@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Base for <code>PropertyReader</code> implementations that use an underlying
- * <code>Properties</code> object.
+ * <code>Map</code> instance.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
