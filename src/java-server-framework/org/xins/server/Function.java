@@ -224,7 +224,7 @@ implements DefaultResultCodes {
     * @throws IllegalStateException
     *    if this object is currently not initialized.
     */
-   FunctionResult handleCall(long start, PropertyReader parameters, String ip)
+   FunctionResult handleCall(long start, FunctionRequest functionRequest, String ip)
    throws IllegalStateException {
 
       // Check state first
@@ -235,12 +235,12 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (!_enabled) {
-         performedCall(parameters, ip, start, callID, DISABLED_FUNCTION_RESULT);
+         performedCall(functionRequest, ip, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(parameters, start, this, callID, ip);
+      CallContext context = new CallContext(functionRequest, start, this, callID, ip);
 
       FunctionResult result;
       try {
@@ -277,7 +277,7 @@ implements DefaultResultCodes {
 
       // Update function statistics
       // We assume that this method will never throw any exception
-      performedCall(parameters, ip, start, callID, result);
+      performedCall(functionRequest, ip, start, callID, result);
 
       return result;
    }
@@ -324,11 +324,11 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>parameters == null || result == null</code>.
     */
-   private final void performedCall(PropertyReader parameters,
-                                    String         ip,
-                                    long           start,
-                                    int            callID,
-                                    FunctionResult result)
+   private final void performedCall(FunctionRequest functionRequest,
+                                    String          ip,
+                                    long            start,
+                                    int             callID,
+                                    FunctionResult  result)
    throws NullPointerException {
 
       // NOTE: Since XINS 1.0.0-beta11, callID is ignored.
@@ -340,15 +340,15 @@ implements DefaultResultCodes {
       boolean isSuccess = code == null;
       long duration = _statistics.recordCall(start, isSuccess, code);
 
-      // Serialize the date, input parameters and output parameters
-      LogdocSerializable serStart  = new FormattedDate(start);
-      LogdocSerializable inParams  = new FormattedParameters(parameters);
-      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
-
       // Fallback is a zero character
       if (code == null) {
          code = "0";
       }
+
+      // Serialize the date, input parameters and output parameters
+      LogdocSerializable serStart  = new FormattedDate(start);
+      LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
+      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
 
       // Perform transaction logging, with and without parameters
       Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);

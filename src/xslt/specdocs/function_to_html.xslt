@@ -522,7 +522,7 @@
 							</span>
 						</span>
 					</xsl:for-each>
-					<xsl:if test="$example-inputdata">
+					<xsl:if test="$example-inputdata != ''">
 						<xsl:text>&amp;</xsl:text>
 						<span class="param">
 							<xsl:attribute name="title">
@@ -726,7 +726,7 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:for-each>
-								<xsl:if test="$example-inputdata">
+								<xsl:if test="$example-inputdata != ''">
 									<xsl:text>&amp;_data=</xsl:text>
 									<xsl:call-template name="urlencode">
 										<xsl:with-param name="text">
@@ -768,7 +768,7 @@
 											</xsl:with-param>
 										</xsl:call-template>
 									</xsl:for-each>
-									<xsl:if test="$example-inputdata">
+									<xsl:if test="$example-inputdata != ''">
 										<xsl:text>&amp;_data=</xsl:text>
 										<xsl:call-template name="urlencode">
 											<xsl:with-param name="text">

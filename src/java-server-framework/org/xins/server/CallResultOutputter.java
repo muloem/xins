@@ -60,7 +60,8 @@ final class CallResultOutputter extends Object {
     */
    public static void output(PrintWriter    out,
                              String         encoding,
-                             FunctionResult result)
+                             FunctionResult result,
+                             boolean        oldStyle)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
@@ -80,6 +81,12 @@ final class CallResultOutputter extends Object {
 
       // Write the error code
       String code = result.getErrorCode();
+      if (oldStyle) {
+         xmlout.attribute("success", code == null ? "true" : "false");
+         if (code != null) {
+            xmlout.attribute("code", code);
+         }
+      }
       if (code != null) {
          xmlout.attribute("errorcode", code);
       }

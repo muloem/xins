@@ -9,6 +9,7 @@ package org.xins.server;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.xml.ElementParser;
+import org.xins.common.xml.Element;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -56,14 +57,15 @@ public final class CallContext {
     * @throws IllegalArgumentException
     *    if <code>parameters == null || function == null</code>.
     */
-   CallContext(PropertyReader parameters, long start, Function function, int callID, String remoteIP)
+   CallContext(FunctionRequest functionRequest, long start, Function function, int callID, String remoteIP)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("parameters",  parameters, "function", function);
+      MandatoryArgumentChecker.check("functionRequest",  functionRequest, "function", function);
 
       // Initialize fields
-      _parameters   = parameters;
+      _parameters   = functionRequest.getParameters();
+      _dataElement  = functionRequest.getDataElement();
       _start        = start;
       _function     = function;
       _callID       = callID;
@@ -80,6 +82,11 @@ public final class CallContext {
     * The parameters of the request.
     */
    private final PropertyReader _parameters;
+
+   /**
+    * The data section of the request.
+    */
+   private final Element _dataElement;
 
    /**
     * The call result builder. Cannot be <code>null</code>.
@@ -174,18 +181,8 @@ public final class CallContext {
     *    function does not define a data section or if the data section sent is
     *    empty.
     */
-   public org.xins.common.xml.Element getDataElement() {
-      String dataSectionValue = _parameters.get("_data");
-      ElementParser parser = new ElementParser();
-      try {
-         if (dataSectionValue != null) {
-            System.err.println("value " + dataSectionValue);
-            System.err.println("parsed " + parser.parse(dataSectionValue.getBytes("UTF-8")));
-            return parser.parse(dataSectionValue.getBytes("UTF-8"));
-         }
-      } catch (Exception ex) {
-      }
-      return null;
+   public Element getDataElement() {
+      return _dataElement;
    }
 
    /**

@@ -1,7 +1,7 @@
 <!--
  XINS Function DTD. This DTD should be added to all function files created of
  the project by adding the following lines at the top of the .fnc file :
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://www.xins.org/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://www.xins.org/dtd/function_1_1.dtd">
 -->
 <!ELEMENT function (description, input?, output?, example*)>
 <!ATTLIST function

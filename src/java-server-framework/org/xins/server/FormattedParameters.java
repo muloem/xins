@@ -78,7 +78,7 @@ extends AbstractLogdocSerializable {
          return "-";
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(93);
+      FastStringBuffer buffer = new FastStringBuffer(80 + _parameters.size() * 40);
 
       boolean first = true;
       do {

@@ -48,6 +48,7 @@ import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.ParseException;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -214,6 +215,26 @@ extends HttpServlet {
    public static final String API_BUILD_VERSION_PROPERTY = "org.xins.api.build.version";
 
    /**
+    * The name of the build property that specifies the default calling convention.
+    */
+   public static final String API_CALLING_CONVENTION_PROPERTY = "org.xins.api.calling-convention";
+
+   /**
+    * The parameter of the query to specify the calling convention.
+    */
+   public static final String CALLING_CONVENTION_PARAMETER = "_convention";
+
+   /**
+    * The standard calling convention.
+    */
+   public static final String STANDARD_CALLING_CONVENTION = "xins-std";
+
+   /**
+    * The old style calling convention.
+    */
+   public static final String OLD_STYLE_CALLING_CONVENTION = "xins-old";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *
@@ -221,16 +242,6 @@ extends HttpServlet {
     *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
    public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
-
-   /**
-    * The response encoding format.
-    */
-   public static final String RESPONSE_ENCODING = "UTF-8";
-
-   /**
-    * The content type of the HTTP response.
-    */
-   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
 
    //-------------------------------------------------------------------------
@@ -342,6 +353,10 @@ extends HttpServlet {
     */
    private API _api;
 
+   /**
+    * The default calling convention for the API.
+    */
+   private CallingConvention _callingConvention;
 
    //-------------------------------------------------------------------------
    // Methods
@@ -352,8 +367,8 @@ extends HttpServlet {
     * identifier will be like app@host:time:rnd where
     *   - app is the name of the deployed application
     *   - host is the hostname the computer running this servlet.
-    *   - time is the current time formatted a yyyyMMdd_HHmmssNNN
-    *     (e.g. 20040806_171522358)
+    *   - time is the current time formatted a yyMMdd-HHmmssNNN
+    *     (e.g. 040806-171522358)
     *   - rnd is a 5 digits long random hexadecimal generated number.
     *
     * @return
@@ -729,6 +744,9 @@ extends HttpServlet {
             _apiName= "-";
          }
 
+         // Get the default calling convention.
+         String callingConventionName = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
+         _callingConvention = createCallingConvention(callingConventionName);
 
          //----------------------------------------------------------------//
          //                        Bootstrap API                           //
@@ -1035,11 +1053,16 @@ extends HttpServlet {
 
       // Call the API if the state is READY
       FunctionResult result;
+      CallingConvention callingConvention = _callingConvention;
+      String conventionParameter = (String)request.getParameter(CALLING_CONVENTION_PARAMETER);
+      if (conventionParameter != null) {
+         callingConvention = createCallingConvention(conventionParameter);
+      }
       State state = getState();
-      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
       if (state == READY) {
          try {
-            result = _api.handleCall(start, parameters, ip);
+            FunctionRequest functionRequest = callingConvention.getFunctionRequest(request);
+            result = _api.handleCall(start, functionRequest, ip);
 
          // If access is denied, return '403 Forbidden'
          } catch (AccessDeniedException exception) {
@@ -1048,6 +1071,11 @@ extends HttpServlet {
 
          // If no matching function is found, return '404 Not Found'
          } catch (NoSuchFunctionException exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+
+         // If the request cannot be parsed, return '404 Not Found'
+         } catch (ParseException exception) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
          }
@@ -1067,17 +1095,28 @@ extends HttpServlet {
 
       // Send the output only if GET or POST
       if (sendOutput) {
-
-         // Send the XML output to the stream and flush
-         PrintWriter out = response.getWriter();
-         response.setContentType(RESPONSE_CONTENT_TYPE);
-         response.setStatus(HttpServletResponse.SC_OK);
-
-         CallResultOutputter.output(out, RESPONSE_ENCODING, result);
-         out.close();
+         callingConvention.handleResult(response, result);
       }
    }
-   
+
+   /**
+    * Creates the calling convention.
+    *
+    * @param name
+    *    the name of the default calling convention, can be <code>null</code>.
+    */
+   CallingConvention createCallingConvention(String name) {
+      if (name == null) {
+         return new StandardCallingConvention();
+      }
+      if (name.equals(OLD_STYLE_CALLING_CONVENTION)) {
+         return new OldStyleCallingConvention();
+      }
+
+      // The default calling convention is returned otherwise
+      return new StandardCallingConvention();
+   }
+
    /**
     * Re-initialise the properties if the property file has changed.
     */

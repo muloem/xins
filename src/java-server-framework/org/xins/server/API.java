@@ -707,8 +707,8 @@ implements DefaultResultCodes {
     *    the start time of the request, in milliseconds since midnight January
     *    1, 1970.
     *
-    * @param parameters
-    *    the parameters of the request, never <code>null</code>.
+    * @param functionRequest
+    *    the function request, never <code>null</code>.
     *
     * @param ip
     *    the IP address of the requester, never <code>null</code>.
@@ -720,7 +720,7 @@ implements DefaultResultCodes {
     *    if this object is currently not initialized.
     *
     * @throws NullPointerException
-    *    if <code>parameters == null</code>.
+    *    if <code>functionRequest == null</code>.
     *
     * @throws NoSuchFunctionException
     *    if there is no matching function for the specified request.
@@ -729,7 +729,7 @@ implements DefaultResultCodes {
     *    if access is denied for the specified combination of IP address and
     *    function name.
     */
-   final FunctionResult handleCall(long start, PropertyReader parameters, String ip)
+   final FunctionResult handleCall(long start, FunctionRequest functionRequest, String ip)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
@@ -739,10 +739,7 @@ implements DefaultResultCodes {
       assertUsable();
 
       // Determine the function name
-      String functionName = parameters.get("_function");
-      if (functionName == null || functionName.length() == 0) {
-         functionName = parameters.get("function");
-      }
+      String functionName = functionRequest.getFunctionName();
 
       // The function name is required
       if (functionName == null || functionName.length() == 0) {
@@ -783,9 +780,9 @@ implements DefaultResultCodes {
          } else if ("_GetFunctionList".equals(functionName)) {
             result = doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
-            String detailedArgument = parameters.get("detailed");
+            String detailedArgument = functionRequest.getParameters().get("detailed");
             boolean detailed = detailedArgument != null && detailedArgument.equals("true");
-            String resetArgument = parameters.get("reset");
+            String resetArgument = functionRequest.getParameters().get("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
                _statisticsLocked = true;
                result = doGetStatistics(detailed);
@@ -802,9 +799,9 @@ implements DefaultResultCodes {
          } else if ("_GetSettings".equals(functionName)) {
             result = doGetSettings();
          } else if ("_DisableFunction".equals(functionName)) {
-            result = doDisableFunction(parameters);
+            result = doDisableFunction(functionRequest.getParameters().get("functionName"));
          } else if ("_EnableFunction".equals(functionName)) {
-            result = doEnableFunction(parameters);
+            result = doEnableFunction(functionRequest.getParameters().get("functionName"));
          } else if ("_ResetStatistics".equals(functionName)) {
             result = doResetStatistics();
          } else if ("_ReloadProperties".equals(functionName)) {
@@ -817,16 +814,16 @@ implements DefaultResultCodes {
          // Determine duration
          long duration = System.currentTimeMillis() - start;
 
-         // Prepare for transaction logging
-         LogdocSerializable serStart  = new FormattedDate(start);
-         LogdocSerializable inParams  = new FormattedParameters(parameters);
-         LogdocSerializable outParams = new FormattedParameters(result.getParameters());
-
          // Determine error code, fallback is a zero character
          String code = result.getErrorCode();
          if (code == null) {
             code = "0";
          }
+
+         // Prepare for transaction logging
+         LogdocSerializable serStart  = new FormattedDate(start);
+         LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
+         LogdocSerializable outParams = new FormattedParameters(result.getParameters());
 
          // Log transaction before returning the result
          Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);
@@ -848,7 +845,7 @@ implements DefaultResultCodes {
       }
 
       // Forward the call to the function
-      return function.handleCall(start, parameters, ip);
+      return function.handleCall(start, functionRequest, ip);
    }
 
    /**
@@ -1028,20 +1025,15 @@ implements DefaultResultCodes {
    /**
     * Enables a function.
     *
-    * @param parameters
-    *    the request parameters, cannot be <code>null</code>.
+    * @param functionName
+    *    the name of the function to disable, can be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>parameters == null</code>.
     */
-   private final FunctionResult doEnableFunction(PropertyReader parameters)
-   throws NullPointerException {
+   private final FunctionResult doEnableFunction(String functionName) {
 
       // Get the name of the function to enable
-      String functionName = parameters.get("functionName");
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
@@ -1063,20 +1055,15 @@ implements DefaultResultCodes {
    /**
     * Disables a function.
     *
-    * @param parameters
-    *    the request parameters, cannot be <code>null</code>.
+    * @param functionName
+    *    the name of the function to disable, can be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>parameters == null</code>.
     */
-   private final FunctionResult doDisableFunction(PropertyReader parameters)
-   throws NullPointerException {
+   private final FunctionResult doDisableFunction(String functionName) {
 
       // Get the name of the function to disable
-      String functionName = parameters.get("functionName");
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");

@@ -53,6 +53,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     architect group recommendation.
   - The server classes now use the org.xins.common.xml.Element class instead of
     the deprecated org.xins.server.Element class.
+  - Added calling convention which allows to specify in which format the data
+    should be received and returned. Two implementation are provided "xins-std"
+    and "xins-old".
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
