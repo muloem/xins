@@ -524,6 +524,7 @@ implements DefaultResultCodes {
          _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
          // Log build-time properties
+         Logger log = Library.BOOTSTRAP_LOG;
          FastStringBuffer buffer = new FastStringBuffer(160);
 
          // - build host name
@@ -532,7 +533,7 @@ implements DefaultResultCodes {
             buffer.append("host ");
             buffer.append(_buildHost);
          } else {
-            Library.BOOTSTRAP_LOG.warn("Build host name is not set.");
+            log.warn("Build host name is not set.");
             buffer.append("unknown host");
             _buildHost = null;
          }
@@ -543,7 +544,7 @@ implements DefaultResultCodes {
             buffer.append(_buildTime);
             buffer.append(")");
          } else {
-            Library.BOOTSTRAP_LOG.warn("Build time stamp is not set.");
+            log.warn("Build time stamp is not set.");
             _buildTime = null;
          }
 
@@ -561,12 +562,12 @@ implements DefaultResultCodes {
             buffer.append(", using XINS ");
             buffer.append(_buildVersion);
          } else {
-            Library.BOOTSTRAP_LOG.warn("Build version is not set.");
+            log.warn("Build version is not set.");
             _buildVersion = null;
          }
 
          buffer.append('.');
-         Library.BOOTSTRAP_LOG.info(buffer.toString());
+         log.info(buffer.toString());
 
          // Let the subclass perform initialization
          try {
@@ -584,13 +585,28 @@ implements DefaultResultCodes {
          for (int i = 0; i < count; i++) {
             LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
             String className = lsm.getClass().getName();
-            Library.BOOTSTRAP_LOG.debug("Bootstrapping lifespan manager " + className + " for " + _name + " API.");
+            log.debug("Bootstrapping lifespan manager " + className + " for " + _name + " API.");
             try {
                lsm.bootstrap(_buildSettings);
-               Library.BOOTSTRAP_LOG.info("Bootstrapped lifespan manager " + className + " for " + _name +  " API.");
+               log.info("Bootstrapped lifespan manager " + className + " for " + _name +  " API.");
             } catch (Throwable exception) {
-               String message = "Failed to bootstrap lifespan manager " + className + " for " + _name + " API.";
-               Library.BOOTSTRAP_LOG.error(message, exception);
+               String exMessage = exception.getMessage();
+               buffer.clear();
+               buffer.append("Failed to bootstrap lifespan manager ");
+               buffer.append(className);
+               buffer.append(" for ");
+               buffer.append(_name);
+               buffer.append(" API due to ");
+               buffer.append(exception.getClass().getName());
+               if (exMessage == null || exMessage.length() < 1) {
+                  buffer.append('.');
+               } else {
+                  buffer.append(" with message \"");
+                  buffer.append(exMessage);
+                  buffer.append("\".");
+               }
+               String message = buffer.toString();
+               log.error(message, exception);
                throw new InitializationException(message);
             }
          }
@@ -655,12 +671,22 @@ implements DefaultResultCodes {
          try {
             lsm.init(runtimeSettings);
             log.info("Initialized lifespan manager " + className + " for " + _name + " API.");
-         } catch (InitializationException exception) {
-            String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API.";
-            log.error(message, exception);
-            throw new InitializationException(message);
          } catch (Throwable exception) {
-            String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API due to unexpected " + exception.getClass().getName() + '.';
+            String exMessage = exception.getMessage();
+            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize lifespan manager ");
+            buffer.append(className);
+            buffer.append(" for ");
+            buffer.append(_name);
+            buffer.append(" API due to ");
+            buffer.append(exception.getClass().getName());
+            if (exMessage == null || exMessage.length() < 1) {
+               buffer.append('.');
+            } else {
+               buffer.append(" with message \"");
+               buffer.append(exMessage);
+               buffer.append("\".");
+            }
+            String message = buffer.toString();
             log.error(message, exception);
             throw new InitializationException(message);
          }

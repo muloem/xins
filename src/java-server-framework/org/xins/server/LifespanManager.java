@@ -77,7 +77,7 @@ public abstract class LifespanManager extends Object {
     *    if the initialization failed, for any reason.
     */
    public abstract void init(PropertyReader runtimeSettings)
-   throws InitializationException;
+   throws Throwable;
 
    /**
     * Deinitializes this instance.
