@@ -3,6 +3,10 @@ CHANGES INTRODUCED IN XINS 0.198:
 
 * XINS/Java Server Framework:
   - Added log entry 1540 for transaction logging.
+  - Now storing runtime properties within APIServlet. Allowing package to call
+    APIServlet.initAPI(). API instance now gets reference to APIServlet
+    instance. Added reinitialize() method to class API, that may be called by API
+    function implementations.
 
 * XINS/Java Client Framework:
   - Removed the deprecated getException() method from class CallException.
