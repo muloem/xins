@@ -102,7 +102,7 @@
 					</tr>
 					<tr>
 						<td>DEBUG</td>
-						<td>Debugging messages. Only useful for programmers.  This is the only level that may contain implementation details that are not exposed outside individual functions.</td>
+						<td>Debugging messages. Only useful for programmers. This is the only level that may contain implementation details that are not exposed outside individual functions.</td>
 					</tr>
 					<tr>
 						<td>INFO</td>
@@ -125,6 +125,9 @@
 						<td>Fatal error messages. Indicates an error that keeps the whole application from functioning.</td>
 					</tr>
 				</table>
+
+				<p>Note that it is a fatal condition to start with an unexpected condition of any crucial aspect of the application. If the configuration of all crucial aspects of the application could not be correctly and fully processed it is effectively in an unexpected state. Falling back to defaults does not imply returning to an expected condition because clearly some specific configuration was intended and expected.</p>
+				<p>This rule should be applied to determine whether a message should be logged at the FATAL level or not.</p>
 			</body>
 		</html>
 	</xsl:template>
