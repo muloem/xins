@@ -30,6 +30,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.specs.FunctionSpecTests.class);
       suite.addTestSuite(org.xins.tests.common.specs.InputParamSpecTests.class);
       suite.addTestSuite(org.xins.tests.common.specs.TypeSpecTests.class);
+      suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
