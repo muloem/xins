@@ -255,7 +255,7 @@ public class Date extends Type {
          _month = month;
          _day   = day;
 
-         _asString = toString(year, month, day);
+         _asString = Date.toString(year, month, day);
       }
 
       //----------------------------------------------------------------------
