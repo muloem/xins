@@ -43,7 +43,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Remove getErrorCode() in class HTTPServiceCaller.Result
 [x] Make inner class HTTPServiceCaller.Result static
 [ ] Log all events properly                                         [LOW PRIO]
-[ ] Rename HTTPServiceCaller.Result to HTTPCallResult
+[x] Rename HTTPServiceCaller.Result to HTTPCallResult
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
