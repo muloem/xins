@@ -152,11 +152,35 @@ implements DefaultReturnCodes {
 
       // Determine the function name
       String functionName = context.getFunction();
-      if ("_GetFunctionList".equals(functionName)) {
-         doGetFunctionList(context);
+      if (functionName == null || functionName.length() == 0) {
+         context.startResponse(false, "MissingFunctionName"); // TODO: Use constant
+         context.endResponse();
+         out.print(stringWriter.toString());
          return;
-      } else if ("_GetStatistics".equals(functionName)) {
-         doGetStatistics(context);
+      }
+
+      // Detect special functions
+      if (functionName.charAt(0) == '_') {
+         if ("_GetFunctionList".equals(functionName)) {
+            doGetFunctionList(context);
+         } else if ("_GetStatistics".equals(functionName)) {
+            doGetStatistics(context);
+         } else {
+            context.startResponse(false, NO_SUCH_FUNCTION);
+         }
+         context.endResponse();
+         out.print(stringWriter.toString());
+         return;
+      }
+
+      // Get the function object
+      Function f = getFunction(functionName);
+
+      // Detect case where function is not recognised
+      if (f == null) {
+         context.startResponse(false, NO_SUCH_FUNCTION);
+         context.endResponse();
+         out.print(stringWriter.toString());
          return;
       }
 
@@ -205,12 +229,11 @@ implements DefaultReturnCodes {
       if (!exceptionThrown) {
          out.print(stringWriter.toString());
       }
-      Function f    = getFunction(functionName);
       long start    = context.getStart();
       long duration = System.currentTimeMillis() - start;
       f.performedCall(start, duration, success, code);
 
-      out.flush();
+      out.flush(); // TODO: Move to APIServlet
    }
 
    /**
