@@ -47,7 +47,7 @@
  */
 public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text> extends Object {
+		<xsl:text> extends java.lang.Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -117,7 +117,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> from, not <code>null</code>.
     *
-    * @throws IllegalArgumentException
+    * @throws java.lang.IllegalArgumentException
     *    if <code>result == null || result.isSuccess() == false</code>.
     *
     * @throws org.xins.client.InvalidCallResultException
@@ -129,17 +129,17 @@ public final class ]]></xsl:text>
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>(org.xins.client.CallResult result)
-   throws IllegalArgumentException,
+   throws java.lang.IllegalArgumentException,
           org.xins.client.InvalidCallResultException {
 
       // Check preconditions
       if (result == null) {
-         throw new IllegalArgumentException("result == null");
+         throw new java.lang.IllegalArgumentException("result == null");
       } else if (!result.isSuccess()) {
-         throw new IllegalArgumentException("result.isSuccess() == false");
+         throw new java.lang.IllegalArgumentException("result.isSuccess() == false");
       }
 
-      String currentParam = "";</xsl:text>
+      java.lang.String currentParam = "";</xsl:text>
 		<xsl:if test="output/data/element">
 			<xsl:text>
 
