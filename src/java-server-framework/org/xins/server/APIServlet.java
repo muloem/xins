@@ -64,16 +64,9 @@ implements Servlet {
 
    /**
     * The name of the system property that specifies the location of the
-    * configuration directory.
+    * configuration file.
     */
-   public static final String CONFIG_DIR_SYSTEM_PROPERTY = "confdir";
-
-   /**
-    * The name of the configuration file to use. The system property
-    * {@link #CONFIG_DIR_SYSTEM_PROPERTY} specifies the location where this
-    * file should be found.
-    */
-   public static final String CONFIG_FILE = "xins.properties";
+   public static final String CONFIG_FILE_SYSTEM_PROPERTY = "org.xins.server.config";
 
    /**
     * The name of the initialization property that specifies the name of the
@@ -242,48 +235,63 @@ implements Servlet {
     * sources, initially:
     *
     * <dl>
-    *    <dt><strong>1. System properties</strong></dt>
-    *    <dd>The location of the configuration directory must be passed to the
+    *    <dt><strong>1. Build-time settings</strong></dt>
+    *    <dd>The application package contains a <code>web.xml</code> file with
+    *        build-time settings. Some of these settings are required in order
+    *        for the XINS/Java Server Framework to start up, while others are
+    *        optional. These build-time settings are passed to the servlet by
+    *        the application server as a {@link ServletConfig} object. See
+    *        {@link #init(ServletConfig)}.
+    *        <br />The servlet configuration is the responsibility of the
+    *        <em>assembler</em>.</dd>
+    *
+    *    <dt><strong>2. System properties</strong></dt>
+    *    <dd>The location of the configuration file must be passed to the
     *        Java VM at startup, as a system property.
     *        <br />System properties are the responsibility of the
     *        <em>system administrator</em>.
     *        <br />Example:
-    *        <br /><pre>java -Dconfdir=`pwd`/conf orion.jar</pre></dd>
+    *        <br /><code>java -Dorg.xins.server.config=`pwd`/conf/xins.properties orion.jar</code></dd>
     *
-    *    <dt><strong>2. Servlet configuration</strong></dt>
-    *    <dd>The application package contains a <code>web.xml</code> file with
-    *        initialization properties. These initialization properties should
-    *        contain build-time configuration settings. Some of these settings
-    *        are required in order for the XINS/Java Server Framework to start
-    *        up, while others are optional.
-    *        <br />The servlet configuration is the responsible of the
-    *        <em>assembler</em>.</dd>
+    *    <dt><strong>3. Configuration file</strong></dt>
+    *    <dd>The configuration file should contain runtime configuration
+    *        settings, like the settings for the logging subsystem.
+    *        <br />System properties are the responsibility of the
+    *        <em>system administrator</em>.
+    *        <br />Example contents for a configuration file:
+    *        <blockquote><code>log4j.rootLogger=DEBUG, console
+    *        <br />log4j.appender.console=org.apache.log4j.ConsoleAppender
+    *        <br />log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    *        <br />log4j.appender.console.layout.ConversionPattern=%d %-5p [%c] %m%n</code></blockquote>
     * </dl>
     *
     * <p>The initialization is performed as follows:
     *
     * <ol>
     *    <li>if this servlet is not currently <em>uninitialized</em>, then a
-    *        {@link ServletException} is thrown;
-    *    <li>if <code>config == null</code> then a {@link ServletException} is
-    *        thrown;
+    *        {@link ServletException} is thrown; this indicates a problem with
+    *        the application server;
+    *    <li>if <code>config</code> argument is <code>null</code> then a
+    *        {@link ServletException} is thrown; this indicates a problem
+    *        with the application server;
     *    <li>the state is set to <em>initializing</em>;
-    *    <li>the value of the required system property
-    *        {@link #CONFIG_DIR_SYSTEM_PROPERTY} is determined; if it is not
-    *        set then a {@link ServletException} is thrown;
-    *    <li>the config file (the name should equals {@link #CONFIG_FILE}) is
-    *        loaded from the directory denoted by the
-    *        {@link #CONFIG_DIR_SYSTEM_PROPERTY} setting, and all
+    *    <li>the value of the required system property named
+    *        {@link #CONFIG_FILE_SYSTEM_PROPERTY} is determined, this is the
+    *        relative or absolute path to the runtime configuration file; if
+    *        it is not set then a {@link ServletException} is thrown;
+    *    <li>the indicated configuration file is loaded and all
     *        configuration properties in this file are read according to
     *        {@link Properties#load(InputStream) the specifications for a property file};
     *        if this fails, then a {@link ServletException} is thrown;
     *    <li>the logging subsystem is initialized using the properties from
-    *        the config file, see
+    *        the configuration file, see
     *        {@link PropertyConfigurator#doConfigure(String,org.apache.log4j.spi.LoggerRepository) the Log4J documentation};
     *    <li>the logging system is investigated to check if it is properly
-    *        initialized, if it is not then it will be configured to log to
-    *        the console using a simple output method, with no log level
-    *        threshold; in this case a warning message is immediately logged;
+    *        initialized, if it is not then apparently the configuration file
+    *        contained no initialization properties for it; in this case the
+    *        logging subsystem will be configured to log to the standard
+    *        output stream using a simple output method, with no log level
+    *        threshold and a warning message is immediately logged;
     *    <li>at this point the logging subsystem is definitely initialized;
     *        the interval for the configuration file modification checks is
     *        determined by reading the
@@ -293,7 +301,6 @@ implements Servlet {
     *        if this property exists but has an invalid value, then a
     *        <em>warning</em> message is logged and
     *        {@link #DEFAULT_CONFIG_RELOAD_INTERVAL} is also assumed;
-    *    <li>the configuration file watch thread is started;
     *    <li>the initialization property {@link #API_CLASS_PROPERTY} is read
     *        from the {@link ServletConfig servlet configuration} (not from
     *        the configuration file); if it is not set then a
@@ -312,6 +319,7 @@ implements Servlet {
     *    <li>the {@link ServletConfig config} object is stored internally, to
     *        be returned by {@link #getServletConfig()}.
     *    <li>the state is set to <em>ready</em>.
+    *    <li>the configuration file watch thread is started;
     * </ol>
     *
     * <p>Note that if a {@link ServletException} is thrown, the state is reset
@@ -319,11 +327,14 @@ implements Servlet {
     *
     * <p>Also note that if the logging subsystem is already initialized and a
     * {@link ServletException} is thrown, a <em>fatal</em> message is logged
-    * just before the exception is actually thrown.
+    * just before the exception is actually thrown. However, if the logging
+    * subsystem is not yet initialized, then a message is printed to the
+    * standard error stream.
     *
     * @param config
     *    the {@link ServletConfig} object which contains initialization and
-    *    startup parameters for this servlet, cannot be <code>null</code>.
+    *    startup parameters for this servlet, as specified by the
+    *    <em>assembler</em>, cannot be <code>null</code>.
     *
     * @throws ServletException
     *    if <code>config == null</code>, if this servlet is not uninitialized
@@ -337,36 +348,45 @@ implements Servlet {
 
          // Check preconditions
          if (_state != UNINITIALIZED) {
-            // TODO: throw new ServletException("State is " + _state + " instead of " + UNINITIALIZED + '.');
-            throw new ServletException("Unable to initialize, state is not UNINITIALIZED.");
+            String message = "Application server malfunction suspected. State is " + _state + " instead of " + UNINITIALIZED + '.';
+            System.err.println(message);
+            throw new ServletException(message);
          } else if (config == null) {
-            throw new ServletException("config == null");
+            String message = "Application server malfunction suspected. No servlet configuration object passed.";
+            System.err.println(message);
+            throw new ServletException(message);
          }
 
          // Set the state
          _state = INITIALIZING;
 
          try {
-            // Determine configuration directory
-            String confdir = System.getProperty(CONFIG_DIR_SYSTEM_PROPERTY);
+            // Determine configuration file location
+            String configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
 
             // Read properties from the config file
             Properties properties;
-            String _configFile; // TODO: Determine absolute path name
-            if (confdir == null || confdir.length() < 1) {
-               throw new ServletException("System property \"" + CONFIG_DIR_SYSTEM_PROPERTY + "\" is not set.");
+            if (_configFile == null || _configFile.length() < 1) {
+               String message = "System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.";
+               System.err.println(message);
+               throw new ServletException(message);
             } else {
-               _configFile = confdir + System.getProperty("file.separator") + CONFIG_FILE;
                try {
                   FileInputStream in = new FileInputStream(_configFile);
                   properties = new Properties();
                   properties.load(in);
                } catch (FileNotFoundException exception) {
-                  throw new ServletException("Configuration file \"" + _configFile + "\" not found.");
+                  String message = "System administration issue detected. Configuration file \"" + _configFile + "\" not found.";
+                  System.err.println(message);
+                  throw new ServletException(message);
                } catch (SecurityException exception) {
-                  throw new ServletException("Access denied while loading configuration file \"" + _configFile + "\".");
+                  String message = "System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".";
+                  System.err.println(message);
+                  throw new ServletException(message);
                } catch (IOException exception) {
-                  throw new ServletException("Unable to read configuration file \"" + _configFile + "\".");
+                  String message = "System administration issue detected. Unable to read configuration file \"" + _configFile + "\".";
+                  System.err.println(message);
+                  throw new ServletException(message);
                }
             }
 
