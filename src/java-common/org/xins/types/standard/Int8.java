@@ -89,4 +89,23 @@ public final class Int8 extends Type {
          }
       }
    }
+
+   /**
+    * Converts the specified string value to a <code>Byte</code> value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public Byte fromStringForOptional(String string)
+   throws TypeValueException {
+      try {
+         return Byte.valueOf(string);
+      } catch (NumberFormatException nfe) {
+         throw new TypeValueException(this, string);
+      }
+   }
 }
