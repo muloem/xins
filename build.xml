@@ -11,18 +11,18 @@
 	<target name="-checkstyle-avail">
 		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</available>
 		<fail unless="checkstyle.available" message="Checkstyle not available" />
 	</target>
 
 	<target name="-junit-avail">
-		<available classname="junit.framework.Test" property="junit.available">
+		<available classname="junit.framework.TestListener" property="junit.available">
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</available>
 		<fail unless="junit.available" message="JUnit not available" />
@@ -31,8 +31,8 @@
 	<target name="-checkstyle-task" depends="-checkstyle-avail">
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</taskdef>
 	</target>
@@ -40,8 +40,8 @@
 	<target name="-junit-task" depends="-junit-avail">
 		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</taskdef>
 	</target>
@@ -160,8 +160,8 @@
 		optimize="${javac.optimize}"
 		target="${javac.targetvm}">
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -203,8 +203,8 @@
 		target="${javac.targetvm}">
 			<classpath>
 				<pathelement path="build/classes/java-common" />
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -243,8 +243,8 @@
 		target="${javac.targetvm}">
 			<classpath>
 				<pathelement path="build/classes/java-common" />
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -282,7 +282,7 @@
 		</exec>
 	</target>
 
-	<target name="classes-tests" depends="-junit-avail,java" description="Compiles the test cases">
+	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
 		<mkdir dir="build/classes/tests" />
 		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="false">
 			<src path="src/tests" />
@@ -290,8 +290,8 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -307,8 +307,8 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="depends/runtime"             includes="*.jar" />
 			</classpath>
 		</junit>
 	</target>
@@ -361,10 +361,10 @@
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
-				<fileset dir="${ant.home}/lib"             includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="depends/runtime"             includes="*.jar" />
+				<fileset dir="${ant.home}/lib"             includes="*.jar" />
 			</classpath>
 			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://java.sun.com/products/servlet/2.3/javadoc/"         />
 			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.3/docs/api"                     />
@@ -660,8 +660,8 @@
 			<classpath>
 				<pathelement path="build/xins-common.jar" />
 				<pathelement path="build/xins-client.jar" />
-				<fileset dir="depends/compile"             includes="**/*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 		<java
@@ -671,8 +671,8 @@
 				<pathelement path="build/classes/demos/caller" />
 				<pathelement path="build/xins-common.jar" />
 				<pathelement path="build/xins-client.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="depends/runtime"             includes="*.jar" />
 			</classpath>
 			<arg value="${config}" />
 			<arg value="${request}" />
