@@ -265,6 +265,8 @@ implements DefaultResultCodes {
     *
     * @return
     *    the response validator, never <code>null</code>.
+    *
+    * @since XINS 0.50
     */
    final ResponseValidator getResponseValidator() {
       return _responseValidator;
