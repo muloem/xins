@@ -163,9 +163,12 @@ final class Element extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("pcdata", pcdata);
 
+      // Initialize the content list, if necessary
       if (_content == null) {
          _content = new ArrayList(7);
       }
+
+      // Add the PCDATA
       _content.add(pcdata);
    }
 
@@ -187,11 +190,15 @@ final class Element extends Object {
          throw new IllegalArgumentException("child.getParent() != null");
       }
 
+      // Initialize the content list, if necessary
       if (_content == null) {
          _content = new ArrayList(7);
       }
 
+      // Add the child element
       _content.add(child);
+
+      // Set the parent of the child
       child._parent = this;
    }
 
