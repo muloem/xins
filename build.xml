@@ -42,6 +42,19 @@
 		<mkdir dir="build" />
 	</target>
 
+	<target name="-prepare-java" depends="-prepare">
+		<mkdir dir="build/src/java-server-framework" />
+		<style
+		in="src/xml/default_returncodes.xml"
+		out="build/src/java-server-framework/org/xins/server/DefaultReturnCodes.java"
+		style="src/xslt/java-server-framework/default_returncodes_to_java.xslt" />
+		<mkdir dir="build/classes/java-server-framework" />
+		<copy todir="build/classes/java-server-framework">
+			<fileset dir="build/src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-server-framework"   includes="**/*.java" />
+		</copy>
+	</target>
+
 	<target name="-prepare-classes" depends="-prepare">
 		<mkdir dir="build/classes" />
 	</target>
@@ -50,10 +63,9 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-server-framework" depends="-xmlenc-avail,-servlet-avail,-prepare-classes" description="Compiles the XINS/Java server framework">
-		<mkdir dir="build/classes/java-server-framework" />
+	<target name="java-server-framework" depends="-xmlenc-avail,-servlet-avail,-prepare-java,-prepare-classes" description="Compiles the XINS/Java server framework">
 		<javac
-		srcdir="src/java-server-framework"
+		srcdir="build/src/java-server-framework"
 		destdir="build/classes/java-server-framework"
 		debug="on"
 		deprecation="on"
@@ -80,18 +92,18 @@
 	</target>
 
 	<target name="-javadoc-sourcepath-nojdksrc" depends="-servlet-avail,-prepare,-jdksrc-avail" unless="jdksrc.available">
-		<property name="javadoc.sourcepath" value="src/java-server-framework" />
+		<property name="javadoc.sourcepath" value="build/src/java-server-framework" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
 
 	<target name="-javadoc-sourcepath-jdksrc" depends="-jdksrc-avail" if="jdksrc.available">
-		<property name="javadoc.sourcepath" value="src/java-server-framework:${java.home}/src" />
+		<property name="javadoc.sourcepath" value="build/src/java-server-framework:${java.home}/src" />
 		<echo level="verbose" message="JDK source code available." />
 	</target>
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="javadoc" depends="-prepare,-javadoc-sourcepath" description="Generates Javadoc API documentation">
+	<target name="javadoc" depends="-prepare-java,-javadoc-sourcepath" description="Generates Javadoc API documentation">
 		<mkdir dir="build/javadoc" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
