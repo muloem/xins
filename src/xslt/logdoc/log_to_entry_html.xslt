@@ -90,13 +90,36 @@
 				<em>No parameters are defined for this entry.</em>
 			</xsl:when>
 			<xsl:otherwise>
-				<ul>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Nullable</th>
+					</tr>
 					<xsl:for-each select="param">
-						<li>
-							<xsl:value-of select="@name" />
-						</li>
+						<xsl:variable name="nullable">
+							<xsl:choose>
+								<xsl:when test="string-length(@nullable) &lt; 1">true</xsl:when>
+								<xsl:when test="@nullable = 'true'">true</xsl:when>
+								<xsl:when test="@nullable = 'false'">false</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>The 'nullable' attribute is set to '</xsl:text>
+										<xsl:value-of select="@nullable" />
+										<xsl:text>', which is invalid. It should be either 'true' or 'false'.</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<tr>
+							<td>
+								<xsl:value-of select="@name" />
+							</td>
+							<td>
+								<xsl:value-of select="$nullable" />
+							</td>
+						</tr>
 					</xsl:for-each>
-				</ul>
+				</table>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
