@@ -35,6 +35,9 @@ CHANGES INTRODUCED IN XINS 0.195:
     defined in the TargetDescriptor class.
   - Changed log message 2007. The logged exception is now always the root
     cause exception.
+  - Changed InvalidCallResultException to use ExceptionUtils to store the root
+    cause exception of the cause exception and to use the message of that
+    root cause exception if no message is explicitly specified.
 
 * Build and release process:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
