@@ -123,6 +123,14 @@
 		<entry id="3318" level="INFO">
 			<description>More targets available and fail-over is allowed</description>
 		</entry>
+		<entry id="3319" level="INFO">
+			<description>Target descriptor constructed</description>
+			<param name="url"               type="text"  nullable="false" />
+			<param name="urlCRC"            type="int32" nullable="false" />
+			<param name="connectionTimeOut" type="int32" nullable="false" />
+			<param name="socketTimeOut"     type="int32" nullable="false" />
+			<param name="totalTimeOut"      type="int32" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="expiry" name="Expiry-related classes">
