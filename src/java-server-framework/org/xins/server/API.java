@@ -6,6 +6,7 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.znerd.xmlenc.XMLOutputter;
@@ -52,13 +53,23 @@ implements DefaultReturnCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
-      // empty
+      _functionsByName = new HashMap();
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Map that maps function names to <code>Function</code> instances.
+    * Contains all functions associated with this API.
+    *
+    * <p />This field is initialised to a non-<code>null</code> value by the
+    * constructor.
+    */
+   private final Map _functionsByName;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -85,9 +96,12 @@ implements DefaultReturnCodes {
     *
     * @param function
     *    the function that is added, not <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>function == null</code>.
     */
    final void functionAdded(Function function) {
-      // TODO
+      _functionsByName.put(function.getName(), function);
    }
 
    /**
