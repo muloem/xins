@@ -342,10 +342,10 @@ public final class TargetDescriptor extends Descriptor {
    private final int _instanceNumber;
 
    /**
-    * A textual representation of this object. Cannot be <code>null</code>.
-    * The value of this field is returned by {@link #toString()}.
+    * A textual representation of this object. Lazily initialized by
+    * {@link #toString()} before returning it.
     */
-   private final String _asString;
+   private String _asString;
 
    /**
     * The URL for the service. Cannot be <code>null</code>.
@@ -513,7 +513,7 @@ public final class TargetDescriptor extends Descriptor {
          FastStringBuffer buffer = new FastStringBuffer(233, "TargetDescriptor #");
          buffer.append(_instanceNumber);
          buffer.append(" [url=\"");
-         buffer.append(url);
+         buffer.append(_url);
          buffer.append("\"; crc=\"");
          buffer.append(HexConverter.toHexString(_crc));
          buffer.append("\"; total time-out is ");
