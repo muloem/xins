@@ -19,6 +19,9 @@ CHANGES INTRODUCED IN XINS 0.186:
 
 * Generated specification documentation:
   - The name for the enumeration type are also printed in the generated HTML.
+  - Fixed a bug that prevented to create the index when at least one API uses
+    the new directory structure.
+    This bug has been in XINS since version 0.169.
 
 * Generated build file:
   - Fixed incorrect targets classes and wars generated when at least one API

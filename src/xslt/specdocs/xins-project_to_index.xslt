@@ -76,7 +76,7 @@
 					<xsl:value-of select="$old_api_file" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat('apis/', @name, '/spec/api.xml')" />
+					<xsl:value-of select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
