@@ -105,6 +105,9 @@ public final class Utils extends Object {
     * Logs a programming error with an optional cause exception, and returns a
     * <code>ProgrammingException</code> object for it.
     *
+    * <p>The class and method that call this method will be considered to be
+    * the detecting class and calling class for the programming error.
+    *
     * @param detail
     *    the detail message, can be <code>null</code>.
     *
@@ -113,8 +116,10 @@ public final class Utils extends Object {
     *    calling method, never <code>null</code>.
     */
    public static final ProgrammingException
-   logProgrammingError(String details) {
-      return logProgrammingError(getCallingClass(), getCallingMethod(), getCallingClass(), getCallingMethod(), details);
+   logProgrammingError(String detail) {
+      return logProgrammingError(getCallingClass(), getCallingMethod(),
+                                 getCallingClass(), getCallingMethod(),
+                                 detail);
    }
 
    /**
@@ -138,8 +143,11 @@ public final class Utils extends Object {
          sourceClass = source.getClassName();
          sourceMethod = source.getMethodName();
       } catch (Throwable t) {
+         // ignore
       }
-      return logProgrammingError(getCallingClass(), getCallingMethod(), sourceClass, sourceMethod, cause.getMessage(), cause);
+      return logProgrammingError(getCallingClass(), getCallingMethod(),
+                                 sourceClass,       sourceMethod,
+                                 null,              cause);
    }
 
    /**
