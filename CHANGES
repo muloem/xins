@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.36:
+
+* Renamed xins.sh to xins.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.35:
 
 * Fixed some Checkstyle warnings.
