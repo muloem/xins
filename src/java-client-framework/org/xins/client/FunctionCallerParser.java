@@ -73,7 +73,8 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Parses the given XML string to create a <code>FunctionCaller</code> object.
+    * Parses the given XML string to create a <code>FunctionCaller</code>
+    * object.
     *
     * @param xml
     *    the XML to be parsed, not <code>null</code>.
