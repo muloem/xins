@@ -48,7 +48,7 @@ public class CallResultParser extends Object {
     * Constructs a new <code>CallResultParser</code>.
     */
    public CallResultParser() {
-      xmlBuilder = new SAXBuilder();
+      _xmlBuilder = new SAXBuilder();
    }
 
 
@@ -59,7 +59,7 @@ public class CallResultParser extends Object {
    /**
     * Parser that takes an XML document and converts it to a JDOM Document.
     */
-   private final SAXBuilder xmlBuilder;
+   private final SAXBuilder _xmlBuilder;
 
 
    //-------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class CallResultParser extends Object {
 
       try {
          StringReader reader = new StringReader(xml);
-         return parse(xmlBuilder.build(reader));
+         return parse(_xmlBuilder.build(reader));
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);
