@@ -46,6 +46,7 @@ XINS/JAVA COMMON LIBRARY
 * Change Type class to add a 'version' property.
 * Add DateType class to represent standard type '_date'. Add Date class to
   represent an actual date and make this the value class for the DateType.
+* Change ExpiryFolder to allow retrieval of slot info.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
