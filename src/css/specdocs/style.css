@@ -283,13 +283,13 @@ table.element_details tr td {
 
 table.example {
 	border: none;
-	background-color: #ddddff;
 	border-collapse: collapse;
 	table-layout: auto;
 	width: 95%;
 }
 
 table.example tr th {
+	background-color: #ddddff;
 	text-align: left;
 	vertical-align: text-top;
 	border: solid 1px #8888dd;
@@ -297,6 +297,7 @@ table.example tr th {
 }
 
 table.example tr td {
+	background-color: #ddddff;
 	text-align: left;
 	vertical-align: text-top;
 	border: solid 1px #8888dd;
