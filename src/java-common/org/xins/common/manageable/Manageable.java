@@ -12,7 +12,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * Abstractgion of a manageanble object. Abstract base class for classes that
+ * Abstraction of a manageable object. Abstract base class for classes that
  * support bootstrap, initialization and destruction functions.
  *
  * <p>In environments where <code>Manageable</code> instances are constructed
