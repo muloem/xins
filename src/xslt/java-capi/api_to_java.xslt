@@ -233,6 +233,8 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
 	<!-- Print a method to call a single function -->
 	<xsl:template match="function">
+
+		<!-- Define parameters -->
 		<xsl:param name="name" />
 
 		<!-- Determine the name of the method in the API class that will call
@@ -273,6 +275,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			</xsl:choose>
 		</xsl:variable>
 
+		<!-- Check name set in function definition file -->
+		<xsl:if test="string-length(@name) &gt; 0 and not($name = @name)">
+			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file. Removing the attribute in the function definition file should solve this problem.</xsl:message>
+		</xsl:if>
+
 		<xsl:text><![CDATA[
 
    /**
@@ -281,13 +288,13 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		<xsl:text><![CDATA[</em> function.
     *
     * <p>See the <a href="]]></xsl:text>
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+		<xsl:value-of select="$specdocsURL" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>.html</xsl:text>
-		<xsl:text><![CDATA["><code>]]></xsl:text>
+		<xsl:text><![CDATA["><em>]]></xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em> function specification</a>.]]></xsl:text>
 		<xsl:choose>
@@ -308,59 +315,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				<xsl:text>.</xsl:text>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:for-each select="input/param">
-			<xsl:variable name="required">
-				<xsl:choose>
-					<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-					<xsl:when test="@required = 'false'">false</xsl:when>
-					<xsl:when test="@required = 'true'">true</xsl:when>
-					<xsl:otherwise>
-						<xsl:message terminate="yes">
-							<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-							<xsl:value-of select="@required" />
-							<xsl:text>'.</xsl:text>
-						</xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="javatype">
-				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="required" select="$required" />
-					<xsl:with-param name="type"     select="@type" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="typeIsPrimary">
-				<xsl:call-template name="is_java_datatype">
-					<xsl:with-param name="text" select="$javatype" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:text>
-    *
-    * @param </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>
-    *    </xsl:text>
-			<xsl:call-template name="hungarianLower">
-				<xsl:with-param name="text">
-					<!-- TODO: Improve this -->
-					<xsl:value-of select="description/text()" />
-				</xsl:with-param>
-			</xsl:call-template>
-			<xsl:if test="$typeIsPrimary = 'false'">
-				<xsl:choose>
-					<xsl:when test="$required = 'true'">
-						<xsl:text><![CDATA[
-    *    Cannot be <code>null</code>.]]></xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text><![CDATA[
-    *    Can be <code>null</code>.]]></xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
-		</xsl:for-each>
+		<xsl:apply-templates select="input/param" mode="javadoc" />
 		<xsl:choose>
 			<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
 				<xsl:text><![CDATA[
@@ -586,5 +541,89 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		</xsl:choose>
 		<xsl:text>
    }</xsl:text>
+	</xsl:template>
+
+	<!-- Prints an @param section for an input parameter. -->
+	<xsl:template match="input/param" mode="javadoc">
+
+		<!-- Determine if the input parameter is mandatory. -->
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+						<xsl:value-of select="@required" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Determine the Java primary data type or class for the input
+		     parameter -->
+		<xsl:variable name="javatype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="$required" />
+				<xsl:with-param name="type"     select="@type" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- Determine if $javatype is a Java primary data type -->
+		<xsl:variable name="typeIsPrimary">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$javatype" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- Determine the description for the input parameter -->
+		<xsl:variable name="origDescription">
+			<xsl:value-of select="normalize-space(description/text())" />
+		</xsl:variable>
+		<xsl:variable name="description">
+			<xsl:choose>
+				<xsl:when test="string-length($origDescription) = 0">
+					<xsl:text><![CDATA[the value of the <em>]]></xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text><![CDATA[</em> input parameter.]]></xsl:text>
+				</xsl:when>
+				<xsl:when test="substring($origDescription, string-length($origDescription), 1) = '.'">
+					<xsl:call-template name="hungarianLower">
+						<xsl:with-param name="text" select="$origDescription" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="hungarianLower">
+						<xsl:with-param name="text" select="$origDescription" />
+					</xsl:call-template>
+					<xsl:text>.</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Perform the actual printing -->
+		<xsl:text>
+    *
+    * @param </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>
+    *    </xsl:text>
+		<xsl:value-of select="$description" />
+		<xsl:if test="$typeIsPrimary = 'false'">
+			<xsl:choose>
+				<xsl:when test="$required = 'true'">
+					<xsl:text><![CDATA[
+    *    Cannot be <code>null</code>.]]></xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text><![CDATA[
+    *    Can be <code>null</code>.]]></xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>
