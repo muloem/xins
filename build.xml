@@ -8,6 +8,16 @@
 
 <project name="xins" default="all" basedir=".">
 
+	<target name="-xmlenc-avail">
+		<available classname="org.znerd.xmlenc.XMLOutputter" property="xmlenc.available" />
+		<fail unless="xmlenc.available" message="Library not available: xmlenc" />
+	</target>
+
+	<target name="-servlet-avail">
+		<available classname="javax.servlet.http.HttpServletRequest" property="servlet.available" />
+		<fail unless="servlet.available" message="Library not available: Servlet API" />
+	</target>
+
 	<target name="-prepare">
 		<mkdir dir="build" />
 	</target>
@@ -20,7 +30,7 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-server-framework" depends="-prepare-classes" description="Compiles the XINS/Java server framework">
+	<target name="java-server-framework" depends="-xmlenc-avail,-servlet-avail,-prepare-classes" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/classes/java-server-framework" />
 		<javac
 		srcdir="src/java-server-framework"
@@ -28,10 +38,7 @@
 		debug="on"
 		deprecation="on"
 		optimize="off"
-		target="1.2">
-			<classpath path="../wanadoo-dependencies/servlet/servlet.jar" />
-			<classpath path="../wanadoo-dependencies/xmlenc/xmlenc.jar" />
-		</javac>
+		target="1.2" />
 	</target>
 
 	<target name="all" depends="java-server-framework" description="Generates everything" />
