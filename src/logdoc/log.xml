@@ -19,7 +19,7 @@
 		</entry>
 	</group>
 
-	<group name="Bootstrapping" category="org.xins.server.lifespan.bootstrap">
+	<group id="bootstrap" name="Bootstrapping" category="org.xins.server.lifespan.bootstrap">
 		<entry id="2000" level="DEBUG">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
 		</entry>
@@ -188,7 +188,7 @@
 		</entry>
 	</group>
 
-	<group name="Logging subsystem" category="org.xins.server.log">
+	<group id="log" name="Logging subsystem" category="org.xins.server.log">
 		<entry id="3000" level="DEBUG">
 			<description>Initializing logging subsystem.</description>
 		</entry>
@@ -234,7 +234,7 @@
 		</entry>
 	</group>
 
-	<group name="Initialization" category="org.xins.server.lifespan.init">
+	<group id="init" name="Initialization" category="org.xins.server.lifespan.init">
 		<entry id="4000" level="WARNING">
 			<description>Runtime properties file cannot be opened.</description>
 			<param name="configFile" />
@@ -327,7 +327,7 @@
 		</entry>
 	</group>
 
-	<group name="Runtime" category="org.xins.server.runtime">
+	<group id="runtime" name="Runtime" category="org.xins.server.runtime">
 		<entry id="5000" level="ERROR">
 			<description>Received HTTP request with invalid method.</description>
 			<param name="ip" />
@@ -340,7 +340,7 @@
 		</entry>
 	</group>
 
-	<group name="Shutdown" category="org.xins.server.lifespan.shutdown">
+	<group id="shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
 		<entry id="6000" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>
 		</entry>
