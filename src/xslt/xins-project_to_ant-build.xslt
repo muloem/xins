@@ -7,20 +7,20 @@
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
+
 	<!-- Define parameters -->
 	<xsl:param name="xins_home"    />
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
 	<xsl:param name="xins_version" />
-	
+
 	<!-- Perform includes -->
 	<xsl:include href="hungarian.xslt"       />
 	<xsl:include href="package_to_dir.xslt"  />
 	<xsl:include href="package_for_api.xslt" />
-	
+
 	<xsl:output indent="yes" />
-	
+
 	<xsl:variable name="xmlenc_version"    select="'0.37'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
@@ -57,7 +57,7 @@
 			<xsl:otherwise>depends</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	
+
 	<xsl:template match="project">
 		<project default="all" basedir="..">
 			
@@ -127,6 +127,12 @@
 							<xsl:value-of select="$clientPackage" />
 						</xsl:with-param>
 					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="apiHasTypes">
+					<xsl:choose>
+						<xsl:when test="document($api_file)/api/type">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
 				</xsl:variable>
 				
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
@@ -200,84 +206,85 @@
 					</xsl:for-each>
 				</target>
 
-				<target name="-classes-types-{$api}" depends="-prepare-classes">
-					<xsl:variable name="package">
-						<xsl:call-template name="package_for_type_classes">
-							<xsl:with-param name="project_file">
-								<xsl:value-of select="$project_file" />
-							</xsl:with-param>
-							<xsl:with-param name="api">
-								<xsl:value-of select="$api" />
-							</xsl:with-param>
-						</xsl:call-template>
-					</xsl:variable>
-					<xsl:variable name="packageAsDir">
-						<xsl:call-template name="package2dir">
-							<xsl:with-param name="package">
-								<xsl:value-of select="$package" />
-							</xsl:with-param>
-						</xsl:call-template>
-					</xsl:variable>
-					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
-					<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
-
-					<delete dir="{$copiedTypesDir}" />
-					<xsl:for-each select="document($api_file)/api/type">
-						<xsl:variable name="type" select="@name" />
-						<xsl:variable name="classname">
-							<xsl:call-template name="hungarianUpper">
-								<xsl:with-param name="text">
-									<xsl:value-of select="$type" />
+				<xsl:if test="$apiHasTypes = 'true'">
+					<target name="-classes-types-{$api}" depends="-prepare-classes">
+						<xsl:variable name="package">
+							<xsl:call-template name="package_for_type_classes">
+								<xsl:with-param name="project_file">
+									<xsl:value-of select="$project_file" />
+								</xsl:with-param>
+								<xsl:with-param name="api">
+									<xsl:value-of select="$api" />
 								</xsl:with-param>
 							</xsl:call-template>
 						</xsl:variable>
-						<copy
-						file="{$specsdir}/{$api}/{$type}.typ"
-						tofile="{$copiedTypesDir}/{$classname}.typ" />
-					</xsl:for-each>
-						
-					<!-- XXX: Change the base dir for the XSLT file ? -->
-					<style
-					basedir="{$copiedTypesDir}"
-					destdir="{$javaDestDir}/{$packageAsDir}/"
-					style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
-					reloadstylesheet="true"
-					extension=".java">
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$specsdir}"     />
-						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
-						<param name="package"      expression="{$package}"      />
-					</style>
-					<delete dir="{$copiedTypesDir}" />
+						<xsl:variable name="packageAsDir">
+							<xsl:call-template name="package2dir">
+								<xsl:with-param name="package">
+									<xsl:value-of select="$package" />
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
+						<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
-					<mkdir dir="{$typeClassesDir}" />
-					<javac
-					srcdir="{$javaDestDir}"
-					destdir="{$typeClassesDir}"
-					debug="true"
-					deprecation="true">
-						<classpath>
-							<pathelement path="{$xins-common.jar}" />
-							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
-							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
-							<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
-								<fileset dir="{$dependenciesDir}/{@dir}">
-									<xsl:attribute name="includes">
-										<xsl:choose>
-											<xsl:when test="@includes">
-												<xsl:value-of select="@includes" />
-											</xsl:when>
-											<xsl:otherwise>**/*.jar</xsl:otherwise>
-										</xsl:choose>
-									</xsl:attribute>
-								</fileset>
-							</xsl:for-each>
-						</classpath>
-					</javac>
-				</target>
+						<delete dir="{$copiedTypesDir}" />
+						<xsl:for-each select="document($api_file)/api/type">
+							<xsl:variable name="type" select="@name" />
+							<xsl:variable name="classname">
+								<xsl:call-template name="hungarianUpper">
+									<xsl:with-param name="text">
+										<xsl:value-of select="$type" />
+									</xsl:with-param>
+								</xsl:call-template>
+							</xsl:variable>
+							<copy
+							file="{$specsdir}/{$api}/{$type}.typ"
+							tofile="{$copiedTypesDir}/{$classname}.typ" />
+						</xsl:for-each>
+							
+						<style
+						basedir="{$copiedTypesDir}"
+						destdir="{$javaDestDir}/{$packageAsDir}/"
+						style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
+						reloadstylesheet="true"
+						extension=".java">
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+							<param name="package"      expression="{$package}"      />
+						</style>
+						<delete dir="{$copiedTypesDir}" />
+
+						<mkdir dir="{$typeClassesDir}" />
+						<javac
+						srcdir="{$javaDestDir}"
+						destdir="{$typeClassesDir}"
+						debug="true"
+						deprecation="true">
+							<classpath>
+								<pathelement path="{$xins-common.jar}" />
+								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
+								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
+									<fileset dir="{$dependenciesDir}/{@dir}">
+										<xsl:attribute name="includes">
+											<xsl:choose>
+												<xsl:when test="@includes">
+													<xsl:value-of select="@includes" />
+												</xsl:when>
+												<xsl:otherwise>**/*.jar</xsl:otherwise>
+											</xsl:choose>
+										</xsl:attribute>
+									</fileset>
+								</xsl:for-each>
+							</classpath>
+						</javac>
+					</target>
+				</xsl:if>
 					
 				<xsl:if test="document($api_file)/api/impl-java">
 					<xsl:variable name="package">
@@ -357,7 +364,16 @@
 						</xsl:attribute>
 					</target>
 
-					<target name="classes-api-{$api}" depends="-classes-types-{$api},-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
+					<target name="classes-api-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
+						<xsl:attribute name="depends">
+							<xsl:if test="$apiHasTypes = 'true'">
+								<xsl:text>-classes-types-</xsl:text>
+								<xsl:value-of select="$api" />
+								<xsl:text>,</xsl:text>
+							</xsl:if>
+							<xsl:text>-skeletons-impl-</xsl:text>
+							<xsl:value-of select="$api" />
+						</xsl:attribute>
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
 						in="{$api_file}"
@@ -403,9 +419,11 @@
 						debug="true"
 						deprecation="true">
 							<classpath>
-								<pathelement path="build/classes-types/{$api}" />
-								<pathelement path="{$xins-common.jar}"         />
-								<pathelement path="{$xins-server.jar}"         />
+								<xsl:if test="$apiHasTypes = 'true'">
+									<pathelement path="{$typeClassesDir}" />
+								</xsl:if>
+								<pathelement path="{$xins-common.jar}" />
+								<pathelement path="{$xins-server.jar}" />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
@@ -473,8 +491,10 @@
 								</lib>
 							</xsl:for-each>
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
-							<classes dir="{$typeClassesDir}" includes="**/*.class" />
-							<classes dir="{$javaImplDir}"    excludes="**/*.java" />
+							<xsl:if test="$apiHasTypes = 'true'">
+								<classes dir="{$typeClassesDir}" includes="**/*.class" />
+							</xsl:if>
+							<classes dir="{$javaImplDir}" excludes="**/*.java" />
 						</war>
 					</target>
 					
@@ -490,7 +510,9 @@
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
 							<packageset dir="build/java-combined/{$api}" />
-							<packageset dir="build/java-types/{$api}" />
+							<xsl:if test="$apiHasTypes = 'true'">
+								<packageset dir="build/java-types/{$api}" />
+							</xsl:if>
 							<link
 							href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 							offline="true"
@@ -579,7 +601,16 @@
 					</xsl:if>
 				</target>
 
-				<target name="jar-capi-{$api}" depends="-classes-types-{$api},-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+				<target name="jar-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+					<xsl:attribute name="depends">
+						<xsl:if test="$apiHasTypes = 'true'">
+							<xsl:text>-classes-types-</xsl:text>
+							<xsl:value-of select="$api" />
+							<xsl:text>,</xsl:text>
+						</xsl:if>
+						<xsl:text>-stubs-capi-</xsl:text>
+						<xsl:value-of select="$api" />
+					</xsl:attribute>
 					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
 					<javac
 					srcdir="{$project_home}/build/java-capi/{$api}/"
@@ -587,23 +618,36 @@
 					debug="true"
 					deprecation="true">
 						<classpath>
-							<pathelement path="{$xins-common.jar}"                                     />
-							<pathelement path="{$xins-client.jar}"                                     />
-							<pathelement path="{concat($project_home, '/build/classes-types/', $api)}" />
+							<pathelement path="{$xins-common.jar}" />
+							<pathelement path="{$xins-client.jar}" />
+							<xsl:if test="$apiHasTypes = 'true'">
+								<pathelement path="{$typeClassesDir}"  />
+							</xsl:if>
 							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						</classpath>
 					</javac>
-					<copy todir="{$project_home}/build/classes-capi/{$api}">
-						<fileset dir="{$typeClassesDir}" includes="**/*.class" />
-					</copy>
+					<xsl:if test="$apiHasTypes = 'true'">
+						<copy todir="{$project_home}/build/classes-capi/{$api}">
+							<fileset dir="{$typeClassesDir}" includes="**/*.class" />
+						</copy>
+					</xsl:if>
 					<mkdir dir="{$project_home}/build/capis/" />
 					<jar
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"
 					basedir="{$project_home}/build/classes-capi/{$api}" />
 				</target>
 					
-				<target name="javadoc-capi-{$api}" depends="-classes-types-{$api},-stubs-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
+				<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
+					<xsl:attribute name="depends">
+						<xsl:if test="$apiHasTypes = 'true'">
+							<xsl:text>-classes-types-</xsl:text>
+							<xsl:value-of select="$api" />
+							<xsl:text>,</xsl:text>
+						</xsl:if>
+						<xsl:text>-stubs-capi-</xsl:text>
+						<xsl:value-of select="$api" />
+					</xsl:attribute>
 					<mkdir dir="build/javadoc-capi/{$api}" />
 					<javadoc
 					sourcepath="build/java-capi/{$api}"
@@ -615,7 +659,9 @@
 					windowtitle="Call interface for {$api} API"
 					doctitle="Call interface for {$api} API">
 						<packageset dir="build/java-capi/{$api}" />
-						<packageset dir="build/java-types/{$api}" />
+						<xsl:if test="$apiHasTypes = 'true'">
+							<packageset dir="build/java-types/{$api}" />
+						</xsl:if>
 						<link
 						href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 						offline="true"
