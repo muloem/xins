@@ -3,11 +3,16 @@ CHANGES INTRODUCED IN XINS 0.125:
 
 * XINS/Java Server Framework:
   - Response validation is now a runtime configuration settings.
+  - Fixed some Checkstyle-reported issues.
+
+* XINS/Java Client Framework:
+  - Fixed some Checkstyle-reported issues.
 
 * XINS/Java Common Library:
   - Changed FileWatcher class: A null listener is now declined by the
     constructor. This fixes the issue that a null listener would cause
     NullPointerExceptions at runtime.
+  - Fixed some Checkstyle-reported issues.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.124:
