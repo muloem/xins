@@ -77,7 +77,11 @@
 	<xsl:include href="../rcs.xslt"        />
 	<xsl:include href="../types.xslt"      />
 
-	<!-- Match the root element: api -->
+
+	<!-- ***************************************************************** -->
+	<!-- Match the root element: api                                       -->
+	<!-- ***************************************************************** -->
+
 	<xsl:template match="api">
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
@@ -98,7 +102,7 @@
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[/">API specification</a>.
  */
-public final class API extends Object {
+public final class CAPI extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -161,7 +165,11 @@ public final class API extends Object {
 ]]></xsl:text>
 	</xsl:template>
 
-	<!-- Print the list of Java import statements -->
+
+	<!-- ***************************************************************** -->
+	<!-- Print the list of Java import statements                          -->
+	<!-- ***************************************************************** -->
+
 	<xsl:template name="imports">
 		<xsl:text>
 
@@ -175,7 +183,11 @@ import org.xins.client.SessionIDSplitter;
 import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 	</xsl:template>
 
-	<!-- Print the constructor -->
+
+	<!-- ***************************************************************** -->
+	<!-- Print the constructor                                             -->
+	<!-- ***************************************************************** -->
+
 	<xsl:template name="constructor">
 		<xsl:choose>
 			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
@@ -194,7 +206,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null || sessionIDSplitter == null</code>.
     */
-   public API(FunctionCaller functionCaller, SessionIDSplitter sessionIDSplitter)
+   public CAPI(FunctionCaller functionCaller, SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -218,7 +230,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null</code>.
     */
-   public API(FunctionCaller functionCaller)
+   public CAPI(FunctionCaller functionCaller)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -231,7 +243,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Print a method to call a single function -->
+
+	<!-- ***************************************************************** -->
+	<!-- Print a method to call a single function                          -->
+	<!-- ***************************************************************** -->
+
 	<xsl:template match="function">
 
 		<!-- Define parameters -->
@@ -387,37 +403,8 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				<xsl:text> session</xsl:text>
 			</xsl:if>
 
-			<xsl:for-each select="input/param">
-				<xsl:variable name="required">
-					<xsl:choose>
-						<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-						<xsl:when test="@required = 'false'">false</xsl:when>
-						<xsl:when test="@required = 'true'">true</xsl:when>
-						<xsl:otherwise>
-							<xsl:message terminate="yes">
-								<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-								<xsl:value-of select="@required" />
-								<xsl:text>'.</xsl:text>
-							</xsl:message>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="javatype">
-					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="api"      select="$api"      />
-						<xsl:with-param name="specsdir" select="$specsdir" />
-						<xsl:with-param name="required" select="$required" />
-						<xsl:with-param name="type"     select="@type" />
-					</xsl:call-template>
-				</xsl:variable>
+			<xsl:apply-templates select="input/param" mode="methodSignature" />
 
-				<xsl:if test="$sessionBased = 'true' or position() &gt; 1">
-					<xsl:text>, </xsl:text>
-				</xsl:if>
-				<xsl:value-of select="$javatype" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@name" />
-			</xsl:for-each>
 		<xsl:text>)
    throws </xsl:text>
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
@@ -440,34 +427,8 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
       // Store the input parameters in a map
       Map params = new HashMap();</xsl:text>
-			<xsl:for-each select="input/param">
-				<xsl:variable name="required">
-					<xsl:choose>
-						<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-						<xsl:when test="@required = 'false'">false</xsl:when>
-						<xsl:when test="@required = 'true'">true</xsl:when>
-						<xsl:otherwise>
-							<xsl:message terminate="yes">
-								<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-								<xsl:value-of select="@required" />
-								<xsl:text>'.</xsl:text>
-							</xsl:message>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:text>
-      params.put("</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>", </xsl:text>
-				<xsl:call-template name="javatype_to_string_for_type">
-					<xsl:with-param name="api"      select="$api" />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="required" select="$required" />
-					<xsl:with-param name="type"     select="@type" />
-					<xsl:with-param name="variable" select="@name" />
-				</xsl:call-template> 
-				<xsl:text>);</xsl:text>
-			</xsl:for-each>
+			<xsl:apply-templates select="input/param" mode="store" />
+
 		</xsl:if>
 		<xsl:text>
       CallResult result = </xsl:text>
@@ -563,7 +524,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
    }</xsl:text>
 	</xsl:template>
 
-	<!-- Prints an @param section for an input parameter. -->
+
+	<!-- ***************************************************************** -->
+	<!-- Prints an @param section for an input parameter.                  -->
+	<!-- ***************************************************************** -->
+
 	<xsl:template match="input/param" mode="javadoc">
 
 		<!-- Determine if the input parameter is mandatory. -->
@@ -645,5 +610,80 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
+	</xsl:template>
+
+
+	<!-- ***************************************************************** -->
+	<!-- Prints a parameter definition for a function calling method       -->
+	<!-- ***************************************************************** -->
+
+	<xsl:template match="input/param" mode="methodSignature">
+
+		<!-- Determine if this parameter is required -->
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+						<xsl:value-of select="@required" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Determine the Java class or primary data type -->
+		<xsl:variable name="javatype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="$required" />
+				<xsl:with-param name="type"     select="@type" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:if test="$sessionBased = 'true' or position() &gt; 1">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+		<xsl:value-of select="$javatype" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="@name" />
+	</xsl:template>
+
+
+	<!-- ***************************************************************** -->
+	<!-- Print code that will store an input parameter in a map            -->
+	<!-- ***************************************************************** -->
+
+	<xsl:template match="input/param" mode="store">
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+						<xsl:value-of select="@required" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:text>
+      params.put("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>", </xsl:text>
+		<xsl:call-template name="javatype_to_string_for_type">
+			<xsl:with-param name="api"      select="$api" />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="required" select="$required" />
+			<xsl:with-param name="type"     select="@type" />
+			<xsl:with-param name="variable" select="@name" />
+		</xsl:call-template> 
+		<xsl:text>);</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
