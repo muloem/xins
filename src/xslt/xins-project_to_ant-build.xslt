@@ -558,6 +558,18 @@
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
+								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
+									<fileset dir="{$dependenciesDir}/{@dir}">
+										<xsl:attribute name="includes">
+											<xsl:choose>
+												<xsl:when test="@includes">
+													<xsl:value-of select="@includes" />
+												</xsl:when>
+												<xsl:otherwise>**/*.jar</xsl:otherwise>
+											</xsl:choose>
+										</xsl:attribute>
+									</fileset>
+								</xsl:for-each>
 							</classpath>
 						</javadoc>
 						<copy
