@@ -13,6 +13,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
   - Only the "_function" parameter is supported when using either the standard
     or the XML calling convention. The "function" parameter is treated as a
     normal parameter.
+  - The XML is first generated on a StringWriter and its content is sent to
+    the Servlet PrintWriter afterwards.
+    Typical impact on performance: Small to Medium.
 
 * Build and release process:
   - The Java2HTML pages are now uploaded in a TAR GZ file.

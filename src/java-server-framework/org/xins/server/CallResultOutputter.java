@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 
@@ -73,8 +74,11 @@ final class CallResultOutputter extends Object {
                                      "encoding", encoding,
                                      "result",   result);
 
+      // Store the result in a StringWriter before sending it.
+      StringWriter outputBuffer = new StringWriter();
+
       // Create an XMLOutputter
-      XMLOutputter xmlout = new XMLOutputter(out, encoding);
+      XMLOutputter xmlout = new XMLOutputter(outputBuffer, encoding);
 
       // Output the declaration
       // XXX: Make it configurable whether the declaration is output or not?
@@ -124,6 +128,9 @@ final class CallResultOutputter extends Object {
       }
 
       xmlout.endTag(); // result
+
+      // Write the result to the servlet response
+      out.write(outputBuffer.toString());
    }
 
 
