@@ -291,7 +291,7 @@ public final class XINSCallRequest extends CallRequest {
     * The parameters to send with the HTTP request. Cannot be
     * <code>null</code>.
     */
-   private PropertyReader _httpParams;
+   private ProtectedPropertyReader _httpParams;
 
 
    //-------------------------------------------------------------------------
@@ -483,12 +483,13 @@ public final class XINSCallRequest extends CallRequest {
       // Check preconditions
       MandatoryArgumentChecker.check("dataSection", dataSection);
 
+      // Store the data section
       _dataSection = dataSection;
 
       // Add the data section to the parameter list
       ElementSerializer serializer = new ElementSerializer();
       String xmlDataSection = serializer.serialize(dataSection);
-      ((ProtectedPropertyReader) _httpParams).set(SECRET_KEY, "_data", xmlDataSection);
+      _httpParams.set(SECRET_KEY, "_data", xmlDataSection);
    }
 
    /**
