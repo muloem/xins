@@ -13,6 +13,11 @@
 		<fail unless="checkstyle.available" message="Checkstyle not available" />
 	</target>
 
+	<target name="-junit-avail">
+		<available classname="junit.framework.Test" property="junit.available" />
+		<fail unless="junit.available" message="JUnit not available" />
+	</target>
+
 	<target name="-checkstyle-task" depends="-checkstyle-avail">
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
 	</target>
@@ -30,7 +35,7 @@
 	<target name="-init">
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version"             value="0.45" />
+		<property name="version"             value="0.46-dev" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
 		<property name="www.user"            value="znerd" />
@@ -207,6 +212,42 @@
 			<arg value="${www.target}/xins-client-${version}.jar" />
 		</exec>
 	</target>
+
+	<target name="classes-tests" depends="-junit-avail,java" description="Compiles the test cases">
+		<mkdir dir="build/classes/tests" />
+		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="true">
+			<src path="src/tests" />
+			<classpath location="build/xins-common.jar" />
+			<classpath location="build/xins-server.jar" />
+			<classpath location="build/xins-client.jar" />
+		</javac>
+	</target>
+
+	<target name="do-tests" depends="classes-tests" description="Runs the unit tests">
+		<mkdir dir="build/testresults" />
+		<mkdir dir="build/testresults/xml" />
+		<junit printsummary="true" failureproperty="tests.failed">
+			<formatter type="xml" />
+			<test name="org.znerd.xmlenc.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<classpath>
+				<pathelement location="build/classes/main" />
+				<pathelement location="build/classes/tests" />
+			</classpath>
+		</junit>
+	</target>
+
+	<target name="testreports" description="Generates the unit test reports">
+		<mkdir dir="build/testresults/html" />
+		<style
+		in="build/testresults/xml/testresults.xml"
+		out="build/testresults/html/index.html"
+		style="src/xslt/tests/index.xslt" />
+		<copy
+		file="src/css/tests/stylesheet.css"
+		todir="build/testresults/html" />
+	</target>
+
+	<target name="tests" depends="do-tests,testreports" description="Runs the unit tests and generates reports" />
 
 	<target name="-jdksrc-avail">
 		<available file="${javadoc.srcdir.j2se}" type="dir" property="jdksrc.available" />
@@ -454,7 +495,7 @@
 
 	<target
 	name="-prepare-release"
-	depends="-init-release,clean"
+	depends="-init-release,clean,tests"
 	description="Creates a release">
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
