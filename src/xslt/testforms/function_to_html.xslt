@@ -126,6 +126,7 @@
 					<xsl:value-of select="$functionName" />
 				</xsl:attribute>
 			</input>
+			<input name="_convention" value="_xins-std" type="hidden" />
 			<xsl:choose>
 				<xsl:when test="input/param or input/data/element">
 					<table>
