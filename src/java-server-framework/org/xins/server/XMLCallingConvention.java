@@ -109,20 +109,28 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
+      // Check content type
+      // TODO: Support other character sets as well
       String contentType = httpRequest.getContentType();
-      if (!contentType.startsWith("text/xml;") && !contentType.endsWith("charset=UTF-8")) {
-         throw new InvalidRequestException("Incorrect content type.", null);
+      if (!contentType.startsWith("text/xml;") && !contentType.endsWith("charset=" + REQUEST_ENCODING)) {
+         final String DETAIL = "Incorrect content type \""
+                             + contentType
+                             + "\".";
+         throw new InvalidRequestException(DETAIL);
       }
       
       try {
+
+         // Convert the Reader to a string buffer
          BufferedReader reader = httpRequest.getReader();
          FastStringBuffer content = new FastStringBuffer(1024);
          String nextLine;
-         while ((nextLine = reader.readLine()) !=null) {
+         while ((nextLine = reader.readLine()) != null) {
             content.append(nextLine);
             content.append("\n");
          }
 
+         // TODO: Consider passing the Reader to the ElementParser
          String contentString = content.toString();
          ElementParser parser = new ElementParser();
          Element requestElem = parser.parse(contentString.getBytes(REQUEST_ENCODING));
@@ -142,25 +150,30 @@ extends CallingConvention {
             functionParams.set(SECRET_KEY, name, value);
          }
 
+         // Check if function is specified
+         if (TextUtils.isEmpty(functionName)) {
+            throw new FunctionNotSpecifiedException();
+         }
+
          // Remove all invalid parameters
          cleanUpParameters(functionParams, SECRET_KEY);
 
+         // Get data section
          Element dataElement = null;
          List dataElementList = requestElem.getChildElements("data");
          if (dataElementList.size() == 1) {
             dataElement = (Element)dataElementList.get(0);
          } else if (dataElementList.size() > 1) {
-            throw new InvalidRequestException("The request has more than two data section specified.", null);
-         }
-
-         if (TextUtils.isEmpty(functionName)) {
-            throw new FunctionNotSpecifiedException();
+            throw new InvalidRequestException("Found multiple data sections.");
          }
 
          return new FunctionRequest(functionName, functionParams, dataElement);
 
+      // I/O error
       } catch (IOException ex) {
          throw new InvalidRequestException("Cannot read the XML request.", ex);
+
+      // Parsing error
       } catch (ParseException ex) {
          throw new InvalidRequestException("Cannot parse the XML request.", ex);
       }
