@@ -25,13 +25,6 @@ public final class Library extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The logging category used by the XINS/Java Server Framework core during
-    * runtime. This field is not <code>null</code>.
-    */
-   static final Logger RUNTIME_LOG = Logger.getLogger("org.xins.server.runtime");
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

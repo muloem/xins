@@ -143,8 +143,6 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      boolean debugEnabled = Library.RUNTIME_LOG.isDebugEnabled();
-
       // If necessary init the Map and then store the entry
       if (_attributes == null) {
 
