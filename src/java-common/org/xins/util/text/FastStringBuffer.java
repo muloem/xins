@@ -87,7 +87,7 @@ public class FastStringBuffer extends Object {
       }
 
       _buffer = new char[capacity];
-      _length = s.length;
+      _length = s.length();
       s.getChars(0, _length, _buffer, 0);
    }
 
