@@ -222,7 +222,7 @@
 	<xsl:template name="additional-constraints">
 		<xsl:if test="param-combo or param/dependson">
 			<h4>Additional constraints</h4>
-			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will return an unsuccessful result with code </xsl:text>
+			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will result an unsuccessful result with code </xsl:text>
 			<em>InvalidParameters</em>
 			<xsl:text>.</xsl:text>
 			<ul>
@@ -348,19 +348,19 @@
 		<xsl:variable name="success">
 			<xsl:choose>
 
-				<!-- No return code -->
+				<!-- No result code -->
 				<xsl:when test="not(boolean($resultcode))">
 					<xsl:if test="not(boolean(@success))">
 						<xsl:message terminate="yes">
 							<xsl:text>Example </xsl:text>
 							<xsl:value-of select="$examplenum" />
-							<xsl:text> does not define if it is successful or not nor does it specify a return code.</xsl:text>
+							<xsl:text> does not define if it is successful or not nor does it specify a result code.</xsl:text>
 						</xsl:message>
 					</xsl:if>
 					<xsl:value-of select="@success" />
 				</xsl:when>
 
-				<!-- Generic return code -->
+				<!-- Generic result code -->
 				<xsl:when test="$isgenericresultcode = 'true'">
 					<xsl:if test="boolean(@success) and not(@success=document($resultcodes_file)/resultcodes/code[@value=$resultcode]/@success)">
 						<xsl:message terminate="yes">
@@ -378,7 +378,7 @@
 					<xsl:text>false</xsl:text>
 				</xsl:when>
 
-				<!-- API-specific return code -->
+				<!-- API-specific result code -->
 				<xsl:when test="$isapiresultcode = 'true'">
 					<xsl:choose>
 						<xsl:when test="boolean(@success)">
@@ -388,8 +388,8 @@
 									<xsl:value-of select="$resultcode" />
 									<xsl:text>' is defined as </xsl:text>
 									<xsl:choose>
-										<xsl:when test="@success='true'">a successful return code, but it is claimed to be unsuccessful</xsl:when>
-										<xsl:otherwise>an unsuccessful return code, but it is claimed to be successful</xsl:otherwise>
+										<xsl:when test="@success='true'">a successful result code, but it is claimed to be unsuccessful</xsl:when>
+										<xsl:otherwise>an unsuccessful result code, but it is claimed to be successful</xsl:otherwise>
 									</xsl:choose>
 									<xsl:text> in example </xsl:text>
 									<xsl:value-of select="$examplenum" />
@@ -404,7 +404,7 @@
 					</xsl:choose>
 				</xsl:when>
 
-				<!-- Function-specific return code -->
+				<!-- Function-specific result code -->
 				<xsl:when test="$isfunctionresultcode = 'true'">
 					<xsl:choose>
 						<xsl:when test="boolean(@success)">
@@ -414,8 +414,8 @@
 									<xsl:value-of select="$resultcode" />
 									<xsl:text>' is defined as </xsl:text>
 									<xsl:choose>
-										<xsl:when test="@success='true'">a successful return code, but it is claimed to be unsuccessful</xsl:when>
-										<xsl:otherwise>an unsuccessful return code, but it is claimed to be successful</xsl:otherwise>
+										<xsl:when test="@success='true'">a successful result code, but it is claimed to be unsuccessful</xsl:when>
+										<xsl:otherwise>an unsuccessful result code, but it is claimed to be successful</xsl:otherwise>
 									</xsl:choose>
 									<xsl:text> in example </xsl:text>
 									<xsl:value-of select="$examplenum" />
@@ -430,12 +430,12 @@
 					</xsl:choose>
 				</xsl:when>
 
-				<!-- TODO: Check that the return code is not defined in 2 places -->
+				<!-- TODO: Check that the result code is not defined in 2 places -->
 
-				<!-- Unrecognised return code -->
+				<!-- Unrecognised result code -->
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
-						<xsl:text>Non-existent return code '</xsl:text>
+						<xsl:text>Non-existent result code '</xsl:text>
 						<xsl:value-of select="$resultcode" />
 						<xsl:text>' used in example </xsl:text>
 						<xsl:value-of select="@num" />
@@ -794,7 +794,7 @@
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
 			<xsl:variable name="code" select="@code" />
-			<!-- TODO: Use name of return code, not value -->
+			<!-- TODO: Use name of result code, not value -->
 			<xsl:for-each select="document($api_file)/api/resultcode[@value = $code]">
 				<tr>
 					<td class="value">
@@ -847,7 +847,7 @@
 		<xsl:if test="not(boolean(@success))">
 			<!-- TODO: Let this check terminate -->
 			<xsl:message>
-				<xsl:text>It is not indicated if the return code '</xsl:text>
+				<xsl:text>It is not indicated if the result code '</xsl:text>
 				<xsl:value-of select="@value" />
 				<xsl:text>' indicates success or not.</xsl:text>
 			</xsl:message>
