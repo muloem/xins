@@ -79,15 +79,65 @@ extends Object {
    public static final IPFilter parseIPFilter(String expression)
    throws IllegalArgumentException, ParseException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("expression", expression);
 
-      boolean validFilter = isValidFilter(expression);
-
-      if (validFilter == false) {
-         throw new ParseException("The provided filter " + expression + " is invalid.");
+      // Find the slash ('/') character
+      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
+      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
+         throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
       }
 
-      return new IPFilter(expression);
+      // Get the IP part
+      String ip = expression.substring(0, slashPosition);
+      if (isValidIP(ip) == false) {
+         throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
+      }
+
+      // Get the mask part
+      int mask = parseMask(expression.substring(slashPosition + 1));
+
+      // Create and return an IPFilter object
+      return new IPFilter(ip, mask);
+   }
+
+   /**
+    * Parses the specified mask.
+    *
+    * @param maskString
+    *    the mask string, may not be <code>null</code>.
+    *
+    * @return
+    *    an integer representing the value of the mask, between 0 and 32.
+    *
+    * @throws ParseException
+    *    if the specified string is not a mask between 0 and 32, with no
+    *    leading zeroes.
+    */
+   private static final int parseMask(String maskString)
+   throws ParseException {
+
+      // Convert to an int
+      int mask;
+      try {
+         mask = Integer.parseInt(maskString);
+
+      // Catch conversion exception
+      } catch (NumberFormatException nfe) {
+         throw new ParseException("The mask string \"" + maskString + "\" is not a valid number.");
+      }
+
+      // Number must be between 0 and 32
+      if (mask < 0 || mask > 32) {
+         throw new ParseException("The mask string \"" + maskString + "\" is not a number between 0 and 32.");
+      }
+
+      // Disallow a leading zero
+      if (mask >= 10 && maskString.charAt(0) == '0') {
+         throw new ParseException("The mask string \"" + maskString + "\" starts with a leading zero.");
+      }
+
+      return mask;
    }
 
 
@@ -109,9 +159,10 @@ extends Object {
     *    zeroes, and <em>n</em> is a number between <em>0</em> and
     *    <em>32</em>, no leading zeroes.
     */
-   private IPFilter(String expression) {
-      _expression = expression;
-      _mask = determineMask(expression);
+   private IPFilter(String baseIP, int mask) {
+      _expression = baseIP + '/' + mask;
+      _baseIP     = baseIP;
+      _mask       = mask;
    }
 
 
@@ -123,6 +174,11 @@ extends Object {
     * The expression of this filter, cannot be <code>null</code>.
     */
    private final String _expression;
+
+   /**
+    * The base IP address. Never <code>null</code>.
+    */
+   private final String _baseIP;
 
    /**
     * The mask of this filter. Can only have a value between 0 and 32.
@@ -142,6 +198,29 @@ extends Object {
     */
    public final String getExpression() {
       return _expression;
+   }
+
+   /**
+    * Returns the base IP address.
+    *
+    * @return
+    *    the base IP address, in the form 
+    *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
+    *    where <em>a</em> is a number between 0 and 255, with no leading
+    *    zeroes; never <code>null</code>.
+    */
+   public final String getBaseIP() {
+      return _baseIP;
+   }
+
+   /**
+    * Returns the mask.
+    *
+    * @return
+    *    the mask, between 0 and 32.
+    */
+   public final int getMask() {
+      return _mask;
    }
 
    /**
@@ -190,47 +269,6 @@ extends Object {
    }
 
    /**
-    * Determines whether the provided expression is a valid IP filter.
-    *
-    * @param expression
-    *    the IP filter expression, may not be <code>null</code>.
-    *
-    * @return
-    *    a boolean with the value <code>true</code> when the expression
-    *    is a valid IP filter, otherwise <code>false</code>.
-    *
-    * @throws NullPointerException
-    *    when <code>expression == null</code>.
-    */
-   private static boolean isValidFilter(String expression)
-   throws NullPointerException {
-      String ip = null;
-      String mask = null;
-      boolean validFilter = true;
-      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
-
-      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
-         validFilter = false;
-      } else {
-         ip = expression.substring(0, slashPosition);
-      }
-
-      if (validFilter == true && isValidIP(ip) == false) {
-         validFilter = false;
-      }
-
-      if (validFilter == true) {
-         mask = expression.substring(slashPosition + 1);
-      }
-
-      if (validFilter == true && isValidMask(mask) == false) {
-         validFilter = false;
-      }
-
-      return validFilter;
-   }
-
-   /**
     * Determines whether the provided IP address is of a valid format.
     *
     * @param ip
@@ -241,8 +279,10 @@ extends Object {
     *    otherwise false.
     */
    private static boolean isValidIP(String ip) {
+
       // NOTE: This method depends on the reliability of the getIPFields()
       //       method.
+
       String[] ipFields = getIPFields(ip);
       boolean validIP = ipFields == null ? false : true;
       return validIP;
@@ -381,38 +421,6 @@ extends Object {
       }
 
       return ipFields;
-   }
-
-   /**
-    * Determines what the mask is of the provided expression.
-    *
-    * @param expression
-    *    the expression, may not be <code>null</code>.
-    *
-    * @return
-    *    An integer representing the value of the mask of this expression.
-    *
-    * @throws NullPointerException
-    *    when <code>expression == null</code>.
-    */
-   private int determineMask(String expression)
-   throws NullPointerException {
-      int mask = -1;
-      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
-
-      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
-         throw new InternalError("The provided filter " + expression + " is invalid.");
-      }
-
-      String maskString = expression.substring(slashPosition + 1);
-
-      try {
-         mask = Integer.parseInt(maskString);
-      } catch (NumberFormatException nfe) {
-         throw new InternalError("The mask within the provided filter " + expression + " could not be translated to an integer.");
-      }
-
-      return mask;
    }
 
    /**
