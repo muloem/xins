@@ -13,11 +13,6 @@ package org.xins.server;
 public interface ResponderStates {
 
    /**
-    * Uninitialized state. In this state no output can be written.
-    */
-   static final ResponderState UNINITIALIZED = new ResponderState("UNINITIALIZED");
-
-   /**
     * Initial state, before response output is started.
     */
    static final ResponderState BEFORE_START = new ResponderState("BEFORE_START");
