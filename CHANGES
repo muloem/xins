@@ -43,7 +43,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . 2111 (was INFO);
     . 2112 (was INFO).
   - Added log message 2113: XINS call request completely failed.
-  - Changed log message 2200 to include namespace.
+  - Changed log messages 2200 and 2206 to include namespace.
 
 * XINS/Java Server Framework:
   - Fixed bug #1036854: Reset logging subsystem when reloading.
