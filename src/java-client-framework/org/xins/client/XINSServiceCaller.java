@@ -183,6 +183,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws XINSCallException
     *    if the first call attempt failed due to a XINS-related reason and
     *    all the other call attempts failed as well.
+    *
+    * @since XINS 0.207
     */
    public XINSCallResult call(XINSCallRequest request)
    throws GenericCallException, HTTPCallException, XINSCallException {
@@ -228,7 +230,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws XINSCallException
     *    if the call to the specified target failed.
     *
-    * @since XINS 0.198
+    * @since XINS 0.207
     */
    public XINSCallResult call(TargetDescriptor target,
                               XINSCallRequest  request)
@@ -249,6 +251,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       HTTPCallRequest httpRequest = request.getHTTPCallRequest();
       HTTPCallResult  httpResult  = _httpCaller.call(target, httpRequest);
 
+      long duration = 0L; // TODO: Get duration from httpResult:
+
       // Parse the result
       XINSCallResult xinsResult;
       try {
@@ -265,36 +269,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       } else {
          return xinsResult;
       }
-   }
-
-   /**
-    * Executes the specified request. If possible, multiple targets will be
-    * called if a target fails and fail-over is considered allowable.
-    *
-    * @param request
-    *    the request to execute, cannot be <code>null</code>.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
-    *
-    * @throws XINSCallException
-    *    if the call failed.
-    *
-    * @since XINS 0.207
-    */
-   public XINSCallResult execute(XINSCallRequest request)
-   throws IllegalArgumentException,
-          GenericCallException,
-          HTTPCallException,
-          XINSCallException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
-
-      return (XINSCallResult) doCall(request).getResult();
    }
 
    /**

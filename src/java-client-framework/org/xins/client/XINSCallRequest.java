@@ -120,6 +120,9 @@ public final class XINSCallRequest extends CallRequest {
          method = HTTPServiceCaller.POST;
       }
 
+      // TODO: Create PropertyReader for the HTTP parameters
+      PropertyReader httpParams = null;
+
       // TODO: Check the parameters and throw an exception if an entry is
       //       invalid.
 
