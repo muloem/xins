@@ -524,13 +524,13 @@
 				<fileset dir="${ant.home}/lib" includes="*.jar" />
 			</classpath>
 			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://java.sun.com/products/servlet/2.3/javadoc/"         />
-			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.4.2/docs/api"                     />
+			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.4.2/docs/api"                   />
 			<link offline="true" packagelistloc="src/package-lists/log4j/"              href="http://jakarta.apache.org/log4j/docs/api/"                 />
 			<link offline="true" packagelistloc="src/package-lists/commons-logging/"    href="http://jakarta.apache.org/commons/logging/api/"            />
 			<link offline="true" packagelistloc="src/package-lists/commons-httpclient/" href="http://jakarta.apache.org/commons/httpclient/apidocs/"     />
 			<link offline="true" packagelistloc="src/package-lists/oro/"                href="http://jakarta.apache.org/oro/api/"                        />
 			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.44/"               />
-			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/" />
+			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://xins.sourceforge.net/ant-1.6.2-docs/"               />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"

@@ -815,7 +815,7 @@
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<link
-							href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
+							href="http://xins.sourceforge.net/ant-1.6.2-docs/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/ant/" />
 							<classpath>
@@ -996,7 +996,7 @@
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 						<link
-						href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
+						href="http://xins.sourceforge.net/ant-1.6.2-docs/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/ant/" />
 						<classpath>
