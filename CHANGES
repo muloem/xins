@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.190:
+
+* XINS/Java Common Library:
+  - Added an append(boolean) method to the LogdocStringBuffer class. This is
+    needed in order to properly support the 'boolean' type in Logdoc.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 
 * Build and release process:

@@ -148,6 +148,22 @@ public class LogdocStringBuffer {
    }
 
    /**
+    * Appends the specified boolean. If necessary, the capacity of this
+    * string buffer will be increased.
+    *
+    * @param b
+    *    the boolean to append.
+    */
+   public void append(boolean b) {
+
+      if (b) {
+         append("true");
+      } else {
+         append("false");
+      }
+   }
+
+   /**
     * Appends the specified character. If necessary, the capacity of this
     * string buffer will be increased.
     *
