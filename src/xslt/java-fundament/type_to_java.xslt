@@ -16,6 +16,8 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<xsl:include href="../casechange.xslt" />
+
 	<xsl:variable name="type" select="//type/@name" />
 	<xsl:variable name="classname">
 		<xsl:call-template name="hungarianUpper">
@@ -91,7 +93,24 @@ public final class ]]></xsl:text>
 		<xsl:text>", </xsl:text>
 		<xsl:choose>
 			<xsl:when test="enum">
-				<xsl:text>null</xsl:text> <!-- TODO -->
+				<xsl:text>new EnumItem[] {</xsl:text>
+				<xsl:for-each select="enum/item">
+					<xsl:if test="position() &gt; 1">,</xsl:if>
+					<xsl:text>
+         new EnumItem("</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@name">
+							<xsl:value-of select="@name" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@value" />
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>", "</xsl:text>
+					<xsl:value-of select="@value" />
+					<xsl:text>")</xsl:text>
+				</xsl:for-each>
+				<xsl:text>}</xsl:text>
 			</xsl:when>
 			<xsl:when test="pattern">
 				<xsl:text>"</xsl:text>
