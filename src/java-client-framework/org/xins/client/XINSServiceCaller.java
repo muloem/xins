@@ -74,9 +74,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("baseURL",      baseURL,
                                      "functionName", functionName);
-
-      // TODO: More checks on the function name? It cannot be an empty string,
-      //       for example.
+      if (functionName.equals("")) {
+         throw new IllegalArgumentException("No functions specified.");
+      }
 
       // Construct PostMethod object
       PostMethod method = new PostMethod(baseURL);
@@ -259,30 +259,13 @@ public final class XINSServiceCaller extends ServiceCaller {
 
          // Determine the call duration
          duration = System.currentTimeMillis() - start;
-
-         if (!succeeded) {
-
-            // If there was an exception already, don't allow another one to
-            // override it, so wrap the releasing of the connection in a
-            // try-catch block.
-            try {
-               method.releaseConnection();
-
-            // If there was an exception, then log it
-            } catch (Throwable exception) {
-               Log.log_2007(exception, url, functionName, serParams, exception.getClass().getName());
-            }
-         }
       }
 
       // Read response body (mandatory operation)
       byte[] xml = method.getResponseBody();
 
-      // Release the connection
-      method.releaseConnection();
-
       // Check for exceptions
-      Throwable exception = executor._exception;
+      Throwable exception = executor.getException();
       if (exception != null) {
 
          // Connection refusal
@@ -342,7 +325,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Check the code
-      int code = executor._statusCode;
+      int code = executor.getStatusCode();
 
       Log.log_2016(System.currentTimeMillis() - start, url, functionName, serParams, code);
 
@@ -541,6 +524,8 @@ public final class XINSServiceCaller extends ServiceCaller {
          _httpClient = httpClient;
          _call       = call;
 
+         _statusCode = -1;
+
          // The Java Virtual Machine exits when the only threads running are
          // all daemon threads. This is such a thread.
          setDaemon(true);
@@ -594,10 +579,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        */
       public void run() {
 
-         // Reset for this run
-         _exception  = null;
-         _statusCode = -1;
-
          // Activate the diagnostic context ID
          if (_contextID != null) {
             NDC.push(_contextID);
@@ -611,7 +592,29 @@ public final class XINSServiceCaller extends ServiceCaller {
          } catch (Throwable exception) {
             _exception = exception;
          }
+
          _call.releaseConnection();
+      }
+
+      /**
+       * Gets the returned HTTP code of the call.
+       *
+       * @return
+       *    the returned HTTP status code, or -1 if the call has not be performed.
+       */
+      public int getStatusCode() {
+         return _statusCode;
+      }
+
+      /**
+       * Gets the exception if any generated when calling the method.
+       *
+       * @return
+       *    the invocation exception or <code>null</code> if the call
+       *    performed successfully.
+       */
+      public Throwable getException() {
+         return _exception;
       }
    }
 }
