@@ -81,6 +81,16 @@ implements DefaultReturnCodes {
    }
 
    /**
+    * Callback method invoked when a function is constructed.
+    *
+    * @param function
+    *    the function that is added, not <code>null</code>.
+    */
+   final void functionAdded(Function function) {
+      // TODO
+   }
+
+   /**
     * Returns the function with the specified name.
     *
     * @param name

@@ -47,6 +47,8 @@ extends Object {
 
       _api  = api;
       _name = name;
+
+      _api.functionAdded(this);
    }
 
 
