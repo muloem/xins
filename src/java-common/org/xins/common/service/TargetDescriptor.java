@@ -24,7 +24,7 @@ import org.xins.common.text.FastStringBuffer;
 /**
  * Descriptor for a single target service. A target descriptor defines a URL
  * that identifies the location of the service. Also, it may define 3 kinds of
- * time-out:
+ * time-outs:
  *
  * <dl>
  *    <dt><em>total time-out</em> ({@link #getTotalTimeOut()})</dt>
