@@ -3,6 +3,7 @@
  */
 package org.xins.tests.server;
 
+import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -74,7 +75,8 @@ public class MetaFunctionsTests extends TestCase {
     */
    protected void setUp() {
       // Start the web server
-      System.setProperty("org.xins.server.config", "../xins-examples/xins.properties");
+      File xinsProps = new File(System.getProperty("user.dir"), "../xins-examples/xins.properties");
+      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       _httpServer = new HTTPServletHandler("../xins-examples/xins-project/build/webapps/allinone/allinone.war");
       System.err.println("Web server set up.");
    }

@@ -140,16 +140,17 @@ public class HTTPServletHandler {
             }
             LocalHTTPServletResponse response = query(inputLine);
             String result = response.getResult();
-            String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
-            httpResult += "Content-type: " + response.getContentType() + "\r\n";
-            httpResult += "Content-Length: " + result.length() + "\r\n";
-            httpResult += "\r\n";
-            httpResult += result + "\r\n";
-            httpResult += "\r\n";
+            String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
+            httpResult += "Content-type: " + response.getContentType() + "\n";
+            int length = result.length() + 1;
+            httpResult += "Content-Length: " + length + "\n";
+            httpResult += "\n";
+            httpResult += result + "\n";
+            httpResult += "\n";
             return httpResult;
          }
       }
-      return "HTTP/1.1 400 BAD_REQUEST\r\n\r\n";
+      return "HTTP/1.1 400 BAD_REQUEST\n\n";
    }
    
    public LocalHTTPServletResponse query(String url) throws IOException {
