@@ -467,7 +467,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // TODO: Log (2016 ?)
 
       // Grab the result from the HTTP call
-      HTTPCallResult.Data data = executor.getData();
+      HTTPCallResultData data = executor.getData();
 
       // Check the status code, if necessary
       HTTPStatusCodeVerifier verifier = request.getStatusCodeVerifier();
@@ -538,7 +538,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                 succeededTarget,
                                 duration,
                                 exceptions,
-                                (HTTPCallResult.Data) result);
+                                (HTTPCallResultData) result);
    }
 
    /**
@@ -687,7 +687,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * <code>null</code> if the call was unsuccessful or if it was not
        * executed yet.
        */
-      private HTTPCallResult.Data _result;
+      private HTTPCallResultData _result;
 
 
       //----------------------------------------------------------------------
@@ -747,7 +747,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             byte[] body       = method.getResponseBody();
 
             // Store the result
-            _result = new HTTPCallResult.Data(statusCode, body);
+            _result = new HTTPCallResultData(statusCode, body);
 
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
@@ -789,7 +789,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the result from the call, or <code>null</code> if it was
        *    unsuccessful.
        */
-      private HTTPCallResult.Data getData() {
+      private HTTPCallResultData getData() {
          return _result;
       }
    }
