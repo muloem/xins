@@ -171,18 +171,34 @@ public class DataElement implements Cloneable {
       return _pcdata;
    }
     
+   /**
+    * Clones this object. The clone will have the same name and equivalent
+    * attributes, children and PCDATA content.
+    *
+    * @return
+    *    the clone of this object, never <code>null</code>.
+    */
    public Object clone() {
+
+      // Construct a new DataElement, copy the name
       DataElement clone = new DataElement(getName());
+
+      // Copy the children
       Iterator itChildren = getChildren();
       while (itChildren.hasNext()) {
          clone.addChild((DataElement) ((DataElement)itChildren.next()).clone());
       }
+
+      // Copy the attributes
       Iterator itAttributes = getAttributes();
       while (itAttributes.hasNext()) {
          String nextKey = (String) itAttributes.next();
          clone.addAttribute(nextKey, get(nextKey));
       }
+
+      // Copy the PCDATA content
       clone.setText(getText());
+
       return clone;
    }
 }
