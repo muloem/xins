@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.51:
 
 * XINS/Java Common Library: Added class FastStack.
 
+* XINS/Java Server Framework: Duplicate attributes per element are now
+  checked.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.50:
 
