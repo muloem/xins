@@ -318,6 +318,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Check that all targets have a supported protocol
       Iterator iterator = descriptor.iterateTargets();
       while (iterator.hasNext()) {
+         TargetDescriptor target = (TargetDescriptor) iterator.next();
          // FIXME: Throw UnsupportedProtocolException as required
       }
 
