@@ -107,7 +107,7 @@ implements Responder, Log {
       _functionName = function.getName();
       _callID       = callID;
       _logger       = function.getLogger();
-      _logPrefix    = getLogPrefix(functionName, callID);
+      _logPrefix    = getLogPrefix(_functionName, callID);
       _session      = session;
       _state        = BEFORE_START;
       _builder      = new CallResultBuilder();
