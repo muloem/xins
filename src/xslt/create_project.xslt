@@ -35,6 +35,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${api.description}<![CDATA[</description>
 
 </api>]]></echo>
+			<fixcrlf srcdir="${{api.specdir}}" includes="api.xml" />
 			<replace file="xins-project.xml">
 				<replacetoken><![CDATA[</project>]]></replacetoken>
 				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[" />
@@ -70,6 +71,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 <impl>
 </impl>
 ]]></echo>
+			<fixcrlf srcdir="${{api.impldir}}" includes="impl.xml" />
 			<replace file="xins-project.xml">
 				<replacetoken><![CDATA[	<api name="]]>${api.name}<![CDATA[" />]]></replacetoken>
 				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[">
@@ -91,6 +93,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 </environments>
 ]]></echo>
+			<fixcrlf srcdir="apis/${{api.name}}" includes="environments.xml" />
 			<replace file="xins-project.xml">
 				<replacetoken><![CDATA[	<api name="]]>${api.name}<![CDATA[" />]]></replacetoken>
 				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[">
@@ -127,6 +130,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${function.description}<![CDATA[</description>
 
 </function>]]></echo>
+			<fixcrlf srcdir="apis/${{api.name}}/spec" includes="${{function.name}}.fnc" />
 			<replace file="apis/${{api.name}}/spec/api.xml">
 				<replacetoken><![CDATA[</description>
 
@@ -167,6 +171,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${rcd.description}<![CDATA[</description>
 
 </resultcode>]]></echo>
+			<fixcrlf srcdir="apis/${{api.name}}/spec" includes="${{rcd.name}}.rcd" />
 			<replace file="apis/${{api.name}}/spec/api.xml">
 				<replacetoken><![CDATA[
 </api>]]></replacetoken>
@@ -196,6 +201,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${type.description}<![CDATA[</description>
 
 </type>]]></echo>
+			<fixcrlf srcdir="apis/${{api.name}}/spec" includes="${{type.name}}.typ" />
 			<echo message="Don't forget to add &lt;type name=&quot;${{type.name}}&quot; /&gt; to the api.xml file." />
 		</target>
 
@@ -235,6 +241,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<translation entry="10001">Example of an exception.</translation>
 </translation-bundle>
 ]]></echo>
+			<fixcrlf srcdir="apis/${{api.name}}/impl" includes="log.xml translation-bundle-en_US.xml" />
 			<replace file="apis/${{api.name}}/impl/impl.xml">
 				<replacetoken><![CDATA[<impl>]]></replacetoken>
 				<replacevalue><![CDATA[<impl>

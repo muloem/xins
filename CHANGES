@@ -56,6 +56,8 @@ CHANGES INTRODUCED IN XINS 0.209:
   - The create-logdoc doesn't generated the domain and default-locale
     attributes in the log.xml file.
   - The generated javadoc for the API has now the package private visibility.
+  - The files created with the "create" targets have now the correct OS
+    carriage return.
 
 * Build and release process:
   - Added the possibility to release with a specific version
