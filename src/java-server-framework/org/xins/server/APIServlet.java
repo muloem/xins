@@ -755,8 +755,11 @@ extends HttpServlet {
    public void service(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
 
-      // Determine context ID
+      // Determine diagnostic context ID
       String contextID = request.getParameter("_context");
+
+      // If there is a diagnostic context ID, then apply it and perform the
+      // request...
       boolean haveContextID = (contextID != null) && (contextID.length() > 0);
       if (haveContextID) {
          NDC.push(contextID);
@@ -765,6 +768,8 @@ extends HttpServlet {
          } finally {
             NDC.pop();
          }
+
+      // ...otherwise just perform the request.
       } else {
          doService(request, response);
       }
