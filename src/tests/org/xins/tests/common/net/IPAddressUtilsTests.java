@@ -4,7 +4,7 @@
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.common.util.net;
+package org.xins.tests.common.net;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
