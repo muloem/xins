@@ -330,8 +330,6 @@ implements DefaultResultCodes {
             LOG.error("Failed to deinitialize instance of " + className + '.');
          }
       }
-
-      LOG.info("Completed XINS API shutdown sequence.");
    }
 
    /**

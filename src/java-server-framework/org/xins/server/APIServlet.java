@@ -90,9 +90,11 @@ implements Servlet {
 
    public void init(ServletConfig config)
    throws ServletException {
+      _log.debug("XINS/Java Server Framework initializing.");
       synchronized (_stateLock) {
          initImpl(config);
       }
+      _log.info("XINS/Java Server Framework initialized.");
    }
 
    private void initImpl(ServletConfig config)
@@ -226,11 +228,15 @@ implements Servlet {
    }
 
    public void destroy() {
+      if (_log != null) {
+         _log.debug("XINS/Java Server Framework shutdown initiated.");
+      }
+
       synchronized (_stateLock) {
          _state = DISPOSING;
          _api.destroy();
          if (_log != null) {
-            _log.info("Destroyed API servlet.");
+            _log.info("XINS/Java Server Framework shutdown completed.");
          }
          _state = DISPOSED;
       }

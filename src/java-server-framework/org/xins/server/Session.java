@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.types.Type;
 
@@ -22,6 +23,13 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(Session.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -100,20 +108,37 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
+      boolean debugEnabled = LOG.isDebugEnabled();
+
       // If necessary init the Map and then store the entry
       if (_attributes == null) {
          if (value != null) {
             _attributes = new HashMap(89);
+            if (debugEnabled) {
+               String s = value instanceof String
+                        ? "\"" + value + '"'
+                        : value.getClass().getName() + " (\"" + value + "\")";
+               LOG.debug("Setting attribute \"" + key + "\" to " + s + '.');
+            }
             _attributes.put(key, value);
          }
 
       // If the value is null, then remove the entry
       } else if (value == null) {
+         if (debugEnabled) {
+            LOG.debug("Resetting session attribute \"" + key + "\".");
+         }
          _attributes.remove(key);
          // XXX: Check if the map is now empty and set it to null?
 
       // Otherwise store a new entry
       } else {
+         if (debugEnabled) {
+            String s = value instanceof String
+                     ? "\"" + value + '"'
+                     : value.getClass().getName() + " (\"" + value + "\")";
+            LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
+         }
          _attributes.put(key, value);
       }
    }
