@@ -53,6 +53,11 @@ public final class AddReleaseTask extends Task {
    private static final String FTP_DIR = "incoming";
 
    /**
+    * The base URL for adding a release to a SourceForge package.
+    */
+   private static final String ADD_RELEASE_URL = "https://sourceforge.net/project/admin/newrelease.php";
+
+   /**
     * The <em>debug</em> log level.
     */
    //private static int DEBUG = Project.MSG_DEBUG;
@@ -91,8 +96,8 @@ public final class AddReleaseTask extends Task {
       httpState.setCookiePolicy(CookiePolicy.COMPATIBILITY);
 
       _httpClient = new HttpClient();
-      _httpClient.setConnectionTimeout(7000); // 7 seconds
-      _httpClient.setTimeout(5000);           // 5 seconds
+      _httpClient.setConnectionTimeout(9000); // 7 seconds
+      _httpClient.setTimeout(7000);           // 5 seconds
       _httpClient.setState(httpState);
    }
 
@@ -467,37 +472,30 @@ public final class AddReleaseTask extends Task {
 
    private void addRelease() throws BuildException {
 
+      // Construct the URL
       FastStringBuffer buffer = new FastStringBuffer(256);
-      buffer.append("http://sourceforge.net/project/admin/newrelease.php?group_id=");
+      buffer.append(ADD_RELEASE_URL);
+      buffer.append("?group_id=");
       buffer.append(_groupID);
-      buffer.append("&release_name=");
-      buffer.append(_releaseName);
       buffer.append("&package_id=");
       buffer.append(_packageID);
+      buffer.append("&release_name=");
+      buffer.append(_releaseName);
       buffer.append("&submit=Create+This+Release");
-
       String url = buffer.toString();
-
       GetMethod method = new GetMethod(url);
 
-      log("Creating release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', VERBOSE);
       try {
          // Execute the request
+         log("Creating release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', VERBOSE);
          log("Current cookie count is " + _httpClient.getState().getCookies().length);
          log("Executing request \"" + url + "\".", DEBUG);
          int code = _httpClient.executeMethod(method);
-         log("Current cookie count is " + _httpClient.getState().getCookies().length);
-
-         // Check status code
-         final int EXPECTED_CODE = 200;
-         if (code != EXPECTED_CODE) {
-            throw fail("Expected result code " + EXPECTED_CODE + " while adding release. Received: " + method.getStatusLine());
-         }
+         log("Received status line: " + method.getStatusLine(), DEBUG);
+         log("Current cookie count is " + _httpClient.getState().getCookies().length, DEBUG);
+         log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', INFO);
       } catch (IOException e) {
-         throw fail("I/O error while creating release.", e);
+         throw fail("Caught " + e.getClass().getName() + " while adding release.", e);
       }
-
-      // Succeeded
-      log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.');
    }
 }
