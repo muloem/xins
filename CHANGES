@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.185:
     then on supposed to start with an underscore. However, there were still
     references to the 'InternalError' result code. This has now been fixed to
     '_InternalError'.
+  - Changed FunctionResult class to improve documentation and style slightly.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.184:
