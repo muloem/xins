@@ -5,6 +5,10 @@ CHANGES INTRODUCED IN XINS 0.12:
 
 * Refactored statistics-related code.
 
+* Putting current time in function _GetStatistics output.
+
+* Fixed bug, now resetting success indication and return code.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.11:
 
