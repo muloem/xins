@@ -12,7 +12,6 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="api"          />
-	<xsl:param name="deployment"   />
 	<xsl:param name="hostname"     />
 	<xsl:param name="timestamp"    />
 
@@ -42,13 +41,6 @@
 	</xsl:template>
 
 	<xsl:template match="api/impl-java">
-		<xsl:if test="(not ($deployment = '')) and not(boolean(deployment[@name = $deployment]))">
-			<xsl:message terminate="yes">
-				<xsl:text>No deployment named '</xsl:text>
-				<xsl:value-of select="$deployment" />
-				<xsl:text>' defined.</xsl:text>
-			</xsl:message>
-		</xsl:if>
 		<web-app>
 			<servlet>
 				<servlet-name>
@@ -97,51 +89,16 @@
 						</param-value>
 					</init-param>
 				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="not ($deployment = '')">
-						<init-param>
-							<param-name>org.xins.api.deployment</param-name>
-							<param-value>
-								<xsl:value-of select="$deployment" />
-							</param-value>
-						</init-param>
-						<xsl:for-each select="deployment[@name = $deployment]/param">
-							<init-param>
-								<param-name>
-									<xsl:value-of select="@name" />
-								</param-name>
-								<param-value>
-									<xsl:value-of select="text()" />
-								</param-value>
-							</init-param>
-						</xsl:for-each>
-						<xsl:for-each select="param">
-							<xsl:variable name="param_name" select="@name" />
-							<xsl:if test="not (//api/impl-java/deployment[@name = $deployment]/param[@name = $param_name])">
-								<init-param>
-									<param-name>
-										<xsl:value-of select="@name" />
-									</param-name>
-									<param-value>
-										<xsl:value-of select="text()" />
-									</param-value>
-								</init-param>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:for-each select="param">
-							<init-param>
-								<param-name>
-									<xsl:value-of select="@name" />
-								</param-name>
-								<param-value>
-									<xsl:value-of select="text()" />
-								</param-value>
-							</init-param>
-						</xsl:for-each>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:for-each select="param">
+					<init-param>
+						<param-name>
+							<xsl:value-of select="@name" />
+						</param-name>
+						<param-value>
+							<xsl:value-of select="text()" />
+						</param-value>
+					</init-param>
+				</xsl:for-each>
 				<init-param>
 					<param-name>org.xins.api.build.version</param-name>
 					<param-value>

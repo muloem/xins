@@ -458,12 +458,6 @@
 					</target>
 					
 					<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
-						<xsl:if test="document($api_file)/api/impl-java/@deployment-required = 'true'">
-							<condition property="deployment_required_and_set">
-								<isset property="deployment" />
-							</condition>
-							<fail unless="deployment_required_and_set" message="Deployment setting is required. Please specify the deployment using 'ant -Ddeployment=&lt;identifier&gt;'" />
-						</xsl:if>
 						<mkdir dir="build/webapps/{$api}" />
 						<taskdef name="hostname" classname="org.xins.util.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 						<tstamp>
@@ -471,8 +465,6 @@
 						</tstamp>
 						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
-						<!-- If deployment is not set yet, then set it to an empty value -->
-						<property name="deployment" value="" />
 						<style
 						in="{$specsdir}/{$api}/api.xml"
 						out="build/webapps/{$api}/web.xml"
@@ -482,7 +474,6 @@
 							<param name="project_file" expression="{$project_file}" />
 							<param name="api"          expression="{$api}"          />
 							<param name="api_file"     expression="{$api_file}"     />
-							<param name="deployment"   expression="${{deployment}}" />
 							<param name="hostname"     expression="${{hostname}}"   />
 							<param name="timestamp"    expression="${{timestamp}}"  />
 						</style>
