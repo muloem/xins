@@ -163,7 +163,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                Object           subject)
    throws Throwable {
 
-      // Convert subject to PropertyReader
+      // Convert subject to a PropertyReader
       PropertyReader reader = (PropertyReader) subject;
 
       // Construct a new HTTP client object
