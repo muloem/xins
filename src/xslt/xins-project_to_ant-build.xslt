@@ -573,6 +573,11 @@
 						tofile="build/javadoc-api/{$api}/stylesheet.css"
 						overwrite="true" />
 					</target>
+					
+					<target name="server-{$api}" 
+					        depends="war-api-{$api}, specdocs-api-{$api}, javadoc-api-{$api}"
+					        description="Generate the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}' API stubs">
+					</target>
 				</xsl:if>
 
 				<target name="-stubs-capi-{$api}">
@@ -733,6 +738,24 @@
 					file="{$xins_home}/src/css/javadoc/style.css"
 					tofile="build/javadoc-capi/{$api}/stylesheet.css"
 					overwrite="true" />
+				</target>
+				
+				<target name="client-{$api}" 
+				        depends="jar-capi-{$api}, javadoc-capi-{$api}"
+				        description="Generate the Javadoc API docs for the client side and the client jar file for the '{$api}' API stubs">
+				</target>
+				
+				<target name="all-{$api}" 
+				        description="Generate everything for the '{$api}'  API stubs.">
+					<xsl:attribute name="depends">
+						<xsl:if test="document($api_file)/api/impl-java">
+							<xsl:text>server-</xsl:text>
+							<xsl:value-of select="$api" />
+							<xsl:text>,</xsl:text>
+						</xsl:if>
+						<xsl:text>client-</xsl:text>
+						<xsl:value-of select="$api" />
+					</xsl:attribute>
 				</target>
 			</xsl:for-each>
 
