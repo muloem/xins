@@ -681,6 +681,7 @@
 								<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
 									<xmlcatalog refid="all-dtds" />
 								</xmlvalidate>
+								<xsl:variable name="accesslevel" select="document($impl_file)/impl/logdoc/@accesslevel" />
 								<style
 								in="{$impl_dir}/log.xml"
 								out="build/logdoc/{$api}/build.xml"
@@ -694,9 +695,7 @@
 									<param name="package_name"    expression="{$package}" />
 								</style>
 								<ant antfile="build/logdoc/{$api}/build.xml" target="java">
-<!-- FIXME for anthonyg:
 									<property name="accesslevel" value="{$accesslevel}" />
--->
 								</ant>
 							</xsl:if>
 						</xsl:if>
