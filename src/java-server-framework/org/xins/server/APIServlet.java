@@ -76,8 +76,6 @@ extends HttpServlet {
          throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
       }
 
-      // TODO: Better error handling
-
       Properties settings = ServletUtils.settingsAsProperties(config);
 
       // Initialize Log4J
@@ -89,16 +87,24 @@ extends HttpServlet {
 
       // Create an API instance
       try {
+         _log.debug("Attempting to create API instance of class: " + apiClass);
          _api = (API) Class.forName(apiClass).newInstance();
+         _log.info("Created API instance of class: " + apiClass);
       } catch (Exception e) {
-         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", unable to instantiate an object of type " + apiClass + ", or unable to convert it to an API instance.");
+         String message = "Failed to create API instance of class: " + apiClass;
+         _log.error(message, e);
+         throw new ServletException(message);
       }
 
       // Initialize the API
       try {
+         _log.debug("Initializing API.");
          _api.init(settings);
+         _log.info("Initialized API.");
       } catch (Throwable e) {
-         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", the initialisation performed by API of type " + apiClass + " failed.");
+         String message = "Failed to initialize API.";
+         _log.error(message, e);
+         throw new ServletException(message);
       }
    }
 
