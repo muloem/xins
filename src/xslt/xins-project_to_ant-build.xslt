@@ -401,7 +401,9 @@
 						srcdir="{$javaDestDir}"
 						destdir="{$typeClassesDir}"
 						debug="true"
-						deprecation="${{deprecated}}">
+						deprecation="${{deprecated}}"
+		                                source="1.4"
+		                                target="1.4">
 							<classpath>
 								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
@@ -673,7 +675,9 @@
 						srcdir="{$javaCombinedDir}"
 						destdir="{$classesDestDir}"
 						debug="true"
-						deprecation="${{deprecated}}">
+						deprecation="${{deprecated}}"
+		                                source="1.4"
+		                                target="1.4">
 							<classpath>
 								<xsl:if test="$apiHasTypes = 'true'">
 									<pathelement path="{$typeClassesDir}" />
@@ -894,7 +898,9 @@
 					srcdir="{$project_home}/build/java-capi/{$api}/"
 					destdir="{$project_home}/build/classes-capi/{$api}"
 					debug="true"
-					deprecation="${{deprecated}}">
+					deprecation="${{deprecated}}"
+		                        source="1.4"
+	                                target="1.4">
 						<classpath>
 							<pathelement path="{$logdoc.jar}"      />
 							<pathelement path="{$xins-common.jar}" />
