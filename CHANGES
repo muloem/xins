@@ -15,8 +15,10 @@ CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
   - Improved Javadoc documentation.
 
 * XINS/Java Server Framework:
-  - Added 2 states to the APIServlet, DETERMINE_RELOAD_INTERVAL_STATE and
-    DETERMINE_RELOAD_INTERVAL_FAILED_STATE.
+  - Fixed SF.net bug #1032469. Previously, a negative reload interval not
+    handled properly. Now the framework will not accept this any longer and
+    enter a failure state, Added 2 states to the APIServlet for this:
+    DETERMINE_INTERVAL and DETERMINE_INTERVAL_FAILED.
   - Removed log message 1412. The relevant information is in log message 3200
     already, logged directly by the FileWatcher when the file watch thread
     starts running.
