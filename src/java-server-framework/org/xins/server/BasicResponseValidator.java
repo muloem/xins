@@ -67,6 +67,14 @@ implements ResponseValidator {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Gets the 2-size <code>Map[]</code> array for this thread. If there is no
+    * array yet, then it is created and stored in {@link #_threadLocals}.
+    *
+    * @return
+    *    the {@link Map}<code>[]</code> array for this thread, never
+    *    <code>null</code>.
+    */
    private final Map[] getThreadLocals() {
       Object o = _threadLocals.get();
       Map[] arr;
@@ -79,6 +87,9 @@ implements ResponseValidator {
       return arr;
    }
 
+   /**
+    * Cleans up the current response.
+    */
    private final void reset() {
       Object o = _threadLocals.get();
       if (o != null) {
@@ -100,6 +111,13 @@ implements ResponseValidator {
       }
    }
 
+   /**
+    * Gets the parameter <code>Map</code> for the current response. If there
+    * is none, then one will be created and stored.
+    *
+    * @return
+    *    the parameter {@link Map}, never <code>null</code>.
+    */
    protected final Map getParameters() {
 
       // Get the 2-size Map array
@@ -118,6 +136,14 @@ implements ResponseValidator {
       return parameters;
    }
 
+   /**
+    * Fails with an <code>InvalidResponseException</code> after cleaning up.
+    * Subclasses should use this method if they find that the response is
+    * invalid.
+    *
+    * @param message
+    *    the message, can be <code>null</code>.
+    */
    protected final void fail(String message)
    throws InvalidResponseException {
       reset();
