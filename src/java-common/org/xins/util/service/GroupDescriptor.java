@@ -250,7 +250,7 @@ public final class GroupDescriptor extends Descriptor {
     *    <code>null</code>, if none could be found in this group.
     */
    public TargetDescriptor getTargetByCRC32(int crc32) {
-      return null; // TODO
+      return (TargetDescriptor) _targetsByCRC32.get(new Integer(crc32));
    }
 
 
