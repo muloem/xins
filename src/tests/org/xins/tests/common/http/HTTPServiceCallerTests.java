@@ -3,9 +3,13 @@
  */
 package org.xins.tests.common.http;
 
+import java.io.UnsupportedEncodingException;
+import java.util.zip.CRC32;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
@@ -44,6 +48,17 @@ public class HTTPServiceCallerTests extends TestCase {
       return new TestSuite(HTTPServiceCallerTests.class);
    }
 
+   private static long checksum(String s) {
+      CRC32 crc = new CRC32();
+      try {
+         byte[] bytes = s.getBytes("UTF-8");
+         crc.update(bytes);
+         return crc.getValue();
+      } catch (UnsupportedEncodingException exception) {
+         throw new Error(exception);
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -79,8 +94,7 @@ public class HTTPServiceCallerTests extends TestCase {
       String text = result.getString();
       boolean correctStart = text.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html lang=\"EN\" xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" /><title>Extensible Markup Language (XML) 1.0 (Third Edition)</title>");
       assertTrue("Unexpected HTML received.", correctStart);
-
-      // XXX: Test MD5 ?
+      assertEquals(2840783247L, checksum(text));
    }
 
    public void testParameters() throws Exception {
