@@ -20,7 +20,9 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 0.207
  */
-public final class XINSCallResult extends CallResult {
+public final class XINSCallResult
+extends CallResult
+implements XINSCallResultData {
 
    //----------------------------------------------------------------------
    // Class fields
