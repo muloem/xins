@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.144:
   - Fixed bug in APIServlet that caused a InterruptedIOException when a
     configuration file was reloaded. Had to change FileWatcher for this as
     well.
+  - Logs now always refer to session using hex session ID, not sometimes as
+    decimal and sometimes as hex.
 
 * XINS/Java Common Library:
   - Fixed small bug in ExpiryFolder that could cause a NPE.
