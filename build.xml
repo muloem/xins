@@ -34,7 +34,7 @@
 
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.deprecation"   value="true"  />
-		<property name="javac.optimize"      value="false" />
+		<property name="javac.optimize"      value="true" />
 	</target>
 
 	<target name="version" depends="-init">
