@@ -62,11 +62,10 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Computes the CRC-32 checksum for the specified string. If
-    * <code>null</code> is passed, then <code>0L</code> is returned.
+    * Computes the CRC-32 checksum for the specified URL.
     *
-    * @param string
-    *    the string for which to compute the checksum, or <code>null</code>.
+    * @param url
+    *    the URL for which to compute the checksum, or <code>null</code>.
     *
     * @return
     *    the checksum for <code>url.</code>{@link URL#toString() toString()}.
