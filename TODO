@@ -143,6 +143,7 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Generate Docbook from the specifications.
 * If the api.xml has changed, the specification documentation should be
   regenerated.
+* Have an item for a result code page in the header.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
