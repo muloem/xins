@@ -37,6 +37,11 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The name of this class.
+    */
+   private static final String EXPIRY_FOLDER_CLASSNAME = ExpiryFolder.class.getName();
+
+   /**
     * The initial size for the queue of threads waiting to obtain read or
     * write access to a resource.
     */
@@ -245,7 +250,7 @@ extends Object {
          // If the new size was negative, it has been fixed already, but
          // report it now, after the synchronized section
          if (newSize < 0) {
-            Log.log_3006("Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
+            Log.log_3006(EXPIRY_FOLDER_CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
          }
          Log.log_3400(_asString, toBeExpiredSize, newSize);
       } else {
