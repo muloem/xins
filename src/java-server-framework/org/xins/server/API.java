@@ -639,6 +639,9 @@ implements DefaultResultCodes {
     * @return
     *    the result of the call, never <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if this object is currently not initialized.
+    *
     * @throws NullPointerException
     *    if <code>request == null</code>.
     *
@@ -650,9 +653,13 @@ implements DefaultResultCodes {
     *    function name.
     */
    final CallResult handleCall(long start, ServletRequest request)
-   throws NullPointerException,
+   throws IllegalStateException,
+          NullPointerException,
           NoSuchFunctionException,
           AccessDeniedException {
+
+      // Check state first
+      assertUsable();
 
       // Determine the function name
       String functionName = request.getParameter("_function");

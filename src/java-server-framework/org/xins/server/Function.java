@@ -214,11 +214,18 @@ implements DefaultResultCodes {
     *
     * @return
     *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this object is currently not initialized.
     */
-   CallResult handleCall(long start, ServletRequest request) {
+   CallResult handleCall(long start, ServletRequest request)
+   throws IllegalStateException {
 
       // TODO: Know nothing about servlets, so do not accept the
       //       ServletRequest argument
+
+      // Check state first
+      assertUsable();
 
       // Assign a call ID
       int callID = assignCallID();
