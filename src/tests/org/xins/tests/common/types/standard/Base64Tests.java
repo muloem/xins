@@ -72,10 +72,23 @@ public class Base64Tests extends TestCase {
       // empty
    }
 
-   public void testToString() {
+   public void testToString() throws Throwable {
       byte[] hello = { 'h', 'e', 'l', 'l', 'o' };
       assertEquals("aGVsbG8=", lowerLimit.toString(hello));
+      assertEquals("aGVsbG8=", lowerLimit.toString((Object)hello));
       assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
+   }
+
+   public void testFromString() throws Throwable {
+      byte[] hello = (byte[])lowerLimit.fromString("aGVsbG8=");
+      assertEquals(5, hello.length);
+      assertEquals('o', hello[4]);
+      try {
+         byte[] hello2 = (byte[])lowerLimit.fromString("héllo");
+         fail("Converted an invalid base64 String.");
+      } catch (TypeValueException tve) {
+         // As expected
+      }
    }
 
    public void testFromStringForRequired() throws Throwable {

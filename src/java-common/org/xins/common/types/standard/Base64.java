@@ -200,14 +200,23 @@ public class Base64 extends Type {
       }
    }
 
-   protected Object fromStringImpl(String string) {
-      return Float.valueOf(string);
+   protected Object fromStringImpl(String string) throws TypeValueException {
+      try {
+         byte[] encoded = string.getBytes(STRING_ENCODING);
+         return org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
+      } catch (Exception ex) {
+         throw new TypeValueException(SINGLETON, string, ex.getMessage());
+      }
    }
 
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
       byte[] b = (byte[]) value;
-      return new String(b);
+      try {
+         return new String(org.apache.commons.codec.binary.Base64.encodeBase64(b), STRING_ENCODING);
+      } catch (UnsupportedEncodingException uee) {
+         throw new TypeValueException(SINGLETON, new String(b), "Encoding " + STRING_ENCODING + " not supported.");
+      }
    }
 }

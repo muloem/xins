@@ -71,12 +71,24 @@ public class Int8Tests extends TestCase {
       // empty
    }
 
-   public void testToString() {
+   public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((byte)12) should return a value of \"12\"", "12", lowerLimit.toString((byte)12));
-      assertEquals("lowerLimit.toString(Byte.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Byte.valueOf("12")));
+      assertEquals("lowerLimit.toString(Byte.valueOf(\"12\")) should return a value of \"12\"", "12", lowerLimit.toString(Byte.valueOf("12")));
+      assertEquals("lowerLimit.toString(Byte.valueOf(\"12\")) should return a value of \"12\"", "12", lowerLimit.toString((Object)Byte.valueOf("12")));
       assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
+   public void testFromString() throws Throwable {
+      Byte nine = (Byte)lowerLimit.fromString("9");
+      assertEquals((byte)9, nine.byteValue());
+      try {
+         Byte twentyTwo = (Byte)lowerLimit.fromString("Twenty 2");
+         fail("Converted an invalid base64 String.");
+      } catch (TypeValueException tve) {
+         // As expected
+      }
+   }
+   
    public void testFromStringForRequired() throws Throwable {
 
       try {

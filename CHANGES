@@ -50,6 +50,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     XINS API specification.
   - Added getClassName(Object) and getNameOfClass(Class) functions to class
     Utils.
+  - Fixed the method fromString() of the base64 standard type.
+  - Fixed the method toString(Object) of the base64 standard type.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
