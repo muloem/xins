@@ -9,7 +9,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
-	<xsl:param name="package_name"    />
+	<xsl:param name="package_name" />
+	<xsl:param name="accesslevel"  />
 
 	<xsl:include href="shared.xslt" />
 	<xsl:include href="../xml_to_java.xslt" />

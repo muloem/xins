@@ -10,6 +10,7 @@
 
 	<!-- Define parameters -->
 	<xsl:param name="package_name" />
+	<xsl:param name="accesslevel"  />
 
 	<!-- Define variables -->
 	<xsl:variable name="domain" select="/log/@domain" />

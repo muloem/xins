@@ -12,6 +12,7 @@
 	<xsl:param name="package_name" />
 	<xsl:param name="locale"       />
 	<xsl:param name="log_file"     />
+	<xsl:param name="accesslevel"  />
 
 	<!-- Perform includes -->
 	<xsl:include href="shared.xslt"         />
