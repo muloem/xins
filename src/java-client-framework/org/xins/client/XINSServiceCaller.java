@@ -349,9 +349,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       // TODO: Throw specific exception that stores the HTTP code so it can be
       //       used to determine whether or not fail-over should be attempted.
       int code = executor._statusCode;
-      if (code != 200 && code != 201) {
-         Log.log_2008(code);
-         throw new InvalidCallResultException("HTTP code " + code + '.');
+
+      Log.log_2016(url, functionName, code);
+
+      // If HTTP status code is not in 2xx range, abort
+      if (code < 200 || code > 299) {
+         Log.log_2008(url, functionName, code);
+         throw new UnexpectedHTTPStatusCodeException(code);
       }
 
       // If the body is null, then there was an error
@@ -460,7 +464,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    <code>false</code> if it should not.
     */
    protected boolean shouldFailOver(Object subject, Throwable exception) {
-      return (exception instanceof ConnectionException);
+      return (exception instanceof ConnectionException) ||
+             (exception instanceof UnexpectedHTTPStatusCodeException);
    }
 
 
