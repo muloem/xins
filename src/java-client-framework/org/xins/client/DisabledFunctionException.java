@@ -9,16 +9,16 @@ package org.xins.client;
 import org.xins.common.service.TargetDescriptor;
 
 /**
- * Exception thrown to indicate a standard error code was received that
- * indicates a server-side internal error.
+ * Exception thrown to indicate that the called function has been disabled
+ * at the server-side.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.2.0
  */
-public class InternalErrorException
-extends StandardErrorCodeException {
+public class DisabledFunctionException
+extends UnsuccessfulXINSCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -33,7 +33,7 @@ extends StandardErrorCodeException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InternalErrorException</code>.
+    * Constructs a new <code>DisabledFunctionException</code>.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
@@ -55,10 +55,10 @@ extends StandardErrorCodeException {
     *          || resultData  == null
     *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
     */
-   InternalErrorException(XINSCallRequest    request,
-                          TargetDescriptor   target,
-                          long               duration,
-                          XINSCallResultData resultData)
+   DisabledFunctionException(XINSCallRequest    request,
+                             TargetDescriptor   target,
+                             long               duration,
+                             XINSCallResultData resultData)
    throws IllegalArgumentException {
       super(request, target, duration, resultData, null);
    }

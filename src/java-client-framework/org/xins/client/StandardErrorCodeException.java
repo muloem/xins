@@ -9,16 +9,17 @@ package org.xins.client;
 import org.xins.common.service.TargetDescriptor;
 
 /**
- * Exception thrown to indicate a standard error code was received that
- * indicates a server-side internal error.
+ * Abstract base class for exceptions that indicate that a standard error code
+ * was returned from the server-side. Standard error codes all start with an
+ * underscore, e.g. <em>_InternalError</em>.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.2.0
  */
-public class InternalErrorException
-extends StandardErrorCodeException {
+public abstract class StandardErrorCodeException
+extends UnsuccessfulXINSCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -33,7 +34,7 @@ extends StandardErrorCodeException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InternalErrorException</code>.
+    * Constructs a new <code>StandardErrorCodeException</code>.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
@@ -48,6 +49,9 @@ extends StandardErrorCodeException {
     * @param resultData
     *    the result data, cannot be <code>null</code>.
     *
+    * @param detail
+    *    detail message, or <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
@@ -55,12 +59,13 @@ extends StandardErrorCodeException {
     *          || resultData  == null
     *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
     */
-   InternalErrorException(XINSCallRequest    request,
-                          TargetDescriptor   target,
-                          long               duration,
-                          XINSCallResultData resultData)
+   StandardErrorCodeException(XINSCallRequest    request,
+                              TargetDescriptor   target,
+                              long               duration,
+                              XINSCallResultData resultData,
+                              String             detail)
    throws IllegalArgumentException {
-      super(request, target, duration, resultData, null);
+      super(request, target, duration, resultData, detail);
    }
 
 
@@ -71,6 +76,4 @@ extends StandardErrorCodeException {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   // XXX: Add methods for retrieval of details?
 }

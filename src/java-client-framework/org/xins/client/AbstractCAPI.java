@@ -15,6 +15,7 @@ import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
 /**
@@ -239,8 +240,19 @@ public abstract class AbstractCAPI extends Object {
     * error code. If the specified error code is not recognized, then
     * <code>null</code> is returned.
     *
-    * @param errorCode
-    *    the error code, never <code>null</code>.
+    * @param request
+    *    the original request, should not be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, should not
+    *    be <code>null</code>.
+    *
+    * @param duration
+    *    the call duration in milliseconds, should be &gt;= 0.
+    *
+    * @param resultData
+    *    the result data, should not be <code>null</code> and should have an
+    *    error code set.
     *
     * @return
     *    if the error code is recognized, then a matching
@@ -249,6 +261,13 @@ public abstract class AbstractCAPI extends Object {
     *
     * @since XINS 1.2.0
     */
-   protected abstract AbstractCAPIErrorCodeException
-   convertErrorCode(String errorCode);
+   protected AbstractCAPIErrorCodeException
+   createErrorCodeException(XINSCallRequest    request,
+                            TargetDescriptor   target,
+                            long               duration,
+                            XINSCallResultData resultData)
+   throws IllegalArgumentException {
+      // By default return nothing
+      return null;
+   }
 }

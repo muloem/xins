@@ -674,10 +674,60 @@ public final class XINSServiceCaller extends ServiceCaller {
       // If the result is unsuccessful, then throw an exception
       String errorCode = resultData.getErrorCode();
       if (errorCode != null) {
+
+         // Log this
          Log.log_2112(url, function, params, duration, errorCode);
-         throw xinsRequest.createUnsuccessfulXINSCallException(target,
-                                                               duration,
-                                                               resultData);
+
+         // Standard error codes (start with an underscore)
+         if (errorCode.charAt(0) == '_') {
+            if (errorCode.equals("_DisabledFunction")) {
+               throw new DisabledFunctionException(xinsRequest,
+                                                   target,
+                                                   duration,
+                                                   resultData);
+            } else if (errorCode.equals("_InternalError")
+                    || errorCode.equals("_InvalidResponse")) {
+               throw new InternalErrorException(xinsRequest,
+                                                target,
+                                                duration,
+                                                resultData);
+            } else if (errorCode.equals("_InvalidRequest")) {
+               throw new InvalidRequestException(xinsRequest,
+                                                 target,
+                                                 duration,
+                                                 resultData);
+            } else {
+               throw new UnexpectedErrorCodeException(xinsRequest,
+                                                      target,
+                                                      duration,
+                                                      resultData);
+            }
+
+         // Non-standard error codes, CAPI not used
+         } else if (_capi == null) {
+            throw new UnsuccessfulXINSCallException(xinsRequest,
+                                                    target,
+                                                    duration,
+                                                    resultData,
+                                                    null);
+
+         // Non-standard error codes, CAPI used
+         } else {
+            AbstractCAPIErrorCodeException ex =
+               _capi.createErrorCodeException(xinsRequest,
+                                              target,
+                                              duration,
+                                              resultData);
+
+            if (ex != null) {
+               throw ex;
+            } else {
+               throw new UnexpectedErrorCodeException(xinsRequest,
+                                                      target,
+                                                      duration,
+                                                      resultData);
+            }
+         }
       }
 
       // Call completely succeeded

@@ -15,17 +15,17 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Exception thrown to indicate an <code>_InvalidRequest</code> error code was
- * received.
- *
- * <p>Although this class is currently package-private, it is expected to be
- * marked as public at some point.
+ * Exception thrown to indicate a standard error code was received that
+ * indicates the request from the client-side is considered invalid by the
+ * server-side.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-class InvalidRequestException
-extends UnsuccessfulXINSCallException {
+public class InvalidRequestException
+extends StandardErrorCodeException {
 
    //-------------------------------------------------------------------------
    // Class fields
