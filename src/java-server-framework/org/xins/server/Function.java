@@ -87,7 +87,7 @@ implements DefaultResultCodes {
    protected Function(API api, String name, String version, boolean sessionBased)
    throws IllegalArgumentException {
 
-      // Check argument
+      // Check arguments
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
       _log          = Logger.getLogger("org.xins.server.apis." + api.getName() + '.' + name);
@@ -251,6 +251,11 @@ implements DefaultResultCodes {
     *
     * @return
     *    the associated logger, constant, and cannot be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.158 with no replacement. Instead of using a
+    *    <code>Logger</code>, use the <em>logdoc</em> approach. Although this
+    *    method is deprecated, it still works as specified.
     */
    final Logger getLogger() {
       return _log;
