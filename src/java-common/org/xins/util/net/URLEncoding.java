@@ -4,6 +4,7 @@
 package org.xins.util.net;
 
 import java.net.URLDecoder;
+import org.xins.text.NonASCIIException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
