@@ -17,7 +17,7 @@ import org.xins.util.text.FastStringBuffer;
  * @since XINS 0.140
  */
 public final class NoSuchSessionException
-extends Exception {
+extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
