@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
 
 * Libraries
   - Upgraded Log4J library to 1.2.9.
+  - Upgraded Common logging to 1.0.4.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
