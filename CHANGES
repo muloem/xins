@@ -1,7 +1,8 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.50:
 
-* Added ResponseValidator to XINS/Java Server Framework.
+* Added ResponseValidator to XINS/Java Server Framework. Duplicate parameters
+  are now detected and properly cause a failure.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.49:
