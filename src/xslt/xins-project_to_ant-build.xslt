@@ -556,7 +556,7 @@ $Id$
 					basedir="{$project_home}/build/classes-capi/{$api}" />
 				</target>
 					
-				<target name="javadoc-capi-{$api}" depends="-stubs-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
+				<target name="javadoc-capi-{$api}" depends="-classes-types-{$api},-stubs-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 					<mkdir dir="build/javadoc-capi/{$api}" />
 					<javadoc
 					sourcepath="build/java-capi/{$api}"
