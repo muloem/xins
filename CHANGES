@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
 * XINS/Java Client Framework:
   - Improved XINSCallResultParser with regard to logging, documentation,
     memory use and performance.
+  - Changed DataElement class to support namespaces. Some methods have been
+    deprecated in favor of new ones.
 
 * Generation of server-side Java code:
   - Import type classes for the generated implementation class.
@@ -143,6 +145,11 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
 
 * Added support for the -version argument for the xins commands.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.0 FINAL:
+
+No changes.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 3:
