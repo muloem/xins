@@ -124,3 +124,4 @@ MISCELLANEOUS
   files are valid.
 * Fix 'xins -version' on systems without .sourceforge.properties file.
 * Fix 'xins -projecthelp'.
+* Consider removing dependency on JDOM.
