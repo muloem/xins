@@ -25,7 +25,17 @@ import org.xins.common.text.ParseException;
  * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
  * object.
  *
+ * <p>The root element in the XML must be of type <code>result</code>. Inside
+ * this element, <code>param</code> elements optionally define parameters and
+ * an optional <code>data</code> element defines a data section.
+ *
+ * <p>If the result element contains an <code>error</code> or a
+ * <code>code</code> attribute, then the value of the attribute is interpreted
+ * as the error code. If both these attributes are set and conflicting, then
+ * this is considered a showstopper.
+ *
  * @version $Revision$ $Date$
+ *
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -54,6 +64,30 @@ extends Object {
     * by this class.
     */
    private static final Object PROTECTION_KEY = new Object();
+
+   /**
+    * Initial state for the SAX event handler, before the root element is
+    * processed.
+    */
+   private static final State INITIAL = new State("INITIAL");
+
+   /**
+    * State for the SAX event handler for the level just within the root
+    * element (<code>result</code>).
+    */
+   private static final State AT_ROOT_LEVEL = new State("AT_ROOT_LEVEL");
+
+   /**
+    * State for the SAX event handler for the level within the output
+    * parameter element (<code>param</code>).
+    */
+   private static final State IN_PARAM_TAG = new State("IN_PARAM_TAG");
+
+   /**
+    * State for the SAX event handler for the level within the data section
+    * (within the <code>data</code> element).
+    */
+   private static final State IN_DATA_SECTION = new State("IN_DATA_SECTION");
 
 
    //-------------------------------------------------------------------------
@@ -112,8 +146,8 @@ extends Object {
       try {
 
          // Construct a SAX parser
-         SAXParserFactory factory = SAXParserFactory.newInstance();
-         SAXParser saxParser      = factory.newSAXParser();
+         SAXParserFactory factory   = SAXParserFactory.newInstance();
+         SAXParser        saxParser = factory.newSAXParser();
 
          // Convert the byte array to an input stream
          ByteArrayInputStream bais = new ByteArrayInputStream(xml);
@@ -169,14 +203,6 @@ extends Object {
    implements XINSCallResultData {
 
       //-------------------------------------------------------------------------
-      // Class fields
-      //-------------------------------------------------------------------------
-
-      //-------------------------------------------------------------------------
-      // Class functions
-      //-------------------------------------------------------------------------
-
-      //-------------------------------------------------------------------------
       // Constructors
       //-------------------------------------------------------------------------
 
@@ -184,13 +210,18 @@ extends Object {
        * Constructs a new <code>Handler</code> instance.
        */
       private Handler() {
-         // empty
+         _state = INITIAL;
       }
 
 
       //-------------------------------------------------------------------------
       // Fields
       //-------------------------------------------------------------------------
+
+      /**
+       * The current state. Never <code>null</code>.
+       */
+      private State _state;
 
       /**
        * The error code returned by the function or <code>null</code>, if no
@@ -220,18 +251,13 @@ extends Object {
       private Hashtable _elements = new Hashtable();
 
       /**
-       * The level of the element that is actually parsed in the data element.
+       * The level of the element that is actually parsed in the data section.
        * Initially this field is set to -1, which means that no element is parsed;
        * 0 means that the parser just read the &lt;data&gt; tag;
        * 1 means that the parser entered in an direct sub-element of the
        * &lt;data&gt; tag, etc.
        */
       private int _level = -1;
-
-      /**
-       * Indicates if the parsing of the result has started
-       */
-      private boolean _parsingStarted  = false;
 
 
       //-------------------------------------------------------------------------
@@ -274,12 +300,36 @@ extends Object {
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
 
          // Root element must be 'result'
-         if (!_parsingStarted && !qName.equals("result")) {
-            Log.log_2200(qName);
-         }
+         if (_state == INITIAL) {
+            if (! qName.equals("result")) {
+               Log.log_2200(qName);
+               throw new SAXException("Root element is \"" + qName + "\" while only \"result\" is supported.");
+            }
+
+            // Get the 'errorcode' and 'code attributes
+            String code1 = atts.getValue("errorcode");
+            String code2 = atts.getValue("code");
+
+            // Only one error code attribute set
+            if (code1 != null && code2 == null) {
+               _errorCode = code1;
+            } else if (code1 == null && code2 != null) {
+               _errorCode = code2;
+
+            // Two error code attribute set
+            } else if (code1 == null && code2 == null) {
+               _errorCode = null;
+            } else if (code1.equals(code2)) {
+               _errorCode = code1;
+
+            // Conflicting error codes
+            } else {
+               Log.log_2207(code1, code2);
+               throw new SAXException("Found conflicting duplicate value for error code. First is \"" + code1 + "\". Second is \"" + code2 + "\".");
+            }
 
          // Within the data section
-         if (_level >= 0) {
+         } else if (_state == IN_DATA_SECTION) {
 
             // Increase the depth level
             _level++;
@@ -298,14 +348,6 @@ extends Object {
             // Reserve buffer for PCDATA
             _pcdata = new FastStringBuffer(20);
 
-         // Root element
-         } else if (qName.equals("result")) {
-            _parsingStarted = true;
-            _errorCode = atts.getValue("errorcode");
-            if (_errorCode == null) {
-               _errorCode = atts.getValue("code");
-            }
-
          // Output parameter
          } else if (qName.equals("param")) {
             _parameterKey = atts.getValue("name");
@@ -317,11 +359,9 @@ extends Object {
             _elements.put(ZERO, new DataElement("data"));
             _level = 0;
 
-         // Unknown element
+         // Unknown element in data section
          } else {
-            // TODO: Log?
-            // TODO: Just ignore this element?
-            throw new SAXException("Unknown element \"" + qName + "\".");
+            // Ignore this element
          }
       }
 
@@ -414,11 +454,9 @@ extends Object {
          // End of data section
          } else if (_level == 0 && qName.equals("data")) {
             _level--;
-
-         // Otherwise we expect to be in the root element (result)
-         } else if (!qName.equals("result")) {
-            throw new SAXException("Unknown element \"" + qName + "\".");
          }
+
+         // Otherwise do nothing
       }
 
       /**
@@ -486,6 +524,73 @@ extends Object {
        */
       public DataElement getDataElement() {
          return (DataElement) _elements.get(ZERO);
+      }
+   }
+
+   /**
+    * State of the event handler.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.0.0-beta6
+    */
+   private static final class State extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>State</code> object.
+       *
+       * @param name
+       *    the name of this state, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null</code>.
+       */
+      private State(String name) throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("name", name);
+
+         _name = name;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The name of this state. Cannot be <code>null</code>.
+       */
+      private final String _name;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Returns the name of this state.
+       *
+       * @return
+       *    the name of this state, cannot be <code>null</code>.
+       */
+      public String getName() {
+         return _name;
+      }
+
+      /**
+       * Returns a textual representation of this object.
+       *
+       * @return
+       *    the name of this state, never <code>null</code>.
+       */
+      public String toString() {
+         return _name;
       }
    }
 }
