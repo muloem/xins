@@ -1,7 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.54:
 
-* Fixed bug in CallContext.getSession().
+* XINS/Java Server Framework:
+  - Fixed bug in CallContext.getSession().
+  - Relying on APIServlet.destroy() to call API.destroy() at shutdown. Removed
+    shutdown handler from API class.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.53:
