@@ -9,14 +9,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 * XINS/Java Server Framework:
   - Added the possibility to point to an ACL file in the ACL runtime property.
 
-* Slightly improved and cleaned the 'xins' shell script. Now the '-version'
-  and the 'version' argument both work the same. Also, the shell script now
-  calls Ant only once. Then Ant first does the transformation from
-  xins-project.xml to build.xml and then executes the generated build.xml
-  directly. This does not work good yet, though, since now only one target can
-  be specified. This will need to be fixed in a later release of XINS 1.1.
-  Note that the batch file has not been changed yet.
-
 * XINS/Java Client Framework:
   - The AbstractCAPI class now supports specifying the HTTPMethod. The
     HTTPMethod can be passed to the AbstractCAPI constructor.
@@ -25,7 +17,16 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
   - The generated CAPI classes now support specifying the HTTPMethod. The
     HTTPMethod can be passed to the CAPI constructor.
 
-* Removed src/ant/transform.xml which was no longer used since XINS 0.165.
+* Other:
+  - Removed src/ant/transform.xml which was no longer used since XINS 0.165.
+  - Slightly improved and cleaned the 'xins' shell script. Now the '-version'
+    and the 'version' argument both work the same. Also, the shell script now
+    calls Ant only once. Then Ant first does the transformation from
+    xins-project.xml to build.xml and then executes the generated build.xml
+    directly.
+    Note that the xins.bat batch file has not been changed yet.
+  - Linking to Apache Ant 1.6.2 API docs at xins.sourceforge.net, since they
+    are not available at apache.org.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
