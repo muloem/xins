@@ -126,7 +126,7 @@ public final class FileWatcher extends Thread {
     * <ul>
     *    <li>if the file does not exist, then {@link Listener#fileNotFound()} is called;
     *    <li>if the file was modified, then {@link Listener#fileModified()} is called;
-    *    <li>if {@link File#exists()} or {@link File#lastModified()} throws a {@link SecurityException}, then {@link Listener#securityException()} is called;
+    *    <li>if {@link File#exists()} or {@link File#lastModified()} throws a {@link SecurityException}, then {@link Listener#securityException(SecurityException)} is called;
     *    <li>if the file was not modified and no {@link SecurityException}, then {@link Listener#fileNotModified()} is called.
     * </ul>
     */
