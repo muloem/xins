@@ -41,6 +41,7 @@ implements Responder {
     */
    CallContext() {
       _state = UNINITIALIZED;
+      _success      = true;
       _stringWriter = new FastStringWriter();
       _xmlOutputter = new XMLOutputter();
    }
@@ -110,7 +111,7 @@ implements Responder {
     * {@link #startResponse(boolean,String)} is called with the first
     * parameter (<em>success</em>) set to <code>false</code>.
     */
-   private boolean _success = true;
+   private boolean _success;
 
    /**
     * Return code. The default is <code>null</code> and will <em>only</em> be
@@ -136,6 +137,7 @@ implements Responder {
    void reset() {
       _request = null;
       _state   = UNINITIALIZED;
+      _success = true;
    }
 
    /**
@@ -160,6 +162,7 @@ implements Responder {
       _start   = System.currentTimeMillis();
       _request = request;
       _state   = BEFORE_START;
+      _success = true;
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
