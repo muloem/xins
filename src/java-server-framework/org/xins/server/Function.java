@@ -30,7 +30,7 @@ implements DefaultResultCodes {
     * Call result to be returned when a function is currently disabled. See
     * {@link #isEnabled()}.
     */
-   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult(false, "DisabledFunction", null, null);
+   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult("DisabledFunction", null, null);
 
 
    //-------------------------------------------------------------------------
@@ -262,7 +262,7 @@ implements DefaultResultCodes {
             parameters.set("_exception.stacktrace", stackTrace);
          }
 
-         result = new BasicCallResult(false, "InternalError", parameters, null);
+         result = new BasicCallResult("InternalError", parameters, null);
       }
 
       // Update function statistics

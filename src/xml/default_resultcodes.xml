@@ -9,16 +9,16 @@
 -->
 
 <resultcodes rcsversion="$Revision$" rcsdate="$Date$">
-	<code name="_DisabledFunction" success="false" value="_DisabledFunction">
+	<code name="_DisabledFunction" value="_DisabledFunction">
 		<description>The function is currently disabled.</description>
 	</code>
-	<code name="_InternalError" success="false" value="_InternalError">
+	<code name="_InternalError" value="_InternalError">
 		<description>There was an internal error.</description>
 	</code>
-	<code name="_InvalidRequest" success="false" value="_InvalidRequest" onlyIfInputParameters="true">
+	<code name="_InvalidRequest" value="_InvalidRequest" onlyIfInputParameters="true">
 		<description>Indicates that the request is considered invalid since it does not match the criteria defined by the specification.</description>
 	</code>
-	<code name="_InvalidResponse" success="false" value="_InvalidResponse" onlyIfInputParameters="false">
+	<code name="_InvalidResponse" value="_InvalidResponse" onlyIfInputParameters="false">
 		<description>Indicates that the implementation produced a response that does not match the criteria defined by the specification. Typical callers should treat this like an internal error.</description>
 	</code>
 </resultcodes>

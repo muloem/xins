@@ -99,7 +99,7 @@ final class </xsl:text>
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
-      super(false, "</xsl:text>
+      super("</xsl:text>
 		<xsl:value-of select="@value" />
 		<xsl:text>");
    }</xsl:text>

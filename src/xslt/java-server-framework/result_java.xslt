@@ -86,7 +86,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    public SuccessfulResult() {
 
       // Report the success
-      super(true, null);
+      super(null);
    }
 
    //-------------------------------------------------------------------------
@@ -149,7 +149,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
          if (_errorOutputResult == null) {
             _errorOutputResult = new org.xins.server.InvalidResponseResult();
          }
-         _errorOutputResult.addInvalidTypeForValue("</xsl:text>
+         _errorOutputResult.addInvalidValueForType("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
 				<xsl:value-of select="@type" />

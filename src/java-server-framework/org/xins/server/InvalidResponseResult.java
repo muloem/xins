@@ -27,7 +27,7 @@ public class InvalidResponseResult extends FunctionResult {
    //-------------------------------------------------------------------------
 
    public InvalidResponseResult() {
-      super(false, DefaultResultCodes._INVALID_RESPONSE.getValue());
+      super(DefaultResultCodes._INVALID_RESPONSE.getValue());
    }
 
    //-------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class InvalidResponseResult extends FunctionResult {
     * @param type
     *    the type which this parameter should be compliant with.
     */
-   public void addInvalidTypeForValue(String parameter, String type) {
+   public void addInvalidValueForType(String parameter, String type) {
       getResultBuilder().startTag("invalid-value-for-type");
       getResultBuilder().attribute("param", parameter);
       getResultBuilder().attribute("type", type);

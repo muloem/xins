@@ -58,7 +58,6 @@ final class CallResultOutputter extends Object {
 
       // Write the result start tag
       outputter.startTag("result");
-      outputter.attribute("success", result.isSuccess() ? "true" : "false");
 
       String code = result.getCode();
       if (code != null) {

@@ -149,7 +149,6 @@ final class CallResultBuilder extends Object implements CallResult {
     */
    CallResultBuilder() {
       _state = BEFORE_START;
-      _success = true;
    }
 
 
@@ -161,11 +160,6 @@ final class CallResultBuilder extends Object implements CallResult {
     * Current state.
     */
    private State _state;
-
-   /**
-    * Success indication.
-    */
-   private boolean _success;
 
    /**
     * The result code. This field is <code>null</code> if no code was
@@ -210,16 +204,13 @@ final class CallResultBuilder extends Object implements CallResult {
    /**
     * Sets the success indication and the result code (if any).
     *
-    * @param success
-    *    success indication, <code>true</code> or <code>false</code>.
-    *
     * @param code
     *    the result code, or <code>null</code>.
     *
     * @throws IllegalStateException
     *    if {@link #getState()}<code> != </code>{@link #BEFORE_START}.
     */
-   void startResponse(boolean success, String code)
+   void startResponse(String code)
    throws IllegalStateException {
 
       // TODO: Accept ResultCode object ?
@@ -231,7 +222,6 @@ final class CallResultBuilder extends Object implements CallResult {
       }
 
       // Store the information
-      _success = success;
       _code    = code;
 
       // Update the state
@@ -245,7 +235,7 @@ final class CallResultBuilder extends Object implements CallResult {
     *    success indication, <code>true</code> or <code>false</code>.
     */
    public boolean isSuccess() {
-      return _success;
+      return _code == null;
    }
 
    /**

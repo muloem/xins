@@ -181,7 +181,7 @@ public abstract class ]]></xsl:text>
 	       if (_errorInputResult == null) {
 	          _errorInputResult = new org.xins.server.InvalidRequestResult();
 	       }
-         _errorInputResult.addInvalidTypeForValue("</xsl:text>
+         _errorInputResult.addInvalidValueForType("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
 				<xsl:value-of select="@type" />

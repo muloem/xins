@@ -31,9 +31,6 @@ final class BasicCallResult extends Object implements CallResult {
    /**
     * Constructs a new <code>BasicCallResult</code> object.
     *
-    * @param success
-    *    the success indication.
-    *
     * @param code
     *    the result code, can be <code>null</code>.
     *
@@ -43,8 +40,7 @@ final class BasicCallResult extends Object implements CallResult {
     * @param dataElement
     *    the data element, can be <code>null</code>.
     */
-   BasicCallResult(boolean success, String code, PropertyReader parameters, Element dataElement) {
-      _success     = success;
+   BasicCallResult(String code, PropertyReader parameters, Element dataElement) {
       _code        = code;
       _parameters  = parameters;
       _dataElement = dataElement;
@@ -56,11 +52,6 @@ final class BasicCallResult extends Object implements CallResult {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Success indication.
-    */
-   private final boolean _success;
 
    /**
     * The result code. This field is <code>null</code> if there is no result
@@ -85,7 +76,7 @@ final class BasicCallResult extends Object implements CallResult {
    //-------------------------------------------------------------------------
 
    public boolean isSuccess() {
-      return _success;
+      return _code == null;
    }
 
    public String getCode() {

@@ -26,9 +26,9 @@ public class FunctionResult {
    /**
     * Creates a new <code>FunctionResult</code> instance.
     */
-   public FunctionResult(boolean successful, String code) {
+   public FunctionResult(String code) {
       _builder = new CallResultBuilder();
-      _builder.startResponse(successful, code);
+      _builder.startResponse(code);
    }
 
 

@@ -251,8 +251,8 @@
 					<xsl:text>any of these constraints</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text> will result in an unsuccessful result with code </xsl:text>
-			<em>InvalidRequest</em>
+			<xsl:text> will result in an unsuccessful result with the error code </xsl:text>
+			<em>_InvalidRequest</em>
 			<xsl:text>.</xsl:text>
 			<ul>
 				<xsl:apply-templates select="param-combo" />
@@ -363,17 +363,7 @@
 			<xsl:choose>
 
 				<!-- No result code -->
-				<!-- TODO: Silently expect success -->
-				<xsl:when test="string-length($resultcode) &lt; 1">
-					<xsl:if test="not(boolean(@success))">
-						<xsl:message terminate="yes">
-							<xsl:text>Example </xsl:text>
-							<xsl:value-of select="$examplenum" />
-							<xsl:text> does not define if it is successful or not nor does it specify a result code.</xsl:text>
-						</xsl:message>
-					</xsl:if>
-					<xsl:value-of select="@success" />
-				</xsl:when>
+				<xsl:when test="string-length($resultcode) &lt; 1">true</xsl:when>
 
 				<!-- Have result code -->
 				<xsl:otherwise>false</xsl:otherwise>
@@ -383,29 +373,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:if test="not($success='true' or $success='false')">
-			<xsl:message terminate="yes">
-				<xsl:text>Example </xsl:text>
-				<xsl:value-of select="$examplenum" />
-				<xsl:text> has an invalid success setting: '</xsl:text>
-				<xsl:value-of select="$success" />
-				<xsl:text>'. It should be either 'true' or 'false'.</xsl:text>
-			</xsl:message>
-		</xsl:if>
-
-		<xsl:if test="@success and @resultcode">
-			<xsl:message>
-				<xsl:text>Example </xsl:text>
-				<xsl:value-of select="$examplenum" />
-				<xsl:text> defines both the success ('</xsl:text>
-				<xsl:value-of select="@success" />
-				<xsl:text>') and the result code ('</xsl:text>
-				<xsl:value-of select="@resultcode" />
-				<xsl:text>') attributes. Only the result code needs to be specified. The success indication can be determined from that.</xsl:text>
-			</xsl:message>
-		</xsl:if>
-
-		<xsl:if test="$success = 'true'">
+		<xsl:if test="not(@resultcode)">
 			<!--
 			If this is an example of a successful case, then all required
 			input parameters need to be set.
@@ -518,16 +486,6 @@
 					<span class="elem">
 						<xsl:text>&lt;</xsl:text>
 						<span class="name">result</span>
-						<xsl:text> </xsl:text>
-						<span class="attr">
-							<span class="name">success</span>
-							<xsl:text>=</xsl:text>
-							<span class="value">
-								<xsl:text>"</xsl:text>
-								<xsl:value-of select="$success" />
-								<xsl:text>"</xsl:text>
-							</span>
-						</span>
 						<xsl:if test="string-length($resultcode) &gt; 0">
 							<xsl:text> </xsl:text>
 							<span class="attr">

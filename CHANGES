@@ -1,6 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.179:
 
+* XINS/Java Server Framework:
+  - If the function name is missing or incorrect an _InvalidRequest is now
+    returned.
+  - Renamed in InvalidRequestResult and InvalidResponseResult the method
+    addInvalidTypeForValue to addInvalidValueForType.
+
 * Generated build file:
   - The client-<api> target now also creates the zip files containing the
     specdocs, the CAPI jar file, the CAPI source code and the CAPI javadoc.
@@ -10,8 +16,12 @@ CHANGES INTRODUCED IN XINS 0.179:
 * Specification:
   - Removed the mapping attribute in <impl> or <impl-java>, the value is
     always "/".
-  - Removed Removed the attribute javadir and specdir from the
+  - Removed the attribute javadir and specdir from the
     xins-project_1_0.dtd.
+  - Removed the attribute success from the result, the existence of a result
+    code or not is used to know if the result is successful.
+    This may break compatibility as the xml result now longer returns a
+    success attribute.
 
 * Generation of specification documentation:
   - Changed the style.css for the specdocs. It does not explicitly specify

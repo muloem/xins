@@ -73,7 +73,6 @@ public class APIImpl extends API {
 		<xsl:for-each select="//api/resultcode">
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.rcd')" />
-			<xsl:variable name="successAttr" select="document($file)/resultcode/@success" />
 			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
@@ -85,24 +84,6 @@ public class APIImpl extends API {
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:variable>
-
-			<xsl:choose>
-				<xsl:when test="string-length($successAttr) = 0" />
-				<xsl:when test="$successAttr = 'false'">
-					<xsl:message>
-						<xsl:text>The result code </xsl:text>
-						<xsl:value-of select="$name" />
-						<xsl:text> does not need to be marked as unsuccessful, since it always is.</xsl:text>
-					</xsl:message>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>Success attribute is set to "</xsl:text>
-						<xsl:value-of select="$successAttr" />
-						<xsl:text>". It should not be set, since a result code is always unsuccessful.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
 
 			<xsl:text><![CDATA[
 

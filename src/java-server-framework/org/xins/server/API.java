@@ -52,7 +52,7 @@ implements DefaultResultCodes {
    /**
     * Successful empty call result.
     */
-   private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(true, null, null, null);
+   private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(null, null, null);
 
    /**
     * The runtime (init) property that contains the ACL descriptor.
@@ -686,7 +686,7 @@ implements DefaultResultCodes {
       // Short-circuit if we are shutting down
       if (_shutDown) {
          // TODO: Add message
-         return new BasicCallResult(false, "InternalError", null, null);
+         return new BasicCallResult("InternalError", null, null);
       }
 
       // Get the function object
@@ -1012,13 +1012,15 @@ implements DefaultResultCodes {
       // Get the name of the function to enable
       String functionName = request.getParameter("functionName");
       if (functionName == null || functionName.length() < 1) {
-         return new BasicCallResult(false, "MissingParameters", null, null);
+         InvalidRequestResult invalidRequest = new InvalidRequestResult();
+         invalidRequest.addMissingParameter("functionName");
+         return invalidRequest.getCallResult();
       }
 
       // Get the Function object
       Function function = getFunction(functionName);
       if (function == null) {
-         return new BasicCallResult(false, "InvalidParameters", null, null);
+         return new InvalidRequestResult().getCallResult();
       }
 
       // Enable or disable the function
@@ -1045,13 +1047,15 @@ implements DefaultResultCodes {
       // Get the name of the function to disable
       String functionName = request.getParameter("functionName");
       if (functionName == null || functionName.length() < 1) {
-         return new BasicCallResult(false, "MissingParameters", null, null);
+         InvalidRequestResult invalidRequest = new InvalidRequestResult();
+         invalidRequest.addMissingParameter("functionName");
+         return invalidRequest.getCallResult();
       }
 
       // Get the Function object
       Function function = getFunction(functionName);
       if (function == null) {
-         return new BasicCallResult(false, "InvalidParameters", null, null);
+         return new InvalidRequestResult().getCallResult();
       }
 
       // Enable or disable the function
