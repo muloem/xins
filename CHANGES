@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.15:
 
 * Javadoc API documentation now links to Log4J API documentation.
 
+* Added startResponse(boolean) and startResponse(ResultCode) to replace the
+  now deprectated startResponse(boolean,String).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.14:
 
