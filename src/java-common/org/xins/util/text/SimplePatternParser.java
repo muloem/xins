@@ -3,6 +3,7 @@
  */
 package org.xins.util.text;
 
+import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -24,6 +25,7 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * <table>
  *    <tr><th>Simple pattern</th><th>Perl 5 regex equivalent</th></tr>
+ *    <tr><td></td>              <td>^$</td>                     </tr>
  *    <tr><td>*</td>             <td>^.*$</td>                   </tr>
  *    <tr><td>?</td>             <td>^.$</td>                    </tr>
  *    <tr><td>_Get*</td>         <td>^_Get.*$</td>               </tr>
@@ -65,4 +67,18 @@ public class SimplePatternParser extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Converts the specified simple pattern to a Perl 5 regular expression.
+    *
+    * @param simplePattern
+    *    the simple pattern, cannot be <code>null</code>.
+    *
+    * @return
+    *    the Perl 5 regular expression, never <code>null</code>.
+    */
+   public Perl5Pattern parseSimplePattern(String simplePattern)
+   throws IllegalArgumentException, ParseException {
+      return null; // TODO
+   }
 }
