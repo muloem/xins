@@ -1,5 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.26:
+
+* Storing links to result codes in API instance.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.25:
+
+* Fixed bug introduced in 0.23 that causes all functions declared in the API
+  to be invisible.
 
 * Code cleanup.
 
