@@ -7,11 +7,9 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 
 * XINS/Java Server Framework:
-  - Only _function parameter is supported when using the 
-    StandardCallingConvention, the function parameter is treated as a standard
-    parameter.
-  - Only the function attribute is used to get the function name when using
-    the XMLCallingConvention.
+  - Only the "_function" parameter is supported when using either the standard
+    or the XML calling convention. The "function" parameter is treated as a
+    normal parameter.
 
 * Build and release process:
   - The Java2HTML pages are now uploaded in a TAR GZ file.
