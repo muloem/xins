@@ -886,7 +886,9 @@ implements DefaultResultCodes {
 
       // Detect special functions
       if (functionName.charAt(0) == '_') {
-         if ("_GetFunctionList".equals(functionName)) {
+         if ("_NoOp".equals(functionName)) {
+            // empty
+         } else if ("_GetFunctionList".equals(functionName)) {
             doGetFunctionList(context);
          } else if ("_GetStatistics".equals(functionName)) {
             doGetStatistics(context);
@@ -909,6 +911,7 @@ implements DefaultResultCodes {
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
          xmlOutputter.attribute("code",    INTERNAL_ERROR.getValue());
+         // TODO: Add _message parameter
          xmlOutputter.endDocument();
       }
 
@@ -1151,24 +1154,6 @@ implements DefaultResultCodes {
     */
    private final void doGetSettings(CallContext context)
    throws IOException {
-
-      // Build: deployment, host name and time stamp
-      context.startTag("build");
-      if (_deployment != null) {
-         context.startTag("property");
-         context.attribute("name", "deployment");
-         context.pcdata(_deployment);
-         context.endTag();
-      }
-      context.startTag("property");
-      context.attribute("name", "host");
-      context.pcdata(_buildHost);
-      context.endTag();
-      context.startTag("property");
-      context.attribute("name", "time");
-      context.pcdata(_buildTime);
-      context.endTag();
-      context.endTag();
 
       // Initialization settings
       Enumeration names = _initSettings.propertyNames();
