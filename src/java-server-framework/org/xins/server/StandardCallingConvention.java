@@ -32,7 +32,8 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.1.0
  */
-public final class StandardCallingConvention implements CallingConvention {
+public final class StandardCallingConvention
+extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields

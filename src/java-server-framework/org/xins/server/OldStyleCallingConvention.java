@@ -33,8 +33,7 @@ import org.xins.common.xml.ElementParser;
  * @since XINS 1.1.0
  */
 public final class OldStyleCallingConvention
-extends Object
-implements CallingConvention {
+extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields

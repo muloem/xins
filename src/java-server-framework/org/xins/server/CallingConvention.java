@@ -24,11 +24,37 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.1.0
  */
-public interface CallingConvention {
+abstract class CallingConvention
+extends Object {
 
-   // TODO: Why is this interface public?
-   // TODO: Why is this an interface and not an abstract class?
-   
+   //------------------------------------------------------------------------
+   // Class fields
+   //------------------------------------------------------------------------
+
+   //------------------------------------------------------------------------
+   // Class functions
+   //------------------------------------------------------------------------
+
+   //------------------------------------------------------------------------
+   // Constructors
+   //------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>CallingConvention</code>.
+    */
+   protected CallingConvention() {
+      // empty
+   }
+
+
+   //------------------------------------------------------------------------
+   // Fields
+   //------------------------------------------------------------------------
+
+   //------------------------------------------------------------------------
+   // Methods
+   //------------------------------------------------------------------------
+
    /**
     * Converts an HTTP request to a XINS request.
     *
@@ -44,10 +70,11 @@ public interface CallingConvention {
     * @throws ParseException
     *    if the request is considerd to be invalid.
     */
-   FunctionRequest convertRequest(HttpServletRequest httpRequest)
+   abstract FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException,
           InvalidRequestException,
           FunctionNotSpecifiedException;
+   // TODO: Use "Wrapper/Implementation Method" pattern
    
    /**
     * Converts a XINS result to an HTTP response.
@@ -62,7 +89,9 @@ public interface CallingConvention {
     * @throws IllegalArgumentException
     *    if <code>xinsResult == null || httpResponse == null</code>.
     */
-   void convertResult(FunctionResult xinsResult, HttpServletResponse httpResponse)
+   abstract void convertResult(FunctionResult      xinsResult,
+                               HttpServletResponse httpResponse)
    throws IOException;
-   // TODO: Replace IOException with more appropriate exception
+   // TODO: Use "Wrapper/Implementation Method" pattern
+   // XXX: Replace IOException with more appropriate exception?
 }
