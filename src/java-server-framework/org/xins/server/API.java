@@ -25,6 +25,7 @@ import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
 import org.xins.util.text.DateConverter;
+import org.xins.util.text.FastStringBuffer;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -245,6 +246,11 @@ implements DefaultResultCodes {
    private String _buildTime;
 
    /**
+    * XINS version used to build the web application package.
+    */
+   private String _buildVersion;
+
+   /**
     * The time zone used when generating dates for output.
     */
    private TimeZone _timeZone;
@@ -453,23 +459,55 @@ implements DefaultResultCodes {
       }
 
       // Get build-time properties
-      _deployment = properties.getProperty("org.xins.api.deployment");
-      _buildHost  = properties.getProperty("org.xins.api.build.host");
-      _buildTime  = properties.getProperty("org.xins.api.build.time");
-      if (_buildHost == null) {
-         Library.LIFESPAN_LOG.warn("Build host name is not set.");
-         _buildHost = "<unknown>";
-      } else if (_buildTime == null) {
-         Library.LIFESPAN_LOG.warn("Build time stamp is not set.");
-         _buildTime = "<unknown>";
-      }
+      _deployment   = properties.getProperty("org.xins.api.deployment");
+      _buildHost    = properties.getProperty("org.xins.api.build.host");
+      _buildTime    = properties.getProperty("org.xins.api.build.time");
+      _buildVersion = properties.getProperty("org.xins.api.build.version");
 
       // Log build-time properties
-      if (_deployment == null) {
-         Library.LIFESPAN_LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
+      FastStringBuffer buffer = new FastStringBuffer(160);
+
+      // - build host name
+      buffer.append("Built on ");
+      if (_buildHost != null && !("".equals(_buildHost))) {
+         buffer.append("host ");
+         buffer.append(_buildHost);
       } else {
-         Library.LIFESPAN_LOG.info("Built on " + _buildHost + " (" + _buildTime + "), for deployment \"" + _deployment + "\".");
+         Library.LIFESPAN_LOG.warn("Build host name is not set.");
+         buffer.append("unknown host");
+         _buildHost = null;
       }
+
+      // - build time
+      if (_buildTime != null && !("".equals(_buildTime))) {
+         buffer.append(" (at ");
+         buffer.append(_buildTime);
+         buffer.append(")");
+      } else {
+         Library.LIFESPAN_LOG.warn("Build time stamp is not set.");
+         _buildTime = null;
+      }
+
+      // - deployment
+      if (_deployment != null && !("".equals(_deployment))) {
+         buffer.append(", for deployment \"");
+         buffer.append(_deployment);
+         buffer.append('"');
+      } else {
+         _deployment = null;
+      }
+
+      // - XINS version
+      if (_buildVersion != null && !("".equals(_buildVersion))) {
+         buffer.append(", using XINS ");
+         buffer.append(_buildVersion);
+      } else {
+         Library.LIFESPAN_LOG.warn("Build version is not set.");
+         _buildVersion = null;
+      }
+
+      buffer.append('.');
+      Library.LIFESPAN_LOG.info(buffer.toString());
 
       // Let the subclass perform initialization
       boolean succeeded = false;
