@@ -532,7 +532,7 @@ implements DefaultResultCodes {
        *    the duration of the most recent unsuccessful call.
        */
       public long getLastUnsuccessfulDuration() {
-         return _unsuccessfulDuration;
+         return _lastUnsuccessfulDuration;
       }
 
       /**
