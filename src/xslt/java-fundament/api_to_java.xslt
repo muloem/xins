@@ -18,6 +18,7 @@
 
 	<xsl:output method="text" />
 
+	<xsl:include href="../casechange.xslt" />
 	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
@@ -39,6 +40,7 @@ import java.util.Map;
 import java.util.Properties;
 import org.xins.server.API;
 import org.xins.server.CallContext;
+import org.xins.server.ResultCode;
 
 /**
  * Implementation of <code>]]></xsl:text>
@@ -58,7 +60,38 @@ public class APIImpl extends API {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public static final APIImpl SINGLETON = new APIImpl();
+   public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
+		<xsl:for-each select="//api/resultcode">
+			<xsl:variable name="name"    select="@name" />
+			<xsl:variable name="file"    select="concat($specsdir, '/', $api, '/', $name, '.rcd')" />
+			<xsl:variable name="success" select="document($file)/resultcode/@success" />
+			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
+			<xsl:variable name="fieldname">
+				<xsl:call-template name="toupper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="$name" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:text><![CDATA[
+
+   /**
+    * The <em>]]></xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text><![CDATA[</em> result code.
+    */
+   public final static ResultCode ]]></xsl:text>
+			<xsl:value-of select="$fieldname" />
+			<xsl:text> = new ResultCode(SINGLETON, </xsl:text>
+			<xsl:value-of select="$success" />
+			<xsl:text>, "</xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text>", "</xsl:text>
+			<xsl:value-of select="$value" />
+			<xsl:text>");</xsl:text>
+		</xsl:for-each>
+		<xsl:text><![CDATA[
 
 
    //-------------------------------------------------------------------------
