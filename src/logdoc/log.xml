@@ -424,7 +424,7 @@
 		</entry>
 	</group>
 
-	<group id="runtime" name="Runtime">
+	<group id="runtime.http" name="HTTP-level">
 		<entry id="5000" level="INFO">
 			<description>Received HTTP request with invalid method.</description>
 			<param name="ip" />
@@ -435,6 +435,9 @@
 			<param name="ip" />
 			<param name="method" />
 		</entry>
+	</group>
+
+	<group id="runtime" name="Runtime">
 		<entry id="5006" level="DEBUG">
 			<description>Setting session attribute value.</description>
 			<param name="name" nullable="false" />
