@@ -44,7 +44,7 @@
 
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
-				in="xins-project.xml"
+				in="{$project_file}"
 				out="build/specdocs/index.html"
 				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
 					<param name="project_home" expression="{$project_home}" />
