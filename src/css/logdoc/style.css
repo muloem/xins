@@ -1,0 +1,69 @@
+/*
+ -*- mode: Fundamental; tab-width: 4; -*-
+  ex:ts=4
+ 
+ CSS Stylesheet for an HTML document describing a XINS API.
+
+ Version: $Revision$ $Date$
+ Authors: Ernst de Haan <znerd@FreeBSD.org>
+          Chris Gilbride <chris.gilbride@nl.wanadoo.com>
+
+ $Id$
+*/
+
+@media screen {
+	body {
+		font-family: Trebuchet Ms, Verdana, Lucida, sans-serif;
+		color: #000000;
+		background-color: #ffffff;
+	}
+}
+
+@media print {
+	body {
+		font-family: serif;
+	}
+}
+
+h1 {
+	color: #000000;
+	font-size: 150%;
+	text-align: left;
+}
+
+h2 {
+	color: #000000;
+	font-size: 120%;
+	text-align: left;
+	border-width: 1pt 0pt 0pt 0pt;
+	border-style: solid;
+	border-color: #8888dd;
+}
+
+h3 {
+	font-size: 110%
+}
+
+table {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: fixed;
+	table-layout: auto;
+	width: 100%;
+}
+
+table tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	vertical-align: text-top;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+}
+
+table tr td {
+	vertical-align: text-top;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
