@@ -293,6 +293,9 @@ public final class DescriptorBuilder extends Object {
          }
 
          int memberCount = tokenCount - 2;
+         if (memberCount < 2) {
+            throw new InvalidPropertyValueException(propertyName, value, "Group descriptor member count is " + memberCount + ", while minimum is 2.");
+         }
          Descriptor[] members = new Descriptor[memberCount];
          for (int i = 0; i < memberCount; i++) {
             members[i] = build(properties, baseProperty, tokens[i + 2]);
