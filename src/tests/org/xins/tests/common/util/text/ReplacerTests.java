@@ -78,7 +78,7 @@ public class ReplacerTests extends TestCase {
       char tagEnd   = '}';
 
       try {
-         Replacer.replace(null, tagStart, tagEnd, new Properties());
+         Replacer.replace((String) null, tagStart, tagEnd, new Properties());
          fail("Replacer.replace(null, '" + tagStart + "', '" + tagEnd + "', new java.util.Properties()) should throw a java.lang.IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
@@ -93,7 +93,7 @@ public class ReplacerTests extends TestCase {
       }
 
       try {
-         Replacer.replace(null, tagStart, tagEnd, null);
+         Replacer.replace((String) null, tagStart, tagEnd, null);
          fail("Replacer.replace(null, '" + tagStart + "', '" + tagEnd + "', null) should throw a java.lang.IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
