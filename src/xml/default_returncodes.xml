@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+
+ Default return codes.
+-->
+
+<returncodes>
+	<code value="NoSuchFunction" success="false">
+		<description>There is no function with the specified name in this API implementation.</description>
+	</code>
+	<code value="InvalidParameters" success="false">
+		<description>At least one parameter has an invalid value, or the combination of parameter values is invalid.</description>
+	</code>
+	<code value="MissingParameters" success="false">
+		<description>There is at least one mandatory input parameter missing.</description>
+	</code>
+	<code value="InternalError" success="false">
+		<description>There was an internal error.</description>
+	</code>
+</returncodes>
