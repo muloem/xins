@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.18:
+
+* Linking to Jakarta Commons Logging API documentation.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.17:
 
 * Greatly improved logging. Using Jakarta Commons library. Added it to the
