@@ -153,13 +153,13 @@ public class MandatoryArgumentChecker extends Object {
                             String argumentName2, Object argumentValue2,
                             String argumentName3, Object argumentValue3)
    throws IllegalArgumentException {
-      if (argumentValue1==null && argumentValue2==null && argumentValue3==null) {
+      if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName3});
-      } else if (argumentValue1==null && argumentValue2==null) {
+      } else if (argumentValue1 == null && argumentValue2 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2});
-      } else if (argumentValue1==null && argumentValue3==null) {
+      } else if (argumentValue1 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName3});
-      } else if (argumentValue2==null && argumentValue3==null) {
+      } else if (argumentValue2 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName2, argumentName3});
       } else if (argumentValue1 == null) {
          throw new MissingArgumentException(argumentName1);
@@ -208,25 +208,26 @@ public class MandatoryArgumentChecker extends Object {
                             String argumentName3, Object argumentValue3,
                             String argumentName4, Object argumentValue4)
    throws IllegalArgumentException {
-      if (argumentValue1==null && argumentValue2==null && argumentValue3==null && argumentValue4==null) {
+      if (argumentValue1 == null && argumentValue2 == null && argumentValue3
+== null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName3, argumentName4});
-      } else if (argumentValue1==null && argumentValue2==null && argumentValue3==null) {
+      } else if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName3});
-      } else if (argumentValue1==null && argumentValue2==null && argumentValue4==null) {
+      } else if (argumentValue1 == null && argumentValue2 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName4});
-      } else if (argumentValue2==null && argumentValue3==null && argumentValue4==null) {
+      } else if (argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName2, argumentName3, argumentName4});
-      } else if (argumentValue1==null && argumentValue2==null) {
+      } else if (argumentValue1 == null && argumentValue2 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2});
-      } else if (argumentValue1==null && argumentValue3==null) {
+      } else if (argumentValue1 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName3});
-      } else if (argumentValue1==null && argumentValue4==null) {
+      } else if (argumentValue1 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName4});
-      } else if (argumentValue2==null && argumentValue3==null) {
+      } else if (argumentValue2 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName2, argumentName3});
-      } else if (argumentValue2==null && argumentValue4==null) {
+      } else if (argumentValue2 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName2, argumentName4});
-      } else if (argumentValue3==null && argumentValue4==null) {
+      } else if (argumentValue3 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName3, argumentName4});
       } else if (argumentValue1 == null) {
          throw new MissingArgumentException(argumentName1);
