@@ -22,11 +22,27 @@ public class LongUtils extends Object {
    /**
     * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
     */
-   private final static char[] DIGITS = {
+   private static final char[] DIGITS = {
       '0' , '1' , '2' , '3' , '4' , '5' ,
       '6' , '7' , '8' , '9' , 'a' , 'b' ,
       'c' , 'd' , 'e' , 'f'
    };
+
+   /**
+    * The number of characters written when converting a <code>long</code> to
+    * an unsigned hex string.
+    */
+   private static final int LENGTH = 16;
+
+   /**
+    * The radix when converting (16).
+    */
+   private static final long RADIX = 16L;
+
+   /**
+    * The radix mask. Equal to {@link #RADIX}<code> - 1</code>.
+    */
+   private static final long MASK = RADIX - 1L;
 
 
    //-------------------------------------------------------------------------
@@ -47,12 +63,8 @@ public class LongUtils extends Object {
     */
    public static String toHexString(long n) {
 
-      final int  BUFFER_SIZE = 16;
-      final long RADIX       = 16L;
-      final long MASK        = RADIX - 1L;
-
-      char[] chars = new char[BUFFER_SIZE];
-      int pos      = BUFFER_SIZE - 1;
+      char[] chars = new char[LENGTH];
+      int pos      = LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
@@ -64,7 +76,7 @@ public class LongUtils extends Object {
          chars[pos] = '0';
       }
 
-      return new String(chars, 0, BUFFER_SIZE);
+      return new String(chars, 0, LENGTH);
    }
 
    /**
@@ -84,12 +96,8 @@ public class LongUtils extends Object {
     */
    public static void toHexString(FastStringBuffer buffer, long n) {
 
-      final int  BUFFER_SIZE = 16;
-      final long RADIX       = 16L;
-      final long MASK        = RADIX - 1L;
-
-      char[] chars = new char[BUFFER_SIZE];
-      int pos      = BUFFER_SIZE - 1;
+      char[] chars = new char[LENGTH];
+      int pos      = LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
@@ -104,7 +112,7 @@ public class LongUtils extends Object {
       // TODO: Improve performance
 
       // Move all characters to the buffer
-      for (int i = 0; i < BUFFER_SIZE; i++) {
+      for (int i = 0; i < LENGTH; i++) {
          buffer.append(chars[i]);
       }
    }
