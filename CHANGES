@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.3:
+
+* Now including dependency JAR files in generated JAR file (xins.jar)
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.2:
 
 * Generated APIImpl classes now correctly call init(Properties) on all
