@@ -18,6 +18,8 @@ CHANGES INTRODUCED IN XINS 0.159:
 * XINS/Java Client Framework:
   - Added an abstract getXINSVersion() method in the AbstractCAPI class that
     returns the XINS version with which the CAPI class has been built.
+  - If an NDC (nested diagnostic context) is set, then it will automatically
+    be passed on to other XINS APIs via the _context parameter.
 
 * Generated CAPI classes:
   - Generating implementation for getXINSVersion() method, defined in
