@@ -654,7 +654,6 @@
 			<include name="CHANGES"                        />
 			<include name="COPYRIGHT"                      />
 			<include name="README"                         />
-			<include name="TODO"                           />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
 		</patternset>

@@ -26,6 +26,12 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Remove the directory build/classes from being created as it's not used.
   - The owner is created in api.xml only if a authors.xml file exists.
 
+* Build and release process:
+  - Removed the TODO file from the release.
+
+* Libraries
+  - Updated some incorrect license files.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.206:
 
