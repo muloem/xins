@@ -32,15 +32,12 @@ XINS/JAVA SERVER FRAMEWORK
   CallResult interface self.
 * CallContext.getCallResult() should either be removed or it should return
   'this'.
-* Add state management to the LifespanManagers class.
 * Set state in APIServlet and API classes using private setState(State) method
   that could check that the state transition is valid.
 * Per State in the APIServlet and API classes define what a valid next state
   is. Change the setState(State) methods to check this.
 * Support returning of call ID in function output, as an output parameter
   named '_callID'.
-* Consider returning an HTTP error code if the call is unsuccessful.
-* Consider initializing all LifespanManagers at once.
 * CallResultBuilder should perhaps not implement CallResult.
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
@@ -88,7 +85,7 @@ GENERATED SPECIFICATION DOCUMENTATION
 ______________________________________________________________________________
 GENERATED TEST FORMS
 
-* None
+* Consider adding a 'Disable this function' link on a testform page.
 
 ______________________________________________________________________________
 GENERATED TYPE CLASSES
