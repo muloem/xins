@@ -26,6 +26,11 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = ExpiryStrategy.class.getName();
+
+   /**
     * The number of instances of this class.
     */
    private static int INSTANCE_COUNT;
@@ -54,39 +59,53 @@ public final class ExpiryStrategy extends Object {
     *    the time-out precision, in milliseconds.
     *
     * @throws IllegalArgumentException
-    *    if <code>timeOut &lt; 1
-    *          || precision &lt; 1
-    *          || timeOut &lt; precision</code>
+    *    if <code>timeOut   &lt; 1L
+    *          || precision &lt; 1L
+    *          || timeOut   &lt; precision</code>
     */
-   public ExpiryStrategy(long timeOut, long precision)
+   public ExpiryStrategy(final long timeOut,
+                         final long precision)
    throws IllegalArgumentException {
-
-      // TRACE: Enter constructor
-      Log.log_1000(ExpiryStrategy.class.getName(), "timeOut=" + timeOut + "; precision=" + precision);
-
-      // Check preconditions
-      if (timeOut < 1 || precision < 1) {
-         String message;
-         if (timeOut < 1 && precision < 1) {
-            message = "timeOut (" + timeOut + ") < 1 && precision (" + precision + ") < 1";
-         } else if (timeOut < 1) {
-            message = "timeOut (" + timeOut + ") < 1";
-         } else {
-            message = "precision (" + precision + ") < 1";
-         }
-         throw new IllegalArgumentException(message);
-      } else if (timeOut < precision) {
-         throw new IllegalArgumentException("timeOut < precision");
-      }
 
       // Determine instance number
       synchronized (INSTANCE_COUNT_LOCK) {
          _instanceNum = INSTANCE_COUNT++;
       }
 
+      final String CONSTRUCTOR_DETAIL = "#"
+                                      + _instanceNum
+                                      + " [timeOut="
+                                      + timeOut
+                                      + "L; precision="
+                                      + precision
+                                      + "L]";
+
+      // TRACE: Enter constructor
+      Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
+
+      // TODO: Log.log_1050 below
+
+      // Check preconditions
+      if (timeOut < 1) {
+         final String DETAIL = "timeOut (" + timeOut + "L) < 1L";
+         throw new IllegalArgumentException(DETAIL);
+
+      } else if (precision < 1) {
+         final String DETAIL = "precision (" + precision + "L) < 1L";
+         throw new IllegalArgumentException(DETAIL);
+
+      } else if (timeOut < precision) {
+         final String DETAIL = "timeOut ("
+                             + timeOut
+                             + "L) < precision ("
+                             + precision
+                             + "L)";
+         throw new IllegalArgumentException(DETAIL);
+      }
+
       // Determine number of slots
       long slotCount = timeOut / precision;
-      if ((precision % precision) > 0) {
+      if ((timeOut % precision) != 0L) {
          slotCount++;
       }
 
@@ -96,17 +115,19 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
 
-      // Create and start the timer thread
+      // Create and start the timer thread. If no other threads are active,
+      // then neither should this timer thread, so do not mark as a daemon
+      // thread.
       _timerThread = new TimerThread();
-      _timerThread.setDaemon(true);
+      _timerThread.setDaemon(false);
       _timerThread.start();
 
       // TRACE: Leave constructor
-      Log.log_1002(ExpiryStrategy.class.getName(), null);
+      Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // TODO: Add field _asString
       // TODO: Fill _asString in constructor
-      // TODO: Send _asString to log message 3002
+      // TODO: Send _asString to log message 1002?
       // TODO: Return _asString from toString()
    }
 
@@ -123,23 +144,24 @@ public final class ExpiryStrategy extends Object {
    /**
     * The time-out, in milliseconds.
     */
-   private long _timeOut;
+   private final long _timeOut;
 
    /**
     * The time-out precision, in milliseconds.
     */
-   private long _precision;
+   private final long _precision;
 
    /**
     * The number of slots that should be used by expiry collections that use
     * this strategy.
     */
-   private int _slotCount;
+   private final int _slotCount;
 
    /**
     * The list of folders associated with this strategy.
     */
    private final List _folders;
+   // TODO: Store WeakReferences in the list
 
    /**
     * The timer thread. Not <code>null</code>.
