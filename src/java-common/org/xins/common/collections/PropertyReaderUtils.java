@@ -13,7 +13,9 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 import org.xins.common.text.WhislEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
@@ -34,6 +36,15 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * An empty and unmodifiable <code>PropertyReader</code> instance. This
+    * field is not <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public static final PropertyReader EMPTY_PROPERTY_READER = new ProtectedPropertyReader(new Object());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -77,7 +88,7 @@ extends Object {
       String value = properties.get(propertyName);
 
       // Fallback to the default, if necessary
-      if (value == null || value.length() == 0) {
+      if (TextUtils.isEmpty(value)) {
          return fallbackDefault;
       }
 
@@ -394,8 +405,6 @@ extends Object {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
     */
    private static final class SerializedPropertyReader
    extends AbstractLogdocSerializable {
