@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.59:
+
+* Replaced 'classes-capi-XXX' targets with 'jar-capi-XXX' targets.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.58:
 
 * Fixed bug in generated Java CAPI classes. Now correctly sending session ID
