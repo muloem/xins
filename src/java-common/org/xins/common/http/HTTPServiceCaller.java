@@ -55,18 +55,26 @@ import org.xins.common.text.FastStringBuffer;
  * <p>The following example code snippet constructs an
  * <code>HTTPServiceCaller</code> instance:
  *
- * <blockquote><code>{@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, PROPERTY_NAME);
- * <br />HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor) HTTPServiceCaller}(descriptor);</code></blockquote>
+ * <blockquote><pre>// Initialize properties for the services. Normally these
+// properties would come from a configuration source, like a file.
+{@link BasicPropertyReader} properties = new {@link BasicPropertyReader#BasicPropertyReader() BasicPropertyReader}();
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
+
+// Construct a descriptor and an HTTPServiceCaller instance
+{@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, PROPERTY_NAME);
+HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor) HTTPServiceCaller}(descriptor);</pre></blockquote>
  *
  * <p>Then the following code snippet uses this <code>HTTPServiceCaller</code>
  * to perform an HTTP GET call:
  *
- * <blockquote><code>{@link BasicPropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
- * <br />params.{@link BasicPropertyReader#set(String,String) set}("street",      "Broadband Avenue");
- * <br />params.{@link BasicPropertyReader#set(String,String) set}("houseNumber", "12");
- * <br />
- * <br />{@link HTTPCallRequest} request = new {@link HTTPCallRequest#HTTPCallRequest(HTTPMethod,PropertyReader) HTTPCallRequest}({@link HTTPMethod}.{@link HTTPMethod#GET GET}, params);
- * <br />{@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</code></blockquote>
+ * <blockquote><pre>{@link BasicPropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
+params.{@link BasicPropertyReader#set(String,String) set}("street",      "Broadband Avenue");
+params.{@link BasicPropertyReader#set(String,String) set}("houseNumber", "12");
+
+{@link HTTPCallRequest} request = new {@link HTTPCallRequest#HTTPCallRequest(HTTPMethod,PropertyReader) HTTPCallRequest}({@link HTTPMethod}.{@link HTTPMethod#GET GET}, params);
+{@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -446,8 +454,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    an {@link HTTPCallResult} instance, never <code>null</code>.
     *
     * @throws ClassCastException
-    *    if <code>! (request instanceof {@link HTTPCallRequest})
-    *          || ! (result  instanceof {@link HTTPCallResult.Data})</code>.
+    *    if either <code>request</code> or <code>result</code> is not of the
+    *    correct class.
     */
    protected CallResult createCallResult(CallRequest       request,
                                          TargetDescriptor  succeededTarget,
