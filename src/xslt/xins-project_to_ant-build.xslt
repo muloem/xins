@@ -540,7 +540,11 @@
 							<xsl:text>-skeletons-impl-</xsl:text>
 							<xsl:value-of select="$api" />
 						</xsl:attribute>
-						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
+						<mkdir dir="{$javaDestDir}" />
+						<dependset>
+							<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
+							<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
+						</dependset>
 						<xmlvalidate file="{$api_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>

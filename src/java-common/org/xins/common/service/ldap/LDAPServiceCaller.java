@@ -6,6 +6,7 @@ package org.xins.common.service.ldap;
 import java.util.Hashtable;
 import javax.naming.AuthenticationException;
 import javax.naming.Context;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
@@ -187,6 +188,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
       InitialDirContext context;
       try {
          context = authenticate(target,  authenticationDetails);
+      } catch (NameNotFoundException exception) {
+         return new QueryResult(false, null);
       } catch (AuthenticationException exception) {
          return new QueryResult(false, null);
       }
@@ -341,6 +344,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
       try {
          ne = context.search(searchBase, filter, searchControls);
          succeeded = true;
+      } catch (NameNotFoundException exception) {
+         return new QueryResult(false, null);
       } finally {
          if (!succeeded) {
             Log.log_3309(searchBase, filter);

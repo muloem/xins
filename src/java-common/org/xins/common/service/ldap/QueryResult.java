@@ -42,8 +42,9 @@ public final class QueryResult extends Object {
     *    flag that indicates if the authentication failed or not.
     *
     * @param namingEnumeration
-    *    enumeration that returns the {@link SearchResult} objects, cannot be
-    *    <code>null</code> and must return {@link SearchResult} objects.
+    *    enumeration that returns the {@link SearchResult} objects, must be
+    *    <code>null</code> if and only if the authentication failed and must
+    *    return {@link SearchResult} objects.
     *
     * @throws IllegalArgumentException
     *    if <code>authenticated == false &amp;&amp; namingEnumeration != null</code>.
