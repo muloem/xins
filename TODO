@@ -96,6 +96,8 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Link to CVSweb or ViewCVS.
 * Generate an anchor for each input parameter, output parameter, element and
   attribute in the generated file for a function.
+* On specification documentation page for a result code: Have a list of links
+  to the functions that specify they may return the result code.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
