@@ -25,6 +25,14 @@ if [ ! -f ${style} ]; then
 	exit 1
 fi
 
+# Make sure the input file exists
+in=xins-project.xml
+if [ ! -f ${in} ]; then
+	echo "${prog}: Cannot find input file:"
+	echo ${style}
+	exit 1
+fi
+
 # Create the build directory
 builddir=build
 if [ ! -d ${builddir} ]; then
@@ -32,7 +40,6 @@ if [ ! -d ${builddir} ]; then
 fi
 
 # Create the Ant build file
-in=xins-project.xml
 out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
 returncode=$?
