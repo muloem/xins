@@ -210,7 +210,8 @@ extends AbstractFunctionCaller {
       _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
       _crc32            = computeCRC32(_url);
-      _crc32String      = HexConverter.toHexString((long) _crc32); // TODO: Not convert to long
+      _crc32String      = HexConverter.toHexString(((long) _crc32) & 0x00000000ffffffffL); // TODO: Not convert to long
+
       _urlString        = urlString;
 
       // Log message
