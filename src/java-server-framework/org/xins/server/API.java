@@ -57,8 +57,8 @@ implements DefaultReturnCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
-      _functionsByName          = new HashMap();
-      _functionList             = new ArrayList();
+      _functionsByName = new HashMap();
+      _functionList    = new ArrayList();
    }
 
 
