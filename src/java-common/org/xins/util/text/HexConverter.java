@@ -157,7 +157,8 @@ public class HexConverter extends Object {
     * @throws IllegalArgumentException
     *    if <code>buffer == null</code>.
     */
-   public static void toHexString(FastStringBuffer buffer, int n) {
+   public static void toHexString(FastStringBuffer buffer, int n)
+   throws IllegalArgumentException {
 
       // Check preconditions
       if (buffer == null) {
@@ -190,7 +191,8 @@ public class HexConverter extends Object {
     * @throws IllegalArgumentException
     *    if <code>buffer == null</code>.
     */
-   public static void toHexString(FastStringBuffer buffer, long n) {
+   public static void toHexString(FastStringBuffer buffer, long n)
+   throws IllegalArgumentException {
 
       // Check preconditions
       if (buffer == null) {

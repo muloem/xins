@@ -56,7 +56,8 @@ public class FastStringBuffer extends Object {
     * @throws IllegalArgumentException
     *    if <code>s == null</code>.
     */
-   public FastStringBuffer(String s) {
+   public FastStringBuffer(String s)
+   throws IllegalArgumentException {
       if (s == null) {
          throw new IllegalArgumentException("s == null");
       }
@@ -79,7 +80,8 @@ public class FastStringBuffer extends Object {
     * @throws IllegalArgumentException
     *    if <code>capacity &lt; <code>s.</code>{@link String#length()} || s == null</code>.
     */
-   public FastStringBuffer(int capacity, String s) {
+   public FastStringBuffer(int capacity, String s)
+   throws IllegalArgumentException {
       if (s == null) {
          throw new IllegalArgumentException("s == null");
       } else if (capacity < s.length()) {
