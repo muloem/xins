@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.threads.Doorman;
 
@@ -33,14 +34,10 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The number of instances of this class.
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
     */
-   private static int INSTANCE_COUNT;
-
-   /**
-    * Lock object for <code>INSTANCE_COUNT</code>.
-    */
-   private static final Object INSTANCE_COUNT_LOCK = new Object();
+   private final static Logger LOG = Logger.getLogger(ExpiryFolder.class.getName());
 
    /**
     * The initial size for the queue of threads waiting to obtain read or
@@ -60,6 +57,10 @@ extends Object {
    /**
     * Constructs a new <code>ExpiryFolder</code>.
     *
+    * @param name
+    *    description of this folder, to be used in log and exception messages,
+    *    not <code>null</code>.
+    *
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
     *
@@ -68,21 +69,19 @@ extends Object {
     *    write access to a resource, must be &gt; 0L.
     *
     * @throws IllegalArgumentException
-    *    if <code>strategy == null || maxQueueWaitTime &lt;= 0L</code>.
+    *    if <code>name == null || strategy == null || maxQueueWaitTime &lt;= 0L</code>.
     */
-   public ExpiryFolder(ExpiryStrategy strategy,
+   public ExpiryFolder(String         name,
+                       ExpiryStrategy strategy,
                        long           maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("strategy", strategy);
-
-      // Determine instance number
-      synchronized (INSTANCE_COUNT_LOCK) {
-         _instanceNum = INSTANCE_COUNT++;
-      }
+      MandatoryArgumentChecker.check("name", name, "strategy", strategy);
 
       // Initialize fields
+      _name             = name;
+      _asString         = "ExpiryFolder \"" + _name + '"';
       _strategy         = strategy;
       _recentlyAccessed = new HashMap(89);
       _slotCount        = strategy.getSlotCount();
@@ -105,9 +104,14 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The instance number of this instance.
+    * The name of this expiry folder.
     */
-   private final int _instanceNum;
+   private final String _name;
+
+   /**
+    * String representation. Cannot be <code>null</code>.
+    */
+   private final String _asString;
 
    /**
     * The strategy used. This field cannot be <code>null</code>.
@@ -172,6 +176,16 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the name given to this expiry folder.
+    *
+    * @return
+    *    the name assigned to this expiry folder, not <code>null</code>.
+    */
+   public final String getName() {
+      return _name;
+   }
+
+   /**
     * Notifies this map that the precision time frame has passed since the
     * last tick.
     *
@@ -211,9 +225,16 @@ extends Object {
       _slotsDoorman.leaveAsWriter();
 
       // Adjust the size
-      if (toBeExpired != null && toBeExpired.size() > 0) {
+      int toBeExpiredSize = toBeExpired == null ? 0 : toBeExpired.size();
+      if (toBeExpiredSize > 0) {
+         int newSize;
          synchronized (_sizeLock) {
-            _size -= toBeExpired.size();
+            _size -= toBeExpiredSize;
+            newSize = _size;
+         }
+
+         if (LOG.isDebugEnabled()) {
+            LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " entries remaining).");
          }
       }
 
@@ -367,6 +388,6 @@ extends Object {
    }
 
    public String toString() {
-      return "XINS ExpiryFolder #" + _instanceNum;
+      return _asString;
    }
 }
