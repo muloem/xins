@@ -3,6 +3,8 @@
  */
 package org.xins.server;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.types.Type;
 
@@ -53,6 +55,15 @@ extends Object {
     */
    private final String _id;
 
+   /**
+    * Attributes for this session. This map contains {@link String} keys and
+    * {@link Object} values.
+    *
+    * <p>This field is lazily initialized, so it is initially
+    * <code>null</code>.
+    */
+   private Map _attributes;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -64,7 +75,72 @@ extends Object {
     * @return
     *    the identifier, never <code>null</code>.
     */
-   public final String getID() {
+   public String getID() {
       return _id;
+   }
+
+   /**
+    * Sets or resets the specified attribute. If the specified value is
+    * <code>null</code> then the attribute setting will be removed (if it
+    * existed at all).
+    *
+    * @param key
+    *    the attribute key, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the attribute value, or <code>null</code> if the attribute should be
+    *    reset.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>key == null</code>.
+    */
+   public void setAttribute(String key, Object value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("key", key);
+
+      // If necessary init the Map and then store the entry
+      if (_attributes == null) {
+         if (value != null) {
+            _attributes = new HashMap(89);
+            _attributes.put(key, value);
+         }
+
+      // If the value is null, then remove the entry
+      } else if (value == null) {
+         _attributes.remove(key);
+         // XXX: Check if the map is now empty and set it to null?
+
+      // Otherwise store a new entry
+      } else {
+         _attributes.put(key, value);
+      }
+   }
+
+   /**
+    * Gets the value of the attribute with the specified key.
+    *
+    * @param key
+    *    the attribute key, cannot be <code>null</code>.
+    *
+    * @return
+    *    the attribute value, or <code>null</code> if the attribute is not
+    *    set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>key == null</code>.
+    */
+   public Object getAttribute(String key)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("key", key);
+
+      if (_attributes != null) {
+         return _attributes.get(key);
+      } else {
+         return null;
+      }
    }
 }
