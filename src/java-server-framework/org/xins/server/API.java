@@ -103,6 +103,11 @@ implements DefaultResultCodes {
     */
    private Properties _initSettings;
 
+   /**
+    * Flag that indicates if the shutdown sequence has been initiated.
+    */
+   private boolean _shutDown;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -130,6 +135,9 @@ implements DefaultResultCodes {
       } else {
          _initSettings = (Properties) properties.clone();
       }
+
+      // Register shutdown hook
+      Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
 
       initImpl(properties);
    }
@@ -249,6 +257,16 @@ implements DefaultResultCodes {
          context.endResponse();
          out.print(stringWriter.toString());
          return;
+      }
+
+      // Short-circuit we are shutting down
+      if (_shutDown) {
+         XMLOutputter xmlOutputter = context.getXMLOutputter();
+         xmlOutputter.reset(out, "UTF-8");
+         xmlOutputter.startTag("result");
+         xmlOutputter.attribute("success", "false");
+         xmlOutputter.attribute("code",    INTERNAL_ERROR.getValue());
+         xmlOutputter.endDocument();
       }
 
       // Get the function object
@@ -447,7 +465,7 @@ implements DefaultResultCodes {
    private final void doGetVersion(CallContext context)
    throws IOException {
       context.param("xins.version",   Library.getVersion());
-      context.param("xmlenc.version", XMLOutputter.getVersion());
+      context.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
    }
 
    /**
@@ -473,5 +491,48 @@ implements DefaultResultCodes {
          context.endTag();
       }
       context.endTag();
+   }
+
+   /**
+    * Shutdown handler.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private class ShutdownHandler
+   extends Thread {
+
+      //----------------------------------------------------------------------
+      // Class fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Class functions
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Creates a new <code>ShutdownHandler</code>.
+       */
+      private ShutdownHandler() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public void run() {
+         _log.info("Shut down sequence initiated.");
+         _shutDown = true;
+      }
    }
 }
