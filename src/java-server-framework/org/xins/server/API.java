@@ -155,6 +155,9 @@ implements DefaultReturnCodes {
       if ("_GetFunctionList".equals(functionName)) {
          doGetFunctionList(context);
          return;
+      } else if ("_GetStatistics".equals(functionName)) {
+         doGetStatistics(context);
+         return;
       }
 
       // Forward the call
@@ -240,6 +243,26 @@ implements DefaultReturnCodes {
          context.startTag("function");
          context.attribute("name",    function.getName());
          context.attribute("version", function.getVersion());
+         context.endTag();
+      }
+   }
+
+   /**
+    * Returns the call statistics for all functions in this API.
+    *
+    * @param context
+    *    the context, guaranteed to be not <code>null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   private final void doGetStatistics(CallContext context)
+   throws IOException {
+      int count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function function = (Function) _functionList.get(i);
+         context.startTag("function");
+         context.attribute("name",    function.getName());
          context.endTag();
       }
    }
