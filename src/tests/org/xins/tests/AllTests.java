@@ -40,6 +40,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
+      suite.addTestSuite(org.xins.tests.common.util.service.TargetDescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.PatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.SimplePatternParserTests.class);
