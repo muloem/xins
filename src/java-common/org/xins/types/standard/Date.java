@@ -94,35 +94,57 @@ public class Date extends Type {
          return null;
       }
 
+      return toString(value.getYear(),
+                      value.getMonthOfYear(),
+                      value.getDayOfMonth());
+   }
+
+   /**
+    * Converts the specified combination of a year, month and day to a string.
+    *
+    * @param year
+    *    the year, must be &gt;=0 and &lt;= 9999.
+    *
+    * @param month
+    *    the month of the year, must be &gt;= 1 and &lt;= 12.
+    *
+    * @param day
+    *    the day of the month, must be &gt;= 1 and &lt;= 31.
+    *
+    * @return
+    *    the textual representation of the value, never <code>null</code>.
+    */
+   private static String toString(int year, int month, int day) {
+
+      // Short-circuit if the argument is null
+      if (value == null) {
+         return null;
+      }
+
       // Use a buffer to create the string
       FastStringBuffer buffer = new FastStringBuffer(8);
 
-      // Get the components
-      int y = value.getYear();
-      int m = value.getMonthOfYear();
-      int d = value.getDayOfMonth();
-
       // Append the year
-      if (y < 10) {
+      if (year < 10) {
          buffer.append("000");
-      } else if (y < 100) {
+      } else if (year < 100) {
          buffer.append("00");
-      } else if (y < 1000) {
+      } else if (year < 1000) {
          buffer.append('0');
       }
-      buffer.append(y);
+      buffer.append(year);
 
       // Append the month
-      if (m < 10) {
+      if (month < 10) {
          buffer.append('0');
       }
-      buffer.append(m);
+      buffer.append(month);
 
       // Append the day
-      if (d < 10) {
+      if (day < 10) {
          buffer.append('0');
       }
-      buffer.append(d);
+      buffer.append(day);
 
       return buffer.toString();
    }
@@ -237,6 +259,8 @@ public class Date extends Type {
          _year  = year;
          _month = month;
          _day   = day;
+
+         _asString = toString(year, month, day);
       }
 
       //----------------------------------------------------------------------
@@ -258,6 +282,12 @@ public class Date extends Type {
        * month.
        */
       private final int _day;
+
+      /**
+       * Textual representation of this date. Composed of the year (YYYY),
+       * month (MM) and day (DD) in the format: <em>YYYYMMDD</em>.
+       */
+      private final String _asString;
 
 
       //----------------------------------------------------------------------
@@ -294,5 +324,8 @@ public class Date extends Type {
          return _day;
       }
 
+      public String toString() {
+         return _asString;
+      }
    }
 }
