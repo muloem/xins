@@ -89,20 +89,48 @@ public class EnumItem extends Object {
       return _value;
    }
 
+   /**
+    * Returns the hash code for this object.
+    *
+    * @return
+    *    the hash code.
+    */
    public int hashCode() {
       return (_name == null ? 0 : _name.hashCode()) ^
              (_value == null ? 0 : _value.hashCode());
    }
 
+   /**
+    * Checks if this object is considered equal to the specified object. In
+    * order for it to qualify as equals, it needs to be an instance of this
+    * class (not a subclass), and it needs to have the same name and value.
+    * 
+    * @param obj
+    *    the object to compare, or <code>null</code>.
+    * 
+    * @return
+    *    <code>true</code> if <code>obj</code> is considered equal to this
+    *    instance, or <code>false</code> otherwise.
+    */
    public boolean equals(Object obj) {
+
+      // Check class
       if (!(obj.getClass().equals(getClass()))) {
          return false;
       }
-      EnumItem other = (EnumItem)obj;
+
+      // Check name and value
+      EnumItem other = (EnumItem) obj;
       return (_name == null ? other.getName() == null : _name.equals(other.getName()))  &&
          (_value == null ? other.getValue() == null : _value.equals(other.getValue()));
    }
 
+   /**
+    * Returns a textual representation of this object.
+    *
+    * @return
+    *    a textual representation of this object, never <code>null</code>.
+    */
    public String toString() {
       return _value;
    }
