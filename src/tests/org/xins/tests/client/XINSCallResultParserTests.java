@@ -293,7 +293,7 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals("SomeError", result.getErrorCode());
 
       // Error code both in 'error' and in 'code' attribute (conflicting)
-      xml = "<result code='SomeError' error='SomethingElse'/>";
+      xml = "<result code='SomeError' errorcode='SomethingElse'/>";
       try {
          parser.parse(xml.getBytes(ENCODING));
          fail("Conflicting values for error code should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
