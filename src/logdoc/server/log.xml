@@ -470,6 +470,13 @@
 		</entry>
 	</group>
 
+	<group id="runtime.cc" name="Calling Convention">
+		<entry id="3560" level="ERROR" exception="true">
+			<description>Error when creating or initializing a calling convention.</description>
+			<param name="convention" nullable="false" />
+		</entry>
+	</group>
+
 	<group id="lifespan.shutdown" name="Shutdown">
 		<entry id="3600" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>

@@ -97,7 +97,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * Cache for the templates.
     */
-   private Map _templateCache = new HashMap();
+   private final static Map _templateCache = new HashMap();
 
 
    //-------------------------------------------------------------------------
@@ -115,7 +115,13 @@ class XSLTCallingConvention extends StandardCallingConvention {
       _baseXSLTDir = runtimeProperties.get(TEMPLATE_LOCATION_PROPERTY);
       
       // Relative URLs use the user directory as base dir.
-      if (_baseXSLTDir.indexOf("://") == -1) {
+      if (_baseXSLTDir == null) {
+         try {
+            _baseXSLTDir = new File(System.getProperty("user.dir")).toURL().toString();
+         } catch (IOException ioe) {
+            // Ignore
+         }
+      } else if (_baseXSLTDir.indexOf("://") == -1) {
          try {
             String userDir = new File(System.getProperty("user.dir")).toURL().toString();
             _baseXSLTDir = userDir + _baseXSLTDir;
@@ -143,12 +149,16 @@ class XSLTCallingConvention extends StandardCallingConvention {
          Templates template = null;
          if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
             _templateCache.clear();
+            PrintWriter out = httpResponse.getWriter();
+            out.write("Done.");
+            out.close();
+            return;
          }
          if (_templateCache.containsKey(xsltLocation)) {
             template = (Templates) _templateCache.get(xsltLocation);
          } else {
-            template = _factory.newTemplates(new StreamSource(
-               new URL(xsltLocation).openStream()));
+            template = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
+            _templateCache.put(xsltLocation, template);
          }
          Transformer xformer = template.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
@@ -192,6 +202,8 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    class XsltURIResolver implements URIResolver {
 
+      private String _base;
+      
       /**
        * Revolve a hyperlink reference.
        *
@@ -209,21 +221,23 @@ class XSLTCallingConvention extends StandardCallingConvention {
        */
       public Source resolve(String href, String base) throws TransformerException {
          if (base == null) {
-            base = _baseXSLTDir;
+            base = _base;
+         } else if (!base.endsWith("/")) {
+            base += '/';
          }
-         if (href.startsWith("../")) {
-            int lastSlash = base.lastIndexOf('/');
-            int secondLastSlash = base.lastIndexOf('/', lastSlash - 1);
-            href = base.substring(0, secondLastSlash) + href.substring(2);
-         } else if (!href.startsWith("http://")) {
-            int lastSlash = base.lastIndexOf('/');
-            href = base.substring(0, lastSlash + 1) + href;
+         _base = base;
+         String url = null;
+         if (href.indexOf(":/") == -1) {
+            url = base + href;
+         } else {
+            url = href;
+            _base = href.substring(0, href.lastIndexOf('/') + 1);
          }
          try {
-            return new StreamSource(new URL(href).openStream());
+            return new StreamSource(new URL(url).openStream());
          } catch (IOException ioe) {
             ioe.printStackTrace();
-            return _factory.getURIResolver().resolve(href, base);
+            throw new TransformerException(ioe);
          }
       }
    }

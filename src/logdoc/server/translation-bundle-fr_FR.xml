@@ -101,6 +101,8 @@
 	<translation entry="3552">La requète à la fonction <value-of-param name="function" /> à partir de <value-of-param name="ip" /> ne correspond pas à la règle d'accès <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="3553">L'appel à la fonction <value-of-param name="function" /> à partir de <value-of-param name="ip" /> est rejeté. La requète ne correspond à aucune des règles d'accès.</translation>
 
+	<translation entry="3560">Erreur lors de la création ou de l'initialisation de la convention d'appel <value-of-param name="convention" format="quoted" />.</translation>
+
 	<translation entry="3600">Fermeture du XINS/Java Server Framework.</translation>
 	<translation entry="3601">La désinitialisation de l'API a échoué lors de l'arrêt du XINS/Java Server.</translation>
 	<translation entry="3602">Fermeture du XINS/Java Server Framework terminé.</translation>

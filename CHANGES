@@ -29,6 +29,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - The CallingConvention class now extends the Manageable class.
   - Added a template cache system for the XSLT calling convention.
   - The config file name is now path separator independent.
+  - Fixed problems related to the URIResolver of the XSLTCallingConvention.
 
 * Generation of server-side Java code:
   - Code generated to check input and output parameters is now merged in a 
