@@ -19,7 +19,7 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:variable name="old_authors_file" select="concat($project_home, '/src/authors/authors.xml')" />
-	<xsl:variable name="">
+	<xsl:variable name="authors_file">
 		<xsl:choose>
 			<xsl:when test="document($old_authors_file)">
 				<xsl:value-of select="$old_authors_file" />
