@@ -20,59 +20,62 @@
 
 	<!-- Bootstrapping -->
 
-	<entry id="100" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2000" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrapping XINS/Java Server Framework.</description>
 	</entry>
-	<entry id="101" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2001" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
 		<param name="state" />
 	</entry>
-	<entry id="102" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2002" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
 		<param name="detail" />
 	</entry>
-	<entry id="103" level="WARNING" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2003" level="WARNING" category="org.xins.server.lifespan.bootstrap">
 		<description>Application server implements unexpected version of Java Servlet API Specification.</description>
 		<param name="actual_version" />
 		<param name="expected_version" />
 	</entry>
-	<entry id="104" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2004" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 		<param name="propertyName" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="105" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2005" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>System property that defines the runtime properties file to use is not set.</description>
 		<param name="propertyName" />
 	</entry>
-	<entry id="106" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2006" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>API class name not set in build property.</description>
 		<param name="propertyName" />
 	</entry>
-	<entry id="107" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2007" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>API class cannot be loaded.</description>
 		<param name="propertyName" />
 		<param name="apiClass" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="108" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2008" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>API class is invalid, since it does not derive from the correct class.</description>
 		<param name="propertyName" />
 		<param name="apiClass" />
 		<param name="superClass" />
 	</entry>
-	<entry id="109" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2009" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrap of API class failed due to a missing but required property.</description>
 		<param name="propertyName" />
 	</entry>
-	<entry id="110" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+	<entry id="2010" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrap of API class failed due to an invalid property value.</description>
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<!-- TODO: Add an entry here. See APIServlet.java -->
+	<entry id="2011" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrap of API class failed.</description>
+		<param name="message" />
+	</entry>
 	<entry id="111" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrap of API class failed due to an exception.</description>
 		<param name="exceptionClass" />
