@@ -3,8 +3,7 @@
  project by adding the following lines at the top of the file :
 <!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://www.xins.org/dtd/api_1_0.dtd">
 -->
-<!-- @deprecated With the new directory structure impl-java should be removed. -->
-<!ELEMENT api (description, function*, type*, resultcode*, environment*, impl-java?)>
+<!ELEMENT api (description, function*, type*, resultcode*)>
 <!ATTLIST api
           name       NMTOKEN #REQUIRED
           freeze     NMTOKEN #IMPLIED
@@ -28,22 +27,4 @@
 <!ATTLIST resultcode
           name       NMTOKEN #REQUIRED
           freeze     NMTOKEN #IMPLIED
->
-<!ELEMENT environment EMPTY>
-<!ATTLIST environment
-          id         CDATA #REQUIRED
-          url        CDATA #REQUIRED
->
-<!ELEMENT impl-java (dependency*, instance*)>
-<!ELEMENT dependency EMPTY>
-<!ATTLIST dependency
-          dir        CDATA #REQUIRED
-          includes   CDATA #IMPLIED
-          type       CDATA #IMPLIED
->
-<!ELEMENT instance EMPTY>
-<!ATTLIST instance
-          name        CDATA #REQUIRED
-          getter      CDATA #IMPLIED
-          class       CDATA #REQUIRED
 >
