@@ -85,10 +85,7 @@ ${version.file}</fail>
 	<!--
 	Determines the SourceForge account with the corresponding password by
 	reading the properties 'sf.user' and 'sf.password' from a file.
-
-	By default, this information
 	-->
-	<target name="load-sfproperties" depends="-load-sfproperties" />
 	<target name="-load-sfproperties">
 		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
 		<available property="sf.file.exists" file="${sf.file}" />
@@ -681,13 +678,20 @@ ${sf.file}</fail>
 
 		<!-- Copy to remote host -->
 		<echo level="verbose" message="Copying TAR GZ file for Javadoc" />
-		<scp todir="${www.target}/" password="${sf.password}" trust="true" file="build/javadoc.tgz" />
+		<scp
+		todir="${www.target}/"
+		password="${sf.password}"
+		trust="true"
+		file="build/javadoc.tgz" />
 
 		<!-- Remotely: unpack and create symbolic links -->
 		<echo level="verbose" message="Unpacking TAR GZ file for Javadoc remotely" />
-		<sshexec host="${www.host}" username="${sf.user}"
-			password="${sf.password}" trust="true"
-			command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp; cd ../javadoc-private &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
+		<sshexec
+		host="${www.host}"
+		username="${sf.user}"
+		password="${sf.password}"
+		trust="true"
+		command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp; cd ../javadoc-private &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
 	<target
@@ -742,8 +746,10 @@ ${sf.file}</fail>
 		         command="mkdir -p ${www.dir}/checkstyle/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/checkstyle/${version} on ${www.host}" />
 		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/checkstyle/${version}"
-		     password="${sf.password}" trust="true">
+		<scp
+		todir="${www.target}/checkstyle/${version}"
+		password="${sf.password}"
+		trust="true">
 			<fileset dir="build/checkstyle/html" />
 		</scp>
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
@@ -762,14 +768,19 @@ ${sf.file}</fail>
 		         command="mkdir -p ${www.dir}/j2h/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/j2h/${version} on ${www.host}" />
 		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/j2h/${version}"
-		     password="${sf.password}" trust="true">
+		<scp
+		todir="${www.target}/j2h/${version}"
+		password="${sf.password}"
+		trust="true">
 			<fileset dir="build/j2h" />
 		</scp>
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="rm ${www.dir}/j2h/latest" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="ln -s ${www.dir}/j2h/${version} ${www.dir}/j2h/latest" />
+
+		<sshexec
+		host="${www.host}"
+		username="${sf.user}"
+		password="${sf.password}"
+		trust="true"
+		command="rm ${www.dir}/j2h/latest &amp;&amp; ln -s ${www.dir}/j2h/${version} ${www.dir}/j2h/latest" />
 	</target>
 
 	<target name="copy-docs-demo" depends="-init">
@@ -896,9 +907,11 @@ ${sf.file}</fail>
 	depends="-init"
 	description="Uploads the package to the web site">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
-		<scp file="build/${package-basename}.tgz"
-		     todir="${www.target}/"
-		     password="${sf.password}" trust="true" />
+		<scp
+		file="build/${package-basename}.tgz"
+		todir="${www.target}/"
+		password="${sf.password}"
+		trust="true" />
 	</target>
 
 	<target
@@ -994,9 +1007,11 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	description="Uploads the change history file to the web site">
 		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
 		<copy file="CHANGES" tofile="build/changes-${version}.txt" />
-		<scp file="build/changes-${version}.txt"
-		     todir="${www.target}"
-		     password="${sf.password}" trust="true" />
+		<scp
+		file="build/changes-${version}.txt"
+		todir="${www.target}"
+		password="${sf.password}"
+		trust="true" />
 	</target>
 
 	<target name="upload-homepage" depends="-init">
