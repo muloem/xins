@@ -38,6 +38,7 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderConverter;
 
 import org.xins.common.io.FileWatcher;
 
@@ -883,16 +884,7 @@ extends HttpServlet {
          }
 
          // Attempt to configure Log4J
-         PropertyConfigurator.configure(properties);
-
-         // Determine if Log4J is properly initialized
-         Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
-         if (appenders instanceof NullEnumeration) {
-            Log.log_3304(_configFile);
-            configureLoggerFallback();
-         } else {
-            Log.log_3305();
-         }
+         configureLogger(properties);
 
          // Change the hostname if needed
          String hostname = properties.getProperty(HOSTNAME_PROPERTY);
@@ -905,6 +897,25 @@ extends HttpServlet {
       }
    }
 
+   /**
+    * Configure the Log4J system
+    *
+    * @param properties
+    *    the runtime properties containing the Log4J configuration.
+    */
+   private void configureLogger(Properties properties) {
+      PropertyConfigurator.configure(properties);
+
+      // Determine if Log4J is properly initialized
+      Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+      if (appenders instanceof NullEnumeration) {
+         Log.log_3304(_configFile);
+         configureLoggerFallback();
+      } else {
+         Log.log_3305();
+      }
+   }
+   
    /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
@@ -1215,6 +1226,10 @@ extends HttpServlet {
                // Logging is already done in determineConfigReloadInterval()
                return;
             }
+
+            // Reconfigure the Log4J system
+            LogManager.getLoggerRepository().resetConfiguration();
+            configureLogger(PropertyReaderConverter.toProperties(_runtimeProperties));
 
             // Re-initialize the API
             initAPI();

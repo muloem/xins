@@ -33,6 +33,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
   - Fixed bug #1063006: log.xml with alpha DTD fails if no server reachable.
+  - Fixed bug #1036854: Reset logging subsystem when reloading.
 
 * Generation of types Java code:
   - Fixed bug #1061692: A NullPointerException was thrown when using
