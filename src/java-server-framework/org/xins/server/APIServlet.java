@@ -275,6 +275,19 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
+    * Gets the current state. This method first synchronizes on
+    * {@link #_stateLock} and then returns the value of {@link #_state}.
+    *
+    * @return
+    *    the current state, cannot be <code>null</code>.
+    */
+   private State getState() {
+      synchronized (_stateLock) {
+         return _state;
+      }
+   }
+
+   /**
     * Initializes this servlet using the specified configuration. The
     * (required) {@link ServletConfig} argument is stored internally and is
     * returned from {@link #getServletConfig()}.
@@ -546,6 +559,8 @@ extends HttpServlet {
     */
    private final void initAPI(PropertyReader runtimeProperties) {
 
+      // TODO: Check state and lock on state
+
       _state = INITIALIZING_API;
 
       try {
@@ -675,7 +690,8 @@ extends HttpServlet {
 
       // Call the API if the state is READY
       CallResult result;
-      if (_state == READY) {
+      State state = getState();
+      if (state == READY) {
          try {
             result = _api.handleCall(start, request);
 
@@ -686,11 +702,11 @@ extends HttpServlet {
          }
 
       // Otherwise return an appropriate 50x HTTP response code
-      } else if (_state == INITIAL
-              || _state == BOOTSTRAPPING_FRAMEWORK
-              || _state == CONSTRUCTING_API
-              || _state == BOOTSTRAPPING_API
-              || _state == INITIALIZING_API) {
+      } else if (state == INITIAL
+              || state == BOOTSTRAPPING_FRAMEWORK
+              || state == CONSTRUCTING_API
+              || state == BOOTSTRAPPING_API
+              || state == INITIALIZING_API) {
          response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
          return;
       } else {
@@ -735,20 +751,22 @@ extends HttpServlet {
 
       Library.SHUTDOWN_LOG.debug("Shutting down XINS/Java Server Framework.");
 
+      // Set the state temporarily to DISPOSING
       synchronized (_stateLock) {
-         // Set the state temporarily to DISPOSING
          _state = DISPOSING;
+      }
 
-         // Destroy the API
-         if (_api != null) {
-            try {
-               _api.deinit();
-            } catch (Throwable t) {
-               Library.SHUTDOWN_LOG.error("Caught exception while deinitializing API.", t);
-            }
+      // Destroy the API
+      if (_api != null) {
+         try {
+            _api.deinit();
+         } catch (Throwable t) {
+            Library.SHUTDOWN_LOG.error("Caught exception while deinitializing API.", t);
          }
+      }
 
-         // Set the state to DISPOSED
+      // Set the state to DISPOSED
+      synchronized (_state) {
          _state = DISPOSED;
       }
 
