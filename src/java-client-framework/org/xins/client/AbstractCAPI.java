@@ -118,6 +118,39 @@ public abstract class AbstractCAPI extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Assigns the specified call configuration to this CAPI object.
+    *
+    * @param config
+    *    the call configuration to apply when executing a call with this CAPI
+    *    object, or <code>null</code> if no specific call configuration should be
+    *    associated with CAPI object; note that the call configuration can be
+    *    overridden by the request, see
+    *    {@link AbstractCAPICallRequest#configure(XINSCallConfig)}.
+    *
+    * @since XINS 1.2.0
+    */
+   public final void configure(XINSCallConfig config) {
+      _caller.setXINSCallConfig(config);
+   }
+
+   /**
+    * Retrieves the call configuration currently associated with this CAPI
+    * object.
+    *
+    * @return
+    *    the call configuration currently associated with this CAPI object, or
+    *    <code>null</code> if no specific call configuration is associated
+    *    with this cAPI object; note that the call configuration can be
+    *    overridden by the request, see
+    *    {@link AbstractCAPICallRequest#configuration()}.
+    *
+    * @since XINS 1.2.0
+    */
+   public final XINSCallConfig configuration() {
+      return _caller.getXINSCallConfig();
+   }
+
+   /**
     * Returns the XINS service caller to use.
     *
     * <p>This method is considered internal to XINS. It should not be called

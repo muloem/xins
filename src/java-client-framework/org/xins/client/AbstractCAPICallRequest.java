@@ -37,9 +37,16 @@ extends Object {
 
    /**
     * Creates a new <code>AbstractCAPICallRequest</code> object.
+    *
+    * @param functionName
+    *    the name of the function to call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
     */
-   protected AbstractCAPICallRequest() {
-      // empty
+   protected AbstractCAPICallRequest(String functionName)
+   throws IllegalArgumentException {
+      _request = new XINSCallRequest(functionName);
    }
 
 
@@ -47,9 +54,40 @@ extends Object {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The underlying XINS call request. Initialized to a non-<code>null</code>
+    * value in the constructor.
+    */
+   private final XINSCallRequest _request;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Assigns the specified call configuration to this request.
+    *
+    * @param config
+    *    the call configuration to apply when executing this request, or
+    *    <code>null</code> if no specific call configuration should be
+    *    associated with this request.
+    */
+   public void configure(XINSCallConfig config) {
+      _request.setXINSCallConfig(config);
+   }
+
+   /**
+    * Retrieves the call configuration currently associated with this request.
+    *
+    * @return
+    *    the call configuration currently associated with this request, which
+    *    will be applied when executing this request, or <code>null</code> if
+    *    no specific call configuration is associated with this request.
+    */
+   public XINSCallConfig configuration() {
+      return _request.getXINSCallConfig();
+   }
 
    /**
     * Validates whether this request is considered acceptable (wrapper
