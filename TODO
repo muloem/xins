@@ -45,6 +45,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Generated Javadoc should include package-private and private members.
 * Consider making ACL-related classes package-private.
 * Log an INFO message if some runtime properties are unused.
+* Implement a _ResetStatistics function.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
