@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.78:
+
+* XINS/Java Servlet Framework:
+  - Added support for default functions.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.77:
 
 * Generated web.xml file now has indentation enabled.
