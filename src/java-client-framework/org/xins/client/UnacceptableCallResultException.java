@@ -9,6 +9,11 @@ import org.xins.common.MandatoryArgumentChecker;
  * Exception that indicates that an API call returned a result that was
  * considered unacceptable by the application layer.
  *
+ * <p>Note that this exception is <em>not</em> thrown if the result is
+ * invalid according to the XINS rules for an result XML document. Only if the
+ * result is just invalid in relation to the applicable API specification this
+ * exception is thrown.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *

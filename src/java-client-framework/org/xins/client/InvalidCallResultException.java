@@ -7,7 +7,12 @@ import org.xins.common.service.TargetDescriptor;
 
 /**
  * Exception thrown to indicate that the result from a XINS API call was
- * invalid according to the XINS standard or the applicable API specification.
+ * invalid according to the XINS standard.
+ *
+ * <p>Note that this exception is <em>only</em> thrown if the result is
+ * invalid according to the XINS rules for an result XML document. If the
+ * result is only invalid in relation to the applicable API specification,
+ * then an {@link UnacceptableCallResultException} is thrown instead.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
