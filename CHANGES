@@ -1,6 +1,14 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
 
+* Build and release process:
+  - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
+    Java 1.3 documentation.
+
+* Generated build file:
+  - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
+    Java 1.3 documentation.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.194:
 
