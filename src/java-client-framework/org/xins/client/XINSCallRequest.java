@@ -103,8 +103,8 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
-    * Constructs a new <code>CallRequest</code> for the specified function and
-    * parameters, possibly allowing fail-over.
+    * Constructs a new <code>XINSCallRequest</code> for the specified function
+    * and parameters, possibly allowing fail-over.
     *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
@@ -201,14 +201,7 @@ public final class XINSCallRequest extends CallRequest {
       _failOverAllowed = failOverAllowed;
       _httpRequest     = new HTTPCallRequest(method, httpParams, HTTP_STATUS_CODE_VERIFIER);
 
-      // Construct a textual representation of this object
-      FastStringBuffer buffer = new FastStringBuffer(149, "XINS HTTP ");
-      buffer.append(method.toString());
-      buffer.append(" request with parameters");
-
-      // TODO: Fill buffer
-
-      _asString = buffer.toString();
+      // XXX: Note that _asString is lazily initialized.
    }
 
 
@@ -220,7 +213,7 @@ public final class XINSCallRequest extends CallRequest {
     * Description of this XINS call request. This field cannot be
     * <code>null</code>, it is initialized during construction.
     */
-   private final String _asString;
+   private String _asString;
 
    /**
     * The name of the function to call. This field cannot be
