@@ -19,6 +19,7 @@ import org.xins.common.TimeOutException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
+import org.xins.common.service.CallException;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
@@ -149,9 +150,41 @@ public final class XINSServiceCaller extends ServiceCaller {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Calls the specified target using the specified subject. If the call
+    * succeeds, then a {@link XINSCallResult} object is returned, otherwise a
+    * {@link CallException} is thrown.
+    *
+    * <p>The implementation of this method in class
+    * <code>XINSServiceCaller</code> delegates to
+    * {@link #call(TargetDescriptor,XINSCallRequest)}.
+    *
+    * @param target
+    *    the target to call, cannot be <code>null</code>.
+    *
+    * @param request
+    *    the call request to be executed, must be an instance of class
+    *    {@link XINSCallRequest}, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result, if and only if the call succeeded, always an instance of
+    *    class {@link XINSCallResult}, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if the specified <code>request</code> object is not <code>null</code>
+    *    and not an instance of class {@link XINSCallRequest}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || request == null</code>.
+    *
+    * @throws CallException
+    *    if the call to the specified target failed.
+    *
+    * @since XINS 0.207
+    */
    protected Object doCallImpl(TargetDescriptor target,
                                CallRequest      request)
-   throws Throwable {
+   throws ClassCastException, IllegalArgumentException, CallException {
 
       // Delegate to method with more specialized interface
       return call(target, (XINSCallRequest) request);
