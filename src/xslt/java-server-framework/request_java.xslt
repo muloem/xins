@@ -361,6 +361,9 @@ public final static class Request {
    public java.util.List list</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
+      if (__dataSection == null) {
+         return java.util.Collections.EMPTY_LIST;
+      }
       java.util.List elements = __dataSection.getChildElements("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>");
@@ -491,6 +494,9 @@ public final static class Request {
    public java.util.List list</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>() {
+      if (_element == null) {
+         return java.util.Collections.EMPTY_LIST;
+      }
       java.util.List elements = _element.getChildElements("</xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>");

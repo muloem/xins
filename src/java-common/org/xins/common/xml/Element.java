@@ -391,7 +391,7 @@ public class Element implements Cloneable {
       MandatoryArgumentChecker.check("name", name);
 
       // If there are no children, then return null
-      if (_children.size() == 0) {
+      if (_children == null || _children.size() == 0) {
          return Collections.EMPTY_LIST;
 
       // There are children, find all matching ones
