@@ -5,11 +5,16 @@
 
  $Id$
 
- Transforms a single XML file using XSLT.
+ Transforms a single XML file using XSLT to bootstrap the build process for a
+ XINS project.
 -->
 
 <project name="xins-bootstrap-ant" default="transform" basedir=".">
 	<target name="transform">
-		<style in="${in}" out="${out}" style="${style}" />
+		<style in="${in}" out="${out}" style="${style}">
+			<param name="xins_home"    expression="${xins_home}"    />
+			<param name="project_home" expression="${project_home}" />
+			<param name="builddir"     expression="${builddir}"     />
+		</style>
 	</target>
 </project>

@@ -50,7 +50,14 @@ fi
 
 # Create the Ant build file
 out=${builddir}/build.xml
-ant -f ${xins_home}/src/ant/transform.xml -Din=${in} -Dout=${out} -Dstyle=${style}
+project_home=`pwd`
+ant -f ${xins_home}/src/ant/transform.xml \
+    -Din=${in} \
+	-Dout=${out} \
+	-Dstyle=${style} \
+    -Dxins_home=${xins_home} \
+    -Dproject_home=${project_home} \
+	-Dbuilddir=${builddir}
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: ERROR: Unable to transform ${in}."
@@ -58,7 +65,6 @@ if [ ! "${returncode}a" = "0a" ]; then
 fi
 
 # Run Ant against the build file
-project_home=`pwd`
 (cd ${builddir} && ant -Dxins_home=${xins_home} \
                        -Dproject_home=${project_home} \
                        $*)
