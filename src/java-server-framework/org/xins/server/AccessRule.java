@@ -260,7 +260,6 @@ extends Object {
       boolean matchIP       = _ipFilter.match(ip);
       boolean matchFunction = PATTERN_MATCHER.matches(functionName, _functionNamePattern);
 
-System.out.println("AccessRule \"" + _asString + "\" IP=\"" + ip + "\"; function=\"" + functionName + "\": IP match=" + matchIP + "; Function match=" + matchFunction + '.');
       if (LOG.isDebugEnabled()) {
          LOG.debug("AccessRule \"" + _asString + "\" IP=\"" + ip + "\"; function=\"" + functionName + "\": IP match=" + matchIP + "; Function match=" + matchFunction + '.');
       }
