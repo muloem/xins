@@ -693,6 +693,9 @@ public final class Doorman extends Object {
        * @param description
        *    the description of this entry type, cannot be
        *    <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>description == null</code>.
        */
       public QueueEntryType(String description)
       throws IllegalArgumentException {
