@@ -133,7 +133,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
             // Get the value
             Object value = parameters.get(key);
 
-            // Add this parameter key/value combination
+            // Add this parameter key/value combination, but only if both the
+            // key and the value are not null. A general rule in XINS is that
+            // if a parameter (input or output) has the empty string as the
+            // value, this is equivalent to having the parameter not set at
+            // all.
             if (key != null && value != null) {
                postMethod.addParameter(key, value.toString());
             }
@@ -155,7 +159,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
             // Get the value
             Object value = parameters.get(key);
 
-            // Add this parameter key/value combination
+            // Add this parameter key/value combination, but only if both the
+            // key and the value are not null. A general rule in XINS is that
+            // if a parameter (input or output) has the empty string as the
+            // value, this is equivalent to having the parameter not set at
+            // all.
+            if (key != null && value != null) {
             if (key != null && value != null) {
 
                if (query.getLength() > 0) {
