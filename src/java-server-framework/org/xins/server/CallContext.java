@@ -348,7 +348,7 @@ implements Responder, Log {
    }
 
    public final void startResponse(ResultCode resultCode)
-   throws IllegalStateException, IOException {
+   throws IllegalStateException, InvalidResponseException, IOException {
       if (resultCode == null) {
          startResponse(true, null);
       } else {
@@ -357,12 +357,12 @@ implements Responder, Log {
    }
 
    public final void startResponse(boolean success)
-   throws IllegalStateException, IOException {
+   throws IllegalStateException, InvalidResponseException, IOException {
       startResponse(success, null);
    }
 
    public final void startResponse(boolean success, String returnCode)
-   throws IllegalStateException, IOException {
+   throws IllegalStateException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != BEFORE_START) {
@@ -392,7 +392,7 @@ implements Responder, Log {
    }
 
    public final void param(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != BEFORE_START && _state != WITHIN_PARAMS) {
@@ -438,7 +438,7 @@ implements Responder, Log {
    }
 
    public final void startTag(String type)
-   throws IllegalStateException, IllegalArgumentException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
 
       // Check state
       if (_state == AFTER_END) {
@@ -474,7 +474,7 @@ implements Responder, Log {
    }
 
    public final void attribute(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != START_TAG_OPEN) {
@@ -492,7 +492,7 @@ implements Responder, Log {
    }
 
    public final void pcdata(String text)
-   throws IllegalStateException, IllegalArgumentException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != START_TAG_OPEN && _state != WITHIN_ELEMENT) {
@@ -510,7 +510,7 @@ implements Responder, Log {
    }
 
    public final void endTag()
-   throws IllegalStateException, IOException {
+   throws IllegalStateException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != START_TAG_OPEN && _state != WITHIN_ELEMENT) {
@@ -532,7 +532,7 @@ implements Responder, Log {
    }
 
    public void fail(ResultCode resultCode)
-   throws IllegalArgumentException, IllegalStateException, IOException {
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != BEFORE_START) {
@@ -550,7 +550,7 @@ implements Responder, Log {
       endResponse();
    }
 
-   public final void endResponse() throws IOException {
+   public final void endResponse() throws InvalidResponseException, IOException {
 
       // Short-circuit if the response is already ended
       if (_state == AFTER_END) {
