@@ -186,9 +186,6 @@ extends Object {
     *    Although this method is deprecated, it still works as described.
     */
    public Map getAttributes() {
-
-      // TODO: Return an unmodifiable Map ?
-
       return _attributes;
    }
 
