@@ -12,8 +12,7 @@ List of things to be done for XINS release 1.0:
 - Make sure the automated release process works for the 1.x.y releases.
 - Client Framework: Rethink and re-implement the failover. Distinguish between
   connection and socket time-outs and do not fail-over on the latter, except
-  if the function is explicitly as supporting fail-over.
+  if the function is explicitly marked as supporting fail-over.
 - Server Framework: Allow configuration of diagnostic context identifier
   generation. A flag (enable/disable automatic generation) and a prefix
   ("sso-", "webmail-", etc.) is probably enough.
-- Link to Java 1.4 docs instead of Java 1.3 docs.
