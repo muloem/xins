@@ -90,6 +90,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
 * Generation of CAPI classes:
   - Renamed function_to_java.xslt to function_to_result_java.xslt.
+  - Added proper @since tag (for XINS 1.1.0) on the generated create methods.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
