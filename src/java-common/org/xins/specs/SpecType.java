@@ -135,6 +135,17 @@ extends Object {
    }
 
    /**
+    * Gets the type for parents.
+    *
+    * @return
+    *    the parent type, or <code>null</code> if components of this type have
+    *    no parent.
+    */
+   public final SpecType getParentType() {
+      return null;
+   }
+
+   /**
     * Checks that the specified name for a component of this type matches the
     * criteria for such a name.
     *
