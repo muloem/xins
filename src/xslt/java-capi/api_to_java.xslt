@@ -48,9 +48,8 @@
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
-		<xsl:text>;</xsl:text>
 
-<xsl:text><![CDATA[
+		<xsl:text><![CDATA[;
 
 /**
  * Stub for the <em>]]></xsl:text>
