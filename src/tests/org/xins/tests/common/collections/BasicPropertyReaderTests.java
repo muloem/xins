@@ -3,6 +3,8 @@
  */
 package org.xins.tests.common.collections;
 
+import java.lang.Exception;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -128,7 +130,7 @@ public class BasicPropertyReaderTests extends TestCase {
       assertEquals(testVal, reader.get(testName));
       // now remove it
       reader.remove(testName);
-      assertEquals(null, reader.get(testName));
+      assertNull(reader.get(testName));
    }
 
    public void testGet() {
@@ -141,9 +143,42 @@ public class BasicPropertyReaderTests extends TestCase {
       }
    }
 
-   public void testGetNames() {
+   public void testGetNames()
+    throws Exception  {
       BasicPropertyReader reader = new BasicPropertyReader();
-      //TODO Implement getNames().
+
+      // first add something in the property reader
+      String testVal = "value 1";
+      String testName = "first";
+      String testVal2 = "value 2";
+      String testName2 = "second";
+      reader.set(testName, testVal);
+      reader.set(testName2, testVal2);
+      
+      // retrieve the iterator
+      Iterator it = reader.getNames();
+      // does it have any content
+      assertTrue(it.hasNext());
+      // get the first element
+      String n3 = (String) it.next();
+      String v3 = reader.get(n3);
+      // must have another element
+      assertTrue(it.hasNext());
+      // get second element
+      String n4 = (String) it.next(); 
+      String v4 = reader.get(n4);
+      // shouldn't have any more elements
+      assertFalse(it.hasNext());
+
+      // check the values returned
+      assertTrue( (n3 == testName && n4 == testName2) || (n4 == testName && n3 == testName2) );
+      if (n3.equals(testName)) {
+         assertEquals(v3, testVal);
+         assertEquals(v4, testVal2);
+      } else {
+         assertEquals(v3, testVal2);
+         assertEquals(v4, testVal);
+      }
    }
 
    public void testGetPropertiesMap() {
