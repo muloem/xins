@@ -196,13 +196,10 @@ public final class CallRequestParser extends Object {
          throw new ParseException("The specified XML element cannot be parsed to build a CallRequest object. The attribute \"function\" is not set.");
       }
 
-      // Parse the session identifier, if any
-      String sessionID = element.getAttributeValue("session");
-
       // Parse the list of input parameters
       Map parameters = parseParameters(element);
 
-      return new CallRequest(sessionID, functionName, parameters);
+      return new CallRequest(functionName, parameters);
    }
 
    /**

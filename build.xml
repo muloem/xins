@@ -17,15 +17,13 @@
 	<target name="-checkstyle-task">
 		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
 			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</available>
 		<fail unless="checkstyle.available" message="Checkstyle not available" />
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</taskdef>
 	</target>
@@ -172,8 +170,7 @@
 		target="${javac.targetvm}">
 			<classpath>
 				<path refid="path.common" />
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="lib"             includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -246,12 +243,24 @@
 		</antcall>
 	</target>
 
+	<target name="logdoc-html" depends="-init, logdoc-html-server, logdoc-html-client, logdoc-html-common">
+		<copy todir="docs/logdoc/server">
+			<fileset dir="build/logdoc/server/html" />
+		</copy>
+		<copy todir="docs/logdoc/client">
+			<fileset dir="build/logdoc/client/html" />
+		</copy>
+		<copy todir="docs/logdoc/common">
+			<fileset dir="build/logdoc/common/html" />
+		</copy>
+	</target>
+
 	<target name="-logdoc-html">
 		<copy file="src/css/logdoc/style.css" todir="build/logdoc/${side}/html" />
 		<ant dir="build/logdoc/${side}" target="html" inheritall="false" />
 	</target>
 
-	<target name="upload-logdoc" depends="-init,logdoc-html-server, logdoc-html-client, logdoc-html-common">
+	<target name="upload-logdoc" depends="logdoc-html">
 		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
@@ -315,8 +324,7 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -332,8 +340,7 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-				<fileset dir="depends/runtime"             includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
 	</target>
@@ -403,10 +410,8 @@
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-				<fileset dir="depends/runtime"             includes="*.jar" />
-				<fileset dir="${ant.home}/lib"             includes="*.jar" />
+				<fileset dir="lib"             includes="*.jar" />
+				<fileset dir="${ant.home}/lib" includes="*.jar" />
 			</classpath>
 			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://java.sun.com/products/servlet/2.3/javadoc/"         />
 			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.3/docs/api"                     />
@@ -429,7 +434,7 @@
 	<target name="javadoc-public" depends="-init" description="Generates public Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
-			<param name="javadoc.destdir" value="build/javadoc" />
+			<param name="javadoc.destdir" value="docs/javadoc" />
 			<param name="javadoc.title"   value="${title} ${version}" />
 			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${www.url}'&gt;${www.url}&lt;/a&gt;." />
 		</antcall>
@@ -438,7 +443,7 @@
 	<target name="javadoc-private" depends="-init" description="Generates private Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="yes" />
-			<param name="javadoc.destdir" value="build/javadoc-private" />
+			<param name="javadoc.destdir" value="docs/javadoc-private" />
 			<param name="javadoc.title"   value="${title} ${version}" />
 			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${www.url}'&gt;${www.url}&lt;/a&gt;.&lt;br /&gt;This Javadoc API documentation set contains private and package private members as well." />
 		</antcall>
@@ -541,14 +546,43 @@
 		         command="ln -s ${www.dir}/j2h/${version} ${www.dir}/j2h/latest" />
 	</target>
 
-	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
+	<target name="copy-docs-demo" depends="-init">
+		<!-- Copy the examples in the release -->
+		<mkdir dir="demo" />
+		<copy todir="demo">
+			<fileset dir="../${name}-examples">
+				<include name="build.xml" />
+				<include name="xins.properties" />
+				<include name="capis/**/*.xml" />
+				<include name="capis/**/*.java" />
+				<include name="xins-project/**/*.xml" />
+				<include name="xins-project/**/*.fnc" />
+				<include name="xins-project/**/*.typ" />
+				<include name="xins-project/**/*.rcd" />
+				<include name="xins-project/**/*.java" />
+				<exclude name="build" />
+			</fileset>
+		</copy>
+		<!-- Create and copy the documentation -->
+		<ant dir="../${name}-docs" target="guide" inheritall="false">
+			<property name="version" value="${version.major}.${version.minor}" />
+		</ant>
+		<mkdir dir="docs" />
+		<copy todir="docs">
+			<fileset dir="../${name}-docs/build/guide">
+				<exclude name="*.fo" />
+				<exclude name="XINSGuide.html" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="package" depends="javadoc,java-server,java-client,html-logdoc,copy-docs-demo" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
 			<include name="src/css/javadoc/*"              />
 			<include name="src/css/logdoc/*"               />
 			<include name="src/css/specdocs/*"             />
-			<include name="src/demos/**/*"                 />
 			<include name="src/dtd/**/*"                   />
 			<include name="src/java-client-framework/**/*" />
 			<include name="src/java-common/**/*"           />
@@ -559,6 +593,10 @@
 			<include name="src/package-lists/**/*"         />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
+			<include name="lib/*.LICENSE"                  />
+			<include name="docs/**/*.html"                 />
+			<include name="docs/**/*.css"                  />
+			<include name="demo/**/*"                      />
 			<include name="build.xml"                      />
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
@@ -590,9 +628,16 @@
 			mode="644">
 				<include name="build/javadoc/**/*"             />
 				<include name="build/*.jar"                    />
-				<include name="depends/compile_and_runtime/*"  />
-				<include name="depends/compile/servlet.jar"    />
-				<include name="depends/runtime"                />
+				<include name="demo/**/*"                      />
+				<include name="docs/**/*"                      />
+				<include name="lib/apache.LICENSE"             />
+				<include name="lib/commons-httpclient.*"       />
+				<include name="lib/commons-logging.*"          />
+				<include name="lib/jakarta-oro.*"              />
+				<include name="lib/jdom.*"                     />
+				<include name="lib/log4j.*"                    />
+				<include name="lib/xmlenc.*"                   />
+				<include name="lib/servlet.jar"                />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build"
@@ -615,9 +660,8 @@
 	<target name="sfaddrelease" depends="java-common" description="Adds a release to the SourceForge package [BROKEN]">
 		<taskdef name="sfaddrelease" classname="org.xins.common.ant.sourceforge.AddReleaseTask">
 			<classpath>
-				<fileset dir="build"                       includes="xins-common.jar"        />
-				<fileset dir="depends/compile"             includes="commons-net.jar"        />
-				<fileset dir="depends/compile_and_runtime" includes="commons-httpclient.jar" />
+				<fileset dir="build"   includes="xins-common.jar"                        />
+				<fileset dir="lib"     includes="commons-net.jar commons-httpclient.jar" />
 			</classpath>
 		</taskdef>
 
@@ -738,48 +782,4 @@
 	</target>
 
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
-
-	<target name="-demo-caller-pretest">
-		<condition property="demo-caller-properties-set">
-			<and>
-				<isset property="config"  />
-				<isset property="request" />
-			</and>
-		</condition>
-	</target>
-
-	<target name="-demo-caller-properties-notset" depends="-demo-caller-pretest" unless="demo-caller-properties-set">
-		<echo message="The properties 'config' and 'request' need to be set." />
-	</target>
-
-	<target name="demo-caller" depends="java-client,-demo-caller-properties-notset" if="demo-caller-properties-set" description="Executes the 'Caller' demo program">
-		<mkdir dir="build/classes/demos/caller" />
-		<javac
-		srcdir="src/demos/caller/java"
-		destdir="build/classes/demos/caller"
-		debug="true"
-		deprecation="true"
-		optimize="false"
-		target="${javac.targetvm}">
-			<classpath>
-				<pathelement path="build/xins-common.jar" />
-				<pathelement path="build/xins-client.jar" />
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</javac>
-		<java
-		classname="org.xins.demos.caller.Main"
-		fork="true">
-			<classpath>
-				<pathelement path="build/classes/demos/caller" />
-				<pathelement path="build/xins-common.jar" />
-				<pathelement path="build/xins-client.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-				<fileset dir="depends/runtime"             includes="*.jar" />
-			</classpath>
-			<arg value="${config}" />
-			<arg value="${request}" />
-		</java>
-	</target>
 </project>

@@ -1,4 +1,25 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.180:
+
+* XINS/Java Server Framework:
+  - Replaced some tabs that were in the generated function with 3 spaces.
+
+* Generated build file:
+  - Improved the logdoc skeleton used for xins create-logdoc.
+
+* XINS/Java Client Framework:
+  - Removed files and methods related to the session ID.
+  - Removed methods related to the success.
+
+* Build and release process:
+  - Renamed the depends directory to lib.
+  - Moved all jar files in the lib directory.
+  - Moved XINS javadoc to a newly created docs directory.
+  - Added XINS guide in the release.
+  - Added the examples in the release.
+  - Added the HTML logdoc pages in the release.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.179:
 
 * XINS/Java Server Framework:

@@ -409,8 +409,7 @@
 						deprecation="${{deprecated}}">
 							<classpath>
 								<pathelement path="{$xins-common.jar}" />
-								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
-								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
 						</javac>
@@ -648,8 +647,7 @@
 								</xsl:if>
 								<pathelement path="{$xins-common.jar}" />
 								<pathelement path="{$xins-server.jar}" />
-								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
-								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
 						</javac>
@@ -684,8 +682,7 @@
 							destfile="build/webapps/{$api}/{$api}.war">
 							<lib dir="{$xins_home}/build"                       includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
-							<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
-							<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
+							<lib dir="{$xins_home}/lib" includes="**/*.jar" />
 							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
 							<xsl:if test="$apiHasTypes = 'true'">
@@ -717,7 +714,7 @@
 							<link
 							href="http://xins.sourceforge.net/javadoc/${{version.prev.major}}.${{version.prev.minor}}/"
 							offline="true"
-							packagelistloc="{$xins_home}/build/javadoc/" />
+							packagelistloc="{$xins_home}/docs/javadoc/" />
 							<link
 							href="http://java.sun.com/j2se/1.3/docs/api"
 							offline="true"
@@ -739,12 +736,12 @@
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/ant/" />
 							<classpath>
-								<pathelement location="{$xins_home}/build/xins-common.jar" />
-								<pathelement location="{$xins_home}/build/xins-server.jar" />
-								<pathelement location="{$xins_home}/depends/compile_and_runtime/jdom.jar" />
-								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
-								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
-								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+								<pathelement location="{$xins_home}/build/xins-common.jar"   />
+								<pathelement location="{$xins_home}/build/xins-server.jar"   />
+								<pathelement location="{$xins_home}/lib/jdom.jar"            />
+								<pathelement location="{$xins_home}/lib/log4j.jar"           />
+								<pathelement location="{$xins_home}/lib/commons-logging.jar" />
+								<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
@@ -854,8 +851,7 @@
 							<xsl:if test="$apiHasTypes = 'true'">
 								<pathelement path="{$typeClassesDir}"  />
 							</xsl:if>
-							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
-							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+							<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 						</classpath>
 					</javac>
 					<xsl:if test="$apiHasTypes = 'true'">
@@ -896,7 +892,7 @@
 						<link
 						href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 						offline="true"
-						packagelistloc="{$xins_home}/build/javadoc/" />
+						packagelistloc="{$xins_home}/docs/javadoc/" />
 						<link
 						href="http://java.sun.com/j2se/1.3/docs/api"
 						offline="true"
@@ -918,12 +914,12 @@
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/ant/" />
 						<classpath>
-							<pathelement location="{$xins_home}/build/xins-common.jar" />
-							<pathelement location="{$xins_home}/build/xins-client.jar" />
-							<pathelement location="{$xins_home}/depends/compile_and_runtime/jdom.jar" />
-							<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
-							<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
-							<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+							<pathelement location="{$xins_home}/build/xins-common.jar"   />
+							<pathelement location="{$xins_home}/build/xins-client.jar"   />
+							<pathelement location="{$xins_home}/lib/jdom.jar"            />
+							<pathelement location="{$xins_home}/lib/log4j.jar"           />
+							<pathelement location="{$xins_home}/lib/commons-logging.jar" />
+							<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 							<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 						</classpath>
 					</javadoc>

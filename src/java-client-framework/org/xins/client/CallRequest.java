@@ -34,10 +34,6 @@ public final class CallRequest extends Object {
    /**
     * Constructs a new <code>CallRequest</code> object.
     *
-    * @param sessionID
-    *    the session identifier, or <code>null</code> if the no session
-    *    identifier should be passed with the call.
-    *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
     *
@@ -47,14 +43,13 @@ public final class CallRequest extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   public CallRequest(String sessionID, String functionName, Map parameters)
+   public CallRequest(String functionName, Map parameters)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 
       // Store the function name and copy the Map
-      _sessionID    = sessionID;
       _functionName = functionName;
       _parameters   = (parameters != null)
                     ? Collections.unmodifiableMap(new HashMap(parameters))
@@ -65,11 +60,6 @@ public final class CallRequest extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The session identifier. This field can be <code>null</code>.
-    */
-   private final String _sessionID;
 
    /**
     * The name of the function to call. This field cannot be
@@ -88,17 +78,6 @@ public final class CallRequest extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the session identifier, if any.
-    *
-    * @return
-    *    the session identifier, or <code>null</code> if no session identifier
-    *    should be passed in the request.
-    */
-   public String getSessionID() {
-      return _sessionID;
-   }
 
    /**
     * Returns the name of the function to call.

@@ -126,21 +126,11 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<translation-bundle locale="en_US" />
 
-	<group id="initilisation" name="Initialisation">
+	<group id="myapi" name="MyProject">
 		<entry id="10000" level="INFO">
-			<description>Starting initilisation of the function.</description>
+			<description>Example of logdoc with some parameters.</description>
 			<param name="functionName" />
-		</entry>
-		<entry id="10001" level="INFO">
-			<description>Initilisation of the function finished.</description>
-			<param name="functionName" />
-		</entry>
-	</group>
-
-	<group id="runtime" name="Runtime">
-		<entry id="11000" level="DEBUG">
-			<description>Running the function.</description>
-			<param name="functionName" />
+			<param name="number" nullable="false" type="int32" />
 		</entry>
 	</group>
 </log>
@@ -149,9 +139,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 <!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://xins.sourceforge.net/dtd/translation-bundle_1_0.dtd">
 
 <translation-bundle>
-	<translation entry="10000">Starting the initialisation of the <value-of-param name="functionName" /> function.</translation>
-	<translation entry="10001">Finished the initialisation of the <value-of-param name="functionName" /> function.</translation>
-	<translation entry="11000">Running the function <value-of-param name="functionName" />.</translation>
+	<translation entry="10000">Example of logdoc with the parameters <value-of-param name="functionName" format="quoted" /> and <value-of-param name="number" />.</translation>
 </translation-bundle>
 ]]></echo>
 		</target>

@@ -49,13 +49,10 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    /**
     * Creates a <code>PostMethod</code> object for the specific base URL,
-    * session ID, function name and parameter set.
+    * function name and parameter set.
     *
     * @param baseURL
     *    the base URL, cannot be <code>null</code>.
-    *
-    * @param sessionID
-    *    the session identifier, or <code>null</code>.
     *
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
@@ -78,7 +75,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    if <code>baseURL == null || functionName == null</code>.
     */
    private static final PostMethod createPostMethod(String baseURL,
-                                                    String sessionID,
                                                     String functionName,
                                                     Map parameters)
    throws IllegalArgumentException {
@@ -97,11 +93,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       PostMethod method = new PostMethod(baseURL);
 
       method.addParameter("function", functionName);
-
-      // If there is a session identifier, process it
-      if (sessionID != null) {
-         method.addParameter("_session", sessionID);
-      }
 
       // If a diagnostic context is available, pass it on
       String contextID = NDC.peek();
@@ -201,7 +192,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Disect the CallRequest and forward the method call
       return call(target,
-                  request.getSessionID(),
                   request.getFunctionName(),
                   request.getParameters());
    }
@@ -212,10 +202,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @param target
     *    the service target on which to execute the request, cannot be
     *    <code>null</code>.
-    *
-    * @param sessionID
-    *    the session identifier, if any, or <code>null</code> if the function
-    *    is session-less.
     *
     * @param functionName
     *    the name of the function to be called, not <code>null</code>.
@@ -235,7 +221,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    if the call failed.
     */
    public Result call(TargetDescriptor target,
-                      String sessionID,
                       String functionName,
                       Map    parameters)
    throws IllegalArgumentException, CallException {
@@ -249,7 +234,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       client.setTimeout(target.getTimeOut());
 
       // Construct the method object
-      PostMethod method = createPostMethod(target.getURL(), sessionID, functionName, parameters);
+      PostMethod method = createPostMethod(target.getURL(), functionName, parameters);
 
       boolean succeeded = false;
       String body;
@@ -301,7 +286,7 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Calls the specified session-less API function with the specified
+    * Calls the specified API function with the specified
     * parameters.
     *
     * @param functionName
@@ -323,38 +308,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    public Result call(String functionName, Map parameters)
    throws IllegalArgumentException, CallException {
-      return call(new CallRequest(null, functionName, parameters));
-   }
-
-   /**
-    * Calls the specified API function with the specified parameters.
-    *
-    * @param sessionID
-    *    the session identifier, if any, or <code>null</code> if the function
-    *    is session-less.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed to that function, or
-    *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
-    * @throws CallException
-    *    if the call failed.
-    */
-   public Result call(String sessionID,
-                      String functionName,
-                      Map    parameters)
-   throws IllegalArgumentException, CallException {
-      return call(new CallRequest(sessionID, functionName, parameters));
+      return call(new CallRequest(functionName, parameters));
    }
 
    /**
@@ -423,9 +377,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        *    the {@link TargetDescriptor} that was used to successfully get the
        *    result, cannot be <code>null</code>.
        *
-       * @param success
-       *    success indication returned by the function.
-       *
        * @param code
        *    the return code, if any, can be <code>null</code>.
        *
@@ -443,7 +394,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>)))</code>
        */
       public Result(TargetDescriptor target,
-                    boolean          success,
                     String           code,
                     Map              parameters,
                     Element          dataElement)
@@ -464,7 +414,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
          // Store all the information
          _target      = target;
-         _success     = success;
          _code        = code;
          _parameters  = parameters == null
                       ? CollectionUtils.EMPTY_MAP
@@ -482,11 +431,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        * result. Cannot be <code>null</code>.
        */
       private final TargetDescriptor _target;
-
-      /**
-       * Success indication.
-       */
-      private final boolean _success;
 
       /**
        * The result code. This field is <code>null</code> if no code was
@@ -521,16 +465,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        */
       public TargetDescriptor getTarget() {
          return _target;
-      }
-
-      /**
-       * Returns the success indication.
-       *
-       * @return
-       *    success indication, <code>true</code> or <code>false</code>.
-       */
-      public boolean isSuccess() {
-         return _success;
       }
 
       /**
