@@ -51,8 +51,10 @@ public final class GroupDescriptor extends Descriptor {
     *    list of members of the group, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>type == null || members == null || members<em>n</em> == null</code> (where
-    *    <code>0 &lt;= <em>n</em> &lt; members.length</code>).
+    *    if <code>type == null
+    *          || members == null
+    *          || members[<em>n</em>] == null</code>
+    *    (where <code>0 &lt;= <em>n</em> &lt; members.length</code>).
     */
    public GroupDescriptor(Type type, Descriptor[] members) {
 
