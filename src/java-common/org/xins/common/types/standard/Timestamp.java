@@ -3,6 +3,7 @@
  */
 package org.xins.common.types.standard;
 
+import java.util.Calendar;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
@@ -48,7 +49,7 @@ public class Timestamp extends Type {
       int hour = today.get(Calendar.HOUR);
       int minutes = today.get(Calendar.MINUTE);
       int seconds = today.get(Calendar.SECOND);
-      return new Date.Value(year, month, day, hour, minutes, seconds);
+      return new Value(year, month, day, hour, minutes, seconds);
    }
 
    /**

@@ -3,6 +3,7 @@
  */
 package org.xins.common.types.standard;
 
+import java.util.Calendar;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
@@ -43,7 +44,7 @@ public class Date extends Type {
       int year = today.get(Calendar.YEAR);
       int month = today.get(Calendar.MONTH);
       int day = today.get(Calendar.DAY_OF_MONTH);
-      return new Date.Value(year, month, day);
+      return new Value(year, month, day);
    }
 
    /**
