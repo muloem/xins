@@ -21,7 +21,7 @@
 
 	<xsl:output indent="yes" />
 
-	<xsl:variable name="xmlenc_version"    select="'0.41'"                                          />
+	<xsl:variable name="xmlenc_version"    select="'0.43'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home,    '/build/xins-common.jar')" />
