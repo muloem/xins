@@ -98,8 +98,15 @@
 					<xsl:value-of select="$api" />
 				</servlet-name>
 				<url-pattern>
-					<xsl:text>/</xsl:text>
-					<xsl:value-of select="$api" />
+					<xsl:choose>
+						<xsl:when test="@mapping">
+							<xsl:value-of select="@mapping" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>/</xsl:text>
+							<xsl:value-of select="$api" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</url-pattern>
 			</servlet-mapping>
 		</web-app>
