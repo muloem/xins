@@ -47,7 +47,7 @@ public final class EnumItem extends Object {
     * @throws IllegalArgumentException
     *    if <code>name == null || value == null</code>.
     */
-   protected EnumItem(String name, String value)
+   public EnumItem(String name, String value)
    throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name, "value", value);
 
