@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://xins.sourceforge.net/dtd/api_1_0.dtd">
+
+<api name="allinone" owner="johnd"
+rcsversion="$Revision$" rcsdate="$Date$">
+
+	<description>API that uses all the features included in XINS.</description>
+
+	<function name="Logdoc"       />
+	<function name="DataSection"  />
+	<function name="DataSection2" freeze="1.1" />
+	<function name="ResultCode"   />
+	<function name="DefinedTypes" />
+	<function name="SimpleTypes"  />
+
+	<type name="Age"               />
+	<type name="AgeNameProperties" />
+	<type name="IPAddress"         />
+	<type name="TextList"          freeze="1.1" />
+	<type name="Salutation"        />
+
+	<resultcode name="AlreadySet"    />
+	<resultcode name="InvalidNumber" />
+
+</api>

@@ -19,6 +19,11 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
   - Fixed the PCDATA set in the data section was not parsed correctly.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
+* Tests
+  - Added JCoverage to the libraries and added a coverage task that shows the 
+    code covered by the tests.
+  - Integrated the allinone example to the src/tests directory.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
 

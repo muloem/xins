@@ -95,9 +95,9 @@ public class MetaFunctionsTests extends TestCase {
     * Starts the HTTP server with the correct parameters.
     */
    protected void setUp() throws ServletException, IOException {
-      File xinsProps = new File(System.getProperty("user.dir"), "../xins-examples/xins.properties");
+      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
-      String warLocation = "../xins-examples/xins-project/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
+      String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
       
       // Start the web server

@@ -72,10 +72,15 @@ public class LocalServletHandler {
       // to do so the /WEB-INF/classes/impl.xml should be parsed
 
       // create and initiliaze the Servlet
-      _apiServlet = (APIServlet) servletClassLoader.loadClass("org.xins.server.APIServlet").newInstance();
-      //new APIServlet();
-      LocalServletConfig servletConfig = new LocalServletConfig(warFile);
-      _apiServlet.init(servletConfig);
+      try {
+         _apiServlet = (APIServlet) servletClassLoader.loadClass("org.xins.server.APIServlet").newInstance();
+         //new APIServlet();
+         LocalServletConfig servletConfig = new LocalServletConfig(warFile);
+         _apiServlet.init(servletConfig);
+      } catch (ClassNotFoundException exception) {
+         exception.printStackTrace();
+         throw exception;
+      }
    }
 
    /**

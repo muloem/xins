@@ -108,6 +108,7 @@
 		<delete dir="build" />
 		<delete dir="docs" />
 		<delete dir="demo" />
+		<delete dir="src/tests/build" />
 	</target>
 
 	<target name="java-logdoc" depends="-init" description="Compiles the XINS/Java logdoc code">
@@ -351,9 +352,18 @@
 	</target>
 
 	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
+		<!-- Compiles the example used for the tests -->
+		<!--delete dir="src/tests/build" /-->
+		<ant antfile="${basedir}/src/ant/make-build.xml" dir="src/tests">
+			<property name="xins_home" value="${basedir}"/>
+			<property name="user.dir" value="${basedir}/src/tests"/>
+		</ant>
+		<ant antfile="build/build.xml" dir="src/tests" target="all-allinone" />
+		
+		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />
 		<javac destdir="build/classes/tests"
-		       includes="**/*.java"
+		       includes="org/xins/tests/**/*.java"
 		       debug="true"
 		       deprecation="false"
 		       source="${javac.targetvm}"
@@ -364,7 +374,7 @@
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
 				<pathelement location="build/logdoc.jar" />
-				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
@@ -373,8 +383,6 @@
 	<target name="do-tests" depends="classes-tests" description="Runs the unit tests">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
-		<available property="xins.examples" file="${basedir}/../xins-examples" />
-		<fail message="Please, check out the xins-examples in the ${basedir} directory." unless="xins.examples" />
 		
 		<junit printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
@@ -386,9 +394,9 @@
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
 				<pathelement location="build/logdoc.jar" />
-				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
-				<pathelement location="../xins-examples/xins-project/build/classes-api/allinone" />
-				<pathelement location="../xins-examples/xins-project/build/classes-types/allinone" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
