@@ -277,15 +277,6 @@ implements Responder, Log {
       _session         = session;
       _returnSessionID = true;
 
-      if (_logger.isDebugEnabled()) {
-         FastStringBuffer buffer = new FastStringBuffer(80);
-         buffer.append(_logPrefix);
-         buffer.append("Created session ");
-         buffer.append(session.getIDString());
-         buffer.append('.');
-         _logger.debug(buffer.toString());
-      }
-
       return session;
    }
 

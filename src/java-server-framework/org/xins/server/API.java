@@ -748,8 +748,10 @@ implements DefaultResultCodes {
 
       // Generate a session ID that does not yet exist
       Object sessionID;
+      int count = 0;
       do {
          sessionID = _sessionIDGenerator.generateSessionID();
+         count++;
       } while (_sessionsByID.get(sessionID) != null);
 
       // Construct a Session object...
@@ -757,6 +759,9 @@ implements DefaultResultCodes {
 
       // ...store it...
       _sessionsByID.put(sessionID, session);
+
+      // ...log it...
+      Log.log_5010(sessionID, count);
 
       // ...and then return it
       return session;
