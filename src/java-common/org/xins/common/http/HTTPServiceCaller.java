@@ -339,16 +339,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Trace first and then call superclass constructor
       super(trace(descriptor), callConfig);
 
-      // Check that all targets have a supported protocol
-      Iterator iterator = descriptor.iterateTargets();
-      while (iterator.hasNext()) {
-         TargetDescriptor target = (TargetDescriptor) iterator.next();
-         String url = target.getURL().toLowerCase();
-         if (! url.startsWith("http://")) {
-            throw new UnsupportedProtocolException(target);
-         }
-      }
-
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
    }
@@ -380,6 +370,35 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Checks if the specified protocol is supported (implementation method).
+    * The protocol is the part in a URL before the string <code>"://"</code>).
+    *
+    * <p>This method should only ever be called from the
+    * {@link #isProtocolSupported(String)} method.
+    *
+    * <p>The implementation of this method in class <code>ServiceCaller</code>
+    * throws an {@link UnsupportedOperationException}.
+    *
+    * @param protocol
+    *    the protocol, guaranteed not to be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the specified protocol is supported, or
+    *    <code>false</code> if it is not.
+    *
+    * @throws UnsupportedOperationException
+    *    if this method is not implemented (probably because this
+    *    <code>ServiceCaller</code> implementation was originally written with
+    *    XINS 1.0.x or XINS 1.1.x)
+    *
+    * @since XINS 1.2.0
+    */
+   protected boolean isProtocolSupportedImpl(String protocol)
+   throws UnsupportedOperationException {
+      return "http".equals(protocol);
+   }
 
    /**
     * Returns a default <code>CallConfig</code> object. This method is called
