@@ -519,6 +519,16 @@ implements DefaultResultCodes {
       }
 
       /**
+       * Returns the start time of the successful call that took the shortest.
+       *
+       * @return
+       *    the start time of the successful call that took the shortest.
+       */
+      public long getSuccessfulMinStart() {
+         return _successfulMin;
+      }
+
+      /**
        * Returns the minimum time an unsuccessful call took.
        *
        * @return
@@ -529,23 +539,62 @@ implements DefaultResultCodes {
       }
 
       /**
-       * Returns the maximum time a successful call took.
+       * Returns the start time of the unsuccessful call that took the shortest.
        *
        * @return
-       *    the maximum time a successful call took.
+       *    the start time of the unsuccessful call that took the shortest,
+       *    always &gt;= 0.
+       */
+      public long getUnsuccessfulMinStart() {
+         return _unsuccessfulMin;
+      }
+
+      // TODO: Have a similar description for all these getters
+
+      /**
+       * Returns the duration of the successful call that took the longest.
+       *
+       * @return
+       *    the duration of the successful call that took the longest, always
+       *    &gt;= 0.
        */
       public long getSuccessfulMax() {
          return _successfulMax;
       }
 
       /**
-       * Returns the maximum time an unsuccessful call took.
+       * Returns the start time of the most recent successful call that took
+       * the longest.
        *
        * @return
-       *    the maximum time an unsuccessful call took.
+       *    the start time of the most recent successful call that took the
+       *    longest, always &gt;= 0.
+       */
+      public long getSuccessfulMaxStart() {
+         return _successfulMaxStart;
+      }
+
+      /**
+       * Returns the duration of the unsuccessful call that took the longest.
+       *
+       * @return
+       *    the duration of the unsuccessful call that took the longest,
+       *    always &gt;= 0.
        */
       public long getUnsuccessfulMax() {
          return _unsuccessfulMax;
+      }
+
+      /**
+       * Returns the start time of the most recent unsuccessful call that took
+       * the longest.
+       *
+       * @return
+       *    the start time of the most recent unsuccessful call that took the
+       *    longest, always &gt;= 0.
+       */
+      public long getUnsuccessfulMaxStart() {
+         return _unsuccessfulMaxStart;
       }
    }
 }

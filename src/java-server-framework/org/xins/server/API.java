@@ -379,50 +379,66 @@ implements DefaultResultCodes {
 
          String successfulAverage;
          String successfulMin;
+         String successfulMinStart;
          String successfulMax;
+         String successfulMaxStart;
          String lastSuccessfulStart;
          String lastSuccessfulDuration;
          if (successfulCalls == 0) {
             successfulAverage = "NA";
             successfulMin     = "NA";
+            successfulMinStart = "NA";
             successfulMax     = "NA";
+            successfulMaxStart = "NA";
             lastSuccessfulStart    = "NA";
             lastSuccessfulDuration = "NA";
          } else if (successfulDuration == 0) {
             successfulAverage = "0";
             successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
             successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
             lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          } else {
             successfulAverage = String.valueOf(successfulDuration / successfulCalls);
             successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
             successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
             lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          }
 
          String unsuccessfulAverage;
          String unsuccessfulMin;
+         String unsuccessfulMinStart;
          String unsuccessfulMax;
+         String unsuccessfulMaxStart;
          String lastUnsuccessfulStart;
          String lastUnsuccessfulDuration;
          if (unsuccessfulCalls == 0) {
             unsuccessfulAverage = "NA";
             unsuccessfulMin     = "NA";
+            unsuccessfulMinStart = "NA";
             unsuccessfulMax     = "NA";
+            unsuccessfulMinStart = "NA";
             lastUnsuccessfulStart    = "NA";
             lastUnsuccessfulDuration = "NA";
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage = "0";
             unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
             unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
             lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          } else {
             unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
             unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
             unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
             lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          }
@@ -431,9 +447,15 @@ implements DefaultResultCodes {
          context.attribute("name", function.getName());
          context.startTag("successful");
          context.attribute("count", String.valueOf(successfulCalls));
-         context.attribute("min",   successfulMin);
-         context.attribute("max",   successfulMax);
          context.attribute("average", successfulAverage);
+         context.startTag("min");
+         context.attribute("start",    successfulMinStart);
+         context.attribute("duration", successfulMin);
+         context.endTag(); // min
+         context.startTag("max");
+         context.attribute("start",    successfulMaxStart);
+         context.attribute("duration", successfulMax);
+         context.endTag(); // max
          context.startTag("last");
          context.attribute("start",    lastSuccessfulStart);
          context.attribute("duration", lastSuccessfulDuration);
@@ -441,9 +463,13 @@ implements DefaultResultCodes {
          context.endTag(); // successful
          context.startTag("unsuccessful");
          context.attribute("count",   String.valueOf(unsuccessfulCalls));
-         context.attribute("min",     unsuccessfulMin);
-         context.attribute("max",     unsuccessfulMax);
          context.attribute("average", unsuccessfulAverage);
+         context.startTag("min");
+         context.attribute("duration",     unsuccessfulMin);
+         context.endTag(); // min
+         context.startTag("max");
+         context.attribute("duration",     unsuccessfulMax);
+         context.endTag(); // max
          context.startTag("last");
          context.attribute("start",    lastUnsuccessfulStart);
          context.attribute("duration", lastUnsuccessfulDuration);
