@@ -11,7 +11,9 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 /**
- * Type for a function parameter.
+ * Value type. This is an abstract base class for type classes. Each type
+ * defines a name and it defines what values are considered valid and what
+ * values are considered invalid.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
