@@ -19,6 +19,7 @@ $Id$
 	<xsl:param name="builddir"     />
 	<xsl:param name="xins_version" />
 	
+	<xsl:variable name="typeClassesDir"    select="concat($project_home, '/build/classes-types/', $api)" />
 	<xsl:variable name="xmlenc_version"    select="'0.37'" />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
@@ -199,7 +200,6 @@ $Id$
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/',    $api)"    />
-					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes-types/', $api)" />
 
 					<xsl:for-each select="document($api_file)/api/type">
 						<xsl:variable name="type" select="@name" />
@@ -224,10 +224,10 @@ $Id$
 						</style>
 					</xsl:for-each>
 
-					<mkdir dir="{$classesDestDir}" />
+					<mkdir dir="{$typeClassesDir}" />
 					<javac
 					srcdir="{$javaDestDir}"
-					destdir="{$classesDestDir}"
+					destdir="{$typeClassesDir}"
 					debug="true"
 					deprecation="true">
 						<classpath>
@@ -430,6 +430,7 @@ $Id$
 								</lib>
 							</xsl:for-each>
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
+							<classes dir="{$typeClassesDir}" includes="**/*.class" />
 							<classes dir="{$javaImplDir}"    excludes="**/*.java" />
 						</war>
 					</target>
