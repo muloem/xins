@@ -46,6 +46,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.NoSuchTranslationBundleException;
+import org.xins.logdoc.LogStatistics;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -155,7 +156,20 @@ public class Log extends AbstractLog {
 
       // Store the bundle
       TRANSLATION_BUNDLE = bundle;
-   }]]></xsl:text>
+   }
+
+   /**
+    * Returns the statistics for all log entries.
+    *
+    * @return
+    *    the statistics, never <code>null</code>.
+    */
+   public LogStatistics getStatistics() {
+      return new LogStatistics(new LogStatistics.Entry[] {]]></xsl:text>
+		<xsl:apply-templates select="group/entry" mode="log_entry" />
+		<xsl:text>
+      });
+   }</xsl:text>
 
 		<xsl:apply-templates select="group/entry" />
 
@@ -250,5 +264,15 @@ public class Log extends AbstractLog {
    private static int COUNT_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="group/entry" mode="log_entry">
+		<xsl:if test="not (position() = 1)">,</xsl:if>
+		<xsl:text>
+         new LogStatistics.Entry("</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>", COUNT_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>)</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
