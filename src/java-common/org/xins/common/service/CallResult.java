@@ -6,12 +6,17 @@ package org.xins.common.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Result of a call to a service. The actual result is returned, combined with
  * links to the services that failed and a link to the service to which the
  * call succeeded.
+ *
+ * <p>This is an <code>abstract</code> class. Service callers return a
+ * specific kind of result, which is derived from this class.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -23,6 +28,12 @@ public abstract class CallResult extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = CallResult.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -60,6 +71,9 @@ public abstract class CallResult extends Object {
                         CallExceptionList exceptions)
    throws IllegalArgumentException {
 
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("request",         request,
                                      "succeededTarget", succeededTarget);
@@ -72,6 +86,9 @@ public abstract class CallResult extends Object {
       _succeededTarget = succeededTarget;
       _duration        = duration;
       _exceptions      = exceptions;
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 

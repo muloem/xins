@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
+
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -26,6 +28,27 @@ public final class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = GroupDescriptor.class.getName();
+
+   /**
+    * The fully-qualified name of this inner class <code>Type</code>.
+    */
+   private static final String TYPE_CLASSNAME = GroupDescriptor.Type.class.getName();
+
+   /**
+    * The fully-qualified name of the inner class <code>RandomIterator</code>.
+    */
+   private static final String RANDOM_ITERATOR_CLASSNAME = GroupDescriptor.RandomIterator.class.getName();
+
+   /**
+    * The fully-qualified name of this inner class
+    * <code>OrderedIterator</code>.
+    */
+   private static final String ORDERED_ITERATOR_CLASSNAME = GroupDescriptor.OrderedIterator.class.getName();
 
    /**
     * The identifier of the <em>random</em> group type.
@@ -112,6 +135,9 @@ public final class GroupDescriptor extends Descriptor {
    public GroupDescriptor(Type type, Descriptor[] members)
    throws IllegalArgumentException {
 
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
       int size = members.length;
@@ -130,6 +156,9 @@ public final class GroupDescriptor extends Descriptor {
       // Recursively add all TargetDescriptor instances to the Map
       _targetsByCRC = new HashMap();
       addTargetsByCRC(members);
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
    /**
@@ -279,7 +308,14 @@ public final class GroupDescriptor extends Descriptor {
        *    the description for this type.
        */
       private Type(String description) {
+
+         // TRACE: Enter constructor
+         Log.log_3000(TYPE_CLASSNAME, null);
+
          _description = description;
+
+         // TRACE: Leave constructor
+         Log.log_3002(TYPE_CLASSNAME, null);
       }
 
 
@@ -330,6 +366,9 @@ public final class GroupDescriptor extends Descriptor {
        */
       private RandomIterator() {
 
+         // TRACE: Enter constructor
+         Log.log_3000(RANDOM_ITERATOR_CLASSNAME, null);
+
          // Copy all members to _remaining
          int size = _members.length;
          _remaining = new ArrayList(size);
@@ -343,6 +382,9 @@ public final class GroupDescriptor extends Descriptor {
 
          // Initialize the current iterator to link to that member's services
          _currentIterator = member.iterateTargets();
+
+         // TRACE: Leave constructor
+         Log.log_3002(RANDOM_ITERATOR_CLASSNAME, null);
       }
 
 
@@ -440,11 +482,17 @@ public final class GroupDescriptor extends Descriptor {
        */
       private OrderedIterator() {
 
+         // TRACE: Enter constructor
+         Log.log_3000(ORDERED_ITERATOR_CLASSNAME, null);
+
          // Copy all members to _remaining
          _currentIndex = 0;
 
          // Initialize the current iterator to link to that member's services
          _currentIterator = _members[0].iterateTargets();
+
+         // TRACE: Leave constructor
+         Log.log_3002(ORDERED_ITERATOR_CLASSNAME, null);
       }
 
 

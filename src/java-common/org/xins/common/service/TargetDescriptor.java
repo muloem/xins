@@ -47,6 +47,16 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = TargetDescriptor.class.getName();
+
+   /**
+    * The fully-qualified name of the inner class <code>Iterator</code>.
+    */
+   private static final String ITERATOR_CLASSNAME = TargetDescriptor.Iterator.class.getName();
+
+   /**
     * The default time-out when no time-out is specified.
     */
    private static final int DEFAULT_TIMEOUT = 5000;
@@ -247,6 +257,9 @@ public final class TargetDescriptor extends Descriptor {
                            int    socketTimeOut)
    throws IllegalArgumentException, MalformedURLException {
 
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
       if (! PATTERN_MATCHER.matches(url, PATTERN)) {
@@ -274,6 +287,7 @@ public final class TargetDescriptor extends Descriptor {
       _crc               = computeCRC32(url);
 
       // Convert to a string
+      // TODO: Include CRC in _asString
       FastStringBuffer buffer = new FastStringBuffer(290, "TargetDescriptor(url=\"");
       buffer.append(url);
       buffer.append("\"; total time-out is ");
@@ -297,7 +311,8 @@ public final class TargetDescriptor extends Descriptor {
       }
       _asString = buffer.toString();
 
-      Log.log_3319(url, _crc, connectionTimeOut, socketTimeOut, timeOut);
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, _asString);
    }
 
 
@@ -466,7 +481,13 @@ public final class TargetDescriptor extends Descriptor {
        * Constructs a new <code>Iterator</code>.
        */
       private Iterator() {
+         // TRACE: Enter constructor
+         Log.log_3000(ITERATOR_CLASSNAME, null);
+
          // empty
+
+         // TRACE: Leave constructor
+         Log.log_3002(ITERATOR_CLASSNAME, null);
       }
 
 

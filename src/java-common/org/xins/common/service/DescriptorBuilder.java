@@ -312,6 +312,8 @@ public final class DescriptorBuilder extends Object {
     */
    private DescriptorBuilder() {
       // empty
+
+      // NOTE: No tracing is performed, since this constructor is never used
    }
 
 

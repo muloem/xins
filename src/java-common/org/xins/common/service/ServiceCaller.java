@@ -26,6 +26,12 @@ public abstract class ServiceCaller extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = ServiceCaller.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -46,11 +52,17 @@ public abstract class ServiceCaller extends Object {
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
 
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
       // Set fields
       _descriptor = descriptor;
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 

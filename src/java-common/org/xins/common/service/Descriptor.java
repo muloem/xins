@@ -5,6 +5,8 @@ package org.xins.common.service;
 
 import java.util.Iterator;
 
+import org.xins.common.Log;
+
 /**
  * Descriptor for a service or group of services.
  *
@@ -19,6 +21,12 @@ public abstract class Descriptor extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = Descriptor.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -31,7 +39,14 @@ public abstract class Descriptor extends Object {
     * Constructs a new <code>Descriptor</code>.
     */
    Descriptor() {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       // empty
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 
