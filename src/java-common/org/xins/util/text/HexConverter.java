@@ -24,8 +24,9 @@ public class HexConverter extends Object {
     * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
     */
    private static final char[] DIGITS = {
-      '0' , '1' , '2' , '3' , '4' , '5' ,
-      '6' , '7' , '8' , '9' , 'a' , 'b' ,
+      '0' , '1' , '2' , '3' ,
+      '4' , '5' , '6' , '7' ,
+      '8' , '9' , 'a' , 'b' ,
       'c' , 'd' , 'e' , 'f'
    };
 
@@ -48,10 +49,13 @@ public class HexConverter extends Object {
    /**
     * Array of 16 zero characters.
     */
-   private static final char[] SIXTEEN_ZEROES = new char[] { '0', '0', '0', '0',
-                                                             '0', '0', '0', '0',
-                                                             '0', '0', '0', '0',
-                                                             '0', '0', '0', '0' };
+   private static final char[] SIXTEEN_ZEROES = {
+      '0', '0', '0', '0',
+      '0', '0', '0', '0',
+      '0', '0', '0', '0',
+      '0', '0', '0', '0' 
+   };
+
 
    //-------------------------------------------------------------------------
    // Class functions
