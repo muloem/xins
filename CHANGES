@@ -8,6 +8,9 @@ CHANGES INTRODUCED IN XINS 0.56:
 * Test forms now display a SELECT box for booleans with the options: empty,
   'true' and 'false'.
 
+* In generated specified documentation: No longer displaying standard result
+  code as acronym.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.55:
 
