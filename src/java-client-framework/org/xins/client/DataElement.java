@@ -179,30 +179,6 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Gets all child elements, through an <code>Iterator</code>.
-    *
-    * @return
-    *    an {@link Iterator} that returns each child of this element as
-    *    another <code>DataElement</code> instance; can be <code>null</code>,
-    *    if this element has no children.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0-beta11. Use {@link #getChildElements()}
-    *    instead, which returns a {@link List} instead of an {@link Iterator},
-    *    and which never returns <code>null</code>, which should make that
-    *    method easier and safer to use.
-    */
-   public Iterator getChildren() {
-
-      // If there are no children, then return null
-      if (_children.size() == 0) {
-         return null;
-      }
-
-      return _children.iterator();
-   }
-
-   /**
     * Gets the list of all child elements.
     *
     * @return
@@ -224,56 +200,6 @@ public class DataElement implements Cloneable {
       }
 
       return children;
-   }
-
-   /**
-    * Gets child elements with the specified name from this element.
-    *
-    * @param name
-    *    the name for the child elements to match, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    an {@link Iterator} that returns each child that matches the
-    *    specified name as another <code>DataElement</code> instance; can be
-    *    <code>null</code>, if this element has no children.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0-beta11. Use
-    *    {@link #getChildElements(String)} instead, which returns a
-    *    {@link List} instead of an {@link Iterator} and which never returns
-    *    <code>null</code>, which should make that method easier and safer to
-    *    use.
-    */
-   public Iterator getChildren(String name)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
-
-      // If there are no children, then return null
-      if (_children.size() == 0) {
-         return null;
-      }
-
-      List matches = new ArrayList();
-      Iterator it = _children.iterator();
-      while (it.hasNext()) {
-         DataElement child = (DataElement) it.next();
-         if (name.equals(child.getName())) {
-            matches.add(child);
-         }
-      }
-
-      // If there are no matching children, then return null
-      if (matches.size() == 0) {
-         return null;
-      }
-
-      return matches.iterator();
    }
 
    /**
