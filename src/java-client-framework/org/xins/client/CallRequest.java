@@ -55,7 +55,7 @@ public final class CallRequest extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   CallRequest(String sessionID, String functionName, Map parameters)
+   public CallRequest(String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException {
 
       // Check preconditions
