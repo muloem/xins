@@ -10,6 +10,14 @@ CHANGES INTRODUCED IN XINS 0.164:
   - Generating LogController subclass for each Log class.
   - Removed setTranslationBundle() from generated Log class.
 
+* Generated build file:
+  - Added a new target server-<api> that builds the war file, the specdocs 
+    and the javadoc on the server-side.
+  - Added a new target client-<api> that builds the jar file and the javadoc 
+    on the client-side.
+  - Added a new target all-<api> that builds the server-side and the 
+    client-side.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
