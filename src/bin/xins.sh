@@ -49,6 +49,11 @@ if [ ! -d ${builddir} ]; then
 	mkdir ${builddir}
 fi
 
+# Delete the Ant build file if it exists
+if [ -f ${builddir}/build.xml ]; then
+	rm ${builddir}/build.xml
+fi
+
 # Create the Ant build file
 out=${builddir}/build.xml
 project_home=`pwd`
