@@ -130,9 +130,7 @@ public interface Responder
 extends ResponderStates {
 
    /**
-    * Creates a new session and associates it with this call. After calling
-    * this method, {@link #getSession()} will return the session returned from
-    * this call.
+    * Creates a new session and associates it with this call.
     *
     * <p>Calling this method will trigger the return of the
     * <code>_session</code> output parameter from the call.
