@@ -460,8 +460,8 @@ extends AbstractCompositeFunctionCaller {
    /**
     * Returns the result of <code>tryCall()</code>. This utility method can be
     * called from {@link #callImpl(String,String,Map)} after
-    * {@link tryCall(FunctionCaller,String,String)} has been called as many
-    * times as necessary.
+    * {@link tryCall(FunctionCaller,String,String,Map)} has been called as
+    * many times as necessary.
     *
     * <p>If the specified object is a <code>CallResult</code> object, then it
     * will be <em>returned</em>. If it is an exception, then that exception
