@@ -358,7 +358,7 @@ implements DefaultResultCodes {
       if (_deployment == null) {
          LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
       } else {
-         LOG.info("Built deployment \"" + _deployment + "\" on " + _buildHost + " (" + _buildTime + ").");
+         LOG.info("Built on " + _buildHost + " (" + _buildTime + "), for deployment \"" + _deployment + "\".");
       }
 
       // Let the subclass perform initialization
