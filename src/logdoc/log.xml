@@ -464,6 +464,22 @@
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
 		</entry>
+		<entry id="5006" level="INFO">
+			<description>Setting session attribute value.</description>
+			<param name="name" nullable="false" />
+			<param name="valueClass" nullable="true" />
+			<param name="valueString" nullable="true" />
+		</entry>
+		<entry id="5007" level="INFO">
+			<description>Resetting session attribute.</description>
+			<param name="name" nullable="false" />
+		</entry>
+		<entry id="5008" level="INFO">
+			<description>Getting session attribute value.</description>
+			<param name="name" nullable="false" />
+			<param name="valueClass" nullable="true" />
+			<param name="valueString" nullable="true" />
+		</entry>
 	</group>
 
 	<group id="shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
