@@ -77,18 +77,20 @@ public class MetaFunctionsTests extends TestCase {
     * Starts the HTTP server with the correct parameters.
     */
    protected void setUp() {
-      // Start the web server
       File xinsProps = new File(System.getProperty("user.dir"), "../xins-examples/xins.properties");
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
-      _httpServer = new HTTPServletHandler("../xins-examples/xins-project/build/webapps/allinone/allinone.war");
-      System.err.println("Web server set up.");
+      String warLocation = "../xins-examples/xins-project/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
+      File warFile = new File(System.getProperty("user.dir"), warLocation);
+      
+      // Start the web server
+      _httpServer = new HTTPServletHandler(warFile);
+      //System.err.println("Web server set up.");
    }
 
    public void testGetVersion() throws Throwable {
-      XINSCallRequest request = new XINSCallRequest("_GetVersion", null, false, HTTPMethod.GET);
+      XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
-      System.err.println("Calling server...");
       XINSCallResult result = caller.call(request);
       System.err.println("Server called");
       assertNull("The function returned a result code.", result.getErrorCode());

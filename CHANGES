@@ -102,6 +102,12 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
   - The files created with the "create" targets have now the correct OS
     linefeed character(s).
 
+* Tests
+  - Added the MetaFunctionsTests that tests the XINSServiceCaller and the
+    _GetVersion meta function. This test requires the xins-examples directory
+    in the same directory as xins. The allinone example should be compiled.
+  - Added a basic implementation of a Servlet container that can run XINS APIs.
+
 * Build and release process:
   - Added the possibility to release with a specific version
     (e.g. 1.0.0-beta2).

@@ -60,7 +60,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
       } else {
          _queryString = url;
       }
-      StringTokenizer paramsParser = new StringTokenizer(_queryString, ",");
+      StringTokenizer paramsParser = new StringTokenizer(_queryString, "&");
       while (paramsParser.hasMoreTokens()) {
          String parameter = paramsParser.nextToken();
          int equalPos = parameter.indexOf('=');

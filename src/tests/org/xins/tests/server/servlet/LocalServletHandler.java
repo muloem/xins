@@ -3,7 +3,10 @@
  */
 package org.xins.tests.server.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import javax.servlet.ServletException;
 import org.xins.server.APIServlet;
 
@@ -41,10 +44,12 @@ public class LocalServletHandler {
     *    the location of the war file containing the Servlet, cannot be 
     *    <code>null</code>.
     */
-   private LocalServletHandler(String warFile) {
+   private LocalServletHandler(File warFile) {
       try {
          initServlet(warFile);
       } catch (ServletException ex) {
+         ex.printStackTrace();
+      } catch (Exception ex) {
          ex.printStackTrace();
       }
    }
@@ -55,8 +60,20 @@ public class LocalServletHandler {
     * @param warFile
     *    the location of the war file, cannot be <code>null</code>.
     */
-   public void initServlet(String warFile) throws ServletException {
-      _apiServlet = new APIServlet();
+   public void initServlet(File warFile) throws ServletException, Exception {
+      // create the correct class loader
+      URL warURL = warFile.toURL();
+      URL[] warURLs = {warURL}; 
+      URLClassLoader warClassLoader = new URLClassLoader(warURLs);
+      URL classesURL = warClassLoader.getResource("/WEB-INF/classes");
+      URL[] classesURLs = {classesURL};
+      URLClassLoader servletClassLoader = new URLClassLoader(classesURLs);
+      // This class loader doesn't takes the dependencies
+      // to do so the /WEB-INF/classes/impl.xml should be parsed
+
+      // create and initiliaze the Servlet
+      _apiServlet = (APIServlet) servletClassLoader.loadClass("org.xins.server.APIServlet").newInstance();
+      //new APIServlet();
       LocalServletConfig servletConfig = new LocalServletConfig(warFile);
       _apiServlet.init(servletConfig);
    }
@@ -64,7 +81,7 @@ public class LocalServletHandler {
    /**
     * Gets the instance of the Servlet handler.
     */
-   public final static LocalServletHandler getInstance(String warFile) {
+   public final static LocalServletHandler getInstance(File warFile) {
       if (_servlet == null) {
          _servlet = new LocalServletHandler(warFile);
       }
@@ -97,7 +114,7 @@ public class LocalServletHandler {
     *    the url query for the request.
     */
    public String query(String url) throws IOException {
-      LocalHTTPServletRequest request = new LocalHTTPServletRequest(url.replace('&', ','));
+      LocalHTTPServletRequest request = new LocalHTTPServletRequest(url);
       LocalHTTPServletResponse response = new LocalHTTPServletResponse();
       _apiServlet.service(request, response);
       return response.getResult();

@@ -44,17 +44,15 @@ public class LocalServletConfig implements ServletConfig {
     * Creates a new Servlet configuration.
     *
     * @param warFileLocation
-    *    the location of the war file containing the servlet to deploy,
+    *    the war file containing the servlet to deploy,
     *    cannot be <code>null</code>.
     */
-   public LocalServletConfig(String warFileLocation) {
+   public LocalServletConfig(File warFileLocation) {
       _initParameters = new Properties();
       _context = new LocalServletContext();
       
       try {
-         File file = new File(System.getProperty("user.dir"), warFileLocation.replace('/', File.separatorChar));
-         System.err.println("config " + file.getAbsolutePath());
-         JarFile warFile = new JarFile(file);
+         JarFile warFile = new JarFile(warFileLocation);
          JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
          InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
 
@@ -174,12 +172,10 @@ public class LocalServletConfig implements ServletConfig {
             _paramName = _pcdata.toString();
          } else if (qName.equals("param-value")) {
             _initParameters.setProperty(_paramName, _pcdata.toString());
-            System.err.println("added " + _paramName + ":" + _pcdata.toString());
          } else if (qName.equals("servlet-name")) {
             _servletName = _pcdata.toString();
          } else if (qName.equals("servlet-class")) {
             _servletClass = _pcdata.toString();
-            System.err.println("servlet class " + _servletClass);
          }
          _pcdata = null;
       }

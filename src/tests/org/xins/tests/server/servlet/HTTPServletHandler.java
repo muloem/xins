@@ -6,6 +6,7 @@ package org.xins.tests.server.servlet;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -43,7 +44,7 @@ public class HTTPServletHandler {
     * @param warFile
     *    the war file of the application to deploy, cannot be <code>null</code>.
     */
-   public HTTPServletHandler(String warFile) {
+   public HTTPServletHandler(File warFile) {
       try {
          // Initialize the servlet
          initServlet(warFile);
@@ -89,9 +90,9 @@ public class HTTPServletHandler {
     * Initializes the Servlet.
     *
     * @param warFile
-    *    the location of the war file, cannot be <code>null</code>.
+    *    the war file containing the Servlet, cannot be <code>null</code>.
     */
-   public void initServlet(String warFile) throws ServletException {
+   public void initServlet(File warFile) throws ServletException {
       _apiServlet = new APIServlet();
       LocalServletConfig servletConfig = new LocalServletConfig(warFile);
       _apiServlet.init(servletConfig);
@@ -171,7 +172,7 @@ public class HTTPServletHandler {
       String inputLine;
     
       while ((inputLine = input.readLine()) != null) {
-         // System.out.println("*** input: " + inputLine);
+         //System.out.println("*** input: " + inputLine);
          if (inputLine.startsWith("GET ")) {
             int questionPos = inputLine.indexOf('?');
             if (questionPos !=-1) {
@@ -182,12 +183,36 @@ public class HTTPServletHandler {
                   inputLine = inputLine.substring(questionPos + 1);
                }
             }
+            inputLine = inputLine.replace(',', '&');
             LocalHTTPServletResponse response = query(inputLine);
             String result = response.getResult();
             String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
             httpResult += "Content-type: " + response.getContentType() + "\n";
             int length = result.length() + 1;
             httpResult += "Content-Length: " + length + "\n";
+            httpResult += "Connection: close\n";
+            httpResult += "\n";
+            httpResult += result + "\n";
+            httpResult += "\n";
+            return httpResult;
+         }
+         
+         // POST method
+         if (inputLine.startsWith("Content-Length: ")) {
+            int postLength = Integer.parseInt(inputLine.substring(16));
+            input.readLine();
+            input.readLine();
+            byte[] data = new byte[postLength];
+            input.read(data);
+            //System.out.println("*** input "+new String(data));
+            
+            LocalHTTPServletResponse response = query(new String(data));
+            String result = response.getResult();
+            String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
+            httpResult += "Content-type: " + response.getContentType() + "\n";
+            int length = result.length() + 1;
+            httpResult += "Content-Length: " + length + "\n";
+            httpResult += "Connection: close\n";
             httpResult += "\n";
             httpResult += result + "\n";
             httpResult += "\n";
