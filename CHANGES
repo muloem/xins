@@ -4,9 +4,15 @@ CHANGES INTRODUCED IN XINS 0.124:
 * Generation of Java fundament classes:
   - Fixed a bug that kept the APIImpl class from being initialized properly.
 
+* XINS/Java Server Framework:
+  - Not completely failing if the API could not be initialized at startup.
+    Instead of a 'fatal' message, an 'error' message is logged. The
+    configuration file is still checked every 10 seconds.
+
 * XINS/Java Client Framework:
   - Exception class UnsuccessfulCallException now constructs a message. If
     there is a result code, it will be in the message.
+  - Improved exception message for ParseException in CallRequestParser class.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.123:
