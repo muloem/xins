@@ -7,8 +7,10 @@
 package org.xins.common.constraint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.xins.common.collections.CollectionUtils;
+import org.xins.common.collections.ProtectedList;
 
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -34,6 +36,11 @@ extends Constraint {
     * Fully-qualified name of this class.
     */
    private static final String CLASSNAME = ParamComboConstraint.class.getName();
+
+   /**
+    * Secret key for protected collection instances.
+    */
+   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -63,7 +70,8 @@ extends Constraint {
    ParamComboConstraint(String[] names)
    throws IllegalArgumentException {
 
-      _names = CollectionUtils.list("names", names, 2);
+      // Convert the array to an ArrayList
+      ArrayList list = CollectionUtils.list("names", names, 2);
 
       // Make sure there are no empty strings in the list
       for (int i = 0; i < names.length; i++) {
@@ -72,6 +80,9 @@ extends Constraint {
             throw new IllegalArgumentException("names[" + i + "].length() == 0");
          }
       }
+
+      // Convert the ArrayList to a ProtectedList and store that
+      _names = new ProtectedList(SECRET_KEY, list);
    }
 
 
@@ -82,10 +93,22 @@ extends Constraint {
    /**
     * The names of all parameters. This field is never <code>null</code>.
     */
-   private final ArrayList _names;
+   private final ProtectedList _names;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the list of parameter names.
+    *
+    * @return
+    *    an unmodifiable view on the list of parameter names, never
+    *    <code>null</code>, not containing any duplicate or <code>null</code>
+    *    values, but only <code>String</code> objects; size is at least 2.
+    */
+   public final List getParameterNames() {
+      return _names;
+   }
 }
