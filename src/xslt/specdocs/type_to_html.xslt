@@ -8,6 +8,11 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:param name="project_home" />
+	<xsl:param name="specsdir"     />
+
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+
 	<xsl:output
 	method="xml"
 	indent="no"
@@ -121,13 +126,20 @@
 	</xsl:template>
 
 	<xsl:template match="pattern">
+		<p />
+		<xsl:text>This is a pattern type. Allowed values must match the following pattern:</xsl:text>
+		<blockquote>
+			<code>
+				<xsl:value-of select="text()" />
+			</code>
+		</blockquote>
+		<xsl:if test="document($project_file)/project/patterntest">
 			<p />
-			<xsl:text>This is a pattern type. Allowed values must match the following pattern:</xsl:text>
-			<blockquote>
-				<code>
-					<xsl:value-of select="text()" />
-				</code>
-			</blockquote>
+			<a href="{document($project_file)/project/patterntest/@href}?pattern={text()}">
+				<xsl:text>Test this pattern</xsl:text>
+			</a>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="extends_tree">
