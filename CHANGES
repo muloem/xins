@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.190:
+
+* Build and release process:
+  - Check for the required directories before making a release.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 
 * XINS/Java Common Library:
