@@ -3,6 +3,8 @@
  */
 package org.xins.util;
 
+import org.xins.util.text.FastStringBuffer;
+
 /**
  * Utility class for printing long numbers as hexadecimals.
  *
@@ -63,6 +65,48 @@ public class LongUtils extends Object {
       }
 
       return new String(chars, 0, BUFFER_SIZE);
+   }
+
+   /**
+    * Converts the specified <code>long</code> to unsigned number and appends
+    * it to the specified string buffer. Exactly 16 characters will be
+    * appended, all between <code>'0'</code> to <code>'9'</code> or between
+    * <code>'a'</code> and <code>'f'</code>.
+    *
+    * @param buffer
+    *    the string buffer to append to, cannot be <code>null</code>.
+    *
+    * @param n
+    *    the number to be converted to a text string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>buffer == null</code>.
+    */
+   public static void toHexString(FastStringBuffer buffer, long n) {
+
+      final int  BUFFER_SIZE = 16;
+      final long RADIX       = 16L;
+      final long MASK        = RADIX - 1L;
+
+      char[] chars = new char[BUFFER_SIZE];
+      int pos      = BUFFER_SIZE - 1;
+
+      // Convert the long to a hex string until the remainder is 0
+      for (; n != 0; n >>>= 4) {
+         chars[pos--] = DIGITS[(int) (n & MASK)];
+      }
+
+      // Fill the rest with '0' characters
+      for (; pos >= 0; pos--) {
+         chars[pos] = '0';
+      }
+
+      // TODO: Improve performance
+
+      // Move all characters to the buffer
+      for (int i = 0; i < BUFFER_SIZE; i++) {
+         buffer.append(chars[i]);
+      }
    }
 
    /**
