@@ -48,6 +48,10 @@
 		in="src/xml/default_returncodes.xml"
 		out="build/src/java-server-framework/org/xins/server/DefaultReturnCodes.java"
 		style="src/xslt/java-server-framework/default_returncodes_to_java.xslt" />
+		<style
+		in="src/xml/default_resultcodes.xml"
+		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
+		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
 		<mkdir dir="build/src/java-server-framework" />
 		<copy todir="build/src/java-server-framework">
 			<fileset dir="build/src/java-server-framework" includes="**/*.java" />
