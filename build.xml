@@ -596,7 +596,8 @@
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
 			<include name="lib/*.LICENSE"                  />
-			<include name="docs/**/*.html"                 />
+			<include name="docs/javadoc/**/*.html"         />
+			<include name="docs/*.html"                    />
 			<include name="docs/**/*.css"                  />
 			<include name="demo/**/*"                      />
 			<include name="build.xml"                      />
@@ -611,7 +612,7 @@
 		<copy todir="build" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
-				<include name="src/bin/*" />
+				<include name="src/bin/*"              />
 			</fileset>
 		</copy>
 		<fixcrlf srcdir="build" eol="unix" eof="remove">
@@ -628,10 +629,8 @@
 			dir="${basedir}"
 			prefix="${name}-${version}"
 			mode="644">
-				<include name="build/javadoc/**/*"             />
 				<include name="build/*.jar"                    />
-				<include name="demo/**/*"                      />
-				<include name="docs/**/*"                      />
+				<include name="docs/XINSGuide.pdf"             />
 				<include name="lib/apache.LICENSE"             />
 				<include name="lib/commons-httpclient.*"       />
 				<include name="lib/commons-logging.*"          />
