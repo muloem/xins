@@ -37,7 +37,7 @@ public abstract class Service extends Object {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     */
-   public Service(Descriptor descriptor)
+   protected Service(Descriptor descriptor)
    throws IllegalArgumentException {
 
       // Check preconditions
