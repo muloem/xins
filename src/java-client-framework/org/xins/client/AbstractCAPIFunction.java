@@ -90,7 +90,7 @@ extends Object {
       } else {
          _inputConstraints = CollectionUtils.list("inputConstraints",
                                                   inputConstraints,
-                                                  1);
+                                                  0);
       }
 
       // Check and store output constraints
@@ -99,7 +99,7 @@ extends Object {
       } else {
          _outputConstraints = CollectionUtils.list("outputConstraints",
                                                    outputConstraints,
-                                                   1);
+                                                   0);
       }
    }
 
