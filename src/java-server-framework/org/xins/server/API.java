@@ -329,6 +329,12 @@ implements DefaultResultCodes {
          _sessionsByID = new ExpiryFolder(expiryStrategy, timeOut / 2L);
       }
 
+      // If a deployment has been set, log it
+      String deployment = properties.getProperty("org.xins.api.deployment");
+      if (deployment != null && deployment.length() > 0) {
+         LOG.info("Settings applied for deployment \"" + deployment + "\".");
+      }
+
       // Let the subclass perform initialization
       boolean succeeded = false;
       try {
