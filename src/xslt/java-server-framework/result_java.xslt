@@ -43,7 +43,7 @@ public interface Result {
 ]]></xsl:text>
 
 		<!-- ************************************************************* -->
-		<!-- Generate the UnsuccessResult interface                        -->
+		<!-- Generate the UnsuccessfulResult interface                     -->
 		<!-- ************************************************************* -->
 
 		<xsl:text><![CDATA[
@@ -66,7 +66,9 @@ public interface UnsuccessfulResult extends Result {
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
  */
-public final static class SuccessfulResult extends org.xins.server.FunctionResult implements Result {
+public final static class SuccessfulResult
+extends org.xins.server.FunctionResult
+implements Result {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -81,7 +83,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new SuccessfulResult.
+    * Creates a new <code>SuccessfulResult</code> object.
     */
    public SuccessfulResult() {
 
@@ -89,18 +91,17 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
       super(null);
    }
 
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 ]]></xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
-		<xsl:apply-templates select="output">
-		</xsl:apply-templates>
+		<xsl:apply-templates select="output" />
 		<xsl:text>
 }
 </xsl:text>
-		<xsl:apply-templates select="output/data/element" mode="elementClass">
-		</xsl:apply-templates>
+		<xsl:apply-templates select="output/data/element" mode="elementClass" />
 	</xsl:template>
 
 	<xsl:template match="output">
@@ -112,13 +113,13 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
 
-		<xsl:apply-templates select="data/element" mode="addMethod">
-		</xsl:apply-templates>
+		<xsl:apply-templates select="data/element" mode="addMethod" />
 
 		<xsl:text>
 
    protected org.xins.server.InvalidResponseResult checkOutputParameters() {
-      // check the output parameters
+
+      // Check the mandatory output parameters
       org.xins.server.InvalidResponseResult _errorOutputResult = null;</xsl:text>
 
 		<!-- ************************************************************* -->
@@ -428,8 +429,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 			<xsl:apply-templates select="attribute">
 				<xsl:with-param name="methodImpl" select="'_jdomElement.setAttribute'" />
 			</xsl:apply-templates>
-			<xsl:apply-templates select="contains/contained">
-			</xsl:apply-templates>
+			<xsl:apply-templates select="contains/contained" />
 			<xsl:text>
    }
 </xsl:text>
