@@ -5,7 +5,8 @@ CHANGES INTRODUCED IN XINS 0.75:
   - Displaying XINS version when initializing.
   - Session-based methods now check if the API is really session-based. If it
     is not, then they throw an IllegalStateException.
-  - A warning is logged
+  - A warning is logged if APIServlet has to initialize Log4J without
+    initialization settings.
 
 * Upgraded xmlenc from 0.34 to 0.36.
 
