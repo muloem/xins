@@ -197,7 +197,9 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Executes the specified call request on the specified XINS API.
+    * Executes the specified call request on the specified XINS API. If the
+    * call fails in any way or if the result is unsuccessful, then a
+    * {@link CallException} is thrown.
     *
     * @param target
     *    the service target on which to execute the request, cannot be
@@ -207,7 +209,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the call request to execute, cannot be <code>null</code>.
     *
     * @return
-    *    the call result, never <code>null</code>.
+    *    the call result, never <code>null</code> and always successful.
     *
     * @throws IllegalArgumentException
     *    if <code>target == null || request == null</code>.
@@ -251,20 +253,16 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       boolean succeeded = false;
       long start = System.currentTimeMillis();
-      long duration;
       try {
          controlTimeOut(executor, target);
          succeeded = true;
 
       } catch (TimeOutException exception) {
-         duration = System.currentTimeMillis() - start;
-
          Log.log_2015(url, functionName, totalTimeOut);
-
+         long duration = System.currentTimeMillis() - start;
          throw new TotalTimeOutException(request, target, duration);
 
       } finally {
-         duration = System.currentTimeMillis() - start;
          if (succeeded == false) {
 
             // If there was an exception already, don't allow another one to
@@ -293,11 +291,13 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Connection refusal
          if (exception instanceof ConnectException) {
             Log.log_2012(url, functionName);
+            long duration = System.currentTimeMillis() - start;
             throw new ConnectionRefusedException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
             Log.log_2013(url, functionName, connectionTimeOut);
+            long duration = System.currentTimeMillis() - start;
             throw new ConnectionTimeOutException(request, target, duration);
 
          // Socket time-out
@@ -311,17 +311,20 @@ public final class XINSServiceCaller extends ServiceCaller {
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_2014(url, functionName, socketTimeOut);
+               long duration = System.currentTimeMillis() - start;
                throw new SocketTimeOutException(request, target, duration);
 
             // Unspecific I/O error
             } else {
                Log.log_2017(exception, url, functionName);
+               long duration = System.currentTimeMillis() - start;
                throw new CallIOException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
             Log.log_2017(exception, url, functionName);
+            long duration = System.currentTimeMillis() - start;
             throw new CallIOException(request, target, duration, (IOException) exception);
 
          } else if (exception instanceof RuntimeException) {
@@ -346,20 +349,31 @@ public final class XINSServiceCaller extends ServiceCaller {
       // If HTTP status code is not in 2xx range, abort
       if (code < 200 || code > 299) {
          Log.log_2008(url, functionName, code);
+         long duration = System.currentTimeMillis() - start;
          throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
       }
 
       // If the body is null, then there was an error
       if (body == null) {
          Log.log_2009();
+         long duration = System.currentTimeMillis() - start;
          throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
 
-      // Parse and return the result
+      // Parse the result
+      Result result;
       try {
-         return _parser.parse(target, body);
+         result = _parser.parse(target, body);
       } catch (ParseException parseException) {
+         long duration = System.currentTimeMillis() - start;
          throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
+      }
+
+      if (result.getErrorCode() != null) {
+         long duration = System.currentTimeMillis() - start;
+         throw new UnsuccessfulCallException(request, target, duration, result);
+      } else {
+         return result;
       }
    }
 
@@ -376,18 +390,42 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws CallFailedException
+    * @throws CallException
     *    if the call failed.
     *
     * @since XINS 0.198
     */
    public Result execute(CallRequest request)
-   throws IllegalArgumentException, CallFailedException {
+   throws IllegalArgumentException, CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
-      return (Result) doCall(request).getResult();
+      try {
+         return (Result) doCall(request).getResult();
+
+      // Link the CallException instances together and throw the first one
+      } catch (CallFailedException cfe) {
+
+         // Retrieve all CallExceptions
+         List exceptions = cfe.getExceptions();
+
+         // Remember the first one, since this one should be thrown
+         CallException first = (CallException) exceptions.get(0);
+
+         // Loop through all following CallExceptions to link them to the
+         // previous one
+         int count = exceptions.size();
+         CallException previous = first;
+         for (int i = 1; i < count; i++) {
+            CallException current = (CallException) exceptions.get(i);
+            previous.setNext(current);
+            previous = current;
+         }
+
+         // Throw the first CallException
+         throw first;
+      }
    }
 
    /**
