@@ -46,6 +46,15 @@ public final class ]]></xsl:text>
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * The one and only instance of this class.
+    */
+   public static final ]]></xsl:text>
+		<xsl:value-of select="$classname" />
+		<xsl:text> SINGLETON = new </xsl:text>
+		<xsl:value-of select="$classname" />
+		<xsl:text><![CDATA[();
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -57,8 +66,10 @@ public final class ]]></xsl:text>
     */
    private ]]></xsl:text>
 		<xsl:value-of select="$classname" />
-		<xsl:text><![CDATA[() {
-      // empty
+		<xsl:text>() {
+      super("</xsl:text>
+		<xsl:value-of select="$locale" />
+		<xsl:text>");
    }
 
 
@@ -70,6 +81,6 @@ public final class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------
 }
-]]></xsl:text>
+</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
