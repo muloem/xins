@@ -69,9 +69,6 @@
 			
 			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="{$builddir}/specdocs" />
-				<copy
-					todir="{$builddir}/specdocs"
-				file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 			
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
@@ -84,6 +81,7 @@
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$specsdir}"     />
 				</style>
+				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 			
 			<xsl:for-each select="api">
@@ -208,6 +206,7 @@
 							<param name="environment"  expression="{@id}"           />
 						</style>
 					</xsl:for-each>
+					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 				</target>
 
 				<xsl:if test="$apiHasTypes = 'true'">
