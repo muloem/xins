@@ -15,7 +15,6 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.http.HTTPRequester;
 
 /**
  * Abstract base class for <code>FunctionCaller</code> implementations.
