@@ -6,6 +6,7 @@ package org.xins.util.collections.expiry;
 import java.util.HashMap;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.threads.Doorman;
 
 /**
  * Expiry folder. Contains values indexed by key. Entries in this folder will
@@ -52,6 +53,14 @@ extends Object {
       _recentlyAccessed = new HashMap(89);
       _slotCount        = strategy.getSlotCount();
       _slots            = new Map[_slotCount];
+      _lastSlot         = _slotCount - 1;
+      _sizeLock         = new Object();
+
+      _recentlyAccessedDoorman = new Doorman(89);
+      _slotsDoorman            = new Doorman(89);
+
+      // TODO
+      // strategy.folderAdded(this);
    }
 
 
@@ -70,7 +79,7 @@ extends Object {
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private Map _recentlyAccessed;
+   private volatile Map _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -79,11 +88,37 @@ extends Object {
    private final int _slotCount;
 
    /**
+    * The index of the last slot. This is always
+    * {@link #_slotCount}<code> - 1</code>.
+    */
+   private final int _lastSlot;
+
+   /**
     * Slots to contain the maps with entries that are not the most recently
     * accessed. The further back in the array, the faster the entries will
     * expire.
     */
    private final Map[] _slots;
+
+   /**
+    * Doorman protecting the field <code>_recentlyAccessed</code>.
+    */
+   private final Doorman _recentlyAccessedDoorman;
+
+   /**
+    * Doorman protecting the field <code>_slots</code>.
+    */
+   private final Doorman _slotsDoorman;
+
+   /**
+    * The size of this folder.
+    */
+   private int _size;
+
+   /**
+    * Lock for the <code>_size</code>.
+    */
+   private final Object _sizeLock;
 
 
    //-------------------------------------------------------------------------
@@ -91,39 +126,44 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Touches the entry that is identified by the specified key.
-    *
-    * @param key
-    *    the key that identifies the entry, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>key == null</code>.
-    *
-    * @throws NoSuchEntryException
-    *    if <code>get(key) == null</code>.
-    */
-   public void touch(Object key) throws NoSuchEntryException {
-      // TODO
-   }
-
-   /**
     * Notifies this map that the precision time frame has passed since the
     * last tick.
     *
-    * <p>If any entries are expirable, they will be removed from this map.
+    * <p>If any entries are expirable, they will be removed from this folder.
     */
-   void tick() {
-      int lastSlotIndex = _slotCount - 1;
+   void tick() throws InterruptedException {
 
-      synchronized (_recentlyAccessed) {
-         Map toBeExpired = _slots[lastSlotIndex];
-         // TODO: Map doNotExpire = _validator.validateExpiry(toBeExpired);
-         for (int i = lastSlotIndex; i > 0; i--) {
+      // First enter the protected area for '_recentlyAccessed', because that
+      // is the most difficult to enter
+      _recentlyAccessedDoorman.enterAsWriter();
+
+      // Then enter the protected area for '_slots' as well
+      // is the most difficult to enter
+      _slotsDoorman.enterAsWriter();
+
+      synchronized (_sizeLock) {
+
+         // Keep a link to the old map with recently accessed elements and then
+         // reset _recentlyAccessed so we can leave the protected area for
+         // '_recentlyAccessed' right away
+         Map oldRecentlyAccessed = _recentlyAccessed;
+         _recentlyAccessed = new HashMap();
+
+         // Leave the protected area for '_recentlyAccessed' first, because that
+         // is the heaviest used
+         _recentlyAccessedDoorman.leaveAsWriter();
+
+         // Shift the slots
+         Map toBeExpired = _slots[_lastSlot];
+         _size -= toBeExpired.size();
+         for (int i = _lastSlot; i > 0; i--) {
             _slots[i] = _slots[i - 1];
          }
-         _slots[0] = _recentlyAccessed;
-         _recentlyAccessed = new HashMap(89);
+         _slots[0] = oldRecentlyAccessed;
       }
+
+      // Then leave the protected area for '_slots' as well.
+      _slotsDoorman.leaveAsWriter();
    }
 
    /**
@@ -133,48 +173,14 @@ extends Object {
     *    the number of entries in this expiry folder, always &gt;= 0.
     */
    public int size() {
-      int size;
-      int slotCount = _slots.length;
-      synchronized (_recentlyAccessed) {
-         synchronized (_slots) {
-            size = _recentlyAccessed.size();
-            for (int i = 0; i < slotCount; i++) {
-               size += _slots[i].size();
-            }
-         }
+      synchronized (_sizeLock) {
+         return _size;
       }
-      return size;
    }
 
    /**
-    * Checks if this folder is completely empty.
-    *
-    * @return
-    *    <code>true</code> if and only if there are no entries in this folder.
-    */
-   public boolean isEmpty() {
-
-      synchronized (_recentlyAccessed) {
-         if (_recentlyAccessed.isEmpty() == false) {
-            return false;
-         }
-      }
-
-      int slotCount = _slots.length;
-      for (int i = 0; i < slotCount; i++) {
-         Map slot = _slots[i];
-         synchronized (slot) {
-            if (slot.isEmpty() == false) {
-               return false;
-            }
-         }
-      }
-
-      return true;
-   }
-
-   /**
-    * Gets the value associated with a key.
+    * Gets the value associated with a key. If the key is found, then the
+    * expiry time-out for the matching entry will be reset.
     *
     * @param key
     *    the key to lookup, cannot be <code>null</code>.
@@ -192,25 +198,7 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Check _recentlyAccessed
-      synchronized (_recentlyAccessed) {
-         Object o = _recentlyAccessed.get(key);
-         if (o != null) {
-            return o;
-         }
-      }
-
-      // Check all slots
-      int slotCount = _slots.length;
-      for (int i = 0; i < slotCount; i++) {
-         Map slot = _slots[i];
-         synchronized (slot) {
-            Object o = slot.get(key);
-            if (o != null) {
-               return o;
-            }
-         }
-      }
+      // TODO
 
       return null;
    }
@@ -233,25 +221,10 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key, "value", value);
 
-      synchronized (_recentlyAccessed) {
-         _recentlyAccessed.put(key, value);
-      }
-   }
+      // TODO
 
-   /**
-    * Removes all entries.
-    */
-   public void clear() {
-      int slotCount = _slots.length;
-      synchronized (_recentlyAccessed) {
-         _recentlyAccessed.clear();
-
-         for (int i = 0; i < slotCount; i++) {
-            Map slot = _slots[i];
-            synchronized (slot) {
-               slot.clear();
-            }
-         }
+      synchronized (_sizeLock) {
+         _size++;
       }
    }
 }
