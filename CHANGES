@@ -10,6 +10,12 @@ CHANGES INTRODUCED IN XINS 0.203:
 * XINS/Java Client Framework:
   - Removed the deprecated getCode() method from UnsuccessfulCallException.
   - Extended interface of UnacceptableCallResultException.
+  - Overhaul of logdoc entries.
+
+* Logdoc:
+  - Changed the interface of class AbstractLogdocSerializable (introduced in
+    XINS 0.201) in an incompatible way. All subclasses have been adapted
+    accordingly.
 
 * Generated specification documentation:
   - Fixed regeneration of the test forms if the environments.xml file has
