@@ -8,7 +8,7 @@
  Default return codes.
 -->
 
-<returncodes rcsversion="$Revision$" rcsdate="$Date$>
+<returncodes rcsversion="$Revision$" rcsdate="$Date$">
 	<code value="NoSuchFunction" success="false">
 		<description>There is no function with the specified name in this API implementation.</description>
 	</code>
