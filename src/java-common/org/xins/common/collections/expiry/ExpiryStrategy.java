@@ -6,12 +6,14 @@
  */
 package org.xins.common.collections.expiry;
 
+import java.lang.ref.WeakReference;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.ref.WeakReference;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 /**
  * Expiry strategy. A strategy maintains a time-out and a time-out precision.
