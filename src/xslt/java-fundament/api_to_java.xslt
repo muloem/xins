@@ -153,7 +153,7 @@ public class APIImpl extends API {
 					<xsl:text>)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-            context.startResponse(false, "MissingParameters");</xsl:text>
+            context.startResponse(false, MISSING_PARAMETERS);</xsl:text>
 				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='inclusive-or']">
 					<xsl:text>
          } else if (</xsl:text>
@@ -164,7 +164,7 @@ public class APIImpl extends API {
 						<xsl:text>)</xsl:text>
 					</xsl:for-each>
 					<xsl:text>) {
-            context.startResponse(false, "InvalidParameters");</xsl:text>
+            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
 				</xsl:for-each>
 				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='exclusive-or']">
 					<xsl:for-each select="param-ref">
@@ -180,7 +180,7 @@ public class APIImpl extends API {
 							<xsl:text>)</xsl:text>
 						</xsl:for-each>
 						<xsl:text>)) {
-            context.startResponse(false, "InvalidParameters");</xsl:text>
+            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
 					</xsl:for-each>
 				</xsl:for-each>
 				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='all-or-none']">
@@ -200,7 +200,7 @@ public class APIImpl extends API {
 						<xsl:text>)</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-            context.startResponse(false, "InvalidParameters");</xsl:text>
+            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
          } else {
