@@ -513,22 +513,20 @@ implements DefaultResultCodes {
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          try {
-            log.info("Property \"" + ACL_PROPERTY + "\" not set. Falling back to default: \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
-            log.warn("Property \"" + ACL_PROPERTY + "\" not set. Allowing all requests. In the future, this behaviour will change so that if the property is not set, then all requests will be denied instead of allowed.");
+            Log.log_4031(ACL_PROPERTY);
+            Log.log_4032(DEFAULT_ACCESS_RULE_LIST);
             _accessRuleList = AccessRuleList.parseAccessRuleList(DEFAULT_ACCESS_RULE_LIST);
          } catch (ParseException exception) {
-            throw new InitializationException("Unable to apply the default access rule list \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
+            Log.log_4033(DEFAULT_ACCESS_RULE_LIST, exception.getMessage());
+            throw new InitializationException(exception);
          }
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
             int ruleCount = _accessRuleList.getRuleCount();
-            if (ruleCount == 1) {
-               log.info("Access rule list loaded, with 1 rule.");
-            } else {
-               log.info("Access rule list loaded, with " + ruleCount + " rules.");
-            }
+            Log.log_4034(String.valueOf(ruleCount));
          } catch (ParseException exception) {
+            Log.log_4035(ACL_PROPERTY, acl, exception.getMessage());
             throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
          }
       }
