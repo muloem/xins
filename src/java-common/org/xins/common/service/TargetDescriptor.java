@@ -372,23 +372,6 @@ public final class TargetDescriptor extends Descriptor {
     *    the total time-out for the service, as a positive number, in
     *    milli-seconds, or 0 if there is no total time-out.
     *
-    * @since XINS 0.195
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.202. Use {@link #getTotalTimeOut()} instead.
-    */
-   public int getTimeOut() {
-      return _timeOut;
-   }
-
-   /**
-    * Returns the total time-out for a call to the service. The value 0
-    * is returned if there is no total time-out.
-    *
-    * @return
-    *    the total time-out for the service, as a positive number, in
-    *    milli-seconds, or 0 if there is no total time-out.
-    *
     * @since XINS 0.202
     */
    public int getTotalTimeOut() {
