@@ -12,18 +12,18 @@ import org.xins.util.collections.PropertyReader;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
 import org.xins.util.service.Descriptor;
-import org.xins.util.service.Service;
+import org.xins.util.service.ServiceCaller;
 import org.xins.util.service.ServiceDescriptor;
 
 /**
- * HTTP service accessor.
+ * HTTP service caller.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
  * @since XINS 0.115
  */
-public final class HTTPService extends Service {
+public final class HTTPServiceCaller extends ServiceCaller {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -49,7 +49,7 @@ public final class HTTPService extends Service {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>HTTPService</code> object.
+    * Constructs a new <code>HTTPServiceCaller</code> object.
     *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
@@ -57,7 +57,7 @@ public final class HTTPService extends Service {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     */
-   public HTTPService(Descriptor descriptor, String baseURL)
+   public HTTPServiceCaller(Descriptor descriptor, String baseURL)
    throws IllegalArgumentException {
       super(descriptor);
    }

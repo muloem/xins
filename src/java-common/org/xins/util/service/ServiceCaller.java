@@ -8,15 +8,15 @@ import java.util.Iterator;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
- * Service accessor. This abstract class must be subclasses by specific kinds
- * of service accessors, for example for HTTP, FTP, JDBC, etc.
+ * Service caller. This abstract class must be subclasses by specific kinds
+ * of service callers, for example for HTTP, FTP, JDBC, etc.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
  * @since XINS 0.115
  */
-public abstract class Service extends Object {
+public abstract class ServiceCaller extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -31,7 +31,7 @@ public abstract class Service extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Service</code> object.
+    * Constructs a new <code>ServiceCaller</code> object.
     *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
@@ -39,7 +39,7 @@ public abstract class Service extends Object {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     */
-   protected Service(Descriptor descriptor)
+   protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
 
       // Check preconditions
