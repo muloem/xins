@@ -3,14 +3,17 @@ CHANGES INTRODUCED IN XINS 0.207:
 
 * XINS/Java Server Framework:
   - Removed the getCallResult() method from CallContext as it's not used.
-  - Bootstrap exception and Throwable are handled in a similar way.
+  - Caught BootstrapExceptions and Throwables are now handled in a similar
+    way.
   - Removed some TODOs that are no longer relevant.
   - Check the state of API and APIServlet before calling a method.
   - Used another system to suspend any call to an API when the statistics
     are reset.
-  - Added the possibility to transform the returned XML using XSLT.
   - Removed _PerformGC metafunction.
   - Removed support for XSLT transformations.
+  - Changed access level of field _api in class Function from protected to
+    private. Subclasses should use getAPI() to get a reference to the API
+    object. This may break existing code.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
