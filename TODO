@@ -64,6 +64,9 @@ XINS/JAVA SERVER FRAMEWORK
   reinitialize.
 * If input/param/description is empty, then for the generated classes the
   @param section should be appropriate, non-empty.
+* Improve the performance of the parsing of the query string by using a custom
+  method to do this. Return an HTTP error code if the query string is invalid,
+  for example if it contains duplicate parameter names.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
