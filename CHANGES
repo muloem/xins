@@ -48,6 +48,8 @@ CHANGES INTRODUCED IN XINS 0.209:
     type _text or a pattern type.
   - Fixed a compilation error when a function had no input parameters.
     This bug has been in XINS since version 0.208.
+  - Generated function call result classes now extend class
+    org.xins.client.AbstractCAPICallResult instead of class java.lang.Object.
 
 * Generated specification documentation:
   - Added the broken freeze warning message for types and result codes.
