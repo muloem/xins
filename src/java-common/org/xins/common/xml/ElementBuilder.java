@@ -52,14 +52,9 @@ public class ElementBuilder extends Object {
 
    /**
     * Creates a new <code>ElementBuilder</code>.
-    *
-    * @param localName
-    *    the local name of the element, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>localName == null</code>.
     */
    public ElementBuilder() {
+
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
