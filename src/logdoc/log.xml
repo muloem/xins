@@ -319,11 +319,8 @@
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
 		</entry>
-		<entry id="4017" level="NOTICE">
-			<description>XINS/Java Server Framework has been initialized.</description>
-		</entry>
 		<entry id="4018" level="NOTICE">
-			<description>XINS/Java Server Framework has been re-initialized.</description>
+			<description>XINS/Java Server Framework has been (re-)initialized.</description>
 		</entry>
 		<entry id="4019" level="DEBUG">
 			<description>Initializing manageable object.</description>

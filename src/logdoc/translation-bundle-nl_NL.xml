@@ -67,8 +67,7 @@
 	<translation entry="4014">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
 	<translation entry="4015">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="4016">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
-	<translation entry="4017">XINS/Java Server Framework is geinitialiseerd.</translation>
-	<translation entry="4018">XINS/Java Server Framework is opnieuw geinitialiseerd.</translation>
+	<translation entry="4018">XINS/Java Server Framework is (opnieuw) geinitialiseerd.</translation>
 	<translation entry="4019">Manageable object <value-of-param name="className" /> wordt geinitialiseerd.</translation>
 	<translation entry="4020">Manageable object <value-of-param name="className" /> is geinitialiseerd.</translation>
 	<translation entry="4021">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
