@@ -567,6 +567,9 @@ public abstract class ServiceCaller extends Object {
             CallException currentException;
             if (exception instanceof CallException) {
                currentException = (CallException) exception;
+            } else if (exception instanceof MethodNotImplementedError) {
+               Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
+               throw new Error(getClass().getName() + ".doCallImpl(CallRequest,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
             } else {
                currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
             }
@@ -719,9 +722,11 @@ public abstract class ServiceCaller extends Object {
     *    as in XINS 1.0.x.
     *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
-   protected abstract Object doCallImpl(CallRequest      request,
-                                        TargetDescriptor target)
-   throws ClassCastException, IllegalArgumentException, CallException;
+   protected Object doCallImpl(CallRequest      request,
+                               TargetDescriptor target)
+   throws ClassCastException, IllegalArgumentException, CallException {
+      throw new MethodNotImplementedError();
+   }
 
    /**
     * Constructs an appropriate <code>CallResult</code> object for a
