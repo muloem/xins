@@ -594,6 +594,13 @@ extends Object {
       return _strategy;
    }
 
+   /**
+    * Returns a textual representation of this object.
+    *
+    * @return
+    *    a textual representation of this <code>ExpiryFolder</code>, which
+    *    includes the name.
+    */
    public String toString() {
       return _asString;
    }
