@@ -23,7 +23,7 @@ fi
 
 # Recognize clean option
 # Fix for SF.net bug #1110726: Invalid generated build.xml can't be removed with xins clean
-if [ "$1" = "clean" ]; then
+if [ "$1" = "clean" ] && [ -f build/build.xml ]; then
 	rm build/build.xml
 fi
 
