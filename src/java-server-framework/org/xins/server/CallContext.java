@@ -566,10 +566,7 @@ implements Responder, Log {
       _state = ERROR;
 
       // Close all open elements
-      _xmlOutputter.close();
-
-      // Flush the output stream
-      _xmlOutputter.getWriter().flush();
+      _xmlOutputter.endDocument();
    }
 
    public void trace(Object message) {
