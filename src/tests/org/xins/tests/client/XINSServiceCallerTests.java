@@ -96,7 +96,7 @@ public class XINSServiceCallerTests extends TestCase {
    /**
     * Tests the constructor arguments.
     */
-   public void testConstructor() throws Throwable {
+   public void testXINSServiceCaller_constructor() throws Throwable {
       try {
          XINSServiceCaller upe = new XINSServiceCaller(null);
          fail("HTTPServiceCaller did not throw an exception with a <null> argument for the constructor.");
