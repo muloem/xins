@@ -162,6 +162,31 @@ public final class HTTPServiceCaller extends ServiceCaller {
    }
 
    /**
+    * Quotes the specified string, or returns <code>"(null)"</code> if it is
+    * <code>null</code>.
+    *
+    * <p>TODO: Move to class <code>org.xins.common.text.TextUtils</code>.
+    *
+    * @param s
+    *    the input string, or <code>null</code>.
+    *
+    * @return
+    *    if <code>s != null</code> the quoted string, otherwise the string
+    *    <code>"(null)"</code>.
+    */
+   private static final String quote(String s) {
+      if (s != null) {
+         FastStringBuffer buffer = new FastStringBuffer(s.length() + 2);
+         buffer.append('"');
+         buffer.append(s);
+         buffer.append('"');
+         return buffer.toString();
+      } else {
+         return "(null)";
+      }
+   }
+
+   /**
     * Creates an appropriate <code>HttpMethod</code> object for the specified
     * URL.
     *
@@ -397,10 +422,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (HTTPCallException exception) {
          throw exception;
       } catch (Exception exception) {
-         String message = "Unexpected exception caught of class \"" + exception.getClass().getName() + "\".";
-         Log.log_3006(ServiceCaller.class.getName(), "doCall(CallRequest)",
-                      message);
-         throw new Error(message);
+         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
+         message.append(".doCall(CallRequest) threw ");
+         message.append(exception.getClass().getName());
+         message.append(". Message: ");
+         message.append(quote(exception.getMessage()));
+         message.append('.');
+         throw new Error(message.toString(), exception);
       }
 
       // TRACE: Leave method
