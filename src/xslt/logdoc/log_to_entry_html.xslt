@@ -83,6 +83,22 @@
 				</td>
 			</tr>
 		</table>
+
+		<h2>Parameters</h2>
+		<xsl:choose>
+			<xsl:when test="count(param) &lt; 1">
+				<em>No parameters are defined for this entry.</em>
+			</xsl:when>
+			<xsl:otherwise>
+				<ul>
+					<xsl:for-each select="param">
+						<li>
+							<xsl:value-of select="@name" />
+						</li>
+					</xsl:for-each>
+				</ul>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="messageset">
