@@ -116,6 +116,12 @@ implements DefaultResultCodes {
    private boolean _sessionBased;
 
    /**
+    * Flag that indicates if response validations should be enabled for the
+    * functions in this API.
+    */
+   private boolean _responseValidationEnabled;
+
+   /**
     * List of registered instances. See {@link #addInstance(Object)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
@@ -334,9 +340,11 @@ implements DefaultResultCodes {
     * @return
     *    <code>true</code> if response validation is enabled,
     *    <code>false</code> otherwise.
+    *
+    * @since XINS 0.98
     */
    public final boolean isResponseValidationEnabled() {
-      return true;
+      return _responseValidationEnabled;
    }
 
    /**
@@ -386,6 +394,10 @@ implements DefaultResultCodes {
       if (_defaultFunction != null) {
          LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
+
+      // Check if response validation is enabled
+      _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
+      LOG.debug("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
