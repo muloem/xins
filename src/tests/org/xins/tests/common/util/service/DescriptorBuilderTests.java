@@ -104,7 +104,7 @@ public class DescriptorBuilderTests extends TestCase {
       } catch (DescriptorBuilder.Exception exception) { /* as expected */ }
 
       // Simple example
-      String url = "http://somehost.somecompany.com:3003/something/else?a=b&c=d";
+      String url = "http://somehost.somecompany.com:3003/something/else";
       long timeOut = 1500;
       String base = "server";
       _properties.setProperty(base, DescriptorBuilder.SERVICE_DESCRIPTOR_TYPE + DescriptorBuilder.DELIMITER + url + DescriptorBuilder.DELIMITER + String.valueOf(timeOut));
