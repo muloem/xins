@@ -2,7 +2,9 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 
 * XINS/Java Client Framework:
-  - Added ping() method to AbstractCAPI class.
+  - Added methods to AbstractCAPI class:
+    . ping()
+    . getRemoteXINSVersion()
 
 * Generated CAPI classes:
   - Generating package.html.
