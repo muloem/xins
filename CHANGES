@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
+
+* Build and release process:
+  - The Java2HTML pages are now uploaded in TAR GZ file.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
 * Logdoc

@@ -668,7 +668,7 @@ ${sf.file}</fail>
 		<echo message="Uploading ${title} ${version} Javadoc to ${www.host}" />
 
 		<!-- Create TAR GZ file for Javadoc -->
-		<echo level="verbose" message="Creating TAR GZ file for Logdoc HTML" />
+		<echo level="verbose" message="Creating TAR GZ file for Javadoc HTML" />
 		<tar tarfile="build/javadoc.tar">
 			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
 			<tarfileset dir="docs/javadoc-private" mode="664" dirmode="775" prefix="javadoc-private/${version}" />
@@ -696,7 +696,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-javadoc"
-	depends="javadoc,javadoc-private,do-upload-javadoc"
+	depends="javadoc,javadoc-private"
 	description="Generates and then uploads the Javadoc API documentation to the web site"
 	unless="no-upload" />
 
@@ -763,24 +763,31 @@ ${sf.file}</fail>
 	description="Uploads the Java2HTML documentation to the web site"
 	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
-		<echo level="verbose" message="Creating directory ${www.dir}/j2h/${version} on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/j2h/${version}" />
-		<echo level="verbose" message="Copying files to directory ${www.dir}/j2h/${version} on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp
-		todir="${www.target}/j2h/${version}"
-		password="${sf.password}"
-		trust="true">
-			<fileset dir="build/j2h" />
-		</scp>
+		
+		<!-- Create TAR GZ file for Java2HTML -->
+		<echo level="verbose" message="Creating TAR GZ file for Java2HTML" />
+		<tar tarfile="build/j2h.tar">
+			<tarfileset dir="build/j2h" mode="664" dirmode="775" prefix="j2h/${version}" />
+		</tar>
+		<gzip src="build/j2h.tar" zipfile="build/j2h.tgz" />
+		<delete file="build/j2h.tar" />
 
+		<!-- Copy to remote host -->
+		<echo level="verbose" message="Copying TAR GZ file for Java2HTML" />
+		<scp
+		todir="${www.target}/"
+		password="${sf.password}"
+		trust="true"
+		file="build/j2h.tgz" />
+
+		<!-- Remotely: unpack and create symbolic links -->
+		<echo level="verbose" message="Unpacking TAR GZ file for Java2HTML remotely" />
 		<sshexec
 		host="${www.host}"
 		username="${sf.user}"
 		password="${sf.password}"
 		trust="true"
-		command="rm ${www.dir}/j2h/latest &amp;&amp; ln -s ${www.dir}/j2h/${version} ${www.dir}/j2h/latest" />
+		command="cd ${www.dir} &amp;&amp; tar zxf j2h.tgz &amp;&amp; rm j2h.tgz &amp;&amp; cd j2h &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
 	<target name="copy-docs-demo" depends="-init">
