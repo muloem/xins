@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     release if a target fails.
   - The build/testresults/log4j.log file is now created when executing the
     test-ui target.
+  - Fixed the script to upload the Javadoc when creating a release.
+    This bug has been in XINS since XINS 1.1.0-alpha8.
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.2 to 3.0-beta1.

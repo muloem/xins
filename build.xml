@@ -752,7 +752,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-javadoc"
-	depends="javadoc,javadoc-private"
+	depends="javadoc,javadoc-private,do-upload-javadoc"
 	description="Generates and then uploads the Javadoc API documentation to the web site"
 	unless="no-upload" />
 
