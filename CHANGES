@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     "Abstractgion of a manageanble object". Fixed those 2 typos.
   - Moved some unit tests for org.xins.common packages from
     org.xins.tests.common.util to org.xins.tests.common.
+  - Extended test set for class TargetDescriptor.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
@@ -32,8 +33,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 * Logdoc:
   - The parameter types are now defined in the DTD.
 
-* Generation of server-side Java code:
-  - An object is created for the data input parameter.
+* Build and release process:
+  - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
+    Compilation and Javadoc generation will be faster.
 
 * Generated build file:
   - Fixed bug #1078317: Compilation and Javadoc of the API is now done using 
@@ -41,9 +43,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     directory. This will increase compilation and javadoc generation 
     performances.
 
-* Build and release process:
-  - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
-    Compilation and Javadoc generation will be faster.
+* Generation of server-side Java code:
+  - An object is created for the data input parameter.
+
+* Generation of CAPI classes:
+  - Slightly improved performance by making SECRET_KEY a class field.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
