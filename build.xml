@@ -36,8 +36,8 @@
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
 		<property name="version.major"       value="0" />
-		<property name="version.minor"       value="75" />
-		<property name="version.suffix"      value="" />
+		<property name="version.minor"       value="76" />
+		<property name="version.suffix"      value="-dev" />
 		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
