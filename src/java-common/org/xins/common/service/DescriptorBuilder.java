@@ -7,12 +7,17 @@
 package org.xins.common.service;
 
 import java.net.MalformedURLException;
+
 import java.util.StringTokenizer;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
+
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Builder that can build a <code>Descriptor</code> object based on a set of
@@ -172,12 +177,10 @@ public final class DescriptorBuilder extends Object {
           MissingRequiredPropertyException,
           InvalidPropertyValueException {
 
-      // FIXME: Do something with the caller
-
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties,
                                      "propertyName", propertyName);
-      return build(properties, propertyName, null);
+      return build(caller, properties, propertyName, null);
    }
 
    /**
@@ -214,12 +217,16 @@ public final class DescriptorBuilder extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties,
                                      "propertyName", propertyName);
-      return build(properties, propertyName, null);
+      return build((ServiceCaller) null, properties, propertyName);
    }
 
    /**
     * Builds a <code>Descriptor</code> based on the specified set of
     * properties, specifying base property and reference.
+    *
+    * @param caller
+    *    the service caller to build a descriptor for, or <code>null</code> if
+    *    unknown.
     *
     * @param properties
     *    the properties to read from, should not be <code>null</code>.
@@ -245,7 +252,8 @@ public final class DescriptorBuilder extends Object {
     *    <code>properties</code>, but the format of this property or the
     *    format of a referenced property is invalid.
     */
-   private static Descriptor build(PropertyReader properties,
+   private static Descriptor build(ServiceCaller  caller,
+                                   PropertyReader properties,
                                    String         baseProperty,
                                    String         reference)
    throws NullPointerException,
@@ -323,12 +331,28 @@ public final class DescriptorBuilder extends Object {
             socketTimeOut = 0;
          }
 
+         // Construct a TargetDescriptor instance
+         TargetDescriptor td;
          try {
-            return new TargetDescriptor(url, timeOut, connectionTimeOut, socketTimeOut);
+            td = new TargetDescriptor(url, timeOut, connectionTimeOut, socketTimeOut);
          } catch (MalformedURLException exception) {
             Log.log_1300(exception, url);
             throw new InvalidPropertyValueException(propertyName, value, "Malformed URL.");
          }
+
+         // Test the protocol
+         if (caller != null) {
+            try {
+               caller.testTargetDescriptor(td);
+            } catch (UnsupportedProtocolException cause) {
+               // TODO: Log
+               InvalidPropertyValueException exception = new InvalidPropertyValueException(propertyName, value, "Unsupported protocol.");
+               ExceptionUtils.setCause(exception, cause);
+               throw exception;
+            }
+         }
+
+         return td;
 
       // Parse group descriptor
       } else if (GROUP_DESCRIPTOR_TYPE.equals(descriptorType)) {
@@ -344,7 +368,7 @@ public final class DescriptorBuilder extends Object {
          }
          Descriptor[] members = new Descriptor[memberCount];
          for (int i = 0; i < memberCount; i++) {
-            members[i] = build(properties, baseProperty, tokens[i + 2]);
+            members[i] = build(caller, properties, baseProperty, tokens[i + 2]);
          }
          return new GroupDescriptor(groupType, members);
 
