@@ -57,9 +57,9 @@ implements DefaultReturnCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
-      _log             = Logger.getLogger(getClass().getName());
-      _functionsByName = new HashMap();
-      _functionList    = new ArrayList();
+      _log              = Logger.getLogger(getClass().getName());
+      _functionsByName  = new HashMap();
+      _functionList     = new ArrayList();
       _contextsByThread = new HashMap();
    }
 
