@@ -6,6 +6,7 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.net.IPAddressUtils;
 import org.xins.util.text.ParseException;
@@ -33,21 +34,10 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The character that delimits the 4 sections of an IP address.
-    */
-   private static final String IP_ADDRESS_DELIMETER = ".";
-
-   /**
     * The character that delimits the IP address and the mask of the provided
     * filter.
     */
    private static final char IP_MASK_DELIMETER = '/';
-
-   /**
-    * The character that is used to determine whether the provided expression
-    * IP contains zero's.
-    */
-   private static final char ZERO_CHAR = '0';
 
 
    //-------------------------------------------------------------------------
@@ -157,7 +147,7 @@ extends Object {
     *    the mask, between 0 and 32 (inclusive).
     */
    private IPFilter(String ipString, int ip, int mask) {
-      _expression   = ipString + '/' + mask;
+      _expression   = ipString + IP_MASK_DELIMETER + mask;
       _baseIPString = ipString;
       _baseIP       = ip;
       _mask         = mask;
@@ -267,8 +257,16 @@ extends Object {
          return true;
       }
 
-      // Zero out the unapplicable bits
-      return (ip >> _shift) == (_baseIP >> _shift);
+      // Perform the match
+      boolean match = (ip >> _shift) == (_baseIP >> _shift);
+
+      Logger log = Library.RUNTIME_ACL_LOG;
+      if (log.isInfoEnabled()) {
+         String s = match ? " matches" : " does not match";
+         log.info("IP " + ipString + s + " the filter " + _expression + '.');
+      }
+
+      return match;
    }
 
    /**
