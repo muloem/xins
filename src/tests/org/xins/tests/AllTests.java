@@ -28,6 +28,7 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
       suite.addTestSuite(org.xins.tests.common.specs.APISpecTests.class);
       suite.addTestSuite(org.xins.tests.common.specs.FunctionSpecTests.class);
+      suite.addTestSuite(org.xins.tests.common.specs.TypeSpecTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
