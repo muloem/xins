@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.157:
     more consistent layout.
 
 * XINS/Java Server Framework:
+  - Removed support for default functions (introduced in XINS 0.78).
   - Trimming API class name property value.
   - Consistently logging an error first and then setting the state.
   - Always throwing a ServletException if the bootstrap failed. This fixes the
@@ -15,9 +16,10 @@ CHANGES INTRODUCED IN XINS 0.157:
     thrown.
   - Reviewed and changed log messages quite drastically.
   - Using logdoc-approach throughout the complete APIServlet class.
-  - Removed support for default functions (introduced in XINS 0.78).
 
 * Logdoc:
+  - Changed names of files.
+  - Changed some element and attribute names.
   - Added a number of log message entries.
   - Changed the descriptions for a few log message entries.
   - Supporting a 'nullable' attribute for 'param' elements in log.xml.
