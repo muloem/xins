@@ -14,12 +14,14 @@ import org.xins.common.threads.Doorman;
 
 /**
  * Expiry folder. Contains values indexed by key. Entries in this folder will
- * expire after a predefined amount of time, unless they're accessed within that
- * timeframe.
+ * expire after a predefined amount of time, unless their lifetime is extended
+ * within that timeframe. This is done using the {@link #get(Object)} method.
  *
- * <p>Listeners are supported. If a listener is registered multiple times, it
- * will receive the events multiple times as well. And it will have to be
- * removed multiple times as well.
+ * <p>Listeners are supported. Listeners are added using the
+ * {@link #addListener(ExpiryListener)} method and removed using the
+ * {@link #removeListener(ExpiryListener)} method. If a listener is registered
+ * multiple times, it will receive the events multiple times as well. And it
+ * will have to be removed multiple times as well.
  *
  * <p>This class is thread-safe.
  *
