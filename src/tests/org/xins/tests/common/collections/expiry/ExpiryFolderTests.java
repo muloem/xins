@@ -71,42 +71,38 @@ public class ExpiryFolderTests extends TestCase {
          folder.get(null);
          fail("Invalid argument accepted.");
       } catch (IllegalArgumentException exception) {
+         // as expected
       }
       try {
          folder.find(null);
          fail("Invalid argument accepted.");
       } catch (IllegalArgumentException exception) {
+         // as expected
       }
       try {
          folder.put("hello", null);
          fail("Invalid argument accepted.");
       } catch (IllegalArgumentException exception) {
+         // as expected
       }
       try {
          folder.put(null, "hello");
          fail("Invalid argument accepted.");
       } catch (IllegalArgumentException exception) {
+         // as expected
       }
+
       folder.put("hello", "world");
       assertEquals("Incorrect value found.", "world", folder.get("hello"));
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
-      try {
-         Thread.sleep(30);
-      } catch (Exception ex) {
-         fail("Sleeping thread interrupted.");
-      }
+
+      Thread.sleep(30);
       assertEquals("Incorrect value found.", "world", folder.get("hello"));
-      try {
-         Thread.sleep(40);
-      } catch (Exception ex) {
-         fail("Sleeping thread interrupted.");
-      }
+
+      Thread.sleep(40);
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
-      try {
-         Thread.sleep(30);
-      } catch (Exception ex) {
-         fail("Sleeping thread interrupted.");
-      }
+
+      Thread.sleep(40);
       assertNull("Incorrect value found.", folder.find("hello"));
       assertNull("Incorrect value found.", folder.get("hello"));
    }
