@@ -94,9 +94,9 @@
 		</xsl:variable>
 
 		<tr>
-			<td>
+			<th>
 				<xsl:value-of select="@id" />
-			</td>
+			</th>
 			<td>
 				<xsl:value-of select="document($messageset_doc)/messages/message[@entry=$entry]" />
 			</td>
