@@ -78,7 +78,7 @@ public class IPFilterTests extends TestCase {
    private void doTestGetExpression(String expression)
    throws Throwable {
 
-      IPFilter filter = IPFilter.parseFilter(expression);
+      IPFilter filter = IPFilter.parseIPFilter(expression);
       assertNotNull(filter);
 
       assertEquals(expression, filter.getExpression());
@@ -88,8 +88,8 @@ public class IPFilterTests extends TestCase {
    public void testParseFilter() throws Throwable {
 
       try {
-         IPFilter.parseFilter(null);
-         fail("IPFilter.parseFilter(null) should throw an IllegalArgumentException.");
+         IPFilter.parseIPFilter(null);
+         fail("IPFilter.parseIPFilter(null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
@@ -138,20 +138,20 @@ public class IPFilterTests extends TestCase {
 
       if (! okay) {
          try {
-            IPFilter.parseFilter(expression);
+            IPFilter.parseIPFilter(expression);
             fail("IPFilter.parse(\"" + expression + "\") should throw a ParseException.");
          } catch (ParseException exception) {
             // as expected
          }
       } else {
-         IPFilter filter = IPFilter.parseFilter(expression);
+         IPFilter filter = IPFilter.parseIPFilter(expression);
          assertNotNull(filter);
       }
    }
 
    public void testIsAuthorized() throws Throwable {
 
-      IPFilter filter = IPFilter.parseFilter("194.134.168.213/32");
+      IPFilter filter = IPFilter.parseIPFilter("194.134.168.213/32");
       assertNotNull(filter);
 
       try {
@@ -196,7 +196,7 @@ public class IPFilterTests extends TestCase {
       doTestIsAuthorized(filter, "194.134.168.212",          true,  false);
       doTestIsAuthorized(filter, "194.134.168.214",          true,  false);
 
-      filter = IPFilter.parseFilter("194.134.168.213/31");
+      filter = IPFilter.parseIPFilter("194.134.168.213/31");
       assertNotNull(filter);
 
       doTestIsAuthorized(filter, "194.134.168.213",          true,  true);

@@ -76,7 +76,7 @@ extends Object {
     * @throws ParseException
     *    if <code>expression</code> does not match the specified format.
     */
-   public static final IPFilter parseFilter(String expression)
+   public static final IPFilter parseIPFilter(String expression)
    throws IllegalArgumentException, ParseException {
 
       MandatoryArgumentChecker.check("expression", expression);
