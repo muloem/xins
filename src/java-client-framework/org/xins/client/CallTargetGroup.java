@@ -351,6 +351,11 @@ extends AbstractCompositeFunctionCaller {
     * @throws InvalidCallResultException
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.63. Use
+    *    {@link #getActualFunctionCaller(String)} instead, and then use on of
+    *    the normal <code>call(...)</code> methods.
     */
    public final CallResult call(String url, String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, NoSuchActualFunctionCallerException, IOException, InvalidCallResultException {
