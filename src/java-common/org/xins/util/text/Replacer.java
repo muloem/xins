@@ -3,6 +3,7 @@
  */
 package org.xins.util.text;
 
+import java.util.Enumeration;
 import java.util.Properties;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -100,6 +101,30 @@ public class Replacer extends Object {
       }
 
       return buffer.toString();
+   }
+
+   public static final Properties replace(Properties source,
+                                          char       tagStart,
+                                          char       tagEnd,
+                                          Properties properties)
+   throws IllegalArgumentException, Replacer.Exception {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("source", source, "properties", properties);
+
+      Properties result = new Properties();
+
+      Enumeration e = source.propertyNames();
+      while (e.hasMoreElements()) {
+
+         String key   = (String) e.nextElement();
+         String value = source.getProperty(key);
+
+         value = replace(value, tagStart, tagEnd, properties);
+         result.put(key, value);
+      }
+
+      return result;
    }
 
 
