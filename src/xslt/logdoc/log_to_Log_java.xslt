@@ -295,33 +295,33 @@ import org.xins.util.MandatoryArgumentChecker;
       if (LOG.isEnabledFor(</xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>)) {
-         LOG.log(FQCN, </xsl:text>
-		<xsl:value-of select="@level" />
-		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
+         String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(id</xsl:text>
 		<xsl:for-each select="param">
 			<xsl:text>, </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
-		<xsl:text>), </xsl:text>
+		<xsl:text>);
+         LOG.log(FQCN, </xsl:text>
+		<xsl:value-of select="@level" />
+		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
-				<xsl:text>exception</xsl:text>
+				<xsl:text>exception);</xsl:text>
+			</xsl:when>
+			<xsl:when test="$exception = 'true'">
+				<xsl:text>null);
+         if (LOG.isEnabledFor(DEBUG)) {
+            LOG.log(FQCN, DEBUG, __translation__, exception);
+         }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>null</xsl:text>
+				<xsl:text>null);</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>);
-      }</xsl:text>
-		<xsl:if test="$exception = 'true' and not(@level = 'DEBUG')">
-			<xsl:text>
-      if (LOG.isEnabledFor(DEBUG)) {
-         LOG.log(FQCN, DEBUG, null, exception);
-      }</xsl:text>
-		</xsl:if>
 		<xsl:text>
+      }
    }</xsl:text>
 	</xsl:template>
 
