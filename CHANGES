@@ -3,6 +3,10 @@ CHANGES INTRODUCED IN XINS 0.38:
 
 * Removed DataUnavailableException from XINS/Java Client Framework.
 
+* Added standard types: _text, _boolean, _int8, _int16, _int32, _int64.
+
+* Refactored some of the function_to_html.xslt files.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.37:
 
