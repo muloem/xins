@@ -47,10 +47,6 @@ public abstract class AbstractCAPI extends Object {
     * @param caller
     *    the XINS service caller to use, cannot be <code>null</code>.
     *
-    * @param httpMethod
-    *    the HTTP method to use when doing a call, or <code>null</code> if the
-    *    default should be used.
-    *
     * @throws IllegalArgumentException
     *    if <code>caller == null</code>.
     *
