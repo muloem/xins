@@ -8,8 +8,8 @@ import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
- * Expiry folder. Contains values indexed by key. Items in this map will
- * expire after a predefined amount of time, unless they're access within that
+ * Expiry folder. Contains values indexed by key. Entries in this folder will
+ * expire after a predefined amount of time, unless they're accessed within that
  * timeframe.
  *
  * <p>This class is thread-safe.
