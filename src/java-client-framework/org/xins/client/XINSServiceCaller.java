@@ -265,13 +265,13 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Unknown kind of exception. This should never happen. Log and
          // re-throw the exception, packed up as an Error.
          } else {
-            final String METHODNAME = "doCall(CallRequest)";
-            Log.log_2052(exception, CLASSNAME, METHODNAME);
+            final String DOCALL_METHODNAME = "doCall(CallRequest)";
+            Log.log_2052(exception, CLASSNAME, DOCALL_METHODNAME);
 
             FastStringBuffer message = new FastStringBuffer(190);
             message.append(CLASSNAME);
             message.append('.');
-            message.append(METHODNAME);
+            message.append(DOCALL_METHODNAME);
             message.append(" threw unexpected ");
             message.append(exception.getClass().getName());
             message.append(". Message: ");
