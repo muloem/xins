@@ -25,28 +25,20 @@ import org.xins.common.threads.Doorman;
  * as well. They should use {@link #_doorman} to synchronize the read and
  * write operations to all fields.
  *
- * <p>When reading a field, {@link Doorman#enterAsReader() enterAsReader()}
- * should be called, followed by
- * {@link Doorman#leaveAsReader() leaveAsReader()} when done.
- *
- * <p>When writing a field, {@link Doorman#enterAsWriter() enterAsWriter()}
- * should be called, followed by
- * {@link Doorman#leaveAsWriter() leaveAsWriter()} when done.
- *
- * <p>For example, the <em>failOverAllowed</em> getter and setter methods in
- * this class could be implemented as follows:
+ * <p>When reading or writing a field, the code should synchronize on
+ * {@link #_lock}. For example, the <em>failOverAllowed</em> getter and setter
+ * methods in this class could be implemented as follows:
  *
  * <blockquote><pre>public final boolean isFailOverAllowed() {
- *   {@link #_doorman}.{@link Doorman#enterAsReader() enterAsReader()};
- *   boolean b = _failOverAllowed;
- *   {@link #_doorman}.{@link Doorman#leaveAsReader() leaveAsReader()};
- *   return b;
+ *   synchronized (_lock) {
+ *      return _failOverAllowed;
+ *   }
  *}
  *
  *public final void setFailOverAllowed(boolean allowed) {
- *   {@link #_doorman}.{@link Doorman#enterAsWriter() enterAsWriter()};
- *   _failOverAllowed = allowed;
- *   {@link #_doorman}.{@link Doorman#leaveAsWriter() leaveAsWriter()};
+ *   synchronized (_lock) {
+ *      _failOverAllowed = allowed;
+ *   }
  *}</pre></blockquote>
  *
  * @version $Revision$ $Date$
@@ -85,8 +77,8 @@ public class CallConfig extends Object {
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
-      // TODO: Improve name sent to Doorman constructor
-      _doorman = new Doorman("CallConfig", false, 3, 4000);
+      // Create lock object
+      _lock = new Object();
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -98,9 +90,10 @@ public class CallConfig extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Access controller for the fields in this object.
+    * Access controller for the fields in this object. Field reading or
+    * writing code should synchronize on this object.
     */
-   protected final Doorman _doorman;
+   protected final Object _lock;
 
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
@@ -121,10 +114,9 @@ public class CallConfig extends Object {
     *    <code>false</code> otherwise.
     */
    public final boolean isFailOverAllowed() {
-      _doorman.enterAsReader();
-      boolean b = _failOverAllowed;
-      _doorman.leaveAsReader();
-      return b;
+      synchronized (_lock) {
+         return _failOverAllowed;
+      }
    }
 
    /**
@@ -136,8 +128,8 @@ public class CallConfig extends Object {
     *    <code>false</code> otherwise.
     */
    public final void setFailOverAllowed(boolean allowed) {
-      _doorman.enterAsWriter();
-      _failOverAllowed = allowed;
-      _doorman.leaveAsWriter();
+      synchronized (_lock) {
+         _failOverAllowed = allowed;
+      }
    }
 }

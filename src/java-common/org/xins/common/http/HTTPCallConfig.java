@@ -68,10 +68,10 @@ public final class HTTPCallConfig extends CallConfig {
     *    the HTTP method, never <code>null</code>.
     */
    public HTTPMethod getMethod() {
-      HTTPMethod method;
-      _doorman.enterAsReader();
-      method = _method;
-      _doorman.leaveAsReader();
-      return method;
+      synchronized (_lock) {
+         return _method;
+      }
    }
+
+   // TODO: Add setter for HTTPMethod
 }
