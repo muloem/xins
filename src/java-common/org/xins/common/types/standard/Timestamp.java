@@ -33,6 +33,25 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a <code>Timestamp.Value</code> with the value of the current
+    * time.
+    *
+    * @return
+    *    the {@link Value} initialed with the current time,
+    *    never <code>null</code>.
+    */
+   public static Value now() {
+      Calendar today = Calendar.getInstance();
+      int year = today.get(Calendar.YEAR);
+      int month = today.get(Calendar.MONTH);
+      int day = today.get(Calendar.DAY_OF_MONTH);
+      int hour = today.get(Calendar.HOUR);
+      int minutes = today.get(Calendar.MINUTE);
+      int seconds = today.get(Calendar.SECOND);
+      return new Date.Value(year, month, day, hour, minutes, seconds);
+   }
+
+   /**
     * Constructs a <code>Timestamp.Value</code> from the specified string
     * which is guaranteed to be non-<code>null</code>.
     *

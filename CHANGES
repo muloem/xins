@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 
+* XINS/Java Common Library:
+  - Added the static methods today() in Date and now() in Timestamp.
+
 * Generated build file:
   - Fixed bug #985218. The index.html and css are now generated or copied in
     in the correct directory.

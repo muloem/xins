@@ -33,6 +33,20 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a <code>Date.Value</code> with the value of the current date.
+    *
+    * @return
+    *    the {@link Value} for today, never <code>null</code>.
+    */
+   public static Value today() {
+      Calendar today = Calendar.getInstance();
+      int year = today.get(Calendar.YEAR);
+      int month = today.get(Calendar.MONTH);
+      int day = today.get(Calendar.DAY_OF_MONTH);
+      return new Date.Value(year, month, day);
+   }
+
+   /**
     * Constructs a <code>Date.Value</code> from the specified string
     * which is guaranteed to be non-<code>null</code>.
     *
