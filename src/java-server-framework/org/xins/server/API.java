@@ -142,11 +142,15 @@ implements DefaultReturnCodes {
     * @throws IOException
     *    if an I/O error occurs.
     */
-   final void handleCall(ServletRequest request, PrintWriter out) throws IOException {
+   final void handleCall(ServletRequest request, PrintWriter out)
+   throws IOException {
 
-      // Create a new call context
-      CallContext context = new CallContext(request);
+      // Get call context
+      CallContext context = new CallContext();
       // TODO: Fetch CallContext by Thread
+
+      // Configure the call context
+      context.reset(request);
 
       StringWriter stringWriter = context.getStringWriter();
 
