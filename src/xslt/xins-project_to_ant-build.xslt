@@ -333,10 +333,51 @@ $Id$
 							<classes dir="{$javaImplDir}"    excludes="**/*.java" />
 						</war>
 					</target>
+					
+					<target name="javadoc-api-{$api}" depends="-skeletons-impl-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
+						<mkdir dir="build/javadoc/{$api}" />
+						<javadoc
+						sourcepath="build/java-combined/{$api}"
+						destdir="build/javadoc/{$api}"
+						version="yes"
+						use="yes"
+						author="yes"
+						private="no"
+						windowtitle="TODO"
+						doctitle="TODO"
+						bottom="TODO">
+							<packageset dir="build/java-combined/{$api}" />
+							<link
+							href="http://xins.sourceforge.net/javadoc/0.31/"
+							offline="true"
+							packagelistloc="{$xins_home}/build/javadoc/" />
+							<link
+							href="http://java.sun.com/j2se/1.3/docs/api"
+							offline="true"
+							packagelistloc="{$xins_home}/src/package-lists/j2se/" />
+							<link
+							href="http://jakarta.apache.org/log4j/docs/api/"
+							offline="true"
+							packagelistloc="{$xins_home}/src/package-lists/log4j/" />
+							<link
+							href="http://xmlenc.sourceforge.net/javadoc/0.34/"
+							offline="true"
+							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
+							<classpath>
+								<pathelement location="{$xins_home}/build/xins.jar" />
+								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
+								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
+								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+							</classpath>
+						</javadoc>
+						<copy
+						file="{$xins_home}/src/css/javadoc/style.css"
+						tofile="build/javadoc/{$api}/stylesheet.css"
+						overwrite="true" />
+					</target>
 				</xsl:if>
-				
 			</xsl:for-each>
-			
+
 			<target name="specdocs" description="Generates all specification docs">
 				<xsl:attribute name="depends">
 					<xsl:text>specdocs-index</xsl:text>
