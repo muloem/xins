@@ -3,21 +3,23 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
-$Id$
+ $Id$
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
+	<!-- Define parameters -->
+	<xsl:param name="xins_home"    />
+	<xsl:param name="project_home" />
+	<xsl:param name="builddir"     />
+	<xsl:param name="xins_version" />
+	
+	<!-- Perform includes -->
 	<xsl:include href="hungarian.xslt"       />
 	<xsl:include href="package_to_dir.xslt"  />
 	<xsl:include href="package_for_api.xslt" />
 	
 	<xsl:output indent="yes" />
-	
-	<xsl:param name="xins_home"    />
-	<xsl:param name="project_home" />
-	<xsl:param name="builddir"     />
-	<xsl:param name="xins_version" />
 	
 	<xsl:variable name="xmlenc_version"    select="'0.37'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
