@@ -32,6 +32,17 @@ extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The number of instances of this class.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * Lock object for <code>INSTANCE_COUNT</code>.
+    */
+   private static final Object INSTANCE_COUNT_LOCK = new Object();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -65,6 +76,11 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("strategy", strategy);
 
+      // Determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNum = INSTANCE_COUNT++;
+      }
+
       // Initialize fields
       _strategy         = strategy;
       _recentlyAccessed = new HashMap(89);
@@ -86,6 +102,11 @@ extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The instance number of this instance.
+    */
+   private final int _instanceNum;
 
    /**
     * The strategy used. This field cannot be <code>null</code>.
@@ -332,5 +353,9 @@ extends Object {
       synchronized (_sizeLock) {
          _size++;
       }
+   }
+
+   public String toString() {
+      return "XINS ExpiryFolder #" + _instanceNum;
    }
 }
