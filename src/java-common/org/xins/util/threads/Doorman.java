@@ -171,49 +171,6 @@ public final class Doorman extends Object {
    }
 
    /**
-    * Notifies all appropriate waiting threads in the queue.
-    */
-   private void leave() {
-      Queue.EntryType type;
-      synchronized (_queue) {
-         type = _queue.getTypeOfFirst();
-      }
-
-      if (type == READ_QUEUE_ENTRY_TYPE) {
-         _readAccess.notifyAll();
-      } else if (type == WRITE_QUEUE_ENTRY_TYPE) {
-         _writeAccess.notifyAll();
-      }
-   }
-
-   /**
-    * Leaves the 'protected area' as a reader.
-    */
-   public void leaveAsReader() {
-      Thread reader = Thread.currentThread();
-
-      synchronized (_currentActorLock) {
-         _currentReaders.remove(reader);
-      }
-
-      leave();
-   }
-
-   /**
-    * Leaves the 'protected area' as a writer.
-    */
-   public void leaveAsWriter() {
-      // XXX: Thread writer = Thread.currentThread();
-
-      synchronized (_currentActorLock) {
-         // TODO: What if _currentWriter != writer ?
-         _currentWriter = null;
-      }
-
-      leave();
-   }
-
-   /**
     * Enters the 'protected area' as a writer. If necessary, this method will
     * wait until the area can be entered.
     *
@@ -269,6 +226,49 @@ public final class Doorman extends Object {
             }
          }
       } while (! mayEnter);
+   }
+
+   /**
+    * Notifies all appropriate waiting threads in the queue.
+    */
+   private void leave() {
+      Queue.EntryType type;
+      synchronized (_queue) {
+         type = _queue.getTypeOfFirst();
+      }
+
+      if (type == READ_QUEUE_ENTRY_TYPE) {
+         _readAccess.notifyAll();
+      } else if (type == WRITE_QUEUE_ENTRY_TYPE) {
+         _writeAccess.notifyAll();
+      }
+   }
+
+   /**
+    * Leaves the 'protected area' as a reader.
+    */
+   public void leaveAsReader() {
+      Thread reader = Thread.currentThread();
+
+      synchronized (_currentActorLock) {
+         _currentReaders.remove(reader);
+      }
+
+      leave();
+   }
+
+   /**
+    * Leaves the 'protected area' as a writer.
+    */
+   public void leaveAsWriter() {
+      // XXX: Thread writer = Thread.currentThread();
+
+      synchronized (_currentActorLock) {
+         // TODO: What if _currentWriter != writer ?
+         _currentWriter = null;
+      }
+
+      leave();
    }
 
 
