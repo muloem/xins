@@ -410,7 +410,7 @@
 
 	<group id="runtime.tx" name="Transaction logging">
 		<entry id="1540" level="INFO">
-			<description>Function called.</description>
+			<description>Function called. This entry differs from 1541 in that it logs all input and output parameters, while 1541 does not.</description>
 			<param name="ip"           type="text"         nullable="false" />
 			<param name="functionName" type="text"         nullable="false" />
 			<param name="callID"       type="int32"        nullable="false" />
@@ -418,6 +418,15 @@
 			<param name="duration"     type="int64"        nullable="false" />
 			<param name="inParams"     type="serializable" nullable="true"  />
 			<param name="outParams"    type="serializable" nullable="true"  />
+			<param name="errorCode"    type="text"         nullable="true"  />
+		</entry>
+		<entry id="1541" level="INFO">
+			<description>Function called. This entry differs from 1540 in that it does not log all input and output parameters, while 1540 does.</description>
+			<param name="ip"           type="text"         nullable="false" />
+			<param name="functionName" type="text"         nullable="false" />
+			<param name="callID"       type="int32"        nullable="false" />
+			<param name="start"        type="serializable" nullable="false" />
+			<param name="duration"     type="int64"        nullable="false" />
 			<param name="errorCode"    type="text"         nullable="true"  />
 		</entry>
 	</group>
