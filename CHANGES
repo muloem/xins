@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.203:
 
+* XINS/Java Server Framework:
+  - Changed the format of the context identifier to app@hostname:time:random.
+
 * XINS/Java Common Library:
   - Replaced the way to find the hostname for the hostname task.
 

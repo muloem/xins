@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Random;
@@ -35,6 +37,7 @@ import org.xins.common.io.FileWatcher;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.servlet.ServletConfigPropertyReader;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
 
 /**
@@ -144,6 +147,11 @@ extends HttpServlet {
    private static final State DISPOSED = new State("DISPOSED");
 
    /**
+    * The date formatter used for the context identifier.
+    */
+   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+
+   /**
     * The name of the system property that specifies the location of the
     * configuration file.
     */
@@ -165,6 +173,12 @@ extends HttpServlet {
     * API class to load.
     */
    public static final String API_CLASS_PROPERTY = "org.xins.api.class";
+
+   /**
+    * The name of the build property that specifies the name of the
+    * API.
+    */
+   public static final String API_NAME_PROPERTY = "org.xins.api.name";
 
    /**
     * The name of the runtime property that specifies the locale for the log
@@ -296,6 +310,11 @@ extends HttpServlet {
    private PropertyReader _runtimeProperties;
 
    /**
+    * The name of the API.
+    */
+   private String _apiName;
+
+   /**
     * The API that this servlet forwards requests to.
     */
    private API _api;
@@ -306,14 +325,39 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
-    * Generates a random diagnostic context identifier.
+    * Generates a diagnostic context identifier. The generated context
+    * identifier will be like app@host:time:rnd where
+    *   - app is the name of the deployed application
+    *   - host is the hostname the sender or its IP address.
+    *   - time is the current time formatted a yyyyMMdd_HHmmssNNN
+    *     (e.g. 20040806_171522358)
+    *   - rnd is a 5 digits long random hexadecimal generated number.
+    *
+    * @param remoteHost
+    *    the fully qualified name of the client that sent the request or the
+    *    IP address if the host can not be resolved,
+    *    cannot be <code>null</code>.
     *
     * @return
-    *    the generated diagnostic context identifier, never <code>null</code>
-    *    but always a 16-character string.
+    *    the generated diagnostic context identifier, never <code>null</code>.
     */
-   private String generateContextID() {
-      return HexConverter.toHexString(_random.nextLong());
+   private String generateContextID(String remoteHost) {
+
+      String currentDate = DATE_FORMATTER.format(new Date());
+
+      FastStringBuffer buffer = new FastStringBuffer(16);
+      HexConverter.toHexString(buffer, _random.nextLong());
+      String randomFive = buffer.toString().substring(0, 5);
+
+      FastStringBuffer contextID = new FastStringBuffer(_apiName.length() + remoteHost.length() + 27);
+      contextID.append(_apiName);
+      contextID.append('@');
+      contextID.append(remoteHost);
+      contextID.append(':');
+      contextID.append(currentDate);
+      contextID.append(':');
+      contextID.append(randomFive);
+      return contextID.toString();
    }
 
    /**
@@ -494,7 +538,7 @@ extends HttpServlet {
          }
 
          // Check the expected vs implemented Java Servlet API version
-	 // Both 2.2 and 2.3 are supported
+         // Both 2.2 and 2.3 are supported
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
          if (major != 2 || (minor != 2 && minor != 3)) {
@@ -590,6 +634,14 @@ extends HttpServlet {
             Log.log_1208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
+         }
+
+         // Store the name of the API
+         _apiName = config.getInitParameter(API_NAME_PROPERTY);
+         if (_apiName == null) {
+
+            // Should never happen
+            _apiName= "-";
          }
 
 
@@ -806,7 +858,7 @@ extends HttpServlet {
 
       // If there is no diagnostic context ID, then generate one.
       if ((contextID == null) || (contextID.length() < 1)) {
-         contextID = generateContextID();
+         contextID = generateContextID(request.getRemoteHost());
       }
 
       // Associate the context ID with this thread
