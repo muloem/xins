@@ -154,6 +154,9 @@ public final class FastStack extends Object {
     * untouched, though.
     */
    public void clear() {
+      for (int i = 0; i < _size; i++) {
+         _elements[i] = null;
+      }
       _size = 0;
    }
 }
