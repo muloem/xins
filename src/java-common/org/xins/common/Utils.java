@@ -8,6 +8,7 @@ package org.xins.common;
 
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**
@@ -276,6 +277,65 @@ public final class Utils extends Object {
       return logProgrammingError(detectingClass, detectingMethod,
                                  subjectClass,   subjectMethod,
                                  detail,         null);
+   }
+
+   /**
+    * Determines the name of the specified class.
+    *
+    * @param c
+    *    the class to determine the name for, not <code>null</code>.
+    *
+    * @return
+    *    the name of the class, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>c == null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public static final String getNameOfClass(Class c)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("c", c);
+
+      // TODO: if (c.isPrimitive()) {
+
+      if (c.isArray()) {
+         FastStringBuffer buffer = new FastStringBuffer(137);
+         Class comp = c.getComponentType();
+         buffer.append(getNameOfClass(comp));
+         if (c.getName().charAt(0) == '[') {
+            buffer.append("[]");
+         }
+         return buffer.toString();
+      } else {
+         return c.getName();
+      }
+   }
+
+   /**
+    * Determines the name of the class of the specified object.
+    *
+    * @param object
+    *    the object to determine the name of the class for, not
+    *    <code>null</code>.
+    *
+    * @return
+    *    the name of the class, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>object == null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public static final String getClassName(Object object)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("object", object);
+
+      return getNameOfClass(object.getClass());
    }
 
 
