@@ -29,6 +29,7 @@
 	<xsl:variable name="className" select="'SuccessfulResult'" />
 
 	<xsl:template name="result">
+		<xsl:param name="createsSession" />
 
 		<!-- ************************************************************* -->
 		<!-- Generate the Result interface                                 -->
@@ -84,10 +85,19 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    /**
     * Creates a new SuccessfulResult.
     */
-   public SuccessfulResult() {
+   public SuccessfulResult(]]></xsl:text>
+	  <xsl:if test="$createsSession = 'true'">
+			<xsl:text>org.xins.server.Session session</xsl:text>
+		</xsl:if>
+		<xsl:text>) {
 
       // Report the success
-      super(true, null);
+      super(true, null);</xsl:text>
+	  <xsl:if test="$createsSession = 'true'">
+			<xsl:text>
+      param("_session", session.getIDString());</xsl:text>
+		</xsl:if>
+		<xsl:text>
    }
 
    //-------------------------------------------------------------------------
@@ -96,7 +106,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------]]></xsl:text>
+   //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="output/param">
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
@@ -131,41 +141,27 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="javatype">
+		<xsl:variable name="javasimpletype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_file" select="$project_file" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="required"     select="'true'"     />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
-		</xsl:variable>
-		<xsl:variable name="required">
-			<xsl:choose>
-				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-				<xsl:when test="@required = 'false'">false</xsl:when>
-				<xsl:when test="@required = 'true'">true</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-						<xsl:value-of select="@required" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="typeToString">
 			<xsl:call-template name="javatype_to_string_for_type">
 				<xsl:with-param name="api"      select="$api" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="$required" />
+				<xsl:with-param name="required" select="@required" />
 				<xsl:with-param name="type"     select="@type" />
 				<xsl:with-param name="variable" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="typeIsPrimary">
 			<xsl:call-template name="is_java_datatype">
-				<xsl:with-param name="text" select="$javatype" />
+				<xsl:with-param name="text" select="$javasimpletype" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -175,7 +171,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    /**
     * Sets the value of the ]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="$required = 'true'">
+			<xsl:when test="@required = 'true'">
 				<xsl:text>required</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -209,7 +205,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    public void </xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
-		<xsl:value-of select="$javatype" />
+		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>) {

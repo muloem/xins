@@ -195,12 +195,10 @@ MISCELLANEOUS
 * Support the Freshmeat.net XML-RPC interface for notification of new
   releases.
 * Refactor documentation.
-* Merge the similar targets in build.xml (java-client, java-server,
-  -prepare-java-client, -prepare-java-server, -prepare-java-common).
 * Link the javadoc to the correct XINS version on sourceforge.
 * xslt & xml files should contain a description in their header.
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.
-* Rename build targets to war-<api> specdocs-<api> jar-<api>
 * Look at unused classes/methods.
+* Refactor the directory structure.

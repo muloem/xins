@@ -423,11 +423,12 @@ public abstract class ]]></xsl:text>
 </xsl:text>
 		<!-- Generates the Result interfaces and object used to set the output data. -->
 		<xsl:call-template name="result">
-			<xsl:with-param name="project_home" select="$project_home" />
-			<xsl:with-param name="project_file" select="$project_file" />
-			<xsl:with-param name="api"          select="$api"          />
-			<xsl:with-param name="api_file"     select="$api_file"     />
-			<xsl:with-param name="specsdir"     select="$specsdir"     />
+			<xsl:with-param name="project_home"   select="$project_home"   />
+			<xsl:with-param name="project_file"   select="$project_file"   />
+			<xsl:with-param name="api"            select="$api"            />
+			<xsl:with-param name="api_file"       select="$api_file"       />
+			<xsl:with-param name="specsdir"       select="$specsdir"       />
+			<xsl:with-param name="createsSession" select="$createsSession" />
 		</xsl:call-template>
 <xsl:text>
 }</xsl:text>

@@ -6,6 +6,11 @@ CHANGES INTRODUCED IN XINS 0.170:
     parameter names.
   - The method retrieveSession is also available if the function creates the
     session.
+  - If the function creates the session, the session must be in the
+    successful result.
+  - The methods in Request and Result also uses simple java type when
+    possible and not objects. To know if an optional parameter has been set
+    there is a boolean isSet<parameter>() method.
   - Removed some unused import.
 
 * XINS/Java Client Framework:
@@ -24,9 +29,13 @@ CHANGES INTRODUCED IN XINS 0.170:
   - The result code generated files are regenerated if any function
     specification has changed.
   - Added the 'help' target that prints a summary of the possible targets.
-    This target is now the default target.
+    This target is now the default target. This target also prints the
+    possible APIs.
   - If you compile using 'xins -Ddeprecated=false [target]*' the deprecation
     warnings won't be printed.
+  - Renamed the target war-api-<api> to war-<api>, specdocs-api-<api> to
+    specdocs-<api> and jar-capi-<api> to jar-<api>.
+  - Added a new clean-<api> target.
 
 * Build and release process:
   - Keep the changes-<version>.txt when making a release.

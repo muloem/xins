@@ -172,16 +172,12 @@ public final static class Request {
 			</xsl:call-template>
 		</xsl:variable>
 		<!-- Get the name of the get method. -->
-		<xsl:variable name="methodName">
-			<xsl:choose>
-				<xsl:when test="$basetype = '_boolean'">is</xsl:when>
-				<xsl:otherwise>get</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="hungarianName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<!-- Get the return type of the get method. -->
+		<!-- Get the return type of the variable. -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_file" select="$project_file" />
@@ -191,29 +187,48 @@ public final static class Request {
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
-		<!-- Get whether this input was required or not. -->
-		<xsl:variable name="required">
-			<xsl:choose>
-				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-				<xsl:when test="@required = 'false'">false</xsl:when>
-				<xsl:when test="@required = 'true'">true</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-						<xsl:value-of select="@required" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
+		<!-- Get the return type of the get method. -->
+		<xsl:variable name="javasimpletype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="'true'"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="typeIsPrimary">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$javasimpletype" />
+			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- If the object is not required, write a isSetType() method -->
+		<xsl:if test="not(@required = 'true')">
+			<xsl:text>
+   /**
+    * As the parameter is optional, this method checks whether this parameter
+    * has been sent.
+    *
+    * @return
+    *    true is the parameter has been sent, false otherwise.
+    */
+   boolean isSet</xsl:text>
+			<xsl:value-of select="$hungarianName" />
+			<xsl:text>() {
+      return _</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> != null;
+   }
+			</xsl:text>
+		</xsl:if>
 		<!-- Generates the get method. -->
 		<xsl:text><![CDATA[
 
    /**
     * Gets the value of the ]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="$required = 'true'">
+			<xsl:when test="@required = 'true'">
 				<xsl:text>required</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -230,22 +245,50 @@ public final static class Request {
 		<xsl:text><![CDATA[</em> input parameter]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="not($basetype = '_text')">.</xsl:when>
-			<xsl:when test="@required = 'true'">
-				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
-			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text><![CDATA[, or <code>null</code> if the parameter is not set.]]></xsl:text>
+				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text><![CDATA[
+		<xsl:if test="not(@required = 'true')">
+			<xsl:text>
+    *
+    * @throw ParameterNotInitializedException
+    *    if the value has not been set.</xsl:text>
+		</xsl:if>
+		<xsl:text>
     */
-   public ]]></xsl:text>
-		<xsl:value-of select="$javatype" />
-		<xsl:text> </xsl:text>
-		<xsl:value-of select="$methodName" />
-		<xsl:text>() {
+   </xsl:text>
+		<xsl:value-of select="$javasimpletype" />
+		<xsl:text> get</xsl:text>
+		<xsl:value-of select="$hungarianName" />
+		<xsl:text>() </xsl:text>
+		<xsl:if test="not(@required = 'true')">
+			<xsl:text>throws org.xins.server.ParameterNotInitializedException </xsl:text>
+		</xsl:if>
+		<xsl:text>{
+      </xsl:text>
+		<xsl:choose>
+			<xsl:when test="@required = 'true'">
+				<xsl:text>return _</xsl:text>
+				<xsl:value-of select="@name" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>if (!isSet</xsl:text>
+				<xsl:value-of select="$hungarianName" />
+				<xsl:text>()) {
+         throw new org.xins.server.ParameterNotInitializedException("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>");
+      }
       return _</xsl:text>
-		<xsl:value-of select="@name" />
+				<xsl:value-of select="@name" />
+				<xsl:if test="$typeIsPrimary = 'true'">
+					<xsl:text>.</xsl:text>
+					<xsl:value-of select="$javasimpletype" />
+					<xsl:text>Value()</xsl:text>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>;
    }</xsl:text>
 	</xsl:template>

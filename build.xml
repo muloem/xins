@@ -534,38 +534,76 @@
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
+		<!-- convert all text files to Unix LF -->
+		<patternset id="src.release.text.files">
+			<include name="ant/**/*"                   />
+			<include name="config/**/*"                />
+			<include name="css/**/*"                   />
+			<include name="demos/**/*"                 />
+			<include name="dtd/**/*"                   />
+			<include name="java-client-framework/**/*" />
+			<include name="java-common/**/*"           />
+			<include name="java-server-framework/**/*" />
+			<include name="logdoc/client/*"            />
+			<include name="logdoc/common/*"            />
+			<include name="logdoc/server/*"            />
+			<include name="package-lists/**/*"         />
+			<include name="xml/**/*"                   />
+			<include name="xslt/**/*"                  />
+		</patternset>
+		<patternset id="main.release.text.files">
+			<include name="build.xml"                      />
+			<include name=".version.properties"            />
+			<include name="CHANGES"                        />
+			<include name="COPYRIGHT"                      />
+			<include name="README"                         />
+			<include name="TODO"                           />
+		</patternset>
+		<mkdir dir="build.src" />
+		<copy desdir="build/src">
+			<fileset dir="src">
+				<patternset refid="src.release.text.files"/>
+			</fileset>
+			<fileset dir="src/bin" />
+		</copy>
+		<copy desdir="build">
+			<fileset dir="src">
+				<patternset refid="main.release.text.files"/>
+			</fileset>
+		</copy>
+		<fixcrlf eol="unix" eof="remove">
+			<fileset dir="build/src">
+				<patternset refid="src.release.text.files"/>
+			</fileset>
+			<fileset dir="build">
+				<patternset refid="main.release.text.files"/>
+			</fileset>
+			<fileset file="build/src/bin/xins" />
+		</fixcrlf>
+		<fixcrlf eol="dos" eof="asis">
+			<fileset file="build/src/bin/xins.bat" />
+		</fixcrlf>
+
+		<!-- Tar the release file -->
 		<tar tarfile="build/${package-basename}.tar">
 			<tarfileset
 			dir="${basedir}"
 			prefix="${name}-${version}"
 			mode="644">
-				<include name="build.xml"                      />
-				<include name=".version.properties"            />
-				<include name="CHANGES"                        />
-				<include name="COPYRIGHT"                      />
-				<include name="README"                         />
-				<include name="TODO"                           />
 				<include name="build/javadoc/**/*"             />
 				<include name="build/*.jar"                    />
-				<include name="src/ant/**/*"                   />
-				<include name="src/bin/xins.bat"               />
-				<include name="src/config/**/*"                />
-				<include name="src/css/**/*"                   />
-				<include name="src/demos/**/*"                 />
-				<include name="src/dtd/**/*"                   />
-				<include name="src/java-client-framework/**/*" />
-				<include name="src/java-common/**/*"           />
-				<include name="src/java-server-framework/**/*" />
-				<include name="src/logdoc/client/*"            />
-				<include name="src/logdoc/common/*"            />
-				<include name="src/logdoc/server/*"            />
-				<include name="src/package-lists/**/*"         />
-				<include name="src/xml/**/*"                   />
-				<include name="src/xslt/**/*"                  />
 				<include name="depends/**/*"                   />
 			</tarfileset>
 			<tarfileset
-			dir="${basedir}"
+			dir="${basedir}/build"
+			prefix="${name}-${version}"
+			mode="644">
+				<patternset refid="src.release.text.files"/>
+				<patternset refid="main.release.text.files"/>
+				<include name="src/bin/xins.bat" />
+			</tarfileset>
+			<tarfileset
+			dir="${basedir}/build"
 			prefix="${name}-${version}"
 			mode="755">
 				<include name="src/bin/xins" />

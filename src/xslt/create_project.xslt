@@ -24,8 +24,7 @@
 			<input addproperty="api.description"
 						 message="Please, enter the description of the new api:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN"
-"http://xins.sourceforge.net/dtd/api_1_0.dtd">
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" "http://xins.sourceforge.net/dtd/api_1_0.dtd">
 
 <api name="]]>${api.name}<![CDATA[" owner="]]>${user.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -50,8 +49,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="function.description"
 						 message="Please, enter the description of the new function:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function//EN"
-"http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
 
 <function name="]]>${function.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -73,8 +71,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="rcd.description"
 						 message="Please, enter the description of the new result code:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code//EN"
-"http://xins.sourceforge.net/dtd/resultcode_1_0.dtd">
+<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code//EN" "http://xins.sourceforge.net/dtd/resultcode_1_0.dtd">
 
 <resultcode name="]]>${rcd.name}&quot; value=&quot;${rcd.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -96,8 +93,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="type.description"
 						 message="Please, enter the description of the new type:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE type PUBLIC "-//XINS//DTD Type//EN"
-"http://xins.sourceforge.net/dtd/type_1_0.dtd">
+<!DOCTYPE type PUBLIC "-//XINS//DTD Type//EN" "http://xins.sourceforge.net/dtd/type_1_0.dtd">
 
 <type name="]]>${type.name}<![CDATA[" extends="_text"
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
