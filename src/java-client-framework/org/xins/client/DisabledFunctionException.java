@@ -18,7 +18,7 @@ import org.xins.common.service.TargetDescriptor;
  * @since XINS 1.2.0
  */
 public class DisabledFunctionException
-extends UnsuccessfulXINSCallException {
+extends StandardErrorCodeException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -71,6 +71,4 @@ extends UnsuccessfulXINSCallException {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   // XXX: Add methods for retrieval of details?
 }
