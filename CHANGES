@@ -3,16 +3,19 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
 
 * XINS/Java Server Framework:
   - Added tests for _GetSettings, _DiasableFunction, _EnableFunction and
-   _GetFunctionList meta functions.
+    _GetFunctionList meta functions.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Common Library:
   - Added the hashCode() and equals() method to the types Date and Timestamp.
   - Fixed the HTTPServiceCaller did not pass the arguments correctly when using
     the GET method.
   - Added tests for the ExpiryFolder.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Client Framework:
   - Added more test using the AllInOne CAPI.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
