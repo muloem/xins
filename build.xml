@@ -28,6 +28,10 @@
 		<property name="vendor"              value="Wanadoo Nederland B.V." />
 	</target>
 
+	<target name="version" depends="-init">
+		<echo message="${title} ${version}" />
+	</target>
+
 	<target name="-xmlenc-avail">
 		<available classname="org.znerd.xmlenc.XMLOutputter" property="xmlenc.available" />
 		<fail unless="xmlenc.available" message="Library not available: xmlenc" />
@@ -146,6 +150,29 @@
 			<arg value="${www.target}/javadoc/${version}/" />
 		</exec>
 	</target>
+
+	<target name="src-package" depends="-prepare" description="Builds a distribution archive with all source files">
+		<tar tarfile="build/${src-package-tarfile}">
+			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,COPYRIGHT,README,src/**/*" />
+		</tar>
+		<gzip zipfile="build/${src-package-tarfile}.gz" src="build/${src-package-tarfile}" />
+		<delete file="build/${src-package-tarfile}" />
+	</target>
+
+	<target name="packages" depends="src-package" description="Build all distribution archives"/>
+
+	<target name="do-upload-packages" depends="-init" description="Uploads the packages to the web server">
+		<echo message="Uploading ${src-package-tarfile}.gz to ${www.host}" />
+		<exec dir="build/" executable="scp" failonerror="true">
+			<arg value="${src-package-tarfile}.gz" />
+			<arg value="${www.target}" />
+		</exec>
+	</target>
+
+	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
+
+
+	<target name="upload-release" depends="clean,upload-packages,upload-javadoc" description="Uploads everything" />
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
