@@ -8,11 +8,19 @@ package org.xins.server;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
+
+import org.xins.common.collections.CollectionUtils;
+import org.xins.common.collections.ProtectedPropertyReader;
+
+import org.xins.common.text.TextUtils;
 
 /**
  * Abstraction of a calling convention. A calling convention determines how an
@@ -34,9 +42,141 @@ extends Object {
    // Class fields
    //------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = CallingConvention.class.getName();
+
+
    //------------------------------------------------------------------------
    // Class functions
    //------------------------------------------------------------------------
+
+   /**
+    * Determines the name of the function to be called based on the parameters
+    * in the specified <code>HttpServletRequest</code>.
+    *
+    * @param httpRequest
+    *    the {@link HttpServletRequest} to get the parameters from, cannot be
+    *    <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>httpRequest == null</code>.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the function name is not specified.
+    *
+    * @throws InvalidRequestException
+    *    if both the parameter <code>"_function"</code> and the parameter
+    *    <code>"function"</code> are specified, but they have different
+    *    values.
+    */
+   static String determineFunction(HttpServletRequest httpRequest)
+   throws FunctionNotSpecifiedException, InvalidRequestException {
+
+      // Determine function name
+
+      return determineFunction(httpRequest.getParameter("_function"),
+                               httpRequest.getParameter("function"));
+   }
+
+   /**
+    * Determines the name of the function to be called based on the specified
+    * values for the parameters <code>"_function"</code> and
+    * <code>"function"</code>.
+    *
+    * @param withUnderScore
+    *    the value of the parameter <code>"_function"</code>.
+    *
+    * @param withoutUnderScore
+    *    the value of the parameter <code>"function"</code>.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the function name is not specified in either of the parameters.
+    *
+    * @throws InvalidRequestException
+    *    if both the parameter <code>"_function"</code> and the parameter
+    *    <code>"function"</code> are specified, but they have different
+    *    values.
+    */
+   static String determineFunction(String withUnderScore,
+                                   String withoutUnderScore)
+   throws FunctionNotSpecifiedException, InvalidRequestException {
+
+      String functionName;
+
+      // Function name is not specified
+      if (TextUtils.isEmpty(withUnderScore)
+      && TextUtils.isEmpty(withoutUnderScore)) {
+
+         throw new FunctionNotSpecifiedException();
+
+      // Only "function" is specified
+      } else if (TextUtils.isEmpty(withUnderScore)) {
+         functionName = withoutUnderScore;
+
+      // Only "_function" is specified
+      } else if (TextUtils.isEmpty(withoutUnderScore)) {
+         functionName = withUnderScore;
+
+      // Both "function" and "_function" are specified, and they are equal
+      } else if (withUnderScore.equals(withoutUnderScore)) {
+         functionName = withUnderScore;
+
+      // Both "function" and "_function" are specified, but they are different
+      } else {
+         final String DETAIL = "_function="
+                             + TextUtils.quote(withUnderScore)
+                             + "; function="
+                             + TextUtils.quote(withoutUnderScore);
+         throw new InvalidRequestException(DETAIL, null);
+      }
+
+      return functionName;
+   }
+
+   /**
+    * Removes all parameters that should not be passed to a function. If the
+    * set of parameters passed is <code>null</code>, then nothing is done.
+    *
+    * @param parameters
+    *    the {@link ProtectedPropertyReader} containing the set of parameters
+    *    to investigate, or <code>null</code>.
+    *
+    * @param secretKey
+    *    the secret key required to be able to modify the parameters, can be
+    *    <code>null</code>.
+    */
+   void cleanUpParameters(ProtectedPropertyReader parameters,
+                          Object                  secretKey) {
+      
+      // TODO: Ignore (and log?) invalid parameter names
+      // TODO: Should we not let the diagnostic context ID through?
+
+      // If the set of parameters passed is null, then nothing is done.
+      if (parameters == null) {
+         return;
+      }
+
+      // Get an list of the parameter names
+      ArrayList names = CollectionUtils.list(parameters.getNames());
+
+      // Loop through all parameters
+      for (int i = 0; i < names.size(); i++) {
+
+         // Determine parameter name and value
+         String name  = (String) names.get(i);
+         String value = parameters.get(name);
+
+         // Remove the parameter if appropriate
+         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value)
+         || name.charAt(0) == '_'    || "function".equals(name)) {
+
+            parameters.set(secretKey, name, null);
+         }
+      }
+   }
+
 
    //------------------------------------------------------------------------
    // Constructors
@@ -83,6 +223,10 @@ extends Object {
           InvalidRequestException,
           FunctionNotSpecifiedException {
 
+      final String THIS_METHOD = "convertRequest("
+                               + HttpServletRequest.class.getName()
+                               + ')';
+
       // Check preconditions
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
@@ -103,14 +247,18 @@ extends Object {
          } else if (t instanceof FunctionNotSpecifiedException) {
             throw (FunctionNotSpecifiedException) t;
          } else {
-            Log.log_3052(t, SUBJECT_CLASS, SUBJECT_METHOD);
-            // FIXME: Log everything like in 1052
-            throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " has thrown an unexpected " + t.getClass().getName() + '.', t);
+            throw Utils.logProgrammingError(CLASSNAME,
+                                            THIS_METHOD,
+                                            SUBJECT_CLASS,
+                                            SUBJECT_METHOD,
+                                            null,
+                                            t);
          }
       }
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
+         // FIXME: Use Utils.logProgrammingError
          Log.log_3050(SUBJECT_CLASS, SUBJECT_METHOD, "Method returned null.");
          throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " returned null.");
       }

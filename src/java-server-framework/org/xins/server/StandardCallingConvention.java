@@ -107,13 +107,19 @@ extends CallingConvention {
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
       // Determine function name
-      String functionName = httpRequest.getParameter("_function");
-      if (TextUtils.isEmpty(functionName)) {
-         functionName = httpRequest.getParameter("function");
-         if (TextUtils.isEmpty(functionName)) {
-            throw new FunctionNotSpecifiedException();
-         }
+      String functionName = determineFunction(httpRequest);
+
+      // Determine function parameters
+      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      Enumeration params = httpRequest.getParameterNames();
+      while (params.hasMoreElements()) {
+         String name = (String) params.nextElement();
+         String value = httpRequest.getParameter(name);
+         functionParams.set(SECRET_KEY, name, value);
       }
+
+      // Remove all invalid parameters
+      cleanUpParameters(functionParams, SECRET_KEY);
 
       // Get data section
       String dataSectionValue = httpRequest.getParameter("_data");
@@ -134,28 +140,7 @@ extends CallingConvention {
          dataElement = null;
       }
 
-      // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-      Enumeration params = httpRequest.getParameterNames();
-      while (params.hasMoreElements()) {
-         String name = (String) params.nextElement();
-
-         // XXX: If parameter "function" contained function name, then do not
-         //      pass it down. This should be changed in the future.
-         if ("function".equals(name) && TextUtils.isEmpty(httpRequest.getParameter("_function"))) {
-            // ignore
-
-         // Pass parameters if the name is not empty and does not start with
-         // an underscore
-         } else if (! TextUtils.isEmpty(name) && name.charAt(0) != '_') {
-            String value = httpRequest.getParameter(name);
-            if (! TextUtils.isEmpty(value)) {
-               functionParams.set(SECRET_KEY, name, value);
-            }
-         }
-         // TODO: Decide: Just ignore invalid parameter names?
-      }
-
+      // Construct and return the request object
       return new FunctionRequest(functionName, functionParams, dataElement);
    }
 

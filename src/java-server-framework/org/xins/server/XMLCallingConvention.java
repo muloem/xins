@@ -124,26 +124,25 @@ extends CallingConvention {
          ElementParser parser = new ElementParser();
          Element requestElem = parser.parse(content.toString().getBytes(REQUEST_ENCODING));
          
+         // Determine function name
+         String functionName = determineFunction(
+            requestElem.getAttribute("_function"),
+            requestElem.getAttribute("function")
+         );
+
+         // Determine function parameters
          ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-         String functionName = requestElem.getAttribute("function");
          Iterator parameters = requestElem.getChildElements("param").iterator();
          while (parameters.hasNext()) {
-            Element nextParam = (Element)parameters.next();
-            String name = nextParam.getAttribute("name");
+            Element nextParam = (Element) parameters.next();
+            String name  = nextParam.getAttribute("name");
             String value = nextParam.getText();
-            if ("_function".equals(name) || "function".equals("name")) {
-               if (functionName == null) {
-                  functionName = value;
-               } else if (!functionName.equals(value)) {
-                  throw new InvalidRequestException("The request has more than two different function's name specified.", null);
-               }
-            } else if ((!TextUtils.isEmpty(name) && name.charAt(0) != '_')) {
-               if (!TextUtils.isEmpty(value)) {
-                  functionParams.set(SECRET_KEY, name, value);
-               }
-            }
+            functionParams.set(SECRET_KEY, name, value);
          }
          
+         // Remove all invalid parameters
+         cleanUpParameters(functionParams, SECRET_KEY);
+
          Element dataElement = null;
          List dataElementList = requestElem.getChildElements("data");
          if (dataElementList.size() == 1) {
