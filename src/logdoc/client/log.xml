@@ -61,21 +61,23 @@
 		</entry>
 	</group>
 
-	<group id="call" name="XINS service calling" />
+	<group id="call" name="XINS service calling">
+		<entry id="2100" level="INFO">
+	</group>
 
 	<group id="parse" name="XINS call result parsing">
-		<entry id="2200" level="ERROR">
+		<entry id="2200" level="NOTICE">
 			<description>Root element is not "result".</description>
 			<param name="elementName" type="text" nullable="false" />
 		</entry>
-		<entry id="2201" level="WARNING">
+		<entry id="2201" level="INFO">
 			<description>Found output parameter with name nor value.</description>
 		</entry>
-		<entry id="2202" level="WARNING">
+		<entry id="2202" level="INFO">
 			<description>Found output parameter without name.</description>
 			<param name="value" type="text" nullable="false" />
 		</entry>
-		<entry id="2203" level="WARNING">
+		<entry id="2203" level="INFO">
 			<description>Found output parameter without value.</description>
 			<param name="name" type="text" nullable="false" />
 		</entry>
@@ -84,22 +86,11 @@
 			<param name="name"  type="text" nullable="false" />
 			<param name="value" type="text" nullable="false" />
 		</entry>
-		<entry id="2205" level="ERROR">
-			<description>Found conflicting duplicate value for output parameter.</description>
-			<param name="name"     type="text" nullable="false" />
-			<param name="oldValue" type="text" nullable="false" />
-			<param name="newValue" type="text" nullable="false" />
-		</entry>
-		<entry id="2206" level="ERROR" exception="true">
+		<entry id="2205" level="NOTICE" exception="true">
 			<description>Unable to convert the specified character string to XML.</description>
 			<param name="detail" type="text" nullable="true" />
 		</entry>
-		<entry id="2207" level="ERROR">
-			<description>Found conflicting duplicate value for error code.</description>
-			<param name="code1" type="text" nullable="false" />
-			<param name="code2" type="text" nullable="false" />
-		</entry>
-		<entry id="2208" level="ERROR">
+		<entry id="2206" level="INFO">
 			<description>Ignoring unrecognized element at root level.</description>
 			<param name="type" type="text" nullable="false" />
 		</entry>

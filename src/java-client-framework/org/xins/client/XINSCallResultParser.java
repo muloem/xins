@@ -181,7 +181,7 @@ extends Object {
 
          // Log: Parsing failed
          String detail = exception.getMessage();
-         Log.log_2206(exception, detail);
+         Log.log_2205(exception, detail);
 
          // Construct a buffer for the error message
          FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
@@ -348,7 +348,7 @@ extends Object {
 
             // Conflicting error codes
             } else {
-               Log.log_2207(code1, code2);
+               // NOTE: This will be logged already (message 2205)
                throw new SAXException("Found conflicting duplicate value for error code. First is \"" + code1 + "\". Second is \"" + code2 + "\".");
             }
 
@@ -384,18 +384,18 @@ extends Object {
 
             // No 'result' element allowed within 'result' element
             } else if (qName.equals("result")) {
-               // NOTE: This will be logged already (message 2206)
+               // NOTE: This will be logged already (message 2205)
                throw new SAXException("Found \"result\" element within \"result\" element.");
 
             // Unknown elements at the root level are okay
             } else {
                // Ignore unrecognized element
-               Log.log_2208(qName);
+               Log.log_2206(qName);
             }
 
          // Within output parameter element
          } else if (_state == IN_PARAM_ELEMENT) {
-            // NOTE: This will be logged already (message 2206)
+            // NOTE: This will be logged already (message 2205)
             throw new SAXException("Found \"" + qName + "\" element within \"param\" element.");
 
          // Within the data section
@@ -535,7 +535,7 @@ extends Object {
                   String existingValue = _parameters.get(name);
                   if (existingValue != null) {
                      if (!existingValue.equals(value)) {
-                        Log.log_2205(name, existingValue, value);
+                        // NOTE: This will be logged already (message 2205)
                         throw new SAXException("Found conflicting duplicate value for output parameter \"" + name + "\". Initial value is \"" + existingValue + "\". New value is \"" + value + "\".");
                      }
                   }
@@ -579,7 +579,7 @@ extends Object {
 
          // Check state
          if (_state != IN_PARAM_ELEMENT && _state != IN_DATA_SECTION) {
-            // NOTE: This will be logged already (message 2206)
+            // NOTE: This will be logged already (message 2205)
             throw new IllegalStateException("Found PCDATA content in state " + _state + '.');
          }
 
