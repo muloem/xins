@@ -33,14 +33,9 @@ extends CallException {
     *
     * @param message
     *    the detail message, can be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.201. Use
-    *    {@link InvalidCallResultException(CallRequest,TargetDescriptor,String)}
-    *    instead.
     */
    InvalidCallResultException(String message) {
-      this(message, null);
+      super(message, null);
    }
 
 
