@@ -184,9 +184,6 @@
 		<h2>Examples section</h2>
 		<blockquote>
 			<xsl:choose>
-				<xsl:when test="examples">
-					<xsl:apply-templates select="examples" />
-				</xsl:when>
 				<xsl:when test="example">
 					<table class="example">
 						<xsl:apply-templates select="example" />
@@ -716,11 +713,6 @@
 
 <!-- end -->
 
-	<xsl:template match="function/examples">
-		<xsl:call-template name="examplesinput" />
-		<xsl:call-template name="examplesoutput" />
-	</xsl:template>
-
 	<xsl:template name="resultcodes">
 		<h3>Result codes</h3>
 		<table class="resultcodes">
@@ -927,67 +919,6 @@
 				</xsl:if>
 			</td>
 		</tr>
-	</xsl:template>
-
-	<xsl:template name="examplesinput">
-		<strong>Example Input</strong>
-		<p />
-		<xsl:apply-templates select="//function/examples/inputcode" />
-	</xsl:template>
-
-	<xsl:template name="examplesoutput">
-		<strong>Example Output</strong><p />
-		<xsl:if test="//function/examples/output/@type='success'">
-			<xsl:text>Example on success :</xsl:text>
-			<p />
-			<xsl:apply-templates select="//function/examples/output/successcode" />
-		</xsl:if>
-		<xsl:if test="//function/examples/output/@type='fail'">
-			<xsl:text>Example on failure :</xsl:text>
-			<p />
-			<xsl:apply-templates select="//function/examples/output/failcode" />
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="//function/examples/output/successcode">
-		<pre>
-			<xsl:value-of select="." />
-		</pre>
-		<p />
-	</xsl:template>
-
-	<xsl:template match="//function/examples/output/failcode">
-		<pre>
-			<xsl:value-of select="." />
-		</pre>
-		<p />
-	</xsl:template>
-
-	<xsl:template match="inputcode">
-		<pre>
-			<xsl:value-of select="." />
-		</pre>
-		<p />
-	</xsl:template>
-
-	<xsl:template match="note">
-		<em>
-			<xsl:value-of select="." />
-		</em>
-	</xsl:template>
-
-	<xsl:template match="see">
-		<xsl:if test="position() != 1">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
-		<xsl:text> </xsl:text>
-		<a>
-			<xsl:attribute name="href">
-				<xsl:value-of select="@function" />
-				<xsl:text>.html</xsl:text>
-			</xsl:attribute>
-			<xsl:value-of select="@function" />
-		</a>
 	</xsl:template>
 
 	<xsl:template match="data/element">
