@@ -39,7 +39,7 @@ public final class UnexpectedHTTPStatusCodeException extends CallException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param code
     *    the received HTTP status code.

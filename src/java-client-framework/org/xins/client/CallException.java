@@ -50,7 +50,7 @@ public abstract class CallException extends Exception {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param detail
     *    a detailed description of the problem, can be <code>null</code> if
@@ -189,7 +189,7 @@ public abstract class CallException extends Exception {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param detail
     *    a detailed description of the problem, can be <code>null</code> if
@@ -242,8 +242,8 @@ public abstract class CallException extends Exception {
 
    /**
     * The time elapsed between the time the call attempt was started and the
-    * time the error was detected. The duration is in milliseconds and is
-    * always &gt;= 0.
+    * time the call returned. The duration is in milliseconds and is always
+    * &gt;= 0.
     */
    private final long _duration;
 
@@ -252,6 +252,7 @@ public abstract class CallException extends Exception {
     * there is none or if it has not been set yet.
     */
    private CallException _next;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -282,11 +283,12 @@ public abstract class CallException extends Exception {
    }
 
    /**
-    * The time elapsed between the time the call attempt was started and the
-    * time the error was detected. The duration is in milliseconds.
+    * Returns the call duration. This is defined as the time elapsed between
+    * the time the call attempt was started and the time the call returned.
+    * The duration is in milliseconds and is always &gt;= 0.
     *
     * @return
-    *    the duration in milliseconds, always &gt;= 0.
+    *    the call duration in milliseconds, always &gt;= 0.
     *
     * @since XINS 0.202
     */

@@ -41,7 +41,7 @@ public abstract class ConnectionException extends CallException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param detail
     *    a detailed description of the problem, can be <code>null</code> if

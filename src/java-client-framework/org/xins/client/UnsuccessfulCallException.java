@@ -41,7 +41,7 @@ public final class UnsuccessfulCallException extends CallException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param result
     *    the call result that is unsuccessful, cannot be <code>null</code>,

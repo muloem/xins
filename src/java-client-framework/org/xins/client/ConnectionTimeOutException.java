@@ -39,7 +39,7 @@ public final class ConnectionTimeOutException extends ConnectionException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @throws IllegalArgumentException
     *    if <code>request     == null

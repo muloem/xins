@@ -44,7 +44,7 @@ public final class InvalidCallResultException extends CallException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param detail
     *    a more detailed description of the problem, or <code>null</code> if

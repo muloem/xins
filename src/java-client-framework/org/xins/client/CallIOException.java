@@ -46,23 +46,18 @@ extends CallException {
     *    descriptor for the target that was attempted to be called, cannot be
     *    <code>null</code>.
     *
-    * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
-    *
     * @param ioException
     *    the cause {@link IOException}, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
-    *          || ioException == null
-    *          || duration  &lt; 0</code>.
+    *          || ioException == null</code>
     *
     * @since XINS 0.202
     */
    private static String getShortReason(CallRequest      request,
                                         TargetDescriptor target,
-                                        long             duration,
                                         IOException      ioException)
    throws IllegalArgumentException {
 
@@ -70,9 +65,6 @@ extends CallException {
       MandatoryArgumentChecker.check("request",     request,
                                      "target",      target,
                                      "ioException", ioException);
-      if (duration < 0) {
-         throw new IllegalArgumentException("duration (" + duration + ") < 0");
-      }
 
       // Return the short reason
       return "I/O error";
@@ -94,7 +86,7 @@ extends CallException {
     *    <code>null</code>.
     *
     * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param ioException
     *    the cause {@link IOException}, cannot be <code>null</code>.
@@ -114,7 +106,7 @@ extends CallException {
    throws IllegalArgumentException {
 
       // Check arguments first and then call superconstructor
-      super(getShortReason(request, target, duration, ioException),
+      super(getShortReason(request, target, ioException),
             request,
             target,
             duration,

@@ -262,13 +262,15 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Call the API function
       boolean succeeded = false;
       long start = System.currentTimeMillis();
+      long duration;
       try {
          controlTimeOut(executor, target);
+         duration = System.currentTimeMillis() - start;
          succeeded = true;
 
       // Total time-out exceeded
       } catch (TimeOutException exception) {
-         long duration = System.currentTimeMillis() - start;
+         duration = System.currentTimeMillis() - start;
          Log.log_2015(duration, url, functionName, serParams, totalTimeOut);
          throw new TotalTimeOutException(request, target, duration);
 
@@ -286,6 +288,8 @@ public final class XINSServiceCaller extends ServiceCaller {
                Log.log_2007(exception, url, functionName, serParams, exception.getClass().getName());
             }
          }
+
+         duration = System.currentTimeMillis() - start;
       }
 
       // Read response body (mandatory operation)
@@ -300,13 +304,11 @@ public final class XINSServiceCaller extends ServiceCaller {
 
          // Connection refusal
          if (exception instanceof ConnectException) {
-            long duration = System.currentTimeMillis() - start;
             Log.log_2012(duration, url, functionName, serParams);
             throw new ConnectionRefusedException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            long duration = System.currentTimeMillis() - start;
             Log.log_2013(duration, url, functionName, serParams, connectionTimeOut);
             throw new ConnectionTimeOutException(request, target, duration);
 
@@ -320,31 +322,26 @@ public final class XINSServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               long duration = System.currentTimeMillis() - start;
                Log.log_2014(duration, url, functionName, serParams, socketTimeOut);
                throw new SocketTimeOutException(request, target, duration);
 
             // Unspecific I/O error
             } else {
-               long duration = System.currentTimeMillis() - start;
                Log.log_2017(exception, duration, url, functionName, serParams);
                throw new CallIOException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            long duration = System.currentTimeMillis() - start;
             Log.log_2017(exception, duration, url, functionName, serParams);
             throw new CallIOException(request, target, duration, (IOException) exception);
 
          } else if (exception instanceof RuntimeException) {
-            long duration = System.currentTimeMillis() - start;
             Log.log_2018(exception, duration, url, functionName, serParams);
             // TODO: Throw CallException
             throw (RuntimeException) exception;
 
          } else if (exception instanceof Error) {
-            long duration = System.currentTimeMillis() - start;
             Log.log_2018(exception, duration, url, functionName, serParams);
             // TODO: Throw CallException
             throw (Error) exception;
@@ -363,13 +360,11 @@ public final class XINSServiceCaller extends ServiceCaller {
       // If HTTP status code is not in 2xx range, abort
       if (code < 200 || code > 299) {
          Log.log_2008(url, functionName, serParams, code);
-         long duration = System.currentTimeMillis() - start;
          throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
       }
 
       // If the body is null, then there was an error
       if (body == null) {
-         long duration = System.currentTimeMillis() - start;
          Log.log_2009(duration, url, functionName, serParams);
          throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
@@ -379,12 +374,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       try {
          result = _parser.parse(target, body);
       } catch (ParseException parseException) {
-         long duration = System.currentTimeMillis() - start;
          throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
       }
 
       if (result.getErrorCode() != null) {
-         long duration = System.currentTimeMillis() - start;
          throw new UnsuccessfulCallException(request, target, duration, result);
       } else {
          return result;
