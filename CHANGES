@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 0.172:
     org.xins.types.standard.Properties.
   - The _properties type does not allow a single key to be used multiple times.
 
+* XINS/Java Client Framework:
+  - HTTP code other than 200 and 201 now throws a CallException.
+
 * Generated specification documentation:
   - Set some attributes from required to implied for xins-project_1_0.dtd.
   - If api.xml has changed only regenerate index.html and the test forms.
@@ -22,6 +25,8 @@ CHANGES INTRODUCED IN XINS 0.172:
     locally.
   - Fixed the clean-<api> target to point to the correct directories.
     This bug has been in XINS since version 0.170.
+  - Fixed some problems with the logdoc for the implementation.
+    This bug has been in XINS since version 0.171.
 
 * Build and release process:
   - A symbolic link latest is created in the directory javadoc, j2h,

@@ -410,23 +410,22 @@
 					<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api)" />
 					<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api)" />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home,    '/build/java-combined/',  $api)" />
-					<xsl:variable name="logdoc_file"    select="concat($project_home, '/src/logdoc/', $api, '/Log.xml')" />
-					<xsl:variable name="javaDestFileDir"    select="concat($javaDestDir, '/', $packageAsDir)" />
+					<xsl:variable name="logdoc_file"     select="concat($project_home, '/src/logdoc/', $api, '/log.xml')" />
+					<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
 
-					<target name="-classes-logdoc-{$api}" depends="-prepare-classes" if="${{logdoc.available.{$api}}}">
+					<target name="-classes-logdoc-{$api}" depends="-prepare-classes" if="logdoc.available.{$api}">
 						<echo message="Generating the logdoc for {$api}" />
 						<mkdir dir="build/logdoc/{$api}" />
 						<style
 						in="src/logdoc/{$api}/log.xml"
 						out="build/logdoc/{$api}/build.xml"
-						style="src/xslt/logdoc/log_to_build.xslt">
+						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 							<xmlcatalog refid="all-dtds" />
 							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-							<param name="sourcedir"       expression="src/logdoc/{$api}" />
+							<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
 							<param name="html_destdir"    expression="html" />
 							<param name="java_destdir"    expression="{$javaDestFileDir}" />
-							<param name="package_name"    expression="$package" />
-							<!--param name="package_name"    expression="$packageXXX use domain argument org.xins.{api}" /-->
+							<param name="package_name"    expression="{$package}" />
 						</style>
 						<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 					</target>
@@ -940,6 +939,7 @@
 					<delete dir="build/java-types/{$api}" />
 					<delete dir="build/javadoc-api/{$api}" />
 					<delete dir="build/javadoc-capi/{$api}" />
+					<delete dir="build/logdoc/{$api}" />
 					<delete dir="build/specdocs/{$api}" />
 					<delete dir="build/types/{$api}" />
 					<delete dir="build/webapps/{$api}" />

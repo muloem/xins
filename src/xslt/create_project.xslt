@@ -116,15 +116,16 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="xml.exists2" file="${{xml.file2}}" />
 			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
 			<fail message="The file ${{xml.file2}} already exists!" if="xml.exists2" />
+			<mkdir dir="src/logdoc/${{api.name}}" />
 			<property name="domain">
-			<xsl:attribute name="value">
-				<xsl:value-of select="document($project_file)/project/@domain" />
-			</xsl:attribute>
+				<xsl:attribute name="value">
+					<xsl:value-of select="document($project_file)/project/@domain" />
+				</xsl:attribute>
 			</property>
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://xins.sourceforge.net/dtd/log_1_0.dtd">
 
-<log default-locale="en_US" domain="]]>${domain}<![CDATA[">
+<log default-locale="en_US" domain="]]>${domain}.${api.name}.api<![CDATA[">
 
 	<translation-bundle locale="en_US" />
 

@@ -281,14 +281,15 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Check the code
-      // TODO: Support HTTP codes other than 200
-      if (code != 200) {
-         throw new Error("HTTP code " + code + '.'); // TODO: Throw CallException
+      if (code != 200 && code != 201) {
+         LOG.error("HTTP code " + code + '.');
+         throw new CallException("HTTP code " + code + '.');
       }
 
       // If the body is null, then there was an error
       if (body == null) {
-         throw new Error("Failed to read the response body."); // TODO: Throw CallException
+         LOG.error("Failed to read the response body.");
+         throw new CallException("Failed to read the response body.");
       }
 
       // Parse and return the result
