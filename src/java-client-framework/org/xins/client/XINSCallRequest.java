@@ -186,8 +186,18 @@ public final class XINSCallRequest extends CallRequest {
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
 
+      final String CONSTRUCTOR_DETAIL = "#"
+                                      + _instanceNumber;
+
+/* FIXME:
+                                      + " [functionName="
+                                      + TextUtils.quote(functionName)
+                                      + "; parameters="
+                                      + TextUtils.quote
+*/
+
       // TRACE: Enter constructor
-      Log.log_2000(CLASSNAME, "#" + _instanceNumber);
+      Log.log_2000(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
@@ -202,7 +212,7 @@ public final class XINSCallRequest extends CallRequest {
       // TODO: Use shared BasicUnsuccessfulXINSCallExceptionFactory instance
 
       // TRACE: Leave constructor
-      Log.log_2002(CLASSNAME, "#" + _instanceNumber);
+      Log.log_2002(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // Note that _asString is lazily initialized.
    }
