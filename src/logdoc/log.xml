@@ -104,6 +104,12 @@
 		<param name="timeOut" />
 		<param name="timeOutPrecision" />
 	</entry>
+	<entry id="117" level="INFO" category="org.xins.server.lifespan.bootstrap">
+		<description>Determining build-time settings.</description>
+		<param name="buildHost" />
+		<param name="buildTime" />
+		<param name="buildVersion" />
+	</entry>
 
 
 	<!-- Logging subsystem -->

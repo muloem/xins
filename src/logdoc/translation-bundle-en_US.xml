@@ -27,6 +27,7 @@
 	<translation entry="114">Starting session-related bootstrapping of API.</translation>
 	<translation entry="115">Finished session-related bootstrapping of API.</translation>
 	<translation entry="116">Session time-out is <value-of-param name="timeOut" /> seconds with a precision of <value-of-param name="timeOutPrecision" /> seconds.</translation>
+	<translation entry="117">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="150">Initializing logging subsystem.</translation>
 	<translation entry="151">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="152">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
