@@ -10,7 +10,7 @@ CHANGES INTRODUCED IN XINS 0.98:
     disabled. To enable it, add the following to the <impl-java> section in
     api.xml:
 
-    <param name="org.xins.server.api.responseValidation">true</param>
+    <param name="org.xins.server.responseValidation">true</param>
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.97:
