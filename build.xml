@@ -135,6 +135,31 @@
 		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
 	</target>
 
+	<target name="-prepare-java-client" depends="-prepare">
+		<mkdir dir="build/src/java-client-framework" />
+		<copy todir="build/src/java-client-framework">
+			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
+		</copy>
+		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
+	</target>
+
+	<target name="-prepare-java-server" depends="logdoc-java">
+		<mkdir dir="build/src/java-server-framework" />
+		<style
+		in="src/xml/default_resultcodes.xml"
+		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
+		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
+		<copy todir="build/src/java-server-framework">
+			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
+		</copy>
+		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
+		<copy todir="build/src/java-server-framework/org/xins/server">
+			<fileset dir="build/logdoc/java" includes="**/*.java" />
+		</copy>
+	</target>
+
+	<target name="-prepare-java" depends="-prepare-java-common,-prepare-java-client,-prepare-java-server" />
+
 	<target name="java-common" depends="-prepare-java-common,-prepare-classes" description="Compiles the XINS/Java common code">
 		<mkdir dir="build/classes/java-common" />
 		<javac
@@ -163,61 +188,6 @@
 		jarfile="build/xins-common.jar"
 		basedir="build/classes/java-common"
 		manifest="build/MANIFEST.MF" />
-	</target>
-
-	<target name="-prepare-java-server" depends="logdoc-java">
-		<mkdir dir="build/src/java-server-framework" />
-		<style
-		in="src/xml/default_resultcodes.xml"
-		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
-		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
-		<copy todir="build/src/java-server-framework">
-			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
-		</copy>
-		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-server-framework/org/xins/server">
-			<fileset dir="build/logdoc/java" includes="**/*.java" />
-		</copy>
-	</target>
-
-	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
-		<mkdir dir="build/classes/java-server" />
-		<javac
-		srcdir="build/src/java-server-framework"
-		destdir="build/classes/java-server"
-		debug="${javac.debug}"
-		deprecation="${javac.deprecation}"
-		optimize="${javac.optimize}"
-		target="${javac.targetvm}">
-			<classpath>
-				<pathelement path="build/classes/java-common" />
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</javac>
-		<manifest file="build/MANIFEST.MF">
-			<attribute name="Class-Path" value="xins-common.jar" />
-			<section name="xins-server">
-				<attribute name="Specification-Title"    value="XINS/Java Server Framework" />
-				<attribute name="Specification-Version"  value="${version}" />
-				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="XINS/Java Server Framework" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Implementation-Vendor"  value="${vendor}"  />
-			</section>
-		</manifest>
-		<jar
-		jarfile="build/xins-server.jar"
-		basedir="build/classes/java-server"
-		manifest="build/MANIFEST.MF" />
-	</target>
-
-	<target name="-prepare-java-client" depends="-prepare">
-		<mkdir dir="build/src/java-client-framework" />
-		<copy todir="build/src/java-client-framework">
-			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
-		</copy>
-		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
 	</target>
 
 	<target name="java-client" depends="java-common,-prepare-java-client" description="Compiles the XINS/Java client framework">
@@ -252,7 +222,39 @@
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="java" depends="java-server,java-client" />
+	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
+		<mkdir dir="build/classes/java-server" />
+		<javac
+		srcdir="build/src/java-server-framework"
+		destdir="build/classes/java-server"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		target="${javac.targetvm}">
+			<classpath>
+				<pathelement path="build/classes/java-common" />
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+			</classpath>
+		</javac>
+		<manifest file="build/MANIFEST.MF">
+			<attribute name="Class-Path" value="xins-common.jar" />
+			<section name="xins-server">
+				<attribute name="Specification-Title"    value="XINS/Java Server Framework" />
+				<attribute name="Specification-Version"  value="${version}" />
+				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Implementation-Title"   value="XINS/Java Server Framework" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+			</section>
+		</manifest>
+		<jar
+		jarfile="build/xins-server.jar"
+		basedir="build/classes/java-server"
+		manifest="build/MANIFEST.MF" />
+	</target>
+
+	<target name="java" depends="java-common,java-client,java-server" />
 
 	<target name="-prepare-logdoc" depends="-prepare">
 		<style
@@ -336,6 +338,23 @@
 
 	<target name="tests" depends="do-tests,testreports" description="Runs the unit tests and generates reports" />
 
+	<target name="j2h" depends="-j2h-task,-prepare-java" description="Generates pretty-printed Java code as HTML">
+		<mkdir dir="build/j2h" />
+		<java2html title="Source X-ref for ${title} ${version}" destination="build/j2h" footer="no">
+			<fileset dir="build/src/java-common">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="build/src/java-server-framework">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="build/src/java-client-framework">
+				<include name="**/*.java" />
+			</fileset>
+		</java2html>
+		<copy file="src/j2h/front.html" todir="build/j2h" overwrite="true" />
+		<copy file="src/css/j2h/style.css" tofile="build/j2h/stylesheet.css" overwrite="true" />
+	</target>
+
 	<target name="-jdksrc-avail">
 		<available file="${javadoc.srcdir.j2se}" type="dir" property="jdksrc.available" />
 	</target>
@@ -352,7 +371,7 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java-server,-prepare-java-client,-prepare-java-common,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="-prepare-java,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
@@ -482,10 +501,26 @@
 			<arg value="${www.user}@${www.host}" />
 			<arg value="mkdir -p ${www.dir}/checkstyle/${version}" />
 		</exec>
+		<echo level="verbose" message="Copying files to directory ${www.dir}/checkstyle/${version} on ${www.host}" />
 		<exec dir="build/checkstyle/html" executable="scp" failonerror="true">
 			<arg value="-r" />
 			<arg value="." />
 			<arg value="${www.target}/checkstyle/${version}" />
+		</exec>
+	</target>
+
+	<target name="upload-j2h" depends="-init,j2h">
+		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
+		<echo level="verbose" message="Creating directory ${www.dir}/j2h/${version} on ${www.host}" />
+		<exec executable="ssh" failonerror="true">
+			<arg value="${www.user}@${www.host}" />
+			<arg value="mkdir -p ${www.dir}/checkstyle/${version}" />
+		</exec>
+		<echo level="verbose" message="Copying files to directory ${www.dir}/j2h/${version} on ${www.host}" />
+		<exec dir="build/j2h" executable="scp" failonerror="true">
+			<arg value="-r" />
+			<arg value="." />
+			<arg value="${www.target}/j2h/${version}" />
 		</exec>
 	</target>
 
@@ -623,7 +658,7 @@
 
 	<target
 	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle,upload-j2h"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor" type="int" operation="+" value="1"    />
