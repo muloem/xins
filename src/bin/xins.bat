@@ -18,7 +18,6 @@ ECHO FATAL: Cannot find stylesheet %XINS_HOME%\src\xslt\xins-project_to_ant-buil
 GOTO end
 
 :stylesheet_found
-in="${project_home}/${in_base}"
 IF EXIST xins-project.xml GOTO project_file_found
 ECHO FATAL: Cannot find input file xins-project.xml
 GOTO end
