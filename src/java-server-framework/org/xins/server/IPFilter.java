@@ -35,6 +35,13 @@ extends Object {
     */
    private static final String IP_ADDRESS_DELIMETER = ".";
 
+   /**
+    * The character that delimits the IP address and the mask of the provided
+    * filter.
+    */
+   private static final char IP_MASK_DELIMETER = '/';
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -53,10 +60,7 @@ extends Object {
     *    zeroes, and <em>n</em> is a number between <em>0</em> and
     *    <em>32</em>, no leading zeroes.
     *
-    * @return
-    *    the constructed <code>IPFilter</code> object that has
-    *    <code>expression</code> as the filter expression; never
-    *    <code>null</code>.
+    * @return the created IP Filter object.
     *
     * @throws IllegalArgumentException
     *    if <code>expression == null</code>.
@@ -72,7 +76,7 @@ extends Object {
       String ip = null;
       String mask = null;
       boolean validFilter = true;
-      int slashPosition = expression.indexOf('/');
+      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
 
       if (slashPosition < 0 || slashPosition == expression.length() - 1) {
          validFilter = false;
@@ -119,9 +123,7 @@ extends Object {
     *    <em>32</em>, no leading zeroes.
     */
    private IPFilter(String expression) {
-
       _expression = expression;
-
    }
 
 
@@ -178,7 +180,7 @@ extends Object {
          throw new ParseException("The provided IP " + ip + " is invalid.");
       }
 
-      return false; // TODO
+      return false;
    }
 
    /**
@@ -192,6 +194,14 @@ extends Object {
       return getExpression();
    }
 
+   /**
+    * Determines whether the provided IP address is of a valid format.
+    *
+    * @param ip the IP address.
+    *
+    * @return boolean with the value <code>true</code> if the IP is valid,
+    *    otherwise false.
+    */
    private static boolean isValidIp(String ip) {
       StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
       String currIPSection = null;
@@ -212,14 +222,43 @@ extends Object {
       return validIP;
    }
 
+   /**
+    * Determines whether the provided mask is of a valid format.
+    *
+    * @param mask the mask.
+    *
+    * @return boolean with the value <code>true</code> if the mask is valid,
+    *    otherwise false.
+    */
    private static boolean isValidMask(String mask) {
       return isAllowedValue(mask, 32);
    }
 
+   /**
+    * Determines whether the provided IP section (the part of the IP address)
+    * is of a valid format, i.e. an integer between 0 and 255.
+    *
+    * @param ipSection the IP section.
+    *
+    * @return boolean with the value <code>true</code> if the IP section is
+    *    valid, otherwise false.
+    */
    private static boolean isValidIPSection(String ipSection) {
       return isAllowedValue(ipSection, 255);
    }
 
+   /**
+    * Determines whether the contents of the provided string are valid, i.e.
+    * can be translated into an integer value that lies between zero and the
+    * specified maximum allowed value.
+    *
+    * @param value the value to be checked.
+    *
+    * @param maxAllowedValue the maximum allowed integer value.
+    *
+    * @return boolean with the value <code>true</code> if the provided value
+    *    is valid, otherwise false.
+    */
    private static boolean isAllowedValue(String value, int maxAllowedValue) {
       boolean validValue = true;
       int intValue = -1;
@@ -236,7 +275,6 @@ extends Object {
       }
 
       return validValue;
-
    }
 
 }
