@@ -141,15 +141,18 @@ implements DefaultReturnCodes {
       CallContext context = new CallContext(xmlOutputter, map);
 
       // Forward the call
-      boolean succeeded = false;
+      boolean exceptionThrown = true;
+      boolean success;
+      String code;
       try {
          handleCall(context);
-         succeeded = true;
+         success = context.getSuccess();
+         code    = context.getCode();
+         exceptionThrown = false;
       } catch (Throwable exception) {
-         long end = System.currentTimeMillis();
-         long start = context.getStart();
-         long duration = end - start;
-         final String code = INTERNAL_ERROR;
+         success = false;
+         code    = INTERNAL_ERROR;
+
          xmlOutputter.reset(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
@@ -177,13 +180,16 @@ implements DefaultReturnCodes {
             xmlOutputter.pcdata(stackTrace);
          }
          xmlOutputter.close();
-
-         callFailed(context.getFunction(), start, duration, code);
       }
 
-      if (succeeded) {
+      if (!exceptionThrown) {
          out.print(stringWriter.toString());
       }
+      Function f    = getFunction(context.getFunction());
+      long start    = context.getStart();
+      long duration = System.currentTimeMillis() - start;
+      f.performedCall(start, duration, success, code);
+
       out.flush();
    }
 
