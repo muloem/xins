@@ -104,13 +104,10 @@ ______________________________________________________________________________
 LOGDOC
 
 * Support making generated classes package-private.
-* Allow locales for all logs to be set at once.
-* Add AbstractLog class that defines getDomain() method.
-* Add org.logdoc package with class LogCentral with method 'void
-  registerLog(AbstractLog)' and 'AbstractLog getLogByDomain(String)'.
 * Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
 * Support element in log.xml to reserve an ID that was previously used. For
   example <reserve id="5002" />
+* Support the logging of stack traces.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
