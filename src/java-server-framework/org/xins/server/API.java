@@ -144,6 +144,8 @@ implements DefaultReturnCodes {
     */
    final void handleCall(ServletRequest request, PrintWriter out) throws IOException {
 
+      // TODO: Be less memory-intensive
+
       // Reset the XMLOutputter
       StringWriter stringWriter = new StringWriter();
       XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
