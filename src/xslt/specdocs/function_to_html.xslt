@@ -8,14 +8,16 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
+	<xsl:param name="xins_version" />
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api"          />
+	<xsl:param name="api_file"     />
 
 	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
-	<xsl:variable name="project_file"     select="concat($project_home, '/xins-project.xml')"                />
 	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
-	<xsl:variable name="api_file"         select="concat($specsdir, '/', $api, '/api.xml')"                  />
 	<xsl:variable name="function_name"    select="//function/@name"                                          />
 	<xsl:variable name="function_file"    select="concat($specsdir, '/', $api, '/', $function_name, '.fnc')" />
 
@@ -111,7 +113,9 @@
 				<xsl:call-template name="output_section" />
 				<xsl:call-template name="testforms_section" /> 
 				<xsl:call-template name="examples_section" /> 
-				<xsl:call-template name="footer" />
+				<xsl:call-template name="footer">
+					<xsl:with-param name="xins_version" select="$xins_version" />
+				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>

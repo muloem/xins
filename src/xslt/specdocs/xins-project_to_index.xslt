@@ -8,6 +8,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
+	<xsl:param name="xins_version" />
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 
@@ -56,7 +58,9 @@
 						</em>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:call-template name="footer" />
+				<xsl:call-template name="footer">
+					<xsl:with-param name="xins_version" select="$xins_version" />
+				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>

@@ -8,13 +8,14 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
+	<xsl:param name="xins_version" />
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="environment"  />
 	<xsl:param name="api"          />
-
-	<xsl:variable name="api_file"     select="concat($specsdir, '/', $api, '/api.xml')" />
-	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+	<xsl:param name="api_file"     />
 
 	<xsl:output
 	method="xml"
@@ -73,7 +74,9 @@
 				</p>
 
 				<xsl:call-template name="input_section" />
-				<xsl:call-template name="footer" />
+				<xsl:call-template name="footer">
+					<xsl:with-param name="xins_version" select="$xins_version" />
+				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>
