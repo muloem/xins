@@ -87,7 +87,7 @@ extends Object {
       } else if ("deny".equals(token)) {
          allow = false;
       } else {
-         throw new ParseException("First token of descriptor is not 'allow' or 'deny'.");
+         throw new ParseException("First token of descriptor is \"" + token + "\", instead of either 'allow' or 'deny'.");
       }
 
       // determine the IP address to be checked
