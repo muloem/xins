@@ -765,7 +765,12 @@ implements DefaultResultCodes {
       _sessionExpiryStrategy.stop();
 
       // Destroy all sessions
-      Library.LIFESPAN_LOG.info("Closing " + _sessionsByID.size() + " open sessions.");
+      int openSessionCount = _sessionsByID.size();
+      if (openSessionCount == 1) {
+         Library.LIFESPAN_LOG.info("Closing 1 open session.");
+      } else {
+         Library.LIFESPAN_LOG.info("Closing " + openSessionCount + " open sessions.");
+      }
       _sessionsByID = null;
 
       // Deinitialize instances
