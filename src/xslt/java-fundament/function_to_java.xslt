@@ -59,6 +59,7 @@
 import org.xins.server.CallContext;
 import org.xins.server.Function;
 import org.xins.server.Responder;
+import org.xins.server.Session;
 
 /**
  * Abstract base class for <code>]]></xsl:text>
@@ -309,6 +310,9 @@ public abstract class ]]></xsl:text>
       // Nothing to check, just let the subclass do the thing
       call(context</xsl:text>
 		</xsl:if>
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text>, context.getSession()</xsl:text>
+		</xsl:if>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_from_string_for_type">
@@ -332,10 +336,16 @@ public abstract class ]]></xsl:text>
     *
     * @param responder
     *    the responder to be used, never <code>null</code>.]]></xsl:text>
-		<xsl:for-each select="input/param">
+		<xsl:if test="$sessionBased = 'true'">
 			<xsl:text><![CDATA[
     *
-    * @param ]]></xsl:text>
+    * @param session
+    *    the current session, never <code>null</code>.]]></xsl:text>
+		</xsl:if>
+		<xsl:for-each select="input/param">
+			<xsl:text>
+    *
+    * @param </xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text><![CDATA[
     *    ]]></xsl:text>
@@ -345,6 +355,9 @@ public abstract class ]]></xsl:text>
 		<xsl:text><![CDATA[
     */
    public abstract void call(Responder responder]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text>, Session session</xsl:text>
+		</xsl:if>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_for_type">
