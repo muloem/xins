@@ -31,9 +31,12 @@
 					<xsl:text>Result code </xsl:text>
 					<xsl:value-of select="@name" />
 				</title>
-				<link rel="stylesheet" type="text/css" href="../style.css" />
-				<link rel="top" href="../index.html" title="API index" />
-				<link rel="up" href="index.html" title="Overview of this API" />
+
+				<meta name="generator" content="XINS" />
+
+				<link rel="stylesheet" type="text/css" href="../style.css"                               />
+				<link rel="top"                        href="../index.html" title="API index"            />
+				<link rel="up"                         href="index.html"    title="Overview of this API" />
 			</head>
 			<body>
 				<xsl:call-template name="header">

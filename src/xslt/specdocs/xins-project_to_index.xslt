@@ -26,6 +26,9 @@
 		<html>
 			<head>
 				<title>API index</title>
+
+				<meta name="generator" content="XINS" />
+
 				<link rel="stylesheet" href="style.css" type="text/css" />
 			</head>
 			<body>

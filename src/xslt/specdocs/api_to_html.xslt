@@ -102,9 +102,12 @@
 					<xsl:text>API overview: </xsl:text>
 					<xsl:value-of select="@name" />
 				</title>
-				<link rel="stylesheet" type="text/css" href="../style.css" />
-				<link rel="top" href="../index.html" title="API index" />
-				<link rel="up" href="../index.html" title="API index" />
+
+				<meta name="generator" content="XINS" />
+
+				<link rel="stylesheet" type="text/css" href="../style.css"                    />
+				<link rel="top"                        href="../index.html" title="API index" />
+				<link rel="up"                         href="../index.html" title="API index" />
 				<link rel="first">
 					<xsl:attribute name="href">
 						<xsl:text>../</xsl:text>
