@@ -4,6 +4,7 @@
 package org.xins.types.standard;
 
 import org.xins.types.Type;
+import org.xins.types.TypeValueException;
 
 /**
  * Standard type <em>_int32</em>.
@@ -60,5 +61,29 @@ public final class Int32 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Integer.valueOf(string);
+   }
+
+   /**
+    * Converts the specified non-<code>null</code> string value to an
+    * <code>int</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public int fromStringForRequired(String string)
+   throws TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         try {
+            return Integer.parseInt(string);
+         } catch (NumberFormatException nfe) {
+            throw new TypeValueException(this, string);
+         }
+      }
    }
 }

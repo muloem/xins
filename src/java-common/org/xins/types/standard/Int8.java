@@ -4,6 +4,7 @@
 package org.xins.types.standard;
 
 import org.xins.types.Type;
+import org.xins.types.TypeValueException;
 
 /**
  * Standard type <em>_int8</em>.
@@ -60,5 +61,29 @@ public final class Int8 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Byte.valueOf(string);
+   }
+
+   /**
+    * Converts the specified non-<code>null</code> string value to a
+    * <code>byte</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public byte fromStringForRequired(String string)
+   throws TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         try {
+            return Byte.parseByte(string);
+         } catch (NumberFormatException nfe) {
+            throw new TypeValueException(this, string);
+         }
+      }
    }
 }
