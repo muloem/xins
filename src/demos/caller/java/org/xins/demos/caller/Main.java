@@ -67,6 +67,7 @@ public final class Main extends Object {
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
       settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
       PropertyConfigurator.configure(settings);
+      Logger log = Logger.getLogger(Main.class.getName());
 
       // Get all parameters
       String configFileName = args[0];
@@ -84,8 +85,12 @@ public final class Main extends Object {
       CallRequest request = callRequestParser.parse(requestFile);
 
       // Execute the call(s)
-      for (int i = 0; i < count; i++) {
-         caller.call(request);
+      try {
+         for (int i = 0; i < count; i++) {
+            caller.call(request);
+         }
+      } catch (Throwable exception) {
+         log.error("Failed to execute call.", exception);
       }
    }
 
