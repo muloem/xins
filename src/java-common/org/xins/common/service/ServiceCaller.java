@@ -84,6 +84,13 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #ServiceCaller(Descriptor,CallConfig)} instead. Although
+    *    marked as deprecated, this constructor still works the same as in
+    *    XINS 1.0.x.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
@@ -251,8 +258,10 @@ public abstract class ServiceCaller extends Object {
    protected final CallResult doCall(CallRequest request, CallConfig config)
    throws IllegalArgumentException, CallException {
 
+      final String METHODNAME = "doCall(CallRequest,CallConfig)";
+
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "doCall(CallRequest,CallConfig)", null);
+      Log.log_1003(CLASSNAME, METHODNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -365,7 +374,7 @@ public abstract class ServiceCaller extends Object {
             long duration = System.currentTimeMillis() - start;
 
             // TRACE: Leave method
-            Log.log_1005(CLASSNAME, "doCall", null);
+            Log.log_1005(CLASSNAME, METHODNAME, null);
 
             return createCallResult(request, target, duration, exceptions, result);
          }
@@ -378,7 +387,7 @@ public abstract class ServiceCaller extends Object {
       CallException first = exceptions.get(0);
 
       // TRACE: Leave method with exception
-      Log.log_1004(first, CLASSNAME, "doCall", null);
+      Log.log_1004(first, CLASSNAME, METHODNAME, null);
 
       throw first;
    }
@@ -411,6 +420,12 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws CallException
     *    if all call attempts failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #doCall(CallRequest,CallConfig)} instead. Although marked
+    *    as deprecated, this method still works the same as in XINS 1.0.x.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
