@@ -10,6 +10,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="DataSection2" freeze="1.1" />
 	<function name="DataSection3" />
 	<function name="DefinedTypes" />
+	<function name="InvalidResponse" />
 	<function name="Logdoc"       />
 	<function name="ParamCombo"   />
 	<function name="ResultCode"   />
