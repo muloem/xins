@@ -7,6 +7,9 @@ CHANGES INTRODUCED IN XINS 0.129:
   - Starting the configuration file watch thread only after the API has been
     initialized.
 
+* XINS/Java Common Library:
+  - Changed FileWatcher class to add end() method that stops the thread.
+
 * Building XINS:
   - Simplified target and directory names by removing '-framework' suffixes.
 
