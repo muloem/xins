@@ -49,7 +49,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - If the "org.xins.server.config.reload" is zero the FileWatcher won't be 
     started.
   - Added _ReloadProperties meta function.
-  - Changed the way the _GetSettings meta-functions retrieves the system
+  - Changed the way the _GetSettings meta-function retrieves the system
     properties. It now succeeds without throwing an exception even if a
     SecurityManager denies access to system properties.
     This fixes an issue with the integration with NetBeans 4.0-beta2.
@@ -94,6 +94,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 
 * Build and release process:
   - Adapted the release process to the new XINS version format.
+  - Added netbeans-debug task.
+  - Disabled optimization for javac.
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
