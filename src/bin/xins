@@ -68,12 +68,23 @@ fi
 # Create the Ant build file
 buildfile_base=build.xml
 buildfile=${builddir}/${buildfile_base}
-mktemp_template="/tmp/${prog}.XXXXXXXX"
-tmpout=`mktemp -q ${mktemp_template}`
-returncode=$?
-if [ ! "${returncode}a" = "0a" ]; then
-	echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template}"
-	exit 1
+os=`uname`
+if [ "${os}" = "FreeBSD" ]; then
+	mktemp_template="/tmp/xins.XXXXXXXX.tmp"
+	tmpout=`mktemp -q ${mktemp_template}`
+	returncode=$?
+	if [ ! "${returncode}a" = "0a" ]; then
+		echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template} (return code ${returncode})"
+		exit 1
+	fi
+else
+	tmpout=/tmp/xins.`whoami`.`date "+%Y%m%d%H%M.%S"`.tmp
+	echo -n "" > ${tmpout}
+	returncode=$?
+	if [ ! "${returncode}a" = "0a" ]; then
+		echo "${prog}: ERROR: Unable to create temporary file ${tmpout} (return code ${returncode})"
+		exit 1
+	fi
 fi
 echo -n ">> Generating ${buildfile_base}..."
 ant -f ${xins_home}/src/ant/transform.xml \
