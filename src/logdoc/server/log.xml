@@ -386,26 +386,10 @@
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
 		</entry>
-		<entry id="1514" level="INFO">
-			<description>Call to function succeeded.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="duration" type="int64" nullable="false" />
-		</entry>
-		<entry id="1516" level="INFO">
-			<description>Call to function failed.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="duration" type="int64" nullable="false" />
-			<param name="code" nullable="true" />
-		</entry>
-		<entry id="1517" level="INFO">
-			<description>Call to function failed with the given parameter.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="parameterName" nullable="false" />
-			<param name="parameterValue" nullable="true" />
-		</entry>
+		<!-- TODO: <reserved id="1514" /> -->
+		<!-- TODO: <reserved id="1515" /> -->
+		<!-- TODO: <reserved id="1516" /> -->
+		<!-- TODO: <reserved id="1517" /> -->
 	</group>
 
 	<group id="runtime.tx" name="Transaction logging">
