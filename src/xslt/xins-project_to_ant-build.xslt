@@ -720,6 +720,7 @@
 								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
 								<pathelement path="{$xins-server.jar}" />
+								<pathelement path="{$xins-client.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
@@ -761,6 +762,7 @@
 							<lib dir="{$xins_home}/build" includes="logdoc.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-server.jar" />
+							<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 							<lib dir="{$xins_home}/lib"   includes="commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
 							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 							<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
@@ -818,6 +820,7 @@
 							packagelistloc="{$xins_home}/src/package-lists/ant/" />
 							<classpath>
 								<pathelement location="{$xins_home}/build/logdoc.jar"       />
+								<pathelement location="{$xins_home}/build/xins-client.jar"   />
 								<pathelement location="{$xins_home}/build/xins-common.jar"   />
 								<pathelement location="{$xins_home}/build/xins-server.jar"   />
 								<pathelement location="{$xins_home}/lib/log4j.jar"           />
