@@ -316,10 +316,12 @@ implements DefaultResultCodes {
 
          // log the parameters
          PropertyReader parameters = result.getParameters();
-         Iterator itParams = parameters.getNames();
-         while (itParams.hasNext()) {
-            String nextParam = (String) itParams.next();
-            Log.log_1517(_name, callID, nextParam, parameters.get(nextParam));
+         if (parameters != null) {
+            Iterator itParams = parameters.getNames();
+            while (itParams.hasNext()) {
+               String nextParam = (String) itParams.next();
+               Log.log_1517(_name, callID, nextParam, parameters.get(nextParam));
+            }
          }
       }
    }
