@@ -6,6 +6,11 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 
+* Generated build file:
+  - Fixed a bug that prevented APIs using the old directory structure to
+    compile.
+  - Fixed a DTD caching problem.
+
 * Examples:
   - Added .version.properties in the demo directory of the release.
 

@@ -82,6 +82,8 @@
 				<dtd publicId="-//XINS//DTD XINS Logdoc 1.1//EN"
 				     location="${xins_home}/src/dtd/log_1_1.dtd" />
 
+				<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
+				     location="${xins_home}/src/dtd/impl_1_2.dtd" />
 			</xmlcatalog>
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />

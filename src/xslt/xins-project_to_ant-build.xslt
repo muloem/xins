@@ -416,10 +416,10 @@ APIs in this project are:
 					</xsl:if>
 					<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
 						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-						<xmlvalidate file="{$impl_file}" warn="false">
-							<xmlcatalog refid="all-dtds" />
-						</xmlvalidate>
 						<xsl:if test="document($impl_file)/impl/runtime-properties">
+							<xmlvalidate file="{$impl_file}" warn="false">
+								<xmlcatalog refid="all-dtds" />
+							</xmlvalidate>
 							<style
 							in="{$impl_file}"
 							out="{$project_home}/build/specdocs/{$api}/properties.html"
@@ -656,7 +656,16 @@ APIs in this project are:
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
-						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+						<xsl:variable name="impl_file">
+							<xsl:choose>
+								<xsl:when test="impl">
+									<xsl:value-of select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$api_file" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<xmlvalidate file="{$impl_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
@@ -673,6 +682,7 @@ APIs in this project are:
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
+						
 						<xmlvalidate warn="false">
 							<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
 							<xmlcatalog refid="all-dtds" />
