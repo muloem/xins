@@ -55,14 +55,17 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a parameter string from a session ID, a function name and a set
-    * of parameters.
+    * Creates a <code>PostMethod</code> object for the specific base URL,
+    * session ID, function name and parameter set.
+    *
+    * @param baseURL
+    *    the base URL, cannot be <code>null</code>.
     *
     * @param sessionID
-    *    the session identifier, if any, or <code>null</code>.
+    *    the session identifier, or <code>null</code>.
     *
     * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
+    *    the name of the function, cannot be <code>null</code>.
     *
     * @param parameters
     *    the parameters to be passed, or <code>null</code>; keys must be
@@ -75,36 +78,36 @@ public final class XINSServiceCaller extends ServiceCaller {
     *        || value.</code>{@link Object#toString() toString()}<code>.</code>{@link String#length() length()}<code> &lt; 1)</code>,
     *    then this parameter will not be sent down.
     *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
     * @return
-    *    the string that can be used in an HTTP GET call, never
-    *    <code>null</code> nor empty.
+    *    the {@link PostMethod} object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>baseURL == null || functionName == null</code>.
     */
-   private final String createParameterString(String sessionID,
-                                              String functionName,
-                                              Map    parameters)
+   private static final PostMethod createPostMethod(String baseURL,
+                                                    String sessionID,
+                                                    String functionName,
+                                                    Map parameters)
    throws IllegalArgumentException {
 
       // TODO: Consider using an IndexedMap, for improved iteration
       //       performance
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionName", functionName);
+      MandatoryArgumentChecker.check("baseURL",      baseURL,
+                                     "functionName", functionName);
 
       // TODO: More checks on the function name? It cannot be an empty string,
       //       for example.
 
-      // Initialize a buffer
-      FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
-      buffer.append("function=");
-      buffer.append(functionName);
+      // Construct PostMethod object
+      PostMethod method = new PostMethod(baseURL);
+
+      method.addParameter("function", functionName);
 
       // If there is a session identifier, process it
       if (sessionID != null) {
-         buffer.append("&_session=");
-         buffer.append(sessionID);
+         method.addParameter("_session", sessionID);
       }
 
       // If there are parameters, then process them
@@ -144,17 +147,14 @@ public final class XINSServiceCaller extends ServiceCaller {
 
                   // Only add the key/value combo if there is a value string
                   if (valueString != null && valueString.length() > 0) {
-                     buffer.append('&');
-                     buffer.append(URLEncoding.encode(key));
-                     buffer.append('=');
-                     buffer.append(URLEncoding.encode(valueString));
+                     method.addParameter(key, valueString);
                   }
                }
             }
          }
       }
 
-      return buffer.toString();
+      return method;
    }
 
 
@@ -245,12 +245,12 @@ public final class XINSServiceCaller extends ServiceCaller {
       MandatoryArgumentChecker.check("target",       target,
                                      "functionName", functionName);
 
-      // Construct new HttpClient and PostMethod objects
+      // Construct new HttpClient object
       HttpClient client = new HttpClient();
-      PostMethod method = new PostMethod(target.getURL());
-
-      // Set the correct time-out
       client.setTimeout(target.getTimeOut());
+
+      // Construct the method object
+      PostMethod method = createPostMethod(target.getURL(), sessionID, functionName, parameters);
 
       boolean succeeded = false;
       String body;
