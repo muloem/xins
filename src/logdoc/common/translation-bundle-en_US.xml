@@ -13,15 +13,15 @@
 	<translation entry="3200">Starting watch thread for file <value-of-param name="file" format="quoted" />.</translation>
 	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="old_interval" /> to <value-of-param name="new_interval" /> seconds.</translation>
 	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="3203"><value-of-param name="class_name" />: Failed to generate secure random int, falling back to pseudo-random.</translation>
-	<translation entry="3204"><value-of-param name="class_name" />: Failed to generate secure random long, falling back to pseudo-random.</translation>
+	<translation entry="3203"><value-of-param name="className" />: Failed to generate secure random int, falling back to pseudo-random.</translation>
+	<translation entry="3204"><value-of-param name="className" />: Failed to generate secure random long, falling back to pseudo-random.</translation>
 	<translation entry="3205">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
 
 	<translation entry="3300">I/O error while attempting to close input stream. Ignoring.</translation>
 	<translation entry="3301">I/O error while attempting to close output stream. Ignoring.</translation>
 	<translation entry="3302">I/O error while attempting to disconnect. Ignoring.</translation>
 	<translation entry="3303">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
-	<translation entry="3304">Caught <value-of-param name="exception_name" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
+	<translation entry="3304">Caught <value-of-param name="exceptionName" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
 	<translation entry="3305">Authenticated with <value-of-param name="url" />.</translation>
 	<translation entry="3306">Authenticated with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
 	<translation entry="3307">Failed to authenticate with <value-of-param name="url" />.</translation>
@@ -38,22 +38,22 @@
 	<translation entry="3318">More targets available and fail-over is allowed.</translation>
 	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
 
-	<translation entry="3400"><value-of-param name="folder_name" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
-	<translation entry="3401"><value-of-param name="folder_name" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
+	<translation entry="3400"><value-of-param name="folderName" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
+	<translation entry="3401"><value-of-param name="folderName" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
 	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="new_size" />, adjusted to 0.</translation>
 	<translation entry="3403">Created <value-of-param name="strategy" />, time-out duration is <value-of-param name="time_out" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="3405"><value-of-param name="strategy" /> started.</translation>
 	<translation entry="3406"><value-of-param name="strategy" /> stopped.</translation>
-	<translation entry="3407">Constructed <value-of-param name="class_name" />, initial queue size is <value-of-param name="queue_size" />, maximum queue wait time is <value-of-param name="max_queue_size" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
-	<translation entry="3408"><value-of-param name="class_name" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="3409"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
-	<translation entry="3410"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
-	<translation entry="3411"><value-of-param name="class_name" />: enterAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="3412"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
-	<translation entry="3413"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
-	<translation entry="3414"><value-of-param name="class_name" />: leaveAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="3415"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
-	<translation entry="3416"><value-of-param name="class_name" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="3417"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
+	<translation entry="3407">Constructed <value-of-param name="className" />, initial queue size is <value-of-param name="queue_size" />, maximum queue wait time is <value-of-param name="max_queue_size" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
+	<translation entry="3408"><value-of-param name="className" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
+	<translation entry="3409"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
+	<translation entry="3410"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
+	<translation entry="3411"><value-of-param name="className" />: enterAsWriter() called for <value-of-param name="writer" />.</translation>
+	<translation entry="3412"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
+	<translation entry="3413"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
+	<translation entry="3414"><value-of-param name="className" />: leaveAsReader() called for <value-of-param name="reader" />.</translation>
+	<translation entry="3415"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
+	<translation entry="3416"><value-of-param name="className" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
+	<translation entry="3417"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
 </translation-bundle>

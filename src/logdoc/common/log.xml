@@ -37,11 +37,11 @@
 		</entry>
 		<entry id="3203" level="WARNING">
 			<description>Failed to generate secure random int, falling back to pseudo-random.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 		</entry>
 		<entry id="3204" level="WARNING">
 			<description>Failed to generate secure random long, falling back to pseudo-random.</description>
-			<param name="class_name" />
+			<param name="className" />
 		</entry>
 		<entry id="3205" level="DEBUG">
 			<description>Increasing capacity of the FastStringBuffer.</description>
@@ -66,7 +66,7 @@
 		</entry>
 		<entry id="3304" level="ERROR" exception="true">
 			<description>Caught exception while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</description>
-			<param name="exception_name" />
+			<param name="exceptionName" />
 		</entry>
 		<entry id="3305" level="INFO">
 			<description>Authenticated with a URL.</description>
@@ -136,13 +136,13 @@
 	<group id="expiry" name="Expiry-related classes">
 		<entry id="3400" level="DEBUG">
 			<description>Some expired entries remain.</description>
-			<param name="folder_name" nullable="false" />
+			<param name="folderName" nullable="false" />
 			<param name="to_be_expired_size" type="int32" nullable="false" />
 			<param name="new_size" type="int32" nullable="false" />
 		</entry>
 		<entry id="3401" level="DEBUG">
 			<description>One expired entry remains.</description>
-			<param name="folder_name" nullable="false" />
+			<param name="folderName" nullable="false" />
 			<param name="new_size" type="int32" nullable="false" />
 		</entry>
 		<entry id="3402" level="ERROR">
@@ -170,59 +170,59 @@
 		</entry>
 		<entry id="3407" level="DEBUG">
 			<description>Constructed new Doorman.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="queue_size" type="int32" nullable="false" />
 			<param name="max_queue_size" type="int64" nullable="false" />
 			<param name="strict" nullable="false" />
 		</entry>
 		<entry id="3408" level="DEBUG">
 			<description>enterAsReader() called for a reader.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3409" level="WARNING">
 			<description>A reader attempts to enter as a reader while it is already the active writer.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3410" level="WARNING">
 			<description>A reader attempts to enter as a reader while it is already an active reader.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3411" level="DEBUG">
 			<description>enterAsWriter() called for a writer.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
 		<entry id="3412" level="WARNING">
 			<description>A writer attempts to enter as a writer but it is already the active writer.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
 		<entry id="3413" level="WARNING">
 			<description>A writer attempts to enter as a writer but it is already an active reader.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
 		<entry id="3414" level="DEBUG">
 			<description>leaveAsReader() called for a reader.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3415" level="WARNING">
 			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3416" level="DEBUG">
 			<description>leaveAsWriter() called for a writer.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
 		<entry id="3417" level="WARNING">
 			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
-			<param name="class_name" nullable="false" />
+			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
 	</group>
