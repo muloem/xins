@@ -15,7 +15,8 @@ import org.xins.util.text.FastStringBuffer;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public abstract class Function
-extends Object {
+extends Object
+implements DefaultReturnCodes {
 
    //-------------------------------------------------------------------------
    // Class fields
