@@ -16,6 +16,36 @@ import org.xins.util.text.FastStringBuffer;
  * Builder that can build a <code>Descriptor</code> object based on a set of
  * properties.
  *
+ * <h3>Examples</h3>
+ *
+ * <p>The following example is the definition of a single backend at
+ * <code>http://somehost/</code>, identified by the property name
+ * <code>"backend"</code>, the time-out is set to 20 seconds:
+ *
+ * <blockquote><code>backend=service, http://somehost/, 20000</code></blockquote>
+ *
+ * <p>The next example is the definition of 2 backends, of which one will be
+ * chosen randomly. The time-out is set to 10 seconds for one, and to 12.5
+ * seconds for the other. This setting is identified by the property name
+ * <code>"capi.sso"</code>:
+ *
+ * <blockquote><code>capi.sso=group, random, host1a, host3c
+ * <br>capi.sso.host1a=service, http://somehost/, 10000
+ * <br>capi.sso.host3c=service, http://othrhost/, 12500</code></blockquote>
+ *
+ * <p>The last example is the most complex. It defines 2 backends at a more
+ * preferred location and one at a less-preferred location. Normally one of
+ * the 2 backends at the preferred location will be chosen randomly, but if
+ * none is available, then the backend at the less preferred location will be
+ * tried. The time-out for all backends in 8 seconds. The name of the property
+ * is <code>"ldap"</code>.
+ *
+ * <blockquote><code>ldap=group, ordered, loc1, host2a
+ * <br>ldap.loc1=group, random, host1a, host1b
+ * <br>ldap.host1a=service, ldap://host1a/, 8000
+ * <br>ldap.host1b=service, ldap://host1b/, 8000
+ * <br>ldap.host2a=service, ldap://host2a/, 8000</code></blockquote>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
