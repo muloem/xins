@@ -28,51 +28,19 @@ extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InvalidCallResultException</code> with no detail
-    * message.
-    */
-   public InvalidCallResultException() {
-      this(null, null);
-   }
-
-   /**
     * Constructs a new <code>InvalidCallResultException</code> with the
     * specified detail message.
     *
     * @param message
     *    the detail message, can be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.201. Use
+    *    {@link InvalidCallResultException(CallRequest,TargetDescriptor,String)}
+    *    instead.
     */
-   public InvalidCallResultException(String message) {
+   InvalidCallResultException(String message) {
       this(message, null);
-   }
-
-   /**
-    * Constructs a new <code>InvalidCallResultException</code> with the
-    * specified cause exception.
-    *
-    * @param exception
-    *    the cause exception, can be <code>null</code>.
-    */
-   public InvalidCallResultException(Throwable exception) {
-      this(null, exception);
-   }
-
-   /**
-    * Constructs a new <code>InvalidCallResultException</code> with the
-    * specified detail message and cause exception.
-    *
-    * @param message
-    *    the detail message, can be <code>null</code>.
-    *
-    * @param exception
-    *    the cause exception, can be <code>null</code>.
-    */
-   public InvalidCallResultException(String message, Throwable exception) {
-
-      super((message != null || exception == null) ? message
-                                                   : ExceptionUtils.getRootCause(exception).getMessage(),
-            (exception == null) ? null
-                                : ExceptionUtils.getRootCause(exception));
    }
 
 
