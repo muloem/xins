@@ -30,6 +30,13 @@ implements Servlet {
    // Class fields
    //-------------------------------------------------------------------------
 
+   private static final int UNINITIALIZED = 0;
+   private static final int INITIALIZING = 1;
+   private static final int READY = 2;
+   private static final int DISPOSING = 3;
+   private static final int DISPOSED = 4;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -42,13 +49,23 @@ implements Servlet {
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
-      // empty
+      _stateLock = new Object();
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The current state.
+    */
+   private int _state;
+
+   /**
+    * The object to synchronize on when the state is changed.
+    */
+   private Object _stateLock;
 
    /**
     * The stored servlet configuration object.
@@ -73,6 +90,15 @@ implements Servlet {
 
    public void init(ServletConfig config)
    throws ServletException {
+      synchronized (_stateLock) {
+         initImpl(config);
+      }
+   }
+
+   private void initImpl(ServletConfig config)
+   throws ServletException {
+
+      _state = INITIALIZING;
 
       // Store the ServletConfig object, per the Servlet API Spec, see:
       // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
@@ -137,6 +163,8 @@ implements Servlet {
          _log.error(message, e);
          throw new ServletException(message);
       }
+
+      _state = READY;
    }
 
    /**
@@ -148,6 +176,7 @@ implements Servlet {
     */
    private void configureLogger(Properties settings) {
 
+      // TODO: Take a better approach to checking if Log4J is initialized
       String value = settings.getProperty("log4j.rootCategory");
       if (value == null || "".equals(value)) {
          settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
@@ -164,7 +193,20 @@ implements Servlet {
    }
 
    public void service(ServletRequest request, ServletResponse response)
-   throws IOException {
+   throws ServletException, IOException {
+
+      // Check state
+      if (_state != READY) {
+         if (_state == UNINITIALIZED) {
+            throw new ServletException("This servlet is not yet initialized.");
+         } else if (_state == DISPOSING) {
+            throw new ServletException("This servlet is currently being disposed.");
+         } else if (_state == DISPOSED) {
+            throw new ServletException("This servlet is disposed.");
+         } else {
+            throw new InternalError("This servlet is not ready, the state is unknown.");
+         }
+      }
 
       // Set the content output type to XML
       response.setContentType("text/xml");
@@ -182,6 +224,12 @@ implements Servlet {
    }
 
    public void destroy() {
-      // empty
+      synchronized (_stateLock) {
+         _state = DISPOSING;
+         if (_log != null) {
+            _log.info("Destroyed API servlet.");
+         }
+         _state = DISPOSED;
+      }
    }
 }
