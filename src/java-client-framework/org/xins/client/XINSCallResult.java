@@ -159,42 +159,14 @@ extends Object {
    }
 
    /**
-    * Returns the error code.
-    *
-    * @return
-    *    the error code or <code>null</code> if no code was returned.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.182.
-    *    Use {@link #getErrorCode()} instead.
-    */
-   public String getCode() {
-      return _code;
-   }
-
-   /**
-    * Returns the error code.
+    * Returns the error code. If the result was successful, then no error code
+    * is returned. In this case this method will return <code>null</code>.
     *
     * @return
     *    the error code or <code>null</code> if no code was returned.
     */
    public String getErrorCode() {
       return _code;
-   }
-
-   /**
-    * Returns the success indication.
-    *
-    * @return
-    *    <code>true</code> if the result is successful, <code>false</code>
-    *    otherwise.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.182.
-    *    Use {@link #getErrorCode()}<code> == null</code> instead.
-    */
-   public boolean isSuccess() {
-      return getErrorCode() == null;
    }
 
    /**
