@@ -337,7 +337,7 @@ public class MetaFunctionsTests extends TestCase {
       BasicPropertyReader parameters2 = new BasicPropertyReader();
       parameters2.set("functionName", "Logdoc");
       XINSCallRequest request2 = new XINSCallRequest("_DisableFunction", parameters2);
-      XINSCallResult result2 = caller.call(request);
+      XINSCallResult result2 = caller.call(request2);
       assertNull("The function returned a result code.", result2.getErrorCode());
       assertNull("The function returned some parameters.", result2.getParameters());
       assertNull("The function returned a data element.", result2.getDataElement());
@@ -345,7 +345,7 @@ public class MetaFunctionsTests extends TestCase {
       // Test that the function is not working anymore
       try {
          XINSCallResult result3 = caller.call(request);
-         fail("The call of a disable function did not throw an exception.");
+         fail("The call of a disabled function did not throw an exception.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("Incorrect error code.", "_DisabledFunction", exception.getErrorCode());
          assertNull("The function returned some parameters.", exception.getParameters());
@@ -354,7 +354,7 @@ public class MetaFunctionsTests extends TestCase {
       
       // Enable the function
       XINSCallRequest request3 = new XINSCallRequest("_EnableFunction", parameters2);
-      XINSCallResult result3 = caller.call(request);
+      XINSCallResult result3 = caller.call(request3);
       assertNull("The function returned a result code.", result3.getErrorCode());
       assertNull("The function returned some parameters.", result3.getParameters());
       assertNull("The function returned a data element.", result3.getDataElement());

@@ -103,12 +103,10 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
 
    public void setStatus(int sc) {
       _status = sc;
-      System.err.println("Status code: " + sc);
    }
 
    public void sendError(int sc) {
-      _status = sc;
-      System.err.println("Error code: " + sc);
+      sendError(sc, null);
    }
 
    public void setBufferSize(int param) {
@@ -140,7 +138,7 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    }
 
    public void sendError(int sc, String msg) {
-      System.err.println("Error: " + msg + "; code: " + sc);
+      _status = sc;
    }
 
    public void setHeader(String str, String str1) {
@@ -195,6 +193,9 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
     *    the returned message.
     */
    public String getResult() {
+      if (_writer == null) {
+         return null;
+      }
       return _writer.toString();
    }
    

@@ -358,7 +358,9 @@
 			<property name="xins_home" value="${basedir}"/>
 			<property name="user.dir" value="${basedir}/src/tests"/>
 		</ant>
-		<ant antfile="build/build.xml" dir="src/tests" target="all-allinone" />
+		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
+		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone" />
+		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone" />
 		
 		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />

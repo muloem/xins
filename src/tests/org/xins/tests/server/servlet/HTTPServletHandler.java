@@ -176,8 +176,9 @@ public class HTTPServletHandler {
     */
    public String httpQuery(DataInputStream input) throws IOException {
       String inputLine;
+      String query = null;
     
-      while ((inputLine = input.readLine()) != null) {
+      while (query == null && (inputLine = input.readLine()) != null) {
          //System.out.println("*** input: " + inputLine);
          if (inputLine.startsWith("GET ")) {
             int questionPos = inputLine.indexOf('?');
@@ -189,18 +190,7 @@ public class HTTPServletHandler {
                   inputLine = inputLine.substring(questionPos + 1);
                }
             }
-            inputLine = inputLine.replace(',', '&');
-            LocalHTTPServletResponse response = query(inputLine);
-            String result = response.getResult();
-            String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
-            httpResult += "Content-type: " + response.getContentType() + "\n";
-            int length = result.length() + 1;
-            httpResult += "Content-Length: " + length + "\n";
-            httpResult += "Connection: close\n";
-            httpResult += "\n";
-            httpResult += result + "\n";
-            httpResult += "\n";
-            return httpResult;
+            query = inputLine.replace(',', '&');
          }
          
          // POST method
@@ -210,20 +200,27 @@ public class HTTPServletHandler {
             input.readLine();
             byte[] data = new byte[postLength];
             input.read(data);
-            //System.out.println("*** input "+new String(data));
-            
-            LocalHTTPServletResponse response = query(new String(data));
-            String result = response.getResult();
-            String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
-            httpResult += "Content-type: " + response.getContentType() + "\n";
-            int length = result.length() + 1;
-            httpResult += "Content-Length: " + length + "\n";
-            httpResult += "Connection: close\n";
-            httpResult += "\n";
-            httpResult += result + "\n";
-            httpResult += "\n";
-            return httpResult;
+            query = new String(data);
          }
+      }
+      if (query != null) {
+         //System.err.println("*** query " + query);
+         LocalHTTPServletResponse response = query(query);
+         String result = response.getResult();
+         if (result == null) {
+            result = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
+            //System.err.println("*** result " + result);
+            return result;
+         }
+         String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
+         httpResult += "Content-type: " + response.getContentType() + "\n";
+         int length = result.length() + 1;
+         httpResult += "Content-Length: " + length + "\n";
+         httpResult += "Connection: close\n";
+         httpResult += "\n";
+         httpResult += result + "\n";
+         httpResult += "\n";
+         return httpResult;
       }
       return "HTTP/1.1 400 BAD_REQUEST\n\n";
    }

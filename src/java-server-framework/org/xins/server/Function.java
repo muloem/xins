@@ -240,7 +240,6 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (!_enabled) {
-
          performedCall(parameters, ip, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }

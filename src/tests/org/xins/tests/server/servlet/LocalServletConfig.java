@@ -161,7 +161,7 @@ public class LocalServletConfig implements ServletConfig {
                                String     qName,
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
-         _pcdata = new FastStringBuffer(20);
+         _pcdata = new FastStringBuffer(80);
       }
       
       public void endElement(String namespaceURI,
