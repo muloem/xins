@@ -9,20 +9,27 @@ package org.xins.common.http;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
-import org.xins.common.text.FastStringBuffer;
-
-import org.xins.common.service.CallRequest;
-
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.service.CallRequest;
+
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
+
 /**
  * A request towards an HTTP service.
+ *
+ * <p>Since XINS 1.1.0, an HTTP method is not a mandatory property anymore. If
+ * the HTTP method is not specified in a request, then it will from the
+ * applicable {@link HTTPCallConfig}.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see HTTPServiceCaller
  */
 public final class HTTPCallRequest extends CallRequest {
 
@@ -55,13 +62,11 @@ public final class HTTPCallRequest extends CallRequest {
     * unless the request was definitely not processed by the other end.
     *
     * @param method
-    *    the HTTP method to use, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>method == null</code>.
+    *    the HTTP method to use, or <code>null</code> if the method should be
+    *    determined when the call is made
+    *    (<em>since XINS 1.1.0 this argument can be null</em>).
     */
-   public HTTPCallRequest(HTTPMethod method)
-   throws IllegalArgumentException {
+   public HTTPCallRequest(HTTPMethod method) {
       this(method, null, false, null);
    }
 
@@ -71,17 +76,15 @@ public final class HTTPCallRequest extends CallRequest {
     * definitely not processed by the other end.
     *
     * @param method
-    *    the HTTP method to use, cannot be <code>null</code>.
+    *    the HTTP method to use, or <code>null</code> if the method should be
+    *    determined when the call is made
+    *    (<em>since XINS 1.1.0 this argument can be null</em>).
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>method == null</code>.
     */
    public HTTPCallRequest(HTTPMethod     method,
-                          PropertyReader parameters)
-   throws IllegalArgumentException {
+                          PropertyReader parameters) {
       this(method, parameters, false, null);
    }
 
@@ -91,7 +94,9 @@ public final class HTTPCallRequest extends CallRequest {
     * fail-over in all cases.
     *
     * @param method
-    *    the HTTP method to use, cannot be <code>null</code>.
+    *    the HTTP method to use, or <code>null</code> if the method should be
+    *    determined when the call is made
+    *    (<em>since XINS 1.1.0 this argument can be null</em>).
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code>.
@@ -103,9 +108,6 @@ public final class HTTPCallRequest extends CallRequest {
     * @param statusCodeVerifier
     *    the HTTP status code verifier, or <code>null</code> if all HTTP
     *    status codes are allowed.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>method == null || parameters == null</code>.
     */
    public HTTPCallRequest(HTTPMethod             method,
                           PropertyReader         parameters,
@@ -115,36 +117,29 @@ public final class HTTPCallRequest extends CallRequest {
 
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
-      FastStringBuffer buffer = new FastStringBuffer(137, "HTTPCallRequest #");
-      buffer.append(_instanceNumber);
-      String asString = buffer.toString();
 
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, "#" + _instanceNumber);
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("method", method);
+      // Create an HTTPCallConfig object
+      HTTPCallConfig callConfig = new HTTPCallConfig();
+      callConfig.setFailOverAllowed(failOverAllowed);
+      if (method != null) {
+         callConfig.setMethod(method);
+      }
+      setCallConfig(callConfig);
 
       // Store information
-      _method             = method;
       _parameters         = parameters;
-      _failOverAllowed    = failOverAllowed;
       _statusCodeVerifier = statusCodeVerifier;
 
-      // Complete the description of this object
-      buffer.append(" [method=");
-      buffer.append(_method.toString());
-      buffer.append(", failOverAllowed=");
-      buffer.append(failOverAllowed);
-      buffer.append(", parameters=");
-      PropertyReaderUtils.serialize(_parameters, buffer, "(null)");
-      buffer.append(']');
-      asString = buffer.toString();
-      _asString = asString;
-
       // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, asString);
+      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
+
+      // Note that _asString is lazily initialized.
    }
+
+   // TODO: Add constructor that accepts HTTPCallConfig
 
 
    //-------------------------------------------------------------------------
@@ -165,22 +160,10 @@ public final class HTTPCallRequest extends CallRequest {
    private String _asString;
 
    /**
-    * The HTTP method to use when executing this call request. This field
-    * cannot be <code>null</code>, it is initialized during construction.
-    */
-   private final HTTPMethod _method;
-
-   /**
     * The parameters for the HTTP call. This field cannot be
     * <code>null</code>, it is initialized during construction.
     */
    private final PropertyReader _parameters;
-
-   /**
-    * Flag that indicates whether fail-over is in principle allowed, even if
-    * the request was already sent to the other end.
-    */
-   private final boolean _failOverAllowed;
 
    /**
     * The HTTP status code verifier, or <code>null</code> if all HTTP status codes are allowed.
@@ -199,17 +182,69 @@ public final class HTTPCallRequest extends CallRequest {
     *    the description of this request, never <code>null</code>.
     */
    public String describe() {
+
+      // Lazily initialize the description of this call request object
+      if (_asString == null) {
+         FastStringBuffer buffer = new FastStringBuffer(193, "HTTP request #");
+
+         // Request number
+         buffer.append(_instanceNumber);
+
+         // HTTP method
+         buffer.append(" [config=");
+         buffer.append(TextUtils.quote(getCallConfig()));
+
+         // Parameters
+         if (_parameters == null || _parameters.size() < 1) {
+            buffer.append("; parameters=(null)");
+         } else {
+            buffer.append("; parameters=\"");
+            PropertyReaderUtils.serialize(_parameters, buffer, "(null)");
+            buffer.append('"');
+         }
+
+         _asString = buffer.toString();
+      }
+
       return _asString;
+   }
+
+
+   /**
+    * Returns the HTTP call configuration.
+    *
+    * @return
+    *    the HTTP call configuration object, or <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPCallConfig getHTTPCallConfig() {
+      return (HTTPCallConfig) getCallConfig();
+   }
+
+   /**
+    * Sets the associated HTTP call configuration.
+    *
+    * @param callConfig
+    *    the HTTP call configuration object to associate with this request, or
+    *    <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public void setHTTPCallConfig(HTTPCallConfig callConfig) {
+      setCallConfig(callConfig);
    }
 
    /**
     * Returns the HTTP method associated with this call request.
     *
+    * <p><em>Since XINS 1.1.0, this method may return <code>null</code>.</em>
+    *
     * @return
-    *    the HTTP method, never <code>null</code>.
+    *    the HTTP method, or <code>null</code>.
     */
    public HTTPMethod getMethod() {
-      return _method;
+      return getHTTPCallConfig().getMethod();
    }
 
    /**
@@ -219,6 +254,7 @@ public final class HTTPCallRequest extends CallRequest {
     *    the parameters, can be <code>null</code>.
     */
    public PropertyReader getParameters() {
+      // TODO: Never return null
       return _parameters;
    }
 
@@ -232,7 +268,7 @@ public final class HTTPCallRequest extends CallRequest {
     *    otherwise.
     */
    public boolean isFailOverAllowed() {
-      return _failOverAllowed;
+      return getHTTPCallConfig().isFailOverAllowed();
    }
 
    /**
