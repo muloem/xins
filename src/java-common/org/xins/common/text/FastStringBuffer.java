@@ -148,6 +148,21 @@ public class FastStringBuffer extends Object {
    }
 
    /**
+    * Appends the specified boolean. If necessary, the capacity of this
+    * string buffer will be increased.
+    *
+    * @param b
+    *    the boolean to append, if it is <code>true</code> then the string
+    *    <code>"true"</code> will be appended, otherwise the string
+    *    <code>"false"</code> will be appended..
+    *
+    * @since XINS 0.196
+    */
+   public void append(boolean b) {
+      append(b ? "true" : "false");
+   }
+
+   /**
     * Appends the specified character. If necessary, the capacity of this
     * string buffer will be increased.
     *
