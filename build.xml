@@ -25,7 +25,7 @@
 	<target name="-init">
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version"             value="0.33" />
+		<property name="version"             value="0.34-dev" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
 		<property name="www.user"            value="znerd" />
@@ -280,7 +280,9 @@
 
 	<target name="checkstyle-text" depends="-prepare-checkstyle" description="Prints checkstyle errors">
 		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
+			<fileset dir="src/java-common"           includes="**/*.java" />
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-client-framework" includes="**/*.java" />
 			<formatter type="plain" />
 		</checkstyle>
 	</target>
