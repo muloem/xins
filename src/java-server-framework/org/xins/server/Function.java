@@ -494,7 +494,6 @@ implements DefaultResultCodes {
       // TODO: Accept ResultCode
 
       long duration = System.currentTimeMillis() - start;
-      boolean debugEnabled = _log.isDebugEnabled();
       String message = null;
 
       // Call succeeded
