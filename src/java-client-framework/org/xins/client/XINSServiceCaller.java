@@ -204,8 +204,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Initialize the fields
-      _parser     = new XINSCallResultParser();
-      _httpCaller = new HTTPServiceCaller(descriptor);
+      _parser      = new XINSCallResultParser();
+      _httpCaller  = new HTTPServiceCaller(descriptor);
 
       // TRACE: Leave constructor
       Log.log_2002(CLASSNAME, null);
@@ -263,7 +263,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     * {@link HTTPMethod#POST POST}.
     *
     * @return
-    *    a new {@link XINSCallConfig} instance, never <code>null</code>.
+    *    a new {@link XINSCallConfig} instance with default settings, never
+    *    <code>null</code>.
     */
    protected CallConfig getDefaultCallConfig() {
       return new XINSCallConfig();
@@ -597,7 +598,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       String errorCode = resultData.getErrorCode();
       if (errorCode != null) {
          Log.log_2112(url, function, params, duration, errorCode);
-         throw new UnsuccessfulXINSCallException(xinsRequest, target, duration, resultData);
+         throw xinsRequest.createUnsuccessfulXINSCallException(target,
+                                                               duration,
+                                                               resultData);
       }
 
       // Call completely succeeded
