@@ -465,7 +465,6 @@
 			<param name="start"        type="serializable" nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
 			<param name="functionName" type="text"         nullable="false" />
-			<param name="callID"       type="int32"        nullable="false" />
 			<param name="duration"     type="int64"        nullable="false" />
 			<param name="errorCode"    type="text"         nullable="false" />
 			<param name="inParams"     type="serializable" nullable="false" />
@@ -476,7 +475,6 @@
 			<param name="start"        type="serializable" nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
 			<param name="functionName" type="text"         nullable="false" />
-			<param name="callID"       type="int32"        nullable="false" />
 			<param name="duration"     type="int64"        nullable="false" />
 			<param name="errorCode"    type="text"         nullable="false" />
 		</entry>
