@@ -33,6 +33,9 @@ CHANGES INTRODUCED IN XINS 0.202:
     CallFailedException.
   - UnacceptableCallResultException no longer extends from CallException, just
     from Exception.
+  - TODO: XINSServiceCaller should not rethrow RuntimeException and Error
+    exceptions, but it should encapsulate them in a CallException, so that the
+    linking will work correctly in the execute() method.
 
 * Generated specification documentation:
   - Implemented the pcdata-example attribute.
