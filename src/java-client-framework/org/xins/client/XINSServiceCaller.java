@@ -541,9 +541,6 @@ public final class XINSServiceCaller extends ServiceCaller {
        *    if <code>request    == null
        *          || target     == null
        *          || duration &lt; 0
-       *          || (dataElement != null &amp;&amp;
-       *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
-       *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>)))</code>
        */
       public Result(CallRequest      request,
                     TargetDescriptor target,
