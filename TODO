@@ -65,6 +65,8 @@ XINS/JAVA SERVER FRAMEWORK
   method to do this. Return an HTTP error code if the query string is invalid,
   for example if it contains duplicate parameter names.
 * Log 5014/5015 for meta-functions.
+* Return InvalidParameters if an input parameter of type _properties has a
+  single key used multiple times.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -111,6 +113,8 @@ XINS/JAVA COMMON LIBRARY
 * Create an implementation of interface IndexedMap.
 * Implemented and test method isValidValueImpl in class
   org.xins.types.standard.Properties.
+* Change _properties type so it does not allow a single key to be used
+  multiple times.
 
 ______________________________________________________________________________
 LOGDOC
@@ -142,6 +146,9 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Per type have a list of input parameters, output parameters and data element
   attributes that are defined as of this type.
 * Display the name of each item in the generated HTML for an enum type.
+* If the api.xml file changes, then all files generated for that API should be
+  regenerated. For example, the freeze version for a function may change in
+  the api.xml file. This changes the generated content for that function.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
