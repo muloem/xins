@@ -142,6 +142,8 @@ GENERATED SPECIFICATION DOCUMENTATION
   regenerated.
 * Have an item for a result code page in the header.
 * Add standard type '_list': Support <list type="TYPE" /> in .typ files.
+* Per type have a list of input parameters, output parameters and data element
+  attributes that are defined as of this type.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
