@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 0.127:
   - Added Jakarta Commons Net 1.0.0 to compile-time dependencies, for the
     SourceForge AddRelease task.
 
+* Building XINS:
+  - File .sourceforge.properties is now expected to be in the user home
+    directory. It should contain the properties 'sf.user' and 'sf.password'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.126:
 
