@@ -185,7 +185,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param request
     *    the HTTP call request, not <code>null</code>.
     *
-    * @param request
+    * @param callConfig
     *    the HTTP call configuration object, not <code>null</code>.
     *
     * @return
@@ -199,7 +199,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                           HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "createMethod(String,HTTPCallConfig,HTTPCallRequest)";
+      final String THIS_METHOD = "createMethod(String,HTTPCallRequest,HTTPCallConfig)";
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
