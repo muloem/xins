@@ -71,8 +71,8 @@ extends Object {
     *    should be strict or loose.
     *
     * @param maxQueueWaitTime
-    *    the maximum time a thread can wait in the queue for obtaining read or
-    *    write access to a resource, must be &gt; 0L.
+    *    the maximum time in milliseconds a thread can wait in the queue for 
+    *    obtaining read or write access to a resource, must be &gt; 0L.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || strategy == null || maxQueueWaitTime &lt;= 0L</code>.

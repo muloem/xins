@@ -68,7 +68,7 @@ public class AllInOneAPITests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>MetaFunctionsTests</code> test suite with
+    * Constructs a new <code>AllInOneAPITests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
