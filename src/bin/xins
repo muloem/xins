@@ -15,13 +15,15 @@ os=`uname`
 buildfile_base=build.xml
 builddir=${project_home}/build
 
-# Distinguish between operating systems
-if [ "${os}" = "FreeBSD" ]; then
-	echo_n="echo -n"
+# Figure out what kind of echo to use
+if [ "`echo -n`" = "-n" ]; then
+	n=
+	c="\c"
 else
-	echo_n="echo"
+	n="-n"
+	c=
 fi
-
+ 
 # Make sure XINS_HOME is set
 xins_home=${XINS_HOME}
 guessed_xins_home=false
@@ -126,14 +128,14 @@ if [ "${bypass}" = "false" ]; then
 		fi
 	else
 		tmpout=/tmp/xins.`whoami`.`date "+%Y%m%d%H%M.%S"`.tmp
-		${echo_n} "" > ${tmpout}
+		echo > ${tmpout}
 		returncode=$?
 		if [ ! "${returncode}a" = "0a" ]; then
 			echo "${prog}: ERROR: Unable to create temporary file ${tmpout} (return code ${returncode})"
 			exit 1
 		fi
 	fi
-	${echo_n} ">> Generating ${buildfile_base}..."
+	echo $n ">> Generating ${buildfile_base}..." $c
 	ant -f ${xins_home}/src/ant/transform.xml \
     	-Din=${in} \
 		-Dout=${buildfile} \
