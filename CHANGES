@@ -1,6 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
 
+* Logdoc
+  - The validation of the Logdoc XML files is now done using the local files
+    when the declaration uses 1.0 alpha.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
 
