@@ -52,7 +52,7 @@
 
 	<xsl:template match="file">
 		<h3>
-			<xsl:value-of select="substring-after(translate(@name,'\','/'),'xins/')" />
+			<xsl:value-of select="substring-after(translate(@name,'\','/'),'src/')" />
 		</h3>
 
 		<table class="file">
