@@ -1,0 +1,42 @@
+/*
+ * -*- mode: Fundamental; tab-width: 4; -*-
+ * ex:ts=4
+ *
+ * Stylesheet for the test results HTML generated with XSLT.
+ * 
+ * $Id$
+*/
+body {
+	background-color: #ffffff;
+}
+
+table {
+	background-color: #ccccff;
+	border-width: 2;
+}
+
+th {
+	background-color: #8888dd;
+	vertical-align: top;
+	text-align: left;
+	padding: 3pt;
+}
+
+td {
+	background-color: #ffffff;
+	vertical-align: top;
+	text-align: left;
+	padding: 3pt;
+}
+
+.okay {
+	color: #008800;
+}
+
+.failure {
+	color: #cc0000;
+}
+
+.error {
+	color: #cc0000;
+}
