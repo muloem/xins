@@ -358,14 +358,21 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       long duration = httpResult.getDuration();
 
+      // Make sure data was received
+      byte[] httpData = httpResult.getData();
+      if (httpData == null || httpData.length == 0) {
+         throw new InvalidResultXINSCallException(request, target, duration, "No data received.", null);
+      }
+
       // Parse the result
       XINSCallResultData data;
       try {
-         data = _parser.parse(httpResult.getData());
+         data = _parser.parse(httpData);
       } catch (ParseException parseException) {
          throw new InvalidResultXINSCallException(request, target, duration, "Failed to parse result.", parseException);
       }
 
+      // Construct a XINSCallResult object to contain the data
       XINSCallResult xinsResult = new XINSCallResult(request,
                                                      target,
                                                      duration,
