@@ -27,6 +27,9 @@ CHANGES INTRODUCED IN XINS 0.209:
     instance. This is necessary so CAPI users can actually throw an
     UnacceptableResultXINSCallException, since they have no handle to a
     XINSCallResult instance directly.
+  - If doCall(CallRequest) throws an unexpected type of exception, then an
+    Error is thrown. Improved the message for that Error, and registering the
+    cause of the Error properly.
 
 * Logdoc
   - The boolean type was not declared in the log_to_entry_html.xslt as a
