@@ -85,7 +85,7 @@ public class IPFilterTests extends TestCase {
       assertEquals(expression, filter.getExpression());
    }
 
-   public void testParseFilter() throws Throwable {
+   public void testParseIPFilter() throws Throwable {
 
       try {
          IPFilter.parseIPFilter(null);
@@ -94,46 +94,46 @@ public class IPFilterTests extends TestCase {
          // as expected
       }
 
-      doTestParseFilter("abcd",                     false);
-      doTestParseFilter("abcd/24",                  false);
-      doTestParseFilter("a.b.c.d/12",               false);
-      doTestParseFilter("1.",                       false);
-      doTestParseFilter("1.2.",                     false);
-      doTestParseFilter("1.2.3",                    false);
-      doTestParseFilter("1.2.3.",                   false);
-      doTestParseFilter("1.2.3.4",                  false);
-      doTestParseFilter("1./",                      false);
-      doTestParseFilter("1.2./",                    false);
-      doTestParseFilter("1.2.3/",                   false);
-      doTestParseFilter("1.2.3./",                  false);
-      doTestParseFilter("1.2.3.4/",                 false);
-      doTestParseFilter("1./0",                     false);
-      doTestParseFilter("1.2./0",                   false);
-      doTestParseFilter("1.2.3/0",                  false);
-      doTestParseFilter("1.2.3./0",                 false);
-      doTestParseFilter("1.2.3.4/a",                false);
-      doTestParseFilter("1.2.3.4/-1",               false);
-      doTestParseFilter(" 1.2.3.4/0",               false);
-      doTestParseFilter("1.2.3.4/0 ",               false);
-      doTestParseFilter(" 1.2.3.4/0 ",              false);
-      doTestParseFilter("1.2.3.4/0",                true);
-      doTestParseFilter("1.2.3.4/5",                true);
-      doTestParseFilter("1.2.3.4/5a",               false);
-      doTestParseFilter("1.2.3.4a/5",               false);
-      doTestParseFilter("1.2.3.4//5",               false);
-      doTestParseFilter("1.2.3.4/32",               true);
-      doTestParseFilter("01.2.3.4/32",              false);
-      doTestParseFilter("1.02.3.4/32",              false);
-      doTestParseFilter("1.102.3.4/32",             true);
-      doTestParseFilter("1.2.3.4/00",               false);
-      doTestParseFilter("1.2.3.4/01",               false);
-      doTestParseFilter("1.2.3.4/032",              false);
-      doTestParseFilter("1.2.3.4/33",               false);
-      doTestParseFilter("1.2.3.4/1234567890123456", false);
-      doTestParseFilter("1.2.3.4.5/0",              false);
+      doTestParseIPFilter("abcd",                     false);
+      doTestParseIPFilter("abcd/24",                  false);
+      doTestParseIPFilter("a.b.c.d/12",               false);
+      doTestParseIPFilter("1.",                       false);
+      doTestParseIPFilter("1.2.",                     false);
+      doTestParseIPFilter("1.2.3",                    false);
+      doTestParseIPFilter("1.2.3.",                   false);
+      doTestParseIPFilter("1.2.3.4",                  false);
+      doTestParseIPFilter("1./",                      false);
+      doTestParseIPFilter("1.2./",                    false);
+      doTestParseIPFilter("1.2.3/",                   false);
+      doTestParseIPFilter("1.2.3./",                  false);
+      doTestParseIPFilter("1.2.3.4/",                 false);
+      doTestParseIPFilter("1./0",                     false);
+      doTestParseIPFilter("1.2./0",                   false);
+      doTestParseIPFilter("1.2.3/0",                  false);
+      doTestParseIPFilter("1.2.3./0",                 false);
+      doTestParseIPFilter("1.2.3.4/a",                false);
+      doTestParseIPFilter("1.2.3.4/-1",               false);
+      doTestParseIPFilter(" 1.2.3.4/0",               false);
+      doTestParseIPFilter("1.2.3.4/0 ",               false);
+      doTestParseIPFilter(" 1.2.3.4/0 ",              false);
+      doTestParseIPFilter("1.2.3.4/0",                true);
+      doTestParseIPFilter("1.2.3.4/5",                true);
+      doTestParseIPFilter("1.2.3.4/5a",               false);
+      doTestParseIPFilter("1.2.3.4a/5",               false);
+      doTestParseIPFilter("1.2.3.4//5",               false);
+      doTestParseIPFilter("1.2.3.4/32",               true);
+      doTestParseIPFilter("01.2.3.4/32",              false);
+      doTestParseIPFilter("1.02.3.4/32",              false);
+      doTestParseIPFilter("1.102.3.4/32",             true);
+      doTestParseIPFilter("1.2.3.4/00",               false);
+      doTestParseIPFilter("1.2.3.4/01",               false);
+      doTestParseIPFilter("1.2.3.4/032",              false);
+      doTestParseIPFilter("1.2.3.4/33",               false);
+      doTestParseIPFilter("1.2.3.4/1234567890123456", false);
+      doTestParseIPFilter("1.2.3.4.5/0",              false);
    }
 
-   private void doTestParseFilter(String expression, boolean okay)
+   private void doTestParseIPFilter(String expression, boolean okay)
    throws Throwable {
 
       if (! okay) {
