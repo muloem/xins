@@ -6,10 +6,12 @@
 -->
 <!ELEMENT function (description?, input?, output?, example*)>
 <!ATTLIST function
-          name       CDATA #REQUIRED
-          api        CDATA #IMPLIED
-          rcsversion CDATA #IMPLIED
-          rcsdate    CDATA #IMPLIED
+          name           CDATA #REQUIRED
+          api            CDATA #IMPLIED
+	  createsSession CDATA #IMPLIED
+	  sessionBased   CDATA #IMPLIED
+          rcsversion     CDATA #IMPLIED
+          rcsdate        CDATA #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
@@ -28,7 +30,7 @@
 <!ATTLIST param-ref
           name       CDATA #REQUIRED
 >
-<!ELEMENT output (resultcode-ref*, resultcode*, data?, param*)>
+<!ELEMENT output (resultcode-ref*, resultcode*, param*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
           name       CDATA #REQUIRED
@@ -67,6 +69,7 @@
 <!ATTLIST example
           num         CDATA #REQUIRED
           resultcode  CDATA #IMPLIED
+          sessionID   CDATA #IMPLIED
           success     CDATA #IMPLIED
 >
 <!ELEMENT data-example (element-example*)>
