@@ -6,9 +6,13 @@ package org.xins.common.collections;
 import java.io.InputStream;
 import java.io.IOException;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.WhislEncoding;
+
+import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Utility functions for dealing with <code>PropertyReader</code> objects.
