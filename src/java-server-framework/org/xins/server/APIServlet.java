@@ -71,6 +71,39 @@ implements Servlet {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Configures the logger using the specified settings. This method is
+    * called from {@link #init(ServletConfig)}.
+    *
+    * @param settings
+    *    the initialization settings, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>settings == null</code>.
+    */
+   private static void configureLogger(Properties settings)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("settings", settings);
+
+      // Perform the actual initialization of the logger
+      PropertyConfigurator.configure(settings);
+
+      // Check if Log4J is already initialized
+      if (! LOG.getAllAppenders().hasMoreElements()) {
+         settings.setProperty("log4j.rootCategory",            "DEBUG, console");
+         settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
+         settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
+
+         // Perform the actual initialization of the logger
+         PropertyConfigurator.configure(settings);
+
+         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -201,6 +234,16 @@ implements Servlet {
          }
          _api.init(settings);
       } catch (Throwable e) {
+
+         // Reset state
+         _state = UNINITIALIZED;
+         try {
+            _api.destroy();
+         } catch (Throwable e2) {
+            LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + _api.getClass().getName() + ". Ignoring.", e2);
+         }
+         _api = null;
+
          String message = "Failed to initialize API.";
          LOG.error(message, e);
          throw new ServletException(message);
@@ -213,38 +256,6 @@ implements Servlet {
 
       // Finally enter the ready state
       _state = READY;
-   }
-
-   /**
-    * Configures the logger using the specified settings. This method is
-    * called from {@link #init(ServletConfig)}.
-    *
-    * @param settings
-    *    the initialization settings, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>settings == null</code>.
-    */
-   private void configureLogger(Properties settings)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("settings", settings);
-
-      // Perform the actual initialization of the logger
-      PropertyConfigurator.configure(settings);
-
-      // Check if Log4J is already initialized
-      if (! LOG.getAllAppenders().hasMoreElements()) {
-         settings.setProperty("log4j.rootCategory",            "DEBUG, console");
-         settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
-         settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
-
-         // Perform the actual initialization of the logger
-         PropertyConfigurator.configure(settings);
-
-         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
-      }
    }
 
    public ServletConfig getServletConfig() {
