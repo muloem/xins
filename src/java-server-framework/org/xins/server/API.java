@@ -164,7 +164,8 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Forwards a call to the <code>handleCall(CallContext)</code> method.
+    * Forwards a call to a function. The call will actually be handled by
+    * {@link Function#handleCall(CallContext)}.
     *
     * @param request
     *    the original servlet request, not <code>null</code>.
@@ -236,6 +237,7 @@ implements DefaultResultCodes {
       String code;
       try {
          f.handleCall(context);
+         context.endResponse();
          success = context.getSuccess();
          code    = context.getCode();
          exceptionThrown = false;
