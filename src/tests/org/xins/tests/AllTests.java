@@ -60,6 +60,7 @@ public class AllTests extends TestSuite {
 
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.DataElementTests.class);
+      suite.addTestSuite(org.xins.tests.client.UnacceptableResultXINSCallExceptionTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
 
