@@ -97,7 +97,7 @@ implements Servlet {
          configureLoggerFallback();
          String message = "Failed to apply replacements to servlet initialization settings.";
          LOG.error(message, exception);
-         throw new ServletException("Failed to apply replacements to servlet initialization settings.", exception);
+         throw new ServletException(message, exception);
       }
 
       // First see if a config file has been specified
