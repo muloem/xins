@@ -288,6 +288,11 @@ implements Responder {
       }
    }
 
+   public final void startResponse(boolean success)
+   throws IllegalStateException, IOException {
+      startResponse(success, null);
+   }
+
    public final void startResponse(boolean success, String returnCode)
    throws IllegalStateException, IOException {
 

@@ -35,6 +35,14 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    <tr>
  *    <tr>
+ *       <th>{@link #startResponse(boolean)}</th>
+ *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *    <tr>
+ *    <tr>
  *       <th>{@link #startResponse(boolean,String)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -102,10 +110,10 @@ import java.io.IOException;
  *    <li>S4: AFTER_END</li>
  * </ul>
  *
- * <p />If {@link #startResponse(boolean,String)} or
- * {@link #startResponse(ResultCode)} is not called, then a
- * <code>result</code> element is written with <code>success="true"</code> and
- * no result code.
+ * <p />If {@link #startResponse(boolean,String)},
+ * {@link #startResponse(boolean)} or {@link #startResponse(ResultCode)} is
+ * not called, then a <code>result</code> element is written with
+ * <code>success="true"</code> and no result code.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -125,8 +133,29 @@ extends ResponderStates {
     *
     * @throws IOException
     *    if an I/O error occurred.
+    *
+    * @since XINS 0.15.
     */
    void startResponse(ResultCode resultCode)
+   throws IllegalStateException, IOException;
+
+   /**
+    * Starts the response output. This is done by writing a
+    * <code>result</code> start tag with the specified value for the
+    * <em>result</em> attribute.
+    *
+    * @param success
+    *    success indication.
+    *
+    * @throws IllegalStateException
+    *    if the response output has already started.
+    *
+    * @throws IOException
+    *    if an I/O error occurred.
+    *
+    * @since XINS 0.15
+    */
+   void startResponse(boolean success)
    throws IllegalStateException, IOException;
 
    /**
