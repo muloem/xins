@@ -152,7 +152,7 @@
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2112" level="INFO" exception="false">
+		<entry id="2112" level="WARNING" exception="false">
 			<description>Unsuccessful XINS result received.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
