@@ -340,14 +340,30 @@ public final class ExpiryStrategy extends Object {
 
          Log.log_1402(getName());
 
+         long now  = System.currentTimeMillis();
+         long next = now + _precision;
+
          while (! _stop) {
-            try {
-               while (! _stop) {
-                  sleep(_precision);
-                  doTick();
+            long sleep = (next - now);
+            if (sleep > 0) {
+// TODO: System.out.println("Sleeping " + sleep + " ms.");
+               try {
+                  Thread.sleep(sleep);
+               } catch (InterruptedException exception) {
+// TODO: System.out.println("Interrupted");
+                  now = System.currentTimeMillis();
+                  continue;
                }
-            } catch (InterruptedException exception) {
-               // fall through
+            }
+
+// TODO: System.out.println("Woke up.");
+
+            now = System.currentTimeMillis();
+            while (next <= now) {
+// TODO: System.out.println("Tick.");
+               doTick();
+               now = System.currentTimeMillis();
+               next += _precision;
             }
          }
 

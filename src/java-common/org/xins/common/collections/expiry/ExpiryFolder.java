@@ -113,16 +113,16 @@ extends Object {
       MandatoryArgumentChecker.check("name", name, "strategy", strategy);
 
       // Initialize fields
+      _lock                 = new Object();
       _name                 = name;
       _strategy             = strategy;
       _asString             = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
       _recentlyAccessed     = new HashMap(89);
-      _recentlyAccessedLock = new Object();
       _slotCount            = strategy.getSlotCount();
       _slots                = new HashMap[_slotCount];
       _lastSlot             = _slotCount - 1;
-      _sizeLock             = new Object();
       _listeners            = new ArrayList(5);
+      _expired              = new HashMap();
 
       // Initialize all slots to a new HashMap
       for (int i = 0; i < _slotCount; i++) {
@@ -185,6 +185,11 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Lock object.
+    */
+   private final Object _lock;
+
+   /**
     * The instance number of this instance.
     */
    private final int _instanceNum;
@@ -210,7 +215,7 @@ extends Object {
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private volatile HashMap _recentlyAccessed;
+   private HashMap _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -232,25 +237,18 @@ extends Object {
    private final HashMap[] _slots;
 
    /**
-    * Lock for accessing the <code>_recentlyAccessed</code> field.
-    */
-   private final Object _recentlyAccessedLock;
-
-   /**
-    * The size of this folder. If code needs to write to this field, then it
-    * should lock on {@link #_sizeLock}.
-    */
-   private int _size;
-
-   /**
-    * Lock for writing to the <code>_size</code> field.
-    */
-   private final Object _sizeLock;
-
-   /**
     * The set of listeners. May be empty, but never is <code>null</code>.
     */
    private final ArrayList _listeners;
+
+   /**
+    * Map containing entries already removed (because they are expired) but
+    * not passed to the listeners yet.
+    *
+    * <p>Values in this map are the actual object references. These are not
+    * wrapped in {@link Entry} objects.
+    */
+   private HashMap _expired;
 
 
    //-------------------------------------------------------------------------
@@ -281,97 +279,89 @@ extends Object {
       // the synchronized sections
       HashMap newRecentlyAccessed = new HashMap();
 
-      // Store the entries that need to be expired in this map
-      HashMap toBeExpired;
+      int newSize;
+      HashMap toBeExpired, refMap;
+      synchronized (_lock) {
 
-      // Always get the lock for _recentlyAccessed first
-      synchronized (_recentlyAccessedLock) {
+         // Keep a link to the old map with recently accessed elements and
+         // then reset _recentlyAccessed
+         HashMap oldRecentlyAccessed = _recentlyAccessed;
+         _recentlyAccessed           = newRecentlyAccessed;
 
-         // Then get the lock for _slots
-         synchronized (_slots) {
+         // Shift the slots
+         toBeExpired = _slots[_lastSlot];
+         for (int i = _lastSlot; i > 0; i--) {
+            _slots[i] = _slots[i - 1];
+         }
+         _slots[0] = oldRecentlyAccessed;
 
-            // Keep a link to the old map with recently accessed elements and
-            // then reset _recentlyAccessed
-            HashMap oldRecentlyAccessed = _recentlyAccessed;
-            _recentlyAccessed           = newRecentlyAccessed;
+         // Determine the new size
+         newSize = size();
 
-            // Shift the slots
-            toBeExpired = _slots[_lastSlot];
-            for (int i = _lastSlot; i > 0; i--) {
-               _slots[i] = _slots[i - 1];
-            }
-            _slots[0] = oldRecentlyAccessed;
+         // Get the map with all objects to be expired
+         if (_expired.size() > 0) {
+            refMap   = _expired;
+            _expired = new HashMap();
+         } else {
+            refMap = null;
          }
       }
 
-      // Adjust the size
-      int toBeExpiredSize = (toBeExpired == null)
-                          ? 0
-                          : toBeExpired.size();
-      if (toBeExpiredSize > 0) {
-         int newSize;
-         synchronized (_sizeLock) {
-            _size -= toBeExpiredSize;
-            newSize = _size;
-            if (_size < 0) {
-               _size = 0;
-            }
-         }
+      // Determine how may objects are to be sent to the listeners
+      int toBeExpiredSize = toBeExpired.size()
+                          + (refMap == null ? 0 : refMap.size());
 
-         // If the new size was negative, it has been fixed already, but
-         // report it now, outside the synchronized section
-         if (newSize < 0) {
-            final String DETAIL = "Size of expiry folder \""
-                                + _name
-                                + "\" dropped to "
-                                + newSize
-                                + ", adjusted it to 0.";
-            Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                      CLASSNAME, THIS_METHOD,
-                                      DETAIL);
-         }
-         Log.log_1400(_asString, toBeExpiredSize, newSize);
-      } else {
-         Log.log_1400(_asString, 0, _size);
+      // Log this
+      Log.log_1400(_asString, toBeExpiredSize, newSize);
+      
+      // If set of objects for listeners is empty, then short-circuit
+      if (toBeExpiredSize < 1) {
+         return;
       }
 
-      // XXX: Should we do this in a separate thread, so all locks held by the
-      //      ExpiryStrategy are released?
+      // XXX: Should we do this in separate thread(s) ?
 
       // Get a copy of the list of listeners
-      List listeners;
+      ArrayList listeners;
       synchronized (_listeners) {
          listeners = (_listeners.size() == 0) ? null : new ArrayList(_listeners);
       }
 
-      // Notify all listeners
-      if (listeners != null) {
-         int count = listeners.size();
+      // If there are no listeners to notify, then short-circuit
+      if (listeners == null) {
+         return;
+      }
 
-         // Pass object references to listeners, not Entry objects
-         Map refMap = new HashMap();
-         Iterator keyIterator = toBeExpired.keySet().iterator();
-         while (keyIterator.hasNext()) {
-            Object key   = keyIterator.next();
-            Entry  entry = (Entry) toBeExpired.get(key);
-            if (entry.isExpired()) {
-               refMap.put(key, entry.getReference());
-            } else {
-               final String DETAIL = "Entry marked for expiry should not be expired yet. Key as string is \""
-                                   + entry.getReference().toString()
-                                   + "\".";
-               Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                         CLASSNAME, THIS_METHOD,
-                                         DETAIL);
-            }
+
+      // Create a map for the object references, if necessary
+      if (refMap == null) {
+         refMap = new HashMap();
+      }
+
+      // Copy all references from the wrapping Entry objects
+      Iterator keyIterator = toBeExpired.keySet().iterator();
+      while (keyIterator.hasNext()) {
+         Object key   = keyIterator.next();
+         Entry  entry = (Entry) toBeExpired.get(key);
+         if (entry.isExpired()) {
+            refMap.put(key, entry.getReference());
+         } else {
+            final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
+                                + entry.getReference().toString()
+                                + "\".";
+            Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                      CLASSNAME, THIS_METHOD,
+                                      DETAIL);
          }
+      }
 
-         if (refMap.size() > 0) {
-            Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
-            for (int i = 0; i < count; i++) {
-               ExpiryListener listener = (ExpiryListener) listeners.get(i);
-               listener.expired(this, unmodifiableExpired);
-            }
+      // If appropriate, notify the listeners
+      if (refMap.size() > 0) {
+         Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
+         int listenerCount = listeners.size();
+         for (int i = 0; i < listenerCount; i++) {
+            ExpiryListener listener = (ExpiryListener) listeners.get(i);
+            listener.expired(this, unmodifiableExpired);
          }
       }
    }
@@ -415,14 +405,50 @@ extends Object {
    }
 
    /**
+    * Determines the number of non-expired entries in the specified
+    * <code>HashMap</code>. If any entries are expired, they will be removed.
+    *
+    * @return
+    *    the size of the specified map, always &gt;= 0.
+    */
+   private int sizeOf(HashMap map) {
+
+      int size = 0;
+
+      synchronized (_lock) {
+         Iterator keyIterator = map.keySet().iterator();
+         while (keyIterator.hasNext()) {
+            Object key   = keyIterator.next();
+            Entry  entry = (Entry) map.get(key);
+            if (entry.isExpired()) {
+               keyIterator.remove();
+               _expired.put(key, entry.getReference());
+            } else {
+               size++;
+            }
+         }
+      }
+
+      return size;
+   }
+
+   /**
     * Gets the number of entries.
     *
     * @return
     *    the number of entries in this expiry folder, always &gt;= 0.
     */
    public int size() {
-      synchronized (_sizeLock) {
-         return _size;
+
+      // Always get the lock for _recentlyAccessed first
+      synchronized (_lock) {
+
+         int size = sizeOf(_recentlyAccessed);
+         for (int i = 0; i < _slotCount; i++) {
+            size += sizeOf(_slots[i]);
+         }
+
+         return size;
       }
    }
 
@@ -451,18 +477,16 @@ extends Object {
 
       // Search in the recently accessed map first
       Entry entry;
-      synchronized (_recentlyAccessedLock) {
+      synchronized (_lock) {
          entry = (Entry) _recentlyAccessed.get(key);
 
          // Entry found in recently accessed
          if (entry != null) {
 
-            // Entry is already expired, update the map and size and return null
+            // Entry is already expired
             if (entry.isExpired()) {
                _recentlyAccessed.remove(key);
-               synchronized (_sizeLock) {
-                  _size--;
-               }
+               _expired.put(key, entry.getReference());
                return null;
 
             // Entry is not expired, touch it and return the reference
@@ -473,35 +497,31 @@ extends Object {
 
          // Not found in recently accessed, look in slots
          } else {
-            synchronized (_slots) {
 
-               // Go through all slots
-               for (int i = 0; i < _slotCount; i++) {
-                  entry = (Entry) _slots[i].remove(key);
+            // Go through all slots
+            for (int i = 0; i < _slotCount; i++) {
+               entry = (Entry) _slots[i].remove(key);
 
-                  if (entry != null) {
+               if (entry != null) {
 
-                     // Entry is already expired, update the map and size and
-                     // return null
-                     if (entry.isExpired()) {
-                        synchronized (_sizeLock) {
-                           _size--;
-                        }
-                        return null;
+                  // Entry is already expired, update the map and size and
+                  // return null
+                  if (entry.isExpired()) {
+                     _expired.put(key, entry.getReference());
+                     return null;
 
-                     // Entry is not expired, touch it, store in the recently
-                     // accessed and return the reference
-                     } else {
-                        entry.touch();
-                        _recentlyAccessed.put(key, entry);
-                        return entry.getReference();
-                     }
+                  // Entry is not expired, touch it, store in the recently
+                  // accessed and return the reference
+                  } else {
+                     entry.touch();
+                     _recentlyAccessed.put(key, entry);
+                     return entry.getReference();
                   }
                }
-
-               // Nothing found in any of the slots
-               return null;
             }
+
+            // Nothing found in any of the slots
+            return null;
          }
       }
    }
@@ -532,13 +552,11 @@ extends Object {
       Object value;
 
       // Search in the recently accessed map first
-      synchronized (_recentlyAccessedLock) {
+      synchronized (_lock) {
          value = _recentlyAccessed.get(key);
-      }
 
-      // If not found, then look in the slots
-      if (value == null) {
-         synchronized (_slots) {
+         // If not found, then look in the slots
+         if (value == null) {
             for (int i = 0; i < _slotCount && value == null; i++) {
                value = _slots[i].get(key);
             }
@@ -576,14 +594,9 @@ extends Object {
       MandatoryArgumentChecker.check("key", key, "value", value);
 
       // Store the association in the set of recently accessed entries
-      synchronized (_recentlyAccessedLock) {
+      synchronized (_lock) {
          Entry entry = new Entry(value);
          _recentlyAccessed.put(key, entry);
-      }
-
-      // Bump the size
-      synchronized (_sizeLock) {
-         _size++;
       }
    }
 
@@ -627,11 +640,6 @@ extends Object {
          return null;
       }
 
-      // Decrease the size
-      synchronized (_sizeLock) {
-         _size--;
-      }
-
       Entry entry = (Entry) value;
       if (entry.isExpired()) {
          return null;
@@ -667,24 +675,15 @@ extends Object {
          throw new IllegalArgumentException("The folders must have the same precision.");
       }
 
-      synchronized (_recentlyAccessedLock) {
-         synchronized (newFolder._recentlyAccessedLock) {
-            synchronized (_slots) {
-               synchronized (newFolder._slots) {
+      synchronized (_lock) {
+         synchronized (newFolder._lock) {
 
-                  // Copy the recentlyAccessed
-                  newFolder._recentlyAccessed = new HashMap(_recentlyAccessed);
+            // Copy the recentlyAccessed
+            newFolder._recentlyAccessed = new HashMap(_recentlyAccessed);
 
-                  // Copy the slots
-                  for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
-                     newFolder._slots[i] = new HashMap(_slots[i]);
-                  }
-
-                  // Copy the size
-                  synchronized (newFolder._sizeLock) {
-                     newFolder._size = _size;
-                  }
-               }
+            // Copy the slots
+            for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
+               newFolder._slots[i] = new HashMap(_slots[i]);
             }
          }
       }
