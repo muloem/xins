@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.163:
+
+* Generated build file:
+  - Linking to xmlenc 0.43 API docs.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
 
 * XINS/Java Server Framework:
