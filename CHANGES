@@ -7,7 +7,12 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 
 * Build and release process:
-  - The Java2HTML pages are now uploaded in TAR GZ file.
+  - The Java2HTML pages are now uploaded in a TAR GZ file.
+
+* Libraries
+  - Updated xmlenc from 0.45 to 0.46, which should result in a performance
+    improvement.
+    Typical impact on performance: Small.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
