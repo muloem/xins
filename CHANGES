@@ -8,6 +8,11 @@ CHANGES INTRODUCED IN XINS 0.88:
     'org.apache.log4j.config'.
   - Replacement strings should now be between square brackets ('[' and ']')
     instead of curly ones ('{' and '}').
+  - Added a default function _NoOp that does nothing but return
+    <result success="true" />.
+  - Function _GetSettings no longer returns a <build /> section, since all the
+    properties are already in the <initialization /> section.
+  - Fixed bug in logging of deployment ID.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.87:
