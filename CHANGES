@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.128:
+
+* XINS/Java Server Framework:
+  - Made Function.getAPI() public.
+  - Renamed CallContext.getSuccess() to isSuccess() and made it public.
+
+* Generation of Java Fundament classes:
+  - Fixed bug that caused CallContext.createSession() to be called, even if
+    the function failed.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.127:
 
 * XINS/Java Server Framework:
