@@ -38,6 +38,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     retain backwards compatibility.
   - Added tests for class ProtectedPropertyReader.
   - Added crop(int) to class FastStringBuffer.
+  - Added class function list(String,Object[],int) to class CollectionUtils.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
@@ -65,6 +66,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
+  - Slightly improved output of 'help' target.
 
 * Generic XSLT files:
   - Added 'javaclass_for_javatype' template to types.xslt. For a Java primary
