@@ -3,8 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
-
 /**
  * XINS responder. Classes that implement this interface can generate a XINS
  * response.
@@ -142,13 +140,10 @@ extends ResponderStates {
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
-    * @throws IOException
-    *    if an I/O error occurred.
-    *
     * @since XINS 0.15.
     */
    void startResponse(ResultCode resultCode)
-   throws IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Starts the response output. This is done by writing a
@@ -164,9 +159,6 @@ extends ResponderStates {
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
-    * @throws IOException
-    *    if an I/O error occurred.
-    *
     * @since XINS 0.15
     *
     * @deprecated
@@ -174,7 +166,7 @@ extends ResponderStates {
     *    Use {@link #startResponse(ResultCode)} instead.
     */
    void startResponse(boolean success)
-   throws IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Starts the response output. This is done by writing a
@@ -192,15 +184,12 @@ extends ResponderStates {
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
-    * @throws IOException
-    *    if an I/O error occurred.
-    *
     * @deprecated
     *    Deprecated since XINS 0.15.
     *    Use {@link #startResponse(ResultCode)} instead.
     */
    void startResponse(boolean success, String returnCode)
-   throws IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Adds an output parameter to the response. The name and the value must
@@ -222,12 +211,9 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
    void param(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException;
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
 
    /**
     * Writes a start tag within the data section.
@@ -243,12 +229,9 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
    void startTag(String type)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException;
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
 
    /**
     * Writes an attribute within the current element.
@@ -270,12 +253,9 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
    void attribute(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException;
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
 
    /**
     * Writes parsed character data.
@@ -291,12 +271,9 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
    void pcdata(String text)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException;
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
 
    /**
     * Ends the current element by writing an end tag.
@@ -306,12 +283,9 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
    void endTag()
-   throws IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Indicates a failure.
@@ -328,13 +302,10 @@ extends ResponderStates {
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
-    * @throws IOException
-    *    if an I/O error occurred.
-    *
     * @since XINS 0.29.
     */
    void fail(ResultCode resultCode)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException;
 
    /**
     * Indicates a failure with the specified message.
@@ -354,13 +325,10 @@ extends ResponderStates {
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
-    * @throws IOException
-    *    if an I/O error occurred.
-    *
     * @since XINS 0.29.
     */
    void fail(ResultCode resultCode, String message)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException;
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException;
 
    /**
     * Ends the response output. This is done by writing a <code>result</code>
@@ -369,9 +337,6 @@ extends ResponderStates {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
-    *
-    * @throws IOException
-    *    if an I/O error occurred.
     */
-   void endResponse() throws InvalidResponseException, IOException;
+   void endResponse() throws InvalidResponseException;
 }
