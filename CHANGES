@@ -25,6 +25,12 @@ CHANGES INTRODUCED IN XINS 0.115:
   - UnsuccessfulCallException and InvalidCallResultException now both derive
     from a new exception class CallException.
 
+* All Java classes:
+  - No longer throwing InternalError, but throwing Error instead. The
+    description of the InternalError class clearly states the error pertains
+    to a Java Virtual Machine internal error. So InternalError is not
+    appropriate here.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.114:
 
