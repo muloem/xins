@@ -11,6 +11,9 @@
 	<!-- Define parameters -->
 	<xsl:param name="package_name" />
 
+	<!-- Define variables -->
+	<xsl:variable name="domain" select="/log/@domain" />
+
 	<!-- Perform includes -->
 	<xsl:include href="shared.xslt" />
 
@@ -271,6 +274,12 @@ public class Log extends Object {
 	</xsl:template>
 
 	<xsl:template match="group/entry">
+		<xsl:variable name="category">
+			<xsl:value-of select="$domain" />
+			<xsl:text>.</xsl:text>
+			<xsl:value-of select="../@id" />
+		</xsl:variable>
+
 		<xsl:text>
 
    /**
@@ -290,7 +299,7 @@ public class Log extends Object {
 		<xsl:apply-templates select="param" mode="method-argument" />
 		<xsl:text>) {
       final Logger LOG = Logger.getLogger("</xsl:text>
-		<xsl:value-of select="../@category" />
+		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>");

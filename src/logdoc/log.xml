@@ -11,7 +11,7 @@
 	<translation-bundle locale="en_US" />
 	<translation-bundle locale="nl_NL" />
 
-	<group id="lifespan" name="Internal lifespan-related" category="org.xins.server.lifespan">
+	<group id="lifespan" name="Internal lifespan-related">
 		<entry id="1000" level="DEBUG">
 			<description>State change in APIServlet instance.</description>
 			<param name="oldState" />
@@ -19,7 +19,7 @@
 		</entry>
 	</group>
 
-	<group id="lifespan.bootstrap" name="Bootstrapping" category="org.xins.server.lifespan.bootstrap">
+	<group id="lifespan.bootstrap" name="Bootstrapping">
 		<entry id="2000" level="DEBUG">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
 		</entry>
@@ -188,7 +188,7 @@
 		</entry>
 	</group>
 
-	<group id="log" name="Logging subsystem" category="org.xins.server.log">
+	<group id="log" name="Logging subsystem">
 		<entry id="3000" level="DEBUG">
 			<description>Initializing logging subsystem.</description>
 		</entry>
@@ -234,7 +234,7 @@
 		</entry>
 	</group>
 
-	<group id="lifespan.init" name="Initialization" category="org.xins.server.lifespan.init">
+	<group id="lifespan.init" name="Initialization">
 		<entry id="4000" level="WARNING">
 			<description>Runtime properties file cannot be opened.</description>
 			<param name="configFile" />
@@ -427,7 +427,7 @@
 		</entry>
 	</group>
 
-	<group id="runtime" name="Runtime" category="org.xins.server.runtime">
+	<group id="runtime" name="Runtime">
 		<entry id="5000" level="ERROR">
 			<description>Received HTTP request with invalid method.</description>
 			<param name="ip" />
@@ -542,7 +542,7 @@
 		</entry>
 	</group>
 
-	<group id="lifespan.shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
+	<group id="lifespan.shutdown" name="Shutdown">
 		<entry id="6000" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>
 		</entry>

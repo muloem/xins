@@ -8,9 +8,14 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
 	<xsl:param name="sourcedir" />
 	<xsl:param name="entry"     />
 
+	<!-- Define variables -->
+	<xsl:variable name="domain" select="/log/@domain" />
+
+	<!-- Configure output method -->
 	<xsl:output
 	method="xml"
 	indent="no"
@@ -52,6 +57,12 @@
 	</xsl:template>
 
 	<xsl:template match="group/entry">
+		<xsl:variable name="category">
+			<xsl:value-of select="$domain" />
+			<xsl:text>.</xsl:text>
+			<xsl:value-of select="../@id" />
+		</xsl:variable>
+
 		<table class="headerlinks">
 			<tr>
 				<td>
@@ -94,7 +105,7 @@
 			<tr>
 				<th>Group category</th>
 				<td>
-					<xsl:value-of select="../@category" />
+					<xsl:value-of select="$category" />
 				</td>
 			</tr>
 			<tr>

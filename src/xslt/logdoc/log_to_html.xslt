@@ -8,6 +8,12 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+
+	<!-- Define variables -->
+	<xsl:variable name="default_locale" select="/log/@default-locale" />
+	<xsl:variable name="domain" select="/log/@domain" />
+
+	<!-- Configure output method -->
 	<xsl:output
 	method="xml"
 	indent="no"
@@ -17,7 +23,6 @@
 	omit-xml-declaration="yes" />
 
 	<xsl:template match="log">
-		<xsl:variable name="default_locale" select="@default-locale" />
 		<html>
 			<head>
 				<title>Log documentation</title>
@@ -48,6 +53,11 @@
 						<th title="The number of log entries in this group">Entries</th>
 					</tr>
 					<xsl:for-each select="group">
+						<xsl:variable name="category">
+							<xsl:value-of select="$domain" />
+							<xsl:text>.</xsl:text>
+							<xsl:value-of select="@id" />
+						</xsl:variable>
 						<xsl:variable name="group_link">
 							<xsl:text>group-</xsl:text>
 							<xsl:value-of select="@id" />
@@ -63,7 +73,7 @@
 								</a>
 							</td>
 							<td>
-								<xsl:value-of select="@category" />
+								<xsl:value-of select="$category" />
 							</td>
 							<td>
 								<xsl:value-of select="count(entry)" />
