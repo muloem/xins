@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.145:
 * Moved jakarta-oro.jar from depends/runtime to depends/compile_and_runtime,
   where it belongs.
 
+* Generated build file:
+  - Now correctly including dependency JAR files in Javadoc classpath.
+
 * XINS/Java Common Library:
   - Logging each buffer increase in FastStringBuffer.
 
