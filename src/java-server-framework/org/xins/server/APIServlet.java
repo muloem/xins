@@ -329,7 +329,7 @@ implements Servlet {
             if (_configFile == null || _configFile.length() < 1) {
                Library.STARTUP_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
             } else {
-               runtimeProperties = applyConfigFile();
+               runtimeProperties = applyConfigFile(Library.STARTUP_LOG);
             }
 
             // Initialization starting
@@ -408,11 +408,11 @@ implements Servlet {
 
          Library.configure(log, properties);
       } catch (FileNotFoundException exception) {
-         logger.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         log.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
       } catch (SecurityException exception) {
-         logger.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
+         log.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
       } catch (IOException exception) {
-         logger.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
+         log.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
       }
 
       return properties;
@@ -636,7 +636,7 @@ implements Servlet {
 
       public void fileModified() {
          Library.REINIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
-         applyConfigFile();
+         applyConfigFile(REINIT_LOG);
          // TODO: reinit API
          Library.REINIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
