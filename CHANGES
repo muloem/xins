@@ -6,13 +6,24 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
+* XINS/Java Client Framework:
+  - The AbstractCAPICallResult class adds the following methods:
+    . long duration()                    -- Returns the call duration, in
+                                            milliseconds.
+    . CallExceptionList exceptions()     -- Returns the list of CallExceptions.
+    . TargetDescriptor succeededTarget() -- Returns the target for which the
+                                            call succeeded. 
+
 * XINS/Java Server Framework:
   - Added _GetStatistics meta function with error code by using the optional
     parameter "detailed=true".
 
 * Generated CAPI classes:
-  - All call methods now return a function result object, never void. This is
-    backwards compatible with XINS 1.0.
+  - All call methods now return a function result object, never void. This
+    change is backwards compatible with XINS 1.0.
+  - All function result objects now contain the call duration, the exceptions
+    (if any) and a link to the succeeded target. See the changes for the
+    AbstractCAPICallResult class for details.
 
 * Generated Javadoc now lists the groups of packages in the following order:
   Logdoc, Common, Client and finally Server. This should now generally be
