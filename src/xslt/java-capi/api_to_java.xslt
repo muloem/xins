@@ -490,15 +490,18 @@ TODO for Ernst: Catch all expected error codes and throw a specific error code e
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision" select="@rcsversion" />
 		</xsl:call-template>
-		<xsl:text><![CDATA[.
+		<xsl:text>.</xsl:text>
+		<xsl:if test="$hasSpecdocsURL = 'true'">
+			<xsl:text><![CDATA[
     * See the
     * <a href="]]></xsl:text>
-		<xsl:value-of select="$specdocsURL" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
+			<xsl:value-of select="$specdocsURL" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$api" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
+		</xsl:if>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
 		<xsl:if test="input/data/element">
 			<xsl:text><![CDATA[
