@@ -10,8 +10,9 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
-  - Added unit test class for Int16 type.
-
+  - Added unit test class for Int 8, Int16, Int32 and Int64 types.
+  - removed redundant code from all the Intxx type classes.
+ 
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
 
