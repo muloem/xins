@@ -332,6 +332,12 @@ $Id$
 					</target>
 					
 					<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
+						<xsl:if test="document($api_file)/api/impl-java/@deployment-required = 'true'">
+							<condition property="deployment_required_and_set">
+								<isset property="deployment" />
+							</condition>
+							<fail unless="deployment_required_and_set" message="Deployment setting is required. Please specify the deployment using 'ant -Ddeployment=&lt;identifier&gt;'" />
+						</xsl:if>
 						<mkdir dir="build/webapps/{$api}" />
 						<delete file="build/webapps/{$api}/web.xml" />
 						<style
