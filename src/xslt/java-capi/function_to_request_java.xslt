@@ -287,10 +287,10 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>);
       super.parameter("</xsl:text>
 				<xsl:value-of select="@name" />
-				<!-- FIXME: Do not use String.valueOf() !!!!  -->
-				<xsl:text>", String.valueOf(</xsl:text>
+				<!-- FIXME: Do not use toString() !!!!  -->
+				<xsl:text>", _</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>));
+				<xsl:text>.toString());
    }</xsl:text>
 			</xsl:when>
 
