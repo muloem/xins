@@ -44,6 +44,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Support ACLs for the complete API and/or specific functions.
 * Generated Javadoc should include package-private and private members.
 * Consider making ACL-related classes package-private.
+* Log an INFO message if some runtime properties are unused.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -78,6 +79,8 @@ XINS/JAVA COMMON LIBRARY
 * Create SingleEntryMap that contains only a single entry. It should have a
   constructor SingleEntryMap(Object key, Object value) and perhaps also a
   method set(Object key, Object value).
+* Add functionality to allow the retrieval of property names from a
+  PropertyReader for which get(String) has not been called.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
