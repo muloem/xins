@@ -9,9 +9,6 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:variable name="functionName" select="//function/@name" />
-	<xsl:variable name="className" select="'SuccessfulResult'" />
-
 	<xsl:template name="result">
 
 		<!-- ************************************************************* -->
