@@ -16,11 +16,13 @@ CHANGES INTRODUCED IN XINS 0.157:
     thrown.
   - Reviewed and changed log messages quite drastically.
   - Using logdoc-approach throughout the complete APIServlet class.
+  - Added some log messages. For example, now logging every request with the
+    request method (GET, POST, HEAD, OPTIONS) and the IP address (log messages
+    10 and 11).
 
 * Logdoc:
   - Changed names of files.
   - Changed some element and attribute names.
-  - Added a number of log message entries.
   - Changed the descriptions for a few log message entries.
   - Supporting a 'nullable' attribute for 'param' elements in log.xml.
   - Changed a number of translations for the en_US locale.
