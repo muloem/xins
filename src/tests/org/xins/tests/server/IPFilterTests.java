@@ -168,8 +168,8 @@ public class IPFilterTests extends TestCase {
       assertNotNull(filter);
 
       try {
-         filter.isAuthorized(null);
-         fail("IPFilter.isAuthorized(null) should throw an IllegalArgumentException.");
+         filter.match(null);
+         fail("IPFilter.match(null) should throw an IllegalArgumentException.");
          return;
       } catch (IllegalArgumentException exception) {
          // as expected
@@ -225,16 +225,16 @@ public class IPFilterTests extends TestCase {
    throws Throwable {
 
       if (validIP) {
-         boolean auth = filter.isAuthorized(ip);
+         boolean auth = filter.match(ip);
          if (shouldBeAuth && !auth) {
-            fail("IPFilter.isAuthorized(\"" + ip + "\") should return true for \"" + filter + "\".");
+            fail("IPFilter.match(\"" + ip + "\") should return true for \"" + filter + "\".");
          } else if (!shouldBeAuth && auth) {
-            fail("IPFilter.isAuthorized(\"" + ip + "\") should return false for \"" + filter + "\".");
+            fail("IPFilter.match(\"" + ip + "\") should return false for \"" + filter + "\".");
          }
       } else {
          try {
-            filter.isAuthorized(ip);
-            fail("IPFilter.isAuthorized(\"" + ip + "\") should throw a ParseException.");
+            filter.match(ip);
+            fail("IPFilter.match(\"" + ip + "\") should throw a ParseException.");
             return;
          } catch (ParseException exception) {
             // as expected
