@@ -65,6 +65,7 @@ extends ParamConstraint {
     */
    public TypedParamConstraint(String parameterName, Type type)
    throws IllegalArgumentException {
+
       super(parameterName);
 
       // Check additional preconditions
@@ -141,12 +142,22 @@ extends ParamConstraint {
               + _type.getValueClass()
               + ").";
       } catch (TypeValueException exception) {
-         return "Value for parameter \""
-              + getParameterName()
-              + "\" does not match type \""
-              + _type.getName()
-              + "\".";
-         // TODO: Add description from TypeValueException?
+         String detail = exception.getDetail();
+         if (detail == null || detail.length() < 1) {
+            return "Value for parameter \""
+                 + getParameterName()
+                 + "\" does not match type \""
+                 + _type.getName()
+                 + "\".";
+         } else {
+            return "Value for parameter \""
+                 + getParameterName()
+                 + "\" does not match type \""
+                 + _type.getName()
+                 + "\" (detail: \""
+                 + detail
+                 + "\").";
+         }
       }
    }
 }
