@@ -76,6 +76,11 @@ extends Object {
    private final String _version;
 
    /**
+    * Statistics object linked to this function.
+    */
+   private final Statistics _statistics = new Statistics();
+
+   /**
     * Lock object for a successful call.
     */
    private final Object _successfulCallLock = new Object();
@@ -96,12 +101,12 @@ extends Object {
    int _unsuccessfulCalls;
 
    /**
-    * The duration of the most recent successful call.
+    * The start time of the most recent successful call.
     */
    long _lastSuccessfulStart;
 
    /**
-    * The duration of the most recent unsuccessful call.
+    * The start time of the most recent unsuccessful call.
     */
    long _lastUnsuccessfulStart;
 
@@ -171,6 +176,16 @@ extends Object {
    }
 
    /**
+    * Returns the call statistics for this function.
+    *
+    * @return
+    *    the statistics, never <code>null</code>.
+    */
+   final Statistics getStatistics() {
+      return _statistics;
+   }
+
+   /**
     * Callback method that may be called after a call to this function. This
     * method will store statistics-related information.
     *
@@ -209,6 +224,160 @@ extends Object {
             _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
             _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
          }
+      }
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Call statistics pertaining to a certain function.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    */
+   public final class Statistics extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Statistics</code> object.
+       */
+      private Statistics() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Returns the number of successful calls executed up until now.
+       *
+       * @return
+       *    the number of successful calls executed up until now.
+       */
+      public int getSuccessfulCalls() {
+         return _successfulCalls;
+      }
+
+      /**
+       * Returns the number of unsuccessful calls executed up until now.
+       *
+       * @return
+       *    the number of unsuccessful calls executed up until now.
+       */
+      public int getUnsuccessfulCalls() {
+         return _unsuccessfulCalls;
+      }
+
+      /**
+       * Returns the start time of the most recent successful call.
+       *
+       * @return
+       *    the start time of the most recent successful call.
+       */
+      public long getLastSuccessfulStart() {
+         return _lastSuccessfulStart;
+      }
+
+      /**
+       * Returns the start time of the most recent unsuccessful call.
+       *
+       * @return
+       *    the start time of the most recent unsuccessful call.
+       */
+      public long getLastUnsuccessfulStart() {
+         return _lastUnsuccessfulStart;
+      }
+
+      /**
+       * Returns the duration of the most recent successful call.
+       *
+       * @return
+       *    the duration of the most recent successful call.
+       */
+      public long getLastSuccessfulDuration() {
+         return _lastSuccessfulDuration;
+      }
+
+      /**
+       * Returns the duration of the most recent unsuccessful call.
+       *
+       * @return
+       *    the duration of the most recent unsuccessful call.
+       */
+      public long getLastUnsuccessfulDuration() {
+         return _unsuccessfulDuration;
+      }
+
+      /**
+       * Returns the total duration of all successful calls up until now.
+       *
+       * @return
+       *    the total duration of all successful calls up until now.
+       */
+      public long getSuccessfulDuration() {
+         return _successfulDuration;
+      }
+
+      /**
+       * Returns the total duration of all unsuccessful calls up until now.
+       *
+       * @return
+       *    the total duration of all unsuccessful calls up until now.
+       */
+      public long getUnsuccessfulDuration() {
+         return _unsuccessfulDuration;
+      }
+
+      /**
+       * Returns the minimum time a successful call took.
+       *
+       * @return
+       *    the minimum time a successful call took.
+       */
+      public long getSuccessfulMin() {
+         return _successfulMin;
+      }
+
+      /**
+       * Returns the minimum time an unsuccessful call took.
+       *
+       * @return
+       *    the minimum time an unsuccessful call took.
+       */
+      public long getUnsuccessfulMin() {
+         return _unsuccessfulMin;
+      }
+
+      /**
+       * Returns the maximum time a successful call took.
+       *
+       * @return
+       *    the maximum time a successful call took.
+       */
+      public long getSuccessfulMax() {
+         return _successfulMax;
+      }
+
+      /**
+       * Returns the maximum time an unsuccessful call took.
+       *
+       * @return
+       *    the maximum time an unsuccessful call took.
+       */
+      public long getUnsuccessfulMax() {
+         return _unsuccessfulMax;
       }
    }
 }
