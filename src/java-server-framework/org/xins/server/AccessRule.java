@@ -29,10 +29,14 @@ import org.xins.util.text.SimplePatternParser;
  *
  * <p>Example of access rule descriptors:
  *
- * <ul>
- *    <li><code>"allow&nbsp;194.134.168.213/32 *"</code>
- *    <li><code>"deny&nbsp;&nbsp;194.134.168.213/24\t_*"</code>
- * </ul>
+ * <dl>
+ *    <dt><code>"allow&nbsp;194.134.168.213/32 *"</code></dt>
+ *    <dd>Allows 194.134.168.213 to access any function.</dd>
+ *
+ *    <dt><code>"deny&nbsp;&nbsp;194.134.168.213/24\t_*"</code></dt>
+ *    <dd>Denies all 194.134.168.x IP addresses to access any function
+ *        starting with an underscore (<code>'_'</code>).</dd>
+ * </dl>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
