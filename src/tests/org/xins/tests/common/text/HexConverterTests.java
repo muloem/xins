@@ -4,7 +4,7 @@
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.common.util.text;
+package org.xins.tests.common.text;
 
 import java.util.List;
 import junit.framework.Test;
