@@ -341,7 +341,7 @@ extends HttpServlet {
          _state = newState;
       }
 
-      Log.log_0(oldState._name, newState._name);
+      Log.log_1000(oldState._name, newState._name);
    }
 
    /**
@@ -448,7 +448,7 @@ extends HttpServlet {
    public void init(ServletConfig config)
    throws ServletException {
 
-      Log.log_100();
+      Log.log_2000();
 
       //-------------------------------------------------------------------//
       //                     Checks and preparations                       //
@@ -462,17 +462,17 @@ extends HttpServlet {
          if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
           && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
           && _state != API_INITIALIZATION_FAILED) {
-            Log.log_101(_state == null ? null : _state._name);
+            Log.log_2001(_state == null ? null : _state._name);
             throw new ServletException();
          } else if (config == null) {
-            Log.log_102("config == null");
+            Log.log_2002("config == null");
             throw new ServletException();
          }
 
          // Get the ServletContext
          ServletContext context = config.getServletContext();
          if (context == null) {
-            Log.log_102("config.getServletContext() == null");
+            Log.log_2002("config.getServletContext() == null");
             throw new ServletException();
          }
 
@@ -482,7 +482,7 @@ extends HttpServlet {
          if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
             String expected = "" + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR;
             String actual   = "" + major + '.' + minor;
-            Log.log_103(actual, expected);
+            Log.log_2003(actual, expected);
          }
 
          // Store the ServletConfig object, per the Servlet API Spec, see:
@@ -501,7 +501,7 @@ extends HttpServlet {
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
-            Log.log_104(CONFIG_FILE_SYSTEM_PROPERTY, exception.getClass().getName(), exception.getMessage());
+            Log.log_2004(CONFIG_FILE_SYSTEM_PROPERTY, exception.getClass().getName(), exception.getMessage());
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
@@ -510,7 +510,7 @@ extends HttpServlet {
          // NOTE: Don't trim the configuration file name, since it may start
          //       with a space or other whitespace character.
          if (_configFile == null || _configFile.length() < 1) {
-            Log.log_105(CONFIG_FILE_SYSTEM_PROPERTY);
+            Log.log_2005(CONFIG_FILE_SYSTEM_PROPERTY);
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
@@ -530,7 +530,7 @@ extends HttpServlet {
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
          apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
          if (apiClassName == null || apiClassName.length() < 1) {
-            Log.log_106(API_CLASS_PROPERTY);
+            Log.log_2006(API_CLASS_PROPERTY);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -540,14 +540,14 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
-            Log.log_107(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName(), exception.getMessage());
+            Log.log_2007(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName(), exception.getMessage());
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
 
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
-            Log.log_108(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
+            Log.log_2008(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -558,18 +558,18 @@ extends HttpServlet {
             singletonField = apiClass.getDeclaredField("SINGLETON");
             _api = (API) singletonField.get(null);
          } catch (Throwable exception) {
-            Log.log_108(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
+            Log.log_2008(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
 
          // Make sure that the field is an instance of that same class
          if (_api == null) {
-            Log.log_108(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
+            Log.log_2008(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          } else if (_api.getClass() != apiClass) {
-            Log.log_108(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
+            Log.log_2008(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -588,11 +588,11 @@ extends HttpServlet {
             _api.bootstrap(new ServletConfigPropertyReader(config));
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_109(exception.getPropertyName());
+            Log.log_2009(exception.getPropertyName());
          } catch (InvalidPropertyValueException exception) {
-            Log.log_110(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_2010(exception.getPropertyName(), exception.getPropertyValue());
          } catch (BootstrapException exception) {
-            // TODO: Log.log_xxx(exception.getMesssage());
+            Log.log_2011(exception.getMessage());
          } catch (Throwable exception) {
             Log.log_111(exception.getClass().getName(), exception.getMessage());
          } finally {

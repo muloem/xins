@@ -11,8 +11,8 @@
 	<translation-bundle locale="en_US" />
 	<translation-bundle locale="nl_NL" />
 
-	<group name="Internal" category="org.xins.server.lifespan">
-		<entry id="0" level="DEBUG">
+	<group name="Internal lifespan-related" category="org.xins.server.lifespan">
+		<entry id="1000" level="DEBUG">
 			<description>State change in APIServlet instance.</description>
 			<param name="oldState" />
 			<param name="newState" />

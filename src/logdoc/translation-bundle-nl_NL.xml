@@ -7,7 +7,7 @@
 -->
 
 <translation-bundle>
-	<translation entry="0">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
+	<translation entry="1000">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
 	<translation entry="2000">XINS/Java Server Framework wordt gestart.</translation>
 	<translation entry="2001">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</translation>
 	<translation entry="2002">XINS/Java Server Framework kan niet gestart worden. Applicatie server gedraagt zich onverwacht. Reden: <value-of-param name="detail" /></translation>
