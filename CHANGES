@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.37:
 
 * Fixed 'xins -version' on Windows systems.
 
+* Fixed problem: Included JAR files in bin package again.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.36:
 
