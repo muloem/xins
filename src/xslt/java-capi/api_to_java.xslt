@@ -35,6 +35,12 @@
 	<xsl:variable name="specdocsURL">
 		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
 	</xsl:variable>
+	<xsl:variable name="hasSpecdocsURL">
+		<xsl:choose>
+			<xsl:when test="string-length($specdocsURL) &gt; 0">true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<!-- ***************************************************************** -->
 	<!-- Match the root element: api                                       -->
@@ -54,7 +60,7 @@
 		<xsl:text><![CDATA[</em> API.]]></xsl:text>
 
 		<!-- Display the specdocs URL if it is specified -->
-		<xsl:if test="string-length($specdocsURL) &gt; 0">
+		<xsl:if test="$hasSpecdocsURL = 'true'">
 			<xsl:text><![CDATA[
  *
  * <p>See the <a href="]]></xsl:text>
@@ -402,15 +408,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision" select="@rcsversion" />
 		</xsl:call-template>
-		<xsl:text><![CDATA[.
+		<xsl:text>.</xsl:text>
+		<xsl:if test="$hasSpecdocsURL = 'true'">
+			<xsl:text><![CDATA[
     * See the
     * <a href="]]></xsl:text>
-		<xsl:value-of select="$specdocsURL" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[.html">online function specification</a>.
+			<xsl:value-of select="$specdocsURL" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$api" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
     *
     * @param request
     *    the request, cannot be <code>null</code>.
