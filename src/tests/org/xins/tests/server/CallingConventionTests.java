@@ -31,8 +31,6 @@ import org.xins.common.text.HexConverter;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
-
 /**
  * Tests for XINS call convention.
  *

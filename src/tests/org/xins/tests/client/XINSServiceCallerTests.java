@@ -20,8 +20,6 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
-
 /**
  * Tests the <code>XINSServiceCaller</code>.
  *

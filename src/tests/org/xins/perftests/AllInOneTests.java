@@ -35,7 +35,7 @@ import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
+import org.xins.common.servlet.container.HTTPServletHandler;
 
 import com.mycompany.allinone.capi.CAPI;
 import com.mycompany.allinone.capi.DefinedTypesResult;

@@ -44,8 +44,6 @@ import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
-
 /**
  * Tests the allinone functions using the generated CAPI.
  *

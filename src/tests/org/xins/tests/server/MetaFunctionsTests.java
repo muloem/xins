@@ -35,8 +35,6 @@ import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
-
 /**
  * Tests for XINS meta functions.
  *
