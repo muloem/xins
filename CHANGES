@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.131:
 * XINS/Java Common Library:
   - Added PropertyReaderConverter class.
 
+* XINS/Java Client Framework:
+  - Added AbstractCAPI class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.130:
 
