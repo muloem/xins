@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.Element;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
