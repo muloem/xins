@@ -380,28 +380,7 @@
 
 				<!-- API-specific result code -->
 				<xsl:when test="$isapiresultcode = 'true'">
-					<xsl:choose>
-						<xsl:when test="boolean(@success)">
-							<xsl:if test="not(@success=parent::function/output/resultcode[@value=$resultcode]/@success)">
-								<xsl:message terminate="yes">
-									<xsl:text>The API-specific result code '</xsl:text>
-									<xsl:value-of select="$resultcode" />
-									<xsl:text>' is defined as </xsl:text>
-									<xsl:choose>
-										<xsl:when test="@success='true'">a successful result code, but it is claimed to be unsuccessful</xsl:when>
-										<xsl:otherwise>an unsuccessful result code, but it is claimed to be successful</xsl:otherwise>
-									</xsl:choose>
-									<xsl:text> in example </xsl:text>
-									<xsl:value-of select="$examplenum" />
-									<xsl:text>.</xsl:text>
-								</xsl:message>
-							</xsl:if>
-							<xsl:value-of select="@success" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="document(concat($specsdir, '/', $api, '/', $resultcode, '.rcd'))/resultcode/@success" />
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:value-of select="document(concat($specsdir, '/', $api, '/', $resultcode, '.rcd'))/resultcode/@success" />
 				</xsl:when>
 
 				<!-- Function-specific result code -->
