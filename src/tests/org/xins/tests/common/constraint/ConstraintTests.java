@@ -6,6 +6,9 @@
  */
 package org.xins.tests.common.constraint;
 
+import java.util.HashMap;
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -103,17 +106,17 @@ public class ConstraintTests extends TestCase {
       assertEquals(NAME, rpc.getParameterName());
 
       // Test with null value
-      TestContext ctx = new TestContext(NAME, null);
+      ParamContext ctx = new ParamContext(NAME, null);
       ConstraintViolation violation = rpc.check(ctx);
       assertNotNull(violation);
       assertEquals(rpc, violation.getConstraint());
 
       // Test with non-null value
-      ctx = new TestContext(NAME, "SomeValue");
+      ctx = new ParamContext(NAME, "SomeValue");
       assertNull(rpc.check(ctx));
 
       // Extra test: Empty string is not null
-      ctx = new TestContext(NAME, "");
+      ctx = new ParamContext(NAME, "");
       assertNull(rpc.check(ctx));
    }
 
@@ -164,26 +167,216 @@ public class ConstraintTests extends TestCase {
       assertEquals(TYPE, tpc.getType());
 
       // Test with null parameter value (should succeed)
-      TestContext ctx = new TestContext(NAME, null);
+      ParamContext ctx = new ParamContext(NAME, null);
       assertNull(tpc.check(ctx));
 
       // Test with empty string value (should fail)
-      ctx = new TestContext(NAME, "");
+      ctx = new ParamContext(NAME, "");
       ConstraintViolation violation = tpc.check(ctx);
       assertEquals(tpc, violation.getConstraint());
 
       // Test with Boolean object with value "false" (should fail)
-      ctx = new TestContext(NAME, java.lang.Boolean.FALSE);
+      ctx = new ParamContext(NAME, java.lang.Boolean.FALSE);
       violation = tpc.check(ctx);
       assertEquals(tpc, violation.getConstraint());
 
       // Test with Integer with value "0" (should succeed)
-      ctx = new TestContext(NAME, new Integer(0));
+      ctx = new ParamContext(NAME, new Integer(0));
       assertNull(tpc.check(ctx));
 
       // Test with Integer with value "-1" (should succeed)
-      ctx = new TestContext(NAME, new Integer(-1));
+      ctx = new ParamContext(NAME, new Integer(-1));
       assertNull(tpc.check(ctx));
+   }
+
+   /**
+    * Tests the <code>AllOrNoneParamComboConstraint</code> class.
+    */
+   public void testAllOrNoneParamComboConstraint()
+   throws Exception {
+
+      final String NAME1 = "Name1";
+      final String NAME2 = "Name2";
+      final String NAME3 = "Name3";
+
+      // Test constructor failure
+      try {
+         new AllOrNoneParamComboConstraint(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new AllOrNoneParamComboConstraint(new String[0]);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new AllOrNoneParamComboConstraint(new String[] { NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new AllOrNoneParamComboConstraint(new String[] { NAME1, NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+
+      // Test constructor, expecting success
+      String[] n = new String[] { NAME1, NAME2 };
+      AllOrNoneParamComboConstraint a = new AllOrNoneParamComboConstraint(n);
+      List names = a.getParameterNames();
+      assertNotNull(names);
+      assertEquals(n.length, names.size());
+      assertEquals(n[0], names.get(0));
+      assertEquals(n[1], names.get(1));
+
+      // Test constraint validation: None set (should succeed)
+      ConstraintContext ctx = new ParamContext(NAME1, null);
+      assertNull(a.check(ctx));
+
+      // Test constraint validation: All set (should succeed)
+      HashMap map = new HashMap();
+      map.put(NAME1, "a");
+      map.put(NAME2, "b");
+      map.put(NAME3, "c");
+      ctx = new MapContext(map);
+      assertNull(a.check(ctx));
+
+      // Test constraint validation: Only one set (should fail)
+      ctx = new ParamContext(NAME1, "a");
+      ConstraintViolation violation = a.check(ctx);
+      assertEquals(a, violation.getConstraint());
+   }
+
+   /**
+    * Tests the <code>ExclusiveOrParamComboConstraint</code> class.
+    */
+   public void testExclusiveOrParamComboConstraint()
+   throws Exception {
+
+      final String NAME1 = "Name1";
+      final String NAME2 = "Name2";
+      final String NAME3 = "Name3";
+
+      // Test constructor failure
+      try {
+         new ExclusiveOrParamComboConstraint(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new ExclusiveOrParamComboConstraint(new String[0]);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new ExclusiveOrParamComboConstraint(new String[] { NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new ExclusiveOrParamComboConstraint(new String[] { NAME1, NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+
+      // Test constructor, expecting success
+      String[] n = new String[] { NAME1, NAME2 };
+      ExclusiveOrParamComboConstraint a = new ExclusiveOrParamComboConstraint(n);
+      List names = a.getParameterNames();
+      assertNotNull(names);
+      assertEquals(n.length, names.size());
+      assertEquals(n[0], names.get(0));
+      assertEquals(n[1], names.get(1));
+
+      // Test constraint validation: None set (should fail)
+      ConstraintContext ctx = new ParamContext(NAME1, null);
+      ConstraintViolation violation = a.check(ctx);
+      assertEquals(a, violation.getConstraint());
+
+      // Test constraint validation: All set (should fail)
+      HashMap map = new HashMap();
+      map.put(NAME1, "a");
+      map.put(NAME2, "b");
+      map.put(NAME3, "c");
+      ctx = new MapContext(map);
+      violation = a.check(ctx);
+      assertEquals(a, violation.getConstraint());
+
+      // Test constraint validation: Only one set (should succeed)
+      ctx = new ParamContext(NAME1, "a");
+      assertNull(a.check(ctx));
+   }
+
+   /**
+    * Tests the <code>InclusiveOrParamComboConstraint</code> class.
+    */
+   public void testInclusiveOrParamComboConstraint()
+   throws Exception {
+
+      final String NAME1 = "Name1";
+      final String NAME2 = "Name2";
+      final String NAME3 = "Name3";
+
+      // Test constructor failure
+      try {
+         new InclusiveOrParamComboConstraint(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new InclusiveOrParamComboConstraint(new String[0]);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new InclusiveOrParamComboConstraint(new String[] { NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+      try {
+         new InclusiveOrParamComboConstraint(new String[] { NAME1, NAME1 });
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException iae) {
+         // as expected
+      }
+
+      // Test constructor, expecting success
+      String[] n = new String[] { NAME1, NAME2 };
+      InclusiveOrParamComboConstraint a = new InclusiveOrParamComboConstraint(n);
+      List names = a.getParameterNames();
+      assertNotNull(names);
+      assertEquals(n.length, names.size());
+      assertEquals(n[0], names.get(0));
+      assertEquals(n[1], names.get(1));
+
+      // Test constraint validation: None set (should fail)
+      ConstraintContext ctx = new ParamContext(NAME1, null);
+      ConstraintViolation violation = a.check(ctx);
+      assertEquals(a, violation.getConstraint());
+
+      // Test constraint validation: All set (should succeed)
+      HashMap map = new HashMap();
+      map.put(NAME1, "a");
+      map.put(NAME2, "b");
+      map.put(NAME3, "c");
+      ctx = new MapContext(map);
+      assertNull(a.check(ctx));
+
+      // Test constraint validation: Only one set (should succeed)
+      ctx = new ParamContext(NAME1, "a");
+      assertNull(a.check(ctx));
    }
 
 
@@ -191,7 +384,7 @@ public class ConstraintTests extends TestCase {
    // Inner classes
    //-------------------------------------------------------------------------
 
-   private class TestContext
+   private class ParamContext
    extends Object
    implements ConstraintContext {
 
@@ -199,7 +392,7 @@ public class ConstraintTests extends TestCase {
       // Constructors
       //----------------------------------------------------------------------
 
-      private TestContext(String name, Object value) {
+      private ParamContext(String name, Object value) {
          _name  = name;
          _value = value;
       }
@@ -218,6 +411,34 @@ public class ConstraintTests extends TestCase {
 
       public Object getParameter(String name) {
          return (name == _name) ? _value : null;
+      }
+   }
+
+   private class MapContext
+   extends Object
+   implements ConstraintContext {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      private MapContext(HashMap map) {
+         _map = map;
+      }
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      private final HashMap _map;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public Object getParameter(String name) {
+         return _map.get(name);
       }
    }
 }
