@@ -49,4 +49,8 @@
 	<translation entry="1401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
 	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
+	<translation entry="1404">Sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
+	<translation entry="1405">Sleep interrupted after <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
+	<translation entry="1406">Woke up after sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
+	<translation entry="1407">Triggering tick in expiry strategy thread.</translation>
 </translation-bundle>

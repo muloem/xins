@@ -223,6 +223,21 @@
 			<description>Expiry strategy thread stopped.</description>
 			<param name="name" type="text" nullable="false" />
 		</entry>
+		<entry id="1404" level="DEBUG">
+			<description>Sleeping in expiry strategy thread.</description>
+			<param name="duration" type="int64" nullable="false" />
+		</entry>
+		<entry id="1405" level="DEBUG">
+			<description>Sleep interrupted in expiry strategy thread.</description>
+			<param name="duration" type="int64" nullable="false" />
+		</entry>
+		<entry id="1406" level="DEBUG">
+			<description>Woke up after sleeping in expiry strategy thread.</description>
+			<param name="duration" type="int64" nullable="false" />
+		</entry>
+		<entry id="1407" level="DEBUG">
+			<description>Triggering tick in expiry strategy thread.</description>
+		</entry>
 	</group>
 
 	<group id="threads" name="Threading" />
