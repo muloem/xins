@@ -39,6 +39,8 @@ CHANGES INTRODUCED IN XINS 0.146:
     and incomplete, so it has been removed completely, to simplify the code.
     Support may be put back in in the future.
 
+* Upgraded from Jakarta ORO 2.0.7 to 2.0.8.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.145:
 
