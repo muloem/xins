@@ -58,6 +58,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 3:
 
+* Generation of specification documentation:
+  - Fixed bug #1064487: The function name is not written in the examples.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
 
