@@ -296,6 +296,40 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Returns the applicable time zone.
+    *
+    * @return
+    *    the time zone, not <code>null</code>.
+    *
+    * @since XINS 0.95
+    */
+   public final TimeZone getTimeZone() {
+      return _timeZone;
+   }
+
+   /**
+    * Returns the current number of sessions.
+    *
+    * @return
+    *    the current number of sessions, always &gt;= 0.
+    *
+    * @throws IllegalStateException
+    *    if this API is not session-based.
+    *
+    * @since XINS 0.95
+    */
+   public final int getCurrentSessions()
+   throws IllegalStateException {
+
+      // Check preconditions
+      if (! _sessionBased) {
+         throw new IllegalStateException("This API is not session-based.");
+      }
+
+      return _sessionsByID.size();
+   }
+
+   /**
     * Initializes this API. The properties are stored internally and then
     * {@link #initImpl(Properties)} is called.
     *
