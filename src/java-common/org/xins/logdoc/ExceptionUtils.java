@@ -123,7 +123,7 @@ public final class ExceptionUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   private static final Throwable getCause(Throwable exception)
+   public static final Throwable getCause(Throwable exception)
    throws IllegalArgumentException {
 
       // Check preconditions
