@@ -5,6 +5,15 @@ CHANGES INTRODUCED IN XINS 0.159:
   - For each 'param' element in the output section a responder.param() call is
     automatically inserted when an example [Function]Impl.java file is
     generated.
+  - Removed log message 4017 (XINS/Java Server Framework has been
+    initialized).
+  - Using log message 4018 also for the first initialization, instead of 4017.
+  - When re-initializing the framework, the check interval is now checked
+    before (instead of after) the API is re-initialized.
+  - Added support for _context parameter. If this parameter is set, it will be
+    used to set it as the NDC (nested diagnostic context). The nested
+    diagnostic context can be output in the log. With the pattern layout,
+    use %x.
 
 * XINS/Java Client Framework:
   - Added an abstract getXINSVersion() method in the AbstractCAPI class that
