@@ -10,9 +10,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.log4j.NDC;
+
 import org.xins.client.XINSCallRequest;
 
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.http.HTTPMethod;
 
 /**
  * Tests for class <code>XINSCallRequest</code>.
@@ -116,7 +119,6 @@ public class XINSCallRequestTests extends TestCase {
 
       final int constructorCount = 3;
       XINSCallRequest[] r = new XINSCallRequest[constructorCount];
-      String s;
 
       String functionName = "SomeFunction";
       r[0] = new XINSCallRequest(functionName, null);
@@ -125,10 +127,23 @@ public class XINSCallRequestTests extends TestCase {
 
       for (int i = 0; i < constructorCount; i++) {
          assertEquals(functionName, r[i].getFunctionName());
-         s = r[i].describe();
-         if (s.indexOf(functionName) < 0) {
-            fail("XINSCallRequest.describe() should return a string that contains the function name. Function name is: \"" + functionName + "\".  Description is: \"" + s + "\".");
+         if (r[i].describe().indexOf(functionName) < 0) {
+            fail("XINSCallRequest.describe() should return a string that contains the function name. Function name is: \"" + functionName + "\". Description is: \"" + r[i].describe() + "\".");
          }
+      }
+
+      String contextID = "f54b715f249bd02c";
+      NDC.push("f54b715f249bd02c");
+      BasicPropertyReader p = new BasicPropertyReader();
+      p.set("channel",     "USR_REG_WEB_W");
+      p.set("lineType",    "PSTN");
+      p.set("postCode",    "1011PZ");
+      p.set("houseNumber", "1");
+      XINSCallRequest req = new XINSCallRequest("GetUpgradePlanList", p, false, HTTPMethod.POST);
+      NDC.pop();
+
+      if (req.describe().indexOf(contextID) < 0) {
+         fail("XINSCallRequest.describe() should return a string that contains the diagnostic context ID. Context ID is: \"" + contextID + "\". Description is: \"" + req.describe() + "\".");
       }
    }
 }
