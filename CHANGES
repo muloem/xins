@@ -1,6 +1,8 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.18:
 
+* Logging different types of InvalidParameters errors.
+
 * Linking to Jakarta Commons Logging API documentation.
 
 ______________________________________________________________________________
