@@ -21,6 +21,7 @@ $Id$
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins-common.jar" select="concat($xins_home, '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar" select="concat($xins_home, '/build/xins-server.jar')" />
+	<xsl:variable name="xins-client.jar" select="concat($xins_home, '/build/xins-client.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
@@ -191,7 +192,7 @@ $Id$
 					</xsl:variable>
 					<xsl:variable name="javaImplDir"    select="concat($javaImplBaseDir, '/', $api)" />
 					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
-					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)"        />
+					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes-api/', $api)"        />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
 
 					<target name="-impl-{$api}-existencechecks">
@@ -400,9 +401,9 @@ $Id$
 				<target name="-stubs-capi-{$api}">
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 					<style
-						in="{$api_file}"
-						out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
-						style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
+					in="{$api_file}"
+					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
+					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="package"      expression="{$clientPackage}"      />
@@ -410,6 +411,19 @@ $Id$
 				</target>
 
 				<target name="classes-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+					<mkdir dir="{$project_home}/build/classes/{$api}/{$clientPackageAsDir}" />
+					<javac
+					srcdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
+					destdir="{$project_home}/build/classes/{$api}/{$clientPackageAsDir}"
+					debug="true"
+					deprecation="true">
+						<classpath>
+							<pathelement path="{$xins-common.jar}" />
+							<pathelement path="{$xins-client.jar}" />
+							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
+							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+						</classpath>
+					</javac>
 				</target>
 			</xsl:for-each>
 
