@@ -32,7 +32,7 @@ public final class UnacceptableCallResultException extends Exception {
     * Constructs a new <code>UnacceptableCallResultException</code>.
     *
     * @param result
-    *    the (successful) {@link XINSServiceCaller.Result} that is considered
+    *    the {@link XINSServiceCaller.Result} that is considered
     *    unacceptable, never <code>null</code>.
     *
     * @param detail
@@ -54,13 +54,20 @@ public final class UnacceptableCallResultException extends Exception {
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);
 
-      // TODO: Do something with result
+      // Store the result
+      _result = result;
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The result that is considered unacceptable. Never <code>null</code>.
+    */
+   private final XINSServiceCaller.Result _result;
+
 
    //-------------------------------------------------------------------------
    // Methods
