@@ -1172,7 +1172,14 @@
 	<xsl:template match="function-ref[@name]">
 		<xsl:variable name="reffunction" select="@name" />
 		<xsl:variable name="reffunction_file" select="concat($specsdir, '/', $api, '/', $reffunction, '.fnc')" />
-		<a href="{$reffunction}.html" title="{document($reffunction_file)/function/description/text()}">
+		<a href="{$reffunction}.html">
+			<xsl:attribute name="title">
+				<xsl:call-template name="firstline">
+					<xsl:with-param name="text">
+						<xsl:value-of select="document($reffunction_file)/function/description/text()" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:attribute>
 			<xsl:value-of select="$reffunction" />
 		</a>
 	</xsl:template>
