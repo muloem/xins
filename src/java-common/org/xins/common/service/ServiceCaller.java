@@ -72,17 +72,17 @@ import org.xins.common.Utils;
  * <ol>
  *    <li>There should be a constructor that accepts only a {@link Descriptor}
  *        object. This constructor should call
- *        <code>super(descriptor, null)</code>. If this descriptor contains
- *        any {@link TargetDescriptor} instances that have an unsupported
- *        protocol, then an {@link UnsupportedProtocolException} should be
- *        thrown.
+ *        <code>super(descriptor, null)</code>.
+ *        This descriptor should document the same exceptions as the
+ *        {@link #ServiceCaller(Descriptor,CallConfig)} constructor.
  *    <li>There should be a constructor that accepts both a
  *        {@link Descriptor} and a service-specific call config object
  *        (derived from {@link CallConfig}).  This constructor should call
- *        <code>super(descriptor, callConfig)</code>. If this descriptor
- *        contains any {@link TargetDescriptor} instances that have an
- *        unsupported protocol, then an {@link UnsupportedProtocolException}
- *        should be thrown.
+ *        <code>super(descriptor, callConfig)</code>.
+ *        This descriptor should document the same exceptions as the
+ *        {@link #ServiceCaller(Descriptor,CallConfig)} constructor.
+ *    <li>The method {@link #isProtocolSupportedImpl(String)} should be
+ *        implemented.
  *    <li>There should be a <code>call</code> method that accepts only a
  *        service-specific request object (derived from {@link CallRequest}).
  *        It should call
@@ -264,10 +264,14 @@ public abstract class ServiceCaller extends Object {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol (<em>since XINS 1.2.0</em>).
+    *
     * @since XINS 1.1.0
     */
    protected ServiceCaller(Descriptor descriptor, CallConfig callConfig)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedProtocolException {
 
       final String THIS_METHOD = "<init>("
                                + Descriptor.class.getName()
@@ -402,6 +406,20 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
+      // Test the protocol for all TargetDescriptors
+      Iterator targets = descriptor.iterateTargets();
+      while (targets.hasNext()) {
+         TargetDescriptor td = (TargetDescriptor) targets.next();
+         String protocol = td.getProtocol();
+         boolean supported;
+         try {
+            if (! isProtocolSupported(td.getProtocol())) {
+               throw new UnsupportedProtocolException(td);
+            }
+         } catch (UnsupportedOperationException exception) {
+            // ignore
+         }
+      }
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -438,6 +456,81 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Checks if the specified protocol is supported (wrapper method). The
+    * protocol is the part in a URL before the string <code>"://"</code>).
+    *
+    * <p>For example:
+    *
+    * <ul>
+    *    <li>in the URL <code>"http://www.google.nl"</code>, the protocol is
+    *        <code>"http"</code>;
+    *
+    *    <li>in the URL <code>"jdbc:mysql://we.are.the.b.org/mydb/"</code>,
+    *        the protocol is <code>"jdbc:mysql"</code>.
+    * </ul>
+    *
+    * <p>This method first checks the argument. If it is <code>null</code>,
+    * then an exception is thrown. Otherwise, the result of a call to
+    * {@link #isProtocolSupportedImpl(String)} is returned. This method may
+    * throw an {@link UnsupportedOperationException}.
+    *
+    * @param protocol
+    *    the protocol, should not be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the specified protocol is supported, or
+    *    <code>false</code> if it is not.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>protocol == null</code>.
+    *
+    * @throws UnsupportedOperationException
+    *    if this method is not implemented (probably because this
+    *    <code>ServiceCaller</code> implementation was originally written with
+    *    XINS 1.0.x or XINS 1.1.x)
+    *
+    * @since XINS 1.2.0
+    */
+   public final boolean isProtocolSupported(String protocol)
+   throws IllegalArgumentException,
+          UnsupportedOperationException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("protocol", protocol);
+
+      return isProtocolSupportedImpl(protocol);
+   }
+
+   /**
+    * Checks if the specified protocol is supported (implementation method).
+    * The protocol is the part in a URL before the string <code>"://"</code>).
+    *
+    * <p>This method should only ever be called from the
+    * {@link #isProtocolSupported(String)} method.
+    *
+    * <p>The implementation of this method in class <code>ServiceCaller</code>
+    * throws an {@link UnsupportedOperationException}.
+    *
+    * @param protocol
+    *    the protocol, guaranteed not to be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the specified protocol is supported, or
+    *    <code>false</code> if it is not.
+    *
+    * @throws UnsupportedOperationException
+    *    if this method is not implemented (probably because this
+    *    <code>ServiceCaller</code> implementation was originally written with
+    *    XINS 1.0.x or XINS 1.1.x)
+    *
+    * @since XINS 1.2.0
+    */
+   protected boolean isProtocolSupportedImpl(String protocol)
+   throws UnsupportedOperationException {
+      throw new UnsupportedOperationException();
+   }
 
    /**
     * Returns the descriptor.
