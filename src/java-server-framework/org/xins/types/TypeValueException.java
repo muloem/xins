@@ -9,7 +9,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * Exception thrown to indicate a value is invalid for a certain type.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class TypeValueException extends Exception {
 
