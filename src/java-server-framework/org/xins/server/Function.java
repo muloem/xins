@@ -342,10 +342,10 @@ implements DefaultResultCodes {
             _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
             _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
          }
+      }
 
-         if (debugEnabled) {
-            context.debug(message);
-         }
+      if (debugEnabled) {
+         context.debug(message);
       }
    }
 
