@@ -83,4 +83,4 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Log all events properly
 
 Adapt CAPI generation:
-[ ] Build upon new XINS/Java Client Framework
+[x] Build upon new XINS/Java Client Framework
