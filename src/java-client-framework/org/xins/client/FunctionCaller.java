@@ -15,6 +15,28 @@ import java.util.Map;
 public interface FunctionCaller {
 
    /**
+    * Calls the specified session-less API function, with no parameters.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    *
+    * @throws IOException
+    *    if the API could not be contacted due to an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the calling of the function failed or if the result from the
+    *    function was invalid.
+    */
+   CallResult call(String functionName)
+   throws IOException, InvalidCallResultException;
+
+   /**
     * Calls the specified session-less API function with the specified
     * parameters.
     *
