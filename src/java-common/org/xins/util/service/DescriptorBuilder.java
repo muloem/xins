@@ -271,7 +271,9 @@ public final class DescriptorBuilder extends Object {
        * @throws IllegalArgumentException
        *    if <code>propertyName == null || propertyValue == null</code>.
        */
-      PropertyValueException(String propertyName, String propertyValue, String message) {
+      PropertyValueException(String propertyName, String propertyValue, String message)
+      throws IllegalArgumentException {
+         // TODO: Use createMessage()
          super("Property \"" + propertyName.toString() + "\" is set to invalid value \"" + propertyValue.toString() + '"' + (message == null ? "." : (": " + message)));
          MandatoryArgumentChecker.check("propertyName", propertyName, "propertyValue", propertyValue);
       }

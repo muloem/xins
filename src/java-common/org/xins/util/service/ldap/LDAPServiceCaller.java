@@ -112,7 +112,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    public QueryResult call(AuthenticationMethod method,
                       String               principal,
                       String               credentials)
-   throws CallFailedException {
+   throws IllegalArgumentException, CallFailedException {
       return call(new AuthenticationDetails(method, principal, credentials),
                   null);
    }
@@ -232,6 +232,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @param authenticationDetails
     *    the authentication details, cannot be <code>null</code>.
+    *
+    * @return
+    *    the directory context, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>target == null || authenticationDetails == null</code>.
