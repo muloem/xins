@@ -1,4 +1,42 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.40:
+
+* Properly encoding plus characters ('+') while URL encoding the link to the
+  test form for a type.
+
+* Storing (un)successful min/maximum start timestamp and displaying it in the
+  result of _GetStatistics. In the old situation, the output was similar to
+  this:
+
+      <data>
+         <function name="MyFunction">
+            <successful count="124" average="132" min="13" max="830">
+               <last start="1055333674847" duration="196" />
+            </successful>
+            <unsuccessful count="9" average="244" min="94" max="340">
+               <last start="1055333620172" duration="250" />
+            </successful>
+         </function>
+      </data>
+
+  In the new situation the output is similar to this:
+
+      <data>
+         <function name="MyFunction">
+            <successful count="124" average="132">
+               <min start="1055332820374" duration="13" />
+               <max start="1055330282035" duration="830" />
+               <last start="1055333674847" duration="196" />
+            </successful>
+            <unsuccessful count="9" average="244">
+               <min start="1055200307218" duration="94" />
+               <max start="1055231843442" duration="340">
+               <last start="1055333620172" duration="250" />
+            </successful>
+         </function>
+      </data>
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.39:
 
 * Made shell script 'xins' executable.
