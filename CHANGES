@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.81:
+
+* XINS/Java Server Framework:
+  - Class APIServlet: Improved logging and applied some small improvements.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.80:
 
 * Fix minor typo in Javadoc comment (class FunctionCallerParser).
