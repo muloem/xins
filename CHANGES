@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.51:
+
+* XINS/Java Common Library: Added class FastStack.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.50:
 
 * Added ResponseValidator to XINS/Java Server Framework. Duplicate parameters
