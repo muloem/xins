@@ -3,6 +3,11 @@ CHANGES INTRODUCED IN XINS 0.26:
 
 * Storing links to result codes in API instance.
 
+* Code cleanup.
+
+* In function specification documentation: Only displaying result code in
+  example if there is one.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.25:
 

@@ -592,7 +592,7 @@
 								<xsl:text>"</xsl:text>
 							</span>
 						</span>
-						<xsl:if test="$resultcode">
+						<xsl:if test="string-length($resultcode) &gt; 0">
 							<xsl:text> </xsl:text>
 							<span class="attr">
 								<!-- TODO: Get result code description for referenced result codes as well -->
