@@ -121,6 +121,17 @@ public class APIImpl extends API {
    // Methods
    //-------------------------------------------------------------------------
 
+   public void init(Properties properties)
+   throws Throwable {</xsl:text>
+		<xsl:for-each select="document($impllist_file)/impllist/impl[@api=$api]/instance">
+			<xsl:text>
+      </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>.init(properties);</xsl:text>
+		</xsl:for-each>
+		<xsl:text>
+   }
+
    protected void handleCall(CallContext context)
    throws Throwable {
       String function = context.getParameter("function");
