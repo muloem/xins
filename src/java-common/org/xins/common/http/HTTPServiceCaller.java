@@ -144,6 +144,10 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  */
 public final class HTTPServiceCaller extends ServiceCaller {
 
+   // NOTE: This class requires Jakarta Commons HttpClient 3.0+
+   //
+   // XXX: Detected HttpClient version and fail if lower than 3.0 ?
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -702,7 +706,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
 
-         // Socket time-out (HttpClient 3.x and Java 1.4+)
+         // Socket time-out (Java 1.4+)
          //
          // XXX: We do not use instanceof because class SocketTimeoutException
          //      is not available in Java 1.3
@@ -711,7 +715,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             executor.dispose();
             throw new SocketTimeOutCallException(request, target, duration);
 
-         // Socket time-out (HttpClient 3.x and Java 1.3)
+         // Socket time-out (Java 1.3)
          } else if (exception instanceof InterruptedIOException) {
             String exMessage = exception.getMessage();
             // XXX: Only tested on Sun JVM
@@ -719,26 +723,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                Log.log_1105(url, params, duration, socketTimeOut);
                executor.dispose();
                throw new SocketTimeOutCallException(request, target, duration);
-
-            // Unspecific I/O error
-            } else {
-               Log.log_1109(exception, url, params, duration);
-               executor.dispose();
-               throw new IOCallException(request, target, duration, (IOException) exception);
-            }
-
-         // Handle HttpClient 2.x-specific HttpRecoverableException
-         // (exception class was deprecated in HttpClient 3.0)
-         } else if (exception instanceof HttpRecoverableException) {
-
-            // Socket time-out (HttpClient 2.x and Java 1.4+)
-            String exMessage = exception.getMessage();
-            if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_1105(url, params, duration, socketTimeOut);
-               executor.dispose();
-               throw new SocketTimeOutCallException(request, target, duration);
-
-            // FIXME: Socket time-out (HttpClient 2.x and Java 1.3)
 
             // Unspecific I/O error
             } else {
