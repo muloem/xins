@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.14:
 
 * The files CHANGES, COPYRIGHT and README are now in both distribution files.
 
+* Supporting associating returncodes with an API.
+
 * Refactored parameter getting and checking: Moved the functionality from API
   class to Function class, to the handleCall(CallContext) method.
 
