@@ -43,7 +43,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null || sessionID == null</code>.
     */
-   protected NonSharedSession(FunctionCaller functionCaller, String sessionID)
+   public NonSharedSession(FunctionCaller functionCaller, String sessionID)
    throws IllegalArgumentException {
 
       // Check preconditions
