@@ -10,11 +10,18 @@ CHANGES INTRODUCED IN XINS 0.149:
     Depending on the actual state it will either be '500 Internal Server
     Error' or '502 Service Unavailable'. This has been documented in the
     Javadoc comments for the APIServlet class.
+  - If the state is READY, but no function name is specified, or if the
+    function name does not identify an existing function, then the '404 Not
+    Found' HTTP response code is returned.
 
 * XINS/Java Common Library:
   - Added '_' and '.' to the pattern for url matching in the TargetDescriptor.
     This will allow urls such as http://blah.blah.com/some_file.html
   - Fixed @link in class Manageable.
+  - Removed unused @param in class InitializationException.
+
+* Removed standard 'MissingFunctionName' and 'NoSuchFunction' result codes.
+  Instead, the API will return a '404 Not Found' HTTP response code.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.148:
