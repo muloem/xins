@@ -158,6 +158,8 @@ public class HexConverterTests extends TestCase {
       assertEquals("380ae6", output1);
       assertEquals("e2", HexConverter.toHexString((byte)226));
       assertEquals("1234", HexConverter.toHexString((short)0x1234));
+      assertEquals("00e9", HexConverter.toHexString('\u00e9'));
+      assertEquals("0020", HexConverter.toHexString(' '));
       assertEquals("000000e2", HexConverter.toHexString(226));
       assertEquals("1234567890123456", HexConverter.toHexString(0x1234567890123456L));
 

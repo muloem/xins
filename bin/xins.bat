@@ -14,7 +14,7 @@
 @ECHO OFF
 
 :: Make sure XINS_HOME is set
-IF NOT "%XINS_HOME%" == "" GOTO show_version1
+IF NOT ""%XINS_HOME%"" == """" GOTO show_version1
 ECHO FATAL: XINS_HOME not set
 GOTO end
 

@@ -36,6 +36,12 @@ public class HexConverter extends Object {
    private static final int SHORT_LENGTH = 4;
 
    /**
+    * The number of characters written when converting a <code>char</code> to
+    * an unsigned hex string.
+    */
+   private static final int CHAR_LENGTH = 4;
+
+   /**
     * The number of characters written when converting a <code>int</code> to
     * an unsigned hex string.
     */
@@ -262,6 +268,39 @@ public class HexConverter extends Object {
       }
 
       return new String(chars, 0, SHORT_LENGTH);
+   }
+
+   /**
+    * Converts the specified <code>char</code> to an unsigned number hex
+    * string. The returned string will always consist of 4 hex characters,
+    * zeroes will be prepended as necessary.
+    *
+    * @param n
+    *    the character to be converted to a hex string.
+    *
+    * @return
+    *    the hex string, cannot be <code>null</code>, the length is always 4
+    *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 4</code>).
+    */
+   public static String toHexString(char n) {
+
+      // First convert to int, since there are no Java opcodes for shorts
+      int i = (int) n;
+
+      char[] chars = new char[CHAR_LENGTH];
+      int pos      = CHAR_LENGTH - 1;
+
+      // Convert the number to a hex string until the remainder is 0
+      for (; i != 0; i >>>= 4) {
+         chars[pos--] = DIGITS[i & INT_MASK];
+      }
+
+      // Fill the rest with '0' characters
+      for (; pos >= 0; pos--) {
+         chars[pos] = '0';
+      }
+
+      return new String(chars, 0, CHAR_LENGTH);
    }
 
    /**

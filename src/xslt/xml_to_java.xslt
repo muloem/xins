@@ -9,7 +9,8 @@
 $Id$
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:template name="xml_to_java_string">
 		<xsl:param name="text" />
@@ -28,6 +29,12 @@ $Id$
 				<xsl:choose>
 					<xsl:when test="$firstchar='\'">\\</xsl:when>
 					<xsl:when test="$firstchar='&quot;'">\"</xsl:when>
+					<xsl:when test="$firstchar='&#xDF;'">\u00DF</xsl:when>
+					<xsl:when test="$firstchar='&#xE0;'">\u00E0</xsl:when>
+					<xsl:when test="$firstchar='&#xE7;'">\u00E7</xsl:when>
+					<xsl:when test="$firstchar='&#xE8;'">\u00E8</xsl:when>
+					<xsl:when test="$firstchar='&#xE9;'">\u00E9</xsl:when>
+					<xsl:when test="$firstchar='&#xEA;'">\u00EA</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
 					</xsl:otherwise>
