@@ -206,13 +206,18 @@
 		<xsl:if test="param-combo[count(param-ref) = 0]">
 			<xsl:message terminate="yes">Found param-combo with no param-ref children.</xsl:message>
 		</xsl:if>
-		<xsl:if test="param-combo">
+		<xsl:call-template name="additional-constraints" />
+	</xsl:template>
+
+	<xsl:template name="additional-constraints">
+		<xsl:if test="param-combo or param/dependson">
 			<h4>Additional constraints</h4>
 			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will return an unsuccessful result with code </xsl:text>
 			<em>InvalidParameters</em>
 			<xsl:text>.</xsl:text>
 			<ul>
 				<xsl:apply-templates select="param-combo" />
+				<xsl:apply-templates select="param/dependson" />
 			</ul>
 		</xsl:if>
 	</xsl:template>
@@ -267,6 +272,23 @@
 				<xsl:value-of select="@name" />
 			</em>
 		</xsl:for-each>
+	</xsl:template>
+
+	<!-- TODO: dependson -->
+	<xsl:template match="input/param/dependson[@type='and']">
+		<li>
+			<xsl:text>The parameter </xsl:text>
+			<em>
+				<xsl:value-of select="/param/@name" />
+			</em>
+			<xsl:text> can only be set if the following parameters are set: </xsl:text>
+			<xsl:apply-templates select="param-ref" mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo" priority="-1">
+		<xsl:message terminate="yes">Unrecognised type of param-combo.</xsl:message>
 	</xsl:template>
 
 	<xsl:template match="function/output">
