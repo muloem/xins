@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.154:
+
+* XINS/Java Server Framework:
+  - An IP filter expression can be in the form "a.b.c.d" instead of
+    "a.b.c.d./32".
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.153:
 
 * XINS/Java Server Framework:
