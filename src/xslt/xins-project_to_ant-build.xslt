@@ -19,6 +19,8 @@
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins_jar"     select="concat($xins_home,    '/build/xins.jar')" />
 	<xsl:variable name="specsdir">
+		<xsl:value-of select="$project_home" />
+		<xsl:text>/</xsl:text>
 		<xsl:choose>
 			<xsl:when test="//project/@specsdir">
 				<xsl:value-of select="//project/@specsdir" />
@@ -31,22 +33,22 @@
 		<project default="all" basedir="..">
 
 			<target name="clean" description="Removes all generated files">
-				<delete dir="build" />
+				<delete dir="{$builddir}" />
 			</target>
 
 			<target name="-prepare" />
 
 			<target name="-prepare-specdocs" depends="-prepare">
-				<mkdir dir="build/specdocs" />
+				<mkdir dir="{$builddir}/specdocs" />
 				<copy
-				todir="build/specdocs"
+				todir="{$builddir}/specdocs"
 				file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
 				in="{$project_file}"
-				out="build/specdocs/index.html"
+				out="{$builddir}/specdocs/index.html"
 				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
 					<param name="project_home" expression="{$project_home}" />
 					<param name="specsdir"     expression="{$specsdir}"       />
@@ -55,23 +57,23 @@
 
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
-				<xsl:variable name="api_file" select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
+				<xsl:variable name="api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
 
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
-						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.fnc"         />
-						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.typ"         />
+						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.fnc"         />
+						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.typ"         />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
 					<style
-					in="{$project_home}/{$specsdir}/{$api}/api.xml"
+					in="{$specsdir}/{$api}/api.xml"
 					out="{$project_home}/build/specdocs/{$api}/index.html"
 					style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<style
-					basedir="{$project_home}/{$specsdir}"
+					basedir="{$specsdir}"
 					destdir="{$project_home}/build/specdocs"
 					style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
 					includes="{$api}/*.fnc">
@@ -79,7 +81,7 @@
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<style
-					basedir="{$project_home}/{$specsdir}"
+					basedir="{$specsdir}"
 					destdir="{$project_home}/build/specdocs"
 					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
 					includes="{$api}/*.typ">
@@ -88,7 +90,7 @@
 					</style>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
-						basedir="{$project_home}/{$specsdir}"
+						basedir="{$specsdir}"
 						destdir="{$project_home}/build/specdocs"
 						style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 						includes="{$api}/*.fnc"
@@ -115,9 +117,9 @@
 				<mkdir dir="build/classes" />
 			</target>
 
-			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 				<xsl:variable name="api"      select="@name"                                                         />
-				<xsl:variable name="api_file" select="concat($project_home, '/', $specsdir, '/', @name, '/api.xml')" />
+				<xsl:variable name="api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
 						<xsl:with-param name="api">
@@ -147,7 +149,7 @@
 					</style>
 					<!-- TODO: Include only functions mentioned in api.xml -->
 					<style
-					basedir="{$project_home}/{$specsdir}/{$api}"
+					basedir="{$specsdir}/{$api}"
 					destdir="{$javaDestDir}/{$packageAsDir}"
 					style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
 					includes="*.fnc"
@@ -171,7 +173,7 @@
 
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="@name" />
@@ -179,13 +181,13 @@
 				</xsl:attribute>
 			</target>
 
-			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 				<target name="war-api-{@name}" depends="classes-api-{@name}" description="Creates the WAR for the '{@name}' API" />
 			</xsl:for-each>
 
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>war-api-</xsl:text>
 						<xsl:value-of select="@name" />
