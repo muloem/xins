@@ -51,34 +51,11 @@ public final class InvalidNameException extends Exception {
       FastStringBuffer buffer = new FastStringBuffer(80);
       buffer.append("The specified name \"");
       buffer.append(name);
-      buffer.append("\" is invalid for a");
-      if (vowel) {
-         buffer.append('n');
-      }
-      buffer.append(' ');
+      buffer.append("\" is invalid for a component of type \"");
       buffer.append(typeName);
-      buffer.append('.');
+      buffer.append("\".");
 
       return buffer.toString();
-   }
-
-   /**
-    * Checks if the specified character is a vowel.
-    *
-    * @param c
-    *    the character to check.
-    *
-    * @return
-    *    <code>true</code> if the specified character is a vowel,
-    *    <code>false</code> otherwise.
-    */
-   private static final boolean isVowel(char c) {
-      // TODO: Move this function to a utility class
-      return c == 'a' || c == 'A'
-          || c == 'e' || c == 'E'
-          || c == 'i' || c == 'I'
-          || c == 'o' || c == 'O'
-          || c == 'u' || c == 'U';
    }
 
 
