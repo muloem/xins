@@ -1,4 +1,21 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.200:
+
+* XINS/Java Common Library:
+  - Added class function parseHexBytes() to class HexConverter.
+
+* Build and release process:
+  - Changed Java compilation process to produce Java 1.4-compatible class
+    files instead of Java 1.3-compatible class files.
+
+* Generated build file
+  - Changed Java compilation process to produce Java 1.4-compatible class
+    files instead of Java 1.3-compatible class files.
+  - Expecting API implementation code to be Java 1.4-aware. This means, for
+    example, that assertions will be supported, and using the 'assert' keyword
+    as an identifier will cause a compilation failure.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.199:
 
 * XINS/Java Server Framework:
