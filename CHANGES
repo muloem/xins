@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 0.164:
 * Logdoc:
   - Generating LogController subclass for each Log class.
   - Removed setTranslationBundle() from generated Log class.
+  - Moved XML files from src/logdoc to src/logdoc/java-server-framework.
 
 * Generated build file:
   - Added a new target server-<api> that builds the war file, the specdocs 
