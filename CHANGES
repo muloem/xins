@@ -13,9 +13,9 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Cleaned up and improved Logdoc.
   - Added the possibility to use the HTTPServiceCaller without parameters.
   - Moved the URLEncoding class from the net package to the text package.
-  - Added unit test class for Int8, Int16, Int32 and Int64 types.
-  - removed redundant code from all the Intxx type classes.
-  - Added unit test class for Boolean type.
+  - Added unit tests for the Int8, Int16, Int32 and Int64 type classes.
+  - Removed redundant code from all the Intxx type classes.
+  - Added unit test class for the Boolean type class.
   - Removed redundant TypeValueException calls from Text class.
 
 * XINS/Java Client Framework:
@@ -36,9 +36,10 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Removed the multiplicity attribute from the DTD as it is not used for
     the code generation.
 
-* Generated server-side Java code:
-  - The TypeValueException is no longer catched is the parameter is a String.
-  - Fixed a compilation error when a function had no input arguments.
+* Generated client-side Java code (CAPI):
+  - The TypeValueException is no longer caught if the parameter is either of
+    type _text or a pattern type.
+  - Fixed a compilation error when a function had no input parameters.
     This bug has been in XINS since version 0.208.
 
 * Generated specification documentation:
@@ -64,6 +65,9 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * DTD
   - Moved the pcdata-example after the attribute-example.
+
+* Generic XSLT include files:
+  - Removed support for the 'extends' attribute in type classes.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.208:
