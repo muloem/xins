@@ -829,7 +829,8 @@ extends HttpServlet {
       }
       Log.log_5001(ip, method);
 
-      // XXX: Consider using OutputStream instead of Writer, for improved performance
+      // XXX: Consider using OutputStream instead of Writer, for improved
+      // XXX: performance
 
       // Call the API if the state is READY
       CallResult result;
