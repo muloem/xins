@@ -428,7 +428,7 @@
 			<!-- TODO: <param name="inParams" type="text" nullable="false" /> -->
 			<param name="callID"    type="int32" nullable="false" />
 			<param name="start"     type="int64" nullable="false" />
-			<param name="duration"  type="int32" nullable="false" />
+			<param name="duration"  type="int64" nullable="false" />
 			<param name="errorCode" type="text"  nullable="true"  />
 		</entry>
 	</group>
