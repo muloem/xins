@@ -284,8 +284,40 @@ implements DefaultReturnCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
+
+         long successfulCalls       = function._successfulCalls;
+         long unsuccessfulCalls     = function._unsuccessfulCalls;
+         long successfulDuration    = function._successfulDuration;
+         long unsuccessfulDuration  = function._unsuccessfulDuration;
+
+         String successfulAverage;
+         if (successfulCalls == 0) {
+            successfulAverage = "NA";
+         } else if (successfulDuration == 0) {
+            successfulAverage = "0";
+         } else {
+            successfulAverage = String.valueOf(successfulDuration / successfulCalls);
+         }
+
+         String unsuccessfulAverage;
+         if (unsuccessfulCalls == 0) {
+            unsuccessfulAverage = "NA";
+         } else if (unsuccessfulDuration == 0) {
+            unsuccessfulAverage = "0";
+         } else {
+            unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
+         }
+
          context.startTag("function");
-         context.attribute("name",    function.getName());
+         context.attribute("name",       function.getName());
+         context.startTag("successful");
+         context.attribute("count",   String.valueOf(successfulCalls));
+         context.attribute("average", successfulAverage);
+         context.endTag();
+         context.startTag("unsuccessful");
+         context.attribute("count",   String.valueOf(unsuccessfulCalls));
+         context.attribute("average", unsuccessfulAverage);
+         context.endTag();
          context.endTag();
       }
    }
