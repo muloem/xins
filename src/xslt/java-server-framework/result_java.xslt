@@ -96,10 +96,14 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<!-- Generate the set methods, the inner classes and the add methods -->
 		<xsl:apply-templates select="output">
 		</xsl:apply-templates>
-
+		<xsl:text>
+}
+</xsl:text>
+		<xsl:apply-templates select="output/data/element" mode="elementClass">
+		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template match="function/output | resultcode/output">
+	<xsl:template match="output">
 		<xsl:text>
    //-------------------------------------------------------------------------
    // Methods
@@ -170,10 +174,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<xsl:text>
       return _errorOutputResult;
    }
-}
 </xsl:text>
-		<xsl:apply-templates select="data/element" mode="elementClass">
-		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="output/param | output/data/element/attribute">

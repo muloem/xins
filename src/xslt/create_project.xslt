@@ -198,8 +198,8 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 		<target name="create-logdoc" description="Generates a new logdoc file for the API.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
-			<property name="xml.file" value="apis/${{api.name}}/spec/impl/log.xml" />
-			<property name="xml.file2" value="apis/${{api.name}}/spec/impl/translation-bundle-en_US.xml" />
+			<property name="xml.file" value="apis/${{api.name}}/impl/log.xml" />
+			<property name="xml.file2" value="apis/${{api.name}}/impl/translation-bundle-en_US.xml" />
 			<available property="xml.exists" file="${{xml.file}}" />
 			<available property="xml.exists2" file="${{xml.file2}}" />
 			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />

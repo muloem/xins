@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class Int32 extends Type {
+public class Int32 extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -154,7 +154,7 @@ public final class Int32 extends Type {
     * @param maximum
     *    the maximum for the value.
     */
-   private Int32(String name, int minimum, int maximum) {
+   protected Int32(String name, int minimum, int maximum) {
       super(name, java.lang.Integer.class);
 
       _minimum = minimum;

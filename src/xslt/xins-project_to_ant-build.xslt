@@ -630,13 +630,15 @@
 							</style>
 							<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 						</xsl:if>
+						<echo message="testing logdoc1" />
 						<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
 							<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl')" />
 							<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+						  <echo message="testing logdoc2" />
 							<xmlvalidate file="{$impl_file}" warn="false">
 								<xmlcatalog refid="all-dtds" />
 							</xmlvalidate>
-							<xsl:if test="document($impl_file)/logdoc">
+							<xsl:if test="document($impl_file)/impl/logdoc">
 								<echo message="Generating the logdoc for {$api}" />
 								<mkdir dir="build/logdoc/{$api}" />
 								<xmlvalidate file="{$impl_dir}/log.xml" warn="false">

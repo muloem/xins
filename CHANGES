@@ -1,6 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.188:
 
+* XINS/Java Common Library:
+  - The classes Int8, Int16, Int32 and Int64 are not final anymore as they
+    need to be extended when a defined type specify a minimum and/or a
+    maximum.
+    This bug has been in XINS since version 0.185.
+
 * Specification:
   - Added the possibility to have an output section in result codes.
 
@@ -11,6 +17,10 @@ CHANGES INTRODUCED IN XINS 0.188:
     code.
   - Added the DTD declaration for the creation of the build.xml.
     It's now much faster to generate a new build.xml file.
+  - The create-logdoc creates the log.xml in the correct directory.
+    This bug has been in XINS since version 0.180.
+  - Fixed the generation of the logdoc for an API using the new directory
+    structure.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.187:

@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class Int8 extends Type {
+public class Int8 extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -155,7 +155,7 @@ public final class Int8 extends Type {
     * @param maximum
     *    the maximum for the value.
     */
-   private Int8(String name, byte minimum, byte maximum) {
+   protected Int8(String name, byte minimum, byte maximum) {
       super(name, java.lang.Byte.class);
 
       _minimum = minimum;

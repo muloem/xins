@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class Int16 extends Type {
+public class Int16 extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -154,7 +154,7 @@ public final class Int16 extends Type {
     * @param maximum
     *    the maximum for the value.
     */
-   private Int16(String name, short minimum, short maximum) {
+   protected Int16(String name, short minimum, short maximum) {
       super(name, java.lang.Short.class);
 
       _minimum = minimum;

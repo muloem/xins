@@ -181,6 +181,7 @@ public final class ]]></xsl:text>
 			<xsl:when test="$kind = 'int8'">
 				<xsl:choose>
 					<xsl:when test="int8/@min">
+						<xsl:text>(byte)</xsl:text>
 						<xsl:value-of select="int8/@min" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -190,6 +191,7 @@ public final class ]]></xsl:text>
 				<xsl:text>, </xsl:text>
 				<xsl:choose>
 					<xsl:when test="int8/@max">
+						<xsl:text>(byte)</xsl:text>
 						<xsl:value-of select="int8/@max" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -200,6 +202,7 @@ public final class ]]></xsl:text>
 			<xsl:when test="$kind = 'int16'">
 				<xsl:choose>
 					<xsl:when test="int16/@min">
+						<xsl:text>(short)</xsl:text>
 						<xsl:value-of select="int16/@min" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -209,6 +212,7 @@ public final class ]]></xsl:text>
 				<xsl:text>, </xsl:text>
 				<xsl:choose>
 					<xsl:when test="int16/@max">
+						<xsl:text>(short)</xsl:text>
 						<xsl:value-of select="int16/@max" />
 					</xsl:when>
 					<xsl:otherwise>

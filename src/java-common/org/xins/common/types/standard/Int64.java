@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class Int64 extends Type {
+public class Int64 extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -142,7 +142,7 @@ public final class Int64 extends Type {
    }
 
    /**
-    * Constructs a new <code>Int34</code> object (constructor for
+    * Constructs a new <code>Int64</code> object (constructor for
     * subclasses).
     *
     * @param name
@@ -154,7 +154,7 @@ public final class Int64 extends Type {
     * @param maximum
     *    the maximum for the value.
     */
-   private Int64(String name, long minimum, long maximum) {
+   protected Int64(String name, long minimum, long maximum) {
       super(name, java.lang.Long.class);
 
       _minimum = minimum;

@@ -82,8 +82,9 @@ public class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
+      SuccessfulResult result = new SuccessfulResult();
       // TODO
-      return new SuccessfulResult();
+      return result;
    }
 }
 ]]></xsl:text>

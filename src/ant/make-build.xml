@@ -30,7 +30,7 @@
 			<srcfileset    file="${xins_home}/.version.properties"         />
 			<srcfileset    dir="${project_home}"    includes="**/api.xml"  />
 			<srcfileset    dir="${project_home}"    includes="**/impl.xml" />
-			<targetfileset file="${out}" />
+			<targetfileset file="${project_home}/build/build.xml" />
 		</dependset>
 		<style in="${project_home}/xins-project.xml"
 		       out="${project_home}/build/build.xml"
