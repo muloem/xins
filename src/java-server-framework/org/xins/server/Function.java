@@ -107,7 +107,7 @@ extends Object {
     * @return
     *    the name, not <code>null</code>.
     */
-   public final String getName() {
+   final String getName() {
       return _name;
    }
 
