@@ -67,7 +67,8 @@ public class HungarianMapper implements FileNameMapper {
     * @throws IllegalArgumentException
     *    if <code>sourceFileName == null</code>.
     */
-   public String[] mapFileName(String sourceFileName) {
+   public String[] mapFileName(String sourceFileName)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("sourceFileName", sourceFileName);
