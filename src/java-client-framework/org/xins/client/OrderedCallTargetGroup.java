@@ -57,6 +57,31 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
                        String functionName,
                        Map    parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
-      return null; // TODO
+
+      List members = getMembers();
+      int count = (members == null) ? 0 : members.size();
+      Object result;
+      int i = 0;
+      do {
+         FunctionCaller caller = (FunctionCaller) members.get(i);
+         result = tryCall(caller, sessionID, functionName, parameters);
+         i++;
+      } while (result instanceof Throwable && i < count);
+
+      // TODO: What if result is null ?
+
+      if (result instanceof Error) {
+         throw (Error) result;
+      } else if (result instanceof RuntimeException) {
+         throw (RuntimeException) result;
+      } else if (result instanceof IOException) {
+         throw (IOException) result;
+      } else if (result instanceof InvalidCallResultException) {
+         throw (InvalidCallResultException) result;
+      } else if (result instanceof CallResult) {
+         return (CallResult) result;
+      } else {
+         throw new InternalError("CallTargetGroup.tryCall() returned an instance of class " + result.getClass().getName() + ", which is unsupported.");
+      }
    }
 }
