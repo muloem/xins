@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
   - XML files are now in UTF-8 encoding format.
   - Fixed small error on the English translation of the server side logdoc.
 
+* Libraries
+  - Upgraded Log4J library to 1.2.9.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
 
