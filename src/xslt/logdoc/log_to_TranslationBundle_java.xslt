@@ -26,18 +26,11 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @see Log
  */
-public class TranslationBundle extends Object {
+public abstract class TranslationBundle extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The translation bundle with <em>raw</em> messages. The name of this
-    * bundle is <code>"_raw"</code>.
-    */
-   public static final TranslationBundle RAW = new TranslationBundle();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -93,7 +86,17 @@ public class TranslationBundle extends Object {
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------]]></xsl:text>
+   //-------------------------------------------------------------------------
+
+   /**
+    * Retrieves the name of this translation bundle.
+    *
+    * @return
+    *    the name of this translation bundle.
+    */
+   public final String getName() {
+      return _name;
+   }]]></xsl:text>
 
 		<xsl:apply-templates select="entry" />
 
