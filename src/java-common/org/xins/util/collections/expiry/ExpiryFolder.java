@@ -323,8 +323,11 @@ extends Object {
 
          if (o != null) {
             _recentlyAccessedDoorman.enterAsWriter();
-            _recentlyAccessed.put(key, o);
-            _recentlyAccessedDoorman.leaveAsWriter();
+            try {
+               _recentlyAccessed.put(key, o);
+            } finally {
+               _recentlyAccessedDoorman.leaveAsWriter();
+            }
          }
       }
 
@@ -351,8 +354,11 @@ extends Object {
 
       // Store the association in the set of recently accessed entries
       _recentlyAccessedDoorman.enterAsWriter();
-      _recentlyAccessed.put(key, value);
-      _recentlyAccessedDoorman.leaveAsWriter();
+      try {
+         _recentlyAccessed.put(key, value);
+      } finally {
+         _recentlyAccessedDoorman.leaveAsWriter();
+      }
 
       // Bump the size
       synchronized (_sizeLock) {
