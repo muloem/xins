@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 0.190:
   - Changed the logdoc domain for common from org.xins.util to
     org.xins.common.
 
+* Libraries:
+  - Changed checkstyle.jar to the match the checkstyle-all-3.4.jar instead of
+    checkstyle-3.4.jar.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 
