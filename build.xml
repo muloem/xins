@@ -269,6 +269,10 @@
 		<copy file="src/css/logdoc/style.css" todir="build/logdoc/html" />
 	</target>
 
+	<target name="logdoc-java" depends="-prepare-logdoc">
+		<ant dir="build" antfile="logdoc-build.xml" target="java" inheritall="false" />
+	</target>
+
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
 		<echo message="Uploading JAR files to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
