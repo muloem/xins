@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 0.137:
     . Storing CRC32 in an int.
     . Added method ping()
     . Added method getRemoteXINSVersion()
+    . Never calling _NoOp in constructor. The application can use ping() if
+      appropriate.
 
 * Generated CAPI classes:
   - Generating package.html.
