@@ -124,7 +124,7 @@ public final class ]]></xsl:text>
 				<xsl:for-each select="enum/item">
 					<xsl:if test="position() &gt; 1">,</xsl:if>
 					<xsl:text>
-         new EnumItem("</xsl:text>
+         new Item("</xsl:text>
 					<xsl:choose>
 						<xsl:when test="@name">
 							<xsl:value-of select="@name" />
