@@ -117,11 +117,6 @@ public final class AddReleaseTask extends Task {
    private String _password;
 
    /**
-    * Flag that indicates if upload failures should be ignored.
-    */
-   private boolean _ignoreUploadFailures;
-
-   /**
     * The file to upload.
     */
    private String _file;
@@ -178,16 +173,6 @@ public final class AddReleaseTask extends Task {
       } else {
          return s;
       }
-   }
-
-   /**
-    * Indicates if upload failures should be ignored.
-    *
-    * @param cond
-    *    condition that indicates if upload failures should be ignored.
-    */
-   public void setIgnoreUploadFailures(boolean cond) {
-      _ignoreUploadFailures = cond;
    }
 
    /**
@@ -323,15 +308,7 @@ public final class AddReleaseTask extends Task {
       }
 
       // Upload the file
-      if (_ignoreUploadFailures) {
-         try {
-            // XXX: uploadFile();
-         } catch (BuildException e) {
-            log("Ignoring file upload error.", INFO);
-         }
-      } else {
-         // XXX: uploadFile();
-      }
+      uploadFile();
 
       // Use our own keystore
       log("Using keystore file \"" + _keystore + "\".", DEBUG);
@@ -365,6 +342,9 @@ public final class AddReleaseTask extends Task {
          throw fail("Unable to open file \"" + _file + "\".");
       }
 
+      // Determine URL for display purposes
+      String url = "ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName;
+
       // Create an FTP client
       FTPClient ftp = new FTPClient();
 
@@ -372,42 +352,44 @@ public final class AddReleaseTask extends Task {
          // Connect
          log("Connecting to FTP server \"" + FTP_SERVER + "\".", VERBOSE);
          ftp.connect(FTP_SERVER);
-         log("Connected to FTP server \"" + FTP_SERVER + "\".", DEBUG);
-         log("FTP server \"" + FTP_SERVER + "\" returned reply string \"" + ftp.getReplyString() + "\".", DEBUG);
 
          // Check reply code to verify success
-         int reply = ftp.getReplyCode();
-         if(! FTPReply.isPositiveCompletion(reply)) {
-            throw fail("FTP server \"" + FTP_SERVER + "\" refused connection.");
+         int code = ftp.getReplyCode();
+         if(! FTPReply.isPositiveCompletion(code)) {
+            throw fail("FTP server " + FTP_SERVER + " refused connection.");
          }
 
          // Login
-         log("Logging in as user \"anonymous\".", DEBUG);
-         ftp.login("anonymous", _user + "@users.sourceforge.net");
-         log("Logged in as user \"anonymous\".", DEBUG);
+         String mailAddress = _user + "@users.sourceforge.net";
+         log("Logging in anonymously with e-mail address " + mailAddress + '.', DEBUG);
+         ftp.login("anonymous", mailAddress);
 
          // Set file type
          log("Setting file type to binary.", DEBUG);
          ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
-         log("Set file type to binary.", DEBUG);
 
          // Change to correct directory
          log("Changing working directory to \"" + FTP_DIR + "\".", DEBUG);
          ftp.changeWorkingDirectory(FTP_DIR);
-         log("Changed working directory to \"" + FTP_DIR + "\".", DEBUG);
 
          // Upload file
-         log("Uploading \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, VERBOSE);
+         log("Uploading " + _file + " to " + url, VERBOSE);
          if (!ftp.storeFile(fileName, in)) {
-            int code = ftp.getReplyCode();
-            String replyString = ftp.getReplyString();
-            String url = "ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName;
-            throw fail("Failed to upload \"" + _file + "\" to " + url + ". Reply code " + code + ": \"" + replyString + "\".");
+            code = ftp.getReplyCode();
+            String replyString = ftp.getReplyString().trim();
+
+            String expectedOverwriteError = "550 " + fileName + ": Overwrite permission denied";
+            if (expectedOverwriteError.equals(replyString)) {
+               log("File " + fileName + " already uploaded. Not overwriting.", INFO);
+            } else {
+               throw fail("Failed to upload " + _file + " to " + url + ". Reply: \"" + replyString + "\".");
+            }
+         } else {
+            log("Uploaded " + _file + " to " + url, DEBUG);
          }
-         log("Uploaded \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, DEBUG);
 
       } catch(IOException e) {
-         throw fail("Failed to upload file to FTP server.", e);
+         throw fail("Failed to upload " + _file + " to " + url + " due to " + e.getClass().getName() + '.', e);
       } finally {
          if(ftp.isConnected()) {
             try {
