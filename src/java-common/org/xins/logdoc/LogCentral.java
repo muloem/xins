@@ -73,10 +73,10 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("newLocale", newLocale);
 
-      // Call doSetLocale(String) on all registered LogControllers
+      // Call setLocale(String) on all registered LogControllers
       int size = CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
-         CONTROLLERS[i].doSetLocale(newLocale);
+         CONTROLLERS[i].setLocale(newLocale);
 
          // TODO: What if the controller does not support the specified
          // TODO: locale?

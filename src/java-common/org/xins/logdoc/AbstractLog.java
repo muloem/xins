@@ -120,7 +120,7 @@ extends Object {
       protected LogController() {
 
          // Register this Log with the LogCentral, so that
-         // LogCentral.setLocale(String) may call doSetLocale(String) on this
+         // LogCentral.setLocale(String) may call setLocale(String) on this
          // instance
          LogCentral.registerLog(this);
       }
@@ -133,17 +133,6 @@ extends Object {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
-
-      /**
-       * Activates the specified locale (wrapper method). This method has
-       * package-private access and calls {@link #setLocale(String)}.
-       *
-       * @param newLocale
-       *    the new locale, not <code>null</code>.
-       */
-      final void doSetLocale(String newLocale) {
-         setLocale(newLocale);
-      }
 
       /**
        * Activates the specified locale.
