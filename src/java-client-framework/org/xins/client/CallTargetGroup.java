@@ -290,28 +290,20 @@ extends AbstractCompositeFunctionCaller {
     *    <code>null</code>.
     *
     * @return
-    *    the actual function caller for the specified URL, not
-    *    <code>null</code>.
+    *    the actual function caller for the specified URL, or
+    *    <code>null</code> if there is no {@link ActualFunctionCaller} for the
+    *    specified URL in this group or any of the contained groups (if any).
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
-    *
-    * @throws NoSuchActualFunctionCallerException
-    *    if there is no {@link ActualFunctionCaller} for the specified URL in
-    *    this group or any of the contained groups (if any).
     */
    public final ActualFunctionCaller getActualFunctionCaller(String url)
-   throws IllegalArgumentException, NoSuchActualFunctionCallerException {
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
 
-      Object o = _actualFunctionCallersByURL.get(url);
-      if (o == null) {
-         throw new NoSuchActualFunctionCallerException(url);
-      }
-
-      return (ActualFunctionCaller) o;
+      return (ActualFunctionCaller) _actualFunctionCallersByURL.get(url);
    }
 
    public final CallResult call(String sessionID,
@@ -366,7 +358,12 @@ extends AbstractCompositeFunctionCaller {
       if (url == null) {
          return callImpl(sessionID, functionName, parameters);
       } else {
-         return getActualFunctionCaller(url).call(sessionID, functionName, parameters);
+         ActualFunctionCaller afc = getActualFunctionCaller(url);
+         if (afc != null) {
+            return afc.call(sessionID, functionName, parameters);
+         } else {
+            throw new NoSuchActualFunctionCallerException(url);
+         }
       }
    }
 
