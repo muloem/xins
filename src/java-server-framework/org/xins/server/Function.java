@@ -525,7 +525,7 @@ implements DefaultResultCodes {
        *    the start time of the successful call that took the shortest.
        */
       public long getSuccessfulMinStart() {
-         return _successfulMin;
+         return _successfulMinStart;
       }
 
       /**
@@ -546,7 +546,7 @@ implements DefaultResultCodes {
        *    always &gt;= 0.
        */
       public long getUnsuccessfulMinStart() {
-         return _unsuccessfulMin;
+         return _unsuccessfulMinStart;
       }
 
       // TODO: Have a similar description for all these getters
