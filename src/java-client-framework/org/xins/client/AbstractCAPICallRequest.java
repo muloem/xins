@@ -195,22 +195,32 @@ extends Object {
    public final void validate()
    throws UnacceptableRequestException {
 
+      // Retrieve all input constrainst
       List constraints = _function.getInputConstraints();
 
+      // Check constraints and build list of violations (lazily initialized)
       ArrayList violations = null;
       int constraintCount = constraints.size();
       for (int i = 0; i < constraintCount; i++) {
+
+         // Get the constraint from the collection
          Constraint constraint = (Constraint) constraints.get(i);
+
+         // Validate it
          ConstraintViolation violation = constraint.check(_constraintContext);
+
          if (violation != null) {
+
+            // Lazily initialize the list of violations
             if (violations == null) {
                violations = new ArrayList(constraintCount - i);
             }
+
             violations.add(violation);
          }
       }
 
-      // Throw an exception on error
+      // If there is at least one violation, then fail
       if (violations != null) {
          throw new UnacceptableRequestException(this, violations);
       }
