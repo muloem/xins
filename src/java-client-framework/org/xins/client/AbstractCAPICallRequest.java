@@ -127,6 +127,26 @@ extends Object {
    }
 
    /**
+    * Sets the specified parameter to the specified value.
+    *
+    * @param name
+    *    the parameter name, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the parameter value, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code> or if <code>name</code> does not match
+    *    the constraints for a parameter name, see
+    *    {@link XINSCallRequest#PARAMETER_NAME_PATTERN_STRING} or if it equals
+    *    <code>"function"</code>, which is currently still reserved.
+    */
+   protected final void parameter(String name, String value)
+   throws IllegalArgumentException {
+      _request.setParameter(name, value);
+   }
+
+   /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
     * values are out of bounds, then a description or the problem is returned.
