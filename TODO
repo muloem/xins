@@ -4,9 +4,32 @@ This file lists the planned changes for XINS.
 
 
 ______________________________________________________________________________
+XINS PROTOCOL
+
+* Result codes should be allowed to have their own specification for output
+  parameters and data section.
+
+______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
 
-* None
+* Not log the timezone at startup, but include it in every message that
+  contains a time.
+* The used logging categories should stabilize.
+* A specific category should be used for function performance logging.
+* Log messages for a function should be logged to a category that excludes the
+  'Impl' suffix.
+* A new maximum call duration (for a specific function) should be logged.
+* CallContext should not rely on CallResultBuilder but implement the
+  CallResult interface self.
+* CallContext.getCallResult() should either be removed or it should return
+  'this'.
+* CallResultBuilder should perhaps not implement CallResult.
+* Consider initializing all LifespanManagers at once.
+* Add state management to the LifespanManagers class.
+* Set state in APIServlet and API classes using private setState(State) method
+  that could check that the state transition is valid.
+* Per State in the APIServlet and API classesdefine what a valid next state
+  is. Change the setState(State) methods to check this.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -42,3 +65,10 @@ ______________________________________________________________________________
 GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
 * None
+
+______________________________________________________________________________
+MISCELLANEOUS
+
+* The standard result codes should be documented online.
+
+* A pattern test script should be provided on http://xins.sourceforge.net/.
