@@ -3,6 +3,9 @@
  */
 package org.xins.client;
 
+import java.net.InetAddress;
+import org.xins.util.text.FastStringBuffer;
+
 /**
  * Exception that indicates that a host name resolved to multiple IP
  * addresses, while only one IP address is allowed.
@@ -40,6 +43,8 @@ extends Exception {
     *          || addresses.length &lt; 2
     *          || addresses[<em>n</em>] == null</code>
     *    (where <code>0 &lt;= <em>n</em> &lt; addresses.length</code>).
+    *
+    * @since XINS 0.104
     */
    private static final String createMessage(String hostName, InetAddress[] addresses)
    throws IllegalArgumentException {
@@ -142,7 +147,7 @@ extends Exception {
     * @since XINS 0.104
     */
    public InetAddress[] getAddresses() {
-      InetAddress[] array = new InetAddress(_addresses.length);
+      InetAddress[] array = new InetAddress[_addresses.length];
       System.arraycopy(_addresses, 0, array, 0, _addresses.length);
       return array;
    }
