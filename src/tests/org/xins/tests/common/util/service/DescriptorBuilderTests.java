@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.tests.common.util.sd;
+package org.xins.tests.common.util.service;
 
 import java.util.Properties;
 import junit.framework.Test;
@@ -9,10 +9,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
-import org.xins.util.sd.Descriptor;
-import org.xins.util.sd.DescriptorBuilder;
-import org.xins.util.sd.GroupDescriptor;
-import org.xins.util.sd.ServiceDescriptor;
+import org.xins.util.service.Descriptor;
+import org.xins.util.service.DescriptorBuilder;
+import org.xins.util.service.GroupDescriptor;
+import org.xins.util.service.ServiceDescriptor;
 
 /**
  * Tests for class <code>DescriptorBuilder</code>.

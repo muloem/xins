@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util.sd;
+package org.xins.util.service;
 
 import java.net.MalformedURLException;
 import java.util.StringTokenizer;

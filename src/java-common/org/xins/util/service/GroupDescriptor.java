@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util.sd;
+package org.xins.util.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
