@@ -46,7 +46,6 @@ XINS/JAVA SERVER FRAMEWORK
   the InternalError result code is returned instead of an InvalidParameters.
 * Generated Javadoc should include package-private and private members.
 * Log an INFO message if some runtime properties are unused.
-* Implement a _ResetStatistics function.
 * Implement a _DumpStatistics function that writes the statistics in a comma
   separated line in a text file.
 * Make generated logdoc classes package-private.
@@ -57,6 +56,10 @@ XINS/JAVA SERVER FRAMEWORK
   and remove this method from Function.
 * Log received input parameters.
 * Log that the runtime properties file is opened at startup (DEBUG level).
+* Refactor the invocation of the call method in the implementation.
+  The implementation should now have only a Request object as argument
+  and returns a Result object which can be a Successful or Unsuccessful
+  result.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -104,6 +107,8 @@ XINS/JAVA COMMON LIBRARY
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
+* EnumItem should override the equals() and hashCode() methods so that two
+  EnumItem with the same name and the same value should be equals.
 
 ______________________________________________________________________________
 LOGDOC
@@ -129,6 +134,10 @@ GENERATED SPECIFICATION DOCUMENTATION
   to the functions that specify they may return the result code.
 * Use an image to indicate the inheritance relationship between one type and
   another.
+* Generate Docbook from the specifications.
+* If the api.xml has changed, the specification documentation should be
+  regenerated.
+
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
@@ -163,9 +172,6 @@ MISCELLANEOUS
   - add the corresponding file
   - set the type of the file to '.gz'
   - let SourceForge send a release notification e-mail
-* Have DTD or XML Schema files and use these to check that the specification
-  files are valid.
-* Fix 'xins -projecthelp'.
 * Add date to CHANGES file when a release is created. A (small) custom Ant
   task would need to be developed for this.
 * Support the Freshmeat.net XML-RPC interface for notification of new
