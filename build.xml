@@ -503,9 +503,18 @@
 
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
+	<target name="-check-release-version">
+		<condition property="version.suffix.set">
+			<not>
+				<equals arg1="${version.suffix}" arg2="" />
+			</not>
+		</condition>
+		<fail if="version.suffix.set" message="A version suffix is set." />
+	</target>
+
 	<target
 	name="-prepare-release"
-	depends="-init-release,clean,tests"
+	depends="-init-release,-check-release-version,clean,tests"
 	description="Creates a release">
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
