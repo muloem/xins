@@ -50,12 +50,59 @@ extends XINSCallException {
       super("Unsuccessful XINS call result", result, null, null);
 
       // Result object must be unsuccessful
-      if (result.getErrorCode() == null) {
+      String errorCode = result.getErrorCode();
+      if (errorCode == null) {
          throw new IllegalArgumentException("result.getErrorCode() == null");
       }
 
-      // Store reference to the call result object
-      _result = result;
+      // Store details
+      _errorCode   = errorCode;
+      _parameters  = result.getParameters();
+      _dataElement = result.getDataElement();
+   }
+
+   /**
+    * Constructs a new <code>InvalidCallResultException</code>.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the call duration in milliseconds, must be &gt;= 0.
+    *
+    * @param resultData
+    *    the result data, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request     == null
+    *          || target      == null
+    *          || resultData  == null
+    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.209
+    */
+   UnsuccessfulXINSCallException(XINSCallRequest    request,
+                                 TargetDescriptor   target,
+                                 long               duration,
+                                 XINSCallResultData resultData) {
+
+      super("Unsuccessful XINS call result", request, target, duration, null, null);
+
+      // Result object must be unsuccessful
+      String errorCode = resultData.getErrorCode();
+      if (errorCode == null) {
+         throw new IllegalArgumentException("resultData.getErrorCode() == null");
+      }
+
+      // Store details
+      _errorCode   = errorCode;
+      _parameters  = resultData.getParameters();
+      _dataElement = resultData.getDataElement();
    }
 
 
@@ -64,9 +111,19 @@ extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * The call result. The value of this field cannot be <code>null</code>.
+    * The error code. The value of this field cannot be <code>null</code>.
     */
-   private final XINSCallResult _result;
+   private final String _errorCode;
+
+   /**
+    * The parameters. The value of this field can be <code>null</code>.
+    */
+   private final PropertyReader _parameters;
+
+   /**
+    * Returns the optional extra data.
+    */
+   private final DataElement _dataElement;
 
 
    //-------------------------------------------------------------------------
@@ -80,7 +137,7 @@ extends XINSCallException {
     *    the error code, never <code>null</code>.
     */
    public String getErrorCode() {
-      return _result.getErrorCode();
+      return _errorCode;
    }
 
    /**
@@ -91,7 +148,7 @@ extends XINSCallException {
     *    <code>null</code> if there are none.
     */
    public PropertyReader getParameters() {
-      return _result.getParameters();
+      return _parameters;
    }
 
    /**
@@ -108,7 +165,7 @@ extends XINSCallException {
     */
    public String getParameter(String name)
    throws IllegalArgumentException {
-      return _result.getParameter(name);
+      return _parameters.get(name);
    }
 
    /**
@@ -118,6 +175,6 @@ extends XINSCallException {
     *    the extra data as a {@link DataElement}, can be <code>null</code>;
     */
    public DataElement getDataElement() {
-      return _result.getDataElement();
+      return _dataElement;
    }
 }
