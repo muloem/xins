@@ -77,4 +77,17 @@ public abstract class Descriptor extends Object {
     *    the total number of target descriptors, always &gt;= 1.
     */
    public abstract int getTargetCount();
+
+   /**
+    * Returns the <code>TargetDescriptor</code> that matches the specified
+    * CRC-32 checksum.
+    *
+    * @param crc
+    *    the CRC-32 checksum.
+    *
+    * @return
+    *    the {@link TargetDescriptor} that matches the specified checksum, or
+    *    <code>null</code>, if none could be found in this descriptor.
+    */
+   public abstract TargetDescriptor getTargetByCRC(int crc);
 }

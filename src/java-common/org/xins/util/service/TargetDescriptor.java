@@ -207,6 +207,10 @@ public final class TargetDescriptor extends Descriptor {
       return 1;
    }
 
+   public TargetDescriptor getTargetByCRC(int crc) {
+      return (_crc == crc) ? this : null;
+   }
+
    public String toString() {
       return "TargetDescriptor(url=\"" + _url + "\"; timeOut=" + _timeOut + ')';
    }

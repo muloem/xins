@@ -249,17 +249,6 @@ public final class GroupDescriptor extends Descriptor {
       return array;
    }
 
-   /**
-    * Returns the <code>TargetDescriptor</code> that matches the specified
-    * CRC-32 checksum.
-    *
-    * @param crc
-    *    the CRC-32 checksum.
-    *
-    * @return
-    *    the {@link TargetDescriptor} that matches the specified checksum, or
-    *    <code>null</code>, if none could be found in this group.
-    */
    public TargetDescriptor getTargetByCRC(int crc) {
       return (TargetDescriptor) _targetsByCRC.get(new Integer(crc));
    }
