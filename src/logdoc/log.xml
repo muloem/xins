@@ -6,7 +6,8 @@
  $Id$
 -->
 
-<log>
+<log default-locale="en_US">
+
 	<messageset id="en_US" />
 	<messageset id="nl_NL" />
 
