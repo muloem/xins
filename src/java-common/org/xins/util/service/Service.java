@@ -81,6 +81,9 @@ public abstract class Service extends Object {
     * succeeds. If one of the calls succeeds, then the result is returned. If
     * none succeeds, then a {@link CallFailedException} is thrown.
     *
+    * <p>Each attempt consists of a call to
+    * {@link doCallImpl(ServiceDescriptor,Object)}.
+    *
     * @param subject
     *    the subject passed, could possibly be <code>null</code>.
     *
