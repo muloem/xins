@@ -207,8 +207,10 @@ implements Responder, Log {
     *
     * @return
     *    the success indication.
+    *
+    * @since XINS 0.128
     */
-   final boolean getSuccess() {
+   public final boolean isSuccess() {
       return _builder.isSuccess();
    }
 
