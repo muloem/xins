@@ -189,7 +189,7 @@ extends CallException {
     * @return
     *    the extra data as an XML {@link Element}, can be <code>null</code>;
     *    if it is not <code>null</code>, then
-    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
+    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link org.jdom.Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
     *
     * @since XINS 0.136
     */
