@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.209:
+
+* Build and release process:
+  - Added the possibility to release with a specific version
+    (e.g. 1.0.0Beta2).
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.208:
 
 * XINS/Java Common Library:
@@ -20,10 +27,6 @@ CHANGES INTRODUCED IN XINS 0.208:
 * Generated specification documentation:
   - Fixed the API owner is now printed correctly on the API page.
     This bug has been in XINS since version 0.207.
-
-* Build and release process:
-  - Added the possibility to release with a specific version
-    (e.g. 1.0.0Beta2).
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.207:
