@@ -58,6 +58,11 @@
 			<xsl:otherwise>depends</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	<!-- XXX temporary variable for the new call framework.
+	Also change the handleCall in src/java-server-framework/org/xins/server/Function.java
+	and execute 'ant java-server'
+	-->
+	<xsl:variable name="newCallFramework" select="false()" />
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
@@ -355,6 +360,17 @@
 							if="exists-{$api}-{$classname}">
 							<echo message="Not overwriting existing file: {$javaImplFile}" />
 						</target>
+						<!-- XXX java-skeleton -> java-server-framework/function_to_impl_java -->
+						<xsl:variable name="callFrameworkTransformation">
+							<xsl:choose>
+								<xsl:when test="$newCallFramework">
+									<xsl:value-of select="'java-server-framework/function_to_impl_java'" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="'java-skeleton/function_to_java'" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<target
 							name="-skeleton-impl-{$api}-{$function}"
 							depends="-impl-{$api}-{$function}-unavail"
@@ -362,7 +378,7 @@
 							<style
 							in="{$specsdir}/{$api}/{$function}.fnc"
 							out="{$javaImplFile}"
-							style="{$xins_home}/src/xslt/java-skeleton/function_to_java.xslt">
+							style="{$xins_home}/src/xslt/{$callFrameworkTransformation}.xslt">
 								<param name="xins_version" expression="{$xins_version}" />
 								<param name="project_home" expression="{$project_home}" />
 								<param name="project_file" expression="{$project_file}" />
@@ -411,10 +427,21 @@
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
+						<!-- XXX new call java-fundament -> java-server-framwork + added choose -->
+						<xsl:variable name="callFrameworkTransformation">
+							<xsl:choose>
+								<xsl:when test="$newCallFramework">
+									<xsl:value-of select="'java-server-framework'" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="'java-fundament'" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$javaDestDir}/{$packageAsDir}"
-						style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
+						style="{$xins_home}/src/xslt/{$callFrameworkTransformation}/function_to_java.xslt"
 						extension=".java"
 						includes="{$functionIncludes}">
 							<param name="xins_version" expression="{$xins_version}" />
@@ -425,6 +452,23 @@
 							<param name="api"          expression="{$api}"          />
 							<param name="api_file"     expression="{$api_file}"     />
 						</style>
+						<!-- Generation of the result code added. -->
+						<xsl:if test="$newCallFramework and string-length($resultcodeIncludes) &gt; 0">
+							<style
+							basedir="{$specsdir}/{$api}"
+							destdir="{$javaDestDir}/{$packageAsDir}"
+							style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
+							extension="Result.java"
+							includes="{$resultcodeIncludes}">
+								<param name="xins_version" expression="{$xins_version}" />
+								<param name="project_home" expression="{$project_home}" />
+								<param name="project_file" expression="{$project_file}" />
+								<param name="specsdir"     expression="{$specsdir}"     />
+								<param name="package"      expression="{$package}"      />
+								<param name="api"          expression="{$api}"          />
+								<param name="api_file"     expression="{$api_file}"     />
+							</style>
+						</xsl:if>
 
 						<!-- Copy all .java files to a single directory -->
 						<mkdir dir="{$javaCombinedDir}" />
