@@ -45,6 +45,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [ ] Log all events properly                                         [LOW PRIO]
 [x] Rename HTTPServiceCaller.Result to HTTPCallResult
 [ ] Describe HTTPCallRequest properly in describe() (from _asString).
+[x] Change class HTTPServiceCaller.Method to HTTPMethod
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException

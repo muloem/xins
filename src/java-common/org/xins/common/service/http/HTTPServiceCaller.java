@@ -76,22 +76,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Class fields
    //-------------------------------------------------------------------------
 
-   // TODO: Decide whether Method should be an inner class in this class or not
-
-   // TODO: Decide whether these Method constants should be in this class or
-   //       elsewhere
-
-   /**
-    * Constant representing the HTTP GET method.
-    */
-   public static final Method GET = new Method("GET");
-
-   /**
-    * Constant representing the HTTP POST method.
-    */
-   public static final Method POST = new Method("POST");
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -117,11 +101,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
    private static HttpMethod createMethod(String          url,
                                           HTTPCallRequest request) {
 
-      Method method = request.getMethod();
+      HTTPMethod method = request.getMethod();
       PropertyReader parameters = request.getParameters();
 
       // HTTP POST request
-      if (method == POST) {
+      if (method == HTTPMethod.POST) {
          PostMethod postMethod = new PostMethod(url);
 
          // Loop through the parameters
@@ -142,7 +126,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          return postMethod;
 
       // HTTP GET request
-      } else if (method == GET) {
+      } else if (method == HTTPMethod.GET) {
          GetMethod getMethod = new GetMethod(url);
 
          // Loop through the parameters
@@ -427,66 +411,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
-
-   /**
-    * HTTP method. Possible values for variable of this class:
-    *
-    * <ul>
-    *    <li>{@link #GET}
-    *    <li>{@link #POST}
-    * </ul>
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.115
-    */
-   public static final class Method extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Method</code> object with the specified name.
-       *
-       * @param name
-       *    the name of the method, for example <code>"GET"</code> or
-       *    <code>"POST"</code>; should not be <code>null</code>.
-       */
-      Method(String name) {
-         _name = name;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of this method. For example <code>"GET"</code> or
-       * <code>"POST"</code>. This field should never be <code>null</code>.
-       */
-      private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns a textual representation of this object. The implementation
-       * of this method returns the name of this HTTP method, like
-       * <code>"GET"</code> or <code>"POST"</code>.
-       *
-       * @return
-       *    the name of this method, e.g. <code>"GET"</code> or
-       *    <code>"POST"</code>; never <code>null</code>.
-       */
-      public String toString() {
-         return _name;
-      }
-   }
 
    /**
     * Executor of calls to an API.

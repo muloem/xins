@@ -43,8 +43,8 @@ public final class HTTPCallRequest extends CallRequest {
     * @throws IllegalArgumentException
     *    if <code>method == null || parameters == null</code>.
     */
-   public HTTPCallRequest(HTTPServiceCaller.Method method,
-                          PropertyReader           parameters)
+   public HTTPCallRequest(HTTPMethod     method,
+                          PropertyReader parameters)
    throws IllegalArgumentException {
       this(method, parameters, null);
    }
@@ -66,9 +66,9 @@ public final class HTTPCallRequest extends CallRequest {
     * @throws IllegalArgumentException
     *    if <code>method == null || parameters == null</code>.
     */
-   public HTTPCallRequest(HTTPServiceCaller.Method method,
-                          PropertyReader           parameters,
-                          HTTPStatusCodeVerifier   statusCodeVerifier)
+   public HTTPCallRequest(HTTPMethod             method,
+                          PropertyReader         parameters,
+                          HTTPStatusCodeVerifier statusCodeVerifier)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -105,7 +105,7 @@ public final class HTTPCallRequest extends CallRequest {
     * The HTTP method to use when executing this call request. This field
     * cannot be <code>null</code>, it is initialized during construction.
     */
-   private final HTTPServiceCaller.Method _method;
+   private final HTTPMethod _method;
 
    /**
     * The parameters for the HTTP call. This field cannot be
@@ -139,7 +139,7 @@ public final class HTTPCallRequest extends CallRequest {
     * @return
     *    the HTTP method, never <code>null</code>.
     */
-   public HTTPServiceCaller.Method getMethod() {
+   public HTTPMethod getMethod() {
       return _method;
    }
 

@@ -17,6 +17,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.http.HTTPCallRequest;
+import org.xins.common.service.http.HTTPMethod;
 import org.xins.common.service.http.HTTPServiceCaller;
 import org.xins.common.text.FastStringBuffer;
 
@@ -151,10 +152,10 @@ public final class XINSCallRequest extends CallRequest {
     *    contains a name that does not match the constraints for a parameter
     *    name, see {@link #PARAMETER_NAME_PATTERN_STRING}.
     */
-   public XINSCallRequest(String                   functionName,
-                          PropertyReader           parameters,
-                          boolean                  failOverAllowed,
-                          HTTPServiceCaller.Method method)
+   public XINSCallRequest(String         functionName,
+                          PropertyReader parameters,
+                          boolean        failOverAllowed,
+                          HTTPMethod     method)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -162,7 +163,7 @@ public final class XINSCallRequest extends CallRequest {
 
       // HTTP method defaults to POST
       if (method == null) {
-         method = HTTPServiceCaller.POST;
+         method = HTTPMethod.POST;
       }
 
       // Create PropertyReader for the HTTP parameters
