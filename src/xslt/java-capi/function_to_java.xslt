@@ -17,9 +17,9 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:include href="../function.xslt" />
-	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
+	<xsl:include href="../types.xslt"  />
 
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
@@ -29,13 +29,11 @@
 		</xsl:call-template>
 	</xsl:variable>
 
+	<xsl:variable name="functionName" select="//function/@name" />
+	<xsl:variable name="className" select="concat($functionName, 'Result')" />
+
 	<!-- TODO: Support session-based functions -->
 	<xsl:template match="function">
-		<xsl:variable name="className" select="concat(@name, 'Result')" />
-		<xsl:variable name="sessionBased">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:variable>
-
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
@@ -43,6 +41,8 @@
 		<xsl:text><![CDATA[;
 
 import org.xins.client.CallResult;
+import org.xins.client.InvalidCallResultException;
+import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -52,144 +52,234 @@ import org.xins.util.MandatoryArgumentChecker;
  */
 public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[ extends Object {
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
+		<xsl:text> extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
-   // Constructors
+   // Class functions
    //-------------------------------------------------------------------------
 
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------</xsl:text>
+		<xsl:call-template name="constructor" />
+		<xsl:text>
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------</xsl:text>
+		<xsl:apply-templates select="output/param" mode="field" />
+		<xsl:text>
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------</xsl:text>
+		<xsl:apply-templates select="output/param" mode="method" />
+		<xsl:text>
+}
+</xsl:text>
+	</xsl:template>
+
+	<xsl:template name="constructor">
+		<xsl:text><![CDATA[
    /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> instance.
     *
     * @param result
-    *    the call result to construct a new <code>]]></xsl:text>
+    *    the call result to construct a new
+    *    <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> from, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>result == null || result.isSuccess() == false</code>.
+    *
+    * @throws InvalidCallResultException
+    *    if the specified call result is not valid as a result from the
+    *    <em>]]></xsl:text>
+		<xsl:value-of select="$functionName" />
+		<xsl:text><![CDATA[</em> function.
     */
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[(CallResult result)
-   throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("result", result);
-      if (!result.isSuccess()) {
+		<xsl:text>(CallResult result)
+   throws IllegalArgumentException, InvalidCallResultException {
+      if (result == null) {
+         throw new IllegalArgumentException("result == null");
+      } else if (!result.isSuccess()) {
          throw new IllegalArgumentException("result.isSuccess() == false");
       }
+      String currentParam = "";
+      try {
+</xsl:text>
+		<xsl:apply-templates select="output/param" mode="setfield" />
+		<xsl:text> 
+      } catch (TypeValueException exception) {
+         throw new InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
+      }
+   }</xsl:text>
+	</xsl:template>
 
-      _result = result;
-   }
+	<xsl:template match="function/output/param" mode="setfield">
+		<!-- TODO: Use a named template to determine the base type -->
+		<xsl:variable name="baseType">
+			<xsl:choose>
+				<xsl:when test="starts-with(@type,'_')">
+					<xsl:value-of select="@type" />
+				</xsl:when>
+				<!-- TODO: Interpret 'extends' -->
+				<xsl:otherwise>_text</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+						<xsl:value-of select="@required" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:text>
+         currentParam = "</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>";
+         _</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text> = </xsl:text>
+		<xsl:call-template name="javatype_from_string_for_type">
+			<xsl:with-param name="api"      select="$api" />
+			<xsl:with-param name="specsdir" select="$api" />
+			<xsl:with-param name="required" select="$required" />
+			<xsl:with-param name="type"     select="$baseType" />
+			<xsl:with-param name="variable" select="'result.getParameter(currentParam)'" />
+		</xsl:call-template>
+		<xsl:text>;</xsl:text>
+	</xsl:template>
 
+	<xsl:template match="function/output/param" mode="field">
+		<!-- TODO: Use a named template to determine the base type -->
+		<xsl:variable name="baseType">
+			<xsl:choose>
+				<xsl:when test="starts-with(@type,'_')">
+					<xsl:value-of select="@type" />
+				</xsl:when>
+				<!-- TODO: Interpret 'extends' -->
+				<xsl:otherwise>_text</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="javatype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="type"     select="$baseType" />
+			</xsl:call-template>
+		</xsl:variable>
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
+		<xsl:text>
 
-   /**
-    * The <code>CallResult</code> this object is based on. The value of this
-    * field cannot be <code>null</code>.
-    */
-   private final CallResult _result;
+   private final </xsl:text>
+		<xsl:value-of select="$javatype" />
+		<xsl:text> _</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>;</xsl:text>
+	</xsl:template>
 
+	<xsl:template match="function/output/param" mode="method">
+		<xsl:variable name="baseType">
+			<xsl:choose>
+				<xsl:when test="starts-with(@type,'_')">
+					<xsl:value-of select="@type" />
+				</xsl:when>
+				<!-- TODO: Interpret 'extends' -->
+				<xsl:otherwise>_text</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="methodName">
+			<xsl:choose>
+				<xsl:when test="$baseType = '_boolean'">is</xsl:when>
+				<xsl:otherwise>get</xsl:otherwise>
+			</xsl:choose>
+			<xsl:call-template name="hungarianUpper">
+				<xsl:with-param name="text">
+					<xsl:value-of select="@name" />
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="javatype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="type"     select="$baseType" />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+						<xsl:value-of select="@required" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:for-each select="output/param">
-			<xsl:variable name="methodName">
-				<xsl:choose>
-					<xsl:when test="@type = 'boolean'">is</xsl:when>
-					<xsl:otherwise>get</xsl:otherwise>
-				</xsl:choose>
-				<xsl:call-template name="hungarianUpper">
-					<xsl:with-param name="text">
-						<xsl:value-of select="@name" />
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="returnType">
-				<xsl:choose>
-					<xsl:when test="@type = 'boolean' and @required = 'true'">boolean</xsl:when>
-					<xsl:when test="@type = 'boolean'">java.lang.Boolean</xsl:when>
-					<xsl:otherwise>java.lang.String</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-
-			<xsl:text><![CDATA[
+		<xsl:text><![CDATA[
 
    /**
     * Gets the value of the ]]></xsl:text>
-			<xsl:choose>
-				<xsl:when test="@required = 'true'">
-					<xsl:text>required</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>optional</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text><![CDATA[ output parameter <em>]]></xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em>.
+		<xsl:choose>
+			<xsl:when test="$required = 'true'">
+				<xsl:text>required</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>optional</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text><![CDATA[ output parameter <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em>.
     *
     * @return
     *    the value of the <em>]]></xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
-			<xsl:choose>
-				<xsl:when test="$returnType = 'boolean'">.</xsl:when>
-				<xsl:when test="@required = 'true'">
-					<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text><![CDATA[, or <code>null</code> if the parameter is not set.]]></xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text><![CDATA[
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
+		<xsl:choose>
+			<xsl:when test="not($baseType = '_text')">.</xsl:when>
+			<xsl:when test="@required = 'true'">
+				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text><![CDATA[, or <code>null</code> if the parameter is not set.]]></xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text><![CDATA[
     */
    public ]]></xsl:text>
-			<xsl:value-of select="$returnType" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="$methodName" />
-			<xsl:text>() {
-      String value = _result.getParameter("</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>");</xsl:text>
-			<xsl:choose>
-				<xsl:when test="$returnType = 'boolean'">
-					<xsl:text>
-      return "true".equals(value);
-					</xsl:text>
-				</xsl:when>
-				<xsl:when test="$returnType = 'java.lang.Boolean'">
-					<xsl:text>
-      if (value == null) {
-         return null;
-      } else {
-         return "true".equals(value) ? new Boolean(true) : new Boolean(false);
-      }</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>
-      return value;</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>
+		<xsl:value-of select="$javatype" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$methodName" />
+		<xsl:text>() {
+      return _</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>;
    }</xsl:text>
-		</xsl:for-each>
-		<xsl:text>
-}
-</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>
