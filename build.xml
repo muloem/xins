@@ -847,19 +847,31 @@ ${sf.file}</fail>
 	</target>
 
 	<target
-	name="do-upload-package"
+	name="do-upload-package-www"
 	depends="-init"
-	description="Uploads the package to both the web site and to the SourceForge FTP server">
+	description="Uploads the package to the web site">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<scp file="build/${package-basename}.tgz"
 		     todir="${www.target}/"
 		     password="${sf.password}" trust="true" />
+	</target>
+
+	<target
+	name="do-upload-package-ftp"
+	depends="-init"
+	description="Uploads the package to the SourceForge FTP server"
+	unless="no-ftp">
 		<echo message="Uploading ${title} ${version} package to SourceForge FTP server" />
 		<ftp server="upload.sf.net" remotedir="incoming"
 		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
 			<fileset dir="build" includes="${package-basename}.tgz" />
 		</ftp>
 	</target>
+
+	<target
+	name="do-upload-package"
+	depends="do-upload-package-www,do-upload-package-ftp"
+	description="Uploads the package to both the web site and to the SourceForge FTP server" />
 
 	<target
 	name="upload-package"
@@ -995,13 +1007,11 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="The targets marked with an asterisk (*) need '-lib lib' to be"       />
 		<echo message="passed on the command line:"                                         />
 		<echo                                                                               />
-		<echo message="Optional options for the 'release' target:"                          />
-		<echo message="1) -Dforce=true         : Bypass the -dev suffix check"              />
-		<echo message="2) -Dmajor.release=true : Bypass version update"                     />
-		<echo                                                                               />
-		<echo message="Optional options for the upload-related targets, except the"         />
-		<echo message="package and change history file uploading:"                          />
-		<echo message="1) -Dno-upload=true     : Do not actually upload"                    />
+		<echo message="Supported options (can change at any time):"                         />
+		<echo message="1) -Dforce=true         : Skip -dev suffix check on release"         />
+		<echo message="2) -Dmajor.release=true : Skip version update on release"            />
+		<echo message="3) -Dno-upload=true     : Skip upload except package and changes"    />
+		<echo message="4) -Dno-ftp=true        : Skip FTP upload actions"                   />
 		<echo                                                                               />
 		<echo message="To create a release the following requirements apply:"               />
 		<echo message="1) CVS module 'xins-docs' must be checked out in parent directory"   />
