@@ -63,7 +63,7 @@ public final class BasicSessionID extends Type {
       String part2 = string.substring(9);
 
       try {
-         return Long.parseLong(part2);
+         return LongUtils.parseHexString(part2);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
