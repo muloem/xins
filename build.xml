@@ -237,7 +237,7 @@
 
 	<target name="src-package" depends="-prepare" description="Builds an archive with source files and dependencies">
 		<tar tarfile="build/${src-package-tarfile}">
-			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,COPYRIGHT,README,src/**/*,depends/**/*" />
+			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,CHANGES,COPYRIGHT,README,src/**/*,depends/**/*" />
 		</tar>
 		<gzip zipfile="build/${src-package-tarfile}.gz" src="build/${src-package-tarfile}" />
 		<delete file="build/${src-package-tarfile}" />
@@ -245,7 +245,7 @@
 
 	<target name="bin-package" depends="javadoc,java-server-framework" description="Builds a complete distribution archive">
 		<tar tarfile="build/${bin-package-tarfile}">
-			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,src/**/*,depends/**,build/javadoc/**,build/${name}.jar" />
+			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,CHANGES,COPYRIGHT,README,src/**/*,depends/**,build/javadoc/**,build/${name}.jar" />
 		</tar>
 		<gzip zipfile="build/${bin-package-tarfile}.gz" src="build/${bin-package-tarfile}" />
 		<delete file="build/${bin-package-tarfile}" />
