@@ -72,27 +72,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Checks the arguments for the constructor and returns the
-    * <code>XINSServiceCaller</code>.
-    *
-    * @param caller
-    *    the {@link org.xins.client.XINSServiceCaller}, cannot be
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>caller == null</code>.
-    */
-   private static final org.xins.client.XINSServiceCaller checkArguments(org.xins.client.XINSServiceCaller caller)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      org.xins.common.MandatoryArgumentChecker.check("caller", caller);
-
-      return caller;
-   }
-
-
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
