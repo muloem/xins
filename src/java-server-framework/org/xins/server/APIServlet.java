@@ -64,6 +64,12 @@ implements Servlet {
     */
    private static final int DISPOSED = 4;
 
+   /**
+    * The name of the initialization property that specifies the name of the
+    * API class to load.
+    */
+   private static final String API_CLASS_PROPERTY = "org.xins.api.class";
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -91,7 +97,7 @@ implements Servlet {
       } catch (Replacer.Exception exception) {
          configureLoggerFallback();
          String message = "Failed to apply replacements to servlet initialization settings.";
-         Library.LIFESPAN_LOG.error(message, exception);
+         Library.LIFESPAN_LOG.fatal(message, exception);
          throw new ServletException(message, exception);
       }
 
@@ -151,9 +157,11 @@ implements Servlet {
       API api;
 
       // Determine the API class
-      String apiClassName = config.getInitParameter("org.xins.api.class");
+      String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
       if (apiClassName == null || apiClassName.trim().length() < 1) {
-         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
+         final String message = "API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
+         Library.LIFESPAN_LOG.fatal(message);
+         throw new ServletException(message);
       }
 
       // Load the API class
@@ -161,8 +169,8 @@ implements Servlet {
       try {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
-         String message = "Failed to load API class: \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.error(message, e);
+         String message = "Failed to load API class set in initialization parameter \"" + API_CLASS_PROPERTY + "\": \"" + apiClassName + "\".";
+         Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
@@ -172,7 +180,7 @@ implements Servlet {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
          String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.error(message, e);
+         Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
@@ -181,7 +189,7 @@ implements Servlet {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
          String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.error(message, e);
+         Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
       if (Library.LIFESPAN_LOG.isDebugEnabled()) {
@@ -196,14 +204,15 @@ implements Servlet {
       try {
          api.init(settings);
       } catch (Throwable e) {
+         String message = "Failed to initialize API.";
+         Library.LIFESPAN_LOG.fatal(message, e);
+
          try {
             api.destroy();
          } catch (Throwable e2) {
             Library.LIFESPAN_LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + api.getClass().getName() + ". Ignoring.", e2);
          }
 
-         String message = "Failed to initialize API.";
-         Library.LIFESPAN_LOG.error(message, e);
          throw new ServletException(message);
       }
 
