@@ -6,6 +6,13 @@ CHANGES INTRODUCED IN XINS 0.192:
     only be set. The connection time-out is assumed to be the same as the
     socket time-out (specified in the ServiceDescriptor class).
 
+* XINS/Java Server Framework:
+  - Automatically generating a diagnostic context identifier if none is given
+    via the _context parameter. The generated identifier always consists of
+    exactly 16 hex digits, which represent a random 64-bit number. It is
+    currently not possible to change the algorithm and have a different
+    identifier generated.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
 
