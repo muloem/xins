@@ -250,11 +250,13 @@ public abstract class ServiceCaller extends Object {
     * @throws SecurityException
     *    if the thread did not finish within the total time-out period, but
     *    the interruption of the thread was disallowed (see
-    *    {@link Thread#interrupt()}.
+    *    {@link Thread#interrupt()}).
     *
     * @throws TimeOutException
     *    if the thread did not finish within the total time-out period and was
     *    interrupted.
+    *
+    * @since XINS 0.195
     */
    protected final void controlTimeOut(Thread           thread,
                                        TargetDescriptor descriptor)
