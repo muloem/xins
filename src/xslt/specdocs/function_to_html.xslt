@@ -656,11 +656,6 @@
 							</xsl:if>
 							<xsl:for-each select="$example-inputparams">
 								<xsl:text>&amp;</xsl:text>
-								<xsl:attribute name="title">
-									<xsl:value-of select="../@name" />
-									<xsl:text>: </xsl:text>
-									<xsl:value-of select="text()" />
-								</xsl:attribute>
 								<xsl:value-of select="../@name" />
 								<xsl:text>=</xsl:text>
 								<xsl:call-template name="urlencode">
