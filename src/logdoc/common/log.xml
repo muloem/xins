@@ -11,7 +11,7 @@
 
 	<translation-bundle locale="en_US" />
 
-	<group id="type" name="Type logdoc">
+	<group id="type" name="Types">
 		<entry id="3100" level="ERROR" exception="true">
 			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
 			<param name="pattern_matcher" />
@@ -20,7 +20,7 @@
 		</entry>
 	</group>
 
-	<group id="utilities" name="Logdoc about utilities classes">
+	<group id="utilities" name="Utilities classes">
 		<entry id="3200" level="INFO">
 			<description>Starting watch thread for a file.</description>
 			<param name="file" nullable="false" />
@@ -50,7 +50,7 @@
 		</entry>
 	</group>
 
-	<group id="io_connection" name="Logdoc about connections">
+	<group id="io_connection" name="I/O operations">
 		<entry id="3300" level="ERROR" exception="true">
 			<description>I/O error while attempting to close input stream. Ignoring.</description>
 		</entry>
@@ -125,7 +125,7 @@
 		</entry>
 	</group>
 
-	<group id="expiry" name="Logdoc about the expiry folder and the doorman">
+	<group id="expiry" name="Expiry-related classes">
 		<entry id="3400" level="DEBUG">
 			<description>Some expired entries remain.</description>
 			<param name="folder_name" nullable="false" />
@@ -218,5 +218,4 @@
 			<param name="writer" nullable="false" />
 		</entry>
 	</group>
-
 </log>
