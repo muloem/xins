@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.181:
 * Build and release process:
   - Put the correct license files in the release.
 
+* Specification:
+  - Removed the extends attribute for the types.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.180:
 

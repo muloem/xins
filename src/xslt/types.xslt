@@ -286,32 +286,7 @@
 				<xsl:value-of select="$type" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:variable name="typefile">
-					<xsl:call-template name="file_for_type">
-						<xsl:with-param name="specsdir" select="$specsdir" />
-						<xsl:with-param name="api"      select="$api"      />
-						<xsl:with-param name="type"     select="$type"     />
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:variable name="supertype">
-					<xsl:value-of select="document($typefile)/type/@extends" />
-				</xsl:variable>
-
-				<xsl:choose>
-					<xsl:when test="starts-with($supertype, '_')">
-						<xsl:value-of select="$supertype" />
-					</xsl:when>
-					<xsl:when test="string-length($supertype) &gt; 0">
-						<xsl:call-template name="basetype_for_type">
-							<xsl:with-param name="api"      select="$api"       />
-							<xsl:with-param name="specsdir" select="$specsdir"  />
-							<xsl:with-param name="type"     select="$supertype" />
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>_text</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:text>_text</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
