@@ -148,6 +148,7 @@ public class AccessRuleTests extends TestCase {
       AccessRule rule = AccessRule.parseAccessRule(buffer.toString());
       assertNotNull(rule);
       assertEquals(allow, rule.isAllowRule());
+      assertEquals(true, rule.match(ip, "_GetVersion"));
 
       String asString = (allow ? "allow" : "deny") + ' ' + ip + '/' + mask + ' ' + pattern;
       assertEquals(asString, rule.toString());
