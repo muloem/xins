@@ -16,6 +16,8 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
 
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+	<xsl:variable name="xins_jar"     select="concat($xins_home,    '/build/xins.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:choose>
 			<xsl:when test="//project/@specsdir">
@@ -24,7 +26,6 @@
 			<xsl:otherwise>src/specs</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
@@ -58,8 +59,8 @@
 
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
-						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.fnc" />
-						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.typ" />
+						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.fnc"         />
+						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.typ"         />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
 					<style
@@ -67,7 +68,7 @@
 					out="{$project_home}/build/specdocs/{$api}/index.html"
 					style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
 						<param name="project_home" expression="{$project_home}" />
-						<param name="specsdir"     expression="{$specsdir}"       />
+						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<style
 					basedir="{$project_home}/{$specsdir}"
@@ -75,7 +76,7 @@
 					style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
 					includes="{$api}/*.fnc">
 						<param name="project_home" expression="{$project_home}" />
-						<param name="specsdir"     expression="{$specsdir}"       />
+						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<style
 					basedir="{$project_home}/{$specsdir}"
@@ -83,7 +84,7 @@
 					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
 					includes="{$api}/*.typ">
 						<param name="project_home" expression="{$project_home}" />
-						<param name="specsdir"     expression="{$specsdir}"       />
+						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
@@ -93,8 +94,8 @@
 						includes="{$api}/*.fnc"
 						extension="-testform-{@id}.html">
 							<param name="project_home" expression="{$project_home}" />
-							<param name="specsdir"     expression="{$specsdir}"       />
-							<param name="environment"  expression="{@id}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="environment"  expression="{@id}"           />
 						</style>
 					</xsl:for-each>
 				</target>
@@ -131,12 +132,14 @@
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
+				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
+				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
 
 				<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
 					<mkdir dir="{$project_home}/build/java-fundament/{$packageAsDir}" />
 					<style
 					in="{$api_file}"
-					out="{$project_home}/build/java-fundament/{$packageAsDir}/APIImpl.java"
+					out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
 					style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
@@ -145,7 +148,7 @@
 					<!-- TODO: Include only functions mentioned in api.xml -->
 					<style
 					basedir="{$project_home}/{$specsdir}/{$api}"
-					destdir="{$project_home}/build/java-fundament/{$packageAsDir}"
+					destdir="{$javaDestDir}/{$packageAsDir}"
 					style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
 					includes="*.fnc"
 					extension=".java">
@@ -155,6 +158,14 @@
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
+					<mkdir dir="{$classesDestDir}" />
+					<javac
+					srcdir="{$javaDestDir}"
+					destdir="{$classesDestDir}"
+					debug="true"
+					deprecation="true">
+						<classpath path="{$xins_jar}" />
+					</javac>
 				</target>
 			</xsl:for-each>
 
