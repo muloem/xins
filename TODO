@@ -87,4 +87,5 @@ MISCELLANEOUS
   create a release on the SourceForge site, then add the corresponding file,
   then set the type of the file to 'tar.gz' and finally let SourceForge send
   the notification e-mail.
-
+* Have DTD or XML Schema files and use these to check that the specification
+  files are valid.
