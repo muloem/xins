@@ -8,6 +8,10 @@ package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.service.CallException;
+import org.xins.common.service.CallExceptionList;
+import org.xins.common.service.TargetDescriptor;
+
 /**
  * Base class for CAPI call result classes.
  *
@@ -74,5 +78,45 @@ extends Object {
     */
    XINSCallResult getXINSCallResult() {
       return _result;
+   }
+
+   /**
+    * Returns the target for which the call succeeded.
+    *
+    * @return
+    *    the {@link TargetDescriptor} for which the call succeeded, not
+    *    <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public final TargetDescriptor succeededTarget() {
+      return _result.getSucceededTarget();
+   }
+
+   /**
+    * Returns the call duration, in milliseconds.
+    *
+    * @return
+    *    the duration of the succeeded call, in milliseconds, guaranteed to
+    *    be a non-negative number.
+    *
+    * @since XINS 1.1.0
+    */
+   public final long duration() {
+      // TODO: Duration of succeeded call or of the complete attempt?
+      return _result.getDuration();
+   }
+
+   /**
+    * Returns the list of <code>CallException</code>s.
+    *
+    * @return
+    *    the {@link CallException}s, collected in a {@link CallExceptionList}
+    *    object, or <code>null</code> if the first call attempt succeeded.
+    *
+    * @since XINS 1.1.0
+    */
+   public final CallExceptionList exceptions() {
+      return _result.getExceptions();
    }
 }
