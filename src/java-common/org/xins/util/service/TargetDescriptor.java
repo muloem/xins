@@ -128,7 +128,7 @@ public final class TargetDescriptor extends Descriptor {
       // Set fields
       _url     = url;
       _timeOut = timeOut;
-      _crc32   = computeCRC32(url);
+      _crc     = computeCRC32(url);
    }
 
 
@@ -150,7 +150,7 @@ public final class TargetDescriptor extends Descriptor {
    /**
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
-   private final int _crc32;
+   private final int _crc;
 
 
    //-------------------------------------------------------------------------
@@ -195,8 +195,8 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the CRC-32 checksum.
     */
-   public int getCRC32() {
-      return _crc32;
+   public int getCRC() {
+      return _crc;
    }
 
    public java.util.Iterator iterateTargets() {
