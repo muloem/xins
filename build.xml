@@ -8,12 +8,20 @@
 
 <project name="xins" default="all" basedir=".">
 
+	<!--
+	Defines the 'junit' task. This target fails if the required class for
+	this task is not available.
+	-->
 	<target name="-junit-task">
 		<available classname="junit.framework.TestListener" property="junit.available" />
 		<fail unless="junit.available" message="JUnit not available" />
 		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
 	</target>
 
+	<!--
+	Defines the 'checkstyle' task. This target fails if the required class
+	for this task is not available.
+	-->
 	<target name="-checkstyle-task">
 		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
 			<classpath>
@@ -28,12 +36,26 @@
 		</taskdef>
 	</target>
 
+	<!--
+	Defines the 'j2h' (Java2HTML) task. This target fails if the required
+	class for this task is not available.
+	-->
 	<target name="-j2h-task">
 		<available classname="j2h" property="j2h.available" />
 		<fail unless="j2h.available" message="Java2HTML not available" />
 		<taskdef name="java2html" classname="com.java2html.Java2HTMLTask"/>
 	</target>
 
+	<!--
+	Determines the current XINS version by reading this information from
+	the version file.
+
+	By default the version file is '.version.properties'. This can be
+	overridden by setting the property 'version.file' to the file to read
+	from instead.
+
+	This target fails if the required properties are not set in the file.
+	-->
 	<target name="-load-version">
 		<property name="version.file" value=".version.properties" />
 		<property file="${version.file}" />
@@ -45,9 +67,28 @@
 				<isset property="version.build" />
 			</and>
 		</condition>
-		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
+		<fail unless="version.isset">
+Properties 'version.major', 'version.middle', 'version.minor' and
+'version.build' must be set. These are normally read from the version
+properties file.
+
+Please do either of the following:
+1) add the missing properties to the file;
+2) specify what file to read from instead by setting the 'version.file'
+   property on the command line;
+3) specify the missing properties manually, on the command line.
+
+The current version properties file used is:
+${version.file}</fail>
 	</target>
 
+	<!--
+	Determines the SourceForge account with the corresponding password by
+	reading the properties 'sf.user' and 'sf.password' from a file.
+
+	By default, this information
+	-->
+	<target name="load-sfproperties" depends="-load-sfproperties" />
 	<target name="-load-sfproperties">
 		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
 		<available property="sf.file.exists" file="${sf.file}" />
@@ -59,7 +100,18 @@
 				<isset property="sf.password" />
 			</and>
 		</condition>
-		<fail message="The property sf.user or sf.password is not set." unless="sf.isset" />
+		<fail unless="sf.isset">
+Properties 'sf.user' and 'sf.password' must be set. These are normally read
+from the SourceForge properties file.
+
+Please do either of the following:
+1) add the missing properties to the file;
+2) specify what file to read from instead by setting the 'sf.file'
+   property on the command line;
+3) specify the missing properties manually, on the command line.
+
+The current SourceForge properties file used is:
+${sf.file}</fail>
 	</target>
 
 	<target name="-init-release-properties" depends="-load-version">
