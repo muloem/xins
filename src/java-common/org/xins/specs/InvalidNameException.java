@@ -41,8 +41,10 @@ public final class InvalidNameException extends Exception {
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null</code>.
     */
-   public InvalidNameException(SpecType type, String name)
+   InvalidNameException(SpecType type, String name)
    throws IllegalArgumentException {
+
+      // TODO: super(createMessage(type, name);
 
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "name", name);
