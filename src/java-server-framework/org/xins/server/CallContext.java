@@ -687,9 +687,7 @@ implements Responder, Log {
       }
 
       // Check argument
-      if (resultCode == null) {
-         throw new IllegalArgumentException("resultCode == null");
-      } else if (resultCode.getSuccess()) {
+      if (resultCode != null && resultCode.getSuccess()) {
          throw new IllegalArgumentException("resultCode.getSuccess() == true");
       }
 
