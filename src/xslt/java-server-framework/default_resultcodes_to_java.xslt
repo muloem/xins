@@ -24,11 +24,11 @@ import java.util.List;
 /**
  * Constants for the default result codes.
  *
- * @version </xsl:text>
+ * @version XML file (</xsl:text>
 		<xsl:value-of select="@rcsversion" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@rcsdate" />
-		<xsl:text><![CDATA[
+		<xsl:text><![CDATA[); XSLT file ($Revision$ $Date$)
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
  * @since XINS 0.15
