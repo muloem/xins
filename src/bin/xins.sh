@@ -59,8 +59,6 @@ if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template}"
 	exit 1
 fi
-#	(echo "${prog}: ERROR: Cannot create temporary file." ; exit 1)
-echo ">> Created temporary file: ${tmpout}"
 echo -n ">> Generating `basename ${out}`..."
 ant -f ${xins_home}/src/ant/transform.xml \
     -Din=${in} \
