@@ -263,7 +263,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       long duration;
       try {
          controlTimeOut(executor, target);
-         duration = System.currentTimeMillis() - start;
          succeeded = true;
 
       // Total time-out exceeded
@@ -273,6 +272,10 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new TotalTimeOutException(request, target, duration);
 
       } finally {
+
+         // Determine the call duration
+         duration = System.currentTimeMillis() - start;
+
          if (succeeded == false) {
 
             // If there was an exception already, don't allow another one to
@@ -286,8 +289,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                Log.log_2007(exception, url, functionName, serParams, exception.getClass().getName());
             }
          }
-
-         duration = System.currentTimeMillis() - start;
       }
 
       // Read response body (mandatory operation)
@@ -296,7 +297,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       try {
          xmlStream = method.getResponseBodyAsStream();
       } catch (IOException ioe) {
-         // will be catch later
+         // Fall through. This will dealt with further down the code.
       }
 
       // Release the connection
@@ -340,19 +341,25 @@ public final class XINSServiceCaller extends ServiceCaller {
             Log.log_2017(exception, duration, url, functionName, serParams);
             throw new CallIOException(request, target, duration, (IOException) exception);
 
+         /* TODO: (1) add the lines below
+         } else {
+            Log.log_2018(exception, duration, url, functionName, serParams);
+            throw new UnexpectedExceptionException(request, target, duration, exception);
+         }
+
+         // TODO: (2) remove the lines below
+         */
+
          } else if (exception instanceof RuntimeException) {
             Log.log_2018(exception, duration, url, functionName, serParams);
-            // TODO: Throw CallException
             throw (RuntimeException) exception;
 
          } else if (exception instanceof Error) {
             Log.log_2018(exception, duration, url, functionName, serParams);
-            // TODO: Throw CallException
             throw (Error) exception;
          }
 
          // Unknown kind of exception caught
-         // XXX: Could this be improved?
          throw new Error(exception);
       }
 
