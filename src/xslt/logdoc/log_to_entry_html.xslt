@@ -167,13 +167,13 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="message/value-of-param">
+	<xsl:template match="translation/value-of-param">
 		<span class="value-of-param">
 			<xsl:value-of select="@name" />
 		</span>
 	</xsl:template>
 
-	<xsl:template match="message/value-of-param[@format='quoted']">
+	<xsl:template match="translation/value-of-param[@format='quoted']">
 		<span class="value-of-param">
 			<xsl:text>"</xsl:text>
 			<xsl:value-of select="@name" />
