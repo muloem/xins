@@ -8,8 +8,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Monitor that acts like a doorman. It implements a variation of the
@@ -46,6 +49,32 @@ public final class Doorman extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Quotes the specified string, or returns <code>"(null)"</code> if it is
+    * <code>null</code>.
+    *
+    * <p>TODO: Move to class <code>org.xins.common.text.TextUtils</code>.
+    *
+    * @param s
+    *    the input string, or <code>null</code>.
+    *
+    * @return
+    *    if <code>s != null</code> the quoted string, otherwise the string
+    *    <code>"(null)"</code>.
+    */
+   private static final String quote(String s) {
+      if (s != null) {
+         FastStringBuffer buffer = new FastStringBuffer(s.length() + 2);
+         buffer.append('"');
+         buffer.append(s);
+         buffer.append('"');
+         return buffer.toString();
+      } else {
+         return "(null)";
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -76,7 +105,7 @@ public final class Doorman extends Object {
    throws IllegalArgumentException {
 
       // TRACE: Entering constructor
-      String traceDetail = "name=" + TextUtils.quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
+      String traceDetail = "name=" + quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
       Log.log_3000(DOORMAN_CLASSNAME, traceDetail);
 
       // Check preconditions
