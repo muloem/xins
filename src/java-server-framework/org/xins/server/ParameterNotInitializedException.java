@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Exception that indicates that it is attempted to get the value of a
  * parameter that has not been set.
