@@ -49,6 +49,12 @@ public final class Library extends Object {
     */
    static final Logger RUNTIME_LOG = Logger.getLogger("org.xins.server.runtime");
 
+   /**
+    * The logging category used by the XINS/Java Server Framework core during
+    * runtime for ACL-related messages. This field is not <code>null</code>.
+    */
+   static final Logger RUNTIME_ACL_LOG = Logger.getLogger("org.xins.server.runtime.acl");
+
 
    //-------------------------------------------------------------------------
    // Class functions
