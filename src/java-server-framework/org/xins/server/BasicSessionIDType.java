@@ -194,6 +194,9 @@ public final class BasicSessionIDType extends SessionIDType {
       /**
        * Constructs a new <code>SessionID</code> object with the specified ID
        * number.
+       *
+       * @param id
+       *    the numeric value for the identifier.
        */
       private SessionID(long id) {
          _id = id;
