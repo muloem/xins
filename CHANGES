@@ -4,7 +4,14 @@ CHANGES INTRODUCED IN XINS 0.198:
 * XINS/Java Common Library:
   - Removed reasonFor(Throwable) method and it's brother
     reasonForImpl(Throwable) from class ServiceCaller and from
-    LDAPServiceCaller. These methods is no longer used.
+    LDAPServiceCaller. These methods are no longer used.
+  - Removed the getException() methods from the following classes in the
+    package org.xins.common.manageable. These methods were was deprecated
+    since 0.193, in favor of the Throwable.getCause() method, introduced in
+    Java 1.4:
+    . BootstrapException
+    . DeinitializationException
+    . InitializationException
 
 * Unit tests:
   - Added BasicPropertyReader tests.

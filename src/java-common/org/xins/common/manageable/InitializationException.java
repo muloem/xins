@@ -93,17 +93,4 @@ extends Exception {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the wrapped exception, if any.
-    *
-    * @return
-    *    the wrapped exception, can be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.193. Use {@link #getCause()} instead.
-    */
-   public final Throwable getException() {
-      return getCause();
-   }
 }
