@@ -155,15 +155,17 @@ public final class ]]></xsl:text>
          }
       }</xsl:text>
 		</xsl:if>
-		<xsl:text>
+		<xsl:if test="output/param">
+			<xsl:text>
       try {
 </xsl:text>
-		<xsl:apply-templates select="output/param" mode="setfield" />
-		<xsl:text> 
+			<xsl:apply-templates select="output/param" mode="setfield" />
+			<xsl:text> 
       } catch (TypeValueException exception) {
          throw new InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
       }
    }</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="setfield">
