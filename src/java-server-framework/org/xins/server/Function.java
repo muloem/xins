@@ -189,14 +189,34 @@ implements DefaultResultCodes {
    private long _unsuccessfulMin = Long.MAX_VALUE;
 
    /**
-    * The maximum time a successful call took.
+    * The start time of the successful call that took the shortest.
+    */
+   private long _successfulMinStart;
+
+   /**
+    * The start time of the unsuccessful call that took the shortest.
+    */
+   private long _unsuccessfulMinStart;
+
+   /**
+    * The duration of the successful call that took the longest.
     */
    private long _successfulMax;
 
    /**
-    * The maximum time an unsuccessful call took.
+    * The duration of the unsuccessful call that took the longest.
     */
    private long _unsuccessfulMax;
+
+   /**
+    * The start time of the successful call that took the longest.
+    */
+   private long _successfulMaxStart;
+
+   /**
+    * The start time of the unsuccessful call that took the longest.
+    */
+   private long _unsuccessfulMaxStart;
 
 
    //-------------------------------------------------------------------------
@@ -316,6 +336,8 @@ implements DefaultResultCodes {
             _successfulDuration += duration;
             _successfulMin = _successfulMin > duration ? duration : _successfulMin;
             _successfulMax = _successfulMax < duration ? duration : _successfulMax;
+            _successfulMinStart = (_successfulMin == duration) ? start : _successfulMinStart;
+            _successfulMaxStart = (_successfulMax == duration) ? start : _successfulMaxStart;
          }
       } else {
          if (debugEnabled) {
@@ -340,6 +362,8 @@ implements DefaultResultCodes {
             _unsuccessfulDuration += duration;
             _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
             _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
+            _unsuccessfulMinStart = (_unsuccessfulMin == duration) ? start : _unsuccessfulMinStart;
+            _unsuccessfulMaxStart = (_unsuccessfulMax == duration) ? start : _unsuccessfulMaxStart;
          }
       }
 
