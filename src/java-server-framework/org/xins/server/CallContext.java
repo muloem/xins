@@ -235,7 +235,11 @@ implements Responder {
 
       // Check arguments
       if (_request != null) {
-         return _request.getParameter("function");
+         String function = _request.getParameter("_function");
+         if (function == null) {
+            function = _request.getParameter("function");
+         }
+         return function;
       } else {
          return null;
       }
