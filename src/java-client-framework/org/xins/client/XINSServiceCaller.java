@@ -33,6 +33,8 @@ import org.xins.common.text.ParseException;
  */
 public final class XINSServiceCaller extends ServiceCaller {
 
+   // TODO: Allow configuration of HTTP call method (GET / POST)
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -228,6 +230,10 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Construct new HttpClient object
       HttpClient client = new HttpClient();
+
+      // Configure connection time-out and socket time-out
+      // TODO: Configure connection time-out and socket time-out separately
+      client.setConnectionTimeout(target.getTimeOut());
       client.setTimeout(target.getTimeOut());
 
       // Construct the method object
