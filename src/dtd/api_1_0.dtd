@@ -4,15 +4,22 @@
 <!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN"
 "http://xins.sourceforge.net/dtd/api_1_0.dtd">
 -->
-<!ELEMENT api (description?, function*, type*, resultcode*, environment*, impl-java?)>
+<!ELEMENT api (description?, session-based?, function*, type*, resultcode*, environment*, impl-java?)>
 <!ATTLIST api
           name       CDATA #REQUIRED
           owner      CDATA #REQUIRED
+	  sessionIDType CDATA #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
+<!ELEMENT session-based EMPTY>
+<!ATTLIST session-based
+          timeout    CDATA #REQUIRED
+          precision  CDATA #IMPLIED
+          shared-sessions CDATA #REQUIRED
+>
 <!ELEMENT function EMPTY>
 <!ATTLIST function
           name       CDATA #REQUIRED
@@ -33,7 +40,7 @@
           id         CDATA #REQUIRED
           url        CDATA #REQUIRED
 >
-<!ELEMENT impl-java (dependency*)>
+<!ELEMENT impl-java (dependency*, instance*, param*)>
 <!ATTLIST impl-java
           mapping    CDATA #REQUIRED
 >
@@ -41,4 +48,14 @@
 <!ATTLIST dependency
           dir        CDATA #REQUIRED
           includes   CDATA #IMPLIED
+>
+<!ELEMENT instance EMPTY>
+<!ATTLIST instance
+          name        CDATA #REQUIRED
+          getter      CDATA #IMPLIED
+          class       CDATA #REQUIRED
+>
+<!ELEMENT param (#PCDATA)>
+<!ATTLIST param
+          name        CDATA #REQUIRED
 >
