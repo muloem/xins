@@ -85,7 +85,7 @@ extends AbstractFunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
     */
-   private long computeCRC32(URL url)
+   private int computeCRC32(URL url)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -103,7 +103,7 @@ extends AbstractFunctionCaller {
          throw new Error("Encoding \"" + ENCODING + "\" is not supported.");
       }
       checksum.update(bytes, 0, bytes.length);
-      return checksum.getValue();
+      return (int) (checksum.getValue() & 0x00000000ffffffffL);
    }
 
 
@@ -209,8 +209,8 @@ extends AbstractFunctionCaller {
       // Initialize fields
       _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
-      _crc32            = (int) computeCRC32(_url);
-      _crc32String      = HexConverter.toHexString(_crc32);
+      _crc32            = computeCRC32(_url);
+      _crc32String      = HexConverter.toHexString((long) _crc32); // TODO: Not convert to long
       _urlString        = urlString;
    }
 
@@ -438,7 +438,7 @@ extends AbstractFunctionCaller {
     *    the CRC-32 checksum.
     */
    public long getCRC32() {
-      return (long)  _crc32;
+      return (long) _crc32;
    }
 
    /**
