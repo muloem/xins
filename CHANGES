@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.194:
+
+* XINS/Java Common Framework:
+  - Added getStream() method to class HTTPServiceCaller.Result. It returns an
+    InputStream for the data returned from the HTTP call.
+
+* Build and release process:
+  - If no release is performed, then the .sourceforge.properties is now no
+    longer required.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.193:
 
 * XINS/Java Common Framework:
