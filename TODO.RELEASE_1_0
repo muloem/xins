@@ -46,6 +46,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Rename HTTPServiceCaller.Result to HTTPCallResult
 [ ] Describe HTTPCallRequest properly in describe() (from _asString).
 [x] Change class HTTPServiceCaller.Method to HTTPMethod
+[x] Change example in HTTPServiceCaller to match new interface
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
@@ -74,6 +75,7 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Make InvalidResultXINSCallException extend XINSCallException
 [ ] Describe XINSCallRequest properly in describe() (from _asString).
 [x] Check the parameters in XINSCallRequest constructor.
+[ ] Add example in XINSServiceCaller class comments
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
