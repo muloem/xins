@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Collections;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.CollectionUtils;
+import org.xins.util.collections.PropertyReader;
+import org.xins.util.collections.ProtectedPropertyReader;
 
 /**
  * Builder for a call result. The result is built as the function call is
@@ -102,7 +103,7 @@ final class CallResultBuilder extends Object {
     * The parameters and their values. This field is never <code>null</code>.
     * If there are no parameters, then this field is <code>null</code>.
     */
-   private Map _parameters;
+   private ProtectedPropertyReader _parameters;
 
    /**
     * The data element. This field is <code>null</code> if there is no data
@@ -226,19 +227,25 @@ final class CallResultBuilder extends Object {
       // TODO: Check that parameter is known
       // TODO: Check that parameter is valid for type
 
-      _parameters.put(name, value);
+      // Initialize the _parameters field
+      if (_parameters == null) {
+         _parameters = new ProtectedPropertyReader(LOG);
+      }
+
+      _parameters.set(LOG, name, value);
    }
 
    /**
     * Gets all parameters.
     *
     * @return
-    *    a <code>Map</code> containing all parameters, or <code>null</code> if
-    *    no parameters are set; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values will be the parameter values
+    *    a {@link PropertyReader} containing all parameters, or
+    *    <code>null</code> if no parameters are set; the keys will be the
+    *    names of the parameters ({@link String} objects, cannot be
+    *    <code>null</code>), the values will be the parameter values
     *    ({@link String} objects as well, cannot be <code>null</code>).
     */
-   public Map getParameters() {
+   public PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -264,7 +271,7 @@ final class CallResultBuilder extends Object {
          return null;
       }
 
-      return (String) _parameters.get(name);
+      return _parameters.get(name);
    }
 
    /**
