@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.126:
+
+* Updated xmlenc to 0.39.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.125:
 
 * XINS/Java Server Framework:
