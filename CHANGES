@@ -36,6 +36,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 * Logdoc:
   - Added new types float32 and float64.
 
+* Build and release process:
+  - Adapted the release process to the new XINS version format.
+
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
 

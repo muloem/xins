@@ -40,7 +40,9 @@
 		<condition property="version.isset">
 			<and>
 				<isset property="version.major" />
+				<isset property="version.medium" />
 				<isset property="version.minor" />
+				<isset property="version.build" />
 			</and>
 		</condition>
 		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
@@ -61,7 +63,7 @@
 	</target>
 
 	<target name="-init-release-properties" depends="-load-version">
-		<property name="version" value="${version.major}.${version.minor}" />
+		<property name="version" value="${version.major}.${version.medium}.${version.minor}${version.build}" />
 	</target>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
@@ -71,7 +73,7 @@
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
+		<property name="version"             value="${version.major}.${version.medium}.${version.minor}${version.build}${version.suffix}" />
 		<property name="package-basename"    value="${name}-${version}" />
 		<property name="vendor"              value="Wanadoo Nederland B.V." />
 		<property name="cvs.module"          value="${name}" />
@@ -676,7 +678,7 @@
 		</copy>
 		<!-- Create and copy the documentation -->
 		<ant dir="../${name}-docs" target="guide" inheritall="false">
-			<property name="version" value="${version.major}.${version.minor}" />
+			<property name="version" value="${version.major}.${version.medium}.${version.minor}${version.build}" />
 		</ant>
 		<mkdir dir="docs" />
 		<copy todir="docs">
@@ -843,7 +845,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	name="-prepare-release"
 	depends="-pre-release-checks">
 		<!-- TODO: FIXME: This is hard-coded and should be changed for a new release -->
-		<property name="tagname" value="RELEASE_1_1_0_ALPHA1" />
+		<property name="tagname" value="RELEASE_${version.major}_${version.medium}_${version.minor}${version.build}" />
 		<echo message="Tagging ${tagname}" />
 		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="tag ${tagname}" quiet="true" />
@@ -862,7 +864,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
 		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
-			<property name="version" value="${version.major}.${version.minor}" />
+			<property name="version" value="${version.major}.${version.medium}.${version.minor}${version.build}" />
 			<property name="sf.user" value="${sf.user}" />
 			<property name="sf.password" value="${sf.password}" />
 		</ant>
@@ -870,7 +872,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target name="-post-commit-version" depends="-init" unless="major.release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
-			<entry key="version.minor"      type="int" operation="+" value="1"      />
+			<entry key="version.build"      type="int" operation="+" value="1"      />
 			<entry key="version.suffix"                operation="=" value="-dev"   />
 		</propertyfile>
 		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins" failonerror="true">
