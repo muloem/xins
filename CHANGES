@@ -8,8 +8,12 @@ CHANGES INTRODUCED IN XINS 0.103:
 * Fixed generated Javadoc documentation so that XINS version is correct again.
   This was probably erroneous since XINS 0.85.
 
+* Linking generated Javadoc to xmlenc 0.36.
+
 * XINS/Java Common Library:
   - Added class field EMPTY_LIST to class CollectionUtils.
+
+* Linking XINS API documentation to xmlenc 0.36 API documentation.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.102:
