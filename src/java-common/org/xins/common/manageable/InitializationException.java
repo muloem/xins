@@ -27,20 +27,23 @@ extends Exception {
    /**
     * Creates a message based on the specified constructor argument.
     *
+    * @param message
+    *    the message passed to the constructor, or <code>null</code>.
+    *
     * @param cause
-    *    the cause exception, cannot be <code>null</code>.
+    *    the cause exception, or <code>null</code>.
     *
     * @return
     *    the message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>cause == null</code>.
     */
-   private static final String createMessage(Throwable cause)
+   private static final String createMessage(String message, Throwable cause)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("cause", cause);
+      // TODO: Improve this method.
+
+      if (message != null) {
+         return message;
+      }
 
       String exceptionMessage = cause.getMessage();
 
@@ -71,18 +74,32 @@ extends Exception {
     *    the detail message, or <code>null</code>.
     */
    public InitializationException(String message) {
-      super(message);
+      this(message, null);
+   }
+
+   /**
+    * Constructs a new <code>InitializationException</code> with the specified
+    * cause exception.
+    *
+    * @param cause
+    *    the cause exception, or <code>null</code>.
+    */
+   public InitializationException(Throwable cause) {
+      this(null, cause);
    }
 
    /**
     * Constructs a new <code>InitializationException</code> with the specified
     * detail message and cause exception.
     *
+    * @param message
+    *    the detail message, or <code>null</code>.
+    *
     * @param cause
     *    the cause exception, or <code>null</code>.
     */
-   public InitializationException(Throwable cause) {
-      super(createMessage(cause), cause);
+   public InitializationException(String message, Throwable cause) {
+      super(createMessage(message, cause), cause);
    }
 
 
