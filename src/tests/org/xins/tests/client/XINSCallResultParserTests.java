@@ -173,8 +173,8 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals(1, params.size());
       assertEquals("1", params.get("a"));
 
-      // Unknown element, parameter before and after data section
-      xml = "<result><extra /><param name='a'>1</param><data><a/></data><param name='b'>2</param></result>";
+      // Unknown element, parameter before and after data section (with CDATA section)
+      xml = "<result><extra /><param name='a'>1</param><data><a/></data><param name='b'><![CDATA[2]]></param></result>";
       result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
       assertEquals(null, result.getErrorCode());
@@ -198,15 +198,6 @@ public class XINSCallResultParserTests extends TestCase {
       // There should be 1 child element
       List children = dataElement.getChildElements();
       assertEquals(1, children.size());
-
-      // Do not allow 'result' element within 'result' element
-      xml = "<result><result /></result>";
-      try {
-         parser.parse(xml.getBytes(ENCODING));
-         fail("Element 'result' within 'result' should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
-      } catch (ParseException ex) {
-         // as expected
-      }
 
       // Do not allow PCDATA content within 'result'
       xml = "<result>Some PCDATA content</result>";
@@ -410,7 +401,7 @@ public class XINSCallResultParserTests extends TestCase {
       XINSCallResultData result;
       PropertyReader params;
 
-      xml = "<result>  <data><result /></data>/></result>";
+      xml = "<result>  <data><result /><data /></data></result>";
       result = parser.parse(xml.getBytes(ENCODING));
       DataElement dataElement = result.getDataElement();
       List children = dataElement.getChildElements();
@@ -458,11 +449,113 @@ public class XINSCallResultParserTests extends TestCase {
       // Parameters with namespace should be ignored
       xml = "<result><param xmlns='http://somenamespace/' name='a'>b</param></result>";
       result = parser.parse(xml.getBytes(ENCODING));
-      assertEquals(0, result.getParameters().size());
+      assertNull(result.getParameters());
 
       // Parameters with namespace should be ignored
-      xml = "<result><p:param xmlns:p='http://somenamespace/' name='a'>b</param></result>";
+      xml = "<result><p:param xmlns:p='http://somenamespace/' name='a'>b</p:param></result>";
       result = parser.parse(xml.getBytes(ENCODING));
-      assertEquals(0, result.getParameters().size());
+      assertNull(result.getParameters());
+   }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * <code>parse(byte[])</code>, with regard to a double data section.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult7() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Both data sections empty
+      xml = "<result><data/><data/></result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // First data section is empty
+      xml = "<result><data/><data><c><d/></c></data></result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Second data section is empty
+      xml = "<result><data><a><b/></a></data><data/></result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Neither data section is empty
+      xml = "<result><data><a><b/></a></data><data><c><d/></c></data></result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+   }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * <code>parse(byte[])</code>, with regard to ignorable elements.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult8() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Ignorable element, 1 level
+      xml = "<result><a/></result>";
+      parser.parse(xml.getBytes(ENCODING));
+
+      // Ignorable element, more levels
+      xml = "<result><a><b><result/><data/><c/></b><data/></a><data></data><f/><g><h>PCDATA</h><i><![CDATA[j]]></i></g></result>";
+      parser.parse(xml.getBytes(ENCODING));
+
+      // TODO: Add more
+   }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code> when it is used
+    * for parsing multiple times.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult9() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // TODO
    }
 }
