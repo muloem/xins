@@ -38,7 +38,6 @@
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
-		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
 /**
