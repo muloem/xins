@@ -12,6 +12,8 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @since XINS 0.136
  */
 public final class CallIOException
 extends CallException {
