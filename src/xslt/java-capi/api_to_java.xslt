@@ -88,7 +88,6 @@
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text>;</xsl:text>
-		<xsl:call-template name="imports" />
 
 <xsl:text><![CDATA[
 
@@ -103,7 +102,7 @@
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[/">API specification</a>.
  */
-public final class CAPI extends Object {
+public final class CAPI extends java.lang.Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -127,7 +126,7 @@ public final class CAPI extends Object {
    /**
     * The remote API. This field cannot be <code>null</code>.
     */
-   private final FunctionCaller _functionCaller;]]></xsl:text>
+   private final org.xins.client.FunctionCaller _functionCaller;]]></xsl:text>
 		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
 			<xsl:text><![CDATA[
 
@@ -135,7 +134,7 @@ public final class CAPI extends Object {
     * The client-side session identifier splitter. Cannot be
     * <code>null</code>.
     */
-   private final SessionIDSplitter _sessionIDSplitter;]]></xsl:text>
+   private final org.xins.client.SessionIDSplitter _sessionIDSplitter;]]></xsl:text>
 		</xsl:if>
 		<xsl:text><![CDATA[
 
@@ -168,24 +167,6 @@ public final class CAPI extends Object {
 
 
 	<!-- ***************************************************************** -->
-	<!-- Print the list of Java import statements                          -->
-	<!-- ***************************************************************** -->
-
-	<xsl:template name="imports">
-		<xsl:text>
-
-import java.util.HashMap;
-import java.util.Map;
-import org.xins.client.ActualFunctionCaller;
-import org.xins.client.CallResult;
-import org.xins.client.CallResultParser;
-import org.xins.client.FunctionCaller;
-import org.xins.client.SessionIDSplitter;
-import org.xins.util.MandatoryArgumentChecker;</xsl:text>
-	</xsl:template>
-
-
-	<!-- ***************************************************************** -->
 	<!-- Print the constructor                                             -->
 	<!-- ***************************************************************** -->
 
@@ -207,11 +188,12 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null || sessionIDSplitter == null</code>.
     */
-   public CAPI(FunctionCaller functionCaller, SessionIDSplitter sessionIDSplitter)
+   public CAPI(org.xins.client.FunctionCaller    functionCaller,
+               org.xins.client.SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller",    functionCaller,
+      org.xins.util.MandatoryArgumentChecker.check("functionCaller",    functionCaller,
                                      "sessionIDSplitter", sessionIDSplitter);
 
       // Store data
@@ -231,11 +213,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null</code>.
     */
-   public CAPI(FunctionCaller functionCaller)
+   public CAPI(org.xins.client.FunctionCaller functionCaller)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller", functionCaller);
+      org.xins.util.MandatoryArgumentChecker.check("functionCaller", functionCaller);
 
       // Store data
       _functionCaller = functionCaller;
@@ -475,21 +457,21 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			<xsl:text>
 
       // Split the client-side session ID
-      String[] arr = new String[2];
+      java.lang.String[] arr = new java.lang.String[2];
       _sessionIDSplitter.splitSessionID(session, arr);
-      ActualFunctionCaller afc = _functionCaller.getActualFunctionCallerByCRC32(arr[0]);
+      org.xins.client.ActualFunctionCaller afc = _functionCaller.getActualFunctionCallerByCRC32(arr[0]);
       session = arr[1];</xsl:text>
 		</xsl:if>
 		<xsl:if test="input/param">
 			<xsl:text>
 
       // Store the input parameters in a map
-      Map params = new HashMap();</xsl:text>
+      java.util.Map params = new java.util.HashMap();</xsl:text>
 			<xsl:apply-templates select="input/param" mode="store" />
 
 		</xsl:if>
 		<xsl:text>
-      CallResult result = </xsl:text>
+      org.xins.client.CallResult result = </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$kind = 'nonSharedSessionBased'">
 				<xsl:text>afc</xsl:text>
@@ -525,7 +507,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			<xsl:when test="$kind = 'createsNonSharedSessions'">
 				<xsl:text>
       if (result.isSuccess()) {
-         String session = result.getParameter("_session");
+         java.lang.String session = result.getParameter("_session");
          if (session == null) {
             throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
 				<xsl:value-of select="@name" />
@@ -539,7 +521,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			<xsl:when test="$kind = 'createsSharedSessions'">
 				<xsl:text>
       if (result.isSuccess()) {
-         String session = result.getParameter("_session");
+         java.lang.String session = result.getParameter("_session");
          if (session == null) {
             throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
 				<xsl:value-of select="@name" />
@@ -579,7 +561,8 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
 				<xsl:text>
       if (result.isSuccess()) {
-         return </xsl:text>
+         try {
+            return </xsl:text>
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="specsdir" select="$specsdir"          />
 					<xsl:with-param name="api"      select="$api"               />
@@ -592,9 +575,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text>;
-      } else {
-         throw new org.xins.client.UnsuccessfulCallException(result);
-      }</xsl:text>
+         } catch (org.xins.types.TypeValueException exception) {
+            // fall through
+         }
+      }
+      throw new org.xins.client.UnsuccessfulCallException(result);</xsl:text>
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
