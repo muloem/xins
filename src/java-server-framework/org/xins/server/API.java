@@ -297,10 +297,10 @@ implements DefaultResultCodes {
             Log.log_1222(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_1223(_name, className, exception.getMessage());
+            Log.log_1224(exception, _name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_1224(exception, _name, className);
+            Log.log_1224(exception, _name, className, exception.getMessage());
             throw new BootstrapException(exception);
          }
       }
@@ -321,10 +321,10 @@ implements DefaultResultCodes {
             Log.log_1230(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_1231(_name, functionName, exception.getMessage());
+            Log.log_1232(exception, _name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_1232(exception, _name, functionName);
+            Log.log_1232(exception, _name, functionName, exception.getMessage());
             throw new BootstrapException(exception);
          }
       }
@@ -378,8 +378,10 @@ implements DefaultResultCodes {
     * Triggers re-initialization of this API. This method is meant to be
     * called by API function implementations when it is anticipated that the
     * API should be re-initialized.
+    *
+    * @since XINS 0.199
     */
-   protected final void reinitialize() {
+   protected final void reinitializeImpl() {
       _apiServlet.initAPI();
    }
 
@@ -437,18 +439,28 @@ implements DefaultResultCodes {
          try {
             m.init(runtimeSettings);
             Log.log_1420(_name, className);
+
+	 // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_1421(_name, className, exception.getPropertyName());
             throw exception;
+
+	 // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_1422(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
-         } catch (InitializationException exception) {
-            Log.log_1423(_name, className, exception.getMessage());
-            throw exception;
+
+	 // Catch InitializationException and any other exceptions not caught
+	 // by previous catch statements
          } catch (Throwable exception) {
-            Log.log_1424(exception, _name, className);
-            throw new InitializationException(exception);
+
+            // Log this event
+            Log.log_1424(exception, _name, className, exception.getMessage());
+	    if (exception instanceof InitializationException) {
+	       throw (InitializationException) exception;
+	    } else {
+               throw new InitializationException(exception);
+	    }
          }
       }
 

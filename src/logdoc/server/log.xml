@@ -105,16 +105,12 @@
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1223" level="FATAL">
+		<!-- TODO: <reserved id="1223" /> -->
+		<entry id="1224" level="FATAL" exception="true">
 			<description>Manageable object could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
-		</entry>
-		<entry id="1224" level="FATAL" exception="true">
-			<description>Manageable object could not be bootstrapped due to an unexpected exception.</description>
-			<param name="api" />
-			<param name="className" />
 		</entry>
 		<entry id="1225" level="DEBUG">
 			<description>Adding manageable object to API.</description>
@@ -149,16 +145,12 @@
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1231" level="FATAL">
+		<!-- TODO: <reserved id="1231" /> -->
+		<entry id="1232" level="FATAL" exception="true">
 			<description>Function could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
-		</entry>
-		<entry id="1232" level="FATAL" exception="true">
-			<description>Function could not be bootstrapped due to an unexpected exception.</description>
-			<param name="api" />
-			<param name="function" />
 		</entry>
 	</group>
 
@@ -309,16 +301,12 @@
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1423" level="FATAL">
+		<!-- TODO: <reserved id="1423" /> -->
+		<entry id="1424" level="FATAL" exception="true">
 			<description>Manageable object could not be initialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
-		</entry>
-		<entry id="1424" level="FATAL" exception="true">
-			<description>Manageable object could not be initialized due to an unexpected exception.</description>
-			<param name="api" />
-			<param name="className" />
 		</entry>
 		<entry id="1425" level="DEBUG">
 			<description>Initializing function.</description>
