@@ -32,6 +32,7 @@ import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -100,6 +101,11 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = APIServlet.class.getName();
 
    /**
     * The <em>INITIAL</em> state.
@@ -1086,8 +1092,17 @@ extends HttpServlet {
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
-   private void doService(HttpServletRequest request, HttpServletResponse response)
+   private void doService(final HttpServletRequest request,
+                          final HttpServletResponse response)
    throws IOException {
+
+      final String THIS_METHOD = "doService("
+                               + HttpServletRequest.class.getName()
+                               + ','
+                               + HttpServletResponse.class.getName()
+                               + ')';
+
+      // TODO: TRACE: Enter method
 
       // Determine current time
       long start = System.currentTimeMillis();
@@ -1142,38 +1157,50 @@ extends HttpServlet {
       State state = getState();
       if (state == READY) {
 
-         // Convert the HTTP request to an incoming XINS request
-         FunctionRequest xinsRequest;
+         String SUBJECT_CLASS  = callingConvention.getClass().getName();
+         String SUBJECT_METHOD = "convertRequest(" + HttpServletRequest.class.getName() + ')';
          try {
-            xinsRequest = callingConvention.convertRequest(request);
 
-         // If the function is not specified, then return '404 Not Found'
-         // TODO: Do this with one exception handler instead of 2 to improve
-         //       performance
-         } catch (FunctionNotSpecifiedException exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            // Convert the HTTP request to an incoming XINS request
+            FunctionRequest xinsRequest = callingConvention.convertRequest(request);
 
-         // If the request is invalid, then return '400 Bad Request'
-         } catch (InvalidRequestException exception) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-         }
-
-         // Call the function
-         try {
+            // Call the function
+            SUBJECT_CLASS  = _api.getClass().getName();
+            SUBJECT_METHOD = "handleCall(long," + FunctionRequest.class.getName() + ",java.lang.String)";
             result = _api.handleCall(start, xinsRequest, ip);
 
-         // If access is denied, return '403 Forbidden'
-         // TODO: Do this with one exception handler instead of 2 to improve
-         //       performance
-         } catch (AccessDeniedException exception) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
+         } catch (Throwable exception) {
 
-         // If no matching function is found, return '404 Not Found'
-         } catch (NoSuchFunctionException exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            int error;
+
+            // If the function is not specified, then return '404 Not Found'
+            if (exception instanceof FunctionNotSpecifiedException) {
+               error = HttpServletResponse.SC_NOT_FOUND;
+
+            // If the request is invalid, then return '400 Bad Request'
+            } else if (exception instanceof InvalidRequestException) {
+               error = HttpServletResponse.SC_BAD_REQUEST;
+
+            // If access is denied, return '403 Forbidden'
+            } else if (exception instanceof AccessDeniedException) {
+               error = HttpServletResponse.SC_FORBIDDEN;
+
+            // If no matching function is found, return '404 Not Found'
+            } else if (exception instanceof NoSuchFunctionException) {
+               error = HttpServletResponse.SC_NOT_FOUND;
+
+            // Otherwise an unexpected exception is thrown
+            } else {
+               error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+               Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         null,
+                                         exception);
+            }
+
+            response.sendError(error);
             return;
          }
 
