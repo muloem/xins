@@ -140,12 +140,12 @@
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
 		</entry>
-		<entry id="129" level="DEBUG">
+		<entry id="2025" level="DEBUG">
 			<description>Adding manageable object to API.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="130" level="DEBUG">
+		<entry id="2026" level="DEBUG">
 			<description>Manageable object added to API.</description>
 			<param name="api" />
 			<param name="className" />

@@ -625,12 +625,12 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("m", m);
       String className = m.getClass().getName();
 
-      Log.log_129(_name, className);
+      Log.log_2025(_name, className);
 
       // Store the manageable object in the list
       _manageableObjects.add(m);
 
-      Log.log_130(_name, className);
+      Log.log_2026(_name, className);
    }
 
    /**

@@ -33,8 +33,8 @@
 	<translation entry="2022">Bootstrap of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
 	<translation entry="2023">Bootstrap of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="2024">Bootstrap of manageable <value-of-param name="className" /> failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
-	<translation entry="129">Adding manageable <value-of-param name="className" /> to API.</translation>
-	<translation entry="130">Added manageable <value-of-param name="className" /> to API.</translation>
+	<translation entry="2025">Adding manageable <value-of-param name="className" /> to API.</translation>
+	<translation entry="2026">Added manageable <value-of-param name="className" /> to API.</translation>
 	<translation entry="3000">Initializing logging subsystem.</translation>
 	<translation entry="3001">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="3002">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
