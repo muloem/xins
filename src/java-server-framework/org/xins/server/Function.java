@@ -97,6 +97,26 @@ extends Object {
    int _unsuccessfulCalls;
 
    /**
+    * The duration of the most recent successful call.
+    */
+   long _lastSuccessfulStart;
+
+   /**
+    * The duration of the most recent unsuccessful call.
+    */
+   long _lastUnsuccessfulStart;
+
+   /**
+    * The duration of the most recent successful call.
+    */
+   long _lastSuccessfulDuration;
+
+   /**
+    * The duration of the most recent unsuccessful call.
+    */
+   long _lastUnsuccessfulDuration;
+
+   /**
     * The total duration of all successful calls up until now.
     */
    long _successfulDuration;
@@ -174,6 +194,8 @@ extends Object {
    final void performedCall(long start, long duration, boolean success, String code) {
       if (success) {
          synchronized (_successfulCallLock) {
+            _lastSuccessfulStart    = start;
+            _lastSuccessfulDuration = duration;
             _successfulCalls++;
             _successfulDuration += duration;
             _successfulMin = _successfulMin > duration ? duration : _successfulMin;
@@ -181,6 +203,8 @@ extends Object {
          }
       } else {
          synchronized (_unsuccessfulCallLock) {
+            _lastUnsuccessfulStart    = start;
+            _lastUnsuccessfulDuration = duration;
             _unsuccessfulCalls++;
             _unsuccessfulDuration += duration;
             _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;

@@ -293,35 +293,51 @@ implements DefaultReturnCodes {
          String successfulAverage;
          String successfulMin;
          String successfulMax;
+         String lastSuccessfulStart;
+         String lastSuccessfulDuration;
          if (successfulCalls == 0) {
             successfulAverage = "NA";
             successfulMin     = "NA";
             successfulMax     = "NA";
+            lastSuccessfulStart    = "NA";
+            lastSuccessfulDuration = "NA";
          } else if (successfulDuration == 0) {
             successfulAverage = "0";
             successfulMin     = String.valueOf(function._successfulMin);
             successfulMax     = String.valueOf(function._successfulMax);
+            lastSuccessfulStart    = String.valueOf(function._lastSuccessfulStart);
+            lastSuccessfulDuration = String.valueOf(function._lastSuccessfulDuration);
          } else {
             successfulAverage = String.valueOf(successfulDuration / successfulCalls);
             successfulMin     = String.valueOf(function._successfulMin);
             successfulMax     = String.valueOf(function._successfulMax);
+            lastSuccessfulStart    = String.valueOf(function._lastSuccessfulStart);
+            lastSuccessfulDuration = String.valueOf(function._lastSuccessfulDuration);
          }
 
          String unsuccessfulAverage;
          String unsuccessfulMin;
          String unsuccessfulMax;
+         String lastUnsuccessfulStart;
+         String lastUnsuccessfulDuration;
          if (unsuccessfulCalls == 0) {
             unsuccessfulAverage = "NA";
             unsuccessfulMin     = "NA";
             unsuccessfulMax     = "NA";
+            lastUnsuccessfulStart    = "NA";
+            lastUnsuccessfulDuration = "NA";
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage = "0";
             unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
             unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
+            lastUnsuccessfulStart    = String.valueOf(function._lastUnsuccessfulStart);
+            lastUnsuccessfulDuration = String.valueOf(function._lastUnsuccessfulDuration);
          } else {
             unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
             unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
             unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
+            lastUnsuccessfulStart    = String.valueOf(function._lastUnsuccessfulStart);
+            lastUnsuccessfulDuration = String.valueOf(function._lastUnsuccessfulDuration);
          }
 
          context.startTag("function");
@@ -331,12 +347,20 @@ implements DefaultReturnCodes {
          context.attribute("min",     successfulMin);
          context.attribute("max",     successfulMax);
          context.attribute("average", successfulAverage);
+         context.startTag("last");
+         context.attribute("start",    lastSuccessfulStart);
+         context.attribute("duration", lastSuccessfulDuration);
+         context.endTag();
          context.endTag();
          context.startTag("unsuccessful");
          context.attribute("count",   String.valueOf(unsuccessfulCalls));
          context.attribute("min",     unsuccessfulMin);
          context.attribute("max",     unsuccessfulMax);
          context.attribute("average", unsuccessfulAverage);
+         context.startTag("last");
+         context.attribute("start",    lastUnsuccessfulStart);
+         context.attribute("duration", lastUnsuccessfulDuration);
+         context.endTag();
          context.endTag();
          context.endTag();
       }
