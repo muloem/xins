@@ -7,9 +7,10 @@
 package org.xins.server;
 
 /**
- * Result code that indicates that an output parameter is either missing or invalid.
+ * Result code that indicates that an output parameter is either missing or
+ * invalid.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0

@@ -12,7 +12,7 @@ import org.xins.common.collections.PropertyReader;
 /**
  * Result from a function call.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
