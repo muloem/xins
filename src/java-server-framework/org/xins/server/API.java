@@ -259,7 +259,7 @@ implements DefaultResultCodes {
          return;
       }
 
-      // Short-circuit we are shutting down
+      // Short-circuit if we are shutting down
       if (_shutDown) {
          XMLOutputter xmlOutputter = context.getXMLOutputter();
          xmlOutputter.reset(out, "UTF-8");
