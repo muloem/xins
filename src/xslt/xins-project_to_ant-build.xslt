@@ -778,6 +778,7 @@
 						use="yes"
 						author="yes"
 						private="no"
+						package="yes"
 						source="1.4"
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
