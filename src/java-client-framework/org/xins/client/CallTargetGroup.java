@@ -72,7 +72,7 @@ extends AbstractCompositeFunctionCaller {
     *
     * @since XINS 0.45
     */
-   public final Type getTypeByName(String name)
+   public static final Type getTypeByName(String name)
    throws IllegalArgumentException {
 
       // Recognize existing types
