@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.166:
+
+* XINS/Java Common Library:
+  - Added class function getContext() to class LogCentral. This class function
+    returns the current diagnostic context identifier.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:
 
 * XINS/Java Server Framework:
