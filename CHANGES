@@ -34,17 +34,18 @@ CHANGES INTRODUCED IN XINS 0.163:
 
 * Build and release process:
   - Linking to xmlenc 0.43 API docs.
-
-* Generated build file:
-  - Linking to xmlenc 0.43 API docs.
-  - Fixed compilation of XINS failed because the directory logdoc is not 
-    included in the release.
-    This was probably erroneous since XINS 0.154.
-  - Added the DTD's in the release.
   - The targets "java-client" and "java-server" now use the same common 
     target.
   - The version number of the previous release in the .version.properties 
     file is also increased when a new release is created.
+
+* Generated build file:
+  - Linking to xmlenc 0.43 API docs.
+  - Added the logdoc directory to the release.
+    This causes the compilation of XINS to fail when it was done from the 
+    downloaded package.
+    This was probably erroneous since XINS 0.154.
+  - Added the DTD's in the release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
