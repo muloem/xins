@@ -169,7 +169,8 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   public final boolean isValidName(String name) {
+   public final boolean isValidName(String name)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
