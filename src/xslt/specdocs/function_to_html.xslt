@@ -441,6 +441,38 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
+			
+			<!--
+			Checks that the names set in the example element match the name of the input and output section.
+			-->
+			<xsl:for-each select="input-example">
+				<xsl:variable name="examplename">
+					<xsl:value-of select="@name" />
+				</xsl:variable>
+				<xsl:if test="not(boolean(/function/input/param[@name=$examplename]))">
+					<xsl:message terminate="yes">
+						<xsl:text>Example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text> has a parameter named '</xsl:text>
+						<xsl:value-of select="$examplename" />
+						<xsl:text>' which is not defined in the input section.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="output-example">
+				<xsl:variable name="examplename">
+					<xsl:value-of select="@name" />
+				</xsl:variable>
+				<xsl:if test="not(boolean(/function/output/param[@name=$examplename]))">
+					<xsl:message terminate="yes">
+						<xsl:text>Example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text> has a parameter named '</xsl:text>
+						<xsl:value-of select="$examplename" />
+						<xsl:text>' which is not defined in the output section.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+			</xsl:for-each>
 		</xsl:if>
 
 		<!--
@@ -464,8 +496,32 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
+			
+			<!-- Tests also that the result code is defined correctly -->
+			<xsl:if test="not(document($api_file)/api/resultcode[@name=$resultcode])">
+				<xsl:message terminate="yes">
+					<xsl:text>The error code '</xsl:text>
+					<xsl:value-of select="$resultcode" />
+					<xsl:text>' defined in the example </xsl:text>
+					<xsl:value-of select="$examplenum" />
+					<xsl:text> is not defined in the api.xml as a result code.</xsl:text>
+				</xsl:message>
+			</xsl:if>
+			<xsl:if test="not(/function/output/resultcode-ref[@name=$resultcode])">
+				<xsl:message terminate="yes">
+					<xsl:text>The error code '</xsl:text>
+					<xsl:value-of select="$resultcode" />
+					<xsl:text>' defined in the example </xsl:text>
+					<xsl:value-of select="$examplenum" />
+					<xsl:text> is not defined in the 'resultcode-ref' section.</xsl:text>
+				</xsl:message>
+			</xsl:if>
 		</xsl:if>
 
+		<!--
+		Tests that the attributes have the correct name.
+		-->
+		
 		<tr>
 			<td colspan="2" class="header">
 				<h3>

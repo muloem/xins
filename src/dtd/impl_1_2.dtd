@@ -3,7 +3,7 @@
  project by adding the following line at the top of the file :
 <!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.2//EN" "http://www.xins.org/dtd/impl_1_2.dtd">
 -->
-<!ELEMENT impl (logdoc? | runtime-properties? | dependency* | calling-convention? | instance*)>
+<!ELEMENT impl (logdoc?, runtime-properties?, dependency*, calling-convention?, instance*)>
 <!ELEMENT logdoc EMPTY>
 <!ATTLIST logdoc
           accesslevel (package|public) #IMPLIED
