@@ -56,12 +56,11 @@ XINS/JAVA CLIENT FRAMEWORK
   package org.xins.util.service.
 * Add meta-data methods for retrieving remote XINS version, remote function
   versions, remote settings, etc. to the AbstractCAPI class. E.g.:
-  - ping()           -- Calls _NoOp.
-  - getSettings()    -- Calls _GetSettings and converts the result to a
-                        RemoteSettings object with build properties, runtime
-                        properties and system properties.
-  - getXINSVersion() -- Calls _GetVersion and returns the value of the
-                        xins.version parameter.
+* Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
+  _GetSettings and converts the result to a RemoteSettings object with build
+  properties, runtime properties and system properties.
+* Add method getRemoteXINSVersion() to class AbstractCAPI. Functionality:
+  Calls _GetVersion and returns the value of the xins.version parameter.
 * In a list of APIs, there should not be two APIs with the same URL. Check
   that. Otherwise also the MD5 would be the same.
 * Allow configuration of calling _NoOp at construction of

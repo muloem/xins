@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.137:
+
+* XINS/Java Client Framework:
+  - Added ping() method to AbstractCAPI class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.136:
 
 * XINS/Java Client Framework:
