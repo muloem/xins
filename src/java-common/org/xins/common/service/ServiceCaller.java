@@ -50,8 +50,11 @@ import org.xins.common.TimeOutException;
  */
 public abstract class ServiceCaller extends Object {
 
-   // TODO: Describe load-balancing and fail-over in class description
    // FIXME: Implement CallConfig support
+   // TODO: Describe load-balancing and fail-over in class description
+   // TODO: Describe typical implementation scenario, e.g. a
+   //       SpecificCallResult call(SpecificCallRequest, SpecificCallConfig)
+   //       method that calls doCall(CallRequest,CallConfig).
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -210,7 +213,7 @@ public abstract class ServiceCaller extends Object {
 
    /**
     * Attempts to execute the specified call request on one of the target
-    * services. During the execution,
+    * services, with the specified call configuration. During the execution,
     * {@link TargetDescriptor Target descriptors} will be picked and passed
     * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
     * that succeeds, as long as fail-over can be done (according to
@@ -226,6 +229,12 @@ public abstract class ServiceCaller extends Object {
     * @param request
     *    the call request, not <code>null</code>.
     *
+    * @param config
+    *    the call configuration, or <code>null</code> if the one defined for
+    *    the call request should be used if specified, or otherwise the
+    *    fall-back call configuration associated with this
+    *    <code>ServiceCaller</code> (see {@link #getCallConfig()}).
+    *
     * @return
     *    a combination of the call result and a link to the
     *    {@link TargetDescriptor target} that returned this result, if and
@@ -236,12 +245,14 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws CallException
     *    if all call attempts failed.
+    *
+    * @since XINS 1.1.0
     */
-   protected final CallResult doCall(CallRequest request)
+   protected final CallResult doCall(CallRequest request, CallConfig config)
    throws IllegalArgumentException, CallException {
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "doCall", null);
+      Log.log_1003(CLASSNAME, "doCall(CallRequest,CallConfig)", null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -370,6 +381,40 @@ public abstract class ServiceCaller extends Object {
       Log.log_1004(first, CLASSNAME, "doCall", null);
 
       throw first;
+   }
+
+   /**
+    * Attempts to execute the specified call request on one of the target
+    * services. During the execution,
+    * {@link TargetDescriptor Target descriptors} will be picked and passed
+    * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
+    * that succeeds, as long as fail-over can be done (according to
+    * {@link #shouldFailOver(CallRequest,Throwable)}).
+    *
+    * <p>If one of the calls succeeds, then the result is returned. If
+    * none succeeds or if fail-over should not be done, then a
+    * {@link CallException} is thrown.
+    *
+    * <p>Each call attempt consists of a call to
+    * {@link #doCallImpl(CallRequest,TargetDescriptor)}.
+    *
+    * @param request
+    *    the call request, not <code>null</code>.
+    *
+    * @return
+    *    a combination of the call result and a link to the
+    *    {@link TargetDescriptor target} that returned this result, if and
+    *    only if one of the calls succeeded, could be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws CallException
+    *    if all call attempts failed.
+    */
+   protected final CallResult doCall(CallRequest request)
+   throws IllegalArgumentException, CallException {
+      return doCall(request, null);
    }
 
    /**
