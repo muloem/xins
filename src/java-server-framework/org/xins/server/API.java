@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
 import org.xins.types.Type;
@@ -24,6 +25,7 @@ import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
+import org.xins.util.text.DateConverter;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -215,6 +217,11 @@ implements DefaultResultCodes {
     */
    private String _buildTime;
 
+   /**
+    * The time zone used when generating dates for output.
+    */
+   private TimeZone _timeZone;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -305,6 +312,10 @@ implements DefaultResultCodes {
          }
          _state = INITIALIZING;
       }
+
+      // Set the time zone
+      _timeZone = TimeZone.getDefault();
+      LOG.info("Local time zone is " + _timeZone.getDisplayName() + '.');
 
       // Store the settings
       if (properties == null) {
@@ -1039,18 +1050,18 @@ implements DefaultResultCodes {
             lastSuccessfulStart    = "NA";
             lastSuccessfulDuration = "NA";
          } else if (successfulDuration == 0) {
-            successfulAverage = "0";
-            successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulAverage      = "0";
+            successfulMin          = String.valueOf(stats.getSuccessfulMin());
             successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
-            successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            successfulMax          = String.valueOf(stats.getSuccessfulMax());
             successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
             lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          } else {
-            successfulAverage = String.valueOf(successfulDuration / successfulCalls);
-            successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulAverage      = String.valueOf(successfulDuration / successfulCalls);
+            successfulMin          = String.valueOf(stats.getSuccessfulMin());
             successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
-            successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            successfulMax          = String.valueOf(stats.getSuccessfulMax());
             successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
             lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
@@ -1064,26 +1075,26 @@ implements DefaultResultCodes {
          String lastUnsuccessfulStart;
          String lastUnsuccessfulDuration;
          if (unsuccessfulCalls == 0) {
-            unsuccessfulAverage = "NA";
-            unsuccessfulMin     = "NA";
-            unsuccessfulMinStart = "NA";
-            unsuccessfulMax     = "NA";
-            unsuccessfulMaxStart = "NA";
+            unsuccessfulAverage      = "NA";
+            unsuccessfulMin          = "NA";
+            unsuccessfulMinStart     = "NA";
+            unsuccessfulMax          = "NA";
+            unsuccessfulMaxStart     = "NA";
             lastUnsuccessfulStart    = "NA";
             lastUnsuccessfulDuration = "NA";
          } else if (unsuccessfulDuration == 0) {
-            unsuccessfulAverage = "0";
-            unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulAverage      = "0";
+            unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
             unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
-            unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
             unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
             lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          } else {
-            unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
-            unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulAverage      = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
+            unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
             unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
-            unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
             unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
             lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
