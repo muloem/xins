@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Bootstrap exception and Throwable are handled in a similar way.
   - Removed some TODOs that are no longer relevant.
   - Check the state of API and APIServlet before calling a method.
+  - Used another system to suspend any call to an API when the statistics
+    are reset.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
@@ -20,6 +22,8 @@ CHANGES INTRODUCED IN XINS 0.207:
     TimeOutController.
   - Removed TODO entries that are done or no longer relevant.
   - Added more logs for the Doorman.
+  - The Properties type now returns a PropectedPropertyReader instead of the
+    BasicPropertyReader.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.

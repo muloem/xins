@@ -187,9 +187,9 @@ implements DefaultResultCodes {
    private AccessRuleList _accessRuleList;
 
    /**
-    * Lock object for the getting and resetting the statistics.
+    * Indicates whether the API should wait for the statistic to be unlocked before continuing.
     */
-   private final Object _statisticsLock = new Object();
+   private boolean _statisticsLocked = false;
 
 
    //-------------------------------------------------------------------------
@@ -696,8 +696,13 @@ implements DefaultResultCodes {
       }
 
       // Wait until the statistics are returned
-      // TODO: Investigate: Does this work?
-      synchronized(_statisticsLock) {
+      while (_statisticsLocked) {
+         synchronized (this) {
+            try {
+               wait();
+            } catch (InterruptedException iex) {
+            }
+         }
       }
 
       // Detect special functions
@@ -711,11 +716,14 @@ implements DefaultResultCodes {
          } else if ("_GetStatistics".equals(functionName)) {
             String resetArgument = parameters.get("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
-               synchronized(_statisticsLock) {
-                  FunctionResult result = doGetStatistics();
-                  doResetStatistics();
-                  return result;
+               _statisticsLocked = true;
+               FunctionResult result = doGetStatistics();
+               doResetStatistics();
+               _statisticsLocked = false;
+               synchronized (this) {
+                  notifyAll();
                }
+               return result;
             } else {
                return doGetStatistics();
             }

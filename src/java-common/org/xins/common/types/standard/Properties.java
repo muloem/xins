@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.net.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
@@ -233,8 +233,10 @@ public class Properties extends Type {
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
+      String propertyKey = "PROPERTY_KEY";
+
       // Construct a PropertyReader to store the properties in
-      BasicPropertyReader pr = new BasicPropertyReader();
+      ProtectedPropertyReader pr = new ProtectedPropertyReader(propertyKey);
 
       // Store the property keys
       HashSet propertyKeys = new HashSet();
@@ -264,7 +266,7 @@ public class Properties extends Type {
             _nameType.checkValue(name);
             _valueType.checkValue(value);
 
-            pr.set(name, value);
+            pr.set(propertyKey, name, value);
          }
       }
 
