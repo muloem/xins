@@ -160,6 +160,13 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="errorCode"  type="text"         nullable="false" />
 		</entry>
+		<entry id="2113" level="ERROR" exception="false">
+			<description>XINS call request completely failed.</description>
+			<!-- TODO: Extend parameters -->
+			<param name="function"   type="text"         nullable="false" />
+			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="duration"   type="int64"        nullable="false" />
+		</entry>
 	</group>
 
 	<group id="parse" name="XINS call result parsing">

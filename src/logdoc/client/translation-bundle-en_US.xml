@@ -31,6 +31,7 @@
 	<translation entry="2110">Error while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" /> in <value-of-param name="duration" /> ms: Received invalid XINS result. Detail: <value-of-param name="detail" /></translation>
 	<translation entry="2111">Error while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" /> in <value-of-param name="duration" /> ms: Caught unexpected exception.</translation>
 	<translation entry="2112">Received unsuccessful XINS result (error code <value-of-param name="errorCode" />) while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
+	<translation entry="2113">Call request for function <value-of-param name="function" /> with parameters <value-of-param name="parameters" /> failed completely after <value-of-param name="duration" /> ms.</translation>
 
 	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="elementName" format="quoted" /> instead of "result".</translation>
 	<translation entry="2201">Found output parameter with name nor value.</translation>

@@ -240,39 +240,46 @@ public final class XINSServiceCaller extends ServiceCaller {
       // TRACE: Enter method
       Log.log_2003(CLASSNAME, METHODNAME, null);
 
+      long start = System.currentTimeMillis();
+
       XINSCallResult result;
       try {
          result = (XINSCallResult) doCall(request);
 
       // Allow only GenericCallException, HTTPCallException and
       // XINSCallException to proceed
-      } catch (GenericCallException exception) {
-         // TODO: Log: Call completely failed
-         throw exception;
-      } catch (HTTPCallException exception) {
-         // TODO: Log: Call completely failed
-         throw exception;
-      } catch (XINSCallException exception) {
-         // TODO: Log: Call completely failed
-         throw exception;
-
-      // Unknown kind of exception. This should never happen. Log and re-throw
-      // the exception, packed up as an Error.
       } catch (Throwable exception) {
-         final String methodName = "doCall(CallRequest)";
-         Log.log_2052(exception, CLASSNAME, methodName);
+         long               duration  = System.currentTimeMillis() - start;
+         String             function  = request.getFunctionName();
+         PropertyReader     p         = request.getParameters();
+         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "-");
+         Log.log_2113(function, params, duration);
 
-         FastStringBuffer message = new FastStringBuffer(190);
-         message.append(CLASSNAME);
-         message.append('.');
-         message.append(methodName);
-         message.append(" threw unexpected ");
-         message.append(exception.getClass().getName());
-         message.append(". Message: ");
-         message.append(TextUtils.quote(exception.getMessage()));
-         message.append('.');
+         if (exception instanceof GenericCallException) {
+            throw (GenericCallException) exception;
+         } if (exception instanceof HTTPCallException) {
+            throw (HTTPCallException) exception;
+         } if (exception instanceof XINSCallException) {
+            throw (XINSCallException) exception;
 
-         throw new Error(message.toString(), exception);
+         // Unknown kind of exception. This should never happen. Log and
+         // re-throw the exception, packed up as an Error.
+         } else {
+            final String methodName = "doCall(CallRequest)";
+            Log.log_2052(exception, CLASSNAME, methodName);
+
+            FastStringBuffer message = new FastStringBuffer(190);
+            message.append(CLASSNAME);
+            message.append('.');
+            message.append(methodName);
+            message.append(" threw unexpected ");
+            message.append(exception.getClass().getName());
+            message.append(". Message: ");
+            message.append(TextUtils.quote(exception.getMessage()));
+            message.append('.');
+
+            throw new Error(message.toString(), exception);
+         }
       }
 
       // TRACE: Leave method
