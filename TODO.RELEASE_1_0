@@ -64,8 +64,10 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Use HTTPServiceCaller for the actual call
 [ ] Rename Result to XINSCallResult
 [ ] Rename ResultParser to XINSCallResultParser
-[ ] Make UnacceptableCallResultException extend XINSCallException
-[ ] Make UnsuccessfulCallException extend XINSCallException
+[ ] Rename UnacceptableCallResultException to UnacceptableResultXINSCallException
+[ ] Make UnacceptableResultXINSCallException extend XINSCallException
+[ ] Rename UnsuccessfulCallException to UnsuccessfulXINSCallException
+[ ] Make UnsuccessfulXINSCallException extend XINSCallException
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
