@@ -19,13 +19,22 @@ import org.xins.common.threads.Doorman;
  * which indicates whether fail-over is unconditionally allowed, even if the
  * request was already received or even processed by the other end.
  *
- * <p>This class is thread-safe.
+ * <h2>Thread-safety</h2>
  *
- * <p>Note to implementors of this class: Subclasses <em>must</em> be
- * thread-safe as well. They should use {@link #_doorman} to synchronize the
- * read and write operations to all fields. For example, the
- * <em>failOverAllowed</em> getter and setter methods in this class could be
- * implemented as follows:
+ * <p>This class is thread-safe, and subclasses <em>must</em> be thread-safe
+ * as well. They should use {@link #_doorman} to synchronize the read and
+ * write operations to all fields.
+ *
+ * <p>When reading a field, {@link Doorman#enterAsReader() enterAsReader()}
+ * should be called, followed by
+ * {@link Doorman#leaveAsReader() leaveAsReader()} when done.
+ *
+ * <p>When writing a field, {@link Doorman#enterAsWriter() enterAsWriter()}
+ * should be called, followed by
+ * {@link Doorman#leaveAsWriter() leaveAsWriter()} when done.
+ *
+ * <p>For example, the <em>failOverAllowed</em> getter and setter methods in
+ * this class could be implemented as follows:
  *
  * <blockquote><pre>public final boolean isFailOverAllowed() {
  *   _doorman.enterAsReader();
@@ -88,14 +97,6 @@ public abstract class CallConfig extends Object {
 
    /**
     * Access controller for the fields in this object.
-    *
-    * <p>When reading a field, {@link Doorman#enterAsReader() enterAsReader()}
-    * should be called, followed by
-    * {@link Doorman#leaveAsReader() leaveAsReader()} when done.
-    *
-    * <p>When writing a field, {@link Doorman#enterAsWriter() enterAsWriter()}
-    * should be called, followed by
-    * {@link Doorman#leaveAsWriter() leaveAsWriter()} when done.
     */
    protected final Doorman _doorman;
 
