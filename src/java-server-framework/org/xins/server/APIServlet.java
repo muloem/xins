@@ -14,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.servlet.ServletUtils;
 
 /**
@@ -136,14 +137,20 @@ implements Servlet {
       Properties settings = ServletUtils.settingsAsProperties(config);
 
       // Initialize Log4J
-      configureLogger(settings);
+      boolean setProperties = configureLogger(settings);
       _log = Logger.getLogger(getClass().getName());
       if (_log == null) {
          throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
       }
 
+      // Log startup
       if (_log.isDebugEnabled()) {
          _log.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
+      }
+
+      // Warn if there were no Log4J initialization settings
+      if (setProperties) {
+         _log.warn("No initialization settings found for Log4J, using fallback defaults.");
       }
 
       // Get the API class
@@ -197,19 +204,38 @@ implements Servlet {
     *
     * @param settings
     *    the initialization settings, not <code>null</code>.
+    *
+    * @return
+    *    flag that indicates if the properties for the initialization of the
+    *    logger were set by this method, because it was unspecified;
+    *    <code>true</code> if the initialization settings were unspecified,
+    *    <code>false</code> if they were specified and used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>settings == null</code>.
     */
-   private void configureLogger(Properties settings) {
+   private boolean configureLogger(Properties settings)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("settings", settings);
 
       // TODO: Take a better approach to checking if Log4J is initialized
+
+      // Check if Log4J is already initialized
       String value = settings.getProperty("log4j.rootCategory");
-      if (value == null || "".equals(value)) {
+      boolean setProperties = (value == null || "".equals(value));
+      if (setProperties) {
          settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
          settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
          settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
          settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
       }
 
+      // Perform the actual initialization of the logger
       PropertyConfigurator.configure(settings);
+
+      return setProperties;
    }
 
    public ServletConfig getServletConfig() {
@@ -219,15 +245,13 @@ implements Servlet {
    public void service(ServletRequest request, ServletResponse response)
    throws ServletException, IOException {
 
-      int state = _state;
-
       // Check state
-      if (state != READY) {
-         if (state == UNINITIALIZED) {
+      if (_state != READY) {
+         if (_state == UNINITIALIZED) {
             throw new ServletException("This servlet is not yet initialized.");
-         } else if (state == DISPOSING) {
+         } else if (_state == DISPOSING) {
             throw new ServletException("This servlet is currently being disposed.");
-         } else if (state == DISPOSED) {
+         } else if (_state == DISPOSED) {
             throw new ServletException("This servlet is disposed.");
          } else {
             throw new InternalError("This servlet is not ready, the state is unknown.");
