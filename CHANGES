@@ -7,7 +7,8 @@ CHANGES INTRODUCED IN XINS 0.104:
   - MultipleIPAddressesException: Improved message. Storing host name and
     addresses.
   - At construction time, ActualFunctionCaller checks if the API is actually
-    up or not, and logs this.
+    up or not, and logs this. It does this by calling the _NoOp function on
+    it.
   - Improved stability of ExpiryFolder. Fixed bug in counting of members.
 
 * Generated API docs and XINS API docs now correctly link to Apache Ant API
