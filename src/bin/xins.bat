@@ -12,10 +12,8 @@
 :: Recognise -version option
 IF NOT "%1" == "-version" GOTO no_version
 java -version
-ECHO
-ant -version
-ECHO
-ant -listener org.apache.tools.ant.NoBannerLogger version
+CALL ant -version
+CALL ant -listener org.apache.tools.ant.NoBannerLogger version
 GOTO end
 
 :: Make sure XINS_HOME is set
