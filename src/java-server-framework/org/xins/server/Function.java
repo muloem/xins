@@ -392,27 +392,13 @@ implements DefaultResultCodes {
             try {
                session = _api.getSessionByString(sessionID);
             } catch (TypeValueException exception) {
-               if (_log.isDebugEnabled()) {
-                  FastStringBuffer buffer = new FastStringBuffer(120);
-                  buffer.append(CallContext.getLogPrefix(_name, callID));
-                  buffer.append("Invalid value for session ID type: \"");
-                  buffer.append(sessionID);
-                  buffer.append("\".");
-                  _log.debug(buffer.toString());
-               }
+               Log.log_5011(_name, callID, sessionID);
                // TODO: Cache CallResult and use ResultCode
                performedCall(start, callID, null, false, "InvalidSessionID");
                return new BasicCallResult(false, "InvalidSessionID", null, null);
             }
             if (session == null) {
-               if (_log.isDebugEnabled()) {
-                  FastStringBuffer buffer = new FastStringBuffer(120);
-                  buffer.append(CallContext.getLogPrefix(_name, callID));
-                  buffer.append("Unknown session ID: \"");
-                  buffer.append(sessionID);
-                  buffer.append("\".");
-                  _log.debug(buffer.toString());
-               }
+               Log.log_5012(_name, callID, sessionID);
                // TODO: Cache CallResult and use ResultCode
                performedCall(start, callID, null, false, "UnknownSessionID");
                return new BasicCallResult(false, "UnknownSessionID", null, null);
