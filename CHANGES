@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.100:
+
+* XINS/Java Server Framework:
+  - No longer failing at initialization if build time and host are not set.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.99:
 
 * Fixed bug that caused XINS projects that had deployment-required set to
