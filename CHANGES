@@ -10,11 +10,23 @@ CHANGES INTRODUCED IN XINS 0.155:
     To change the locale at runtime, change the 'org.xins.server.log.locale'
     property in the runtime properties file (typically 'xins.properties').
     The logdoc files are in: src/logdoc.
+  - Class Function now derives from class Manageable.
+  - Function instances are now bootstrapped, (re-)initialized and
+    deinitialized by the API.
+  - Changed the log level of some log messages from INFO to DEBUG, since they
+    are not interesting for operational people.
+  - Changed the bootstrapping, initialization and deinitialization of
+    manageable objects in the API class so that normal exceptions are not
+    reported as 'unexpected'.
 
 * Generated specification documentation:
   - Now one style.css per API, so that if only the specdocs/[api] directory
     can be read by a client, for example because of an access restriction,
     then the pages will still be displayed correctly.
+
+* Build and release process:
+  - Generating and uploading Java2HTML documentation to the website.
+  - Generating and uploading logdoc reports to the website.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.154:
