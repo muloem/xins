@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.139:
+
+* XINS/Java Client Framework:
+  - Storing members in AbstractCompositeFunctionCaller in an unmodifiable
+    list.
+  - Fixed bug in ActualFunctionCaller that was introduced in 0.137. It caused
+    the returned CRC32 to be invalid.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.138:
 
 * Fixed 'xins -version' on systems without .sourceforge.properties file.
