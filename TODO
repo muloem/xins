@@ -21,7 +21,8 @@ XINS/JAVA SERVER FRAMEWORK
 
 * Not log the timezone at startup, but include it in every message that
   contains a time.
-* The used logging categories should stabilize.
+* The used logging categories should stabilize and they should be documented
+  properly and extensively.
 * A specific category should be used for function performance logging.
 * Log messages for a function should be logged to a category that excludes the
   'Impl' suffix.
