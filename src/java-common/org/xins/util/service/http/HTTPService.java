@@ -18,9 +18,6 @@ import org.xins.util.service.ServiceDescriptor;
 /**
  * HTTP service accessor.
  *
- * <p>Subjects for this kind of service must be instances of class
- * {@link PropertyReader}.
- *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
@@ -74,6 +71,23 @@ public final class HTTPService extends Service {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Calls the HTTP service with the specified parameters. If the call
+    * succeeds with one of the targets, then a {@link Result} object is
+    * returned, that combines the HTTP status code and the data returned.
+    * Otherwise, if none of the targets could successfully be called, a
+    * {@link CallFailedException} is thrown.
+    *
+    * @param parameters
+    *    the HTTP parameters to send down, or <code>null</code> if none should
+    *    be sent.
+    *
+    * @return
+    *    the result of the call, cannot be <code>null</code>.
+    *
+    * @throws CallFailedException
+    *    if the call failed.
+    */
    public Result call(PropertyReader parameters)
    throws CallFailedException {
       CallResult callResult = doCall(parameters);
@@ -253,6 +267,13 @@ public final class HTTPService extends Service {
       // Constructors
       //----------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>Method</code> object with the specified name.
+       *
+       * @param name
+       *    the name of the method, for example <code>"GET"</code> or
+       *    <code>"POST"</code>.
+       */
       private Method(String name) {
          _name = name;
       }
@@ -262,6 +283,10 @@ public final class HTTPService extends Service {
       // Fields
       //----------------------------------------------------------------------
 
+      /**
+       * The name of this method. For example <code>"GET"</code> or
+       * <code>"POST"</code>.
+       */
       private final String _name;
 
 
