@@ -546,21 +546,13 @@ implements DefaultResultCodes {
             m.bootstrap(_buildSettings);
             log.info("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
          } catch (Throwable exception) {
-            String exMessage = exception.getMessage();
             buffer.clear();
             buffer.append("Failed to bootstrap manageable object of class ");
             buffer.append(className);
             buffer.append(" for ");
             buffer.append(_name);
-            buffer.append(" API due to ");
-            buffer.append(exception.getClass().getName());
-            if (exMessage == null || exMessage.length() < 1) {
-               buffer.append('.');
-            } else {
-               buffer.append(" with message \"");
-               buffer.append(exMessage);
-               buffer.append("\".");
-            }
+            buffer.append(" API ");
+            buffer.append(APIServlet.dueToUnexpected(exception));
             String message = buffer.toString();
             log.error(message, exception);
             throw new BootstrapException(message);
@@ -666,20 +658,12 @@ implements DefaultResultCodes {
             m.init(runtimeSettings);
             log.info("Initialized manageable object of class " + className + " for " + _name + " API.");
          } catch (Throwable exception) {
-            String exMessage = exception.getMessage();
             FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize manageable object of class ");
             buffer.append(className);
             buffer.append(" for ");
             buffer.append(_name);
-            buffer.append(" API due to ");
-            buffer.append(exception.getClass().getName());
-            if (exMessage == null || exMessage.length() < 1) {
-               buffer.append('.');
-            } else {
-               buffer.append(" with message \"");
-               buffer.append(exMessage);
-               buffer.append("\".");
-            }
+            buffer.append(" API ");
+            buffer.append(APIServlet.dueToUnexpected(exception));
             String message = buffer.toString();
             log.error(message, exception);
             throw new InitializationException(message);

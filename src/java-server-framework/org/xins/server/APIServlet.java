@@ -30,6 +30,7 @@ import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
 import org.xins.util.manageable.InitializationException;
 import org.xins.util.servlet.ServletConfigPropertyReader;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -174,6 +175,38 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates a string for use in an error message in case an unexpected
+    * exception is caught.
+    *
+    * @param exception
+    *    the caught exception, cannot be <code>null</code>.
+    *
+    * @return
+    *    the character string to use in an error message, never
+    *    <code>null</code>, always starts with <code>"due to
+    *    unexpected"</code> and always ends with a full stop character
+    *    (<code>'.'</code>).
+    */
+   static final String dueToUnexpected(Throwable exception)
+   throws NullPointerException {
+      FastStringBuffer buffer = new FastStringBuffer(256);
+      buffer.append("due to unexpected ");
+      buffer.append(exception.getClass().getName());
+
+      String message = exception.getMessage();
+      if (message == null || message.length() < 1) {
+         buffer.append(" with no message.");
+      } else {
+         buffer.append(" with message \"");
+         buffer.append(message);
+         buffer.append("\".");
+      }
+
+      return buffer.toString();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -397,7 +430,7 @@ extends HttpServlet {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
             _state = API_CONSTRUCTION_FAILED;
-            _error = "Invalid application package. Failed to load API class \"" + apiClassName + "\", as set in build property \"" + API_CLASS_PROPERTY + "\" due to unexpected " + exception.getClass().getName() + '.';
+            _error = "Invalid application package. Failed to load API class \"" + apiClassName + "\", as set in build property \"" + API_CLASS_PROPERTY + "\" " + dueToUnexpected(exception);
             log.fatal(_error);
             return;
          }
@@ -416,7 +449,7 @@ extends HttpServlet {
             singletonField = apiClass.getDeclaredField("SINGLETON");
          } catch (Exception exception) {
             _state = API_CONSTRUCTION_FAILED;
-            _error = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\" due to unexpected " + exception.getClass().getName() + '.';
+            _error = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\" " + dueToUnexpected(exception);
             log.fatal(_error, exception);
             return;
          }
@@ -461,7 +494,7 @@ extends HttpServlet {
             _api.bootstrap(new ServletConfigPropertyReader(config));
          } catch (Throwable exception) {
             _state = API_BOOTSTRAP_FAILED;
-            _error = "Application package may be invalid. Unable to bootstrap \"" + apiName + "\" API due to unexpected " + exception.getClass().getName() + '.';
+            _error = "Application package may be invalid. Unable to bootstrap \"" + apiName + "\" API " + dueToUnexpected(exception);
             log.fatal(_error, exception);
             return;
          }
@@ -532,7 +565,7 @@ extends HttpServlet {
             _error = "Failed to initialize " + _api.getName() + " API: " + e.getMessage();
             Library.INIT_LOG.error(_error);
          } else {
-            _error = "Failed to initialize " + _api.getName() + " API due to unexpected " + e.getClass().getName() + '.';
+            _error = "Failed to initialize " + _api.getName() + " API " + dueToUnexpected(e);
             Library.INIT_LOG.error(_error, e);
          }
          return;
