@@ -4,7 +4,9 @@
 package org.xins.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.xins.client.DataElement;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -17,7 +19,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
  *
  * @since XINS 0.119
  */
-public final class Element {
+public final class Element implements Cloneable {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -77,13 +79,19 @@ public final class Element {
    private ProtectedPropertyReader _attributes;
 
    /**
-    * Content of this element. May contain PCDATA (as {@link String} objects)
-    * and other elements (as {@link Element} objects).
+    * Sub elements for this element. This list is a list of {@link Element} 
+    * objects.
     *
     * <p>This field is lazily initialized, so it is initially
     * <code>null</code>.
     */
-   private List _content;
+   private List _children;
+
+   /**
+    * PCDATA text for this element. If no text is specified, the value is
+    * <code>null</code>.
+    */
+   private String _pcdata;
 
 
    //-------------------------------------------------------------------------
@@ -145,7 +153,8 @@ public final class Element {
    }
 
    /**
-    * Adds the specified PCDATA as content for this element.
+    * Sets the text content for this element. Any previous value set will be 
+    * erased.
     *
     * @param pcdata
     *    the text to add, cannot be <code>null</code>.
@@ -153,18 +162,13 @@ public final class Element {
     * @throws IllegalArgumentException
     *    if <code>pcdata == null</code>.
     */
-   public void pcdata(String pcdata) throws IllegalArgumentException {
+   public void setText(String pcdata) throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("pcdata", pcdata);
 
-      // Initialize the content list, if necessary
-      if (_content == null) {
-         _content = new ArrayList(7);
-      }
-
-      // Add the PCDATA
-      _content.add(pcdata);
+      // Set the PCDATA
+      _pcdata = pcdata;
    }
 
    /**
@@ -186,20 +190,20 @@ public final class Element {
       }
 
       // Initialize the content list, if necessary
-      if (_content == null) {
-         _content = new ArrayList(7);
+      if (_children == null) {
+         _children = new ArrayList(7);
       }
 
       // Add the child element
-      _content.add(child);
+      _children.add(child);
 
       // Set the parent of the child
       child._parent = this;
    }
 
    /**
-    * Returns the content of this element. May contain PCDATA (as
-    * {@link String} objects) and other elements (as {@link Element} objects).
+    * Returns the children of this element. This returns a list of 
+    * other elements (as {@link Element} objects).
     *
     * <p>Since the content is lazily initialized, <code>null</code> is
     * returned if there is no content.
@@ -207,7 +211,39 @@ public final class Element {
     * @return
     *    the {@link List} of content items, or <code>null</code>.
     */
-   public List getContent() {
-      return _content;
+   public List getChildren() {
+      return _children;
+   }
+   
+   /**
+    * Gets the value of the PCDATA element for this element.
+    *
+    * @return
+    *    The text content for this element, or <code>null</code> if no text
+    *    content has been specified.
+    */
+   public String getText() {
+      return _pcdata;
+   }
+   
+   public Object clone() {
+      Element clone = new Element(getType());
+      if (getChildren() != null) {
+         Iterator itChildren = getChildren().iterator();
+         while (itChildren.hasNext()) {
+            clone.add((Element) ((Element)itChildren.next()).clone());
+         }
+      }
+      if (getAttributes() != null) {
+         Iterator itAttributes = getAttributes().getNames();
+         while (itAttributes.hasNext()) {
+            String nextKey = (String) itAttributes.next();
+            clone.addAttribute(nextKey, getAttributes().get(nextKey));
+         }
+      }
+      if (getText() != null) {
+         clone.setText(getText());
+      }
+      return clone;
    }
 }

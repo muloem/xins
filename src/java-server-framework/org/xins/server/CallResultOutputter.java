@@ -152,11 +152,10 @@ final class CallResultOutputter extends Object {
       int count = content == null ? 0 : content.size();
       for (int i = 0; i < count; i++) {
          Object o = content.get(i);
-         if (o instanceof Element) {
-            output(xmlout, (Element) o);
-         } else {
-            xmlout.pcdata((String) o);
-         }
+         output(xmlout, (Element) o);
+      }
+      if (element.getText() != null) {
+         xmlout.pcdata(element.getText());
       }
 
       // End the tag

@@ -1,6 +1,14 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
 
+* XINS/Java Server Framework:
+  - When an object is added to the data section, a clone of this object is
+    added to the element.
+  - The class Element now implements the Cloneable interface.
+
+* XINS/Java Client Framework:
+  - The class DataElement now implements the Cloneable interface.
+
 * Logdoc
   - The validation of the Logdoc XML files is now done using the local files
     when the declaration uses 1.0 alpha.

@@ -17,7 +17,7 @@ import org.xins.common.collections.BasicPropertyReader;
  *
  * @since XINS 0.203
  */
-public class DataElement {
+public class DataElement implements Cloneable {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -137,30 +137,45 @@ public class DataElement {
     *    the value of the attribute, or <code>null</code> if the attribute is
     *    either not set or set to <code>null</code>.
     */
-    public String get(String name) {
-       return _attributes.get(name);
-    }
+   public String get(String name) {
+      return _attributes.get(name);
+   }
 
-    /**
-     * Gets the children of this element.
-     *
-     * @return
-     *    an {@link Iterator} that returns each child of this element as
-     *    another <code>DataElement</code> instance; <code>null</code>
-     *    indicates there are no child elements.
-     */
-    public Iterator getChildren() {
-       return _children.iterator();
-    }
+   /**
+    * Gets the children of this element.
+    *
+    * @return
+    *    an {@link Iterator} that returns each child of this element as
+    *    another <code>DataElement</code> instance; <code>null</code>
+    *    indicates there are no child elements.
+    */
+   public Iterator getChildren() {
+      return _children.iterator();
+   }
 
-    /**
-     * Gets the text of this element.
-     *
-     * @return
-     *    the text of this element or <code>null</code> if no text has been specified
-     *    for this element.
-     */
-    public String getText() {
-       return _pcdata;
-    }
+   /**
+    * Gets the text of this element.
+    *
+    * @return
+    *    the text of this element or <code>null</code> if no text has been specified
+    *    for this element.
+    */
+   public String getText() {
+      return _pcdata;
+   }
+    
+   public Object clone() {
+      DataElement clone = new DataElement(getName());
+      Iterator itChildren = getChildren();
+      while (itChildren.hasNext()) {
+         clone.addChild((DataElement) ((DataElement)itChildren.next()).clone());
+      }
+      Iterator itAttributes = getAttributes();
+      while (itAttributes.hasNext()) {
+         String nextKey = (String) itAttributes.next();
+         clone.addAttribute(nextKey, get(nextKey));
+      }
+      clone.setText(getText());
+      return clone;
+   }
 }

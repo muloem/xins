@@ -314,9 +314,9 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
-      add(</xsl:text>
+      add((org.xins.server.Element)</xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>.getElement());
+		<xsl:text>.getElement().clone());
    }
 </xsl:text>
 </xsl:template>
@@ -403,7 +403,7 @@ implements Result {
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
       final void pcdata(String data) {
-         _element.pcdata(data);
+         _element.setText(data);
       }
 
 ]]></xsl:text>
@@ -442,9 +442,9 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>) {
-      _element.add(</xsl:text>
+      _element.add((org.xins.server.Element)</xsl:text>
 		<xsl:value-of select="@element" />
-		<xsl:text>.getElement());
+		<xsl:text>.getElement().clone());
    }
 </xsl:text>
 	</xsl:template>
