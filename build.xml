@@ -512,10 +512,13 @@
 
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
-	<target name="-check-release-version" depends="-init-release,-init" unless="force">
+	<target name="-check-version-suffix" depends="-init">
 		<condition property="version.suffix.set">
 			<equals arg1="${version.suffix}" arg2="-dev" />
 		</condition>
+	</target>
+
+	<target name="-check-release-version" depends="-check-version-suffix" unless="force">
 		<fail unless="version.suffix.set" message="Version suffix is not set to -dev. If you do want to release, please set 'force'." />
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
@@ -545,7 +548,7 @@
 
 	<target
 	name="-pre-release-checks"
-	depends="-check-release-version,-nodiffs-check,tests">
+	depends="-init-release,-check-release-version,-nodiffs-check,tests">
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
@@ -581,8 +584,18 @@
 				<argument value="${version.file}" />
 			</commandline>
 		</cvs>
+		<antcall target="upload-homepage" />
 	</target>
 
+	<target name="upload-homepage" depends="-check-version-suffix">
+		<fail if="version.suffix.set" message="Version suffix is set. Cannot upload homepage." />
+		<property name="docs.dir" value="../xins-docs/" />
+		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
+		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
+		<ant dir="../xins-docs" target="upload-homepage" inheritall="false">
+			<property name="version" value="${version}" />
+		</ant>
+	</target>
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
