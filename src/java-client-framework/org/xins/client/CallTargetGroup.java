@@ -98,7 +98,9 @@ extends AbstractCompositeFunctionCaller {
     *    the members for this group, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>type == null || members == null</code>.
+    *    if <code>type == null || members == null || !(members.get(<em>i</em>)
+    *    instanceof FunctionCaller)</code> (where 0 &lt;= <em>i</em> &lt;
+    *    <code>members.size()</code>).
     */
    CallTargetGroup(Type type, List members) throws IllegalArgumentException {
 
@@ -108,8 +110,10 @@ extends AbstractCompositeFunctionCaller {
       MandatoryArgumentChecker.check("type", type);
 
       // Initialize fields
-      _type                            = type;
+      _type                       = type;
       _actualFunctionCallersByURL = new HashMap();
+
+      addActualFunctionCallers(members);
    }
 
 
@@ -133,6 +137,47 @@ extends AbstractCompositeFunctionCaller {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Stores all actual function callers by URL that are found in the
+    * specified list of function callers.
+    *
+    * @param members
+    *    the list of function callers, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>!(members.get(<em>i</em>) instanceof FunctionCaller)</code>
+    *    (where 0 &lt;= <em>i</em> &lt; <code>members.size()</code>).
+    */
+   private final void addActualFunctionCallers(List members)
+   throws IllegalArgumentException {
+
+      int memberCount = members == null ? 0 : members.size();
+      for (int i = 0; i < memberCount; i++) {
+         FunctionCaller member;
+
+         // Get the member and make sure it is a FunctionCaller instance
+         try {
+            member = (FunctionCaller) members.get(i);
+            if (member == null) {
+               throw new IllegalArgumentException("members.get(" + i + ") == null");
+            }
+         } catch (ClassCastException cce) {
+            throw new IllegalArgumentException("members.get(" + i + ") is an instance of " + members.get(i).getClass().getName() + '.');
+         }
+
+         // If the member is an actual function caller, store a reference
+         if (member instanceof ActualFunctionCaller) {
+            ActualFunctionCaller afc = (ActualFunctionCaller) member;
+            _actualFunctionCallersByURL.put(afc.getURL().toString(), afc);
+
+         // If the member is composite, get all its members
+         } else if (member instanceof CompositeFunctionCaller) {
+            CompositeFunctionCaller cfc = (CompositeFunctionCaller) member;
+            addActualFunctionCallers(cfc.getMembers());
+         }
+      }
+   }
 
    /**
     * Returns the type of this group.
