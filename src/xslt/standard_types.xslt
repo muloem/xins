@@ -31,6 +31,7 @@
 			<xsl:when test="$type = '_float32'">Signed floating number, 32 bit.</xsl:when>
 			<xsl:when test="$type = '_float64'">Signed floating number, 64 bit.</xsl:when>
 			<xsl:when test="$type = '_base64'">Byte Array, Base 64 encoded.</xsl:when>
+			<xsl:when test="$type = '_url'">Unified Resource Location (URL).</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
@@ -66,7 +67,7 @@
 		<xsl:choose>
 			<xsl:when test="$requiredBool = 'false'">
 				<xsl:choose>
-					<xsl:when test="string-length($type) = 0 or $type = '_text'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
@@ -89,7 +90,7 @@
 			</xsl:when>
 			<xsl:otherwise> <!-- $requiredBool = 'true' -->
 				<xsl:choose>
-					<xsl:when test="string-length($type) = 0 or $type = '_text'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>

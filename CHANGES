@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     un- to readable: no effect.")
   - Removed the org.xins.common.specs package, for now. It will probably be
     re-introduced later.
+  - Added _url standard type.
+  - Added a toDate() method for the Date and Timestamp types.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
@@ -24,6 +26,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 
 * Examples:
   - Added .version.properties in the demo directory of the release.
+  - Added PHP and perl examples for the client side. Contribution from 
+    Janwillem Borleffs.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:

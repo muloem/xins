@@ -6,6 +6,9 @@
  */
 package org.xins.common.types.standard;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
@@ -26,6 +29,12 @@ public class Date extends Type {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Formatter used to convert the String representation as a 
+    * {@link java.util.Date}.
+    */
+   private static DateFormat FORMATTER;
+      
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -181,7 +190,7 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -303,7 +312,7 @@ public class Date extends Type {
        */
       private final String _asString;
 
-
+      
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
@@ -350,6 +359,22 @@ public class Date extends Type {
          return _asString.hashCode();
       }
 
+      /**
+       * @return
+       *    The {@link java.util.Date} corresponding to this value.
+       */
+      public java.util.Date toDate() {
+         if (FORMATTER == null) {
+            FORMATTER = new SimpleDateFormat("yyyyMMdd");
+         }
+         try {
+            return FORMATTER.parse(_asString);
+         } catch (ParseException pex) {
+            // TODO Log programming error.
+            return null;
+         }
+      }
+      
       /**
        * @return
        *    The textual representation of this date. Composed of the year (YYYY),
