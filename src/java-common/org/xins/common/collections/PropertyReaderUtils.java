@@ -90,7 +90,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     *
-    * @throws NumberFormatException
+    * @throws InvalidPropertyValueException
     *    if the conversion to an <code>int</code> failed.
     */
    public static final int getIntProperty(PropertyReader properties,
