@@ -335,8 +335,7 @@ implements Responder, Log {
     * @throws IllegalStateException
     *    if there is no current function (i.e.
     *    {@link #getFunction()}<code> == null</code> or if the current
-    *    function is not session-based, i.e. if
-    *    {@link #getFunction()}<code>.</code>{@link Function#isSessionBased() isSessionBased()}<code> == false<code>.
+    *    function is not session-based.
     */
    public Session getSession() throws IllegalStateException {
 
