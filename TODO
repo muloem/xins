@@ -50,6 +50,7 @@ XINS/JAVA SERVER FRAMEWORK
   then be able to remove log message 4033.
 * Move the logs in the Function#performedCall() method somewhere else
   and remove this method from Function.
+* Log received input parameters.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
