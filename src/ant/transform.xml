@@ -11,11 +11,14 @@
 
 <project name="xins-bootstrap-ant" default="transform" basedir=".">
 	<target name="transform">
+		<property file="${xins_home}/.version.properties" />
+		<property name="version" value="${version.major}.${version.minor}" />
 		<delete file="${out}" />
 		<style in="${in}" out="${out}" style="${style}">
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />
 			<param name="builddir"     expression="${builddir}"     />
+			<param name="xins_version" expression="${version}"     />
 		</style>
 	</target>
 </project>
