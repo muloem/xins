@@ -229,6 +229,10 @@ public abstract class Type extends Object {
     * @param value
     *    the value, cannot be <code>null</code>.
     *
+    * @return
+    *    the string representation of the specified value for this type,
+    *    cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
     *
