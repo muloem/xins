@@ -408,6 +408,18 @@ $Id$
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="package"      expression="{$clientPackage}"      />
 					</style>
+					<style
+					basedir="{$specsdir}/{$api}"
+					destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
+					style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
+					extension="Result.java"
+					includes="{$functionIncludes}">
+						<param name="project_home" expression="{$project_home}"  />
+						<param name="specsdir"     expression="{$specsdir}"      />
+						<param name="package"      expression="{$clientPackage}" />
+						<param name="api"          expression="{$api}"           />
+						<param name="api_file"     expression="{$api_file}"      />
+					</style>
 				</target>
 
 				<target name="classes-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
