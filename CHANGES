@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.138:
+
+* Fixed 'xins -version' on systems without .sourceforge.properties file.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 
 * XINS/Java Common Library:
