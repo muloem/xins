@@ -3,6 +3,7 @@ CHANGES INTRODUCED IN XINS 0.139:
 
 * XINS/Java Client Framework:
   - Added NoSuchSessionException.
+  - Changed ActualFunctionCaller to log URL and CRC-32 at construction time.
 
 * Generated CAPI classes:
   - Changed generated CAPI class: Throwing NoSuchSessionException if the
