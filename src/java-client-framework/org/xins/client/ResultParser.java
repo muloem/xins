@@ -172,12 +172,18 @@ public class ResultParser extends Object {
    private static String parseResultCode(Element element)
    throws NullPointerException {
 
+      // First get 'errorcode' attribute. If that attribute is not set, then
+      // fallback and get the 'code' attribute.
       String code = element.getAttributeValue("errorcode");
       if (code == null || code.length() < 1) {
          code = element.getAttributeValue("code");
       }
+
+      // If neither one is set then return null
       if (code == null || code.length() < 1) {
          return null;
+
+      // Otherwise indeed return the code
       } else {
          return code;
       }
