@@ -141,23 +141,6 @@ public final class UnsuccessfulCallException extends CallException {
     *    the error code or <code>null</code> if the call was successful and no
     *    error code was returned.
     *
-    * @since XINS 0.136
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.181. Use {@link #getErrorCode()} instead,
-    *    which is in fact a renamed version of this method.
-    */
-   public String getCode() {
-      return getErrorCode();
-   }
-
-   /**
-    * Returns the error code.
-    *
-    * @return
-    *    the error code or <code>null</code> if the call was successful and no
-    *    error code was returned.
-    *
     * @since XINS 0.181
     */
    public String getErrorCode() {
