@@ -197,49 +197,6 @@ public abstract class ServiceCaller extends Object {
    throws Throwable;
 
    /**
-    * Runs the specified thread. If the thread does not finish within the
-    * total time-out period, then the thread is interrupted using the
-    * {@link Thread#interrupt()} method and a {@link TimeOutException} is
-    * thrown.
-    *
-    * @param task
-    *    the thread to run, cannot be <code>null</code>.
-    *
-    * @param descriptor
-    *    the descriptor for the target on which the thread is executed, cannot
-    *    be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>task == null || descriptor == null</code>.
-    *
-    * @throws IllegalThreadStateException
-    *    if the thread was already started.
-    *
-    * @throws SecurityException
-    *    if the thread did not finish within the total time-out period, but
-    *    the interruption of the thread was disallowed (see
-    *    {@link Thread#interrupt()}).
-    *
-    * @throws TimeOutException
-    *    if the thread did not finish within the total time-out period and was
-    *    interrupted.
-    *
-    * @since XINS 0.195
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.204.
-    *    Use {@link #controlTimeOut(Runnable,TargetDescriptor)} instead.
-    */
-   protected final void controlTimeOut(Thread           task,
-                                       TargetDescriptor descriptor)
-   throws IllegalArgumentException,
-          IllegalThreadStateException, SecurityException,
-          TimeOutException {
-
-      controlTimeOut((Runnable) task, descriptor);
-   }
-
-   /**
     * Runs the specified task. If the task does not finish within the total
     * time-out period, then the thread executing it is interrupted using the
     * {@link Thread#interrupt()} method and a {@link TimeOutException} is
