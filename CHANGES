@@ -37,6 +37,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Implemented SF.net RFE #1107376: Added test for socket time-outs in the
     HTTPServiceCaller class.
 
+* XINS/Java Client Framework:
+  - Changed access level of setUnsuccessfulXINSCallExceptionFactory and
+    getUnsuccessfulXINSCallExceptionFactory in class XINSCallRequest from
+    public to package-private.
+
 * XINS/Java Server Framework:
   - Added custom calling convention.
 

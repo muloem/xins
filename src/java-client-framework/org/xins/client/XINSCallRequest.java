@@ -484,7 +484,7 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @since XINS 1.1.0
     */
-   public void setUnsuccessfulXINSCallExceptionFactory(
+   void setUnsuccessfulXINSCallExceptionFactory(
    UnsuccessfulXINSCallExceptionFactory factory) {
 
       _uxceFactory = (factory != null)
@@ -503,7 +503,7 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @since XINS 1.1.0
     */
-   public UnsuccessfulXINSCallExceptionFactory
+   UnsuccessfulXINSCallExceptionFactory
    getUnsuccessfulXINSCallExceptionFactory() {
       return _uxceFactory;
    }
