@@ -3,6 +3,10 @@
  */
 package org.xins.util.collections.expiry;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.xins.util.MandatoryArgumentChecker;
+
 /**
  * Expiry strategy. A strategy maintains a time-out and a time-out precision.
  *
@@ -63,6 +67,10 @@ public final class ExpiryStrategy extends Object {
       _timeOut   = timeOut;
       _precision = precision;
       _slotCount = (int) slotCount;
+      _folders   = new ArrayList();
+
+      // Create and start the timer thread
+      new TimerThread().start();
    }
 
 
@@ -85,6 +93,11 @@ public final class ExpiryStrategy extends Object {
     * this strategy.
     */
    private final int _slotCount;
+
+   /**
+    * The list of folders associated with this strategy.
+    */
+   private final List _folders;
 
 
    //-------------------------------------------------------------------------
@@ -120,5 +133,65 @@ public final class ExpiryStrategy extends Object {
     */
    public final int getSlotCount() {
       return _slotCount;
+   }
+
+   void folderAdded(ExpiryFolder folder)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("folder", folder);
+
+      synchronized (_folders) {
+         _folders.add(folder);
+      }
+   }
+
+   private void doTick() {
+      synchronized (_folders) {
+         int count = _folders.size();
+         for (int i = 0; i < count; i++) {
+            ExpiryFolder folder = (ExpiryFolder) _folders.get(i);
+            folder.tick();
+         }
+      }
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   private final class TimerThread extends Thread {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      public TimerThread() {
+         super("XINS ExpiryStrategy timer thread");
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public void run() {
+         while (true) {
+            try {
+               while (true) {
+                  sleep(_precision);
+                  doTick();
+               }
+            } catch (InterruptedException exception) {
+               // TODO: Do not ignore InterruptedException
+            }
+         }
+      }
    }
 }
