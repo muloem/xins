@@ -119,6 +119,9 @@ public final class API extends Object {
 				</xsl:variable>
 				<xsl:variable name="returnType">
 					<xsl:choose>
+						<xsl:when test="@createsSession = 'true'">
+							<xsl:text>java.lang.String</xsl:text>
+						</xsl:when>
 						<xsl:when test="output/param">
 							<xsl:value-of select="$functionName" />
 							<xsl:text>Result</xsl:text>
@@ -195,10 +198,21 @@ public final class API extends Object {
 						</xsl:choose>
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:text><![CDATA[
+				<xsl:choose>
+					<xsl:when test="@createsSession = 'true'">
+						<xsl:text><![CDATA[
     *
     * @return
-    *    the result of the call, not <code>null</code>.
+    *    the generated session identifier, not <code>null</code>.]]></xsl:text>
+					</xsl:when>
+					<xsl:when test="output/param">
+						<xsl:text><![CDATA[
+    *
+    * @return
+    *    the result, not <code>null</code>.]]></xsl:text>
+					</xsl:when>
+				</xsl:choose>
+				<xsl:text><![CDATA[
     *
     * @throws IOException
     *    if there was an I/O error.
@@ -286,7 +300,7 @@ public final class API extends Object {
 				</xsl:if>
 				<xsl:text>
       </xsl:text>
-				<xsl:if test="not ($returnType = 'void')">
+				<xsl:if test="output/param or @createsSession = 'true'">
 					<xsl:text>CallResult result = </xsl:text>
 				</xsl:if>
 				<xsl:text>_functionCaller.call(</xsl:text>
@@ -306,12 +320,25 @@ public final class API extends Object {
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>);</xsl:text>
-				<xsl:if test="not ($returnType = 'void')">
-					<xsl:text>
+				<xsl:choose>
+					<xsl:when test="@createsSession = 'true'">
+						<xsl:text>
+      String session = result.getParameter("_session");
+      if (session == null) {
+         throw new InvalidCallResultException("The call to function \"</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>\" returned no session ID.");
+      }
+      return session;</xsl:text>
+
+					</xsl:when>
+					<xsl:when test="output/param">
+						<xsl:text>
       return new </xsl:text>
-					<xsl:value-of select="$returnType" />
-					<xsl:text>(result);</xsl:text>
-				</xsl:if>
+						<xsl:value-of select="$returnType" />
+						<xsl:text>(result);</xsl:text>
+					</xsl:when>
+				</xsl:choose>
 				<xsl:text>
    }</xsl:text>
 			</xsl:for-each>
