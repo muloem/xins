@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.60:
+
+* Improved automatic generation of session identifiers in API implementation.
+  Now marking functions that create session IDs with the attribute
+  createsSession='true'.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.59:
 
 * Replaced 'classes-capi-XXX' targets with 'jar-capi-XXX' targets.
