@@ -331,6 +331,8 @@ implements DefaultResultCodes {
                                     FunctionResult result)
    throws NullPointerException {
 
+      // NOTE: Since XINS 1.0.0-beta11, callID is ignored.
+
       // Get the error code
       String code = result.getErrorCode();
 
@@ -349,7 +351,7 @@ implements DefaultResultCodes {
       }
 
       // Perform transaction logging, with and without parameters
-      Log.log_3540(serStart, ip, _name, callID, duration, code, inParams, outParams);
-      Log.log_3541(serStart, ip, _name, callID, duration, code);
+      Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);
+      Log.log_3541(serStart, ip, _name, duration, code);
    }
 }
