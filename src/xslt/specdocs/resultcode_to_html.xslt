@@ -10,6 +10,7 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="api"          />
 
 	<xsl:output
 	method="xml"

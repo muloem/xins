@@ -10,8 +10,8 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="api"          />
 
-	<xsl:variable name="api"          select="//api/@name" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="authors_file" select="concat($project_home, '/src/authors/authors.xml')" />
 	<xsl:variable name="sessionBased">
