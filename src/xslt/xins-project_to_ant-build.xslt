@@ -54,11 +54,15 @@
 
 			<xsl:for-each select="api">
 				<target name="specdocs-api-{@name}" depends="-prepare-specdocs">
+					<dependset>
+						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.fnc" />
+						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.typ" />
+						<targetfileset dir="${{project_home}}/build/specdocs/{@name}" includes="api.html" />
+					</dependset>
 					<style
-					basedir="${{project_home}}/{$specsdir}"
-					destdir="${{project_home}}/build/specdocs"
-					style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt"
-					includes="{@name}/api.xml">
+					in="${{project_home}}/{$specsdir}/{@name}/api.xml"
+					out="${{project_home}}/build/specdocs/{@name}/api.html"
+					style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt">
 						<param name="project_home" expression="${{project_home}}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
 					</style>
