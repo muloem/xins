@@ -11,6 +11,17 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Removed @since for all fields and methods.
   - All classes are now marked with @since XINS 1.0.0.
 
+* XINS/Java Client Framework:
+  - Removed unused imports.
+  - Removed unused log numbers.
+  - Added missing tranlations for some logging messages.
+  - Fixed some incorrect links in Javadoc.
+  - Removed @since for all fields and methods.
+  - All classes are now marked with @since XINS 1.0.0.
+  - Sending down function name in 2 parameters: "function" and "_function".
+    This is for backwards compatibility, but this may be reverted in the
+    future, so that only "_function" is sent down.
+
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.
   - Fixed missing translations.
@@ -21,14 +32,6 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
     HTTPServiceCaller.
   - Fixed some incorrect links in Javadoc.
   - Switched log numbers from 3XXX to 1XXX.
-  - Removed @since for all fields and methods.
-  - All classes are now marked with @since XINS 1.0.0.
-
-* XINS/Java Client Framework:
-  - Removed unused imports.
-  - Removed unused log numbers.
-  - Added missing tranlations for some logging messages.
-  - Fixed some incorrect links in Javadoc.
   - Removed @since for all fields and methods.
   - All classes are now marked with @since XINS 1.0.0.
 
