@@ -10,6 +10,7 @@ import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
+import org.xins.util.manageable.Manageable;
 import org.xins.util.io.FastStringWriter;
 import org.xins.util.text.FastStringBuffer;
 
@@ -20,7 +21,7 @@ import org.xins.util.text.FastStringBuffer;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public abstract class Function
-extends Object
+extends Manageable
 implements DefaultResultCodes {
 
    //-------------------------------------------------------------------------
