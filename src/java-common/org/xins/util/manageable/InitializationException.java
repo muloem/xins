@@ -82,7 +82,7 @@ extends Exception {
     * @param exception
     *    the cause exception, or <code>null</code>.
     */
-   InitializationException(Throwable exception) {
+   public InitializationException(Throwable exception) {
       super(createMessage(exception));
       _exception = exception;
    }
