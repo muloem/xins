@@ -16,6 +16,15 @@
 		<param name="oldState" />
 		<param name="newState" />
 	</entry>
+	<entry id="10" level="ERROR" category="org.xins.server">
+		<description>Received HTTP request with invalid method.</description>
+		<param name="ip" />
+		<param name="method" />
+	</entry>
+	<entry id="11" level="INFO" category="org.xins.server">
+		<description>Received HTTP OPTIONS request.</description>
+		<param name="ip" />
+	</entry>
 
 
 	<!-- Bootstrapping -->
