@@ -364,7 +364,13 @@ implements DefaultResultCodes {
          if (debugEnabled) {
             synchronized (_successfulCallStringBuffer) {
                _successfulCallStringBuffer.clear();
-               _successfulCallStringBuffer.append("Call succeeded. Duration: ");
+               if (_sessionBased) {
+                  _successfulCallStringBuffer.append("Call succeeded for session ");
+                  _successfulCallStringBuffer.append(context.getSession().toString());
+                  _successfulCallStringBuffer.append(". Duration: ");
+               } else {
+                  _successfulCallStringBuffer.append("Call succeeded. Duration: ");
+               }
                _successfulCallStringBuffer.append(String.valueOf(duration));
                _successfulCallStringBuffer.append(" ms.");
                if (code != null) {
