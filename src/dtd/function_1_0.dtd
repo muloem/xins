@@ -6,7 +6,6 @@
 <!ELEMENT function (description, input?, output?, example*)>
 <!ATTLIST function
           name           NMTOKEN #REQUIRED
-          sessionBased   (true | false) #IMPLIED
           rcsversion     CDATA #IMPLIED
           rcsdate        CDATA #IMPLIED
 >
@@ -62,7 +61,6 @@
 <!ATTLIST example
           num         NMTOKEN #REQUIRED
           resultcode  NMTOKEN #IMPLIED
-          sessionID   NMTOKEN #IMPLIED
           success     (true | false) #IMPLIED
 >
 <!ELEMENT data-example (element-example+)>

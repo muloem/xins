@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.176:
   - The <param> element has been removed from the <impl-java> element for
     XINS 1.0.
   - Added the DTD for authors.xml, environments.xml and impl.xml.
+  - Removed the session related attributes in function_1_0.dtd.
 
 * Generated build file:
   - Fixed a bug that would put the dependencies jar files in the incorrect
