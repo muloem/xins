@@ -209,7 +209,8 @@ public abstract class ServiceCaller extends Object {
    }
 
    /**
-    * Performs a call using the specified subject.
+    * Attempts to execute the specified call request on one of the target
+    * services. During the execution,
     * {@link TargetDescriptor Target descriptors} will be picked and passed
     * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
     * that succeeds, as long as fail-over can be done (according to
