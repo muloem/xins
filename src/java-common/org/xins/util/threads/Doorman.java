@@ -245,7 +245,11 @@ public final class Doorman extends Object {
       try {
          Thread.sleep(_maxQueueWaitTime);
          synchronized (_currentActorLock) {
-            // TODO: Call Thread.interrupted() ?
+            // Reset interrupted state, if this thread was interrupted between
+            // the Thread.sleep(long) call and the acquiry of the
+            // _currentActorLock lock.
+            Thread.interrupted();
+
             if (_currentReaders.contains(reader)) {
                return;
             }
@@ -325,7 +329,11 @@ public final class Doorman extends Object {
       try {
          Thread.sleep(_maxQueueWaitTime);
          synchronized (_currentActorLock) {
-            // TODO: Call Thread.interrupted() ?
+            // Reset interrupted state, if this thread was interrupted between
+            // the Thread.sleep(long) call and the acquiry of the
+            // _currentActorLock lock.
+            Thread.interrupted();
+
             if (_currentWriter == writer) {
                return;
             }
