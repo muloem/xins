@@ -66,20 +66,28 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>newLocale == null</code>.
+    *
+    * @throws LocaleNotSupportedException
+    *    if the specified locale is not supported by all registered
+    *    <em>logdoc</em> <code>Log</code> classes.
     */
    public static final void setLocale(String newLocale)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, LocaleNotSupportedException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newLocale", newLocale);
 
-      // Call setLocale(String) on all registered LogControllers
+      // Make sure the locale is supported by all controllers
       int size = CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
-         CONTROLLERS[i].setLocale(newLocale);
+         if (CONTROLLERS[i].isLocaleSupported(newLocale) == false) {
+            throw new LocaleNotSupportedException(newLocale);
+         }
+      }
 
-         // TODO: What if the controller does not support the specified
-         // TODO: locale?
+      // Change the locale on all controllers
+      for (int i = 0; i < size; i++) {
+         CONTROLLERS[i].setLocale(newLocale);
       }
    }
 
