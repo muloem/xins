@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 0.170:
 
 * XINS/Java Common Library:
   - Removed some unused import.
+  - Added a method getEnumItems() in EnumType.
 
 * Generated specification documentation:
   - Added more possible elements for api_1_0.dtd, function_1_0.dtd and
@@ -36,6 +37,7 @@ CHANGES INTRODUCED IN XINS 0.170:
   - Renamed the target war-api-<api> to war-<api>, specdocs-api-<api> to
     specdocs-<api> and jar-capi-<api> to jar-<api>.
   - Added a new clean-<api> target.
+  - Added to possibility to have a logdoc for the implementation.
 
 * Build and release process:
   - Keep the changes-<version>.txt when making a release.

@@ -4,7 +4,9 @@
 package org.xins.types;
 
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -60,6 +62,7 @@ public class EnumType extends Type {
       Map valuesToNames = new HashMap();
       Map namesToItems  = new HashMap();
       Map valuesToItems = new HashMap();
+      List itemList = new ArrayList();
 
       // TODO: Use ArrayMap ?
 
@@ -77,6 +80,7 @@ public class EnumType extends Type {
             values[actualItems++] = itemValue;
             namesToItems.put(itemName,   item);
             valuesToItems.put(itemValue, item);
+            itemList.add(item);
          }
       }
 
@@ -87,6 +91,7 @@ public class EnumType extends Type {
       _valuesToNames = Collections.unmodifiableMap(valuesToNames);
       _namesToItems  = Collections.unmodifiableMap(namesToItems);
       _valuesToItems = Collections.unmodifiableMap(valuesToItems);
+      _items = Collections.unmodifiableList(itemList);
    }
 
 
@@ -117,6 +122,11 @@ public class EnumType extends Type {
     * is unmodifiable.
     */
    protected final Map _valuesToItems;
+
+   /**
+    * List of the <code>EnumItem</code>. This list is unmodifiable.
+    */
+   protected final List _items;
 
    /**
     * The list of accepted values.
@@ -198,4 +208,14 @@ public class EnumType extends Type {
 
       return (String) _valuesToNames.get(value);
    }
+
+   /**
+    * Get the list of the EnumItem included in this <code>EnumType</code>.
+    *
+    * @return
+    *    the list of {@link EnumItem} included in this <code>EnumType</code>.
+    */
+    public final List getEnumItems() {
+       return _items;
+    }
 }
