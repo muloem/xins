@@ -134,15 +134,19 @@ public class CallTargetGroupTests extends TestCase {
 
       // Create CallTargetGroup with 2 ActualFunctionCallers
       List members = new ArrayList();
-      String url1 = "http://sf.net/1";
-      String url2 = "http://sf.net/2";
+      String url1 = "http://1.2.3.4/1";
+      String url2 = "http://1.2.3.4/2";
       ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL(url1));
       ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL(url2));
       members.add(afc1);
       members.add(afc2);
       CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
 
-      // Test
+      // Test 1
+      assertEquals(url1, afc1.getURL().toString());
+      assertEquals(url2, afc2.getURL().toString());
+
+      // Test 2
       assertEquals(afc1, ctg.getActualFunctionCaller(url1));
       assertEquals(afc2, ctg.getActualFunctionCaller(url2));
    }
