@@ -62,6 +62,11 @@ XINS/JAVA CLIENT FRAMEWORK
                         properties and system properties.
   - getXINSVersion() -- Calls _GetVersion and returns the value of the
                         xins.version parameter.
+* Add CallIOException that extends CallException and wraps around an
+  IOException.
+* Add all methods except isSuccess() from CallResult to
+  UnsuccessfulCallException.
+* Deprecate UnsuccessfulCallException.getCallResult() ?
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
@@ -97,6 +102,9 @@ GENERATED XINS/JAVA CLIENT CAPI CLASSES
 * Add a method to the CAPI interface that provides functionality to determine
   what XINS version was used to generate the class.
 * Generate a package.html file per package.
+* Generated callXxxx methods should not throw an IOException but a
+  CallIOException instead, wrapping around the IOException; this way the
+  callXxxx methods only throw CallException subclasses.
 
 ______________________________________________________________________________
 MISCELLANEOUS
