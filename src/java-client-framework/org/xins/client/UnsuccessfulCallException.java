@@ -32,6 +32,11 @@ extends Exception {
     * Constructs a new <code>UnsuccessfulCallException</code> with the
     * specified call result.
     *
+    * @param result
+    *    the call result that is unsuccessful, cannot be <code>null</code>,
+    *    and <code>result.</code>{@link CallResult#isSuccess() isSuccess()}
+    *    should be <code>false</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>result == null || result.</code>{@link CallResult#isSuccess() isSuccess()}.
     */

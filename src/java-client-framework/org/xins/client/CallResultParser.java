@@ -258,11 +258,11 @@ public class CallResultParser extends Object {
    private static Map parseParameters(Element element)
    throws NullPointerException, ParseException {
 
-      final String elementName  = "param";
-      final String keyAttribute = "name";
+      final String ELEMENT_NAME  = "param";
+      final String KEY_ATTRIBUTE = "name";
 
       // Get a list of all sub-elements
-      List subElements = element.getChildren(elementName);
+      List subElements = element.getChildren(ELEMENT_NAME);
       int count = (subElements == null)
                 ? 0
                 : subElements.size();
@@ -280,21 +280,21 @@ public class CallResultParser extends Object {
          }
 
          // Get the key and the value
-         String key   = subElement.getAttributeValue(keyAttribute);
+         String key   = subElement.getAttributeValue(KEY_ATTRIBUTE);
          String value = subElement.getText();
 
          // If key or value is empty, then ignore the whole thing
          boolean noKey   = (key   == null || key.length()   < 1);
          boolean noValue = (value == null || value.length() < 1);
          if (noKey && noValue) {
-            LOG.error("Found <" + elementName + "/> with an empty key and empty value.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key and empty value.");
          } else if (noKey) {
-            LOG.error("Found <" + elementName + "/> with an empty key.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key.");
          } else if (noValue) {
-            LOG.error("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" but an empty value.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" but an empty value.");
          } else {
 
-            LOG.debug("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" and value \"" + value + "\".");
+            LOG.debug("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" and value \"" + value + "\".");
 
             // Lazily initialize the Map
             if (map == null) {
@@ -302,7 +302,7 @@ public class CallResultParser extends Object {
 
             // Only one value per key allowed
             } else if (map.get(key) != null) {
-               throw new ParseException("The returned XML is invalid. Found <" + elementName + "/> with duplicate " + keyAttribute + " \"" + key + "\".");
+               throw new ParseException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + key + "\".");
             }
 
             // Store the mapping

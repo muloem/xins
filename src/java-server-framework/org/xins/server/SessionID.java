@@ -29,6 +29,13 @@ public abstract class SessionID extends Type {
    /**
     * Constructs a new <code>SessionID</code> type for the specified API.
     *
+    * @param name
+    *    the name for this type, cannot be <code>null</code>.
+    *
+    * @param valueClass
+    *    the value class, or <code>null</code> if {@link Object} should be
+    *    used.
+    *
     * @param api
     *    the API for which to create the type, cannot be <code>null</code>.
     *
