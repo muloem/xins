@@ -37,31 +37,20 @@ public interface DefaultResultCodes {</xsl:text>
 			<xsl:apply-templates select="description" />
 			<xsl:text><![CDATA["</blockquote>
     */
-   final String ]]></xsl:text>
+   final ResultCode ]]></xsl:text>
 			<xsl:call-template name="toupper">
 				<xsl:with-param name="text">
 					<xsl:value-of select="@name" />
 				</xsl:with-param>
 			</xsl:call-template>
-			<xsl:text> = "</xsl:text>
+			<xsl:text> = new ResultCode("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", "</xsl:text>
 			<xsl:value-of select="@value" />
-			<xsl:text>";
+			<xsl:text>");
 </xsl:text>
 		</xsl:for-each>
 		<xsl:text>
-
-   /**
-    * List containing the values of all defined result codes.
-    */
-   final List CODES = Collections.unmodifiableList(Arrays.asList(new String[]
-{</xsl:text>
-		<xsl:for-each select="code">
-			<xsl:if test="position() &gt; 1">, </xsl:if>
-			<xsl:text>"</xsl:text>
-			<xsl:value-of select="@value" />
-			<xsl:text>"</xsl:text>
-		</xsl:for-each>
-		<xsl:text>}));
 }</xsl:text>
 	</xsl:template>
 
