@@ -178,7 +178,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    Use the
     *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String) CAPI(PropertyReader,String)}
     *    constructor in combination with the
-    *    {@link #configure(org.xins.client.XINSCallConfig) configure(XINSCallConfig)}
+    *    {@link #setXINSCallConfig(org.xins.client.XINSCallConfig) setXINSCallConfig(XINSCallConfig)}
     *    method instead.
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
@@ -189,7 +189,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.collections.InvalidPropertyValueException {
 
       CAPI capi = new CAPI(properties, apiName);
-      capi.configure(callConfig);
+      capi.setXINSCallConfig(callConfig);
       return capi;
    }
 

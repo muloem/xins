@@ -129,7 +129,7 @@ public abstract class AbstractCAPI extends Object {
     *
     * @since XINS 1.2.0
     */
-   public final void configure(XINSCallConfig config) {
+   public final void setXINSCallConfig(XINSCallConfig config) {
       _caller.setXINSCallConfig(config);
    }
 
@@ -146,7 +146,7 @@ public abstract class AbstractCAPI extends Object {
     *
     * @since XINS 1.2.0
     */
-   public final XINSCallConfig configuration() {
+   public final XINSCallConfig getXINSCallConfig() {
       return _caller.getXINSCallConfig();
    }
 
