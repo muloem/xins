@@ -54,7 +54,7 @@
 >
 <!ELEMENT example (description, input-example*, output-example*, data-example?)>
 <!ATTLIST example
-          num         NMTOKEN #REQUIRED
+          num         NMTOKEN #IMPLIED
           resultcode  NMTOKEN #IMPLIED
 >
 <!ELEMENT input-example (#PCDATA)>

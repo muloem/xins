@@ -342,7 +342,16 @@
 	<xsl:template match="function/example">
 		<xsl:param name="function_name" />
 
-		<xsl:variable name="examplenum" select="@num" />
+		<xsl:variable name="examplenum">
+			<xsl:choose>
+				<xsl:when test="@num">
+					<xsl:value-of select="@num" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="position()" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-inputparams2"  select="input-example" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
@@ -455,7 +464,7 @@
 			<td colspan="2" class="header">
 				<h3>
 					<xsl:text>Example </xsl:text>
-					<xsl:value-of select="@num" />
+					<xsl:value-of select="$examplenum" />
 
 					<xsl:if test="description">
 						<xsl:text>: </xsl:text>
