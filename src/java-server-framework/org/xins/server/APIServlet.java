@@ -132,7 +132,8 @@ extends HttpServlet {
       response.setContentType("text/xml");
 
       // Call the API
-      _api.handleCall(request, response.getWriter()); 
+      PrintWriter out = response.getWriter(); 
+      _api.handleCall(request, out);
 
       // Flush
       out.flush();
