@@ -3,8 +3,18 @@
  */
 package org.xins.client;
 
+import java.util.Iterator;
+
+import org.apache.log4j.NDC;
+
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.http.HTTPCallRequest;
 import org.xins.common.service.http.HTTPServiceCaller;
@@ -29,10 +39,43 @@ public final class XINSCallRequest extends CallRequest {
     */
    private static final org.xins.common.service.http.HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
 
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
+   /**
+    * The pattern for a parameter name, as a character string.
+    */
+   public static final String PARAMETER_NAME_PATTERN_STRING = "[a-zA-Z][a-zA-Z0-9_]*";
+
+   /**
+    * The pattern for a parameter name.
+    */
+   private static final Pattern PARAMETER_NAME_PATTERN;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Initializes this class. This function compiles
+    * {@link #PARAMETER_NAME_PATTERN_STRING} to a {@link Pattern} and then
+    * stores that in {@link #PARAMETER_NAME_PATTERN}.
+    */
+   static {
+      try {
+         PARAMETER_NAME_PATTERN = PATTERN_COMPILER.compile(PARAMETER_NAME_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
+      } catch (MalformedPatternException mpe) {
+         throw new Error("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.");
+      }
+   }
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -104,7 +147,9 @@ public final class XINSCallRequest extends CallRequest {
     *    method (POST) should be used.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
+    *    if <code>functionName == null</code> or if <code>parameters</code>
+    *    contains a name that does not match the constraints for a parameter
+    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING}.
     */
    public XINSCallRequest(String                   functionName,
                           PropertyReader           parameters,
@@ -120,15 +165,34 @@ public final class XINSCallRequest extends CallRequest {
          method = HTTPServiceCaller.POST;
       }
 
-      // TODO: Create PropertyReader for the HTTP parameters
-      PropertyReader httpParams = null;
+      // Create PropertyReader for the HTTP parameters
+      final Object SECRET_KEY = new Object();
+      ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
 
-      // TODO: Check the parameters and throw an exception if an entry is
-      //       invalid.
+      // Check and copy all XINS parameters to HTTP parameters
+      Iterator names = parameters.getNames();
+      while (names.hasNext()) {
+         String name  = (String) names.next();
+         String value = parameters.get(name);
 
-      // TODO: Add the function to the parameter list
+         if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
+            // XXX: Consider using a different kind of exception for this
+            //      specific case. This exception may or may not derive from
+            //      IllegalArgumentException.
+            throw new IllegalArgumentException("The parameter name \"" + name + "\" does not match the pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\".");
+         }
 
-      // TODO: Add the diagnostic context ID to the parameter list
+         httpParams.set(SECRET_KEY, name, value);
+      }
+
+      // Add the function to the parameter list
+      httpParams.set(SECRET_KEY, "_function", functionName);
+
+      // Add the diagnostic context ID to the parameter list, if there is one
+      String contextID = NDC.peek();
+      if (contextID != null) {
+         httpParams.set(SECRET_KEY, "_context", contextID);
+      }
 
       // Store the information
       _functionName    = functionName;
