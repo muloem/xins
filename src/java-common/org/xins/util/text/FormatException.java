@@ -75,10 +75,6 @@ extends RuntimeException {
     *
     * @throws IllegalArgumentException
     *    if <code>s == null</code>.
-    *
-    * @return
-    *    the message the constructor can pass up to the superclass
-    *    constructor, never <code>null</code>.
     */
    public FormatException(String string, String reason)
    throws IllegalArgumentException {
