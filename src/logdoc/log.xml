@@ -87,6 +87,23 @@
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
+	<entry id="112" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>API is session-oriented.</description>
+	</entry>
+	<entry id="113" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>API is not session-oriented.</description>
+	</entry>
+	<entry id="114" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Starting session-related bootstrapping of API.</description>
+	</entry>
+	<entry id="115" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Finished session-related bootstrapping of API.</description>
+	</entry>
+	<entry id="116" level="INFO" category="org.xins.server.lifespan.bootstrap">
+		<description>Session time-out and time-out precision are set.</description>
+		<param name="timeOut" />
+		<param name="timeOutPrecision" />
+	</entry>
 
 
 	<!-- Logging subsystem -->

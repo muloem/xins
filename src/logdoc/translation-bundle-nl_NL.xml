@@ -22,6 +22,11 @@
 	<translation entry="109">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
 	<translation entry="110">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
 	<translation entry="111">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="112">API is sessie-georienteerd.</translation>
+	<translation entry="113">API is niet sessie-georienteerd.</translation>
+	<translation entry="114">Sessie-gerelateerde eigenschappen van de API worden ingesteld.</translation>
+	<translation entry="115">Sessie-gerelateerde eigenschappen van de API zijn ingesteld.</translation>
+	<translation entry="116">Sessie time-out is <value-of-param name="timeOut" /> seconden met een precisie van <value-of-param name="timeOutPrecision" /> seconden.</translation>
 	<translation entry="150">Logging subsysteem wordt geinitialiseerd.</translation>
 	<translation entry="151">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopend worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="152">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een veiligheidsrestrictie. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
