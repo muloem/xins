@@ -28,7 +28,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
 [x] Add HTTPCallRequest class (final, extends CallRequest)
 [ ] Specify allowed HTTP status codes in HTTPCallRequest
-[ ] Add StatusCodeHTTPCallException (extends HTTPCallException)
+[x] Add StatusCodeHTTPCallException (extends HTTPCallException)
 [x] Throw SocketTimeOutCallException when appropriate
 [x] Throw ConnectionRefusedCallException when appropriate
 [x] Throw ConnectionTimeOutCallException when appropriate
