@@ -32,6 +32,17 @@ public final class HTTPService extends Service {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Constant representing the HTTP GET method.
+    */
+   public static final Method GET = new Method("GET");
+
+   /**
+    * Constant representing the HTTP POST method.
+    */
+   public static final Method POST = new Method("POST");
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -220,6 +231,46 @@ public final class HTTPService extends Service {
       throws UnsupportedEncodingException {
          byte[] bytes = getData();
          return new String(bytes, encoding);
+      }
+   }
+
+   /**
+    * HTTP method. Possible values for variable of this class:
+    *
+    * <ul>
+    *    <li>{@link #GET}
+    *    <li>{@link #POST}
+    * </ul>
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.115
+    */
+   public static final class Method extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      private Method(String name) {
+         _name = name;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      private final String _name;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public String toString() {
+         return _name;
       }
    }
 }
