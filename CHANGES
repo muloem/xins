@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.81:
 
 * XINS/Java Server Framework:
   - Class APIServlet: Improved logging and applied some small improvements.
+  - Function _GetSettings now returns system properties as well, not just the
+    intialization settings.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.80:
