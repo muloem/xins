@@ -44,6 +44,8 @@
 	<translation entry="1306">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1307">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
+	<translation entry="1309">XINS/Java Server Framework version <value-of-param name="version" /> is bootstrapping.</translation>
+	<translation entry="1310">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="1400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="1401">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
 	<translation entry="1402">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is not modified.</translation>

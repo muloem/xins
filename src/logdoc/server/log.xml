@@ -192,6 +192,15 @@
 			<param name="currentLocale" />
 			<param name="failedLocale" />
 		</entry>
+		<entry id="1309" level="INFO">
+			<description>XINS/Java Server Framework is bootstrapping.</description>
+			<param name="version" />
+		</entry>
+		<entry id="1310" level="WARNING">
+			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
+			<param name="serverVersion" />
+			<param name="commonVersion" />
+		</entry>
 	</group>
 
 	<group id="lifespan.init" name="Initialization">

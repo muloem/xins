@@ -730,6 +730,14 @@ extends HttpServlet {
             Log.log_1305();
          }
 
+         // Log XINS version
+         String serverVersion = Library.getVersion();
+         String commonVersion = org.xins.common.Library.getVersion();
+         Log.log_1309(serverVersion);
+         if (! serverVersion.equals(commonVersion)) {
+            Log.log_1310(serverVersion, commonVersion);
+         }
+
          // Determine the log locale
          String newLocale = properties.getProperty(LOG_LOCALE_PROPERTY);
 

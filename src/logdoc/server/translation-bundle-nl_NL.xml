@@ -44,6 +44,8 @@
 	<translation entry="1306">Taal voor de log-berichten wordt gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
 	<translation entry="1307">Taal voor de log-berichten is gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
 	<translation entry="1308">Taal voor de log-berichten kan niet gewijzigd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</translation>
+	<translation entry="1309">XINS/Java Server Framework versie <value-of-param name="version" /> wordt gestart.</translation>
+	<translation entry="1310">XINS/Java Server Framework versie (<value-of-param name="serverVersion" />) verschilt van de XINS/Java Common Library versie (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="1400">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopened worden.</translation>
 	<translation entry="1401">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</translation>
 	<translation entry="1402">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is niet gewijzigd.</translation>
