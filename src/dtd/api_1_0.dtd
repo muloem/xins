@@ -34,7 +34,7 @@
           id         CDATA #REQUIRED
           url        CDATA #REQUIRED
 >
-<!ELEMENT impl-java (dependency*, instance*, param*)>
+<!ELEMENT impl-java (dependency*, instance*)>
 <!ATTLIST impl-java
           mapping    CDATA #IMPLIED
 >
@@ -49,8 +49,4 @@
           name        CDATA #REQUIRED
           getter      CDATA #IMPLIED
           class       CDATA #REQUIRED
->
-<!ELEMENT param (#PCDATA)>
-<!ATTLIST param
-          name        CDATA #REQUIRED
 >

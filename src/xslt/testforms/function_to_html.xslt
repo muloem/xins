@@ -17,6 +17,7 @@
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="environment"  />
+	<xsl:param name="env_url"      />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
@@ -25,7 +26,6 @@
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../types.xslt" />
 
-	<xsl:variable name="env_url" select="document($api_file)/api/environment[@id=$environment]/@url" />
 	<xsl:variable name="functionName" select="//function/@name" />
 	<xsl:variable name="sessionBased">
 		<xsl:for-each select="//function">

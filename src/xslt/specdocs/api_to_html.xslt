@@ -260,41 +260,13 @@
 				<xsl:choose>
 					<xsl:when test="environment">
 						<ul>
-							<xsl:for-each select="environment">
-								<li>
-									<a>
-										<xsl:attribute name="href">
-											<xsl:value-of select="@url" />
-										</xsl:attribute>
-										<xsl:value-of select="@id" />
-									</a>
-									<!-- Generate the ( version statistics settings ) links. -->
-									<font size="-1">(
-										<a>
-											<xsl:attribute name="href">
-												<xsl:value-of select="@url" />
-												<xsl:text>?_function=_GetVersion</xsl:text>
-											</xsl:attribute>
-											version
-										</a>
-										<a>
-											<xsl:attribute name="href">
-												<xsl:value-of select="@url" />
-												<xsl:text>?_function=_GetStatistics</xsl:text>
-											</xsl:attribute>
-											statistics
-										</a>
-										<a>
-											<xsl:attribute name="href">
-												<xsl:value-of select="@url" />
-												<xsl:text>?_function=_GetSettings</xsl:text>
-											</xsl:attribute>
-											settings
-										</a>
-										)
-									</font>
-								</li>
-							</xsl:for-each>
+							<xsl:apply-templates select="environment" />
+						</ul>
+					</xsl:when>
+					<xsl:when test="document($project_file)/projects/api[@name = $api]/environments">
+						<ul>
+							<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+							<xsl:apply-templates select="document($env_file)/environments/environment" />
 						</ul>
 					</xsl:when>
 					<xsl:otherwise>
@@ -309,6 +281,42 @@
 				</xsl:call-template>
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template match="environment">
+		<li>
+			<a>
+				<xsl:attribute name="href">
+					<xsl:value-of select="@url" />
+				</xsl:attribute>
+				<xsl:value-of select="@id" />
+			</a>
+			<!-- Generate the ( version statistics settings ) links. -->
+			<font size="-1">(
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@url" />
+						<xsl:text>?_function=_GetVersion</xsl:text>
+					</xsl:attribute>
+					version
+				</a>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@url" />
+						<xsl:text>?_function=_GetStatistics</xsl:text>
+					</xsl:attribute>
+					statistics
+				</a>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@url" />
+						<xsl:text>?_function=_GetSettings</xsl:text>
+					</xsl:attribute>
+					settings
+				</a>
+				)
+			</font>
+		</li>
 	</xsl:template>
 
 	<xsl:template match="api/description">

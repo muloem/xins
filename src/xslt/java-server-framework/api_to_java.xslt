@@ -13,6 +13,7 @@
 	<!-- Define parameters -->
 	<xsl:param name="xins_home"    />
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
@@ -30,9 +31,13 @@
 
 	<xsl:template match="api">
 		<xsl:apply-templates select="impl-java" />
+		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+			<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>
+			<xsl:apply-templates select="document($impl_file)/impl" />
+		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="impl-java">
+	<xsl:template match="impl-java | impl">
 
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>

@@ -302,15 +302,31 @@
 		<ant dir="build/logdoc/${side}" target="html" inheritall="false" />
 	</target>
 
-	<target name="upload-logdoc" depends="-init,logdoc-html-server">
+	<target name="upload-logdoc" depends="-init,logdoc-html-server, logdoc-html-client, logdoc-html-common">
 		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
-		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version} on ${www.host}" />
+		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/logdoc/${version}" />
-		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version} on ${www.host}" />
-		<scp todir="${www.target}/logdoc/${version}"
+		         command="mkdir -p ${www.dir}/logdoc/${version}/server" />
+		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
+		<scp todir="${www.target}/logdoc/${version}/server"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/logdoc/server/html" />
+		</scp>
+		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/client on ${www.host}" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="mkdir -p ${www.dir}/logdoc/${version}/client" />
+		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/client on ${www.host}" />
+		<scp todir="${www.target}/logdoc/${version}/client"
+		     password="${sf.password}" trust="true">
+			<fileset dir="build/logdoc/client/html" />
+		</scp>
+		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/common on ${www.host}" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="mkdir -p ${www.dir}/logdoc/${version}/common" />
+		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/common on ${www.host}" />
+		<scp todir="${www.target}/logdoc/${version}/common"
+		     password="${sf.password}" trust="true">
+			<fileset dir="build/logdoc/common/html" />
 		</scp>
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="rm ${www.dir}/logdoc/latest" />

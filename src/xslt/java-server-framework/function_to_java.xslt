@@ -171,9 +171,9 @@ public abstract class ]]></xsl:text>
       if (</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text> == null) {
-	       if (_errorInputResult == null) {
-	          _errorInputResult = new org.xins.server.InvalidRequestResult();
-	       }
+         if (_errorInputResult == null) {
+            _errorInputResult = new org.xins.server.InvalidRequestResult();
+         }
          _errorInputResult.addMissingParameter("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>");
@@ -268,9 +268,9 @@ public abstract class ]]></xsl:text>
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-	       if (_errorInputResult == null) {
-	          _errorInputResult = new org.xins.server.InvalidRequestResult();
-	       }
+         if (_errorInputResult == null) {
+            _errorInputResult = new org.xins.server.InvalidRequestResult();
+         }
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 					<xsl:for-each select="param-ref">
 						<xsl:text>
@@ -326,9 +326,9 @@ public abstract class ]]></xsl:text>
 		</xsl:if>
 
 		<xsl:text>
-	    if (_errorInputResult != null) {
-	       return _errorInputResult;
-	    }</xsl:text>
+      if (_errorInputResult != null) {
+         return _errorInputResult;
+      }</xsl:text>
 
 		<!-- ************************************************************* -->
 		<!-- Invoke the abstract call method                               -->

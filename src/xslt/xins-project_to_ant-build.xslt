@@ -304,8 +304,30 @@
 							<param name="api"          expression="{$api}"          />
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="environment"  expression="{@id}"           />
+							<param name="env_url"      expression="{@url}"          />
 						</style>
 					</xsl:for-each>
+					<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+						<xsl:for-each select="document($env_file)/environments/environment">
+							<style
+							basedir="{$api_specsdir}"
+							destdir="{$project_home}/build/specdocs/{$api}"
+							style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
+							includes="{$functionIncludes}"
+							extension="-testform-{@id}.html">
+								<xmlcatalog refid="all-dtds" />
+								<param name="xins_version" expression="{$xins_version}" />
+								<param name="project_home" expression="{$project_home}" />
+								<param name="project_file" expression="{$project_file}" />
+								<param name="specsdir"     expression="{$api_specsdir}" />
+								<param name="api"          expression="{$api}"          />
+								<param name="api_file"     expression="{$api_file}"     />
+								<param name="environment"  expression="{@id}"           />
+								<param name="env_url"      expression="{@url}"          />
+							</style>
+						</xsl:for-each>
+					</xsl:if>
 				</target>
 
 				<xsl:if test="$apiHasTypes = 'true'">
@@ -386,24 +408,13 @@
 								<pathelement path="{$xins-common.jar}" />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
-								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
-									<fileset dir="{$dependenciesDir}/{@dir}">
-										<xsl:attribute name="includes">
-											<xsl:choose>
-												<xsl:when test="@includes">
-													<xsl:value-of select="@includes" />
-												</xsl:when>
-												<xsl:otherwise>**/*.jar</xsl:otherwise>
-											</xsl:choose>
-										</xsl:attribute>
-									</fileset>
-								</xsl:for-each>
+								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
 						</javac>
 					</target>
 				</xsl:if>
 
-				<xsl:if test="document($api_file)/api/impl-java">
+				<xsl:if test="document($api_file)/api/impl-java or document($project_file)/api[@name = $api]/impl">
 					<xsl:variable name="package">
 						<xsl:call-template name="package_for_server_api">
 							<xsl:with-param name="project_file">
@@ -636,18 +647,7 @@
 								<pathelement path="{$xins-server.jar}" />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
-								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
-									<fileset dir="{$dependenciesDir}/{@dir}">
-										<xsl:attribute name="includes">
-											<xsl:choose>
-												<xsl:when test="@includes">
-													<xsl:value-of select="@includes" />
-												</xsl:when>
-												<xsl:otherwise>**/*.jar</xsl:otherwise>
-											</xsl:choose>
-										</xsl:attribute>
-									</fileset>
-								</xsl:for-each>
+								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
 						</javac>
 					</target>
@@ -683,18 +683,7 @@
 							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
 							<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 							<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
-							<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']">
-								<lib dir="{$dependenciesDir}/{@dir}">
-									<xsl:attribute name="includes">
-										<xsl:choose>
-											<xsl:when test="@includes">
-												<xsl:value-of select="@includes" />
-											</xsl:when>
-											<xsl:otherwise>**/*.jar</xsl:otherwise>
-										</xsl:choose>
-									</xsl:attribute>
-								</lib>
-							</xsl:for-each>
+							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" />
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
 							<xsl:if test="$apiHasTypes = 'true'">
 								<classes dir="{$typeClassesDir}" includes="**/*.class" />
@@ -754,18 +743,7 @@
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
-								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
-									<fileset dir="{$dependenciesDir}/{@dir}">
-										<xsl:attribute name="includes">
-											<xsl:choose>
-												<xsl:when test="@includes">
-													<xsl:value-of select="@includes" />
-												</xsl:when>
-												<xsl:otherwise>**/*.jar</xsl:otherwise>
-											</xsl:choose>
-										</xsl:attribute>
-									</fileset>
-								</xsl:for-each>
+								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 							</classpath>
 						</javadoc>
 						<copy
@@ -1031,8 +1009,13 @@
 
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+					<xsl:for-each select="api[document($project_file)/api/impl]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>classes-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+						<xsl:if test="position() &gt; 1 or count(document($project_file)/api/impl) &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
@@ -1041,8 +1024,13 @@
 
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+					<xsl:for-each select="api[document($project_file)/api/impl]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>war-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+						<xsl:if test="position() &gt; 1 or count(document($project_file)/api/impl) &gt; 1">,</xsl:if>
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
@@ -1051,5 +1039,18 @@
 
 			<target name="all" depends="specdocs,wars" description="Generates everything" />
 		</project>
+	</xsl:template>
+
+	<xsl:template match="dependency">
+		<fileset dir="{$dependenciesDir}/{@dir}">
+			<xsl:attribute name="includes">
+				<xsl:choose>
+					<xsl:when test="@includes">
+						<xsl:value-of select="@includes" />
+					</xsl:when>
+					<xsl:otherwise>**/*.jar</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</fileset>
 	</xsl:template>
 </xsl:stylesheet>

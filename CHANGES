@@ -1,4 +1,21 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.175:
+
+* Generated build file:
+  - The new directory structure is taken into account also for
+    the environments and the impl.xml.
+
+* Specification:
+  - Removed the <param> element from the implementation specification.
+
+* Build and release process:
+  - The logdoc html pages generated for the client and the common packages are
+    now uploaded to xins.sourceforge.net.
+  - Added a web page that links to the different logdoc html pages.
+
+* Removed some TODOs done.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.174:
 
 * XINS/Java Server Framework:

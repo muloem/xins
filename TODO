@@ -18,7 +18,6 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 * Allow freezing of api.xml files. Support 'freeze' attribute in DTD and
   copy behaviour from behaviour for frozen .fnc files.
 * Add standard type '_list'.
-* Add more strict values for attributes in the DTDs when possible.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
@@ -55,20 +54,14 @@ XINS/JAVA SERVER FRAMEWORK
   file is now marked +r (readable), the change is not noticed, since the
   modification date does not change. The framework should notice this and
   reinitialize.
-* If input/param/description is empty, then for the generated classes the
-  @param section should be appropriate, non-empty.
 * Improve the performance of the parsing of the query string by using a custom
   method to do this. Return an HTTP error code if the query string is invalid,
   for example if it contains duplicate parameter names.
-* Log 5014/5015 for meta-functions.
-* Return InvalidParameters if an input parameter of type _properties has a
-  single key used multiple times.
-* Verify the required 'set' methods in the SuccessfulResult are set.
+* Log 1514/1515 for meta-functions.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
-* Convert to logdoc-approach.
 * Support non-200 HTTP return codes.
 * Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
   _GetSettings and converts the result to a RemoteSettings object with build
@@ -99,7 +92,6 @@ XINS/JAVA COMMON LIBRARY
 
 * Improve description of class Manageable. It still refers to the term
   'lifespan manager'.
-* Convert to logdoc-approach.
 * Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
 * Add DateType class to represent standard type '_date'. Add Date class to
@@ -108,20 +100,13 @@ XINS/JAVA COMMON LIBRARY
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
 * Create an implementation of interface IndexedMap.
-* Implemented and test method isValidValueImpl in class
-  org.xins.types.standard.Properties.
-* Change _properties type so it does not allow a single key to be used
-  multiple times.
 
 ______________________________________________________________________________
 LOGDOC
 
 * Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
 * Support element in log.xml to reserve an ID that was previously used. For
-  example <reserve id="5002" />
-* Add the possibility for the implementation to use its own logdoc.
-* The XINS client framework should use the logdoc approach.
-* The java common classes should use the logdoc approac.
+  example <reserve id="1502" />
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
@@ -183,4 +168,3 @@ MISCELLANEOUS
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.
 * Investigate the unused classes/methods.
-* Refactor the directory structure.

@@ -153,7 +153,7 @@
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
-		<xsl:if test="boolean(document($api_file)/api/environment)">
+		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/projects/api[@name = $api]/environments">
 			<h2>Test forms</h2>
 			<ul>
 				<xsl:for-each select="document($api_file)/api/environment">
@@ -165,11 +165,26 @@
 								<xsl:value-of select="@id" />
 								<xsl:text>.html</xsl:text>
 							</xsl:attribute>
-
 							<xsl:value-of select="@id" />
 						</a>
 					</li>
 				</xsl:for-each>
+				<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+					<xsl:for-each select="document($env_file)/environments/environment">
+						<li>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:value-of select="$function_name" />
+									<xsl:text>-testform-</xsl:text>
+									<xsl:value-of select="@id" />
+									<xsl:text>.html</xsl:text>
+								</xsl:attribute>
+								<xsl:value-of select="@id" />
+							</a>
+						</li>
+					</xsl:for-each>
+				</xsl:if>
 			</ul>
 		</xsl:if>
 	</xsl:template>
@@ -642,7 +657,7 @@
 				</span>
 			</td>
 		</tr>
-		<xsl:if test="count(document($api_file)/api/environment) &gt; 0">
+		<xsl:if test="count(document($api_file)/api/environment) &gt; 0 or document($project_file)/projects/api[@name = $api]/environments">
 			<tr>
 				<th>Test on:</th>
 				<td>
@@ -672,6 +687,35 @@
 						</a>
 						<xsl:text> </xsl:text>
 					</xsl:for-each>
+					<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+						<xsl:for-each select="document($env_file)/environments/environment">
+							<a>
+								<xsl:attribute name="href">
+									<xsl:value-of select="@url" />
+									<xsl:text>?_function=</xsl:text>
+									<xsl:value-of select="$function_name" />
+									<xsl:if test="$sessionBased = 'true'">
+										<xsl:text>&amp;_session=</xsl:text>
+										<xsl:value-of select="$sessionID" />
+									</xsl:if>
+									<xsl:for-each select="$example-inputparams">
+										<xsl:text>&amp;</xsl:text>
+										<xsl:value-of select="../@name" />
+										<xsl:text>=</xsl:text>
+										<xsl:call-template name="urlencode">
+											<xsl:with-param name="text">
+												<xsl:value-of select="text()" />
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:for-each>
+								</xsl:attribute>
+
+								<xsl:value-of select="@id" />
+							</a>
+							<xsl:text> </xsl:text>
+						</xsl:for-each>
+					</xsl:if>
 				</td>
 			</tr>
 		</xsl:if>
