@@ -182,6 +182,8 @@ implements DefaultReturnCodes {
             doGetFunctionList(context);
          } else if ("_GetStatistics".equals(functionName)) {
             doGetStatistics(context);
+         } else if ("_GetVersion".equals(functionName)) {
+            doGetVersion(context);
          } else {
             context.startResponse(false, NO_SUCH_FUNCTION);
          }
@@ -297,8 +299,6 @@ implements DefaultReturnCodes {
     */
    private final void doGetStatistics(CallContext context)
    throws IOException {
-      context.param("xins.version", Library.getVersion());
-
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
@@ -382,5 +382,19 @@ implements DefaultReturnCodes {
          context.endTag();
          context.endTag();
       }
+   }
+
+   /**
+    * Returns the XINS version.
+    *
+    * @param context
+    *    the context, guaranteed to be not <code>null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   private final void doGetVersion(CallContext context)
+   throws IOException {
+      context.param("xins.version", Library.getVersion());
    }
 }
