@@ -111,9 +111,7 @@ import org.xins.logdoc.LogdocStringBuffer;
 				<xsl:with-param name="had-argument" select="'true'" />
 			</xsl:apply-templates>
 			<xsl:text>) {
-      LogdocStringBuffer buffer = new LogdocStringBuffer(255);
-      buffer.append(id);
-      buffer.append(' ');</xsl:text>
+      LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
 			<xsl:apply-templates />
 			<xsl:text>
       return buffer.toString();</xsl:text>
