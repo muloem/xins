@@ -1,6 +1,13 @@
 #!/bin/sh
 #
+# -*- mode: Fundamental; tab-width: 4; -*-
+# ex:ts=4
+#
 # $Id$
+#
+# Converts xins-project.xml in the current directory to an Ant build file and
+# then passes control to Ant.
+#
 
 prog=`basename $0`
 
