@@ -7,10 +7,12 @@
 package org.xins.common.service;
 
 import org.xins.common.Log;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Exception that indicates an unexpected exception was caught while
- * performing a call.
+ * performing a call. The cause exception is a required argument for the
+ * constructor. It may be retrieved later using {@link #getCause()}.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -81,6 +83,7 @@ extends GenericCallException {
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
+    *          || cause       == null
     *          || duration  &lt; 0</code>.
     */
    public UnexpectedExceptionCallException(CallRequest      request,
@@ -93,6 +96,9 @@ extends GenericCallException {
       // Trace and then call constructor of superclass
       super(trace("Unexpected exception caught"),
             request, target, duration, detail, cause);
+      MandatoryArgumentChecker.check("cause", cause);
+
+      // TODO: Check all arguments at once
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
