@@ -34,7 +34,7 @@ public interface FunctionCaller {
     * @throws IOException
     *    if the API could not be contacted due to an I/O error.
     *
-    * @throws FunctionException
+    * @throws InvalidCallResultException
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
