@@ -182,6 +182,7 @@ extends HttpServlet {
     * The response encoding format.
     */
    public static final String RESPONSE_ENCODING = "UTF-8";
+   // TODO: Allow this to be configured
 
    /**
     * The content type of the HTTP response.
