@@ -385,7 +385,8 @@ $Id$
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<classpath>
-								<pathelement location="{$xins_home}/build/xins.jar" />
+								<pathelement location="{$xins_home}/build/xins-common.jar" />
+								<pathelement location="{$xins_home}/build/xins-server.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
@@ -436,6 +437,49 @@ $Id$
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						</classpath>
 					</javac>
+				</target>
+					
+				<target name="javadoc-capi-{$api}" depends="-stubs-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
+					<mkdir dir="build/javadoc-capi/{$api}" />
+					<javadoc
+					sourcepath="build/java-capi/{$api}"
+					destdir="build/javadoc-capi/{$api}"
+					version="yes"
+					use="yes"
+					author="yes"
+					private="no"
+					windowtitle="TODO"
+					doctitle="TODO"
+					bottom="TODO">
+						<packageset dir="build/java-capi/{$api}" />
+						<link
+						href="http://xins.sourceforge.net/javadoc/0.33/"
+						offline="true"
+						packagelistloc="{$xins_home}/build/javadoc/" />
+						<link
+						href="http://java.sun.com/j2se/1.3/docs/api"
+						offline="true"
+						packagelistloc="{$xins_home}/src/package-lists/j2se/" />
+						<link
+						href="http://jakarta.apache.org/log4j/docs/api/"
+						offline="true"
+						packagelistloc="{$xins_home}/src/package-lists/log4j/" />
+						<link
+						href="http://xmlenc.sourceforge.net/javadoc/0.34/"
+						offline="true"
+						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
+						<classpath>
+							<pathelement location="{$xins_home}/build/xins-common.jar" />
+							<pathelement location="{$xins_home}/build/xins-client.jar" />
+							<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
+							<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
+							<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+						</classpath>
+					</javadoc>
+					<copy
+					file="{$xins_home}/src/css/javadoc/style.css"
+					tofile="build/javadoc-capi/{$api}/stylesheet.css"
+					overwrite="true" />
 				</target>
 			</xsl:for-each>
 
