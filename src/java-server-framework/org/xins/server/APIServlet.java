@@ -481,10 +481,10 @@ extends HttpServlet {
 
       try {
          _api.init(runtimeProperties);
-      } catch (InitializationException e) {
+      } catch (Throwable e) {
          _state = API_INITIALIZATION_FAILED;
          _error = "Failed to initialize " + _api.getName() + " API.";
-         Library.INIT_LOG.error(_error);
+         Library.INIT_LOG.error(_error, e);
          return;
       }
 
