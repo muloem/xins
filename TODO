@@ -42,6 +42,7 @@ XINS/JAVA SERVER FRAMEWORK
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
 * Support ACLs for the complete API and/or specific functions.
+* Generated Javadoc should include package-private and private members.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
