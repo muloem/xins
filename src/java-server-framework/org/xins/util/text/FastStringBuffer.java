@@ -184,6 +184,78 @@ public class FastStringBuffer extends Object {
    }
 
    /**
+    * Appends the string representation of the specified <code>byte</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(byte n) {
+      append(String.valueOf(n));
+   }
+
+   /**
+    * Appends the string representation of the specified <code>short</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(short n) {
+      append(String.valueOf(n));
+   }
+
+   /**
+    * Appends the string representation of the specified <code>int</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(int n) {
+      append(String.valueOf(n));
+   }
+
+   /**
+    * Appends the string representation of the specified <code>long</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(long n) {
+      append(String.valueOf(n));
+   }
+
+   /**
+    * Appends the string representation of the specified <code>float</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(float n) {
+      append(String.valueOf(n));
+   }
+
+   /**
+    * Appends the string representation of the specified <code>double</code>.
+    * If necessary, the capacity of this string buffer will be increased.
+    *
+    * @param n
+    *    the number of which the string representation should be added to this
+    *    buffer.
+    */
+   public void append(double n) {
+      append(String.valueOf(n));
+   }
+
+   /**
     * Clears this string buffer. The capacity will remain untouched, though.
     */
    public void clear() {
