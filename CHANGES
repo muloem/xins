@@ -2,14 +2,19 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.201:
 
 * XINS/Java Server Framework:
-  - Changed log message 1540 to log the start timestamp with millisecond
-    precision, instead of second precision.
-  - Modified translations for log message 1541 to change the order of the
-    parameters. And no longer logging the call ID.
-  - Added log message 1541, which is similar to 1540, but logs less
-    information.
+  - Changed log message 1540:
+    . log the start timestamp with millisecond instead of second precision;
+    . log a zero character ('0') for the error code if there is none;
+    . log a hyphen ('-') for the input parameters if there are none;
+    . log a hyphen ('-') for the output parameters if there are none;
+    . no longer quoting the parameter values;
+    . no longer logging parameters that have a null or empty string as value;
+    . changed order of parameters;
+    . no longer logging the call ID (at least in the translations).
+  - Added log message 1541, which is similar to 1540, except that it does not
+    log the input and output parameters.
   - Removed log messages 1514, 1516 and 1517. The information these messages
-    provided is all bundled in log message 1540.
+    provided is available in log messages 1540 and/or 1541.
 
 * Logdoc:
   - Added class AbstractLogdocSerializable. It supports lazy initialization.
