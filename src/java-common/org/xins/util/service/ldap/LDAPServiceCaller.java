@@ -75,7 +75,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
    /**
     * Authenticates using the specified details. If this succeeds with one of
-    * the targets, then a {@link Result} object is returned. Otherwise, if
+    * the targets, then a {@link QueryResult} is returned. Otherwise, if
     * none of the targets could successfully be called, a
     * {@link CallFailedException} is thrown.
     *
@@ -103,7 +103,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public Result call(AuthenticationMethod method,
+   public QueryResult call(AuthenticationMethod method,
                       String               principal,
                       String               credentials)
    throws CallFailedException {
@@ -114,7 +114,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Performs the specified LDAP query using with no authentication details.
     * If this succeeds with one of the targets, then a
-    * {@link Result} object is returned. Otherwise, if none of the targets
+    * {@link QueryResult} is returned. Otherwise, if none of the targets
     * could successfully be called, a {@link CallFailedException} is thrown.
     *
     * @param query
@@ -132,7 +132,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public Result call(Query query)
+   public QueryResult call(Query query)
    throws IllegalArgumentException, CallFailedException {
       return call(null, query);
    }
@@ -140,7 +140,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Performs the specified LDAP query using the specified authentication
     * details. If this succeeds with one of the targets, then a
-    * {@link Result} object is returned. Otherwise, if none of the targets
+    * {@link QueryResult} is returned. Otherwise, if none of the targets
     * could successfully be called, a {@link CallFailedException} is thrown.
     *
     * @param authenticationDetails
@@ -157,7 +157,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public Result call(AuthenticationDetails authenticationDetails,
+   public QueryResult call(AuthenticationDetails authenticationDetails,
                                  Query                 query)
    throws CallFailedException {
 
@@ -168,7 +168,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       CallResult callResult = doCall(request);
 
       // Return the result
-      return (Result) callResult.getResult();
+      return (QueryResult) callResult.getResult();
    }
 
    protected Object doCallImpl(ServiceDescriptor target,
@@ -267,9 +267,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws NamingException
     *    if the search failed.
     */
-   private Result query(ServiceDescriptor target,
-                        InitialDirContext context,
-                        Query             query)
+   private QueryResult query(ServiceDescriptor target,
+                             InitialDirContext context,
+                             Query             query)
    throws IllegalArgumentException, NamingException {
 
       // Check preconditions
@@ -300,7 +300,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Convert the results
       boolean succeeded = false;
       try {
-         Result result = new Result(true, ne);
+         QueryResult result = new QueryResult(true, ne);
          succeeded = true;
          return result;
       } finally {

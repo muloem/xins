@@ -17,7 +17,7 @@ import javax.naming.directory.SearchResult;
  *
  * @since XINS 0.115
  */
-public final class Result extends Object {
+public final class QueryResult extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -32,7 +32,7 @@ public final class Result extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Result</code> object.
+    * Constructs a new <code>QueryResult</code> object.
     *
     * <p>This constructor accepts and reads from a {@link NamingEnumeration}
     * object. Note that it will not {@link NamingEnumeration#close() close()}
@@ -60,8 +60,8 @@ public final class Result extends Object {
     *    <code>namingEnumeration.</code>{@link NamingEnumeration#next() next()}
     *    returned a <code>null</code> value.
     */
-   public Result(boolean           authenticated,
-                 NamingEnumeration namingEnumeration)
+   public QueryResult(boolean           authenticated,
+                      NamingEnumeration namingEnumeration)
    throws NamingException, IllegalArgumentException {
 
       // Check preconditions
