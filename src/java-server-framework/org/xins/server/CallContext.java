@@ -567,6 +567,9 @@ implements Responder, Log {
 
       // Close all open elements
       _xmlOutputter.endDocument();
+
+      // Set the state
+      _state = AFTER_END;
    }
 
    public void trace(Object message) {
