@@ -61,6 +61,9 @@
 				<xsl:text>
       java.lang.String </xsl:text>
 				<xsl:value-of select="@name" />
+				<xsl:if test="local-name() = 'attribute'">
+					<xsl:text>Attribute</xsl:text>
+				</xsl:if>
 				<xsl:text> = </xsl:text>
 				<xsl:value-of select="$context" />
 				<xsl:choose>
@@ -96,6 +99,9 @@
 				<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="@name" />
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:text>Attribute</xsl:text>
+					</xsl:if>
 					<xsl:text> == null) {
          if (_errorResult == null) {
             _errorResult = new org.xins.server.</xsl:text>
@@ -132,6 +138,9 @@
 				</xsl:call-template>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
+				<xsl:if test="local-name() = 'attribute'">
+					<xsl:text>Attribute</xsl:text>
+				</xsl:if>
 				<xsl:text>)) {
          if (_errorResult == null) {
             _errorResult = new org.xins.server.</xsl:text>
