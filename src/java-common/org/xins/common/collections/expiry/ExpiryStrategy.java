@@ -244,7 +244,7 @@ public final class ExpiryStrategy extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("folder", folder);
 
-      // TODO: Review this log message. Generally, toString() is not wise.
+      // XXX: Review this log message. Generally, toString() is not wise.
       Log.log_1401(folder.toString(), toString());
 
       synchronized (_folders) {
@@ -357,23 +357,39 @@ public final class ExpiryStrategy extends Object {
          long next = now + _precision;
 
          while (! _stop) {
+            boolean interrupted;
             long sleep = (next - now);
             if (sleep > 0) {
-// TODO: System.out.println("Sleeping " + sleep + " ms.");
+               Log.log_1404(sleep);
                try {
                   Thread.sleep(sleep);
+                  interrupted = false;
+
+               // Sleep was interrupted
                } catch (InterruptedException exception) {
-// TODO: System.out.println("Interrupted");
-                  now = System.currentTimeMillis();
-                  continue;
+                  interrupted = true;
+               }
+
+               // Determine how much time we spent since we started sleeping
+               long after = System.currentTimeMillis();
+               long slept = after - now;
+               now        = after;
+
+               // Perform logging
+               if (interrupted) {
+                  Log.log_1405(slept);
+               } else {
+                  Log.log_1406(slept);
                }
             }
 
-// TODO: System.out.println("Woke up.");
+            // If we should stop, then exit the loop
+            if (_stop) {
+               break;
+            }
 
-            now = System.currentTimeMillis();
             while (next <= now) {
-// TODO: System.out.println("Tick.");
+               Log.log_1407();
                doTick();
                now = System.currentTimeMillis();
                next += _precision;
