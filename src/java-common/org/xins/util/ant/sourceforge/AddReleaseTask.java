@@ -13,16 +13,20 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import org.apache.commons.httpclient.Cookie;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpState;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Apache Ant task that creates a new XINS release at the SourceForge site.
@@ -84,6 +88,11 @@ public final class AddReleaseTask extends Task {
     */
    public AddReleaseTask() {
       _httpClient = new HttpClient();
+      _httpClient.setConnectionTimeout(7000); // 7 seconds
+      _httpClient.setTimeout(5000);           // 5 seconds
+
+      _httpState = _httpClient.getState();
+      _httpState.setCookiePolicy(CookiePolicy.COMPATIBILITY);
    }
 
 
@@ -135,6 +144,11 @@ public final class AddReleaseTask extends Task {
     * The <code>HttpClient</code> object to use.
     */
    private HttpClient _httpClient;
+
+   /**
+    * The state holder object for the HTTP connection.
+    */
+   private HttpState _httpState;
 
 
    //-------------------------------------------------------------------------
@@ -248,6 +262,36 @@ public final class AddReleaseTask extends Task {
    }
 
    /**
+    * Fails with the specified error message.
+    *
+    * @param message
+    *    the error message, can be <code>null</code>.
+    *
+    * @return
+    *    the constructed build exception, never <code>null</code>.
+    */
+   private BuildException fail(String message) {
+      log(message, ERROR);
+      return new BuildException(message);
+   }
+   /**
+    * Fails with the specified error message and cause exception.
+    *
+    * @param message
+    *    the error message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
+    * @return
+    *    the constructed build exception, never <code>null</code>.
+    */
+   private BuildException fail(String message, Throwable cause) {
+      log(message, ERROR);
+      return new BuildException(message, cause);
+   }
+
+   /**
     * Called by the project to let the task do its work.
     *
     * @throws BuildException
@@ -257,30 +301,30 @@ public final class AddReleaseTask extends Task {
 
       // Check preconditions
       if (_file == null) {
-         throw new BuildException("The file to upload must be set, but it is not.");
+         throw fail("The file to upload must be set, but it is not.");
       } else if (_user == null) {
-         throw new BuildException("The SourceForge user must be set, but it is not.");
+         throw fail("The SourceForge user must be set, but it is not.");
       } else if (_password == null) {
-         throw new BuildException("The password for the SourceForge user must be set, but it is not.");
+         throw fail("The password for the SourceForge user must be set, but it is not.");
       } else if (_groupID == null) {
-         throw new BuildException("The SourceForge group ID must be set, but it is not.");
+         throw fail("The SourceForge group ID must be set, but it is not.");
       } else if (_releaseName == null) {
-         throw new BuildException("The SourceForge release name must be set, but it is not.");
+         throw fail("The SourceForge release name must be set, but it is not.");
       } else if (_packageID == null) {
-         throw new BuildException("The SourceForge package ID must be set, but it is not.");
+         throw fail("The SourceForge package ID must be set, but it is not.");
       } else if (_keystore == null) {
-         throw new BuildException("The keystore location must be set, but it is not.");
+         throw fail("The keystore location must be set, but it is not.");
       }
 
       // Upload the file
       if (_ignoreUploadFailures) {
          try {
-            uploadFile();
+            // XXX: uploadFile();
          } catch (BuildException e) {
-            log("Ignoring file upload error: " + e.getMessage(), INFO);
+            log("Ignoring file upload error.", INFO);
          }
       } else {
-         uploadFile();
+         // XXX: uploadFile();
       }
 
       // Use our own keystore
@@ -288,35 +332,10 @@ public final class AddReleaseTask extends Task {
       System.setProperty("javax.net.ssl.trustStore", _keystore);
 
       // Login to SourceForge site
-      disableCertificateValidation();
       login();
 
       // Create a new release
-      // XXX: createRelease();
-   }
-
-   /**
-    * Attempts to disable certicate validation for HTTPS connections.
-    *
-    * @throws BuildException
-    *    if anything goes wrong.
-    */
-   private void disableCertificateValidation()
-   throws BuildException {
-
-      // Create a trust manager that does not validate certificate chains
-      TrustManager[] tm = new TrustManager[] { new NaiveTrustManager() };
-    
-      // Install the all-trusting trust manager
-      try {
-         log("Disabling SSL certificate validation.", VERBOSE);
-         SSLContext sc = SSLContext.getInstance("SSL");
-         sc.init(null, tm, new SecureRandom());
-         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-         log("Disabled SSL certificate validation.", DEBUG);
-      } catch (Exception e) {
-         throw new BuildException("Error while disabling SSL certificate validation.", e);
-      }
+      // XXX: addRelease();
    }
 
    /**
@@ -337,7 +356,7 @@ public final class AddReleaseTask extends Task {
          in = new FileInputStream(f);
          fileName = f.getName();
       } catch (FileNotFoundException fnf) {
-         throw new BuildException("Unable to open file \"" + _file + "\".");
+         throw fail("Unable to open file \"" + _file + "\".");
       }
 
       // Create an FTP client
@@ -353,7 +372,7 @@ public final class AddReleaseTask extends Task {
          // Check reply code to verify success
          int reply = ftp.getReplyCode();
          if(! FTPReply.isPositiveCompletion(reply)) {
-            throw new BuildException("FTP server \"" + FTP_SERVER + "\" refused connection.");
+            throw fail("FTP server \"" + FTP_SERVER + "\" refused connection.");
          }
 
          // Login
@@ -377,12 +396,12 @@ public final class AddReleaseTask extends Task {
             int code = ftp.getReplyCode();
             String replyString = ftp.getReplyString();
             String url = "ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName;
-            throw new BuildException("Failed to upload \"" + _file + "\" to " + url + ". Reply code " + code + ": \"" + replyString + "\".");
+            throw fail("Failed to upload \"" + _file + "\" to " + url + ". Reply code " + code + ": \"" + replyString + "\".");
          }
          log("Uploaded \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, DEBUG);
 
       } catch(IOException e) {
-         throw new BuildException("Failed to upload file to FTP server.", e);
+         throw fail("Failed to upload file to FTP server.", e);
       } finally {
          if(ftp.isConnected()) {
             try {
@@ -402,43 +421,57 @@ public final class AddReleaseTask extends Task {
     */
    private void login() throws BuildException {
 
-      // Combine URL and parameters into a PostMethod object
-      PostMethod method = new PostMethod("https://sourceforge.net/account/login.php");
-      method.addParameter("form_loginname", _user);
-      method.addParameter("form_pw",        _password);
-      method.addParameter("login",          "Login With SSL");
+      // Create parameter string
+      FastStringBuffer buffer = new FastStringBuffer(256);
+      buffer.append("https://sourceforge.net/account/login.php?return_to=&form_loginname=");
+      buffer.append(_user);
+      buffer.append("&form_pw=");
+      buffer.append(_password);
+      buffer.append("&persistent_login=1&login=Login+With+SSL");
+      String url = buffer.toString();
 
-      // Execute the request
+      GetMethod method = new GetMethod(url);
+
       log("Logging in to SourceForge site as \"" + _user + "\".", VERBOSE);
       int code;
       try {
+         // Execute the request
+         log("Executing request \"" + url + "\".", DEBUG);
          _httpClient.executeMethod(method);
+
+         // Determine the status code
          code = method.getStatusCode();
+
+         // Expect a HTTP OK (200)
+         if (code != 302) {
+            throw fail("Expected result code 302 while logging in. Received: " + method.getStatusLine());
+         }
+
+         // Get all cookies
+         Cookie[] cookies = _httpState.getCookies();
+         int cookieCount = cookies == null ? 0 : cookies.length;
+         if (cookieCount < 1) {
+            throw fail("SourceForge login failed. No cookies returned.");
+         }
+
+         // Log all cookies
+         log("Received " + cookieCount + " cookies.", DEBUG);
+         for (int i = 0; i < cookieCount; i++) {
+            log("Received cookie: " + cookies[i].toExternalForm(), DEBUG);
+         }
+
       } catch (IOException e) {
-         throw new BuildException("I/O error during SourceForge login.", e);
+         throw fail("I/O error during SourceForge login.", e);
       } finally {
+         log("Releasing HTTP connection.", DEBUG);
          method.releaseConnection();
+         log("Released HTTP connection.", DEBUG);
       }
 
-      // Expect a HTTP redirect (302)
-      if (code != 302) {
-         throw new BuildException("HTTP result code " + code + " while logging in. Status line: " + method.getStatusLine());
-      }
-
-      // Determine redirect location
-      Header locationHeader = method.getResponseHeader("Location");
-      // TODO: Make more safe
-      try {
-         String location = locationHeader.getValues()[0].toString();
-         log("Login resulted in 302 redirect to: " + location);
-      } catch (HttpException e) {
-         throw new BuildException("Unable to determine redirect location.", e);
-      }
-      
       log("Logged in to SourceForge site as \"" + _user + "\".", DEBUG);
    }
 
-   private void createRelease() throws BuildException {
+   private void addRelease() throws BuildException {
       PostMethod method = new PostMethod("http://sourceforge.net/project/admin/newrelease.php");
       method.addParameter("group_id",     _groupID);
       method.addParameter("release_name", _releaseName);
@@ -451,15 +484,31 @@ public final class AddReleaseTask extends Task {
          _httpClient.executeMethod(method);
          code = method.getStatusCode();
       } catch (IOException e) {
-         throw new BuildException("I/O error while creating release.", e);
+         throw fail("I/O error while creating release.", e);
       } finally {
+         log("Releasing HTTP connection.", DEBUG);
          method.releaseConnection();
+         log("Released HTTP connection.", DEBUG);
       }
 
       // Expect a HTTP redirect (302)
       if (code != 302) {
-         throw new BuildException("HTTP result code " + code + " while creating release. Status line: " + method.getStatusLine());
+         throw fail("HTTP result code " + code + " while creating release. Status line: " + method.getStatusLine());
       }
+
+      // Determine redirect location
+      Header locationHeader = method.getResponseHeader("Location");
+      // TODO: Make more safe
+      try {
+         String location = locationHeader.getValues()[0].toString();
+         log("Login resulted in 302 redirect to: " + location);
+      } catch (HttpException e) {
+         throw fail("Unable to determine redirect location.", e);
+      }
+
+      // Fetch cookies
+      
+      
       log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.');
    }
 }
