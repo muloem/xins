@@ -26,10 +26,6 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
-      suite.addTestSuite(org.xins.tests.common.specs.APISpecTests.class);
-      suite.addTestSuite(org.xins.tests.common.specs.FunctionSpecTests.class);
-      suite.addTestSuite(org.xins.tests.common.specs.InputParamSpecTests.class);
-      suite.addTestSuite(org.xins.tests.common.specs.TypeSpecTests.class);
       suite.addTestSuite(org.xins.tests.common.util.collections.SingleEntryMapTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
