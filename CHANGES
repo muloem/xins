@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 0.38:
 
 * Moved org.xins.types package to XINS/Java Common.
 
+* The generated java-fundament classes now support Java data types other than
+  String. This may break existing function ...Impl classes.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.37:
 
