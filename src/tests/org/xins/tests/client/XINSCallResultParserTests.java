@@ -97,7 +97,86 @@ public class XINSCallResultParserTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testParseXINSCallResultData1() throws Throwable {
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * parse(byte[]) behaviour, in general and specifically also with regard to
+    * parsing output parameters.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult1() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Passing null: Should fail
+      try {
+         parser.parse(null);
+         fail("Passing <null> to XINSCallResultParser.parse(byte[]) should throw an IllegalArgumentException.");
+      } catch (IllegalArgumentException ex) {
+         // as expected
+      }
+
+      // Only a product element: Should fail
+      xml = "<product/>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("Root element 'product' should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Only a result element: Should succeed
+      xml = "<result/>";
+      parser.parse(xml.getBytes(ENCODING));
+
+      // Empty keys, empty values, non-conflicting duplicates
+      xml = "<result><param/><param name='a'/><param>b</param><param name='c'>z</param><param name='c'>z</param></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals(null, result.getErrorCode());
+      params = result.getParameters();
+      assertNotNull(params);
+      assertEquals(1, params.size());
+      assertEquals(null, params.get("a"));
+      assertEquals(null, params.get("b"));
+      assertEquals("z", params.get("c"));
+
+      // Conflicting duplicate should fail
+      xml = "<result><param name='c'>1st value</param><param name='c'>2nd value</param></result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("Conflicting values for parameter should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Unknown element as child of result should be ignored
+      xml = "<result><extra /><param name='a'>1</param>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals(null, result.getErrorCode());
+      params = result.getParameters();
+      assertNotNull(params);
+      assertEquals(1, params.size());
+      assertEquals("1", params.get("a"));
+
+   }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * parse(byte[]) behaviour with regard to parsing data sections.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult2() throws Exception {
 
       XINSCallResultParser parser = new XINSCallResultParser();
 
@@ -176,57 +255,50 @@ public class XINSCallResultParserTests extends TestCase {
 
       // The 'available' attribute must be 'false'
       assertEquals("true", childTwo.get("available"));
+  }
 
-      // Passing null: Should fail
-      try {
-         parser.parse(null);
-         fail("Passing <null> to XINSCallResultParser.parse(byte[]) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException ex) {
-         // as expected
-      }
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * parse(byte[]) behaviour with regard to error codes.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult3() throws Exception {
 
-      // Only a product element: Should fail
-      xml = "<product/>";
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Result with error code defined in 'error' attribute
+      xml = "<result error='SomeError'/>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals("SomeError", result.getErrorCode());
+
+      // Result with error code defined in 'code' attribute
+      xml = "<result code='SomeError'/>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals("SomeError", result.getErrorCode());
+
+      // Error code both in 'error' and in 'code' attribute (non-conflicting)
+      xml = "<result code='SomeError' error='SomeError'/>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals("SomeError", result.getErrorCode());
+
+      // Error code both in 'error' and in 'code' attribute (conflicting)
+      xml = "<result code='SomeError' error='SomethingElse'/>";
       try {
          parser.parse(xml.getBytes(ENCODING));
-         fail("Root element 'product' should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
+         fail("Conflicting values for error code should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
       } catch (ParseException ex) {
          // as expected
       }
-
-      // Only a result element: Should succeed
-      xml = "<result/>";
-      parser.parse(xml.getBytes(ENCODING));
-
-      // Empty keys, empty values, non-conflicting duplicates
-      xml = "<result><param/><param name='a'/><param>b</param><param name='c'>z</param><param name='c'>z</param></result>";
-      result = parser.parse(xml.getBytes(ENCODING));
-      assertNotNull(result);
-      assertEquals(null, result.getErrorCode());
-      params = result.getParameters();
-      assertNotNull(params);
-      assertEquals(1, params.size());
-      assertEquals(null, params.get("a"));
-      assertEquals(null, params.get("b"));
-      assertEquals("z", params.get("c"));
-
-      // Conflicting duplicate should fail
-      xml = "<result><param name='c'>1st value</param><param name='c'>2nd value</param></result>";
-      try {
-         parser.parse(xml.getBytes(ENCODING));
-         fail("Conflicting values for parameter should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
-      } catch (ParseException ex) {
-         // as expected
-      }
-
-      // Unknown element as child of result should be ignored
-      xml = "<result><extra /><param name='a'>1</param>";
-      result = parser.parse(xml.getBytes(ENCODING));
-      assertNotNull(result);
-      assertEquals(null, result.getErrorCode());
-      params = result.getParameters();
-      assertNotNull(params);
-      assertEquals(1, params.size());
-      assertEquals("1", params.get("a"));
    }
 }
