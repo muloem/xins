@@ -14,9 +14,26 @@ import org.xins.common.TimeOutController;
 import org.xins.common.TimeOutException;
 
 /**
- * Abstraction of a service caller for a TCP-based service. Possible
- * implementations include service callers for HTTP, FTP, JDBC, etc.
+ * Abstraction of a service caller for a TCP-based service. Service caller
+ * implementations can be used to perform a call to a service, and potentially
+ * fail-over to other back-ends if one is not available. Additionally,
+ * load-balancing and different types of time-outs are supported.
  *
+ * <p>Back-ends are
+ * represented by {@link TargetDescriptor} instances. Groups of back-ends are
+ * represented by {@link GroupDescriptor} instances.
+ *
+ * <a name="section-lbfo"></a>
+ * <h2>Load-balancing and fail-over</h2>
+ *
+ * <p>TODO: Describe load-balancing and fail-over.
+ *
+ * <a name="section-timeouts"></a>
+ * <h2>Time-outs</h2>
+ *
+ * <p>TODO: Describe time-outs.
+ *
+ * <a name="section-callconfig"></a>
  * <h2>Call configuration</h2>
  *
  * <p>Some aspects of a call can be configured using a {@link CallConfig}
@@ -43,6 +60,50 @@ import org.xins.common.TimeOutException;
  * <p>Finally, a <code>CallConfig</code> can be passed as an argument to the
  * call method. If it is, then this overrides any other settings.
  *
+ * <a name="section-implementations"></a>
+ * <h2>Implementations</h2>
+ *
+ * <p>This class is abstract and is intended to be have service-specific
+ * subclasses, e.g. for HTTP, FTP, JDBC, etc.
+ *
+ * <p>Normally, a subclass should be stick to the following rules:
+ *
+ * <ol>
+ *    <li>There should be a constructor that accepts only a {@link Descriptor}
+ *        object. This constructor should call
+ *        <code>super(descriptor, null)</code>.
+ *    <li>There should be a constructor that accepts both a
+ *        {@link Descriptor} and a service-specific call config object
+ *        (derived from {@link CallConfig}).  This constructor should call
+ *        <code>super(descriptor, callConfig)</code>.
+ *    <li>There should be a <code>call</code> method that accepts only a
+ *        service-specific request object (derived from {@link CallRequest}).
+ *        It should call
+ *        {@link #doCall(CallRequest,CallConfig) doCall}<code>(request, null)</code>.
+ *    <li>There should be a <code>call</code> method that accepts both a
+ *        service-specific request object (derived from {@link CallRequest}).
+ *        and a service-specific call config object (derived from
+ *        {@link CallConfig}).  It should call
+ *        {@link #doCall(CallRequest,CallConfig) doCall}<code>(request, callConfig)</code>.
+ *    <li>There should be a <code>call</code> method that accepts both a
+ *        service-specific request object (derived from {@link CallRequest}).
+ *        and a service-specific call config object (derived from
+ *        {@link CallConfig}).  It should call
+ *        {@link #doCall(CallRequest,CallConfig) doCall}<code>(request, callConfig)</code>.
+ *    <li>The method
+ *        {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} must
+ *        be implemented as specified.
+ *    <li>The {@link #createCallResult(CallRequest,TargetDescriptor,long,CallExceptionList,Object) createCallResult}
+ *        method must be implemented as specified.
+ *    <li>To control when fail-over is applied, the method
+ *        {@link #shouldFailOver(CallRequest,CallConfig,CallExceptionList)}
+ *        may also be implemented. The implementation can assume that
+ *        the passed {@link CallRequest} object is an instance of the
+ *        service-specific call request class and that the passed
+ *        {@link CallConfig} object is an instance of the service-specific
+ *        call config class.
+ * </ol>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -50,8 +111,6 @@ import org.xins.common.TimeOutException;
  */
 public abstract class ServiceCaller extends Object {
 
-   // FIXME: Implement CallConfig support
-   // TODO: Describe load-balancing and fail-over in class description
    // TODO: Describe typical implementation scenario, e.g. a
    //       SpecificCallResult call(SpecificCallRequest, SpecificCallConfig)
    //       method that calls doCall(CallRequest,CallConfig).
@@ -90,7 +149,7 @@ public abstract class ServiceCaller extends Object {
     *    Use {@link #ServiceCaller(Descriptor,CallConfig)} instead. Although
     *    marked as deprecated, this constructor still works the same as in
     *    XINS 1.0.x.
-    *    This method is guaranteed not to be removed before XINS 2.0.0.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
@@ -221,22 +280,24 @@ public abstract class ServiceCaller extends Object {
    /**
     * Attempts to execute the specified call request on one of the target
     * services, with the specified call configuration. During the execution,
-    * {@link TargetDescriptor Target descriptors} will be picked and passed
-    * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
-    * that succeeds, as long as fail-over can be done (according to
-    * {@link #shouldFailOver(CallRequest,Throwable)}).
+    * {@link TargetDescriptor Target descriptors} will be picked and passed to
+    * {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} until there
+    * is one that succeeds, as long as fail-over can be done (according to
+    * {@link #shouldFailOver(CallRequest,CallConfig,CallExceptionList)}).
     *
     * <p>If one of the calls succeeds, then the result is returned. If
     * none succeeds or if fail-over should not be done, then a
     * {@link CallException} is thrown.
     *
-    * <p>Each call attempt consists of a call to
-    * {@link #doCallImpl(CallRequest,TargetDescriptor)}.
+    * <p>Subclasses that want to use this method <em>must</em> implement
+    * {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)}. That
+    * method is called for each call attempt to a specific service target
+    * (represented by a {@link TargetDescriptor}).
     *
     * @param request
     *    the call request, not <code>null</code>.
     *
-    * @param config
+    * @param callConfig
     *    the call configuration, or <code>null</code> if the one defined for
     *    the call request should be used if specified, or otherwise the
     *    fall-back call configuration associated with this
@@ -255,10 +316,196 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 1.1.0
     */
-   protected final CallResult doCall(CallRequest request, CallConfig config)
+   protected final CallResult doCall(CallRequest request,
+                                     CallConfig  callConfig)
    throws IllegalArgumentException, CallException {
 
       final String METHODNAME = "doCall(CallRequest,CallConfig)";
+
+      // TRACE: Enter method
+      Log.log_1003(CLASSNAME, METHODNAME, null);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // Determine what config to use. The argument has priority, then the one
+      // associated with the request and the fall-back is the one associated
+      // with this service caller.
+      if (callConfig == null) {
+         callConfig = request.getCallConfig();
+         if (callConfig == null) {
+            callConfig = _callConfig;
+         }
+      }
+
+      // Keep a reference to the most recent CallException since
+      // setNext(CallException) needs to be called on it to make it link to
+      // the next one (if there is one)
+      CallException lastException = null;
+
+      // Maintain the list of CallExceptions
+      //
+      // This is needed if a successful result (a CallResult object) is
+      // returned, since it will contain references to the exceptions as well;
+      //
+      // Note that this object is lazily initialized because this code is
+      // performance- and memory-optimized for the successful case
+      CallExceptionList exceptions = null;
+
+      // Iterate over all targets
+      Iterator iterator = _descriptor.iterateTargets();
+
+      // There should be at least one target
+      if (! iterator.hasNext()) {
+         String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
+         Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
+         throw new Error(message);
+      }
+
+      // Loop over all TargetDescriptors
+      boolean shouldContinue = true;
+      while (shouldContinue) {
+
+         // Get a reference to the next TargetDescriptor
+         TargetDescriptor target = (TargetDescriptor) iterator.next();
+
+         // Call using this target
+         Log.log_1301(target.getURL());
+         Object result = null;
+         boolean succeeded = false;
+         long start = System.currentTimeMillis();
+         try {
+
+            // Attempt the call
+            result = doCallImpl(request, callConfig, target);
+            succeeded = true;
+
+         // If the call to the target fails, store the exception and try the next
+         } catch (Throwable exception) {
+
+            Log.log_1302(target.getURL());
+
+            long duration = System.currentTimeMillis() - start;
+
+            // If the caught exception is not a CallException, then
+            // encapsulate it in one
+            CallException currentException;
+            if (exception instanceof CallException) {
+               currentException = (CallException) exception;
+            } else if (exception instanceof MethodNotImplementedError) {
+               Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
+               throw new Error(getClass().getName() + ".doCallImpl(CallRequest,CallConfig,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
+            } else {
+               currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
+            }
+
+            // Link the previous exception (if there is one) to this one
+            if (lastException != null) {
+               lastException.setNext(currentException);
+            }
+
+            // Now set this exception as the most recent CallException
+            lastException = currentException;
+
+            // If this is the first exception being caught, then lazily
+            // initialize the CallExceptionList and keep a reference to the
+            // first exception
+            if (exceptions == null) {
+               exceptions = new CallExceptionList();
+            }
+
+            // Store the failure
+            exceptions.add(currentException);
+
+            // Determine whether fail-over is allowed and whether we have
+            // another target to fail-over to
+            boolean failOver = shouldFailOver(request, exception);
+            boolean haveNext = iterator.hasNext();
+
+            // No more targets and no fail-over
+            if (!haveNext && !failOver) {
+               Log.log_1304();
+               shouldContinue = false;
+
+            // No more targets but fail-over would be allowed
+            } else if (!haveNext) {
+               Log.log_1305();
+               shouldContinue = false;
+
+            // More targets available but fail-over is not allowed
+            } else if (!failOver) {
+               Log.log_1306();
+               shouldContinue = false;
+
+            // More targets available and fail-over is allowed
+            } else {
+               Log.log_1307();
+               shouldContinue = true;
+            }
+         }
+
+         // The call succeeded
+         if (succeeded) {
+            long duration = System.currentTimeMillis() - start;
+
+            // TRACE: Leave method
+            Log.log_1005(CLASSNAME, METHODNAME, null);
+
+            return createCallResult(request, target, duration, exceptions, result);
+         }
+      }
+
+      // Loop ended, call failed completely
+      Log.log_1303();
+
+      // Get the first exception from the list, this one should be thrown
+      CallException first = exceptions.get(0);
+
+      // TRACE: Leave method with exception
+      Log.log_1004(first, CLASSNAME, METHODNAME, null);
+
+      throw first;
+   }
+
+   /**
+    * Attempts to execute the specified call request on one of the target
+    * services. During the execution,
+    * {@link TargetDescriptor Target descriptors} will be picked and passed
+    * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
+    * that succeeds, as long as fail-over can be done (according to
+    * {@link #shouldFailOver(CallRequest,Throwable)}).
+    *
+    * <p>If one of the calls succeeds, then the result is returned. If
+    * none succeeds or if fail-over should not be done, then a
+    * {@link CallException} is thrown.
+    *
+    * <p>Each call attempt consists of a call to
+    * {@link #doCallImpl(CallRequest,TargetDescriptor)}.
+    *
+    * @param request
+    *    the call request, not <code>null</code>.
+    *
+    * @return
+    *    a combination of the call result and a link to the
+    *    {@link TargetDescriptor target} that returned this result, if and
+    *    only if one of the calls succeeded, could be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws CallException
+    *    if all call attempts failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #doCall(CallRequest,CallConfig)} instead. Although marked
+    *    as deprecated, this method still works the same as in XINS 1.0.x.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
+    */
+   protected final CallResult doCall(CallRequest request)
+   throws IllegalArgumentException, CallException {
+
+      final String METHODNAME = "doCall(CallRequest)";
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, METHODNAME, null);
@@ -393,57 +640,25 @@ public abstract class ServiceCaller extends Object {
    }
 
    /**
-    * Attempts to execute the specified call request on one of the target
-    * services. During the execution,
-    * {@link TargetDescriptor Target descriptors} will be picked and passed
-    * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
-    * that succeeds, as long as fail-over can be done (according to
-    * {@link #shouldFailOver(CallRequest,Throwable)}).
-    *
-    * <p>If one of the calls succeeds, then the result is returned. If
-    * none succeeds or if fail-over should not be done, then a
-    * {@link CallException} is thrown.
-    *
-    * <p>Each call attempt consists of a call to
-    * {@link #doCallImpl(CallRequest,TargetDescriptor)}.
-    *
-    * @param request
-    *    the call request, not <code>null</code>.
-    *
-    * @return
-    *    a combination of the call result and a link to the
-    *    {@link TargetDescriptor target} that returned this result, if and
-    *    only if one of the calls succeeded, could be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
-    *
-    * @throws CallException
-    *    if all call attempts failed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #doCall(CallRequest,CallConfig)} instead. Although marked
-    *    as deprecated, this method still works the same as in XINS 1.0.x.
-    *    This method is guaranteed not to be removed before XINS 2.0.0.
-    */
-   protected final CallResult doCall(CallRequest request)
-   throws IllegalArgumentException, CallException {
-      return doCall(request, null);
-   }
-
-   /**
     * Calls the specified target using the specified subject. This method must
     * be implemented by subclasses. It is called as soon as a target is
     * selected to be called. If the call fails, then a {@link CallException}
     * should be thrown. If the call succeeds, then the call result should be
     * returned from this method.
     *
-    * @param target
-    *    the target to call, cannot be <code>null</code>.
+    * <p>Subclasses that want to use {@link #doCall(CallRequest,CallConfig)}
+    * <em>must</em> implement this method.
     *
     * @param request
-    *    the call request to be executed, cannot be <code>null</code>.
+    *    the call request to be executed, never <code>null</code>.
+    *
+    * @param callConfig
+    *    the call config to be used, never <code>null</code>; this is
+    *    determined by {@link #doCall(CallRequest,CallConfig)} and is
+    *    guaranteed not to be <code>null</code>.
+    *
+    * @param target
+    *    the target to call, cannot be <code>null</code>.
     *
     * @return
     *    the result, if and only if the call succeeded, could be
@@ -459,6 +674,50 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws CallException
     *    if the call to the specified target failed.
+    *
+    * @since XINS 1.1.0
+    */
+   protected Object doCallImpl(CallRequest      request,
+                               CallConfig       callConfig,
+                               TargetDescriptor target)
+   throws ClassCastException, IllegalArgumentException, CallException {
+      throw new MethodNotImplementedError();
+   }
+
+   /**
+    * Calls the specified target using the specified subject. This method must
+    * be implemented by subclasses. It is called as soon as a target is
+    * selected to be called. If the call fails, then a {@link CallException}
+    * should be thrown. If the call succeeds, then the call result should be
+    * returned from this method.
+    *
+    * @param request
+    *    the call request to be executed, cannot be <code>null</code>.
+    *
+    * @param target
+    *    the target to call, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result, if and only if the call succeeded, could be
+    *    <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if the specified <code>request</code> object is not <code>null</code>
+    *    and not an instance of an expected subclass of class
+    *    {@link CallRequest}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || request == null</code>.
+    *
+    * @throws CallException
+    *    if the call to the specified target failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0. Implement
+    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} instead
+    *    of this method. Although deprecated, this method still works the same
+    *    as in XINS 1.0.x.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected abstract Object doCallImpl(CallRequest      request,
                                         TargetDescriptor target)
@@ -522,7 +781,8 @@ public abstract class ServiceCaller extends Object {
     *    if <code>task == null || descriptor == null</code>.
     *
     * @throws IllegalThreadStateException
-    *    if the task is a {@link Thread} which is already started.
+    *    if <code>descriptor.getTotalTimeOut() &gt; 0</code> and the task is a
+    *    {@link Thread} which is already started.
     *
     * @throws SecurityException
     *    if the task did not finish within the total time-out period, but the
@@ -581,9 +841,93 @@ public abstract class ServiceCaller extends Object {
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0. Implement
+    *    {@link #shouldFailOver(CallRequest,CallConfig,CallExceptionList)}
+    *    instead of this method. Although deprecated, this method still works
+    *    the same as in XINS 1.0.x.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception) {
       return (exception instanceof ConnectionCallException);
+   }
+
+   /**
+    * Determines whether a call should fail-over to the next selected target
+    * based on a request, call configuration and exception list.
+    * This method should only be called from
+    * {@link #doCall(CallRequest,CallConfig)}.
+    *
+    * <p>This method is typically overridden by subclasses. Usually, a
+    * subclass first calls this method in the superclass, and if that returns
+    * <code>false</code> it does some additional checks, otherwise
+    * <code>true</code> is immediately returned.
+    *
+    * <p>The implementation of this method in class {@link ServiceCaller}
+    * returns <code>true</code> if and only if
+    * <code>callConfig.{@link CallConfig#isFailOverAllowed() isFailOverAllowed()} || exception instanceof {@link ConnectionCallException}</code>.
+    *
+    * @param request
+    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    should not be <code>null</code>.
+    *
+    * @param callConfig
+    *    the call config that is currently in use, never <code>null</code>.
+    *
+    * @param exceptions
+    *    the current list of {@link CallException}s; never
+    *    <code>null</code>; get the most recent one by calling
+    *    <code>exceptions.</code>{@link CallExceptionList#last() last()}.
+    *
+    * @return
+    *    <code>true</code> if the call should fail-over to the next target, or
+    *    <code>false</code> if it should not.
+    *
+    * @since XINS 1.1.0
+    */
+   protected boolean shouldFailOver(CallRequest       request,
+                                    CallConfig        callConfig,
+                                    CallExceptionList exceptions) {
+      return callConfig.isFailOverAllowed()
+          || (exceptions.last() instanceof ConnectionCallException);
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Error used to indicate a method should be implemented in a subclass, but
+    * is not. Specifically, this is used for the
+    * {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} method.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private static final class MethodNotImplementedError extends Error {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>MethodNotImplementedError</code>.
+       */
+      private MethodNotImplementedError() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
    }
 }
