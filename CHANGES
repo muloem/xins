@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.65:
+
+* Improved descriptions for Library classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.64:
 
 * Added Library class to both XINS/Java Client Framework and to the XINS/Java
