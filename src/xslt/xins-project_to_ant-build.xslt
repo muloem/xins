@@ -403,12 +403,17 @@ $Id$
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 							<link
+							href="http://www.jdom.org/docs/apidocs/"
+							offline="true"
+							packagelistloc="{$xins_home}/src/package-lists/jdom/" />
+							<link
 							href="http://xmlenc.sourceforge.net/javadoc/0.36/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<classpath>
 								<pathelement location="{$xins_home}/build/xins-common.jar" />
 								<pathelement location="{$xins_home}/build/xins-server.jar" />
+								<pathelement location="{$xins_home}/depends/compile_and_runtime/jdom.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
@@ -503,12 +508,17 @@ $Id$
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 						<link
+						href="http://www.jdom.org/docs/apidocs/"
+						offline="true"
+						packagelistloc="{$xins_home}/src/package-lists/jdom/" />
+						<link
 						href="http://xmlenc.sourceforge.net/javadoc/0.36/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 						<classpath>
 							<pathelement location="{$xins_home}/build/xins-common.jar" />
 							<pathelement location="{$xins_home}/build/xins-client.jar" />
+							<pathelement location="{$xins_home}/depends/compile_and_runtime/jdom.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
