@@ -47,6 +47,25 @@ public final class TextUtils extends Object {
       }
    }
 
+   /**
+    * Quotes the textual presentation (returned by <code>toString()</code>) of
+    * the specified object, or returns <code>"(null)"</code> if the object is
+    * <code>null</code>.
+    *
+    * @param o
+    *    the object, or <code>null</code>.
+    *
+    * @return
+    *    if <code>o != null</code> then <code>o.toString()</code> quoted,
+    *    otherwise the string <code>"(null)"</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public static final String quote(Object o) {
+      String s = (o == null) ? null : o.toString();
+      return quote(s);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
