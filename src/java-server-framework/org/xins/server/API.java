@@ -430,9 +430,11 @@ implements DefaultResultCodes {
       _buildHost  = properties.getProperty("org.xins.api.build.host");
       _buildTime  = properties.getProperty("org.xins.api.build.time");
       if (_buildHost == null) {
-         throw new Exception("Build host name is not set.");
+         LOG.warn("Build host name is not set.");
+         _buildHost = "<unknown>";
       } else if (_buildTime == null) {
-         throw new Exception("Build time stamp is not set.");
+         LOG.warn("Build time stamp is not set.");
+         _buildTime = "<unknown>";
       }
 
       // Log build-time properties
