@@ -350,11 +350,12 @@ extends Object {
 
          // Pass object references to listeners, not Entry objects
          Map refMap = new HashMap();
-         Iterator entryIterator = toBeExpired.keySet().iterator();
-         while (entryIterator.hasNext()) {
-            Entry entry = (Entry) entryIterator.next();
+         Iterator keyIterator = toBeExpired.keySet().iterator();
+         while (keyIterator.hasNext()) {
+            Object key   = keyIterator.next();
+            Entry  entry = (Entry) toBeExpired.get(key);
             if (entry.isExpired()) {
-               refMap.put(entry.getReference(), toBeExpired.get(entry));
+               refMap.put(key, entry.getReference());
             } else {
                final String DETAIL = "Entry marked for expiry should not be expired yet. Key as string is \""
                                    + entry.getReference().toString()
