@@ -163,7 +163,7 @@
 	</group>
 
 	<group id="service" name="Service calling framework">
-		<entry id="1300" level="ERROR" exception="true">
+		<entry id="1300" level="DEBUG" exception="true">
 			<description>URL is malformed.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
@@ -171,24 +171,24 @@
 			<description>Call to a specific target succeeded.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="1302" level="WARNING">
+		<entry id="1302" level="DEBUG">
 			<description>Call to a specific target failed.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="1303" level="ERROR">
+		<entry id="1303" level="DEBUG">
 			<description>Call completely failed.</description>
 			<!-- TODO: Include call (request) ID ? -->
 		</entry>
-		<entry id="1304" level="INFO">
+		<entry id="1304" level="DEBUG">
 			<description>No more targets and no fail-over</description>
 		</entry>
-		<entry id="1305" level="INFO">
+		<entry id="1305" level="DEBUG">
 			<description>No more targets, but fail-over would be allowed</description>
 		</entry>
-		<entry id="1306" level="INFO">
+		<entry id="1306" level="DEBUG">
 			<description>More targets available, but fail-over is not allowed</description>
 		</entry>
-		<entry id="1307" level="INFO">
+		<entry id="1307" level="DEBUG">
 			<description>More targets available and fail-over is allowed</description>
 		</entry>
 	</group>

@@ -20,6 +20,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Added new types Float32 and Float64.
   - Added new type Base64.
   - Added a new Base64 class that perform base 64 encoding and decoding.
+  - Changed the level of all Logdoc messages in the 'service' group to DEBUG.
+    Proper logging is the responsibility of the ServiceCaller subclass and
+    corresponding classes.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
