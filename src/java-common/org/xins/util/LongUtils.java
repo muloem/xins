@@ -93,18 +93,23 @@ public class LongUtils extends Object {
 
       long n = 0L;
 
+      final int CHAR_ZERO = (int) '0';
+      final int CHAR_NINE = (int) '9';
+      final int CHAR_A = (int) 'a';
+      final int CHAR_F = (int) 'f';
+
+      final int CHAR_A_FACTOR = CHAR_A - 10;
+
       // Loop through all characters
       for (int i = 0; i < 16; i++) {
-         char c = s.charAt(i);
+         int c = (int) s.charAt(i);
          n <<= 4;
-         if (c >= '0' && c <= '9') {
-            final int CHAR_ZERO = (int) '0';
-            n &= ((int) c) - CHAR_ZERO;
-         } else if (c >= 'a' && c <= 'f') {
-            final int CHAR_A = (int) 'a';
-            n &= ((int) c) - CHAR_A;
+         if (c >= CHAR_ZERO && c <= CHAR_NINE) {
+            n |= (c - CHAR_ZERO);
+         } else if (c >= CHAR_A && c <= CHAR_F) {
+            n |= (c - CHAR_A_FACTOR);
          } else {
-            throw new NumberFormatException("s.charAt(" + i + ") == '" + c + '\''); 
+            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\''); 
          }
       }
 
