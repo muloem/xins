@@ -17,10 +17,13 @@
 				<mkdir dir="build/specdocs" />
 			</target>
 
-			<target name="specdocs" depends="-prepare">
+			<target name="-specdocs-prepare" depends="-prepare">
 				<copy
 				todir="build/specdocs"
 				file="${{xins_home}}/src/css/specdocs/style.css" />
+			</target>
+
+			<target name="specdocs-index" depends="-specdocs-prepare">
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
@@ -28,6 +31,18 @@
 					<param name="project_home" expression="${{project_home}}" />
 				</style>
 			</target>
+
+			<target name="specdocs-functions" depends="-specdocs-prepare">
+				<style
+				basedir="${{project_home}}/src/specs"
+				destdir="${{project_home}}/build/specdocs"
+				style="${{xins_home}}/src/xslt/specdocs/function_to_html.xslt"
+				includes="**/*.fnc">
+					<param name="project_home" expression="${{project_home}}" />
+				</style>
+			</target>
+
+			<target name="specdocs" depends="specdocs-index,specdocs-functions" />
 
 			<target name="all" depends="specdocs" />
 		</project>
