@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.28:
+
+* FastStringBuffer: Supporting appending byte, short, int, long, float and
+  double numbers.
+
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.27:
 
 * Disabled deprecation warnings and debug info when building a release.
