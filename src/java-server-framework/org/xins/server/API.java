@@ -280,6 +280,8 @@ implements DefaultResultCodes {
 
    /**
     * Gets the specified property and converts it to a <code>boolean</code>.
+    * Unless the value of the property equals <code>"true"</code>
+    * <code>false</code> is returned.
     *
     * @param properties
     *    the set of properties to read from, cannot be <code>null</code>.
