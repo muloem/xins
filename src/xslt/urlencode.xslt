@@ -44,6 +44,7 @@
 					<xsl:when test="$firstchar='&gt;'">%3E</xsl:when>
 					<xsl:when test="$firstchar='?'">%3F</xsl:when>
 					<xsl:when test="$firstchar='@'">%40</xsl:when>
+					<xsl:when test="$firstchar='^'">%5E</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
 					</xsl:otherwise>
