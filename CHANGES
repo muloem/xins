@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.147:
 
 * Added j2h.jar to depends/compile. See: http://www.java2html.com/.
 
+* Updated commons-httpclient to 2.0rc2.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.146:
 
