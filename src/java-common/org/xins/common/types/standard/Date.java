@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.types.standard;
 
@@ -342,11 +345,11 @@ public class Date extends Type {
          Value obj2 = (Value) obj;
          return obj2.getYear() == _year && obj2.getMonthOfYear() == _month && obj2.getDayOfMonth() == _day;
       }
-      
+
       public int hashCode() {
          return _asString.hashCode();
       }
-      
+
       public String toString() {
          return _asString;
       }

@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
 
@@ -79,7 +82,7 @@ public final class Element implements Cloneable {
    private ProtectedPropertyReader _attributes;
 
    /**
-    * Sub elements for this element. This list is a list of {@link Element} 
+    * Sub elements for this element. This list is a list of {@link Element}
     * objects.
     *
     * <p>This field is lazily initialized, so it is initially
@@ -153,7 +156,7 @@ public final class Element implements Cloneable {
    }
 
    /**
-    * Sets the text content for this element. Any previous value set will be 
+    * Sets the text content for this element. Any previous value set will be
     * erased.
     *
     * @param pcdata
@@ -202,7 +205,7 @@ public final class Element implements Cloneable {
    }
 
    /**
-    * Returns the children of this element. This returns a list of 
+    * Returns the children of this element. This returns a list of
     * other elements (as {@link Element} objects).
     *
     * <p>Since the content is lazily initialized, <code>null</code> is
@@ -214,7 +217,7 @@ public final class Element implements Cloneable {
    public List getChildren() {
       return _children;
    }
-   
+
    /**
     * Gets the value of the PCDATA element for this element.
     *
@@ -225,7 +228,7 @@ public final class Element implements Cloneable {
    public String getText() {
       return _pcdata;
    }
-   
+
    /**
     * Clones this object. A new <code>Element</code> instance will be returned
     * with the same type, equivalent child elements, equivalent attributes and

@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -23,7 +26,7 @@ import org.xins.server.APIServlet;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalServletHandler {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -41,7 +44,7 @@ public class LocalServletHandler {
     * a HTTP server.
     *
     * @param warFile
-    *    the location of the war file containing the Servlet, cannot be 
+    *    the location of the war file containing the Servlet, cannot be
     *    <code>null</code>.
     */
    private LocalServletHandler(File warFile) {
@@ -53,7 +56,7 @@ public class LocalServletHandler {
          ex.printStackTrace();
       }
    }
-   
+
    /**
     * Initializes the Servlet.
     *
@@ -63,7 +66,7 @@ public class LocalServletHandler {
    public void initServlet(File warFile) throws ServletException, Exception {
       // create the correct class loader
       URL warURL = warFile.toURL();
-      URL[] warURLs = {warURL}; 
+      URL[] warURLs = {warURL};
       URLClassLoader warClassLoader = new URLClassLoader(warURLs);
       URL classesURL = warClassLoader.getResource("/WEB-INF/classes");
       URL[] classesURLs = {classesURL};
@@ -92,7 +95,7 @@ public class LocalServletHandler {
       }
       return _servlet;
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -101,17 +104,17 @@ public class LocalServletHandler {
     * This Servlet handler.
     */
    private static LocalServletHandler _servlet;
-   
+
    /**
     * The Servlet started by this Servlet handler.
     */
    private APIServlet _apiServlet;
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Queries the Servlet with the specified URL.
     *
@@ -124,7 +127,7 @@ public class LocalServletHandler {
       _apiServlet.service(request, response);
       return response.getResult();
    }
-   
+
    /**
     * Disposes the Servlet and closes this Servlet handler.
     */

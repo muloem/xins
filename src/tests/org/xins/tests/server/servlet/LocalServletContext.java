@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -13,7 +16,7 @@ import javax.servlet.ServletContext;
 
 
 /**
- * This class is an implementation of the ServletContext that can be 
+ * This class is an implementation of the ServletContext that can be
  * called locally.
  *
  * @version $Revision$
@@ -32,7 +35,7 @@ public class LocalServletContext implements ServletContext {
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /** Creates a new instance of LocalServletContext */
    public LocalServletContext() {
    }
@@ -100,7 +103,7 @@ public class LocalServletContext implements ServletContext {
    public void log(Exception exception, String msg) {
       log(msg, exception);
    }
-   
+
    public void log(String msg, Throwable throwable) {
       System.err.println(msg);
       throwable.printStackTrace();

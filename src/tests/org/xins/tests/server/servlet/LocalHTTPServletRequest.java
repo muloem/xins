@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -21,7 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.xins.common.text.URLEncoding;
 
 /**
- * This class is an implementation of the HTTPServletRequest that can be 
+ * This class is an implementation of the HTTPServletRequest that can be
  * called localy.
  *
  * @version $Revision$
@@ -45,13 +48,13 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
     * Creates a new Servlet request.
     *
     * @param url
-    *    the request url or the list of the parameters (name=value) separated 
+    *    the request url or the list of the parameters (name=value) separated
     *    with comma's.
     */
    public LocalHTTPServletRequest(String url) {
       _date = System.currentTimeMillis();
       _attributes = new Hashtable();
-      
+
       // Parse the URL
       _parameters = new Properties();
       int questionMarkPos = url.lastIndexOf('?');
@@ -71,7 +74,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
          }
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -80,23 +83,23 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
     * The parameters retrieved from the URL.
     */
    private Properties _parameters;
-   
+
    /**
     * The date when the request was created.
     */
    private long _date;
-   
+
    /**
     * The attributes of the request.
     */
    private Hashtable _attributes;
-   
+
    /**
     * The URL query string.
     */
    private String _queryString;
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------

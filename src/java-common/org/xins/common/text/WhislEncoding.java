@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.text;
 
@@ -17,9 +20,9 @@ import org.xins.common.MandatoryArgumentChecker;
  * <ul>
  *    <li>a plus sign (<code>'+'</code>) converts to a space character;
  *    <li>a percent sign (<code>'%'</code>) must be followed by a 2-digit hex
- *        number that indicate the Unicode value of a single character; 
+ *        number that indicate the Unicode value of a single character;
  *    <li>a dollar sign (<code>'$'</code>) must be followed by a 4-digit hex
- *        number that indicate the Unicode value of a single character; 
+ *        number that indicate the Unicode value of a single character;
  * </ul>
  *
  * <p>TODO: Add decode method.

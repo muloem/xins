@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.text;
 
@@ -33,30 +36,30 @@ public class FastStringBufferTest extends TestCase {
       settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
       PropertyConfigurator.configure(settings);
 
-      
+
    }
    // -------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
-   
-   
+
+
+
    /*
     * test for void FastStringBuffer(int)
     */
@@ -64,13 +67,13 @@ public class FastStringBufferTest extends TestCase {
       int capacity = 3;
       FastStringBuffer fsb = new FastStringBuffer(capacity);
       assertEquals(capacity, fsb.getCapacity());
-      
+
       capacity = -1;
       try {
          fsb = new FastStringBuffer(capacity);
          fail("Expected IllegalArgumentException");
       } catch (IllegalArgumentException iae) {/* as expected */}
-      
+
       try {
          fsb = new FastStringBuffer(null);
          fail("Expected IllegalArgumentException");
@@ -85,7 +88,7 @@ public class FastStringBufferTest extends TestCase {
       FastStringBuffer fsb = new FastStringBuffer(testString);
       assertEquals(testString.length(), fsb.getLength());
       assertEquals(testString, fsb.toString());
-      
+
    }
 
    /*
@@ -97,7 +100,7 @@ public class FastStringBufferTest extends TestCase {
       FastStringBuffer fsb = new FastStringBuffer(capacity, testString);
       assertEquals(testString.length(), fsb.getLength());
       assertEquals(testString, fsb.toString());
-      
+
       try {
          fsb = new FastStringBuffer(3, "more than 3 positions");
          fail("Expected IllegalArgumentException ");
@@ -224,7 +227,7 @@ public class FastStringBufferTest extends TestCase {
       fsb.append(i);
       assertEquals("345", fsb.toString());
       assertEquals(3, fsb.getLength());
-      
+
    }
 
    /*

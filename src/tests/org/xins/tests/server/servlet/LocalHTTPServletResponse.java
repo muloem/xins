@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -11,7 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class is an implementation of the HTTPServletResponse that can be 
+ * This class is an implementation of the HTTPServletResponse that can be
  * invoked locally.
  *
  * @version $Revision$
@@ -30,9 +33,9 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
-   /** 
-    * Creates a new instance of LocalHTTPServletResponse 
+
+   /**
+    * Creates a new instance of LocalHTTPServletResponse
     */
    public LocalHTTPServletResponse() {
    }
@@ -45,22 +48,22 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
     * The content type of the result.
     */
    private String _contentType;
-   
+
    /**
     * The status of the result.
     */
    private int _status;
-   
+
    /**
     * The enconding of the result.
     */
    private String _encoding;
-   
+
    /**
     * The writer where to write the result.
     */
    private StringWriter _writer;
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -189,7 +192,7 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    /**
     * Gets the returned message from the servlet.
     *
-    * @return 
+    * @return
     *    the returned message.
     */
    public String getResult() {
@@ -198,7 +201,7 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
       }
       return _writer.toString();
    }
-   
+
    /**
     * Gets the status of the returned message.
     *
@@ -208,7 +211,7 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    public int getStatus() {
       return _status;
    }
-   
+
    /**
     * Gets the context type of the returned text.
     *

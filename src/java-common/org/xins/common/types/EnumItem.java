@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.types;
 
@@ -105,10 +108,10 @@ public class EnumItem extends Object {
     * order for it to qualify as equals, it needs to be an instance of the
     * very same class as this object (not even a subclass), and it needs to
     * have the same name and value.
-    * 
+    *
     * @param obj
     *    the object to compare, or <code>null</code>.
-    * 
+    *
     * @return
     *    <code>true</code> if <code>obj</code> is considered equal to this
     *    instance, or <code>false</code> otherwise.

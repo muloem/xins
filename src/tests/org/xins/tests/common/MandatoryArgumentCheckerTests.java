@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common;
 
@@ -95,12 +98,12 @@ public class MandatoryArgumentCheckerTests extends TestCase {
          // as expected
       }
    }
-   
+
    /**
     * Tests the check method that accept multiple parameters.
     */
    public void testMultiArguments() throws Throwable {
-      
+
       // Two parameters
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!");
        try {
@@ -127,7 +130,7 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
-      
+
       // Three parameters
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!", "hi", "me");
       try {
@@ -154,7 +157,7 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
-      
+
       // Four parameters
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!", "hi", "me", "bonjour", "tout le monde");
       try {

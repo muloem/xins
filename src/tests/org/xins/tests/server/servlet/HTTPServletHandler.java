@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -27,7 +30,7 @@ import org.xins.server.APIServlet;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class HTTPServletHandler {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -63,7 +66,7 @@ public class HTTPServletHandler {
       startServer();
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -72,26 +75,26 @@ public class HTTPServletHandler {
     * The servlet.
     */
    private APIServlet _apiServlet;
-   
+
    /**
     * The web server.
     */
    private ServerSocket _serverSocket;
-   
+
    /**
     * The thread that waits for connections from the client.
     */
    private SocketAcceptor _acceptor;
-   
+
    /**
     * flag indicating if the server should wait for other connections or stop.
     */
    private boolean _running;
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Initializes the Servlet.
     *
@@ -114,7 +117,7 @@ public class HTTPServletHandler {
       // Create the server socket
       _serverSocket = new ServerSocket(8080, 5);
       _running = true;
-      
+
       _acceptor = new SocketAcceptor();
       _acceptor.start();
    }
@@ -151,21 +154,21 @@ public class HTTPServletHandler {
          // System.out.println("+++ Result " + httpResult);
 
          outbound.writeBytes(httpResult);
-         
+
       } finally{
          // Clean up
          // System.out.println("Cleaning up connection: " + client);
          outbound.flush();
-         
+
          // The following close statements doesn't work on Unix.
          // inbound.close();
          // outbound.close();
          // client.close();
       }
    }
-   
+
    /**
-    * This method parses the data sent from the client to get the input 
+    * This method parses the data sent from the client to get the input
     * parameters and format the result as a compatible HTTP result.
     *
     * @param input
@@ -177,7 +180,7 @@ public class HTTPServletHandler {
    public String httpQuery(DataInputStream input) throws IOException {
       String inputLine;
       String query = null;
-    
+
       while (query == null && (inputLine = input.readLine()) != null) {
          //System.out.println("*** input: " + inputLine);
          if (inputLine.startsWith("GET ")) {
@@ -192,7 +195,7 @@ public class HTTPServletHandler {
             }
             query = inputLine.replace(',', '&');
          }
-         
+
          // POST method
          if (inputLine.startsWith("Content-Length: ")) {
             int postLength = Integer.parseInt(inputLine.substring(16));
@@ -224,12 +227,12 @@ public class HTTPServletHandler {
       }
       return "HTTP/1.1 400 BAD_REQUEST\n\n";
    }
-   
+
    /**
     * Executes the servlet
     *
     * @param url
-    *    the requested URL or a common separated list of the parameters 
+    *    the requested URL or a common separated list of the parameters
     *    passed to the URL (e.g. _function=GetVestion,param1=value1)
     */
    public LocalHTTPServletResponse query(String url) throws IOException {
@@ -238,19 +241,19 @@ public class HTTPServletHandler {
       _apiServlet.service(request, response);
       return response;
    }
-   
+
    /**
     * Thread waiting for connection from the client.
     */
    private class SocketAcceptor extends Thread {
-      
+
       /**
        * Create the thread.
        */
       public SocketAcceptor() {
          setDaemon(true);
       }
-      
+
       /**
        * Executes the thread.
        */

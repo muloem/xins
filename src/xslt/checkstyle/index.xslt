@@ -7,6 +7,9 @@
  XSLT stylesheet that converts a Checkstyle XML report to HTML.
 
  $Id$
+
+ Copyright 2004 Wanadoo Nederland B.V.
+ See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">

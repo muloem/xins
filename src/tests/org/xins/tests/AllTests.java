@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests;
 
@@ -27,7 +30,7 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
-      
+
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
 
@@ -42,27 +45,27 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.util.text.SimplePatternParserTests.class);
 
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
-     
+
       suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int8Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int16Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int32Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int64Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
-      
+
       suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
-      
+
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
-      
+
       // Test just a test
       //suite.addTest(new org.xins.tests.server.MetaFunctionsTests("testUnknownMetaFunction"));
-      
+
       return suite;
    }
 

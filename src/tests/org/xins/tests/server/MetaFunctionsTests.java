@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server;
 
@@ -85,7 +88,7 @@ public class MetaFunctionsTests extends TestCase {
     * The HTTP server used to handle the requests.
     */
    private HTTPServletHandler _httpServer;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -99,7 +102,7 @@ public class MetaFunctionsTests extends TestCase {
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
-      
+
       // Start the web server
       //System.out.println("Web server set up.");
       _httpServer = new HTTPServletHandler(warFile);
@@ -122,7 +125,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No xmlenc version specified.", parameters.get("xmlenc.version"));
       assertEquals("Incorrect number of parameters.", 3, parameters.size());
    }
-   
+
    /**
     * Tests the _GetStatistics meta function.
     */
@@ -153,7 +156,7 @@ public class MetaFunctionsTests extends TestCase {
       DataElement data = result.getDataElement();
       assertNull(data.getAttributes());
       Iterator children = data.getChildren();
-      
+
       DataElement heap = (DataElement) children.next();
       assertNotNull("No total memory provided.", heap.get("total"));
       assertNotNull("No used memory provided.", heap.get("used"));
@@ -167,7 +170,7 @@ public class MetaFunctionsTests extends TestCase {
       } catch (Exception exception) {
          fail("Incorrect value while parsing a memory size.");
       }
-      
+
       // browse all function
       while (children.hasNext()) {
          DataElement nextFunction = (DataElement) children.next();
@@ -183,7 +186,7 @@ public class MetaFunctionsTests extends TestCase {
          checkFunctionStatistics(unsuccessful, false);
       }
    }
-   
+
    /**
     * Checks that the attributes of the successful or unsuccessful result are
     * returned correctly.
@@ -199,7 +202,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    private void checkFunctionStatistics(DataElement functionElement, boolean successful) throws Throwable {
       String success = successful ? "successful" : "unsuccessful";
-      
+
       assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getName());
       assertNotNull("No average attribute defined", functionElement.get("average"));
       assertNotNull("No count attribute defined", functionElement.get("count"));
@@ -220,7 +223,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No average attribute defined", last.get("start"));
       assertNotNull("No count attribute defined", last.get("duration"));
    }
-   
+
    /**
     * Tests the _NoOp meta function.
     */
@@ -233,7 +236,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a data element.", result.getDataElement());
       assertNull("The function returned some parameters.", result.getParameters());
    }
-   
+
    /**
     * Tests the _GetFunctionList meta function.
     */
@@ -264,7 +267,7 @@ public class MetaFunctionsTests extends TestCase {
          assertEquals("The function is not enabled.", "true", enabled);
       }
    }
-   
+
    /**
     * Tests the _GetSettings meta function.
     */
@@ -277,7 +280,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned some parameters.", result.getParameters());
       assertNotNull("The function did not return a data element.", result.getDataElement());
       Iterator functions = result.getDataElement().getChildren();
-      
+
       assertTrue("No build section defined.", functions.hasNext());
       DataElement build = (DataElement) functions.next();
       assertNull(build.getAttributes());
@@ -290,7 +293,7 @@ public class MetaFunctionsTests extends TestCase {
          assertNotNull("No name attribute for the property.", nextProp.get("name"));
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
       }
-      
+
       assertTrue("No runtime section defined.", functions.hasNext());
       DataElement runtime = (DataElement) functions.next();
       assertNull(runtime.getAttributes());
@@ -303,7 +306,7 @@ public class MetaFunctionsTests extends TestCase {
          assertNotNull("No name attribute for the property.", nextProp.get("name"));
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
       }
-      
+
       assertTrue("No system section defined.", functions.hasNext());
       DataElement system = (DataElement) functions.next();
       assertNull(system.getAttributes());
@@ -317,7 +320,7 @@ public class MetaFunctionsTests extends TestCase {
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
       }
    }
-   
+
    /**
     * Tests the _DisableFunction and _EnableFunction meta functions.
     */
@@ -332,7 +335,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result.getErrorCode());
       assertNull("The function returned some parameters.", result.getParameters());
       assertNull("The function returned a data element.", result.getDataElement());
-      
+
       // Disable the function
       BasicPropertyReader parameters2 = new BasicPropertyReader();
       parameters2.set("functionName", "Logdoc");
@@ -341,7 +344,7 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result2.getErrorCode());
       assertNull("The function returned some parameters.", result2.getParameters());
       assertNull("The function returned a data element.", result2.getDataElement());
-      
+
       // Test that the function is not working anymore
       try {
          XINSCallResult result3 = caller.call(request);
@@ -351,21 +354,21 @@ public class MetaFunctionsTests extends TestCase {
          assertNull("The function returned some parameters.", exception.getParameters());
          assertNull("The function returned a data element.", exception.getDataElement());
       }
-      
+
       // Enable the function
       XINSCallRequest request3 = new XINSCallRequest("_EnableFunction", parameters2);
       XINSCallResult result3 = caller.call(request3);
       assertNull("The function returned a result code.", result3.getErrorCode());
       assertNull("The function returned some parameters.", result3.getParameters());
       assertNull("The function returned a data element.", result3.getDataElement());
-      
+
       // Test that the function is working
       XINSCallResult result4 = caller.call(request);
       assertNull("The function returned a result code.", result4.getErrorCode());
       assertNull("The function returned some parameters.", result4.getParameters());
       assertNull("The function returned a data element.", result4.getDataElement());
    }
-   
+
    /**
     * Tests a meta function that does not exists.
     */
@@ -379,7 +382,7 @@ public class MetaFunctionsTests extends TestCase {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
       }
    }
-   
+
    /**
     * Stop the server.
     */

@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.http;
 
@@ -147,7 +150,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals("Received incorrect status code.", result.getStatusCode(), 404);
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
    }
-   
+
    public void testFailOverGet() throws Exception {
       final int timeOut = 60000;
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
@@ -164,7 +167,7 @@ public class HTTPServiceCallerTests extends TestCase {
       String text = result.getString();
       assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
    }
-   
+
    public void testFailOverPost() throws Exception {
       final int timeOut = 60000;
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, null, true, null);

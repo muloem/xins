@@ -6,6 +6,9 @@
  XSLT that generates the header of the specification documentation.
 
  $Id$
+
+ Copyright 2004 Wanadoo Nederland B.V.
+ See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

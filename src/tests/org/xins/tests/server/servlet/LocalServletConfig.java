@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
 
@@ -20,14 +23,14 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * This class is an implementation of the ServletConfig that can be 
+ * This class is an implementation of the ServletConfig that can be
  * called locally.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalServletConfig implements ServletConfig {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -39,7 +42,7 @@ public class LocalServletConfig implements ServletConfig {
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new Servlet configuration.
     *
@@ -50,7 +53,7 @@ public class LocalServletConfig implements ServletConfig {
    public LocalServletConfig(File warFileLocation) {
       _initParameters = new Properties();
       _context = new LocalServletContext();
-      
+
       try {
          JarFile warFile = new JarFile(warFileLocation);
          JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
@@ -65,7 +68,7 @@ public class LocalServletConfig implements ServletConfig {
          ioe.printStackTrace();
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -74,22 +77,22 @@ public class LocalServletConfig implements ServletConfig {
     * The name of the servlet.
     */
    private String _servletName;
-   
+
    /**
     * The class of the servlet.
     */
    private String _servletClass;
-   
+
    /**
     * The properties of the servlet.
     */
    private Properties _initParameters;
-   
+
    /**
     * The servlet context.
     */
    private ServletContext _context;
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -119,12 +122,12 @@ public class LocalServletConfig implements ServletConfig {
    public Enumeration getInitParameterNames() {
       return _initParameters.keys();
    }
-   
+
    /**
     * Parser for the web.xml containing the information about the Servlet.
     */
    private class WebInfoParser extends DefaultHandler {
-      
+
       //-------------------------------------------------------------------------
       // Class functions
       //-------------------------------------------------------------------------
@@ -136,7 +139,7 @@ public class LocalServletConfig implements ServletConfig {
       //-------------------------------------------------------------------------
       // Constructor
       //-------------------------------------------------------------------------
-   
+
       //-------------------------------------------------------------------------
       // Fields
       //-------------------------------------------------------------------------
@@ -151,7 +154,7 @@ public class LocalServletConfig implements ServletConfig {
        */
       private String _paramName;
 
-      
+
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
@@ -163,7 +166,7 @@ public class LocalServletConfig implements ServletConfig {
       throws IllegalArgumentException, SAXException {
          _pcdata = new FastStringBuffer(80);
       }
-      
+
       public void endElement(String namespaceURI,
                              String localName,
                              String qName)
@@ -179,7 +182,7 @@ public class LocalServletConfig implements ServletConfig {
          }
          _pcdata = null;
       }
-      
+
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException {
 

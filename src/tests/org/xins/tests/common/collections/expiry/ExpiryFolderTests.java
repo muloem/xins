@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.collections.expiry;
 
@@ -106,14 +109,14 @@ public class ExpiryFolderTests extends TestCase {
       assertNull("Incorrect value found.", folder.find("hello"));
       assertNull("Incorrect value found.", folder.get("hello"));
    }
-   
+
    public void testStategy() throws Throwable {
       ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
       assertEquals(15, strategy.getPrecision());
       assertEquals(60, strategy.getTimeOut());
       assertEquals(4, strategy.getSlotCount());
    }
-   
+
    public void testRemove() throws Throwable {
       ExpiryStrategy stategy = new ExpiryStrategy(60, 15);
       ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, 10l);
@@ -132,7 +135,7 @@ public class ExpiryFolderTests extends TestCase {
       }
       assertNull("Incorrect value found.", folder.find("hello"));
       assertNull("Incorrect value found.", folder.get("hello"));
-      
+
       // remove a non existing object
       assertNull(folder.remove("hello2"));
    }

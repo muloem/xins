@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.types.standard;
 
@@ -449,15 +452,15 @@ public class Timestamp extends Type {
             return false;
          }
          Value obj2 = (Value) obj;
-         return obj2.getYear() == _year && obj2.getMonthOfYear() == _month && 
+         return obj2.getYear() == _year && obj2.getMonthOfYear() == _month &&
             obj2.getDayOfMonth() == _day && obj2.getHourOfDay() == _hour &&
             obj2.getMinuteOfHour() == _minute && obj2.getSecondOfMinute() == _second;
       }
-      
+
       public int hashCode() {
          return _asString.hashCode();
       }
-      
+
       public String toString() {
          return _asString;
       }

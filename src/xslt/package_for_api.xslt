@@ -6,6 +6,9 @@
  XSLT that creates the package names for the different APIs used in XINS.
 
  $Id$
+
+ Copyright 2004 Wanadoo Nederland B.V.
+ See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

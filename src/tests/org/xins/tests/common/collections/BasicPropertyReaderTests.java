@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.collections;
 
@@ -105,7 +108,7 @@ public class BasicPropertyReaderTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
-      
+
       String testVal = "value";
       String testName = "first";
       // Check that the value testVal has been set in the BasicPropertyReader
@@ -154,7 +157,7 @@ public class BasicPropertyReaderTests extends TestCase {
       String testName2 = "second";
       reader.set(testName, testVal);
       reader.set(testName2, testVal2);
-      
+
       // retrieve the iterator
       Iterator it = reader.getNames();
       // does it have any content
@@ -165,7 +168,7 @@ public class BasicPropertyReaderTests extends TestCase {
       // must have another element
       assertTrue(it.hasNext());
       // get second element
-      String n4 = (String) it.next(); 
+      String n4 = (String) it.next();
       String v4 = reader.get(n4);
       // shouldn't have any more elements
       assertFalse(it.hasNext());

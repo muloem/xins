@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
 
@@ -214,7 +217,7 @@ public class XINSCallResultParserTests extends TestCase {
       // The parser should not return null
       xml = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
             " <result><data>" +
-            "<product available='false' name=\"FOO\" />" + 
+            "<product available='false' name=\"FOO\" />" +
             " <product available=\"true\"  name=\"BAR\" />" +
             "</data></result>";
       result = parser.parse(xml.getBytes(ENCODING));

@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
 
@@ -44,7 +47,7 @@ import com.mycompany.allinone.types.TextList;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class AllInOneAPITests extends TestCase {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -88,7 +91,7 @@ public class AllInOneAPITests extends TestCase {
     * The HTTP server used to handle the requests.
     */
    private HTTPServletHandler _httpServer;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -102,7 +105,7 @@ public class AllInOneAPITests extends TestCase {
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
-      
+
       // Start the web server
       //System.out.println("Web server set up.");
       _httpServer = new HTTPServletHandler(warFile);
@@ -114,7 +117,7 @@ public class AllInOneAPITests extends TestCase {
    public void testSimpleTypes() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 
+      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l,
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"));
       assertNull(result.getOutputByte());
       assertEquals((short)-1, result.getOutputShort());
@@ -126,7 +129,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
       assertNull(result.getOutputTimestamp());
    }
-   
+
    /**
     * Tests a function called with some missing parameters.
     */
@@ -134,7 +137,7 @@ public class AllInOneAPITests extends TestCase {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
       try {
-         SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 
+         SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l,
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"));
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
@@ -150,7 +153,7 @@ public class AllInOneAPITests extends TestCase {
          assertNull(missingParam.getText());
       }
    }
-   
+
    /**
     * Tests CAPI and defined types.
     */
@@ -167,7 +170,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(2, result.getOutputList().getSize());
       assertEquals(2, result.getOutputProperties().size());
    }
-   
+
    /**
     * Tests a function called with some invalid parameters.
     */
@@ -199,7 +202,7 @@ public class AllInOneAPITests extends TestCase {
          assertNull(invalidParam2.getText());
       }
    }
-   
+
    /**
     * Tests a function that should returned a defined result code.
     */
@@ -219,7 +222,7 @@ public class AllInOneAPITests extends TestCase {
          assertNull(exception.getDataElement());
       }
    }
-   
+
    /**
     * Tests a function that writes messages to the Logdoc.
     */
@@ -239,7 +242,7 @@ public class AllInOneAPITests extends TestCase {
       }
       allInOne.callLogdoc("12000");
    }
-   
+
    /**
     * Tests a function that returns a data section containing elements with
     * PCDATA.
@@ -263,7 +266,7 @@ public class AllInOneAPITests extends TestCase {
       assertNull(doe.getText());
       assertNull(doe.getChildren());
    }
-   
+
    /**
     * Tests a function that returns a data section with elements that contain
     * other elements.
@@ -281,7 +284,7 @@ public class AllInOneAPITests extends TestCase {
       assertNotNull("No product specified.", products);
       DataElement product1 = (DataElement) products.next();
       assertEquals("Incorrect price for product1", "12", product1.get("price"));
-      
+
       DataElement packet2 = (DataElement) packets.next();
       assertEquals("Incorrect elements.", "packet", packet2.getName());
       assertNotNull("No destination specified.", packet2.get("destination"));
@@ -290,7 +293,7 @@ public class AllInOneAPITests extends TestCase {
       DataElement product21 = (DataElement) products2.next();
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
    }
-   
+
    /**
     * Tests the getXINSVersion() CAPI method.
     */
@@ -300,7 +303,7 @@ public class AllInOneAPITests extends TestCase {
       assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
       assertTrue("The version does not starts with '1.'", allInOne.getXINSVersion().startsWith("1."));
    }
-   
+
    /**
     * Tests a function that does not exists
     */
@@ -314,7 +317,7 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
       }
    }
-   
+
    /**
     * Stop the server.
     */
