@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.29:
+
+* Responder: Added method fail(ResultCode).
+
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.28:
 
 * FastStringBuffer: Supporting appending byte, short, int, long, float and
