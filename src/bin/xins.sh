@@ -10,6 +10,7 @@
 #
 
 prog=`basename $0`
+project_home=`pwd`
 
 
 # Make sure XINS_HOME is set
@@ -36,22 +37,23 @@ if [ ! -f ${style} ]; then
 fi
 
 # Make sure the input file exists
-in=`pwd`/xins-project.xml
+in_base=xins-project.xml
+in="${project_home}/${in_base}"
 if [ ! -f ${in} ]; then
 	echo "${prog}: ERROR: Cannot find input file:"
-	echo ${style}
+	echo ${in}
 	exit 1
 fi
 
 # Create the build directory
-builddir=`pwd`/build
+builddir=${project_home}/build
 if [ ! -d ${builddir} ]; then
 	mkdir ${builddir}
 fi
 
 # Create the Ant build file
-buildfile=${builddir}/build.xml
-project_home=`pwd`
+buildfile_base=build.xml
+buildfile=${builddir}/${buildfile_base}
 mktemp_template="/tmp/${prog}.XXXXXXXX"
 tmpout=`mktemp -q ${mktemp_template}`
 returncode=$?
@@ -59,7 +61,7 @@ if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template}"
 	exit 1
 fi
-echo -n ">> Generating `basename ${buildfile}`..."
+echo -n ">> Generating ${buildfile_base}..."
 ant -f ${xins_home}/src/ant/transform.xml \
     -Din=${in} \
 	-Dout=${buildfile} \
@@ -70,7 +72,7 @@ ant -f ${xins_home}/src/ant/transform.xml \
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo " [ FAILED ]"
-	echo "${prog}: ERROR: Unable to transform `basename ${in}`:"
+	echo "${prog}: ERROR: Unable to transform ${in_base}:"
 	cat ${tmpout}
 	rm ${tmpout}
 	exit 1
@@ -79,4 +81,4 @@ rm ${tmpout}
 echo " [ DONE ]"
 
 # Run Ant against the build file
-(cd ${builddir} && ant -f `basename ${buildfile}` $*)
+(cd ${builddir} && ant -f ${buildfile_base} $*)
