@@ -45,9 +45,9 @@ public interface CallingConvention {
     *    if the request is considerd to be invalid.
     */
    FunctionRequest convertRequest(HttpServletRequest httpRequest)
-   throws IllegalArgumentException, ParseException;
-   // TODO: Distinguish situation where function is not specified
-   // TODO: Replace ParseException with more appropriate exception
+   throws IllegalArgumentException,
+          InvalidRequestException,
+          FunctionNotSpecifiedException;
    
    /**
     * Converts a XINS result to an HTTP response.
@@ -64,7 +64,5 @@ public interface CallingConvention {
     */
    void convertResult(FunctionResult xinsResult, HttpServletResponse httpResponse)
    throws IOException;
-   // TODO: Inverse the order of the arguments
-   // TODO: Improve the naming of the arguments
    // TODO: Replace IOException with more appropriate exception
 }

@@ -47,7 +47,6 @@ import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
-import org.xins.common.text.ParseException;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -1081,8 +1080,25 @@ extends HttpServlet {
       FunctionResult result;
       State state = getState();
       if (state == READY) {
+
+         // Convert the HTTP request to an incoming XINS request
+         FunctionRequest xinsRequest;
          try {
-            FunctionRequest xinsRequest = callingConvention.convertRequest(request);
+            xinsRequest = callingConvention.convertRequest(request);
+
+         // If the function is not specified, then return '404 Not Found'
+         } catch (FunctionNotSpecifiedException exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+
+         // If the request is invalid, then return '400 Bad Request'
+         } catch (InvalidRequestException exception) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+         }
+
+         // Call the function
+         try {
             result = _api.handleCall(start, xinsRequest, ip);
 
          // If access is denied, return '403 Forbidden'
@@ -1092,12 +1108,6 @@ extends HttpServlet {
 
          // If no matching function is found, return '404 Not Found'
          } catch (NoSuchFunctionException exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-
-         // If the request cannot be parsed, return '404 Not Found'
-         } catch (ParseException exception) {
-            // TODO: Do not return 404 but indicate invalid request
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
          }
