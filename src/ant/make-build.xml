@@ -24,12 +24,51 @@
 
 		<mkdir dir="${project_home}/build" />
 
-		<antcall target="transform">
-			<param name="in" value="${project_home}/xins-project.xml" />
-			<param name="out" value="${project_home}/build/build.xml" />
-			<param name="style" value="${xins_home}/src/xslt/xins-project_to_ant-build.xslt" />
-			<param name="builddir" value="build" />
-		</antcall>
+		<property file="${xins_home}/.version.properties" />
+		<property name="version" value="${version.major}.${version.minor}${version.suffix}" />
+		<dependset>
+			<srcfileset    file="${xins_home}/.version.properties"         />
+			<srcfileset    dir="${project_home}"    includes="**/api.xml"  />
+			<srcfileset    dir="${project_home}"    includes="**/impl.xml" />
+			<targetfileset file="${out}" />
+		</dependset>
+		<style in="${project_home}/xins-project.xml"
+		       out="${project_home}/build/build.xml"
+		       style="${xins_home}/src/xslt/xins-project_to_ant-build.xslt">
+			<xmlcatalog>
+				<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
+				     location="${xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
+				<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
+				     location="${xins_home}/src/dtd/api_1_0_alpha.dtd" />
+				<dtd publicId="-//XINS//DTD Function 1.0 alpha//EN"
+				     location="${xins_home}/src/dtd/function_1_0_alpha.dtd" />
+				<dtd publicId="-//XINS//DTD Type 1.0 alpha//EN"
+				     location="${xins_home}/src/dtd/type_1_0_alpha.dtd" />
+				<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
+				     location="${xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
+
+				<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
+				     location="${xins_home}/src/dtd/xins-project_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+				     location="${xins_home}/src/dtd/api_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD Function 1.0//EN"
+				     location="${xins_home}/src/dtd/function_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD Type 1.0//EN"
+				     location="${xins_home}/src/dtd/type_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
+				     location="${xins_home}/src/dtd/resultcode_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD Implementation 1.0//EN"
+				     location="${xins_home}/src/dtd/impl_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD Environments 1.0//EN"
+				     location="${xins_home}/src/dtd/environments_1_0.dtd" />
+				<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
+				     location="${xins_home}/src/dtd/log_1_0.dtd" />
+			</xmlcatalog>
+			<param name="xins_home"    expression="${xins_home}"    />
+			<param name="project_home" expression="${project_home}" />
+			<param name="builddir"     expression="${build}"     />
+			<param name="xins_version" expression="${version}"     />
+		</style>
 
 	</target>
 

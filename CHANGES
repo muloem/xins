@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 0.188:
     file has changed.
   - The create-rcd target doesn't create the value attribute for the result
     code.
+  - Added the DTD declaration for the creation of the build.xml.
+    It's now much faster to generate a new build.xml file.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.187:
