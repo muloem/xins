@@ -108,7 +108,7 @@ extends Constraint {
     *    (can be an empty string), otherwise (if this constraint was not
     *    violated) <code>null</code>.
     */
-   final String checkImpl(ConstraintContext context) {
+   protected final String checkImpl(ConstraintContext context) {
       return checkParameterValue(context.getParameter(_parameterName));
    }
 
