@@ -143,7 +143,7 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
       } catch (UnsupportedEncodingException exception) {
          String message = "Default encoding \"" + ENCODING + "\" is unsupported.";
          Log.log_1050(CLASSNAME, "getString()", message);
-         throw new ProgrammingError(message, uue);
+         throw new ProgrammingError(message, exception);
       }
    }
 

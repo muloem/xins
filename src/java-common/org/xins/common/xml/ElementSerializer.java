@@ -60,6 +60,7 @@ public final class ElementSerializer extends Object {
     * Constructs a new <code>ElementSerializer</code>.
     */
    public ElementSerializer() {
+      // TODO: Set _instanceNumber
       _lock       = new Object();
       _namespaces = new HashMap();
    }
@@ -115,7 +116,8 @@ public final class ElementSerializer extends Object {
 
          // Make sure this serializer is not yet in use
          if (_inUse) {
-            String message = "serialize(Element)", "ElementSerializer instance already in use.";
+            // TODO: Use _instanceNumber in message
+            String message = "ElementSerializer instance already in use.";
             Log.log_1050(CLASSNAME, "serialize(Element)", message);
             throw new ProgrammingError(message);
          }
