@@ -154,6 +154,7 @@ implements DefaultReturnCodes {
       String functionName = context.getFunction();
       if ("_GetFunctionList".equals(functionName)) {
          doGetFunctionList(context);
+         return;
       }
 
       // Forward the call
