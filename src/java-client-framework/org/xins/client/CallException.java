@@ -36,8 +36,9 @@ public abstract class CallException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates an exception message based on a <code>CallRequest</code> and a
-    * reason.
+    * Creates an exception message for the constructor based on a short
+    * reason, the original request, target called, call duration and detail
+    * message.
     *
     * @param shortReason
     *    the short reason, cannot be <code>null</code>.
@@ -150,6 +151,45 @@ public abstract class CallException extends Exception {
    }
 
    /**
+    * Creates an exception message for the constructor based on a short
+    * reason, call result and detail message.
+    *
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
+    *
+    * @param result
+    *    the call result, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    a detailed description of the problem, can be <code>null</code> if
+    *    there is no more detail.
+    *
+    * @return
+    *    the exception message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>shortReason == null
+    *          || result == null</code>.
+    *
+    * @since XINS 0.203
+    */
+   private static final String createMessage(String                   shortReason,
+                                             XINSServiceCaller.Result result,
+                                             String                   detail)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("shortReason", shortReason,
+                                     "result",      result);
+
+      return createMessage(shortReason,
+                           result.getRequest(),
+                           result.getTarget(),
+                           result.getDuration(),
+                           detail);
+   }
+
+   /**
     * Determines the root cause for the specified exception. If the argument
     * is <code>null</code>, then <code>null</code> is returned.
     *
@@ -176,7 +216,9 @@ public abstract class CallException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallException</code>.
+    * Constructs a new <code>CallException</code> based on a short reason, the
+    * original request, target called, call duration, detail message and cause
+    * exception.
     *
     * @param shortReason
     *    the short reason, cannot be <code>null</code>.
@@ -222,6 +264,46 @@ public abstract class CallException extends Exception {
       _request  = request;
       _target   = target;
       _duration = duration;
+   }
+
+   /**
+    * Constructs a new <code>CallException</code> based on a short reason, a
+    * call result, detail message and cause exception.
+    *
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
+    *
+    * @param result
+    *    the call result, cannot be <code>null</code>; stores the original
+    *    call request, the target descriptor and the call duration.
+    *
+    * @param detail
+    *    a detailed description of the problem, can be <code>null</code> if
+    *    there is no more detail.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>shortReason == null
+    *          || result == null</code>.
+    *
+    * @since XINS 0.203
+    */
+   CallException(String                   shortReason,
+                 XINSServiceCaller.Result result,
+                 String                   detail,
+                 Throwable                cause)
+   throws IllegalArgumentException {
+
+      // Call superconstructor with fabricated message
+      super(createMessage(shortReason, result, detail),
+            rootCauseFor(cause));
+
+      // Store request and target
+      _request  = result.getRequest();
+      _target   = result.getTarget();
+      _duration = result.getDuration();
    }
 
 
