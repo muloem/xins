@@ -349,16 +349,23 @@ extends Object {
 
       // Search in the recently accessed map before
       _recentlyAccessedDoorman.enterAsReader();
-      Object o = _recentlyAccessed.get(key);
-      _recentlyAccessedDoorman.leaveAsReader();
+      Object o;
+      try {
+         o = _recentlyAccessed.get(key);
+      } finally {
+         _recentlyAccessedDoorman.leaveAsReader();
+      }
 
       // If not found, then look in the slots
       if (o == null) {
          _slotsDoorman.enterAsReader();
-         for (int i = 0; i < _slotCount && o == null; i++) {
-            o = _slots[i].get(key);
+         try {
+            for (int i = 0; i < _slotCount && o == null; i++) {
+               o = _slots[i].remove(key);
+            }
+         } finally {
+            _slotsDoorman.leaveAsReader();
          }
-         _slotsDoorman.leaveAsReader();
 
          if (o != null) {
             _recentlyAccessedDoorman.enterAsWriter();
