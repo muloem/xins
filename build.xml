@@ -364,6 +364,7 @@
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
 				<pathelement location="build/logdoc.jar" />
+				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>

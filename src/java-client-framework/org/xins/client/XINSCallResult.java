@@ -131,7 +131,7 @@ implements XINSCallResultData {
     *
     * @return
     *    string containing the value of the parameter element,
-    *    not <code>null</code>.
+    *    or <code>null</code> if the parameter has no value.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.

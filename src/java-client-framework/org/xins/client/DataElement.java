@@ -121,9 +121,13 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    an {@link Iterator} returning each attribute name as a
-    *    {@link String}; <code>null</code> indicates there are no attributes.
+    *    {@link String}. Can be <code>null</code>, if the DataElement has no
+    *    elements.
     */
    public Iterator getAttributes() {
+      if (_attributes.size() == 0) {
+         return null;
+      }
       return _attributes.getNames();
    }
 
@@ -146,10 +150,13 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    an {@link Iterator} that returns each child of this element as
-    *    another <code>DataElement</code> instance; <code>null</code>
-    *    indicates there are no child elements.
+    *    another <code>DataElement</code> instance. Can be <code>null</code>, 
+    *    if the DataElement has no elements.
     */
    public Iterator getChildren() {
+      if (_children.size() == 0) {
+         return null;
+      }
       return _children.iterator();
    }
 

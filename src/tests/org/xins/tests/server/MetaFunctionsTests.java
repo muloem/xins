@@ -30,7 +30,7 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.tests.server.servlet.HTTPServletHandler;
 
 /**
- * Tests for class <code>IPFilter</code>.
+ * Tests for XINS meta functions.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -140,7 +140,7 @@ public class MetaFunctionsTests extends TestCase {
          fail("Incorrect date format for 'now'.");
       }
       DataElement data = result.getDataElement();
-      assertFalse(data.getAttributes().hasNext());
+      assertNull(data.getAttributes());
       Iterator children = data.getChildren();
       
       DataElement heap = (DataElement) children.next();
@@ -173,7 +173,20 @@ public class MetaFunctionsTests extends TestCase {
       }
    }
    
-   private void checkFunctionStatistics(DataElement functionElement, boolean successful) {
+   /**
+    * Checks that the attributes of the successful or unsuccessful result are
+    * returned correctly.
+    *
+    * @param functionElement
+    *    the successful or unsuccessful element.
+    * @param successful
+    *    true if it's the successful element, false if it's the unsuccessful
+    *    element.
+    *
+    * @throws Throwable
+    *    if something fails.
+    */
+   private void checkFunctionStatistics(DataElement functionElement, boolean successful) throws Throwable {
       String success = successful ? "successful" : "unsuccessful";
       
       assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getName());
@@ -195,6 +208,16 @@ public class MetaFunctionsTests extends TestCase {
       assertEquals("The function does not have any successful sub-section.", "last", last.getName());
       assertNotNull("No average attribute defined", last.get("start"));
       assertNotNull("No count attribute defined", last.get("duration"));
+   }
+   
+   public void testNoOp() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_NoOp", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+      assertNull("The function returned a data element.", result.getDataElement());
+      assertNull("The function returned some parameters.", result.getParameters());
    }
    
    /**

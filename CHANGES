@@ -5,9 +5,13 @@ CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
   - When an object is added to the data section, a clone of this object is
     added to the element.
   - The class Element now implements the Cloneable interface.
+  - Added a test for the AllInOne example.
+  - Added a test for the _NoOp meta function.
 
 * XINS/Java Client Framework:
   - The class DataElement now implements the Cloneable interface.
+  - If the result has no parameters, getParameters() returns null.
+  - If a DataElement has no children or no attributes, null is returned.
 
 * Logdoc
   - The validation of the Logdoc XML files is now done using the local files

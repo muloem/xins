@@ -159,7 +159,7 @@ extends Object {
       /**
        * The list of the parameters (name/value) returned by the function.
        */
-      private Properties _parameters = new Properties();
+      private Properties _parameters;
 
       /**
        * The parameter name of the parameter that is actually parsed.
@@ -317,7 +317,9 @@ extends Object {
             } else {
 
                Log.log_2004(ELEMENT_NAME, "name", _parameterKey, value);
-               if (_parameters.get(_parameterKey) != null) {
+               if (_parameters == null) {
+                  _parameters = new Properties();
+               } else if (_parameters.get(_parameterKey) != null) {
                   throw new SAXException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + _parameterKey + "\" attribute.");
                }
                _parameters.put(_parameterKey, value);
@@ -371,9 +373,13 @@ extends Object {
        * Get the parameters returned by the function.
        *
        * @return
-       *    the parameters (name/value), cannot be <code>null</code>.
+       *    the parameters (name/value) or <code>null</code> if the function
+       *    does not have any parameters.
        */
       public PropertyReader getParameters() {
+         if (_parameters == null) {
+            return null;
+         }
          return new PropertiesPropertyReader(_parameters);
       }
 
