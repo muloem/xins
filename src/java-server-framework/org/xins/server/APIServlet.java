@@ -9,7 +9,6 @@ package org.xins.server;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -737,18 +736,6 @@ extends HttpServlet {
             throw new ServletException();
          }
 
-         // Store the name of the API
-         _apiName = config.getInitParameter(API_NAME_PROPERTY);
-         if (_apiName == null) {
-
-            // Should never happen
-            _apiName= "-";
-         }
-
-         // Get the default calling convention.
-         String callingConventionName = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
-         _callingConvention = createCallingConvention(callingConventionName);
-
 
          //----------------------------------------------------------------//
          //                        Bootstrap API                           //
@@ -756,6 +743,28 @@ extends HttpServlet {
 
          // Proceed to next stage
          setState(BOOTSTRAPPING_API);
+
+         // Store the name of the API
+         _apiName = config.getInitParameter(API_NAME_PROPERTY);
+         if (_apiName == null || _apiName.length() < 1) {
+            Log.log_3209(API_NAME_PROPERTY);
+            setState(API_BOOTSTRAP_FAILED);
+            throw new ServletException();
+         }
+
+         // Determine the default calling convention
+         String ccParam = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
+         if (ccParam != null) {
+            _callingConvention = getCallingConvention(ccParam);
+            if (_callingConvention == null) {
+               Log.log_3210(API_CALLING_CONVENTION_PROPERTY, ccParam, "No such calling convention.");
+               setState(API_BOOTSTRAP_FAILED);
+               throw new ServletException();
+            }
+         } else {
+            // TODO: Use shared StandardCallingConvention instance
+            _callingConvention = new StandardCallingConvention();
+         }
 
          // Bootstrap the API
          Throwable caught;
@@ -946,7 +955,7 @@ extends HttpServlet {
          Log.log_3305();
       }
    }
-   
+
    /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
@@ -1050,16 +1059,26 @@ extends HttpServlet {
       }
       Log.log_3521(ip, method, queryString);
 
-      // XXX: Consider using OutputStream instead of Writer, for improved
-      // XXX: performance
+      // XXX: Consider using an OutputStream instead of Writer, for improved performance
+
+
+      // Determine the calling convention. If an existing calling convention
+      // is specified in the request, then use that, otherwise use the calling
+      // convention stored in the field.
+      String ccParam = (String) request.getParameter(CALLING_CONVENTION_PARAMETER);
+      CallingConvention callingConvention;
+      if (ccParam != null) {
+         callingConvention = getCallingConvention(ccParam);
+      } else {
+         callingConvention = null;
+      }
+
+      if (callingConvention == null) {
+         callingConvention = _callingConvention;
+      }
 
       // Call the API if the state is READY
       FunctionResult result;
-      CallingConvention callingConvention = _callingConvention;
-      String conventionParameter = (String)request.getParameter(CALLING_CONVENTION_PARAMETER);
-      if (conventionParameter != null) {
-         callingConvention = createCallingConvention(conventionParameter);
-      }
       State state = getState();
       if (state == READY) {
          try {
@@ -1102,22 +1121,34 @@ extends HttpServlet {
    }
 
    /**
-    * Creates a calling convention based on a name. If the name is not
-    * recognized as identifying a certain calling convention, then the
-    * standard calling convention is returned.
+    * Retrieves a calling convention based on a name. If the name is not
+    * recognized as identifying a certain calling convention, then
+    * <code>null</code> is returned.
+    *
+    * <p>Either an existing {@link CallingConvention} object is retrieved or a
+    * new one is constructed.
     *
     * @param name
-    *    the name of the default calling convention, can be <code>null</code>.
+    *    the name of the calling convention to retrieve, can be <code>null</code>.
+    *
+    * @return
+    *    a {@link CallingConvention} object that matches the specified calling
+    *    convention name, or <code>null</code> if no match is found.
     */
-   CallingConvention createCallingConvention(String name) {
+   CallingConvention getCallingConvention(String name) {
 
-      // Recognize the old-style calling convention
+      // Old-style calling convention
       if (OLD_STYLE_CALLING_CONVENTION.equals(name)) {
          return new OldStyleCallingConvention();
-      }
 
-      // The standard calling convention is returned otherwise
-      return new StandardCallingConvention();
+      // Standard calling convention
+      } else if (STANDARD_CALLING_CONVENTION.equals(name)) {
+         return new StandardCallingConvention();
+
+      // Otherwise return nothing
+      } else {
+         return null;
+      }
    }
 
    /**
@@ -1127,8 +1158,8 @@ extends HttpServlet {
       if (_configFileWatcher == null) {
          _configFileListener.reinit();
       } else {
-         _configFileWatcher.interrupt();         
-      }  
+         _configFileWatcher.interrupt();
+      }
    }
 
    /**
