@@ -234,7 +234,6 @@ extends Object {
       // Adjust the size
       int toBeExpiredSize = toBeExpired == null ? 0 : toBeExpired.size();
       if (toBeExpiredSize > 0) {
-         int newSize;
          synchronized (_sizeLock) {
             _size -= toBeExpiredSize;
             newSize = _size;
@@ -243,17 +242,18 @@ extends Object {
             }
          }
 
-         // Check that new size is at minimum zero
+         // If the new size was negative, it has been fixed already, but
+         // report it now, after the synchronized section
          if (newSize < 0) {
-            Log.log_3402(newSize);
+            Log.log_3006("Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
          }
          Log.log_3400(_asString, toBeExpiredSize, newSize);
       } else {
          Log.log_3400(_asString, 0, _size);
       }
 
-      // TODO: Should we do this in a separate thread, so all locks held by
-      //       the ExpiryStrategy are released?
+      // XXX: Should we do this in a separate thread, so all locks held by the
+      //      ExpiryStrategy are released?
 
       // Get a copy of the list of listeners
       List listeners;
