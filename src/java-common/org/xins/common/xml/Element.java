@@ -4,7 +4,7 @@
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.common.collections;
+package org.xins.common.xml;
 
 import java.util.ArrayList;
 import java.util.Collections;

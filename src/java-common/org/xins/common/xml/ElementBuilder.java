@@ -1,10 +1,16 @@
-package org.xins.common.collections;
+/*
+ * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
+ */
+package org.xins.common.xml;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Construct a new Element.
+ * Builder for <code>Element</code> instances.
  *
  * <p>Note that this class is not thread-safe. It should not be used from
  * different threads at the same time. This applies even to read operations.
@@ -14,9 +20,8 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.1.0
  */
-public class ElementBuilder {
+public class ElementBuilder extends Object {
 
-   
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
