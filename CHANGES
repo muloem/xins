@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
   - Applied some refactorings as preparations to fix SF.net bug #1058074:
     Changed FormattedDate and FormattedParameters from inner classes in class
     Function to outer class with package-private access.
+  - Changed log messages 3540 and 3541 so they no longer accept a 'callID'
+    parameter. The parameter is not used in the translation. This is done
+    because it simplifies the introduction of transaction logging for
+    meta-functions (SF.net bug #1058074).
 
 * XINS build file:
   - Improved 'help' target slightly.
