@@ -311,7 +311,7 @@ import org.xins.logdoc.LogStatistics;
 			<xsl:when test="$exception = 'true'">
 				<xsl:text>null);
          if (LOG.isEnabledFor(DEBUG)) {
-            LOG.log(FQCN, DEBUG, __translation__, exception);
+            LOG.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));
          }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
