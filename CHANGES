@@ -22,7 +22,8 @@ CHANGES INTRODUCED IN XINS 0.183:
     This bug has been in XINS since version 0.169.
 
 * Build and release process:
-  - Put the logdoc package in a apart jar file (logdoc.jar).
+  - Put the logdoc package in a new jar file (logdoc.jar).
+  - Put the logdoc javadoc in a new group.
 
 * Generated build file:
   - Added a "clients" target that builds all the client api's for all the

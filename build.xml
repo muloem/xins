@@ -121,7 +121,11 @@
 
 	<target name="java-logdoc" depends="-init" description="Compiles the XINS/Java logdoc code">
 		<mkdir dir="build/classes/logdoc" />
-		<javac srcdir="src/java-common"
+		<mkdir dir="build/src/java-common" />
+		<copy todir="build/src/java-common">
+			<fileset dir="src/java-common" includes="org/xins/logdoc/**/*.java,org/xins/logdoc/**/package.html" />
+		</copy>
+		<javac srcdir="build/src/java-common"
 		       includes="org/xins/logdoc/*.java"
 		       destdir="build/classes/logdoc"
 		       debug="${javac.debug}"
@@ -184,7 +188,7 @@
 	<target name="-build-framework">
 		<mkdir dir="build/src/java-${src.side}" />
 		<copy todir="build/src/java-${src.side}">
-			<fileset dir="src/java-${src.side}/org/xins/${side}" includes="**/*.java,**/package.html" />
+			<fileset dir="src/java-${src.side}" includes="org/xins/${side}/**/*.java,org/xins/${side}/**/package.html" />
 		</copy>
 		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
 		<copy todir="build/src/java-${src.side}/org/xins/${side}">
@@ -439,7 +443,8 @@
 			<packageset dir="build/src/java-common" />
 			<packageset dir="build/src/java-server-framework" />
 			<packageset dir="build/src/java-client-framework" />
-			<group title="XINS/Java Common Library"   packages="org.xins.logdoc*,org.xins.common*" />
+			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
+			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
