@@ -39,6 +39,14 @@ h3 {
 	font-size: 110%
 }
 
+table tr td {
+	vertical-align: top;
+}
+
+table tr th {
+	vertical-align: top;
+}
+
 table.headerlinks {
 	width: 100%;
 	border-collapse: collapse;
@@ -76,12 +84,10 @@ table.metadata {
 
 table.metadata tr td.key {
 	font-weight: bold;
-	vertical-align: text-top;
 	padding: 0pt 4pt 0pt 0pt;
 }
 
 table.metadata tr td.value {
-	vertical-align: text-top;
 	padding: 0pt;
 }
 
@@ -97,32 +103,27 @@ table.parameters {
 table.parameters tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
 }
 
 table.parameters tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
 table.parameters tr td.value {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.parameters tr td.name {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.parameters tr td.required {
-	vertical-align: text-top;
 	/* font-variant: small-caps; */
 }
 
@@ -137,32 +138,27 @@ table.inputparameters {
 table.inputparameters tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
 }
 
 table.inputparameters tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
 table.inputparameters tr td.value {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.inputparameters tr td.name {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.inputparameters tr td.required {
-	vertical-align: text-top;
 	/* font-variant: small-caps; */
 }
 
@@ -177,32 +173,27 @@ table.outputparameters {
 table.outputparameters tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
 }
 
 table.outputparameters tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
 table.outputparameters tr td.value {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.outputparameters tr td.name {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.outputparameters tr td.required {
-	vertical-align: text-top;
 	/* font-variant: small-caps; */
 }
 
@@ -217,20 +208,17 @@ table.resultcodes {
 table.resultcodes tr th {
 	color: #ffffff;
 	background-color: #7777dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
 }
 
 table.resultcodes tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
 table.resultcodes tr td.value {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
@@ -240,13 +228,11 @@ table.resultcodes tr.default td.value {
 }
 
 table.resultcodes tr td.name {
-	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
 table.resultcodes tr td.required {
-	vertical-align: text-top;
 	/* font-variant: small-caps; */
 }
 
@@ -262,7 +248,6 @@ table.element_details {
 table.element_details tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
@@ -271,7 +256,6 @@ table.element_details tr th {
 }
 
 table.element_details tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
@@ -286,7 +270,6 @@ table.example {
 table.example tr th {
 	background-color: #ddddff;
 	text-align: left;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
@@ -294,14 +277,12 @@ table.example tr th {
 table.example tr td {
 	background-color: #ddddff;
 	text-align: left;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
 table.example tr td.header {
 	text-align: left;
-	vertical-align: text-top;
 	border: none;
 	padding: 2pt;
 	background-color: #ffffff;
@@ -413,7 +394,6 @@ table.apilist {
 table.apilist tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
@@ -421,7 +401,6 @@ table.apilist tr th {
 }
 
 table.apilist tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
@@ -438,7 +417,6 @@ table.functionlist {
 table.functionlist tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
@@ -446,7 +424,6 @@ table.functionlist tr th {
 }
 
 table.functionlist tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
@@ -463,7 +440,6 @@ table.typelist {
 table.typelist tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
@@ -471,7 +447,6 @@ table.typelist tr th {
 }
 
 table.typelist tr td {
-	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
