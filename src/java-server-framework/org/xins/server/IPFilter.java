@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.net.IPAddressUtils;
 import org.xins.util.text.ParseException;
 
 /**
@@ -88,17 +89,13 @@ extends Object {
          throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
       }
 
-      // Get the IP part
-      String ip = expression.substring(0, slashPosition);
-      if (getIPFields(ip) == null) {
-         throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
-      }
-
-      // Get the mask part
-      int mask = parseMask(expression.substring(slashPosition + 1));
+      // Split the IP and the mask
+      String ipString = expression.substring(0, slashPosition);
+      int ip          = IPAddressUtils.ipToInt(ipString);
+      int mask        = parseMask(expression.substring(slashPosition + 1));
 
       // Create and return an IPFilter object
-      return new IPFilter(ip, mask);
+      return new IPFilter(ipString, ip, mask);
    }
 
    /**
@@ -159,10 +156,11 @@ extends Object {
     * @param mask
     *    the mask, between 0 and 32 (inclusive).
     */
-   private IPFilter(String baseIP, int mask) {
-      _expression = baseIP + '/' + mask;
-      _baseIP     = baseIP;
-      _mask       = mask;
+   private IPFilter(String ipString, int ip, int mask) {
+      _expression   = ipString + '/' + mask;
+      _baseIPString = ipString;
+      _baseIP       = ip;
+      _mask         = mask;
    }
 
 
@@ -176,9 +174,14 @@ extends Object {
    private final String _expression;
 
    /**
-    * The base IP address. Never <code>null</code>.
+    * The base IP address, as a <code>String</code>. Never <code>null</code>.
     */
-   private final String _baseIP;
+   private final String _baseIPString;
+
+   /**
+    * The base IP address.
+    */
+   private final int _baseIP;
 
    /**
     * The mask of this filter. Can only have a value between 0 and 32.
@@ -210,7 +213,7 @@ extends Object {
     *    zeroes; never <code>null</code>.
     */
    public final String getBaseIP() {
-      return _baseIP;
+      return _baseIPString;
    }
 
    /**
@@ -226,7 +229,7 @@ extends Object {
    /**
     * Determines if the specified IP address is authorized.
     *
-    * @param ip
+    * @param ipString
     *    the IP address of which must be determined if it is authorized,
     *    cannot be <code>null</code> and must match the form:
     *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
@@ -238,24 +241,30 @@ extends Object {
     *    protected resource, otherwise <code>false</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>ip == null</code>.
+    *    if <code>ipString == null</code>.
     *
     * @throws ParseException
     *    if <code>ip</code> does not match the specified format.
     */
-   public final boolean match(String ip)
+   public final boolean match(String ipString)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("ip", ip);
+      MandatoryArgumentChecker.check("ipString", ipString);
 
-      String[] ipFields = getIPFields(ip);
+      // Convert the IP string to an 'int'
+      int ip = IPAddressUtils.ipToInt(ipString);
 
-      if (ipFields == null) {
-         throw new ParseException("The provided IP " + ip + " is invalid.");
+      // If the mask is 0 bits, then all IP addresses match
+      if (_mask == 0) {
+         return true;
+
+      // If the mask is 32 bits, then the complete IP address must match
+      } else if (_mask == 32) {
+         return _baseIPString.equals(ipString);
       }
 
-      return match(ipFields);
+      return false; // TODO
    }
 
    /**
@@ -268,229 +277,4 @@ extends Object {
    public final String toString() {
       return getExpression();
    }
-
-   /**
-    * Determines whether the provided mask is of a valid format.
-    *
-    * @param mask
-    *    the mask, may not be <code>null</code>.
-    *
-    * @return
-    *    boolean with the value <code>true</code> if the mask is valid,
-    *    otherwise false.
-    *
-    * @throws NullPointerException
-    *    when <code>mask == null</code>.
-    */
-   private static boolean isValidMask(String mask)
-   throws NullPointerException {
-      int maskLength = mask.length();
-
-      if (maskLength < 1 || maskLength > 2) {
-         return false;
-      }
-
-      if (maskLength == 2 && mask.charAt(0) == ZERO_CHAR) {
-         return false;
-      }
-
-      return isAllowedValue(mask, 32);
-   }
-
-   /**
-    * Determines whether the provided IP section (the part of the IP address)
-    * is of a valid format. This means that it has to be possible to convert
-    * the provided IP section to an integer between 0 and 255.
-    *
-    * @param ipSection
-    *    the IP section, may not be <code>null</code>.
-    *
-    * @return
-    *    boolean with the value <code>true</code> if the IP section is
-    *    valid, otherwise false.
-    *
-    * @throws NullPointerException
-    *    when <code>ipSection == null</code>.
-    */
-   private static boolean isValidIPSection(String ipSection)
-   throws NullPointerException {
-      int sectionLength = ipSection.length();
-
-      if (sectionLength < 1 || sectionLength > 3) {
-         return false;
-      }
-
-      if (sectionLength > 1 && ipSection.charAt(0) == ZERO_CHAR) {
-         return false;
-      }
-
-      return isAllowedValue(ipSection, 255);
-   }
-
-   /**
-    * Determines whether the contents of the provided string are valid, thus.
-    * can be translated into an integer value that lies between zero and the
-    * specified maximum allowed value.
-    *
-    * @param value
-    *    the value to be checked, should not be <code>null</code>; if it is
-    *    than the behaviour is undefined.
-    *
-    * @param maxAllowedValue
-    *    the maximum allowed integer value.
-    *
-    * @return
-    *    boolean with the value <code>true</code> if the provided value
-    *    is valid, otherwise false.
-    */
-   private static boolean isAllowedValue(String value, int maxAllowedValue) {
-      boolean validValue = true;
-      int intValue = -1;
-
-      try {
-         intValue = Integer.parseInt(value);
-      } catch (NumberFormatException nfe) {
-         validValue = false;
-      }
-
-      if (intValue < 0 || intValue > maxAllowedValue) {
-         validValue = false;
-      }
-
-      return validValue;
-   }
-
-   /**
-    * Creates an array with the several fields (parts separated by a dot) of 
-    * the provided IP. If the provided IP is invalid <code>null</code> is
-    * returned.
-    *
-    * @param ip
-    *    the IP address, may not be <code>null</code>.
-    *
-    * @return
-    *    an array with the strings representing the value of each IP field
-    *    or <code>null</code> if the provided IP is invalid.
-    *
-    * @throws NullPointerException
-    *    when <code>ip == null</code>.
-    */
-   private static String[] getIPFields(String ip)
-   throws NullPointerException {
-      StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
-      String[] ipFields = new String[4];
-      String currIPSection = null;
-      boolean validIP = true;
-
-      for (int i = 0;i < 4 && validIP == true; i++) {
-         if (tokenizer.hasMoreTokens()) {
-             currIPSection = tokenizer.nextToken();
-             validIP = isValidIPSection(currIPSection);
-             ipFields[i] = currIPSection;
-         }
-         else {
-            validIP = false;
-         }
-      }
-
-      if (tokenizer.hasMoreTokens()) {
-         validIP = false;
-      }
-
-      if (validIP == false) {
-         ipFields = null;
-      }
-
-      return ipFields;
-   }
-
-   /**
-    * Determines what the IP address is of the provided expression.
-    *
-    * @param expression
-    *    the expression, may not be <code>null</code>.
-    *
-    * @return
-    *    A string with the IP address of this expression.
-    *
-    * @throws NullPointerException
-    *    when <code>expression == null</code>.
-    */
-   private String determineIP(String expression)
-   throws NullPointerException {
-      String ip = null;
-      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
-
-      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
-         throw new InternalError("The IP address within the provided filter " + expression + " could not be determined.");
-      } else {
-         ip = expression.substring(0, slashPosition);
-      }
-
-      return ip;
-   }
-
-   /**
-    * Determines whether the IP address that is represented by the string
-    * array is authorized.
-    *
-    * @param ipFields
-    *    the array containing the values of each IP section separated by the
-    *    dots, may not be <code>null</code>.
-    *
-    * @return
-    *    a boolean with the value <code>true</code> if the IP address is 
-    *    authorized, otherwise <code>false</code>.
-    */
-   private boolean match(String[] ipFields) {
-      // NOTE: This method depends on the reliability of the determineIP(),
-      //       getIPFields() and getIPBinaryValue() methods.
-      String filterIp = determineIP(_expression);
-      String[] ipFilterFields = getIPFields(filterIp);
-
-      String filterIpBinary = getIPBinaryValue(ipFilterFields);
-      String ipBinary = getIPBinaryValue(ipFields);
-
-      if (filterIpBinary.length() != 32 || ipBinary.length() != 32) {
-         return false;
-      }
-
-      String filterIpBinaryCompare = filterIpBinary.substring(0, _mask);
-      String ipBinaryCompare = ipBinary.substring(0, _mask);
-
-      return filterIpBinaryCompare.equals(ipBinaryCompare);
-   }
-
-   /**
-    * Determines the binary value of the IP address that is represented by
-    * the string array that contains the values of the fields of the IP
-    * address.
-    *
-    * @param ipFields
-    *    the array containing the values of each IP section separated by the
-    *    dots, may not be <code>null</code>.
-    *
-    * @return
-    *    String with the binary value of the IP that was provided through the
-    *    the string array with the values of each IP section.
-    *
-    * @throws NullPointerException
-    *    when <code>ipFields == null</code>.
-    */
-   private String getIPBinaryValue(String[] ipFields)
-   throws NullPointerException {
-      int ipFieldLength = ipFields.length;
-      StringBuffer buffer = new StringBuffer(32);
-      String currFieldBinaryString = null;
-      int currFieldInteger = 0;
-
-      for (int i = 0;i < ipFieldLength; i++) {
-         currFieldInteger = Integer.parseInt(ipFields[i]);
-         currFieldBinaryString = Integer.toBinaryString(currFieldInteger);
-         buffer.append(currFieldBinaryString);
-      }
-
-      return buffer.toString();
-   }
-
 }
