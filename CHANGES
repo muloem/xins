@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.201:
     parameters. And no longer logging the call ID.
   - Added log message 1541, which is similar to 1540, but logs less
     information.
+  - Removed log messages 1514, 1516 and 1517. The information these messages
+    provided is all bundled in log message 1540.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.200:
