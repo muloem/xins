@@ -73,18 +73,21 @@ public class APISpecTests extends TestCase {
       APISpec spec;
 
       // Test null arguments
-      try {
-         spec = new APISpec(null, null);
-         fail("APISpec(null,null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
-      try {
-         spec = new APISpec(null, "1.1");
-         fail("APISpec(null,non-null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
-      try {
-         spec = new APISpec("name", null);
-         fail("APISpec(non-null,null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
+      int argCount = 2;
+      int combinations = 3; // (2 ** 2) - 1
+      for (int i = 0; i < combinations; i++) {
+         boolean arg1 = (i & 1) > 0;
+         boolean arg2 = (i & 2) > 0;
+         try {
+            spec = new APISpec(
+               (arg1 ? "api" : null),
+               (arg2 ? "1.0" : null)
+            );
+            fail("APISpec() should throw an IllegalArgumentException. Configuration: "
+                 + (arg1 ? "non-null" : "null") + ", "
+                 + (arg2 ? "non-null" : "null") + '.');
+         } catch (IllegalArgumentException iae) { /* as expected */ }
+      }
 
       // Test invalid names
       String[] invalidNames = new String[] {
