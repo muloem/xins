@@ -50,16 +50,19 @@
 
 	<xsl:template match="project">
 		<project default="help" basedir="..">
+			<xsl:attribute name="name">
+				<xsl:value-of select="document($project_file)/project/@name" />
+			</xsl:attribute>
 
 			<target name="clean" description="Removes all generated files">
 				<delete dir="{$builddir}" />
 			</target>
 
-			<target name="version">
+			<target name="version" description="Shows XINS version used.">
 				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
 			</target>
 
-			<target name="help">
+			<target name="help" description="Shows the commands and APIs.">
 				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
 				<echo message="" />
 				<echo message="Possible targets:" />
@@ -98,7 +101,7 @@
 				</echo>
 			</target>
 
-			<target name="run">
+			<target name="run" description="Asks for the command and API to execute.">
 				<input addproperty="command"
 				       message="Command "
 							 validargs="war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server" />

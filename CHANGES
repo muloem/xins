@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.207:
   - An error is thrown when you register a log that doesn't support the
     current locale.
 
+* Generated build file
+  - Added some missing description for the targets help, version and run.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.206:
 
