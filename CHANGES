@@ -9,6 +9,12 @@ CHANGES INTRODUCED IN XINS 0.74:
   - Added method getActualFunctionCallers() to interface
     CompositeFunctionCaller and to CallTargetGroup (which implements that
     interface.)
+  - Added method getActualFunctionCallerByCRC32(String) to interface
+    FunctionCaller and to classes CallTargetGroup and ActualFunctionCaller.
+
+* Generated CAPI classes now support sticky sessions, based on splitting
+  client session ID in identifier for target API and server-side session
+  identifier.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.73:
