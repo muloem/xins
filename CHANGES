@@ -32,6 +32,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
 
 * XINS/Java Server Framework:
   - Fixed various Checkstyle-reported issues.
+  - Slightly improved the exception handling in class APIServlet.
+
+* Build and release process:
+  - Generated Javadoc API docs now link to Servlet 2.4 API docs at
+    xins.sourceforge.net. Previously they linked to Servlet 2.3 API docs at
+    java.sun.com.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
