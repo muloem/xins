@@ -3,6 +3,9 @@
  */
 package org.xins.client;
 
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.service.TargetDescriptor;
+
 /**
  * Exception thrown to indicate that a call to a XINS API failed.
  *
@@ -21,6 +24,37 @@ public abstract class CallException extends Exception {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates an exception message based on a <code>CallRequest</code> and a
+    * reason.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param message
+    *    a description of the reason, can be <code>null</code>.
+    *
+    * @return
+    *    the exception message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null || target == null</code>.
+    *
+    * @since XINS 0.198
+    */
+   private static final String createMessage(CallRequest      request,
+                                             TargetDescriptor target,
+                                             String           message)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request,
+                                     "target",  target);
+
+      return null; // TODO
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -34,9 +68,40 @@ public abstract class CallException extends Exception {
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.198. Use
+    *    {@link CallException(CallRequest,String,Throwable)} instead.
     */
    protected CallException(String message, Throwable cause) {
       super(message, cause);
+
+      _request = null;
+   }
+
+   /**
+    * Constructs a new <code>CallException</code> with the
+    * specified detail message and cause exception.
+    *
+    * @param message
+    *    the detail message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null || target == null</code>.
+    */
+   protected CallException(CallRequest      request,
+                           TargetDescriptor target,
+                           String           message,
+                           Throwable        cause) {
+
+      // Call superconstructor with fabricated message
+      super(createMessage(request, target, message), cause);
+
+      // Store request
+      _request = request;
    }
 
 
@@ -44,7 +109,27 @@ public abstract class CallException extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The original request.
+    */
+   private final CallRequest _request;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the original request.
+    *
+    * @return
+    *    the original request, or <code>null</code> if the deprecated
+    *    constructor was used.
+    *
+    * @since XINS 0.198
+    */
+   // TODO: Change @return to: the original request, cannot be <code>null</code>.
+   public final CallRequest getRequest() {
+      return _request;
+   }
 }
