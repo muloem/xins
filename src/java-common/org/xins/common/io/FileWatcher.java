@@ -59,10 +59,11 @@ public final class FileWatcher extends Thread {
       }
 
       // Store the information
-      _file     = new File(file);
-      _interval = interval;
-      _listener = listener;
-      _stopped  = false;
+      _file          = new File(file);
+      _interval      = interval;
+      _listener      = listener;
+      _listenerClass = listener.getClass().getName();
+      _stopped       = false;
 
       // Configure thread as daemon
       setDaemon(true);
@@ -96,6 +97,11 @@ public final class FileWatcher extends Thread {
     * The listener. Not <code>null</code>
     */
    private final Listener _listener;
+
+   /**
+    * The name of the class of the listener. Not <code>null</code>
+    */
+   private final String _listenerClass;
 
    /**
     * Timestamp of the last modification of the file. The value
@@ -248,7 +254,8 @@ public final class FileWatcher extends Thread {
          try {
             _listener.securityException(securityException);
          } catch (Throwable t) {
-            // TODO: Log
+            Log.log_1052(t, _listenerClass, "securityException(SecurityException)");
+            // ignore
          }
 
          return;
@@ -265,7 +272,8 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileNotFound();
          } catch (Throwable t) {
-            // TODO: Log
+            Log.log_1052(t, _listenerClass, "fileNotFound()");
+            // ignore
          }
 
       // Previously the file could not be found, but now it can
@@ -278,7 +286,8 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileFound();
          } catch (Throwable t) {
-            // TODO: Log
+            Log.log_1052(t, _listenerClass, "fileFound()");
+            // ignore
          }
 
       // File has been modified
@@ -291,7 +300,8 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileModified();
          } catch (Throwable t) {
-            // TODO: Log
+            Log.log_1052(t, _listenerClass, "fileModified()");
+            // ignore
          }
 
       // File has not been modified
@@ -301,7 +311,8 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileNotModified();
          } catch (Throwable t) {
-            // TODO: Log
+            Log.log_1052(t, _listenerClass, "fileNotModified()");
+            // ignore
          }
       }
    }

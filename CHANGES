@@ -71,6 +71,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     corresponding classes.
   - Changed UnexpectedExceptionCallException constructor: The 'cause' argument
     is now mandatory.
+  - Changed FileWatcher class: Logging message 1052 each time a callback
+    method throws an exception. The exception is still ignored, like was done
+    previously.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
