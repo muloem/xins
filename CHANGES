@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.34:
+
+* Fixed XINS-based project build problems introduced in 0.33.
+
+* Generating separate xins-common.jar.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.33:
 
 * Renamed xins.jar to xins-server.jar.
