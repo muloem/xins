@@ -257,7 +257,7 @@ ${sf.file}</fail>
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />
 			<exclude name="org/xins/logdoc/**" />
- 			<classpath>
+			<classpath>
 				<path refid="path.common" />
 				<pathelement location="build/logdoc.jar" />
 				<fileset dir="lib"             includes="*.jar" />
@@ -357,7 +357,9 @@ ${sf.file}</fail>
 		<ant dir="build/logdoc/${side}" target="html" inheritall="false" />
 	</target>
 
-	<target name="do-upload-logdoc" depends="-load-sfproperties,-init">
+	<target name="do-upload-logdoc"
+	depends="-load-sfproperties,-init"
+	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Logdoc HTML to ${www.host}" />
 
 		<!-- Create TAR GZ file for Logdoc HTML -->
@@ -381,7 +383,11 @@ ${sf.file}</fail>
 			command="cd ${www.dir}/logdoc &amp;&amp; tar zxf logdoc.tgz &amp;&amp; rm logdoc.tgz &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
-	<target name="upload-logdoc" depends="logdoc-html,do-upload-logdoc" />
+	<target
+	name="upload-logdoc"
+	depends="logdoc-html,do-upload-logdoc"
+	description="Generates Logdoc HTML and then uploads it for the web site"
+	unless="no-upload" />
 
 	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
 		<antcall target="-logdoc-java">
@@ -612,7 +618,11 @@ ${sf.file}</fail>
 		</antcall>
 	</target>
 
-	<target name="do-upload-javadoc" depends="-load-sfproperties,-init" description="Uploads the Javadoc documentation to the webserver">
+	<target
+	name="do-upload-javadoc"
+	depends="-load-sfproperties,-init"
+	description="Uploads the Javadoc documentation to the web site"
+	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Javadoc to ${www.host}" />
 
 		<!-- Create TAR GZ file for Javadoc -->
@@ -635,7 +645,11 @@ ${sf.file}</fail>
 			command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp; cd ../javadoc-private &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
-	<target name="upload-javadoc" depends="javadoc,javadoc-private,do-upload-javadoc" description="Generates and then uploads the Javadoc documentation to the webserver" />
+	<target
+	name="upload-javadoc"
+	depends="javadoc,javadoc-private,do-upload-javadoc"
+	description="Generates and then uploads the Javadoc API documentation to the web site"
+	unless="no-upload" />
 
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
 
@@ -672,7 +686,11 @@ ${sf.file}</fail>
 
 	<target name="checkstyle" depends="checkstyle-xml,checkstyle-report" description="Checks the style of the source code" />
 
-	<target name="upload-checkstyle" depends="-init,checkstyle">
+	<target
+	name="upload-checkstyle"
+	depends="-init,checkstyle"
+	description="Generates the Checkstyle report and uploads it to the web site"
+	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Checkstyle report to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/checkstyle/${version} on ${www.host}" />
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
@@ -689,7 +707,10 @@ ${sf.file}</fail>
 		         command="ln -s ${www.dir}/checkstyle/${version} ${www.dir}/checkstyle/latest" />
 	</target>
 
-	<target name="upload-j2h" depends="-init,j2h">
+	<target name="upload-j2h"
+	depends="-init,j2h"
+	description="Uploads the Java2HTML documentation to the web site"
+	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/j2h/${version} on ${www.host}" />
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
@@ -825,18 +846,25 @@ ${sf.file}</fail>
 		<delete file="build/${package-basename}.tar" />
 	</target>
 
-	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
+	<target
+	name="do-upload-package"
+	depends="-init"
+	description="Uploads the package to both the web site and to the SourceForge FTP server">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<scp file="build/${package-basename}.tgz"
 		     todir="${www.target}/"
 		     password="${sf.password}" trust="true" />
+		<echo message="Uploading ${title} ${version} package to SourceForge FTP server" />
 		<ftp server="upload.sf.net" remotedir="incoming"
 		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
 			<fileset dir="build" includes="${package-basename}.tgz" />
 		</ftp>
 	</target>
 
-	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
+	<target
+	name="upload-package"
+	depends="package,do-upload-package"
+	description="Creates and uploads package to the web server" />
 
 	<target name="-check-release-version" depends="-init" unless="force">
 		<condition property="version.suffix.set">
@@ -903,7 +931,10 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		     failonerror="true" command="tag ${tagname}" quiet="true" />
 	</target>
 
-	<target name="upload-changes" depends="-init">
+	<target
+	name="upload-changes"
+	depends="-init"
+	description="Uploads the change history file to the web site">
 		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
 		<copy file="CHANGES" tofile="build/changes-${version}.txt" />
 		<scp file="build/changes-${version}.txt"
@@ -964,9 +995,13 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="The targets marked with an asterisk (*) need '-lib lib' to be"       />
 		<echo message="passed on the command line:"                                         />
 		<echo                                                                               />
-		<echo message="Possible options for the 'release' target:"                          />
-		<echo message="1) -Dforce=true         (optional): Bypass the -dev suffix check"    />
-		<echo message="2) -Dmajor.release=true (optional): Bypass version update"           />
+		<echo message="Optional options for the 'release' target:"                          />
+		<echo message="1) -Dforce=true         : Bypass the -dev suffix check"              />
+		<echo message="2) -Dmajor.release=true : Bypass version update"                     />
+		<echo                                                                               />
+		<echo message="Optional options for the upload-related targets, except the"         />
+		<echo message="package and change history file uploading:"                          />
+		<echo message="1) -Dno-upload=true     : Do not actually upload"                    />
 		<echo                                                                               />
 		<echo message="To create a release the following requirements apply:"               />
 		<echo message="1) CVS module 'xins-docs' must be checked out in parent directory"   />
@@ -978,7 +1013,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="4) The DOCBOOK_XSLT_HOME environment variable must be set and"       />
 		<echo message="   refer to the directory containing the Docbook XSLT files."        />
 	</target>
-        
+
 	<target name="netbeans-debug" depends="classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
 		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket">
 			<classpath>
@@ -998,7 +1033,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<pathelement location="src/java-common" />
 			</sourcepath>
 		</nbjpdastart>
-                
+
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		
