@@ -82,7 +82,9 @@ implements DefaultResultCodes {
       _version = version;
       _sessionBased = sessionBased;
 
-      _responseValidator = BasicResponseValidator.SINGLETON;
+      _responseValidator = api.isResponseValidationEnabled()
+                         ? BasicResponseValidator.SINGLETON
+                         : NullResponseValidator.SINGLETON;
 
       _api.functionAdded(this);
    }
