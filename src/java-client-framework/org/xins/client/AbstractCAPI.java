@@ -10,9 +10,11 @@ import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
 
+import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.Descriptor;
+import org.xins.common.service.GenericCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 
 /**
@@ -175,4 +177,54 @@ public abstract class AbstractCAPI extends Object {
     *    the version as a {@link String}, cannot be <code>null</code>.
     */
    public abstract String getXINSVersion();
+
+   /**
+    * Executes the specified call request.
+    *
+    * <p>This method is provided for CAPI subclasses.
+    *
+    * @param request
+    *    the call request to execute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws UnacceptableRequestException
+    *    if the request is considered to be unacceptable; this is determined
+    *    by calling
+    *    <code>request.</code>{@link AbstractCAPICallRequest#validate() validate()}.
+    *
+    * @throws GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts (if any) failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @throws XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @since XINS 1.2.0
+    */
+   protected final XINSCallResult callImpl(AbstractCAPICallRequest request)
+   throws IllegalArgumentException,
+          UnacceptableRequestException,
+          GenericCallException,
+          HTTPCallException,
+          XINSCallException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // Check whether request is acceptable
+      request.validate();
+
+      // Execute the call request
+      return _caller.call(request.getXINSCallRequest());
+   }
 }
