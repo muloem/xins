@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.109:
+
+* Generated CAPI classes:
+  - Main class is now called 'CAPI' instead of 'API' to reduce confusion with
+    other classes named 'RemoteAPI', 'API' or 'APIImpl'.
+  - Applied some refactorings to make the XSLT easier to read and maintain.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.108:
 
 * Improved performance of Java type class generation.
