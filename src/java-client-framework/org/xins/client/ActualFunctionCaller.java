@@ -237,8 +237,8 @@ extends AbstractFunctionCaller {
       try {
          return requester.post(_url, parameterStringBytes, _hostName);
       } catch (Throwable exception) {
-         String message = "Failed to call " + _url.toString() + '?' + parameterStringBytes;
-         LOG.error(message, exception);
+         String message = "Failed to call " + _url.toString() + '?' + parameterString + " due to " + exception.getClass().getName() + ", message is: \"" + exception.getMessage() + "\".";
+         LOG.error(message);
          throw new IOException(message);
       }
    }
