@@ -35,13 +35,14 @@ import org.xins.client.CallResult;
 import org.xins.client.CallResultParser;
 import org.xins.client.InvalidCallResultException;
 import org.xins.client.RemoteAPI;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Stub for <code>]]></xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[</code> API.
  */
-public class API extends Object {
+public final class API extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -55,13 +56,39 @@ public class API extends Object {
    // Constructors
    //-------------------------------------------------------------------------
 
+   /**
+    * Constructs a new <code>API</code> object for the specified remote API.
+    *
+    * @param api
+    *    the remote API, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null</code>.
+    */
+   public API(RemoteAPI api) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("api", api);
+
+      // Store data
+      _api = api;
+   }
+
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The remote API. This field cannot be <code>null</code>.
+    */
+   private final RemoteAPI _api;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-}]]></xsl:text>
+}
+]]></xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
