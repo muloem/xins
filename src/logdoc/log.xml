@@ -495,7 +495,7 @@
 		<entry id="6000" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>
 		</entry>
-		<entry id="6001" level="ERROR">
+		<entry id="6001" level="WARNING">
 			<description>Deinitialization of API triggered an exception.</description>
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
