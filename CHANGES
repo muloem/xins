@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.183:
   - Added a "clients" target that builds all the client api's for all the
     projects.
 
+* Generated specification documentation:
+  - Added a link to download the client zip file.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.182:
 

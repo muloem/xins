@@ -137,6 +137,18 @@
 					<em>
 						<xsl:value-of select="@name" />
 					</em>
+					<font size="-1">
+					( <a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="@name" />
+								<xsl:text>-client.zip</xsl:text>
+							</xsl:attribute>
+							<xsl:attribute name="title">
+								<xsl:text>Download the client API (Javadoc, jar, sources, specdocs) if available</xsl:text>
+							</xsl:attribute>
+							<xsl:text>Download</xsl:text>
+						</a> )
+						</font>
 				</h1>
 
 				<xsl:apply-templates select="description" />
