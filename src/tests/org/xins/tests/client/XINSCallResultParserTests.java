@@ -407,7 +407,7 @@ public class XINSCallResultParserTests extends TestCase {
     * @throws Exception
     *    if an unexpected exception is thrown.
     */
-   public void testParseXINSCallResult6() throws Exception {
+   public void testParseXINSCallResult5() throws Exception {
 
       XINSCallResultParser parser = new XINSCallResultParser();
 
