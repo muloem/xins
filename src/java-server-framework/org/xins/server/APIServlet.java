@@ -669,7 +669,7 @@ extends HttpServlet {
     */
    private PropertyReader readRuntimeProperties() {
 
-      Log.log_150();
+      Log.log_3000();
 
       Properties properties = new Properties();
       try {
@@ -681,11 +681,11 @@ extends HttpServlet {
          properties.load(in);
 
       } catch (FileNotFoundException exception) {
-         Log.log_151(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3001(_configFile, exception.getClass().getName(), exception.getMessage());
       } catch (SecurityException exception) {
-         Log.log_152(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3002(_configFile, exception.getClass().getName(), exception.getMessage());
       } catch (IOException exception) {
-         Log.log_153(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3003(_configFile, exception.getClass().getName(), exception.getMessage());
       }
 
       // TODO: Should we reset the logging subsystem if the Log4J
@@ -699,10 +699,10 @@ extends HttpServlet {
       // Determine if Log4J is properly initialized
       Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
       if (appenders instanceof NullEnumeration) {
-         Log.log_154(_configFile);
+         Log.log_3004(_configFile);
          configureLoggerFallback();
       } else {
-         Log.log_160();
+         Log.log_3005();
       }
 
       // Determine the log locale

@@ -82,6 +82,7 @@
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
+	<!-- TODO: Add an entry here. See APIServlet.java -->
 	<entry id="111" level="FATAL" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrap of API class failed due to an exception.</description>
 		<param name="exceptionClass" />
@@ -196,32 +197,32 @@
 
 	<!-- Logging subsystem -->
 
-	<entry id="150" level="DEBUG" category="org.xins.server.log">
+	<entry id="3000" level="DEBUG" category="org.xins.server.log">
 		<description>Initializing logging subsystem.</description>
 	</entry>
-	<entry id="151" level="ERROR" category="org.xins.server.log">
+	<entry id="3001" level="ERROR" category="org.xins.server.log">
 		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
 		<param name="configFile" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="152" level="ERROR" category="org.xins.server.log">
+	<entry id="3002" level="ERROR" category="org.xins.server.log">
 		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
 		<param name="configFile" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="153" level="ERROR" category="org.xins.server.log">
+	<entry id="3003" level="ERROR" category="org.xins.server.log">
 		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
 		<param name="configFile" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="154" level="WARNING" category="org.xins.server.log">
+	<entry id="3004" level="WARNING" category="org.xins.server.log">
 		<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
 		<param name="configFile" />
 	</entry>
-	<entry id="160" level="DEBUG" category="org.xins.server.log">
+	<entry id="3005" level="DEBUG" category="org.xins.server.log">
 		<description>Logging subsystem has been properly initialized.</description>
 	</entry>
 	<entry id="201" level="INFO" category="org.xins.server.log">
