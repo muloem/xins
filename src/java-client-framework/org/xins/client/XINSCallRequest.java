@@ -99,6 +99,22 @@ public final class XINSCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
+    * with no parameters, disallowing fail-over unless the request was 
+    * definitely not (yet) accepted by the service.
+    *
+    * @param functionName
+    *    the name of the function to call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    */
+   public XINSCallRequest(String functionName)
+   throws IllegalArgumentException {
+      this(functionName, null, false, null);
+   }
+
+   /**
+    * Constructs a new <code>XINSCallRequest</code> for the specified function
     * and parameters, disallowing fail-over unless the request was definitely
     * not (yet) accepted by the service.
     *
@@ -179,67 +195,12 @@ public final class XINSCallRequest extends CallRequest {
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 
-      // Create PropertyReader for the HTTP parameters
-      final Object SECRET_KEY = new Object();
-      ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
-      ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
-
-      // Check and copy all parameters to XINS and HTTP parameters
-      if (parameters != null) {
-         Iterator names = parameters.getNames();
-         while (names.hasNext()) {
-
-            // Get the name and value
-            String name  = (String) names.next();
-            String value = parameters.get(name);
-
-            // Name cannot violate the pattern
-            if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
-               // XXX: Consider using a different kind of exception for this
-               //      specific case. For backwards compatibility, this
-               //      exception class should derive from
-               //      IllegalArgumentException.
-
-               FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
-               buffer.append(name);
-               buffer.append("\" does not match the pattern \"");
-               buffer.append(PARAMETER_NAME_PATTERN_STRING);
-               buffer.append("\".");
-               throw new IllegalArgumentException(buffer.toString());
-
-            // Name cannot be "function"
-            } else if ("function".equals(name)) {
-               throw new IllegalArgumentException("Parameter name \"function\" is reserved.");
-
-            // Name is considered valid, store it
-            } else {
-               xinsParams.set(SECRET_KEY, name, value);
-               httpParams.set(SECRET_KEY, name, value);
-            }
-         }
-      }
-
-      // Add the function to the parameter list
-      httpParams.set(SECRET_KEY, "_function", functionName);
-
-      // XXX: For backwards compatibility, also add the parameter "function"
-      //      to the list of HTTP parameters. This is, however, very likely to
-      //      change in the future.
-      httpParams.set(SECRET_KEY, "function", functionName);
-
-      // Add the diagnostic context ID to the parameter list, if there is one
-      String contextID = NDC.peek();
-      if (contextID != null) {
-         httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
-      }
-
       // Initialize fields
       _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
-      _parameters      = xinsParams;
-      _failOverAllowed = failOverAllowed;
-      _httpMethod      = method;
-      _httpParams      = httpParams;
+      setParameters(parameters);
+      setFailOverAllowed(failOverAllowed);
+      setHTTPMethod(method);
 
       // Note that _asString is lazily initialized.
    }
@@ -272,24 +233,24 @@ public final class XINSCallRequest extends CallRequest {
     * The parameters to pass in the request, and their respective values. This
     * field can be <code>null</code>.
     */
-   private final PropertyReader _parameters;
+   private PropertyReader _parameters;
 
    /**
     * The HTTP method to use. Can be <code>null</code>, in which case the
     * {@link XINSServiceCaller} will determine which HTTP method to use.
     */
-   private final HTTPMethod _httpMethod;
+   private HTTPMethod _httpMethod;
 
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
     */
-   private final boolean _failOverAllowed;
+   private boolean _failOverAllowed;
 
    /**
     * The parameters to send with the HTTP request. Cannot be
     * <code>null</code>.
     */
-   private final PropertyReader _httpParams;
+   private PropertyReader _httpParams;
 
 
    //-------------------------------------------------------------------------
@@ -358,6 +319,81 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
+    * Sets the parameters for this function.
+    *
+    * @param parameters
+    *    the input parameters, if any, can be <code>null</code> if there are
+    *    none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code> or if <code>parameters</code>
+    *    contains a name that does not match the constraints for a parameter
+    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
+    *    <code>"function"</code>, which is currently still reserved.
+    */
+   public void setParameters(PropertyReader parameters) {
+
+      // Create PropertyReader for the HTTP parameters
+      final Object SECRET_KEY = new Object();
+      ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
+      ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
+
+      // Check and copy all parameters to XINS and HTTP parameters
+      if (parameters != null) {
+         Iterator names = parameters.getNames();
+         while (names.hasNext()) {
+
+            // Get the name and value
+            String name  = (String) names.next();
+            String value = parameters.get(name);
+
+            // Name cannot violate the pattern
+            if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
+               // XXX: Consider using a different kind of exception for this
+               //      specific case. For backwards compatibility, this
+               //      exception class should derive from
+               //      IllegalArgumentException.
+
+               FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
+               buffer.append(name);
+               buffer.append("\" does not match the pattern \"");
+               buffer.append(PARAMETER_NAME_PATTERN_STRING);
+               buffer.append("\".");
+               throw new IllegalArgumentException(buffer.toString());
+
+            // Name cannot be "function"
+            } else if ("function".equals(name)) {
+               throw new IllegalArgumentException("Parameter name \"function\" is reserved.");
+
+            // Name is considered valid, store it
+            } else {
+               xinsParams.set(SECRET_KEY, name, value);
+               httpParams.set(SECRET_KEY, name, value);
+            }
+         }
+      }
+
+      // Add the function to the parameter list
+      httpParams.set(SECRET_KEY, "_function", _functionName);
+
+      // XXX: For backwards compatibility, also add the parameter "function"
+      //      to the list of HTTP parameters. This is, however, very likely to
+      //      change in the future.
+      httpParams.set(SECRET_KEY, "function", _functionName);
+
+      // Add the diagnostic context ID to the parameter list, if there is one
+      String contextID = NDC.peek();
+      if (contextID != null) {
+         httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
+      }
+
+      // Initialize fields
+      _parameters = xinsParams;
+      _httpParams = httpParams;
+      _asString   = null;
+   }
+
+   /**
     * Gets all parameters to pass with the call, with their respective values.
     *
     * @return
@@ -389,6 +425,18 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
+    * Sets whether fail-over is unconditionally allowed
+    *
+    * @param allowed
+    *    flag that indicates whether fail-over is in principle allowed, even
+    *    if the request was already sent to the other end.
+    */
+   public void setFailOverAllowed(boolean allowed) {
+      _failOverAllowed = allowed;
+      _asString   = null;
+   }
+   
+   /**
     * Determines whether fail-over is unconditionally allowed.
     *
     * @return
@@ -398,6 +446,19 @@ public final class XINSCallRequest extends CallRequest {
     */
    public boolean isFailOverAllowed() {
       return _failOverAllowed;
+   }
+
+   /**
+    * Sets the <code>HTTPMethod</code> to use for the {@link HTTPCallRequest}.
+    *
+    * @param method
+    *    the HTTP method to use, or <code>null</code> if the used
+    *    <code>XINSServiceCaller</code> should determine what HTTP method to
+    *    use.
+    */
+   public void setHTTPMethod(HTTPMethod method) {
+      _httpMethod = method;
+      _asString   = null;
    }
 
    /**
