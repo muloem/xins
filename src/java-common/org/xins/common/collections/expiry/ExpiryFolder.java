@@ -11,9 +11,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.threads.Doorman;
+
+import org.xins.common.text.TextUtils;
 
 /**
  * Expiry folder. Contains values indexed by key. Entries in this folder will
@@ -44,13 +46,23 @@ extends Object {
    /**
     * The name of this class.
     */
-   private static final String EXPIRY_FOLDER_CLASSNAME = ExpiryFolder.class.getName();
+   private static final String CLASSNAME = ExpiryFolder.class.getName();
 
    /**
     * The initial size for the queue of threads waiting to obtain read or
     * write access to a resource.
     */
    private static final int INITIAL_QUEUE_SIZE = 89;
+
+   /**
+    * The number of instances of this class.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * Lock object for <code>INSTANCE_COUNT</code>.
+    */
+   private static final Object INSTANCE_COUNT_LOCK = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -71,6 +83,66 @@ extends Object {
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || strategy == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public ExpiryFolder(String         name,
+                       ExpiryStrategy strategy)
+   throws IllegalArgumentException {
+
+      // Determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNum = INSTANCE_COUNT++;
+      }
+
+      final String CONSTRUCTOR_DETAIL = "#"
+                                      + _instanceNum
+                                      + " [name="
+                                      + TextUtils.quote(name)
+                                      + "; strategy="
+                                      + TextUtils.quote(name)
+                                      + ']';
+
+      Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name, "strategy", strategy);
+
+      // Initialize fields
+      _name                 = name;
+      _strategy             = strategy;
+      _asString             = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
+      _recentlyAccessed     = new HashMap(89);
+      _recentlyAccessedLock = new Object();
+      _slotCount            = strategy.getSlotCount();
+      _slots                = new HashMap[_slotCount];
+      _lastSlot             = _slotCount - 1;
+      _sizeLock             = new Object();
+      _listeners            = new ArrayList(5);
+
+      // Initialize all the fields in _slots
+      for (int i = 0; i < _slotCount; i++) {
+         _slots[i] = new HashMap(89);
+      }
+
+      // Notify the strategy that we listen to it
+      strategy.folderAdded(this);
+
+      Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
+   }
+
+   /**
+    * Constructs a new <code>ExpiryFolder</code>.
+    *
+    * @param name
+    *    description of this folder, to be used in log and exception messages,
+    *    not <code>null</code>.
+    *
+    * @param strategy
+    *    the strategy that should be applied, not <code>null</code>.
+    *
     * @param strictChecking
     *    flag that indicates if checking of thread synchronization operations
     *    should be strict or loose.
@@ -80,39 +152,29 @@ extends Object {
     *    obtaining read or write access to a resource, must be &gt; 0L.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || strategy == null || maxQueueWaitTime &lt;= 0L</code>.
+    *    if <code>name             ==    null
+    *          || strategy         ==    null
+    *          || maxQueueWaitTime &lt;= 0L</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use the constructor {@link #ExpiryFolder(String,ExpiryStrategy)}
+    *    instead.
     */
    public ExpiryFolder(String         name,
                        ExpiryStrategy strategy,
                        boolean        strictChecking,
                        long           maxQueueWaitTime)
    throws IllegalArgumentException {
+      this(name, strategy);
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("name", name, "strategy", strategy);
-
-      // Initialize fields
-      _name             = name;
-      _asString         = "ExpiryFolder \"" + _name + '"';
-      _strategy         = strategy;
-      _recentlyAccessed = new HashMap(89);
-      _slotCount        = strategy.getSlotCount();
-      _slots            = new Map[_slotCount];
-      _lastSlot         = _slotCount - 1;
-      _sizeLock         = new Object();
-      _listeners        = new ArrayList(5);
-
-      // Initialize all the fields in _slots
-      for (int i = 0; i < _slotCount; i++) {
-         _slots[i] = new HashMap(89);
+      // Check the extra documented precondition
+      if (maxQueueWaitTime <= 0L) {
+         final String DETAIL = "maxQueueWaitTime ("
+                             + maxQueueWaitTime
+                             + "L) <= 0L";
+         throw new IllegalArgumentException(DETAIL);
       }
-
-      // Create the doormen
-      _recentlyAccessedDoorman = new Doorman("recentlyAccessed", strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
-      _slotsDoorman            = new Doorman("slots",            strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
-
-      // Notify the strategy
-      strategy.folderAdded(this);
    }
 
 
@@ -121,14 +183,14 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The instance number of this instance.
+    */
+   private final int _instanceNum;
+
+   /**
     * The name of this expiry folder.
     */
    private final String _name;
-
-   /**
-    * String representation. Cannot be <code>null</code>.
-    */
-   private final String _asString;
 
    /**
     * The strategy used. This field cannot be <code>null</code>.
@@ -136,12 +198,17 @@ extends Object {
    private final ExpiryStrategy _strategy;
 
    /**
+    * String representation. Cannot be <code>null</code>.
+    */
+   private final String _asString;
+
+   /**
     * The most recently accessed entries. This field cannot be
     * <code>null</code>. The entries in this map will expire after
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private volatile Map _recentlyAccessed;
+   private volatile HashMap _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -160,32 +227,28 @@ extends Object {
     * accessed. The further back in the array, the faster the entries will
     * expire.
     */
-   private final Map[] _slots;
+   private final HashMap[] _slots;
 
    /**
-    * Doorman protecting the field <code>_recentlyAccessed</code>.
+    * Lock for accessing the <code>_recentlyAccessed</code> field.
     */
-   private final Doorman _recentlyAccessedDoorman;
+   private final Object _recentlyAccessedLock;
 
    /**
-    * Doorman protecting the field <code>_slots</code>.
-    */
-   private final Doorman _slotsDoorman;
-
-   /**
-    * The size of this folder.
+    * The size of this folder. If code needs to write to this field, then it
+    * should lock on {@link #_sizeLock}.
     */
    private int _size;
 
    /**
-    * Lock for the <code>_size</code>.
+    * Lock for writing to the <code>_size</code> field.
     */
    private final Object _sizeLock;
 
    /**
     * The set of listeners. May be empty, but never is <code>null</code>.
     */
-   private final List _listeners;
+   private final ArrayList _listeners;
 
 
    //-------------------------------------------------------------------------
@@ -210,39 +273,37 @@ extends Object {
     */
    void tick() {
 
-      // Allocate memory _before_ entering any doorman, so if this fails, then
-      // we don't hold any locks
-      Map newRecentlyAccessed = new HashMap();
+      // Allocate memory for the new map of recently accessed entries outside
+      // the synchronized sections
+      HashMap newRecentlyAccessed = new HashMap();
 
-      // First enter the protected area for '_recentlyAccessed', because that
-      // is the most difficult to enter
-      _recentlyAccessedDoorman.enterAsWriter();
+      // Store the entries that need to be expired in this map
+      HashMap toBeExpired;
 
-      // Then enter the protected area for '_slots' as well
-      _slotsDoorman.enterAsWriter();
+      // Always get the lock for _recentlyAccessed first
+      synchronized (_recentlyAccessedLock) {
 
-      // Keep a link to the old map with recently accessed elements and then
-      // reset _recentlyAccessed so we can leave the protected area for
-      // '_recentlyAccessed' right away
-      Map oldRecentlyAccessed = _recentlyAccessed;
-      _recentlyAccessed       = newRecentlyAccessed;
+         // Then get the lock for _slots
+         synchronized (_slots) {
 
-      // Leave the protected area for '_recentlyAccessed' first, because that
-      // is the heaviest used
-      _recentlyAccessedDoorman.leaveAsWriter();
+            // Keep a link to the old map with recently accessed elements and
+            // then reset _recentlyAccessed
+            HashMap oldRecentlyAccessed = _recentlyAccessed;
+            _recentlyAccessed       = newRecentlyAccessed;
 
-      // Shift the slots
-      Map toBeExpired = _slots[_lastSlot];
-      for (int i = _lastSlot; i > 0; i--) {
-         _slots[i] = _slots[i - 1];
+            // Shift the slots
+            toBeExpired = _slots[_lastSlot];
+            for (int i = _lastSlot; i > 0; i--) {
+               _slots[i] = _slots[i - 1];
+            }
+            _slots[0] = oldRecentlyAccessed;
+         }
       }
-      _slots[0] = oldRecentlyAccessed;
-
-      // Leave the protected area for '_slots' as well.
-      _slotsDoorman.leaveAsWriter();
 
       // Adjust the size
-      int toBeExpiredSize = toBeExpired == null ? 0 : toBeExpired.size();
+      int toBeExpiredSize = (toBeExpired == null)
+                          ? 0
+                          : toBeExpired.size();
       if (toBeExpiredSize > 0) {
          int newSize;
          synchronized (_sizeLock) {
@@ -254,9 +315,9 @@ extends Object {
          }
 
          // If the new size was negative, it has been fixed already, but
-         // report it now, after the synchronized section
+         // report it now, outside the synchronized section
          if (newSize < 0) {
-            Log.log_1050(EXPIRY_FOLDER_CLASSNAME, "tick()", EXPIRY_FOLDER_CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
+            Log.log_1050(CLASSNAME, "tick()", CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
          }
          Log.log_1400(_asString, toBeExpiredSize, newSize);
       } else {
@@ -354,35 +415,22 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Search in the recently accessed map first
-      _recentlyAccessedDoorman.enterAsReader();
       Object value;
-      try {
+
+      // Search in the recently accessed map first
+      synchronized (_recentlyAccessedLock) {
          value = _recentlyAccessed.get(key);
-      } finally {
-         _recentlyAccessedDoorman.leaveAsReader();
-      }
 
-      // If not found, then look in the slots
-      // TODO: Determine whether enterAsReader() is really good enough. It
-      //       seems that enterAsWriter() should be called. However, this may
-      //       have a major impact on performance.
-      if (value == null) {
-         _slotsDoorman.enterAsReader();
-         try {
-            for (int i = 0; i < _slotCount && value == null; i++) {
-               value = _slots[i].remove(key);
+         // If not found, then look in the slots
+         if (value == null) {
+            synchronized (_slots) {
+               for (int i = 0; i < _slotCount && value == null; i++) {
+                  value = _slots[i].remove(key);
+               }
             }
-         } finally {
-            _slotsDoorman.leaveAsReader();
-         }
 
-         if (value != null) {
-            _recentlyAccessedDoorman.enterAsWriter();
-            try {
+            if (value != null) {
                _recentlyAccessed.put(key, value);
-            } finally {
-               _recentlyAccessedDoorman.leaveAsWriter();
             }
          }
       }
@@ -413,24 +461,19 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Search in the recently accessed map first
-      _recentlyAccessedDoorman.enterAsReader();
       Object value;
-      try {
+
+      // Search in the recently accessed map first
+      synchronized (_recentlyAccessedLock) {
          value = _recentlyAccessed.get(key);
-      } finally {
-         _recentlyAccessedDoorman.leaveAsReader();
       }
 
       // If not found, then look in the slots
       if (value == null) {
-         _slotsDoorman.enterAsReader();
-         try {
+         synchronized (_slots) {
             for (int i = 0; i < _slotCount && value == null; i++) {
                value = _slots[i].get(key);
             }
-         } finally {
-            _slotsDoorman.leaveAsReader();
          }
       }
 
@@ -438,7 +481,7 @@ extends Object {
    }
 
    /**
-    * Associates the specified value with the specified key in this folder.
+    * Associates the specified key with the specified value.
     *
     * @param key
     *    they key for the entry, cannot be <code>null</code>.
@@ -456,18 +499,14 @@ extends Object {
       MandatoryArgumentChecker.check("key", key, "value", value);
 
       // Store the association in the set of recently accessed entries
-      _recentlyAccessedDoorman.enterAsWriter();
-      try {
+      synchronized (_recentlyAccessedLock) {
          _recentlyAccessed.put(key, value);
-
-         // Bump the size
-         synchronized (_sizeLock) {
-            _size++;
-         }
-      } finally {
-         _recentlyAccessedDoorman.leaveAsWriter();
       }
 
+      // Bump the size
+      synchronized (_sizeLock) {
+         _size++;
+      }
    }
 
    /**
@@ -490,40 +529,26 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Remove the key in the set of recently accessed entries
-      _recentlyAccessedDoorman.enterAsReader();
       Object value;
-      try {
+
+      // Remove the key in the set of recently accessed entries
+      synchronized (_recentlyAccessed) {
          value = _recentlyAccessed.remove(key);
-
-         if (value != null) {
-
-            // Bump the size
-            synchronized (_sizeLock) {
-               _size--;
-            }
-         }
-      } finally {
-         _recentlyAccessedDoorman.leaveAsReader();
       }
 
       // If not found, then look in the slots
       if (value == null) {
-         _slotsDoorman.enterAsReader();
-         try {
+         synchronized (_slots) {
             for (int i = 0; i < _slotCount && value == null; i++) {
                value = _slots[i].remove(key);
             }
+         }
+      }
 
-            if (value != null) {
-
-               // Bump the size
-               synchronized (_sizeLock) {
-                  _size--;
-               }
-            }
-         } finally {
-            _slotsDoorman.leaveAsReader();
+      // Decrease the size, if appropriate
+      if (value != null) {
+         synchronized (_sizeLock) {
+            _size--;
          }
       }
 
@@ -549,46 +574,35 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("newFolder", newFolder);
       if (newFolder == this) {
+         // TODO: Log programming error
          throw new IllegalArgumentException("The folder can not be copied into itself.");
       }
       if (newFolder.getStrategy().getPrecision() != getStrategy().getPrecision()) {
+         // TODO: Log programming error
          throw new IllegalArgumentException("The folders must have the same precision.");
       }
 
-      // Copy the recentlyAccessed
-      _recentlyAccessedDoorman.enterAsReader();
-      newFolder._recentlyAccessedDoorman.enterAsWriter();
-      try {
-         newFolder._recentlyAccessed = _recentlyAccessed;
-         synchronized(newFolder._sizeLock) {
-            newFolder._size = newFolder._recentlyAccessed.size();
-         }
-      } finally {
-         try {
-            newFolder._recentlyAccessedDoorman.leaveAsWriter();
-         } finally {
-            _recentlyAccessedDoorman.leaveAsReader();
-         }
-      }
+      synchronized (_recentlyAccessedLock) {
+         synchronized (newFolder._recentlyAccessedLock) {
+            synchronized (_slots) {
+               synchronized (newFolder._slots) {
 
-      // Copy the slots
-      _slotsDoorman.enterAsReader();
-      newFolder._slotsDoorman.enterAsWriter();
-      try {
-         for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
-            newFolder._slots[i] = _slots[i];
-            synchronized(newFolder._sizeLock) {
-               newFolder._size += newFolder._slots[i].size();
+                  // Copy the recentlyAccessed
+                  newFolder._recentlyAccessed = new HashMap(_recentlyAccessed);
+
+                  // Copy the slots
+                  for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
+                     newFolder._slots[i] = new HashMap(_slots[i]);
+                  }
+
+                  // Copy the size
+                  synchronized (newFolder._sizeLock) {
+                     newFolder._size = _size;
+                  }
+               }
             }
          }
-      } finally {
-         try {
-            newFolder._slotsDoorman.leaveAsWriter();
-         } finally {
-            _slotsDoorman.leaveAsReader();
-         }
       }
-
    }
 
    /**
