@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.116:
+
+* XINS/Java Common Library:
+  - GroupDescriptor: Fixed bug in service iteration mechanism.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.115:
 
 * Added Jakarta Commons HttpClient JAR file (commons-httpclient.jar) to
