@@ -34,6 +34,12 @@ public final class Doorman extends Object {
     */
    private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType();
 
+   /**
+    * The maximum time an entry can be in the queue. This is currently set to
+    * 30 seconds.
+    */
+   private static final long MAX_QUEUE_WAIT_TIME = 30000L;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -65,8 +71,6 @@ public final class Doorman extends Object {
       _currentActorLock = new Object();
       _currentReaders   = new HashSet();
       _queue            = new Queue(queueSize);
-      _readAccess       = new Object();
-      _writeAccess      = new Object();
    }
 
 
@@ -96,16 +100,6 @@ public final class Doorman extends Object {
     */
    private final Queue _queue;
 
-   /**
-    * Object used for waiting for read access.
-    */
-   private final Object _readAccess;
-
-   /**
-    * Object used for waiting for write access.
-    */
-   private final Object _writeAccess;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -115,132 +109,100 @@ public final class Doorman extends Object {
     * Enters the 'protected area' as a reader. If necessary, this method will
     * wait until the area can be entered.
     *
-    * @throws InterruptedException
-    *    if a {@link Object#wait()} call was interrupted.
+    * @throws QueueTimeOutException
+    *    if this thread was waiting in the queue for too long.
     */
    public void enterAsReader()
-   throws InterruptedException {
+   throws QueueTimeOutException {
 
       Thread reader = Thread.currentThread();
 
       synchronized (_currentActorLock) {
 
          // Short-circuit if this thread is already entered
-         if (_currentReaders.contains(reader)) {
-            return;
+         if (_currentWriter == reader) {
+            throw new IllegalStateException("Thread cannot enter as a reader if it is already an active writer.");
+         } else if (_currentReaders.contains(reader)) {
+            throw new IllegalStateException("Thread cannot enter as a reader if it is already an active reader.");
          }
 
-         // If there is an existing queue, or if a writer is busy, line up.
-         boolean enterQueue = !_queue.isEmpty() || _currentWriter != null;
+         // If there is a current writer, then we need to wait in the queue
+         boolean enterQueue = _currentWriter != null;
+         synchronized (_queue) {
+
+            // If there is no current writer, but there is already a queue,
+            // then we also need to join it
+            enterQueue = enterQueue ? true : !_queue.isEmpty();
+
+            // Join the queue if necessary
+            if (enterQueue) {
+               _queue.add(reader, READ_QUEUE_ENTRY_TYPE);
+            }
+         }
 
          // If we don't have to join the queue, join the set of current
          // readers and go ahead
          if (!enterQueue) {
             _currentReaders.add(reader);
             return;
-
-         // Otherwise we must join the queue
-         } else {
-            synchronized (_queue) {
-               _queue.add(reader, READ_QUEUE_ENTRY_TYPE);
-            }
          }
       }
 
       // Wait for read access
-      boolean mayEnter;
-      do {
-         synchronized (_currentActorLock) {
-            mayEnter = _currentReaders.contains(reader);
-         }
-
-         if (! mayEnter) {
-            boolean exceptionThrown = true;
-            try {
-               _readAccess.wait();
-               exceptionThrown = false;
-            } finally {
-               if (exceptionThrown) {
-                  synchronized (_currentActorLock) {
-                     _queue.remove(reader);
-                  }
-               }
-            }
-         }
-      } while (! mayEnter);
+      try {
+         Thread.sleep(MAX_QUEUE_WAIT_TIME);
+         throw new QueueTimeOutException();
+      } catch (InterruptedException exception) {
+         // fall through
+      }
    }
 
    /**
     * Enters the 'protected area' as a writer. If necessary, this method will
     * wait until the area can be entered.
     *
-    * @throws InterruptedException
-    *    if a {@link Object#wait()} call was interrupted.
+    * @throws QueueTimeOutException
+    *    if this thread was waiting in the queue for too long.
     */
    public void enterAsWriter()
-   throws InterruptedException {
+   throws QueueTimeOutException {
+
       Thread writer = Thread.currentThread();
 
       synchronized (_currentActorLock) {
 
          // Short-circuit if this thread is already entered
          if (_currentWriter == writer) {
-            return;
+            throw new IllegalStateException("Thread cannot enter as a writer if it is already an active writer.");
+         } else if (_currentReaders.contains(writer)) {
+            throw new IllegalStateException("Thread cannot enter as a writer if it is already an active reader.");
          }
 
-         // If there is an existing queue, or if any thread is busy, line up.
-         boolean enterQueue = !_queue.isEmpty() || !_currentReaders.isEmpty() || _currentWriter != null;
+         // If there is a current writer or one or more current readers, then
+         // we need to wait in the queue
+         boolean enterQueue = _currentWriter != null || !_currentReaders.isEmpty();
 
-         // If we don't have to join the queue, join the set of current
-         // readers and go ahead
-         if (!enterQueue) {
-            _currentWriter = writer;
-            return;
-
-         // Otherwise we must join the queue
-         } else {
+         // Join the queue if necessary
+         if (enterQueue) {
             synchronized (_queue) {
                _queue.add(writer, WRITE_QUEUE_ENTRY_TYPE);
             }
          }
+
+         // If we don't have to join the queue, become the current writer and
+         // return
+         if (!enterQueue) {
+            _currentWriter = writer;
+            return;
+         }
       }
 
       // Wait for write access
-      boolean mayEnter;
-      do {
-         synchronized (_currentActorLock) {
-            mayEnter = _currentWriter == writer;
-         }
-
-         if (! mayEnter) {
-            boolean exceptionThrown = true;
-            try {
-               _writeAccess.wait();
-               exceptionThrown = false;
-            } finally {
-               if (exceptionThrown) {
-                  synchronized (_currentActorLock) {
-                     _queue.remove(writer);
-                  }
-               }
-            }
-         }
-      } while (! mayEnter);
-   }
-
-   /**
-    * Notifies all appropriate waiting threads in the queue.
-    */
-   private void leave() {
-      Queue.EntryType type;
-      synchronized (_queue) {
-         type = _queue.getTypeOfFirst();
-      }
-
-      if (type == READ_QUEUE_ENTRY_TYPE) {
-         _readAccess.notifyAll();
-      } else if (type == WRITE_QUEUE_ENTRY_TYPE) {
-         _writeAccess.notifyAll();
+      try {
+         Thread.sleep(MAX_QUEUE_WAIT_TIME);
+         throw new QueueTimeOutException();
+      } catch (InterruptedException exception) {
+         // fall through
       }
    }
 
@@ -251,24 +213,68 @@ public final class Doorman extends Object {
       Thread reader = Thread.currentThread();
 
       synchronized (_currentActorLock) {
-         _currentReaders.remove(reader);
-      }
+         boolean readerRemoved = _currentReaders.remove(reader);
 
-      leave();
+         if (!readerRemoved) {
+            throw new IllegalStateException("Cannot leave protected area as reader, because it has not entered as a reader.");
+         }
+
+         if (_currentReaders.isEmpty()) {
+
+            synchronized (_queue) {
+
+               // Determine if the queue has a writer atop, a reader atop or is
+               // empty
+               Queue.EntryType type = _queue.getTypeOfFirst();
+
+               if (type == WRITE_QUEUE_ENTRY_TYPE) {
+
+                  // If a writer is waiting, activate it
+                  _currentWriter = _queue.pop();
+                  _currentWriter.interrupt();
+               } else if (type == READ_QUEUE_ENTRY_TYPE) {
+
+                  // If a reader leaves, the queue cannot contain a reader at the
+                  // top, it must be either empty or have a writer at the top
+                  throw new IllegalStateException("Found writer at top of queue while a reader is leaving the protected area.");
+               }
+            }
+         }
+      }
    }
 
    /**
     * Leaves the 'protected area' as a writer.
     */
    public void leaveAsWriter() {
-      // XXX: Thread writer = Thread.currentThread();
+      Thread writer = Thread.currentThread();
 
       synchronized (_currentActorLock) {
-         // TODO: What if _currentWriter != writer ?
-         _currentWriter = null;
-      }
 
-      leave();
+         if (_currentWriter != writer) {
+            throw new IllegalStateException("Cannot leave protected area as writer, because it has not entered as a writer.");
+         }
+
+         synchronized (_queue) {
+
+            // Determine if the queue has a writer atop, a reader atop or is
+            // empty
+            Queue.EntryType type = _queue.getTypeOfFirst();
+
+            if (type == WRITE_QUEUE_ENTRY_TYPE) {
+
+               // If a writer is waiting, activate it
+               _currentWriter = _queue.pop();
+               _currentWriter.interrupt();
+            } else if (type == READ_QUEUE_ENTRY_TYPE) {
+
+               // If there are multiple readers atop, activate all of them
+               do {
+                  _queue.pop().interrupt();
+               } while (_queue.getTypeOfFirst() == READ_QUEUE_ENTRY_TYPE);
+            }
+         }
+      }
    }
 
 
@@ -343,32 +349,88 @@ public final class Doorman extends Object {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Determines if this queue is empty.
+       *
+       * @return
+       *    <code>true</code> if this queue is empty, <code>false</code> if it
+       *    is not.
+       */
       public boolean isEmpty() {
          return (_first == null);
       }
 
+      /**
+       * Gets the type of the first waiting thread in this queue. If this
+       * queue is empty, then <code>null</code> is returned.
+       *
+       * @return
+       *    <code>null</code> if this queue is empty;
+       *    {@link #READ_QUEUE_ENTRY_TYPE} is the first thread in this queue
+       *    is waiting for read access;
+       *    {@link #WRITE_QUEUE_ENTRY_TYPE} is the first thread in this queue
+       *    is waiting for write access;
+       */
       public EntryType getTypeOfFirst() {
          return _typeOfFirst;
       }
 
-      public void add(Thread thread, EntryType type) {
+      public void add(Thread thread, EntryType type)
+      throws IllegalStateException {
+
+         // Check preconditions
+         if (_entryTypes.containsKey(thread)) {
+            throw new IllegalStateException("The specified thread is already in this queue.");
+         }
+
+         // If the queue is empty, then store the new waiter as the first
          if (_first == null) {
             _first       = thread;
             _typeOfFirst = type;
          }
+
+         // Store the waiter thread and its type
          _entryTypes.put(thread, type);
          _entries.addLast(thread);
       }
 
+      public Thread pop() throws IllegalStateException {
+         if (_first == null) {
+            throw new IllegalStateException("This queue is empty.");
+         }
+
+         Thread oldFirst = _first;
+
+         // Remove the current first
+         _entries.removeFirst();
+         _entryTypes.remove(oldFirst);
+
+         // Get the new first, now that the other one is removed
+         Object newFirst = _entries.getFirst();
+         _first          = newFirst == null ? null : (Thread) _entries.getFirst();
+         _typeOfFirst    = newFirst == null ? null : (EntryType) _entryTypes.get(_first);
+
+         return oldFirst;
+      }
+
       public void remove(Thread thread) {
-         _entryTypes.remove(thread);
+
          if (thread == _first) {
+
+            // Remove the current first
             _entries.removeFirst();
-            _first       = (Thread) _entries.getFirst();
-            _typeOfFirst = _first == null ? null : (EntryType) _entryTypes.get(_first);
+
+            // Get the new first, now that the other one is removed
+            Object newFirst = _entries.getFirst();
+            _first       = newFirst == null ? null : (Thread) _entries.getFirst();
+            _typeOfFirst = newFirst == null ? null : (EntryType) _entryTypes.get(_first);
          } else {
+
+            // Remove the thread from the list
             _entries.remove(thread);
          }
+
+         _entryTypes.remove(thread);
       }
 
 
