@@ -9,6 +9,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . public Iterator getChildren(String name)
     Changed the tests accordingly.
 
+* XINS/Java Common Library:
+  - Added new types Float32 and Float64.
+
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
@@ -25,11 +28,15 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 * Generation of types Java code:
   - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
+  - Added new types float32 and float64.
+
+* Logdoc
+  - Added new types float32 and float64.
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
 
-* Added support for the -version argument.
+* Added support for the -version argument for the xins commands.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:

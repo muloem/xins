@@ -6,9 +6,6 @@ import junit.framework.TestSuite;
 
 import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Int16;
-import org.xins.common.types.standard.Properties;
-import org.xins.common.collections.PropertyReader;
-
 
 /**
  * Tests for class <code>Int16</code>.

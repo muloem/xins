@@ -5,15 +5,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.types.TypeValueException;
-import org.xins.common.types.standard.Int8;
+import org.xins.common.types.standard.Float32;
+
 
 /**
- * Tests for class <code>Int8</code>.
+ * Tests for class <code>Float32</code>.
  *
  * @version $Revision$ $Date$
  * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
  */
-public class Int8Tests extends TestCase {
+public class Float32Tests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -26,7 +27,7 @@ public class Int8Tests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(Int8Tests.class);
+      return new TestSuite(Float32Tests.class);
    }
 
 
@@ -39,13 +40,13 @@ public class Int8Tests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Int8Tests</code> test suite with
+    * Constructs a new <code>Float32Tests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public Int8Tests(String name) {
+   public Float32Tests(String name) {
       super(name);
    }
 
@@ -54,7 +55,7 @@ public class Int8Tests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
-   ZeroToTen lowerLimit = new ZeroToTen();
+   ZeroToTenThousand lowerLimit = new ZeroToTenThousand();
 
    //-------------------------------------------------------------------------
    // Methods
@@ -72,8 +73,8 @@ public class Int8Tests extends TestCase {
    }
 
    public void testToString() {
-      assertEquals("lowerLimit.toString((byte)12) should return a value of \"12\"", "12", lowerLimit.toString((byte)12));
-      assertEquals("lowerLimit.toString(Byte.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Byte.valueOf("12")));
+      assertEquals("lowerLimit.toString(12.0F) should return a value of \"12.0\"", "12.0", lowerLimit.toString(12.0F));
+      assertEquals("lowerLimit.toString(Float.valueOf(\"12.0\")) should return a value of \"12.0\"", "12.0", lowerLimit.toString(Float.valueOf("12.0")));
       assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
@@ -94,7 +95,7 @@ public class Int8Tests extends TestCase {
       }
 
       try {
-         lowerLimit.fromStringForRequired("7");
+         assertEquals(7072.0F, lowerLimit.fromStringForRequired("7072"), 0.01F);
       } catch (Exception e) {
          fail("lowerLimit.fromStringForRequired(\"7072\") caught an unexpected error.");
       }
@@ -110,9 +111,9 @@ public class Int8Tests extends TestCase {
       }
 
       try {
-         lowerLimit.fromStringForOptional("4");
+         assertEquals(new Float(4.3), lowerLimit.fromStringForOptional("4.3"));
       } catch (Exception e1) {
-         fail("lowerLimit.fromStringForOptional(\"4\") caught unexpected error.");
+         fail("lowerLimit.fromStringForOptional(\"4.3\") caught unexpected error.");
       }
 
       assertNull("lowerLimit.fromStringForOptional(null) should return a null.", lowerLimit.fromStringForOptional(null));
@@ -122,18 +123,18 @@ public class Int8Tests extends TestCase {
 
       assertFalse("fred is not a valid value.",lowerLimit.isValidValue("fred"));
 
-      assertFalse("12 is outside the bounds of the instance.",lowerLimit.isValidValue("12"));
+      assertFalse("1253232.65 is outside the bounds of the instance.",lowerLimit.isValidValue("1253232.65"));
 
-      assertTrue("9 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9"));
+      assertTrue("9.81 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9.81"));
 
       assertTrue("null is considered to be a valid object",lowerLimit.isValidValue(null));
    }
 
-   class ZeroToTen extends Int8 {
+   class ZeroToTenThousand extends Float32 {
 
       // constructor
-      public ZeroToTen() {
-         super("ZeroToTen", (byte) 0, (byte) 10);
+      public ZeroToTenThousand() {
+         super("ZeroToTenThousand", 0.0F, 10000.0F);
       }
 
   }

@@ -42,6 +42,18 @@
 			<xsl:when test="@type = 'object'">
 				<xsl:text>java.lang.Object</xsl:text>
 			</xsl:when>
+			<xsl:when test="(@type = 'float64') and ($nullable = 'true')">
+				<xsl:text>java.lang.Double</xsl:text>
+			</xsl:when>
+			<xsl:when test="@type = 'float64'">
+				<xsl:text>double</xsl:text>
+			</xsl:when>
+			<xsl:when test="(@type = 'float32') and ($nullable = 'true')">
+				<xsl:text>java.lang.Float</xsl:text>
+			</xsl:when>
+			<xsl:when test="@type = 'float32'">
+				<xsl:text>float</xsl:text>
+			</xsl:when>
 			<xsl:when test="(@type = 'int64') and ($nullable = 'true')">
 				<xsl:text>java.lang.Long</xsl:text>
 			</xsl:when>

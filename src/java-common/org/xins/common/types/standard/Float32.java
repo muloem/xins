@@ -11,14 +11,14 @@ import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Standard type <em>_int32</em>.
+ * Standard type <em>_float32</em>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 1.0.0
+ * @since XINS 1.1.0
  */
-public class Int32 extends Type {
+public class Float32 extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -27,7 +27,7 @@ public class Int32 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Int32 SINGLETON = new Int32();
+   public final static Float32 SINGLETON = new Float32();
 
 
    //-------------------------------------------------------------------------
@@ -36,13 +36,13 @@ public class Int32 extends Type {
 
    /**
     * Converts the specified non-<code>null</code> string value to an
-    * <code>int</code>.
+    * <code>float</code>.
     *
     * @param string
     *    the string to convert, cannot be <code>null</code>.
     *
     * @return
-    *    the <code>int</code> value.
+    *    the <code>float</code> value.
     *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
@@ -51,13 +51,13 @@ public class Int32 extends Type {
     *    if the specified string does not represent a valid value for this
     *    type.
     */
-   public static int fromStringForRequired(String string)
+   public static float fromStringForRequired(String string)
    throws IllegalArgumentException, TypeValueException {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            return Integer.parseInt(string);
+            return Float.parseFloat(string);
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -65,20 +65,20 @@ public class Int32 extends Type {
    }
 
    /**
-    * Converts the specified string value to an <code>Integer</code> value.
+    * Converts the specified string value to an <code>Float</code> value.
     *
     * @param string
     *    the string to convert, can be <code>null</code>.
     *
     * @return
-    *    the {@link Integer}, or <code>null</code> if
+    *    the {@link Float}, or <code>null</code> if
     *    <code>string == null</code>.
     *
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.
     */
-   public static Integer fromStringForOptional(String string)
+   public static Float fromStringForOptional(String string)
    throws TypeValueException {
 
       if (string == null) {
@@ -86,14 +86,14 @@ public class Int32 extends Type {
       }
 
       try {
-         return Integer.valueOf(string);
+         return Float.valueOf(string);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
    }
 
    /**
-    * Converts the specified <code>Integer</code> to a string.
+    * Converts the specified <code>Float</code> to a string.
     *
     * @param value
     *    the value to convert, can be <code>null</code>.
@@ -102,16 +102,16 @@ public class Int32 extends Type {
     *    the textual representation of the value, or <code>null</code> if and
     *    only if <code>value == null</code>.
     */
-   public static String toString(Integer value) {
+   public static String toString(Float value) {
       if (value == null) {
          return null;
       } else {
-         return toString(value.intValue());
+         return toString(value.floatValue());
       }
    }
 
    /**
-    * Converts the specified <code>int</code> to a string.
+    * Converts the specified <code>float</code> to a string.
     *
     * @param value
     *    the value to convert.
@@ -119,7 +119,7 @@ public class Int32 extends Type {
     * @return
     *    the textual representation of the value, never <code>null</code>.
     */
-   public static String toString(int value) {
+   public static String toString(float value) {
       return String.valueOf(value);
    }
 
@@ -129,16 +129,16 @@ public class Int32 extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Int32</code>.
+    * Constructs a new <code>Float32</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
     */
-   private Int32() {
-      this("int32", Integer.MIN_VALUE, Integer.MAX_VALUE);
+   private Float32() {
+      this("float32", Float.MIN_VALUE, Float.MAX_VALUE);
    }
 
    /**
-    * Constructs a new <code>Int32</code> object (constructor for
+    * Constructs a new <code>Float32</code> object (constructor for
     * subclasses).
     *
     * @param name
@@ -150,8 +150,8 @@ public class Int32 extends Type {
     * @param maximum
     *    the maximum for the value.
     */
-   protected Int32(String name, int minimum, int maximum) {
-      super(name, java.lang.Integer.class);
+   protected Float32(String name, float minimum, float maximum) {
+      super(name, java.lang.Float.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -163,14 +163,14 @@ public class Int32 extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * The minimum value that this Int32 can have.
+    * The minimum value that this Float32 can have.
     */
-   private final int _minimum;
+   private final float _minimum;
 
    /**
-    * The maximum value that this Int32 can have.
+    * The maximum value that this Float32 can have.
     */
-   private final int _maximum;
+   private final float _maximum;
 
    //-------------------------------------------------------------------------
    // Methods
@@ -178,7 +178,7 @@ public class Int32 extends Type {
 
    protected boolean isValidValueImpl(String value) {
       try {
-         int number = Integer.parseInt(value);
+         float number = Float.parseFloat(value);
          if (number < _minimum || number > _maximum) {
             return false;
          }
@@ -189,13 +189,13 @@ public class Int32 extends Type {
    }
 
    protected Object fromStringImpl(String string) {
-      return Integer.valueOf(string);
+      return Float.valueOf(string);
    }
 
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Integer i = (java.lang.Integer) value;
-      return i.toString();
+      java.lang.Float f = (java.lang.Float) value;
+      return f.toString();
    }
 }

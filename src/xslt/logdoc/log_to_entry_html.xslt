@@ -188,6 +188,12 @@
 									<xsl:when test="@type = 'object'">
 										<xsl:text>object</xsl:text>
 									</xsl:when>
+									<xsl:when test="@type = 'float64'">
+										<xsl:text>float64</xsl:text>
+									</xsl:when>
+									<xsl:when test="@type = 'float32'">
+										<xsl:text>float32</xsl:text>
+									</xsl:when>
 									<xsl:when test="@type = 'int64'">
 										<xsl:text>int64</xsl:text>
 									</xsl:when>

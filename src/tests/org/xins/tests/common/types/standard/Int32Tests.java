@@ -6,8 +6,6 @@ import junit.framework.TestSuite;
 
 import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Int32;
-import org.xins.common.types.standard.Properties;
-import org.xins.common.collections.PropertyReader;
 
 
 /**

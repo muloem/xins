@@ -57,6 +57,8 @@ public class SimpleTypesImpl extends SimpleTypes  {
       result.setOutputShort(shortValue);
       result.setOutputInt(request.getInputByte() * 2);
       result.setOutputLong(14L);
+      result.setOutputFloat(28.0F);
+      result.setOutputDouble(16.3);
       result.setOutputText("hello");
       Date.Value outputDate = new Date.Value(2004,6,21);
       result.setOutputDate(outputDate);

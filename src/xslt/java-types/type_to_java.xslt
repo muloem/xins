@@ -48,6 +48,8 @@
 				<xsl:when test="int16">int16</xsl:when>
 				<xsl:when test="int32">int32</xsl:when>
 				<xsl:when test="int64">int64</xsl:when>
+				<xsl:when test="float32">float32</xsl:when>
+				<xsl:when test="float64">float64</xsl:when>
 				<xsl:when test="list">list</xsl:when>
 				<xsl:when test="set">set</xsl:when>
 				<xsl:otherwise>
@@ -66,6 +68,8 @@
 				<xsl:when test="$kind = 'int16'">org.xins.common.types.standard.Int16</xsl:when>
 				<xsl:when test="$kind = 'int32'">org.xins.common.types.standard.Int32</xsl:when>
 				<xsl:when test="$kind = 'int64'">org.xins.common.types.standard.Int64</xsl:when>
+				<xsl:when test="$kind = 'float32'">org.xins.common.types.standard.Float32</xsl:when>
+				<xsl:when test="$kind = 'float64'">org.xins.common.types.standard.Float64</xsl:when>
 				<xsl:when test="$kind = 'list'">org.xins.common.types.List</xsl:when>
 				<xsl:when test="$kind = 'set'">org.xins.common.types.List</xsl:when>
 			</xsl:choose>
@@ -136,7 +140,7 @@ public final class ]]></xsl:text>
 </xsl:text>
 		</xsl:if>
 
-		<xsl:if test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64'">
+		<xsl:if test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
 			<xsl:variable name="optional_object">
 				<xsl:call-template name="javatype_for_type">
 					<xsl:with-param name="project_file"     select="$project_file" />
@@ -330,6 +334,46 @@ public final class ]]></xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>Long.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'float32'">
+				<xsl:choose>
+					<xsl:when test="float32/@min">
+						<xsl:value-of select="float32/@min" />
+						<xsl:text>F</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Float.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="float32/@max">
+						<xsl:value-of select="float32/@max" />
+						<xsl:text>F</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Float.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'float64'">
+				<xsl:choose>
+					<xsl:when test="float64/@min">
+						<xsl:value-of select="float64/@min" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Double.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="float64/@max">
+						<xsl:value-of select="float64/@max" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Double.MAX_VALUE</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>

@@ -19,6 +19,12 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputLong" required="true" type="_int64">
 			<description>An example of input for a long.</description>
 		</param>
+		<param name="inputFloat" required="true" type="_float32">
+			<description>An example of input for a float.</description>
+		</param>
+		<param name="inputDouble" required="false" type="_float64">
+			<description>An example of input for a double.</description>
+		</param>
 		<param name="inputText" required="true" type="_text">
 			<description>An example of input for a text.</description>
 		</param>
@@ -52,6 +58,12 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 		<param name="outputLong" required="true" type="_int64">
 			<description>An example of output for a long.</description>
+		</param>
+		<param name="outputFloat" required="true" type="_float32">
+			<description>An example of output for a float.</description>
+		</param>
+		<param name="outputDouble" required="false" type="_float64">
+			<description>An example of output for a double.</description>
 		</param>
 		<param name="outputText" required="true" type="_text">
 			<description>An example of output for a text.</description>

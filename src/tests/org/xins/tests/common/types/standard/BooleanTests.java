@@ -3,11 +3,9 @@ package org.xins.tests.common.types.standard;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Boolean;
-import org.xins.common.types.standard.Properties;
-import org.xins.common.collections.PropertyReader;
-
 
 /**
  * Tests for class <code>Boolean</code>.

@@ -98,6 +98,8 @@
 				<xsl:apply-templates select="int16"      />
 				<xsl:apply-templates select="int32"      />
 				<xsl:apply-templates select="int64"      />
+				<xsl:apply-templates select="float32"    />
+				<xsl:apply-templates select="float64"    />
 				<xsl:apply-templates select="list"       />
 				<xsl:apply-templates select="set"        />
 
@@ -197,7 +199,7 @@
 		<xsl:text> type.</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="int8 | int16 | int32 | int64">
+	<xsl:template match="int8 | int16 | int32 | int64 | float32 | float64">
 		<p />
 		This is a <em>
 		<xsl:value-of select="name()" />
