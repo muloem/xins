@@ -3,13 +3,9 @@
  */
 package org.xins.common.service;
 
-import java.util.Iterator;
-
 import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.WhislEncoding;
 
 /**
  * Exception thrown to indicate that a <code>ServiceCaller</code> call failed.
