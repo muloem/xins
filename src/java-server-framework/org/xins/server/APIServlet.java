@@ -162,27 +162,22 @@ implements Servlet {
          throw new ServletException(message);
       }
 
+      // Get the name of the API
+      String apiName = api.getName();
+
       // Initialize the API
-      Library.LIFESPAN_LOG.debug("Initializing API instance of class: \"" + apiClassName + "\".");
+      Library.LIFESPAN_LOG.debug("Initializing \"" + apiName + "\" API.");
       Properties settings = ServletUtils.settingsAsProperties(config);
       try {
          api.init(settings);
       } catch (Throwable e) {
-         String message = "Failed to initialize API.";
+         String message = "Failed to initialize \"" + apiName + "\" API.";
          Library.LIFESPAN_LOG.fatal(message, e);
-
-         // TODO: Let the API.init() rollback the initialization self
-         try {
-            api.destroy();
-         } catch (Throwable e2) {
-            Library.LIFESPAN_LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + api.getClass().getName() + ". Ignoring.", e2);
-         }
-
          throw new ServletException(message);
       }
 
-      Library.LIFESPAN_LOG.debug("Initialized \"" + api.getName() + "\" API.");
-
+      // Done!
+      Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
       return api;
    }
 
