@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.66:
   - Added ArrayIterator class.
   - Added FixedArraySet class.
   - Added IndexedMap interface.
+  - Added Doorman class.
+  - Rewrote ExpiryFolder, based on Doorman class.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.65:
