@@ -88,7 +88,13 @@
 		</h1>
 
 		<h2>Details for this entry</h2>
-		<table type="entry">
+		<table class="entry">
+			<tr>
+				<th>Description</th>
+				<td>
+					<xsl:apply-templates select="description" />
+				</td>
+			</tr>
 			<tr>
 				<th>Group</th>
 				<td>
@@ -103,7 +109,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>ID</th>
+				<th>Log entry ID</th>
 				<td>
 					<xsl:value-of select="@id" />
 				</td>
@@ -117,15 +123,20 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Description</th>
+				<th>Log level</th>
 				<td>
-					<xsl:apply-templates select="description" />
+					<xsl:value-of select="@level" />
 				</td>
 			</tr>
 			<tr>
-				<th>Level</th>
+				<th>With exception</th>
 				<td>
-					<xsl:value-of select="@level" />
+					<xsl:choose>
+						<xsl:when test="@exception = 'true'">Yes</xsl:when>
+					</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="(string-length(@exception) = 0) or (@exception = 'false')">No</xsl:when>
+					</xsl:choose>
 				</td>
 			</tr>
 		</table>
