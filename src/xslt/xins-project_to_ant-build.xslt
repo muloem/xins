@@ -141,6 +141,10 @@
 					     location="{$xins_home}/src/dtd/type_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" 
+					     location="{$xins_home}/src/dtd/log_1_0_alpha.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
+					     location="{$xins_home}/src/dtd/translation-bundle_1_0_alpha.dtd" />
 
 					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
 					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
@@ -158,6 +162,8 @@
 					     location="{$xins_home}/src/dtd/environments_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
 					     location="{$xins_home}/src/dtd/log_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" 
+					     location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd" />
 				</xmlcatalog>
 			</target>
 
