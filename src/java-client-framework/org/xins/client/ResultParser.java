@@ -3,20 +3,21 @@
  */
 package org.xins.client;
 
-import java.io.StringReader;
-import java.util.List;
+import java.io.InputStream;
+import java.util.Hashtable;
+import java.util.Properties;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.ProtectedPropertyReader;
-
+import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.service.TargetDescriptor;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
@@ -25,9 +26,11 @@ import org.xins.common.text.ParseException;
  * {@link XINSServiceCaller.Result} object.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 0.203
  */
-public class ResultParser extends Object {
+public class ResultParser {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -41,23 +44,9 @@ public class ResultParser extends Object {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /**
-    * Constructs a new <code>ResultParser</code>.
-    */
-   public ResultParser() {
-      _xmlBuilder = new SAXBuilder();
-   }
-
-
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Parser that takes an XML document and converts it to a JDOM Document.
-    */
-   private final SAXBuilder _xmlBuilder;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -79,16 +68,16 @@ public class ResultParser extends Object {
     * @param duration
     *    the call duration, should be &gt;= 0.
     *
-    * @param xml
-    *    the XML to be parsed, not <code>null</code>.
+    * @param xmlStream
+    *    the input stream of the XML to be parsed, not <code>null</code>.
     *
     * @return
     *    the parsed result of the call, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null
-    *          || target  == null
-    *          || xml     == null
+    *    if <code>request   == null
+    *          || target    == null
+    *          || xmlStream == null
     *          || duration &lt; 0</code>
     *
     * @throws ParseException
@@ -98,22 +87,22 @@ public class ResultParser extends Object {
    public XINSServiceCaller.Result parse(CallRequest      request,
                                          TargetDescriptor target,
                                          long             duration,
-                                         String           xml)
+                                         InputStream      xmlStream)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request,
-                                     "target",  target,
-                                     "xml",     xml);
+      MandatoryArgumentChecker.check("request",   request,
+                                     "target",    target,
+                                     "xmlStream", xmlStream);
       if (duration < 0) {
          throw new IllegalArgumentException("duration (" + duration + ") < 0");
       }
 
-      // Convert the String to a JDOM Document object
-      StringReader reader = new StringReader(xml);
-      Document document;
+      ResultHandler handler = new ResultHandler();
       try {
-         document = _xmlBuilder.build(reader);
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser saxParser = factory.newSAXParser();
+        saxParser.parse(xmlStream, handler);
       } catch (Throwable exception) {
          String detail = exception.getMessage();
          FastStringBuffer buffer = new FastStringBuffer(250);
@@ -128,172 +117,129 @@ public class ResultParser extends Object {
          Log.log_2005(exception, detail);
          throw new ParseException(message);
       } finally {
-         reader.close();
+         //xmlStream.close();
       }
 
-      return parse(request, target, duration, document);
+      return new XINSServiceCaller.Result(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
    }
 
-   /**
-    * Parses the given XML <code>Document</code> to create a
-    * <code>XINSServiceCaller.Result</code> object with the specified
-    * <code>TargetDescriptor</code>.
-    *
-    * @param target
-    *    the {@link TargetDescriptor} that was used to get the XML, cannot be
-    *    <code>null</code>.
-    *
-    * @param request
-    *    the original {@link CallRequest} that was used to perform the call,
-    *    cannot be <code>null</code>.
-    *
-    * @param duration
-    *    the call duration, should be &gt;= 0.
-    *
-    * @param document
-    *    the document to be parsed, not <code>null</code>.
-    *
-    * @return
-    *    the parsed result of the call, not <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>target == null
-    *          || document == null
-    *          || document.</code>{@link Document#getRootElement() getRootElement()}<code> == null</code>
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null || duration &lt; 0</code>.
-    *
-    * @throws ParseException
-    *    if the specified XML document is not a valid XINS API function call
-    *    result.
-    */
-   private XINSServiceCaller.Result parse(CallRequest      request,
-                                          TargetDescriptor target,
-                                          long             duration,
-                                          Document         document)
-   throws NullPointerException, ParseException {
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
 
-      Element element = document.getRootElement();
+   class ResultHandler extends DefaultHandler {
 
-      // Check that the root element is <result/>
-      if ("result".equals(element.getName()) == false) {
-         String message = "The returned XML is invalid. The type of the root element is \"" + element.getName() + "\" instead of \"result\".";
-         Log.log_2006(element.getName());
-         throw new ParseException(message);
-      }
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
 
-      String         code        = parseResultCode(element);
-      PropertyReader parameters  = parseParameters(element);
-      Element        dataElement = element.getChild("data");
+      //-------------------------------------------------------------------------
+      // Class functions
+      //-------------------------------------------------------------------------
 
-      return new XINSServiceCaller.Result(request, target, duration, code, parameters, dataElement);
-   }
+      //-------------------------------------------------------------------------
+      // Constructors
+      //-------------------------------------------------------------------------
 
-   /**
-    * Parses the result code in the specified result element.
-    *
-    * @param element
-    *    the <code>&lt;result/&gt;</code> element, not <code>null</code>.
-    *
-    * @return
-    *    the result code, or <code>null</code> if there is none.
-    *
-    * @throws NullPointerException
-    *    if <code>element == null</code>.
-    */
-   private static String parseResultCode(Element element)
-   throws NullPointerException {
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
 
-      // First get 'errorcode' attribute. If that attribute is not set, then
-      // fallback and get the 'code' attribute.
-      String code = element.getAttributeValue("errorcode");
-      if (code == null || code.length() < 1) {
-         code = element.getAttributeValue("code");
-      }
+      private String _errorCode;
 
-      // If neither one is set then return null
-      if (code == null || code.length() < 1) {
-         return null;
+      private Properties _parameters;
+      private String _parameterKey;
+      private FastStringBuffer _pcdata;
 
-      // Otherwise indeed return the code
-      } else {
-         return code;
-      }
-   }
+      //private DataElement _dataElement;
+      private Hashtable _elements;
+      private int _level = -1;
 
-   /**
-    * Parses the parameters in the specified result element.
-    *
-    * @param element
-    *    the <code>result</code> element to be parsed, not <code>null</code>.
-    *
-    * @return
-    *    the parameters, or <code>null</code> if there are none.
-    *
-    * @throws NullPointerException
-    *    if <code>element == null</code>.
-    *
-    * @throws ParseException
-    *    if the specified XML is not a valid part of a XINS API function call
-    *    result.
-    */
-   private static PropertyReader parseParameters(Element element)
-   throws NullPointerException, ParseException {
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
 
-      final String ELEMENT_NAME  = "param";
-      final String KEY_ATTRIBUTE = "name";
-      final Object SECRET_KEY    = new Object();
+      // todo throw the parse exception
+      public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+         if (_level >= 0) {
+            _level++;
+            DataElement element = new DataElement();
 
-      // Get a list of all sub-elements
-      List subElements = element.getChildren(ELEMENT_NAME);
-      int count = (subElements == null)
-                ? 0
-                : subElements.size();
-
-      // Loop through all sub-elements
-      ProtectedPropertyReader parameters = null;
-      for (int i = 0; i < count; i++) {
-
-         // Get the current subelement
-         Element subElement = (Element) subElements.get(i);
-
-         // Ignore empty elements in the list
-         if (subElement == null) {
-            continue;
-         }
-
-         // Get the key and the value
-         String key   = subElement.getAttributeValue(KEY_ATTRIBUTE);
-         String value = subElement.getText();
-
-         // If key and/or value is empty, then ignore the whole thing
-         boolean noKey   = (key   == null || key.length()   < 1);
-         boolean noValue = (value == null || value.length() < 1);
-         if (noKey && noValue) {
-            Log.log_2001(ELEMENT_NAME);
-         } else if (noKey) {
-            Log.log_2002(ELEMENT_NAME, KEY_ATTRIBUTE);
-         } else if (noValue) {
-            Log.log_2003(ELEMENT_NAME, KEY_ATTRIBUTE, key);
-         } else {
-
-            Log.log_2004(ELEMENT_NAME, KEY_ATTRIBUTE, key, value);
-
-            // Lazily initialize the parameter set
-            if (parameters == null) {
-               parameters = new ProtectedPropertyReader(SECRET_KEY);
-
-            // Only one value per key allowed
-            } else if (parameters.get(key) != null) {
-               throw new ParseException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + key + "\" attribute.");
+            for (int i = 0; i < attributes.getLength(); i++) {
+               String key = attributes.getQName(i);
+               String value = attributes.getValue(i);
+               element.addAttribute(key, value);
             }
-
-            // Store the mapping
-            parameters.set(SECRET_KEY, key, value);
+            _elements.put(new Integer(_level), element);
+         } else if (qName.equals("result")) {
+            _errorCode = attributes.getValue("errorcode");
+            if (_errorCode == null) {
+               _errorCode = attributes.getValue("code");
+            }
+         } else if (qName.equals("param")) {
+            _parameterKey = attributes.getValue("name");
+            _pcdata = new FastStringBuffer(20);
+         } else if (qName.equals("data")) {
+            _elements = new Hashtable();
+            _elements.put(new Integer(0), new DataElement());
+            _level = 0;
+         } else {
+            throw new SAXException("Starting to parse an unknown element \"" + qName + "\".");
          }
       }
 
-      return parameters;
+      public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+         if (_level > 0) {
+            DataElement child = (DataElement)_elements.get(new Integer(_level));
+            if (_pcdata != null) {
+               child.setPCData(_pcdata.toString());
+            }
+            _level--;
+            DataElement parent = (DataElement)_elements.get(new Integer(_level));
+            parent.addChild(child);
+         } if (qName.equals("param")) {
+            final String ELEMENT_NAME  = "param";
+            final String KEY_ATTRIBUTE = "name";
+            String value = _pcdata.toString();
+            boolean noKey   = (_parameterKey == null || _parameterKey.length() < 1);
+            boolean noValue = (value == null || value.length() < 1);
+            if (noKey && noValue) {
+               Log.log_2001(ELEMENT_NAME);
+            } else if (noKey) {
+               Log.log_2002(ELEMENT_NAME, KEY_ATTRIBUTE);
+            } else if (noValue) {
+               Log.log_2003(ELEMENT_NAME, KEY_ATTRIBUTE, _parameterKey);
+            } else {
+
+               Log.log_2004(ELEMENT_NAME, "name", _parameterKey, value);
+               if (_parameters.get(_parameterKey) != null) {
+                  throw new SAXException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + _parameterKey + "\" attribute.");
+               }
+               _parameters.put(_parameterKey, value);
+            }
+            _parameterKey = null;
+            _pcdata = null;
+         } else if (!qName.equals("result")) {
+            throw new SAXException("Ending to parse an unknown element \"" + qName + "\".");
+         }
+      }
+
+      public void characters(char[] ch, int start, int length) {
+         if (_pcdata != null) {
+            _pcdata.append(ch, start, length);
+         }
+      }
+
+      public String getErrorCode() {
+         return _errorCode;
+      }
+
+      public PropertyReader getParameters() {
+         return new PropertiesPropertyReader(_parameters);
+      }
+
+      public DataElement getDataElement() {
+         return (DataElement) _elements.get(new Integer(0));
+      }
    }
 }

@@ -3,8 +3,6 @@
  */
 package org.xins.client;
 
-import org.jdom.Element;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.TargetDescriptor;
@@ -166,18 +164,14 @@ public final class UnsuccessfulCallException extends CallException {
    }
 
    /**
-    * Returns the optional extra data. The data is an XML {@link Element}, or
-    * <code>null</code>.
+    * Returns the optional extra data.
     *
     * @return
-    *    the extra data as an XML {@link Element}, can be <code>null</code>;
-    *    if it is not <code>null</code>, then
-    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link org.jdom.Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
+    *    the extra data as a {@link DataElement}, can be <code>null</code>;
     *
     * @since XINS 0.136
     */
-   public Element getDataElement() {
-      // TODO: Do not return a JDOM Element
+   public DataElement getDataElement() {
       return _result.getDataElement();
    }
 }

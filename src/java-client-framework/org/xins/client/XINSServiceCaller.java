@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import java.io.InputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Iterator;
@@ -15,9 +16,6 @@ import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.apache.log4j.NDC;
-
-import org.jdom.Element;
-import org.jdom.Namespace;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
@@ -226,7 +224,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                       CallRequest      request)
    throws IllegalArgumentException,
           CallException {
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("target", target, "request", request);
 
@@ -293,7 +291,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Read response body (mandatory operation)
-      String body = method.getResponseBodyAsString();
+      //SAX String body = method.getResponseBodyAsString();
+      InputStream xmlStream = null;
+      try {
+         xmlStream = method.getResponseBodyAsStream();
+      } catch (IOException ioe) {
+         // will be catch later
+      }
 
       // Release the connection
       method.releaseConnection();
@@ -363,8 +367,8 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
       }
 
-      // If the body is null, then there was an error
-      if (body == null) {
+      // If the stream is null, then there was an error
+      if (xmlStream == null) {
          Log.log_2009(duration, url, functionName, serParams);
          throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
@@ -372,7 +376,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Parse the result
       Result result;
       try {
-         result = _parser.parse(request, target, duration, body);
+         result = _parser.parse(request, target, duration, xmlStream);
       } catch (ParseException parseException) {
          throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
       }
@@ -546,26 +550,13 @@ public final class XINSServiceCaller extends ServiceCaller {
                     long             duration,
                     String           code,
                     PropertyReader   parameters,
-                    Element          dataElement)
+                    DataElement      dataElement)
       throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("request", request, "target", target);
          if (duration < 0) {
             throw new IllegalArgumentException("duration (" + duration + ") < 0");
-         }
-
-         if (dataElement != null) {
-            String    dataElementName = dataElement.getName();
-            Namespace ns              = dataElement.getNamespace();
-            if (!"data".equals(dataElement.getName())) {
-               throw new IllegalArgumentException("dataElement.getName() returned \"" + dataElementName + "\", instead of \"data\".");
-            } else if (!Namespace.NO_NAMESPACE.equals(ns)) {
-               throw new IllegalArgumentException("dataElement.getNamespace() returned a namespace with URI \"" + ns.getURI() + "\", instead of no namespace.");
-            }
-
-            // Clone the data element if there is one
-            dataElement = (Element) dataElement.clone();
          }
 
          // Store all the information
@@ -614,7 +605,7 @@ public final class XINSServiceCaller extends ServiceCaller {
        * The data element. This field is <code>null</code> if there is no data
        * element.
        */
-      private final Element _dataElement;
+      private final DataElement _dataElement;
 
 
       //----------------------------------------------------------------------
@@ -735,24 +726,15 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       /**
-       * Returns the optional extra data. The data is an XML {@link Element}, or
+       * Returns the optional extra data. The data is an XML {@link DataElement}, or
        * <code>null</code>.
        *
        * @return
        *    the extra data as an XML {@link Element}, can be <code>null</code>;
-       *    if it is not <code>null</code>, then
-       *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
        */
-      public Element getDataElement() {
+      public DataElement getDataElement() {
 
-         // If there is no data element, return null
-         if (_dataElement == null) {
-            return null;
-
-         // Otherwise return a clone of the data element
-         } else {
-            return (Element) _dataElement.clone();
-         }
+         return _dataElement;
       }
    }
 

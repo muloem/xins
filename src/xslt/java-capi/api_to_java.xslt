@@ -222,7 +222,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:when test="output/data/element">
-					<xsl:text>org.jdom.Element</xsl:text>
+					<xsl:text>org.xins.client.DataElement</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>void</xsl:otherwise>
 			</xsl:choose>
@@ -319,7 +319,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text><![CDATA[
     *
     * @return
-    *    a {@link org.jdom.Element#clone() clone} of the returned data
+    *    a {@link org.xins.client.DataElement} of the returned data
     *    element, or <code>null</code> if no data element is returned.]]></xsl:text>
 			</xsl:when>
 		</xsl:choose>
@@ -423,12 +423,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
-      org.jdom.Element element = result.getDataElement();
-      if (element != null) {
-         return (org.jdom.Element) element.clone();
-      } else {
-         return null;
-      }</xsl:text>
+      return result.getDataElement();</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text>

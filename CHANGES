@@ -23,6 +23,10 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Overhaul of logdoc entries.
   - Explicitly defined duration in CallException as the call duration.
   - Changed UnacceptableCallResultException to extend CallException again.
+  - Removed reference to JDom, the org.jdom.Element is replaced with
+    org.xins.client.DataElement.
+    Note: this change may break your code compatibility if you use a CAPI API.
+  - Replaced the Dom parser with a SAX parser to parse the XML.
 
 * Logdoc:
   - Changed the interface of class AbstractLogdocSerializable (introduced in

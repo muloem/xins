@@ -75,7 +75,7 @@ public final class ]]></xsl:text>
     * The result data element. This field will be <code>null</code> if no data
     * element was returned.
     */
-   private final org.jdom.Element _dataElement;]]></xsl:text>
+   private final org.xins.client.DataElement _dataElement;]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
 
@@ -90,18 +90,11 @@ public final class ]]></xsl:text>
     * Gets the data element, if any. If there is no data element, then
     * <code>null</code> is returned.
     *
-    * <p>This method will always {@link org.jdom.Element#clone() clone}
-    * the underlying element and return the clone.
-    *
     * @return
     *    the data element, or <code>null</code> if there is none.
     */
-   public org.jdom.Element getDataElement() {
-      if (_dataElement != null) {
-         return (org.jdom.Element) _dataElement.clone();
-      } else {
-         return null;
-      }
+   public org.xins.client.DataElement getDataElement() {
+      return _dataElement;
    }]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
@@ -148,8 +141,7 @@ public final class ]]></xsl:text>
 		<xsl:if test="output/data/element">
 			<xsl:text>
 
-      org.jdom.Element data = result.getDataElement();
-      _dataElement = data == null ? null : (org.jdom.Element) data.clone();</xsl:text>
+      _dataElement = result.getDataElement();</xsl:text>
 		</xsl:if>
 		<xsl:if test="output/param">
 			<xsl:text>
