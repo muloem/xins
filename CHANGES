@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.20:
 
 * Cleaned up fallback initialization of Log4J.
 
+* Class APIServlet directly implements Servlet interface, no longer derives
+  from HttpServlet class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.19:
 
