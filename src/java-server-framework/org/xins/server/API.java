@@ -6,6 +6,7 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -456,6 +457,16 @@ implements DefaultReturnCodes {
    private final void doGetSettings(CallContext context)
    throws IOException {
       context.startTag("init-settings");
+      Enumeration names = _initSettings.propertyNames();
+      while (names.hasMoreElements()) {
+         String key   = (String) names.nextElement();
+         String value = _initSettings.getProperty(key);
+
+         context.startTag("param");
+         context.attribute("name", key);
+         context.pcdata(value);
+         context.endTag();
+      }
       context.endTag();
    }
 }
