@@ -65,6 +65,16 @@ implements Servlet {
    private static final State DISPOSED = new State("DISPOSED");
 
    /**
+    * The expected version of the Java Servlet Specification, major part.
+    */
+   private static final int EXPECTED_SERVLET_VERSION_MAJOR = 2;
+
+   /**
+    * The expected version of the Java Servlet Specification, minor part.
+    */
+   private static final int EXPECTED_SERVLET_VERSION_MINOR = 3;
+
+   /**
     * The name of the system property that specifies the location of the
     * configuration file.
     */
@@ -99,6 +109,9 @@ implements Servlet {
     * @param config
     *    the servlet configuration, cannot be <code>null</code>.
     *
+    * @return
+    *    the constructed {@link API} instance, never <code>null</code>.
+    *
     * @throws ServletException
     *    if an API instance could not be initialized.
     */
@@ -110,7 +123,7 @@ implements Servlet {
       // Determine the API class
       String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
       if (apiClassName == null || apiClassName.trim().length() < 1) {
-         final String message = "Invalid application package. API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
+         String message = "Invalid application package. API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
          Library.LIFESPAN_LOG.fatal(message);
          throw new ServletException(message);
       }
@@ -309,13 +322,11 @@ implements Servlet {
             throw new ServletException(message);
          }
 
-         // Check the implemented vs expected Java Servlet API version
-         final int expectedMajor = 2;
-         final int expectedMinor = 3;
+         // Check the expected vs implemented Java Servlet API version
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
-         if (major != expectedMajor || minor != expectedMinor) {
-            Library.LIFESPAN_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + expectedMajor + '.' + expectedMajor + ". The application may or may not work correctly.");
+         if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
+            Library.LIFESPAN_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
          }
 
          // Set the state
@@ -341,8 +352,8 @@ implements Servlet {
             // Watch the configuration file
             if (_configFile != null) {
                FileWatcher.Listener listener = new ConfigurationFileListener();
-               final int delay = 10; // TODO: Read from config file
-               FileWatcher watcher = new FileWatcher(_configFile, 10, listener);
+               int interval = 10; // TODO: Read from config file
+               FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
                watcher.start();
                Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + delay + " seconds.");
             }
@@ -560,6 +571,12 @@ implements Servlet {
          return _name;
       }
 
+      /**
+       * Returns a textual representation of this object.
+       *
+       * @return
+       *    the name of this state, never <code>null</code>.
+       */
       public String toString() {
          return _name;
       }
