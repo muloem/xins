@@ -46,9 +46,7 @@ implements DefaultResultCodes {
 
    private static final int UNINITIALIZED = 0;
    private static final int INITIALIZING = 1;
-   private static final int READY = 2;
-   private static final int DISPOSING = 3;
-   private static final int DISPOSED = 4;
+   private static final int INITIALIZED = 2;
 
 
    //-------------------------------------------------------------------------
@@ -63,6 +61,7 @@ implements DefaultResultCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
+      _stateLock         = new Object();
       _startupTimestamp  = System.currentTimeMillis();
       _instances         = new ArrayList();
       _sessionsByID      = new HashMap();
@@ -82,6 +81,11 @@ implements DefaultResultCodes {
     * The current state.
     */
    private int _state;
+
+   /**
+    * Lock object for the current state.
+    */
+   private final Object _stateLock;
 
    /**
     * List of registered instances. See {@link #addInstance(Object)}.
@@ -223,8 +227,10 @@ implements DefaultResultCodes {
       _sessionIDGenerator = _sessionIDType.getGenerator();
 
       // Let the subclass perform initialization
+      boolean succeeded = false;
       try {
          initImpl(properties);
+         succeeded = true;
 
       // Set the state
       } finally {
