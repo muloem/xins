@@ -686,7 +686,7 @@ implements DefaultResultCodes {
       // Short-circuit if we are shutting down
       if (_shutDown) {
          // TODO: Add message
-         return new BasicCallResult("InternalError", null, null);
+         return new BasicCallResult("_InternalError", null, null);
       }
 
       // Get the function object

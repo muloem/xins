@@ -262,7 +262,7 @@ implements DefaultResultCodes {
             parameters.set("_exception.stacktrace", stackTrace);
          }
 
-         result = new BasicCallResult("InternalError", parameters, null);
+         result = new BasicCallResult("_InternalError", parameters, null);
       }
 
       // Update function statistics
@@ -310,14 +310,16 @@ implements DefaultResultCodes {
 
       // TODO: Accept ResultCode
 
-      // TODO: If the Logging is moved somewhere else the
-      // The method invoking this method (performedCall) can directly
-      // invoke recordCall and this method can be removed.
+      // TODO: If the Logging is moved somewhere else then
+      //       the method invoking this method (performedCall) can directly
+      //       invoke recordCall and this method can be removed.
+
       long duration = _statistics.recordCall(start, success);
 
       // Call succeeded
       if (success) {
          Log.log_1514(_name, callID, duration);
+
       // Call failed
       } else {
          Log.log_1516(_name, callID, duration, code);
