@@ -707,24 +707,6 @@
 		<delete file="build/${package-basename}.tar" />
 	</target>
 
-	<target name="sfaddrelease" depends="java-common" description="Adds a release to the SourceForge package [BROKEN]">
-		<taskdef name="sfaddrelease" classname="org.xins.common.ant.sourceforge.AddReleaseTask">
-			<classpath>
-				<fileset dir="build"   includes="xins-common.jar"                        />
-				<fileset dir="lib"     includes="commons-net.jar commons-httpclient.jar" />
-			</classpath>
-		</taskdef>
-
-		<sfaddrelease
-		file="build/${name}-${version}.tgz"
-		user="${sf.user}"
-		password="${sf.password}"
-		group="${sf.group}"
-		package="${sf.package}"
-		release="${version}"
-		keystore="src/certificates/sourceforge.net.cert" />
-	</target>
-
 	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<scp file="build/${package-basename}.tgz"
