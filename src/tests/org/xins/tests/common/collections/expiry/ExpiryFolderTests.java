@@ -204,7 +204,7 @@ public class ExpiryFolderTests extends TestCase {
       assertEquals(0, folder.size());
       folder.put(KEY_2, VAL_2);
       assertEquals(1, folder.size());
-      final long WAIT_TIME = DURATION * 5L;
+      final long WAIT_TIME = DURATION * 2L;
       long before = System.currentTimeMillis();
       Thread.sleep(WAIT_TIME);
       assertNull(folder.get(KEY_2));
