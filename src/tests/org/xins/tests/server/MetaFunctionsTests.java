@@ -88,8 +88,8 @@ public class MetaFunctionsTests extends TestCase {
       File warFile = new File(System.getProperty("user.dir"), warLocation);
       
       // Start the web server
+      //System.out.println("Web server set up.");
       _httpServer = new HTTPServletHandler(warFile);
-      //System.err.println("Web server set up.");
    }
 
    public void testGetVersion() throws Throwable {

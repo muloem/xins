@@ -575,6 +575,7 @@ implements DefaultResultCodes {
             Log.log_1607(exception, _name, className);
          }
       }
+      _manageableObjects.clear();
 
       // Deinitialize functions
       count = _functionList.size();

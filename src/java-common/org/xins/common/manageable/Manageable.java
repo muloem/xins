@@ -390,8 +390,10 @@ public abstract class Manageable extends Object {
       // Delegate to subclass
       boolean done = false;
       try {
+         System.out.println("Deinitializing " + getClass().getName());
          deinitImpl();
          done = true;
+         System.out.println("Deinitialized " + getClass().getName());
 
       // Catch and wrap all caught exceptions
       } catch (Throwable exception) {

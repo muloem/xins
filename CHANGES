@@ -4,6 +4,8 @@ CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
 * XINS/Java Server Framework:
   - Logging warning if the current XINS version is not a production release.
   - Added test for the _GetStatistics meta function.
+  - Clear the list of manageable object when deinitializing the API as
+    the manageable object are added during the initialisation.
 
 * XINS/Java Client Framework:
   - Fixed parsing problem of when a result had a data section.
