@@ -67,7 +67,7 @@ public class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text> extends </xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[  {
+		<xsl:text><![CDATA[ {
 
    //-------------------------------------------------------------------------
    // Class fields

@@ -84,6 +84,7 @@ This build file was generated with XINS </xsl:text>
 - specdocs            Generates all specification docs.
 - wars                Generates all WAR files.
 - capis               Generates all CAPI JAR files.
+- javadoc-capis       Generates all CAPI Javadoc.
 
 The following commands assist in authoring specifications:
 - create-api          Generates a new api specification file.
@@ -1146,6 +1147,16 @@ APIs in this project are:
 					<xsl:for-each select="api">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>client-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<target name="javadoc-capis" description="Generates all CAPI Javadoc">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>javadoc-capi-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				</xsl:attribute>

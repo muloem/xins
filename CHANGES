@@ -67,6 +67,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
   - Slightly improved output of 'help' target.
+  - Added target 'javadoc-capis'.
 
 * Generic XSLT files:
   - Added 'javaclass_for_javatype' template to types.xslt. For a Java primary

@@ -163,7 +163,7 @@ public class FunctionResult extends Object {
     *    string containing the value of the parameter element,
     *    not <code>null</code>.
     */
-   protected String getParameter(String name) {
+   public String getParameter(String name) {
       return _parameters.get(name);
    }
 
