@@ -11,17 +11,21 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.NDC;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
-import org.xins.logdoc.NoSuchTranslationBundleException;
+
+import org.xins.logdoc.LocaleNotSupportedException;
+import org.xins.logdoc.LogCentral;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.InvalidPropertyValueException;
@@ -715,9 +719,9 @@ extends HttpServlet {
          if (currentLocale.equals(newLocale) == false) {
             Log.log_3006(currentLocale, newLocale);
             try {
-               Log.setTranslationBundle(newLocale);
+               LogCentral.setLocale(newLocale);
                Log.log_3007(currentLocale, newLocale);
-            } catch (NoSuchTranslationBundleException exception) {
+            } catch (LocaleNotSupportedException exception) {
                Log.log_3008(currentLocale, newLocale);
             }
          }
