@@ -339,7 +339,7 @@ public final class API extends Object {
 						<xsl:value-of select="$returnType" />
 						<xsl:text>(result);
       } else {
-         throw new InvalidCallResultException(result);
+         throw new UnsuccessfulCallException(result);
       }</xsl:text>
 					</xsl:when>
 				</xsl:choose>
