@@ -7,6 +7,7 @@
 -->
 
 <messages>
+	<message entry="0">APIServlet object wordt geconstrueerd.</message>
 	<message entry="100">XINS/Java Server Framework wordt opgestart.</message>
 	<message entry="101">XINS/Java Server Framework kan niet opgestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</message>
 	<message entry="102">XINS/Java Server Framework kan niet opgestart worden, omdat applicatie server zich onverwacht gedraagt. Reden: <value-of-param name="detail" /></message>

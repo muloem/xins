@@ -11,6 +11,9 @@
 	<messageset id="en_US" />
 	<messageset id="nl_NL" />
 
+	<entry id="0" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>APIServlet object is being constructed.</description>
+	</entry>
 	<entry id="100" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrapping XINS/Java Server Framework.</description>
 	</entry>
