@@ -25,6 +25,9 @@ public class FunctionResult {
 
    /**
     * Creates a new <code>FunctionResult</code> instance.
+    *
+    * @param code
+    *    the error code, can be <code>null</code>.
     */
    public FunctionResult(String code) {
       _builder = new CallResultBuilder();
