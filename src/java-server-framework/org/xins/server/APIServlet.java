@@ -208,6 +208,8 @@ implements Servlet {
          }
       }
 
+      // TODO: Only set the content type to XML if there is no uncaught exception
+
       // Set the content output type to XML
       response.setContentType("text/xml");
 
