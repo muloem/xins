@@ -49,7 +49,8 @@ XINS/JAVA SERVER FRAMEWORK
 * Create an apart Statistics object that would contain the statistics and
   the methods to update them.
 * Stop runtime configuration file watch thread when the servlet is disposed.
-* Access control rules: Make default behaviour to deny requests.
+* Access control rules: Make default behaviour to deny requests. We should
+  then be able to remove log message 4033.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
