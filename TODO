@@ -40,7 +40,6 @@ XINS/JAVA SERVER FRAMEWORK
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
 * Generated Javadoc should include package-private and private members.
-* Consider making ACL-related classes package-private.
 * Log an INFO message if some runtime properties are unused.
 * Implement a _ResetStatistics function.
 * Implement a _DumpStatistics function that writes the statistics in a comma
@@ -50,6 +49,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Create an apart Statistics object that would contain the statistics and
   the methods to update them.
 * Stop runtime configuration file watch thread when the servlet is disposed.
+* Access control rules: Make default behaviour to deny requests.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
