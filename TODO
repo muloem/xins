@@ -79,8 +79,6 @@ MISCELLANEOUS
 
 * The standard result codes should be documented online.
 * A pattern test script should be provided on http://xins.sourceforge.net/.
-* Distribute only a single package, the current xins-VERSION-bin.tar.gz
-  package. Rename it to xins-VERSION.tar.gz.
 * Add a SourceForgeUpload task to smoothens the release process by uploading
   the distribution file(s) to ftp://upload.sourceforge.net/incoming/, then
   create a release on the SourceForge site, then add the corresponding file,
