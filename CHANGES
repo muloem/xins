@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.143:
+
+* XINS/Java Client Framework:
+  - Changed log messages in ActualFunctionCaller constructor.
+  - Implemented toString() in ActualFunctionCaller.
+  - Changed CallTargetGroup to retry not only if the call failed, but also if
+    the result code was DisabledFunction.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.142:
 
 * Generation of specification documentation:
