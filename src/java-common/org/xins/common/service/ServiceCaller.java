@@ -79,8 +79,8 @@ public abstract class ServiceCaller extends Object {
    }
 
    /**
-    * Performs a call using the specified subject. Target
-    * {@link TargetDescriptor descriptors} will be picked and passed
+    * Performs a call using the specified subject.
+    * {@link TargetDescriptor Target descriptors} will be picked and passed
     * to {@link #doCallImpl(TargetDescriptor,CallRequest)} until there is one
     * that succeeds, as long as fail-over can be done (according to
     * {@link #shouldFailOver(CallRequest,Throwable)}).
@@ -235,28 +235,36 @@ public abstract class ServiceCaller extends Object {
    /**
     * Calls the specified target using the specified subject. This method must
     * be implemented by subclasses. It is called as soon as a target is
-    * selected to be called. If the call fails, then an exception should be
-    * thrown. If the call succeeds, then the call result should be returned
-    * from this method.
+    * selected to be called. If the call fails, then a {@link CallException}
+    * should be thrown. If the call succeeds, then the call result should be
+    * returned from this method.
     *
     * @param target
     *    the target to call, cannot be <code>null</code>.
     *
-    * @param subject
-    *    the subject passed, could possibly be <code>null</code>.
+    * @param request
+    *    the call request to be executed, cannot be <code>null</code>.
     *
     * @return
     *    the result, if and only if the call succeeded, could be
     *    <code>null</code>.
     *
-    * @throws Throwable
+    * @throws ClassCastException
+    *    if the specified <code>request</code> object is not <code>null</code>
+    *    and not an instance of an expected subclass of class
+    *    {@link CallRequest}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || request == null</code>.
+    *
+    * @throws CallException
     *    if the call to the specified target failed.
     *
     * @since XINS 0.207
     */
    protected abstract Object doCallImpl(TargetDescriptor target,
                                         CallRequest      request)
-   throws Throwable;
+   throws ClassCastException, IllegalArgumentException, CallException;
 
    /**
     * Runs the specified task. If the task does not finish within the total
