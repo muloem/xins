@@ -3,6 +3,7 @@
  */
 package org.xins.util.sd;
 
+import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 
 /**
