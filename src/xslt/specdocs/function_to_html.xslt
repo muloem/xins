@@ -237,14 +237,13 @@
 	</xsl:template>
 
 	<xsl:template name="additional-constraints">
-		<xsl:if test="param-combo or param/dependson">
+		<xsl:if test="param-combo">
 			<h4>Additional constraints</h4>
 			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will result an unsuccessful result with code </xsl:text>
 			<em>InvalidParameters</em>
 			<xsl:text>.</xsl:text>
 			<ul>
 				<xsl:apply-templates select="param-combo" />
-				<xsl:apply-templates select="param/dependson" />
 			</ul>
 		</xsl:if>
 	</xsl:template>
