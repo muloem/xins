@@ -4,6 +4,8 @@ CHANGES INTRODUCED IN XINS 0.133:
 * Generated build file:
   - Printing timestamp after WAR creation.
 
+* Slightly improved urlencode.xslt. Added '^' symbol.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.132:
 
