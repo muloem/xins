@@ -31,6 +31,8 @@
 		<xsl:text><![CDATA[
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import org.xins.client.CallResult;
 import org.xins.client.CallResultParser;
 import org.xins.client.FunctionCaller;
@@ -153,10 +155,40 @@ public final class API extends Object {
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				<xsl:text>)
-   throws IOException, InvalidCallResultException, UnsuccessfulCallException {
+   throws IOException, InvalidCallResultException, UnsuccessfulCallException {</xsl:text>
+				<xsl:if test="input/param">
+					<xsl:text>
+      Map params = new HashMap();</xsl:text>
+					<xsl:for-each select="input/param">
+						<xsl:text>
+      params.put("</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>", </xsl:text>
+						<xsl:choose> 
+							<xsl:when test="@type = 'boolean'">
+								<xsl:value-of select="@name" />
+								<xsl:text> ? "true" : "false"</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name" />
+							</xsl:otherwise>
+						</xsl:choose> 
+						<xsl:text>);</xsl:text>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:text>
       CallResult result = _functionCaller.call("</xsl:text>
 				<xsl:value-of select="$functionName" />
-				<xsl:text>", null); // TODO: Pass parameters if any
+				<xsl:text>", </xsl:text>
+				<xsl:choose>
+					<xsl:when test="input/param">
+						<xsl:text>params</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>null</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>);
       return result;
    }</xsl:text>
 			</xsl:for-each>
