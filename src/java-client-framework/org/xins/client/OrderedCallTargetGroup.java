@@ -54,8 +54,8 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
    //-------------------------------------------------------------------------
 
    CallResult callImpl(String sessionID,
-                                String functionName,
-                                Map    parameters)
+                       String functionName,
+                       Map    parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
       return null; // TODO
    }
