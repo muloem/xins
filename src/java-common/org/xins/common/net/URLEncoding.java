@@ -24,11 +24,34 @@ public final class URLEncoding extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The character zero (<code>'0'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_ZERO = (int) '0';
+
+   /**
+    * The character nine (<code>'9'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_NINE = (int) '9';
+
+   /**
+    * The character lowercase A (<code>'a'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_LOWER_A = (int) 'a';
+
+   /**
+    * The character lowercase F (<code>'f'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_LOWER_F = (int) 'f';
+
+   /**
+    * The character uppercase A (<code>'A'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_UPPER_A = (int) 'A';
+
+   /**
+    * The character uppercase F (<code>'F'</code>) as an <code>int</code>.
+    */
    private static final int CHAR_UPPER_F = (int) 'F';
 
    /**
