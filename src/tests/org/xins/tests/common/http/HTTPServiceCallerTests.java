@@ -38,6 +38,11 @@ public class HTTPServiceCallerTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
+   private final static int CONN_TO = 5000;
+   private final static int SOCKET_TO = 3000;
+   private final static int TOTAL_TO = 60000;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -88,10 +93,8 @@ public class HTTPServiceCallerTests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void testW3URL() throws Exception {
-      final int timeOut = 10000;
-
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
-      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/TR/2004/REC-xml-20040204/", timeOut);
+      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/TR/2004/REC-xml-20040204/", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
@@ -104,14 +107,13 @@ public class HTTPServiceCallerTests extends TestCase {
    }
 
    public void testPostParameters() throws Exception {
-      final int timeOut = 60000;
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
       parameters.set("string", "Janwillem");
       parameters.set("submit", "submit");
       // XXX GET method doesn't work
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", timeOut);
+      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
@@ -122,13 +124,12 @@ public class HTTPServiceCallerTests extends TestCase {
    }
 
    public void testGetParameters() throws Exception {
-      final int timeOut = 60000;
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
       parameters.set("string", "Janwillem");
       parameters.set("submit", "submit");
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", timeOut);
+      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
@@ -139,11 +140,10 @@ public class HTTPServiceCallerTests extends TestCase {
    }
 
    public void testWrongURL() throws Exception {
-      final int timeOut = 60000;
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("hello", "world");
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/nOnExIsTeNt.html", timeOut);
+      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/nOnExIsTeNt.html", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
 
       HTTPCallResult result = caller.call(request);
@@ -152,10 +152,9 @@ public class HTTPServiceCallerTests extends TestCase {
    }
 
    public void testFailOverGet() throws Exception {
-      final int timeOut = 60000;
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
-      TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", timeOut);
-      TargetDescriptor succeededTarget = new TargetDescriptor("http://www.w3.org/StyleSheets/TR/W3C-REC.css", timeOut);
+      TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", TOTAL_TO, CONN_TO, SOCKET_TO);
+      TargetDescriptor succeededTarget = new TargetDescriptor("http://www.w3.org/StyleSheets/TR/W3C-REC.css", TOTAL_TO, CONN_TO, SOCKET_TO);
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
@@ -169,10 +168,9 @@ public class HTTPServiceCallerTests extends TestCase {
    }
 
    public void testFailOverPost() throws Exception {
-      final int timeOut = 60000;
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, null, true, null);
-      TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", timeOut);
-      TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", timeOut);
+      TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", TOTAL_TO, CONN_TO, SOCKET_TO);
+      TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", TOTAL_TO, CONN_TO, SOCKET_TO);
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
