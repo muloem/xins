@@ -217,8 +217,10 @@ public class APIImpl extends API {
 </xsl:text>
 	<xsl:if test="instance">
 		<xsl:text>
-   protected void bootstrapImpl(org.xins.util.collections.PropertyReader buildSettings)
-   throws Throwable {</xsl:text>
+   protected void bootstrapImpl2(org.xins.util.collections.PropertyReader properties)
+   throws org.xins.util.manageable.MissingRequiredPropertyException,
+          org.xins.util.manageable.InvalidPropertyValueException,
+          org.xins.util.manageable.BootstrapException {</xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>
       add(</xsl:text>
