@@ -51,78 +51,38 @@ implements Responder, Log {
     * Constructs a new <code>CallContext</code> and configures it for the
     * specified servlet request. The state is set to {@link #BEFORE_START}.
     *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
     * @param api
     *    the API for which this <code>CallContext</code> will be used, cannot
     *    be <code>null</code>.
     *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
+    * @param functionName
+    *    the name of the pertaining function, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>api == null || request == null</code>.
-    *
-    * @throws MissingSessionIDException
-    *    if no session ID is specified in the request.
-    *
-    * @throws InvalidSessionIDException
-    *    if the session ID specified in the request is considered invalid.
-    *
-    * @throws UnknownSessionIDException
-    *    if the session ID specified in the request is valid, but unknown.
+    *    if <code>api == null || functionName == null || request == null</code>.
     */
-   CallContext(API api, ServletRequest request)
-   throws IllegalArgumentException,
-          MissingSessionIDException,
-          InvalidSessionIDException,
-          UnknownSessionIDException {
+   CallContext(ServletRequest request, Function function)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("api", api, "request", request);
+      MandatoryArgumentChecker.check("request",  request, "function", function);
 
       // Initialize fields
-      _api          = api;
       _request      = request;
+      _api          = function.getAPI();
+      _function     = function;
+      _functionName = function.getName();
       _state        = BEFORE_START;
       _start        = System.currentTimeMillis();
       _builder      = new CallResultBuilder();
 
-      // Determine the function name
-      String functionName = request.getParameter("_function");
-      if (functionName == null) {
-         functionName = request.getParameter("function");
-      }
-      if (functionName == null) {
-         functionName = _api.getDefaultFunctionName();
-      }
-      _functionName = functionName;
-
-      // Determine the function object, logger, call ID, log prefix
-      _function  = (functionName == null) ? null : _api.getFunction(functionName);
-      _logger    = (_function    == null) ? null : _function.getLogger();
-      _callID    = (_function    == null) ? -1   : _function.assignCallID();
-      _logPrefix = (_function    == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
-
-      // Determine the active session
-      if (_function != null && _function.isSessionBased()) {
-         String sessionID = request.getParameter("_session");
-         if (sessionID == null || sessionID.length() == 0) {
-            throw MissingSessionIDException.SINGLETON;
-         } else {
-            try {
-               _session = _api.getSessionByString(sessionID);
-            } catch (TypeValueException exception) {
-               if (LOG.isDebugEnabled()) {
-                  LOG.debug("Invalid value for session ID type: \"" + sessionID + "\".");
-               }
-               throw InvalidSessionIDException.SINGLETON;
-            }
-            if (_session == null) {
-               throw UnknownSessionIDException.SINGLETON;
-            }
-         }
-      }
-
-      _returnSessionID = false;
+      // Determine the function object, logger, call ID and log prefix
+      _logger    = _function.getLogger();
+      _callID    = _function.assignCallID();
+      _logPrefix = "Call " + _functionName + ':' + _callID + ": ";
    }
 
 

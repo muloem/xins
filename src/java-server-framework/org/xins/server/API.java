@@ -948,32 +948,32 @@ implements DefaultResultCodes {
 
    /**
     * Forwards a call to a function. The call will actually be handled by
-    * {@link Function#handleCall0(CallContext)}.
+    * {@link Function#handleCall(ServletRequest)}.
     *
     * @param request
     *    the original servlet request, not <code>null</code>.
     *
     * @return
     *    the result of the call, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
     */
-   final CallResult handleCall(ServletRequest request) {
-
-      // Configure the call context
-      CallContext context;
-      try {
-         context = new CallContext(this, request);
-         // TODO: Do not check session ID here, but at a later stage
-      } catch (MissingSessionIDException exception) {
-         return new BasicCallResult(false, "MissingSessionID", null, null);
-      } catch (InvalidSessionIDException exception) {
-         return new BasicCallResult(false, "InvalidSessionID", null, null);
-      } catch (UnknownSessionIDException exception) {
-         return new BasicCallResult(false, "UnknownSessionID", null, null);
-      }
+   final CallResult handleCall(ServletRequest request)
+   throws NullPointerException {
 
       // Determine the function name
-      String functionName = context.getFunctionName();
+      String functionName = request.getParameter("_function");
       if (functionName == null || functionName.length() == 0) {
+         functionName = request.getParameter("function");
+      }
+      if (functionName == null || functionName.length() == 0) {
+         functionName = getDefaultFunctionName();
+      }
+
+      // The function name is required
+      if (functionName == null || functionName.length() == 0) {
+         // TODO: return new BasicCallResult(MISSING_FUNCTION_NAME);
          return new BasicCallResult(false, "MissingFunctionName", null, null);
       }
 
@@ -984,6 +984,7 @@ implements DefaultResultCodes {
          } else if ("_PerformGC".equals(functionName)) {
             // TODO: return doPerformGC();
             System.gc();
+            // TODO: Cache this CallResult
             return new BasicCallResult(true, null, null, null);
          } else if ("_GetFunctionList".equals(functionName)) {
             return doGetFunctionList();
@@ -994,6 +995,8 @@ implements DefaultResultCodes {
          } else if ("_GetSettings".equals(functionName)) {
             return doGetSettings();
          } else {
+            // TODO: Cache this CallResult
+            // TODO: new BasicCallResult(NO_SUCH_FUNCTION);
             return new BasicCallResult(false, "NoSuchFunction", null, null);
          }
       }
@@ -1004,58 +1007,15 @@ implements DefaultResultCodes {
       }
 
       // Get the function object
-      Function f = context.getFunction();
-
-      // Detect case where function is not recognized
-      if (f == null) {
+      Function function  = getFunction(functionName);
+      if (function == null)  {
+         // TODO: Cache this CallResult
+         // TODO: new BasicCallResult(NO_SUCH_FUNCTION);
          return new BasicCallResult(false, "NoSuchFunction", null, null);
       }
 
       // Forward the call to the function
-      return handleCall(f, context);
-   }
-
-   private CallResult handleCall(Function f, CallContext context) {
-
-      CallResult result;
-      try {
-
-         // TODO: Check session ID in Function.handleCall(CallContext) ?
-         result = f.handleCall0(context);
-
-      } catch (Throwable exception) {
-
-         // TODO: Allow customization of what exceptions are logged?
-         LOG.error("Caught exception while calling API.", exception);
-
-         // Create a set of parameters for the result
-         BasicPropertyReader parameters = new BasicPropertyReader();
-
-         // Add the exception class
-         parameters.set("_exception.class", exception.getClass().getName());
-
-         // Add the exception message, if any
-         String message = exception.getMessage();
-         if (message != null && message.length() > 0) {
-            parameters.set("_exception.message", message);
-         }
-
-         // Add the stack trace, if any
-         FastStringWriter stWriter = new FastStringWriter();
-         PrintWriter printWriter = new PrintWriter(stWriter);
-         exception.printStackTrace(printWriter);
-         String stackTrace = stWriter.toString();
-         if (stackTrace != null && stackTrace.length() > 0) {
-            parameters.set("_exception.stacktrace", stackTrace);
-         }
-
-         result = new BasicCallResult(false, "InternalError", parameters, null);
-      }
-
-      // Update function statistics
-      f.performedCall(context, result.isSuccess(), result.getCode());
-
-      return result;
+      return function.handleCall(request);
    }
 
    /**

@@ -3,8 +3,14 @@
  */
 package org.xins.server;
 
+import java.io.PrintWriter;
+import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
+import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.BasicPropertyReader;
+import org.xins.util.collections.PropertyReader;
+import org.xins.util.io.FastStringWriter;
 import org.xins.util.text.FastStringBuffer;
 
 /**
@@ -76,10 +82,10 @@ implements DefaultResultCodes {
       // Check argument
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
-      _log     = Logger.getLogger(getClass().getName());
-      _api     = api;
-      _name    = name;
-      _version = version;
+      _log          = Logger.getLogger(getClass().getName());
+      _api          = api;
+      _name         = name;
+      _version      = version;
       _sessionBased = sessionBased;
 
       _api.functionAdded(this);
@@ -237,6 +243,16 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Returns the API that contains this function.
+    *
+    * @return
+    *    the {@link API}, not <code>null</code>.
+    */
+   final API getAPI() {
+      return _api;
+   }
+
+   /**
     * Returns the name of this function.
     *
     * @return
@@ -296,8 +312,8 @@ implements DefaultResultCodes {
     * Handles a call to this function (wrapper method). This method will call
     * {@link #handleCall(CallContext context)}.
     *
-    * @param context
-    *    the context for this call, never <code>null</code>.
+    * @param request
+    *    the original servlet request for this call, never <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
@@ -305,10 +321,80 @@ implements DefaultResultCodes {
     * @throws Throwable
     *    if anything goes wrong.
     */
-   CallResult handleCall0(CallContext context)
-   throws Throwable {
-      handleCall(context);
-      return context.getCallResult();
+   CallResult handleCall(ServletRequest request) {
+
+      // Determine the session identifier
+      Session session;
+      if (!isSessionBased()) {
+         session = null;
+      } else {
+         String sessionID = request.getParameter("_session");
+         if (sessionID == null || sessionID.length() == 0) {
+            // TODO: Cache CallResult and use ResultCode
+            return new BasicCallResult(false, "MissingSessionID", null, null);
+         } else {
+            try {
+               session = _api.getSessionByString(sessionID);
+            } catch (TypeValueException exception) {
+               if (_log.isDebugEnabled()) {
+                  _log.debug("Invalid value for session ID type: \"" + sessionID + "\".");
+               }
+               // TODO: Cache CallResult and use ResultCode
+               return new BasicCallResult(false, "InvalidSessionID", null, null);
+            }
+            if (session == null) {
+               if (_log.isDebugEnabled()) {
+                  _log.debug("Unknown session ID: \"" + sessionID + "\".");
+               }
+               // TODO: Cache CallResult and use ResultCode
+               return new BasicCallResult(false, "UnknownSessionID", null, null);
+            }
+         }
+      }
+
+      // Construct a CallContext object
+      CallContext context = new CallContext(request, this);
+      long start = context.getStart(); // TODO: Do we _need_ to store it in the context?
+
+      CallResult result;
+      try {
+
+         handleCall(context);
+         result = context.getCallResult();
+
+      } catch (Throwable exception) {
+
+         // TODO: Allow customization of what exceptions are logged?
+         _log.error("Caught exception while calling API.", exception);
+
+         // Create a set of parameters for the result
+         BasicPropertyReader parameters = new BasicPropertyReader();
+
+         // Add the exception class
+         parameters.set("_exception.class", exception.getClass().getName());
+
+         // Add the exception message, if any
+         String message = exception.getMessage();
+         if (message != null && message.length() > 0) {
+            parameters.set("_exception.message", message);
+         }
+
+         // Add the stack trace, if any
+         FastStringWriter stWriter = new FastStringWriter();
+         PrintWriter printWriter = new PrintWriter(stWriter);
+         exception.printStackTrace(printWriter);
+         String stackTrace = stWriter.toString();
+         if (stackTrace != null && stackTrace.length() > 0) {
+            parameters.set("_exception.stacktrace", stackTrace);
+         }
+
+         result = new BasicCallResult(false, "InternalError", parameters, null);
+      }
+
+      // Update function statistics
+      performedCall(start, session, result.isSuccess(), result.getCode());
+
+      return result;
    }
 
    /**
@@ -330,30 +416,33 @@ implements DefaultResultCodes {
     * <p />This method does not <em>have</em> to be called. If statistics
     * gathering is disabled, then this method should not be called.
     *
-    * @param context
-    *    the used call context, not <code>null</code>.
+    * @param start
+    *    the start time, in milliseconds since January 1, 1970, not
+    *    <code>null</code>.
+    *
+    * @param session
+    *    the session, if and only if this function is session-based, otherwise
+    *    <code>null</code>.
     *
     * @param success
     *    indication if the call was successful.
     *
     * @param code
     *    the function result code, or <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.32. Use
-    *    {@link #performedCall(CallContext,ResultCode)} instead.
     */
-   final void performedCall(CallContext context, boolean success, String code) {
-      long start    = context.getStart();
+   final void performedCall(long start, Session session, boolean success, String code) {
+
+      // TODO: Accept ResultCode
+
       long duration = System.currentTimeMillis() - start;
-      boolean debugEnabled = context.isDebugEnabled();
+      boolean debugEnabled = _log.isDebugEnabled();
       String message = null;
       if (success) {
          if (debugEnabled) {
             FastStringBuffer buffer = new FastStringBuffer(250);
-            if (_sessionBased) {
+            if (session != null) {
                buffer.append("Call succeeded for session ");
-               buffer.append(context.getSession().toString());
+               buffer.append(session.toString());
                buffer.append(". Duration: ");
             } else {
                buffer.append("Call succeeded. Duration: ");
@@ -406,30 +495,7 @@ implements DefaultResultCodes {
       }
 
       if (debugEnabled) {
-         context.debug(message);
-      }
-   }
-
-   /**
-    * Callback method that may be called after a call to this function. This
-    * method will store statistics-related information.
-    *
-    * <p />This method does not <em>have</em> to be called. If statistics
-    * gathering is disabled, then this method should not be called.
-    *
-    * @param context
-    *    the used call context, not <code>null</code>.
-    *
-    * @param code
-    *    the function result code, or <code>null</code>.
-    *
-    * @since XINS 0.32
-    */
-   final void performedCall(CallContext context, ResultCode code) {
-      if (code == null) {
-         performedCall(context, true, null);
-      } else {
-         performedCall(context, code.getSuccess(), code.getValue());
+         _log.debug(message);
       }
    }
 
