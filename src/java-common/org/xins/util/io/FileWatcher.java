@@ -146,6 +146,7 @@ public final class FileWatcher extends Thread {
 
          // ...otherwise notify the listener and return.
          } else {
+            lastModified = 0;
             _listener.fileNotFound();
             return;
          }
@@ -157,7 +158,7 @@ public final class FileWatcher extends Thread {
       }
 
       // No authorisation error, check if the file was modified.
-      if (lastModified > _lastModified) {
+      if (lastModified != _lastModified) {
          _listener.fileModified();
       } else {
          _listener.fileNotModified();
