@@ -513,10 +513,15 @@
 	</target>
 
 	<target
-	name="-prepare-release"
-	depends="-init-release,-check-release-version,clean,tests"
-	description="Creates a release">
+	name="-pre-release-checks"
+	depends="-init-release,-check-release-version,clean,tests">
 		<fail if="tests.failed" message="All tests should run" />
+	</target>
+
+	<target
+	name="-prepare-release"
+	depends="-pre-release-checks">
+		<cvs command="tag RELEASE_${version.major}_${version.minor}" />
 	</target>
 
 	<target name="upload-changes" depends="-init">
