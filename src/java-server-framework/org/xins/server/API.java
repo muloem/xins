@@ -470,7 +470,7 @@ implements DefaultResultCodes {
       
       // Close the previous ACL
       if (_accessRuleList != null) {
-         _accessRuleList.close();
+         _accessRuleList.dispose();
       }
       if (acl == null || acl.trim().length() < 1) {
          _accessRuleList = AccessRuleList.EMPTY;

@@ -111,8 +111,8 @@ extends Object {
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
-         Log.log_3050(SUBJECT_CLASS, METHOD_NAME, "Method returned null.");
-         throw new ProgrammingError(SUBJECT_CLASS + '.' + METHOD_NAME + " returned null.");
+         Log.log_3050(SUBJECT_CLASS, SUBJECT_METHOD, "Method returned null.");
+         throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " returned null.");
       }
 
       return xinsRequest;
@@ -182,7 +182,7 @@ extends Object {
             throw (IOException) t;
          } else {
             Log.log_3052(t, SUBJECT_CLASS, SUBJECT_METHOD);
-            throw new ProgrammingError(SUBJECT_CLASS + '.' + METHOD_NAME + " has thrown an unexpected " + t.getClass().getName() + '.', t);
+            throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " has thrown an unexpected " + t.getClass().getName() + '.', t);
             // TODO: Log everything as in 1052
          }
       }

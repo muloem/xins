@@ -203,7 +203,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       // Close all the children
       if (_rules != null) {
          for (int i = 0; i < _rules.length; i++) {
-            _rules[i].close();
+            _rules[i].dispose();
          }
       }
       _aclFileWatcher.end();
@@ -304,7 +304,7 @@ public class AccessRuleFile implements AccessRuleContainer {
          // Close the children
          if (_rules != null) {
             for (int i = 0; i < _rules.length; i++) {
-               _rules[i].close();
+               _rules[i].dispose();
             }
          }
          try {

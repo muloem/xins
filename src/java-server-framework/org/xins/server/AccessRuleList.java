@@ -305,7 +305,7 @@ extends Object implements AccessRuleContainer {
    public void dispose() {
       if (_rules != null) {
          for (int i = 0; i < _rules.length; i++) {
-            _rules[i].close();
+            _rules[i].dispose();
          }
       }
    }

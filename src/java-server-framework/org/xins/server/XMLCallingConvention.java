@@ -160,7 +160,7 @@ extends CallingConvention {
       } catch (UnsupportedEncodingException ex) {
          final String DETAIL = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";
          Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", DETAIL);
-         throw new ProgrammingError(message);
+         throw new ProgrammingError(DETAIL);
       } catch (IOException ex) {
          throw new InvalidRequestException("Cannot read the XML request.", ex);
       } catch (ParseException ex) {
