@@ -4,6 +4,7 @@
 package org.xins.util.text;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
@@ -51,24 +52,34 @@ public class DateConverter extends Object {
     * @param n
     *    the time stamp to be converted to a human-readable character string,
     *    as a number of milliseconds since the Epoch (midnight January 1,
-    *    1970).
+    *    1970), must be greater than {@link Long#MIN_VALUE} and smaller than
+    *    {@link Long#MAX_VALUE}.
     *
     * @return
     *    the converted character string, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>timeZone == null</code>.
+    *    if <code>n == <code>{@link Long#MIN_VALUE}<code> || n == </code>{@link Long#MAX_VALUE}<code> || timeZone == null</code>.
     */
    public static String toDateString(TimeZone timeZone, long n) {
 
       // Check preconditions
       MandatoryArgumentChecker.check("timeZone", timeZone);
+      if (n == Long.MIN_VALUE) {
+         throw new IllegalArgumentException("n == Long.MIN_VALUE");
+      } else if (n == Long.MAX_VALUE) {
+         throw new IllegalArgumentException("n == Long.MAX_VALUE");
+      }
 
       FastStringBuffer buffer = new FastStringBuffer(23);
 
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTimeZone(timeZone);
-      calendar.setTimeInMillis(n);
+      Calendar calendar = Calendar.getInstance(timeZone);
+
+      // XXX: This works with Java 1.4+ only
+      // calendar.setTimeInMillis(n);
+
+      // XXX: This works with Java 1.3 as well
+      calendar.setTime(new Date(n));
 
       int year  = calendar.get(Calendar.YEAR);
       int month = calendar.get(Calendar.MONTH);
