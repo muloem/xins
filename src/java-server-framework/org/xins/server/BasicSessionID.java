@@ -6,6 +6,7 @@ package org.xins.server;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.math.SafeRandom;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.HexConverter;
 
@@ -17,7 +18,7 @@ import org.xins.util.text.HexConverter;
  *
  * @since XINS 0.57
  */
-public final class BasicSessionID extends SessionID {
+public final class BasicSessionID extends SessionIDType {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -111,7 +112,7 @@ public final class BasicSessionID extends SessionID {
       return buffer.toString();
    }
 
-   public final SessionID.Generator getGenerator() {
+   public final SessionIDType.Generator getGenerator() {
       return _generator;
    }
 
@@ -129,7 +130,7 @@ public final class BasicSessionID extends SessionID {
     * @since XINS 0.57
     */
    private final class Generator
-   extends SessionID.Generator {
+   extends SessionIDType.Generator {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -140,6 +141,7 @@ public final class BasicSessionID extends SessionID {
        */
       private Generator() {
          _lock = new Object();
+         _randomizer = new SafeRandom();
       }
 
 
@@ -148,15 +150,15 @@ public final class BasicSessionID extends SessionID {
       //----------------------------------------------------------------------
 
       /**
-       * Counter for the session IDs. Will be used to generate the session ID.
-       */
-      private long _counter;
-
-      /**
-       * Object that will be locked on before the value of <code>_counter</code>
-       * is get and set.
+       * Object that will be locked on if {@link #_randomizer} needs to be
+       * accessed.
        */
       private Object _lock;
+
+      /**
+       * The random number generator for the session IDs.
+       */
+      private final SafeRandom _randomizer;
 
 
       //----------------------------------------------------------------------
@@ -167,7 +169,7 @@ public final class BasicSessionID extends SessionID {
          // TODO: Improve performance ?
          long num;
          synchronized (_lock) {
-            num = _counter++;
+            num = _randomizer.nextLong();
          }
          return new Long(num);
       }
