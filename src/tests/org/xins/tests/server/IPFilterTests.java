@@ -162,7 +162,7 @@ public class IPFilterTests extends TestCase {
       assertEquals(baseIP + '/' + mask, filter.toString());
    }
 
-   public void testIsAuthorized() throws Throwable {
+   public void testMatch() throws Throwable {
 
       IPFilter filter = IPFilter.parseIPFilter("194.134.168.213/32");
       assertNotNull(filter);
@@ -175,53 +175,81 @@ public class IPFilterTests extends TestCase {
          // as expected
       }
 
-      doTestIsAuthorized(filter, "abcd",                     false, false);
-      doTestIsAuthorized(filter, "abcd",                     false, false);
-      doTestIsAuthorized(filter, "abcd/24",                  false, false);
-      doTestIsAuthorized(filter, "a.b.c.d",                  false, false);
-      doTestIsAuthorized(filter, "a.b.c.d/12",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/",                 false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/a",                false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/-1",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/0",                false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/5",                false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/5a",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4a/5",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4//5",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/32",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/33",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/1234567890123456", false, false);
-      doTestIsAuthorized(filter, "1.",                       false, false);
-      doTestIsAuthorized(filter, "1.2",                      false, false);
-      doTestIsAuthorized(filter, "1.2.",                     false, false);
-      doTestIsAuthorized(filter, "1.2.3",                    false, false);
-      doTestIsAuthorized(filter, "1.2.3.",                   false, false);
-      doTestIsAuthorized(filter, "1.2.34.",                  false, false);
-      doTestIsAuthorized(filter, "1.2.3.4",                  true,  false);
-      doTestIsAuthorized(filter, "1.2.3.4.5",                false, false);
-      doTestIsAuthorized(filter, "01.2.3.4/32",              false, false);
-      doTestIsAuthorized(filter, "1.02.3.4/32",              false, false);
-      doTestIsAuthorized(filter, "1.102.3.4/32",             false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/00",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4/01",               false, false);
-      doTestIsAuthorized(filter, "194.103.168.213",          true,  false);
-      doTestIsAuthorized(filter, "194.134.168.213",          true,  true);
-      doTestIsAuthorized(filter, "194.134.168.212",          true,  false);
-      doTestIsAuthorized(filter, "194.134.168.214",          true,  false);
+      doTestMatch(filter, "abcd",                     false, false);
+      doTestMatch(filter, "abcd",                     false, false);
+      doTestMatch(filter, "abcd/24",                  false, false);
+      doTestMatch(filter, "a.b.c.d",                  false, false);
+      doTestMatch(filter, "a.b.c.d/12",               false, false);
+      doTestMatch(filter, "1.2.3.4/",                 false, false);
+      doTestMatch(filter, "1.2.3.4/a",                false, false);
+      doTestMatch(filter, "1.2.3.4/-1",               false, false);
+      doTestMatch(filter, "1.2.3.4/0",                false, false);
+      doTestMatch(filter, "1.2.3.4/5",                false, false);
+      doTestMatch(filter, "1.2.3.4/5a",               false, false);
+      doTestMatch(filter, "1.2.3.4a/5",               false, false);
+      doTestMatch(filter, "1.2.3.4//5",               false, false);
+      doTestMatch(filter, "1.2.3.4/32",               false, false);
+      doTestMatch(filter, "1.2.3.4/33",               false, false);
+      doTestMatch(filter, "1.2.3.4/1234567890123456", false, false);
+      doTestMatch(filter, "1.",                       false, false);
+      doTestMatch(filter, "1.2",                      false, false);
+      doTestMatch(filter, "1.2.",                     false, false);
+      doTestMatch(filter, "1.2.3",                    false, false);
+      doTestMatch(filter, "1.2.3.",                   false, false);
+      doTestMatch(filter, "1.2.34.",                  false, false);
+      doTestMatch(filter, "1.2.3.4",                  true,  false);
+      doTestMatch(filter, "1.2.3.4.5",                false, false);
+      doTestMatch(filter, "01.2.3.4/32",              false, false);
+      doTestMatch(filter, "1.02.3.4/32",              false, false);
+      doTestMatch(filter, "1.102.3.4/32",             false, false);
+      doTestMatch(filter, "1.2.3.4/00",               false, false);
+      doTestMatch(filter, "1.2.3.4/01",               false, false);
+      doTestMatch(filter, "194.103.168.213",          true,  false);
+      doTestMatch(filter, "194.134.168.213",          true,  true);
+      doTestMatch(filter, "194.134.168.212",          true,  false);
+      doTestMatch(filter, "194.134.168.214",          true,  false);
+
+      filter = IPFilter.parseIPFilter("194.134.168.213/32");
+      assertNotNull(filter);
+      doTestMatch(filter, "a",               false, false);
+      doTestMatch(filter, "194.134.168.211", true,  false);
+      doTestMatch(filter, "194.134.168.212", true,  false);
+      doTestMatch(filter, "194.134.168.213", true,  true);
+      doTestMatch(filter, "194.134.168.214", true,  false);
 
       filter = IPFilter.parseIPFilter("194.134.168.213/31");
       assertNotNull(filter);
+      doTestMatch(filter, "a",               false, false);
+      doTestMatch(filter, "194.134.168.211", true,  false);
+      doTestMatch(filter, "194.134.168.212", true,  true);
+      doTestMatch(filter, "194.134.168.213", true,  true);
+      doTestMatch(filter, "194.134.168.214", true,  false);
 
-      doTestIsAuthorized(filter, "194.134.168.213",          true,  true);
-      doTestIsAuthorized(filter, "194.134.168.212",          true,  true);
-      doTestIsAuthorized(filter, "194.134.168.211",          true,  false);
-      doTestIsAuthorized(filter, "194.134.168.214",          true,  false);
+      filter = IPFilter.parseIPFilter("1.2.3.4/0");
+      assertNotNull(filter);
+      doTestMatch(filter, "a",               false, false);
+      doTestMatch(filter, "1.2.3.4",         true,  true);
+      doTestMatch(filter, "194.134.168.213", true,  true);
+      doTestMatch(filter, "194.134.168.212", true,  true);
+      doTestMatch(filter, "194.134.168.211", true,  true);
+      doTestMatch(filter, "194.134.168.214", true,  true);
+
+      filter = IPFilter.parseIPFilter("1.2.3.4/24");
+      assertNotNull(filter);
+      doTestMatch(filter, "a",               false, false);
+      doTestMatch(filter, "1.2.3.4",         true,  true);
+      doTestMatch(filter, "1.2.3.128",       true,  true);
+      doTestMatch(filter, "1.2.3.132",       true,  true);
+      doTestMatch(filter, "1.2.3.255",       true,  true);
+      doTestMatch(filter, "1.2.4.4",         true,  false);
+      doTestMatch(filter, "1.2.2.4",         true,  false);
+      doTestMatch(filter, "1.2.3.0",         true,  true);
    }
 
-   private void doTestIsAuthorized(IPFilter filter,
-                                   String   ip,
-                                   boolean  validIP,
-                                   boolean  shouldBeAuth)
+   private void doTestMatch(IPFilter filter,
+                            String   ip,
+                            boolean  validIP,
+                            boolean  shouldBeAuth)
    throws Throwable {
 
       if (validIP) {
