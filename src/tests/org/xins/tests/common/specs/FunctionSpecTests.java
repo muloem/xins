@@ -133,6 +133,10 @@ public class FunctionSpecTests extends TestCase {
       spec = new FunctionSpec("F0",       "1.2.3.4.5.6.7.8.9.10");
    }
 
+   public void testGetTypeName() throws Throwable {
+      assertEquals("function", FunctionSpec.TYPE.getTypeName());
+   }
+
    public void testGetParentType() throws Throwable {
       assertEquals(APISpec.TYPE, FunctionSpec.TYPE.getParentType());
    }

@@ -131,6 +131,10 @@ public class APISpecTests extends TestCase {
       spec = new APISpec("a-api-a",   "1.2.3.4.5.6.7.8.9.10");
    }
 
+   public void testGetTypeName() throws Throwable {
+      assertEquals("api", APISpec.TYPE.getTypeName());
+   }
+
    public void testGetParentType() throws Throwable {
       assertNull(APISpec.TYPE.getParentType());
    }
