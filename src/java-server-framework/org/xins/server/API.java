@@ -445,7 +445,7 @@ implements DefaultResultCodes {
     *    the build-time configuration properties, not <code>null</code>.
     *
     * @throws IllegalStateException
-    *    TODO: determine
+    *    if the state is not {@link #INITIAL}.
     *
     * @throws IllegalArgumentException
     *    if <code>buildSettings == null</code>.
@@ -995,6 +995,10 @@ implements DefaultResultCodes {
             return doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
             return doGetSettings();
+         } else if ("_DisableFunction".equals(functionName)) {
+            return doDisableFunction(request);
+         } else if ("_EnableFunction".equals(functionName)) {
+            return doEnableFunction(request);
          } else {
             return NO_SUCH_FUNCTION_RESULT;
          }
@@ -1002,11 +1006,12 @@ implements DefaultResultCodes {
 
       // Short-circuit if we are shutting down
       if (_shutDown) {
+         // TODO: Add message
          return new BasicCallResult(false, "InternalError", null, null);
       }
 
       // Get the function object
-      Function function  = getFunction(functionName);
+      Function function = getFunction(functionName);
       if (function == null)  {
          return NO_SUCH_FUNCTION_RESULT;
       }
@@ -1044,6 +1049,7 @@ implements DefaultResultCodes {
          builder.startTag("function");
          builder.attribute("name",    function.getName());
          builder.attribute("version", function.getVersion());
+         builder.attribute("enabled", function.isEnabled() ? "true" : "false");
          builder.endTag();
       }
 
@@ -1280,6 +1286,70 @@ implements DefaultResultCodes {
       builder.endTag();
 
       return builder;
+   }
+
+   /**
+    * Enables a function.
+    *
+    * @param request
+    *    the servlet request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
+    */
+   private final CallResult doEnableFunction(ServletRequest request) {
+
+      // Get the name of the function to enable
+      String functionName = request.getParameter("functionName");
+      if (functionName == null || functionName.length() < 1) {
+         return new BasicCallResult(false, "MissingParameters", null, null);
+      }
+
+      // Get the Function object
+      Function function = getFunction(functionName);
+      if (function == null) {
+         return new BasicCallResult(false, "InvalidParameters", null, null);
+      }
+
+      // Enable or disable the function
+      function.setEnabled(true);
+
+      return SUCCESSFUL_RESULT;
+   }
+
+   /**
+    * Disables a function.
+    *
+    * @param request
+    *    the servlet request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
+    */
+   private final CallResult doDisableFunction(ServletRequest request) {
+
+      // Get the name of the function to disable
+      String functionName = request.getParameter("functionName");
+      if (functionName == null || functionName.length() < 1) {
+         return new BasicCallResult(false, "MissingParameters", null, null);
+      }
+
+      // Get the Function object
+      Function function = getFunction(functionName);
+      if (function == null) {
+         return new BasicCallResult(false, "InvalidParameters", null, null);
+      }
+
+      // Enable or disable the function
+      function.setEnabled(false);
+
+      return SUCCESSFUL_RESULT;
    }
 
 
