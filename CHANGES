@@ -2,9 +2,10 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.116:
 
 * XINS/Java Common Library:
-  - GroupDescriptor: Now correctly iterating over services, either randomly or
-    ordered.
+  - GroupDescriptor: Now correctly iterating over services randomly. Ordered
+    iterating has been implemented but is yet untested.
   - ServiceCaller: Improved logging.
+  - ServiceDescriptor: Improved (fixed) URL matching pattern.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.115:
