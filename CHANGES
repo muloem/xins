@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.169:
+
+* Fixed bug. If the pattern for a pattern type contained a double quote ('"')
+  character, then the generated Java classes for that type would not be
+  correctly generated and it would not compile.
+  This bug has been in the XSLT code (escapepattern.xslt) since XINS 0.1.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.168:
 
 * Generated specification documentation:
@@ -14,8 +22,8 @@ CHANGES INTRODUCED IN XINS 0.168:
     editing the src/java-server-framework/org/xins/server/Function.java file.
 
 * XINS/Java Common Library:
-  - Fixed : Creating a Date from a string thow a IndexOutOfBoundsException in
-    the type _date.
+  - Fixed: Creating a Date from a string threw an IndexOutOfBoundsException
+    for the type _date.
     This bug has been in the code since the introduction of the
     Date class in XINS 0.166
 
