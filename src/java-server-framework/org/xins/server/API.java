@@ -187,9 +187,10 @@ implements DefaultResultCodes {
    private AccessRuleList _accessRuleList;
 
    /**
-    * Indicates whether the API should wait for the statistic to be unlocked before continuing.
+    * Indicates whether the API should wait for the statistic to be unlocked
+    * before continuing. This field is initially set to <code>false</code>.
     */
-   private boolean _statisticsLocked = false;
+   private boolean _statisticsLocked;
 
 
    //-------------------------------------------------------------------------
