@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.49:
+
+* Fixed bug in link to pattern test form (for pattern types).
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.48:
 
 * Hid some of the protected interface of CallTargetGroup, because only classes
