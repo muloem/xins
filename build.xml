@@ -115,123 +115,73 @@
 		<echo message="${title} ${version} (real: ${version.real})" />
 	</target>
 
-	<target name="-prepare" depends="-init">
-		<mkdir dir="build" />
-	</target>
-
-	<target name="-prepare-classes" depends="-prepare">
-		<mkdir dir="build/classes" />
-	</target>
-
 	<target name="clean" description="Removes all generated files">
 		<delete dir="build" />
 	</target>
 
-	<target name="-prepare-java-common" depends="logdoc-java-common">
-		<mkdir dir="build/src/java-common" />
-		<copy todir="build/src/java-common">
-			<fileset dir="src/java-common" includes="**/*.java,**/package.html" />
-		</copy>
-		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-common/org/xins/common">
-			<fileset dir="build/logdoc/common/java" includes="**/*.java" />
-		</copy>
-	</target>
-
-	<target name="-prepare-java-client" depends="logdoc-java-client">
-		<mkdir dir="build/src/java-client-framework" />
-		<copy todir="build/src/java-client-framework">
-			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
-		</copy>
-		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-client-framework/org/xins/client">
-			<fileset dir="build/logdoc/client/java" includes="**/*.java" />
-		</copy>
-	</target>
-
-	<target name="-prepare-java-server" depends="logdoc-java-server">
-		<mkdir dir="build/src/java-server-framework" />
-		<style
-		in="src/xml/default_resultcodes.xml"
-		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
-		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
-		<copy todir="build/src/java-server-framework">
-			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
-		</copy>
-		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-server-framework/org/xins/server">
-			<fileset dir="build/logdoc/server/java" includes="**/*.java" />
-		</copy>
-	</target>
-
-	<target name="-prepare-java" depends="-prepare-java-common,-prepare-java-client,-prepare-java-server" />
-
-	<target name="java-common" depends="-prepare-java-common,-prepare-classes" description="Compiles the XINS/Java common code">
-		<mkdir dir="build/classes/java-common" />
-		<javac
-		srcdir="build/src/java-common"
-		destdir="build/classes/java-common"
-		debug="${javac.debug}"
-		deprecation="${javac.deprecation}"
-		optimize="${javac.optimize}"
-		target="${javac.targetvm}">
-			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</javac>
-		<manifest file="build/MANIFEST.MF">
-			<section name="xins-common">
-				<attribute name="Specification-Title"    value="XINS/Java Common Library" />
-				<attribute name="Specification-Version"  value="${version}" />
-				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="XINS/Java Common Library" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Implementation-Vendor"  value="${vendor}"  />
-			</section>
-		</manifest>
-		<jar
-		jarfile="build/xins-common.jar"
-		basedir="build/classes/java-common"
-		manifest="build/MANIFEST.MF" />
-	</target>
-
-	<target name="java-client" depends="java-common,-prepare-java-client" description="Compiles the XINS/Java client framework">
+	<target name="java-common" depends="-init" description="Compiles the XINS/Java common code">
 		<antcall target="-build-framework">
-			<param name="side" value="client"/>
-			<param name="type" value="Client"/>
+			<param name="src.side" value="common" />
+			<param name="side"     value="common" />
+			<param name="type"     value="Common" />
 		</antcall>
 	</target>
 
-	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
-		<antcall target="-build-framework">
-			<param name="side" value="server"/>
-			<param name="type" value="Server"/>
+	<target name="java-client" depends="java-common" description="Compiles the XINS/Java client framework">
+		<path id="path.common">
+			<pathelement path="build/classes/java-common" />
+		</path>
+		<antcall target="-build-framework" inheritRefs="true">
+			<param name="src.side" value="client-framework" />
+			<param name="side"     value="client"           />
+			<param name="type"     value="Client Framework" />
+		</antcall>
+	</target>
+
+	<target name="java-server" depends="java-common" description="Compiles the XINS/Java server framework">
+		<mkdir dir="build/src/java-server-framework" />
+		<style in="src/xml/default_resultcodes.xml"
+		       out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
+		       style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
+		<path id="path.common">
+			<pathelement path="build/classes/java-common" />
+		</path>
+		<antcall target="-build-framework" inheritRefs="true">
+			<param name="src.side" value="server-framework" />
+			<param name="side"     value="server"           />
+			<param name="type"     value="Server Framework" />
 		</antcall>
 	</target>
 
 	<target name="-build-framework">
+		<mkdir dir="build/src/java-${src.side}" />
+		<copy todir="build/src/java-${src.side}">
+			<fileset dir="src/java-${src.side}" includes="**/*.java,**/package.html" />
+		</copy>
+		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
+		<copy todir="build/src/java-${src.side}/org/xins/${side}">
+			<fileset dir="build/logdoc/${side}/java" includes="**/*.java" />
+		</copy>
 		<mkdir dir="build/classes/java-${side}" />
 		<javac
-		srcdir="build/src/java-${side}-framework"
+		srcdir="build/src/java-${src.side}"
 		destdir="build/classes/java-${side}"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		target="${javac.targetvm}">
 			<classpath>
-				<pathelement path="build/classes/java-common" />
+				<path refid="path.common" />
 				<fileset dir="depends/compile"             includes="*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
-			<attribute name="Class-Path" value="xins-common.jar" />
 			<section name="xins-${side}">
-				<attribute name="Specification-Title"    value="XINS/Java ${type} Framework" />
+				<attribute name="Specification-Title"    value="XINS/Java ${type}" />
 				<attribute name="Specification-Version"  value="${version}" />
 				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="XINS/Java ${type} Framework" />
+				<attribute name="Implementation-Title"   value="XINS/Java ${type}" />
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Implementation-Vendor"  value="${vendor}"  />
 			</section>
@@ -262,7 +212,7 @@
 		</antcall>
 	</target>
 
-	<target name="-prepare-logdoc" depends="-prepare">
+	<target name="-prepare-logdoc" depends="-init">
 		<!-- If not defined in the antcall, the default is the side -->
 		<property name="package" value="${side}" />
 		<style
@@ -274,7 +224,7 @@
 			<param name="sourcedir"       expression="../../../src/logdoc/${side}" />
 			<param name="html_destdir"    expression="html"                        />
 			<param name="java_destdir"    expression="java"                        />
-			<param name="package_name"    expression="org.xins.${package}"            />
+			<param name="package_name"    expression="org.xins.${package}"         />
 		</style>
 	</target>
 
@@ -401,7 +351,7 @@
 
 	<target name="tests" depends="do-tests,testreports" description="Runs the unit tests and generates reports" />
 
-	<target name="j2h" depends="-j2h-task,-prepare-java" description="Generates pretty-printed Java code as HTML">
+	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
 		<mkdir dir="build/j2h" />
 		<java2html title="Source X-ref for ${title} ${version}" destination="build/j2h" footer="no">
 			<fileset dir="build/src/java-common">
@@ -422,7 +372,7 @@
 		<available file="${javadoc.srcdir.j2se}" type="dir" property="jdksrc.available" />
 	</target>
 
-	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
+	<target name="-javadoc-sourcepath-nojdksrc" depends="-init,-jdksrc-avail" unless="jdksrc.available">
 		<property name="javadoc.sourcepath" value="${javadoc.srcdir.xins}" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
@@ -434,7 +384,7 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="java,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"

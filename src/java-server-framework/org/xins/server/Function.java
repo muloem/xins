@@ -227,34 +227,6 @@ implements DefaultResultCodes {
          return DISABLED_FUNCTION_RESULT;
       }
 
-      // Determine the session identifier
-      /*Session session;
-      if (!isSessionBased()) {
-         session = null;
-      } else {
-         String sessionID = request.getParameter("_session");
-         if (sessionID == null || sessionID.length() == 0) {
-            // TODO: Cache CallResult and use ResultCode
-            performedCall(start, callID, null, false, "MissingSessionID");
-            return new BasicCallResult(false, "MissingSessionID", null, null);
-         } else {
-            try {
-               session = _api.getSessionByString(sessionID);
-            } catch (TypeValueException exception) {
-               Log.log_1511(_name, callID, sessionID);
-               // TODO: Cache CallResult and use ResultCode
-               performedCall(start, callID, null, false, "InvalidSessionID");
-               return new BasicCallResult(false, "InvalidSessionID", null, null);
-            }
-            if (session == null) {
-               Log.log_1512(_name, callID, sessionID);
-               // TODO: Cache CallResult and use ResultCode
-               performedCall(start, callID, null, false, "UnknownSessionID");
-               return new BasicCallResult(false, "UnknownSessionID", null, null);
-            }
-         }
-      }*/
-
       // Construct a CallContext object
       CallContext context = new CallContext(request, start, this, callID);
 

@@ -1,4 +1,22 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.178:
+
+* XINS/Java Common Library:
+  - Refactored some method in the ExpiryFolder.
+
+* XINS/Java Common Library:
+  - ExpiryListener now also passes the folder in the expired method.
+
+* Logdoc
+  - Removed Logdoc related to the sessions.
+
+* Build and release process:
+  - Removed some unneeded "-prepare" targets.
+
+* Generated build file:
+  - Added a "-load-dtds" target.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.177:
 
 This version includes several incompatibilities with the previous version:

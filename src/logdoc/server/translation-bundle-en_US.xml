@@ -87,19 +87,9 @@
 	<translation entry="1436">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
 	<translation entry="1500">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="1501">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="1506">Setting session attribute <value-of-param name="name" format="quoted" /> to <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
-	<translation entry="1507">Setting session attribute <value-of-param name="name" format="quoted" /> to (null).</translation>
-	<translation entry="1508">Getting session attribute <value-of-param name="name" format="quoted" />, value is <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
-	<translation entry="1509">Getting session attribute <value-of-param name="name" format="quoted" />, value is (null).</translation>
-	<translation entry="1510">Created session with unique ID <value-of-param name="sessionID" /> in <value-of-param name="generationLoops" /> attempts.</translation>
-	<translation entry="1511">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: The received session ID <value-of-param name="sessionID" /> is invalid.</translation>
-	<translation entry="1512">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: The received session ID <value-of-param name="sessionID" /> is unknown.</translation>
 	<translation entry="1513">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="1514">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Succeeded in <value-of-param name="duration" /> ms.</translation>
-	<translation entry="1515">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, session <value-of-param name="session" />: Succeeded in <value-of-param name="duration" /> ms.</translation>
 	<translation entry="1516">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Failed in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
-	<translation entry="1517">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, session <value-of-param name="session" />: Failed in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
-	<translation entry="1518">Internal error. Failed to convert session identifier to character string. Reason: <value-of-param name="reason" format="quoted" />.</translation>
 	<translation entry="1550">Allowing call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="1551">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="1552">Request from <value-of-param name="ip" /> to function <value-of-param name="function" /> does not match access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
@@ -107,7 +97,6 @@
 	<translation entry="1600">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="1601">Deinitialization of API failed during XINS/Java Server Framework shutdown.</translation>
 	<translation entry="1602">XINS/Java Server Framework shutdown completed.</translation>
-	<translation entry="1603">Closing <value-of-param name="sessionCount" /> open session(s).</translation>
 	<translation entry="1604">Deinitializing manageable <value-of-param name="className" />.</translation>
 	<translation entry="1605">Deinitialized manageable <value-of-param name="className" />.</translation>
 	<translation entry="1606">Deinitialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>

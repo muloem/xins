@@ -25,6 +25,7 @@ import org.xins.common.threads.Doorman;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public final class ExpiryFolder
 extends Object {
@@ -268,7 +269,7 @@ extends Object {
          Map unmodifiableExpired = Collections.unmodifiableMap(toBeExpired);
          for (int i = 0; i < count; i++) {
             ExpiryListener listener = (ExpiryListener) listeners.get(i);
-            listener.expired(unmodifiableExpired);
+            listener.expired(this, unmodifiableExpired);
          }
       }
    }
@@ -413,7 +414,7 @@ extends Object {
     * Removes the specified key from this folder.
     *
     * @param key
-    *    they key for the entry, cannot be <code>null</code>.
+    *    the key for the entry, cannot be <code>null</code>.
     *
     * @return
     *    the old value associated with the specified key, or <code>null</code>
@@ -429,7 +430,7 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Store the association in the set of recently accessed entries
+      // Remove the key in the set of recently accessed entries
       _recentlyAccessedDoorman.enterAsReader();
       Object value;
       try {
@@ -459,45 +460,64 @@ extends Object {
    }
 
    /**
-    * Copies the entries of this ExpiryFolder to the new ExpiryFolder
+    * Copies the entries of this ExpiryFolder into another one.
+    * This method does not perform a deep copy, so if a key is added or
+    * removed, both folders will be modified.
     *
     * @param newFolder
-    *    the new folder where the entries should be copied, cannot be <code>null</code>.
+    *    the new folder where the entries should be copied into,
+    *    cannot be <code>null</code>, cannot be <code>this</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>newFolder == null</code>.
+    *    if <code>newFolder == null</code> or <code>newFolder == this</code>
+    *    or the precision is the newFolder is not the same as for this folder.
     */
    public void copy(ExpiryFolder newFolder)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newFolder", newFolder);
-
-      // Store the association in the set of recently accessed entries
-
-      // Copy the slots
-      _slotsDoorman.enterAsReader();
-      try {
-         newFolder._slotsDoorman.enterAsWriter();
-         for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
-            newFolder._slots[i] = _slots[i];
-         }
-      } finally {
-         newFolder._slotsDoorman.leaveAsWriter();
-         _slotsDoorman.leaveAsReader();
+      if (newFolder == this) {
+         throw new IllegalArgumentException("The folder can not be copied into itself.");
+      }
+      if (newFolder.getStrategy().getPrecision() != getStrategy().getPrecision()) {
+         throw new IllegalArgumentException("The folders must have the same precision.");
       }
 
       // Copy the recentlyAccessed
       _recentlyAccessedDoorman.enterAsReader();
+      newFolder._recentlyAccessedDoorman.enterAsWriter();
       try {
-         newFolder._recentlyAccessedDoorman.enterAsWriter();
          newFolder._recentlyAccessed = _recentlyAccessed;
+         synchronized(newFolder._sizeLock) {
+            newFolder._size = newFolder._recentlyAccessed.size();
+         }
       } finally {
-         newFolder._recentlyAccessedDoorman.leaveAsWriter();
-         _recentlyAccessedDoorman.leaveAsReader();
+         try {
+            newFolder._recentlyAccessedDoorman.leaveAsWriter();
+         } finally {
+            _recentlyAccessedDoorman.leaveAsReader();
+         }
       }
 
-      newFolder._size = _size;
+      // Copy the slots
+      _slotsDoorman.enterAsReader();
+      newFolder._slotsDoorman.enterAsWriter();
+      try {
+         for (int i = 0; i < _slotCount && i < newFolder._slotCount; i++) {
+            newFolder._slots[i] = _slots[i];
+            synchronized(newFolder._sizeLock) {
+               newFolder._size += newFolder._slots[i].size();
+            }
+         }
+      } finally {
+         try {
+            newFolder._slotsDoorman.leaveAsWriter();
+         } finally {
+            _slotsDoorman.leaveAsReader();
+         }
+      }
+
    }
 
    /**

@@ -76,23 +76,6 @@
 		<entry id="1212" level="FATAL" exception="true">
 			<description>Bootstrap of API class failed due to an exception.</description>
 		</entry>
-		<entry id="1213" level="INFO">
-			<description>API is session-oriented.</description>
-		</entry>
-		<entry id="1214" level="INFO">
-			<description>API is not session-oriented.</description>
-		</entry>
-		<entry id="1215" level="DEBUG">
-			<description>Starting session-related bootstrapping of API.</description>
-		</entry>
-		<entry id="1216" level="DEBUG">
-			<description>Finished session-related bootstrapping of API.</description>
-		</entry>
-		<entry id="1217" level="INFO">
-			<description>Session time-out and time-out precision are set.</description>
-			<param name="timeOut" type="int32" nullable="false" />
-			<param name="timeOutPrecision" type="int32" nullable="false" />
-		</entry>
 		<entry id="1218" level="INFO">
 			<description>Determining build-time settings.</description>
 			<param name="buildHost" />
@@ -408,79 +391,23 @@
 	</group>
 
 	<group id="runtime" name="Runtime">
-		<entry id="1506" level="DEBUG">
-			<description>Setting session attribute value.</description>
-			<param name="name" nullable="false" />
-			<param name="valueClass" nullable="false" />
-			<param name="valueString" nullable="true" />
-		</entry>
-		<entry id="1507" level="DEBUG">
-			<description>Resetting session attribute.</description>
-			<param name="name" nullable="false" />
-		</entry>
-		<entry id="1508" level="DEBUG">
-			<description>Getting session attribute value, value is not null.</description>
-			<param name="name" nullable="false" />
-			<param name="valueClass" nullable="false" />
-			<param name="valueString" nullable="true" />
-		</entry>
-		<entry id="1509" level="DEBUG">
-			<description>Getting session attribute value, value is null.</description>
-			<param name="name" nullable="false" />
-		</entry>
-		<entry id="1510" level="INFO">
-			<description>Created session.</description>
-			<param name="sessionID" type="object" nullable="false" />
-			<param name="generationLoops" type="int32" nullable="false" />
-		</entry>
-		<entry id="1511" level="INFO">
-			<description>Received session ID is invalid.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="sessionID" nullable="false" />
-		</entry>
-		<entry id="1512" level="INFO">
-			<description>Received session ID is valid but unknown.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="sessionID" nullable="false" />
-		</entry>
 		<entry id="1513" level="NOTICE" exception="true">
 			<description>Exception thrown during function call.</description>
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
 		</entry>
 		<entry id="1514" level="INFO">
-			<description>Call to session-less function succeeded.</description>
+			<description>Call to function succeeded.</description>
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
 			<param name="duration" type="int64" nullable="false" />
-		</entry>
-		<entry id="1515" level="INFO">
-			<description>Call to session-oriented function succeeded.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="duration" type="int64" nullable="false" />
-			<param name="session" type="object" nullable="false" />
 		</entry>
 		<entry id="1516" level="INFO">
-			<description>Call to session-less function failed.</description>
+			<description>Call to function failed.</description>
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
 			<param name="duration" type="int64" nullable="false" />
 			<param name="code" nullable="true" />
-		</entry>
-		<entry id="1517" level="INFO">
-			<description>Call to session-oriented function failed.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
-			<param name="duration" type="int64" nullable="false" />
-			<param name="code" nullable="true" />
-			<param name="session" type="object" nullable="false" />
-		</entry>
-		<entry id="1518" level="ERROR">
-			<description>Failed to convert session ID to character string.</description>
-			<param name="reason" nullable="true" />
 		</entry>
 	</group>
 
@@ -522,10 +449,6 @@
 		</entry>
 		<entry id="1602" level="NOTICE">
 			<description>XINS/Java Server Framework shutdown completed.</description>
-		</entry>
-		<entry id="1603" level="NOTICE">
-			<description>Closing open sessions.</description>
-			<param name="sessionCount" type="int32" nullable="false" />
 		</entry>
 		<entry id="1604" level="DEBUG">
 			<description>Deinitializing manageable object.</description>

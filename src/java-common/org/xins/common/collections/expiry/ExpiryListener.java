@@ -17,9 +17,12 @@ public interface ExpiryListener {
    /**
     * Notification of the expiry of the specified set of objects.
     *
+    * @param folder
+    *    the folder that has expired the entries , never <code>null</code>.
+    *
     * @param expired
     *    the map containing the objects that have expired, indexed by key;
     *    never <code>null</code>.
     */
-   void expired(Map expired);
+   void expired(ExpiryFolder folder, Map expired);
 }

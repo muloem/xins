@@ -108,8 +108,11 @@
 
 			<target name="-prepare" />
 
-			<target name="-prepare-specdocs" depends="-prepare">
+			<target name="-prepare-specdocs" depends="-prepare, -load-dtds">
 				<mkdir dir="{$builddir}/specdocs" />
+			</target>
+
+			<target name="-load-dtds">
 				<xmlcatalog id="all-dtds">
 					<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
@@ -765,7 +768,7 @@
 							<xsl:variable name="functionFile" select="concat($api_specsdir, '/', $functionName, '.fnc')" />
 							<xsl:for-each select="document($functionFile)/function">
 								<xsl:choose>
-                					<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
+									<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 										<xsl:value-of select="$functionName" />
 										<xsl:text>.fnc,</xsl:text>
 									</xsl:when>
@@ -979,32 +982,10 @@
 				</xsl:attribute>
 			</target>
 
-			<target name="-prepare-classes" depends="-prepare">
+			<target name="-prepare-classes" depends="-prepare,-load-dtds">
 				<!-- If not set by the user set it to true. -->
 				<property name="deprecated" value="true" />
 				<mkdir dir="build/classes" />
-				<xmlcatalog id="all-dtds">
-					<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/api_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/function_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/type_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
-					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-					     location="{$xins_home}/src/dtd/api_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.0//EN"
-					     location="{$xins_home}/src/dtd/function_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.0//EN"
-					     location="{$xins_home}/src/dtd/type_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
-					     location="{$xins_home}/src/dtd/resultcode_1_0.dtd" />
-				</xmlcatalog>
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">
