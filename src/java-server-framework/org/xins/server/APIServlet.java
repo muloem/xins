@@ -340,7 +340,7 @@ extends HttpServlet {
     * @return
     *    the generated diagnostic context identifier, never <code>null</code>.
     */
-   private String generateContextID(String remoteHost) {
+   private String generateContextID() {
 
       String currentDate = DATE_FORMATTER.format(new Date());
 
@@ -348,10 +348,10 @@ extends HttpServlet {
       HexConverter.toHexString(buffer, _random.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
 
-      FastStringBuffer contextID = new FastStringBuffer(_apiName.length() + remoteHost.length() + 27);
+      FastStringBuffer contextID = new FastStringBuffer(_apiName.length() + _hostname.length() + 27);
       contextID.append(_apiName);
       contextID.append('@');
-      contextID.append(remoteHost);
+      contextID.append(_hostname);
       contextID.append(':');
       contextID.append(currentDate);
       contextID.append(':');
@@ -890,7 +890,7 @@ extends HttpServlet {
 
       // If there is no diagnostic context ID, then generate one.
       if ((contextID == null) || (contextID.length() < 1)) {
-         contextID = generateContextID(request.getRemoteHost());
+         contextID = generateContextID();
       }
 
       // Associate the context ID with this thread

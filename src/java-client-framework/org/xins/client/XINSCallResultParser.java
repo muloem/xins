@@ -78,11 +78,11 @@ extends Object {
 
       Handler handler = new Handler();
       try {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser saxParser = factory.newSAXParser();
-        ByteArrayInputStream bais = new ByteArrayInputStream(xml);
-        saxParser.parse(bais, handler);
-        bais.close();
+         SAXParserFactory factory = SAXParserFactory.newInstance();
+         SAXParser saxParser = factory.newSAXParser();
+         ByteArrayInputStream bais = new ByteArrayInputStream(xml);
+         saxParser.parse(bais, handler);
+         bais.close();
       } catch (Throwable exception) {
          String detail = exception.getMessage();
          FastStringBuffer buffer = new FastStringBuffer(250);
