@@ -40,6 +40,33 @@ extends Object {
     * Constructs a new generic <code>ResultCode</code>. This constructor can
     * only be called by classes in the same package.
     *
+    * @param name
+    *    the symbolic name, can be <code>null</code>.
+    *
+    * @param value
+    *    the actual value of this code, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @since XINS 0.117.
+    */
+   ResultCode(String name, String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("value", value);
+
+      _api     = null;
+      _success = false;
+      _name    = name;
+      _value   = value;
+   }
+
+   /**
+    * Constructs a new generic <code>ResultCode</code>. This constructor can
+    * only be called by classes in the same package.
+    *
     * @param success
     *    the success indication.
     *
@@ -51,6 +78,10 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.117. Use {@link ResultCode(String,String)}
+    *    instead.
     */
    ResultCode(boolean success, String name, String value)
    throws IllegalArgumentException {
@@ -74,6 +105,37 @@ extends Object {
     * @param api
     *    the API to which this result code belongs, not <code>null</code>.
     *
+    * @param name
+    *    the symbolic name, can be <code>null</code>.
+    *
+    * @param value
+    *    the actual value of this code, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null || value == null</code>.
+    *
+    * @since XINS 0.117
+    */
+   public ResultCode(API api, String name, String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("api", api, "value", value);
+
+      _api     = api;
+      _success = false;
+      _name    = name;
+      _value   = value;
+
+      _api.resultCodeAdded(this);
+   }
+
+   /**
+    * Constructs a new <code>ResultCode</code> for the specified API.
+    *
+    * @param api
+    *    the API to which this result code belongs, not <code>null</code>.
+    *
     * @param success
     *    the success indication.
     *
@@ -85,6 +147,10 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>api == null || value == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.117. Use {@link ResultCode(API,String,String)}
+    *    instead.
     */
    public ResultCode(API api, boolean success, String name, String value)
    throws IllegalArgumentException {
@@ -141,6 +207,10 @@ extends Object {
     * @return
     *    <code>true</code> if this result code indicates a successful call,
     *    <code>false</code> otherwise.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.117. All result codes should be unsuccessful
+    *    and indicate failure.
     */
    public final boolean getSuccess() {
       return _success;
