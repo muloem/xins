@@ -110,6 +110,34 @@
 		<param name="buildTime" />
 		<param name="buildVersion" />
 	</entry>
+	<entry id="118" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrapping Manageable object registered with the API.</description>
+		<param name="api" />
+		<param name="className" />
+	</entry>
+	<entry id="119" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrapped Manageable object registered with the API.</description>
+		<param name="api" />
+		<param name="className" />
+	</entry>
+	<entry id="120" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Manageable object could not be initialized due to a missing required property.</description>
+		<param name="propertyName" />
+	</entry>
+	<entry id="121" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Manageable object could not be initialized due to an invalid property value.</description>
+		<param name="propertyName" />
+		<param name="propertyValue" />
+	</entry>
+	<entry id="122" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Manageable object could not be initialized.</description>
+		<param name="message" />
+	</entry>
+	<entry id="123" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Manageable object could not be initialized due to an unexpected exception.</description>
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
 
 
 	<!-- Logging subsystem -->
