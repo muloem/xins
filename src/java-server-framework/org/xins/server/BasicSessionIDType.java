@@ -141,8 +141,8 @@ public final class BasicSessionIDType extends SessionIDType {
        * Constructs a new <code>Generator</code> for the specified API.
        */
       private Generator() {
-         _lock = new Object();
-         _randomizer = new SafeRandom();
+         _lock       = new Object();
+         _randomizer = new SafeRandom("sessionIDs");
       }
 
 
