@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 
 /**
@@ -37,13 +38,23 @@ public class DataElement implements Cloneable {
    /**
     * Creates a new DataElement with the specified qualified name.
     *
-    * @param qName
-    *    the name of the element, cannot be <code>null</code>.
+    * @param name
+    *    the type of the element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   DataElement(String qName) {
-      _name = qName;
-      _children = new ArrayList();
+   DataElement(String name) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      // Initialize all fields
+      _name       = name;
+      _children   = new ArrayList();
       _attributes = new BasicPropertyReader();
+
+      // XXX: Lazily initialize children and attributes?
    }
 
 
@@ -52,24 +63,25 @@ public class DataElement implements Cloneable {
    //-------------------------------------------------------------------------
 
    /**
-    * The name of this element.
+    * The name of this element. This field is never <code>null</code>.
     */
    private final String _name;
 
    /**
-    * The sub-elements of this element.
+    * The sub-elements of this element. This field is never <code>null</code>.
     */
    private final List _children;
 
    /**
-    * The attributes of this elements.
+    * The attributes of this elements. This field is never <code>null</code>.
     */
    private final BasicPropertyReader _attributes;
 
    /**
-    * The content of this element.
+    * The character data content for this element. Can be <code>null</code>.
     */
-   private String _pcdata;
+   private String _text;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -96,27 +108,35 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Adds an attribute to this element. If the key already exists, the previous
-    * value for this key is replaced by the new one.
+    * Adds an attribute to this element. If the value for the specified
+    * attribute is already set, then the previous value is replaced.
     *
-    * @param key
+    * @param name
     *    the name of the attribute, cannot be <code>null</code>.
     *
     * @param value
     *    the value of the attribute, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   void addAttribute(String key, String value) {
-      _attributes.set(key, value);
+   void addAttribute(String name, String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      _attributes.set(name, value);
    }
 
    /**
-    * Sets the PCDATA content of this element.
+    * Sets the character data content.
     *
-    * @param pcdata
-    *    the PCDATA content for this element, can be <code>null</code>.
+    * @param text
+    *    the character data content for this element, can be <code>null</code>.
     */
-   void setText(String pcdata) {
-      _pcdata = pcdata;
+   void setText(String text) {
+      _text = text;
    }
 
    /**
@@ -124,7 +144,7 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    an {@link Iterator} returning each attribute name as a
-    *    {@link String}. Can be <code>null</code>, if the DataElement has no
+    *    {@link String}; can be <code>null</code>, if the DataElement has no
     *    elements.
     */
    public Iterator getAttributes() {
@@ -143,40 +163,94 @@ public class DataElement implements Cloneable {
     * @return
     *    the value of the attribute, or <code>null</code> if the attribute is
     *    either not set or set to <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public String get(String name) {
+   public String get(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
       return _attributes.get(name);
    }
 
    /**
-    * Gets the children of this element.
+    * Gets all child elements of this element.
     *
     * @return
     *    an {@link Iterator} that returns each child of this element as
-    *    another <code>DataElement</code> instance. Can be <code>null</code>,
-    *    if the DataElement has no elements.
+    *    another <code>DataElement</code> instance; can be <code>null</code>,
+    *    if this element has no children.
     */
    public Iterator getChildren() {
+
+      // If there are no children, then return null
       if (_children.size() == 0) {
          return null;
       }
+
       return _children.iterator();
+   }
+
+   /**
+    * Gets child elements with the specified name from this element.
+    *
+    * @param name
+    *    the name for the child elements to match, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    an {@link Iterator} that returns each child that matches the
+    *    specified name as another <code>DataElement</code> instance; can be
+    *    <code>null</code>, if this element has no children.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   public Iterator getChildren(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      // If there are no children, then return null
+      if (_children.size() == 0) {
+         return null;
+      }
+
+      List matches = new ArrayList();
+      Iterator it = _children.iterator();
+      while (it.hasNext()) {
+         DataElement child = (DataElement) it.next();
+         if (name.equals(child.getName())) {
+            matches.add(child);
+         }
+      }
+
+      // If there are no matching children, then return null
+      if (matches.size() == 0) {
+         return null;
+      }
+
+      return matches.iterator();
    }
 
    /**
     * Gets the text of this element.
     *
     * @return
-    *    the text of this element or <code>null</code> if no text has been specified
-    *    for this element.
+    *    the text of this element or <code>null</code> if no text has been
+    *    specified for this element.
     */
    public String getText() {
-      return _pcdata;
+      return _text;
    }
 
    /**
     * Clones this object. The clone will have the same name and equivalent
-    * attributes, children and PCDATA content.
+    * attributes, children and character data content.
     *
     * @return
     *    the clone of this object, never <code>null</code>.
@@ -199,7 +273,7 @@ public class DataElement implements Cloneable {
          clone.addAttribute(nextKey, get(nextKey));
       }
 
-      // Copy the PCDATA content
+      // Copy the character data content
       clone.setText(getText());
 
       return clone;
