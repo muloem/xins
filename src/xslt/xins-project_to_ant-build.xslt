@@ -24,7 +24,7 @@
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
-				style="${{xins_home}}/src/xslt/xins-project_to_specdocs-index.xslt">
+				style="${{xins_home}}/src/xslt/specdocs/xins-project_to_index.xslt">
 					<param name="project_home" expression="${{project_home}}" />
 				</style>
 			</target>

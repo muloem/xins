@@ -17,9 +17,9 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:include href="header.xslt" />
-	<xsl:include href="footer.xslt" />
-	<xsl:include href="firstline.xslt" />
+	<xsl:include href="../header.xslt" />
+	<xsl:include href="../footer.xslt" />
+	<xsl:include href="../firstline.xslt" />
 
 	<xsl:template match="project">
 		<html>
