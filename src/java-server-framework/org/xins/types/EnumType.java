@@ -1,4 +1,4 @@
-/* Ernst is een enorme flapdrolllllll!!!!!!
+/*
  * $Id$
  */
 package org.xins.types;
