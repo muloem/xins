@@ -12,6 +12,7 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 
 import java.util.Iterator;
+import org.apache.commons.httpclient.ConnectTimeoutException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnection;
@@ -654,7 +655,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
-         } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
+         } else if (exception instanceof ConnectTimeoutException) {
             Log.log_1104(url, params, duration, connectionTimeOut);
             executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
