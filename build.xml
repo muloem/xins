@@ -504,24 +504,36 @@
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
 	<target name="-check-release-version">
-		<condition property="version.suffix.set">
-			<not>
-				<equals arg1="${version.suffix}" arg2="" />
-			</not>
+		<condition property="version.suffix.unset">
+			<equals arg1="${version.suffix}" arg2="" />
 		</condition>
-		<fail if="version.suffix.set" message="A version suffix is set." />
+		<fail unless="version.suffix.unset" message="A version suffix is set." />
+	</target>
+
+	<target name="-nodiffs-check" depends="clean">
+		<tempfile destdir="${java.io.tmpdir}" prefix="xins-release-diff." property="diff-file" suffix=".diff" />
+		<echo message="Creating temporary file ${diff-file}" />
+		<cvs command="diff" output="${diff-file}" quiet="true" />
+		<loadfile srcfile="${diff-file}" property="diff-contents" />
+		<condition property="diff-contents-empty">
+			<equals arg1="${diff-contents}" arg2="" />
+		</condition>
+		<delete file="${diff-file}" />
+		<fail unless="diff-contents-empty" message="There are differences with the CVS repository (result of 'cvs diff' is non-empty)." />
 	</target>
 
 	<target
 	name="-pre-release-checks"
-	depends="-init-release,-check-release-version,clean,tests">
+	depends="-init-release,-check-release-version,-nodiffs-check,tests">
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
 	<target
 	name="-prepare-release"
 	depends="-pre-release-checks">
-		<cvs command="tag RELEASE_${version.major}_${version.minor}" />
+		<property name="tagname" value="RELEASE_${version.major}_${version.minor}" />
+		<echo message="Tagging ${tagname}" />
+		<cvs command="tag ${tagname}" quiet="true" />
 	</target>
 
 	<target name="upload-changes" depends="-init">
