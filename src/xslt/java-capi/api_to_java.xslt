@@ -463,16 +463,18 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.http.HTTPCallException,
           org.xins.client.XINSCallException {
 
-      // Check preconditions
-      org.xins.common.MandatoryArgumentChecker.check("request", request);
+      // Execute the call request
+      org.xins.client.XINSCallResult result = callImpl(request);
 
-      // Get the XINS service caller
-      org.xins.client.XINSServiceCaller caller = getCaller();
+      return new </xsl:text>
 
-      // Get the input parameters to send down
-      // TODO: org.xins.common.collections.PropertyReader params = request.getParams();
+<!--
+TODO for Ernst: Catch all expected error codes and throw a specific error code exception
+-->
 
-      return null; // TODO
+		<xsl:value-of select="$returnType" />
+		<xsl:text>(result);</xsl:text>
+		<xsl:text>
    }</xsl:text>
 
 		<!-- Print method that accepts the individual parameters -->
