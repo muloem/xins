@@ -216,8 +216,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
    /**
     * Performs the specified request towards the HTTP service. If the call
-    * succeeds with one of the targets, then a {@link Result} object is
-    * returned, that combines the HTTP status code and the data returned.
+    * succeeds with one of the targets, then a {@link HTTPCallResult} object
+    * is returned, that combines the HTTP status code and the data returned.
     * Otherwise, if none of the targets could successfully be called, a
     * {@link CallException} is thrown.
     *
@@ -238,7 +238,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if the first call attempt failed due to an HTTP-related reason and
     *    all the other call attempts failed as well.
     */
-   public Result call(HTTPCallRequest request)
+   public HTTPCallResult call(HTTPCallRequest request)
    throws GenericCallException, HTTPCallException {
 
       CallResult callResult;
@@ -255,7 +255,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
       }
 
-      return (Result) callResult.getResult();
+      return (HTTPCallResult) callResult.getResult();
    }
 
    /**
@@ -285,8 +285,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.207
     */
-   public Result call(TargetDescriptor target,
-                      HTTPCallRequest  request)
+   public HTTPCallResult call(TargetDescriptor target,
+                              HTTPCallRequest  request)
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
@@ -367,7 +367,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // TODO: Log (2016 ?)
 
       // Grab the result from the HTTP call
-      Result result = executor.getResult();
+      HTTPCallResult result = executor.getResult();
 
       // Check the status code, if necessary
       HTTPStatusCodeVerifier verifier = request.getStatusCodeVerifier();
@@ -377,7 +377,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          if (! verifier.isAcceptable(code)) {
             // TODO: Pass down body as well. Perhaps just pass down complete
-            //       Result object and add getter for the body to the
+            //       HTTPCallResult object and add getter for the body to the
             //       StatusCodeHTTPCallException class.
             throw new StatusCodeHTTPCallException(request, target, duration, code);
          }
@@ -425,141 +425,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
-
-   /**
-    * Result returned from an HTTP request.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.115
-    */
-   public static final class Result extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructor
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Result</code> object.
-       *
-       * @param code
-       *    the HTTP return code, must be &gt;= 0.
-       *
-       * @param data
-       *    the retrieved data, not <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>code &lt; 0 || data == null</code>.
-       */
-      public Result(int code, byte[] data)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("data", data);
-         if (code < 0) {
-            throw new IllegalArgumentException("code (" + code + ") < 0");
-         }
-
-         // Just store the arguments in fields
-         _code = code;
-         _data = data;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The HTTP return code.
-       */
-      private final int _code;
-
-      /**
-       * The data returned.
-       */
-      private final byte[] _data;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the HTTP status code.
-       *
-       * @return
-       *    the HTTP status code.
-       *
-       * @since XINS 0.207
-       */
-      public int getStatusCode() {
-         return _code;
-      }
-
-      /**
-       * Returns the result data as a byte array. Note that this is not a copy
-       * or clone of the internal data structure, but it is a link to the
-       * actual data structure itself.
-       *
-       * @return
-       *    a byte array of the result data, not <code>null</code>.
-       */
-      public byte[] getData() {
-         return _data;
-      }
-
-      /**
-       * Returns the returned data as a <code>String</code>. The encoding
-       * <code>US-ASCII</code> is assumed.
-       *
-       * @return
-       *    the result data as a text string, not <code>null</code>.
-       */
-      public String getString() {
-         final String ENCODING = "US-ASCII";
-         try {
-            return getString(ENCODING);
-         } catch (UnsupportedEncodingException exception) {
-            throw new Error("Encoding \"" + ENCODING + "\" is unsupported.");
-         }
-      }
-
-      /**
-       * Returns the returned data as a <code>String</code> in the specified
-       * encoding.
-       *
-       * @param encoding
-       *    the encoding to use in the conversion from bytes to a text string,
-       *    not <code>null</code>.
-       *
-       * @return
-       *    the result data as a text string, not <code>null</code>.
-       *
-       * @throws UnsupportedEncodingException
-       *    if the specified encoding is not supported.
-       */
-      public String getString(String encoding)
-      throws UnsupportedEncodingException {
-         byte[] bytes = getData();
-         return new String(bytes, encoding);
-      }
-
-      /**
-       * Returns the returned data as an <code>InputStream</code>. The input
-       * stream is based directly on the underlying byte array.
-       *
-       * @return
-       *    an {@link InputStream} that returns the returned data, never
-       *    <code>null</code>.
-       *
-       * @since XINS 0.194
-       */
-      public InputStream getStream() {
-         return new ByteArrayInputStream(_data);
-      }
-   }
 
    /**
     * HTTP method. Possible values for variable of this class:
@@ -723,7 +588,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * <code>null</code> if the call was unsuccessful or if it was not
        * executed yet..
        */
-      private Result _result;
+      private HTTPCallResult _result;
 
 
       //----------------------------------------------------------------------
@@ -783,7 +648,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             byte[] body       = method.getResponseBody();
 
             // Store the result
-            _result = new Result(statusCode, body);
+            _result = new HTTPCallResult(statusCode, body);
 
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
@@ -825,7 +690,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the result from the call, or <code>null</code> if it was
        *    unsuccessful.
        */
-      public Result getResult() {
+      public HTTPCallResult getResult() {
          return _result;
       }
    }
