@@ -334,9 +334,13 @@ public final class API extends Object {
 					</xsl:when>
 					<xsl:when test="output/param">
 						<xsl:text>
-      return new </xsl:text>
+      if (result.isSuccess()) {
+         return new </xsl:text>
 						<xsl:value-of select="$returnType" />
-						<xsl:text>(result);</xsl:text>
+						<xsl:text>(result);
+      } else {
+         throw new InvalidCallResultException(result);
+      }</xsl:text>
 					</xsl:when>
 				</xsl:choose>
 				<xsl:text>
