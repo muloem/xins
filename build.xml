@@ -8,6 +8,25 @@
 
 <project name="xins" default="all" basedir=".">
 
+	<target name="-init">
+		<property name="title"               value="XINS" />
+		<property name="name"                value="${ant.project.name}" />
+		<property name="version"             value="0.1-dev" />
+		<property name="release-version"     value="0.1" />
+		<property name="src-package-tarfile" value="${name}-${version}.tar" />
+		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
+		<property name="debug"               value="true" />
+		<property name="www.user"            value="znerd" />
+		<property name="project"             value="${name}" />
+		<property name="cvs.module"          value="${name}" />
+		<property name="www.host"            value="${project}.sourceforge.net" />
+		<property name="www.dir"             value="/home/groups/x/xi/xins/htdocs" />
+		<property name="www.target"          value="${www.user}@${www.host}:${www.dir}" />
+		<property name="url"                 value="http://${www.host}/" />
+		<property name="javadoc.title"       value="${title} ${version}" />
+		<property name="javadoc.footer"      value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;." />
+	</target>
+
 	<target name="-xmlenc-avail">
 		<available classname="org.znerd.xmlenc.XMLOutputter" property="xmlenc.available" />
 		<fail unless="xmlenc.available" message="Library not available: xmlenc" />
@@ -18,7 +37,7 @@
 		<fail unless="servlet.available" message="Library not available: Servlet API" />
 	</target>
 
-	<target name="-prepare">
+	<target name="-prepare" depends="-init">
 		<mkdir dir="build" />
 	</target>
 
@@ -41,6 +60,66 @@
 		target="1.2" />
 	</target>
 
-	<target name="all" depends="java-server-framework" description="Generates everything" />
+	<target name="-jdksrc-avail">
+		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
+	</target>
+
+	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
+		<property name="javadoc.sourcepath" value="src/java-server-framework" />
+		<echo level="verbose" message="JDK source code not available." />
+	</target>
+
+	<target name="-javadoc-sourcepath-jdksrc" depends="-jdksrc-avail" if="jdksrc.available">
+		<property name="javadoc.sourcepath" value="src/java-server-framework:${java.home}/src" />
+		<echo level="verbose" message="JDK source code available." />
+	</target>
+
+	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
+
+	<target name="javadoc" depends="-prepare,-javadoc-sourcepath" description="Generates Javadoc API documentation">
+		<mkdir dir="build/javadoc" />
+		<javadoc
+		sourcepath="${javadoc.sourcepath}"
+		destdir="build/javadoc"
+		version="yes"
+		use="yes"
+		author="yes"
+		private="no"
+		windowtitle="${javadoc.title}"
+		doctitle="${javadoc.title}"
+		bottom="${javadoc.footer}">
+			<packageset dir="src/java-server-framework" />
+			<link
+			href="http://java.sun.com/products/servlet/2.3/javadoc/"
+			offline="true"
+			packagelistloc="src/package-lists/servlet/" />
+			<link
+			href="http://java.sun.com/j2se/1.3/docs/api"
+			offline="true"
+			packagelistloc="src/package-lists/j2se/" />
+		</javadoc>
+		<copy
+		file="src/css/javadoc/style.css"
+		tofile="build/javadoc/stylesheet.css"
+		overwrite="true" />
+	</target>
+
+	<target name="upload-javadoc" depends="javadoc" description="Uploads the Javadoc documentation to the webserver">
+		<echo message="Uploading API documentation to ${www.host}" />
+		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
+		<exec executable="ssh" failonerror="true">
+			<arg value="${www.user}@${www.host}" />
+			<arg value="mkdir -p ${www.dir}/javadoc/${version}" />
+		</exec>
+		<echo level="verbose" message="Copying files to ${www.dir}/javadoc/${version} on ${www.host}" />
+		<exec dir="build/javadoc" executable="scp" failonerror="true">
+			<arg value="-r" />
+			<arg value="." />
+			<arg value="${www.target}/javadoc/${version}/" />
+		</exec>
+	</target>
+
+
+	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
 </project>
