@@ -64,8 +64,10 @@ implements Responder, Log {
     */
    CallContext(API api) throws IllegalArgumentException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("api", api);
 
+      // Initialize fields
       _api          = api;
       _state        = UNINITIALIZED;
       _success      = true;
@@ -133,13 +135,6 @@ implements Responder, Log {
    private Function _function;
 
    /**
-    * The response validator currently in effect. This field is initialized by
-    * {@link #reset(ServletRequest)} and can be set to <code>null</code>. This
-    * field is set if and only if {@link #_request} is set.
-    */
-   private ResponseValidator _responseValidator;
-
-   /**
     * The logger associated with the function. This field is set if and only
     * if {@link #_function} is set.
     */
@@ -202,7 +197,6 @@ implements Responder, Log {
       _code              = null;
       _functionName      = null;
       _function          = null;
-      _responseValidator = null;
       _logger            = null;
       _callID            = -1;
       _logPrefix         = null;
@@ -272,11 +266,6 @@ implements Responder, Log {
       _logger    = (_function    == null) ? null : _function.getLogger();
       _callID    = (_function    == null) ? -1   : _function.assignCallID();
       _logPrefix = (_function    == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
-
-      // Determine the response validator
-      _responseValidator = (_function == null)
-                         ? NullResponseValidator.SINGLETON
-                         : _function.getResponseValidator();
 
       // Determine the active session
       if (_function != null && _function.isSessionBased()) {
@@ -495,9 +484,6 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
-      // Validate
-      _responseValidator.startResponse(success, returnCode);
-
       _xmlOutputter.startTag("result");
 
       if (success) {
@@ -552,9 +538,6 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
-      // Validate
-      _responseValidator.param(name, value);
-
       // Write <param name="name">value</param>
       _xmlOutputter.startTag("param");
       _xmlOutputter.attribute("name", name);
@@ -602,9 +585,6 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
-      // Validate
-      _responseValidator.startTag(type);
-
       // Write the start tag
       _xmlOutputter.startTag(type);
       _elementDepth++;
@@ -620,9 +600,6 @@ implements Responder, Log {
       if (_state != START_TAG_OPEN) {
          throw new IllegalStateException("The state is " + _state + '.');
       }
-
-      // Validate
-      _responseValidator.attribute(name, value);
 
       // Temporarily enter the ERROR state
       _state = ERROR;
@@ -641,9 +618,6 @@ implements Responder, Log {
       if (_state != START_TAG_OPEN && _state != WITHIN_ELEMENT) {
          throw new IllegalStateException("The state is " + _state + '.');
       }
-
-      // Validate
-      _responseValidator.pcdata(text);
 
       // Temporarily enter the ERROR state
       _state = ERROR;
@@ -668,9 +642,6 @@ implements Responder, Log {
 
       // Temporarily enter the ERROR state
       _state = ERROR;
-
-      // Validate
-      _responseValidator.endTag();
 
       // End the tag
       _xmlOutputter.endTag();
@@ -728,9 +699,6 @@ implements Responder, Log {
 
       // Temporarily enter the ERROR state
       _state = ERROR;
-
-      // Validate
-      _responseValidator.endResponse();
 
       // Close all open elements
       _xmlOutputter.endDocument();

@@ -82,12 +82,6 @@ implements DefaultResultCodes {
       _version = version;
       _sessionBased = sessionBased;
 
-      if (api.isResponseValidationEnabled()) {
-         _responseValidator = BasicResponseValidator.SINGLETON;
-      } else {
-         _responseValidator = NullResponseValidator.SINGLETON;
-      }
-
       _api.functionAdded(this);
    }
 
@@ -121,11 +115,6 @@ implements DefaultResultCodes {
     * Flag that indicates if this function is session-based.
     */
    private final boolean _sessionBased;
-
-   /**
-    * The current response validator.
-    */
-   private ResponseValidator _responseValidator;
 
    /**
     * Lock object for <code>_callCount</code>.
@@ -265,18 +254,6 @@ implements DefaultResultCodes {
     */
    final String getVersion() {
       return _version;
-   }
-
-   /**
-    * Returns the response validator for this function.
-    *
-    * @return
-    *    the response validator, never <code>null</code>.
-    *
-    * @since XINS 0.50
-    */
-   final ResponseValidator getResponseValidator() {
-      return _responseValidator;
    }
 
    /**
