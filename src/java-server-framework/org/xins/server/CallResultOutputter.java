@@ -47,6 +47,10 @@ final class CallResultOutputter extends Object {
     *
     * @param xslt
     *    the URL of the XSLT to link to, can be <code>null</code>.
+	*
+	* @param compatibility
+	*    the compatibility format for the generated output, 
+	*    can be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>out      == null
@@ -59,7 +63,8 @@ final class CallResultOutputter extends Object {
    public static void output(PrintWriter out,
                              String encoding,
                              CallResult result,
-                             String xslt)
+                             String xslt,
+							 String compatibility)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
@@ -87,17 +92,22 @@ final class CallResultOutputter extends Object {
       String code = result.getErrorCode();
       if (code != null) {
          outputter.attribute("errorcode", code);
+	  }
+	  
+	  if (compatibility != null && compatibility.equals("alpha")) {
 
-         // XXX: For backwards compatibility, write the error code in the
-	 //      'code' attribute and set the 'success' attribute to 'false'
-         outputter.attribute("code", code);
-         outputter.attribute("success", "false");
+		  if (code != null) {
+			 // XXX: For backwards compatibility, write the error code in the
+			 //      'code' attribute and set the 'success' attribute to 'false'
+			 outputter.attribute("code", code);
+			 outputter.attribute("success", "false");
 
-      // XXX: For backwards compatibility, set the 'success' attribute to
-      //      'true'
-      } else {
-         outputter.attribute("success", "true");
-      }
+		  // XXX: For backwards compatibility, set the 'success' attribute to
+		  //      'true'
+		  } else {
+			 outputter.attribute("success", "true");
+		  }
+	  }
 
       // Write the output parameters
       PropertyReader params = result.getParameters();

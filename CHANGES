@@ -1,6 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.202:
 
+* XINS/Java Server Framework:
+  - Added the optional org.xins.server.output.compatibility property that
+    sets the output format compatibility for the returned XML. The APIs that
+    want to keep compatibility with XINS 1.180 or below should set the value
+    to "alpha".
+
 * XINS/Java Common Library:
   - Added a new static method getItemByName() in EnumItem.
   - Changed the getItemByValue() to a static method.

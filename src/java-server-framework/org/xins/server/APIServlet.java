@@ -173,6 +173,12 @@ extends HttpServlet {
    public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
    /**
+    * The name of the runtime property that specifies the compatibility version
+    * that the generated output xml should comply with.
+    */
+   public static final String OUTPUT_COMPATIBILITY_PROPERTY = "org.xins.server.output.compatibility";
+
+   /**
     * The default locale used for starting up when the locale is not defined in
     * command line arguments.
     */
@@ -278,6 +284,11 @@ extends HttpServlet {
     * The properties read from the runtime configuration file.
     */
    private Object _runtimePropertiesLock;
+
+   /**
+    * The output format compatibility for the returned XML.
+    */
+   private String _outputCompatibility;
 
    /**
     * The properties read from the runtime configuration file.
@@ -752,6 +763,9 @@ extends HttpServlet {
             }
          }
 
+         // Store the output compatibility format that should be returned
+         _outputCompatibility = properties.getProperty(OUTPUT_COMPATIBILITY_PROPERTY);
+
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }
    }
@@ -905,7 +919,7 @@ extends HttpServlet {
          PrintWriter out = response.getWriter();
          response.setContentType(RESPONSE_CONTENT_TYPE);
          response.setStatus(HttpServletResponse.SC_OK);
-         CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt);
+         CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt, _outputCompatibility);
          out.flush();
       }
    }
