@@ -30,10 +30,34 @@ implements Servlet {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Constant indicating the <em>uninitialized</em> state. See
+    * {@link #_state}.
+    */
    private static final int UNINITIALIZED = 0;
+
+   /**
+    * Constant indicating the <em>initializing</em> state. See
+    * {@link #_state}.
+    */
    private static final int INITIALIZING = 1;
+
+   /**
+    * Constant indicating the <em>ready</em> state. See
+    * {@link #_state}.
+    */
    private static final int READY = 2;
+
+   /**
+    * Constant indicating the <em>disposing</em> state. See
+    * {@link #_state}.
+    */
    private static final int DISPOSING = 3;
+
+   /**
+    * Constant indicating the <em>disposed</em> state. See
+    * {@link #_state}.
+    */
    private static final int DISPOSED = 4;
 
 
