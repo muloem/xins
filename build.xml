@@ -115,6 +115,8 @@
 
 	<target name="clean" description="Removes all generated files">
 		<delete dir="build" />
+		<delete dir="docs" />
+		<delete dir="demo" />
 	</target>
 
 	<target name="java-common" depends="-init, logdoc-java-common" description="Compiles the XINS/Java common code">
@@ -576,7 +578,7 @@
 		</copy>
 	</target>
 
-	<target name="package" depends="javadoc,java-server,java-client,html-logdoc,copy-docs-demo" description="Builds a complete distribution archive">
+	<target name="package" depends="javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
