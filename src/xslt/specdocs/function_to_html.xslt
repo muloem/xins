@@ -203,6 +203,59 @@
 			<xsl:with-param name="class">inputparameters</xsl:with-param>
 		</xsl:call-template>
 		<xsl:apply-templates select="note" />
+		<xsl:if test="param-combo[count(param-ref) = 0]">
+			<xsl:message terminate="yes">Found param-combo with no param-ref children.</xsl:message>
+		</xsl:if>
+		<xsl:if test="param-combo">
+			<h4>Additional constraints</h4>
+			<ul>
+				<xsl:apply-templates select="param-combo" />
+			</ul>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo[@type='exclusive-or']">
+		<li>
+			<em>Exactly</em>
+			<xsl:text> one of these parameters must be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo[@type='inclusive-or']">
+		<li>
+			<xsl:text>At </xsl:text>
+			<em>least</em>
+			<xsl:text> one of these parameters must be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo[@type='all-or-none']">
+		<li>
+			<xsl:text>Either </xsl:text>
+			<em>all</em>
+			<xsl:text> of these parameters must be set, or </xsl:text>
+			<em>none</em>
+			<xsl:text> of them can be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo" priority="-1">
+		<xsl:message terminate="yes">Unrecognised type of param-combo.</xsl:message>
+	</xsl:template>
+
+	<xsl:template match="input/param-combo" mode="textlist">
+		<xsl:for-each select="param-ref">
+			<xsl:if test="position() &gt; 1">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+			<xsl:value-of select="@name" />
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="function/output">
