@@ -8,10 +8,15 @@ import org.xins.util.collections.PropertyReader;
 /**
  * Lifespan manager. Abstract base class for lifespan management classes
  * registered with an API implementation. Implementations must have a public
- * no-argument constructor. The {@link #init(PropertyReader,PropertyReader)}
- * method will be called during initialization and re-initialization of the
- * XINS/Java Server Framework, while {@link #destroy()} will be called at
- * shutdown.
+ * no-argument constructor.
+ *
+ * <p>The {@link #bootstrap(PropertyReader)} method will
+ * be called exactly once during the boostrap of this lifespan manager.
+ *
+ * <p>After that the {@link #init(PropertyReader)} method will be called to
+ * initialize or re-initialize this lifespan manager.
+ *
+ * <p>The {@link #destroy()} method will be called at shutdown.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
