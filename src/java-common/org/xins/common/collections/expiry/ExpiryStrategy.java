@@ -215,7 +215,8 @@ public final class ExpiryStrategy extends Object {
     * @throws IllegalStateException
     *    if this strategy was already stopped.
     */
-   public void stop() throws IllegalStateException {
+   public void stop()
+   throws IllegalStateException {
 
       // Check preconditions
       if (_stop) {
@@ -226,6 +227,10 @@ public final class ExpiryStrategy extends Object {
       _timerThread.interrupt();
    }
 
+   /**
+    * Callback method indicating the next tick has taken place. This method is
+    * called from (and on) the timer thread.
+    */
    private void doTick() {
       synchronized (_folders) {
          int count = _folders.size();
@@ -236,6 +241,12 @@ public final class ExpiryStrategy extends Object {
       }
    }
 
+   /**
+    * Returns a textual representation of this object.
+    *
+    * @return
+    *    a textual representation of this object, never <code>null</code>.
+    */
    public String toString() {
       return "XINS ExpiryStrategy #" + _instanceNum;
    }
@@ -245,12 +256,23 @@ public final class ExpiryStrategy extends Object {
    // Inner classes
    //-------------------------------------------------------------------------
 
+   /**
+    * Timer thread for an expiry strategy. It calls back the expiry strategy
+    * at each so-called 'tick'. The interval between ticks is the precision of
+    * the strategy.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
    private final class TimerThread extends Thread {
 
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>TimerThread</code>.
+       */
       public TimerThread() {
          super(ExpiryStrategy.this.toString() + " timer thread");
       }
@@ -264,6 +286,10 @@ public final class ExpiryStrategy extends Object {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Runs this thread. The thread keeps running until the expiry strategy
+       * is stopped.
+       */
       public void run() {
 
          Log.log_3405(getName());
@@ -282,6 +308,12 @@ public final class ExpiryStrategy extends Object {
          Log.log_3406(getName());
       }
 
+      /**
+       * Returns a textual representation of this timer thread object.
+       *
+       * @return
+       *    a textual representation of this object, never <code>null</code>.
+       */
       public String toString() {
          return getName();
       }
