@@ -192,4 +192,64 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the list of targets for which the call failed. The returned
+    * {@link List} can be <code>null</code>, but if it is not then all
+    * elements in the {@link List} are {@link ServiceDescriptor} objects, and
+    * it contains no <code>null</code> elements. It may contain duplicates,
+    * though.
+    *
+    * <p>The returned {@link List} is unmodifiable.
+    *
+    * <p>If this method returns <code>null</code>, then so will
+    * {@link #getExceptions()} and vice versa.
+    *
+    * @return
+    *    the {@link List} of failed targets, or <code>null</code> if the first
+    *    attempt succeeded.
+    */
+   public List getFailedTargets() {
+      return _failedTargets;
+   }
+
+   /**
+    * The list of caught exceptions, one per failed target. The returned
+    * {@link List} be <code>null</code>, but if it is not then all elements in
+    * the {@link List} are {@link Throwable} objects, and it contains no
+    * <code>null</code> elements. It may contain duplicates, though.
+    *
+    * <p>The returned {@link List} is unmodifiable.
+    *
+    * <p>If this method returns <code>null</code>, then so will
+    * {@link #getFailedTargets()} and vice versa.
+    *
+    * @return
+    *    the {@link List} of exceptions, or <code>null</code> if the first
+    *    attempt succeeded.
+    */
+   public List getExceptions() {
+      return _exceptions;
+   }
+
+   /**
+    * Returns the target for which the call succeeded.
+    *
+    * @return
+    *    the {@link ServiceDescriptor target} for which the call succeeded,
+    *    not <code>null</code>.
+    */
+   public ServiceDescriptor getSucceededTarget() {
+      return _succeededTarget;
+   }
+
+   /**
+    * Returns the actual result object.
+    *
+    * @return
+    *    the result object, or <code>null</code>.
+    */
+   public Object getResult() {
+      return _result;
+   }
 }
