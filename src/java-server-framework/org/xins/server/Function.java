@@ -212,12 +212,17 @@ implements DefaultResultCodes {
     */
    CallResult handleCall(long start, ServletRequest request) {
 
+      // TODO: Know nothing about servlets, so do not accept the
+      //       ServletRequest argument
+
+      String ip = request.getRemoteAddr();
+
       // Assign a call ID
       int callID = assignCallID();
 
       // Check if this function is enabled
       if (!_enabled) {
-         performedCall(start, callID, DISABLED_FUNCTION_RESULT);
+         performedCall(ip, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
@@ -260,7 +265,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(start, callID, result);
+      performedCall(ip, start, callID, result);
 
       return result;
    }
@@ -287,6 +292,9 @@ implements DefaultResultCodes {
     * <p />This method does not <em>have</em> to be called. If statistics
     * gathering is disabled, then this method should not be called.
     *
+    * @param ip
+    *    the IP address of the other end.
+    *
     * @param start
     *    the start time, in milliseconds since January 1, 1970, not
     *    <code>null</code>.
@@ -297,7 +305,7 @@ implements DefaultResultCodes {
     * @param result
     *    the function result code, cannot be <code>null</code>.
     */
-   private final void performedCall(long start, int callID, CallResult result) {
+   private final void performedCall(String ip, long start, int callID, CallResult result) {
 
       // TODO: Accept ResultCode
 
@@ -308,11 +316,14 @@ implements DefaultResultCodes {
       long duration = _statistics.recordCall(start, result.isSuccess());
 
       // Call succeeded
+      String code;
       if (result.isSuccess()) {
+         code = null;
          Log.log_1514(_name, callID, duration);
 
       // Call failed
       } else {
+         code = result.getErrorCode();
          Log.log_1516(_name, callID, duration, result.getErrorCode());
 
          // log the parameters
@@ -325,5 +336,7 @@ implements DefaultResultCodes {
             }
          }
       }
+
+      Log.log_1540(ip, _name, callID, start, duration, code);
    }
 }
