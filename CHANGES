@@ -4,6 +4,12 @@ CHANGES INTRODUCED IN XINS 0.137:
 * XINS/Java Client Framework:
   - Added ping() method to AbstractCAPI class.
 
+* Generated CAPI classes:
+  - Generating package.html.
+
+* Generated type classes:
+  - Generating package.html.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.136:
 

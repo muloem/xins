@@ -244,6 +244,18 @@
 						</xsl:for-each>
 							
 						<style
+						in="{$api_file}"
+						out="{$javaDestDir}/{$packageAsDir}/package.html"
+						style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
+							<param name="xins_version" expression="{$xins_version}"  />
+							<param name="project_home" expression="{$project_home}"  />
+							<param name="project_file" expression="{$project_file}"  />
+							<param name="specsdir"     expression="{$specsdir}"      />
+							<param name="api"          expression="{$api}"           />
+							<param name="api_file"     expression="{$api_file}"      />
+							<param name="package"      expression="{$package}"       />
+						</style>
+						<style
 						basedir="{$copiedTypesDir}"
 						destdir="{$javaDestDir}/{$packageAsDir}/"
 						style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
@@ -576,6 +588,18 @@
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
 					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
+						<param name="xins_version" expression="{$xins_version}"  />
+						<param name="project_home" expression="{$project_home}"  />
+						<param name="project_file" expression="{$project_file}"  />
+						<param name="specsdir"     expression="{$specsdir}"      />
+						<param name="api"          expression="{$api}"           />
+						<param name="api_file"     expression="{$api_file}"      />
+						<param name="package"      expression="{$clientPackage}" />
+					</style>
+					<style
+					in="{$api_file}"
+					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/package.html"
+					style="{$xins_home}/src/xslt/java-capi/api_to_packagehtml.xslt">
 						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="project_file" expression="{$project_file}"  />

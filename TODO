@@ -87,7 +87,7 @@ GENERATED TEST FORMS
 ______________________________________________________________________________
 GENERATED TYPE CLASSES
 
-* Generate a package.html file per package.
+* None
 
 ______________________________________________________________________________
 GENERATED XINS/JAVA SERVER FUNDAMENT CLASSES
@@ -99,7 +99,6 @@ GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
 * Add a method to the CAPI interface that provides functionality to determine
   what XINS version was used to generate the class.
-* Generate a package.html file per package.
 
 ______________________________________________________________________________
 MISCELLANEOUS
