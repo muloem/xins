@@ -109,9 +109,10 @@ public class CAPITests extends TestCase {
       CAPI capi;
       String url;
 
-      BasicPropertyReader properties = new BasicPropertyReader();
+      BasicPropertyReader properties;
 
       // Pass nulls (should fail)
+      properties = new BasicPropertyReader();
       try {
          CAPI.create((PropertyReader) null, (String) null);
          fail("Expected IllegalArgumentException.");
@@ -153,6 +154,7 @@ public class CAPITests extends TestCase {
       }
 
       // Pass property set with missing property
+      properties = new BasicPropertyReader();
       properties.set("capis.allinone",     "group, ordered, one, two");
       properties.set("capis.allinone.one", "service, http://xins.org/, 5000");
       try {
@@ -163,6 +165,7 @@ public class CAPITests extends TestCase {
       }
 
       // Pass invalid property value
+      properties = new BasicPropertyReader();
       url = "bla://www.xins.org/";
       properties.set("capis.allinone", url);
       try {
@@ -174,6 +177,7 @@ public class CAPITests extends TestCase {
       }
 
       // Pass URL with unsupported protocol at root
+      properties = new BasicPropertyReader();
       url = "bla://www.xins.org/";
       properties.set("capis.allinone", "service, " + url + ", 5000");
       try {
@@ -190,6 +194,35 @@ public class CAPITests extends TestCase {
       try {
          CAPI.create(properties, "allinone", (XINSCallConfig) null);
       } catch (InvalidPropertyValueException exception) {
+         Throwable cause = ExceptionUtils.getCause(exception);
+         assertNotNull("Expected InvalidPropertyValueException to have an UnsupportedProtocolException as the cause.", cause);
+         assertTrue("Expected cause of InvalidPropertyValueException to be an UnsupportedProtocolException instead of an instance of class " + cause.getClass().getName(), cause instanceof UnsupportedProtocolException);
+         UnsupportedProtocolException upe = (UnsupportedProtocolException) cause;
+         assertEquals(url, upe.getTargetDescriptor().getURL());
+      }
+
+      // Pass URL with unsupported protocol at leaf
+      properties = new BasicPropertyReader();
+      url = "bla://www.xins.org/";
+      properties.set("capis.allinone", "group, ordered, one, two");
+      properties.set("capis.allinone.one", "service, http://xins.org/, 5000");
+      properties.set("capis.allinone.two", "service, " + url + ", 5000");
+      try {
+         CAPI.create(properties, "allinone");
+      } catch (InvalidPropertyValueException exception) {
+         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + '"', "capis.allinone.two", exception.getPropertyName());
+         assertEquals(properties.get("capis.allinone.two"), exception.getPropertyValue());
+         Throwable cause = ExceptionUtils.getCause(exception);
+         assertNotNull("Expected InvalidPropertyValueException to have an UnsupportedProtocolException as the cause.", cause);
+         assertTrue("Expected cause of InvalidPropertyValueException to be an UnsupportedProtocolException instead of an instance of class " + cause.getClass().getName(), cause instanceof UnsupportedProtocolException);
+         UnsupportedProtocolException upe = (UnsupportedProtocolException) cause;
+         assertEquals(url, upe.getTargetDescriptor().getURL());
+      }
+      try {
+         CAPI.create(properties, "allinone", (XINSCallConfig) null);
+      } catch (InvalidPropertyValueException exception) {
+         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + '"', "capis.allinone.two", exception.getPropertyName());
+         assertEquals(properties.get("capis.allinone.two"), exception.getPropertyValue());
          Throwable cause = ExceptionUtils.getCause(exception);
          assertNotNull("Expected InvalidPropertyValueException to have an UnsupportedProtocolException as the cause.", cause);
          assertTrue("Expected cause of InvalidPropertyValueException to be an UnsupportedProtocolException instead of an instance of class " + cause.getClass().getName(), cause instanceof UnsupportedProtocolException);
