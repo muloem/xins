@@ -77,7 +77,7 @@
 			<param name="socketTimeOut"     type="int32"        nullable="false" />
 		</entry>
 		<entry id="2101" level="INFO">
-			<description>XINS service called.</description>
+			<description>Successful XINS result received.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
@@ -121,14 +121,7 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
-		<entry id="2107" level="INFO">
-			<description>XINS result received, status code is considered acceptable.</description>
-			<param name="url"        type="text"         nullable="false" />
-			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
-			<param name="duration"   type="int64"        nullable="false" />
-			<param name="code"       type="int32"        nullable="false" />
-		</entry>
+		<!-- XXX: 2107 -->
 		<entry id="2108" level="INFO">
 			<description>XINS result received, status code is considered unacceptable.</description>
 			<param name="url"        type="text"         nullable="false" />
@@ -152,8 +145,8 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="detail"     type="text"         nullable="false" />
 		</entry>
-		<entry id="2111" level="INFO" exception="false">
-			<description>Successful XINS result received.</description>
+		<entry id="2111" level="INFO" exception="true">
+			<description>Unexpected exception while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
