@@ -235,7 +235,18 @@ public abstract class ]]></xsl:text>
 					<xsl:text>)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
-         context.startResponse(INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);
+         if (debugEnabled) {
+            context.debug("Either </xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> and </xsl:if>
+					<xsl:text>\"</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>\"</xsl:text>
+				</xsl:for-each>
+				<xsl:text> should all be set, or none these should be set.");
+         }</xsl:text>
+
 			</xsl:for-each>
 			<xsl:if test="input/param[not(@type='text' or string-length(@type) = 0)]">
 				<xsl:text>
