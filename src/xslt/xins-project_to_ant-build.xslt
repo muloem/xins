@@ -94,6 +94,13 @@ $Id$
 						<xsl:text>.typ</xsl:text>
 					</xsl:for-each>
 				</xsl:variable>
+				<xsl:variable name="resultcodeIncludes">
+					<xsl:for-each select="document($api_file)/api/resultcode">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:value-of select="@name" />
+						<xsl:text>.rcd</xsl:text>
+					</xsl:for-each>
+				</xsl:variable>
 				
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
@@ -121,6 +128,14 @@ $Id$
 						destdir="{$project_home}/build/specdocs/{$api}"
 						style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
 						includes="{$typeIncludes}">
+						<param name="project_home" expression="{$project_home}" />
+						<param name="specsdir"     expression="{$specsdir}"     />
+					</style>
+					<style
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
+						style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
+						includes="{$resultcodeIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
