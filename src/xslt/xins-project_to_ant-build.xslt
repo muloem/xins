@@ -141,63 +141,66 @@ APIs in this project are:
 
 			<target name="-load-dtds">
 				<xmlcatalog id="all-dtds">
+					<classpath>
+						<pathelement path="{$xins_home}/src/dtd"/>
+					</classpath>
 					<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
+					     location="xins-project_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/api_1_0_alpha.dtd" />
+					     location="api_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/function_1_0_alpha.dtd" />
+					     location="function_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Type 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/type_1_0_alpha.dtd" />
+					     location="type_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
+					     location="resultcode_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/log_1_0_alpha.dtd" />
+					     location="log_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
-					     location="{$xins_home}/src/dtd/translation-bundle_1_0_alpha.dtd" />
+					     location="translation-bundle_1_0_alpha.dtd" />
 
 					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
-					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
+					     location="xins-project_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-					     location="{$xins_home}/src/dtd/api_1_0.dtd" />
+					     location="api_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.0//EN"
-					     location="{$xins_home}/src/dtd/function_1_0.dtd" />
+					     location="function_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Type 1.0//EN"
-					     location="{$xins_home}/src/dtd/type_1_0.dtd" />
+					     location="type_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
-					     location="{$xins_home}/src/dtd/resultcode_1_0.dtd" />
+					     location="resultcode_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Implementation 1.0//EN"
-					     location="{$xins_home}/src/dtd/impl_1_0.dtd" />
+					     location="impl_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Environments 1.0//EN"
-					     location="{$xins_home}/src/dtd/environments_1_0.dtd" />
+					     location="environments_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
-					     location="{$xins_home}/src/dtd/log_1_0.dtd" />
+					     location="log_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN"
-					     location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd" />
+					     location="translation-bundle_1_0.dtd" />
 
 					<dtd publicId="-//XINS//DTD XINS Project 1.1//EN"
-					     location="{$xins_home}/src/dtd/xins-project_1_1.dtd" />
+					     location="xins-project_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD XINS API 1.1//EN"
-					     location="{$xins_home}/src/dtd/api_1_1.dtd" />
+					     location="api_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.1//EN"
-					     location="{$xins_home}/src/dtd/function_1_1.dtd" />
+					     location="function_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Type 1.1//EN"
-					     location="{$xins_home}/src/dtd/type_1_1.dtd" />
+					     location="type_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.1//EN"
-					     location="{$xins_home}/src/dtd/resultcode_1_1.dtd" />
+					     location="resultcode_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Implementation 1.1//EN"
-					     location="{$xins_home}/src/dtd/impl_1_1.dtd" />
+					     location="impl_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Environments 1.1//EN"
-					     location="{$xins_home}/src/dtd/environments_1_1.dtd" />
+					     location="environments_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Logdoc 1.1//EN"
-					     location="{$xins_home}/src/dtd/log_1_1.dtd" />
+					     location="log_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN"
-					     location="{$xins_home}/src/dtd/translation-bundle_1_1.dtd" />
+					     location="translation-bundle_1_1.dtd" />
 
 					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
-					     location="{$xins_home}/src/dtd/impl_1_2.dtd" />
+					     location="impl_1_2.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.2//EN"
-					     location="{$xins_home}/src/dtd/function_1_2.dtd" />
+					     location="function_1_2.dtd" />
 				</xmlcatalog>
 			</target>
 

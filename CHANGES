@@ -51,6 +51,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added support for the jikes compiler.
   - Added run-<api> target that runs your API implementation.
   - Replace the "for-each api" loop with an apply-template.
+  - Fixed SF.net bug #1168317: Used another method to load local DTD files 
+    that also works with directories containing spaces.
 
 * Examples:
   - Added .version.properties in the demo directory of the release.
