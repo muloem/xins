@@ -76,7 +76,7 @@
 				<echo message="server-&lt;api&gt;        Generates the war file, the Javadoc API docs for the server side and the specdocs for the API." />
 				<echo message="jar-&lt;api&gt;           Generates and compiles the Java classes for the client-side API." />
 				<echo message="javadoc-capi-&lt;api&gt;  Generates Javadoc API docs for the client-side API." />
-				<echo message="client-&lt;api&gt;        Generates the Javadoc API docs for the client side and the client jar file for the API." />
+				<echo message="client-&lt;api&gt;        Generates the Javadoc API docs for the client side and the client JAR file for the API." />
 				<echo message="clean-&lt;api&gt;         Cleans everything for the API." />
 				<echo message="rebuild-&lt;api&gt;       Regenerates everything for the API." />
 				<echo message="all-&lt;api&gt;           Generates everything for the API." />
@@ -1030,7 +1030,7 @@
 
 				<target name="client-{$api}"
 				        depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}"
-				        description="Generates the Javadoc API docs for the client side and the client jar file for the '{$api}' API stubs and zip the result.">
+				        description="Generates the Javadoc API docs for the client side and the client JAR file for the '{$api}' API stubs and zip the result.">
 					<zip destfile="{$builddir}/specdocs/{$api}/{$api}-client.zip">
 						<fileset dir="{$builddir}/capis" includes="{$api}-capi.jar" />
 						<zipfileset dir="{$builddir}/javadoc-capi/{$api}" prefix="javadoc" />
