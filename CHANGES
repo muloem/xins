@@ -5,7 +5,11 @@ CHANGES INTRODUCED IN XINS 0.121:
   longer supported.
 
 * XINS/Java Server Framework:
-  - Some small improvements.
+  - Rewrote the initialization procedure and most of the log messages.
+  - Added sensibility checks.
+  - Soft requirement is now that the Java VM be started with a property
+    "org.xins.server.config" pointing to a configuration file. This
+    configuration file is automatically reloaded every 10 seconds.
   - The _NoOp function now also works if the API is in the process of shutting
     down.
 
