@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.182:
 * XINS/Java Common Library:
   - Added a regression test for the PatternType.
 
+* XINS/Java Client Framework:
+  - Improved description of 'parameters' argument in class XINSServiceCaller,
+    in the call(...) methods.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.181:
 
