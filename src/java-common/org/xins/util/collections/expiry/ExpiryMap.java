@@ -14,6 +14,8 @@ import java.util.Set;
  * Expiry map. Items in this map will expire after a predefined amount of
  * time, unless they're access within that timeframe.
  *
+ * <p>This method is thread-safe.
+ *
  * <p>This implementation of the {@link Map} interface violates that
  * interface, because {@link #put(Object,Object)} will not return the
  * previous value associated with specified key. This is because getting the
@@ -127,8 +129,26 @@ extends AbstractMap {
    }
 
    public boolean isEmpty() {
-      // TODO: Improve performance
-      return size() < 1;
+
+      // XXX: This method may return a value that is no longer valid when it
+      //      returns the value, because of the multi-threaded nature
+
+      synchronized (_recentlyAccessed) {
+         if (_recentlyAccessed.isEmpty() == false) {
+            return false;
+         }
+      }
+
+      for (int i = 0; i < _slots.length; i++) {
+         Map slot = _slots[i];
+         synchronized (slot) {
+            if (slot.isEmpty() == false) {
+               return false;
+            }
+         }
+      }
+
+      return true;
    }
 
    public boolean containsKey(Object key) {
