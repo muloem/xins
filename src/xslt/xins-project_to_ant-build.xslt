@@ -493,7 +493,6 @@
 					<!-- xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/',                      $api)" /-->
 					<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api)" />
 					<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api)" />
-					<xsl:variable name="javaCombinedDir" select="concat($project_home,    '/build/java-combined/',  $api)" />
 					<!-- This test is not garanted to work with all XSLT processors. -->
 					<xsl:variable name="logdoc_dir">
 						<xsl:choose>
@@ -584,7 +583,7 @@
 						</dependset>
 						<dependset>
 							<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
-							<targetfileset dir="{$javaCombinedDir}/{$packageAsDir}" includes="*.java"/>
+							<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 						</dependset>
 						<xmlvalidate file="{$api_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
@@ -696,26 +695,18 @@
 							</xsl:if>
 						</xsl:if>
 
-						<!-- Copy all .java files to a single directory -->
-						<mkdir dir="{$javaCombinedDir}" />
-						<copy todir="{$javaCombinedDir}">
-							<fileset dir="{$javaImplDir}" includes="**/*.java" />
-						</copy>
-						<copy todir="{$javaCombinedDir}" overwrite="true">
-							<fileset dir="{$javaDestDir}" includes="**/*.java" />
-						</copy>
-
 						<!-- Compile all classes -->
 						<mkdir dir="{$classesDestDir}" />
 						<!-- If not set by the user set it to true. -->
 						<property name="deprecated" value="true" />
 						<javac
-						srcdir="{$javaCombinedDir}"
 						destdir="{$classesDestDir}"
 						debug="true"
 						deprecation="${{deprecated}}"
 						source="1.4"
 						target="1.4">
+							<src path="{$javaDestDir}" />
+							<src path="{$javaImplDir}" />
 							<classpath>
 								<xsl:if test="$apiHasTypes = 'true'">
 									<pathelement path="{$typeClassesDir}" />
@@ -791,7 +782,6 @@
 						<property file="{$xins_home}/.version.properties" />
 						<mkdir dir="build/javadoc-api/{$api}" />
 						<javadoc
-						sourcepath="build/java-combined/{$api}"
 						destdir="build/javadoc-api/{$api}"
 						version="yes"
 						use="yes"
@@ -801,7 +791,8 @@
 						source="1.4"
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
-							<packageset dir="build/java-combined/{$api}" />
+							<packageset dir="{$javaDestDir}" />
+							<packageset dir="{$javaImplDir}" />
 							<xsl:if test="$apiHasTypes = 'true'">
 								<packageset dir="build/java-types/{$api}" />
 							</xsl:if>

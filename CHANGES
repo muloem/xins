@@ -34,6 +34,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 * Generation of server-side Java code:
   - An object is created for the data input parameter.
 
+* Generated build file:
+  - Fixed bug #1078317: Compilation and Javadoc of the API is now done using 
+    the files of the impl directory without copying them to the build 
+    directory.
+
 * Build and release process:
   - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
 
