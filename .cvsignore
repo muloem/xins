@@ -10,3 +10,4 @@ depends
 .directory
 .nbintdb
 jcoverage.ser
+.*.swp
