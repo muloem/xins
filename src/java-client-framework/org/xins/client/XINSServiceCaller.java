@@ -13,6 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
+import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
@@ -20,6 +21,7 @@ import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
+import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
@@ -183,24 +185,25 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.1.0
     */
-   public XINSServiceCaller(Descriptor descriptor, HTTPMethod httpMethod)
+   public XINSServiceCaller(Descriptor descriptor, XINSCallConfig callConfig)
    throws IllegalArgumentException, UnsupportedProtocolException {
 
       // Trace and then call constructor of superclass
-      super(trace(descriptor));
-
+      super(trace(descriptor), callConfig);
 
       // Check that all targets have a supported protocol
       Iterator iterator = descriptor.iterateTargets();
       while (iterator.hasNext()) {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
-         // FIXME: Throw UnsupportedProtocolException as required
+         String url = target.getURL().toLowerCase();
+         if (! url.startsWith("http://")) {
+            throw new UnsupportedProtocolException(target);
+         }
       }
 
       // Initialize the fields
       _parser     = new XINSCallResultParser();
       _httpCaller = new HTTPServiceCaller(descriptor);
-      _httpMethod = (httpMethod != null) ? httpMethod : HTTPMethod.POST;
 
       // TRACE: Leave constructor
       Log.log_2002(CLASSNAME, null);
@@ -242,28 +245,108 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private final HTTPServiceCaller _httpCaller;
 
-   /**
-    * The HTTP method to use, if none is specified in the XINS call request.
-    * The default is {@link HTTPMethod#POST}. This field cannot be
-    * <code>null</code>.
-    */
-   private final HTTPMethod _httpMethod;
-
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    /**
-    * Get the HTTP method to use if none is specified in a XINS call request.
-    * The default is {@link HTTPMethod#POST}.
+    * Executes the specified XINS call request towards one of the associated
+    * targets. If the call succeeds with one of these targets, then a
+    * {@link XINSCallResult} object is returned. Otherwise, if none of the
+    * targets could successfully be called, a
+    * {@link org.xins.common.service.CallException} is thrown.
+    *
+    * <p>If the call succeeds, but the result is unsuccessful, then an
+    * {@link UnsuccessfulXINSCallException} is thrown, which contains the
+    * result.
+    *
+    * @param request
+    *    the call request, not <code>null</code>.
+    *
+    * @param callConfig
+    *    the call configuration, or <code>null</code> if the one specified in
+    *    the request should be used, or -if the request does not specify any
+    *    either- the one specified for this service caller.
     *
     * @return
-    *    the HTTP method to use if none is specified in a XINS call request,
-    *    never <code>null</code>.
+    *    the result of the call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
+    *
+    * @throws XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts failed as well.
+    *
+    * @since XINS 1.1.0
     */
-   HTTPMethod getHTTPMethod() {
-      return _httpMethod;
+   public XINSCallResult call(XINSCallRequest request,
+                              XINSCallConfig  callConfig)
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException,
+          XINSCallException {
+
+      final String METHODNAME = "call(XINSCallRequest,XINSCallConfig)";
+
+      // TRACE: Enter method
+      Log.log_2003(CLASSNAME, METHODNAME, null);
+
+      long start = System.currentTimeMillis();
+
+      XINSCallResult result;
+      try {
+         result = (XINSCallResult) doCall(request,callConfig);
+
+      // Allow only GenericCallException, HTTPCallException and
+      // XINSCallException to proceed
+      } catch (Throwable exception) {
+         long               duration  = System.currentTimeMillis() - start;
+         String             function  = request.getFunctionName();
+         PropertyReader     p         = request.getParameters();
+         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "-");
+         Log.log_2113(function, params, duration);
+
+         if (exception instanceof GenericCallException) {
+            throw (GenericCallException) exception;
+         } if (exception instanceof HTTPCallException) {
+            throw (HTTPCallException) exception;
+         } if (exception instanceof XINSCallException) {
+            throw (XINSCallException) exception;
+
+         // Unknown kind of exception. This should never happen. Log and
+         // re-throw the exception, packed up as an Error.
+         } else {
+            final String DOCALL_METHODNAME = "doCall(CallRequest,CallConfig)";
+            Log.log_2052(exception, CLASSNAME, DOCALL_METHODNAME);
+
+            FastStringBuffer message = new FastStringBuffer(190);
+            message.append(CLASSNAME);
+            message.append('.');
+            message.append(DOCALL_METHODNAME);
+            message.append(" threw unexpected ");
+            message.append(exception.getClass().getName());
+            message.append(". Message: ");
+            message.append(TextUtils.quote(exception.getMessage()));
+            message.append('.');
+
+            throw new Error(message.toString(), exception);
+         }
+      }
+
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, METHODNAME, null);
+
+      return result;
    }
 
    /**
@@ -303,67 +386,19 @@ public final class XINSServiceCaller extends ServiceCaller {
           GenericCallException,
           HTTPCallException,
           XINSCallException {
-
-      final String METHODNAME = "call(XINSCallException)";
-
-      // TRACE: Enter method
-      Log.log_2003(CLASSNAME, METHODNAME, null);
-
-      long start = System.currentTimeMillis();
-
-      XINSCallResult result;
-      try {
-         result = (XINSCallResult) doCall(request);
-
-      // Allow only GenericCallException, HTTPCallException and
-      // XINSCallException to proceed
-      } catch (Throwable exception) {
-         long               duration  = System.currentTimeMillis() - start;
-         String             function  = request.getFunctionName();
-         PropertyReader     p         = request.getParameters();
-         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "-");
-         Log.log_2113(function, params, duration);
-
-         if (exception instanceof GenericCallException) {
-            throw (GenericCallException) exception;
-         } if (exception instanceof HTTPCallException) {
-            throw (HTTPCallException) exception;
-         } if (exception instanceof XINSCallException) {
-            throw (XINSCallException) exception;
-
-         // Unknown kind of exception. This should never happen. Log and
-         // re-throw the exception, packed up as an Error.
-         } else {
-            final String DOCALL_METHODNAME = "doCall(CallRequest)";
-            Log.log_2052(exception, CLASSNAME, DOCALL_METHODNAME);
-
-            FastStringBuffer message = new FastStringBuffer(190);
-            message.append(CLASSNAME);
-            message.append('.');
-            message.append(DOCALL_METHODNAME);
-            message.append(" threw unexpected ");
-            message.append(exception.getClass().getName());
-            message.append(". Message: ");
-            message.append(TextUtils.quote(exception.getMessage()));
-            message.append('.');
-
-            throw new Error(message.toString(), exception);
-         }
-      }
-
-      // TRACE: Leave method
-      Log.log_2005(CLASSNAME, METHODNAME, null);
-
-      return result;
+      return call(request, null);
    }
 
    /**
-    * Calls the specified target using the specified subject. If the call
+    * Executes the specified request on the given target. If the call
     * succeeds, then a {@link XINSCallResult} object is returned, otherwise a
     * {@link org.xins.common.service.CallException} is thrown.
     *
     * @param target
     *    the target to call, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the call configuration, never <code>null</code>.
     *
     * @param request
     *    the call request to be executed, must be an instance of class
@@ -374,7 +409,9 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    class {@link XINSCallResult}, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null || target == null</code>.
+    *    if <code>request    == null
+    *          || callConfig == null
+    *          || target     == null</code>.
     *
     * @throws ClassCastException
     *    if the specified <code>request</code> object is not <code>null</code>
@@ -391,6 +428,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    if the call attempt failed due to a XINS-related reason.
     */
    protected Object doCallImpl(CallRequest      request,
+                               CallConfig       callConfig,
                                TargetDescriptor target)
    throws IllegalArgumentException,
           ClassCastException,
@@ -404,10 +442,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       Log.log_2003(CLASSNAME, METHODNAME, null);
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request, "target", target);
+      MandatoryArgumentChecker.check("request",    request,
+                                     "callConfig", callConfig,
+                                     "target",     target);
 
-      // Convert the request to the appropriate class
+      // Convert arguments to the appropriate classes
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
+      XINSCallConfig  xinsConfig  = (XINSCallConfig)  callConfig;
 
       // Get URL, function and parameters (for logging)
       String             url       = target.getURL();
@@ -424,7 +465,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       Log.log_2100(url, function, params, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Get the contained HTTP request from the XINS request
-      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest(_httpMethod);
+      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
+
+      // Convert XINSCallConfig to HTTPCallConfig
+      HTTPCallConfig httpConfig = xinsConfig.getHTTPCallConfig();
 
       // Determine the start time. Only required when an unexpected kind of
       // exception is caught.
@@ -434,7 +478,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       HTTPCallResult httpResult;
       long duration;
       try {
-         httpResult = _httpCaller.call(httpRequest, target);
+         httpResult = _httpCaller.call(httpRequest, httpConfig, target);
 
       // Call failed due to a generic service calling error
       } catch (GenericCallException exception) {
