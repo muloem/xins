@@ -576,7 +576,7 @@
 	depends="-pre-release-checks">
 		<property name="tagname" value="RELEASE_${version.major}_${version.minor}" />
 		<echo message="Tagging ${tagname}" />
-		<cvs failonerror="true" command="tag ${tagname}" quiet="true" />
+		<cvs failonerror="true" command="tag -F ${tagname}" quiet="true" />
 	</target>
 
 	<target name="upload-changes" depends="-init">
