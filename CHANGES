@@ -24,6 +24,15 @@ CHANGES INTRODUCED IN XINS 0.201:
 * XINS/Java Client Framework:
   - CallException constructors that get a cause exception as an argument now
     determine the root cause of that exception and use that as the real cause.
+  - Added getTarget method to class CallException. It returns the
+    TargetDescriptor.
+  - Changed the access modifiers for CallException and its subclasses so that
+    they cannot be instantiated outside the package.
+  - Added new constructors to the following subclasses of class CallException
+    that take a TargetDescriptor argument and a CallRequest argument, and
+    deprecated the old constructors:
+    . CallIOException
+    . ConnectException
 
 * XINS/Java Common Library:
   - PropertyReader interface no longer directly extends LogdocSerializable.
