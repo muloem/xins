@@ -14,6 +14,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Descriptor for a single target service. A target service descriptor defines
@@ -223,18 +224,58 @@ public final class TargetDescriptor extends Descriptor {
          throw new MalformedURLException(url);
       }
 
+      // Convert negative time-outs to 0
+      timeOut           = (timeOut           > 0) ? timeOut           : 0;
+      connectionTimeOut = (connectionTimeOut > 0) ? connectionTimeOut : 0;
+      socketTimeOut     = (socketTimeOut     > 0) ? socketTimeOut     : 0;
+
+      // If either connection or socket time-out is greater than total
+      // time-out, then limit it to the total time-out
+      connectionTimeOut = (connectionTimeOut < timeOut) ? connectionTimeOut : timeOut;
+      socketTimeOut     = (socketTimeOut     < timeOut) ? socketTimeOut     : timeOut;
+
       // Set fields
       _url               = url;
       _timeOut           = timeOut;
-      _connectionTimeOut = (connectionTimeOut < timeOut) ? connectionTimeOut : timeOut;
-      _socketTimeOut     = (socketTimeOut     < timeOut) ? socketTimeOut     : timeOut;
+      _connectionTimeOut = connectionTimeOut;
+      _socketTimeOut     = socketTimeOut;
       _crc               = computeCRC32(url);
+
+      // Convert to a string
+      FastStringBuffer buffer = new FastStringBuffer(290, "TargetDescriptor(url=\"");
+      buffer.append(url);
+      buffer.append("\"; total time-out is ");
+      if (_timeOut < 1) {
+         buffer.append("disabled; connection time-out is ");
+      } else {
+         buffer.append(_timeOut);
+         buffer.append(" ms; connection time-out is ");
+      }
+      if (_connectionTimeOut < 1) {
+         buffer.append("disabled; socket time-out is ");
+      } else {
+         buffer.append(_connectionTimeOut);
+         buffer.append(" ms; socket time-out is ");
+      }
+      if (_socketTimeOut < 1) {
+         buffer.append("disabled)");
+      } else {
+         buffer.append(_socketTimeOut);
+         buffer.append(" ms)");
+      }
+      _asString = buffer.toString();
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * A textual representation of this object. Cannot be <code>null</code>.
+    * The value of this field is returned by {@link #toString()}.
+    */
+   private final String _asString;
 
    /**
     * The URL for the service. Cannot be <code>null</code>.
@@ -354,16 +395,17 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Textual description of this object.
+    * Textual description of this object. The string includes the URL and all
+    * time-out values. For example:
+    *
+    * <blockquote><code>TargetDescriptor(url="http://api.google.com/some_api/"; total-time-out is 5300 ms; connection time-out is 1000 ms; socket time-out is disabled)</code></blockquote>
     *
     * @return
     *    this <code>TargetDescriptor</code> as a {@link String}, never
     *    <code>null</code>.
     */
    public String toString() {
-      // XXX: Cache in _asString ?
-      // TODO: Include connection time-out and socket time-out
-      return "TargetDescriptor(url=\"" + _url + "\"; timeOut=" + _timeOut + ')';
+      return _asString;
    }
 
 
