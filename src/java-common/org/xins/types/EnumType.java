@@ -198,48 +198,4 @@ public class EnumType extends Type {
 
       return (String) _valuesToNames.get(value);
    }
-
-   /**
-    * Gets the value matching the specified name.
-    *
-    * @param name
-    *    the name to match a corresponding value by, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the corresponding value, or <code>null</code> if there is none.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.109, use {@link #getValueByName(String)}
-    *    instead.
-    */
-   public final String getByName(String name)
-   throws IllegalArgumentException {
-      return getValueByName(name);
-   }
-
-   /**
-    * Gets the name matching the specified value.
-    *
-    * @param value
-    *    the value to match a corresponding name by, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the corresponding name, or <code>null</code> if there is none.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>value == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.109, use {@link #getNameByValue(String)}
-    *    instead.
-    */
-   public final String getByValue(String value)
-   throws IllegalArgumentException {
-      return getNameByValue(value);
-   }
 }
