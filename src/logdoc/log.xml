@@ -442,21 +442,21 @@
 			<description>Access rule matches. Allowing function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
-			<param name="index" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
 			<param name="rule" nullable="false" />
 		</entry>
 		<entry id="5003" level="INFO">
 			<description>Access rule matches. Denying function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
-			<param name="index" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
 			<param name="rule"  nullable="false" />
 		</entry>
 		<entry id="5004" level="INFO">
 			<description>Access rule does not match.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
-			<param name="index" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
 			<param name="rule"  nullable="false" />
 		</entry>
 		<entry id="5005" level="INFO">

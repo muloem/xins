@@ -197,7 +197,6 @@ extends Object {
          AccessRule rule = _rules[i];
 
          String ruleString = rule.toString();
-         String iString = String.valueOf(i);
 
          if (rule.match(ip, functionName)) {
 
@@ -206,14 +205,14 @@ extends Object {
 
             // Log this match
             if (allow) {
-               Log.log_5002(ip, functionName, iString, ruleString);
+               Log.log_5002(ip, functionName, i, ruleString);
             } else {
-               Log.log_5003(ip, functionName, iString, ruleString);
+               Log.log_5003(ip, functionName, i, ruleString);
             }
 
             return allow;
          } else {
-            Log.log_5004(ip, functionName, iString, ruleString);
+            Log.log_5004(ip, functionName, i, ruleString);
          }
       }
 
