@@ -66,6 +66,7 @@
 			<xsl:value-of select="$api" />
 			<xsl:text><![CDATA[/">API specification</a>.]]></xsl:text>
 		</xsl:if>
+
 		<xsl:text><![CDATA[
  */
 public final class CAPI extends org.xins.client.AbstractCAPI {
@@ -288,7 +289,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<!-- Check name set in function definition file -->
 		<xsl:if test="string-length(@name) &gt; 0 and not($name = @name)">
-			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file. Removing the attribute in the function definition file should solve this problem.</xsl:message>
+			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file.</xsl:message>
 		</xsl:if>
 
 		<xsl:text><![CDATA[
