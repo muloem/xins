@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.146:
+
+* XINS/Java Common Library:
+  - Small improvements to the org.xins.util.service package, such as new and
+    improved Javadoc comments, improved exception messages, improved exception
+    handling, etc.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.145:
 
 * Moved jakarta-oro.jar from depends/runtime to depends/compile_and_runtime,
