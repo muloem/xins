@@ -30,15 +30,6 @@
 		</taskdef>
 	</target>
 
-	<target name="-junit-task" depends="-junit-task">
-		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
-			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</taskdef>
-	</target>
-
 	<target name="-j2h-avail">
 		<available classname="j2h" property="j2h.available" />
 		<fail unless="j2h.available" message="Java2HTML not available" />
