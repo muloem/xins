@@ -123,15 +123,15 @@ public final class CallRequestParser extends Object {
       try {
          return parse(_xmlBuilder.build(in));
       } catch (IOException ioException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, ioException);
+         final String MESSAGE = "Unable to parse XML returned by API.";
+         LOG.error(MESSAGE, ioException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, ioException);
+         throw new ParseException(MESSAGE, ioException);
       } catch (JDOMException jdomException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, jdomException);
+         final String MESSAGE = "Unable to parse XML returned by API.";
+         LOG.error(MESSAGE, jdomException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, jdomException);
+         throw new ParseException(MESSAGE, jdomException);
       }
    }
 
@@ -178,9 +178,9 @@ public final class CallRequestParser extends Object {
    throws NullPointerException, ParseException {
 
       // Check preconditions
-      final String expectedElementType = "request";
-      if (expectedElementType.equals(element.getName()) == false) {
-         throw new ParseException("The specified XML element cannot be parsed to build a CallRequest object. The element type is \"" + element.getName() + "\" instead of \"" + expectedElementType + "\".");
+      final String EXPECTED_ELEMENT_TYPE = "request";
+      if (EXPECTED_ELEMENT_TYPE.equals(element.getName()) == false) {
+         throw new ParseException("The specified XML element cannot be parsed to build a CallRequest object. The element type is \"" + element.getName() + "\" instead of \"" + EXPECTED_ELEMENT_TYPE + "\".");
       }
 
       // Parse the function name
@@ -221,11 +221,11 @@ public final class CallRequestParser extends Object {
    private static Map parseParameters(Element element)
    throws NullPointerException, ParseException {
 
-      final String elementName  = "param";
-      final String keyAttribute = "name";
+      final String ELEMENT_NAME  = "param";
+      final String KEY_ATTRIBUTE = "name";
 
       // Get a list of all sub-elements
-      List subElements = element.getChildren(elementName);
+      List subElements = element.getChildren(ELEMENT_NAME);
       int count = (subElements == null)
                 ? 0
                 : subElements.size();
@@ -243,21 +243,21 @@ public final class CallRequestParser extends Object {
          }
 
          // Get the key and the value
-         String key   = subElement.getAttributeValue(keyAttribute);
+         String key   = subElement.getAttributeValue(KEY_ATTRIBUTE);
          String value = subElement.getText();
 
          // If key or value is empty, then ignore the whole thing
          boolean noKey   = (key   == null || key.length()   < 1);
          boolean noValue = (value == null || value.length() < 1);
          if (noKey && noValue) {
-            LOG.error("Found <" + elementName + "/> with an empty key and empty value.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key and empty value.");
          } else if (noKey) {
-            LOG.error("Found <" + elementName + "/> with an empty key.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key.");
          } else if (noValue) {
-            LOG.error("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" but an empty value.");
+            LOG.error("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" but an empty value.");
          } else {
 
-            LOG.debug("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" and value \"" + value + "\".");
+            LOG.debug("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" and value \"" + value + "\".");
 
             // Lazily initialize the Map
             if (map == null) {
@@ -265,7 +265,7 @@ public final class CallRequestParser extends Object {
 
             // Only one value per key allowed
             } else if (map.get(key) != null) {
-               throw new ParseException("The returned XML is invalid. Found <" + elementName + "/> with duplicate " + keyAttribute + " \"" + key + "\".");
+               throw new ParseException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + key + "\".");
             }
 
             // Store the mapping

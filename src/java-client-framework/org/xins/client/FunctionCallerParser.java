@@ -124,18 +124,18 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("in", in);
 
+      final String MESSAGE = "Unable to parse XML returned by API.";
+
       try {
          return parse(_xmlBuilder.build(in));
       } catch (IOException ioException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, ioException);
+         LOG.error(MESSAGE, ioException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, ioException);
+         throw new ParseException(MESSAGE, ioException);
       } catch (JDOMException jdomException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, jdomException);
+         LOG.error(MESSAGE, jdomException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, jdomException);
+         throw new ParseException(MESSAGE, jdomException);
       }
    }
 
