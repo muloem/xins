@@ -196,7 +196,7 @@ public class Properties extends Type {
          String token = tokenizer.nextToken();
          int index = token.indexOf('=');
          if (index < 1) {
-            throw new TypeValueException(SINGLETON, string);
+            throw new TypeValueException(SINGLETON, string, "The token \"" + token + "\" does not contain an equals sign ('=').");
          } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
             throw new TypeValueException(SINGLETON, string);
          } else {
