@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 import java.util.Iterator;
 
@@ -46,6 +47,7 @@ import org.xins.common.service.SocketTimeOutCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
+import org.xins.common.service.UnknownHostCallException;
 
 import org.xins.common.text.FastStringBuffer;
 
@@ -510,7 +512,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
       if (exception != null) {
 
          // Connection refusal
-         if (exception instanceof ConnectException) {
+         if (exception instanceof UnknownHostException) {
+            Log.log_2019(url);
+            throw new UnknownHostCallException(request, target, duration);
+
+         // Connection refusal
+         } else if (exception instanceof ConnectException) {
             Log.log_2012(url);
             throw new ConnectionRefusedCallException(request, target, duration);
 
