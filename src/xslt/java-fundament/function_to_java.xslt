@@ -11,6 +11,7 @@
 	<xsl:output method="text" />
 
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
@@ -21,7 +22,6 @@
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
 
-	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision">
