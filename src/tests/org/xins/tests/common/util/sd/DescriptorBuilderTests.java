@@ -12,7 +12,7 @@ import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.sd.Descriptor;
 import org.xins.util.sd.DescriptorBuilder;
 import org.xins.util.sd.GroupDescriptor;
-import org.xins.util.sd.TargetDescriptor;
+import org.xins.util.sd.ServiceDescriptor;
 
 /**
  * Tests for class <code>DescriptorBuilder</code>.
@@ -110,8 +110,8 @@ public class DescriptorBuilderTests extends TestCase {
       _properties.setProperty(base, DescriptorBuilder.SERVICE_DESCRIPTOR_TYPE + DescriptorBuilder.DELIMITER + url + DescriptorBuilder.DELIMITER + String.valueOf(timeOut));
       Descriptor d = DescriptorBuilder.build(_propertyReader, base);
       assertNotNull(d);
-      assertEquals(TargetDescriptor.class, d.getClass());
-      TargetDescriptor service = (TargetDescriptor) d;
+      assertEquals(ServiceDescriptor.class, d.getClass());
+      ServiceDescriptor service = (ServiceDescriptor) d;
       assertEquals(url,     service.getURL());
       assertEquals(timeOut, service.getTimeOut());
    }

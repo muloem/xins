@@ -147,7 +147,7 @@ public final class DescriptorBuilder extends Object {
          }
 
          try {
-            return new TargetDescriptor(url, timeOut);
+            return new ServiceDescriptor(url, timeOut);
          } catch (MalformedURLException exception) {
             throw new PropertyValueException(propertyName, value, "Malformed URL.");
          }

@@ -18,7 +18,7 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @since XINS 0.105
  */
-public final class TargetDescriptor extends Descriptor {
+public final class ServiceDescriptor extends Descriptor {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -63,7 +63,7 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>TargetDescriptor</code>.
+    * Constructs a new <code>ServiceDescriptor</code>.
     *
     * @param url
     *    the URL of the service, cannot be <code>null</code>.
@@ -78,7 +78,7 @@ public final class TargetDescriptor extends Descriptor {
     * @throws MalformedURLException
     *    if the specified URL is malformed.
     */
-   public TargetDescriptor(String url, long timeOut)
+   public ServiceDescriptor(String url, long timeOut)
    throws IllegalArgumentException, MalformedURLException {
 
       // Check preconditions
