@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.7:
 
 * Refactorings applied to create less objects during a function call.
 
+* Flushing output stream in APIServlet instead of API class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.6:
 
