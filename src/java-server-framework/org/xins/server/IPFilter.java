@@ -55,7 +55,9 @@ extends Object {
    public static final IPFilter parseFilter(String expression)
    throws IllegalArgumentException, ParseException {
 
-      return null; // TODO
+      MandatoryArgumentChecker.check("expression", expression);
+
+      return new IPFilter(expression);
    }
 
 
@@ -63,12 +65,36 @@ extends Object {
    // Constructors
    //-------------------------------------------------------------------------
 
-   // TODO: Constructor
+   /**
+    * Creates an <code>IPFilter</code> object for the specified filter
+    * expression. The expression consists of a base IP address and a bit
+    * count. The bit count indicates how many bits in an IP address must match
+    * the bits in the base IP address. 
+    *
+    * @param expression
+    *    the filter expression, cannot be <code>null</code> and must match the
+    *    form:
+    *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
+    *    where <em>a</em> is a number between 0 and 255, with no leading
+    *    zeroes, and <em>n</em> is a number between <em>0</em> and
+    *    <em>32</em>, no leading zeroes.
+    */
+   private IPFilter(String expression) {
+
+      _expression = expression;
+
+   }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The expression of this filter.
+    */
+   private final String _expression;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -81,7 +107,7 @@ extends Object {
     *    the original filter expression, never <code>null</code>.
     */
    public final String getExpression() {
-      return null; // TODO
+      return _expression;
    }
 
    /**
