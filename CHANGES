@@ -14,6 +14,17 @@ CHANGES INTRODUCED IN XINS 0.165:
   - Added a note to the generated Logdoc index page, about deciding whether a
     log message should be at the FATAL message.
 
+* Generated build file:
+  - Moved most of the command executed in the xins script shell files
+    to a new make-build.xml ANT script file.
+  - The build.xml is now recreated only if some files has been modified.
+  - The targets create-project, create-function, create-type and create-rcd
+    has been added to create a new project, a new function, a new type or
+    a new result code.
+  - The types are now regenerated only if a file has changed.
+  - Added a new rebuild-<api> that executes a clean before building the
+    project.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.164:
 

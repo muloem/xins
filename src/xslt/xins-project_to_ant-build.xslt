@@ -18,6 +18,7 @@
 	<xsl:include href="hungarian.xslt"       />
 	<xsl:include href="package_to_dir.xslt"  />
 	<xsl:include href="package_for_api.xslt" />
+	<xsl:include href="create_project.xslt"  />
 
 	<xsl:output indent="yes" />
 
@@ -60,17 +61,27 @@
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
-			
+
 			<target name="clean" description="Removes all generated files">
 				<delete dir="{$builddir}" />
 			</target>
-			
+
+			<target name="version">
+				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
+			</target>
+
+			<xsl:call-template name="createproject">
+				<xsl:with-param name="specsdir">
+					<xsl:value-of select="$specsdir" />
+				</xsl:with-param>
+			</xsl:call-template>
+
 			<target name="-prepare" />
-			
+
 			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="{$builddir}/specdocs" />
 			</target>
-			
+
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
 				in="{$project_file}"
@@ -83,7 +94,7 @@
 				</style>
 				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
-			
+
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
 				<xsl:variable name="api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
@@ -132,7 +143,7 @@
 						<xsl:otherwise>false</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				
+
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="{$functionIncludes}" />
@@ -231,7 +242,6 @@
 						<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 						<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
-						<delete dir="{$copiedTypesDir}" />
 						<xsl:for-each select="document($api_file)/api/type">
 							<xsl:variable name="type" select="@name" />
 							<xsl:variable name="classname">
@@ -245,7 +255,7 @@
 							file="{$specsdir}/{$api}/{$type}.typ"
 							tofile="{$copiedTypesDir}/{$classname}.typ" />
 						</xsl:for-each>
-							
+
 						<style
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/package.html"
@@ -272,7 +282,6 @@
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
-						<delete dir="{$copiedTypesDir}" />
 
 						<mkdir dir="{$typeClassesDir}" />
 						<javac
@@ -300,7 +309,7 @@
 						</javac>
 					</target>
 				</xsl:if>
-					
+
 				<xsl:if test="document($api_file)/api/impl-java">
 					<xsl:variable name="package">
 						<xsl:call-template name="package_for_server_api">
@@ -425,7 +434,7 @@
 						<copy todir="{$javaCombinedDir}" overwrite="true">
 							<fileset dir="{$javaDestDir}" includes="**/*.java" />
 						</copy>
-						
+
 						<!-- Compile all classes -->
 						<mkdir dir="{$classesDestDir}" />
 						<javac
@@ -456,7 +465,7 @@
 							</classpath>
 						</javac>
 					</target>
-					
+
 					<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
 						<mkdir dir="build/webapps/{$api}" />
 						<taskdef name="hostname" classname="org.xins.util.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
@@ -506,7 +515,7 @@
 						<echo message="MD5: ${{war.md5}}" />
 						<echo message="Build time: ${{timestamp}}" />
 					</target>
-					
+
 					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
 						<mkdir dir="build/javadoc-api/{$api}" />
 						<javadoc
@@ -573,10 +582,10 @@
 						tofile="build/javadoc-api/{$api}/stylesheet.css"
 						overwrite="true" />
 					</target>
-					
-					<target name="server-{$api}" 
+
+					<target name="server-{$api}"
 					        depends="war-api-{$api}, specdocs-api-{$api}, javadoc-api-{$api}"
-					        description="Generate the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}' API stubs">
+					        description="Generates the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}' API stubs">
 					</target>
 				</xsl:if>
 
@@ -675,7 +684,7 @@
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"
 					basedir="{$project_home}/build/classes-capi/{$api}" />
 				</target>
-					
+
 				<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 					<xsl:attribute name="depends">
 						<xsl:if test="$apiHasTypes = 'true'">
@@ -739,14 +748,14 @@
 					tofile="build/javadoc-capi/{$api}/stylesheet.css"
 					overwrite="true" />
 				</target>
-				
-				<target name="client-{$api}" 
+
+				<target name="client-{$api}"
 				        depends="jar-capi-{$api}, javadoc-capi-{$api}"
-				        description="Generate the Javadoc API docs for the client side and the client jar file for the '{$api}' API stubs">
+				        description="Generates the Javadoc API docs for the client side and the client jar file for the '{$api}' API stubs">
 				</target>
-				
-				<target name="all-{$api}" 
-				        description="Generate everything for the '{$api}'  API stubs.">
+
+				<target name="all-{$api}"
+				        description="Generates everything for the '{$api}'  API stubs.">
 					<xsl:attribute name="depends">
 						<xsl:if test="document($api_file)/api/impl-java">
 							<xsl:text>server-</xsl:text>
@@ -757,6 +766,9 @@
 						<xsl:value-of select="$api" />
 					</xsl:attribute>
 				</target>
+
+				<target name="rebuild-{$api}" depends="clean, all-{$api}"
+				        description="Regenerates everything for the '{$api}'  API stubs." />
 			</xsl:for-each>
 
 			<target name="specdocs" description="Generates all specification docs">
@@ -768,11 +780,11 @@
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
-			
+
 			<target name="-prepare-classes" depends="-prepare">
 				<mkdir dir="build/classes" />
 			</target>
-			
+
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
@@ -782,7 +794,7 @@
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
-			
+
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
@@ -792,7 +804,7 @@
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
-			
+
 			<target name="all" depends="specdocs,wars" description="Generates everything" />
 		</project>
 	</xsl:template>
