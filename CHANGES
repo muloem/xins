@@ -7,6 +7,12 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Fixed argument for log message 3312. Now actually sending the URL instead
     of the textual representation of the TargetDescriptor.
   - Minor change to translation of log messages 3312 and 3313.
+  - Narrowed the definition of a service caller to TCP-based services.
+  - Replaced CallFailedException with CallException. While the first combines
+    all failed targets and exceptions, the latter uses a link-based approach.
+    Each exception links to the next.
+  - Added CallRequest and CallException classes in org.xins.common.service
+    package.
 
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
