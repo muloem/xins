@@ -7,6 +7,9 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 
 * XINS/Java Server Framework:
+  - Fixed SF.net bug #1099473: Pattern for incoming parameters breaks
+    compatibility. The change has been reverted. It is scheduled for
+    re-introduction in XINS 2.0.0.
   - Only the "_function" parameter is supported when using either the standard
     or the XML calling convention. The "function" parameter is treated as a
     normal parameter.
@@ -35,10 +38,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
   - Fixed TestMyFunction example.
   - The build.xml is to compile and run the examples, an appart script file
     nbbuild.xml has been created for using XINS with NetBeans 4.0.
-
-* XINS/Java Server Framework:
-  - Fixed SF.net bug #1099473: Pattern for incoming params breaks
-    compatibility.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
