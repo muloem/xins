@@ -135,8 +135,7 @@ public final class TargetDescriptor extends Descriptor {
       try {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
-         // TODO: Is log message 1052 not more appropriate?
-         String message = "Encoding \"" + ENCODING + "\" is not supported.";
+         String message = "Encoding \"" + ENCODING + "\" is not supported by String.getBytes(String).";
          Log.log_1050(CLASSNAME, "computeCRC32(String)", message);
          throw new ProgrammingError(message, exception);
       }
