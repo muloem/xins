@@ -126,6 +126,7 @@
 				<table>
 					<tr>
 						<th>Name</th>
+						<th>Type</th>
 						<th>Nullable</th>
 					</tr>
 					<xsl:for-each select="param">
@@ -146,6 +147,9 @@
 						<tr>
 							<td>
 								<xsl:value-of select="@name" />
+							</td>
+							<td>
+								<xsl:text>string</xsl:text>
 							</td>
 							<td>
 								<xsl:value-of select="$nullable" />
