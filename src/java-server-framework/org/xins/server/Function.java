@@ -151,96 +151,6 @@ implements DefaultResultCodes {
     */
    private final Statistics _statistics = new Statistics();
 
-   /**
-    * Lock object for a successful call.
-    */
-   private final Object _successfulCallLock = new Object();
-
-   /**
-    * Lock object for an unsuccessful call.
-    */
-   private final Object _unsuccessfulCallLock = new Object();
-
-   /**
-    * The number of successful calls executed up until now.
-    */
-   private int _successfulCalls;
-
-   /**
-    * The number of unsuccessful calls executed up until now.
-    */
-   private int _unsuccessfulCalls;
-
-   /**
-    * The start time of the most recent successful call.
-    */
-   private long _lastSuccessfulStart;
-
-   /**
-    * The start time of the most recent unsuccessful call.
-    */
-   private long _lastUnsuccessfulStart;
-
-   /**
-    * The duration of the most recent successful call.
-    */
-   private long _lastSuccessfulDuration;
-
-   /**
-    * The duration of the most recent unsuccessful call.
-    */
-   private long _lastUnsuccessfulDuration;
-
-   /**
-    * The total duration of all successful calls up until now.
-    */
-   private long _successfulDuration;
-
-   /**
-    * The total duration of all unsuccessful calls up until now.
-    */
-   private long _unsuccessfulDuration;
-
-   /**
-    * The minimum time a successful call took.
-    */
-   private long _successfulMin = Long.MAX_VALUE;
-
-   /**
-    * The minimum time an unsuccessful call took.
-    */
-   private long _unsuccessfulMin = Long.MAX_VALUE;
-
-   /**
-    * The start time of the successful call that took the shortest.
-    */
-   private long _successfulMinStart;
-
-   /**
-    * The start time of the unsuccessful call that took the shortest.
-    */
-   private long _unsuccessfulMinStart;
-
-   /**
-    * The duration of the successful call that took the longest.
-    */
-   private long _successfulMax;
-
-   /**
-    * The duration of the unsuccessful call that took the longest.
-    */
-   private long _unsuccessfulMax;
-
-   /**
-    * The start time of the successful call that took the longest.
-    */
-   private long _successfulMaxStart;
-
-   /**
-    * The start time of the unsuccessful call that took the longest.
-    */
-   private long _unsuccessfulMaxStart;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -338,32 +248,6 @@ implements DefaultResultCodes {
     */
    final Statistics getStatistics() {
       return _statistics;
-   }
-
-   /**
-    * Resets the statistics for this function.
-    */
-   final void resetStatistics() {
-      synchronized (_successfulCallLock) {
-         _successfulCalls = 0;
-         _lastSuccessfulStart = 0L;
-         _lastSuccessfulDuration = 0L;
-         _successfulDuration = 0L;
-         _successfulMin = Long.MAX_VALUE;
-         _successfulMinStart = 0L;
-         _successfulMax = 0L;
-         _successfulMaxStart = 0L;
-      }
-      synchronized (_unsuccessfulCallLock) {
-         _unsuccessfulCalls = 0;
-         _lastUnsuccessfulStart = 0L;
-         _lastUnsuccessfulDuration = 0L;
-         _unsuccessfulDuration = 0L;
-         _unsuccessfulMin = Long.MAX_VALUE;
-         _unsuccessfulMinStart = 0L;
-         _unsuccessfulMax = 0L;
-         _unsuccessfulMaxStart = 0L;
-      }
    }
 
    /**
@@ -519,9 +403,15 @@ implements DefaultResultCodes {
 
       // TODO: Accept ResultCode
 
-      long duration = System.currentTimeMillis() - start;
       String message = null;
 
+      // TODO: If the Logging is moved somewhere else the  
+      // The method invoking this method (performedCall) can directly
+      // invoke recordCall and this method can be removed.
+      _statistics.recordCall(start, success);
+      
+      long duration = _statistics.getLastDuration();
+      
       // Call succeeded
       if (success) {
          if (session == null) {
@@ -529,18 +419,6 @@ implements DefaultResultCodes {
          } else {
             Log.log_5015(_name, callID, duration, session);
          }
-
-         synchronized (_successfulCallLock) {
-            _lastSuccessfulStart    = start;
-            _lastSuccessfulDuration = duration;
-            _successfulCalls++;
-            _successfulDuration += duration;
-            _successfulMin      = _successfulMin > duration ? duration : _successfulMin;
-            _successfulMax      = _successfulMax < duration ? duration : _successfulMax;
-            _successfulMinStart = (_successfulMin == duration) ? start : _successfulMinStart;
-            _successfulMaxStart = (_successfulMax == duration) ? start : _successfulMaxStart;
-         }
-
       // Call failed
       } else {
          if (session == null) {
@@ -548,220 +426,6 @@ implements DefaultResultCodes {
          } else {
             Log.log_5017(_name, callID, duration, code, session);
          }
-
-         synchronized (_unsuccessfulCallLock) {
-            _lastUnsuccessfulStart    = start;
-            _lastUnsuccessfulDuration = duration;
-            _unsuccessfulCalls++;
-            _unsuccessfulDuration += duration;
-            _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
-            _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
-            _unsuccessfulMinStart = (_unsuccessfulMin == duration) ? start : _unsuccessfulMinStart;
-            _unsuccessfulMaxStart = (_unsuccessfulMax == duration) ? start : _unsuccessfulMaxStart;
-         }
-      }
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Call statistics pertaining to a certain function.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    */
-   final class Statistics extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Statistics</code> object.
-       */
-      private Statistics() {
-         // empty
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the number of successful calls executed up until now.
-       *
-       * @return
-       *    the number of successful calls executed up until now.
-       */
-      public int getSuccessfulCalls() {
-         return _successfulCalls;
-      }
-
-      /**
-       * Returns the number of unsuccessful calls executed up until now.
-       *
-       * @return
-       *    the number of unsuccessful calls executed up until now.
-       */
-      public int getUnsuccessfulCalls() {
-         return _unsuccessfulCalls;
-      }
-
-      /**
-       * Returns the start time of the most recent successful call.
-       *
-       * @return
-       *    the start time of the most recent successful call.
-       */
-      public long getLastSuccessfulStart() {
-         return _lastSuccessfulStart;
-      }
-
-      /**
-       * Returns the start time of the most recent unsuccessful call.
-       *
-       * @return
-       *    the start time of the most recent unsuccessful call.
-       */
-      public long getLastUnsuccessfulStart() {
-         return _lastUnsuccessfulStart;
-      }
-
-      /**
-       * Returns the duration of the most recent successful call.
-       *
-       * @return
-       *    the duration of the most recent successful call.
-       */
-      public long getLastSuccessfulDuration() {
-         return _lastSuccessfulDuration;
-      }
-
-      /**
-       * Returns the duration of the most recent unsuccessful call.
-       *
-       * @return
-       *    the duration of the most recent unsuccessful call.
-       */
-      public long getLastUnsuccessfulDuration() {
-         return _lastUnsuccessfulDuration;
-      }
-
-      /**
-       * Returns the total duration of all successful calls up until now.
-       *
-       * @return
-       *    the total duration of all successful calls up until now.
-       */
-      public long getSuccessfulDuration() {
-         return _successfulDuration;
-      }
-
-      /**
-       * Returns the total duration of all unsuccessful calls up until now.
-       *
-       * @return
-       *    the total duration of all unsuccessful calls up until now.
-       */
-      public long getUnsuccessfulDuration() {
-         return _unsuccessfulDuration;
-      }
-
-      /**
-       * Returns the minimum time a successful call took.
-       *
-       * @return
-       *    the minimum time a successful call took.
-       */
-      public long getSuccessfulMin() {
-         return _successfulMin;
-      }
-
-      /**
-       * Returns the start time of the successful call that took the shortest.
-       *
-       * @return
-       *    the start time of the successful call that took the shortest.
-       */
-      public long getSuccessfulMinStart() {
-         return _successfulMinStart;
-      }
-
-      /**
-       * Returns the minimum time an unsuccessful call took.
-       *
-       * @return
-       *    the minimum time an unsuccessful call took.
-       */
-      public long getUnsuccessfulMin() {
-         return _unsuccessfulMin;
-      }
-
-      /**
-       * Returns the start time of the unsuccessful call that took the shortest.
-       *
-       * @return
-       *    the start time of the unsuccessful call that took the shortest,
-       *    always &gt;= 0.
-       */
-      public long getUnsuccessfulMinStart() {
-         return _unsuccessfulMinStart;
-      }
-
-      // TODO: Have a similar description for all these getters
-
-      /**
-       * Returns the duration of the successful call that took the longest.
-       *
-       * @return
-       *    the duration of the successful call that took the longest, always
-       *    &gt;= 0.
-       */
-      public long getSuccessfulMax() {
-         return _successfulMax;
-      }
-
-      /**
-       * Returns the start time of the most recent successful call that took
-       * the longest.
-       *
-       * @return
-       *    the start time of the most recent successful call that took the
-       *    longest, always &gt;= 0.
-       */
-      public long getSuccessfulMaxStart() {
-         return _successfulMaxStart;
-      }
-
-      /**
-       * Returns the duration of the unsuccessful call that took the longest.
-       *
-       * @return
-       *    the duration of the unsuccessful call that took the longest,
-       *    always &gt;= 0.
-       */
-      public long getUnsuccessfulMax() {
-         return _unsuccessfulMax;
-      }
-
-      /**
-       * Returns the start time of the most recent unsuccessful call that took
-       * the longest.
-       *
-       * @return
-       *    the start time of the most recent unsuccessful call that took the
-       *    longest, always &gt;= 0.
-       */
-      public long getUnsuccessfulMaxStart() {
-         return _unsuccessfulMaxStart;
       }
    }
 }

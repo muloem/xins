@@ -1043,7 +1043,7 @@ implements DefaultResultCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         Function.Statistics stats = function.getStatistics();
+         Statistics stats = function.getStatistics();
 
          long successfulCalls      = stats.getSuccessfulCalls();
          long unsuccessfulCalls    = stats.getUnsuccessfulCalls();
@@ -1312,7 +1312,7 @@ implements DefaultResultCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         function.resetStatistics();
+         function.getStatistics().resetStatistics();
       }
       return SUCCESSFUL_RESULT;
    }
