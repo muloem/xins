@@ -219,12 +219,22 @@ implements Responder, Log {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
+    * @throws MissingSessionIDException
+    *    if no session ID is specified in the request.
+    *
+    * @throws InvalidSessionIDException
+    *    if the session ID specified in the request is considered invalid.
+    *
+    * @throws UnknownSessionIDException
+    *    if the session ID specified in the request is valid, but unknown.
+    *
     * @throws IOException
     *    if an I/O error occurs.
     */
    void reset(ServletRequest request)
    throws IllegalArgumentException,
           MissingSessionIDException,
+          InvalidSessionIDException,
           UnknownSessionIDException,
           IOException {
 
@@ -268,7 +278,7 @@ implements Responder, Log {
                _session = _api.getSessionByString(sessionID);
             } catch (TypeValueException exception) {
                LOG.error("Invalid value for session ID type: \"" + sessionID + "\".");
-               throw UnknownSessionIDException.SINGLETON; // TODO: Use InvalidSessionIDException ?
+               throw InvalidSessionIDException.SINGLETON;
             }
             if (_session == null) {
                throw UnknownSessionIDException.SINGLETON;
