@@ -1,6 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.41:
 
+* Fixed XSLT error in src/xslt/specdocs/type_to_html.xslt.
+
+* Slightly improved 'javadoc' target in XINS build file
+
 * Extended XINS/Java Client Framework:
   - Added support for sessions.
   - Renamed class RemoteAPI to ActualFunctionCaller. Deprecated RemoteAPI.
@@ -13,6 +17,9 @@ CHANGES INTRODUCED IN XINS 0.41:
 * Improved performance of HTTPRequester (used by RemoteAPI /
   ActualFunctionCaller) by switching to using an unsynchronized
   FastStringBuffer instead of the normal synchronized StringBuffer.
+
+* Improved performance of MandatoryArgumentChecker by letting
+  MissingArgumentException use FastStringBuffer instead of StringBuffer.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.40:
