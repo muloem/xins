@@ -74,6 +74,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Class fields
    //-------------------------------------------------------------------------
 
+   // TODO: Decide whether Method should be an inner class in this class or not
+   // TODO: Decide whether these constants Method should be in this class or elsewhere
+
    /**
     * Constant representing the HTTP GET method.
     */
@@ -355,9 +358,24 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // TODO: Log (2016 ?)
 
-      // TODO: Check HTTP status code
+      // Grab the result from the HTTP call
+      Result result = executor.getResult();
 
-      return executor.getResult();
+      // Check the status code, if necessary
+      HTTPStatusCodeVerifier verifier = request.getStatusCodeVerifier();
+      if (verifier != null) {
+
+         int code = result.getStatusCode();
+
+         if (! verifier.isAcceptable(code)) {
+            // TODO: Pass down body as well. Perhaps just pass down complete
+            //       Result object and add getter for the body to the
+            //       StatusCodeHTTPCallException class.
+            throw new StatusCodeHTTPCallException(request, target, duration, code);
+         }
+      }
+
+      return result;
    }
 
 
@@ -661,7 +679,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
       public void run() {
 
          // TODO: Check if this request was already executed, since this is a
-         //       stateful object.
+         //       stateful object. If not, mark it as executing within a
+         //       synchronized section, so it may no 2 threads may execute
+         //       this request at the same time.
 
          // NOTE: Performance could be improved by using local variables for
          //       _target and _request
