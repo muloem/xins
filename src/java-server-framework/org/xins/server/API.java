@@ -246,16 +246,16 @@ implements DefaultResultCodes {
 
       // TODO: Configure time-out and precision using init settings
       // XXX: Configure time-out and precision at runtime ?
-      final long timeOut   = 30L * 1000L; // 30 seconds
-      final long precision =  2L * 1000L; //  2 seconds
+      final long TIME_OUT  = 30L * 1000L; // 30 seconds
+      final long PRECISION =  2L * 1000L; //  2 seconds
 
-      ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
+      ExpiryStrategy expiryStrategy = new ExpiryStrategy(TIME_OUT, PRECISION);
 
       // TODO: Configure initial queue size and max queue wait time using init
       //       settings
-      final int  initialQueueSize = 89;
-      final long maxQueueWaitTime = 15000L; // 15 seconds
-      _sessionsByID = new ExpiryFolder(expiryStrategy, initialQueueSize, maxQueueWaitTime);
+      final int  INITIAL_QUEUE_SIZE = 89;
+      final long MAX_QUEUE_WAIT_TIME = 15000L; // 15 seconds
+      _sessionsByID = new ExpiryFolder(expiryStrategy, INITIAL_QUEUE_SIZE, MAX_QUEUE_WAIT_TIME);
 
       // Let the subclass perform initialization
       boolean succeeded = false;
@@ -313,6 +313,9 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
+    *
+    * @throws InitializationException
+    *    if the initialization of the instance failed.
     *
     * @since XINS 0.55
     */
@@ -377,6 +380,9 @@ implements DefaultResultCodes {
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
     *
+    * @throws InitializationException
+    *    if the initialization of the instance failed.
+    *
     * @deprecated
     *    Deprecated since XINS 0.55. Use {@link #addInstance(Singleton)}
     *    instead.
@@ -418,6 +424,22 @@ implements DefaultResultCodes {
       }
    }
 
+   /**
+    * Calls the specified method with the specified arguments.
+    *
+    * @param instance
+    *    the instance on which to call the method, should not be
+    *    <code>null</code>.
+    *
+    * @param methodName
+    *    the name of the method to call.
+    *
+    * @param parameterTypes
+    *    the parameter types for the method.
+    *
+    * @param arguments
+    *    the arguments to pass to the method.
+    */
    private final boolean callMethod(Object   instance,
                                     String   methodName,
                                     Class[]  parameterTypes,
@@ -539,7 +561,7 @@ implements DefaultResultCodes {
    /**
     * Gets the session with the specified identifier as a string.
     *
-    * @param id
+    * @param idString
     *    the string representation of the identifier for the session, can be <code>null</code>.
     *
     * @return
