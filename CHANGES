@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.108:
+
+* Improved performance of Java type class generation.
+
+* Now including type classes in CAPI JAR files.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.107:
 
 * Generated specification documentation:
