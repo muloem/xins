@@ -409,10 +409,37 @@ public class FastStringBuffer extends Object {
    }
 
    /**
+    * Reduces the length of this string buffer. The capacity will remain
+    * untouched.
+    *
+    * @param newLength
+    *    the new length, must be less than the existing length (see
+    *    {@link #getLength()}).
+    *
+    * @throws IllegalArgumentException
+    *    if <code>newLength &lt; 0
+    *          || newLength &gt; {@link #getLength()}</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public void crop(int newLength)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (newLength < 0) {
+         throw new IllegalArgumentException("newLength (" + newLength + ") < 0");
+      } else if (newLength > _length) {
+         throw new IllegalArgumentException("newLength (" + newLength + ") > getLength() (" + _length + ')');
+      }
+
+      _length = newLength;
+   }
+
+   /**
     * Clears this string buffer. The capacity will remain untouched, though.
     */
    public void clear() {
-      _length = 0;
+      crop(0);
    }
 
    /**
