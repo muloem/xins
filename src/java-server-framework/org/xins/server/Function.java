@@ -410,10 +410,16 @@ implements DefaultResultCodes {
       // Methods
       //---------------------------------------------------------------------
 
+      /**
+       * Initializes this <code>AbstractLogdocSerializable</code>.
+       *
+       * @return
+       *    the serialized form of this <code>FormattedDate</code>, never
+       *    <code>null</code>.
+       */
       protected String initialize() {
 
          return DATE_FORMATTER.format(new Date(_epochDate));
-
       }
    }
 
@@ -458,6 +464,13 @@ implements DefaultResultCodes {
       // Methods
       //---------------------------------------------------------------------
 
+      /**
+       * Initializes this <code>AbstractLogdocSerializable</code>.
+       *
+       * @return
+       *    the serialized form of this <code>FormattedParameters</code>
+       *    object, never <code>null</code>.
+       */
       protected String initialize() {
 
          Iterator names = (_parameters == null) ? null : _parameters.getNames();
