@@ -172,7 +172,8 @@
 	<group id="parse" name="XINS call result parsing">
 		<entry id="2200" level="NOTICE">
 			<description>Root element is not "result".</description>
-			<param name="elementName" type="text" nullable="false" />
+			<param name="namespaceURI" type="text" nullable="false" />
+			<param name="localName"    type="text" nullable="false" />
 		</entry>
 		<entry id="2201" level="INFO">
 			<description>Found output parameter with name nor value.</description>
