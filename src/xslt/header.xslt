@@ -29,11 +29,6 @@
 					</xsl:call-template>
 					<xsl:text> | </xsl:text>
 					<xsl:call-template name="header_item">
-						<xsl:with-param name="item">typelist</xsl:with-param>
-						<xsl:with-param name="active" select="$active" />
-					</xsl:call-template>
-					<xsl:text> | </xsl:text>
-					<xsl:call-template name="header_item">
 						<xsl:with-param name="item">help</xsl:with-param>
 						<xsl:with-param name="active" select="$active" />
 					</xsl:call-template>
@@ -161,7 +156,6 @@
 			<xsl:when test="$item='frontpage'">Front Page</xsl:when>
 			<xsl:when test="$item='apilist'">API Index</xsl:when>
 			<xsl:when test="$item='api'">Overview</xsl:when>
-			<xsl:when test="$item='typelist'">Type Index</xsl:when>
 			<xsl:when test="$item='help'">Help</xsl:when>
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form</xsl:when>
@@ -175,7 +169,6 @@
 			<xsl:when test="$item='frontpage'">Front page</xsl:when>
 			<xsl:when test="$item='apilist'">Overview of all API specifications</xsl:when>
 			<xsl:when test="$item='api'">Overview of the current API</xsl:when>
-			<xsl:when test="$item='typelist'">Overview of all types</xsl:when>
 			<xsl:when test="$item='help'">Help documentation</xsl:when>
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form for this function</xsl:when>
@@ -191,7 +184,6 @@
 			<xsl:when test="$active='apilist'">
 				<xsl:choose>
 					<xsl:when test="$item='frontpage'">../index.html</xsl:when>
-					<xsl:when test="$item='typelist'">types/index.html</xsl:when>
 					<xsl:when test="$item='help'">help/index.html</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
@@ -208,7 +200,6 @@
 				<xsl:choose>
 					<xsl:when test="$item='apilist'">../index.html</xsl:when>
 					<xsl:when test="$item='api'">api.html</xsl:when>
-					<xsl:when test="$item='typelist'">../types/index.html</xsl:when>
 					<xsl:when test="$item='help'">../help/index.html</xsl:when>
 					<xsl:when test="$item='function'">
 						<xsl:value-of select="@name" />
