@@ -98,8 +98,14 @@
 				<xsl:value-of select="@id" />
 			</th>
 			<td>
-				<xsl:value-of select="document($messageset_doc)/messages/message[@entry=$entry]" />
+				<xsl:apply-templates select="document($messageset_doc)/messages/message[@entry=$entry]" />
 			</td>
 		</tr>
+	</xsl:template>
+
+	<xsl:template match="message/value-of-param">
+		<span class="value-of-param">
+			<xsl:value-of select="@name" />
+		</span>
 	</xsl:template>
 </xsl:stylesheet>

@@ -281,7 +281,11 @@ public class Log extends Object {
    public static final void log_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<!-- TODO: Parameters -->
+		<xsl:for-each select="param">
+			<xsl:if test="position() &gt; 1">, </xsl:if>
+			<xsl:text>String </xsl:text>
+			<xsl:value-of select="@name" />
+		</xsl:for-each>
 		<xsl:text>) {
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="@category" />
@@ -293,7 +297,10 @@ public class Log extends Object {
 		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<!-- TODO: Parameters -->
+		<xsl:for-each select="param">
+			<xsl:if test="position() &gt; 1">, </xsl:if>
+			<xsl:value-of select="@name" />
+		</xsl:for-each>
 		<!-- TODO: Support exception? -->
 		<xsl:text>), null);
    }</xsl:text>

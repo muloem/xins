@@ -11,6 +11,7 @@
 	<!-- Define parameters -->
 	<xsl:param name="package_name" />
 	<xsl:param name="locale"       />
+	<xsl:param name="log_file"     />
 
 	<!-- Set output method -->
 	<xsl:output method="text" />
@@ -26,6 +27,7 @@
 		<xsl:text><![CDATA[;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Translation bundle for the <em>]]></xsl:text>
@@ -84,20 +86,66 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------</xsl:text>
 
 		<xsl:for-each select="message">
+			<xsl:variable name="entry" select="@entry" />
+
 			<xsl:text>
 
    public String translation_</xsl:text>
-			<xsl:value-of select="@entry" />
-			<xsl:text>() {
+			<xsl:value-of select="$entry" />
+			<xsl:text>(</xsl:text>
+			<xsl:for-each select="document($log_file)/log/entry[@id = $entry]/param">
+				<xsl:if test="position() &gt; 1">, </xsl:if>
+				<xsl:text>String </xsl:text>
+				<xsl:value-of select="@name" />
+			</xsl:for-each>
+			<xsl:text>) {</xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(value-of-param) &lt; 1">
+					<xsl:text>
       return "</xsl:text>
-			<xsl:value-of select="text()" />
-			<!-- TODO: Escape characters -->
-			<xsl:text>";
+					<xsl:value-of select="text()" />
+					<!-- TODO: Escape characters -->
+					<xsl:text>";</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>
+      FastStringBuffer buffer = new FastStringBuffer(205);</xsl:text>
+					<xsl:apply-templates />
+					<xsl:text>
+      return buffer.toString();</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>
    }</xsl:text>
 		</xsl:for-each>
 
 		<xsl:text>
 }
 </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="message/value-of-param">
+		<xsl:text>
+      buffer.append(</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>);</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="message/text()">
+		<xsl:choose>
+			<xsl:when test="string-length(.) &lt; 1"></xsl:when>
+			<xsl:when test="string-length(.) = 1">
+				<xsl:text>
+      buffer.append('</xsl:text>
+				<xsl:value-of select="." />
+				<xsl:text>');</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>
+      buffer.append("</xsl:text>
+				<xsl:value-of select="." />
+				<xsl:text>");</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

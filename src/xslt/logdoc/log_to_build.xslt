@@ -68,6 +68,7 @@
 					style="{$logdoc_xslt_dir}/messageset_to_TranslationBundle_java.xslt">
 						<param name="locale"       expression="{@id}" />
 						<param name="package_name" expression="{$package_name}" />
+						<param name="log_file"     expression="../../{$sourcedir}/log.xml" />
 					</style>
 				</xsl:for-each>
 			</target>

@@ -117,7 +117,11 @@ public class TranslationBundle extends Object {
    public String translation_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<!-- TODO: Parameters -->
+		<xsl:for-each select="param">
+			<xsl:if test="position() &gt; 1">, </xsl:if>
+			<xsl:text>String </xsl:text>
+			<xsl:value-of select="@name" />
+		</xsl:for-each>
 		<xsl:text>) {
       return null; // TODO
    }</xsl:text>
