@@ -47,6 +47,10 @@ public final class CallFailedException extends Exception {
     *    elements in this {@link List} must be {@link Throwable} objects, no
     *    <code>null</code> elements are allowed, but duplicates are.
     *
+    * @return
+    *    the message for the constructor to pass up to the superconstructor,
+    *    never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>failedTargets == null || exceptions == null)
     *         || failedTargets.size() != exceptions.size()
