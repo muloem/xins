@@ -13,6 +13,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.apache.log4j.NDC;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 import org.xins.util.collections.PropertyReader;
@@ -103,6 +104,12 @@ public final class XINSServiceCaller extends ServiceCaller {
       // If there is a session identifier, process it
       if (sessionID != null) {
          method.addParameter("_session", sessionID);
+      }
+
+      // If a diagnostic context is available, pass it on
+      String contextID = NDC.peek();
+      if (contextID != null && contextID.length() > 0) {
+         method.addParameter("_context", contextID);
       }
 
       // If there are parameters, then process them
