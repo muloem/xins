@@ -15,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.xins.util.servlet.ServletUtils;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -69,11 +71,18 @@ extends HttpServlet {
       }
 
       // TODO: Better error handling
+      Properties properties = ServletUtils.settingsAsProperties(config);
 
       try {
          _api = (API) Class.forName(apiClass).newInstance();
       } catch (Exception e) {
          throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", unable to instantiate an object of type " + apiClass + ", or unable to convert it to an API instance.");
+      }
+
+      try {
+         _api.init(properties);
+      } catch (Throwable e) {
+         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", the initialisation performed by API of type " + apiClass + " failed.");
       }
    }
 
