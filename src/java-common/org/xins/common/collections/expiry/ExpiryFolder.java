@@ -664,15 +664,25 @@ extends Object {
    public void copy(ExpiryFolder newFolder)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "copy(" + CLASSNAME + ')';
+
       // Check preconditions
       MandatoryArgumentChecker.check("newFolder", newFolder);
       if (newFolder == this) {
-         // TODO: Log programming error
-         throw new IllegalArgumentException("The folder can not be copied into itself.");
+         final String DETAIL = "Folder can not be copied into itself.";
+         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                   Utils.getCallingClass(),
+                                   Utils.getCallingMethod(),
+                                   DETAIL);
+         throw new IllegalArgumentException(DETAIL);
       }
       if (newFolder.getStrategy().getPrecision() != getStrategy().getPrecision()) {
-         // TODO: Log programming error
-         throw new IllegalArgumentException("The folders must have the same precision.");
+         final String DETAIL = "Folders must have the same precision.";
+         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                   Utils.getCallingClass(),
+                                   Utils.getCallingMethod(),
+                                   DETAIL);
+         throw new IllegalArgumentException(DETAIL);
       }
 
       synchronized (_lock) {

@@ -81,19 +81,26 @@ public final class ExpiryStrategy extends Object {
                                       + "L; precision="
                                       + precision
                                       + "L]";
+      final String THIS_METHOD = "<init>" + CONSTRUCTOR_DETAIL;
 
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
 
-      // TODO: Log.log_1050 below
-
       // Check preconditions
       if (timeOut < 1) {
          final String DETAIL = "timeOut (" + timeOut + "L) < 1L";
+         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                   Utils.getCallingClass(),
+                                   Utils.getCallingMethod(),
+                                   DETAIL);
          throw new IllegalArgumentException(DETAIL);
 
       } else if (precision < 1) {
          final String DETAIL = "precision (" + precision + "L) < 1L";
+         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                   Utils.getCallingClass(),
+                                   Utils.getCallingMethod(),
+                                   DETAIL);
          throw new IllegalArgumentException(DETAIL);
 
       } else if (timeOut < precision) {
@@ -102,6 +109,10 @@ public final class ExpiryStrategy extends Object {
                              + "L) < precision ("
                              + precision
                              + "L)";
+         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                   Utils.getCallingClass(),
+                                   Utils.getCallingMethod(),
+                                   DETAIL);
          throw new IllegalArgumentException(DETAIL);
       }
 
