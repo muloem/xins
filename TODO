@@ -98,11 +98,13 @@ MISCELLANEOUS
 
 * The standard result codes should be documented online.
 * A pattern test script should be provided on http://xins.sourceforge.net/.
-* Add a SourceForgeUpload task to smoothen the release process by uploading
-  the distribution file(s) to ftp://upload.sourceforge.net/incoming/, then
-  create a release on the SourceForge site, then add the corresponding file,
-  then set the type of the file to 'tar.gz' and finally let SourceForge send
-  the notification e-mail.
+* Add a SourceForgeUpload task to smoothen the release process by performing
+* the following actions:
+  - upload the distribution file(s) to ftp://upload.sourceforge.net/incoming/
+  - create a release on the SourceForge site
+  - add the corresponding file
+  - set the type of the file to '.gz'
+  - let SourceForge send a release notification e-mail
 * Have DTD or XML Schema files and use these to check that the specification
   files are valid.
 * Fix 'xins -projecthelp'.
