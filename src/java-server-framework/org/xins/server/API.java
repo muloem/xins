@@ -13,7 +13,8 @@ import java.util.Properties;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public abstract class API
-extends Object {
+extends Object
+implements DefaultReturnCodes {
 
    //-------------------------------------------------------------------------
    // Class fields
