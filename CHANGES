@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.153:
+
+* XINS/Java Server Framework:
+  - Renamed class function parseFilter() to parseIPFilter() in class IPFilter.
+  - Renamed class AccessRuleParser to AccessRuleList.
+  - Extended AccessRuleList and AccessRule classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.152:
 
 * XINS/Java Common Library:
