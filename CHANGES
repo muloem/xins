@@ -1,0 +1,5 @@
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.2:
+
+* Generated APIImpl classes now correctly call init(Properties) on all
+  instances.
