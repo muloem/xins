@@ -93,62 +93,62 @@ extends Object {
    /**
     * The number of successful calls executed up until now.
     */
-   int _successfulCalls;
+   private int _successfulCalls;
 
    /**
     * The number of unsuccessful calls executed up until now.
     */
-   int _unsuccessfulCalls;
+   private int _unsuccessfulCalls;
 
    /**
     * The start time of the most recent successful call.
     */
-   long _lastSuccessfulStart;
+   private long _lastSuccessfulStart;
 
    /**
     * The start time of the most recent unsuccessful call.
     */
-   long _lastUnsuccessfulStart;
+   private long _lastUnsuccessfulStart;
 
    /**
     * The duration of the most recent successful call.
     */
-   long _lastSuccessfulDuration;
+   private long _lastSuccessfulDuration;
 
    /**
     * The duration of the most recent unsuccessful call.
     */
-   long _lastUnsuccessfulDuration;
+   private long _lastUnsuccessfulDuration;
 
    /**
     * The total duration of all successful calls up until now.
     */
-   long _successfulDuration;
+   private long _successfulDuration;
 
    /**
     * The total duration of all unsuccessful calls up until now.
     */
-   long _unsuccessfulDuration;
+   private long _unsuccessfulDuration;
 
    /**
     * The minimum time a successful call took.
     */
-   long _successfulMin = Long.MAX_VALUE;
+   private long _successfulMin = Long.MAX_VALUE;
 
    /**
     * The minimum time an unsuccessful call took.
     */
-   long _unsuccessfulMin = Long.MAX_VALUE;
+   private long _unsuccessfulMin = Long.MAX_VALUE;
 
    /**
     * The maximum time a successful call took.
     */
-   long _successfulMax;
+   private long _successfulMax;
 
    /**
     * The maximum time an unsuccessful call took.
     */
-   long _unsuccessfulMax;
+   private long _unsuccessfulMax;
 
 
    //-------------------------------------------------------------------------
