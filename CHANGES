@@ -17,7 +17,8 @@ CHANGES INTRODUCED IN XINS 0.202:
   - Implemented the pcdata-example attribute.
 
 * Build and release process:
-  - Added the argument source="1.4" to avoid error with the assert keyword.
+  - Added the argument source="1.4" to the javadoc task to avoid errors with
+    the assert keyword.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.201:
