@@ -1,14 +1,17 @@
 /*
  * $Id$
  */
-package org.xins.server;
+package org.xins.util;
 
 import org.xins.util.collections.PropertyReader;
 
 /**
- * Lifespan manager. Abstract base class for lifespan management classes
- * registered with an API implementation. Implementations must have a public
- * no-argument constructor.
+ * Lifespan manager. Abstract base class for classes that support bootstrap,
+ * initialization and destruction functions.
+ *
+ * <p>In environments where lifespan manager instances are constructed
+ * dynamically, they are typically expected to have a public no-argument
+ * constructor.
  *
  * <p>The {@link #bootstrap(PropertyReader)} method will
  * be called exactly once during the boostrap of this lifespan manager.
@@ -16,12 +19,14 @@ import org.xins.util.collections.PropertyReader;
  * <p>After that the {@link #init(PropertyReader)} method will be called to
  * initialize or re-initialize this lifespan manager.
  *
- * <p>The {@link #destroy()} method will be called at shutdown.
+ * <p>The {@link #destroy()} method will be called when the object is no
+ * longer needed. After that, {@link #bootstrap(PropertyReader)} could be
+ * called again, though.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
- * @since XINS 0.120
+ * @since XINS 0.146
  */
 public abstract class LifespanManager extends Object {
 

@@ -119,12 +119,6 @@ implements Servlet {
    public static final String CONFIG_FILE_SYSTEM_PROPERTY = "org.xins.server.config";
 
    /**
-    * The name of the build property that specifies the name of the
-    * API class to load.
-    */
-   public static final String API_CLASS_PROPERTY = "org.xins.api.class";
-
-   /**
     * The name of the configuration property that specifies the interval
     * for the configuration file modification checks, in seconds.
     */
@@ -134,6 +128,12 @@ implements Servlet {
     * The default configuration file modification check interval, in seconds.
     */
    public static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
+
+   /**
+    * The name of the build property that specifies the name of the
+    * API class to load.
+    */
+   public static final String API_CLASS_PROPERTY = "org.xins.api.class";
 
 
    //-------------------------------------------------------------------------
