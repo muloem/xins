@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.79:
+
+* Shell script 'xins' now uses 'echo' instead of 'echo -n' for non-FreeBSD
+  operating systems. On Solaris, for example, 'echo -n' prints the literal
+  '-n'.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.78:
 
 * XINS/Java Servlet Framework:
