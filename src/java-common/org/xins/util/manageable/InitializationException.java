@@ -79,9 +79,6 @@ extends Exception {
     * Constructs a new <code>InitializationException</code> with the specified
     * detail message and cause exception.
     *
-    * @param message
-    *    the detail message, or <code>null</code>.
-    *
     * @param exception
     *    the cause exception, or <code>null</code>.
     */
