@@ -144,6 +144,7 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Add standard type '_list': Support <list type="TYPE" /> in .typ files.
 * Per type have a list of input parameters, output parameters and data element
   attributes that are defined as of this type.
+* Display the name of each item in the generated HTML for an enum type.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
