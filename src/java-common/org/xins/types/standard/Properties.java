@@ -3,7 +3,6 @@
  */
 package org.xins.types.standard;
 
-import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import org.xins.types.Type;
@@ -201,12 +200,12 @@ public class Properties extends Type {
          } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
             throw new TypeValueException(SINGLETON, string);
          } else {
-            String name  = URLDecoder.decode(token.substring(0, index));
+            String name  = URLEncoding.decode(token.substring(0, index));
             String value = token.substring(index + 1);
             if (value.length() < 1) {
                value = null;
             } else {
-               value = URLDecoder.decode(value);
+               value = URLEncoding.decode(value);
             }
 
             _nameType.checkValue(name);
