@@ -60,12 +60,41 @@ public final class CallResult extends Object {
     *    the data element returned by the function, or <code>null</code>.
     */
    CallResult(boolean success, String code, Map parameters, Element dataElement) {
+      this(null, success, code, parameters, dataElement);
+   }
+
+   /**
+    * Constructs a new <code>CallResult</code> object, optionally specifying
+    * the <code>FunctionCaller</code> that produced it.
+    *
+    * @param functionCaller
+    *    the {@link FunctionCaller} that produced this
+    *    <code>CallResult</code>, if any.
+    *
+    * @param success
+    *    success indication returned by the function.
+    *
+    * @param code
+    *    the return code, if any, can be <code>null</code>.
+    *
+    * @param parameters
+    *    output parameters returned by the function, or <code>null</code>.
+    *
+    * @param dataElement
+    *    the data element returned by the function, or <code>null</code>.
+    */
+   CallResult(FunctionCaller functionCaller,
+              boolean        success,
+              String         code,
+              Map            parameters,
+              Element        dataElement) {
 
       // Clone the data element if there is one
       if (dataElement != null) {
          dataElement = (Element) dataElement.clone();
       }
 
+      _functionCaller = functionCaller;
       _success     = success;
       _code        = code;
       _parameters  = parameters == null ? CollectionUtils.EMPTY_MAP : Collections.unmodifiableMap(parameters);
@@ -76,6 +105,12 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The <code>FunctionCaller</code> that produced this object. Can be
+    * <code>null</code>.
+    */
+   private final FunctionCaller _functionCaller;
 
    /**
     * Success indication.
@@ -105,6 +140,18 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the <code>FunctionCaller</code> associated with this call
+    * result.
+    *
+    * @return
+    *    the <code>FunctionCaller</code> specified at construction time, or
+    *    <code>null</code> if none was specified.
+    */
+   public FunctionCaller getFunctionCaller() {
+      return _functionCaller;
+   }
 
    /**
     * Returns the success indication.

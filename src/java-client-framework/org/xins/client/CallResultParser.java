@@ -84,13 +84,39 @@ public class CallResultParser extends Object {
     */
    public CallResult parse(String xml)
    throws IllegalArgumentException, ParseException {
+      return parse(null, xml);
+   }
+
+   /**
+    * Parses the given XML string to create a <code>CallResult</code> object,
+    * optionally specifying a <code>FunctionCaller</code>.
+    *
+    * @param functionCaller
+    *    the function caller to associate with the call result, or
+    *    <code>null</code>.
+    *
+    * @param xml
+    *    the XML to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    the parsed result of the call, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>xml == null</code>
+    *
+    * @throws ParseException
+    *    if the specified string is not valid XML or if it is not a valid XINS
+    *    API function call result.
+    */
+   public CallResult parse(FunctionCaller functionCaller, String xml)
+   throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
       try {
          StringReader reader = new StringReader(xml);
-         return parse(_xmlBuilder.build(reader));
+         return parse(functionCaller, _xmlBuilder.build(reader));
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);
@@ -102,6 +128,10 @@ public class CallResultParser extends Object {
    /**
     * Parses the given XML document to create a <code>CallResult</code>
     * object.
+    *
+    * @param functionCaller
+    *    the function caller to associate with the call result, or
+    *    <code>null</code>.
     *
     * @param document
     *    the document to be parsed, not <code>null</code>.
@@ -116,7 +146,7 @@ public class CallResultParser extends Object {
     *    if the specified XML document is not a valid XINS API function call
     *    result.
     */
-   private CallResult parse(Document document)
+   private CallResult parse(FunctionCaller functionCaller, Document document)
    throws NullPointerException, ParseException {
 
       Element element = document.getRootElement();
@@ -133,7 +163,7 @@ public class CallResultParser extends Object {
       Map parameters      = parseParameters(element);
       Element dataElement = element.getChild("data");
 
-      return new CallResult(success, code, parameters, dataElement);
+      return new CallResult(functionCaller, success, code, parameters, dataElement);
    }
 
    /**

@@ -268,9 +268,9 @@ extends AbstractFunctionCaller {
 
       // Parse the result of the HTTP call
       try {
-         return _callResultParser.parse(result.getString());
+         return _callResultParser.parse(this, result.getString());
       } catch (ParseException exception) {
-         throw new InvalidCallResultException(exception.getMessage(), exception.getCause());
+         throw new InvalidCallResultException(exception.getMessage(), exception.getCauseException());
       }
    }
 
