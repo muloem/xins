@@ -59,7 +59,7 @@ public final class TextUtils extends Object {
     *    if <code>o != null</code> then <code>o.toString()</code> quoted,
     *    otherwise the string <code>"(null)"</code>.
     *
-    * @since XINS 1.1.0
+    * @since XINS 1.0.1
     */
    public static final String quote(Object o) {
       String s = (o == null) ? null : o.toString();
@@ -76,7 +76,7 @@ public final class TextUtils extends Object {
     * @return
     *    <code>true</code> if <code>s == null || s.length() &lt; 1</code>.
     *
-    * @since XINS 1.1.0
+    * @since XINS 1.0.1
     */
    public static final boolean isEmpty(String s) {
       return (s == null) || (s.length() < 1);
