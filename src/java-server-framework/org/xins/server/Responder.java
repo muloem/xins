@@ -162,6 +162,10 @@ extends ResponderStates {
     *    if an I/O error occurred.
     *
     * @since XINS 0.15
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.32.
+    *    Use {@link #startResponse(ResultCode)} instead.
     */
    void startResponse(boolean success)
    throws IllegalStateException, IOException;
@@ -184,7 +188,7 @@ extends ResponderStates {
     *
     * @deprecated
     *    Deprecated since XINS 0.15.
-    *    Use {@link #startResponse(ResultCode)}.
+    *    Use {@link #startResponse(ResultCode)} instead.
     */
    void startResponse(boolean success, String returnCode)
    throws IllegalStateException, IOException;
