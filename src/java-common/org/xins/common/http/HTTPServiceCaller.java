@@ -39,6 +39,7 @@ import org.xins.common.service.ConnectionRefusedCallException;
 import org.xins.common.service.ConnectionTimeOutCallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
+import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.IOCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.SocketTimeOutCallException;
@@ -51,6 +52,50 @@ import org.xins.common.text.FastStringBuffer;
 /**
  * HTTP service caller. This class can be used to perform a call to an HTTP
  * server and fail-over to other HTTP servers if the first one fails.
+ *
+ * <h2>Load-balancing and fail-over</h2>
+ *
+ * <p>There are 2 ways to perform an HTTP call using a
+ * <code>HTTPServiceCaller</code> instance:
+ *
+ * <ul>
+ *    <li>to a single HTTP service, using
+ *        {@link #call(HTTPCallRequest,TargetDescriptor)};
+ *    <li>to a set of one or more HTTP services, using
+ *        {@link #call(HTTPCallRequest)};
+ * </ul>
+ *
+ * <p>With the second form of a HTTP call, fail-over and load-balancing can be
+ * performed.
+ *
+ * <p>How load-balancing is done (in the second form) depends on the
+ * {@link Descriptor} passed to the
+ * {@link #HTTPServiceCaller(Descriptor)} constructor. If it is a
+ * {@link TargetDescriptor}, then only this single target service is called
+ * and no load-balancing is performed. If it is a {@link GroupDescriptor},
+ * then the configuration of the <code>GroupDescriptor</code> determines how
+ * the load-balancing is done. A <code>GroupDescriptor</code> is a recursive
+ * data structure, which allows for fairly advanced load-balancing algorithms.
+ *
+ * <p>If a call attempt fails and there are more available target services,
+ * then the <code>HTTPServiceCaller</code> may or may not fail-over to a next
+ * target. If the request was not accepted by the target service, then
+ * fail-over is considered acceptable and will be performed. This includes
+ * the following situations:
+ *
+ * <ul>
+ *    <li>if the <code>failOver</code> property is set to <code>true</code>
+ *        for the {@link HTTPCallRequest};
+ *    <li>on connection refusal;
+ *    <li>if a connection attempt times out;
+ *    <li>if an HTTP status code other than 200-299 is returned;
+ * </ul>
+ *
+ * <p>If none of these conditions holds, then fail-over is not considered
+ * acceptable and will not be performed.
+ *
+ *
+ * <h2>Example code</h2>
  *
  * <p>The following example code snippet constructs an
  * <code>HTTPServiceCaller</code> instance:
@@ -131,15 +176,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
             String key = (String) keys.next();
 
             // Get the value
-            Object value = parameters.get(key);
+            String value = parameters.get(key);
+            if (value == null) {
+               value = "";
+            }
 
-            // Add this parameter key/value combination, but only if both the
-            // key and the value are not null. A general rule in XINS is that
-            // if a parameter (input or output) has the empty string as the
-            // value, this is equivalent to having the parameter not set at
-            // all.
-            if (key != null && value != null) {
-               postMethod.addParameter(key, value.toString());
+            // Add this parameter key/value combination.
+            if (key != null) {
+               postMethod.addParameter(key, value);
             }
          }
          return postMethod;
@@ -157,21 +201,20 @@ public final class HTTPServiceCaller extends ServiceCaller {
             String key = (String) keys.next();
 
             // Get the value
-            Object value = parameters.get(key);
+            String value = parameters.get(key);
+            if (value == null) {
+               value = "";
+            }
 
-            // Add this parameter key/value combination, but only if both the
-            // key and the value are not null. A general rule in XINS is that
-            // if a parameter (input or output) has the empty string as the
-            // value, this is equivalent to having the parameter not set at
-            // all.
-            if (key != null && value != null) {
+            // Add this parameter key/value combination.
+            if (key != null) {
 
                if (query.getLength() > 0) {
                   query.append(",");
                }
                query.append(URLEncoding.encode(key));
                query.append("=");
-               query.append(URLEncoding.encode(value.toString()));
+               query.append(URLEncoding.encode(value));
             }
          }
          if (query.getLength() > 0) {
