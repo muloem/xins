@@ -237,22 +237,22 @@ implements ResponseValidator {
       // empty
    }
 
-   public void startTag(String name)
+   public final void startTag(String name)
    throws InvalidResponseException {
       // empty
    }
 
-   public void attribute(String name, String value)
+   public final void attribute(String name, String value)
    throws InvalidResponseException {
       // empty
    }
 
-   public void pcdata(String text)
+   public final void pcdata(String text)
    throws InvalidResponseException {
       // empty
    }
 
-   public void endTag()
+   public final void endTag()
    throws InvalidResponseException {
       // empty
    }
