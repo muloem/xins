@@ -187,13 +187,6 @@ extends org.xins.client.AbstractCAPICallResult {
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="setfield">
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-			</xsl:call-template>
-		</xsl:variable>
 		<xsl:variable name="required">
 			<xsl:choose>
 				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
