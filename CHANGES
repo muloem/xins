@@ -53,6 +53,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
+NOTE: This release is based on XINS 1.1.0-rc1.
+
 * General:
   - Changed all Java code and the tests so that the XINS code now executes on
     Java 1.3 as well (SF.net RFE #1108205). All unit tests were tested
