@@ -96,7 +96,7 @@ extends Object {
       _listeners        = new ArrayList(5);
 
       // Initialize all the fields in _slots
-      for (int i = 0; i < slotCount; i++) {
+      for (int i = 0; i < _slotCount; i++) {
          _slots[i] = new HashMap(89);
       }
 
