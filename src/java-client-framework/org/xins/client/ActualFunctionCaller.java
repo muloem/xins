@@ -16,6 +16,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.http.HTTPRequester;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Function caller implementation that actually sends an HTTP request to a
@@ -285,7 +286,7 @@ extends AbstractFunctionCaller {
       MandatoryArgumentChecker.check("functionName", functionName);
 
       // Initialize a buffer
-      StringBuffer buffer = new StringBuffer(PARAMETER_STRING_BUFFER_SIZE);
+      FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
       buffer.append("_function=");
       buffer.append(functionName);
 
@@ -320,7 +321,7 @@ extends AbstractFunctionCaller {
                buffer.append('&');
                buffer.append(key);
                buffer.append('=');
-               buffer.append(value);
+               buffer.append(value.toString());
             }
          }
       }
