@@ -29,10 +29,10 @@
 		<!-- Determine the modification timestamp of the concerned object -->
 		<xsl:variable name="timestamp">
 			<xsl:choose>
-				<xsl:when test="@rcsdate = concat('$', 'Date$')">
+				<xsl:when test="not(@rcsdate) or @rcsdate = concat('$', 'Date$')">
 					<xsl:text>?/?/? ?:?:?</xsl:text>
 				</xsl:when>
-				<xsl:when test="string-length(@rcsdate) &lt; 20">
+				<xsl:when test="@rcsdate and string-length(@rcsdate) &lt; 20">
 					<xsl:message>
 						<xsl:text>Unable to parse RCS date. It should be specified in the 'rcsdate' attribute of the '</xsl:text>
 						<xsl:value-of select="name()" />
@@ -81,13 +81,6 @@
 		<!-- Check preconditions -->
 		<xsl:if test="not(string-length($xins_version) &gt; 0)">
 			<xsl:message terminate="yes">The mandatory parameter 'xins_version' is not set.</xsl:message>
-		</xsl:if>
-		<xsl:if test="not(string-length(@rcsdate) &gt; 0)">
-			<xsl:message terminate="yes">
-				<xsl:text>The RCS date is not specified. It should be specified in the 'rcsdate' attribute of the '</xsl:text>
-				<xsl:value-of select="name()" />
-				<xsl:text>' element.</xsl:text>
-			</xsl:message>
 		</xsl:if>
 
 		<div class="footer">
