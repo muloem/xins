@@ -7,14 +7,18 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Fixed SF.net bug #1063699: Log if call fails on error code. The log
     message 2112 was already defined for this purpose, but it was just not
     used in the code.
+  - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
+    logged). Each individual failure is now logged, per target.
+  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
+    elements.
+  - Fixed SF.net bug #1063785: Double spaces in description of a
+    XINSCallRequest.
   - Removed deprecated methods from class DataElement:
     . public Iterator getChildren()
     . public Iterator getChildren(String name)
     Changed the tests accordingly.
   - Removed class field SERVICE_DESCRIPTOR_TYPE that was deprecated since XINS
     1.0.0-beta6.
-  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
-    elements.
   - Removed log message which previously had the ID 2101, since it did not add
     any information. Previously it was logged right after a call was
     performed, whether it was successful or not. Replaced it by a log message
@@ -26,8 +30,6 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     considered acceptable) since it not considered useful.
   - Now actually logging message 2109 (Unrecognized I/O error while calling
     XINS service).
-  - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
-    logged). Each individual failure is now logged, per target.
   - Unified translations in the 21xx range.
   - Changed level of the following log messages to WARNING:
     . 2102 (was INFO);
