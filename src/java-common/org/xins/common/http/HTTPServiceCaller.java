@@ -84,7 +84,7 @@ import org.xins.common.text.FastStringBuffer;
  * the following situations:
  *
  * <ul>
- *    <li>if the <code>failOver</code> property is set to <code>true</code>
+ *    <li>if the <em>failOverAllowed</em> property is set to <code>true</code>
  *        for the {@link HTTPCallRequest};
  *    <li>on connection refusal;
  *    <li>if a connection attempt times out;
@@ -543,8 +543,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception) {
 
-      // First let the superclass do it's job
-      if (super.shouldFailOver(request, exception)) {
+      HTTPCallRequest httpRequest = (HTTPCallRequest) request;
+
+      // Short-circuit if the failOverAllowed flag is set
+      if (httpRequest.isFailOverAllowed()) {
+         return true;
+
+      // Let the superclass do it's job
+      } else if (super.shouldFailOver(request, exception)) {
          return true;
 
       // A non-2xx HTTP status code indicates the request was not handled

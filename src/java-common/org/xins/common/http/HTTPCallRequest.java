@@ -39,7 +39,8 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
-    * method and parameters.
+    * method and parameters. Fail-over is disallowed, unless the request was
+    * definitely not processed by the other end.
     *
     * @param method
     *    the HTTP method to use, cannot be <code>null</code>.
@@ -53,18 +54,23 @@ public final class HTTPCallRequest extends CallRequest {
    public HTTPCallRequest(HTTPMethod     method,
                           PropertyReader parameters)
    throws IllegalArgumentException {
-      this(method, parameters, null);
+      this(method, parameters, false, null);
    }
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
-    * method, parameters and status code verifier.
+    * method, parameters and status code verifier, optionally allowing
+    * fail-over in all cases.
     *
     * @param method
     *    the HTTP method to use, cannot be <code>null</code>.
     *
     * @param parameters
     *    the parameters for the HTTP call, cannot be <code>null</code>.
+    *
+    * @param failOverAllowed
+    *    flag that indicates whether fail-over is in principle allowed, even
+    *    if the request was already sent to the other end.
     *
     * @param statusCodeVerifier
     *    the HTTP status code verifier, or <code>null</code> if all HTTP
@@ -75,6 +81,7 @@ public final class HTTPCallRequest extends CallRequest {
     */
    public HTTPCallRequest(HTTPMethod             method,
                           PropertyReader         parameters,
+                          boolean                failOverAllowed,
                           HTTPStatusCodeVerifier statusCodeVerifier)
    throws IllegalArgumentException {
 
@@ -86,6 +93,7 @@ public final class HTTPCallRequest extends CallRequest {
       _instanceNumber     = ++INSTANCE_COUNT;
       _method             = method;
       _parameters         = parameters;
+      _failOverAllowed    = failOverAllowed;
       _statusCodeVerifier = statusCodeVerifier;
 
       // XXX: Note that _asString is lazily initialized.
@@ -120,6 +128,12 @@ public final class HTTPCallRequest extends CallRequest {
     * <code>null</code>, it is initialized during construction.
     */
    private final PropertyReader _parameters;
+
+   /**
+    * Flag that indicates whether fail-over is in principle allowed, even if
+    * the request was already sent to the other end.
+    */
+   private final boolean _failOverAllowed;
 
    /**
     * The HTTP status code verifier, or <code>null</code> if all HTTP status codes are allowed.
@@ -171,6 +185,19 @@ public final class HTTPCallRequest extends CallRequest {
     */
    public PropertyReader getParameters() {
       return _parameters;
+   }
+
+   /**
+    * Determines whether fail-over is in principle allowed, even if the
+    * request was already sent to the other end.
+    *
+    * @return
+    *    <code>true</code> if fail-over is in principle allowed, even if the
+    *    request was already sent to the other end, <code>false</code>
+    *    otherwise.
+    */
+   public boolean isFailOverAllowed() {
+      return _failOverAllowed;
    }
 
    /**
