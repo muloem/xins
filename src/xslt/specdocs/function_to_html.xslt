@@ -847,7 +847,8 @@
 	</xsl:template>
 
 	<xsl:template name="examplesinput">
-	<strong>Example Input</strong><p />
+		<strong>Example Input</strong>
+		<p />
 		<xsl:apply-templates select="//function/examples/inputcode" />
 	</xsl:template>
 
