@@ -30,13 +30,6 @@ public final class CallResult extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(CallResult.class.getName());
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -124,7 +117,9 @@ public final class CallResult extends Object {
       _functionCaller = functionCaller;
       _success     = success;
       _code        = code;
-      _parameters  = parameters == null ? CollectionUtils.EMPTY_MAP : Collections.unmodifiableMap(parameters);
+      _parameters  = parameters == null
+                   ? CollectionUtils.EMPTY_MAP
+                   : Collections.unmodifiableMap(parameters);
       _dataElement = dataElement;
    }
 
@@ -206,8 +201,9 @@ public final class CallResult extends Object {
     * @return
     *    a <code>Map</code> containing all parameters, never
     *    <code>null</code>; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values will be the parameter values
-    *    ({@link String} objects as well, cannot be <code>null</code>).
+    *    ({@link String} objects, cannot be <code>null</code>), the values
+    *    will be the parameter values ({@link String} objects as well, cannot
+    *    be <code>null</code>).
     */
    public Map getParameters() {
       return _parameters;
@@ -244,7 +240,8 @@ public final class CallResult extends Object {
     *
     * @return
     *    the extra data as an XML {@link Element}, can be <code>null</code>;
-    *    if it is not <code>null</code>, then <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
+    *    if it is not <code>null</code>, then
+    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
     */
    public Element getDataElement() {
       if (_dataElement == null) {
