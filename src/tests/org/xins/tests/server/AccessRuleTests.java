@@ -92,6 +92,31 @@ public class AccessRuleTests extends TestCase {
 
    private void doTestParseAccessRule(boolean allow, String ip, int mask)
    throws Throwable {
+
+      try {
+         String expression = "";
+         AccessRule.parseAccessRule(expression);
+         fail("AccessRule(\"" + expression + "\") should throw a ParseException.");
+      } catch (ParseException exception) {
+         // as expected
+      }
+
+      try {
+         String expression = " \t\r\n ";
+         AccessRule.parseAccessRule(expression);
+         fail("AccessRule(\"" + expression + "\") should throw a ParseException.");
+      } catch (ParseException exception) {
+         // as expected
+      }
+
+      try {
+         String expression = "something 1.2.3.4/32 *";
+         AccessRule.parseAccessRule(expression);
+         fail("AccessRule(\"" + expression + "\") should throw a ParseException.");
+      } catch (ParseException exception) {
+         // as expected
+      }
+
       doTestParseAccessRule(allow, ip, mask, " ",        " ");
       doTestParseAccessRule(allow, ip, mask, "\t",       "\t");
       doTestParseAccessRule(allow, ip, mask, " ",        "\t");
