@@ -14,6 +14,12 @@ import java.util.Set;
  * Expiry map. Items in this map will expire after a predefined amount of
  * time, unless they're access within that timeframe.
  *
+ * <p>This implementation of the {@link Map} interface violates that
+ * interface, because {@link #put(Object,Object)} will not return the
+ * previous value associated with specified key. This is because getting the
+ * previous value is a bigger effort than actually setting the new value. The
+ * {@link #put(Object,Object)} will always return <code>null</code>.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
@@ -108,25 +114,36 @@ extends AbstractMap {
    public abstract void tick();
 
    public int size() {
-      int size = _recentlyAccessed.size();
-      for (int i = 0; i < _slots.length; i++) {
-         size += _slots[i].size();
+      int size;
+      synchronized (_recentlyAccessed) {
+         synchronized (_slots) {
+            size = _recentlyAccessed.size();
+            for (int i = 0; i < _slots.length; i++) {
+               size += _slots[i].size();
+            }
+         }
       }
       return size;
    }
 
    public boolean isEmpty() {
+      // TODO: Improve performance
       return size() < 1;
    }
 
    public boolean containsKey(Object key) {
-      if (_recentlyAccessed.containsKey(key)) {
-         return true;
+      synchronized (_recentlyAccessed) {
+         if (_recentlyAccessed.containsKey(key)) {
+            return true;
+         }
       }
 
       for (int i = 0; i < _slots.length; i++) {
-         if (_slots[i].containsKey(key)) {
-            return true;
+         Map slot = _slots[i];
+         synchronized (slot) {
+            if (slot.containsKey(key)) {
+               return true;
+            }
          }
       }
 
@@ -134,13 +151,18 @@ extends AbstractMap {
    }
 
    public boolean containsValue(Object value) {
-      if (_recentlyAccessed.containsValue(value)) {
-         return true;
+      synchronized (_recentlyAccessed) {
+         if (_recentlyAccessed.containsValue(value)) {
+            return true;
+         }
       }
 
       for (int i = 0; i < _slots.length; i++) {
-         if (_slots[i].containsValue(value)) {
-            return true;
+         Map slot = _slots[i];
+         synchronized (slot) {
+            if (slot.containsValue(value)) {
+               return true;
+            }
          }
       }
 
@@ -148,13 +170,18 @@ extends AbstractMap {
    }
 
    public Object get(Object key) {
-      if (_recentlyAccessed.containsKey(key)) {
-         return _recentlyAccessed.get(key);
+      synchronized (_recentlyAccessed) {
+         if (_recentlyAccessed.containsKey(key)) {
+            return _recentlyAccessed.get(key);
+         }
       }
 
       for (int i = 0; i < _slots.length; i++) {
-         if (_slots[i].containsKey(key)) {
-            return _recentlyAccessed.get(key);
+         Map slot = _slots[i];
+         synchronized (slot) {
+            if (slot.containsKey(key)) {
+               return slot.get(key);
+            }
          }
       }
 
@@ -162,8 +189,8 @@ extends AbstractMap {
    }
 
    public Object put(Object key, Object value) {
-      // XXX: Should we search the other maps to get the actual value?
-      return _recentlyAccessed.put(key, value);
+      _recentlyAccessed.put(key, value);
+      return null;
    }
 
    public void putAll(Map t) {
