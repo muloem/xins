@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.23:
+
+* ResultCode class is now public.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.22:
 
 * Improved message when logging succeeded calls.
