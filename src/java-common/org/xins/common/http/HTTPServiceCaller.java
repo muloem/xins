@@ -228,7 +228,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
-         throw new Error("Unrecognized method \"" + method + "\".");
+         String message = "Unrecognized method \"" + method + "\".";
+         Log.log_3006(CLASSNAME, "createMethod(String,HTTPCallResult)",
+                      message);
+         throw new Error(message);
       }
    }
 
@@ -342,7 +345,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (HTTPCallException exception) {
          throw exception;
       } catch (Exception exception) {
-         throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
+         String message = "Unexpected exception caught of class \"" + exception.getClass().getName() + "\".";
+         Log.log_3006(ServiceCaller.class.getName(), "doCall(CallRequest)",
+                      message);
+         throw new Error(message);
       }
 
       return (HTTPCallResult) callResult;

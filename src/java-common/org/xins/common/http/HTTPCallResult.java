@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.service.CallException;
@@ -27,6 +28,12 @@ public final class HTTPCallResult extends CallResult {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = HTTPCallResult.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -130,7 +137,9 @@ public final class HTTPCallResult extends CallResult {
       try {
          return getString(ENCODING);
       } catch (UnsupportedEncodingException exception) {
-         throw new Error("Encoding \"" + ENCODING + "\" is unsupported.");
+         String message = "Default encoding \"" + ENCODING + "\" is unsupported.";
+         Log.log_3006(CLASSNAME, "getString()", message);
+         throw new Error(message);
       }
    }
 
