@@ -120,13 +120,9 @@ extends CallingConvention {
       return new FunctionRequest(functionName, functionParams, null);
    }
 
-   void convertResult(FunctionResult      xinsResult,
-                             HttpServletResponse httpResponse)
-   throws IllegalArgumentException, IOException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("xinsResult",   xinsResult,
-                                     "httpResponse", httpResponse);
+   protected void convertResultImpl(FunctionResult      xinsResult,
+                          HttpServletResponse httpResponse)
+   throws IOException {
 
       // Send the XML output to the stream and flush
       PrintWriter out = httpResponse.getWriter();
