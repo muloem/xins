@@ -92,7 +92,7 @@ public final class Doorman extends Object {
    private Thread _currentWriter;
 
    /**
-    * The queue that contains the waiting readers and writers.
+    * The queue that contains the waiting readers and/or writers.
     */
    private final Queue _queue;
 
@@ -123,7 +123,6 @@ public final class Doorman extends Object {
 
       Thread reader = Thread.currentThread();
 
-      boolean enterQueue;
       synchronized (_currentActorLock) {
 
          // Short-circuit if this thread is already entered
@@ -132,7 +131,7 @@ public final class Doorman extends Object {
          }
 
          // If there is an existing queue, or if a writer is busy, line up.
-         enterQueue = !_queue.isEmpty() || _currentWriter != null;
+         boolean enterQueue = !_queue.isEmpty() || _currentWriter != null;
 
          // If we don't have to join the queue, join the set of current
          // readers and go ahead
@@ -225,7 +224,6 @@ public final class Doorman extends Object {
    throws InterruptedException {
       Thread writer = Thread.currentThread();
 
-      boolean enterQueue;
       synchronized (_currentActorLock) {
 
          // Short-circuit if this thread is already entered
@@ -234,7 +232,7 @@ public final class Doorman extends Object {
          }
 
          // If there is an existing queue, or if any thread is busy, line up.
-         enterQueue = !_queue.isEmpty() || !_currentReaders.isEmpty() || _currentWriter != null;
+         boolean enterQueue = !_queue.isEmpty() || !_currentReaders.isEmpty() || _currentWriter != null;
 
          // If we don't have to join the queue, join the set of current
          // readers and go ahead
