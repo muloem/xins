@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.125:
+
+* Response validation is now a runtime configuration settings.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.124:
 
 * Generation of Java fundament classes:
