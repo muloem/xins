@@ -9,6 +9,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="project_home" />
+	<xsl:param name="deployment"   />
 
 	<xsl:variable name="api"          select="//api/@name"                                />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
@@ -32,6 +33,13 @@
 	</xsl:template>
 
 	<xsl:template match="api/impl-java">
+		<xsl:if test="(not ($deployment = '')) and not(boolean(deployment[@name = $deployment]))">
+			<xsl:message terminate="yes">
+				<xsl:text>No deployment named '</xsl:text>
+				<xsl:value-of select="$deployment" />
+				<xsl:text>' defined.</xsl:text>
+			</xsl:message>
+		</xsl:if>
 		<web-app>
 			<servlet>
 				<servlet-name>
