@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import javax.servlet.ServletRequest;
 
 import org.xins.logdoc.LogStatistics;
+import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -452,11 +453,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Get the root cause of the exception
-	    Throwable cause = exception.getCause();
-	    while (cause != null) {
-	       exception = cause;
-	       cause = exception.getCause();
-	    }
+	    exception = ExceptionUtils.getRootCause(exception);
 
 	    // Log this event
             Log.log_1430(exception, _name, functionName);
