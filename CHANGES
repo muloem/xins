@@ -45,6 +45,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Added a Java version retrieval function to the Utils class.
   - Implemented SF.net RFE #1107376: Added a unit test for socket time-outs in
     the HTTPServiceCaller class.
+  - Added clear(Object) method to the ProtectedPropertyReader class.
 
 * XINS/Java Client Framework:
   - Fixed bug 1109810: Incorrect parsing of the returned XML.
