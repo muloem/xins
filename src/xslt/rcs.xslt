@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="US-ASCII" ?>
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+-->
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<xsl:template name="revision2string">
+		<xsl:param name="revision" />
+
+    	<xsl:choose>
+			<xsl:when test="string-length($revision) &lt; 16">
+				<xsl:text>?.?</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring($revision, 12, string-length($revision) - 13)" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+</xsl:stylesheet>
