@@ -29,7 +29,7 @@ public class Int64Tests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(PropertiesTests.class);
+      return new TestSuite(Int64Tests.class);
    }
 
 
@@ -118,7 +118,7 @@ public class Int64Tests extends TestCase {
          fail("lowerLimit.fromStringForOptional(\"4\") caught unexpected error.");
       }
 
-      assertEquals("lowerLimit.fromStringForOptional(null) should return a null.", null, lowerLimit.fromStringForOptional(null));
+      assertNull("lowerLimit.fromStringForOptional(null) should return a null.", lowerLimit.fromStringForOptional(null));
    }
 
    public void testValidValue() throws Throwable {
@@ -136,7 +136,7 @@ public class Int64Tests extends TestCase {
       
       // constructor
       public ZeroToTenThousand() {
-         super("ZeroToTen", (long) 0, (long) 10000);
+         super("ZeroToTenThousand", (long) 0, (long) 10000);
       }
 
   }

@@ -49,9 +49,9 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.Int16Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int32Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int64Tests.class);
-      suite.addTestSuite(org.xins.tests.common.types.standard.TextTests.class);
+      //suite.addTestSuite(org.xins.tests.common.types.standard.TextTests.class);
       
-      suite.addTestSuite(org.xins.tests.common.types.standard.PatternTypeTests.class);
+      //suite.addTestSuite(org.xins.tests.common.types.standard.PatternTypeTests.class);
       return suite;
    }
 

@@ -29,7 +29,7 @@ public class Int32Tests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(PropertiesTests.class);
+      return new TestSuite(Int32Tests.class);
    }
 
 
@@ -57,7 +57,7 @@ public class Int32Tests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
-   ZeroTo100 lowerLimit = new ZeroTo100();
+   ZeroToOneHundred lowerLimit = new ZeroToOneHundred();
 
    //-------------------------------------------------------------------------
    // Methods
@@ -118,7 +118,7 @@ public class Int32Tests extends TestCase {
          fail("lowerLimit.fromStringForOptional(\"4\") caught unexpected error.");
       }
 
-      assertEquals("lowerLimit.fromStringForOptional(null) should return a null.", null, lowerLimit.fromStringForOptional(null));
+      assertNull("lowerLimit.fromStringForOptional(null) should return a null.", lowerLimit.fromStringForOptional(null));
    }
 
    public void testValidValue() throws Throwable {
@@ -132,11 +132,11 @@ public class Int32Tests extends TestCase {
       assertTrue("null is considered to be a valid object",lowerLimit.isValidValue(null));
    }
 
-   class ZeroTo100 extends Int32 {
+   class ZeroToOneHundred extends Int32 {
       
       // constructor
-      public ZeroTo100() {
-         super("ZeroTo100", 0, 100);
+      public ZeroToOneHundred() {
+         super("ZeroToOneHundred", 0, 100);
       }
 
   }

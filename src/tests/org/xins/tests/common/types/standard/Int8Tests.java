@@ -29,7 +29,7 @@ public class Int8Tests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(PropertiesTests.class);
+      return new TestSuite(Int8Tests.class);
    }
 
 
@@ -118,7 +118,7 @@ public class Int8Tests extends TestCase {
          fail("lowerLimit.fromStringForOptional(\"4\") caught unexpected error.");
       }
 
-      assertEquals("lowerLimit.fromStringForOptional(null) should return a null.", null, lowerLimit.fromStringForOptional(null));
+      assertNull("lowerLimit.fromStringForOptional(null) should return a null.", lowerLimit.fromStringForOptional(null));
    }
 
    public void testValidValue() throws Throwable {

@@ -29,7 +29,7 @@ public class BooleanTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(PropertiesTests.class);
+      return new TestSuite(BooleanTests.class);
    }
 
 
