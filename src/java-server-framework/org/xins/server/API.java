@@ -589,9 +589,8 @@ implements DefaultResultCodes {
                lsm.bootstrap(_buildSettings);
                Library.BOOTSTRAP_LOG.info("Bootstrapped lifespan manager " + className + " for " + _name +  " API.");
             } catch (Throwable exception) {
-               // XXX: The exception is not logged anywhere!
-               String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API due to unexpected " + exception.getClass().getName() + '.';
-               Library.BOOTSTRAP_LOG.error(message);
+               String message = "Failed to bootstrap lifespan manager " + className + " for " + _name + " API.";
+               Library.BOOTSTRAP_LOG.error(message, exception);
                throw new InitializationException(message);
             }
          }
@@ -656,10 +655,13 @@ implements DefaultResultCodes {
          try {
             lsm.init(runtimeSettings);
             log.info("Initialized lifespan manager " + className + " for " + _name + " API.");
+         } catch (InitializationException exception) {
+            String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API.";
+            log.error(message, exception);
+            throw new InitializationException(message);
          } catch (Throwable exception) {
-            // XXX: The exception is not logged anywhere!
             String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API due to unexpected " + exception.getClass().getName() + '.';
-            log.error(message);
+            log.error(message, exception);
             throw new InitializationException(message);
          }
       }
