@@ -134,8 +134,14 @@
 			</code>
 		</blockquote>
 		<xsl:if test="document($project_file)/project/patterntest">
+			<xsl:variable name="pattern" select="text()" />
 			<p />
-			<a href="{document($project_file)/project/patterntest/@href}?pattern={text()}">
+			<a>
+				<xsl:attribute name="href">
+					<xsl:call-template name="urlencode">
+						<xsl:with-param name="text" select="{document($project_file)/project/patterntest/@href}?pattern={text()}" />
+					</xsl:call-template>
+				</xsl:attribute>
 				<xsl:text>Test this pattern</xsl:text>
 			</a>
 			<xsl:text>.</xsl:text>
