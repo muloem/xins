@@ -5,6 +5,12 @@ CHANGES INTRODUCED IN XINS 0.166:
   - Added class function getContext() to class LogCentral. This class function
     returns the current diagnostic context identifier.
 
+* XINS/Java Server Framework:
+  - Renamed parameter 'id' to 'sessionID' in log message 5010.
+
+* Logdoc:
+  - Parameters cannot be called 'id'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:
 
