@@ -4,6 +4,8 @@
 package org.xins.client;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -54,14 +56,15 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     *    the type, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>type == null</code>.
+    *    if <code>type == null || members == null</code>.
     */
-   CallTargetGroup(Type type) throws IllegalArgumentException {
+   CallTargetGroup(Type type, List members) throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("type", type);
+      MandatoryArgumentChecker.check("type", type, "members", members);
 
-      _type = type;
+      _type    = type;
+      _members = members;
    }
 
 
@@ -74,10 +77,36 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     */
    private final Type _type;
 
+   /**
+    * The members of this group. This field cannot be <code>null</code>.
+    */
+   private final List _members;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the type of this group.
+    *
+    * @return
+    *    the type of this group, either {@link #ORDERED_TYPE},
+    *     {@link #RANDOM_TYPE} or {@link #ROUND_ROBIN_TYPE}.
+    */
+   public final Type getType() {
+      return _type;
+   }
+
+   /**
+    * Returns the list of members.
+    *
+    * @return
+    *    an unmodifiable view of the list of members, never <code>null</code>.
+    */
+   public final List getMembers() {
+      return Collections.unmodifiableList(_members);
+   }
 
    public final CallResult call(String sessionID,
                                 String functionName,
@@ -122,7 +151,12 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     */
    public final CallResult call(String hostName, String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
-      return callImpl(sessionID, functionName, parameters);
+      if (hostName == null) {
+         return callImpl(sessionID, functionName, parameters);
+      } else {
+         // TODO: getActualFunctionCaller(hostName);
+         throw new IOException();
+      }
    }
 
    /**
