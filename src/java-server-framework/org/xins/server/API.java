@@ -21,6 +21,8 @@ import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
+import org.xins.util.collections.expiry.ExpiryFolder;
+import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -64,7 +66,6 @@ implements DefaultResultCodes {
       _stateLock         = new Object();
       _startupTimestamp  = System.currentTimeMillis();
       _instances         = new ArrayList();
-      _sessionsByID      = new HashMap();
       _functionsByName   = new HashMap();
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
@@ -100,9 +101,9 @@ implements DefaultResultCodes {
     * Contains all sessions associated with this API.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
-    * constructor.
+    * initialization method {@link #init(Properties)}.
     */
-   private final Map _sessionsByID;
+   private ExpiryFolder _sessionsByID;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
@@ -222,9 +223,21 @@ implements DefaultResultCodes {
       }
       _initSettingsReader = new PropertiesPropertyReader(_initSettings);
 
+      // TODO: Check if this API is session-based at all
+
       // XXX: Allow configuration of session ID type ?
       _sessionIDType      = new BasicSessionID(this);
       _sessionIDGenerator = _sessionIDType.getGenerator();
+
+      // TODO: Configure time-out and precision using init settings
+      // XXX: Configure time-out and precision at runtime ?
+      //final long timeOut   = 15L * 60L * 1000L; // 15 minutes
+      final long timeOut   = 30L * 1000L; // 30 seconds
+      final long precision =  2L * 1000L; //  2 seconds
+
+      ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
+
+      _sessionsByID = new ExpiryFolder(expiryStrategy);
 
       // Let the subclass perform initialization
       boolean succeeded = false;
