@@ -4,10 +4,10 @@
 package org.xins.server;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -42,7 +42,7 @@ implements Responder {
     */
    CallContext() {
       _state = UNINITIALIZED;
-      _stringWriter = new StringWriter();
+      _stringWriter = new FastStringWriter();
       _xmlOutputter = new XMLOutputter();
    }
 
@@ -84,10 +84,10 @@ implements Responder {
    private ServletRequest _request;
 
    /**
-    * The <code>StringWriter</code> to send the output to. This field is
-    * initialized by the constructor and can never be <code>null</code>.
+    * The character stream to send the output to. This field is initialized by
+    * the constructor and can never be <code>null</code>.
     */
-   private final StringWriter _stringWriter;
+   private final FastStringWriter _stringWriter;
 
    /**
     * The XML outputter. It is initialized by the constructor and sends its
@@ -177,12 +177,12 @@ implements Responder {
    }
 
    /**
-    * Returns the <code>StringWriter</code> the XML output is sent to.
+    * Returns the character stream the XML output is sent to.
     *
     * @return
-    *    the underlying {@link StringWriter}.
+    *    the underlying {@link FastStringWriter}, not <code>null</code>.
     */
-   StringWriter getStringWriter() {
+   FastStringWriter getStringWriter() {
       return _stringWriter;
    }
 
@@ -191,7 +191,7 @@ implements Responder {
     *
     * @return
     *    the underlying {@link XMLOutputter} that sends its output to the
-    *    {@link StringWriter}.
+    *    {@link FastStringWriter}.
     */
    XMLOutputter getXMLOutputter() {
       return _xmlOutputter;

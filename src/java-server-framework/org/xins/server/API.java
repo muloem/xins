@@ -5,7 +5,6 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletRequest;
+import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -166,7 +166,7 @@ implements DefaultReturnCodes {
       context.reset(request);
 
       // TODO: Use a custom non-thread-safe StringBuffer equivalent
-      StringWriter stringWriter = context.getStringWriter();
+      FastStringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
       String functionName = context.getFunction();
@@ -232,7 +232,7 @@ implements DefaultReturnCodes {
             xmlOutputter.pcdata(message);
          }
 
-         StringWriter stWriter = new StringWriter();
+         FastStringWriter stWriter = new FastStringWriter();
          PrintWriter printWriter = new PrintWriter(stWriter);
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
