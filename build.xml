@@ -30,9 +30,10 @@
 		</taskdef>
 	</target>
 
-	<target name="-j2h-avail">
+	<target name="-j2h-task">
 		<available classname="j2h" property="j2h.available" />
 		<fail unless="j2h.available" message="Java2HTML not available" />
+		<taskdef name="java2html" classname="com.java2html.Java2HTMLTask"/>
 	</target>
 
 	<target name="-load-version">
@@ -541,7 +542,7 @@
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
-		<cvs>
+		<cvs failonerror="true">
 			<commandline>
 				<argument value="commit" />
 				<argument value="-m" />
@@ -553,7 +554,7 @@
 
 	<target name="-nodiffs-check" depends="clean">
 		<tempfile destdir="${java.io.tmpdir}" prefix="${name}-release-diff." property="diff-file" suffix=".diff" />
-		<cvs command="diff" output="${diff-file}" quiet="true" />
+		<cvs failonerror="true" command="diff" output="${diff-file}" quiet="true" />
 		<loadfile srcfile="${diff-file}" property="diff-contents" />
 		<property name="diff-contents" value="" />
 		<echo message="Diff contents: &quot;${diff-contents}&quot;." />
@@ -575,7 +576,7 @@
 	depends="-pre-release-checks">
 		<property name="tagname" value="RELEASE_${version.major}_${version.minor}" />
 		<echo message="Tagging ${tagname}" />
-		<cvs command="tag ${tagname}" quiet="true" />
+		<cvs failonerror="true" command="tag ${tagname}" quiet="true" />
 	</target>
 
 	<target name="upload-changes" depends="-init">
@@ -597,13 +598,13 @@
 
 	<target
 	name="release"
-	depends="-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor" type="int" operation="+" value="1"    />
 			<entry key="version.suffix"           operation="=" value="-dev" />
 		</propertyfile>
-		<cvs>
+		<cvs failonerror="true">
 			<commandline>
 				<argument value="commit" />
 				<argument value="-m" />
