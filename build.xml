@@ -85,7 +85,7 @@
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
-		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server-framework:build/src/java-client-framework" />
+		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server:build/src/java-client" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -142,23 +142,23 @@
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="-prepare-java-server-framework" depends="-prepare">
-		<mkdir dir="build/src/java-server-framework" />
+	<target name="-prepare-java-server" depends="-prepare">
+		<mkdir dir="build/src/java-server" />
 		<style
 		in="src/xml/default_resultcodes.xml"
-		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
-		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
-		<copy todir="build/src/java-server-framework">
-			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
+		out="build/src/java-server/org/xins/server/DefaultResultCodes.java"
+		style="src/xslt/java-server/default_resultcodes_to_java.xslt" />
+		<copy todir="build/src/java-server">
+			<fileset dir="src/java-server" includes="**/*.java,**/package.html" />
 		</copy>
-		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
+		<replace dir="build/src/java-server" token="%%VERSION%%" value="${version}" />
 	</target>
 
-	<target name="java-server-framework" depends="java-common,-prepare-java-server-framework" description="Compiles the XINS/Java server framework">
-		<mkdir dir="build/classes/java-server-framework" />
+	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
+		<mkdir dir="build/classes/java-server" />
 		<javac
-		srcdir="build/src/java-server-framework"
-		destdir="build/classes/java-server-framework"
+		srcdir="build/src/java-server"
+		destdir="build/classes/java-server"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
@@ -182,23 +182,23 @@
 		</manifest>
 		<jar
 		jarfile="build/xins-server.jar"
-		basedir="build/classes/java-server-framework"
+		basedir="build/classes/java-server"
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="-prepare-java-client-framework" depends="-prepare">
-		<mkdir dir="build/src/java-client-framework" />
-		<copy todir="build/src/java-client-framework">
-			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
+	<target name="-prepare-java-client" depends="-prepare">
+		<mkdir dir="build/src/java-client" />
+		<copy todir="build/src/java-client">
+			<fileset dir="src/java-client" includes="**/*.java,**/package.html" />
 		</copy>
-		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
+		<replace dir="build/src/java-client" token="%%VERSION%%" value="${version}" />
 	</target>
 
-	<target name="java-client-framework" depends="java-common,-prepare-java-client-framework" description="Compiles the XINS/Java client framework">
-		<mkdir dir="build/classes/java-client-framework" />
+	<target name="java-client" depends="java-common,-prepare-java-client" description="Compiles the XINS/Java client framework">
+		<mkdir dir="build/classes/java-client" />
 		<javac
-		srcdir="build/src/java-client-framework"
-		destdir="build/classes/java-client-framework"
+		srcdir="build/src/java-client"
+		destdir="build/classes/java-client"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
@@ -222,11 +222,11 @@
 		</manifest>
 		<jar
 		jarfile="build/xins-client.jar"
-		basedir="build/classes/java-client-framework"
+		basedir="build/classes/java-client"
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="java" depends="java-server-framework,java-client-framework" />
+	<target name="java" depends="java-server,java-client" />
 
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
 		<echo message="Uploading JAR files to ${www.host}" />
@@ -304,7 +304,7 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java-server-framework,-prepare-java-client-framework,-prepare-java-common,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="-prepare-java-server,-prepare-java-client,-prepare-java-common,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
@@ -317,8 +317,8 @@
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
 			<packageset dir="build/src/java-common" />
-			<packageset dir="build/src/java-server-framework" />
-			<packageset dir="build/src/java-client-framework" />
+			<packageset dir="build/src/java-server" />
+			<packageset dir="build/src/java-client" />
 			<group title="XINS/Java Common Library"   packages="org.xins.util*,org.xins.types*,org.xins.tools*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
@@ -416,8 +416,8 @@
 	<target name="checkstyle-text" depends="-prepare-checkstyle" description="Prints checkstyle errors">
 		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
 			<fileset dir="src/java-common"           includes="**/*.java" />
-			<fileset dir="src/java-server-framework" includes="**/*.java" />
-			<fileset dir="src/java-client-framework" includes="**/*.java" />
+			<fileset dir="src/java-server" includes="**/*.java" />
+			<fileset dir="src/java-client" includes="**/*.java" />
 			<formatter type="plain" />
 		</checkstyle>
 	</target>
@@ -427,8 +427,8 @@
 		<mkdir dir="build/checkstyle/xml" />
 		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
 			<fileset dir="src/java-common"           includes="**/*.java" />
-			<fileset dir="src/java-server-framework" includes="**/*.java" />
-			<fileset dir="src/java-client-framework" includes="**/*.java" />
+			<fileset dir="src/java-server" includes="**/*.java" />
+			<fileset dir="src/java-client" includes="**/*.java" />
 			<formatter type="xml" tofile="build/checkstyle/xml/results.xml"/>
 		</checkstyle>
 	</target>
@@ -460,7 +460,7 @@
 		</exec>
 	</target>
 
-	<target name="package" depends="javadoc,java-server-framework,java-client-framework" description="Builds a complete distribution archive">
+	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
 		<tar tarfile="build/${package-tarfile}">
 			<tarfileset
 			dir="${basedir}"
@@ -479,9 +479,9 @@
 				<include name="src/config/**/*"                />
 				<include name="src/css/**/*"                   />
 				<include name="src/demos/**/*"                 />
-				<include name="src/java-client-framework/**/*" />
+				<include name="src/java-client/**/*" />
 				<include name="src/java-common/**/*"           />
-				<include name="src/java-server-framework/**/*" />
+				<include name="src/java-server/**/*" />
 				<include name="src/package-lists/**/*"         />
 				<include name="src/xml/**/*"                   />
 				<include name="src/xslt/**/*"                  />
@@ -614,7 +614,7 @@
 		</ant>
 	</target>
 
-	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
+	<target name="all" depends="java-server,javadoc" description="Generates everything" />
 
 	<target name="-demo-caller-pretest">
 		<condition property="demo-caller-properties-set">
@@ -629,7 +629,7 @@
 		<echo message="The properties 'config' and 'request' need to be set." />
 	</target>
 
-	<target name="demo-caller" depends="java-client-framework,-demo-caller-properties-notset" if="demo-caller-properties-set" description="Executes the 'Caller' demo program">
+	<target name="demo-caller" depends="java-client,-demo-caller-properties-notset" if="demo-caller-properties-set" description="Executes the 'Caller' demo program">
 		<mkdir dir="build/classes/demos/caller" />
 		<javac
 		srcdir="src/demos/caller/java"
