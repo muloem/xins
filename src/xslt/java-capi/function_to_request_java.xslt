@@ -87,7 +87,7 @@ extends org.xins.client.AbstractCAPICallRequest {
    private ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
-      _request = new org.xins.client.XINSCallRequest("</xsl:text>
+      super("</xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[");
    }
