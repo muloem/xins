@@ -61,6 +61,8 @@ extends Object {
       _type   = type;
       _parent = parent;
       _name   = name;
+
+      // TODO: Disallow duplicate names in the context of the parent
    }
 
 
