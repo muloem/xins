@@ -39,6 +39,50 @@
 
 				<h1>Log documentation</h1>
 
+				<h2>Log entry groups</h2>
+				<xsl:text>The following groups of log entries are defined:</xsl:text>
+				<table type="groups">
+					<tr>
+						<th title="The name of the group">Name</th>
+						<th title="The logging category for the group">Category</th>
+						<th title="The number of log entries in this group">Entries</th>
+					</tr>
+					<xsl:for-each select="group">
+						<xsl:variable name="group_link">
+							<xsl:text>group-</xsl:text>
+							<xsl:value-of select="@name" />
+							<xsl:text>.html</xsl:text>
+						</xsl:variable>
+						<tr>
+							<td>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="$group_link" />
+									</xsl:attribute>
+									<xsl:value-of select="@name" />
+								</a>
+							</td>
+							<td>
+								<xsl:value-of select="@category" />
+							</td>
+							<td>
+								<xsl:value-of select="count(entry)" />
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
+
+				<h2>Translation bundles</h2>
+				<p>The following translation bundles are available:</p>
+				<ul>
+					<xsl:for-each select="translation-bundle">
+						<li>
+							<xsl:value-of select="@locale" />
+							<xsl:if test="$default_locale = @locale"> (default)</xsl:if>
+						</li>
+					</xsl:for-each>
+				</ul>
+
 				<h2>Log levels</h2>
 				<p>The following log levels can be used:</p>
 				<table class="loglevels">
@@ -70,50 +114,6 @@
 						<td>fatal</td>
 						<td>Fatal error messages. Indicates an error that keeps the whole application from functioning. The application must be restarted in order to recover from the problem.</td>
 					</tr>
-				</table>
-
-				<h2>Translation bundles</h2>
-				<p>The following translation bundles are available:</p>
-				<ul>
-					<xsl:for-each select="translation-bundle">
-						<li>
-							<xsl:value-of select="@locale" />
-							<xsl:if test="$default_locale = @locale"> (default)</xsl:if>
-						</li>
-					</xsl:for-each>
-				</ul>
-
-				<h2>Log entry groups</h2>
-				<xsl:text>The following groups are defined:</xsl:text>
-				<table type="groups">
-					<tr>
-						<th title="The name of the group">Name</th>
-						<th title="The logging category for the group">Category</th>
-						<th title="The number of log entries in this group">Entries</th>
-					</tr>
-					<xsl:for-each select="group">
-						<xsl:variable name="group_link">
-							<xsl:text>group-</xsl:text>
-							<xsl:value-of select="@name" />
-							<xsl:text>.html</xsl:text>
-						</xsl:variable>
-						<tr>
-							<td>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="$group_link" />
-									</xsl:attribute>
-									<xsl:value-of select="@name" />
-								</a>
-							</td>
-							<td>
-								<xsl:value-of select="@category" />
-							</td>
-							<td>
-								<xsl:value-of select="count(entry)" />
-							</td>
-						</tr>
-					</xsl:for-each>
 				</table>
 			</body>
 		</html>
