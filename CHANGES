@@ -14,6 +14,14 @@ CHANGES INTRODUCED IN XINS 0.157:
   - Consistently not passing any information to a ServletException when it is
     thrown.
   - Reviewed and changed log messages quite drastically.
+  - Using logdoc-approach throughout the complete APIServlet class.
+
+* Logdoc:
+  - Added a number of log message entries.
+  - Changed the descriptions for a few log message entries.
+  - Supporting a 'nullable' attribute for 'param' elements in log.xml.
+  - Changed a number of translations for the en_US locale.
+  - Changed a number of translations for the nl_NL locale.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.156:
