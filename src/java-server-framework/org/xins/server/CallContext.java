@@ -9,6 +9,7 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 import org.apache.commons.logging.Log;
+import org.apache.log4j.Logger;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -118,6 +119,12 @@ implements Responder, Log {
    private Function _function;
 
    /**
+    * The logger associated with the function. This field is set if and only
+    * if {@link #_function} is set.
+    */
+   private Logger _logger;
+
+   /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -159,6 +166,7 @@ implements Responder, Log {
       _callID  = -1;
       _functionName = null;
       _function     = null;
+      _logger       = null;
    }
 
    /**
@@ -196,8 +204,9 @@ implements Responder, Log {
       }
       _functionName = functionName;
 
-      // Determine the function object
+      // Determine the function object and the logger
       _function = (functionName == null) ? null : _api.getFunction(functionName);
+      _logger   = (_function    == null) ? null : _function.getLogger();
 
       // Assign a call ID
       _callID  = _function.assignCallID();
