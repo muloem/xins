@@ -76,15 +76,15 @@ public final class StandardCallingConvention implements CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   public FunctionRequest getFunctionRequest(HttpServletRequest request)
+   public FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
+      MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
-      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
+      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(httpRequest);
       String functionName = parameters.get("_function");
       if (functionName == null || functionName.length() == 0) {
          // TODO: Throw special exception indicating function is unspecified
@@ -115,17 +115,19 @@ public final class StandardCallingConvention implements CallingConvention {
       return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
-   public void handleResult(HttpServletResponse response, FunctionResult result)
+   public void convertResult(FunctionResult      xinsResult,
+                             HttpServletResponse httpResponse)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("response", response, "result", result);
+      MandatoryArgumentChecker.check("xinsResult",   xinsResult,
+                                     "httpResponse", httpResponse);
 
       // Send the XML output to the stream and flush
-      PrintWriter out = response.getWriter();
-      response.setContentType(RESPONSE_CONTENT_TYPE);
-      response.setStatus(HttpServletResponse.SC_OK);
-      CallResultOutputter.output(out, RESPONSE_ENCODING, result, false);
+      PrintWriter out = httpResponse.getWriter();
+      httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+      httpResponse.setStatus(HttpServletResponse.SC_OK);
+      CallResultOutputter.output(out, RESPONSE_ENCODING, xinsResult, false);
       out.close();
    }
 }

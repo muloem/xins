@@ -1082,8 +1082,8 @@ extends HttpServlet {
       State state = getState();
       if (state == READY) {
          try {
-            FunctionRequest functionRequest = callingConvention.getFunctionRequest(request);
-            result = _api.handleCall(start, functionRequest, ip);
+            FunctionRequest xinsRequest = callingConvention.convertRequest(request);
+            result = _api.handleCall(start, xinsRequest, ip);
 
          // If access is denied, return '403 Forbidden'
          } catch (AccessDeniedException exception) {
@@ -1097,6 +1097,7 @@ extends HttpServlet {
 
          // If the request cannot be parsed, return '404 Not Found'
          } catch (ParseException exception) {
+            // TODO: Do not return 404 but indicate invalid request
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
          }
@@ -1116,7 +1117,7 @@ extends HttpServlet {
 
       // Send the output only if GET or POST
       if (sendOutput) {
-         callingConvention.handleResult(response, result);
+         callingConvention.convertResult(result, response);
       }
    }
 

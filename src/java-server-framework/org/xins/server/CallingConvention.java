@@ -32,11 +32,11 @@ public interface CallingConvention {
    /**
     * Converts an HTTP request to a XINS request.
     *
-    * @param request
+    * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
     *
     * @return
-    *    the XINS request, never <code>null</code>.
+    *    the XINS request object, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
@@ -44,28 +44,26 @@ public interface CallingConvention {
     * @throws ParseException
     *    if the request is considerd to be invalid.
     */
-   FunctionRequest getFunctionRequest(HttpServletRequest request)
+   FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException, ParseException;
-   // TODO: Rename method
    // TODO: Distinguish situation where function is not specified
    // TODO: Replace ParseException with more appropriate exception
    
    /**
-    * Converts a XINS response to an HTTP response.
+    * Converts a XINS result to an HTTP response.
     *
-    * @param response
-    *    the HTTP response object to configure, cannot be <code>null</code>.
-    *
-    * @param result
+    * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
     *    cannot be <code>null</code>.
     *
+    * @param httpResponse
+    *    the HTTP response object to configure, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>response == null || result == null</code>.
+    *    if <code>xinsResult == null || httpResponse == null</code>.
     */
-   void handleResult(HttpServletResponse response, FunctionResult result)
+   void convertResult(FunctionResult xinsResult, HttpServletResponse httpResponse)
    throws IOException;
-   // TODO: Rename method
    // TODO: Inverse the order of the arguments
    // TODO: Improve the naming of the arguments
    // TODO: Replace IOException with more appropriate exception

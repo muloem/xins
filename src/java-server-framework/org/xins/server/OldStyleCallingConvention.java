@@ -79,15 +79,15 @@ implements CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   public FunctionRequest getFunctionRequest(HttpServletRequest request)
+   public FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
+      MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
-      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
+      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(httpRequest);
       String functionName = parameters.get("_function");
       if (functionName == null || functionName.length() == 0) {
          functionName = parameters.get("function");
@@ -110,17 +110,19 @@ implements CallingConvention {
       return new FunctionRequest(functionName, functionParams, null);
    }
 
-   public void handleResult(HttpServletResponse response, FunctionResult result)
+   public void convertResult(FunctionResult      xinsResult,
+                             HttpServletResponse httpResponse)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("response", response, "result", result);
+      MandatoryArgumentChecker.check("xinsResult",   xinsResult,
+                                     "httpResponse", httpResponse);
 
       // Send the XML output to the stream and flush
-      PrintWriter out = response.getWriter();
-      response.setContentType(RESPONSE_CONTENT_TYPE);
-      response.setStatus(HttpServletResponse.SC_OK);
-      CallResultOutputter.output(out, RESPONSE_ENCODING, result, true);
+      PrintWriter out = httpResponse.getWriter();
+      httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+      httpResponse.setStatus(HttpServletResponse.SC_OK);
+      CallResultOutputter.output(out, RESPONSE_ENCODING, xinsResult, true);
       out.close();
    }
 }
