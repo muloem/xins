@@ -23,7 +23,7 @@ import org.xins.util.text.FastStringBuffer;
  *
  * @since XINS 0.106
  */
-public final class Properties extends Type {
+public class Properties extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -62,7 +62,7 @@ public final class Properties extends Type {
       // Check preconditions
       MandatoryArgumentChecker.check("string", string);
 
-      return fromStringForOptional(string);
+      return (PropertyReader) SINGLETON.fromString(string);
    }
 
    /**
@@ -81,39 +81,7 @@ public final class Properties extends Type {
     */
    public static PropertyReader fromStringForOptional(String string)
    throws TypeValueException {
-
-      // Short-circuit if the argument is null
-      if (string == null) {
-         return null;
-      }
-
-      // Construct a PropertyReader to store the properties in
-      BasicPropertyReader pr = new BasicPropertyReader();
-
-      // Separate the string by ampersands
-      StringTokenizer tokenizer = new StringTokenizer(string, "&");
-      while (tokenizer.hasMoreTokens()) {
-         String token = tokenizer.nextToken();
-         int index = token.indexOf('=');
-         if (index < 1) {
-            throw new TypeValueException(SINGLETON, string);
-         } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
-            throw new TypeValueException(SINGLETON, string);
-         } else {
-            String name  = URLDecoder.decode(token.substring(0, index));
-            String value = token.substring(index + 1);
-            if (value.length() < 1) {
-               value = null;
-            } else {
-               value = URLDecoder.decode(value);
-            }
-            pr.set(name, value);
-         }
-      }
-
-      // TODO: pr.finishedModifications();
-
-      return pr;
+      return (PropertyReader) SINGLETON.fromString(string);
    }
 
    /**
@@ -168,7 +136,29 @@ public final class Properties extends Type {
     * used.
     */
    private Properties() {
-      super("properties", PropertyReader.class);
+      this("properties", null, null);
+   }
+
+   /**
+    * Constructs a new <code>Properties</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param nameType
+    *    the type for property names, or <code>null</code> if {@link Text}
+    *    should be assumed.
+    *
+    * @param valueType
+    *    the type for property values, or <code>null</code> if {@link Text}
+    *    should be assumed.
+    */
+   protected Properties(String name, Type nameType, Type valueType) {
+      super(name, PropertyReader.class);
+
+      _nameType  = nameType  == null ? Text.SINGLETON : nameType;
+      _valueType = valueType == null ? Text.SINGLETON : valueType;
    }
 
 
@@ -176,17 +166,59 @@ public final class Properties extends Type {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The type for property names. Cannot be <code>null</code>.
+    */
+   private final Type _nameType;
+
+   /**
+    * The type for property values. Cannot be <code>null</code>.
+    */
+   private final Type _valueType;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   protected boolean isValidValueImpl(String value) {
+   protected final boolean isValidValueImpl(String value) {
       return true; // TODO
    }
 
-   protected Object fromStringImpl(String string)
+   protected final Object fromStringImpl(String string)
    throws TypeValueException {
-      return fromStringForOptional(string);
+
+      // Construct a PropertyReader to store the properties in
+      BasicPropertyReader pr = new BasicPropertyReader();
+
+      // Separate the string by ampersands
+      StringTokenizer tokenizer = new StringTokenizer(string, "&");
+      while (tokenizer.hasMoreTokens()) {
+         String token = tokenizer.nextToken();
+         int index = token.indexOf('=');
+         if (index < 1) {
+            throw new TypeValueException(SINGLETON, string);
+         } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
+            throw new TypeValueException(SINGLETON, string);
+         } else {
+            String name  = URLDecoder.decode(token.substring(0, index));
+            String value = token.substring(index + 1);
+            if (value.length() < 1) {
+               value = null;
+            } else {
+               value = URLDecoder.decode(value);
+            }
+
+            _nameType.checkValue(name);
+            _valueType.checkValue(value);
+
+            pr.set(name, value);
+         }
+      }
+
+      // TODO: pr.finishedModifications();
+
+      return pr;
    }
 
    public final String toString(Object value)
