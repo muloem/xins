@@ -30,6 +30,13 @@
 			<xsl:value-of select="@default-locale" />
 		</xsl:variable>
 
+		<xsl:variable name="accessmodifier">
+			<xsl:choose>
+				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'public'">public </xsl:when>
+				<xsl:when test="$accesslevel = 'package'"></xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:if test="not(boolean(translation-bundle[@locale=$default_locale]))">
 			<xsl:message terminate="yes">
 				<xsl:text>The default locale "</xsl:text>
@@ -40,7 +47,7 @@
 
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
-		<xsl:text><![CDATA[;
+		<xsl:text>;
 
 import java.util.HashMap;
 import org.apache.log4j.Level;
@@ -52,7 +59,9 @@ import org.xins.util.MandatoryArgumentChecker;
 /**
  * Central logging handler.
  */
-public class Log extends AbstractLog {
+</xsl:text>
+		<xsl:value-of select="$accessmodifier" />
+		<xsl:text>class Log extends AbstractLog {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -61,7 +70,7 @@ public class Log extends AbstractLog {
    /**
     * The fully-qualified name for this class.
     */
-   private static final String FQCN = "]]></xsl:text>
+   private static final String FQCN = "</xsl:text>
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[.Log";
 

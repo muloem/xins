@@ -19,6 +19,13 @@
 	<xsl:output method="text" />
 
 	<xsl:template match="log">
+		<xsl:variable name="accessmodifier">
+			<xsl:choose>
+				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'public'">public </xsl:when>
+				<xsl:when test="$accesslevel = 'package'"></xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
@@ -31,7 +38,9 @@ import org.xins.util.text.FastStringBuffer;
  *
  * @see Log
  */
-public abstract class TranslationBundle extends Object {
+]]></xsl:text>
+		<xsl:value-of select="$accessmodifier" />
+		<xsl:text>abstract class TranslationBundle extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -39,7 +48,7 @@ public abstract class TranslationBundle extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
-   //-------------------------------------------------------------------------]]></xsl:text>
+   //-------------------------------------------------------------------------</xsl:text>
 
 		<xsl:text><![CDATA[
 

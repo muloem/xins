@@ -27,6 +27,13 @@
 			<xsl:value-of select="$locale" />
 		</xsl:variable>
 
+		<xsl:variable name="accessmodifier">
+			<xsl:choose>
+				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'public'">public </xsl:when>
+				<xsl:when test="$accesslevel = 'package'"></xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
@@ -43,7 +50,9 @@ import org.xins.util.text.FastStringBuffer;
  *
  * @see Log
  */
-public final class ]]></xsl:text>
+]]></xsl:text>
+		<xsl:value-of select="$accessmodifier" />
+		<xsl:text>final class </xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text><![CDATA[ extends TranslationBundle {
 
