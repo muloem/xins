@@ -15,6 +15,10 @@ import org.xins.util.threads.Doorman;
  * expire after a predefined amount of time, unless they're accessed within that
  * timeframe.
  *
+ * <p>Listeners are supported. If a listener is registered multiple times, it
+ * will receive the events multiple times as well. And it will have to be
+ * removed multiple times as well.
+ *
  * <p>This class is thread-safe.
  *
  * @version $Revision$ $Date$
@@ -176,6 +180,36 @@ extends Object {
 
       // Invalidate the reference to the set of expired entries
       toBeExpired = null;
+   }
+
+   /**
+    * Adds the specified object as a listener for expiry events.
+    *
+    * @param listener
+    *    the listener to be registered, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>listener == null</code>.
+    */
+   public void addListener(ExpiryListener listener)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("listener", listener);
+      _listeners.add(listener);
+   }
+
+   /**
+    * Removes the specified object as a listener for expiry events.
+    *
+    * @param listener
+    *    the listener to be unregistered, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>listener == null</code>.
+    */
+   public void removeListener(ExpiryListener listener)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("listener", listener);
+      _listeners.remove(listener);
    }
 
    /**
