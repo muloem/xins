@@ -301,7 +301,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                String detail = exception.getDetail();
                Log.log_2110(url, function, params, duration, detail);
             } else if (exception instanceof UnsuccessfulXINSCallException) {
-               String errorCode = (UnsuccessfulXINSCallException) exception.getErrorCode();
+               String errorCode = ((UnsuccessfulXINSCallException) exception).getErrorCode();
                Log.log_2112(url, function, params, duration, errorCode);
             } else if (exception instanceof UnacceptableResultXINSCallException) {
                // This should never happen. Log and re-throw the exception.
