@@ -35,8 +35,8 @@
 	</xsl:variable>
 
 	<xsl:output
-	method="xml"
-	indent="no"
+	method="html"
+	indent="yes"
 	encoding="US-ASCII"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"

@@ -200,5 +200,5 @@ MISCELLANEOUS
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.
-* Look at unused classes/methods.
+* Investigate the unused classes/methods.
 * Refactor the directory structure.

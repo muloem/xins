@@ -14,8 +14,8 @@
 	<xsl:param name="specsdir"     />
 
 	<xsl:output
-	method="xml"
-	indent="no"
+	method="html"
+	indent="yes"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
@@ -89,7 +89,7 @@
 					</xsl:attribute>
 					<xsl:value-of select="@name" />
 				</a>
-			</td>      
+			</td>
 
 			<td>
 				<xsl:apply-templates select="document($path)/api/description" />

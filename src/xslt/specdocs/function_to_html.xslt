@@ -34,8 +34,8 @@
 	</xsl:variable>
 
 	<xsl:output
-	method="xml"
-	indent="no"
+	method="html"
+	indent="yes"
 	encoding="US-ASCII"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
@@ -104,8 +104,8 @@
 
 				<xsl:call-template name="input_section" />
 				<xsl:call-template name="output_section" />
-				<xsl:call-template name="testforms_section" /> 
-				<xsl:call-template name="examples_section" /> 
+				<xsl:call-template name="testforms_section" />
+				<xsl:call-template name="examples_section" />
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
@@ -316,7 +316,7 @@
 			<xsl:with-param name="content">output parameters</xsl:with-param>
 			<xsl:with-param name="class">outputparameters</xsl:with-param>
 		</xsl:call-template>
-		
+
 		<xsl:call-template name="datasection" />
 	</xsl:template>
 
@@ -527,11 +527,9 @@
 							<xsl:text>=</xsl:text>
 							<span class="value">"1.0"</span>
 						</span>
-						<xsl:text>?&gt;</xsl:text>
+						<xsl:text>?&gt;
+</xsl:text>
 					</span>
-
-					<br />
-
 					<!-- The <result/> element -->
 					<span class="elem">
 						<xsl:text>&lt;</xsl:text>
@@ -575,12 +573,12 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</span>
-
 					<xsl:choose>
 						<xsl:when test="$example-outputparams or data-example">
 							<xsl:if test="$example-outputparams">
 								<xsl:for-each select="$example-outputparams">
-									<br />
+									<xsl:text>
+</xsl:text>
 									<xsl:value-of disable-output-escaping="yes" select="$indentation" />
 									<span class="elem">
 										<xsl:text>&lt;</xsl:text>
@@ -608,21 +606,21 @@
 								</xsl:for-each>
 							</xsl:if>
 							<xsl:if test="data-example">
-								<br />
+								<xsl:text>
+</xsl:text>
 								<xsl:value-of disable-output-escaping="yes" select="$indentation" />
 								<span class="elem">
 									<xsl:text>&lt;</xsl:text>
 									<span class="name">data</span>
 									<xsl:text>&gt;</xsl:text>
 								</span>
-
 								<!-- First call, use $indent to set the start value of the indent param -->
 								<xsl:apply-templates select="data-example/element-example">
 									<!-- Insert the indentation -->
 									<xsl:with-param name="indent" select="concat($indentation,$indentation)" />
 								</xsl:apply-templates>
-								
-								<br />
+								<xsl:text>
+</xsl:text>
 								<xsl:value-of disable-output-escaping="yes" select="$indentation" />
 								<span class="elem">
 									<xsl:text>&lt;/</xsl:text>
@@ -630,9 +628,9 @@
 									<xsl:text>&gt;</xsl:text>
 								</span>
 							</xsl:if>
-							<br />
 							<span class="elem">
-								<xsl:text>&lt;/</xsl:text>
+								<xsl:text>
+&lt;/</xsl:text>
 								<span class="name">result</span>
 								<xsl:text>&gt;</xsl:text>
 							</span>
@@ -686,7 +684,8 @@
 			<xsl:value-of select="normalize-space(text())" />
 		</xsl:variable>
 
-		<br />
+		<xsl:text>
+</xsl:text>
 		<xsl:value-of disable-output-escaping="yes" select="$indent" />
 		<span class="elem">
 			<xsl:text>&lt;</xsl:text>
@@ -911,7 +910,7 @@
 				</p>
 			</xsl:otherwise>
 		</xsl:choose>
-		
+
 	</xsl:template>
 
 	<xsl:template match="param">
