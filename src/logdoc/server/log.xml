@@ -36,11 +36,9 @@
 			<param name="actual_version" />
 			<param name="expected_version" />
 		</entry>
-		<entry id="2004" level="FATAL">
+		<entry id="2004" level="FATAL" exception="true">
 			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="2005" level="FATAL">
 			<description>System property that defines the runtime properties file to use is not set.</description>
@@ -50,12 +48,10 @@
 			<description>API class name not set in build property.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="2007" level="FATAL">
+		<entry id="2007" level="FATAL" exception="true">
 			<description>API class cannot be loaded.</description>
 			<param name="propertyName" />
 			<param name="apiClass" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="2008" level="FATAL">
 			<description>API class is invalid, since it does not derive from the correct class.</description>
@@ -76,10 +72,8 @@
 			<description>Bootstrap of API class failed.</description>
 			<param name="message" />
 		</entry>
-		<entry id="2012" level="FATAL">
+		<entry id="2012" level="FATAL" exception="true">
 			<description>Bootstrap of API class failed due to an exception.</description>
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="2013" level="INFO">
 			<description>API is session-oriented.</description>
@@ -133,12 +127,10 @@
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="2024" level="FATAL">
+		<entry id="2024" level="FATAL" exception="true">
 			<description>Manageable object could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="2025" level="DEBUG">
 			<description>Adding manageable object to API.</description>
@@ -179,12 +171,10 @@
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="2032" level="FATAL">
+		<entry id="2032" level="FATAL" exception="true">
 			<description>Function could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 	</group>
 
@@ -192,23 +182,17 @@
 		<entry id="3000" level="DEBUG">
 			<description>Initializing logging subsystem.</description>
 		</entry>
-		<entry id="3001" level="ERROR">
+		<entry id="3001" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
 			<param name="configFile" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
-		<entry id="3002" level="ERROR">
+		<entry id="3002" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
 			<param name="configFile" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
-		<entry id="3003" level="ERROR">
+		<entry id="3003" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
 			<param name="configFile" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="3004" level="WARNING">
 			<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
@@ -239,11 +223,9 @@
 			<description>Runtime properties file cannot be opened while checking whether the file has been modified.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="4001" level="WARNING">
+		<entry id="4001" level="WARNING" exception="true">
 			<description>Runtime properties file cannot be opened while checking whether the file has been modified, due to a security restriction.</description>
 			<param name="configFile" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="4002" level="DEBUG">
 			<description>Runtime properties file is not modified.</description>
@@ -314,10 +296,8 @@
 			<description>API could not be initialized.</description>
 			<param name="message" />
 		</entry>
-		<entry id="4016" level="FATAL">
+		<entry id="4016" level="FATAL" exception="true">
 			<description>API could not be initialized due to an unexpected exception.</description>
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="4018" level="NOTICE">
 			<description>XINS/Java Server Framework has been (re-)initialized.</description>
@@ -351,12 +331,10 @@
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="4024" level="FATAL">
+		<entry id="4024" level="FATAL" exception="true">
 			<description>Manageable object could not be initialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="4025" level="DEBUG">
 			<description>Initializing function.</description>
@@ -387,12 +365,10 @@
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="4030" level="ERROR">
+		<entry id="4030" level="ERROR" exception="true">
 			<description>Function could not be initialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="4031" level="WARNING">
 			<description>No access rule list defined.</description>
@@ -475,12 +451,10 @@
 			<param name="callID" type="int32" nullable="false" />
 			<param name="sessionID" nullable="false" />
 		</entry>
-		<entry id="5013" level="NOTICE">
+		<entry id="5013" level="NOTICE" exception="true">
 			<description>Exception thrown during function call.</description>
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
-			<param name="exceptionClass" nullable="false" />
-			<param name="exceptionMessage" nullable="true" />
 		</entry>
 		<entry id="5014" level="INFO">
 			<description>Call to session-less function succeeded.</description>
@@ -549,10 +523,8 @@
 		<entry id="6000" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>
 		</entry>
-		<entry id="6001" level="WARNING">
+		<entry id="6001" level="WARNING" exception="true">
 			<description>Deinitialization of API triggered an exception.</description>
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="6002" level="NOTICE">
 			<description>XINS/Java Server Framework shutdown completed.</description>
@@ -577,12 +549,10 @@
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="6007" level="WARNING">
+		<entry id="6007" level="WARNING" exception="true">
 			<description>Manageable object could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 		<entry id="6008" level="DEBUG">
 			<description>Deinitializing function.</description>
@@ -600,12 +570,10 @@
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="6011" level="WARNING">
+		<entry id="6011" level="WARNING" exception="true">
 			<description>Function could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
-			<param name="exceptionClass" />
-			<param name="exceptionMessage" />
 		</entry>
 	</group>
 </log>
