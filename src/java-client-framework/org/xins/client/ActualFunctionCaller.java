@@ -57,7 +57,7 @@ extends AbstractFunctionCaller {
     * <code>ActualFunctionCaller</code> the backend API is called to see if it
     * is up.
     */
-   private static boolean CALL_AT_CONSTRUCTION = true;
+   private static boolean CALL_AT_CONSTRUCTION = false;
 
 
    //-------------------------------------------------------------------------
