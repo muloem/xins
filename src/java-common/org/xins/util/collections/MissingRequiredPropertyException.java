@@ -8,9 +8,6 @@ import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception thrown to indicate a required property has no value set for it.
- * This exception applies to both bootstrapping
- * ({@link Manageable#bootstrap(PropertyReader)}) and initialization
- * ({@link Manageable#init(PropertyReader)}).
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)

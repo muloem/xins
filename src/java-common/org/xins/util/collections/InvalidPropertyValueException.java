@@ -7,10 +7,7 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
 /**
- * Exception thrown to indicate the property of a value is invalid. This
- * exception applies to both bootstrapping
- * ({@link Manageable#bootstrap(PropertyReader)}) and initialization
- * ({@link Manageable#init(PropertyReader)}).
+ * Exception thrown to indicate the property of a value is invalid.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
