@@ -3,6 +3,9 @@
  */
 package org.xins.logdoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -18,9 +21,37 @@ extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * All registered <code>LogController</code> instances.
+    *
+    * @see #registerLog(LogController)
+    */
+   private static final List CONTROLLERS = new ArrayList();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Registers the specified <code>LogController</code>, which represents a
+    * <em>logdoc</em> <code>Log</code> class.
+    *
+    * @param controller
+    *    the {@link LogController}, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>controller == null</code>.
+    */
+   static final void registerLog(AbstractLog.LogController controller)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("controller", controller);
+
+      // Add the controller to the List
+      CONTROLLERS.add(controller);
+   }
 
    /**
     * Sets the locale on all <em>logdoc</em> <code>Log</code> classes.
