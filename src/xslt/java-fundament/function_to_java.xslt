@@ -169,7 +169,17 @@ public abstract class ]]></xsl:text>
 					<xsl:text>)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         context.startResponse(INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);
+         if (debugEnabled) {
+            context.debug("Either </xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> or </xsl:if>
+					<xsl:text>\"</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>\"</xsl:text>
+				</xsl:for-each>
+				<xsl:text> should be set.");
+         }</xsl:text>
 			</xsl:for-each>
 			<xsl:if test="input/param-combo[@type='exclusive-or']">
 				<xsl:text>
