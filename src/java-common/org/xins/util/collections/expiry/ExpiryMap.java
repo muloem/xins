@@ -27,9 +27,29 @@ public abstract class ExpiryMap extends AbstractMap {
    // Constructor
    //-------------------------------------------------------------------------
 
+   /**
+    * Constructs a new <code>ExpiryMap</code>.
+    *
+    * @param strategy
+    *    the strategy that should be applied, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>strategy == null</code>.
+    */
+   public ExpiryMap(ExpiryStrategy strategy) throws IllegalArgumentException {
+      _strategy = strategy;
+   }
+
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The strategy used. This field cannot be <code>null</code>.
+    */
+   private final ExpiryStrategy _strategy;
+
 
    //-------------------------------------------------------------------------
    // Methods
