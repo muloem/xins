@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.66:
 
+* XINS/Java Server Framework:
+  - Slightly improved logging for session-based functions.
+
 * XINS/Java Common Library:
   - Added ArrayIterator class.
   - Added FixedArraySet class.
