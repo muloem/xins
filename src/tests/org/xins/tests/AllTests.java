@@ -38,6 +38,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
+      suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
       return suite;
    }
 
