@@ -3,6 +3,7 @@
  */
 package org.xins.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -14,8 +15,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.servlet.ServletUtils;
+import org.xins.util.text.Replacer;
 
 /**
  * Servlet that forwards request to an <code>API</code>.
@@ -82,24 +85,59 @@ implements Servlet {
     *    if <code>config == null</code>.
     */
    private static void configureLogger(ServletConfig config)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, ServletException {
 
       // Convert the ServletConfig to a Properties object
       Properties settings = ServletUtils.settingsAsProperties(config);
 
-      // Perform the actual initialization of the logger
-      PropertyConfigurator.configure(settings);
-
-      // If Log4J is not initialized, use fallback defaults
-      if (! LOG.getAllAppenders().hasMoreElements()) {
-         settings.setProperty("log4j.rootCategory",            "ALL, console");
-         settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
-         settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
-
-         PropertyConfigurator.configure(settings);
-
-         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
+      // Apply replacements
+      try {
+         settings = Replacer.replace(settings, '{', '}', System.getProperties());
+      } catch (Replacer.Exception exception) {
+         configureLoggerFallback();
+         String message = "Failed to apply replacements to servlet initialization settings.";
+         LOG.error(message, exception);
+         throw new ServletException("Failed to apply replacements to servlet initialization settings.", exception);
       }
+
+      // First see if a config file has been specified
+      String configFile = settings.getProperty("log4j.configFile");
+      boolean doConfigure = true;
+      if (configFile != null && configFile.length() > 0) {
+         if (new File(configFile).exists()) {
+            // TODO: configure delay for configureAndWatch
+            PropertyConfigurator.configureAndWatch(configFile);
+            doConfigure = false;
+            LOG.debug("Using Log4J configuration file \"" + configFile + "\".");
+         } else {
+            configureLoggerFallback();
+            doConfigure = false;
+            LOG.error("Log4J configuration file \"" + configFile + "\" does not exist. Using fallback defaults.");
+         }
+
+      // If not, perform initialization with init settings
+      } else {
+         PropertyConfigurator.configure(settings);
+      }
+
+      // If Log4J is not initialized at this point, use fallback defaults
+      if (doConfigure && LOG.getAllAppenders() instanceof NullEnumeration) {
+         configureLoggerFallback();
+         LOG.warn("No initialization settings found for Log4J. Using fallback defaults.");
+      }
+   }
+
+   /**
+    * Initializes Log4J with fallback default settings.
+    */
+   private static final void configureLoggerFallback() {
+      Properties settings = new Properties();
+
+      settings.setProperty("log4j.rootLogger",              "ALL, console");
+      settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
+
+      PropertyConfigurator.configure(settings);
    }
 
    /**
