@@ -3,6 +3,7 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
+  - Added unit test class for Int16 type.
 
 * Build and release process:
   - Added the possibility to release with a specific version
