@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util.ant;
+package org.xins.util.ant.sourceforge;
 
 import java.io.IOException;
 import org.apache.commons.net.ftp.FTPClient;
