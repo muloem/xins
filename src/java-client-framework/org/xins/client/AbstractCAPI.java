@@ -9,11 +9,14 @@ package org.xins.client;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.InvalidPropertyValueException;
+import org.xins.common.collections.MissingRequiredPropertyException;
 
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.Descriptor;
+import org.xins.common.service.DescriptorBuilder;
 import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
@@ -55,8 +58,8 @@ public abstract class AbstractCAPI extends Object {
     *
     * <p>A default XINS call configuration will be used.
     *
-    * <p>This constructor is considered internal to XINS. Do not use it
-    * directly.
+    * <p><em>This constructor is considered internal to XINS. Do not use it
+    * directly.</em>
     *
     * @param descriptor
     *    the descriptor for the service(s), cannot be <code>null</code>.
@@ -77,6 +80,71 @@ public abstract class AbstractCAPI extends Object {
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor);
       _caller.setCAPI(this);
+   }
+
+   /**
+    * Creates a new <code>AbstractCAPI</code> object based on the specified
+    * set of properties.
+    *
+    * <p>A default XINS call configuration will be used.
+    *
+    * <p><em>This constructor is considered internal to XINS. Do not use it
+    * directly.</em>
+    *
+    * @param properties
+    *    the properties to read from, cannot be <code>null</code>.
+    *
+    * @param apiName
+    *    the name of the API, cannot be <code>null</code> and must be a valid
+    *    API name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || apiName == null</code> or if
+    *    <code>apiName</code> is not considered to be a valid API name.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is missing in the specified properties set.
+    *
+    * @throws InvalidPropertyValueException
+    *    if one of the properties in the specified properties set is used to
+    *    create a <code>CAPI</code> instance but its value is considered
+    *    invalid.
+    */
+   protected AbstractCAPI(PropertyReader properties, String apiName)
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("properties", properties,
+                                     "apiName",    apiName);
+
+      // TODO: Check validity of API name
+
+      // Determine property name
+      String propertyName = "capis." + apiName;
+
+      // Build a descriptor from the properties
+      Descriptor descriptor = DescriptorBuilder.build(properties, propertyName);
+
+      // Construct a new XINSServiceCaller
+      try {
+         _caller = new XINSServiceCaller(descriptor);
+         _caller.setCAPI(this);
+
+      // Invalid property value due to unsupported protocol
+      } catch (UnsupportedProtocolException e) {
+         // TODO: Use correct property name for specific target descriptor
+         // TODO: Use correct property value for specific target descriptor
+         org.xins.common.service.TargetDescriptor target = e.getTargetDescriptor();
+         final String PROPERTY_VALUE = properties.get(propertyName);
+         final String DETAIL         = "Protocol in URL \""
+                                     + target.getURL()
+                                     + "\" is not supported.";
+         throw new InvalidPropertyValueException(propertyName,
+                                                 PROPERTY_VALUE,
+                                                 DETAIL);
+      }
    }
 
 
