@@ -6,11 +6,11 @@ package org.xins.common.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.httpclient.util.TimeoutController;
-
 import org.xins.common.ExceptionUtils;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.TimeOutController;
+import org.xins.common.TimeOutException;
 
 /**
  * Service caller. This abstract class must be subclasses by specific kinds
@@ -83,8 +83,12 @@ public abstract class ServiceCaller extends Object {
     * Performs a call using the specified subject. Target
     * {@link TargetDescriptor descriptors} will be picked and passed
     * to {@link #doCallImpl(TargetDescriptor,Object)} until there is one that
-    * succeeds. If one of the calls succeeds, then the result is returned. If
-    * none succeeds, then a {@link CallFailedException} is thrown.
+    * succeeds, as long as fail-over can be done (according to
+    * {@link #shouldFailOver(Object,Throwable)}.
+    *
+    * <p>If one of the calls succeeds, then the result is returned. If
+    * none succeeds or if fail-over should not be done, then a {@link
+    * CallFailedException} is thrown.
     *
     * <p>Each attempt consists of a call to
     * {@link #doCallImpl(TargetDescriptor,Object)}.
@@ -108,7 +112,8 @@ public abstract class ServiceCaller extends Object {
 
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateTargets();
-      while (iterator.hasNext()) {
+      boolean shouldContinue = true;
+      while (iterator.hasNext() && shouldContinue) {
 
          // Determine the service descriptor target
          TargetDescriptor target = (TargetDescriptor) iterator.next();
@@ -118,18 +123,13 @@ public abstract class ServiceCaller extends Object {
 
             // Attempt the call
             Object result = doCallImpl(target, subject);
+
+            // The call succeeded
+            // TODO: Don't do this within the try-block
             Log.log_3312(target.toString());
-
-            // Trim the collections to save on memory
-            // XXX: Should we really trim the collections?
-            if (failedTargets != null) {
-               failedTargets.trimToSize();
-               exceptions.trimToSize();
-            }
-
             return new CallResult(failedTargets, exceptions, target, result);
 
-         // If it fails, store the exception and try the next
+         // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
             if (failedTargets == null) {
                failedTargets = new ArrayList();
@@ -138,11 +138,37 @@ public abstract class ServiceCaller extends Object {
             failedTargets.add(target);
             exceptions.add(exception);
 
-            Log.log_3313(target.toString(), reasonFor(exception));
+            Log.log_3313(target.getURL(), reasonFor(exception));
+
+            // Determine whether fail-over is allowed and whether we have
+            // another target to fail-over to
+            boolean failOver = shouldFailOver(subject, exception);
+            boolean haveNext = iterator.hasNext();
+
+            // No more targets and no fail-over
+            if (!haveNext && !failOver) {
+               Log.log_3315();
+               shouldContinue = false;
+
+            // No more targets but fail-over would be allowed
+            } else if (!haveNext) {
+               Log.log_3316();
+               shouldContinue = false;
+
+            // More targets available but fail-over is not allowed
+            } else if (!failOver) {
+               Log.log_3317();
+               shouldContinue = false;
+
+            // More targets available and fail-over is allowed
+            } else {
+               Log.log_3318();
+               shouldContinue = true;
+            }
          }
       }
 
-      // Loop ended, all calls failed
+      // Loop ended, call failed completely
       Log.log_3314();
       throw new CallFailedException(subject, failedTargets, exceptions);
    }
@@ -273,24 +299,27 @@ public abstract class ServiceCaller extends Object {
       MandatoryArgumentChecker.check("thread",     thread,
                                      "descriptor", descriptor);
 
-      // Start the thread. This may throw an IllegalThreadStateException.
-      thread.start();
+      TimeOutController.execute(thread, descriptor.getTimeOut());
+   }
 
-      // Wait for the thread to finish, within limits
-      try {
-         thread.join(descriptor.getTimeOut());
-      } catch (InterruptedException exception) {
-         // ignore
-         // XXX: Log?
-      }
-
-      // If the thread is still running at this point, it should stop
-      if (thread.isAlive()) {
-
-         // Interrupt the thread. This may throw a SecurityException
-         thread.interrupt();
-
-         throw new TimeOutException();
-      }
+   /**
+    * Determines whether a call should fail-over to the next selected target.
+    * This method should be overridden by subclasses. The implementation in
+    * class {@link ServiceCaller} always returns <code>false</code>.
+    *
+    * @param subject
+    *    the subject for the call, as passed to {@link #doCall(Object)}, can
+    *    be <code>null</code>.
+    *
+    * @param exception
+    *    the exception caught while calling the most recently called target,
+    *    never <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the call should fail-over to the next target, or
+    *    <code>false</code> if it should not.
+    */
+   protected boolean shouldFailOver(Object subject, Throwable exception) {
+      return false;
    }
 }
