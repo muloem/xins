@@ -17,14 +17,16 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Removed the "org.xins.server.output.compatibility" property.
   - The returned output stream from the Servlet is now closed instead of
     being only flushed.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Common Library:
-  - Small refactoring in ServiceCaller.doCall(Object) that should have no
-    impact on behaviour.
+  - Completely refactored the service calling framework.
+  - Narrowed the definition of a service caller to TCP-based services.
+  - Moved the HTTPServiceCaller and supporting classes from package
+    org.xins.common.service.http to org.xins.common.http.
   - Fixed argument for log message 3312. Now actually sending the URL instead
     of the textual representation of the TargetDescriptor.
   - Minor change to translation of log messages 3312 and 3313.
-  - Narrowed the definition of a service caller to TCP-based services.
   - Changed the interface and rewrote the implementation of the service caller
     framework in package org.xins.common.service.
   - Removed deprecated method execute(Thread,int) from class
@@ -39,6 +41,7 @@ CHANGES INTRODUCED IN XINS 0.207:
     anywhere.
   - Removed method getTimeOut() in class TargetDescriptor. It was deprecated
     and replaced by getTotalTimeOut() in XINS 0.202.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
@@ -46,18 +49,23 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Supporting checking of HTTP status codes.
   - Removed AbstractCAPI(XINSServiceCaller). This constructor was deprecated
     since XINS 0.192.
+  - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
     current locale.
   - Changed levels for log message entry 1404 from INFO to DEBUG.
 
-* Generated java code:
+* Generated server-side Java code:
   - Removed unused imports in the generated APIImpl.java.
   - Fixed some unused variable that conflicted with existing one that had the
     same name using the JDK 1.5.
   - The @author tag is filled in with the name and the e-mail of the API owner
     if the owner is specified in the API.
+
+* Generated client-side Java code:
+  - No longer generating deprecated CAPI constructor that takes a
+    XINSServiceCaller instance as the argument.
 
 * Generated specification documentation:
   - The optional author file is computed only when needed as it may fail
