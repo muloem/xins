@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 import javax.servlet.ServletRequest;
-import org.apache.log4j.Logger;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.types.standard.Text;
@@ -509,7 +508,6 @@ implements DefaultResultCodes {
       _runtimeSettings = runtimeSettings;
 
       // Initialize ACL subsystem
-      Logger log = Library.INIT_ACL_LOG;
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          try {
@@ -532,7 +530,6 @@ implements DefaultResultCodes {
       }
 
       // Initialize all instances
-      log = Library.INIT_LOG;
       int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
