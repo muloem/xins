@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 0.136:
   - Added class UnacceptableCallResultException that extends CallException and
     accepts an optional reason only.
 
+* Generated CAPI classes:
+  - Call methods now only throw CallException.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.135:
 
