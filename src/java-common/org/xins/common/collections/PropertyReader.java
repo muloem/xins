@@ -5,16 +5,15 @@ package org.xins.common.collections;
 
 import java.util.Iterator;
 
-import org.xins.logdoc.LogdocSerializable;
-
 /**
  * Property reader.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 0.177
  */
-public interface PropertyReader
-extends LogdocSerializable {
+public interface PropertyReader {
 
    /**
     * Gets the value of the property with the specified name.
