@@ -3,3 +3,7 @@ build
 docs
 demo
 *~
+depends
+.classpath
+.checkstyle
+.clover
