@@ -6,14 +6,15 @@ package org.xins.util;
 import org.xins.util.text.FastStringBuffer;
 
 /**
- * Utility class for printing long numbers as hexadecimals.
+ * Utility class for converting numbers to unsigned hex strings and vice
+ * versa.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
- * @since XINS 0.57
+ * @since XINS 0.73
  */
-public class LongUtils extends Object {
+public class HexConverter extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -44,6 +45,13 @@ public class LongUtils extends Object {
     */
    private static final long MASK = RADIX - 1L;
 
+   /**
+    * Array of 16 zero characters.
+    */
+   private static final char[] SIXTEEN_ZEROES = new char[] { '0', '0', '0', '0',
+                                                             '0', '0', '0', '0',
+                                                             '0', '0', '0', '0',
+                                                             '0', '0', '0', '0' };
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -102,10 +110,6 @@ public class LongUtils extends Object {
       }
 
       // Append 16 zero characters to the buffer
-      final char[] ZEROES = new char[] { '0', '0', '0', '0',
-                                         '0', '0', '0', '0',
-                                         '0', '0', '0', '0',
-                                         '0', '0', '0', '0' };
       buffer.append(ZEROES);
 
       int pos = LENGTH - 1;
