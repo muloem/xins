@@ -3,7 +3,9 @@
  */
 package org.xins.server;
 
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Base class for function implementation classes.
@@ -48,6 +50,7 @@ extends Object {
       // Check argument
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
+      _log     = Logger.getLogger(getClass().getName());
       _api     = api;
       _name    = name;
       _version = version;
@@ -59,6 +62,12 @@ extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logger used by this API instance. This field is initialized by the
+    * constructor and set to a non-<code>null</code> value.
+    */
+   private final Logger _log;
 
    /**
     * The API implementation this function is part of.
@@ -89,6 +98,18 @@ extends Object {
     * Lock object for an unsuccessful call.
     */
    private final Object _unsuccessfulCallLock = new Object();
+
+   /**
+    * Buffer for log messages for successful calls. This field is
+    * initialized at construction time and cannot be <code>null</code>.
+    */
+   private final FastStringBuffer _successfulCallStringBuffer = new FastStringBuffer(256);
+
+   /**
+    * Buffer for log messages for unsuccessful calls. This field is
+    * initialized at construction time and cannot be <code>null</code>.
+    */
+   private final FastStringBuffer _unsuccessfulCallStringBuffer = new FastStringBuffer(256);
 
    /**
     * The number of successful calls executed up until now.
@@ -207,6 +228,23 @@ extends Object {
     */
    final void performedCall(long start, long duration, boolean success, String code) {
       if (success) {
+         if (_log.isDebugEnabled()) {
+            synchronized (_successfulCallStringBuffer) {
+               _successfulCallStringBuffer.clear();
+               _successfulCallStringBuffer.append("Function ");
+               _successfulCallStringBuffer.append(_name);
+               _successfulCallStringBuffer.append(" call succeeded. Duration: ");
+               _successfulCallStringBuffer.append(String.valueOf(duration));
+               _successfulCallStringBuffer.append(" ms.");
+               if (code != null) {
+                  _successfulCallStringBuffer.append(" Code: \"");
+                  _successfulCallStringBuffer.append(code);
+                  _successfulCallStringBuffer.append("\".");
+               }
+               _log.debug(_successfulCallStringBuffer.toString());
+            }
+         }
+
          synchronized (_successfulCallLock) {
             _lastSuccessfulStart    = start;
             _lastSuccessfulDuration = duration;
@@ -216,6 +254,23 @@ extends Object {
             _successfulMax = _successfulMax < duration ? duration : _successfulMax;
          }
       } else {
+         if (_log.isDebugEnabled()) {
+            synchronized (_unsuccessfulCallStringBuffer) {
+               _unsuccessfulCallStringBuffer.clear();
+               _unsuccessfulCallStringBuffer.append("Function ");
+               _unsuccessfulCallStringBuffer.append(_name);
+               _unsuccessfulCallStringBuffer.append(" call failed. Duration: ");
+               _unsuccessfulCallStringBuffer.append(String.valueOf(duration));
+               _unsuccessfulCallStringBuffer.append(" ms.");
+               if (code != null) {
+                  _unsuccessfulCallStringBuffer.append(" Code: \"");
+                  _unsuccessfulCallStringBuffer.append(code);
+                  _unsuccessfulCallStringBuffer.append("\".");
+               }
+               _log.debug(_unsuccessfulCallStringBuffer.toString());
+            }
+         }
+
          synchronized (_unsuccessfulCallLock) {
             _lastUnsuccessfulStart    = start;
             _lastUnsuccessfulDuration = duration;
