@@ -103,8 +103,9 @@ public final class ]]></xsl:text>
 				<xsl:when test="count(value-of-param) &lt; 1">
 					<xsl:text>
       return "</xsl:text>
-					<xsl:value-of select="text()" />
-					<!-- TODO: Escape characters -->
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="text()" />
+					</xsl:call-template>
 					<xsl:text>";</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -131,20 +132,68 @@ public final class ]]></xsl:text>
 		<xsl:text>);</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="message/value-of-param[@format='quoted']">
+		<xsl:text>
+      if (</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text> == null) {
+         buffer.append("(null)");
+      } else {
+         buffer.append('"');
+         buffer.append(</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>);
+         buffer.append('"');
+      }</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="message/text()">
 		<xsl:choose>
 			<xsl:when test="string-length(.) &lt; 1"></xsl:when>
 			<xsl:when test="string-length(.) = 1">
 				<xsl:text>
       buffer.append('</xsl:text>
-				<xsl:value-of select="." />
+				<xsl:call-template name="xml_to_java_string"> <!-- TODO: xml_to_java_char -->
+					<xsl:with-param name="text" select="." />
+				</xsl:call-template>
 				<xsl:text>');</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
       buffer.append("</xsl:text>
-				<xsl:value-of select="." />
+				<xsl:call-template name="xml_to_java_string">
+					<xsl:with-param name="text" select="." />
+				</xsl:call-template>
 				<xsl:text>");</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="xml_to_java_string">
+		<xsl:param name="text" />
+
+		<xsl:variable name="firstchar">
+			<xsl:value-of select="substring($text, 1, 1)" />
+		</xsl:variable>
+
+		<xsl:variable name="rest">
+			<xsl:value-of select="substring($text, 2)" />
+		</xsl:variable>
+
+		<xsl:choose>
+			<xsl:when test="string-length($text) &lt; 1" />
+			<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="$firstchar='\'">\\</xsl:when>
+					<xsl:when test="$firstchar='&quot;'">\"</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$firstchar" />
+					</xsl:otherwise>
+				</xsl:choose>
+
+				<xsl:call-template name="xml_to_java_string">
+					<xsl:with-param name="text" select="$rest" />
+				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
