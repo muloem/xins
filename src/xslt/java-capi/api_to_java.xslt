@@ -33,9 +33,9 @@
 import java.io.IOException;
 import org.xins.client.CallResult;
 import org.xins.client.CallResultParser;
+import org.xins.client.FunctionCaller;
 import org.xins.client.InvalidCallResultException;
 import org.xins.client.UnsuccessfulCallException;
-import org.xins.client.RemoteAPI;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -60,19 +60,19 @@ public final class API extends Object {
    /**
     * Constructs a new <code>API</code> object for the specified remote API.
     *
-    * @param api
-    *    the remote API, cannot be <code>null</code>.
+    * @param functionCaller
+    *    the function caller, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
+    *    if <code>functionCaller == null</code>.
     */
-   public API(RemoteAPI api) throws IllegalArgumentException {
+   public API(FunctionCaller functionCaller) throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("api", api);
+      MandatoryArgumentChecker.check("functionCaller", functionCaller);
 
       // Store data
-      _api = api;
+      _functionCaller = functionCaller;
    }
 
 
@@ -83,7 +83,7 @@ public final class API extends Object {
    /**
     * The remote API. This field cannot be <code>null</code>.
     */
-   private final RemoteAPI _api;
+   private final FunctionCaller _functionCaller;
 
 
    //-------------------------------------------------------------------------
