@@ -65,7 +65,7 @@ public final class CollectionUtils extends Object {
     * <p>No <code>null</code> values or duplicates are allowed.
     *
     * <p><em>This method is reserved for internal use by the XINS framework.
-    * It may be removed in a future minor XINS release.</p>
+    * It may be removed in a future minor XINS release.</em></p>
     *
     * @param argumentName
     *    the name to assume for the array when constructing a message for an
@@ -86,7 +86,7 @@ public final class CollectionUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>array                     ==   null
     *          || array.length              &lt; min
-    *          || array[<em>i</em>          ==   null</code>
+    *          || array[<em>i</em>]         ==   null</code>
     *    or if <code>array</code> constains any duplicates.
     *
     * @since XINS 1.2.0
@@ -133,6 +133,8 @@ public final class CollectionUtils extends Object {
                                 + "]";
             throw new IllegalArgumentException(DETAIL);
          }
+
+         list.add(elem);
       }
 
       return list;
