@@ -220,8 +220,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    if the call failed.
     */
    public Result call(TargetDescriptor target,
-                      String functionName,
-                      Map    parameters)
+                      String           functionName,
+                      Map              parameters)
    throws IllegalArgumentException, CallException {
 
       // Check preconditions
