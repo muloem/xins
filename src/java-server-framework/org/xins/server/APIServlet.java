@@ -125,7 +125,12 @@ implements Servlet {
          throw new ServletException(message);
       }
 
-      // TODO: Check that the API class is derived from org.xins.server.API
+      // Check that the loaded API class is derived from the API base class
+      if (! API.class.isAssignableFrom(apiClass)) {
+         String message = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
+         Library.LIFESPAN_LOG.fatal(message);
+         throw new ServletException(message);
+      }
 
       // Get the SINGLETON field
       Field singletonField;
@@ -141,21 +146,24 @@ implements Servlet {
       try {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
-         String message = "Invalid application package. Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
+         String message = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\".";
          Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
-      // TODO: Make sure that the field is an instance of that same class
-
-      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
-         Library.LIFESPAN_LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
+      // Make sure that the field is an instance of that same class
+      if (api == null) {
+         String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
+         Library.LIFESPAN_LOG.fatal(message);
+         throw new ServletException(message);
+      } else if (api.getClass() != apiClass) {
+         String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
+         Library.LIFESPAN_LOG.fatal(message);
+         throw new ServletException(message);
       }
 
       // Initialize the API
-      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
-         Library.LIFESPAN_LOG.debug("Initializing API.");
-      }
+      Library.LIFESPAN_LOG.debug("Initializing API instance of class: \"" + apiClassName + "\".");
       Properties settings = ServletUtils.settingsAsProperties(config);
       try {
          api.init(settings);
@@ -173,9 +181,7 @@ implements Servlet {
          throw new ServletException(message);
       }
 
-      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
-         Library.LIFESPAN_LOG.debug("Initialized API.");
-      }
+      Library.LIFESPAN_LOG.debug("Initialized \"" + api.getName() + "\" API.");
 
       return api;
    }
