@@ -7,14 +7,30 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 import java.util.zip.CRC32;
+
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Descriptor for a single target service.
+ * Descriptor for a single target service. A target service descriptor defines
+ * a URL that identifies the location of the service. Also, it may define 3
+ * kinds of time-out:
+ *
+ * <dl>
+ *    <dt>total time-out</dt>
+ *    <dd>the maximum duration of a call, including connection time, time used
+ *    to send the request, time used to receive the response, etc.</dd>
+ *
+ *    <dt>connection time-out</dt>
+ *    <dd>the maximum time for attempting to establish a connection</dd>
+ *
+ *    <dt>socket time-out</dt>
+ *    <dd>the maximum time for attempting to receive data on a socket</dd>
+ * </dl>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -101,14 +117,18 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>TargetDescriptor</code>.
+    * Constructs a new <code>TargetDescriptor</code> for the specified URL,
+    * with the specifed total time-out.
+    *
+    * <p>Note: Both the connection time-out and the socket time-out will be
+    * set to equal the total time-out.
     *
     * @param url
     *    the URL of the service, cannot be <code>null</code>.
     *
     * @param timeOut
-    *    the time-out for the service, in milliseconds; if a negative value is
-    *    passed then the service should be waited for forever.
+    *    the total time-out for the service, in milliseconds; or a negative
+    *    value for no total time-out.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
@@ -118,6 +138,81 @@ public final class TargetDescriptor extends Descriptor {
     */
    public TargetDescriptor(String url, int timeOut)
    throws IllegalArgumentException, MalformedURLException {
+      this(url, timeOut, timeOut, timeOut);
+   }
+
+   /**
+    * Constructs a new <code>TargetDescriptor</code> for the specified URL,
+    * with the specifed total time-out and connection time-out.
+    *
+    * <p>Note: The socket time-out will be set to equal the total time-out.
+    *
+    * <p>Note: If the passed connection time-out is greater than the total
+    * time-out, then it will be adjusted to equal the total time-out.
+    *
+    * @param url
+    *    the URL of the service, cannot be <code>null</code>.
+    *
+    * @param timeOut
+    *    the total time-out for the service, in milliseconds; or a negative
+    *    value for no total time-out.
+    *
+    * @param connectionTimeOut
+    *    the connection time-out for the service, in milliseconds; or a
+    *    negative value for no connection time-out.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>url == null</code>.
+    *
+    * @throws MalformedURLException
+    *    if the specified URL is malformed.
+    *
+    * @since XINS 0.195
+    */
+   public TargetDescriptor(String url, int timeOut, int connectionTimeOut)
+   throws IllegalArgumentException, MalformedURLException {
+      this(url, timeOut, connectionTimeOut, timeOut);
+   }
+
+   /**
+    * Constructs a new <code>TargetDescriptor</code> for the specified URL,
+    * with the specifed total time-out, connection time-out and socket
+    * time-out.
+    *
+    * <p>Note: If the passed connection time-out is greater than the total
+    * time-out, then it will be adjusted to equal the total time-out.
+    *
+    * <p>Note: If the passed socket time-out is greater than the total
+    * time-out, then it will be adjusted to equal the total time-out.
+    *
+    * @param url
+    *    the URL of the service, cannot be <code>null</code>.
+    *
+    * @param timeOut
+    *    the total time-out for the service, in milliseconds; or a negative
+    *    value for no total time-out.
+    *
+    * @param connectionTimeOut
+    *    the connection time-out for the service, in milliseconds; or a
+    *    negative value for no connection time-out.
+    *
+    * @param socketTimeOut
+    *    the socket time-out for the service, in milliseconds; or a
+    *    negative value for no socket time-out.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>url == null</code>.
+    *
+    * @throws MalformedURLException
+    *    if the specified URL is malformed.
+    *
+    * @since XINS 0.195
+    */
+   public TargetDescriptor(String url,
+                           int    timeOut,
+                           int    connectionTimeOut,
+                           int    socketTimeOut)
+   throws IllegalArgumentException, MalformedURLException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
@@ -126,9 +221,11 @@ public final class TargetDescriptor extends Descriptor {
       }
 
       // Set fields
-      _url     = url;
-      _timeOut = timeOut;
-      _crc     = computeCRC32(url);
+      _url               = url;
+      _timeOut           = timeOut;
+      _connectionTimeOut = connectionTimeOut;
+      _socketTimeOut     = socketTimeOut;
+      _crc               = computeCRC32(url);
    }
 
 
@@ -142,10 +239,22 @@ public final class TargetDescriptor extends Descriptor {
    private final String _url;
 
    /**
-    * The time-out for the service. Is set to a negative value if the service
-    * should be waited for forever.
+    * The total time-out for the service. Is set to a negative value if no
+    * total time-out should be applied.
     */
    private final int _timeOut;
+
+   /**
+    * The connection time-out for the service. Is set to a negative value if
+    * no connection time-out should be applied.
+    */
+   private final int _connectionTimeOut;
+
+   /**
+    * The socket time-out for the service. Is set to a negative value if no
+    * socket time-out should be applied.
+    */
+   private final int _socketTimeOut;
 
    /**
     * The CRC-32 checksum for the URL. See {@link #_url}.
@@ -196,9 +305,11 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the connection time-out for the service, in milli-seconds, or a
     *    negative number if there is no connection time-out.
+    *
+    * @since XINS 0.195
     */
    public int getConnectionTimeOut() {
-      return _timeOut; // TODO: Get from distinct field
+      return _connectionTimeOut;
    }
 
    /**
@@ -208,9 +319,11 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the socket time-out for the service, in milli-seconds, or a
     *    negative number if there is no socket time-out.
+    *
+    * @since XINS 0.195
     */
    public int getSocketTimeOut() {
-      return _timeOut; // TODO: Get from distinct field
+      return _socketTimeOut;
    }
 
    /**
