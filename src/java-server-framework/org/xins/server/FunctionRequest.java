@@ -15,10 +15,9 @@ import org.xins.common.xml.Element;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- *
- * @since XINS 1.1.0
  */
-public class FunctionRequest {
+class FunctionRequest
+extends Object {
    
    //-------------------------------------------------------------------------
    // Class fields
@@ -45,13 +44,22 @@ public class FunctionRequest {
     *    the data section of the input request, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if 
+    *    if <code>functionName == null || parameters == null</code>.
     */
-   public FunctionRequest(String functionName, PropertyReader parameters, Element dataElement) {
+   public FunctionRequest(String         functionName,
+                          PropertyReader parameters,
+                          Element        dataElement)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName,
+                                     "parameters",   parameters);
+
       _functionName = functionName;
       _parameters = parameters;
       _dataElement = dataElement;
    }
+
    
    //-------------------------------------------------------------------------
    // Fields
@@ -71,6 +79,7 @@ public class FunctionRequest {
     * The data section of the function.
     */
    private final Element _dataElement;
+
 
    //-------------------------------------------------------------------------
    // Methods
