@@ -385,6 +385,18 @@
 				<!-- TODO: Check that the result code exists? -->
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="sessionID">
+			<xsl:if test="$sessionBased = 'true'">
+				<xsl:if test="string-length(@sessionID) = 0">
+					<xsl:message terminate="yes">
+						<xsl:text>No sessionID specified for example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text>.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+				<xsl:value-of select="@sessionID" />
+			</xsl:if>
+		</xsl:variable>
 
 		<xsl:if test="not($success='true' or $success='false')">
 			<xsl:message terminate="yes">
@@ -475,6 +487,16 @@
 							<xsl:value-of select="$function_name" />
 						</span>
 					</span>
+					<xsl:if test="$sessionBased = 'true'">
+						<xsl:text>&amp;</xsl:text>
+						<span class="param">
+							<span class="name">_session</span>
+						</span>
+						<xsl:text>=</xsl:text>
+						<span class="value">
+							<xsl:value-of select="$sessionID" />
+						</span>
+					</xsl:if>
 					<xsl:for-each select="$example-inputparams">
 						<xsl:text>&amp;</xsl:text>
 						<span class="param">
