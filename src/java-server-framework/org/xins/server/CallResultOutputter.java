@@ -45,26 +45,55 @@ final class CallResultOutputter extends Object {
     * @param xslt
     *    the URL of the XSLT to link to, can be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>out      == null
+    *          || encoding == null
+    *          || result   == null</code>.
+    *
     * @throws IOException
     *    if there was an I/O error while writing to the output stream.
     */
-   public static void output(PrintWriter out, String encoding, CallResult result, String xslt)
-   throws IOException {
+   public static void output(PrintWriter out,
+                             String encoding,
+                             CallResult result,
+                             String xslt)
+   throws IllegalArgumentException, IOException {
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("out",      out,
+                                     "encoding", encoding,
+                                     "result",   result);
+
+      // Create an XMLOutputter
       XMLOutputter outputter = new XMLOutputter(out, encoding);
 
+      // Output the declaration
+      // XXX: Make it configurable whether the declaration is output or not?
       outputter.declaration();
 
+      // Output an xml-stylesheet processing instruction, if appropriate
       if (xslt != null) {
-         outputter.pi("xml-stylesheet", "type=\"text/xsl\" href=\"" + xslt + "\"");
+         outputter.pi("xml-stylesheet",
+                      "type=\"text/xsl\" href=\"" + xslt + "\"");
       }
 
       // Write the result start tag
       outputter.startTag("result");
 
+      // Write the error code
       String code = result.getErrorCode();
       if (code != null) {
          outputter.attribute("errorcode", code);
+
+         // XXX: For backwards compatibility, write the error code in the
+	 //      'code' attribute and set the 'success' attribute to 'false'
+         outputter.attribute("code", code);
+         outputter.attribute("success", "false");
+
+      // XXX: For backwards compatibility, set the 'success' attribute to
+      //      'true'
+      } else {
+         outputter.attribute("success", "false");
       }
 
       // Write the output parameters
@@ -98,7 +127,8 @@ final class CallResultOutputter extends Object {
     *    the XML outputter to use, cannot be <code>null</code>.
     *
     * @param element
-    *    the {@link Element} object to convert to XML, cannot be <code>null</code>.
+    *    the {@link Element} object to convert to XML, cannot be
+    *    <code>null</code>.
     *
     * @throws NullPointerException
     *    if <code>outputter == null || element == null</code>.

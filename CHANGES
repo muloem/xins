@@ -3,9 +3,14 @@ CHANGES INTRODUCED IN XINS 0.191:
 
 * XINS/Java Server Framework:
   - Slightly improved internal error checking in AccessRule class.
+  - Changed CallResultOutputter for backwards compatibility with clients that
+    still expect the 'success' and 'code' attributes. These are now returned
+    again, alongside the 'errorcode' attribute, if there is an error code.
+  - Changed CallResultOutputter to check that all mandatory arguments are
+    specified for the output(...) class function.
 
 * XINS/Java Client Framework:
-  - Fixed typo in both UnacceptableCallResultException and
+  - Fixed typo in the Javadoc for both UnacceptableCallResultException and
     UnsuccessfulCallException classes.
 
 * XINS/Java Common Library:
