@@ -462,12 +462,6 @@
 							<classpath>
 								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
-								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
-								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
-									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-								</xsl:if>
 							</classpath>
 						</javac>
 					</target>

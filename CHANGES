@@ -56,6 +56,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 * XINS/Java Server Framework:
   - Added support for custom calling conventions.
 
+* Generated build file:
+  - Removed the dependencies from the classpath when compiling the types.
+
 * Build and release process:
   - Added -init-release in the dependencies to facilitate the making of a
     release if a target fails.
