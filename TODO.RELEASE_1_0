@@ -16,3 +16,4 @@ List of things to be done for XINS release 1.0:
 - Server Framework: Allow configuration of diagnostic context identifier
   generation. A flag (enable/disable automatic generation) and a prefix
   ("sso-", "webmail-", etc.) is probably enough.
+- Warn if the Server Framework starts up with a -dev version.
