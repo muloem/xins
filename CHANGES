@@ -1,4 +1,17 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.86:
+
+* Added support for _xslt parameter. When specified, the returned XML will
+* contain a processing instruction in the form:
+
+     <?xml-stylesheet type="text/xsl" href="{URL}"?>
+
+  in browsers like Internet Explorer and Mozilla this will result in the
+  specified XSLT to be applied to the result XML, client-side. Note that the
+  appropriate Security settings need to be applied if the XSLT is from a
+  different source than the source XML.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.85:
 
 * Improved the automatic release process. Introduced .version.properties.
