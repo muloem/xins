@@ -6,6 +6,7 @@ package org.xins.server;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.HexConverter;
 
 /**
@@ -41,8 +42,9 @@ public final class BasicSessionID extends SessionID {
     */
    BasicSessionID(API api) throws IllegalArgumentException {
       super("basicSessionID", java.lang.Long.class, api);
-      // TODO: Use FastStringBuffer ?
-      _prefix = HexConverter.toHexString(api.getStartupTimestamp()) + ':';
+      FastStringBuffer buffer = new FastStringBuffer(17, HexConverter.toHexString(api.getStartupTimestamp()));
+      buffer.append(':');
+      _prefix    = buffer.toString();
       _generator = new Generator();
    }
 
@@ -103,8 +105,10 @@ public final class BasicSessionID extends SessionID {
    public String toString(Object value) {
       MandatoryArgumentChecker.check("value", value);
       Long l = (Long) value;
-      // TODO: Use FastStringBuffer
-      return _prefix + HexConverter.toHexString(l.longValue());
+      // TODO: Cache the FastStringBuffer in a ThreadLocal ?
+      FastStringBuffer buffer = new FastStringBuffer(33, _prefix);
+      buffer.append(HexConverter.toHexString(l.longValue()));
+      return buffer.toString();
    }
 
    public final SessionID.Generator getGenerator() {
