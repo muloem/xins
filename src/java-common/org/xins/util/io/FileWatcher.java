@@ -36,27 +36,27 @@ public final class FileWatcher extends Thread {
     * @param file
     *    the name of the file to watch, cannot be <code>null</code>.
     *
-    * @param delay
-    *    the delay in seconds, must be greater than or equal to 1.
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 1.
     *
     * @param listener
     *    the object to notify on events, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>file == null || listener == null || delay &lt; 1</code>
+    *    if <code>file == null || listener == null || interval &lt; 1</code>
     */
-   public FileWatcher(String file, int delay, Listener listener)
+   public FileWatcher(String file, int interval, Listener listener)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("file", file, "listener", listener);
-      if (delay < 1) {
-         throw new IllegalArgumentException("delay (" + delay + ") < 1");
+      if (interval < 1) {
+         throw new IllegalArgumentException("interval (" + interval + ") < 1");
       }
 
       // Store the information
       _file     = new File(file);
-      _delay    = 1000 * (long) delay;
+      _interval = 1000 * (long) interval;
       _listener = listener;
       _stopped  = false;
 
@@ -86,7 +86,7 @@ public final class FileWatcher extends Thread {
    /**
     * Delay in seconds, at least 1.
     */
-   private final long _delay;
+   private final long _interval;
 
    /**
     * The listener. Not <code>null</code>
@@ -127,7 +127,7 @@ public final class FileWatcher extends Thread {
          try {
             while(! _stopped) {
                // Wait for the designated amount of time
-               sleep(_delay);
+               sleep(_interval);
 
                // Check if the file changed
                check();
