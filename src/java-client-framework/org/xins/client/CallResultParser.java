@@ -115,19 +115,18 @@ public class CallResultParser extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
+      final String MESSAGE = "Unable to parse XML returned by API.";
       try {
          StringReader reader = new StringReader(xml);
          return parse(functionCaller, _xmlBuilder.build(reader));
       } catch (IOException ioException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, ioException);
+         LOG.error(MESSAGE, ioException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, ioException);
+         throw new ParseException(MESSAGE, ioException);
       } catch (JDOMException jdomException) {
-         final String message = "Unable to parse XML returned by API.";
-         LOG.error(message, jdomException);
+         LOG.error(MESSAGE, jdomException);
          // TODO: Include type of error in here somewhere
-         throw new ParseException(message, jdomException);
+         throw new ParseException(MESSAGE, jdomException);
       }
    }
 

@@ -43,12 +43,6 @@ implements FunctionCaller {
 
    /**
     * Creates a new <code>AbstractFunctionCaller</code>.
-    *
-    * @param url
-    *    the URL for the API, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>url == null</code>.
     */
    protected AbstractFunctionCaller() {
       // empty

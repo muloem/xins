@@ -36,7 +36,7 @@ public interface FunctionCaller {
     *    function was invalid.
     */
    CallResult call(String functionName)
-   throws IOException, InvalidCallResultException;
+   throws IllegalArgumentException, IOException, InvalidCallResultException;
 
    /**
     * Calls the specified session-less API function with the specified
