@@ -8,6 +8,7 @@ import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Simple pattern parser.
@@ -54,44 +55,6 @@ public class SimplePatternParser extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The dot character.
-    */
-   private static final char DOT = '.';
-
-   /**
-    * The asterisk character.
-    */
-   private static final char ASTERISK = '*';
-
-   /**
-    * The question mark character.
-    */
-   private static final char QUESTION_MARK = '?';
-
-   /**
-    * The accent circunflex character.
-    */
-   private static final char CIRCUNFLEX = '^';
-
-   /**
-    * The dollar sign character.
-    */
-   private static final char DOLLAR_SIGN = '$';
-
-   /**
-    * The regular expression that is used to replace all occurrences of an
-    * asterisk within the pattern by a dot and an asterisk.
-    */
-   private static final String ASTERISK_REGEXP = "\\*";
-
-   /**
-    * The wilcard (dot and asterisk) to which each asterisk that appears 
-    * within the pattern is converted.
-    */
-   private static final String PERL5_ASTERISK_WILDCARD = ".*";
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -136,10 +99,6 @@ public class SimplePatternParser extends Object {
 
       MandatoryArgumentChecker.check("simplePattern", simplePattern);
 
-      if (isValidPattern(simplePattern) == false) {
-         throw new ParseException("The pattern '" + simplePattern + "' is invalid.");
-      }
-
       simplePattern = convertToPerl5RegularExpression(simplePattern);
 
       Perl5Pattern perl5pattern = null;
@@ -179,46 +138,56 @@ public class SimplePatternParser extends Object {
     *
     * @throws NullPointerException
     *    if <code>pattern == null</code>.
+    *
+    * @throws ParseException
+    *    if provided simplePattern is invalid or could not be parsed.
     */
    private String convertToPerl5RegularExpression(String pattern)
-   throws NullPointerException {
-      pattern = pattern.replaceAll(ASTERISK_REGEXP, PERL5_ASTERISK_WILDCARD);
-      pattern = pattern.replace(QUESTION_MARK, DOT);
-      pattern = CIRCUNFLEX + pattern + DOLLAR_SIGN;
-      return pattern;
-   }
+   throws NullPointerException, ParseException {
 
-   /**
-    * Determines whether the provided pattern is valid.
-    *
-    * @param pattern
-    *    the pattern to be validated, not <code>null</code>.
-    *
-    * @return
-    *    boolean with the value <code>true</code> if the pattern is valid,
-    *    otherwise <code>false</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>pattern == null</code>.
-    */
-   private boolean isValidPattern(String pattern)
-   throws NullPointerException {
-      char[] patternContents = pattern.toCharArray();
-      int patternContentsLength = patternContents.length;
-      boolean valid = true;
+      char[] contents = pattern.toCharArray();
+      int size = contents.length;
+      FastStringBuffer buffer = new FastStringBuffer(size * 2);
+      char prevChar = (char) 0;
 
-      for (int i= 0;i < patternContentsLength && valid == true; i++) {
-         char currChar = patternContents[i];
-         if (i < patternContentsLength - 1) {
-            if (currChar == ASTERISK || currChar == QUESTION_MARK || currChar == CIRCUNFLEX || currChar == DOLLAR_SIGN) {
-               char nextChar = patternContents[i + 1];
-               if (nextChar == ASTERISK || nextChar == QUESTION_MARK || nextChar == CIRCUNFLEX || nextChar == DOLLAR_SIGN) {
-                  valid = false;
-               }
+      buffer.append('^');
+
+      for (int i= 0; i < size; i++) {
+         char currChar = contents[i];
+
+         if (currChar >= 'a' && currChar <= 'z') {
+            buffer.append(currChar);
+         } else if (currChar >= 'A' && currChar <= 'Z') {
+            buffer.append(currChar);
+         } else if (currChar >= '0' && currChar <= '9') {
+            buffer.append(currChar);
+         } else if (currChar == '_') {
+            buffer.append(currChar);
+         } else if (currChar == '-') {
+            buffer.append(currChar);
+         } else if (currChar == '.') {
+            buffer.append("\\.");
+         } else if (currChar == '*') {
+            if (prevChar == '*' || prevChar == '?') {
+               throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
+            } else {
+               buffer.append(".*");
             }
+         } else if (currChar == '?') {
+            if (prevChar == '*' || prevChar == '?') {
+               throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
+            } else {
+               buffer.append('.');
+            }
+         } else {
+            throw new ParseException("The pattern \"" + pattern + "\" is invalid. The character '" + currChar + "' is not allowed.");
          }
+
+         prevChar = currChar;
       }
 
-      return valid;
+      buffer.append('$');
+
+      return buffer.toString();
    }
 }
