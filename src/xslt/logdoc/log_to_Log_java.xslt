@@ -90,10 +90,16 @@ public class Log extends Object {
     */
    static {
 
+      // Determine the int value for the NOTICE level
+      int noticeInt = (Level.INFO_INT + Level.WARN_INT) / 2;
+      if (noticeInt <= Level.INFO_INT || noticeInt >= Level.WARN_INT) {
+         throw new Error("Unable to determine int value for NOTICE level between INFO and WARN.  Value for INFO level is " + Level.INFO_INT + ". Value for WARN level is " + Level.WARN_INT + '.');
+      }
+
       // Initialize all the log levels
       DEBUG   = Level.DEBUG;
       INFO    = Level.INFO;
-      NOTICE  = new NoticeLevel();
+      NOTICE  = new CustomLevel(noticeInt, "NOTICE", 5);
       WARNING = Level.WARN;
       ERROR   = Level.ERROR;
       FATAL   = Level.FATAL;
@@ -191,17 +197,35 @@ public class Log extends Object {
    /**
     * The <em>notice</em> log level.
     */
-   private static class NoticeLevel extends Level {
+   private static class CustomLevel extends Level {
 
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>NoticeLevel</code> object.
+       * Constructs a new <code>CustomLevel</code> object.
+       *
+       * @param value
+       *    the <code>int</code> value for this level.
+       *
+       * @param name
+       *    the name for this level, should not be <code>null</code>.
+       *
+       * @param syslogEquivalent
+       *    the syslog equivalent.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null</code>.
        */
-      private NoticeLevel() {
-         super((Level.INFO_INT + Level.WARN_INT) / 2, "NOTICE", 5);
+      private CustomLevel(int value, String name, int syslogEquivalent)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("name", name);
+
+         // Call superconstructor
+         super(value, name, syslogEquivalent);
       }
 
 
