@@ -4,7 +4,8 @@ CHANGES INTRODUCED IN XINS 0.48:
 * Hid some of the protected interface of CallTargetGroup, because only classes
   in the same package can derive from this class.
 
-* Fixed bug in statistics output. Previously the output was like this:
+* Fixed bug in statistics output, produced by function _GetStatistics.
+  Previously the output was like this (incorrect):
 
      <function name="Login">
         <successful count="1" average="351">
@@ -19,7 +20,7 @@ CHANGES INTRODUCED IN XINS 0.48:
         </unsuccessful>
      </function>
 
-  Now the output will be like this:
+  Now the output will be like this (correct):
 
      <function name="Login">
         <successful count="1" average="351">
