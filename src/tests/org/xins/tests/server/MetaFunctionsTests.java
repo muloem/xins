@@ -64,6 +64,9 @@ public class MetaFunctionsTests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The HTTP server used to handle the requests.
+    */
    private HTTPServletHandler _httpServer;
    
    //-------------------------------------------------------------------------
@@ -71,7 +74,7 @@ public class MetaFunctionsTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs setup for the tests.
+    * Starts the HTTP server with the correct parameters.
     */
    protected void setUp() {
       // Start the web server

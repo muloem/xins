@@ -375,7 +375,7 @@
 		<available property="xins.examples" file="${basedir}/../xins-examples" />
 		<fail message="Please, check out the xins-examples in the ${basedir} directory." unless="xins.examples" />
 		
-		<junit printsummary="true" failureproperty="tests.failed" showoutput="true">
+		<junit printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>

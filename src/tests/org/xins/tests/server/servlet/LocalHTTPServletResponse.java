@@ -31,7 +31,9 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    // Constructor
    //-------------------------------------------------------------------------
    
-   /** Creates a new instance of LocalHTTPServletResponse */
+   /** 
+    * Creates a new instance of LocalHTTPServletResponse 
+    */
    public LocalHTTPServletResponse() {
    }
 
@@ -39,9 +41,24 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The content type of the result.
+    */
    private String _contentType;
+   
+   /**
+    * The status of the result.
+    */
    private int _status;
+   
+   /**
+    * The enconding of the result.
+    */
    private String _encoding;
+   
+   /**
+    * The writer where to write the result.
+    */
    private StringWriter _writer;
    
    //-------------------------------------------------------------------------

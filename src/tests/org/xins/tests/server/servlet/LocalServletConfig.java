@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * This class is an implementation of the ServletContext that can be 
+ * This class is an implementation of the ServletConfig that can be 
  * called locally.
  *
  * @version $Revision$
@@ -40,6 +40,13 @@ public class LocalServletConfig implements ServletConfig {
    // Constructor
    //-------------------------------------------------------------------------
    
+   /**
+    * Creates a new Servlet configuration.
+    *
+    * @param warFileLocation
+    *    the location of the war file containing the servlet to deploy,
+    *    cannot be <code>null</code>.
+    */
    public LocalServletConfig(String warFileLocation) {
       _initParameters = new Properties();
       _context = new LocalServletContext();
@@ -115,7 +122,10 @@ public class LocalServletConfig implements ServletConfig {
       return _initParameters.keys();
    }
    
-   class WebInfoParser extends DefaultHandler {
+   /**
+    * Parser for the web.xml containing the information about the Servlet.
+    */
+   private class WebInfoParser extends DefaultHandler {
       
       //-------------------------------------------------------------------------
       // Class functions

@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import javax.servlet.ServletException;
+
 import org.apache.commons.httpclient.HttpStatus;
 import org.xins.server.APIServlet;
 
@@ -35,6 +36,13 @@ public class HTTPServletHandler {
    // Constructor
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * on port 8080 and wait for calls from the XINSServiceCaller.
+    *
+    * @param warFile
+    *    the war file of the application to deploy, cannot be <code>null</code>.
+    */
    public HTTPServletHandler(String warFile) {
       try {
          // Initialize the servlet
@@ -53,9 +61,24 @@ public class HTTPServletHandler {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The servlet.
+    */
    private APIServlet _apiServlet;
+   
+   /**
+    * The web server.
+    */
    private ServerSocket _serverSocket;
+   
+   /**
+    * The thread that waits for connections from the client.
+    */
    private SocketAcceptor _acceptor;
+   
+   /**
+    * flag indicating if the server should wait for other connections or stop.
+    */
    private boolean _running;
    
    //-------------------------------------------------------------------------
@@ -76,6 +99,9 @@ public class HTTPServletHandler {
 
    /**
     * Starts the web server.
+    *
+    * @throw IOException
+    *    If the web server cannot be created.
     */
    public void startServer() throws IOException {
       // Create the server socket
@@ -87,7 +113,7 @@ public class HTTPServletHandler {
    }
 
    /**
-    * Stops the server.
+    * Dispose the servlet and stops the web server.
     */
    public void close() {
       _running = false;
@@ -99,6 +125,12 @@ public class HTTPServletHandler {
       }
    }
 
+   /**
+    * This method is invoked when a client connects to the server.
+    *
+    * @param client
+    *    the connection with the client.
+    */
    public void serviceClient(Socket client) throws IOException {
       DataInputStream inbound = null;
       DataOutputStream outbound = null;
@@ -109,25 +141,37 @@ public class HTTPServletHandler {
 
          // Get the output
          String httpResult = httpQuery(inbound);
-         System.err.println("+++ Result " + httpResult);
+         // System.out.println("+++ Result " + httpResult);
 
          outbound.writeBytes(httpResult);
          
       } finally{
          // Clean up
-         System.out.println("Cleaning up connection: " + client);
-         inbound.close();
-         outbound.close();
-         client.close();
-         client.close();
+         // System.out.println("Cleaning up connection: " + client);
+         outbound.flush();
+         
+         // The following close statements doesn't work on Unix.
+         // inbound.close();
+         // outbound.close();
+         // client.close();
       }
    }
    
+   /**
+    * This method parses the data sent from the client to get the input 
+    * parameters and format the result as a compatible HTTP result.
+    *
+    * @param input
+    *    the input stream that contains the data send by the client.
+    *
+    * @return
+    *    the HTTP result to send back to the client.
+    */
    public String httpQuery(DataInputStream input) throws IOException {
       String inputLine;
     
       while ((inputLine = input.readLine()) != null) {
-         System.out.println("*** input: " + inputLine);
+         // System.out.println("*** input: " + inputLine);
          if (inputLine.startsWith("GET ")) {
             int questionPos = inputLine.indexOf('?');
             if (questionPos !=-1) {
@@ -153,6 +197,13 @@ public class HTTPServletHandler {
       return "HTTP/1.1 400 BAD_REQUEST\n\n";
    }
    
+   /**
+    * Executes the servlet
+    *
+    * @param url
+    *    the requested URL or a common separated list of the parameters 
+    *    passed to the URL (e.g. _function=GetVestion,param1=value1)
+    */
    public LocalHTTPServletResponse query(String url) throws IOException {
       LocalHTTPServletRequest request = new LocalHTTPServletRequest(url);
       LocalHTTPServletResponse response = new LocalHTTPServletResponse();
@@ -160,21 +211,30 @@ public class HTTPServletHandler {
       return response;
    }
    
+   /**
+    * Thread waiting for connection from the client.
+    */
    private class SocketAcceptor extends Thread {
       
+      /**
+       * Create the thread.
+       */
       public SocketAcceptor() {
          setDaemon(true);
       }
       
+      /**
+       * Executes the thread.
+       */
       public void run() {
-         System.err.println("Server started.");
+         // System.out.println("Server started.");
          try {
             while (_running) {
                // Wait for a connection
                Socket clientSocket = _serverSocket.accept();
-               System.err.println("Server contacted.");
+               // System.out.println("Server contacted.");
 
-               //Service the connection
+               // Service the connection
                serviceClient(clientSocket);
             }
          } catch (SocketException ie) {

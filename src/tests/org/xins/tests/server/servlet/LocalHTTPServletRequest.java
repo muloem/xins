@@ -41,6 +41,13 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
    // Constructor
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates a new Servlet request.
+    *
+    * @param url
+    *    the request url or the list of the parameters (name=value) separated 
+    *    with comma's.
+    */
    public LocalHTTPServletRequest(String url) {
       _date = System.currentTimeMillis();
       _attributes = new Hashtable();
@@ -69,9 +76,24 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The parameters retrieved from the URL.
+    */
    private Properties _parameters;
+   
+   /**
+    * The date when the request was created.
+    */
    private long _date;
+   
+   /**
+    * The attributes of the request.
+    */
    private Hashtable _attributes;
+   
+   /**
+    * The URL query string.
+    */
    private String _queryString;
 
    
