@@ -109,7 +109,7 @@ public class HexConverter extends Object {
          chars[pos] = '0';
       }
 
-      return new String(chars, 0, LONG_LENGTH);
+      return new String(chars, 0, INT_LENGTH);
    }
 
    /**
