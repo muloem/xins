@@ -661,6 +661,7 @@ extends HttpServlet {
          try {
             result = _api.handleCall(start, request);
 
+         // If access is denied, return '403 Forbidden'
          } catch (AccessDeniedException exception) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
