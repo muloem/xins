@@ -1,14 +1,23 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.79:
 
-* Shell script 'xins' now uses 'echo' instead of 'echo -n' for non-FreeBSD
-  operating systems. On Solaris, for example, 'echo -n' prints the literal
-  '-n'.
+* Shell script 'xins' has been improved. These changes have not been applied
+  to xins.bat (yet):
+  - support added for -deployment option
+  - supports for -bypass option that disables the regeneration of the Ant
+    buildfile. The buildfile must already exist.
+
+* Shell script 'xins' now distinguishes between SystemV and BSD systems. Based
+  on this, either 'echo -n "text"' or 'echo "text" \c' is used when no newline
+  should be output.
+
+* XINS/Java Server Framework:
+  - Logging deployment ID if any was specified at build time.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.78:
 
-* XINS/Java Servlet Framework:
+* XINS/Java Server Framework:
   - Added support for default functions.
 
 ______________________________________________________________________________
