@@ -447,6 +447,7 @@ implements DefaultResultCodes {
       if (_defaultFunction != null) {
          Library.LIFESPAN_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
+      // TODO: Chech that default function exists
 
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
