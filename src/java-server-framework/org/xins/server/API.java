@@ -419,7 +419,7 @@ implements DefaultResultCodes {
             Log.log_2023(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_2024(_name, className, exception.getClass().getName(), exception.getMessage());
+            Log.log_2024(exception, _name, className);
             throw new BootstrapException(exception);
          }
       }
@@ -443,7 +443,7 @@ implements DefaultResultCodes {
             Log.log_2031(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_2032(_name, functionName, exception.getClass().getName(), exception.getMessage());
+            Log.log_2032(exception, _name, functionName);
             throw new BootstrapException(exception);
          }
       }
@@ -552,7 +552,7 @@ implements DefaultResultCodes {
             Log.log_4023(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_4024(_name, className, exception.getClass().getName(), exception.getMessage());
+            Log.log_4024(exception, _name, className);
             throw new InitializationException(exception);
          }
       }
@@ -576,7 +576,7 @@ implements DefaultResultCodes {
             Log.log_4029(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_4030(_name, functionName, exception.getClass().getName(), exception.getMessage());
+            Log.log_4030(exception, _name, functionName);
             throw new InitializationException(exception);
          }
       }
@@ -654,7 +654,7 @@ implements DefaultResultCodes {
          } catch (DeinitializationException exception) {
             Log.log_6006(_name, className, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_6007(_name, className, exception.getClass().getName(), exception.getMessage());
+            Log.log_6007(exception, _name, className);
          }
       }
 
@@ -672,7 +672,7 @@ implements DefaultResultCodes {
          } catch (DeinitializationException exception) {
             Log.log_6010(_name, functionName, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_6011(_name, functionName, exception.getClass().getName(), exception.getMessage());
+            Log.log_6011(exception, _name, functionName);
          }
       }
    }

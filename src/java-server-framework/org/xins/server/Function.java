@@ -327,20 +327,17 @@ implements DefaultResultCodes {
 
       } catch (Throwable exception) {
 
-         String exceptionClass = exception.getClass().getName();
-         String exceptionMessage = exception.getMessage();
-
          // TODO: Allow customization of what exceptions are logged?
-         // TODO: Log stack trace (5013)
-         Log.log_5013(_name, callID, exceptionClass, exceptionMessage);
+         Log.log_5013(exception, _name, callID);
 
          // Create a set of parameters for the result
          BasicPropertyReader parameters = new BasicPropertyReader();
 
          // Add the exception class
-         parameters.set("_exception.class", exceptionClass);
+         parameters.set("_exception.class", exception.getClass().getName());
 
          // Add the exception message, if any
+         String exceptionMessage = exception.getMessage();
          if (exceptionMessage != null && exceptionMessage.length() > 0) {
             parameters.set("_exception.message", exceptionMessage);
          }

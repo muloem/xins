@@ -507,7 +507,7 @@ extends HttpServlet {
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
-            Log.log_2004(CONFIG_FILE_SYSTEM_PROPERTY, exception.getClass().getName(), exception.getMessage());
+            Log.log_2004(exception, CONFIG_FILE_SYSTEM_PROPERTY);
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
@@ -546,7 +546,7 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
-            Log.log_2007(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName(), exception.getMessage());
+            Log.log_2007(exception, API_CLASS_PROPERTY, apiClassName);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -600,7 +600,7 @@ extends HttpServlet {
          } catch (BootstrapException exception) {
             Log.log_2011(exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_2012(exception.getClass().getName(), exception.getMessage());
+            Log.log_2012(exception);
          } finally {
             if (succeeded == false) {
                setState(API_BOOTSTRAP_FAILED);
@@ -650,7 +650,7 @@ extends HttpServlet {
       } catch (InitializationException exception) {
          Log.log_4015(exception.getMessage());
       } catch (Throwable exception) {
-         Log.log_4016(exception.getClass().getName(), exception.getMessage());
+         Log.log_4016(exception);
       } finally {
 
          if (succeeded) {
@@ -686,11 +686,11 @@ extends HttpServlet {
          properties.load(in);
 
       } catch (FileNotFoundException exception) {
-         Log.log_3001(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3001(exception, _configFile);
       } catch (SecurityException exception) {
-         Log.log_3002(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3002(exception, _configFile);
       } catch (IOException exception) {
-         Log.log_3003(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_3003(exception, _configFile);
       }
 
       // TODO: Should we reset the logging subsystem if the Log4J
@@ -901,7 +901,7 @@ extends HttpServlet {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Log.log_6001(exception.getClass().getName(), exception.getMessage());
+            Log.log_6001(exception);
          }
       }
 
@@ -1045,7 +1045,7 @@ extends HttpServlet {
       }
 
       public void securityException(SecurityException exception) {
-         Log.log_4001(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_4001(exception, _configFile);
       }
    }
 }
