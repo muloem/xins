@@ -3,6 +3,8 @@
  */
 package org.xins.common.text;
 
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Utility class for converting numbers to unsigned hex strings and vice
  * versa.
@@ -19,21 +21,33 @@ public class HexConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The number of characters written when converting a <code>byte</code> to
+    * an unsigned hex string.
+    */
+   private static final int BYTE_LENGTH = 2;
+
+   /**
+    * The number of characters written when converting a <code>short</code> to
+    * an unsigned hex string.
+    */
+   private static final int SHORT_LENGTH = 4;
+
+   /**
+    * The number of characters written when converting a <code>int</code> to
+    * an unsigned hex string.
+    */
+   private static final int INT_LENGTH = 8;
+
+   /**
     * The number of characters written when converting a <code>long</code> to
     * an unsigned hex string.
     */
    private static final int LONG_LENGTH = 16;
 
    /**
-    * The number of characters written when converting a <code>long</code> to
-    * an unsigned hex string.
-    */
-   private static final int INT_LENGTH = 8;
-
-   /**
     * The radix when converting (16).
     */
-   private static final int RADIX = 16;
+   private static final byte RADIX = 16;
 
    /**
     * The radix mask as an <code>int</code>. Equal to {@link #RADIX}<code> -
@@ -46,6 +60,13 @@ public class HexConverter extends Object {
     * 1L</code>.
     */
    private static final long LONG_MASK = RADIX - 1L;
+
+   /**
+    * Array of 4 zero characters.
+    */
+   private static final char[] FOUR_ZEROES = {
+      '0', '0', '0', '0',
+   };
 
    /**
     * Array of 8 zero characters.
@@ -104,7 +125,110 @@ public class HexConverter extends Object {
    }
 
    /**
-    * Convert the specified <code>int</code> to an unsigned number hex
+    * Converts the specified <code>byte</code> array to an unsigned number hex
+    * string. The number of characters in the returned string will always be
+    * equal to the number of input bytes times 2.
+    *
+    * @param input
+    *    the <code>byte[]</code> array to be converted to a hex string.
+    *
+    * @return
+    *    the hex string, cannot be <code>null</code>, the length is always 2
+    *    times the length of the input array
+    *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == (input.length * 2)</code>).
+    *
+    * @throws IllegalArgumentException
+    *    if <code>n == null || n.length &lt; 1</code>.
+    *
+    * @since XINS 0.199
+    */
+   public static String toHexString(byte[] input)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("input", input);
+      if (input.length < 1) {
+         throw new IllegalArgumentException("input.length (" + input.length + ") < 1");
+      }
+
+      // Construct a new char array to store the hex digits in
+      int length   = input.length;
+      char[] chars = new char[length * 2];
+
+      int pos = 0;
+      for (int i = 0; i < length; i++) {
+
+         int n = (int) input[i];
+         chars[pos++] = DIGITS[(n & 0x000000f0) >> 4];
+         chars[pos++] = DIGITS[(n & 0x0000000f) >> 0];
+      }
+
+      return new String(chars, 0, length * 2);
+   }
+
+   /**
+    * Converts the specified <code>byte</code> to an unsigned number hex
+    * string. The returned string will always consist of 2 hex characters,
+    * a zero will be prepended if necessary.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @return
+    *    the hex string, cannot be <code>null</code>, the length is always 2
+    *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 2</code>).
+    *
+    * @since XINS 0.199
+    */
+   public static String toHexString(byte n) {
+
+      // First convert to int, since there are no Java opcodes for bytes
+      byte i = (byte) n;
+
+      char[] chars = new char[BYTE_LENGTH];
+      chars[0] = DIGITS[(i & 0x000000f0) >> 4];
+      chars[1] = DIGITS[(i & 0x0000000f) >> 0];
+
+      return new String(chars, 0, BYTE_LENGTH);
+   }
+
+   /**
+    * Converts the specified <code>short</code> to an unsigned number hex
+    * string. The returned string will always consist of 4 hex characters,
+    * zeroes will be prepended as necessary.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @return
+    *    the hex string, cannot be <code>null</code>, the length is always 4
+    *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 4</code>).
+    *
+    * @since XINS 0.199
+    */
+   public static String toHexString(short n) {
+
+      // First convert to int, since there are no Java opcodes for shorts
+      int i = (int) n;
+
+      char[] chars = new char[SHORT_LENGTH];
+      int pos      = SHORT_LENGTH - 1;
+
+      // Convert the number to a hex string until the remainder is 0
+      for (; i != 0; i >>>= 4) {
+         chars[pos--] = DIGITS[i & INT_MASK];
+      }
+
+      // Fill the rest with '0' characters
+      for (; pos >= 0; pos--) {
+         chars[pos] = '0';
+      }
+
+      return new String(chars, 0, SHORT_LENGTH);
+   }
+
+   /**
+    * Converts the specified <code>int</code> to an unsigned number hex
     * string. The returned string will always consist of 8 hex characters,
     * zeroes will be prepended as necessary.
     *
