@@ -43,16 +43,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    // TODO: Allow configuration of HTTP call method (GET / POST)
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The number of constructed call executors.
-    */
-   private static int CALL_EXECUTOR_COUNT;
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -503,6 +493,16 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final class CallExecutor extends Thread {
 
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+
+      /**
+       * The number of constructed call executors.
+       */
+      private static int CALL_EXECUTOR_COUNT;
+
+
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
@@ -530,7 +530,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                            PostMethod call)
       throws IllegalArgumentException {
 
-         super("XINS call executor #" + CALL_EXECUTOR_COUNT++);
+         super("XINS call executor #" + ++CALL_EXECUTOR_COUNT);
 
          // Check preconditions
          MandatoryArgumentChecker.check("httpClient", httpClient,

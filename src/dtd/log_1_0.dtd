@@ -4,10 +4,6 @@
 <!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://xins.sourceforge.net/dtd/log_1_0.dtd">
 -->
 <!ELEMENT log (translation-bundle*, group*)>
-<!ATTLIST log
-          default-locale       CDATA #IMPLIED
-          domain               CDATA #IMPLIED
->
 <!ELEMENT translation-bundle EMPTY>
 <!ATTLIST translation-bundle
           locale               CDATA #REQUIRED

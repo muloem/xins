@@ -28,6 +28,7 @@ CHANGES INTRODUCED IN XINS 0.206:
 * Logdoc:
   - Removed the counter that counted the number of time that a log was
     invoked.
+  - Removed the attributes domain and default-locale from the DTD.
 
 * Generated build file
   - Added a run target that asks for the command and API to execute.
