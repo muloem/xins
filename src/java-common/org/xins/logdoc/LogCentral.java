@@ -3,6 +3,8 @@
  */
 package org.xins.logdoc;
 
+import org.apache.log4j.NDC;
+
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -56,6 +58,17 @@ extends Object {
          a[size] = controller;
          CONTROLLERS = a;
       }
+   }
+
+   /**
+    * Returns the current diagnostic context identifier.
+    *
+    * @return
+    *    the current diagnostic context identifier, or <code>null</code> if
+    *    there is none.
+    */
+   public static final String getContext() {
+      return NDC.peek();
    }
 
    /**
