@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.27:
+
+* Enabled javac optimizations.
+
+* Switched from Checkstyle 2.x to Checkstyle 3.0.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.26:
 
 * Storing links to result codes in API instance.
