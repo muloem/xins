@@ -46,6 +46,9 @@ public final class Boolean extends Type {
     * @param string
     *    the string to convert, cannot be <code>null</code>.
     *
+    * @return
+    *    the <code>boolean</code> value.
+    *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
@@ -72,6 +75,10 @@ public final class Boolean extends Type {
     *
     * @param string
     *    the string to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the {@link java.lang.Boolean}, or <code>null</code> if
+    *    <code>string == null</code>.
     *
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
