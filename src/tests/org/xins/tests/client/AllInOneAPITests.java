@@ -31,6 +31,7 @@ import org.xins.client.DataElement;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
+import org.xins.client.UnacceptableRequestException;
 import org.xins.client.UnsuccessfulXINSCallException;
 
 import org.xins.common.collections.PropertyReader;
@@ -150,7 +151,22 @@ public class AllInOneAPITests extends TestCase {
     * call methods.
     */
    public void testSimpleTypes2() throws Exception {
+
+      try {
+         _capi.callSimpleTypes(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
       SimpleTypesRequest request = new SimpleTypesRequest();
+      try {
+         _capi.callSimpleTypes(request);
+         fail("Expected UnacceptableRequestException.");
+      } catch (UnacceptableRequestException exception) {
+         // as expected
+      }
+
       request.setInputByte((byte) 8);
       request.setInputShort((Short) null);
       request.setInputInt(65);
