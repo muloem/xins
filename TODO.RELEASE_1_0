@@ -127,7 +127,7 @@ Other:
 Improved Logdoc for XINS/Java Common Library:
 [x] Let Logdoc groups match Java package names
 [x] Make parameter names match hungarian notation
-[ ] Review Logdoc entry descriptions
+[x] Review Logdoc entry descriptions
 [ ] Make Logdoc entry descriptions and translations match
 [ ] Review Logdoc translations
 [ ] Add groups for missing Java packages
