@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.85:
+
+* Improved the automatic release process. Introduced .version.properties.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.84:
 
 * Generated test forms:
