@@ -103,14 +103,16 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Group category</th>
+				<th>ID</th>
 				<td>
-					<xsl:value-of select="$category" />
+					<xsl:value-of select="@id" />
 				</td>
 			</tr>
 			<tr>
-				<th>ID</th>
+				<th>Log category</th>
 				<td>
+					<xsl:value-of select="$category" />
+					<xsl:text>.</xsl:text>
 					<xsl:value-of select="@id" />
 				</td>
 			</tr>
