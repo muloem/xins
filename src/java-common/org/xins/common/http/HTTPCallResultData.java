@@ -16,7 +16,7 @@ import org.xins.common.service.CallResult;
 import org.xins.common.service.TargetDescriptor;
 
 /**
- * Data part of an HTTP call result.
+ * Abstraction of the data part of an HTTP call result.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
