@@ -475,7 +475,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Total time-out exceeded
       } catch (TimeOutException exception) {
          duration = System.currentTimeMillis() - start;
-         Log.log_1105(url, params, duration, totalTimeOut);
+         Log.log_1106(url, params, duration, totalTimeOut);
          throw new TotalTimeOutCallException(request, target, duration);
 
       } finally {
@@ -493,17 +493,17 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Unknown host
          if (exception instanceof UnknownHostException) {
-            Log.log_1110(url, params, duration);
+            Log.log_1102(url, params, duration);
             throw new UnknownHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
-            Log.log_1102(url, params, duration);
+            Log.log_1103(url, params, duration);
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_1103(url, params, duration, connectionTimeOut);
+            Log.log_1104(url, params, duration, connectionTimeOut);
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -516,23 +516,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_1104(url, params, duration, socketTimeOut);
+               Log.log_1105(url, params, duration, socketTimeOut);
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
             } else {
-               Log.log_1108(exception, url, params, duration);
+               Log.log_1109(exception, url, params, duration);
                throw new IOCallException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            Log.log_1108(exception, url, params, duration);
+            Log.log_1109(exception, url, params, duration);
             throw new IOCallException(request, target, duration, (IOException) exception);
 
          // Unrecognized kind of exception caught
          } else {
-            Log.log_1109(exception, url, params, duration);
+            Log.log_1110(exception, url, params, duration);
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -547,7 +547,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Status code is considered acceptable
       if (verifier == null || verifier.isAcceptable(code)) {
-         Log.log_1106(url, params, duration, code);
+         Log.log_1107(url, params, duration, code);
 
       // Status code is considered unacceptable
       } else {
@@ -555,7 +555,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
 
-         Log.log_1107(url, params, duration, code);
+         Log.log_1108(url, params, duration, code);
 
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }

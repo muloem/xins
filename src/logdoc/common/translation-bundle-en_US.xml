@@ -20,15 +20,15 @@
 
 	<translation entry="1100">Calling <value-of-param name="url" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
 	<translation entry="1101">Called <value-of-param name="url" />, with the parameters <value-of-param name="parameters"/>. The call took <value-of-param name="duration" /> ms.</translation>
-	<translation entry="1102">Connection refused while calling <value-of-param name="url" />.</translation>
-	<translation entry="1103">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="1104">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="1105">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="1106">Received acceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
-	<translation entry="1107">Received unacceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
-	<translation entry="1108">I/O error while calling <value-of-param name="url" />.</translation>
-	<translation entry="1109">Unexpected exception while calling <value-of-param name="url" />.</translation>
-	<translation entry="1110">Unknown host error while calling <value-of-param name="url" />.</translation>
+	<translation entry="1102">Unknown host error while calling <value-of-param name="url" />.</translation>
+	<translation entry="1103">Connection refused while calling <value-of-param name="url" />.</translation>
+	<translation entry="1104">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1105">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1106">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1107">Received acceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
+	<translation entry="1108">Received unacceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
+	<translation entry="1109">I/O error while calling <value-of-param name="url" />.</translation>
+	<translation entry="1110">Unexpected exception while calling <value-of-param name="url" />.</translation>
 
 	<translation entry="1200">Starting watch thread for file <value-of-param name="file" format="quoted" />. Checking for modifications every <value-of-param name="interval" /> seconds.</translation>
 	<translation entry="1201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</translation>
