@@ -51,8 +51,7 @@ extends HTTPCallException {
     *          || target == null
     *          || duration &lt; 0</code>.
     */
-   StatusCodeHTTPCallException(String           shortReason,
-                               HTTPCallRequest  request,
+   StatusCodeHTTPCallException(HTTPCallRequest  request,
                                TargetDescriptor target,
                                long             duration,
                                int              code)
