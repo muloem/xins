@@ -53,20 +53,8 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Parses the given XML string to create a
-    * <code>Result</code> object with the specified
-    * <code>TargetDescriptor</code>.
-    *
-    * @param request
-    *    the original {@link XINSCallRequest} that was used to perform the
-    *    call, cannot be <code>null</code>.
-    *
-    * @param target
-    *    the {@link TargetDescriptor} that was used to get the XML, cannot be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the call duration, should be &gt;= 0.
+    * Parses the given XML string to create a <code>XINSCallResult.Data</code>
+    * object.
     *
     * @param xml
     *    the XML to be parsed, not <code>null</code>.
@@ -75,28 +63,17 @@ extends Object {
     *    the parsed result of the call, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request   == null
-    *          || target    == null
-    *          || xmlStream == null
-    *          || duration &lt; 0</code>
+    *    if <code>xml == null</code>.
     *
     * @throws ParseException
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public XINSCallResult parse(XINSCallRequest  request,
-                               TargetDescriptor target,
-                               long             duration,
-                               byte[]           xml)
+   public XINSCallResult.Data parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request",   request,
-                                     "target",    target,
-                                     "xml",       xml);
-      if (duration < 0) {
-         throw new IllegalArgumentException("duration (" + duration + ") < 0");
-      }
+      MandatoryArgumentChecker.check("xml", xml);
 
       Handler handler = new Handler();
       try {
@@ -120,7 +97,9 @@ extends Object {
          throw new ParseException(message);
       }
 
-      return new XINSCallResult(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
+      return new XINSCallResult.Data(handler.getErrorCode(),
+                                     handler.getParameters(),
+                                     handler.getDataElement());
    }
 
    //-------------------------------------------------------------------------

@@ -9,6 +9,11 @@ import java.io.UnsupportedEncodingException;
 
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.service.CallException;
+import org.xins.common.service.CallExceptionList;
+import org.xins.common.service.CallResult;
+import org.xins.common.service.TargetDescriptor;
+
 /**
  * Result returned from an HTTP request.
  *
@@ -17,10 +22,14 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 0.207
  */
-public final class HTTPCallResult extends Object {
+public final class HTTPCallResult extends CallResult {
 
    //-------------------------------------------------------------------------
    // Class fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Class functions
    //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
@@ -28,31 +37,46 @@ public final class HTTPCallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>HTTPCallResult</code> object. The status code and
-    * the byte data need to be given. Note that the byte data will be stored
-    * as-is, no copying will be done. And the data will be returned as-is by
-    * {@link #getData()}.
+    * Constructs a new <code>HTTPCallResult</code> object.
     *
-    * @param code
-    *    the HTTP return code, must be &gt;= 0.
+    * @param request
+    *    the call request that resulted in this result, cannot be
+    *    <code>null</code>.
+    *
+    * @param succeededTarget
+    *    the target for which the call succeeded, cannot be <code>null</code>.
+    *
+    * @param duration
+    *    the call duration in milliseconds, must be a non-negative number.
+    *
+    * @param exceptions
+    *    the list of {@link CallException}s, or <code>null</code> if the first
+    *    call attempt succeeded.
     *
     * @param data
-    *    the retrieved data, not <code>null</code>.
+    *    the {@link Data} returned from the call, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>data == null || code &lt; 0</code>.
+    *    if <code>request         ==   null
+    *          || succeededTarget ==   null
+    *          || data            ==   null
+    *          || duration        &lt; 0L</code>.
     */
-   public HTTPCallResult(int code, byte[] data)
+   HTTPCallResult(HTTPCallRequest   request,
+                  TargetDescriptor  succeededTarget,
+                  long              duration,
+                  CallExceptionList exceptions,
+                  Data              data)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("data", data);
-      if (code < 0) {
-         throw new IllegalArgumentException("code (" + code + ") < 0");
-      }
+      super(request, succeededTarget, duration, exceptions);
 
-      // Just store the arguments in fields
-      _code = code;
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",         request,
+                                     "succeededTarget", succeededTarget,
+                                     "data",            data);
+      // TODO: Check all arguments at once, before calling superconstructor
+
       _data = data;
    }
 
@@ -62,14 +86,10 @@ public final class HTTPCallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The HTTP status code. Guaranteed to be greater than 0.
+    * The <code>Data</code> object that contains the information returned from
+    * the call. This field cannot be <code>null</code>.
     */
-   private final int _code;
-
-   /**
-    * The data returned. Never <code>null</code>.
-    */
-   private final byte[] _data;
+   private final Data _data;
 
 
    //-------------------------------------------------------------------------
@@ -83,7 +103,7 @@ public final class HTTPCallResult extends Object {
     *    the HTTP status code.
     */
    public int getStatusCode() {
-      return _code;
+      return _data._code;
    }
 
    /**
@@ -95,7 +115,7 @@ public final class HTTPCallResult extends Object {
     *    a byte array of the result data, never <code>null</code>.
     */
    public byte[] getData() {
-      return _data;
+      return _data._data;
    }
 
    /**
@@ -143,6 +163,70 @@ public final class HTTPCallResult extends Object {
     *    <code>null</code>.
     */
    public InputStream getStream() {
-      return new ByteArrayInputStream(_data);
+      return new ByteArrayInputStream(_data._data);
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Data part of an HTTP call result.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.207
+    */
+   static final class Data extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Data</code> object.
+       *
+       * @param code
+       *    the HTTP status code.
+       *
+       * @param data
+       *    the data returned from the call, as a set of bytes.
+       */
+      Data(int code, byte[] data) {
+         _code = code;
+         _data = data;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The HTTP status code.
+       */
+      private final int _code;
+
+      /**
+       * The data returned.
+       */
+      private final byte[] _data;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Returns the HTTP status code.
+       *
+       * @return
+       *    the HTTP status code.
+       */
+      int getStatusCode() {
+         return _code;
+      }
    }
 }

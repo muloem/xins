@@ -81,7 +81,7 @@ public abstract class ServiceCaller extends Object {
    /**
     * Performs a call using the specified subject.
     * {@link TargetDescriptor Target descriptors} will be picked and passed
-    * to {@link #doCallImpl(TargetDescriptor,CallRequest)} until there is one
+    * to {@link #doCallImpl(CallRequest,TargetDescriptor)} until there is one
     * that succeeds, as long as fail-over can be done (according to
     * {@link #shouldFailOver(CallRequest,Throwable)}).
     *
@@ -90,7 +90,7 @@ public abstract class ServiceCaller extends Object {
     * {@link CallException} is thrown.
     *
     * <p>Each call attempt consists of a call to
-    * {@link #doCallImpl(TargetDescriptor,CallRequest)}.
+    * {@link #doCallImpl(CallRequest,TargetDescriptor)}.
     *
     * @param request
     *    the call request, not <code>null</code>.
@@ -116,20 +116,17 @@ public abstract class ServiceCaller extends Object {
 
       // Keep a reference to the most recent CallException since
       // setNext(CallException) needs to be called on it to make it link to
-      // the next one, if there is one
+      // the next one (if there is one)
       CallException lastException = null;
 
-      // Keep a reference to the very first CallException since that is the
-      // exception that will be thrown, if there will be any CallException
-      CallException firstException = null;
-
-      // Maintain the list of failed targets and the corresponding exceptions;
+      // Maintain the list of CallExceptions
+      //
       // This is needed if a successful result (a CallResult object) is
-      // returned, since it will contain references to the failures as well;
-      // Note that these lists are lazily initialized because this code is
+      // returned, since it will contain references to the exceptions as well;
+      //
+      // Note that this object is lazily initialized because this code is
       // performance- and memory-optimized for the successful case
-      ArrayList failedTargets = null;
-      ArrayList exceptions    = null;
+      CallExceptionList exceptions = null;
 
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateTargets();
@@ -154,7 +151,7 @@ public abstract class ServiceCaller extends Object {
          try {
 
             // Attempt the call
-            result = doCallImpl(target, request);
+            result = doCallImpl(request, target);
             succeeded = true;
 
          // If the call to the target fails, store the exception and try the next
@@ -182,17 +179,14 @@ public abstract class ServiceCaller extends Object {
             lastException = currentException;
 
             // If this is the first exception being caught, then lazily
-            // initialize the list of failed targets and the list of
-            // exceptions and keep a reference to the first exception
-            if (failedTargets == null) {
-               failedTargets  = new ArrayList();
-               exceptions     = new ArrayList();
-               firstException = currentException;
+            // initialize the CallExceptionList and keep a reference to the
+            // first exception
+            if (exceptions == null) {
+               exceptions = new CallExceptionList();
             }
 
-            // Store the failed target and the corresponding exception
-            failedTargets.add(target);
-            exceptions.add(exception);
+            // Store the failure
+            exceptions.add(currentException);
 
             // Determine whether fail-over is allowed and whether we have
             // another target to fail-over to
@@ -223,13 +217,14 @@ public abstract class ServiceCaller extends Object {
 
          // The call succeeded
          if (succeeded) {
-            return new CallResult(failedTargets, exceptions, target, result);
+            long duration = System.currentTimeMillis() - start;
+            return createCallResult(request, target, duration, exceptions, result);
          }
       }
 
       // Loop ended, call failed completely
       Log.log_3314();
-      throw firstException;
+      throw exceptions.get(0);
    }
 
    /**
@@ -262,9 +257,50 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 0.207
     */
-   protected abstract Object doCallImpl(TargetDescriptor target,
-                                        CallRequest      request)
+   protected abstract Object doCallImpl(CallRequest      request,
+                                        TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException;
+
+   /**
+    * Constructs an appropriate <code>CallResult</code> object for a
+    * successful call attempt. This method is called from
+    * {@link #doCall(CallRequest)}.
+    *
+    * @param request
+    *    the {@link CallRequest} that was to be executed, never
+    *    <code>null</code> when called from {@link #doCall(CallRequest)}.
+    *
+    * @param succeededTarget
+    *    the {@link TargetDescriptor} for the service that was successfully
+    *    called, never <code>null</code> when called from
+    *    {@link #doCall(CallRequest)}.
+    *
+    * @param duration
+    *    the call duration in milliseconds, guaranteed to be a non-negative
+    *    number when called from {@link #doCall(CallRequest)}.
+    *
+    * @param exceptions
+    *    the list of {@link CallException} instances, or <code>null</code> if
+    *    there were no call failures.
+    *
+    * @param result
+    *    the result from the call, which is the object returned by
+    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    a {@link CallResult} instance, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>request</code> and/or <code>result</code> are not of the
+    *    correct class.
+    */
+   protected abstract CallResult createCallResult(CallRequest       request,
+                                                  TargetDescriptor  succeededTarget,
+                                                  long              duration,
+                                                  CallExceptionList exceptions,
+                                                  Object            result)
+   throws ClassCastException;
 
    /**
     * Runs the specified task. If the task does not finish within the total

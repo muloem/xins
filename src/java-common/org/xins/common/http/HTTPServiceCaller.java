@@ -32,6 +32,7 @@ import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.net.URLEncoding;
 
 import org.xins.common.service.CallException;
+import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.ConnectionRefusedCallException;
@@ -203,7 +204,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * <p>The implementation of this method in class
     * <code>HTTPServiceCaller</code> delegates to
-    * {@link #call(TargetDescriptor,HTTPCallRequest)}.
+    * {@link #call(HTTPCallRequest,TargetDescriptor)}.
     *
     * @param target
     *    the target to call, cannot be <code>null</code>.
@@ -226,12 +227,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @throws CallException
     *    if the call to the specified target failed.
     */
-   protected Object doCallImpl(TargetDescriptor target,
-                               CallRequest      request)
+   protected Object doCallImpl(CallRequest      request,
+                               TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {
 
       // Delegate to method with more specialized interface
-      return call(target, (HTTPCallRequest) request);
+      return call((HTTPCallRequest) request, target);
    }
 
    /**
@@ -281,19 +282,19 @@ public final class HTTPServiceCaller extends ServiceCaller {
          throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
       }
 
-      return (HTTPCallResult) callResult.getResult();
+      return (HTTPCallResult) callResult;
    }
 
    /**
     * Executes the specified HTTP call request on the specified target. If the
     * call fails in any way, then a {@link CallException} is thrown.
     *
+    * @param request
+    *    the call request to execute, cannot be <code>null</code>.
+    *
     * @param target
     *    the service target on which to execute the request, cannot be
     *    <code>null</code>.
-    *
-    * @param request
-    *    the call request to execute, cannot be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
@@ -309,8 +310,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if the first call attempt failed due to an HTTP-related reason and
     *    all the other call attempts failed as well.
     */
-   public HTTPCallResult call(TargetDescriptor target,
-                              HTTPCallRequest  request)
+   public HTTPCallResult call(HTTPCallRequest  request,
+                              TargetDescriptor target)
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
@@ -319,7 +320,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // NOTE: Preconditions are checked by the CallExecutor constructor
       // Prepare a thread for execution of the call
-      CallExecutor executor = new CallExecutor(target, request, NDC.peek());
+      CallExecutor executor = new CallExecutor(request, target, NDC.peek());
 
       // TODO: Log that we are about to make an HTTP call
 
@@ -391,13 +392,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // TODO: Log (2016 ?)
 
       // Grab the result from the HTTP call
-      HTTPCallResult result = executor.getResult();
+      HTTPCallResult.Data data = executor.getData();
 
       // Check the status code, if necessary
       HTTPStatusCodeVerifier verifier = request.getStatusCodeVerifier();
       if (verifier != null) {
 
-         int code = result.getStatusCode();
+         int code = data.getStatusCode();
 
          if (! verifier.isAcceptable(code)) {
             // TODO: Pass down body as well. Perhaps just pass down complete
@@ -407,7 +408,60 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
       }
 
-      return result;
+      return new HTTPCallResult(request, target, duration, null, data);
+   }
+
+   /**
+    * Constructs an appropriate <code>CallResult</code> object for a
+    * successful call attempt. This method is called from
+    * {@link #doCall(CallRequest)}.
+    *
+    * <p>The implementation of this method in class
+    * {@link HTTPServiceCaller} expects an {@link HTTPCallRequest} and
+    * returns an {@link HTTPCallResult}.
+    *
+    * @param request
+    *    the {@link CallRequest} that was to be executed, never
+    *    <code>null</code> when called from {@link #doCall(CallRequest)};
+    *    should be an instance of class {@link HTTPCallRequest}.
+    *
+    * @param succeededTarget
+    *    the {@link TargetDescriptor} for the service that was successfully
+    *    called, never <code>null</code> when called from
+    *    {@link #doCall(CallRequest)}.
+    *
+    * @param duration
+    *    the call duration in milliseconds, must be a non-negative number.
+    *
+    * @param exceptions
+    *    the list of {@link CallException} instances, or <code>null</code> if
+    *    there were no call failures.
+    *
+    * @param result
+    *    the result from the call, which is the object returned by
+    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, always an instance
+    *    of class {@link HTTPCallResult}, never <code>null</code>; .
+    *
+    * @return
+    *    an {@link HTTPCallResult} instance, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>! (request instanceof {@link HTTPCallRequest})
+    *          || ! (result  instanceof {@link HTTPCallResult.Data})</code>.
+    */
+   protected CallResult createCallResult(CallRequest       request,
+                                         TargetDescriptor  succeededTarget,
+                                         long              duration,
+                                         CallExceptionList exceptions,
+                                         Object            result)
+   throws ClassCastException {
+
+
+      return new HTTPCallResult((HTTPCallRequest) request,
+                                succeededTarget,
+                                duration,
+                                exceptions,
+                                (HTTPCallResult.Data) result);
    }
 
    /**
@@ -481,12 +535,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * If the NDC is <code>null</code>, then it will be left unchanged. See
        * the {@link NDC} class.
        *
+       * @param request
+       *    the call request to execute, cannot be <code>null</code>.
+       *
        * @param target
        *    the service target on which to execute the request, cannot be
        *    <code>null</code>.
-       *
-       * @param request
-       *    the call request to execute, cannot be <code>null</code>.
        *
        * @param context
        *    the <em>Nested Diagnostic Context identifier</em> (NDC), or
@@ -495,8 +549,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * @throws IllegalArgumentException
        *    if <code>target == null || request == null</code>.
        */
-      private CallExecutor(TargetDescriptor target,
-                           HTTPCallRequest  request,
+      private CallExecutor(HTTPCallRequest  request,
+                           TargetDescriptor target,
                            String           context)
       throws IllegalArgumentException {
 
@@ -504,11 +558,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
          _asString = "HTTP call executor #" + (++CALL_EXECUTOR_COUNT);
 
          // Check preconditions
-         MandatoryArgumentChecker.check("target", target, "request", request);
+         MandatoryArgumentChecker.check("request", request, "target", target);
 
          // Store data for later use in the run() method
-         _target  = target;
          _request = request;
+         _target  = target;
          _context = context;
       }
 
@@ -523,15 +577,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
       private final String _asString;
 
       /**
+       * The call request to execute. Never <code>null</code>.
+       */
+      private final HTTPCallRequest _request;
+
+      /**
        * The service target on which to execute the request. Never
        * <code>null</code>.
        */
       private final TargetDescriptor _target;
-
-      /**
-       * The call request to execute. Never <code>null</code>.
-       */
-      private final HTTPCallRequest _request;
 
       /**
        * The <em>Nested Diagnostic Context identifier</em> (NDC). Is set to
@@ -548,9 +602,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
       /**
        * The result from the call. The value of this field is
        * <code>null</code> if the call was unsuccessful or if it was not
-       * executed yet..
+       * executed yet.
        */
-      private HTTPCallResult _result;
+      private HTTPCallResult.Data _result;
 
 
       //----------------------------------------------------------------------
@@ -610,7 +664,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             byte[] body       = method.getResponseBody();
 
             // Store the result
-            _result = new HTTPCallResult(statusCode, body);
+            _result = new HTTPCallResult.Data(statusCode, body);
 
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
@@ -640,7 +694,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the invocation exception or <code>null</code> if the call
        *    performed successfully.
        */
-      public Throwable getException() {
+      private Throwable getException() {
          return _exception;
       }
 
@@ -652,7 +706,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the result from the call, or <code>null</code> if it was
        *    unsuccessful.
        */
-      public HTTPCallResult getResult() {
+      private HTTPCallResult.Data getData() {
          return _result;
       }
    }

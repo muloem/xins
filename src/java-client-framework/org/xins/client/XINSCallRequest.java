@@ -14,6 +14,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.service.CallRequest;
 import org.xins.common.http.HTTPCallRequest;
@@ -59,6 +60,17 @@ public final class XINSCallRequest extends CallRequest {
     * The pattern for a parameter name.
     */
    private static final Pattern PARAMETER_NAME_PATTERN;
+
+   /**
+    * The name of the HTTP parameter that specifies the diagnostic context
+    * identifier.
+    */
+   private static final String CONTEXT_ID_HTTP_PARAMETER_NAME = "_context";
+
+   /**
+    * The number of instances of this class. Initially zero.
+    */
+   private static int INSTANCE_COUNT;
 
 
    //-------------------------------------------------------------------------
@@ -193,10 +205,11 @@ public final class XINSCallRequest extends CallRequest {
       // Add the diagnostic context ID to the parameter list, if there is one
       String contextID = NDC.peek();
       if (contextID != null) {
-         httpParams.set(SECRET_KEY, "_context", contextID);
+         httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
       }
 
-      // Store the information
+      // Initialize fields
+      _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
       _parameters      = parameters; // XXX: Make unmodifiable and change @param?
       _failOverAllowed = failOverAllowed;
@@ -209,6 +222,13 @@ public final class XINSCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
 
    /**
     * Description of this XINS call request. This field cannot be
@@ -252,6 +272,34 @@ public final class XINSCallRequest extends CallRequest {
     *    the description of this request, never <code>null</code>.
     */
    public String describe() {
+
+      // Lazily initialize the description of this call request object
+      if (_asString == null) {
+         FastStringBuffer buffer = new FastStringBuffer(208, "XINS HTTP ");
+         buffer.append(_httpRequest.getMethod().toString());
+         buffer.append(" request #");
+         buffer.append(_instanceNumber);
+         buffer.append(", parameters: ");
+         PropertyReaderUtils.serialize(_parameters, buffer, "-");
+         if (_failOverAllowed) {
+            buffer.append(", fail-over allowed, ");
+         } else {
+            buffer.append(", fail-over disallowed, ");
+         }
+
+         String contextID = _httpRequest.getParameters().get(CONTEXT_ID_HTTP_PARAMETER_NAME);
+
+         if (contextID == null) {
+            buffer.append(" no diagnostic context ID");
+         } else {
+            buffer.append(" diagnostic context ID: \"");
+            buffer.append(contextID);
+            buffer.append('"');
+         }
+
+         _asString = buffer.toString();
+      }
+
       return _asString;
    }
 

@@ -20,6 +20,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.service.CallException;
+import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
@@ -50,61 +51,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-/*
-      method.addParameter("_function", functionName);
-
-      // If a diagnostic context ID is available, pass it on
-      String contextID = NDC.peek();
-      if (contextID != null && contextID.length() > 0) {
-         method.addParameter("_context", contextID);
-      }
-
-      // If there are parameters, then process them
-      int paramCount = (parameters == null) ? 0 : parameters.size();
-      if (paramCount > 0) {
-
-         // Loop through them all
-         Iterator names = parameters.getNames();
-         for (int i = 0; i < paramCount; i++) {
-
-            // Get the parameter key
-            String key = (String) names.next();
-
-            // Process key only if it is not null and not an empty string
-            if (key != null && key.length() > 0) {
-
-               // TODO: Improve checks to make sure the key is properly
-               //       formatted, otherwise throw an InvalidKeyException
-
-               // The key cannot start with an underscore
-               if (key.charAt(0) == '_') {
-                  throw new IllegalArgumentException("The parameter key \"" + key + "\" is invalid, since it cannot start with an underscore.");
-
-               // The key cannot equal 'function'
-               } else if ("function".equals(key)) {
-                  throw new IllegalArgumentException("The parameter key \"function\" is invalid, since \"function\" is a reserved word.");
-               }
-
-               // Get the value
-               Object value = parameters.get(key);
-
-               // Add this parameter key/value combination
-               if (value != null) {
-
-                  // Convert the value object to a string
-                  String valueString = value.toString();
-
-                  // Only add the key/value combo if there is a value string
-                  if (valueString != null && valueString.length() > 0) {
-                     method.addParameter(key, valueString);
-                  }
-               }
-            }
-         }
-      }
-*/
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -157,7 +103,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * <p>The implementation of this method in class
     * <code>XINSServiceCaller</code> delegates to
-    * {@link #call(TargetDescriptor,XINSCallRequest)}.
+    * {@link #call(XINSCallRequest,TargetDescriptor)}.
     *
     * @param target
     *    the target to call, cannot be <code>null</code>.
@@ -182,12 +128,12 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.207
     */
-   protected Object doCallImpl(TargetDescriptor target,
-                               CallRequest      request)
+   protected Object doCallImpl(CallRequest      request,
+                               TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {
 
       // Delegate to method with more specialized interface
-      return call(target, (XINSCallRequest) request);
+      return call((XINSCallRequest) request, target);
    }
 
    /**
@@ -225,9 +171,9 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      CallResult callResult;
+      CallResult result;
       try {
-         callResult = doCall(request);
+         result = doCall(request);
 
       // Allow GenericCallException, HTTPCallException, XINSCallException and
       // Error to proceed, but block other kinds of exceptions and throw an
@@ -242,7 +188,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
       }
 
-      return (XINSCallResult) callResult.getResult();
+      return (XINSCallResult) result;
    }
 
    /**
@@ -275,15 +221,15 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.207
     */
-   public XINSCallResult call(TargetDescriptor target,
-                              XINSCallRequest  request)
+   public XINSCallResult call(XINSCallRequest  request,
+                              TargetDescriptor target)
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException,
           XINSCallException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("target", target, "request", request);
+      MandatoryArgumentChecker.check("request", request, "target", target);
 
       // Log that we are about to call the API
       // TODO: Either uncomment or remove the following line
@@ -292,26 +238,85 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Delegate the actual HTTP call to the HTTPServiceCaller. This may
       // cause a CallException
       HTTPCallRequest httpRequest = request.getHTTPCallRequest();
-      HTTPCallResult  httpResult  = _httpCaller.call(target, httpRequest);
+      HTTPCallResult  httpResult  = _httpCaller.call(httpRequest, target);
 
-      long duration = 0L; // TODO: Get duration from httpResult:
+      long duration = httpResult.getDuration();
 
       // Parse the result
-      XINSCallResult xinsResult;
+      XINSCallResult.Data data;
       try {
-         xinsResult = _parser.parse(request, target, duration, httpResult.getData());
+         data = _parser.parse(httpResult.getData());
       } catch (ParseException parseException) {
          throw new InvalidResultXINSCallException(request, target, duration, "Failed to parse result.", parseException);
       }
 
+      XINSCallResult xinsResult = new XINSCallResult(request,
+                                                     target,
+                                                     duration,
+                                                     null,
+                                                     data);
+
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
-      if (xinsResult.getErrorCode() != null) {
+      if (! data.isSuccess()) {
          throw new UnsuccessfulXINSCallException(xinsResult);
 
       // Otherwise just return the result
       } else {
          return xinsResult;
       }
+   }
+
+   /**
+    * Constructs an appropriate <code>CallResult</code> object for a
+    * successful call attempt. This method is called from
+    * {@link #doCall(CallRequest)}.
+    *
+    * <p>The implementation of this method in class
+    * {@link XINSServiceCaller} expects an {@link XINSCallRequest} and
+    * returns an {@link XINSCallResult}.
+    *
+    * @param request
+    *    the {@link CallRequest} that was to be executed, never
+    *    <code>null</code> when called from {@link #doCall(CallRequest)};
+    *    should be an instance of class {@link XINSCallRequest}.
+    *
+    * @param succeededTarget
+    *    the {@link TargetDescriptor} for the service that was successfully
+    *    called, never <code>null</code> when called from
+    *    {@link #doCall(CallRequest)}.
+    *
+    * @param duration
+    *    the call duration in milliseconds, must be a non-negative number.
+    *
+    * @param exceptions
+    *    the list of {@link CallException} instances, or <code>null</code> if
+    *    there were no call failures.
+    *
+    * @param result
+    *    the result from the call, which is the object returned by
+    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, always an instance
+    *    of class {@link XINSCallResult}, never <code>null</code>; .
+    *
+    * @return
+    *    a {@link XINSCallResult} instance, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>! (request instanceof {@link XINSCallRequest})
+    *          || ! (result  instanceof {@link XINSCallResult.Data})</code>.
+    */
+   protected CallResult createCallResult(CallRequest       request,
+                                         TargetDescriptor  succeededTarget,
+                                         long              duration,
+                                         CallExceptionList exceptions,
+                                         Object            result)
+   throws ClassCastException {
+
+
+      return new XINSCallResult((XINSCallRequest) request,
+                                succeededTarget,
+                                duration,
+                                exceptions,
+                                (XINSCallResult.Data) result);
    }
 
    /**

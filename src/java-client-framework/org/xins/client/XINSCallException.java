@@ -142,7 +142,7 @@ public abstract class XINSCallException extends CallException {
       // Call superconstructor
       super(checkArguments(shortReason, result),
             (result == null) ? null : result.getRequest(),
-            (result == null) ? null : result.getTarget(),
+            (result == null) ? null : result.getSucceededTarget(),
             (result == null) ?   0L : result.getDuration(),
             detail,
             cause);

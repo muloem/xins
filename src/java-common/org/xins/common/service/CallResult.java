@@ -18,79 +18,11 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 0.115
  */
-public final class CallResult extends Object {
+public abstract class CallResult extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Checks that the a list of failed targets and a list of exceptions are
-    * valid individually and together.
-    *
-    * @param failedTargets
-    *    the list of targets for which the call failed, can be
-    *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
-    *    allowed, but duplicates are.
-    *
-    * @param exceptions
-    *    the list of caught exceptions, matching the list of failed targets,
-    *    can be <code>null</code>; all elements in this {@link List} must be
-    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
-    *    but duplicates are.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>(failedTargets == null &amp;&amp; exceptions != null)
-    *         || (failedTargets != null &amp;&amp; (
-    *               exceptions == null
-    *            || failedTargets.size() != exceptions.size()
-    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)
-    *            || failedTargets.get(<em>i</em>) == null
-    *            || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
-    *            || failedTargets.get(<em>x</em>).equals(failedTargets.get(<em>y</em>))))</code>,
-    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>
-    *    and   <code>0 &lt;= <em>x</em> &lt; <em>y</em> &lt; failedTargets.size()</code>.
-    */
-   static void checkFailureLists(List failedTargets, List exceptions)
-   throws IllegalArgumentException {
-
-      // Either both are null, or none is null
-      if (failedTargets == null && exceptions == null) {
-         return;
-      } else if (failedTargets == null) {
-         throw new IllegalArgumentException("failedTargets == null && exceptions != null");
-      } else if (exceptions == null) {
-         throw new IllegalArgumentException("failedTargets != null && exceptions == null");
-      }
-
-      // Check size of both lists is equal
-      int failureCount   = failedTargets == null ? 0 : failedTargets.size();
-      int exceptionCount = exceptions    == null ? 0 : exceptions.size();
-      if (failureCount != exceptionCount) {
-         throw new IllegalArgumentException("failedTargets.size() (" + failureCount + ") != exceptions.size() (" + exceptionCount + ')');
-      }
-
-      // Check all elements
-      for (int i = 0; i < failureCount; i++) {
-         Object ftElem = failedTargets.get(i);
-         Object exElem = exceptions.get(i);
-
-         // Elements cannot be null
-         if (ftElem == null) {
-            throw new IllegalArgumentException("failedTargets.get(" + i + ") == null");
-         } else if (exElem == null) {
-            throw new IllegalArgumentException("exceptions.get(" + i + ") == null");
-
-         // Elements must be instance of correct class
-         } else if (!(ftElem instanceof TargetDescriptor)) {
-            throw new IllegalArgumentException("(failedTargets.get(" + i + ") instanceof TargetDescriptor) == false");
-         } else if (!(exElem instanceof Throwable)) {
-            throw new IllegalArgumentException("(exceptions.get(" + i + ") instanceof Throwable) == false");
-         }
-      }
-   }
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -103,50 +35,43 @@ public final class CallResult extends Object {
    /**
     * Constructs a new <code>CallResult</code> object.
     *
-    * @param failedTargets
-    *    the list of targets for which the call failed, can be
-    *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
-    *    allowed, but duplicates are.
-    *
-    * @param exceptions
-    *    the list of caught exceptions, matching the list of failed targets,
-    *    can be <code>null</code>; all elements in this {@link List} must be
-    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
-    *    but duplicates are.
+    * @param request
+    *    the call request that resulted in this result, cannot be
+    *    <code>null</code>.
     *
     * @param succeededTarget
     *    the target for which the call succeeded, cannot be <code>null</code>.
     *
-    * @param result
-    *    the actual result object, can possibly be <code>null</code>.
+    * @param duration
+    *    the call duration in milliseconds, cannot be a negative number.
+    *
+    * @param exceptions
+    *    the list of {@link CallException}s, or <code>null</code> if the first
+    *    call attempt succeeded.
     *
     * @throws IllegalArgumentException
-    *    if <code>succeededTarget == null
-    *         || (failedTargets == null &amp;&amp; exceptions != null)
-    *         || (failedTargets != null &amp;&amp; (
-    *               exceptions == null
-    *            || failedTargets.size() != exceptions.size()
-    *            || failedTargets.get(<em>i</em>) == null
-    *            || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
-    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
-    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
+    *    if <code>request         ==   null
+    *          || succeededTarget ==   null
+    *          || duration        &lt; 0L</code>.
     */
-   public CallResult(List              failedTargets,
-                     List              exceptions,
-                     TargetDescriptor succeededTarget,
-                     Object            result)
+   protected CallResult(CallRequest       request,
+                        TargetDescriptor  succeededTarget,
+                        long              duration,
+                        CallExceptionList exceptions)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("succeededTarget", succeededTarget);
-      checkFailureLists(failedTargets, exceptions);
+      MandatoryArgumentChecker.check("request",         request,
+                                     "succeededTarget", succeededTarget);
+      if (duration < 0L) {
+         throw new IllegalArgumentException("duration (" + duration + "L) < 0L");
+      }
 
       // Set fields
-      _failedTargets   = failedTargets == null ? null : Collections.unmodifiableList(new ArrayList(failedTargets));
-      _exceptions      = exceptions    == null ? null : Collections.unmodifiableList(new ArrayList(exceptions));
+      _request         = request;
       _succeededTarget = succeededTarget;
-      _result          = result;
+      _duration        = duration;
+      _exceptions      = exceptions;
    }
 
 
@@ -155,25 +80,9 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The list of targets for which the call failed. Can be <code>null</code>.
-    * All elements in this {@link List} are {@link TargetDescriptor} objects.
-    * The {@link List} contains no <code>null</code> elements, but it may
-    * contain duplicates.
-    *
-    * <p>This is an unmodifiable {@link List}.
+    * The call request. This field cannot be <code>null</code>.
     */
-   private final List _failedTargets;
-
-   /**
-    * The list of caught exceptions, one per failed target. Can be
-    * <code>null</code> if and only if <code>_failedTargets == null</code>.
-    * All elements in this {@link List} are {@link Throwable} objects.
-    * The {@link List} contains no <code>null</code> elements, but it may
-    * contain duplicates.
-    *
-    * <p>This is an unmodifiable {@link List}.
-    */
-   private final List _exceptions;
+   private final CallRequest _request;
 
    /**
     * The target for which the call succeeded. This field cannot be
@@ -182,9 +91,15 @@ public final class CallResult extends Object {
    private final TargetDescriptor _succeededTarget;
 
    /**
-    * The actual result object. Can possibly be <code>null</code>.
+    * The call duration, in milliseconds.
     */
-   private final Object _result;
+   private final long _duration;
+
+   /**
+    * The list of <code>CallException</code>s. This field may be
+    * <code>null</code>.
+    */
+   private final CallExceptionList _exceptions;
 
 
    //-------------------------------------------------------------------------
@@ -192,63 +107,45 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the list of targets for which the call failed. The returned
-    * {@link List} can be <code>null</code>, but if it is not then all
-    * elements in the {@link List} are {@link TargetDescriptor} objects, and
-    * it contains no <code>null</code> elements. It may contain duplicates,
-    * though.
-    *
-    * <p>The returned {@link List} is unmodifiable.
-    *
-    * <p>If this method returns <code>null</code>, then so will
-    * {@link #getExceptions()} and vice versa.
+    * Returns the call request.
     *
     * @return
-    *    the {@link List} of failed targets, or <code>null</code> if the first
-    *    attempt succeeded.
+    *    the {@link CallRequest}, never <code>null</code>.
     */
-   public List getFailedTargets() {
-      return _failedTargets;
-   }
-
-   /**
-    * The list of caught exceptions, one per failed target. The returned
-    * {@link List} can be <code>null</code>, but if it is not then all
-    * elements in the {@link List} are {@link Throwable} objects, and it
-    * contains no <code>null</code> elements. It may contain duplicates,
-    * though.
-    *
-    * <p>The returned {@link List} is unmodifiable.
-    *
-    * <p>If this method returns <code>null</code>, then so will
-    * {@link #getFailedTargets()} and vice versa.
-    *
-    * @return
-    *    the {@link List} of exceptions, or <code>null</code> if the first
-    *    attempt succeeded.
-    */
-   public List getExceptions() {
-      return _exceptions;
+   public final CallRequest getRequest() {
+      return _request;
    }
 
    /**
     * Returns the target for which the call succeeded.
     *
     * @return
-    *    the {@link TargetDescriptor target} for which the call succeeded,
-    *    not <code>null</code>.
+    *    the {@link TargetDescriptor} for which the call succeeded, not
+    *    <code>null</code>.
     */
-   public TargetDescriptor getSucceededTarget() {
+   public final TargetDescriptor getSucceededTarget() {
       return _succeededTarget;
    }
 
    /**
-    * Returns the actual result object.
+    * Returns the call duration, in milliseconds.
     *
     * @return
-    *    the result object, or <code>null</code>.
+    *    the duration of the succeeded calls, in milliseconds, guaranteed to
+    *    be a non-negative number.
     */
-   public Object getResult() {
-      return _result;
+   public final long getDuration() {
+      return _duration;
+   }
+
+   /**
+    * Returns the list of <code>CallException</code>s.
+    *
+    * @return
+    *    the {@link CallException}s, collected in a {@link CallExceptionList}
+    *    object, or <code>null</code> if the first call attempt succeeded.
+    */
+   public final CallExceptionList getExceptions() {
+      return _exceptions;
    }
 }

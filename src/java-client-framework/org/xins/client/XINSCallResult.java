@@ -4,7 +4,12 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+
+import org.xins.common.service.CallException;
+import org.xins.common.service.CallExceptionList;
+import org.xins.common.service.CallResult;
 import org.xins.common.service.TargetDescriptor;
+
 import org.xins.common.collections.PropertyReader;
 
 /**
@@ -15,8 +20,7 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 0.207
  */
-public final class XINSCallResult
-extends Object {
+public final class XINSCallResult extends CallResult {
 
    //----------------------------------------------------------------------
    // Class fields
@@ -31,56 +35,50 @@ extends Object {
    //----------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Result</code> object.
+    * Constructs a new <code>XINSCallResult</code> object.
     *
     * @param request
     *    the original {@link XINSCallRequest} that was used to perform the
     *    call, cannot be <code>null</code>.
     *
-    * @param target
+    * @param succeededTarget
     *    the {@link TargetDescriptor} that was used to successfully get the
     *    result, cannot be <code>null</code>.
     *
     * @param duration
     *    the call duration, should be &gt;= 0.
     *
-    * @param code
-    *    the return code, if any, can be <code>null</code>.
+    * @param exceptions
+    *    the list of {@link CallException}s, collected in a
+    *    {@link CallExceptionList} object, or <code>null</code> if the first
+    *    call attempt succeeded.
     *
-    * @param parameters
-    *    output parameters returned by the function, or <code>null</code>.
-    *
-    * @param dataElement
-    *    the data element returned by the function, or <code>null</code>; if
-    *    specified then the name must be <code>"data"</code>, with no
-    *    namespace.
+    * @param data
+    *    the {@link Data} returned from the call, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request    == null
-    *          || target     == null
-    *          || duration &lt; 0
+    *    if <code>request         ==   null
+    *          || succeededTarget ==   null
+    *          || data            ==   null
+    *          || duration        &lt; 0</code>.
     */
-   XINSCallResult(XINSCallRequest      request,
-                  TargetDescriptor target,
-                  long             duration,
-                  String           code,
-                  PropertyReader   parameters,
-                  DataElement      dataElement)
+   XINSCallResult(XINSCallRequest   request,
+                  TargetDescriptor  succeededTarget,
+                  long              duration,
+                  CallExceptionList exceptions,
+                  Data              data)
+
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request, "target", target);
-      if (duration < 0) {
-         throw new IllegalArgumentException("duration (" + duration + ") < 0");
-      }
+      super(request, succeededTarget, duration, exceptions);
 
-      // Store all the information
-      _request     = request;
-      _target      = target;
-      _duration    = duration;
-      _code        = code;
-      _parameters  = parameters;
-      _dataElement = dataElement;
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",         request,
+                                     "succeededTarget", succeededTarget,
+                                     "data",            data);
+      // TODO: Check all arguments at once, before calling superconstructor
+
+      _data = data;
    }
 
 
@@ -89,74 +87,15 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The original <code>XINSCallRequest</code>. Cannot be <code>null</code>.
+    * The <code>Data</code> object that contains the information returned from
+    * the call. This field cannot be <code>null</code>.
     */
-   private final XINSCallRequest _request;
-
-   /**
-    * The <code>TargetDescriptor</code> that was used to produce this
-    * result. Cannot be <code>null</code>.
-    */
-   private final TargetDescriptor _target;
-
-   /**
-    * The call duration. Guaranteed to be &gt;= 0.
-    */
-   private final long _duration;
-
-   /**
-   /**
-    * The error code. This field is <code>null</code> if the call was
-    * successful and thus no error code was returned.
-    */
-   private final String _code;
-
-   /**
-    * The parameters and their values. This field is never <code>null</code>.
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * The data element. This field is <code>null</code> if there is no data
-    * element.
-    */
-   private final DataElement _dataElement;
+   private final Data _data;
 
 
    //----------------------------------------------------------------------
    // Methods
    //----------------------------------------------------------------------
-
-   /**
-    * Returns the original <code>XINSCallRequest</code>.
-    *
-    * @return
-    *    the {@link XINSCallRequest}, never <code>null</code>.
-    */
-   public XINSCallRequest getRequest() {
-      return _request;
-   }
-
-   /**
-    * Returns the <code>TargetDescriptor</code> that was used to generate
-    * this result.
-    *
-    * @return
-    *    the {@link TargetDescriptor}, cannot be <code>null</code>.
-    */
-   public TargetDescriptor getTarget() {
-      return _target;
-   }
-
-   /**
-    * Returns the call duration in milliseconds.
-    *
-    * @return
-    *    the call duration in milliseconds, guaranteed to be &gt;= 0.
-    */
-   public long getDuration() {
-      return _duration;
-   }
 
    /**
     * Returns the error code. If the result was successful, then no error code
@@ -166,7 +105,7 @@ extends Object {
     *    the error code or <code>null</code> if no code was returned.
     */
    public String getErrorCode() {
-      return _code;
+      return _data._code;
    }
 
    /**
@@ -177,7 +116,7 @@ extends Object {
     *    if there are none.
     */
    public PropertyReader getParameters() {
-      return _parameters;
+      return _data._parameters;
    }
 
    /**
@@ -200,12 +139,12 @@ extends Object {
       MandatoryArgumentChecker.check("name", name);
 
       // Short-circuit if there are no parameters at all
-      if (_parameters == null) {
+      if (_data._parameters == null) {
          return null;
       }
 
       // Otherwise return the parameter value
-      return _parameters.get(name);
+      return _data._parameters.get(name);
    }
 
    /**
@@ -217,6 +156,88 @@ extends Object {
     */
    public DataElement getDataElement() {
 
-      return _dataElement;
+      return _data._dataElement;
+   }
+
+
+   //----------------------------------------------------------------------
+   // Inner classes
+   //----------------------------------------------------------------------
+
+   /**
+    * Data part of a XINS call result.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.207
+    */
+   static final class Data extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Data</code> object.
+       *
+       * @param code
+       *    the error code returned, if any, or <code>null</code> if none was
+       *    returned.
+       *
+       * @param parameters
+       *    output parameters returned by the function, or <code>null</code>.
+       *
+       * @param dataElement
+       *    the data element returned by the function, or <code>null</code>;
+       *    if specified then the name must be <code>"data"</code>, with no
+       *    namespace.
+       */
+      Data(String         code,
+           PropertyReader parameters,
+           DataElement    dataElement) {
+
+         _code        = code;
+         _parameters  = parameters;
+         _dataElement = dataElement;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The error code. This field is <code>null</code> if the call was
+       * successful and thus no error code was returned.
+       */
+      private final String _code;
+
+      /**
+       * The parameters and their values. This field is never <code>null</code>.
+       */
+      private final PropertyReader _parameters;
+
+      /**
+       * The data element. This field is <code>null</code> if there is no data
+       * element.
+       */
+      private final DataElement _dataElement;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Determines if the call was successful or not.
+       *
+       * @return
+       *    <code>true</code> if the call result indicated success,
+       *    <code>false</code> otherwise.
+       */
+      boolean isSuccess() {
+         return (_code == null);
+      }
    }
 }
