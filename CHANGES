@@ -1,6 +1,31 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.199:
 
+* XINS/Java Server Framework:
+  - Changed the handleCall() methods in the API and Function classes to throw
+    an IllegalStateException if the object is not currently in the correct
+    state.
+  - Renamed protected reinitialize() method in class API to
+    reinitializeImpl(). Generating package-private reinitialize() method in
+    generated APIImpl classes.
+  - Added message parameter to logdoc entry 1224.
+  - Added message parameter to logdoc entry 1232.
+  - Removed logdoc entry 1223, logging entry 1224 instead.
+  - Removed logdoc entry 1231, logging entry 1232 instead.
+
+* XINS/Java Common Library:
+  - Changed class PropertyReaderUtils:
+    - Changed class function getIntProperty() to throw a
+      MissingRequiredPropertyException if the property is not set.
+    - Added class function createPropertyReader() that reads an input stream
+      and converts it to a PropertyReader instance.
+    - Added class function getRequiredProperty() that throws a
+      MissingRequiredPropertyException if the property is not set.
+
+* Logdoc:
+  - Fixed bug introduced in XINS 0.198. The root cause exception was only
+    logged if the logdoc entry was at DEBUG level.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.198:
 
