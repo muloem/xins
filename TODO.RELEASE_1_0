@@ -50,27 +50,27 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
 [x] Rename CallRequest to XINSCallRequest
 [x] Let XINSCallException extend CallException
-[ ] Let XINSCallRequest extend CallRequest
-[ ] Use ConnectionCallException instead of ConnectionException
+[x] Let XINSCallRequest extend CallRequest
+[x] Use ConnectionCallException instead of ConnectionException
 [x] Remove ConnectionException class
-[ ] Use ConnectionRefusedCallException instead of ConnectionRefusedException
+[x] Use ConnectionRefusedCallException instead of ConnectionRefusedException
 [x] Remove ConnectionRefusedException class
-[ ] Use ConnectionTimeOutCallException instead of ConnectionTimeOutException
+[x] Use ConnectionTimeOutCallException instead of ConnectionTimeOutException
 [x] Remove ConnectionTimeOutException class
-[ ] Use SocketTimeOutCallException instead of SocketTimeOutException
+[x] Use SocketTimeOutCallException instead of SocketTimeOutException
 [x] Remove SocketTimeOutException class
-[ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
+[x] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
 [x] Remove UnexpectedHTTPStatusCodeException class
-[ ] Make XINSServiceCaller throw appropriate CallException subclasses
-[ ] Use HTTPServiceCaller for the actual call
+[x] Make XINSServiceCaller throw appropriate CallException subclasses
+[x] Use HTTPServiceCaller for the actual call
 [x] Rename Result to XINSCallResult
 [x] Rename ResultParser to XINSCallResultParser
-[ ] Rename UnacceptableCallResultException to UnacceptableResultXINSCallException
-[ ] Make UnacceptableResultXINSCallException extend XINSCallException
+[x] Rename UnacceptableCallResultException to UnacceptableResultXINSCallException
+[x] Make UnacceptableResultXINSCallException extend XINSCallException
 [x] Rename UnsuccessfulCallException to UnsuccessfulXINSCallException
 [x] Make UnsuccessfulXINSCallException extend XINSCallException
-[ ] Rename InvalidCallResultException to InvalidResultXINSCallException
-[ ] Make InvalidResultXINSCallException extend XINSCallException
+[x] Rename InvalidCallResultException to InvalidResultXINSCallException
+[x] Make InvalidResultXINSCallException extend XINSCallException
 [ ] Describe XINSCallRequest properly in describe() (from _asString).
 [ ] Check the parameters in XINSCallRequest constructor.
 
