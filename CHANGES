@@ -1,6 +1,18 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
 
+* XINS/Java Server Framework:
+  - Made the method getResultBuilder() in class FunctionResult
+    package-private, since it only needs to be accessed from the package. In
+    fact the return type, CallResultBuilder, is package-private already.
+  - Slightly improved performance in error reporting code in classes
+    InvalidRequestResult and InvalidResponseResult, which represent
+    respectively the result code _InvalidRequest and _InvalidResponse.
+
+* XINS/Java Common Library:
+  - Changed TargetDescriptor class: Added getters for connection and socket
+    time-outs.
+
 * Build and release process:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
     Java 1.3 documentation.
@@ -12,7 +24,7 @@ CHANGES INTRODUCED IN XINS 0.195:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.194:
 
-* XINS/Java Common Framework:
+* XINS/Java Common Library:
   - Added getStream() method to class HTTPServiceCaller.Result. It returns an
     InputStream for the data returned from the HTTP call.
   - Fixed bug in FastStringBuffer#append(charArray, offset, len) new lenght 
@@ -29,7 +41,7 @@ CHANGES INTRODUCED IN XINS 0.194:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.193:
 
-* XINS/Java Common Framework:
+* XINS/Java Common Library:
   - Fixed bug in GroupDescriptor.hasNext(). Previously it could incorrectly
     return true instead of false.
   - Deprecated getException() method in classes BootstrapException,
