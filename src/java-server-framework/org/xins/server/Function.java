@@ -396,6 +396,9 @@ implements DefaultResultCodes {
 
       protected String initialize() {
 
+         // XXX Why not using the SimpleDateFormater:
+         // XXX return new SimpleDateFormat("yyyyMMdd-HHmmssSSS").format(new Date(_epochDate));
+
          // Create a FastStringBuffer with an initial size as follows:
          //  2 for the century     (e.g.  20)
          //  2 for the year        (e.g.  04)
@@ -409,7 +412,7 @@ implements DefaultResultCodes {
          // ---
          // 18 in total
          final int BUFFER_SIZE = 18;
-         FastStringBuffer buffer = new FastStringBuffer(18);
+         FastStringBuffer buffer = new FastStringBuffer(BUFFER_SIZE);
 
          // XXX: It seems stupid that it is not possible to create a Calendar
          //      instance directly using the current date as a number of
@@ -623,7 +626,7 @@ implements DefaultResultCodes {
          if (names == null || !names.hasNext()) {
             return "-";
          }
-            
+
          FastStringBuffer buffer = new FastStringBuffer(93);
 
          boolean first = true;
