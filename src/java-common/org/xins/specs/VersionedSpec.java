@@ -3,6 +3,10 @@
  */
 package org.xins.specs;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -19,9 +23,44 @@ extends Spec {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
+   /**
+    * The pattern for a URL, as a character string.
+    */
+   private static final String VERSION_PATTERN_STRING = "^[0-9]+(.[0-9]+)*$";
+
+   /**
+    * The pattern for a URL.
+    */
+   private static final Pattern VERSION_PATTERN;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Compiles the version pattern. The string {@link #VERSION_PATTERN_STRING}
+    * is used as the input and the result is stored in
+    * {@link #VERSION_PATTERN}.
+    */
+   static {
+      try {
+         VERSION_PATTERN = PATTERN_COMPILER.compile(VERSION_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
+      } catch (MalformedPatternException mpe) {
+         throw new Error("The pattern \"" + VERSION_PATTERN_STRING + "\" is malformed.");
+      }
+   }
+
 
    /**
     * Checks the arguments to the constructor and returns the first one.
@@ -47,8 +86,13 @@ extends Spec {
    private static final SpecType checkArguments(SpecType type, String name, String version)
    throws IllegalArgumentException, InvalidVersionException {
 
-      // Check conditions
+      // Check required arguments
       MandatoryArgumentChecker.check("type", type, "name", name, "version", version);
+
+      // Check version string
+      if (PATTERN_MATCHER.matches(version, VERSION_PATTERN) == false) {
+         throw new InvalidVersionException(version);
+      }
 
       // Return type
       return type;
