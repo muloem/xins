@@ -158,12 +158,12 @@ implements Responder, Log {
     * The start time of the call, as a number of milliseconds since midnight
     * January 1, 1970 UTC.
     */
-   private long _start;
+   private final long _start;
 
    /**
     * The original servlet request.
     */
-   private ServletRequest _request;
+   private final ServletRequest _request;
 
    /**
     * The character stream to send the output to. This field is initialized by
@@ -240,7 +240,7 @@ implements Responder, Log {
    /**
     * The call ID, unique in the context of the pertaining function.
     */
-   private int _callID;
+   private final int _callID;
 
 
    //-------------------------------------------------------------------------
