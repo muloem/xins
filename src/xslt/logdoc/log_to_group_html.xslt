@@ -48,7 +48,7 @@
 					<xsl:value-of select="$group" />
 					<xsl:text>'</xsl:text>
 				</h1>
-				<xsl:apply-templates select="group[@name = $group]" />
+				<xsl:apply-templates select="group[@id = $group]" />
 			</body>
 		</html>
 	</xsl:template>

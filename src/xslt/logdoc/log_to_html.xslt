@@ -50,7 +50,7 @@
 					<xsl:for-each select="group">
 						<xsl:variable name="group_link">
 							<xsl:text>group-</xsl:text>
-							<xsl:value-of select="@name" />
+							<xsl:value-of select="@id" />
 							<xsl:text>.html</xsl:text>
 						</xsl:variable>
 						<tr>

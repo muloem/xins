@@ -60,7 +60,7 @@
 					<a>
 						<xsl:attribute name="href">
 							<xsl:text>group-</xsl:text>
-							<xsl:value-of select="../@name" />
+							<xsl:value-of select="../@id" />
 							<xsl:text>.html</xsl:text>
 						</xsl:attribute>
 						<xsl:text>Log entry group</xsl:text>
@@ -84,7 +84,7 @@
 					<a>
 						<xsl:attribute name="href">
 							<xsl:text>group-</xsl:text>
-							<xsl:value-of select="../@name" />
+							<xsl:value-of select="../@id" />
 							<xsl:text>.html</xsl:text>
 						</xsl:attribute>
 						<xsl:value-of select="../@name" />

@@ -33,10 +33,10 @@
 				<xsl:for-each select="group">
 					<style
 					in="{$sourcedir}/log.xml"
-					out="{$html_destdir}/group-{@name}.html"
+					out="{$html_destdir}/group-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_group_html.xslt">
 						<param name="sourcedir" expression="../../{$sourcedir}" />
-						<param name="group"     expression="{@name}"            />
+						<param name="group"     expression="{@id}"              />
 					</style>
 				</xsl:for-each>
 				<xsl:for-each select="group/entry">
