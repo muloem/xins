@@ -102,6 +102,23 @@ $Id$
 						<xsl:text>.rcd</xsl:text>
 					</xsl:for-each>
 				</xsl:variable>
+				<xsl:variable name="clientPackage">
+					<xsl:call-template name="package_for_client_api">
+						<xsl:with-param name="project_file">
+							<xsl:value-of select="$project_file" />
+						</xsl:with-param>
+						<xsl:with-param name="api">
+							<xsl:value-of select="$api" />
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="clientPackageAsDir">
+					<xsl:call-template name="package2dir">
+						<xsl:with-param name="package">
+							<xsl:value-of select="$clientPackage" />
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
 				
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
@@ -153,10 +170,10 @@ $Id$
 						</style>
 					</xsl:for-each>
 				</target>
-				
+
 				<xsl:if test="document($api_file)/api/impl-java">
 					<xsl:variable name="package">
-						<xsl:call-template name="package_for_api">
+						<xsl:call-template name="package_for_server_api">
 							<xsl:with-param name="project_file">
 								<xsl:value-of select="$project_file" />
 							</xsl:with-param>
@@ -224,7 +241,7 @@ $Id$
 						</xsl:attribute>
 					</target>
 
-					<target name="classes-api-{$api}" depends="-prepare-classes,-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API">
+					<target name="classes-api-{$api}" depends="-prepare-classes,-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
 							in="{$api_file}"
@@ -379,6 +396,21 @@ $Id$
 						overwrite="true" />
 					</target>
 				</xsl:if>
+
+				<target name="-stubs-capi-{$api}">
+					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
+					<style
+						in="{$api_file}"
+						out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
+						style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
+						<param name="project_home" expression="{$project_home}" />
+						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="package"      expression="{$clientPackage}"      />
+					</style>
+				</target>
+
+				<target name="classes-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+				</target>
 			</xsl:for-each>
 
 			<target name="specdocs" description="Generates all specification docs">
