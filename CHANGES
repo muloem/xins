@@ -49,6 +49,8 @@ CHANGES INTRODUCED IN XINS 0.170:
     This bug has been in the latest release XINS 0.169.
   - The xins.bat files is now release with the correct line feed.
     This bug has been in since the release XINS 0.1.
+  - Added a .cvsignore file in the xins root directory so the cvs diff
+    doesn't complain when making a release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.169:
