@@ -71,7 +71,7 @@ public class Base64 extends Type {
     *    the string to convert, can be <code>null</code>.
     *
     * @return
-    *    the {@link byte[]}, or <code>null</code> if
+    *    the byte[], or <code>null</code> if
     *    <code>string == null</code>.
     *
     * @throws TypeValueException
