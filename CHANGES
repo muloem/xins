@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.69:
+
+* Fixed 22 Checkstyle warnings.
+
+* XINS/Java Client Framework:
+  - Removed call(String,String,String,Map). from class CallTargetGroup.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.68:
 
 * Improved Javadoc comments.
