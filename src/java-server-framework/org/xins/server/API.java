@@ -397,7 +397,7 @@ implements DefaultResultCodes {
 
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
-      LOG.debug("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+      LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
