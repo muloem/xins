@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.9:
+
+* Documented FastStringBuffer class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.8:
 
 * Pooling CallContext instances per thread.
