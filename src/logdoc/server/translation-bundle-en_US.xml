@@ -86,8 +86,8 @@
 	<translation entry="4034">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
 	<translation entry="4035">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="4036">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
-	<translation entry="5000">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed.</translation>
-	<translation entry="5001">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />.</translation>
+	<translation entry="5000">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="5001">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="5006">Setting session attribute <value-of-param name="name" format="quoted" /> to <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
 	<translation entry="5007">Setting session attribute <value-of-param name="name" format="quoted" /> to (null).</translation>
 	<translation entry="5008">Getting session attribute <value-of-param name="name" format="quoted" />, value is <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>

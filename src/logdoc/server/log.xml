@@ -403,13 +403,15 @@
 	<group id="runtime.http" name="HTTP-level">
 		<entry id="5000" level="INFO">
 			<description>Received HTTP request with invalid method.</description>
-			<param name="ip" />
-			<param name="method" />
+			<param name="ip"          nullable="false" />
+			<param name="method"      nullable="true"  />
+			<param name="queryString" nullable="true"  />
 		</entry>
 		<entry id="5001" level="INFO">
 			<description>Received HTTP request with valid method.</description>
-			<param name="ip" />
-			<param name="method" />
+			<param name="ip"          nullable="false" />
+			<param name="method"      nullable="true"  />
+			<param name="queryString" nullable="true"  />
 		</entry>
 	</group>
 

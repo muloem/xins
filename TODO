@@ -50,7 +50,6 @@ XINS/JAVA SERVER FRAMEWORK
   then be able to remove log message 4033.
 * Move the logs in the Function#performedCall() method somewhere else
   and remove this method from Function.
-* Log received input parameters.
 * Log that the runtime properties file is opened at startup (DEBUG level).
 * Refactor the invocation of the call method in the implementation.
   The implementation should now have only a Request object as argument

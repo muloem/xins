@@ -808,15 +808,16 @@ extends HttpServlet {
       // Determine current time
       long start = System.currentTimeMillis();
 
-      // Determine the remote IP address
-      String ip = request.getRemoteAddr();
+      // Determine the remote IP address and the query string
+      String ip          = request.getRemoteAddr();
+      String queryString = request.getQueryString();
 
       // Check the HTTP request method
       String method = request.getMethod();
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
          if ("OPTIONS".equals(method)) {
-            Log.log_5001(ip, method);
+            Log.log_5001(ip, method, queryString);
             response.setContentLength(0);
             response.setHeader("Accept", "GET, HEAD, POST");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -826,12 +827,12 @@ extends HttpServlet {
 
          // If the method is not recognized, return '405 Method Not Allowed'
          } else {
-            Log.log_5000(ip, method);
+            Log.log_5000(ip, method, queryString);
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
-      Log.log_5001(ip, method);
+      Log.log_5001(ip, method, queryString);
 
       // XXX: Consider using OutputStream instead of Writer, for improved
       // XXX: performance
