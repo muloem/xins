@@ -40,9 +40,12 @@ extends Spec {
     *
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null || version == null</code>.
+    *
+    * @throws InvalidVersionException
+    *    if <code>version</code> is not a well-formed version number string.
     */
    private static final SpecType checkArguments(SpecType type, String name, String version)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, InvalidVersionException {
 
       // Check conditions
       MandatoryArgumentChecker.check("type", type, "name", name, "version", version);
@@ -75,9 +78,14 @@ extends Spec {
     *
     * @throws InvalidNameException
     *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
+    *
+    * @throws InvalidVersionException
+    *    if <code>version</code> is not a well-formed version number string.
     */
    VersionedSpec(SpecType type, String name, String version)
-   throws IllegalArgumentException, InvalidNameException {
+   throws IllegalArgumentException,
+          InvalidNameException,
+          InvalidVersionException {
 
       // Check preconditions and call superconstructor
       super(checkArguments(type, name, version), name);

@@ -47,9 +47,14 @@ extends VersionedSpec {
     *
     * @throws InvalidNameException
     *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
+    *
+    * @throws InvalidVersionException
+    *    if <code>version</code> is not a well-formed version number string.
     */
    public APISpec(String name, String version)
-   throws IllegalArgumentException, InvalidNameException {
+   throws IllegalArgumentException,
+          InvalidNameException,
+          InvalidVersionException {
       super(TYPE, name, version);
    }
 
