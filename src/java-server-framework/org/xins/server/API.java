@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
+
 import javax.servlet.ServletRequest;
+
+import org.xins.logdoc.LogStatistics;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.types.standard.Text;
@@ -34,6 +37,7 @@ import org.xins.util.manageable.Manageable;
 import org.xins.util.text.DateConverter;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
+
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -936,6 +940,8 @@ implements DefaultResultCodes {
             return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
             return doGetStatistics();
+         } else if ("_GetLogStatistics".equals(functionName)) {
+            return doGetLogStatistics();
          } else if ("_GetVersion".equals(functionName)) {
             return doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
@@ -1157,6 +1163,33 @@ implements DefaultResultCodes {
 
          builder.endTag(); // function
       }
+
+      return builder;
+   }
+
+   /**
+    * Returns the log statistics for all functions in this API.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    */
+   private final CallResult doGetLogStatistics() {
+
+      // Initialize a builder
+      CallResultBuilder builder = new CallResultBuilder();
+      builder.startTag("statistics");
+
+      LogStatistics.Entry[] entries = Log.getStatistics().getEntries();
+      int entryCount = entries.length;
+      for (int i = 0; i < entryCount; i++) {
+         LogStatistics.Entry entry = entries[i];
+         builder.startTag("entry");
+         builder.attribute("id", entry.getID());
+         builder.attribute("count", String.valueOf(entry.getCount()));
+         builder.endTag(); // entry
+      }
+
+      builder.endTag(); // statistics
 
       return builder;
    }
