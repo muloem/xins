@@ -6,6 +6,9 @@ CHANGES INTRODUCED IN XINS 0.5:
 
 * Fixed bug: Skeleton .java files are now actually generated.
 
+* Class CallContext: The function name must now be retrieved using the method
+  getFunction(), it will no longer be returned by getParameter("function").
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.4:
 
