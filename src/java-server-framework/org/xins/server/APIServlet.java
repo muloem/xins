@@ -616,6 +616,8 @@ extends HttpServlet {
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
          Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, String.valueOf(interval));
          _configFileWatcher.start();
+
+         Log.log_199();
       }
    }
 
@@ -752,11 +754,15 @@ extends HttpServlet {
       // Determine current time
       long start = System.currentTimeMillis();
 
+      // Determine the remote IP address
+      String ip = request.getRemoteAddr();
+
       // Check the HTTP request method
       String method = request.getMethod();
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
          if ("OPTIONS".equals(method)) {
+            Log.log_11(ip, method);
             response.setContentLength(0);
             response.setHeader("Accept", "GET, HEAD, POST");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -766,10 +772,12 @@ extends HttpServlet {
 
          // If the method is not recognized, return '405 Method Not Allowed'
          } else {
+            Log.log_10(ip, method);
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
+      Log.log_11(ip, method);
 
       // XXX: Consider using OutputStream instead of Writer, for improved performance
 
