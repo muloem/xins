@@ -15,7 +15,7 @@
 	<xsl:variable name="project_file"     select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href" />
 	<xsl:variable name="api"              select="//function/@api" />
-	<xsl:variable name="api_file"         select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
+	<xsl:variable name="api_file"         select="concat($specsdir, '/', $api, '/api.xml')" />
 	<xsl:variable name="function_name"    select="//function/@name" />
 
 	<xsl:output
@@ -879,7 +879,7 @@
 	<xsl:template name="typelink">
 		<xsl:param name="type" />
 
-		<xsl:variable name="type_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">

@@ -50,7 +50,7 @@
 	</xsl:template>
 
 	<xsl:template match="api">
-		<xsl:variable name="path" select="concat($project_home, '/', $specsdir, '/', @name, '/api.xml')" />
+		<xsl:variable name="path" select="concat($specsdir, '/', @name, '/api.xml')" />
 		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
 
 		<xsl:if test="not(document($path)/api/@name = @name)">
