@@ -27,6 +27,10 @@ CHANGES INTRODUCED IN XINS 0.209:
   - The boolean type was not declared in the log_to_entry_html.xslt as a
     logdoc type.
 
+* Generated server-side Java code:
+  - Fixed a problem when generating the author in the @author tag.
+    This bug has been in XINS since version 0.208.
+
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is
     not declared in the api.xml.

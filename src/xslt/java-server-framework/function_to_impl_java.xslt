@@ -40,7 +40,7 @@ package ]]></xsl:text>
  * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
  * @author ]]></xsl:text>
 				<xsl:variable name="owner_info">
-					<xsl:apply-templates mode="owner" />
+					<xsl:apply-templates select="document($api_file)/api" mode="owner" />
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="$owner_info != ''">
