@@ -3,9 +3,6 @@
  */
 package org.xins.logdoc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -26,7 +23,7 @@ extends Object {
     *
     * @see #registerLog(LogController)
     */
-   private static final List CONTROLLERS = new ArrayList();
+   private static AbstractLog.LogController[] CONTROLLERS;
 
 
    //-------------------------------------------------------------------------
@@ -50,7 +47,15 @@ extends Object {
       MandatoryArgumentChecker.check("controller", controller);
 
       // Add the controller to the List
-      CONTROLLERS.add(controller);
+      if (CONTROLLERS == null) {
+         CONTROLLERS = new AbstractLog.LogController[] { controller };
+      } else {
+         int size = CONTROLLERS.length;
+         AbstractLog.LogController[] a = new AbstractLog.LogController[size + 1];
+         System.arraycopy(CONTROLLERS, 0, a, 0, size);
+         a[size] = controller;
+         CONTROLLERS = a;
+      }
    }
 
    /**
@@ -65,10 +70,17 @@ extends Object {
    public static final void setLocale(String newLocale)
    throws IllegalArgumentException {
 
-     // Check preconditions
-     MandatoryArgumentChecker.check("newLocale", newLocale);
+      // Check preconditions
+      MandatoryArgumentChecker.check("newLocale", newLocale);
 
-     // TODO: Call setLocale on all LogController instances
+      // Call doSetLocale(String) on all registered LogControllers
+      int size = CONTROLLERS.length;
+      for (int i = 0; i < size; i++) {
+         CONTROLLERS[i].doSetLocale(newLocale);
+
+         // TODO: What if the controller does not support the specified
+         // TODO: locale?
+      }
    }
 
 
