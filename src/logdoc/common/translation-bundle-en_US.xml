@@ -8,6 +8,9 @@
 -->
 
 <translation-bundle>
+	<translation entry="3000">TRACE: Entering <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="3002">TRACE: Leaving <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+
 	<translation entry="3400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="3405">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
