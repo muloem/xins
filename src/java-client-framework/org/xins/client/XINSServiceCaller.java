@@ -103,6 +103,16 @@ boolean         failOver = true;
 public final class XINSServiceCaller extends ServiceCaller {
 
    //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = XINSServiceCaller.class.getName();
+
+
+   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -122,10 +132,14 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
+
+      // TODO: TRACE: Enter constructor
       super(descriptor);
 
       _parser     = new XINSCallResultParser();
       _httpCaller = new HTTPServiceCaller(descriptor);
+
+      // TODO: TRACE: Leave constructor
    }
 
 
@@ -189,6 +203,7 @@ public final class XINSServiceCaller extends ServiceCaller {
           XINSCallException {
 
       // TRACE: Enter method
+      Log.log_2003(CLASSNAME, "call(XINSCallRequest)", null);
 
       CallResult result;
       try {
@@ -219,7 +234,8 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new UnsuccessfulXINSCallException(xinsResult);
       }
 
-      // TODO: TRACE: Leave method
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, "call(XINSCallRequest)", null);
 
       return xinsResult;
    }
@@ -267,6 +283,9 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
+      // TRACE: Enter method
+      Log.log_2003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("request", request, "target", target);
 
@@ -311,6 +330,9 @@ public final class XINSServiceCaller extends ServiceCaller {
                                                  httpResult.getDuration(),
                                                  resultData);
       }
+
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
 
       return resultData;
    }
@@ -362,11 +384,19 @@ public final class XINSServiceCaller extends ServiceCaller {
                                          Object            result)
    throws ClassCastException {
 
-      return new XINSCallResult((XINSCallRequest) request,
-                                succeededTarget,
-                                duration,
-                                exceptions,
-                                (XINSCallResultData) result);
+      // TRACE: Enter method
+      Log.log_2003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+
+      XINSCallResult r = new XINSCallResult((XINSCallRequest) request,
+                                            succeededTarget,
+                                            duration,
+                                            exceptions,
+                                            (XINSCallResultData) result);
+
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+
+      return r;
    }
 
    /**
@@ -384,18 +414,26 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
     *
+    * @throws ClassCastException
+    *    if <code>request</code> is not an instance of class
+    *    {@link XINSCallRequest}.
+    *
     * @since XINS 0.207
     */
    protected boolean shouldFailOver(CallRequest request,
-                                    Throwable   exception) {
+                                    Throwable   exception)
+   throws ClassCastException {
 
-      // First let the superclass do it's job
-      if (super.shouldFailOver(request, exception)) {
-         return true;
-      }
+      // TRACE: Enter method
+      Log.log_2003(CLASSNAME, "shouldFailOver(CallRequest,Throwable)", null);
 
       // The request must be a XINS call request
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
+
+      // First let the superclass do it's job
+      boolean should;
+      if (super.shouldFailOver(request, exception)) {
+         should = true;
 
       // If fail-over is allowed even if request is already sent, then
       // short-circuit and allow fail-over
@@ -406,9 +444,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       //      InterruptedException. This could be improved by checking the
       //      type of exception and only allowingt fail-over if the exception
       //      indicates an I/O error.
-      if (xinsRequest.isFailOverAllowed()) {
-         return true;
-      }
+      } else if (xinsRequest.isFailOverAllowed()) {
+         should = true;
 
       // Check if the request may fail-over from HTTP point-of-view
       //
@@ -419,18 +456,23 @@ public final class XINSServiceCaller extends ServiceCaller {
       //      access.
       //
       // A non-2xx HTTP status code indicates the request was not handled
-      if (exception instanceof StatusCodeHTTPCallException) {
+      } else if (exception instanceof StatusCodeHTTPCallException) {
          int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
-         return (code < 200 || code > 299);
+         should = (code < 200 || code > 299);
 
       // Some XINS error codes indicate the request was not accepted
       } else if (exception instanceof UnsuccessfulXINSCallException) {
          String s = ((UnsuccessfulXINSCallException) exception).getErrorCode();
-         return ("_InvalidRequest".equals(s) || "_DisabledFunction".equals(s));
+         should = ("_InvalidRequest".equals(s) || "_DisabledFunction".equals(s));
 
       // Otherwise do not fail over
       } else {
-         return false;
+         should = false;
       }
+
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, "shouldFailOver(CallRequest,Throwable)", should ? "true" : "false");
+
+      return should;
    }
 }
