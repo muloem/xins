@@ -11,6 +11,17 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
   - Added EMPTY_PROPERTY_READER class field in class PropertyReaderUtils.
   - Changed HTTPCallRequest.getParameters() so it never returns null anymore.
     This helps to avoid NullPointerExceptions.
+  - Added tests for the ExpiryStrategy class. This revealed a bug which caused
+    the slot count to be incorrect if the time-out is not a multiple of the
+    precision.
+  - Changed the ExpiryStrategy to use weak references to the ExpiryFolder
+    instances instead of strong references.
+  - ExpiryFolder implementation no longer uses a Doorman but uses synchronized
+    sections instead.
+  - ExpiryFolder now has a constructor that just takes a name and an
+    ExpiryStrategy. The old constructor (which accepted a 'strict' flag and a
+    maximum queue wait time) has been deprecated.
+  - Marked class Doorman as deprecated.
 
 * XINS/Java Client Framework:
   - Fixed various Checkstyle-reported issues.
