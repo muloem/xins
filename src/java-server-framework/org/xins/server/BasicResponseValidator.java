@@ -314,7 +314,7 @@ implements ResponseValidator {
    throws InvalidResponseException {
       boolean succeeded = false;
       try {
-         endTagImpl(name);
+         endTagImpl();
          succeeded = true;
       } finally {
          // If an exception is thrown, then reset, just in case the subclass
