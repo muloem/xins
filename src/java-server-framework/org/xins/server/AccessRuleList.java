@@ -76,18 +76,19 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
+      // Tokenize the descriptor
       StringTokenizer tokenizer = new StringTokenizer(descriptor, ";");
-      List rules = new ArrayList(tokenizer.countTokens());
+      int ruleCount = tokenizer.countTokens();
 
-      while (tokenizer.hasMoreTokens()) {
+      // Parse all tokens
+      AccessRule[] rules = new AccessRule[ruleCount];
+      for (int i = 0; i < ruleCount; i++) {
+
+         // Remove leading and trailing whitespace from the next token
          String token = tokenizer.nextToken().trim();
 
-         if (!"".equals(token)) {
-            AccessRule rule = AccessRule.parseAccessRule(token);
-            if (rule != null) {
-               rules.add(rule);
-            }
-         }
+         // Parse and add the rule
+         rules[i] = AccessRule.parseAccessRule(token);
       }
 
       return new AccessRuleList(rules);
@@ -99,32 +100,28 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>AccessRuleList</code> object.
+    * Creates a new <code>AccessRuleList</code> object. The passed
+    * {@link AccessRule} array is assumed to be owned by the constructor.
     *
     * @param rules
-    *    the list of rules ({@link AccessRule} objects), cannot be
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>rules == null</code>.
+    *    the list of rules, should not be <code>null</code> and should not
+    *    contain any <code>null</code> elements; if these rules are violated,
+    *    the behaviour is undefined.
     */
-   public AccessRuleList(List rules)
-   throws IllegalArgumentException {
+   public AccessRuleList(AccessRule[] rules) {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("rules", rules);
-
+      // Store the rules
       _rules = rules;
 
       // Build string representation
-      int ruleCount = rules.size();
+      int ruleCount = rules.length;
       FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
-         buffer.append(rules.get(0).toString());
+         buffer.append(rules[0].toString());
       }
       for (int i = 1; i < ruleCount; i++) {
          buffer.append(';');
-         buffer.append(rules.get(i).toString());
+         buffer.append(rules[i].toString());
       }
       _asString = buffer.toString();
    }
@@ -137,7 +134,7 @@ extends Object {
    /**
     * The list of rules. Cannot be <code>null</code>.
     */
-   private List _rules;
+   private AccessRule[] _rules;
 
    /**
     * The string representation of this instance. Cannot be <code>null</code>.
@@ -156,7 +153,7 @@ extends Object {
     *    the number of rules, always &gt;= 0.
     */
    public int getRuleCount() {
-      return _rules.size();
+      return _rules.length;
    }
 
    /**
@@ -189,11 +186,10 @@ extends Object {
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
       // TODO: Logging
-      // TODO: Store rules in AccessRule[] array
 
-      int ruleCount = _rules.size();
+      int ruleCount = _rules.length;
       for (int i = 0; i < ruleCount; i++) {
-         AccessRule rule = (AccessRule) _rules.get(i);
+         AccessRule rule = _rules[i];
          if (rule.match(ip, functionName)) {
             return rule.isAllowRule();
          }
