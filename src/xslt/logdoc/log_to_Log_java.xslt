@@ -304,17 +304,29 @@ public class Log extends Object {
 				<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
 					<xsl:text>java.lang.String</xsl:text>
 				</xsl:when>
-				<xsl:when test="(@type = 'int64') and ">
-					<xsl:text>int64</xsl:text>
+				<xsl:when test="(@type = 'int64') and ($nullable = 'true')">
+					<xsl:text>java.lang.Long</xsl:text>
+				</xsl:when>
+				<xsl:when test="@type = 'int64'">
+					<xsl:text>long</xsl:text>
+				</xsl:when>
+				<xsl:when test="(@type = 'int32') and ($nullable = 'true')">
+					<xsl:text>java.lang.Integer</xsl:text>
 				</xsl:when>
 				<xsl:when test="@type = 'int32'">
 					<xsl:text>int32</xsl:text>
 				</xsl:when>
+				<xsl:when test="(@type = 'int16') and ($nullable = 'true')">
+					<xsl:text>java.lang.Short</xsl:text>
+				</xsl:when>
 				<xsl:when test="@type = 'int16'">
-					<xsl:text>int16</xsl:text>
+					<xsl:text>short</xsl:text>
+				</xsl:when>
+				<xsl:when test="(@type = 'int8') and ($nullable = 'true')">
+					<xsl:text>java.lang.Byte</xsl:text>
 				</xsl:when>
 				<xsl:when test="@type = 'int8'">
-					<xsl:text>int8</xsl:text>
+					<xsl:text>byte</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -324,7 +336,7 @@ public class Log extends Object {
 					</xsl:message>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>String </xsl:text>
+			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>) {
