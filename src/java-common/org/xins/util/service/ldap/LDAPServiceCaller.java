@@ -98,8 +98,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Authentication details. Combines authentication method, principal and
-    * credentials.
+    * LDAP authentication details. Combines authentication method, principal
+    * and credentials.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -113,9 +113,25 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Constructors
       //----------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>AuthenticationDetails</code> object.
+       */
+      public AuthenticationDetails(String method,
+                                   String principal,
+                                   String credentials) {
+         _method      = method;
+         _principal   = principal;
+         _credentials = credentials;
+      }
+
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
+
+      private final String _method;
+      private final String _principal;
+      private final String _credentials;
+
 
       //----------------------------------------------------------------------
       // Methods
@@ -123,7 +139,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Query.
+    * LDAP query.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -147,8 +163,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Search request. Combines {@link AuthenticationDetails} and a
-    * {@link Query}.
+    * LDAP search request. Combines
+    * {@link LDAPServiceCaller.AuthenticationDetails authentication details}
+    * and a {@link LDAPServiceCaller.Query query}.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -198,7 +215,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Result object.
+    * LDAP search result.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
