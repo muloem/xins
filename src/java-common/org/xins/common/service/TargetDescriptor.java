@@ -223,8 +223,8 @@ public final class TargetDescriptor extends Descriptor {
       // Set fields
       _url               = url;
       _timeOut           = timeOut;
-      _connectionTimeOut = connectionTimeOut;
-      _socketTimeOut     = socketTimeOut;
+      _connectionTimeOut = (connectionTimeOut < timeOut) ? connectionTimeOut : timeOut;
+      _socketTimeOut     = (socketTimeOut     < timeOut) ? socketTimeOut     : timeOut;
       _crc               = computeCRC32(url);
    }
 
