@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.82:
+
+* XINS/Java Common Library:
+  - Added class Replacer to package org.xins.util.text.
+
+* XINS/Java Server Framework:
+  - Supporting replacements in servlet initialization settings.
+  - Supporting setting 'log4j.configFile' in api.xml. Will trigger a
+    PropertyConfigurator.configureAndWatch().
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.81:
 
 * XINS/Java Server Framework:
