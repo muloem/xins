@@ -422,7 +422,7 @@ implements DefaultResultCodes {
             unsuccessfulMin     = "NA";
             unsuccessfulMinStart = "NA";
             unsuccessfulMax     = "NA";
-            unsuccessfulMinStart = "NA";
+            unsuccessfulMaxStart = "NA";
             lastUnsuccessfulStart    = "NA";
             lastUnsuccessfulDuration = "NA";
          } else if (unsuccessfulDuration == 0) {
@@ -465,9 +465,11 @@ implements DefaultResultCodes {
          context.attribute("count",   String.valueOf(unsuccessfulCalls));
          context.attribute("average", unsuccessfulAverage);
          context.startTag("min");
+         context.attribute("start",        unsuccessfulMinStart);
          context.attribute("duration",     unsuccessfulMin);
          context.endTag(); // min
          context.startTag("max");
+         context.attribute("start",        unsuccessfulMaxStart);
          context.attribute("duration",     unsuccessfulMax);
          context.endTag(); // max
          context.startTag("last");
