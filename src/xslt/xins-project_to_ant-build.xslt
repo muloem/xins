@@ -123,26 +123,8 @@
 						</style>
 					</xsl:for-each>
 				</target>
-			</xsl:for-each>
 
-			<target name="specdocs" description="Generates all specification docs">
-				<xsl:attribute name="depends">
-					<xsl:text>specdocs-index</xsl:text>
-					<xsl:for-each select="api">
-						<xsl:text>,specdocs-api-</xsl:text>
-						<xsl:value-of select="@name" />
-					</xsl:for-each>
-				</xsl:attribute>
-			</target>
-
-			<target name="-prepare-classes" depends="-prepare">
-				<mkdir dir="build/classes" />
-			</target>
-
-			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-				<xsl:variable name="api"      select="@name"                                     />
-				<xsl:variable name="api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
-				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
+			<xsl:if test="document($api_file)/api/impl-java">
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
 						<xsl:with-param name="project_file">
@@ -274,7 +256,23 @@
 						<classes dir="{$classesDestDir}" includes="**/*.class" />
 					</war>
 				</target>
+			</xsl:if>
+
 			</xsl:for-each>
+
+			<target name="specdocs" description="Generates all specification docs">
+				<xsl:attribute name="depends">
+					<xsl:text>specdocs-index</xsl:text>
+					<xsl:for-each select="api">
+						<xsl:text>,specdocs-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<target name="-prepare-classes" depends="-prepare">
+				<mkdir dir="build/classes" />
+			</target>
 
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
