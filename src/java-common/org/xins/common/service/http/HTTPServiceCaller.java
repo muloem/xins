@@ -77,7 +77,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    // TODO: Decide whether Method should be an inner class in this class or not
-   // TODO: Decide whether these constants Method should be in this class or elsewhere
+
+   // TODO: Decide whether these Method constants should be in this class or
+   //       elsewhere
 
    /**
     * Constant representing the HTTP GET method.
