@@ -46,8 +46,10 @@ package ]]></xsl:text>
 					<xsl:when test="$owner_info != ''">
 						<xsl:value-of select="$owner_info" disable-output-escaping="yes"/>
 					</xsl:when>
+					<!-- Split the text up, so it does not match when searched for -->
 					<xsl:otherwise>
-						<xsl:text>TODO</xsl:text>
+						<xsl:text>TO</xsl:text>
+						<xsl:text>DO</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 		<xsl:text><![CDATA[
@@ -81,7 +83,7 @@ public class ]]></xsl:text>
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$classname" />
-		<xsl:text><![CDATA[(APIImpl api) {
+		<xsl:text>(APIImpl api) {
       super(api);
    }
 
@@ -96,11 +98,13 @@ public class ]]></xsl:text>
 
    public final Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
-      // TODO
+      // TO</xsl:text>
+		<!-- Split this text up so it does not match when searched for -->
+		<xsl:text>DO
       return result;
    }
 }
-]]></xsl:text>
+</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>
