@@ -5,9 +5,14 @@ CHANGES INTRODUCED IN XINS 0.144:
   - Renamed SessionID to SessionIDType.
   - Renamed BasicSessionID to BasicSessionIDType.
   - BasicSessionIDType now generates random session IDs.
+  - Fixed bug in APIServlet that caused a InterruptedIOException when a
+    configuration file was reloaded. Had to change FileWatcher for this as
+    well.
 
 * XINS/Java Common Library:
   - Fixed small bug in ExpiryFolder that could cause a NPE.
+  - Changed FileWatcher class to allow setting of the interval from the
+    listener methods.
 
 * Generated CAPI classes:
   - Fixed small bug in generation of CAPI class that caused compiler errors.
