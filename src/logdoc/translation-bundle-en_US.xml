@@ -97,6 +97,7 @@
 	<translation entry="5007">Setting session attribute <value-of-param name="name" format="quoted" /> to (null).</translation>
 	<translation entry="5008">Getting session attribute <value-of-param name="name" format="quoted" />, value is <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
 	<translation entry="5009">Getting session attribute <value-of-param name="name" format="quoted" />, value is (null).</translation>
+	<translation entry="5010">Created session with unique ID <value-of-param name="id" /> in <value-of-param name="generationLoops" /> attempts.</translation>
 	<translation entry="6000">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="6001">Deinitialization of API failed during XINS/Java Server Framework shutdown. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework shutdown completed.</translation>
