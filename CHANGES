@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 0.166:
   - Fixed EnumItem.equals() now returns true if two EnumItem's are from the
     same class, have the same name and the same value.
     This was erroneous since XINS 0.1.
+  - Fixed small error in Javadoc comments for fromStringForOptional(String) in
+    class org.xins.types.standard.Properties.
 
 * XINS/Java Server Framework:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
