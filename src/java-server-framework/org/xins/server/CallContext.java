@@ -80,10 +80,13 @@ implements Responder, Log {
     * @param callID
     *    the assigned call ID.
     *
+    * @param session
+    *    the session, if any, or <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>api == null || functionName == null || request == null</code>.
+    *    if <code>request == null || function == null</code>.
     */
-   CallContext(ServletRequest request, long start, Function function, int callID)
+   CallContext(ServletRequest request, long start, Function function, int callID, Session session)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -91,11 +94,12 @@ implements Responder, Log {
 
       // Initialize fields
       _request      = request;
+      _start        = start;
       _api          = function.getAPI();
       _function     = function;
       _functionName = function.getName();
+      _session      = session;
       _state        = BEFORE_START;
-      _start        = start;
       _builder      = new CallResultBuilder();
 
       // Determine the function object, logger, call ID and log prefix
@@ -185,7 +189,12 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
 
    // TODO: Document
+   // TODO: Probably take a different approach
    CallResult getCallResult() {
+      if (_returnSessionID) {
+         _builder.param("_session", _session.getIDString());
+         _returnSessionID = false;
+      }
       return _builder;
    }
 
@@ -255,6 +264,15 @@ implements Responder, Log {
       // Store the session and remember that we have to send it down
       _session         = session;
       _returnSessionID = true;
+
+      if (LOG.isDebugEnabled()) {
+         FastStringBuffer buffer = new FastStringBuffer(80);
+         buffer.append(_logPrefix);
+         buffer.append("Created session ");
+         buffer.append(session.getIDString());
+         buffer.append('.');
+         _logger.debug(buffer.toString());
+      }
 
       return session;
    }
@@ -335,6 +353,7 @@ implements Responder, Log {
       // Add the session ID, if any
       if (_returnSessionID) {
          _builder.param("_session", _session.getIDString());
+         _returnSessionID = false;
       }
 
       // Reset the state
@@ -351,6 +370,8 @@ implements Responder, Log {
 
       // Check arguments
       MandatoryArgumentChecker.check("name", name, "value", value);
+
+      // TODO: Disallow parameters that start with an underscore?
 
       // Start the response if necesary
       if (_state == BEFORE_START) {
