@@ -164,7 +164,7 @@ public class Log extends AbstractLog {
     * @return
     *    the statistics, never <code>null</code>.
     */
-   public LogStatistics getStatistics() {
+   public static LogStatistics getStatistics() {
       return new LogStatistics(new LogStatistics.Entry[] {]]></xsl:text>
 		<xsl:apply-templates select="group/entry" mode="log_entry" />
 		<xsl:text>
