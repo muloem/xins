@@ -299,7 +299,7 @@
 			<packageset dir="build/src/java-common" />
 			<packageset dir="build/src/java-server-framework" />
 			<packageset dir="build/src/java-client-framework" />
-			<group title="XINS/Java Common"           packages="org.xins.util*,org.xins.types*" />
+			<group title="XINS/Java Common"           packages="org.xins.util*,org.xins.types*,org.xins.tools*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
@@ -478,12 +478,30 @@
 		<delete file="build/${package-tarfile}" />
 	</target>
 
-	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
+	<target name="do-upload-package" depends="java-common" description="Uploads the package to the web server">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
+		<taskdef name="sfaddrelease" classname="org.xins.util.ant.sourceforge.AddReleaseTask">
+			<classpath>
+				<fileset dir="build"                       includes="xins-common.jar"        />
+				<fileset dir="depends/compile"             includes="commons-net.jar"        />
+				<fileset dir="depends/compile_and_runtime" includes="commons-httpclient.jar" />
+			</classpath>
+		</taskdef>
+		<sfaddrelease
+		ignoreUploadFailures="true"
+		user="znerd"
+		password="${password}"
+		file="build/xins-${version}.tar.gz"
+		group="71598"
+		package="71219"
+		release="${version}"
+		keystore="src/certificates/sourceforge.net.cert" />
+<!--
 		<exec dir="build/" executable="scp" failonerror="true">
 			<arg value="${package-tarfile}.gz" />
 			<arg value="${www.target}" />
 		</exec>
+-->
 	</target>
 
 	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
