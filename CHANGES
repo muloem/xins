@@ -18,6 +18,9 @@ CHANGES INTRODUCED IN XINS 0.201:
 
 * Logdoc:
   - Added class AbstractLogdocSerializable. It supports lazy initialization.
+  - No longer automatically logging the log entry counter (followed by a
+    space) before the actual translation as specified in the translation file.
+    The fallback default message, however, still includes the entry counter.
 
 * XINS/Java Common Library:
   - PropertyReader interface no longer directly extends LogdocSerializable.
