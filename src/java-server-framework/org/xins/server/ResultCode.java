@@ -80,7 +80,7 @@ extends Object {
     *    if <code>value == null</code>.
     *
     * @deprecated
-    *    Deprecated since XINS 0.117. Use {@link ResultCode(String,String)}
+    *    Deprecated since XINS 0.117. Use {@link #ResultCode(String,String)}
     *    instead.
     */
    ResultCode(boolean success, String name, String value)
@@ -149,7 +149,7 @@ extends Object {
     *    if <code>api == null || value == null</code>.
     *
     * @deprecated
-    *    Deprecated since XINS 0.117. Use {@link ResultCode(API,String,String)}
+    *    Deprecated since XINS 0.117. Use {@link #ResultCode(API,String,String)}
     *    instead.
     */
    public ResultCode(API api, boolean success, String name, String value)
