@@ -6,6 +6,17 @@ CHANGES INTRODUCED IN XINS 0.168:
 
 * XINS/Java Server Framework:
   - Fixed translations for log messages 2007 and 2008.
+  - Added a new call framework to get the input parameters, to set the
+    output parameters and to report a result code.
+    This framework is by default disabled in this version because of
+    incompatibilities with XINS 0.167 but it can be enabled by changing
+    the newCallFramework variable in xins-project_to_ant-build.xslt and
+    editing the src/java-server-framework/org/xins/server/Function.java file.
+
+* Generated build file:
+  - The build targets creating the APIs, functions, types and result codes
+    have been updated to link to the correct DTD, to include the description
+    and to rename 'project' with 'api'.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.167:
