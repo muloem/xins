@@ -7,7 +7,7 @@
  $Id$
 -->
 
-<log default-locale="en_US" domain="org.xins.client">
+<log>
 
 	<translation-bundle locale="en_US" />
 
