@@ -87,12 +87,26 @@ public class HostnameTask extends Task {
          log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
       }
 
-      InetAddress localhost;
+      InetAddress localhost = null;
       try {
          localhost = InetAddress.getLocalHost();
       } catch (UnknownHostException unknownHostException) {
-         log("Unable to determine internet address of localhost. Not setting property \"" + _propertyName + "\".");
-         return;
+         try {
+            InetAddress[] addresses = InetAddress.getAllByName("localhost");
+            for (int i=0; i < addresses.length; i++) {
+               if (!addresses[i].getHostAddress().equals("127.0.0.1")) {
+                  localhost = addresses[i];
+                  break;
+               }
+            }
+         } catch (UnknownHostException unknownHostException2) {
+            log("Unable to find any internet address for localhost. Not setting property \"" + _propertyName + "\".");
+            return;
+         }
+         if (localhost == null) {
+            log("Unable to determine internet address of localhost. Not setting property \"" + _propertyName + "\".");
+            return;
+         }
       } catch (SecurityException securityException) {
          log("Determining internet address of localhost is disallowed by security manager. Not setting property \"" + _propertyName + "\".");
          return;

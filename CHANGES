@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 0.202:
     Deprecated the method with the old name.
   - Added size() method to PropertyReader interface and to all implementing
     classes.
+  - Added another way to find the hostname for the hostname task.
 
 * XINS/Java Client Framework:
   - CallException and all subclasses now take CallRequest, TargetDescriptor
