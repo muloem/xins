@@ -417,19 +417,22 @@ implements DefaultResultCodes {
 
       } catch (Throwable exception) {
 
+         String exceptionClass = exception.getClass().getName();
+         String exceptionMessage = exception.getMessage();
+
          // TODO: Allow customization of what exceptions are logged?
-         _log.error("Caught exception while calling API.", exception);
+         // TODO: Log stack trace (5013)
+         Log.log_5013(_name, callID, exceptionClass, exceptionMessage);
 
          // Create a set of parameters for the result
          BasicPropertyReader parameters = new BasicPropertyReader();
 
          // Add the exception class
-         parameters.set("_exception.class", exception.getClass().getName());
+         parameters.set("_exception.class", exceptionClass);
 
          // Add the exception message, if any
-         String message = exception.getMessage();
-         if (message != null && message.length() > 0) {
-            parameters.set("_exception.message", message);
+         if (exceptionMessage != null && exceptionMessage.length() > 0) {
+            parameters.set("_exception.message", exceptionMessage);
          }
 
          // Add the stack trace, if any
@@ -493,32 +496,13 @@ implements DefaultResultCodes {
       long duration = System.currentTimeMillis() - start;
       boolean debugEnabled = _log.isDebugEnabled();
       String message = null;
+
+      // Call succeeded
       if (success) {
-         if (debugEnabled) {
-            FastStringBuffer buffer = new FastStringBuffer(250);
-            if (session != null) {
-               buffer.append("Call ");
-               buffer.append(_name);
-               buffer.append(':');
-               buffer.append(callID);
-               buffer.append(" succeeded for session ");
-               buffer.append(session.toString());
-               buffer.append(". Duration: ");
-            } else {
-               buffer.append("Call ");
-               buffer.append(_name);
-               buffer.append(':');
-               buffer.append(callID);
-               buffer.append(" succeeded. Duration: ");
-            }
-            buffer.append(String.valueOf(duration));
-            buffer.append(" ms.");
-            if (code != null) {
-               buffer.append(" Code: \"");
-               buffer.append(code);
-               buffer.append("\".");
-            }
-            message = buffer.toString();
+         if (session == null) {
+            Log.log_5014(_name, callID, duration);
+         } else {
+            Log.log_5015(_name, callID, duration, session);
          }
 
          synchronized (_successfulCallLock) {
@@ -531,23 +515,13 @@ implements DefaultResultCodes {
             _successfulMinStart = (_successfulMin == duration) ? start : _successfulMinStart;
             _successfulMaxStart = (_successfulMax == duration) ? start : _successfulMaxStart;
          }
+
+      // Call failed
       } else {
-         if (debugEnabled) {
-            FastStringBuffer buffer = new FastStringBuffer(250);
-            buffer.clear();
-            buffer.append("Call ");
-            buffer.append(_name);
-            buffer.append(':');
-            buffer.append(callID);
-            buffer.append(" failed. Duration: ");
-            buffer.append(String.valueOf(duration));
-            buffer.append(" ms.");
-            if (code != null) {
-               buffer.append(" Code: \"");
-               buffer.append(code);
-               buffer.append("\".");
-            }
-            message = buffer.toString();
+         if (session == null) {
+            Log.log_5016(_name, callID, duration, code);
+         } else {
+            Log.log_5017(_name, callID, duration, code, session);
          }
 
          synchronized (_unsuccessfulCallLock) {
@@ -560,10 +534,6 @@ implements DefaultResultCodes {
             _unsuccessfulMinStart = (_unsuccessfulMin == duration) ? start : _unsuccessfulMinStart;
             _unsuccessfulMaxStart = (_unsuccessfulMax == duration) ? start : _unsuccessfulMaxStart;
          }
-      }
-
-      if (debugEnabled) {
-         _log.debug(message);
       }
    }
 
