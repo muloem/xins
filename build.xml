@@ -867,7 +867,7 @@ ${sf.file}</fail>
 			<include name="src/package-lists/**/*"         />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
-			<include name="lib/apache.LICENSE"    />
+			<include name="lib/apache.LICENSE"             />
 			<include name="lib/commons-httpclient.LICENSE" />
 			<include name="lib/commons-logging.LICENSE"    />
 			<include name="lib/jakarta-oro.LICENSE"        />
@@ -875,6 +875,8 @@ ${sf.file}</fail>
 			<include name="lib/xmlenc.LICENSE"             />
 			<include name="docs/*.html"                    />
 			<include name="docs/*.css"                     />
+			<include name="docs/protocol/*.html"           />
+			<include name="docs/protocol/*.css"            />
 			<include name="docs/javadoc/**/*.html"         />
 			<include name="docs/javadoc/*.css"             />
 			<include name="docs/logdoc/**/*.html"          />
@@ -910,6 +912,7 @@ ${sf.file}</fail>
 			mode="644">
 				<include name="build/*.jar"                    />
 				<include name="docs/XINSGuide.pdf"             />
+				<include name="docs/protocol/XINSProtocol.pdf" />
 				<include name="lib/commons-httpclient.jar"     />
 				<include name="lib/commons-logging.jar"        />
 				<include name="lib/jakarta-oro.jar"            />
