@@ -26,6 +26,7 @@ import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
+import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
@@ -44,6 +45,48 @@ import org.xins.logdoc.LogdocSerializable;
  * XINS service caller. This class can be used to perform a call to a XINS
  * service, over HTTP, and fail-over to other XINS services if the first one
  * fails.
+ *
+ * <h2>Load-balancing and fail-over</h2>
+ *
+ * <p>There are 2 ways to perform a XINS call:
+ *
+ * <ul>
+ *    <li>to a single XINS service, using
+ *        {@link #call(XINSCallRequest,TargetDescriptor)};
+ *    <li>to a set of one or more XINS services, using
+ *        {@link #call(XINSCallRequest)};
+ * </ul>
+ *
+ * <p>With the second form of a XINS call, fail-over and load-balancing can be
+ * performed.
+ *
+ * <p>How load-balancing is done depends on the {@link Descriptor}. If it is a
+ * {@link TargetDescriptor}, then only this single target service is called
+ * and no load-balancing is performed. If it is a {@link GroupDescriptor},
+ * then the configuration of the <code>GroupDescriptor</code> determines how
+ * the load-balancing is done. A <code>GroupDescriptor</code> is a recursive
+ * data structure, which allows for fairly advanced load-balancing algorithms.
+ *
+ * <p>If a call attempt fails and there are more available target services,
+ * then the <code>XINSServiceCaller</code> may or may not fail-over to a next
+ * target. If the request was not accepted by the target service, then
+ * fail-over is considered acceptable and will be performed. This includes
+ * the following situations:
+ *
+ * <ul>
+ *    <li>connection refusal;
+ *    <li>a connection time-out;
+ *    <li>an HTTP status code other than 200-299;
+ *    <li>the XINS error code <em>_InvalidRequest</em>;
+ *    <li>the XINS error code <em>_DisabledFunction</em>.
+ * </ul>
+ *
+ * <p>In other situations, like socket time-outs, total time-outs, other XINS
+ * error codes, fail-over is normally not considered acceptable. There is one
+ * exception, and that is when the call request explicitly allows fail-over in
+ * all situations. See {@link XINSCallRequest#isFailOverAllowed()}.
+ *
+ * <h2>Example code</h2>
  *
  * <p>The following example code snippet constructs a
  * <code>XINSServiceCaller</code> instance:
