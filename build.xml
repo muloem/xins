@@ -152,7 +152,9 @@
 		overwrite="true" />
 	</target>
 
-	<target name="javadoc" depends="-init" description="Generates Javadoc API documentation">
+	<target name="javadoc" depends="javadoc-public,javadoc-private" description="Generates all Javadoc API documentation" />
+
+	<target name="javadoc-public" depends="-init" description="Generates public Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="build/javadoc" />
