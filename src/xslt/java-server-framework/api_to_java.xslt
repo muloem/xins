@@ -178,11 +178,12 @@ public class APIImpl extends API {
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------</xsl:text>
+   //-------------------------------------------------------------------------
+
+   private final RuntimeProperties _runtimeProperties;</xsl:text>
+
 		<xsl:for-each select="instance">
 			<xsl:text>
-
-   private final RuntimeProperties _runtimeProperties;
 
    private final </xsl:text>
 			<xsl:value-of select="@class" />

@@ -419,7 +419,7 @@ APIs in this project are:
 						<xmlvalidate file="{$impl_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
-						<xsl:if test="document($impl_file)/impl/runtime-properties/property/description">
+						<xsl:if test="document($impl_file)/impl/runtime-properties">
 							<style
 							in="{$impl_file}"
 							out="{$project_home}/build/specdocs/{$api}/properties.html"
