@@ -414,20 +414,43 @@ implements Servlet {
 
          log.info("Bootstrapped " + apiName + " API.");
 
-         // Watch the configuration file
-         // TODO: Do this somewhere else?
-         FileWatcher.Listener listener = new ConfigurationFileListener();
-         int interval = 10; // TODO: Read from config file
-         FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
-         watcher.start(); // XXX: Start after API is initialized ?
-         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
-
 
          //----------------------------------------------------------------//
          //                      Initialize the API                        //
          //----------------------------------------------------------------//
 
          initAPI(runtimeProperties);
+
+
+         //----------------------------------------------------------------//
+         //                      Watch the config file                     //
+         //----------------------------------------------------------------//
+
+         // Get the runtime property
+         String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
+         int interval;
+
+         // If the property is set, parse it
+         if (s != null && s.length() >= 1) {
+            try {
+               interval = Integer.parseInt(s);
+               log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+            } catch (NumberFormatException nfe) {
+               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+               interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+            }
+
+         // Otherwise, if the property is not set, use the default
+         } else {
+            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+         }
+
+         // Create a file watch thread and start it
+         FileWatcher.Listener listener = new ConfigurationFileListener();
+         FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
+         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+         watcher.start();
       }
    }
 
@@ -713,9 +736,11 @@ implements Servlet {
       //----------------------------------------------------------------------
 
       public void fileModified() {
+         // TODO: Stop the file watch thread
          Library.INIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
          PropertyReader config = applyConfigFile(Library.INIT_LOG);
          initAPI(config);
+         // TODO: Start a new file watch thread with the new interval
          Library.INIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
 
