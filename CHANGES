@@ -11,6 +11,10 @@ CHANGES INTRODUCED IN XINS 0.152:
     . Changed the log level from DEBUG to INFO for succeeded authentications
     This bug has been in the code since the introduction of the
     LDAPServiceCaller class in XINS 0.115
+  - Added SimplePatternParser class.
+
+* XINS/Java Server Framework:
+  - Completed the IPFilter class. It is yet unused, however.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.151:
