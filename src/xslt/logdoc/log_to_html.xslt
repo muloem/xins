@@ -80,7 +80,7 @@
 						<th title="The log level for the message, ranging from DEBUG to FATAL">Level</th>
 						<th title="The logging category">Category</th>
 						<th title="Number of parameters the message accepts">Parameters</th>
-						<th title="Number of available translations for this message entry">Parameters</th>
+						<th title="Number of available translations for this message entry">Translations</th>
 					</tr>
 					<xsl:for-each select="entry">
 						<xsl:variable name="entry_link">
