@@ -235,6 +235,9 @@ public class FastStringWriter extends Writer {
     * Closes this writer. If this writer was already closed, then nothing
     * happens. After calling this method, the write and flush methods will
     * throw an {@link IOException} if called.
+    *
+    * <p>Calling this method on a <code>FastStringWriter</code> after use is
+    * really optional.
     */
    public void close() {
       _closed = true;
