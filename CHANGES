@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.50:
+
+* Added ResponseValidator to XINS/Java Server Framework.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.49:
 
 * Fixed bug in link to pattern test form (for pattern types).
