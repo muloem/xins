@@ -1061,14 +1061,14 @@
 							<br />
 							<xsl:text>View differences between this version and the frozen version:</xsl:text>
 							<br />
-							<a href="${cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}">
+							<a href="{$cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}">
 								<xsl:text>diff </xsl:text>
 								<xsl:value-of select="$frozen_version" />
 								<xsl:text> and </xsl:text>
 								<xsl:value-of select="$version" />
 							</a>
 							<xsl:text> (</xsl:text>
-							<a href="${cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}&amp;f=h">
+							<a href="{$cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}&amp;f=h">
 								<xsl:text>colored</xsl:text>
 							</a>
 							<xsl:text>)</xsl:text>
