@@ -76,7 +76,54 @@
 		</entry>
 	</group>
 
-	<group id="http" name="HTTP-related" />
+	<group id="http" name="HTTP-related">
+                <entry id="2011" level="INFO">
+                        <description>Calling HTTP service.</description>
+                        <param name="url"               type="text"  nullable="false" />
+                        <param name="totalTimeOut"      type="int32" nullable="false" />
+                        <param name="connectionTimeOut" type="int32" nullable="false" />
+                        <param name="socketTimeOut"     type="int32" nullable="false" />
+                </entry>
+                <entry id="2012" level="NOTICE">
+                        <description>Connection refused while calling HTTP service.</description>
+                        <param name="url" type="text" nullable="false" />
+                </entry>
+                <entry id="2013" level="NOTICE">
+                        <description>Connection time-out while calling HTTP service.</description>
+                        <param name="url"     type="text"  nullable="false" />
+                        <param name="timeOut" type="int32" nullable="false" />
+                </entry>
+                <entry id="2014" level="NOTICE">
+                        <description>Socket time-out while calling HTTP service.</description>
+                        <param name="url"     type="text"  nullable="false" />
+                        <param name="timeOut" type="int32" nullable="false" />
+                </entry>
+                <entry id="2015" level="NOTICE">
+                        <description>Total call time-out while calling HTTP service.</description>
+                        <param name="url"     type="text"  nullable="false" />
+                        <param name="timeOut" type="int32" nullable="false" />
+                </entry>
+                <entry id="2016" level="INFO">
+                        <description>HTTP result received, status code is considered acceptable.</description>
+			<!-- TODO: Check translation for this one -->
+                        <param name="url"  type="text"  nullable="false" />
+                        <param name="code" type="int32" nullable="false" />
+                </entry>
+                <entry id="2099" level="INFO">
+                        <description>HTTP result received, status code is considered unacceptable.</description>
+			<!-- TODO: Add translation for this one -->
+                        <param name="url"  type="text"  nullable="false" />
+                        <param name="code" type="int32" nullable="false" />
+                </entry>
+                <entry id="2017" level="NOTICE" exception="true">
+                        <description>Unrecognized I/O error while calling HTTP service.</description>
+                        <param name="url" type="text"  nullable="false" />
+                </entry>
+                <entry id="2018" level="NOTICE" exception="true">
+                        <description>Unexpected exception while calling HTTP service.</description>
+                        <param name="url" type="text"  nullable="false" />
+                </entry>
+	</group>
 
 	<group id="io" name="General I/O">
 		<entry id="3200" level="INFO">
