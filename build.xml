@@ -517,8 +517,8 @@
 		<condition property="diff-contents-empty">
 			<equals arg1="${diff-contents}" arg2="" />
 		</condition>
+		<fail unless="diff-contents-empty" message="There are differences with the CVS repository (result of 'cvs diff' is non-empty). See: ${diff-file}" />
 		<delete file="${diff-file}" />
-		<fail unless="diff-contents-empty" message="There are differences with the CVS repository (result of 'cvs diff' is non-empty)." />
 	</target>
 
 	<target
