@@ -373,7 +373,7 @@ implements DefaultResultCodes {
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(request, start, this, callID);
+      CallContext context = new CallContext(request, start, this, callID, session);
 
       CallResult result;
       try {
