@@ -224,10 +224,11 @@ extends HttpServlet {
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
-      _stateLock          = new Object();
-      _state              = INITIAL;
-      _configFileListener = new ConfigurationFileListener();
-      _random             = new Random();
+      _stateLock             = new Object();
+      _state                 = INITIAL;
+      _configFileListener    = new ConfigurationFileListener();
+      _random                = new Random();
+      _runtimePropertiesLock = new Object();
    }
 
 
@@ -264,19 +265,29 @@ extends HttpServlet {
    private ServletConfig _servletConfig;
 
    /**
-    * The name of the configuration file.
+    * The name of the runtime configuration file.
     */
    private String _configFile;
+
+   /**
+    * Runtime configuration file watcher.
+    */
+   private FileWatcher _configFileWatcher;
+
+   /**
+    * The properties read from the runtime configuration file.
+    */
+   private Object _runtimePropertiesLock;
+
+   /**
+    * The properties read from the runtime configuration file.
+    */
+   private PropertyReader _runtimeProperties;
 
    /**
     * The API that this servlet forwards requests to.
     */
    private API _api;
-
-   /**
-    * Configuration file watcher.
-    */
-   private FileWatcher _configFileWatcher;
 
 
    //-------------------------------------------------------------------------
@@ -345,16 +356,13 @@ extends HttpServlet {
     * Determines the interval for checking the runtime properties file for
     * modifications.
     *
-    * @param properties
-    *    the runtime properties to read from, should not be <code>null</code>.
-    *
     * @return
     *    the interval to use, always &gt;= 1.
     */
-   private int determineConfigReloadInterval(PropertyReader properties) {
+   private int determineConfigReloadInterval() {
 
       // Get the runtime property
-      String s = properties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
+      String s = _runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
       int interval = -1;
 
       // If the property is set, parse it
@@ -513,7 +521,7 @@ extends HttpServlet {
          }
 
          // Initialize the logging subsystem
-         PropertyReader runtimeProperties = readRuntimeProperties();
+         readRuntimeProperties();
 
 
          //----------------------------------------------------------------//
@@ -584,34 +592,49 @@ extends HttpServlet {
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
             succeeded = true;
+
+         // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_1209(exception.getPropertyName());
+
+         // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_1210(exception.getPropertyName(), exception.getPropertyValue());
+
+         // TODO: Review the catching of BootstrapException and Throwable.
+         //       Perhaps they should be treated in the same manner.
+
+         // Other bootstrap error
          } catch (BootstrapException exception) {
             Log.log_1211(exception.getMessage());
+
+         // Unknown type of error
          } catch (Throwable exception) {
             Log.log_1212(exception);
-         } finally {
-            if (!succeeded) {
-               setState(API_BOOTSTRAP_FAILED);
-               throw new ServletException();
-            }
          }
+
+         // Throw a ServletException if the bootstrap failed
+         if (!succeeded) {
+            setState(API_BOOTSTRAP_FAILED);
+            throw new ServletException();
+         }
+
+         // Make the API have a link to this APIServlet
+         _api.setAPIServlet(this);
 
 
          //----------------------------------------------------------------//
          //                      Initialize the API                        //
          //----------------------------------------------------------------//
 
-         initAPI(runtimeProperties);
+         initAPI();
 
 
          //----------------------------------------------------------------//
          //                      Watch the config file                     //
          //----------------------------------------------------------------//
 
-         int interval = determineConfigReloadInterval(runtimeProperties);
+         int interval = determineConfigReloadInterval();
 
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
@@ -621,35 +644,35 @@ extends HttpServlet {
    }
 
    /**
-    * Initializes the API using the specified runtime settings.
-    *
-    * @param runtimeProperties
-    *    the runtime settings, guaranteed not to be <code>null</code>.
+    * Initializes the API using the current runtime settings.
     */
-   private void initAPI(PropertyReader runtimeProperties) {
+   void initAPI() {
 
       setState(INITIALIZING_API);
 
-      boolean succeeded = false;
-      try {
-         _api.init(runtimeProperties);
-         succeeded = true;
-      } catch (MissingRequiredPropertyException exception) {
-         Log.log_1413(exception.getPropertyName());
-      } catch (InvalidPropertyValueException exception) {
-         Log.log_1414(exception.getPropertyName(), exception.getPropertyValue());
-      } catch (InitializationException exception) {
-         Log.log_1415(exception.getMessage());
-      } catch (Throwable exception) {
-         Log.log_1416(exception);
-      } finally {
+      synchronized (_runtimePropertiesLock) {
 
-         if (succeeded) {
-            setState(READY);
-            Log.log_1418();
-         } else {
-            setState(API_INITIALIZATION_FAILED);
-            return;
+         boolean succeeded = false;
+         try {
+            _api.init(_runtimeProperties);
+            succeeded = true;
+         } catch (MissingRequiredPropertyException exception) {
+            Log.log_1413(exception.getPropertyName());
+         } catch (InvalidPropertyValueException exception) {
+            Log.log_1414(exception.getPropertyName(), exception.getPropertyValue());
+         } catch (InitializationException exception) {
+            Log.log_1415(exception.getMessage());
+         } catch (Throwable exception) {
+            Log.log_1416(exception);
+         } finally {
+
+            if (succeeded) {
+               setState(READY);
+               Log.log_1418();
+            } else {
+               setState(API_INITIALIZATION_FAILED);
+               return;
+            }
          }
       }
    }
@@ -663,64 +686,67 @@ extends HttpServlet {
     * @return
     *    the properties read from the config file, never <code>null</code>.
     */
-   private PropertyReader readRuntimeProperties() {
+   private void readRuntimeProperties() {
 
       Log.log_1300();
 
-      Properties properties = new Properties();
-      try {
+      synchronized (_runtimePropertiesLock) {
 
-         // Open the file
-         FileInputStream in = new FileInputStream(_configFile);
+         Properties properties = new Properties();
+         try {
 
-         // Load the properties
-         properties.load(in);
+            // Open the file
+            FileInputStream in = new FileInputStream(_configFile);
 
-         // Close the file
-         in.close();
-      } catch (FileNotFoundException exception) {
-         Log.log_1301(exception, _configFile);
-      } catch (SecurityException exception) {
-         Log.log_1302(exception, _configFile);
-      } catch (IOException exception) {
-         Log.log_1303(exception, _configFile);
-      }
+            // Load the properties
+            properties.load(in);
 
-      // TODO: Should we reset the logging subsystem if the Log4J
-      // TODO  properties have been removed from the xins.properties file?
-      // TODO  Determine the current behaviour and make a decision.
+            // Close the file
+            in.close();
+         } catch (FileNotFoundException exception) {
+            Log.log_1301(exception, _configFile);
+         } catch (SecurityException exception) {
+            Log.log_1302(exception, _configFile);
+         } catch (IOException exception) {
+            Log.log_1303(exception, _configFile);
+         }
+
+         // TODO: Should we reset the logging subsystem if the Log4J
+         //       properties have been removed from the xins.properties file?
+         //       Determine the current behaviour and make a decision.
 
 
-      // Attempt to configure Log4J
-      PropertyConfigurator.configure(properties);
+         // Attempt to configure Log4J
+         PropertyConfigurator.configure(properties);
 
-      // Determine if Log4J is properly initialized
-      Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
-      if (appenders instanceof NullEnumeration) {
-         Log.log_1304(_configFile);
-         configureLoggerFallback();
-      } else {
-         Log.log_1305();
-      }
+         // Determine if Log4J is properly initialized
+         Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+         if (appenders instanceof NullEnumeration) {
+            Log.log_1304(_configFile);
+            configureLoggerFallback();
+         } else {
+            Log.log_1305();
+         }
 
-      // Determine the log locale
-      String newLocale = properties.getProperty(LOG_LOCALE_PROPERTY);
+         // Determine the log locale
+         String newLocale = properties.getProperty(LOG_LOCALE_PROPERTY);
 
-      // If the log locale is set, apply it
-      if (newLocale != null) {
-         String currentLocale = Log.getTranslationBundle().getName();
-         if (!currentLocale.equals(newLocale)) {
-            Log.log_1306(currentLocale, newLocale);
-            try {
-               LogCentral.setLocale(newLocale);
-               Log.log_1307(currentLocale, newLocale);
-            } catch (UnsupportedLocaleException exception) {
-               Log.log_1308(currentLocale, newLocale);
+         // If the log locale is set, apply it
+         if (newLocale != null) {
+            String currentLocale = Log.getTranslationBundle().getName();
+            if (!currentLocale.equals(newLocale)) {
+               Log.log_1306(currentLocale, newLocale);
+               try {
+                  LogCentral.setLocale(newLocale);
+                  Log.log_1307(currentLocale, newLocale);
+               } catch (UnsupportedLocaleException exception) {
+                  Log.log_1308(currentLocale, newLocale);
+               }
             }
          }
-      }
 
-      return new PropertiesPropertyReader(properties);
+         _runtimeProperties = new PropertiesPropertyReader(properties);
+      }
    }
 
    /**
@@ -886,6 +912,8 @@ extends HttpServlet {
     */
    public void destroy() {
 
+      // TODO: Stop the FileWatcher
+
       Log.log_1600();
 
       // Set the state temporarily to DISPOSING
@@ -1014,21 +1042,24 @@ extends HttpServlet {
 
          Log.log_1407(_configFile);
 
-         // Apply the new runtime settings to the logging subsystem
-         PropertyReader runtimeProperties = readRuntimeProperties();
+         synchronized (_runtimePropertiesLock) {
 
-         // Determine the interval
-         int newInterval = determineConfigReloadInterval(runtimeProperties);
+            // Apply the new runtime settings to the logging subsystem
+            readRuntimeProperties();
 
-         // Update the file watch interval
-         int oldInterval = _configFileWatcher.getInterval();
-         if (oldInterval != newInterval) {
-            _configFileWatcher.setInterval(newInterval);
-            Log.log_1403(_configFile, oldInterval, newInterval);
+            // Determine the interval
+            int newInterval = determineConfigReloadInterval();
+
+            // Update the file watch interval
+            int oldInterval = _configFileWatcher.getInterval();
+            if (oldInterval != newInterval) {
+               _configFileWatcher.setInterval(newInterval);
+               Log.log_1403(_configFile, oldInterval, newInterval);
+            }
+
+            // Re-initialize the API
+            initAPI();
          }
-
-         // Re-initialize the API
-         initAPI(runtimeProperties);
       }
 
       public void fileNotFound() {

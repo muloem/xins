@@ -100,6 +100,11 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
+    * The API servlet that owns this <code>API</code> object.
+    */
+   private APIServlet _apiServlet;
+
+   /**
     * The name of this API. Cannot be <code>null</code> and cannot be an empty
     * string.
     */
@@ -356,6 +361,26 @@ implements DefaultResultCodes {
           InvalidPropertyValueException,
           BootstrapException {
       // empty
+   }
+
+   /**
+    * Stores a reference to the <code>APIServlet</code> object that owns this
+    * <code>API</code> object.
+    *
+    * @param apiServlet
+    *    the {@link APIServlet} instance, should not be <code>null</code>.
+    */
+   void setAPIServlet(APIServlet apiServlet) {
+      _apiServlet = apiServlet;
+   }
+
+   /**
+    * Triggers re-initialization of this API. This method is meant to be
+    * called by API function implementations when it is anticipated that the
+    * API should be re-initialized.
+    */
+   protected final void reinitialize() {
+      _apiServlet.initAPI();
    }
 
    /**
