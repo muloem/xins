@@ -30,19 +30,7 @@ import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 
 /**
- * XINS call result parser. XML is parsed to produce a 
- * {@link org.xins.client.XINSCallResult} object.
- *
- * <p>The root element in the XML must be of type <code>result</code>. Inside
- * this element, <code>param</code> elements optionally define parameters and
- * an optional <code>data</code> element defines a data section.
- *
- * <p>If the result element contains an <code>errorcode</code> or a
- * <code>code</code> attribute, then the value of the attribute is interpreted
- * as the error code. If both these attributes are set and conflicting, then
- * this is considered a showstopper.
- *
- * <p>TODO: Describe rest of parse process.
+ * XML element parser. XML is parsed to produce {@link Element} objects.
  *
  * <p>Note: This parser is
  * <a href="http://www.w3.org/TR/REC-xml-names/">XML Namespaces</a>-aware.
