@@ -92,11 +92,11 @@ public final class CallExceptionList extends Object {
     *    the number of {@link CallException}s, always &gt;= 0.
     */
    public int size() {
-      return _exceptions.size();
+      return (_exceptions == null) ? 0 : _exceptions.size();
    }
 
    /**
-    * Retrieves an element by index.
+    * Retrieves a <code>CallException</code> by index.
     *
     * @param index
     *    the element index, must be &gt;= 0 and &lt; {@link #size()}.
@@ -111,5 +111,22 @@ public final class CallExceptionList extends Object {
    public CallException get(int index)
    throws IndexOutOfBoundsException {
       return (CallException) _exceptions.get(index);
+   }
+
+   /**
+    * Retrieves the last (most recent) <code>CallException</code>.
+    *
+    * @return
+    *    the {@link CallException} element at the highest index, or
+    *    <code>null</code> if this list is empty.
+    *
+    * @since XINS 1.1.0
+    */
+   public CallException last() {
+      if (size() == 0) {
+         return null;
+      } else {
+         return get(size() - 1);
+      }
    }
 }
