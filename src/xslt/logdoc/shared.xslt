@@ -23,6 +23,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:if test="@name = 'exception'">
+			<xsl:message terminate="yes">Parameter cannot be called 'exception'.</xsl:message>
+		</xsl:if>
 		<xsl:if test="position() &gt; 1">, </xsl:if>
 		<xsl:choose>
 			<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
