@@ -5,6 +5,12 @@ CHANGES INTRODUCED IN XINS 0.98:
   - Statistics collection for functions: Creating a new FastStringBuffer every
     time, not synchronizing on shared buffers anymore. Used to have one
     FastStringBuffer for successful, and one for unsuccessful calls.
+  - Recreating CallContext object each time, not caching per thread.
+  - Added property for en-/disabling response validation. Default is now
+    disabled. To enable it, add the following to the <impl-java> section in
+    api.xml:
+
+    <param name="org.xins.server.api.responseValidation">true</param>
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.97:
