@@ -56,6 +56,7 @@
 		<xsl:text>;
 
 import org.xins.types.EnumItem;
+import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -182,22 +183,29 @@ public final class ]]></xsl:text>
     *
     * @param value
     *    the value for which to lookup the matching {@link Item} instance,
-    *    cannot be <code>null</code>.
+    *    can be <code>null</code>, in which case <code>null</code> is also
+    *    returned.
     *
     * @return
-    *    the matching {@link Item} instance, or <code>null</code> if there is
-    *    none.
-    *
-    * @throws IllegalArgumentException
+    *    the matching {@link Item} instance, or <code>null</code> if and only
     *    if <code>value == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value does not denote an existing item.
     */
    public Item getItemByValue(String value)
-   throws IllegalArgumentException {
+   throws TypeValueException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("value", value);
-
-      return (Item) _valuesToItems.get(value);
+      if (value != null) {
+         Object o = _valuesToItems.get(value);
+         if (o != null) {
+            return (Item) o;
+         } else {
+            throw new TypeValueException(this, value);
+         }
+      } else {
+         return null;
+      }
    }
 
 
