@@ -248,6 +248,7 @@ implements DefaultResultCodes {
       // Forward the call
       boolean exceptionThrown = true;
       boolean success;
+      // TODO: Use ResultCode here, instead of String
       String code;
       try {
          handleCall(context);
@@ -258,7 +259,7 @@ implements DefaultResultCodes {
          _log.error("Caught exception while calling API.", exception);
 
          success = false;
-         code    = INTERNAL_ERROR;
+         code    = INTERNAL_ERROR.getValue();
 
          XMLOutputter xmlOutputter = context.getXMLOutputter();
          xmlOutputter.reset(out, "UTF-8");
