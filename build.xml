@@ -299,8 +299,8 @@
 				<include name="xins-common.jar" />
 				<include name="xins-client.jar" />
 				<include name="xins-server.jar" />
-				<mapper type="glob" from="xins-*.jar" to="xins-*-${version}.jar" />
 			</fileset>
+			<mapper type="glob" from="xins-*.jar" to="xins-*-${version}.jar" />
 		</copy>
 		<scp todir="${www.target}"
 		     password="${sf.password}" trust="true">
