@@ -14,6 +14,8 @@ import org.xins.util.MandatoryArgumentChecker;
 public class TypeSpec
 extends VersionedSpec {
 
+   // TODO: Make this class abstract
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
