@@ -439,6 +439,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @throws HTTPCallException
     *    if the first call attempt failed due to an HTTP-related reason and
     *    all the other call attempts failed as well.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0, since this method is expected to be
+    *    removed. Please do not use it directly.
     */
    public HTTPCallResult call(HTTPCallRequest  request,
                               TargetDescriptor target)
@@ -551,12 +555,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Status code is considered unacceptable
       } else {
+         Log.log_1108(url, params, duration, code);
+
          // TODO: Pass down body as well. Perhaps just pass down complete
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
-
-         Log.log_1108(url, params, duration, code);
-
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
 
