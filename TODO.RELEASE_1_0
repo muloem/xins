@@ -23,6 +23,7 @@ Improve service framework in org.xins.common.service:
 [x] Add UnexpectedExceptionCallException (final, extends GenericCallException)
 [x] Add IOCallException (final, extends GenericCallException)
 [x] Change ServiceCaller to use CallRequest and CallException
+[ ] Make CallResult class abstract (research if this is wise)
 
 Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
@@ -49,6 +50,8 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Change example in HTTPServiceCaller to match new interface
 [ ] Log all events properly
 [x] Move classes in org.xins.common.service.http to org.xins.common.http.
+[ ] Store information from CallResult in HTTPCallResult
+[ ] Make HTTPCallResult extend CallResult (research if this is wise)
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
@@ -81,6 +84,8 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Check the parameters in XINSCallRequest constructor.
 [ ] Add example in XINSServiceCaller class comments
 [ ] Log all events properly
+[ ] Store information from CallResult in XINSCallResult
+[ ] Make XINSCallResult extend CallResult (research if this is wise)
 
 Adapt CAPI generation:
 [x] Build upon new XINS/Java Client Framework
