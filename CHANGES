@@ -31,11 +31,14 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
     documents. Had to add a new version of the DTD for this.
 
 * XINS/Java Common Library:
+  - Fixed SF.net bug #1089602: Message for programming error in Perl5Matcher
+    incorrect.
   - The diagnostic context identifier is removed after being poped
     otherwise the thread stays in memory.
   - Reset some variables after the HTTP call, so that the variables can be
     garbage collected.
-  - Improved log entries 1050, 1051 and 1052.
+  - Improved log entries 1050, 1051 and 1052. Including much more information
+    for the reporting programming errors and unexpected exceptions.
   - Added Utils class.
 
 * XINS/Java Client Framework:
@@ -74,12 +77,13 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 
 * XINS/Java Common Library:
+  - Fixed SF.net bug #1065083: No fatal errors at init for malformed URLs.
+  - Fixed SF.net bug #1079069. The first line of the class description was:
+    "Abstractgion of a manageanble object". Fixed those 2 typos.
   - Changed some classes to throw a ProgrammingError instead of an Error, if
     appropriate.
   - Extended tests in ServiceCaller class to make sure the implementation is
     implementing the correct methods.
-  - Fixed SF.net bug #1079069. The first line of the class description was:
-    "Abstractgion of a manageanble object". Fixed those 2 typos.
   - Moved some unit tests for org.xins.common packages from
     org.xins.tests.common.util to org.xins.tests.common.
   - Extended test set for class TargetDescriptor.
