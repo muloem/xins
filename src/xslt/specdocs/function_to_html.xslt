@@ -369,6 +369,7 @@
 			<xsl:choose>
 
 				<!-- No result code -->
+				<!-- TODO: Silently expect success -->
 				<xsl:when test="string-length($resultcode) &lt; 1">
 					<xsl:if test="not(boolean(@success))">
 						<xsl:message terminate="yes">
@@ -781,7 +782,6 @@
 		<table class="resultcodes">
 			<tr>
 				<th>Name</th>
-				<th>Success</th>
 				<th>Description</th>
 			</tr>
 			<xsl:call-template name="default_resultcodes" />
@@ -801,9 +801,6 @@
 						<a href="{$code}.html">
 							<xsl:value-of select="$code" />
 						</a>
-					</td>
-					<td>
-						<xsl:value-of select="@success" />
 					</td>
 					<td class="description">
 						<xsl:apply-templates select="description" />
@@ -847,7 +844,6 @@
 					<xsl:value-of select="$value" />
 				</span>
 			</td>
-			<td>false</td>
 			<td class="description">
 				<xsl:value-of select="$description" />
 			</td>
@@ -855,20 +851,9 @@
 	</xsl:template>
 
 	<xsl:template match="resultcode">
-		<xsl:if test="not(boolean(@success))">
-			<!-- TODO: Let this check terminate -->
-			<xsl:message>
-				<xsl:text>It is not indicated if the result code '</xsl:text>
-				<xsl:value-of select="@value" />
-				<xsl:text>' indicates success or not.</xsl:text>
-			</xsl:message>
-		</xsl:if>
 		<tr>
 			<td class="value">
 				<xsl:value-of select="@value" />
-			</td>
-			<td>
-				<xsl:value-of select="@success" />
 			</td>
 			<td class="description">
 				<xsl:apply-templates select="description" />
