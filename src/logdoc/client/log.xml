@@ -186,5 +186,10 @@
 			<description>Unable to convert the specified character string to XML.</description>
 			<param name="detail" type="text" nullable="true" />
 		</entry>
+		<entry id="2207" level="ERROR">
+			<description>Found conflicting duplicate value for error code.</description>
+			<param name="code1" type="text" nullable="false" />
+			<param name="code2" type="text" nullable="false" />
+		</entry>
 	</group>
 </log>
