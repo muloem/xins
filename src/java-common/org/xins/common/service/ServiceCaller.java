@@ -443,6 +443,39 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Asserts that the specified target descriptor is considered acceptable
+    * for this service caller. If not, an exception is thrown.
+    *
+    * @param target
+    *    the {@link TargetDescriptor} to test, should not be
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if the protocol in the target descriptor is unsupported.
+    *
+    * @since XINS 1.2.0
+    */
+   public final void testTargetDescriptor(TargetDescriptor target)
+   throws IllegalArgumentException, UnsupportedProtocolException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target", target);
+
+      String protocol = target.getProtocol();
+      boolean supported;
+      try {
+         if (! isProtocolSupported(target.getProtocol())) {
+            throw new UnsupportedProtocolException(target);
+         }
+      } catch (UnsupportedOperationException exception) {
+         // ignore
+      }
+   }
+
+   /**
     * Checks if the specified protocol is supported (wrapper method). The
     * protocol is the part in a URL before the string <code>"://"</code>).
     *
@@ -539,16 +572,7 @@ public abstract class ServiceCaller extends Object {
       if (descriptor != null) {
          Iterator targets = descriptor.iterateTargets();
          while (targets.hasNext()) {
-            TargetDescriptor td = (TargetDescriptor) targets.next();
-            String protocol = td.getProtocol();
-            boolean supported;
-            try {
-               if (! isProtocolSupported(td.getProtocol())) {
-                  throw new UnsupportedProtocolException(td);
-               }
-            } catch (UnsupportedOperationException exception) {
-               // ignore
-            }
+            testTargetDescriptor((TargetDescriptor) targets.next());
          }
       }
 
