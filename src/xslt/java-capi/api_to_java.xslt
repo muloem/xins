@@ -139,6 +139,8 @@ public final class API extends Object {
    // Methods
    //-------------------------------------------------------------------------]]></xsl:text>
 
+		<!-- Loop through all <function/> elements within the <api/> element
+		     and process the corresponding .fnc function definition files. -->
 		<xsl:for-each select="function">
 			<xsl:variable name="functionName" select="@name" />
 			<xsl:variable name="functionFile">
@@ -233,13 +235,20 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 	<xsl:template match="function">
 		<xsl:param name="name" />
 
+		<!-- Determine the name of the method in the API class that will call
+		     this function. -->
 		<xsl:variable name="methodName">
 			<xsl:text>call</xsl:text>
 			<xsl:value-of select="$name" />
 		</xsl:variable>
+
+		<!-- Determine if this function is session-based. -->
 		<xsl:variable name="sessionBased">
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
+
+		<!-- Determine the return type of the method, either a Java primary
+		     data type or a Java class name. -->
 		<xsl:variable name="returnType">
 			<xsl:choose>
 				<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
@@ -263,6 +272,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				<xsl:otherwise>void</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+
 		<xsl:text><![CDATA[
 
    /**
