@@ -1,4 +1,16 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.115:
+
+* Added Jakarta Commons HttpClient JAR file (commons-httpclient.jar) to
+  dependencies (compile- and runtime).
+
+* XINS/Java Common Library:
+  - Added class NonASCIIException to class org.xins.util.text.
+  - Added decode(String) method to org.xins.util.net.URLEncoding.
+  - Moved service descriptor classes from package org.xins.util.sd to package
+    org.xins.util.service.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.114:
 
 * XINS/Java Server Framework:
