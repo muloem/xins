@@ -20,10 +20,14 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.1.0
  */
 public interface CallingConvention {
+
+   // TODO: Why is this interface public?
+   // TODO: Why is this an interface and not an abstract class?
    
    /**
     * Converts an HTTP request to a XINS request.
@@ -42,6 +46,7 @@ public interface CallingConvention {
     */
    FunctionRequest getFunctionRequest(HttpServletRequest request)
    throws IllegalArgumentException, ParseException;
+   // TODO: Rename method
    // TODO: Distinguish situation where function is not specified
    // TODO: Replace ParseException with more appropriate exception
    
@@ -60,6 +65,7 @@ public interface CallingConvention {
     */
    void handleResult(HttpServletResponse response, FunctionResult result)
    throws IOException;
+   // TODO: Rename method
    // TODO: Inverse the order of the arguments
    // TODO: Improve the naming of the arguments
    // TODO: Replace IOException with more appropriate exception

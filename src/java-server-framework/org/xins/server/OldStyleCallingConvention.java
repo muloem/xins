@@ -105,6 +105,7 @@ implements CallingConvention {
          if (nextValue != null && nextValue.charAt(0) != '_' && nextName.length() > 0) {
             functionParams.set(SECRET_KEY, nextName, nextValue);
          }
+         // TODO: Decide: Just ignore invalid parameter names?
       }
       return new FunctionRequest(functionName, functionParams, null);
    }
