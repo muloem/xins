@@ -29,25 +29,14 @@ import org.xins.util.collections.ProtectedPropertyReader;
  *    <tr>
  *       <th></th>
  *       <th><acronym title="BEFORE_START">S0</acronym></th>
- *       <th><acronym title="XSLT_SET">S1</acronym></th>
- *       <th><acronym title="WITHIN_PARAMS">S2</acronym></th>
- *       <th><acronym title="START_TAG_OPEN">S3</acronym></th>
- *       <th><acronym title="WITHIN_ELEMENT">S4</acronym></th>
- *       <th><acronym title="AFTER_END">S5</acronym></th>
- *    </tr>
- *    <tr>
- *       <th>{@link #setXSLT(String)}</th>
- *       <td><acronym title="XSLT_SET">S1</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <th><acronym title="WITHIN_PARAMS">S1</acronym></th>
+ *       <th><acronym title="START_TAG_OPEN">S2</acronym></th>
+ *       <th><acronym title="WITHIN_ELEMENT">S3</acronym></th>
+ *       <th><acronym title="AFTER_END">S4</acronym></th>
  *    </tr>
  *    <tr>
  *       <th>{@link #startResponse(boolean,String)}</th>
- *       <td><acronym title="WITHIN_PARAMS">S2</acronym></td>
- *       <td><acronym title="WITHIN_PARAMS">S2</acronym></td>
+ *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -55,28 +44,25 @@ import org.xins.util.collections.ProtectedPropertyReader;
  *    </tr>
  *    <tr>
  *       <th>{@link #param(String,String)}</th>
- *       <td><acronym title="WITHIN_PARAMS">S2</acronym></td>
- *       <td><acronym title="WITHIN_PARAMS">S2</acronym></td>
- *       <td class="nochange"><acronym title="WITHIN_PARAMS">S2</acronym></td>
+ *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
+ *       <td class="nochange"><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
  *    <tr>
  *       <th>{@link #startTag(String)}</th>
- *       <td><acronym title="START_TAG_OPEN">S3</acronym></td>
- *       <td><acronym title="START_TAG_OPEN">S3</acronym></td>
- *       <td><acronym title="START_TAG_OPEN">S3</acronym></td>
- *       <td class="nochange"><acronym title="START_TAG_OPEN">S3</acronym></td>
- *       <td><acronym title="START_TAG_OPEN">S3</acronym></td>
+ *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
+ *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
+ *       <td class="nochange"><acronym title="START_TAG_OPEN">S2</acronym></td>
+ *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
  *    <tr>
  *       <th>{@link #attribute(String,String)}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="nochange"><acronym title="START_TAG_OPEN">S3</acronym></td>
+ *       <td class="nochange"><acronym title="START_TAG_OPEN">S2</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
@@ -84,27 +70,24 @@ import org.xins.util.collections.ProtectedPropertyReader;
  *       <th>{@link #pcdata(String)}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td><acronym title="WITHIN_ELEMENT">S4</acronym></td>
- *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S4</acronym></td>
+ *       <td><acronym title="WITHIN_ELEMENT">S3</acronym></td>
+ *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S3</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
  *    <tr>
  *       <th>{@link #endTag()}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *       <td><acronym title="WITHIN_ELEMENT">S4</acronym></acronym></td>
- *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S4</acronym></td>
+ *       <td><acronym title="WITHIN_ELEMENT">S3</acronym></acronym></td>
+ *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S3</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
  *    <tr>
  *       <th>{@link #endResponse()}</th>
- *       <td><acronym title="AFTER_END">S5</acronym></td>
- *       <td><acronym title="AFTER_END">S5</acronym></td>
- *       <td><acronym title="AFTER_END">S5</acronym></td>
- *       <td><acronym title="AFTER_END">S5</acronym></td>
- *       <td><acronym title="AFTER_END">S5</acronym></td>
+ *       <td><acronym title="AFTER_END">S4</acronym></td>
+ *       <td><acronym title="AFTER_END">S4</acronym></td>
+ *       <td><acronym title="AFTER_END">S4</acronym></td>
+ *       <td><acronym title="AFTER_END">S4</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
  * </table>
@@ -113,11 +96,10 @@ import org.xins.util.collections.ProtectedPropertyReader;
  *
  * <ul>
  *    <li>S0: BEFORE_START</li>
- *    <li>S1: XSLT_SET</li>
- *    <li>S2: WITHIN_PARAMS</li>
- *    <li>S3: START_TAG_OPEN</li>
- *    <li>S4: WITHIN_ELEMENT</li>
- *    <li>S5: AFTER_END</li>
+ *    <li>S1: WITHIN_PARAMS</li>
+ *    <li>S2: START_TAG_OPEN</li>
+ *    <li>S3: WITHIN_ELEMENT</li>
+ *    <li>S4: AFTER_END</li>
  * </ul>
  *
  * @version $Revision$ $Date$
@@ -125,7 +107,7 @@ import org.xins.util.collections.ProtectedPropertyReader;
  *
  * @since XINS 0.119
  */
-final class CallResultBuilder extends Object {
+final class CallResultBuilder extends Object implements CallResult {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -141,12 +123,6 @@ final class CallResultBuilder extends Object {
     * Constant identifying the initial state.
     */
    private static final State BEFORE_START = new State("BEFORE_START");
-
-   /**
-    * Constant identifying the state in which the XSLT to link to has been
-    * set.
-    */
-   private static final State XSLT_SET = new State("XSLT_SET");
 
    /**
     * Constant identifying the state in which parameters values can be set.
@@ -184,7 +160,8 @@ final class CallResultBuilder extends Object {
     * Constructs a new <code>CallResultBuilder</code> object.
     */
    CallResultBuilder() {
-      // empty
+      _state = BEFORE_START;
+      _success = true;
    }
 
 
@@ -196,11 +173,6 @@ final class CallResultBuilder extends Object {
     * Current state.
     */
    private State _state;
-
-   /**
-    * The URL of the XSLT to link to.
-    */
-   private String _xslt;
 
    /**
     * Success indication.
@@ -248,28 +220,6 @@ final class CallResultBuilder extends Object {
    }
 
    /**
-    * Sets the XSLT to link to. The state needs to be {@link #BEFORE_START}.
-    * Calling this method changes the state to {@link #XSLT_SET}.
-    *
-    * @param url
-    *    the URL of the XSLT to link to, or <code>null</code> if none.
-    *
-    * @throws IllegalStateException
-    *    if {@link #getState()}<code> != </code>{@link #BEFORE_START}.
-    */
-   void setXSLT(String url)
-   throws IllegalStateException {
-
-      // Check preconditions
-      if (_state != BEFORE_START) {
-         throw new IllegalStateException("The state is " + _state + " instead of " + BEFORE_START + '.');
-      }
-
-      _xslt  = url;
-      _state = XSLT_SET;
-   }
-
-   /**
     * Sets the success indication and the result code (if any).
     *
     * @param success
@@ -306,7 +256,7 @@ final class CallResultBuilder extends Object {
     * @return
     *    success indication, <code>true</code> or <code>false</code>.
     */
-   boolean isSuccess() {
+   public boolean isSuccess() {
       return _success;
    }
 
@@ -316,13 +266,13 @@ final class CallResultBuilder extends Object {
     * @return
     *    the result code or <code>null</code> if no code was returned.
     */
-   String getCode() {
+   public String getCode() {
       return _code;
    }
 
    /**
     * Adds an output parameter to the result. The name and the value must
-    * both be specified.
+    * both be specified. The state will be changed to {@link #WITHIN_PARAMS}.
     *
     * @param name
     *    the name of the output parameter, not <code>null</code> and not an
@@ -333,7 +283,7 @@ final class CallResultBuilder extends Object {
     *    empty string.
     *
     * @throws IllegalStateException
-    *    if {@link #getState()}<code> != </code>{@link #WITHIN_PARAMS}.
+    *    if {@link #getState()}<code> != </code>{@link #BEFORE_START} &amp;&amp; {@link #getState()}<code> != </code>{@link #WITHIN_PARAMS}.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || value == null || "".equals(name) || "".equals(value)</code>.
@@ -345,8 +295,8 @@ final class CallResultBuilder extends Object {
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException {
 
       // Check state
-      if (_state != WITHIN_PARAMS) {
-         throw new IllegalStateException("The state is " + _state + " instead of " + WITHIN_PARAMS + '.');
+      if (_state != BEFORE_START && _state != WITHIN_PARAMS) {
+         throw new IllegalStateException("The state is " + _state + " instead of either " + BEFORE_START + " or " + WITHIN_PARAMS + '.');
       }
 
       // TODO: Check that parameter does not exist yet
@@ -359,6 +309,8 @@ final class CallResultBuilder extends Object {
       }
 
       _parameters.set(LOG, name, value);
+
+      _state = WITHIN_PARAMS;
    }
 
    /**
@@ -371,7 +323,7 @@ final class CallResultBuilder extends Object {
     *    <code>null</code>), the values will be the parameter values
     *    ({@link String} objects as well, cannot be <code>null</code>).
     */
-   PropertyReader getParameters() {
+   public PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -388,7 +340,7 @@ final class CallResultBuilder extends Object {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   String getParameter(String name)
+   public String getParameter(String name)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -434,6 +386,9 @@ final class CallResultBuilder extends Object {
       }
 
       _currentElement = e;
+
+      // Update the state
+      _state = START_TAG_OPEN;
    }
 
    /**
@@ -534,15 +489,9 @@ final class CallResultBuilder extends Object {
     *    if it is not <code>null</code>, then
     *    <code><em>return</em>.{@link Element#getType() getType()}.equals("data")</code>.
     */
-   Element getDataElement() {
-      if (_dataElement == null) {
-         return null;
-      } else {
-         return (Element) _dataElement.clone();
-      }
+   public Element getDataElement() {
+      return _dataElement;
    }
-
-   // TODO: _xmlOutputter.pi("xml-stylesheet", "type=\"text/xsl\" href=\"" + xslt + "\"");
 
    /**
     * Ends the result. This will change the state to {@link #AFTER_END}.
