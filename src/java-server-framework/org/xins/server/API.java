@@ -960,9 +960,15 @@ implements DefaultResultCodes {
     *
     * @throws NoSuchFunctionException
     *    if there is no matching function for the specified request.
+    *
+    * @throws AccessDeniedException
+    *    if access is denied for the specified combination of IP address and
+    *    function name.
     */
    final CallResult handleCall(long start, ServletRequest request)
-   throws NullPointerException, NoSuchFunctionException {
+   throws NullPointerException,
+          NoSuchFunctionException,
+          AccessDeniedException {
 
       // Determine the function name
       String functionName = request.getParameter("_function");
@@ -976,6 +982,12 @@ implements DefaultResultCodes {
       // The function name is required
       if (functionName == null || functionName.length() == 0) {
          throw new NoSuchFunctionException(null);
+      }
+
+      // Check the access rule list
+      String ip = request.getRemoteAddr();
+      if (_accessRuleList.allow(ip, functionName) == false) {
+         throw new AccessDeniedException(ip, functionName);
       }
 
       // Detect special functions
