@@ -57,6 +57,21 @@
 	This target fails if the required properties are not set in the file.
 	-->
 	<target name="-load-version">
+<!--
+TODO: Should we do this?
+		<condition property="version.wasset">
+			<or>
+				<isset property="version.major" />
+				<isset property="version.middle" />
+				<isset property="version.minor" />
+				<isset property="version.build" />
+			</or>
+		</condition>
+		<fail if="version.wasset">
+At least on of the properties 'version.major', 'version.middle',
+'version.minor' and 'version.build' is already set. These should be read from
+the version properties file.</fail>
+-->
 		<property name="version.file" value=".version.properties" />
 		<property file="${version.file}" />
 		<condition property="version.isset">
