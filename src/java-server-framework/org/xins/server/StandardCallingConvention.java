@@ -32,7 +32,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.1.0
  */
-public final class StandardCallingConvention
+final class StandardCallingConvention
 extends CallingConvention {
 
    //-------------------------------------------------------------------------
@@ -42,12 +42,12 @@ extends CallingConvention {
    /**
     * The response encoding format.
     */
-   public static final String RESPONSE_ENCODING = "UTF-8";
+   static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
    /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
@@ -80,7 +80,7 @@ extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   public FunctionRequest convertRequest(HttpServletRequest httpRequest)
+   FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException,
           InvalidRequestException,
           FunctionNotSpecifiedException {
@@ -142,7 +142,7 @@ extends CallingConvention {
       return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
-   public void convertResult(FunctionResult      xinsResult,
+   void convertResult(FunctionResult      xinsResult,
                              HttpServletResponse httpResponse)
    throws IllegalArgumentException, IOException {
 
