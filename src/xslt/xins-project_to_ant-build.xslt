@@ -241,6 +241,7 @@
 					basedir="{$copiedTypesDir}"
 					destdir="{$javaDestDir}/{$packageAsDir}/"
 					style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
+					reloadstylesheet="true"
 					extension=".java">
 						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
