@@ -18,7 +18,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Removed unused log numbers.
   - Added missing tranlations for some logging messages.
 
-* Specific documentation:
+* Generation of specification documentation:
   - Fixed a missing forward slash for the url generated for broken links.
 
 ______________________________________________________________________________
@@ -72,7 +72,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 5:
 * DTD:
   - Linked DTDs to www.xins.org instead of xins.sourceforge.net.
 
-* Generated build file:
+* Generation of build file:
   - Linked the Javadoc to www.xins.org instead of xins.sourceforge.net.
 
 ______________________________________________________________________________
@@ -188,20 +188,20 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
   - Refactored the translation-bundle_to_java.xslt as the previous
     implementation failed in some possible situations.
 
-* Generated server-side Java code:
+* Generation of server-side Java code:
   - Added a remoteIP() method in the request to retrieve the IP address of the
     remote host that performed the call.
   - Fixed a problem when generating the author in the @author tag.
     This bug has been in XINS since version 0.208.
   - Fixed some Javadoc tags.
 
-* Generated client-side Java code (CAPI):
+* Generation of client-side Java code (CAPI):
   - Fixed a compilation error when a function has no input parameters.
     This bug has been in XINS since version 0.208.
   - Generated function call result classes now extend class
     org.xins.client.AbstractCAPICallResult instead of class java.lang.Object.
 
-* Generated types Java code:
+* Generation of types Java code:
   - Added fromStringForOptional and fromStringForRequired methods for the
     types _int8, _int16, _int32 and _int64. The methods will throw a
     TypeValueException if the value passed as parameter is out of the
@@ -209,14 +209,14 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
   - Added fromStringForOptional and fromStringForRequired methods for the
     PatternType.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added the broken freeze warning message for types and result codes.
   - Added support for the new directory structure for the broken freeze links.
   - Added output section for result codes that define an output section.
   - Added support for the <pcdata> element for the data section.
   - Fixed a layout problem for the element-example.
 
-* Generated build file
+* Generation of build file:
   - Fixed SF.net bug #1040507. If the authors.xml file does not exist the
     owner is not declared in the api.xml file.
     This bug has been in XINS since version 0.207.
@@ -247,7 +247,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
 * Generic XSLT include files:
   - Removed support for the 'extends' attribute in type classes.
 
-* Generated Checkstyle report:
+* Generation of Checkstyle report:
   - Unified file name for Windows and UNIX/Linux systems. No longer including
     full path.
 
@@ -270,7 +270,7 @@ CHANGES INTRODUCED IN XINS 0.208 (1.0.0 BETA 1):
 * Logdoc
   - Removed unused log entries.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Fixed the API owner is now printed correctly on the API page.
     This bug has been in XINS since version 0.207.
 
@@ -333,23 +333,23 @@ CHANGES INTRODUCED IN XINS 0.207:
     current locale.
   - Changed levels for log message entry 1404 from INFO to DEBUG.
 
-* Generated server-side Java code:
+* Generation of server-side Java code:
   - Removed unused imports in the generated APIImpl.java.
   - Fixed some unused variable that conflicted with existing one that had the
     same name using the JDK 1.5.
   - The @author tag is filled in with the name and the e-mail of the API owner
     if the owner is specified in the API.
 
-* Generated client-side Java code:
+* Generation of client-side Java code:
   - No longer generating deprecated CAPI constructor that takes a
     XINSServiceCaller instance as the argument.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - The optional author file is computed only when needed as it may fail
     with some XSLT processor such as JDK 1.5 when absent.
   - Fixed the layout of some brackets in the generated API HTML page.
 
-* Generated build file
+* Generation of build file:
   - Added some missing description for the targets help, version and run.
   - Remove the directory build/classes from being created as it's not used.
   - The owner is created in api.xml only if a authors.xml file exists.
@@ -400,10 +400,10 @@ CHANGES INTRODUCED IN XINS 0.206:
     invoked.
   - Removed the attributes domain and default-locale from the DTD and log.xml.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - _function is now used instead of function for the function name parameter.
 
-* Generated build file
+* Generation of build file:
   - Added a run target that asks for the command and API to execute.
 
 * Moved the bin directory from xins/src to xins directory.
@@ -442,7 +442,7 @@ CHANGES INTRODUCED IN XINS 0.205:
 * XINS/Java Client Framework:
   - Fixed some Javadoc.
 
-* Generated java code:
+* Generation of Java code:
   - Removed references to JDom replaced by org.xins.server.Element.
 
 * Libraries:
@@ -513,11 +513,11 @@ CHANGES INTRODUCED IN XINS 0.203:
     accordingly.
   - Added the possibility to set the Logdoc locale property at start-up time.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Fixed regeneration of the test forms if the environments.xml file has
     changed. This bug has been in XINS since version 0.183.
 
-* Generated build file:
+* Generation of build file:
   - Set the format of the web.xml with Unix line feed.
   - The index of the APIs are regenerated if needed when executing
     specdocs-<api>.
@@ -565,14 +565,14 @@ CHANGES INTRODUCED IN XINS 0.202:
     exceptions, but it should encapsulate them in a CallException, so that the
     linking will work correctly in the execute() method.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Implemented the pcdata-example attribute.
 
 * Logdoc:
   - Removed the possibility to have multi-line text in the translation element
     of the translation-bundle.xml file as it removed some needed spaces.
 
-* Generated build file
+* Generation of build file:
   - Added the name of the API as a parameter in the generated web.xml file.
 
 * Build and release process:
@@ -635,10 +635,10 @@ CHANGES INTRODUCED IN XINS 0.201:
   - Added the possibility to have a multi-line text in the translation element
     of the translation-bundle.xml file.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Fixed layout for min and max for number types.
 
-* Generated build file
+* Generation of build file:
   - The CAPI generated javadoc now links to the J2SE 1.4.2 and accepts the
     assertion keyword.
 
@@ -656,7 +656,7 @@ CHANGES INTRODUCED IN XINS 0.200:
   - Changed Java compilation process to produce Java 1.4-compatible class
     files instead of Java 1.3-compatible class files.
 
-* Generated build file
+* Generation of build file:
   - Changed Java compilation process to produce Java 1.4-compatible class
     files instead of Java 1.3-compatible class files.
   - Expecting API implementation code to be Java 1.4-aware. This means, for
@@ -848,7 +848,7 @@ CHANGES INTRODUCED IN XINS 0.195:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
     Java 1.3 documentation.
 
-* Generated build file:
+* Generation of build file:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
     Java 1.3 documentation.
 
@@ -923,7 +923,7 @@ CHANGES INTRODUCED IN XINS 0.192:
   - No longer warning for servlet containers that implement version 2.2 of the
     Java Servlet specification instead of 2.3. Both are supported.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Added constructor to the generated CAPI class that accepts a Descriptor
     instance. This is from now on the preferred way of constructing a CAPI
     instance. The other constructor, which takes a XINSServiceCaller argument,
@@ -947,7 +947,7 @@ CHANGES INTRODUCED IN XINS 0.191:
 * XINS/Java Common Library:
   - Slightly improved implementation of HungarianMapper.
 
-* Generated java code:
+* Generation of java code:
   - Improved Javadoc for the getDOMElement() method.
 
 * Build and release process:
@@ -963,12 +963,12 @@ CHANGES INTRODUCED IN XINS 0.190:
   - Removed unused private no-arg constructor from class
     org.xins.common.types.List.
 
-* Generated build file:
+* Generation of build file:
   - Added commons-httpclient.jar and jakarta-oro.jar to the classpath for the
     creation of the javadoc.
   - The create targets now create XML files with the encoding set to UTF-8.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - The XML encoding is now showed in the example output section.
   - If an example result has a result code that requires some output
     parameters but the example doesn't define them, the generation fails.
@@ -1005,7 +1005,7 @@ CHANGES INTRODUCED IN XINS 0.189:
 * XINS/Java Client Framework:
   - Removed the unused CallRequestParser class.
 
-* Generated build file:
+* Generation of build file:
   - Fixed bug #985218. The index.html and css are now generated or copied in
     in the correct directory.
     This bug has been in XINS since 0.188.
@@ -1028,7 +1028,7 @@ CHANGES INTRODUCED IN XINS 0.188:
 * Specification:
   - Added the possibility to have an output section in result codes.
 
-* Generated build file:
+* Generation of build file:
   - The java files in the combined directory are removed if the impl.xml
     file has changed.
   - The create-rcd target doesn't create the value attribute for the result
@@ -1051,7 +1051,7 @@ CHANGES INTRODUCED IN XINS 0.187:
   - Fixed: HTTPServiceCaller now also passes the arguments.
     This bug has been in XINS since version 0.116.
 
-* Generated build file:
+* Generation of build file:
   - The generated java files are removed if the impl.xml file has changed.
 
 ______________________________________________________________________________
@@ -1076,13 +1076,13 @@ CHANGES INTRODUCED IN XINS 0.186:
   - CallRequestParser closes the StringReader after its content is parsed.
   - ResultParser closes the StringReader after its content is parsed.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - The names for the enumeration type are also printed in the generated HTML.
   - Fixed a bug that prevented to create the index when at least one API uses
     the new directory structure.
     This bug has been in XINS since version 0.169.
 
-* Generated build file:
+* Generation of build file:
   - Fixed incorrect targets classes and wars generated when at least one API
     uses the new directory structure.
     This bug has been in XINS since version 0.169.
@@ -1128,12 +1128,12 @@ CHANGES INTRODUCED IN XINS 0.185:
   - Removed the value attribute for the result codes. The name attribute will
     be used for XINS 1.0.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Fixed a bug that did not generate the link to the environment with the
     new directory structure.
     This bug existed since 0.183.
 
-* Generated build file:
+* Generation of build file:
   - The create-api target now adds the api element automatically to the
     xins-project.xml file.
   - The create-function target now adds the function element automatically to
@@ -1151,10 +1151,10 @@ CHANGES INTRODUCED IN XINS 0.184:
   - Set the extends attribute optional for type.
   - Added new types in the DTD.
 
-* Generated build file:
+* Generation of build file:
   - The create-type target doesn't create the extends attribute anymore.
 
-* Generated Java code:
+* Generation of Java code:
   - Introduced the extends functionality back as some types did extend
     something else than _text.
 
@@ -1171,7 +1171,7 @@ CHANGES INTRODUCED IN XINS 0.183:
   - Added <impl> and <environments> elements for apis.
   - Added <logdoc> element for the <impl-java> and <impl> elements.
 
-* Generated Java code:
+* Generation of Java code:
   - The generated implementation return by default a new SuccessfulResult
     instead of null.
   - Fixed a bug that prevented the new directory structure to find the defined
@@ -1185,7 +1185,7 @@ CHANGES INTRODUCED IN XINS 0.183:
   - Put the logdoc package in a new jar file (logdoc.jar).
   - Put the logdoc javadoc in a new group.
 
-* Generated build file:
+* Generation of build file:
   - Added a "clients" target that builds all the client api's for all the
     projects.
   - Added a ant mapper to copy the type files that changes the first character
@@ -1195,7 +1195,7 @@ CHANGES INTRODUCED IN XINS 0.183:
   - The create-api target now asks you if you want to create the
     implementation and define some environments.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added a link to download the client zip file.
 
 ______________________________________________________________________________
@@ -1210,7 +1210,7 @@ CHANGES INTRODUCED IN XINS 0.182:
 * XINS/Java Common Library:
   - Added a regression test for the PatternType.
 
-* Generated specification:
+* Generation of specification:
   - Added a text specifying that a result code is returned when an error
     occured.
 
@@ -1248,7 +1248,7 @@ CHANGES INTRODUCED IN XINS 0.180:
   - Removed files and methods related to the session ID.
   - Removed methods related to the success.
 
-* Generated build file:
+* Generation of build file:
   - Improved the logdoc skeleton used for xins create-logdoc.
 
 * Build and release process:
@@ -1269,7 +1269,7 @@ CHANGES INTRODUCED IN XINS 0.179:
   - Renamed in InvalidRequestResult and InvalidResponseResult the method
     addInvalidTypeForValue to addInvalidValueForType.
 
-* Generated build file:
+* Generation of build file:
   - The client-<api> target now also creates the zip files containing the
     specdocs, the CAPI jar file, the CAPI source code and the CAPI javadoc.
   - The target used to create the project files has been changed to use
@@ -1306,7 +1306,7 @@ CHANGES INTRODUCED IN XINS 0.178:
 * Build and release process:
   - Removed some unneeded "-prepare" targets.
 
-* Generated build file:
+* Generation of build file:
   - Added a "-load-dtds" target.
 
 ______________________________________________________________________________
@@ -1335,7 +1335,7 @@ This version includes several incompatibilities with the previous version:
     org.xins.util and org.xins.types.
   - Removed all code related to the sessions.
 
-* Generated build file:
+* Generation of build file:
   - Renamed target "specdocs-index" to "index-specdocs".
 
 * Specification:
@@ -1354,7 +1354,7 @@ CHANGES INTRODUCED IN XINS 0.176:
   - Added the DTD for authors.xml, environments.xml and impl.xml.
   - Removed the session related attributes in function_1_0.dtd.
 
-* Generated build file:
+* Generation of build file:
   - Fixed a bug that would put the dependencies jar files in the incorrect
     directory of the war file.
     This bug has been in XINS since version 0.175.
@@ -1362,7 +1362,7 @@ CHANGES INTRODUCED IN XINS 0.176:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.175:
 
-* Generated build file:
+* Generation of build file:
   - The new directory structure is taken into account also for
     the environments and the impl.xml.
 
@@ -1390,7 +1390,7 @@ CHANGES INTRODUCED IN XINS 0.174:
 * Logdoc:
   - Added logdoc for the client and common packages.
 
-* Generated build file:
+* Generation of build file:
   - The build.xml also accepts the new directory structure.
     The implementation settings are still expected in the api.xml file.
 
@@ -1411,7 +1411,7 @@ CHANGES INTRODUCED IN XINS 0.173:
     present in the PropertyReader with a value null.
   - Added _timestamp type.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Updated DTD to be more restrictive.
 
 * Logdoc:
@@ -1435,11 +1435,11 @@ CHANGES INTRODUCED IN XINS 0.172:
 * XINS/Java Client Framework:
   - HTTP code other than 200 and 201 now throws a CallException.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Set some attributes from required to implied for xins-project_1_0.dtd.
   - If api.xml has changed only regenerate index.html and the test forms.
 
-* Generated build file:
+* Generation of build file:
   - If the API doesn't have any result code, the build.xml doesn't try to
     generate the classes.
     This bug has been in XINS since XINS 0.168.
@@ -1467,7 +1467,7 @@ CHANGES INTRODUCED IN XINS 0.171:
 * XINS/Java Common Library:
   - Added the string format for the javadoc for the type _date.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - If no pattern test is provided in the project, the default one on
     sourceforge.net is provided.
   - Generate the links to the version, the statistics and the settings for
@@ -1512,7 +1512,7 @@ CHANGES INTRODUCED IN XINS 0.170:
   - Removed some unused import.
   - Added a method getEnumItems() in EnumType.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added more possible elements for api_1_0.dtd, function_1_0.dtd and
     type_1_0.dtd.
   - Update DTD files as the declaration should be on one line.
@@ -1520,7 +1520,7 @@ CHANGES INTRODUCED IN XINS 0.170:
     produce better html than the xml method.
   - The generated html is now more readable.
 
-* Generated build file:
+* Generation of build file:
   - The specdocs is regenerated if api.xml has changed.
   - The result code generated files are regenerated if any function
     specification has changed.
@@ -1552,7 +1552,7 @@ CHANGES INTRODUCED IN XINS 0.169:
   - The _GetStatistics function now support the reset=true argument that
     resets the statistics just after getting them.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added DTD validation before any stylesheet transformation.
   - Set the output elements in the correct order for function_1_0.dtd.
 
@@ -1569,7 +1569,7 @@ CHANGES INTRODUCED IN XINS 0.169:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.168:
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added the version number to the DTD files.
 
 * XINS/Java Server Framework:
@@ -1587,7 +1587,7 @@ CHANGES INTRODUCED IN XINS 0.168:
     This bug has been in the code since the introduction of the
     Date class in XINS 0.166
 
-* Generated build file:
+* Generation of build file:
   - The build targets creating the APIs, functions, types and result codes
     have been updated to link to the correct DTD, to include the description
     and to rename 'project' with 'api'.
@@ -1595,10 +1595,10 @@ CHANGES INTRODUCED IN XINS 0.168:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.167:
 
-* Generated type classes:
+* Generation of type classes:
   - Supporting '/' (slash) in item names.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Slightly impoved display of examples in some browsers.
 
 * XINS/Java Common Library:
@@ -1648,10 +1648,10 @@ CHANGES INTRODUCED IN XINS 0.166:
     that it is now displayed whether the log entry supports an exception or
     not.
 
-* Generated build file:
+* Generation of build file:
   - Removed the display of the user directory when starting the 'xins' script.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Only generating 'Test on' row per example, if at least one environment is
     defined.
 
@@ -1669,7 +1669,7 @@ CHANGES INTRODUCED IN XINS 0.165:
   - Changed SingleEntryMap class, so that the put() method throws an exception
     if the new key does not match the old key.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added the freeze parameter in the api.dtd.
   - Added new possible parameters in the function.dtd.
 
@@ -1678,7 +1678,7 @@ CHANGES INTRODUCED IN XINS 0.165:
     log message should be at the FATAL message.
   - Added support for exceptions. These are always logged at DEBUG level.
 
-* Generated build file:
+* Generation of build file:
   - Moved most of the command executed in the xins script shell files
     to a new make-build.xml ANT script file.
   - The build.xml is now recreated only if some files has been modified.
@@ -1702,13 +1702,13 @@ CHANGES INTRODUCED IN XINS 0.164:
   - Removed setTranslationBundle() from generated Log class.
   - Moved XML files from src/logdoc to src/logdoc/server.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Removed the dependency on rcs. The specification is now created if
     a rcsdate or rcsversion attribute is missing from the type,
     the result code or the function.
     The version number is then replaced with '?.?'.
 
-* Generated build file:
+* Generation of build file:
   - Added a new target server-<api> that builds the war file, the specdocs
     and the javadoc on the server-side.
   - Added a new target client-<api> that builds the jar file and the javadoc
@@ -1737,14 +1737,14 @@ CHANGES INTRODUCED IN XINS 0.163:
   - The version number of the previous release in the .version.properties
     file is also increased when a new release is created.
 
-* Generated build file:
+* Generation of build file:
   - Linking to xmlenc 0.43 API docs.
   - Added the logdoc directory to the release.
     This causes the compilation of XINS to fail when it was done from the
     downloaded package.
     This was probably erroneous since XINS 0.154.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added the DTD's in the release.
 
 ______________________________________________________________________________
@@ -1766,7 +1766,7 @@ CHANGES INTRODUCED IN XINS 0.162:
   - Not generating NoSuchTranslationBundleException, but using the
     org.xins.logdoc package.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added DTD's for to project, API, type, result code and function XML files.
 
 ______________________________________________________________________________
@@ -1887,15 +1887,15 @@ CHANGES INTRODUCED IN XINS 0.159:
   - If an NDC (nested diagnostic context) is set, then it will automatically
     be passed on to other XINS APIs via the _context parameter.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Generating implementation for getXINSVersion() method, defined in
     AbstractCAPI class.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Added links to allow the execution of the examples listed for a function
     on a specific environment.
 
-* Generated build file:
+* Generation of build file:
   - Automatic generation and display of the MD5 after the creation of the WAR
     file.
 
@@ -1937,7 +1937,7 @@ CHANGES INTRODUCED IN XINS 0.157:
 * Shell script 'xins':
   - Removed support for -deployment option (introduced in XINS 0.79).
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Indenting text 'This function supports no input parameters', to have a
     more consistent layout.
 
@@ -1978,7 +1978,7 @@ CHANGES INTRODUCED IN XINS 0.157:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.156:
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - First copying CSS and then generating specdocs for the API.
   - Supporting deprecation of element attributes.
 
@@ -2008,7 +2008,7 @@ CHANGES INTRODUCED IN XINS 0.155:
     required property in the runtime properties file, then the framework would
     not recover from this.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Now one style.css per API, so that if only the specdocs/[api] directory
     can be read by a client, for example because of an access restriction,
     then the pages will still be displayed correctly.
@@ -2052,7 +2052,7 @@ CHANGES INTRODUCED IN XINS 0.153:
     INFO, since these messages may be of interest to non-developers.
   - Changed the TargetDescriptor class to allow a tilde (~) in a URL.
 
-* Generated test forms:
+* Generation of test forms:
   - Added links for disabling and enabling a specific function on a specific
     environment.
 
@@ -2186,7 +2186,7 @@ CHANGES INTRODUCED IN XINS 0.146:
     ActualFunctionCaller.
   - Added 'String message' argument to the NoSuchSessionException constructor.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Shared sessions are no longer supported. The support for it was untested
     and incomplete, so it has been removed completely, to simplify the code.
     Support may be re-added in in the future.
@@ -2204,7 +2204,7 @@ CHANGES INTRODUCED IN XINS 0.145:
 * Moved jakarta-oro.jar from depends/runtime to depends/compile_and_runtime,
   where it belongs.
 
-* Generated build file:
+* Generation of build file:
   - Now correctly including dependency JAR files in Javadoc classpath.
 
 * XINS/Java Common Library:
@@ -2219,7 +2219,7 @@ CHANGES INTRODUCED IN XINS 0.145:
 * XINS/Java Client Framework:
   - NoSuchSessionException now extends CallException.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Not throwing TypeValueException anymore, but NoSuchSessionException
     instead, from session-based function call methods.
   - Fixed bug in generated call<function>() method in CAPI class. It
@@ -2248,7 +2248,7 @@ CHANGES INTRODUCED IN XINS 0.144:
   - Changed FileWatcher class to allow setting of the interval from the
     listener methods.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Fixed small bug in generation of CAPI class that caused compiler errors.
 
 * General XINS-related changes:
@@ -2292,7 +2292,7 @@ CHANGES INTRODUCED IN XINS 0.140:
   - Added NoSuchSessionException.
   - Changed ActualFunctionCaller to log URL and CRC-32 at construction time.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Changed generated CAPI class: Throwing NoSuchSessionException if the
     ActualFunctionCaller is null.
 
@@ -2341,10 +2341,10 @@ CHANGES INTRODUCED IN XINS 0.137:
     . Never calling _NoOp in constructor. The application can use ping() if
       appropriate.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Generating package.html.
 
-* Generated type classes:
+* Generation of type classes:
   - Generating package.html.
 
 ______________________________________________________________________________
@@ -2358,7 +2358,7 @@ CHANGES INTRODUCED IN XINS 0.136:
   - Added class UnacceptableCallResultException that extends CallException and
     accepts an optional reason only.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Call methods now only throw CallException.
 
 ______________________________________________________________________________
@@ -2382,14 +2382,14 @@ CHANGES INTRODUCED IN XINS 0.134:
   - Fixed bug in the toString() method in the Properties class, in the types
     package. Previously it did not include any ampersands.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Fixed bug. Not throwing NPE if an optional parameter for a function call
     is not provided.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.133:
 
-* Generated build file:
+* Generation of build file:
   - Printing timestamp after WAR creation.
 
 * Slightly improved urlencode.xslt. Added '^' symbol.
@@ -2410,13 +2410,13 @@ CHANGES INTRODUCED IN XINS 0.131:
 * XINS/Java Client Framework:
   - Added AbstractCAPI class.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - CAPI classes now extend org.xins.client.AbstractCAPI
 
 * The xins -version command now prints Java and Ant version directly from the
   XINS build file.
 
-* Generated build file:
+* Generation of build file:
   - Previously, the generated build file would assume that an API defines at
     least one type. Otherwise the build would abort in an unexpected way.
     Fixed that.
@@ -2520,11 +2520,11 @@ CHANGES INTRODUCED IN XINS 0.125:
     NullPointerExceptions at runtime.
   - Fixed some Checkstyle-reported issues.
 
-* Generated test forms:
+* Generation of test forms:
   - Parameter specifying function name has been renamed from 'function' to
     '_function'. One step closer to completely switching to '_function'.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Function specifications: No longer showing success column in result code
     table.
   - Function specifications: Simplified algorithm to determine if an example
@@ -2724,11 +2724,11 @@ CHANGES INTRODUCED IN XINS 0.114:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.113:
 
-* Generated Java type classes:
+* Generation of Java type classes:
   - Moved type_to_java.xslt from src/xslt/java-fundament to
     src/xslt/java-types.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Refactored some of the XSLT.
   - Fixed some small issues in the Javadoc comments of the generated CAPI
     classes.
@@ -2736,7 +2736,7 @@ CHANGES INTRODUCED IN XINS 0.113:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.112:
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Changed the contract of the generated getItemByValue(String) methods for
     enum types to behave like the Type.fromString(String) method. A null
     argument will cause null to be returned. An unrecognized value will cause
@@ -2747,14 +2747,14 @@ CHANGES INTRODUCED IN XINS 0.112:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.111:
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - The Javadoc for the generated Item classes for enum types now link to
     their instances.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.110:
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - If a function returns only a data section and no output parameters, then
     the generated calling method for that function will return an
     org.jdom.Element object directly.
@@ -2762,7 +2762,7 @@ CHANGES INTRODUCED IN XINS 0.110:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.109: (based on XINS 0.108)
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Main class is now called 'CAPI' instead of 'API' to reduce confusion with
     other classes named 'RemoteAPI', 'API' or 'APIImpl'.
   - Applied some refactorings to make the XSLT easier to read and maintain.
@@ -2776,7 +2776,7 @@ CHANGES INTRODUCED IN XINS 0.109: (based on XINS 0.108)
     WARNING: This may break existing code that expects a java.util.List
              instead.
 
-* Generated fundament classes:
+* Generation of fundament classes:
   - Now using <enumtype>.Item classes as the type for input parameters that
     denote enumeration types.
     WARNING: This may break existing implementation code that expects that the
@@ -2800,24 +2800,25 @@ CHANGES INTRODUCED IN XINS 0.108:
 
 * Now including type classes in CAPI JAR files.
 
-* Generated CAPI: Return output parameter value directly if there is only one
-  output parameter.
+* Generation of CAPI:
+  - Return output parameter value directly if there is only one output
+    parameter.
 
 * Refactored quite some XSLT.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Footer now contains XINS version.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.107:
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Improved URL encoding of the links to the test forms.
 
-* Generated API classes:
+* Generation of API classes:
   - Now supporting properties types.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Fixed bug so that Result classes are now properly generated for functions
     that only return a data section and no output parameters.
 
@@ -2837,7 +2838,7 @@ CHANGES INTRODUCED IN XINS 0.106:
     org.xins.util.net.URLEncoding.
   - Added method checkValue(String) to class Type.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Improved generated specifications for types.
 
 ______________________________________________________________________________
@@ -2851,7 +2852,7 @@ CHANGES INTRODUCED IN XINS 0.105:
 * XINS/Java Common Library:
   - Added org.xins.util.sd package.
 
-* Generated specification documentation:
+* Generation of specification documentation:
   - Function parameter in examples is now called '_function' instead of
     'function'.
 
@@ -2868,8 +2869,8 @@ CHANGES INTRODUCED IN XINS 0.104:
     it.
   - Improved stability of ExpiryFolder. Fixed bug in counting of members.
 
-* Generated API docs and XINS API docs now correctly link to Apache Ant API
-  docs at nagoya.apache.org.
+* Generation of API docs and XINS API docs now correctly link to Apache Ant
+  API docs at nagoya.apache.org.
 
   *** NOTE ***
   The memory leak reported about in the XINS 0.97 release notes has probably
@@ -2878,11 +2879,12 @@ CHANGES INTRODUCED IN XINS 0.104:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.103:
 
-* Generated Java CAPI classes: Supporting data sections.
+* Generation of Java CAPI classes:
+  - Supporting data sections.
 
-* Generated Ant buildfile now set window and document title for generated
-  Javadoc documentation for both API implementation and call interface
-  classes.
+* Generation of buildfile:
+  - Now set window and document title for generated Javadoc documentation for
+    both API implementation and call interface classes.
 
 * Fixed generated Javadoc documentation so that XINS version is correct again.
   This was probably erroneous since XINS 0.85.
@@ -3104,7 +3106,7 @@ CHANGES INTRODUCED IN XINS 0.85:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.84:
 
-* Generated test forms:
+* Generation of test forms:
   - Fixed a bug in the generated SELECTs for enums.
 
 * Supporting deployment-required="true" in api.xml, in the element
@@ -3113,7 +3115,7 @@ CHANGES INTRODUCED IN XINS 0.84:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.83:
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Fixed bug. All generated function calling methods now correctly check
     result.isSuccess(). If it returns false, then an UnsuccessfulCallException
     is thrown.
@@ -3169,7 +3171,8 @@ CHANGES INTRODUCED IN XINS 0.78:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.77:
 
-* Generated web.xml file now has indentation enabled.
+* Generation of web.xml file:
+  - Indentation now enabled.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.76:
@@ -3204,16 +3207,16 @@ CHANGES INTRODUCED IN XINS 0.74:
   - Added method getActualFunctionCallerByCRC32(String) to interface
     FunctionCaller and to classes CallTargetGroup and ActualFunctionCaller.
 
-* Generated CAPI classes now support sticky sessions, based on splitting
-  client session ID in identifier for target API and server-side session
-  identifier.
+* Generation of CAPI classes:
+  - Now supports sticky sessions, based on splitting client session ID in
+    identifier for target API and server-side session identifier.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.73:
 
 * Resolved some Checkstyle warnings.
 
-* Generated Javadoc API documentation for XINS projects can no longer link to
+* Generation of Javadoc API documentation for XINS projects can no longer link to
   -dev versions of XINS. When determining the version of the online XINS API
   documentation to link to, the -dev part is removed.
 
@@ -3242,7 +3245,7 @@ CHANGES INTRODUCED IN XINS 0.72:
     retrieves an ActualFunctionCaller by CRC-32 checksum of its URL.
   - Added class NonSharedSession.
 
-* Generated CAPI classes:
+* Generation of CAPI classes:
   - Returning NonSharedSession from functions that create a session within
     APIs that do not have 'shared-sessions' set to 'true'.
 
