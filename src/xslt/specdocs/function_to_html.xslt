@@ -781,7 +781,7 @@
 		<h3>Result codes</h3>
 		<table class="resultcodes">
 			<tr>
-				<th>Code</th>
+				<th>Name</th>
 				<th>Success</th>
 				<th>Description</th>
 			</tr>
@@ -794,11 +794,14 @@
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
 			<xsl:variable name="code" select="@name" />
-			<!-- TODO: Use name of result code, not value -->
-			<xsl:for-each select="document($api_file)/api/resultcode[@value = $code]">
+			<xsl:variable name="file" select="concat($specsdir, '/', $api, '/', $code, '.rcd')" />
+
+			<xsl:for-each select="document($file)/resultcode">
 				<tr>
 					<td class="value">
-						<xsl:value-of select="@value" />
+						<a href="{$code}.html">
+							<xsl:value-of select="$code" />
+						</a>
 					</td>
 					<td>
 						<xsl:value-of select="@success" />
