@@ -39,6 +39,9 @@ ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
 * Support non-200 HTTP return codes.
+* Replace FunctionCaller / ActualFunctionCaller / CallTargetGroup hierarchy
+  with Service-based solution, implemented in XINS/Java Common Library,
+  package org.xins.util.service.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
