@@ -387,7 +387,9 @@ extends HttpServlet {
 
       // Check preconditions
       synchronized (_stateLock) {
-         if (_state != INITIAL) {
+         if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
+          && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
+          && _state != API_INITIALIZATION_FAILED) {
             Log.log_101(_state == null ? null : _state._name);
             throw new ServletException("state is " + _state);
          } else if (config == null) {
@@ -595,7 +597,7 @@ extends HttpServlet {
     */
    private final void initAPI(PropertyReader runtimeProperties) {
 
-      // TODO: Check state and lock on state
+      // TODO: Check state
 
       setState(INITIALIZING_API);
 
@@ -727,7 +729,7 @@ extends HttpServlet {
          }
       }
 
-      // TODO: Use OutputStream instead of Writer, for improved performance
+      // XXX: Consider using OutputStream instead of Writer, for improved performance
 
       // Call the API if the state is READY
       CallResult result;
