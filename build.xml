@@ -274,6 +274,21 @@
 		<copy file="src/css/logdoc/style.css" todir="build/logdoc/html" />
 	</target>
 
+	<target name="upload-logdoc" depends="-init,logdoc-html">
+		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
+		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version} on ${www.host}" />
+		<exec executable="ssh" failonerror="true">
+			<arg value="${www.user}@${www.host}" />
+			<arg value="mkdir -p ${www.dir}/logdoc/${version}" />
+		</exec>
+		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version} on ${www.host}" />
+		<exec dir="build/logdoc/html" executable="scp" failonerror="true">
+			<arg value="-r" />
+			<arg value="." />
+			<arg value="${www.target}/logdoc/${version}" />
+		</exec>
+	</target>
+
 	<target name="logdoc-java" depends="-prepare-logdoc">
 		<ant dir="build" antfile="logdoc-build.xml" target="java" inheritall="false" />
 	</target>
@@ -658,7 +673,7 @@
 
 	<target
 	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle,upload-j2h"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor" type="int" operation="+" value="1"    />
