@@ -54,6 +54,12 @@
 				</description>
 				<servlet-class>org.xins.server.APIServlet</servlet-class>
 				<init-param>
+					<param-name>org.xins.api.name</param-name>
+					<param-value>
+						<xsl:value-of select="$api" />
+					</param-value>
+				</init-param>
+				<init-param>
 					<param-name>org.xins.api.class</param-name>
 					<param-value>
 						<xsl:call-template name="package_for_server_api">

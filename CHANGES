@@ -16,6 +16,13 @@ CHANGES INTRODUCED IN XINS 0.202:
 * Generated specification documentation:
   - Implemented the pcdata-example attribute.
 
+* Logdoc:
+  - Removed the possibility to have multi-line text in the translation element
+    of the translation-bundle.xml file as it removed some needed spaces.
+
+* Generated build file
+  - Added the name of the API as a parameter in the generated web.xml file.
+
 * Build and release process:
   - Added the argument source="1.4" to the javadoc task to avoid errors with
     the assert keyword.
