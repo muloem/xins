@@ -7,6 +7,7 @@
 package org.xins.tests.client;
 
 import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -45,6 +46,8 @@ public class XINSCallResultParserTests extends TestCase {
    /**
     * Determines the number of elements returned by the specified
     * <code>Iterator</code>.
+    *
+    * <p>TODO: Move this utility function to a utility class.
     *
     * @param iterator
     *    the {@link Iterator} to determine the number of elements in, or
@@ -193,8 +196,8 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals(0, iteratorSize(dataElementAttributes));
 
       // There should be 1 child element
-      Iterator children = dataElement.getChildren();
-      assertEquals(1, iteratorSize(children));
+      List children = dataElement.getChildElements();
+      assertEquals(1, children.size());
 
       // Do not allow 'result' element within 'result' element
       xml = "<result><result /></result>";
@@ -260,13 +263,12 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals(0, iteratorSize(dataElementAttributes));
 
       // There should be 2 child elements
-      Iterator children = dataElement.getChildren();
-      assertEquals(2, iteratorSize(children));
+      List children = dataElement.getChildElements();
+      assertEquals(2, children.size());
 
       // Get both child elements
-      children = dataElement.getChildren();
-      DataElement childOne = (DataElement) children.next();
-      DataElement childTwo = (DataElement) children.next();
+      DataElement childOne = (DataElement) children.get(0);
+      DataElement childTwo = (DataElement) children.get(1);
 
       // First element should have 2 attributes
       assertEquals(2, iteratorSize(childOne.getAttributes()));

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
@@ -146,10 +147,10 @@ public class AllInOneAPITests extends TestCase {
          assertNull(exception.getParameters());
          DataElement dataSection = exception.getDataElement();
          assertNotNull(dataSection);
-         DataElement missingParam = (DataElement) dataSection.getChildren().next();
+         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
          assertEquals("missing-param", missingParam.getName());
          assertEquals("inputText", missingParam.get("param"));
-         assertNull(missingParam.getChildren());
+         assertEquals(0, missingParam.getChildElements().size());
          assertNull(missingParam.getText());
       }
    }
@@ -189,16 +190,16 @@ public class AllInOneAPITests extends TestCase {
          assertNull(exception.getParameters());
          DataElement dataSection = exception.getDataElement();
          assertNotNull(dataSection);
-         Iterator invalidParams = dataSection.getChildren();
-         DataElement invalidParam1 = (DataElement) invalidParams.next();
+         List invalidParams = dataSection.getChildElements();
+         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
          assertEquals("invalid-value-for-type", invalidParam1.getName());
          assertEquals("inputIP", invalidParam1.get("param"));
-         assertNull(invalidParam1.getChildren());
+         assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
-         DataElement invalidParam2 = (DataElement) invalidParams.next();
+         DataElement invalidParam2 = (DataElement) invalidParams.get(1);
          assertEquals("invalid-value-for-type", invalidParam2.getName());
          assertEquals("inputAge", invalidParam2.get("param"));
-         assertNull(invalidParam2.getChildren());
+         assertEquals(0, invalidParam2.getChildElements().size());
          assertNull(invalidParam2.getText());
       }
    }
@@ -251,20 +252,20 @@ public class AllInOneAPITests extends TestCase {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection("Doe").dataElement();
-      Iterator users = element.getChildren();
-      assertTrue("No users found.", users.hasNext());
-      DataElement su = (DataElement) users.next();
+      List users = element.getChildElements();
+      assertTrue("No users found.", users.size() > 0);
+      DataElement su = (DataElement) users.get(0);
       assertEquals("Incorrect elements.", "user", su.getName());
       assertEquals("Incorrect name for su.", "superuser", su.get("name"));
       assertEquals("Incorrect address.", "12 Madison Avenue", su.get("address"));
       assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
-      assertNull(su.getChildren());
-      DataElement doe = (DataElement) users.next();
+      assertEquals(0, su.getChildElements().size());
+      DataElement doe = (DataElement) users.get(1);
       assertEquals("Incorrect elements.", "user", doe.getName());
       assertEquals("Incorrect name for Doe.", "Doe", doe.get("name"));
       assertEquals("Incorrect address.", "Unknown", doe.get("address"));
       assertNull(doe.getText());
-      assertNull(doe.getChildren());
+      assertEquals(0, doe.getChildElements().size());
    }
 
    /**
@@ -275,23 +276,24 @@ public class AllInOneAPITests extends TestCase {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection2("hello").dataElement();
-      Iterator packets = element.getChildren();
-      assertTrue("No destination found.", packets.hasNext());
-      DataElement packet1 = (DataElement) packets.next();
+      List packets = element.getChildElements();
+      assertTrue("No destination found.", packets.size() > 0);
+      DataElement packet1 = (DataElement) packets.get(0);
       assertEquals("Incorrect elements.", "packet", packet1.getName());
       assertNotNull("No destination specified.", packet1.get("destination"));
-      Iterator products = packet1.getChildren();
-      assertNotNull("No product specified.", products);
-      DataElement product1 = (DataElement) products.next();
+      List products = packet1.getChildElements();
+      assertTrue("No product specified.", products.size() > 0);
+      DataElement product1 = (DataElement) products.get(0);
       assertEquals("Incorrect price for product1", "12", product1.get("price"));
 
-      DataElement packet2 = (DataElement) packets.next();
+      DataElement packet2 = (DataElement) packets.get(1);
       assertEquals("Incorrect elements.", "packet", packet2.getName());
       assertNotNull("No destination specified.", packet2.get("destination"));
-      Iterator products2 = packet2.getChildren();
-      assertNotNull("No product specified.", products2);
-      DataElement product21 = (DataElement) products2.next();
+      List products2 = packet2.getChildElements();
+      assertTrue("No product specified.", products2.size() > 0);
+      DataElement product21 = (DataElement) products2.get(0);
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
+      assertTrue(product21.getChildElements().size() == 0);
    }
 
    /**

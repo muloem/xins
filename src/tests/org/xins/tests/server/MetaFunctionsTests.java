@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
-import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
@@ -155,9 +155,9 @@ public class MetaFunctionsTests extends TestCase {
       }
       DataElement data = result.getDataElement();
       assertNull(data.getAttributes());
-      Iterator children = data.getChildren();
+      List children = data.getChildElements();
 
-      DataElement heap = (DataElement) children.next();
+      DataElement heap = (DataElement) children.get(0);
       assertNotNull("No total memory provided.", heap.get("total"));
       assertNotNull("No used memory provided.", heap.get("used"));
       assertNotNull("No free memory provided.", heap.get("free"));
@@ -172,17 +172,17 @@ public class MetaFunctionsTests extends TestCase {
       }
 
       // browse all function
-      while (children.hasNext()) {
-         DataElement nextFunction = (DataElement) children.next();
-         assertEquals("Object other than a fnuction has been found.", "function", nextFunction.getName());
+      int size = children.size();
+      for (int i = 1; i < size; i++) {
+         DataElement nextFunction = (DataElement) children.get(i);
+         assertEquals("Object other than a function has been found.", "function", nextFunction.getName());
          assertNotNull("The function does not have a name", nextFunction.get("name"));
-         // XXX also test the children.
-         Iterator itSubElements = nextFunction.getChildren();
-         assertTrue("The function does not have any successful sub-section.", itSubElements.hasNext());
-         DataElement successful = (DataElement) itSubElements.next();
+         // XXX: Also test the children.
+         List subElements = nextFunction.getChildElements();
+         assertTrue(subElements.size() >= 2);
+         DataElement successful = (DataElement) subElements.get(0);
          checkFunctionStatistics(successful, true);
-         assertTrue("The function does not have any unsuccessful sub-section.", itSubElements.hasNext());
-         DataElement unsuccessful = (DataElement) itSubElements.next();
+         DataElement unsuccessful = (DataElement) subElements.get(1);
          checkFunctionStatistics(unsuccessful, false);
       }
    }
@@ -206,19 +206,17 @@ public class MetaFunctionsTests extends TestCase {
       assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getName());
       assertNotNull("No average attribute defined", functionElement.get("average"));
       assertNotNull("No count attribute defined", functionElement.get("count"));
-      Iterator itMinMaxLast = functionElement.getChildren();
-      assertTrue("The function does not have any min-max-last sub-section.", itMinMaxLast.hasNext());
-      DataElement min = (DataElement) itMinMaxLast.next();
+      List minMaxLast = functionElement.getChildElements();
+      assertTrue(minMaxLast.size() >= 3);
+      DataElement min = (DataElement) minMaxLast.get(0);
       assertEquals("The function does not have any successful sub-section.", "min", min.getName());
       assertNotNull("No average attribute defined", min.get("start"));
       assertNotNull("No count attribute defined", min.get("duration"));
-      assertTrue("The function has an incomplete min-max-last sub-section.", itMinMaxLast.hasNext());
-      DataElement max = (DataElement) itMinMaxLast.next();
+      DataElement max = (DataElement) minMaxLast.get(1);
       assertEquals("The function does not have any successful sub-section.", "max", max.getName());
       assertNotNull("No average attribute defined", max.get("start"));
       assertNotNull("No count attribute defined", max.get("duration"));
-      assertTrue("The function has an incomplete min-max-last sub-section.", itMinMaxLast.hasNext());
-      DataElement last = (DataElement) itMinMaxLast.next();
+      DataElement last = (DataElement) minMaxLast.get(2);
       assertEquals("The function does not have any successful sub-section.", "last", last.getName());
       assertNotNull("No average attribute defined", last.get("start"));
       assertNotNull("No count attribute defined", last.get("duration"));
@@ -248,9 +246,10 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result.getErrorCode());
       assertNull("The function returned some parameters.", result.getParameters());
       assertNotNull("The function did not return a data element.", result.getDataElement());
-      Iterator functions = result.getDataElement().getChildren();
-      while (functions.hasNext()) {
-         DataElement nextFunction = (DataElement) functions.next();
+      List functions = result.getDataElement().getChildElements();
+      int size = functions.size();
+      for (int i = 0; i < size; i++) {
+         DataElement nextFunction = (DataElement) functions.get(i);
          assertEquals("Element other than a function found.", "function", nextFunction.getName());
          String version = nextFunction.get("version");
          String name = nextFunction.get("name");
@@ -279,42 +278,45 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result.getErrorCode());
       assertNull("The function returned some parameters.", result.getParameters());
       assertNotNull("The function did not return a data element.", result.getDataElement());
-      Iterator functions = result.getDataElement().getChildren();
+      List functions = result.getDataElement().getChildElements();
 
-      assertTrue("No build section defined.", functions.hasNext());
-      DataElement build = (DataElement) functions.next();
+      assertTrue("No build section defined.", functions.size() > 0);
+      DataElement build = (DataElement) functions.get(0);
       assertNull(build.getAttributes());
       assertEquals("build", build.getName());
-      Iterator buildProps = build.getChildren();
+      List buildProps = build.getChildElements();
       assertNotNull(buildProps);
-      while (buildProps.hasNext()) {
-         DataElement nextProp = (DataElement) buildProps.next();
+      int size = buildProps.size();
+      for (int i = 0; i < size; i++) {
+         DataElement nextProp = (DataElement) buildProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getName());
          assertNotNull("No name attribute for the property.", nextProp.get("name"));
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
       }
 
-      assertTrue("No runtime section defined.", functions.hasNext());
-      DataElement runtime = (DataElement) functions.next();
+      assertTrue("No runtime section defined.", functions.size() > 1);
+      DataElement runtime = (DataElement) functions.get(1);
       assertNull(runtime.getAttributes());
       assertEquals("runtime", runtime.getName());
-      Iterator runtimeProps = runtime.getChildren();
+      List runtimeProps = runtime.getChildElements();
       assertNotNull(runtimeProps);
-      while (runtimeProps.hasNext()) {
-         DataElement nextProp = (DataElement) runtimeProps.next();
+      size = runtimeProps.size();
+      for (int i = 0; i < size; i++) {
+         DataElement nextProp = (DataElement) runtimeProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getName());
          assertNotNull("No name attribute for the property.", nextProp.get("name"));
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
       }
 
-      assertTrue("No system section defined.", functions.hasNext());
-      DataElement system = (DataElement) functions.next();
+      assertTrue("No system section defined.", functions.size() > 2);
+      DataElement system = (DataElement) functions.get(2);
       assertNull(system.getAttributes());
       assertEquals("system", system.getName());
-      Iterator systemProps = system.getChildren();
+      List systemProps = system.getChildElements();
       assertNotNull(systemProps);
-      while (systemProps.hasNext()) {
-         DataElement nextProp = (DataElement) systemProps.next();
+      size = systemProps.size();
+      for (int i = 0; i < size; i++) {
+         DataElement nextProp = (DataElement) systemProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getName());
          assertNotNull("No name attribute for the property.", nextProp.get("name"));
          assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());

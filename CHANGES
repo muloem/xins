@@ -1,6 +1,14 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
 
+NOTE: This release is based on XINS 1.0.0-beta11.
+
+* XINS/Java Client Framework:
+  - Removed deprecated methods from class DataElement:
+    . public Iterator getChildren()
+    . public Iterator getChildren(String name)
+    Changed the tests accordingly.
+
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using 
     Java 1.4.0 or Java 1.4.1.
@@ -19,6 +27,19 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
+
+* XINS/Java Client Framework:
+  - Removed deprecated methods from class DataElement:
+    . public Iterator getChildren()
+    . public Iterator getChildren(String name)
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 1:
+
+* No changes compared to XINS 1.0.0-beta11.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
