@@ -77,16 +77,14 @@
 
 				<xsl:apply-templates select="description" />
 
-				<xsl:if test="boolean(@extends) or boolean(see)">
+				<xsl:if test="boolean(see)">
 					<table class="metadata">
-						<xsl:if test="boolean(see)">
-							<tr>
-								<td class="key">See also:</td>
-								<td class="value">
-									<xsl:apply-templates select="see" />
-								</td>
-							</tr>
-						</xsl:if>
+						<tr>
+							<td class="key">See also:</td>
+							<td class="value">
+								<xsl:apply-templates select="see" />
+							</td>
+						</tr>
 					</table>
 				</xsl:if>
 
