@@ -6,6 +6,12 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
+* XINS/Java Common Library:
+  - Added class CallConfig in package org.xins.common.service. Objects of this
+    type specify certain aspects of how a call is executed. For example, for
+    an HTTP service caller, a <code>CallConfig</code> object could specify
+    what HTTP method (GET, POST, etc.) to use.
+
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1071731: UnacceptableResultXINSCallException constructor
     threw a NullPointerException instead of the documented
