@@ -5,7 +5,8 @@ CHANGES INTRODUCED IN XINS 0.120:
   - Changed and improved logging. All classes in org.xins.server now log to
     only 2 categories: org.xins.server.LIFESPAN and org.xins.server.RUNTIME.
     Logging the build-time XINS version now, too. Using the log level FATAL if
-    the servlet fails to initialize.
+    the servlet fails to initialize. Logging the location of the Log4J
+    configuration file using the INFO instead of the DEBUG level.
   - Responder interface now extends Log interface too. Use this for logging.
   - Replaced Singleton interface with LifespanManager interface. The Singleton
     interface and all methods that accept a Singleton instance are marked as
