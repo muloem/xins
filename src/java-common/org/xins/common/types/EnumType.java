@@ -136,6 +136,19 @@ public abstract class EnumType extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Actually checks if the specified value is valid for this type. This
+    * method is called from {@link #isValidValue(String)}. It is guaranteed that
+    * the argument is not <code>null</code>.
+    *
+    * @param value
+    *    the value that should be checked for validity, never
+    *    <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if and only if the specified value is valid,
+    *    <code>false</code> otherwise.
+    */
    protected final boolean isValidValueImpl(String value) {
       for (int i = 0; i < _values.length; i++) {
          if (_values[i].equals(value)) {
@@ -145,6 +158,28 @@ public abstract class EnumType extends Type {
       return false;
    }
 
+   /**
+    * Generates a string representation of the specified value for this type.
+    * The specified value must be an instance of the value class for this type
+    * (see {@link #getValueClass()}). Also, it has to fall within the range of
+    * valid values.
+    *
+    * @param value
+    *    the value, cannot be <code>null</code>.
+    *
+    * @return
+    *    the string representation of the specified value for this type,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>getValueClass().isInstance(value) == false</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value is not in the allowed range.
+    */
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
