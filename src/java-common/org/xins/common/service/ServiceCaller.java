@@ -169,9 +169,9 @@ public abstract class ServiceCaller extends Object {
       Log.log_1000(CLASSNAME, null);
 
       // Store information
+      _className  = getClass().getName();
       _newStyle   = false;
       _callConfig = null;
-      _className  = getClass().getName();
       setDescriptor(descriptor);
 
       // Make sure the old-style (XINS 1.0) doCallImpl method is implemented
@@ -287,7 +287,6 @@ public abstract class ServiceCaller extends Object {
       // Store information
       _className  = getClass().getName();
       _newStyle   = true;
-      _descriptor = descriptor;
       setDescriptor(descriptor);
 
       // If no CallConfig is specified, then use a default one
@@ -568,6 +567,13 @@ public abstract class ServiceCaller extends Object {
    public final void setDescriptor(Descriptor descriptor)
    throws UnsupportedProtocolException {
 
+      final String THIS_METHOD = "setDescriptor("
+                               + Descriptor.class.getName()
+                               + ')';
+
+      // TRACE: Enter method
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
+
       // Test the protocol for all TargetDescriptors
       if (descriptor != null) {
          Iterator targets = descriptor.iterateTargets();
@@ -578,6 +584,9 @@ public abstract class ServiceCaller extends Object {
 
       // Store it
       _descriptor = descriptor;
+
+      // TRACE: Leave method
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
    }
 
    /**
@@ -1328,7 +1337,11 @@ public abstract class ServiceCaller extends Object {
          throw new MethodNotImplementedError();
       }
 
-      final String THIS_METHOD = "shouldFailOver(CallRequest,Throwable)";
+      final String THIS_METHOD = "shouldFailOver("
+                               + CallRequest.class.getName()
+                               + ','
+                               + Throwable.class.getName()
+                               + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
@@ -1379,7 +1392,13 @@ public abstract class ServiceCaller extends Object {
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
 
-      final String THIS_METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
+      final String THIS_METHOD = "shouldFailOver("
+                               + CallRequest.class.getName()
+                               + ','
+                               + CallConfig.class.getName()
+                               + ','
+                               + CallExceptionList.class.getName()
+                               + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
@@ -1393,9 +1412,12 @@ public abstract class ServiceCaller extends Object {
                                      + " called while class "
                                      + _className
                                      + " uses old-style (XINS 1.0) constructor.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL);
+         RuntimeException exception = Utils.logProgrammingError(
+            CLASSNAME,     THIS_METHOD,
+            SUBJECT_CLASS, SUBJECT_METHOD,
+            DETAIL);
+         Log.log_1004(exception, CLASSNAME, THIS_METHOD, null);
+         throw exception;
       }
 
       // Determine if fail-over is applicable
