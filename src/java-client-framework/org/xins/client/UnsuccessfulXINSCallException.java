@@ -13,8 +13,8 @@ import org.xins.common.service.TargetDescriptor;
 /**
  * Exception that indicates that a result code was returned by the API call.
  *
- * <p><em>Since XINS 1.1.0, this class is no longer <code>final</code>.</em>.
- * However, all methods still are.
+ * <p><em>Since XINS 1.1.0, this class is no longer <code>final</code>.
+ * However, all methods still are.</em>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
