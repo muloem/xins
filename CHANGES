@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.29:
 
 * Responder: Added method fail(ResultCode).
 
+* Upgraded xmlenc to release 0.33.
+
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.28:
