@@ -86,24 +86,7 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="output/param" mode="method" />
 		<xsl:if test="output/data/element">
-			<!-- TODO: FIXME: Remove getDataElement() -->
 			<xsl:text><![CDATA[
-
-   /**
-    * Gets the data element, if any. If there is no data element, then
-    * <code>null</code> is returned.
-    *
-    * @return
-    *    the data element, or <code>null</code> if there is none.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0-beta9 to avoid a clash if a parameter is
-    *    called <em>dataElement</em>. Use {@link #dataElement()} instead. Note
-    *    that this method will be removed before XINS 1.0.0-rc1.
-    */
-   public org.xins.client.DataElement getDataElement() {
-      return _dataElement;
-   }
 
    /**
     * Returns the data element, if any. If no data element (or an empty data
