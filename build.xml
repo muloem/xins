@@ -90,7 +90,6 @@
 			<classpath>
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -134,7 +133,6 @@
 				<pathelement path="build/classes/java-common" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -175,7 +173,6 @@
 				<pathelement path="build/classes/java-common" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -223,7 +220,6 @@
 				<pathelement location="build/xins-client.jar" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
-				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -239,7 +235,6 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
-				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
 				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
@@ -436,6 +431,7 @@
 				<include name="src/bin/xins.bat"               />
 				<include name="src/config/**/*"                />
 				<include name="src/css/**/*"                   />
+				<include name="src/demos/**/*"                 />
 				<include name="src/java-client-framework/**/*" />
 				<include name="src/java-common/**/*"           />
 				<include name="src/java-server-framework/**/*" />
@@ -471,6 +467,7 @@
 				<include name="src/bin/xins.bat"               />
 				<include name="src/config/**/*"                />
 				<include name="src/css/**/*"                   />
+				<include name="src/demos/**/*"                 />
 				<include name="src/java-client-framework/**/*" />
 				<include name="src/java-common/**/*"           />
 				<include name="src/java-server-framework/**/*" />
@@ -525,4 +522,47 @@
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
+	<target name="-demo-caller-pretest">
+		<condition property="demo-caller-properties-set">
+			<and>
+				<isset property="config"  />
+				<isset property="request" />
+			</and>
+		</condition>
+	</target>
+
+	<target name="-demo-caller-properties-notset" depends="-demo-caller-pretest" unless="demo-caller-properties-set">
+		<echo message="The properties 'config' and 'request' need to be set." />
+	</target>
+
+	<target name="demo-caller" depends="java-client-framework,-demo-caller-properties-notset" if="demo-caller-properties-set" description="Executes the 'Caller' demo program">
+		<mkdir dir="build/classes/demos/caller" />
+		<javac
+		srcdir="src/demos/caller/java"
+		destdir="build/classes/demos/caller"
+		debug="true"
+		deprecation="true"
+		optimize="false"
+		target="1.2">
+			<classpath>
+				<pathelement path="build/xins-common.jar" />
+				<pathelement path="build/xins-client.jar" />
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+			</classpath>
+		</javac>
+		<java
+		classname="org.xins.demos.caller.Main"
+		fork="true">
+			<classpath>
+				<pathelement path="build/classes/demos/caller" />
+				<pathelement path="build/xins-common.jar" />
+				<pathelement path="build/xins-client.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
+			<arg value="${config}" />
+			<arg value="${request}" />
+		</java>
+	</target>
 </project>
