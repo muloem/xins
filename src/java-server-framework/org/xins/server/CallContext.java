@@ -249,6 +249,7 @@ implements Responder, Log {
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
+      _xmlOutputter.declaration();
 
       // Determine the function name
       String functionName = request.getParameter("_function");
@@ -259,6 +260,12 @@ implements Responder, Log {
          functionName = _api.getDefaultFunctionName();
       }
       _functionName = functionName;
+
+      // Determine the XSLT stylesheet, if any
+      String xslt = request.getParameter("_xslt");
+      if (xslt != null) {
+         _xmlOutputter.pi("xml-stylesheet", "type=\"text/xsl\" href=\"" + xslt + "\"");
+      }
 
       // Determine the function object, logger, call ID, log prefix
       _function  = (functionName == null) ? null : _api.getFunction(functionName);
@@ -489,7 +496,6 @@ implements Responder, Log {
       // Validate
       _responseValidator.startResponse(success, returnCode);
 
-      _xmlOutputter.declaration();
       _xmlOutputter.startTag("result");
 
       if (success) {
