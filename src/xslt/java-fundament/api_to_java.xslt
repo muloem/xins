@@ -217,7 +217,8 @@ public class APIImpl extends API {
 </xsl:text>
 	<xsl:if test="instance">
 		<xsl:text>
-   protected void initImpl(Properties properties)
+   protected void initImpl(org.xins.util.collections.PropertyReader buildSettings,
+                           org.xins.util.collections.PropertyReader runtimeSettings)
    throws Throwable {</xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>
