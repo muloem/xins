@@ -49,6 +49,56 @@ public interface ResponseValidator {
    throws InvalidResponseException;
 
    /**
+    * Callback that indicates a new element is added to the data section.
+    *
+    * @param name
+    *    the name of the element, never <code>null</code>.
+    *
+    * @throws InvalidResponseException
+    *    if the specified element is considered invalid in this context.
+    */
+   void startTag(String name)
+   throws InvalidResponseException;
+
+   /**
+    * Callback that indicates an attribute is added.
+    *
+    * @param name
+    *    the name of the attribute, never <code>null</code>.
+    *
+    * @param value
+    *    the value of the attribute, never <code>null</code>.
+    *
+    * @throws InvalidResponseException
+    *    if the specified attribute is considered invalid in this context.
+    */
+   void attribute(String name, String value)
+   throws InvalidResponseException;
+
+   /**
+    * Callback that indicates text is added within the current element in the
+    * data section.
+    *
+    * @param text
+    *    the PCDATA text that is being added in the response, never
+    *    <code>null</code>.
+    *
+    * @throws InvalidResponseException
+    *    if the specified PCDATA text is considered invalid in this context.
+    */
+   void pcdata(String text)
+   throws InvalidResponseException;
+
+   /**
+    * Callback that indicates the current element is closed.
+    *
+    * @throws InvalidResponseException
+    *    if the response is now considered invalid in this context.
+    */
+   void endTag()
+   throws InvalidResponseException;
+
+   /**
     * Callback that indicates the response is ended.
     *
     * <p>Either this method or {@link #cancelResponse()} is used to indicate a

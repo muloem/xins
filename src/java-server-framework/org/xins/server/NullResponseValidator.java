@@ -58,6 +58,26 @@ implements ResponseValidator {
       // empty
    }
 
+   public void startTag(String name)
+   throws InvalidResponseException {
+      // empty
+   }
+
+   public void attribute(String name, String value)
+   throws InvalidResponseException {
+      // empty
+   }
+
+   public void pcdata(String text)
+   throws InvalidResponseException {
+      // empty
+   }
+
+   public void endTag()
+   throws InvalidResponseException {
+      // empty
+   }
+
    public final void endResponse() {
       // empty
    }
