@@ -421,6 +421,7 @@ $Id$
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+								<fileset dir="${ant.home}/lib" includes="**/*.jar" />
 							</classpath>
 						</javadoc>
 						<copy
@@ -530,6 +531,7 @@ $Id$
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
+							<fileset dir="${ant.home}/lib" includes="**/*.jar" />
 						</classpath>
 					</javadoc>
 					<copy

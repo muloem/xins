@@ -305,6 +305,7 @@
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
 				<fileset dir="depends/runtime"             includes="**/*.jar" />
+				<fileset dir="${ant.home}/lib"             includes="**/*.jar" />
 			</classpath>
 			<link
 			href="http://java.sun.com/products/servlet/2.3/javadoc/"
