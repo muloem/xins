@@ -13,7 +13,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -45,6 +47,28 @@ public final class AddReleaseTask extends Task {
     * The directory on the FTP server to upload the distribution files to.
     */
    private static final String FTP_DIR = "incoming";
+
+   /**
+    * The <em>debug</em> log level.
+    */
+   //private static int DEBUG = Project.MSG_DEBUG;
+   private static int DEBUG = Project.MSG_INFO;
+
+   /**
+    * The <em>verbose</em> log level.
+    */
+   //private static int VERBOSE = Project.MSG_VERBOSE;
+   private static int VERBOSE = Project.MSG_INFO;
+
+   /**
+    * The <em>information</em> log level.
+    */
+   private static int INFO = Project.MSG_INFO;
+
+   /**
+    * The <em>error</em> log level.
+    */
+   private static int ERROR = Project.MSG_ERR;
 
 
    //-------------------------------------------------------------------------
@@ -253,14 +277,14 @@ public final class AddReleaseTask extends Task {
          try {
             uploadFile();
          } catch (BuildException e) {
-            log("Ignoring build error: " + e.getMessage());
+            log("Ignoring file upload error: " + e.getMessage(), INFO);
          }
       } else {
          uploadFile();
       }
 
       // Use our own keystore
-      log("Using keystore file \"" + _keystore + "\".", Project.MSG_DEBUG);
+      log("Using keystore file \"" + _keystore + "\".", DEBUG);
       System.setProperty("javax.net.ssl.trustStore", _keystore);
 
       // Login to SourceForge site
@@ -268,31 +292,42 @@ public final class AddReleaseTask extends Task {
       login();
 
       // Create a new release
-      createRelease();
+      // XXX: createRelease();
    }
 
    /**
     * Attempts to disable certicate validation for HTTPS connections.
+    *
+    * @throws BuildException
+    *    if anything goes wrong.
     */
-   private void disableCertificateValidation() {
+   private void disableCertificateValidation()
+   throws BuildException {
 
       // Create a trust manager that does not validate certificate chains
       TrustManager[] tm = new TrustManager[] { new NaiveTrustManager() };
     
       // Install the all-trusting trust manager
       try {
-         log("Disabling SSL certificate validation.", Project.MSG_VERBOSE);
-         SSLContext sc = SSLContext.getInstance("SSLv3");
+         log("Disabling SSL certificate validation.", VERBOSE);
+         SSLContext sc = SSLContext.getInstance("SSL");
          sc.init(null, tm, new SecureRandom());
          HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-         log("Disabled SSL certificate validation.", Project.MSG_DEBUG);
+         log("Disabled SSL certificate validation.", DEBUG);
       } catch (Exception e) {
          throw new BuildException("Error while disabling SSL certificate validation.", e);
       }
    }
 
+   /**
+    * Uploads the distribution file to the SourceForge FTP server.
+    *
+    * @throws BuildException
+    *    if the uploading fails.
+    */
    private void uploadFile() throws BuildException {
 
+      // Create a File object
       File f = new File(_file);
 
       // Create stream to file
@@ -305,14 +340,15 @@ public final class AddReleaseTask extends Task {
          throw new BuildException("Unable to open file \"" + _file + "\".");
       }
 
+      // Create an FTP client
       FTPClient ftp = new FTPClient();
 
       try {
          // Connect
-         log("Connecting to FTP server \"" + FTP_SERVER + "\".", Project.MSG_VERBOSE);
+         log("Connecting to FTP server \"" + FTP_SERVER + "\".", VERBOSE);
          ftp.connect(FTP_SERVER);
-         log("Connected to FTP server \"" + FTP_SERVER + "\".", Project.MSG_DEBUG);
-         log("FTP server \"" + FTP_SERVER + "\" returned reply string \"" + ftp.getReplyString() + "\".", Project.MSG_DEBUG);
+         log("Connected to FTP server \"" + FTP_SERVER + "\".", DEBUG);
+         log("FTP server \"" + FTP_SERVER + "\" returned reply string \"" + ftp.getReplyString() + "\".", DEBUG);
 
          // Check reply code to verify success
          int reply = ftp.getReplyCode();
@@ -321,29 +357,32 @@ public final class AddReleaseTask extends Task {
          }
 
          // Login
-         log("Logging in as user \"anonymous\".", Project.MSG_DEBUG);
+         log("Logging in as user \"anonymous\".", DEBUG);
          ftp.login("anonymous", _user + "@users.sourceforge.net");
-         log("Logged in as user \"anonymous\".", Project.MSG_DEBUG);
+         log("Logged in as user \"anonymous\".", DEBUG);
 
          // Set file type
-         log("Setting file type to binary.", Project.MSG_DEBUG);
+         log("Setting file type to binary.", DEBUG);
          ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
-         log("Set file type to binary.", Project.MSG_DEBUG);
+         log("Set file type to binary.", DEBUG);
 
          // Change to correct directory
-         log("Changing working directory to \"" + FTP_DIR + "\".", Project.MSG_DEBUG);
+         log("Changing working directory to \"" + FTP_DIR + "\".", DEBUG);
          ftp.changeWorkingDirectory(FTP_DIR);
-         log("Changed working directory to \"" + FTP_DIR + "\".", Project.MSG_DEBUG);
+         log("Changed working directory to \"" + FTP_DIR + "\".", DEBUG);
 
          // Upload file
-         log("Uploading \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, Project.MSG_VERBOSE);
+         log("Uploading \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, VERBOSE);
          if (!ftp.storeFile(fileName, in)) {
-            throw new BuildException("Failed to upload \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName);
+            int code = ftp.getReplyCode();
+            String replyString = ftp.getReplyString();
+            String url = "ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName;
+            throw new BuildException("Failed to upload \"" + _file + "\" to " + url + ". Reply code " + code + ": \"" + replyString + "\".");
          }
-         log("Uploaded \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, Project.MSG_DEBUG);
+         log("Uploaded \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, DEBUG);
 
       } catch(IOException e) {
-         throw new BuildException("I/O error while uploading file.", e);
+         throw new BuildException("Failed to upload file to FTP server.", e);
       } finally {
          if(ftp.isConnected()) {
             try {
@@ -355,14 +394,22 @@ public final class AddReleaseTask extends Task {
       }
    }
 
+   /**
+    * Performs a login on the SourceForge web site.
+    *
+    * @throws BuildException
+    *    if the login failed.
+    */
    private void login() throws BuildException {
 
+      // Combine URL and parameters into a PostMethod object
       PostMethod method = new PostMethod("https://sourceforge.net/account/login.php");
       method.addParameter("form_loginname", _user);
       method.addParameter("form_pw",        _password);
       method.addParameter("login",          "Login With SSL");
 
-      log("Logging in to SourceForge site as \"" + _user + "\".", Project.MSG_VERBOSE);
+      // Execute the request
+      log("Logging in to SourceForge site as \"" + _user + "\".", VERBOSE);
       int code;
       try {
          _httpClient.executeMethod(method);
@@ -377,7 +424,18 @@ public final class AddReleaseTask extends Task {
       if (code != 302) {
          throw new BuildException("HTTP result code " + code + " while logging in. Status line: " + method.getStatusLine());
       }
-      log("Logged in to SourceForge site as \"" + _user + "\".", Project.MSG_DEBUG);
+
+      // Determine redirect location
+      Header locationHeader = method.getResponseHeader("Location");
+      // TODO: Make more safe
+      try {
+         String location = locationHeader.getValues()[0].toString();
+         log("Login resulted in 302 redirect to: " + location);
+      } catch (HttpException e) {
+         throw new BuildException("Unable to determine redirect location.", e);
+      }
+      
+      log("Logged in to SourceForge site as \"" + _user + "\".", DEBUG);
    }
 
    private void createRelease() throws BuildException {
@@ -387,7 +445,7 @@ public final class AddReleaseTask extends Task {
       method.addParameter("package_id",   _packageID);
       method.addParameter("submit",       "Create This Release");
 
-      log("Creating release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', Project.MSG_VERBOSE);
+      log("Creating release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', VERBOSE);
       int code;
       try {
          _httpClient.executeMethod(method);
