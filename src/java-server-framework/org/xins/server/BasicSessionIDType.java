@@ -42,7 +42,7 @@ public final class BasicSessionIDType extends SessionIDType {
     *    if <code>api == null</code>.
     */
    BasicSessionIDType(API api) throws IllegalArgumentException {
-      super("basicSessionID", java.lang.Long.class, api);
+      super("basicSessionID", SessionID.class, api);
       FastStringBuffer buffer = new FastStringBuffer(17, HexConverter.toHexString(api.getStartupTimestamp()));
       buffer.append(':');
       _prefix    = buffer.toString();
@@ -99,7 +99,7 @@ public final class BasicSessionIDType extends SessionIDType {
       }
 
       try {
-         return new Long(HexConverter.parseHexString(string, 17));
+         return new SessionID(HexConverter.parseHexString(string, 17));
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(this, string);
       }
@@ -107,10 +107,9 @@ public final class BasicSessionIDType extends SessionIDType {
 
    public String toString(Object value) {
       MandatoryArgumentChecker.check("value", value);
-      Long l = (Long) value;
-      // TODO: Cache the FastStringBuffer in a ThreadLocal ?
+      SessionID sessionID = (SessionID) value;
       FastStringBuffer buffer = new FastStringBuffer(33, _prefix);
-      buffer.append(HexConverter.toHexString(l.longValue()));
+      buffer.append(sessionID.toString());
       return buffer.toString();
    }
 
@@ -173,7 +172,64 @@ public final class BasicSessionIDType extends SessionIDType {
          synchronized (_lock) {
             num = _randomizer.nextLong();
          }
-         return new Long(num);
+         return new SessionID(num);
+      }
+   }
+
+   /**
+    * Session ID used in <code>BasicSessionIDType</code>.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.144
+    */
+   private final class SessionID
+   extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>SessionID</code> object with the specified ID
+       * number.
+       */
+      private SessionID(long id) {
+         _id = id;
+         _asString = HexConverter.toHexString(id);
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The ID number.
+       */
+      private final long _id;
+
+      /**
+       * The ID number, converted to a hexadecimal string.
+       */
+      private final String _asString;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public int hashCode() {
+         return (int) _id;
+      }
+
+      public boolean equals(Object o) {
+         return ((o instanceof SessionID) && ((SessionID) o)._id == _id);
+      }
+
+      public String toString() {
+         return _asString;
       }
    }
 }
