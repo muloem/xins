@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 0.195:
   - Added ExceptionUtils class with a single class function getRootCause().
     This method determines the root cause of an exception using the method
     Throwable.getCause().
+  - Changed reasonFor() in class ServiceCaller to use the root cause for the
+    exception as the exception to report the reason for.
 
 * XINS/Java Server Framework:
   - Made the method getResultBuilder() in class FunctionResult
