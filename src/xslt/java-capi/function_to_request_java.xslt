@@ -147,10 +147,39 @@ extends org.xins.client.AbstractCAPICallRequest {
     */
    public java.lang.String validateImpl()
    throws org.xins.client.UnacceptableRequestException {
-      // TODO
-   }
+      return null; // TODO
+   }]]></xsl:text>
+
+		<xsl:for-each select="input/param">
+			<xsl:text><![CDATA[
+
+   /**
+    * Sets the <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[</em> parameter.
+    *
+    * @param ]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[
+    *    the new value for the parameter, can be <code>null</code>.
+    */
+   public void set]]></xsl:text>
+			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+			<xsl:value-of select="substring(@name,2)" />
+			<xsl:text>(java.lang.String </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>) {
+      _request.setParameter("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>);
+   }</xsl:text>
+		</xsl:for-each>
+
+		<xsl:text>
 }
-]]></xsl:text>
+</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
 
