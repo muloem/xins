@@ -1,22 +1,29 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.159:
 
-* Dependencies:
-  - Updated to xmlenc 0.42.
-
-* Generated specification documentation:
-  - The examples listed in the html page can be executed by clicking
-    on the links to the test forms.
-  - If an <output><param> section exists for a function the generation of 
-    the implementation generates the responder.param("...", "TODO"); 
-    automiatically.
+* XINS/Java Server Framework:
+  - For each 'param' element in the output section a responder.param() call is
+    automatically inserted when an example [Function]Impl.java file is
+    generated.
 
 * XINS/Java Client Framework:
-  - Added a getXINSVersion in the class CAPI that returns the version upon
-    which the classes has been built.
+  - Added an abstract getXINSVersion() method in the AbstractCAPI class that
+    returns the XINS version with which the CAPI class has been built.
+
+* Generated CAPI classes:
+  - Generating implementation for getXINSVersion() method, defined in
+    AbstractCAPI class.
   
-* Build and release process:
-  - Generation of the MD5 after the creation of the war file.
+* Generated specification documentation:
+  - Added links to allow the execution of the examples listed for a function
+    on a specific environment.
+
+* Generated build file:
+  - Automatic generation and display of the MD5 after the creation of the WAR
+    file.
+
+* Dependencies:
+  - Updated to xmlenc 0.42.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.158:
@@ -302,7 +309,7 @@ CHANGES INTRODUCED IN XINS 0.146:
     ActualFunctionCaller.
   - Added 'String message' argument to the NoSuchSessionException constructor.
 
-* Generateed CAPI classes:
+* Generated CAPI classes:
   - Shared sessions are no longer supported. The support for it was untested
     and incomplete, so it has been removed completely, to simplify the code.
     Support may be re-added in in the future.
