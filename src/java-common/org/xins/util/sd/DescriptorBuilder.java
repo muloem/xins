@@ -59,9 +59,21 @@ public final class DescriptorBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
+    *
+    * @throws DescriptorBuilder.Exception
+    *    if <code>properties == null || propertyName == null</code>.
     */
    public Descriptor build(PropertyReader properties, String propertyName)
    throws IllegalArgumentException, DescriptorBuilder.Exception {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+
+      String value = properties.get(propertyName);
+      if (value == null) {
+         throw new DescriptorBuilder.Exception("Base property \"" + propertyName + "\" not found.");
+      }
+
       return null; // TODO
    }
 
@@ -71,7 +83,7 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Exception thrown if a descriptor could not be built.
+    * Exception thrown if a service descriptor object could not be built.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
