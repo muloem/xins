@@ -45,6 +45,7 @@ import java.util.HashMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xins.logdoc.AbstractLog;
+import org.xins.logdoc.NoSuchTranslationBundleException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
