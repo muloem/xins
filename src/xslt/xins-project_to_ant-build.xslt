@@ -553,7 +553,7 @@
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 					<style
 					in="{$api_file}"
-					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
+					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
 					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
 						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
