@@ -1,4 +1,16 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.164:
+
+* XINS/Java Common Library:
+  - Added class LogCentral, with setLocale(String) method.
+  - Renamed NoSuchTranslationBundleException to UnsupportedLocaleException.
+  - Added inner class LogController in AbstractLog.
+
+* Logdoc:
+  - Generating LogController subclass for each Log class.
+  - Removed setTranslationBundle() from generated Log class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
 * XINS/Java Server Framework:
