@@ -47,11 +47,10 @@
 
 	<translation entry="1400">Dossier d'expiration <value-of-param name="folderName" format="quoted" />: tic-tac effectué. Entrées expirées: <value-of-param name="expired" />. Entrées restantes: <value-of-param name="remaining" />.</translation>
 	<translation entry="1401"><value-of-param name="folder" /> associé avec <value-of-param name="strategy" />.</translation>
-	<translation entry="1402">Thread de la statégie d'expiration <value-of-param name="name" format="quoted" /> démarré.</translation>
-	<translation entry="1403">Thread de la statégie d'expiration <value-of-param name="name" format="quoted" /> arrêté.</translation>
-<!-- FIXME for Anthony: Translate log messages 1404-1407 to French -->
-	<translation entry="1404">Sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1405">Sleep interrupted after <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1406">Woke up after sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1407">Triggering tick in expiry strategy thread.</translation>
+	<translation entry="1402">Thread de la stratégie d'expiration <value-of-param name="name" format="quoted" /> démarré.</translation>
+	<translation entry="1403">Thread de la stratégie d'expiration <value-of-param name="name" format="quoted" /> arrêté.</translation>
+	<translation entry="1404">Pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
+	<translation entry="1405">Pause interrompue après <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
+	<translation entry="1406">Reprise après une pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
+	<translation entry="1407">Execution d'un tic-tac dans le thread de la stratégie d'expiration.</translation>
 </translation-bundle>
