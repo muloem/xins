@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 0.161:
   - Added the SingleEntryMap class. This class is the implementation of a 
     Map that can only include one entry. Some unit tests testing this class
     has also been added.
+  - Added AbstractPropertyReader that contains the common implementation 
+    of the different PropertyReader.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 

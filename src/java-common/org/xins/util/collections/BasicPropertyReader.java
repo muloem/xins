@@ -4,8 +4,6 @@
 package org.xins.util.collections;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -15,8 +13,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class BasicPropertyReader
-extends Object
-implements PropertyReader {
+extends AbstractPropertyReader {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -34,19 +31,13 @@ implements PropertyReader {
     * Constructs a new <code>BasicPropertyReader</code>.
     */
    public BasicPropertyReader() {
-      _properties = new HashMap(89);
+      super(new HashMap(89));
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The mappings from property keys to values.
-    */
-   private final Map _properties;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -70,25 +61,16 @@ implements PropertyReader {
     */
    public void set(String name, String value)
    throws IllegalArgumentException {
-
+    
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
-
+   
       // Store the value
       if (value != null) {
-         _properties.put(name, value);
+        getPropertiesMap().put(name, value);
       } else {
-         _properties.remove(name);
+        getPropertiesMap().remove(name);
       }
    }
 
-   public String get(String name) throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("name", name);
-      Object o = _properties.get(name);
-      return (o == null) ? null : (String) o;
-   }
-
-   public Iterator getNames() {
-      return _properties.keySet().iterator();
-   }
 }

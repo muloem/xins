@@ -3,7 +3,6 @@
  */
 package org.xins.util.collections;
 
-import java.util.Iterator;
 import java.util.Properties;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -14,8 +13,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class PropertiesPropertyReader
-extends Object
-implements PropertyReader {
+extends AbstractPropertyReader {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -40,8 +38,8 @@ implements PropertyReader {
     */
    public PropertiesPropertyReader(Properties properties)
    throws IllegalArgumentException {
+      super(properties);
       MandatoryArgumentChecker.check("properties", properties);
-      _properties = properties;
    }
 
 
@@ -49,24 +47,9 @@ implements PropertyReader {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The <code>Properties</code> object to read from. This field is never
-    * <code>null</code>.
-    */
-   private final Properties _properties;
-
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   public String get(String name) throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("name", name);
-      Object o = _properties.get(name);
-      return (o == null) ? null : (String) o;
-   }
-
-   public Iterator getNames() {
-      return _properties.keySet().iterator();
-   }
 }

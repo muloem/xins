@@ -92,8 +92,6 @@ XINS/JAVA COMMON LIBRARY
 * Change ExpiryFolder to allow retrieval of slot info.
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
-* Create an AbstractPropertyReader that would implements the common parts
-  of the different PropertyReader classes.
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
