@@ -12,7 +12,9 @@ package org.xins.server;
  * @since XINS 0.50
  */
 public final class InvalidResponseException
-extends Exception {
+extends RuntimeException {
+
+   // TODO: Extend Exception instead of RuntimeException ?
 
    //-------------------------------------------------------------------------
    // Class fields
