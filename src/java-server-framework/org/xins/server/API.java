@@ -22,7 +22,6 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
-import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
@@ -45,22 +44,49 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Constant indicating the <em>uninitialized</em> state. See
-    * {@link #_state}.
+    * The <em>INITIAL</em> state.
     */
-   private static final int UNINITIALIZED = 0;
+   private static final State INITIAL = new State("INITIAL");
 
    /**
-    * Constant indicating the <em>initializing</em> state. See
-    * {@link #_state}.
+    * The <em>BOOTSTRAPPING</em> state.
     */
-   private static final int INITIALIZING = 1;
+   private static final State BOOTSTRAPPING = new State("BOOTSTRAPPING");
 
    /**
-    * Constant indicating the <em>initialized</em> state. See
-    * {@link #_state}.
+    * The <em>BOOTSTRAPPING_FAILED</em> state.
     */
-   private static final int INITIALIZED = 2;
+   private static final State BOOTSTRAPPING_FAILED = new State("BOOTSTRAPPING_FAILED");
+
+   /**
+    * The <em>BOOTSTRAPPED</em> state.
+    */
+   private static final State BOOTSTRAPPED = new State("BOOTSTRAPPED");
+
+   /**
+    * The <em>INITIALIZING</em> state.
+    */
+   private static final State INITIALIZING = new State("INITIALIZING");
+
+   /**
+    * The <em>INITIALIZATION_FAILED</em> state.
+    */
+   private static final State INITIALIZATION_FAILED = new State("INITIALIZATION_FAILED");
+
+   /**
+    * The <em>INITIALIZED</em> state.
+    */
+   private static final State INITIALIZED = new State("INITIALIZED");
+
+   /**
+    * The <em>DISPOSING</em> state.
+    */
+   private static final State DISPOSING = new State("DISPOSING");
+
+   /**
+    * The <em>DISPOSED</em> state.
+    */
+   private static final State DISPOSED = new State("DISPOSED");
 
    /**
     * String returned by the function <code>_GetStatistics</code> when certain
@@ -117,6 +143,7 @@ implements DefaultResultCodes {
       // Initialize fields
       _name              = name;
       _stateLock         = new Object();
+      _state             = INITIAL;
       _startupTimestamp  = System.currentTimeMillis();
       _lifespanManagers  = new ArrayList();
       _functionsByName   = new HashMap();
@@ -137,10 +164,9 @@ implements DefaultResultCodes {
    private final String _name;
 
    /**
-    * The current state. Either {@link #UNINITIALIZED}, {@link #INITIALIZING}
-    * or {@link #INITIALIZED}.
+    * The current state.
     */
-   private int _state;
+   private State _state;
 
    /**
     * Lock object for the current state.
@@ -215,16 +241,15 @@ implements DefaultResultCodes {
    private final List _resultCodeList;
 
    /**
-    * The build-time settings. This field is initialized by
-    * {@link #init(PropertyReader,PropertyReader)}. It can be
-    * <code>null</code> before that.
+    * The build-time settings. This field is initialized exactly once by
+    * {@link #bootstrap(PropertyReader)}. It can be <code>null</code> before
+    * that.
     */
    private PropertyReader _buildSettings;
 
    /**
-    * The runtime settings. This field is initialized by
-    * {@link #init(PropertyReader,PropertyReader)}. It can be
-    * <code>null</code> before that.
+    * The runtime-time settings. This field is initialized by
+    * {@link #init(PropertyReader)}. It can be <code>null</code> before that.
     */
    private PropertyReader _runtimeSettings;
 
@@ -413,187 +438,198 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Initializes this API (wrapper method). The build-time configuration
-    * settings are stored internally before the actual implementation method
-    * {@link #initImpl(PropertyReader,PropertyReader)} is called.
+    * Bootstraps this API (wrapper method). This method calls
+    * {@link #bootstrapImpl(PropertyReader)}.
     *
     * @param buildSettings
-    *    the build-time configuration properties, can be <code>null</code>.
-    *
-    * @param runtimeSettings
-    *    the runtime configuration properties, can be <code>null</code>.
+    *    the build-time configuration properties, not <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if this API is already initialized.
+    *    TODO: determine
     *
-    * @throws Throwable
-    *    if the initialization fails
-    *    (in {@link #initImpl(PropertyReader,PropertyReader)}).
+    * @throws IllegalArgumentException
+    *    if <code>buildSettings == null</code>.
+    *
+    * @throws InitializationException
+    *    if the bootstrapping fails.
     */
-   public final void init(PropertyReader buildSettings,
-                          PropertyReader runtimeSettings)
+   public final void bootstrap(PropertyReader buildSettings)
    throws IllegalStateException, Throwable {
 
-      // Check and set state
       synchronized (_stateLock) {
-         if (_state != UNINITIALIZED) {
-            // TODO: Log ?
-            // TODO: String message = "The state is " + _state + " instead of " + UNINITIALIZED + '.');
-            // TODO: Library.STARTUP_LOG.error(message);
-            // TODO: throw new IllegalStateException(message);
-            throw new IllegalStateException("This API is not uninitialized anymore.");
+
+         // Check state
+         if (_state != INITIAL) {
+            throw new IllegalStateException("The current state is " + _state + " instead of " + INITIAL + '.');
          }
+
+         // Check argument
+         MandatoryArgumentChecker.check("buildSettings", buildSettings);
+
+         // Set the state
          _state = INITIALIZING;
-      }
 
-      // TODO: Check arguments
+         // Log the time zone
+         // TODO: Why log the time zone?
+         _timeZone = TimeZone.getDefault();
+         String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
+         String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
+         if (tzLongName.equals(tzShortName)) {
+            Library.BOOTSTRAP_LOG.info("Local time zone is " + tzLongName + '.');
+         } else {
+            Library.BOOTSTRAP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
+         }
 
-      // Set the time zone
-      _timeZone = TimeZone.getDefault();
-      String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
-      String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
-      if (tzLongName.equals(tzShortName)) {
-         Library.STARTUP_LOG.info("Local time zone is " + tzLongName + '.');
-      } else {
-         Library.STARTUP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
-      }
+         // Store the build-time settings
+         _buildSettings = buildSettings;
 
-      // Store the settings
-      _buildSettings = buildSettings != null
-                     ? buildSettings
-                     : new ProtectedPropertyReader(new Object());
-      _runtimeSettings = runtimeSettings != null
-                       ? runtimeSettings
-                       : new ProtectedPropertyReader(new Object());
+         // Check if a default function is set
+         _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
+         if (_defaultFunction != null) {
+            Library.BOOTSTRAP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
+         }
+         // TODO: Check that default function exists. If not, set state to
+         //       INITIALIZATION_FAILED
 
-      // Check if a default function is set
-      _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
-      if (_defaultFunction != null) {
-         Library.STARTUP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
-      }
-      // TODO: Check that default function exists
+         // Check if this API is session-based
+         _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased");
 
-      // Check if response validation is enabled
-      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
-      Library.STARTUP_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+         // XXX: Allow configuration of session ID type ?
 
-      // Check if this API is session-based
-      _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased");
+         // Initialize session-based API
+         if (_sessionBased) {
+            Library.BOOTSTRAP_LOG.debug("Performing session-related initialization.");
 
-      // XXX: Allow configuration of session ID type ?
+            // Initialize session ID type
+            _sessionIDType      = new BasicSessionID(this);
+            _sessionIDGenerator = _sessionIDType.getGenerator();
 
-      // Initialize session-based API
-      if (_sessionBased) {
-         Library.STARTUP_LOG.debug("Performing session-related initialization.");
+            // Determine session time-out duration and precision
+            final long MINUTE_IN_MS = 60000L;
+            long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
+            long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
-         // Initialize session ID type
-         _sessionIDType      = new BasicSessionID(this);
-         _sessionIDGenerator = _sessionIDType.getGenerator();
+            // Create expiry strategy and folder
+            _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
+            _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
+                                                      _sessionExpiryStrategy, // expiry strategy
+                                                      false,                  // strict thread sync checking? (TODO)
+                                                      5000L);                 // max queue wait time in ms    (TODO)
+         }
 
-         // Determine session time-out duration and precision
-         final long MINUTE_IN_MS = 60000L;
-         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
-         long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
+         // Get build-time properties
+         _deployment   = _buildSettings.get("org.xins.api.deployment");
+         _buildHost    = _buildSettings.get("org.xins.api.build.host");
+         _buildTime    = _buildSettings.get("org.xins.api.build.time");
+         _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
-         // Create expiry strategy and folder
-         _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
-         _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
-                                                   _sessionExpiryStrategy, // expiry strategy
-                                                   false,                  // strict thread sync checking? (TODO)
-                                                   5000L);                 // max queue wait time in ms    (TODO)
-      }
+         // Log build-time properties
+         FastStringBuffer buffer = new FastStringBuffer(160);
 
-      // Get build-time properties
-      _deployment   = _buildSettings.get("org.xins.api.deployment");
-      _buildHost    = _buildSettings.get("org.xins.api.build.host");
-      _buildTime    = _buildSettings.get("org.xins.api.build.time");
-      _buildVersion = _buildSettings.get("org.xins.api.build.version");
+         // - build host name
+         buffer.append("Built on ");
+         if (_buildHost != null && !("".equals(_buildHost))) {
+            buffer.append("host ");
+            buffer.append(_buildHost);
+         } else {
+            Library.BOOTSTRAP_LOG.warn("Build host name is not set.");
+            buffer.append("unknown host");
+            _buildHost = null;
+         }
 
-      // Log build-time properties
-      FastStringBuffer buffer = new FastStringBuffer(160);
+         // - build time
+         if (_buildTime != null && !("".equals(_buildTime))) {
+            buffer.append(" (at ");
+            buffer.append(_buildTime);
+            buffer.append(")");
+         } else {
+            Library.BOOTSTRAP_LOG.warn("Build time stamp is not set.");
+            _buildTime = null;
+         }
 
-      // - build host name
-      buffer.append("Built on ");
-      if (_buildHost != null && !("".equals(_buildHost))) {
-         buffer.append("host ");
-         buffer.append(_buildHost);
-      } else {
-         Library.STARTUP_LOG.warn("Build host name is not set.");
-         buffer.append("unknown host");
-         _buildHost = null;
-      }
+         // - deployment
+         if (_deployment != null && !("".equals(_deployment))) {
+            buffer.append(", for deployment \"");
+            buffer.append(_deployment);
+            buffer.append('"');
+         } else {
+            _deployment = null;
+         }
 
-      // - build time
-      if (_buildTime != null && !("".equals(_buildTime))) {
-         buffer.append(" (at ");
-         buffer.append(_buildTime);
-         buffer.append(")");
-      } else {
-         Library.STARTUP_LOG.warn("Build time stamp is not set.");
-         _buildTime = null;
-      }
+         // - XINS version
+         if (_buildVersion != null && !("".equals(_buildVersion))) {
+            buffer.append(", using XINS ");
+            buffer.append(_buildVersion);
+         } else {
+            Library.BOOTSTRAP_LOG.warn("Build version is not set.");
+            _buildVersion = null;
+         }
 
-      // - deployment
-      if (_deployment != null && !("".equals(_deployment))) {
-         buffer.append(", for deployment \"");
-         buffer.append(_deployment);
-         buffer.append('"');
-      } else {
-         _deployment = null;
-      }
+         buffer.append('.');
+         Library.BOOTSTRAP_LOG.info(buffer.toString());
 
-      // - XINS version
-      if (_buildVersion != null && !("".equals(_buildVersion))) {
-         buffer.append(", using XINS ");
-         buffer.append(_buildVersion);
-      } else {
-         Library.STARTUP_LOG.warn("Build version is not set.");
-         _buildVersion = null;
-      }
+         // Let the subclass perform initialization
+         try {
+            bootstrapImpl(buildSettings);
+            _state = BOOTSTRAPPED;
 
-      buffer.append('.');
-      Library.STARTUP_LOG.info(buffer.toString());
+         } finally {
+            if (_state != BOOTSTRAPPED) {
+               _state = BOOTSTRAPPING_FAILED;
+            }
+         }
 
-      // Let the subclass perform initialization
-      boolean succeeded = false;
-      try {
-         initImpl(buildSettings, runtimeSettings);
-         succeeded = true;
-
-      // Set the state
-      } finally {
-         synchronized (_stateLock) {
-            if (!succeeded) {
-               _state = UNINITIALIZED;
-            } else {
-               _state = INITIALIZED;
+         // Bootstrap all instances
+         int count = _lifespanManagers.size();
+         for (int i = 0; i < count; i++) {
+            LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
+            String className = lsm.getClass().getName();
+            Library.BOOTSTRAP_LOG.debug("Bootstrapping lifespan manager " + className + " for API \"" + _name + "\".");
+            try {
+               lsm.bootstrap(_buildSettings);
+               Library.BOOTSTRAP_LOG.info("Bootstrapped lifespan manager " + className + " for API \"" + _name + "\".");
+            } catch (Throwable exception) {
+               // XXX: The exception is not logged anywhere!
+               String message = "Failed to initialize lifespan manager " + className + " for API \"" + _name + "\" due to unexpected " + exception.getClass().getName() + '.';
+               Library.BOOTSTRAP_LOG.error(message);
+               throw new InitializationException(message);
             }
          }
       }
-
-      // XXX: Initialize all instances here somewhere ?
    }
 
    /**
-    * Initializes this API (implementation method).
+    * Bootstraps this API (implementation method).
     *
     * <p />The implementation of this method in class {@link API} is empty.
-    * Custom subclasses can perform any necessary initialization in this
+    * Custom subclasses can perform any necessary bootstrapping in this
     * class.
+    *
+    * <p />Note that bootstrapping and initialization are different. Bootstrap
+    * includes only the one-time configuration of the API based on the
+    * build-time settings, while the initialization
+    *
+    * <p />The {@link #add(LifespanManager)} may be called from this method,
+    * and from this method <em>only</em>.
     *
     * @param buildSettings
     *    the build-time properties, guaranteed not to be <code>null</code>.
     *
-    * @param runtimeSettings
-    *    the runtime properties, guaranteed not to be <code>null</code>.
-    *
     * @throws Throwable
     *    if the initialization fails.
     */
-   protected void initImpl(PropertyReader buildSettings,
-                           PropertyReader runtimeSettings)
+   protected void bootstrapImpl(PropertyReader buildSettings)
    throws Throwable {
       // empty
+   }
+
+   public void init(PropertyReader runtimeSettings)
+   throws InitializationException {
+      // Check if response validation is enabled
+      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
+      Library.INIT_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+
+      // TODO: Call initImpl(PropertyReader)
    }
 
    /**
@@ -611,7 +647,7 @@ implements DefaultResultCodes {
     *    and deinitialize at shutdown time, not <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if this API is currently not in the initializing state.
+    *    if this API is currently not bootstrapping.
     *
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
@@ -627,34 +663,23 @@ implements DefaultResultCodes {
           InitializationException {
 
       // Check state
-      if (_state != INITIALIZING) {
-         // TODO: Log and throw
-         throw new IllegalStateException("Currently not initializing.");
+      synchronized (_stateLock) {
+         if (_state != BOOTSTRAPPING) {
+            // TODO: Log and throw?
+            throw new IllegalStateException("Currently not bootstrapping.");
+         }
       }
 
       // Check preconditions
       MandatoryArgumentChecker.check("lsm", lsm);
 
-      // Store the lifespan manager in a list
+      // Store the lifespan manager in the list
       _lifespanManagers.add(lsm);
-
-      boolean succeeded = false;
-      String className = lsm.getClass().getName();
-      Library.STARTUP_LOG.debug("Initializing lifespan manager " + className + " for API \"" + _name + "\".");
-      try {
-         lsm.init(_buildSettings, _runtimeSettings);
-         succeeded = true;
-      } finally {
-         if (succeeded) {
-            Library.STARTUP_LOG.info("Initialized lifespan manager " + className + " for API \"" + _name + "\".");
-         } else {
-            Library.STARTUP_LOG.error("Failed to initialize lifespan manager " + className + " for API \"" + _name + "\".");
-         }
-      }
    }
 
    /**
-    * Performs shutdown of this XINS API.
+    * Performs shutdown of this XINS API. This method will never throw any
+    * exception.
     */
    final void destroy() {
       _shutDown = true;
@@ -1169,9 +1194,23 @@ implements DefaultResultCodes {
 
       CallResultBuilder builder = new CallResultBuilder();
 
-      // Initialization settings
+      // Build settings
       Iterator names = _runtimeSettings.getNames();
-      builder.startTag("initialization");
+      builder.startTag("build");
+      while (names.hasNext()) {
+         String key   = (String) names.next();
+         String value = _buildSettings.get(key);
+
+         builder.startTag("property");
+         builder.attribute("name", key);
+         builder.pcdata(value);
+         builder.endTag();
+      }
+      builder.endTag();
+
+      // Runtime settings
+      names = _runtimeSettings.getNames();
+      builder.startTag("runtime");
       while (names.hasNext()) {
          String key   = (String) names.next();
          String value = _runtimeSettings.get(key);
@@ -1185,7 +1224,7 @@ implements DefaultResultCodes {
 
       // System properties
       Enumeration e = System.getProperties().propertyNames();
-      builder.startTag("runtime");
+      builder.startTag("system");
       while (e.hasMoreElements()) {
          String key   = (String) e.nextElement();
          String value = System.getProperty(key);
@@ -1200,5 +1239,77 @@ implements DefaultResultCodes {
       builder.endTag();
 
       return builder;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * State of an <code>API</code>.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.125
+    */
+   private static final class State extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>State</code> object.
+       *
+       * @param name
+       *    the name of this state, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null</code>.
+       */
+      private State(String name) throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("name", name);
+
+         _name = name;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The name of this state. Cannot be <code>null</code>.
+       */
+      private final String _name; 
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Returns the name of this state.
+       *
+       * @return
+       *    the name of this state, cannot be <code>null</code>.
+       */
+      String getName() {
+         return _name;
+      }
+
+      /**
+       * Returns a textual representation of this object.
+       *
+       * @return
+       *    the name of this state, never <code>null</code>.
+       */
+      public String toString() {
+         return _name;
+      }
    }
 }

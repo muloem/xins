@@ -23,7 +23,7 @@ import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.io.FileWatcher;
-import org.xins.util.servlet.ServletUtils;
+import org.xins.util.servlet.ServletConfigPropertyReader;
 import org.xins.util.text.Replacer;
 
 /**
@@ -41,27 +41,62 @@ implements Servlet {
    //-------------------------------------------------------------------------
 
    /**
-    * The <em>uninitialized</em> state. See {@link #_state}.
+    * The <em>INITIAL</em> state.
     */
-   private static final State UNINITIALIZED = new State("UNINITIALIZED");
+   private static final State INITIAL = new State("INITIAL");
 
    /**
-    * The <em>initializing</em> state. See {@link #_state}.
+    * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
     */
-   private static final State INITIALIZING = new State("INITIALIZING");
+   private static final State BOOTSTRAPPING_FRAMEWORK = new State("BOOTSTRAPPING_FRAMEWORK");
 
    /**
-    * The <em>ready</em> state. See {@link #_state}.
+    * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
+    */
+   private static final State FRAMEWORK_BOOTSTRAP_FAILED = new State("FRAMEWORK_BOOTSTRAP_FAILED");
+
+   /**
+    * The <em>CONSTRUCTING_API</em> state.
+    */
+   private static final State CONSTRUCTING_API = new State("CONSTRUCTING_API");
+
+   /**
+    * The <em>API_CONSTRUCTION_FAILED</em> state.
+    */
+   private static final State API_CONSTRUCTION_FAILED = new State("API_CONSTRUCTION_FAILED");
+
+   /**
+    * The <em>BOOTSTRAPPING_API</em> state.
+    */
+   private static final State BOOTSTRAPPING_API = new State("BOOTSTRAPPING_API");
+
+   /**
+    * The <em>API_BOOTSTRAP_FAILED</em> state.
+    */
+   private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED");
+
+   /**
+    * The <em>INITIALIZING_API</em> state.
+    */
+   private static final State INITIALIZING_API = new State("INITIALIZING_API");
+
+   /**
+    * The <em>API_INITIALIZATION_FAILED</em> state.
+    */
+   private static final State API_INITIALIZATION_FAILED = new State("API_INITIALIZATION_FAILED");
+
+   /**
+    * The <em>READY</em> state.
     */
    private static final State READY = new State("READY");
 
    /**
-    * The <em>disposing</em> state. See {@link #_state}.
+    * The <em>DISPOSING</em> state.
     */
    private static final State DISPOSING = new State("DISPOSING");
 
    /**
-    * The <em>disposed</em> state. See {@link #_state}.
+    * The <em>DISPOSED</em> state.
     */
    private static final State DISPOSED = new State("DISPOSED");
 
@@ -82,7 +117,7 @@ implements Servlet {
    public static final String CONFIG_FILE_SYSTEM_PROPERTY = "org.xins.server.config";
 
    /**
-    * The name of the initialization property that specifies the name of the
+    * The name of the build property that specifies the name of the
     * API class to load.
     */
    public static final String API_CLASS_PROPERTY = "org.xins.api.class";
@@ -103,85 +138,6 @@ implements Servlet {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Loads an API instance based on the specified servlet configuration.
-    *
-    * @param config
-    *    the servlet configuration, cannot be <code>null</code>.
-    *
-    * @return
-    *    the constructed {@link API} instance, never <code>null</code>.
-    *
-    * @throws ServletException
-    *    if an API instance could not be initialized.
-    */
-   private static API loadAPI(ServletConfig config)
-   throws ServletException { 
-
-      // Determine the API class
-      String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
-      if (apiClassName == null || apiClassName.trim().length() < 1) {
-         String message = "Invalid application package. API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
-         Library.STARTUP_LOG.fatal(message);
-         throw new ServletException(message);
-      }
-
-      // Load the API class
-      Class apiClass;
-      try {
-         apiClass = Class.forName(apiClassName);
-      } catch (Exception e) {
-         String message = "Invalid application package. Failed to load API class set in initialization parameter \"" + API_CLASS_PROPERTY + "\": \"" + apiClassName + "\".";
-         Library.STARTUP_LOG.fatal(message, e);
-         throw new ServletException(message);
-      }
-
-      // Check that the loaded API class is derived from the API base class
-      if (! API.class.isAssignableFrom(apiClass)) {
-         String message = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
-         Library.STARTUP_LOG.fatal(message);
-         throw new ServletException(message);
-      }
-
-      // Get the SINGLETON field
-      Field singletonField;
-      try {
-         singletonField = apiClass.getDeclaredField("SINGLETON");
-      } catch (Exception e) {
-         String message = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         Library.STARTUP_LOG.fatal(message, e);
-         throw new ServletException(message);
-      }
-
-      // Get the value of the SINGLETON field
-      API api;
-      try {
-         api = (API) singletonField.get(null);
-      } catch (Exception e) {
-         String message = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\".";
-         Library.STARTUP_LOG.fatal(message, e);
-         throw new ServletException(message);
-      }
-
-      // Make sure that the field is an instance of that same class
-      if (api == null) {
-         String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
-         Library.STARTUP_LOG.fatal(message);
-         throw new ServletException(message);
-      } else if (api.getClass() != apiClass) {
-         String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
-         Library.STARTUP_LOG.fatal(message);
-         throw new ServletException(message);
-      }
-
-      // Get the name of the API
-      String apiName = api.getName();
-      Library.STARTUP_LOG.debug("Loaded \"" + apiName + "\" API.");
-
-      return api;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -191,7 +147,7 @@ implements Servlet {
     */
    public APIServlet() {
       _stateLock = new Object();
-      _state     = UNINITIALIZED;
+      _state     = INITIAL;
    }
 
 
@@ -223,6 +179,13 @@ implements Servlet {
     * The API that this servlet forwards requests to.
     */
    private API _api;
+
+   /**
+    * Description of the current error, if any. Will be returned by
+    * {@link #service(ServletRequest,ServletResponse)} if and only if the
+    * state is not {@link #READY}.
+    */
+   private String _error;
 
 
    //-------------------------------------------------------------------------
@@ -268,48 +231,47 @@ implements Servlet {
     *        <br />log4j.appender.console.layout.ConversionPattern=%d %-5p [%c] %m%n</code></blockquote>
     * </dl>
     *
-    * <p>Note that if a {@link ServletException} is thrown during the
-    * initialization, a <em>fatal</em> message is logged and the state is
-    * reset to <em>uninitialized</em>.
-    *
     * @param config
-    *    the {@link ServletConfig} object which contains initialization and
-    *    startup parameters for this servlet, as specified by the
-    *    <em>assembler</em>, cannot be <code>null</code>.
+    *    the {@link ServletConfig} object which contains build properties for
+    *    this servlet, as specified by the <em>assembler</em>, cannot be
+    *    <code>null</code>.
     *
     * @throws ServletException
     *    if <code>config == null</code>, if this servlet is not uninitialized
     *    or if the initialization failed for some other reason.
     */
-   public void init(ServletConfig config)
-   throws ServletException {
+   public void init(ServletConfig config) {
+
+      //-------------------------------------------------------------------//
+      //                     Checks and preparations                       //
+      //-------------------------------------------------------------------//
 
       // Make sure the Library class is initialized
       String version = Library.getVersion();
 
       // Get a reference to the appropriate logger
-      Logger log = Library.STARTUP_LOG;
+      Logger log = Library.BOOTSTRAP_LOG;
 
-      // Hold the state lock
+      // Check preconditions
       synchronized (_stateLock) {
-
-         // Check preconditions
-         if (_state != UNINITIALIZED) {
-            String message = "Application server malfunction detected. State is " + _state + " instead of " + UNINITIALIZED + '.';
-            log.fatal(message);
-            throw new ServletException(message);
+         if (_state != INITIAL) {
+            String message = "Application server malfunction detected. Cannot initialize servlet. State is " + _state + " instead of " + INITIAL + '.';
+            // This is not fatal, but an error, since the framework is already
+            // initialized.
+            log.error(message);
+            throw new Error(message);
          } else if (config == null) {
-            String message = "Application server malfunction detected. No servlet configuration object passed.";
+            String message = "Application server malfunction detected. Cannot initialize servlet. No servlet configuration object passed.";
             log.fatal(message);
-            throw new ServletException(message);
+            throw new Error(message);
          }
 
          // Get the ServletContext
          ServletContext context = config.getServletContext();
          if (context == null) {
-            String message = "Application server malfunction detected. No servlet context available.";
+            String message = "Application server malfunction detected. Cannot initialize servlet. No servlet context available.";
             log.fatal(message);
-            throw new ServletException(message);
+            throw new Error(message);
          }
 
          // Check the expected vs implemented Java Servlet API version
@@ -319,73 +281,177 @@ implements Servlet {
             log.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
          }
 
-         // Set the state
-         _state = INITIALIZING;
+         // Store the ServletConfig object, per the Servlet API Spec, see:
+         // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
+         _servletConfig = config;
+
+
+         //----------------------------------------------------------------//
+         //                     Bootstrap framework                        //
+         //----------------------------------------------------------------//
+
+         // Proceed to first actual stage
+         _state = BOOTSTRAPPING_FRAMEWORK;
+         log.debug("Bootstrapping XINS/Java Server Framework.");
+
+         // Determine configuration file location
+         try {
+            _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
+         } catch (SecurityException exception) {
+            _state = FRAMEWORK_BOOTSTRAP_FAILED;
+            _error = "System administration issue detected. Unable to get system property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" due to a security restriction.";
+            log.error(_error, exception);
+            return;
+         }
+         
+         // Property value must be set
+         // NOTE: Don't trim the configuration file name, since it may start
+         //       with a space or other whitespace character.
+         if (_configFile == null || _configFile.length() < 1) {
+            _state = FRAMEWORK_BOOTSTRAP_FAILED;
+            _error = "System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.";
+            log.error(_error);
+            return;
+         }
+
+         // Apply the properties to the framework
+         Properties runtimeProperties = applyConfigFile(log);
+
+
+         //----------------------------------------------------------------//
+         //                        Construct API                           //
+         //----------------------------------------------------------------//
+
+         // Proceed to next stage
+         _state = CONSTRUCTING_API;
+         log.debug("Constructing API.");
+
+         // Determine the API class
+         String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
+         if (apiClassName == null || apiClassName.trim().length() < 1) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. API class name not set in build property \"" + API_CLASS_PROPERTY + "\".";
+            log.fatal(_error);
+            return;
+         }
+
+         // Load the API class
+         Class apiClass;
+         try {
+            apiClass = Class.forName(apiClassName);
+         } catch (Throwable exception) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. Failed to load API class \"" + apiClassName + "\", as set in build property \"" + API_CLASS_PROPERTY + "\" due to unexpected " + exception.getClass().getName() + '.';
+            log.fatal(_error);
+            return;
+         }
+
+         // Check that the loaded API class is derived from the API base class
+         if (! API.class.isAssignableFrom(apiClass)) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
+            log.fatal(_error);
+            return;
+         }
+
+         // Get the SINGLETON field
+         Field singletonField;
+         try {
+            singletonField = apiClass.getDeclaredField("SINGLETON");
+         } catch (Exception exception) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\" due to unexpected " + exception.getClass().getName() + '.';
+            log.fatal(_error, exception);
+            return;
+         }
+
+         // Get the value of the SINGLETON field
+         try {
+            _api = (API) singletonField.get(null);
+         } catch (Exception exception) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\". Caught unexpected " + exception.getClass().getName() + '.';
+            log.fatal(_error, exception);
+            return;
+         }
+
+         // Make sure that the field is an instance of that same class
+         if (_api == null) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
+            log.fatal(_error);
+            return;
+         } else if (_api.getClass() != apiClass) {
+            _state = API_CONSTRUCTION_FAILED;
+            _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
+            log.fatal(_error);
+            return;
+         }
+
+         // Get the name of the API
+         String apiName = _api.getName();
+         log.debug("Constructed \"" + apiName + "\" API.");
+
+
+         //----------------------------------------------------------------//
+         //                        Bootstrap API                           //
+         //----------------------------------------------------------------//
+
+         // Proceed to next stage
+         _state = BOOTSTRAPPING_API;
+         log.debug("Bootstrapping \"" + apiName + "\" API.");
 
          try {
-            // Determine configuration file location
-            _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
-
-            // Read properties from the config file
-            Properties runtimeProperties = null;
-            if (_configFile == null || _configFile.length() < 1) {
-               log.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
-            } else {
-               runtimeProperties = applyConfigFile(log);
-            }
-
-            // Initialization starting
-            log.debug("XINS/Java Server Framework " + version + " is initializing.");
-
-            // Load the API instance
-            _api = loadAPI(config);
-            String apiName = _api.getName();
-
-            // Initialize the API
-            log.debug("Initializing \"" + apiName + "\" API.");
-            try {
-               // TODO: Use ServletConfigPropertyReader
-               _api.init(new PropertiesPropertyReader(ServletUtils.settingsAsProperties(config)),
-                         new PropertiesPropertyReader(runtimeProperties));
-
-               log.debug("Initialized \"" + apiName + "\" API.");
-            } catch (Throwable e) {
-               String message = "Failed to initialize \"" + apiName + "\" API.";
-               log.error(message, e);
-            }
-
-            // Watch the configuration file
-            if (_configFile != null) {
-               FileWatcher.Listener listener = new ConfigurationFileListener();
-               int interval = 10; // TODO: Read from config file
-               FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
-               watcher.start();
-               log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
-            }
-
-            // Initialization done
-            log.info("XINS/Java Server Framework " + version + " is initialized.");
-
-            // Finally enter the ready state
-            _state = READY;
-
-            // Store the ServletConfig object, per the Servlet API Spec, see:
-            // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
-            _servletConfig = config;
-
-         // If an exception is thrown, then reset the state
-         } finally {
-            if (_state != READY) {
-               _state = UNINITIALIZED;
-            }
+            _api.bootstrap(new ServletConfigPropertyReader(config));
+         } catch (Throwable exception) {
+            _state = API_BOOTSTRAP_FAILED;
+            _error = "Application package may be invalid. Unable to bootstrap \"" + apiName + "\" API due to unexpected " + exception.getClass().getName() + '.';
+            log.fatal(_error, exception);
+            return;
          }
+
+         log.info("Bootstrapped \"" + apiName + "\" API.");
+
+         // Watch the configuration file
+         // TODO: Do this somewhere else?
+         FileWatcher.Listener listener = new ConfigurationFileListener();
+         int interval = 10; // TODO: Read from config file
+         FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
+         watcher.start(); // XXX: Start after API is initialized ?
+         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+
+
+
+         //----------------------------------------------------------------//
+         //                      Initialize the API                        //
+         //----------------------------------------------------------------//
+
+         // Proceed to next stage
+         log = Library.INIT_LOG;
+         _state = INITIALIZING_API;
+         log.debug("Initializing \"" + apiName + "\" API.");
+
+         try {
+            _api.init(new PropertiesPropertyReader(runtimeProperties));
+         } catch (Throwable e) {
+            _state = API_INITIALIZATION_FAILED;
+            _error = "Failed to initialize \"" + apiName + "\" API.";
+            log.error(_error);
+            return;
+         }
+
+         // Finished!
+         _state = READY;
+         log.debug("Initialized \"" + apiName + "\" API.");
       }
    }
 
    /**
-    * Reads the configuration file and applies the settings in it. If this
-    * fails, then an error is logged on the specified logger. Still, a
-    * {@link Properties} object is always returned.
+    * Reads the configuration file and applies the settings in it to this
+    * library. If this fails, then an error is logged on the specified logger.
+    * Still, a {@link Properties} object is always returned.
+    *
+    * <p>Note that the settings are <em>not</em> applied to the API.
     *
     * @param log
     *    the logger to log messages to, should not be <code>null</code>.
@@ -422,9 +488,8 @@ implements Servlet {
 
    /**
     * Returns the <code>ServletConfig</code> object which contains the
-    * initialization and startup parameters for this servlet. The returned
-    * {@link ServletConfig} object is the one passed to the
-    * {@link #init(ServletConfig)} method. 
+    * build properties for this servlet. The returned {@link ServletConfig}
+    * object is the one passed to the {@link #init(ServletConfig)} method.
     *
     * @return
     *    the {@link ServletConfig} object that was used to initialize this
@@ -459,6 +524,8 @@ implements Servlet {
 
       // Check state
       if (_state != READY) {
+         // TODO: This is not an application server malfunction.
+         // TODO: Return current state and _error
          String message = "Application server malfunction detected. State is " + _state + " instead of " + READY + '.';
          Library.RUNTIME_LOG.error(message);
          throw new ServletException(message);
@@ -637,22 +704,22 @@ implements Servlet {
       //----------------------------------------------------------------------
 
       public void fileModified() {
-         Library.REINIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
-         applyConfigFile(Library.REINIT_LOG);
+         Library.INIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
+         applyConfigFile(Library.INIT_LOG);
          // TODO: reinit API
-         Library.REINIT_LOG.info("XINS/Java Server Framework re-initialized.");
+         Library.INIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
 
       public void fileNotFound() {
-         Library.REINIT_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         Library.INIT_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
       }
 
       public void fileNotModified() {
-         Library.REINIT_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
+         Library.INIT_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
       }
 
       public void securityException(SecurityException exception) {
-         Library.REINIT_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
+         Library.INIT_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
       }
    }
 }
