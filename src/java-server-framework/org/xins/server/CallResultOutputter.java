@@ -41,6 +41,9 @@ final class CallResultOutputter extends Object {
     *
     * @param xslt
     *    the URL of the XSLT to link to, can be <code>null</code>.
+    *
+    * @throws IOException
+    *    if there was an I/O error while writing to the output stream.
     */
    public static void output(PrintWriter out, CallResult result, String xslt)
    throws IOException {

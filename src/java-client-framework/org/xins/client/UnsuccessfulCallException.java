@@ -33,6 +33,10 @@ extends CallException {
     *    and <code>result.</code>{@link CallResult#isSuccess() isSuccess()}
     *    should be <code>false</code>.
     *
+    * @return
+    *    the constructed message for the construcotr to pass up to the
+    *    superconstructor, never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>result == null
     *          || result.</code>{@link CallResult#isSuccess() isSuccess()}.

@@ -321,9 +321,6 @@ implements DefaultResultCodes {
     *
     * @return
     *    the call result, never <code>null</code>.
-    *
-    * @throws Throwable
-    *    if anything goes wrong.
     */
    CallResult handleCall(long start, ServletRequest request) {
 
