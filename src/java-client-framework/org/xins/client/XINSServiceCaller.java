@@ -276,6 +276,42 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
+    * Sets the <code>XINSCallConfig</code> associated with this XINS service
+    * caller.
+    *
+    * @param config
+    *    the fall-back {@link XINSCallConfig} object for this service caller,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>config == null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   protected final void setXINSCallConfig(XINSCallConfig config)
+   throws IllegalArgumentException {
+      super.setCallConfig(config);
+   }
+
+   /**
+    * Returns the <code>XINSCallConfig</code> associated with this service
+    * caller.
+    *
+    * <p>This method is the type-safe equivalent of {@link #getCallConfig()}.
+    *
+    * @return
+    *    the fall-back {@link XINSCallConfig} object for this XINS service
+    *    caller, never <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public final XINSCallConfig getXINSCallConfig() {
+      return (XINSCallConfig) getCallConfig();
+   }
+
+   /**
+
+   /**
     * Executes the specified XINS call request towards one of the associated
     * targets. If the call succeeds with one of these targets, then a
     * {@link XINSCallResult} object is returned. Otherwise, if none of the
