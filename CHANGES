@@ -34,6 +34,7 @@ CHANGES INTRODUCED IN XINS 0.146:
     CallResult class in package org.xins.util.service.
   - Removed setCallAtConstruction(boolean) method in class
     ActualFunctionCaller.
+  - Added 'String message' argument to the NoSuchSessionException constructor.
 
 * Generateed CAPI classes:
   - Shared sessions are no longer supported. The support for it was untested
