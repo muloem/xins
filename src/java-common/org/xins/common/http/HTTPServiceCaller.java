@@ -840,7 +840,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             byte[] body       = method.getResponseBody();
 
             // Store the result
-            _result = new HTTPCallResultData(statusCode, body);
+            _result = new HTTPCallResultDataHandler(statusCode, body);
 
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
@@ -884,6 +884,77 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       private HTTPCallResultData getData() {
          return _result;
+      }
+   }
+   
+   class HTTPCallResultDataHandler implements HTTPCallResultData {
+      
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Class functions
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Constructor
+      //-------------------------------------------------------------------------
+      
+      /**
+       * Constructs a new <code>HTTPCallResultData</code> object.
+       *
+       * @param code
+       *    the HTTP status code.
+       *
+       * @param data
+       *    the data returned from the call, as a set of bytes.
+       */
+      HTTPCallResultDataHandler(int code, byte[] data) {
+         _code = code;
+         _data = data;
+      }
+
+
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
+
+      /**
+       * The HTTP status code.
+       */
+      private final int _code;
+
+      /**
+       * The data returned.
+       */
+      private final byte[] _data;
+
+
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+
+      /**
+       * Returns the HTTP status code.
+       *
+       * @return
+       *    the HTTP status code.
+       */
+      public int getStatusCode() {
+         return _code;
+      }
+
+      /**
+       * Returns the result data as a byte array. Note that this is not a copy or
+       * clone of the internal data structure, but it is a link to the actual
+       * data structure itself.
+       *
+       * @return
+       *    a byte array of the result data, never <code>null</code>.
+       */
+      public byte[] getData() {
+         return _data;
       }
    }
 }

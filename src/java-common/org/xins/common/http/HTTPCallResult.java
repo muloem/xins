@@ -23,7 +23,7 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 0.207
  */
-public final class HTTPCallResult extends CallResult {
+public final class HTTPCallResult extends CallResult implements HTTPCallResultData {
 
    //-------------------------------------------------------------------------
    // Class fields

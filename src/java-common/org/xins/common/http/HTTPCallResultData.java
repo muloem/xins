@@ -23,54 +23,7 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 0.209
  */
-public final class HTTPCallResultData extends Object {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = HTTPCallResultData.class.getName();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a new <code>HTTPCallResultData</code> object.
-    *
-    * @param code
-    *    the HTTP status code.
-    *
-    * @param data
-    *    the data returned from the call, as a set of bytes.
-    */
-   HTTPCallResultData(int code, byte[] data) {
-      _code = code;
-      _data = data;
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The HTTP status code.
-    */
-   private final int _code;
-
-   /**
-    * The data returned.
-    */
-   private final byte[] _data;
+public interface HTTPCallResultData {
 
 
    //-------------------------------------------------------------------------
@@ -83,9 +36,7 @@ public final class HTTPCallResultData extends Object {
     * @return
     *    the HTTP status code.
     */
-   public int getStatusCode() {
-      return _code;
-   }
+   public int getStatusCode();
 
    /**
     * Returns the result data as a byte array. Note that this is not a copy or
@@ -95,7 +46,5 @@ public final class HTTPCallResultData extends Object {
     * @return
     *    a byte array of the result data, never <code>null</code>.
     */
-   public byte[] getData() {
-      return _data;
-   }
+   public byte[] getData();
 }
