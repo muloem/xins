@@ -143,5 +143,13 @@ public class DataElementTests extends TestCase {
       assertEquals(qn2, qn3);
       assertEquals(qn3, qn1);
       assertEquals(qn3, qn2);
+
+      qn1 = new DataElement.QualifiedName(uri, localName);
+      assertEquals(uri,       qn1.getNamespaceURI());
+      assertEquals(localName, qn1.getLocalName());
+
+      qn2 = new DataElement.QualifiedName(uri, localName);
+      assertEquals(qn1, qn2);
+      assertEquals(qn2, qn1);
    }
 }
