@@ -104,6 +104,11 @@ implements DefaultResultCodes {
    private final Object _stateLock;
 
    /**
+    * Flag that indicates if this API is session-based.
+    */
+   private boolean _sessionBased;
+
+   /**
     * List of registered instances. See {@link #addInstance(Object)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
@@ -195,6 +200,50 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
+    * Gets the specified property and converts it to a <code>boolean</code>.
+    *
+    * @param properties
+    *    the set of properties to read from, cannot be <code>null</code>.
+    *
+    * @param propertyName
+    *    the name of the property to read, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || propertyName == null</code>.
+    */
+   private final boolean getBooleanProperty(Properties properties, String propertyName)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+
+      String value = properties.getProperty(propertyName);
+      return "true".equals(value);
+   }
+
+   /**
+    * Gets the specified property and converts it to an <code>int</code>.
+    *
+    * @param properties
+    *    the set of properties to read from, cannot be <code>null</code>.
+    *
+    * @param propertyName
+    *    the name of the property to read, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || propertyName == null</code>.
+    */
+   private final int getIntProperty(Properties properties, String propertyName)
+   throws IllegalArgumentException, NumberFormatException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+
+      String value = properties.getProperty(propertyName);
+      return Integer.parseInt(value);
+   }
+
+   /**
     * Gets the timestamp that indicates when this <code>API</code> instance
     * was created.
     *
@@ -238,24 +287,30 @@ implements DefaultResultCodes {
       }
       _initSettingsReader = new PropertiesPropertyReader(_initSettings);
 
-      // TODO: Check if this API is session-based at all
+      // Check if this API is session-based
+      _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
 
       // XXX: Allow configuration of session ID type ?
-      _sessionIDType      = new BasicSessionID(this);
-      _sessionIDGenerator = _sessionIDType.getGenerator();
 
-      // TODO: Configure time-out and precision using init settings
-      // XXX: Configure time-out and precision at runtime ?
-      final long TIME_OUT  = 30L * 1000L; // 30 seconds
-      final long PRECISION =  2L * 1000L; //  2 seconds
+      // Initialize session-based API
+      if (_sessionBased) {
+         LOG.debug("Performing session-related initialization.");
+         _sessionIDType      = new BasicSessionID(this);
+         _sessionIDGenerator = _sessionIDType.getGenerator();
 
-      ExpiryStrategy expiryStrategy = new ExpiryStrategy(TIME_OUT, PRECISION);
+         final long MINUTE_IN_MS = 60000L;
 
-      // TODO: Configure initial queue size and max queue wait time using init
-      //       settings
-      final int  INITIAL_QUEUE_SIZE = 89;
-      final long MAX_QUEUE_WAIT_TIME = 15000L; // 15 seconds
-      _sessionsByID = new ExpiryFolder(expiryStrategy, INITIAL_QUEUE_SIZE, MAX_QUEUE_WAIT_TIME);
+         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOut");
+         long precision = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOutPrecision");
+
+         ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
+
+         // TODO: Configure initial queue size and max queue wait time using init
+         //       settings
+         final int  INITIAL_QUEUE_SIZE = 89;
+         final long MAX_QUEUE_WAIT_TIME = 15000L; // 15 seconds
+         _sessionsByID = new ExpiryFolder(expiryStrategy, INITIAL_QUEUE_SIZE, MAX_QUEUE_WAIT_TIME);
+      }
 
       // Let the subclass perform initialization
       boolean succeeded = false;
@@ -520,6 +575,26 @@ implements DefaultResultCodes {
             LOG.error("Failed to deinitialize instance of " + className + '.');
          }
       }
+   }
+
+   /**
+    * Returns if this API is session-based.
+    *
+    * @return
+    *    <code>true</code> if this API is session-based, or <code>false</code>
+    *    if it is not.
+    *
+    * @throws IllegalStateException
+    *    if this API is not in the <em>initialized</em> state.
+    */
+   public boolean isSessionBased()
+   throws IllegalStateException {
+
+      if (_state != INITIALIZED) {
+         throw new IllegalStateException("This API is not in the 'initialized' state.");
+      }
+
+      return _sessionBased;
    }
 
    /**
