@@ -53,7 +53,7 @@ implements DefaultResultCodes {
    private static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
 
    /**
-    * The runtime (init) property that contains the ACL descriptor.
+    * The runtime (initialization) property that contains the ACL descriptor.
     */
    private static final String ACL_PROPERTY = "org.xins.server.acl";
 
@@ -734,37 +734,45 @@ implements DefaultResultCodes {
 
       // Detect special functions
       if (functionName.charAt(0) == '_') {
+
+         FunctionResult result;
+
          if ("_NoOp".equals(functionName)) {
-            return SUCCESSFUL_RESULT;
+            result = SUCCESSFUL_RESULT;
          } else if ("_GetFunctionList".equals(functionName)) {
-            return doGetFunctionList();
+            result = doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
             String resetArgument = parameters.get("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
                _statisticsLocked = true;
-               FunctionResult result = doGetStatistics();
+               result = doGetStatistics();
                doResetStatistics();
                _statisticsLocked = false;
                synchronized (this) {
                   notifyAll();
                }
-               return result;
             } else {
-               return doGetStatistics();
+               result = doGetStatistics();
             }
          } else if ("_GetVersion".equals(functionName)) {
-            return doGetVersion();
+            result = doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
-            return doGetSettings();
+            result = doGetSettings();
          } else if ("_DisableFunction".equals(functionName)) {
-            return doDisableFunction(parameters);
+            result = doDisableFunction(parameters);
          } else if ("_EnableFunction".equals(functionName)) {
-            return doEnableFunction(parameters);
+            result = doEnableFunction(parameters);
          } else if ("_ResetStatistics".equals(functionName)) {
-            return doResetStatistics();
+            result = doResetStatistics();
          } else {
             throw new NoSuchFunctionException(functionName);
          }
+
+         // Log transaction before returning the result
+         // TODO: Log.log_3540(serStart, ip, _name, callID, duration, code, inParams, outParams);
+         // TODO: Log.log_3541(serStart, ip, _name, callID, duration, code);
+
+         return result;
       }
 
       // Short-circuit if we are shutting down

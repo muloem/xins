@@ -10,6 +10,11 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
       getChildElements(String), which returns a non-nullable List. The former
       method is marked as deprecated and may be removed before XINS 1.0.0-rc1.
 
+* XINS/Java Server Framework:
+  - Applied some refactorings as preparations to fix SF.net bug #1058074:
+    Changed FormattedDate and FormattedParameters from inner classes in class
+    Function to outer class with package-private access.
+
 * XINS build file:
   - Improved 'help' target slightly.
 

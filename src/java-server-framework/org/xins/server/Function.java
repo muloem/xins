@@ -7,19 +7,13 @@
 package org.xins.server;
 
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.WhislEncoding;
 
-import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
 
 /**
@@ -357,156 +351,5 @@ implements DefaultResultCodes {
       // Perform transaction logging, with and without parameters
       Log.log_3540(serStart, ip, _name, callID, duration, code, inParams, outParams);
       Log.log_3541(serStart, ip, _name, callID, duration, code);
-   }
-
-   /**
-    * Logdoc-serializable for a date.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
-    */
-   private static final class FormattedDate
-   extends AbstractLogdocSerializable {
-
-      //-------------------------------------------------------------------------
-      // Class fields
-      //-------------------------------------------------------------------------
-
-      /**
-       * The date formatter.
-       */
-      private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd-HHmmssSSS");
-
-
-      //---------------------------------------------------------------------
-      // Constructor
-      //---------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>FormattedDate</code> object.
-       *
-       * @param date
-       *    the date, as a number of milliseconds since January 1, 1970.
-       */
-      public FormattedDate(long date) {
-         _epochDate = date;
-      }
-
-
-      //---------------------------------------------------------------------
-      // Fields
-      //---------------------------------------------------------------------
-
-      /**
-       * The date, as a number of milliseconds since January 1, 1970.
-       */
-      private final long _epochDate;
-
-
-      //---------------------------------------------------------------------
-      // Methods
-      //---------------------------------------------------------------------
-
-      /**
-       * Initializes this <code>AbstractLogdocSerializable</code>.
-       *
-       * @return
-       *    the serialized form of this <code>FormattedDate</code>, never
-       *    <code>null</code>.
-       */
-      protected String initialize() {
-
-         return DATE_FORMATTER.format(new Date(_epochDate));
-      }
-   }
-
-   /**
-    * Logdoc-serializable for parameters.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
-    */
-   private static final class FormattedParameters
-   extends AbstractLogdocSerializable {
-
-      //---------------------------------------------------------------------
-      // Constructor
-      //---------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>FormattedParameters</code> object.
-       *
-       * @param parameters
-       *    the parameters, can be <code>null</code>.
-       */
-      public FormattedParameters(PropertyReader parameters) {
-
-         _parameters = parameters;
-      }
-
-
-      //---------------------------------------------------------------------
-      // Fields
-      //---------------------------------------------------------------------
-
-      /**
-       * The parameters to serialize. This field can be <code>null</code>.
-       */
-      private final PropertyReader _parameters;
-
-
-      //---------------------------------------------------------------------
-      // Methods
-      //---------------------------------------------------------------------
-
-      /**
-       * Initializes this <code>AbstractLogdocSerializable</code>.
-       *
-       * @return
-       *    the serialized form of this <code>FormattedParameters</code>
-       *    object, never <code>null</code>.
-       */
-      protected String initialize() {
-
-         Iterator names = (_parameters == null) ? null : _parameters.getNames();
-
-         // If there are no parameters, then just return a hyphen
-         if (names == null || ! names.hasNext()) {
-            return "-";
-         }
-
-         FastStringBuffer buffer = new FastStringBuffer(93);
-
-         boolean first = true;
-         do {
-
-            // Get the name and value
-            String name  = (String) names.next();
-            String value = _parameters.get(name);
-
-            // If the value is null or an empty string, then output nothing
-            if (value == null || value.length() == 0) {
-               continue;
-            }
-
-            // Append an ampersand, except for the first entry
-            if (!first) {
-               buffer.append('&');
-            } else {
-               first = false;
-            }
-
-            // Append the key and the value, separated by an equals sign
-            buffer.append(WhislEncoding.encode(name));
-            buffer.append('=');
-            buffer.append(WhislEncoding.encode(value));
-         } while (names.hasNext());
-
-         return buffer.toString();
-      }
    }
 }
