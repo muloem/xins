@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 0.32:
 
 * Changed the names of the responder states to match the field names.
 
+* Added support for generating Javadoc API docs per XINS API.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.31:
 
