@@ -3,7 +3,9 @@
  */
 package org.xins.server;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
 
@@ -73,7 +75,21 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
-      return null; // TODO
+      StringTokenizer tokenizer = new StringTokenizer(descriptor, ";");
+      List rules = new ArrayList(tokenizer.countTokens());
+
+      while (tokenizer.hasMoreTokens()) {
+         String token = tokenizer.nextToken().trim();
+
+         if (!"".equals(token)) {
+            AccessRule rule = AccessRule.parseAccessRule(token);
+            if (rule != null) {
+               rules.add(rule);
+            }
+         }
+      }
+
+      return new AccessRuleList(rules);
    }
 
 
@@ -122,7 +138,7 @@ extends Object {
     *    the number of rules, always &gt;= 0.
     */
    public int getRuleCount() {
-      return 0; // TODO
+      return _rules.size();
    }
 
    /**
