@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.165:
 * XINS/Java Common Library:
   - Fixed @see tag in LogCentral class.
 
+* Generated specification documentation:
+  - Added the freeze parameter in the api.dtd.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.164:
 
@@ -18,17 +21,17 @@ CHANGES INTRODUCED IN XINS 0.164:
   - Moved XML files from src/logdoc to src/logdoc/server.
 
 * Generated specification documentation:
-  - Removed the dependency on rcs. The specification is now created if 
-    a rcsdate or rcsversion attribute is missing from the type, 
-    the result code or the function. 
+  - Removed the dependency on rcs. The specification is now created if
+    a rcsdate or rcsversion attribute is missing from the type,
+    the result code or the function.
     The version number is then replaced with '?.?'.
 
 * Generated build file:
-  - Added a new target server-<api> that builds the war file, the specdocs 
+  - Added a new target server-<api> that builds the war file, the specdocs
     and the javadoc on the server-side.
-  - Added a new target client-<api> that builds the jar file and the javadoc 
+  - Added a new target client-<api> that builds the jar file and the javadoc
     on the client-side.
-  - Added a new target all-<api> that builds the server-side and the 
+  - Added a new target all-<api> that builds the server-side and the
     client-side.
 
 ______________________________________________________________________________
@@ -47,17 +50,19 @@ CHANGES INTRODUCED IN XINS 0.163:
 
 * Build and release process:
   - Linking to xmlenc 0.43 API docs.
-  - The targets "java-client" and "java-server" now use the same common 
+  - The targets "java-client" and "java-server" now use the same common
     target.
-  - The version number of the previous release in the .version.properties 
+  - The version number of the previous release in the .version.properties
     file is also increased when a new release is created.
 
 * Generated build file:
   - Linking to xmlenc 0.43 API docs.
   - Added the logdoc directory to the release.
-    This causes the compilation of XINS to fail when it was done from the 
+    This causes the compilation of XINS to fail when it was done from the
     downloaded package.
     This was probably erroneous since XINS 0.154.
+
+* Generated specification documentation:
   - Added the DTD's in the release.
 
 ______________________________________________________________________________
