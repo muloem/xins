@@ -221,7 +221,7 @@
 		<xsl:variable name="returncode"           select="@returncode" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
-		<xsl:variable name="returncodes_file"     select="concat($project_home, '/src/specs/returncodes.xml')" />
+		<xsl:variable name="returncodes_file"     select="'../../xml/default_returncodes.xml'" />
 		<xsl:variable name="success">
 			<xsl:choose>
 
