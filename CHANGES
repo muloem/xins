@@ -5,9 +5,16 @@ CHANGES INTRODUCED IN XINS 0.149:
 
 * Fixed typo in INFO log message from API.
 
+* XINS/Java Server Framework:
+  - If the state is not READY, then an HTTP error code will be returned.
+    Depending on the actual state it will either be '500 Internal Server
+    Error' or '502 Service Unavailable'. This has been documented in the
+    Javadoc comments for the APIServlet class.
+
 * XINS/Java Common Library:
   - Added '_' and '.' to the pattern for url matching in the TargetDescriptor.
     This will allow urls such as http://blah.blah.com/some_file.html
+  - Fixed @link in class Manageable.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.148:
