@@ -45,7 +45,6 @@ import java.util.HashMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xins.logdoc.AbstractLog;
-import org.xins.logdoc.NoSuchTranslationBundleException;
 import org.xins.logdoc.LogStatistics;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -136,40 +135,6 @@ public class Log extends AbstractLog {
    }
 
    /**
-    * Activates the specified translation bundle.
-    *
-    * @param name
-    *    the name of the translation bundle to activate, cannot be
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    *
-    * @throws NoSuchTranslationBundleException
-    *    if there is no translation bundle by that name.
-    *
-    * @deprecated
-    *    Use {@link LogCentral#setLocale(String)} instead.
-    */
-   public static final void setTranslationBundle(String name)
-   throws IllegalArgumentException, NoSuchTranslationBundleException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
-
-      // Get the bundle by name
-      TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(name);
-
-      // Make sure there is such a bundle
-      if (bundle == null) {
-         throw new NoSuchTranslationBundleException(name);
-      }
-
-      // Store the bundle
-      TRANSLATION_BUNDLE = bundle;
-   }
-
-   /**
     * Returns the statistics for all log entries.
     *
     * @return
@@ -241,7 +206,7 @@ public class Log extends AbstractLog {
       protected boolean isLocaleSupported(String locale) {
 
          // Fetch the translation bundle
-         TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(newLocale);
+         TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(locale);
 
          // Return true if the bundle exists
          return (bundle != null);
