@@ -27,10 +27,13 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:include href="../header.xslt"    />
-	<xsl:include href="../footer.xslt"    />
-	<xsl:include href="../types.xslt"     />
-	<xsl:include href="../urlencode.xslt" />
+	<xsl:include href="broken_freeze.xslt" />
+	<xsl:include href="../header.xslt"     />
+	<xsl:include href="../footer.xslt"     />
+	<xsl:include href="../types.xslt"      />
+	<xsl:include href="../urlencode.xslt"  />
+
+	<xsl:variable name="type_name"    select="//type/@name" />
 
 	<xsl:template match="type">
 
@@ -60,6 +63,17 @@
 				</h1>
 
 				<br />
+
+				<!-- Broken freezes -->
+				<xsl:call-template name="broken_freeze">
+					<xsl:with-param name="project_home" select="$project_home" />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="api" select="$api" />
+					<xsl:with-param name="api_file" select="$api_file" />
+					<xsl:with-param name="frozen_version" select="document($api_file)/api/type[@name=$type_name]/@freeze" />
+					<xsl:with-param name="broken_file" select="concat($type_name, '.typ')" />
+				</xsl:call-template>
 
 				<xsl:apply-templates select="description" />
 

@@ -27,8 +27,11 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:include href="../header.xslt" />
-	<xsl:include href="../footer.xslt" />
+	<xsl:include href="broken_freeze.xslt" />
+	<xsl:include href="../header.xslt"     />
+	<xsl:include href="../footer.xslt"     />
+
+	<xsl:variable name="resultcode_name" select="//resultcode/@name" />
 
 	<xsl:template match="resultcode">
 
@@ -57,7 +60,20 @@
 					</em>
 				</h1>
 
+				<!-- Broken freezes -->
+				<xsl:call-template name="broken_freeze">
+					<xsl:with-param name="project_home" select="$project_home" />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="api" select="$api" />
+					<xsl:with-param name="api_file" select="$api_file" />
+					<xsl:with-param name="frozen_version" select="document($api_file)/api/resultcode[@name=$resultcode_name]/@freeze" />
+					<xsl:with-param name="broken_file" select="concat($resultcode_name, '.rcd')" />
+				</xsl:call-template>
+
+				<!-- Description -->
 				<xsl:apply-templates select="description" />
+
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>

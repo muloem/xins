@@ -33,9 +33,16 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Fixed a problem when generating the author in the @author tag.
     This bug has been in XINS since version 0.208.
   - Fixed some Javadoc tags.
+  - Removed the multiplicity attribute from the DTD as it is not used for
+    the code generation.
 
 * Generated server-side Java code:
   - The TypeValueException is no longer catched is the parameter is a String.
+
+* Generated specification documentation:
+  - Broken freeze messages are now also provided for the types and
+    result codes.
+  - Added support for the new directory structure for the broken freeze links.
 
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is

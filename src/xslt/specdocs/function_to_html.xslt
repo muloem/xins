@@ -20,13 +20,13 @@
 	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
-	<xsl:include href="../header.xslt"    />
-	<xsl:include href="../footer.xslt"    />
-	<xsl:include href="../types.xslt"     />
-	<xsl:include href="../urlencode.xslt" />
+	<xsl:include href="broken_freeze.xslt" />
+	<xsl:include href="../header.xslt"     />
+	<xsl:include href="../footer.xslt"     />
+	<xsl:include href="../types.xslt"      />
+	<xsl:include href="../urlencode.xslt"  />
 
 	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
-	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
 	<xsl:variable name="function_name"    select="//function/@name"                                          />
 	<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
 
@@ -76,7 +76,15 @@
 				</h1>
 
 				<!-- Broken freezes -->
-				<xsl:call-template name="broken_freeze" />
+				<xsl:call-template name="broken_freeze">
+					<xsl:with-param name="project_home" select="$project_home" />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="api" select="$api" />
+					<xsl:with-param name="api_file" select="$api_file" />
+					<xsl:with-param name="frozen_version" select="document($api_file)/api/function[@name=$function_name]/@freeze" />
+					<xsl:with-param name="broken_file" select="concat($function_name, '.fnc')" />
+				</xsl:call-template>
 
 				<!-- Description -->
 				<xsl:call-template name="description" />
@@ -1192,44 +1200,6 @@
 				<strong>Deprecated: </strong>
 				<xsl:apply-templates select="deprecated" />
 			</em>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="broken_freeze">
-		<xsl:variable name="frozen_version" select="document($api_file)/api/function[@name=$function_name]/@freeze" />
-		<xsl:variable name="version">
-			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="@rcsversion" />
-			</xsl:call-template>
-		</xsl:variable>
-
-		<xsl:if test="string-length($frozen_version) &gt; 0">
-			<xsl:if test="not($frozen_version = $version)">
-				<div class="broken_freeze">
-					<h3>Broken freeze!</h3>
-					<p>
-						<xsl:text>Version </xsl:text>
-						<xsl:value-of select="$frozen_version" />
-						<xsl:text> is marked as frozen.</xsl:text>
-						<xsl:if test="string-length($cvsweb_url) &gt; 0">
-							<br />
-							<xsl:text>View differences between this version and the frozen version:</xsl:text>
-							<br />
-							<a href="{$cvsweb_url}/src/apis/{$api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}">
-								<xsl:text>diff </xsl:text>
-								<xsl:value-of select="$frozen_version" />
-								<xsl:text> and </xsl:text>
-								<xsl:value-of select="$version" />
-							</a>
-							<xsl:text> (</xsl:text>
-							<a href="{$cvsweb_url}/src/apis/{$api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}&amp;f=h">
-								<xsl:text>colored</xsl:text>
-							</a>
-							<xsl:text>)</xsl:text>
-						</xsl:if>
-					</p>
-				</div>
-			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 

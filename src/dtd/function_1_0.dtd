@@ -35,7 +35,6 @@
 <!ELEMENT data (element+)>
 <!ATTLIST data
           contains   CDATA #REQUIRED
-          multiplicity CDATA #IMPLIED
 >
 <!ELEMENT element (description, deprecated?, contains?, attribute*)>
 <!ATTLIST element
@@ -46,7 +45,6 @@
 <!ELEMENT contained EMPTY>
 <!ATTLIST contained
           element    NMTOKEN #REQUIRED
-          multiplicity CDATA #IMPLIED
 >
 <!ELEMENT attribute (description, deprecated?)>
 <!ATTLIST attribute
