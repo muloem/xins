@@ -840,7 +840,7 @@ extends HttpServlet {
     */
    public void destroy() {
 
-      Log.log_300();
+      Log.log_6000();
 
       // Set the state temporarily to DISPOSING
       setState(DISPOSING);
@@ -850,14 +850,14 @@ extends HttpServlet {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Log.log_305(exception.getClass().getName(), exception.getMessage());
+            Log.log_6001(exception.getClass().getName(), exception.getMessage());
          }
       }
 
       // Set the state to DISPOSED
       setState(DISPOSED);
 
-      Log.log_310();
+      Log.log_6002();
    }
 
 

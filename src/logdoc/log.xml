@@ -341,15 +341,15 @@
 
 	<!-- Shutdown -->
 
-	<entry id="300" level="NOTICE" category="org.xins.server.lifespan.shutdown">
+	<entry id="6000" level="NOTICE" category="org.xins.server.lifespan.shutdown">
 		<description>Shutting down XINS/Java Server Framework.</description>
 	</entry>
-	<entry id="305" level="ERROR" category="org.xins.server.lifespan.shutdown">
+	<entry id="6001" level="ERROR" category="org.xins.server.lifespan.shutdown">
 		<description>Deinitialization of API triggered an exception.</description>
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="310" level="NOTICE" category="org.xins.server.lifespan.shutdown">
+	<entry id="6002" level="NOTICE" category="org.xins.server.lifespan.shutdown">
 		<description>XINS/Java Server Framework shutdown completed.</description>
 	</entry>
 </log>
