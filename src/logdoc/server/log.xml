@@ -63,7 +63,6 @@
 			<description>Caught unexpected exception.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
-			<param name="detail"     type="text" nullable="true"  />
 		</entry>
 	</group>
 
