@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
@@ -327,6 +328,8 @@ extends HttpServlet {
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
 
+      // TODO: Check state
+
       State oldState;
 
       synchronized (_stateLock) {
@@ -587,7 +590,7 @@ extends HttpServlet {
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
          }
 
-         // Create a file watch thread and start it
+         // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
          Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
          _configFileWatcher.start();
@@ -601,8 +604,6 @@ extends HttpServlet {
     *    the runtime settings, guaranteed not to be <code>null</code>.
     */
    private final void initAPI(PropertyReader runtimeProperties) {
-
-      // TODO: Check state
 
       setState(INITIALIZING_API);
 
@@ -656,14 +657,12 @@ extends HttpServlet {
       // TODO  properties have been removed from the xins.properties file?
       // TODO  Determine the current behaviour and make a decision.
 
-      // Get the root logger
-      Logger rootLogger = null; // TODO
 
       // Attempt to configure Log4J
       PropertyConfigurator.configure(properties);
 
       // Determine if Log4J is properly initialized
-      Enumeration appenders = rootLogger.getAllAppenders();
+      Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
       if (appenders instanceof NullEnumeration) {
          Log.log_154();
          configureLoggerFallback();
