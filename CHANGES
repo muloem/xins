@@ -25,6 +25,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Fixed SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on
     Blackdown JVM 1.4.1. This problem was not really fixed, since the source
     of the problem is in the Blackdown JVM self. It was worked around though.
+  - Changed HTTPServiceCaller to work with HttpClient 3.0 only. HttpClient 2.0
+    is now no longer supported.
   - Added 'copyFrom' method to class ProtectedPropertyReader.
   - Introduced IncorrectSecretKeyException class to be used by the
     ProtectedPropertyReader and the ProtectedList classes so clients can
@@ -35,8 +37,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added crop(int) to class FastStringBuffer.
 
 * XINS/Java Client Framework:
-  - Implemented SF.net RFE #1114846: Error code in UnsuccessfulCallException
-    message.
+  - Implemented SF.net RFE #1114846: Error code in
+    UnsuccessfulXINSCallException message.
+  - Reworked the framework around the UnsuccessfulXINSCallException class.
+    Removed the UnsuccessfulXINSCallExceptionFactory class and added quite a
+    few UnsuccessfulXINSCallException subclasses.
 
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
@@ -52,6 +57,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     specs.
   - Implemented SF.net RFE #1119902: CAPI Javadoc should only contain public
     members.
+  - Implemented SF.net RFE #1120017: Generated Type class should include
+    Javadoc comments
 
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
