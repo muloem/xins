@@ -5,6 +5,7 @@ package org.xins.client;
 
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Collections;
 import org.apache.log4j.Logger;
@@ -141,6 +142,103 @@ public final class CallRequestParser extends Object {
     */
    private CallRequest parse(Element element)
    throws NullPointerException, ParseException {
-      return null; // TODO
+
+      // Check preconditions
+      final String expectedElementType = "request";
+      if (expectedElementType.equals(element.getName()) == false) {
+         throw new ParseException("The specified XML element cannot be parsed to build a CallRequest object. The element type is \"" + element.getName() + "\" instead of \"" + expectedElementType + "\".");
+      }
+
+      // Parse the function name
+      String functionName = element.getAttributeValue("function");
+      if (functionName == null || functionName.length() == 0) {
+         throw new ParseException("The specified XML element cannot be parsed to build a CallRequest object. The attribute \"function\" is not set.");
+      }
+
+      // Parse the session identifier, if any
+      String sessionID = element.getAttributeValue("session");
+
+      // Parse the list of input parameters
+      Map parameters = parseParameters(element);
+
+      return new CallRequest(sessionID, functionName, parameters);
+   }
+
+   /**
+    * Parses the parameters in the specified element. The returned
+    * {@link Map} will contain have the parameter names as keys
+    * ({@link String} objects) and the parameter values as values
+    * ({@link String} objects as well).
+    *
+    * @param element
+    *    the element to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    a non-empty {@link Map} containing the parameters, or
+    *    <code>null</code> if there are none.
+    *
+    * @throws NullPointerException
+    *    if <code>element == null</code>.
+    *
+    * @throws ParseException
+    *    if the structure of the specified XML information subset is
+    *    considered invalid.
+    */
+   private static Map parseParameters(Element element)
+   throws NullPointerException, ParseException {
+
+      final String elementName  = "param";
+      final String keyAttribute = "name";
+
+      // Get a list of all sub-elements
+      List subElements = element.getChildren(elementName);
+      int count = (subElements == null)
+                ? 0
+                : subElements.size();
+
+      // Loop through all sub-elements
+      Map map = null;
+      for (int i = 0; i < count; i++) {
+
+         // Get the current subelement
+         Element subElement = (Element) subElements.get(i);
+
+         // Ignore empty elements in the list
+         if (subElement == null) {
+            continue;
+         }
+
+         // Get the key and the value
+         String key   = subElement.getAttributeValue(keyAttribute);
+         String value = subElement.getText();
+
+         // If key or value is empty, then ignore the whole thing
+         boolean noKey   = (key   == null || key.length()   < 1);
+         boolean noValue = (value == null || value.length() < 1);
+         if (noKey && noValue) {
+            LOG.error("Found <" + elementName + "/> with an empty key and empty value.");
+         } else if (noKey) {
+            LOG.error("Found <" + elementName + "/> with an empty key.");
+         } else if (noValue) {
+            LOG.error("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" but an empty value.");
+         } else {
+
+            LOG.debug("Found <" + elementName + "/> with " + keyAttribute + " \"" + key + "\" and value \"" + value + "\".");
+
+            // Lazily initialize the Map
+            if (map == null) {
+               map = new HashMap();
+
+            // Only one value per key allowed
+            } else if (map.get(key) != null) {
+               throw new ParseException("The returned XML is invalid. Found <" + elementName + "/> with duplicate " + keyAttribute + " \"" + key + "\".");
+            }
+
+            // Store the mapping
+            map.put(key, value);
+         }
+      }
+
+      return map;
    }
 }
