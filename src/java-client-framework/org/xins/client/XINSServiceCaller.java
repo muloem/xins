@@ -232,9 +232,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       HttpClient client = new HttpClient();
 
       // Configure connection time-out and socket time-out
-      // TODO: Configure connection time-out and socket time-out separately
-      client.setConnectionTimeout(target.getTimeOut());
-      client.setTimeout(target.getTimeOut());
+      client.setConnectionTimeout(target.getConnectionTimeOut());
+      client.setTimeout(target.getSocketTimeOut());
 
       // Construct the method object
       PostMethod method = createPostMethod(target.getURL(), functionName, parameters);
@@ -252,13 +251,20 @@ public final class XINSServiceCaller extends ServiceCaller {
          code = method.getStatusCode();
 
          succeeded = true;
+
       } catch (IOException ioException) {
          throw new CallIOException(ioException);
+
+      // Always release the connection
       } finally {
 
          // Release the connection
          if (succeeded) {
             method.releaseConnection();
+
+         // If there was an exception already, don't allow another one to
+         // override it, so wrap the releasing of the connection in a
+         // try-catch block.
          } else {
             try {
                method.releaseConnection();
@@ -269,6 +275,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Check the code
+      // TODO: Throw specific exception that stores the HTTP code so it can be
+      //       used to determine whether or not fail-over should be attempted.
       if (code != 200 && code != 201) {
          Log.log_2008(code);
          throw new InvalidCallResultException("HTTP code " + code + '.');
