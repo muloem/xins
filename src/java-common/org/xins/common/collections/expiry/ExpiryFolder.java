@@ -355,6 +355,9 @@ extends Object {
       }
 
       // If not found, then look in the slots
+      // TODO: Determine whether enterAsReader() is really good enough. It
+      //       seems that enterAsWriter() should be called. However, this may
+      //       have a major impact on performance.
       if (value == null) {
          _slotsDoorman.enterAsReader();
          try {
