@@ -32,6 +32,20 @@ public interface Singleton {
    throws InitializationException;
 
    /**
+    * Reinitializes this instance.
+    *
+    * @param properties
+    *    the initialization properties, can be <code>null</code>.
+    *
+    * @throws InitializationException
+    *    if the initialization failed, for any reason.
+    *
+    * @since XINS 0.97
+    */
+   void reinit(PropertyReader properties)
+   throws InitializationException;
+
+   /**
     * Deinitializes this instance.
     *
     * @throws Throwable
