@@ -60,6 +60,12 @@ XINS/JAVA SERVER FRAMEWORK
   The implementation should now have only a Request object as argument
   and returns a Result object which can be a Successful or Unsuccessful
   result.
+* When the runtime properties file is marked as -r (not readable) at startup,
+  an error will be logged (3001). After that, the file watch thread is
+  started. However, when the permissions of the file are changed so that the
+  file is now marked +r (readable), the change is not noticed, since the
+  modification date does not change. The framework should notice this and
+  reinitialize.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
