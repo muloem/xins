@@ -23,7 +23,7 @@ public final class Boolean extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Boolean SINGLETON = new Boolean();
+   public final static Boolean SINGLETON = new org.xins.types.standard.Boolean();
 
 
    //-------------------------------------------------------------------------
