@@ -1,6 +1,67 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 
+* XINS/Java Server Framework:
+  - Changed levels for log message entries:
+    . 2000 from DEBUG to NOTICE (Bootstrapping XINS/Java Server Framework)
+    . 2001 from ERROR to FATAL (Unable to bootstrap XINS/Java Server Framework
+      due to unexpected state)
+    . 2004 from ERROR to FATAL (Unable to get system property that defines the
+      runtime properties file to use, due to a security restriction)
+    . 2013 from DEBUG to INFO (API is session-oriented)
+    . 2014 from DEBUG to INFO (API is not session-oriented)
+    . 2021 from ERROR to FATAL (Manageable object could not be bootstrapped
+      due to a missing required property)
+    . 2022 from ERROR to FATAL (Manageable object could not be bootstrapped
+      due to an invalid property value)
+    . 2023 from ERROR to FATAL (Manageable object could not be bootstrapped)
+    . 2024 from ERROR to FATAL (Manageable object could not be bootstrapped
+      due to an unexpected exception)
+    . 2029 from ERROR to FATAL (Function could not be bootstrapped due to a
+      missing required property)
+    . 2030 from ERROR to FATAL (Function could not be bootstrapped due to an
+      invalid property value)
+    . 2031 from ERROR to FATAL (Function could not be bootstrapped)
+    . 2032 from ERROR to FATAL (Function could not be bootstrapped due to an
+      unexpected exception)
+    . 4007 from DEBUG to NOTICE (Runtime properties file modified)
+      Re-initializing XINS/Java Server Framework)
+    . 4008 from DEBUG to INFO (Runtime properties file watch interval not
+      specified, using fallback default)
+    . 4013 from ERROR to FATAL (API could not be initialized due to a missing
+      required property)
+    . 4014 from ERROR to FATAL (API could not be initialized due to an invalid
+      property value)
+    . 4015 from ERROR to FATAL (API could not be initialized)
+    . 4016 from ERROR to FATAL (API could not be initialized due to an
+      unexpected exception)
+    . 4021 from ERROR to FATAL (Manageable object could not be initialized due
+      to a missing required property)
+    . 4022 from ERROR to FATAL (Manageable object could not be initialized due
+      to an invalid property value)
+    . 4023 from ERROR to FATAL (Manageable object could not be initialized)
+    . 4024 from ERROR to FATAL (Manageable object could not be initialized due
+      to an unexpected exception)
+    . 5000 from ERROR to INFO (Received HTTP request with invalid method)
+    . 5004 from INFO to DEBUG (Access rule does not match)
+    . 5006 from INFO to DEBUG (Setting session attribute value)
+    . 5007 from INFO to DEBUG (Resetting session attribute)
+    . 5008 from INFO to DEBUG (Getting session attribute value, value is not
+      null)
+    . 5009 from INFO to DEBUG (Getting session attribute value, value is null)
+  - Improved description of messages 4000 and 4001.
+  - Added a new group: 'Access rule matching', with category
+    org.xins.server.runtime.acl. Moved messages 5002-5005 to this group.
+
+* Logdoc:
+  - Changed description/definition of FATAL level. Previously the description
+    was: "Indicates an error that keeps the whole application from
+    functioning. The application must be restarted in order to recover from
+    the problem." This has been rephrased to: "Indicates an error that keeps
+    the whole application from functioning. Intervention from an operational
+    manager is required to solve the problem. The application may even have to
+    be restarted."
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.159:
 
