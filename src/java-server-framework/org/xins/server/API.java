@@ -653,6 +653,7 @@ implements DefaultResultCodes {
       }
 
       // Wait until the statistics are returned
+      // TODO: Investigate: Does this work?
       synchronized(_statisticsLock) {
       }
 
