@@ -475,7 +475,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:value-of select="@name" />
 				<xsl:text>\" returned no session ID.");
          }
-         return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);
+         return new org.xins.client.NonSharedSession(result.getTarget(), session);
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
