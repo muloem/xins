@@ -23,7 +23,6 @@
 		<property name="version"             value="0.27-dev" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
-		<property name="debug"               value="true" />
 		<property name="www.user"            value="znerd" />
 		<property name="project"             value="${name}" />
 		<property name="cvs.module"          value="${name}" />
@@ -32,6 +31,10 @@
 		<property name="www.target"          value="${www.user}@${www.host}:${www.dir}" />
 		<property name="url"                 value="http://${www.host}/" />
 		<property name="vendor"              value="Wanadoo Nederland B.V." />
+
+		<property name="javac.debug"         value="true"  />
+		<property name="javac.deprecation"   value="true"  />
+		<property name="javac.optimize"      value="false" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -69,9 +72,9 @@
 		<javac
 		srcdir="build/src/java-server-framework"
 		destdir="build/classes/java-server-framework"
-		debug="on"
-		deprecation="on"
-		optimize="off"
+		debug="${java.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
 		target="1.2">
 			<classpath>
 				<fileset dir="depends/compile"             includes="**/*.jar" />
