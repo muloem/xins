@@ -69,6 +69,29 @@
 						</li>
 					</xsl:for-each>
 				</ul>
+
+				<h2>Message entries</h2>
+				<p>The following message entries are declared:</p>
+				<table type="entries">
+					<tr>
+						<th>ID</th>
+						<th>Level</th>
+						<th>Category</th>
+					</tr>
+					<xsl:for-each select="entry">
+						<tr>
+							<td>
+								<xsl:value-of select="@id" />
+							</td>
+							<td>
+								<xsl:value-of select="@level" />
+							</td>
+							<td>
+								<xsl:value-of select="@category" />
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
 			</body>
 		</html>
 	</xsl:template>
