@@ -66,6 +66,8 @@ public class TargetDescriptorTests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void testTargetDescriptor() throws Exception {
+
+      // Pass null to constructor
       try {
          new TargetDescriptor(null);
          fail("TargetDescriptor(String) should throw an IllegalArgumentException if the argument is null.");
@@ -73,12 +75,36 @@ public class TargetDescriptorTests extends TestCase {
          // as expected
       }
 
-      String url = "blablabla";
-      try {
+      // Test some invalid URLs
+      String[] invalidURLs = new String[] {
+         "", " ", "\n", "http:8", "http:/8", "blablabla",
+         "http://1.2.3.4.5", "http://1.2.3.4.5/"
+      };
+      for (int i = 0; i < invalidURLs.length; i++) {
+         String url = invalidURLs[i];
+         try {
+            new TargetDescriptor(url);
+            fail("TargetDescriptor(String) should throw a MalformedURLException if the argument is \"" + url + "\".");
+         } catch (MalformedURLException ex) {
+            // as expected
+         }
+      }
+
+      // Test some valid URLs
+      String[] validURLs = new String[] {
+         "file:/home/ernst/something.xml",
+         "ftp://someserver.co.au/",
+         "ftp://someserver.co.au/pub/content/",
+         "ftp://someserver.co.au/pub/content/a.ico",
+         "http://abc123.com/something",
+         "http://10.2.3.4/",
+         "http://10.2.3.4",
+         "https://1.2.3.4/",
+         "jdbc:odbc://dataserv:80/mydomain"
+      };
+      for (int i = 0; i < invalidURLs.length; i++) {
+         String url = validURLs[i];
          new TargetDescriptor(url);
-         fail("TargetDescriptor(String) should throw a MalformedURLException if the argument is \"" + url + "\".");
-      } catch (MalformedURLException ex) {
-         // as expected
       }
    }
 }
