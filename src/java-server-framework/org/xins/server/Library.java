@@ -68,61 +68,6 @@ public final class Library extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Initializes the loggers to log to the console using a simple format
-    * and no threshold.
-    */
-   static {
-      configureLoggerFallback();
-   }
-
-   /**
-    * Configures or reconfigures the logging subsystem using the specified
-    * properties.
-    *
-    * @param log
-    *    the logger to log to, cannot be <code>null</code>.
-    *
-    * @param properties
-    *    the properties that should initialize the logging subsystem, cannot
-    *    be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>log == null || properties == null</code>.
-    */
-   static final void configure(Logger log, Properties properties)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("log", log, "properties", properties);
-
-      // Get the logger repository
-      Logger rootLogger = log.getRootLogger();
-
-      // Attempt to configure Log4J
-      PropertyConfigurator.configure(properties);
-
-      // Determine if Log4J is properly initialized
-      Enumeration appenders = rootLogger.getAllAppenders();
-      if (appenders instanceof NullEnumeration) {
-         configureLoggerFallback();
-         log.error("System administration issue detected. Logging subsystem is not properly initialized. Falling back to default output method.");
-      } else {
-         log.debug("Logging subsystem is properly initialized.");
-      }
-   }
-
-   /**
-    * Initializes the logging subsystem with fallback default settings.
-    */
-   private static final void configureLoggerFallback() {
-      Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",              "ALL, console");
-      settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
-      PropertyConfigurator.configure(settings);
-   }
-
-   /**
     * Returns the version of this library.
     *
     * @return
