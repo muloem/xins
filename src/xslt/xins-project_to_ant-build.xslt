@@ -19,7 +19,6 @@ $Id$
 	<xsl:param name="builddir"     />
 	<xsl:param name="xins_version" />
 	
-	<xsl:variable name="typeClassesDir"    select="concat($project_home, '/build/classes-types/', $api)" />
 	<xsl:variable name="xmlenc_version"    select="'0.37'" />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
@@ -86,6 +85,7 @@ $Id$
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
 				<xsl:variable name="api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
+				<xsl:variable name="typeClassesDir"    select="concat($project_home, '/build/classes-types/', $api)" />
 				<xsl:variable name="functionIncludes">
 					<xsl:for-each select="document($api_file)/api/function">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
