@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.5:
+
+* Copying resources from source directory to classes/ directory in WAR file.
+  This is useful for resources like .properties and .xml files.
+
+* Fixed bug: Skeleton .java files are now actually generated.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.4:
 
 * Only generating files if the concerning APIs, function and types are
