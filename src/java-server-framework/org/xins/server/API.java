@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
+import org.xins.types.Type;
+import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
@@ -54,6 +56,7 @@ implements DefaultResultCodes {
    protected API() {
       _log               = Logger.getLogger(getClass().getName());
       _instances         = new ArrayList();
+      _sessionsByID      = new HashMap();
       _functionsByName   = new HashMap();
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
@@ -74,8 +77,20 @@ implements DefaultResultCodes {
 
    /**
     * List of registered instances. See {@link #addInstance(Object)}.
+    *
+    * <p />This field is initialized to a non-<code>null</code> value by the
+    * constructor.
     */
    private final List _instances;
+
+   /**
+    * Map that maps session identifiers to <code>Session</code> instances.
+    * Contains all sessions associated with this API.
+    *
+    * <p />This field is initialized to a non-<code>null</code> value by the
+    * constructor.
+    */
+   private final Map _sessionsByID;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
@@ -120,6 +135,17 @@ implements DefaultResultCodes {
    private Properties _initSettings;
 
    /**
+    * The type that applies for session identifiers. Will be set in
+    * {@link #init(Properties)}.
+    */
+   private Type _sessionIDType;
+
+   /**
+    * The session ID generator. Will be set in {@link #init(Properties)}.
+    */
+   private SessionIDGenerator _sessionIDGenerator;
+
+   /**
     * Flag that indicates if the shutdown sequence has been initiated.
     */
    private boolean _shutDown;
@@ -151,6 +177,11 @@ implements DefaultResultCodes {
       } else {
          _initSettings = (Properties) properties.clone();
       }
+
+      // TODO: Allow configuration of session ID type
+      _sessionIDType = Text.SINGLETON;
+      // TODO: Allow configuration of session ID generator
+      _sessionIDGenerator = new CountingSessionIDGenerator(this);
 
       // Register shutdown hook
       Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
@@ -307,6 +338,34 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Gets the session ID type.
+    *
+    * @return
+    *    the type for session IDs in this API, unless otherwise defined this
+    *    is {@link Text}.
+    */
+   public final Type getSessionIDType() {
+      return _sessionIDType;
+   }
+
+   /**
+    * Creates a new session for this API.
+    *
+    * @return
+    *    the newly constructed session, never <code>null</code>.
+    */
+   final Session createSession() {
+      String sessionID = _sessionIDGenerator.generateSessionID();
+      Session session = new Session(sessionID);
+      _sessionsByID.put(sessionID, session);
+      return session;
+   }
+
+   final Session getSession(String id) {
+      return (Session) _sessionsByID.get(id);
+   }
+
+   /**
     * Callback method invoked when a function is constructed.
     *
     * @param function
@@ -376,7 +435,25 @@ implements DefaultResultCodes {
       }
 
       // Configure the call context
-      context.reset(request);
+      try {
+         context.reset(request);
+      } catch (MissingSessionIDException exception) {
+         XMLOutputter xmlOutputter = context.getXMLOutputter();
+         xmlOutputter.reset(out, "UTF-8");
+         xmlOutputter.startTag("result");
+         xmlOutputter.attribute("success", "false");
+         xmlOutputter.attribute("code", "MissingSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.endDocument();
+         return;
+      } catch (UnknownSessionIDException exception) {
+         XMLOutputter xmlOutputter = context.getXMLOutputter();
+         xmlOutputter.reset(out, "UTF-8");
+         xmlOutputter.startTag("result");
+         xmlOutputter.attribute("success", "false");
+         xmlOutputter.attribute("code", "UnknownSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.endDocument();
+         return;
+      }
 
       FastStringWriter stringWriter = context.getStringWriter();
 

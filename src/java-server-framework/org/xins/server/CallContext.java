@@ -144,6 +144,17 @@ implements Responder, Log {
    private String _logPrefix;
 
    /**
+    * The session for this call.
+    */
+   private Session _session;
+
+   /**
+    * Flag that indicates if the session ID should be added as a parameter to
+    * the response.
+    */
+   private boolean _returnSessionID;
+
+   /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -188,6 +199,7 @@ implements Responder, Log {
       _logger       = null;
       _callID       = -1;
       _logPrefix    = null;
+      _session      = null;
    }
 
    /**
@@ -204,7 +216,10 @@ implements Responder, Log {
     *    if an I/O error occurs.
     */
    void reset(ServletRequest request)
-   throws IllegalArgumentException, IOException {
+   throws IllegalArgumentException,
+          MissingSessionIDException,
+          UnknownSessionIDException,
+          IOException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -219,18 +234,35 @@ implements Responder, Log {
       _xmlOutputter.reset(_stringWriter, "UTF-8");
 
       // Determine the function name
-      String functionName = _request.getParameter("_function");
+      String functionName = request.getParameter("_function");
       if (functionName == null) {
-         functionName = _request.getParameter("function");
+         functionName = request.getParameter("function");
       }
       _functionName = functionName;
 
       // Determine the function object, logger, call ID, log prefix
       _function  = (functionName == null) ? null : _api.getFunction(functionName);
-      _responseValidator = (_function == null) ? NullResponseValidator.SINGLETON : _function.getResponseValidator();
       _logger    = (_function    == null) ? null : _function.getLogger();
       _callID    = (_function    == null) ? -1   : _function.assignCallID();
       _logPrefix = (_function    == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
+
+      // Determine the response validator
+      _responseValidator = (_function == null)
+                         ? NullResponseValidator.SINGLETON
+                         : _function.getResponseValidator();
+
+      // Determine the active session
+      if (_function != null && _function.isSessionBased()) {
+         String sessionID = request.getParameter("_session");
+         if (sessionID == null) {
+            throw new MissingSessionIDException();
+         } else {
+            _session = _api.getSession(sessionID);
+            if (_session == null) {
+               throw new UnknownSessionIDException();
+            }
+         }
+      }
    }
 
    /**
@@ -290,6 +322,51 @@ implements Responder, Log {
     */
    final String getCode() {
       return _code;
+   }
+
+   /**
+    * Returns the session for this call, if any.
+    *
+    * @return
+    *    the session for this call, not <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if there is no current function (i.e.
+    *    {@link #getFunction()}<code> == null</code> or if the current
+    *    function is not session-based, i.e. if
+    *    {@link #getFunction()}<code>.</code>{@link Function#isSessionBased() isSessionBased()}<code> == false<code>.
+    */
+   public Session getSession() throws IllegalStateException {
+
+      // Check preconditions
+      if (_function == null) {
+         throw new InternalError("There is no current function.");
+      // TODO:
+      /*
+      } else if (_function.isSessionBased() == false) {
+         throw new IllegalStateException("The function " + _functionName + " is not session-based.");
+      */
+      }
+
+      // Get the session
+      return null; // TODO
+   }
+
+   public Session createSession() {
+
+      // Check preconditions
+      if (_function == null) {
+         throw new InternalError("There is no current function.");
+      }
+
+      // Create the session
+      Session session = _api.createSession();
+
+      // Store the session and remember that we have to send it down
+      _session         = session;
+      _returnSessionID = true;
+
+      return session;
    }
 
    /**
@@ -401,6 +478,14 @@ implements Responder, Log {
 
       // Reset the state
       _state = WITHIN_PARAMS;
+
+      // Add the session ID, if any
+      if (_returnSessionID) {
+         _xmlOutputter.startTag("param");
+         _xmlOutputter.attribute("name", "_session");
+         _xmlOutputter.pcdata(_session.getID());
+         _xmlOutputter.endTag();
+      }
    }
 
    public final void param(String name, String value)

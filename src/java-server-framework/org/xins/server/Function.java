@@ -273,6 +273,19 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Checks if this function is session-based or not.
+    *
+    * @return
+    *    <code>true</code> if this function is session-based,
+    *    <code>false</code> if this function is session-less.
+    *
+    * @since XINS 0.52
+    */
+   final boolean isSessionBased() {
+      return false; // TODO
+   }
+
+   /**
     * Returns the call statistics for this function.
     *
     * @return
