@@ -2,10 +2,10 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Server Framework:
-  - Fixed bug . The context identifier uses now the localhost hostname
+  - Fixed bug. The context identifier uses now the localhost hostname
     instead of the hostname of the remote host.
     This bug has been in XINS since version 0.203.
-  - Fixed SF.net bug #1042113. Function without parms generates
+  - Fixed SF.net bug #1042113. Function without input parameters generates
     NullPointerException. This bug has been in XINS since version 0.207.
   - Removed Dutch Logdoc translations.
 
@@ -14,7 +14,7 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added the possibility to use the HTTPServiceCaller without parameters.
   - Moved the URLEncoding class from the net package to the text package.
   - Added unit test classes for the IntXX type classes.
-  - Removed boundary checks on all methods except the isValidvalue method in
+  - Removed boundary checks on all methods except the isValidValue method in
     all the IntXX type classes.
   - Added unit test class for Boolean type class.
 
@@ -30,28 +30,26 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * Logdoc
   - The boolean type was not declared in the log_to_entry_html.xslt as a
-    logdoc type.
+    logdoc type. This is now fixed.
   - Refactored the translation-bundle_to_java.xslt as the previous
-    implementation failed when in some possible situations.
+    implementation failed in some possible situations.
 
 * Generated server-side Java code:
-  - Added a remoteIP() method in the request to retreive the IP address of the
-    remote host that requested the function.
+  - Added a remoteIP() method in the request to retrieve the IP address of the
+    remote host that performed the call.
   - Fixed a problem when generating the author in the @author tag.
     This bug has been in XINS since version 0.208.
   - Fixed some Javadoc tags.
-  - Removed the multiplicity attribute from the DTD as it is not used for
-    the code generation.
 
 * Generated client-side Java code (CAPI):
-  - Fixed a compilation error when a function had no input parameters.
+  - Fixed a compilation error when a function has no input parameters.
     This bug has been in XINS since version 0.208.
   - Generated function call result classes now extend class
     org.xins.client.AbstractCAPICallResult instead of class java.lang.Object.
 
 * Generated types Java code:
   - Added fromStringForOptional and fromStringForRequired methods for the
-    types int8, int16, int32 and int64. The method will throw a
+    types _int8, _int16, _int32 and _int64. The methods will throw a
     TypeValueException if the value passed as parameter is out of the
     bounderies.
   - Added fromStringForOptional and fromStringForRequired methods for the
@@ -60,19 +58,20 @@ CHANGES INTRODUCED IN XINS 0.209:
 * Generated specification documentation:
   - Added the broken freeze warning message for types and result codes.
   - Added support for the new directory structure for the broken freeze links.
-  - Added output section for result codes that defines an output section.
+  - Added output section for result codes that define an output section.
   - Added support for the <pcdata> element for the data section.
   - Fixed a layout problem for the element-example.
 
 * Generated build file
-  - Fixed SF.net bug #1040507. If the authors.xml file does not exists the
-    owner is not declared in the api.xml.
+  - Fixed SF.net bug #1040507. If the authors.xml file does not exist the
+    owner is not declared in the api.xml file.
     This bug has been in XINS since version 0.207.
-  - The create-logdoc doesn't generated the domain and default-locale
-    attributes in the log.xml file.
-  - The generated javadoc for the API has now the package private visibility.
+  - Previously the 'create-logdoc' target generated the domain and
+    default-locale attributes in the log.xml file. This is now fixed.
+  - The generated javadoc for the API now shows the package-private members as
+    well.
   - The files created with the "create" targets have now the correct OS
-    carriage return.
+    linefeed character(s).
 
 * Build and release process:
   - Added the possibility to release with a specific version
@@ -80,8 +79,10 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added the help target that provides help for the main targets.
   - Removed the sfaddrelease target.
 
-* DTD
+* DTD:
   - Moved the pcdata-example after the attribute-example.
+  - Removed the multiplicity attribute from the DTD as it is not used for
+    the code generation.
 
 * Generic XSLT include files:
   - Removed support for the 'extends' attribute in type classes.
