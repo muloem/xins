@@ -24,7 +24,7 @@
 			<head>
 				<title>
 					<xsl:text>Log entry group '</xsl:text>
-					<xsl:value-of select="$group" />
+					<xsl:value-of select="group[@id = $group]/@name" />
 					<xsl:text>'</xsl:text>
 				</title>
 				<meta name="generator" content="logdoc" />
@@ -42,18 +42,18 @@
 						</td>
 					</tr>
 				</table>
-
-				<h1>
-					<xsl:text>Log entry group '</xsl:text>
-					<xsl:value-of select="$group" />
-					<xsl:text>'</xsl:text>
-				</h1>
 				<xsl:apply-templates select="group[@id = $group]" />
 			</body>
 		</html>
 	</xsl:template>
 
 	<xsl:template match="group">
+		<h1>
+			<xsl:text>Log entry group '</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>'</xsl:text>
+		</h1>
+
 		<xsl:text>The category for this group is: </xsl:text>
 		<code>
 			<xsl:value-of select="@category" />
