@@ -57,8 +57,6 @@ XINS/JAVA CLIENT FRAMEWORK
 * Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
   _GetSettings and converts the result to a RemoteSettings object with build
   properties, runtime properties and system properties.
-* In a list of APIs, there should not be two APIs with the same URL. Check
-  that. Otherwise also the MD5 would be the same.
 * Add class MultiCallResult that maps ActualFunctionCaller instances to a
   result. The result is either a CallException or a CallResult.
 * Add multi-call functionality to CallTargetGroup.

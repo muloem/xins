@@ -7,6 +7,10 @@ CHANGES INTRODUCED IN XINS 0.138:
   - Added class function isHexDigit(char) to class HexConverter.
   - Implemented URLEncoding.decode(String) without using java.net.URLDecoder.
 
+* XINS/Java Client Framework:
+  - Checking that no 2 ActualFunctionCallers in a CallTargetGroup can have the
+    same URL checksum.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 

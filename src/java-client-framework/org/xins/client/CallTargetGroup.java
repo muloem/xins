@@ -296,7 +296,12 @@ extends AbstractCompositeFunctionCaller {
 
             // Store the ActualFunctionCaller by URL checksum
             long checksum = afc.getCRC32();
-            _actualFunctionCallersByURLChecksum.put(new Long(checksum), afc);
+            Long l = new Long(checksum);
+            ActualFunctionCaller afc0 = (ActualFunctionCaller) _actualFunctionCallersByURLChecksum.get(l);
+            if (afc0 != null) {
+               throw new IllegalArgumentException("List contains two ActualFunctionCaller instances that have the same CRC-32 checksum. URL of first is \"" + afc0.getURL().toString() + "\", URL of second is \"" + afc.getURL().toString() + '.');
+            }
+            _actualFunctionCallersByURLChecksum.put(l, afc);
 
             // Store the ActualFunctionCaller by URL checksum string
             _actualFunctionCallersByURLChecksumString.put(HexConverter.toHexString(checksum), afc);
