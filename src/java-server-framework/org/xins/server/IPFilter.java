@@ -12,7 +12,26 @@ import org.xins.util.net.IPAddressUtils;
 import org.xins.util.text.ParseException;
 
 /**
- * Filter for IP addresses. An <code>IPFilter</code> object is
+ * Filter for IP addresses.
+ *
+ * <a name="format"></a>
+ * <h3>Filter expression format</h3>
+ *
+ * <p>An <code>IPFilter</code> instance is created using a so-called
+ * <em>filter expression</em>. This filter expression specifies the IP address
+ * and mask to use for matching a subject IP address.
+ *
+ * <p>A filter expression must match the following format:
+ *
+ * <blockquote><code>"<em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>"</code>,
+ * optionally followed by: <code>/<em>n</em></code>, where <em>a</em> is a
+ * number between 0 and 255, with no leading zeroes, and <em>n</em> is a
+ * number between 0 and 32, no leading zeroes; if <em>n</em> is not
+ * specified.</blockquote>
+ *
+ * <h3>Example code</h3>
+ *
+ * <p>An <code>IPFilter</code> object is
  * created and used as follows:
  *
  * <blockquote><code>IPFilter filter = IPFilter.parseFilter("10.0.0.0/24");
@@ -51,15 +70,13 @@ extends Object {
     * the bits in the base IP address. 
     *
     * @param expression
-    *    the filter expression, cannot be <code>null</code> and must match the
-    *    form:
-    *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
-    *    where <em>a</em> is a number between 0 and 255, with no leading
-    *    zeroes, and <em>n</em> is a number between <em>0</em> and
-    *    <em>32</em>, no leading zeroes.
+    *    the filter expression, cannot be <code>null</code> and must match
+    *    <a href="#format">the format for a filter expression</a>.
+    *    then 32 is assumed.
     *
     * @return
-    *    the created IP Filter object.
+    *    the constructed <code>IPFilter</code> object, never
+    *    <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>expression == null</code>.
@@ -75,14 +92,29 @@ extends Object {
 
       // Find the slash ('/') character
       int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
-      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
-         throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
+
+      String ipString;
+      int mask;
+
+      // If we have a slash, then it cannot be at the first or last position
+      if (slashPosition >= 0) {
+         if (slashPosition == 0 || slashPosition == expression.length() - 1) {
+            throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
+         }
+
+         // Split the IP and the mask
+         ipString = expression.substring(0, slashPosition);
+         mask     = parseMask(expression.substring(slashPosition + 1));
+
+      // If we don't have a slash, then parse the IP address only and assume
+      // the mask to be 32 bits
+      } else {
+         ipString = expression;
+         mask     = 32;
       }
 
-      // Split the IP and the mask
-      String ipString = expression.substring(0, slashPosition);
-      int ip          = IPAddressUtils.ipToInt(ipString);
-      int mask        = parseMask(expression.substring(slashPosition + 1));
+      // Convert the IP string to an int
+      int ip = IPAddressUtils.ipToInt(ipString);
 
       // Create and return an IPFilter object
       return new IPFilter(ipString, ip, mask);
