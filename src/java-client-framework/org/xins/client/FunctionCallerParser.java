@@ -116,7 +116,7 @@ extends Object {
     * @throws ParseException
     *    if there was an I/O error, if the data on the stream is not valid XML
     *    or if the structure of the XML is not valid for the definition of a
-    *    {@link CallRequest}.
+    *    {@link FunctionCaller}.
     */
    public FunctionCaller parse(Reader in)
    throws IllegalArgumentException, ParseException {
