@@ -10,6 +10,10 @@ CHANGES INTRODUCED IN XINS 0.73:
     Extended functionality of HexConverter to support converting ints to hex
     strings.
 
+* XINS/Java Server Framework:
+  - Small performance improvements by switching to using FastStringBuffer in
+    some occasions (instead of the String append operator +).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.72:
 
