@@ -86,13 +86,14 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
          result = tryCall(caller, sessionID, functionName, parameters);
 
          // Determine if the call failed
+         String code = "";
          if (i == count) {
             divert = false;
          } else {
             divert = result instanceof Throwable;
             if (!divert) {
                CallResult callResult = (CallResult) result;
-               String code = callResult.getCode();
+               code = callResult.getCode();
                if (code != null) {
                   divert = divertOnCode(code);
                }
@@ -110,6 +111,7 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
             } else {
                LOG.debug("Call attempt " + i + '/' + count + " succeeded.");
             }
+         }
       } while (divert);
 
       return callImplResult(result);
