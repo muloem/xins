@@ -362,94 +362,6 @@ public class HexConverter extends Object {
    }
 
    /**
-    * Parses the 16-digit unsigned hex number in the specified string.
-    *
-    * @param s
-    *    the hexadecimal string, cannot be <code>null</code>.
-    *
-    * @param index
-    *    the starting index in the string, must be &gt;= 0.
-    *
-    * @return
-    *    the value of the parsed unsigned hexadecimal string.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>s == null || index &lt; 0 || <code>s.</code>{@link String#length() length()}<code> &lt; index + 16</code>).
-    *
-    * @throws NumberFormatException
-    *    if any of the characters in the specified range of the string is not
-    *    a hex digit (<code>'0'</code> to <code>'9'</code> and
-    *    <code>'a'</code> to <code>'f'</code>).
-    */
-   public static long parseHexLong(String s, int index)
-   throws IllegalArgumentException, NumberFormatException {
-
-      // Check preconditions
-      if (s == null) {
-         throw new IllegalArgumentException("s == null");
-      } else if (s.length() < index + 16) {
-         throw new IllegalArgumentException("s.length() (" + s.length() + ") < index (" + index + ") + 16 (" + (index + 16) + ')');
-      }
-
-      long n = 0L;
-
-      final int CHAR_ZERO = (int) '0';
-      final int CHAR_NINE = (int) '9';
-      final int CHAR_A    = (int) 'a';
-      final int CHAR_F    = (int) 'f';
-
-      final int CHAR_A_FACTOR = CHAR_A - 10;
-
-      // Loop through all characters
-      int last = index + 16;
-      for (int i = index; i < last; i++) {
-         int c = (int) s.charAt(i);
-         n <<= 4;
-         if (c >= CHAR_ZERO && c <= CHAR_NINE) {
-            n |= (c - CHAR_ZERO);
-         } else if (c >= CHAR_A && c <= CHAR_F) {
-            n |= (c - CHAR_A_FACTOR);
-         } else {
-            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
-         }
-      }
-
-      return n;
-   }
-
-   /**
-    * Parses the specified 16-digit unsigned hex string.
-    *
-    * @param s
-    *    the hexadecimal string, cannot be <code>null</code> and must have
-    *    size 16
-    *    (i.e. <code>s.</code>{@link String#length() length()}<code> == 16</code>).
-    *
-    * @return
-    *    the value of the parsed unsigned hexadecimal string.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>s == null || s.</code>{@link String#length() length()}<code> != 16</code>.
-    *
-    * @throws NumberFormatException
-    *    if any of the characters in the specified string is not a hex digit
-    *    (<code>'0'</code> to <code>'9'</code> and <code>'a'</code> to
-    *    <code>'f'</code>).
-    */
-   public static long parseHexLong(String s)
-   throws IllegalArgumentException, NumberFormatException {
-
-      // Check preconditions
-      if (s == null) {
-         throw new IllegalArgumentException("s == null");
-      } else if (s.length() != 16) {
-         throw new IllegalArgumentException("s.length() != 16");
-      }
-
-      return parseHexLong(s, 0);
-   }
-
-   /**
     * Parses the 8-digit unsigned hex number in the specified string.
     *
     * @param s
@@ -535,6 +447,94 @@ public class HexConverter extends Object {
       }
 
       return parseHexInt(s, 0);
+   }
+
+   /**
+    * Parses the 16-digit unsigned hex number in the specified string.
+    *
+    * @param s
+    *    the hexadecimal string, cannot be <code>null</code>.
+    *
+    * @param index
+    *    the starting index in the string, must be &gt;= 0.
+    *
+    * @return
+    *    the value of the parsed unsigned hexadecimal string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null || index &lt; 0 || <code>s.</code>{@link String#length() length()}<code> &lt; index + 16</code>).
+    *
+    * @throws NumberFormatException
+    *    if any of the characters in the specified range of the string is not
+    *    a hex digit (<code>'0'</code> to <code>'9'</code> and
+    *    <code>'a'</code> to <code>'f'</code>).
+    */
+   public static long parseHexLong(String s, int index)
+   throws IllegalArgumentException, NumberFormatException {
+
+      // Check preconditions
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      } else if (s.length() < index + 16) {
+         throw new IllegalArgumentException("s.length() (" + s.length() + ") < index (" + index + ") + 16 (" + (index + 16) + ')');
+      }
+
+      long n = 0L;
+
+      final int CHAR_ZERO = (int) '0';
+      final int CHAR_NINE = (int) '9';
+      final int CHAR_A    = (int) 'a';
+      final int CHAR_F    = (int) 'f';
+
+      final int CHAR_A_FACTOR = CHAR_A - 10;
+
+      // Loop through all characters
+      int last = index + 16;
+      for (int i = index; i < last; i++) {
+         int c = (int) s.charAt(i);
+         n <<= 4;
+         if (c >= CHAR_ZERO && c <= CHAR_NINE) {
+            n |= (c - CHAR_ZERO);
+         } else if (c >= CHAR_A && c <= CHAR_F) {
+            n |= (c - CHAR_A_FACTOR);
+         } else {
+            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
+         }
+      }
+
+      return n;
+   }
+
+   /**
+    * Parses the specified 16-digit unsigned hex string.
+    *
+    * @param s
+    *    the hexadecimal string, cannot be <code>null</code> and must have
+    *    size 16
+    *    (i.e. <code>s.</code>{@link String#length() length()}<code> == 16</code>).
+    *
+    * @return
+    *    the value of the parsed unsigned hexadecimal string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null || s.</code>{@link String#length() length()}<code> != 16</code>.
+    *
+    * @throws NumberFormatException
+    *    if any of the characters in the specified string is not a hex digit
+    *    (<code>'0'</code> to <code>'9'</code> and <code>'a'</code> to
+    *    <code>'f'</code>).
+    */
+   public static long parseHexLong(String s)
+   throws IllegalArgumentException, NumberFormatException {
+
+      // Check preconditions
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      } else if (s.length() != 16) {
+         throw new IllegalArgumentException("s.length() != 16");
+      }
+
+      return parseHexLong(s, 0);
    }
 
 
