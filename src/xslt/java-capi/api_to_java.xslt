@@ -103,6 +103,15 @@ public final class API extends Object {
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:for-each select="document($functionFile)/function">
+				<xsl:variable name="returnType">
+					<xsl:choose>
+						<xsl:when test="output/param">
+							<xsl:value-of select="$functionName" />
+							<xsl:text>Result</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>void</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:text><![CDATA[
 
    /**
@@ -140,8 +149,8 @@ public final class API extends Object {
     *    locally already.
     */
    public ]]></xsl:text>
-				<xsl:value-of select="$functionName" />
-				<xsl:text>Result </xsl:text>
+				<xsl:value-of select="$returnType" />
+				<xsl:text> </xsl:text>
 				<xsl:value-of select="$methodName" />
 				<xsl:text>(</xsl:text>
 					<xsl:for-each select="input/param">
