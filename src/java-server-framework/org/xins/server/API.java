@@ -235,7 +235,7 @@ implements DefaultResultCodes {
       // TODO: Use ResultCode here, instead of String
       String code;
       try {
-         handleCall(context);
+         f.handleCall(context);
          success = context.getSuccess();
          code    = context.getCode();
          exceptionThrown = false;
@@ -282,18 +282,6 @@ implements DefaultResultCodes {
       long duration = System.currentTimeMillis() - start;
       f.performedCall(start, duration, success, code);
    }
-
-   /**
-    * Handles a call to this API.
-    *
-    * @param context
-    *    the context for this call, never <code>null</code>.
-    *
-    * @throws Throwable
-    *    if anything goes wrong.
-    */
-   protected abstract void handleCall(CallContext context)
-   throws Throwable;
 
    /**
     * Returns a list of all functions in this API. Per function the name and

@@ -257,6 +257,18 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Handles a call to this function.
+    *
+    * @param context
+    *    the context for this call, never <code>null</code>.
+    *
+    * @throws Throwable
+    *    if anything goes wrong.
+    */
+   protected abstract void handleCall(CallContext context)
+   throws Throwable;
+
+   /**
     * Callback method that may be called after a call to this function. This
     * method will store statistics-related information.
     *

@@ -138,31 +138,6 @@ public class APIImpl extends API {
 </xsl:text>
 	</xsl:if>
 
-	<xsl:text>
-   protected void handleCall(CallContext context)
-   throws Throwable {
-      String function = context.getFunction();
-</xsl:text>
-		<!-- TODO: Default functions -->
-		<xsl:text>
-      if (function == null || function.length() == 0) {
-         context.startResponse(false, "MissingFunctionName");</xsl:text>
-		<xsl:for-each select="//api/function">
-			<xsl:text>
-      } else if ("</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>".equals(function)) {
-         _function</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>.handleCall(context);</xsl:text>
-		</xsl:for-each>
-		<xsl:text>
-      } else {
-         context.startResponse(false, "NoSuchFunction");
-      }
-      context.endResponse();
-   }
-</xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>   public </xsl:text>
 			<xsl:value-of select="@class" />
