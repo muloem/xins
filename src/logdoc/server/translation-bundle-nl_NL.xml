@@ -54,7 +54,6 @@
 	<translation entry="1406">API is geinitialiseerd.</translation>
 	<translation entry="1407">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is gewijzigd. XINS/Java Server Framework wordt opnieuw geinitialiseerd.</translation>
 	<translation entry="1408">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert de interval niet voor het controleren van dit bestand, de property <value-of-param name="propertyName" format="quoted" /> is niet ingesteld. Standaardinstelling wordt gehanteerd.</translation>
-	<translation entry="1409">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> wordt geparsed.</translation>
 	<translation entry="1410">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is niet valide.</translation>
 	<translation entry="1411">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is successvol geparsed.</translation>
 	<translation entry="1412">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) wordt vanaf nu gecontroleerd op veranderingen. De controle op wijzigingen wordt iedere <value-of-param name="interval" /> seconden uitgevoerd, zoals bepaald in de runtime-property <value-of-param name="intervalPropertyName" format="quoted" />.</translation>
@@ -72,7 +71,6 @@
 	<translation entry="1426">Functie <value-of-param name="function" /> is geinitialiseerd.</translation>
 	<translation entry="1427">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
 	<translation entry="1428">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1429">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1430">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden.</translation>
 	<translation entry="1431">Geen toegangsregels gedefinieerd in runtime-property <value-of-param name="propertyName" />.</translation>
 	<translation entry="1434">Lijst van toegangsregels is geladen, met <value-of-param name="ruleCount" /> regel(s).</translation>

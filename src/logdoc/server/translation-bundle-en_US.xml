@@ -54,7 +54,6 @@
 	<translation entry="1406">Initialized API.</translation>
 	<translation entry="1407">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is modified. Re-initializing XINS/Java Server Framework.</translation>
 	<translation entry="1408">Runtime properties file (<value-of-param name="configFile" format="quoted" />) does not specify the watch interval, the property <value-of-param name="propertyName" format="quoted" /> is not set. Assuming fallback default.</translation>
-	<translation entry="1409">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is being parsed.</translation>
 	<translation entry="1410">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is invalid.</translation>
 	<translation entry="1411">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> has been parsed successfully.</translation>
 	<translation entry="1412">Starting to watch the runtime properties file (<value-of-param name="configFile" format="quoted" />). Checking for modifications every <value-of-param name="interval" /> seconds, as specified in the runtime property <value-of-param name="intervalPropertyName" format="quoted" />.</translation>
@@ -72,7 +71,6 @@
 	<translation entry="1426">Initialized <value-of-param name="function" /> function.</translation>
 	<translation entry="1427">Initialization of <value-of-param name="function" /> function failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
 	<translation entry="1428">Initialization of <value-of-param name="function" /> function failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1429">Initialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1430">Initialization of <value-of-param name="function" /> function failed.</translation>
 	<translation entry="1431">No access rule list defined in runtime property <value-of-param name="propertyName" />.</translation>
 	<translation entry="1434">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
