@@ -36,18 +36,21 @@ extends Spec {
     * Constructs a new <code>ElementSpec</code> for an element with the
     * specified name.
     *
+    * @param parent
+    *    the function this element is part of, not <code>null</code>.
+    *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>parent == null || name == null</code>.
     *
     * @throws InvalidNameException
     *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
-   public ElementSpec(String name)
+   public ElementSpec(FunctionSpec parent, String name)
    throws IllegalArgumentException, InvalidNameException {
-      super(TYPE, name);
+      super(TYPE, parent, name);
    }
 
 
@@ -79,7 +82,7 @@ extends Spec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("element");
+         super(FunctionSpec.TYPE, "element", "^[a-zA-Z0-9_-]+$");
       }
 
 

@@ -36,18 +36,21 @@ extends Spec {
     * Constructs a new <code>ElementAttributeSpec</code> for an element
     * attribute with the specified name.
     *
+    * @param parent
+    *    the element this attribute is defined for, not <code>null</code>.
+    *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>parent == null || name == null</code>.
     *
     * @throws InvalidNameException
     *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
-   public ElementAttributeSpec(String name)
+   public ElementAttributeSpec(ElementSpec parent, String name)
    throws IllegalArgumentException, InvalidNameException {
-      super(TYPE, name);
+      super(TYPE, parent, name);
    }
 
 
@@ -79,7 +82,7 @@ extends Spec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("element attribute");
+         super(ElementSpec.TYPE, "element attribute", "^[a-zA-Z0-9_-]+$");
       }
 
 

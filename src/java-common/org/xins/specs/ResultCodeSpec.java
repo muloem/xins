@@ -36,6 +36,9 @@ extends VersionedSpec {
     * Constructs a new <code>ResultCodeSpec</code> for a result code with the
     * specified name and version.
     *
+    * @param parent
+    *    the API this result code is part of, not <code>null</code>.
+    *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
@@ -43,7 +46,7 @@ extends VersionedSpec {
     *    the version for the component, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || version == null</code>.
+    *    if <code>parent == null || name == null || version == null</code>.
     *
     * @throws InvalidNameException
     *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
@@ -51,11 +54,11 @@ extends VersionedSpec {
     * @throws InvalidVersionException
     *    if <code>version</code> is not a well-formed version number string.
     */
-   public ResultCodeSpec(String name, String version)
+   public ResultCodeSpec(APISpec parent, String name, String version)
    throws IllegalArgumentException,
           InvalidNameException,
           InvalidVersionException {
-      super(TYPE, name, version);
+      super(TYPE, parent, name, version);
    }
 
 
@@ -87,7 +90,7 @@ extends VersionedSpec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("result code");
+         super(APISpec.TYPE, "result code", "^([A-Z][a-z0-9]+)+$");
       }
 
 

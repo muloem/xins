@@ -35,28 +35,6 @@ extends Object {
     * @param type
     *    the type of the component, not <code>null</code>.
     *
-    * @param name
-    *    the name for the component, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>type == null || name == null</code>.
-    *
-    * @throws InvalidNameException
-    *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
-    */
-   Spec(SpecType type, String name)
-   throws IllegalArgumentException, InvalidNameException {
-      this(type, null, name);
-   }
-
-   /**
-    * Constructs a new <code>Spec</code> object with the specified type and
-    * name. This constructor can only be called by subclasses in the
-    * same package.
-    *
-    * @param type
-    *    the type of the component, not <code>null</code>.
-    *
     * @param parent
     *    the parent for the component, can be <code>null</code>.
     *

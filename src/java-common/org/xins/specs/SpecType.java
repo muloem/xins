@@ -44,38 +44,6 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>SpecType</code> with the specified name.
-    *
-    * @param typeName
-    *    the name for the type, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    */
-   SpecType(String typeName) throws IllegalArgumentException {
-      this(null, typeName, null);
-   }
-
-   /**
-    * Constructs a new <code>SpecType</code> with the specified name and
-    * regular expression for actual component names.
-    *
-    * @param typeName
-    *    the name for the type, not <code>null</code>.
-    *
-    * @param nameRE
-    *    the regular expression that names for components must match, or
-    *    <code>null</code> if there are no restrictions on the name.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    */
-   SpecType(String typeName, String nameRE)
-   throws IllegalArgumentException {
-      this(null, typeName, nameRE);
-   }
-
-   /**
     * Constructs a new <code>SpecType</code> with the specified name, regular
     * expression for actual component names and parent type.
     *
