@@ -50,7 +50,7 @@ public abstract class AbstractCAPI extends Object {
 
    /**
     * Creates a new <code>AbstractCAPI</code> object, using the specified
-    * <code>XINSServiceCaller</code>.
+    * service descriptor and optional call configuration.
     *
     * <p>This constructor is considered internal to XINS. Do not use it
     * directly.
@@ -78,11 +78,12 @@ public abstract class AbstractCAPI extends Object {
 
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor, callConfig);
+      _caller.setCAPI(this);
    }
 
    /**
     * Creates a new <code>AbstractCAPI</code> object, using the specified
-    * <code>Descriptor</code>.
+    * service descriptor.
     *
     * <p>A default XINS call configuration will be used.
     *

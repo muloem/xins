@@ -161,9 +161,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       return descriptor;
    }
 
-   // FIXME: Document
    public static void testProtocol(Descriptor descriptor) {
-      // TODO
+      // FIXME: Document this testProtocol(Descriptor) method
+      // FIXME: Unit test this testProtocol(Descriptor) method
+      // FIXME: Implement this testProtocol(Descriptor) method
    }
 
 
@@ -252,10 +253,31 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private final HTTPServiceCaller _httpCaller;
 
+   /**
+    * The <code>CAPI</code> object that uses this caller. This field is
+    * <code>null</code> if this caller is not used by a <code>CAPI</code>
+    * class.
+    */
+   private AbstractCAPI _capi;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Sets the associated <code>CAPI</code> instance.
+    *
+    * <p>This method is expected to be called only once, before any calls are
+    * made with this caller.
+    *
+    * @param capi
+    *    the associated <code>CAPI</code> instance, or
+    *    <code>null</code>.
+    */
+   void setCAPI(AbstractCAPI capi) {
+      _capi = capi;
+   }
 
    /**
     * Returns a default <code>CallConfig</code> object. This method is called
