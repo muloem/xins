@@ -263,6 +263,8 @@ implements Responder, Log {
             }
          }
       }
+
+      _returnSessionID = false;
    }
 
    /**
@@ -485,6 +487,7 @@ implements Responder, Log {
          _xmlOutputter.attribute("name", "_session");
          _xmlOutputter.pcdata(_session.getID());
          _xmlOutputter.endTag();
+         _returnSessionID = false;
       }
    }
 
