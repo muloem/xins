@@ -2,9 +2,14 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.41:
 
 * Extended XINS/Java Client Framework:
+  - Added support for sessions.
   - Renamed class RemoteAPI to ActualFunctionCaller. Deprecated RemoteAPI.
   - Added class AbstractFunctionCaller and made ActualFunctionCaller derive
     from it.
+
+* Improved performance of HTTPRequester (used by RemoteAPI /
+  ActualFunctionCaller) by switching to using an unsynchronized
+  FastStringBuffer instead of the normal synchronized StringBuffer.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.40:
