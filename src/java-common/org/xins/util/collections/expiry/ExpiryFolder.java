@@ -33,7 +33,7 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ExpiryMap</code>.
+    * Constructs a new <code>ExpiryFolder</code>.
     *
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
