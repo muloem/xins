@@ -194,8 +194,12 @@
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
+			<packageset dir="src/java-common" />
 			<packageset dir="src/java-server-framework" />
 			<packageset dir="src/java-client-framework" />
+			<group title="XINS/Java Common"           packages="org.xins.util*,org.xins.types" />
+			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
+			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
