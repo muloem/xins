@@ -227,6 +227,21 @@ public class Log extends AbstractLog {
 			<xsl:value-of select="../@id" />
 		</xsl:variable>
 
+		<xsl:variable name="$exception">
+			<xsl:choose>
+				<xsl:when test="@exception = 'true'">true</xsl:when>
+				<xsl:when test="@exception = 'false'">false</xsl:when>
+				<xsl:when test="string-length(@exception) = 0">false</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Element 'entry', parameter 'exception' is set to '</xsl:text>
+						<xsl:value-of select="@exception" />
+						<xsl:text>', which is considered invalid. It should be either 'true', 'false' or empty.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:text>
 
    /**
@@ -243,6 +258,12 @@ public class Log extends AbstractLog {
    public static final void log_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
+		<xsl:if test="$exception = 'true'">
+			<xsl:text>Throwable exception</xsl:text>
+			<xsl:if test="count(param) &gt; 0">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+		</xsl:if>
 		<xsl:apply-templates select="param" mode="method-argument" />
 		<!-- XXX: Lock before updating COUNTER? Probably not needed on int -->
 		<xsl:text>) {
@@ -266,8 +287,16 @@ public class Log extends AbstractLog {
 			<xsl:if test="position() &gt; 1">, </xsl:if>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
-		<!-- TODO: Support exception? -->
-		<xsl:text>), null);
+		<xsl:text>), </xsl:text>
+		<xsl:choose>
+			<xsl:when test="$exception = 'true'">
+				<xsl:text>exception</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>null</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>);
       }
    }</xsl:text>
 	</xsl:template>
