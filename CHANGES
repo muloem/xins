@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.58:
+
+* Fixed bug in generated Java CAPI classes. Now correctly sending session ID
+  with session-based function calls.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.57:
 
 * Introduced quite some changes in the type classes in XINS/Java Common
