@@ -268,76 +268,9 @@ implements Servlet {
     *        <br />log4j.appender.console.layout.ConversionPattern=%d %-5p [%c] %m%n</code></blockquote>
     * </dl>
     *
-    * <p>The initialization is performed as follows:
-    *
-    * <ol>
-    *    <li>if this servlet is not currently <em>uninitialized</em>, then a
-    *        {@link ServletException} is thrown; this indicates a problem with
-    *        the application server;
-    *    <li>if <code>config</code> argument is <code>null</code> then a
-    *        {@link ServletException} is thrown; this indicates a problem
-    *        with the application server;
-    *    <li>the {@link ServletContext} is retrieved from the
-    *        {@link ServletConfig}, using the
-    *        {@link ServletConfig#getServletContext()} method; if the returned
-    *        value is <code>null</code>, then a {@link ServletException} is
-    *        thrown; this indicates a problem with the application server;
-    *    <li>the state is set to <em>initializing</em>;
-    *    <li>the value of the required system property named
-    *        {@link #CONFIG_FILE_SYSTEM_PROPERTY} is determined, this is the
-    *        relative or absolute path to the runtime configuration file; if
-    *        it is not set then a {@link ServletException} is thrown;
-    *    <li>the indicated configuration file is loaded and all
-    *        configuration properties in this file are read according to
-    *        {@link Properties#load(InputStream) the specifications for a property file};
-    *        if this fails, then a {@link ServletException} is thrown;
-    *    <li>the logging subsystem is initialized using the properties from
-    *        the configuration file, see
-    *        {@link PropertyConfigurator#doConfigure(String,org.apache.log4j.spi.LoggerRepository) the Log4J documentation};
-    *    <li>the logging system is investigated to check if it is properly
-    *        initialized, if it is not then apparently the configuration file
-    *        contained no initialization properties for it; in this case the
-    *        logging subsystem will be configured to log to the standard
-    *        output stream using a simple output method, with no log level
-    *        threshold and a warning message is immediately logged;
-    *    <li>at this point the logging subsystem is definitely initialized;
-    *        the interval for the configuration file modification checks is
-    *        determined by reading the
-    *        {@link #CONFIG_RELOAD_INTERVAL_PROPERTY} configuration property;
-    *        if this property is not set, then
-    *        {@link #DEFAULT_CONFIG_RELOAD_INTERVAL} is assumed;
-    *        if this property exists but has an invalid value, then a
-    *        <em>warning</em> message is logged and
-    *        {@link #DEFAULT_CONFIG_RELOAD_INTERVAL} is also assumed;
-    *    <li>the initialization property {@link #API_CLASS_PROPERTY} is read
-    *        from the {@link ServletConfig servlet configuration} (not from
-    *        the configuration file); if it is not set then a
-    *        {@link ServletException} is thrown.
-    *    <li>the API class, specified in the {@link #API_CLASS_PROPERTY}
-    *        property, is loaded; it must be derived from the {@link API}
-    *        class in the XINS/Java Server Framework; if this fails then a
-    *        {@link ServletException} is thrown;
-    *    <li>in the API class a static field called <code>SINGLETON</code> is
-    *        looked up and the value is determined; the value must be an
-    *        instance of that same class, and cannot be <code>null</code>;
-    *        if this fails, then a {@link ServletException} is thrown;
-    *    <li>the API instance will be initialized by calling
-    *        {@link API#init(Properties)}; if this fails a
-    *        {@link ServletException} is thrown;
-    *    <li>the {@link ServletConfig config} object is stored internally, to
-    *        be returned by {@link #getServletConfig()}.
-    *    <li>the state is set to <em>ready</em>.
-    *    <li>the configuration file watch thread is started;
-    * </ol>
-    *
-    * <p>Note that if a {@link ServletException} is thrown, the state is reset
-    * to <em>uninitialized</em>.
-    *
-    * <p>Also note that if the logging subsystem is already initialized and a
-    * {@link ServletException} is thrown, a <em>fatal</em> message is logged
-    * just before the exception is actually thrown. However, if the logging
-    * subsystem is not yet initialized, then a message is printed to the
-    * standard error stream.
+    * <p>Note that if a {@link ServletException} is thrown during the
+    * initialization, a <em>fatal</em> message is logged and the state is
+    * reset to <em>uninitialized</em>.
     *
     * @param config
     *    the {@link ServletConfig} object which contains initialization and
