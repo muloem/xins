@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
 
@@ -197,7 +197,7 @@ public class DataElement implements Cloneable {
    void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
-      final String METHODNAME = "setAttribute(String,String,String)";
+      final String THIS_METHOD = "setAttribute(String,String,String)";
 
       // Construct a QualifiedName object. This will check the preconditions.
       QualifiedName qn = new QualifiedName(namespaceURI, localName);
@@ -227,8 +227,9 @@ public class DataElement implements Cloneable {
            + "; value="             + TextUtils.quote(value)
            + "; getAttribute(...)=" + TextUtils.quote(getValue)
            + '.';
-         Log.log_2050(CLASSNAME, METHODNAME, message);
-         throw new ProgrammingError(message);
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                         CLASSNAME, THIS_METHOD,
+                                         message,   null);
       }
    }
 
@@ -411,14 +412,14 @@ public class DataElement implements Cloneable {
     */
    void addChild(DataElement child) throws IllegalArgumentException {
 
-      final String METHODNAME = "addChild(DataElement)";
+      final String THIS_METHOD = "addChild(DataElement)";
 
       // Check preconditions
       MandatoryArgumentChecker.check("child", child);
       if (child == this) {
-         String message = "child == this";
-         Log.log_2050(CLASSNAME, METHODNAME, message);
-         throw new IllegalArgumentException(message);
+         final String DETAIL = "child == this";
+         Log.log_2050(CLASSNAME, THIS_METHOD, DETAIL);
+         throw new IllegalArgumentException(DETAIL);
       }
 
       // Lazily initialize

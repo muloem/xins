@@ -17,7 +17,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
@@ -109,10 +109,21 @@ public final class XINSCallRequest extends CallRequest {
     * stores that in {@link #PARAMETER_NAME_PATTERN}.
     */
    static {
+
+      final String THIS_METHOD = "<clinit>()";
+
       try {
          PARAMETER_NAME_PATTERN = PATTERN_COMPILER.compile(PARAMETER_NAME_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
-         throw new ProgrammingError("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.", mpe);
+         final String DETAIL = "The pattern \""
+                             + PARAMETER_NAME_PATTERN_STRING
+                             + "\" is malformed.";
+
+         throw Utils.logProgrammingError(
+            CLASSNAME, THIS_METHOD,
+            CLASSNAME, THIS_METHOD,
+            DETAIL,    mpe);
+
       }
    }
 

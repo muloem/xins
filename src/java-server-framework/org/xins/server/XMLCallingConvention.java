@@ -18,11 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+
 import org.xins.common.collections.ProtectedPropertyReader;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -156,10 +158,7 @@ extends CallingConvention {
          }
 
          return new FunctionRequest(functionName, functionParams, dataElement);
-      } catch (UnsupportedEncodingException ex) {
-         final String DETAIL = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";
-         Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", DETAIL);
-         throw new ProgrammingError(DETAIL);
+
       } catch (IOException ex) {
          throw new InvalidRequestException("Cannot read the XML request.", ex);
       } catch (ParseException ex) {

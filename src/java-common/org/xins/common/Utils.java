@@ -78,7 +78,7 @@ public final class Utils extends Object {
 
    /**
     * Logs a programming error with an optional cause exception, and returns a
-    * <code>ProgrammingError</code> object for it.
+    * <code>ProgrammingException</code> object for it.
     *
     * @param detectingClass
     *    the name of the class that detected the problem, or
@@ -103,10 +103,10 @@ public final class Utils extends Object {
     *    the cause exception, can be <code>null</code>.
     *
     * @return
-    *    an appropriate {@link ProgrammingError} that can be thrown by the
+    *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingError
+   public static final ProgrammingException
    logProgrammingError(String    detectingClass,
                        String    detectingMethod,
                        String    subjectClass,
@@ -128,16 +128,16 @@ public final class Utils extends Object {
                       detail);
       }
 
-      // Construct and return ProgrammingError object
-      return new ProgrammingError(detectingClass, detectingMethod,
-                                  subjectClass,   subjectMethod,
-                                  detail,         cause);
+      // Construct and return ProgrammingException object
+      return new ProgrammingException(detectingClass, detectingMethod,
+                                      subjectClass,   subjectMethod,
+                                      detail,         cause);
 
    }
 
    /**
     * Logs a programming error with no cause exception, and returns a
-    * <code>ProgrammingError</code> object for it.
+    * <code>ProgrammingException</code> object for it.
     *
     * @param detectingClass
     *    the name of the class that detected the problem, or
@@ -159,10 +159,10 @@ public final class Utils extends Object {
     *    the detail message, can be <code>null</code>.
     *
     * @return
-    *    an appropriate {@link ProgrammingError} that can be thrown by the
+    *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingError
+   public static final ProgrammingException
    logProgrammingError(String    detectingClass,
                        String    detectingMethod,
                        String    subjectClass,

@@ -14,7 +14,7 @@ import java.util.Set;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
@@ -40,9 +40,14 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The cached name of this class.
+    * The fully-qualified name of the <code>Doorman</code> class.
     */
    private static final String DOORMAN_CLASSNAME = Doorman.class.getName();
+
+   /**
+    * The fully-qualified name of the <code>Doorman.Queue</code> class.
+    */
+   private static final String QUEUE_CLASSNAME = Doorman.Queue.class.getName();
 
    /**
     * The type for readers in the queue.
@@ -68,8 +73,9 @@ public final class Doorman extends Object {
     * size.
     *
     * @param name
-    *    the name for the protected area this doorman guards, to be used in
-    *    logging and exception messages, cannot be <code>null</code>.
+    *    the name for the protected area this doorman guards, to be used
+    *    during logging and when creating exceptions, cannot be
+    *    <code>null</code>.
     *
     * @param strict
     *    flag that indicates if strict thread synchronization checking should
@@ -108,16 +114,20 @@ public final class Doorman extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
       if (queueSize < 0 || maxQueueWaitTime <= 0L) {
-         String message;
+         String detail;
          if (queueSize < 0 && maxQueueWaitTime <= 0L) {
-            message = "queueSize (" + queueSize + ") < 0 && maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L";
+            detail = "queueSize ("
+                   + queueSize
+                   + ") < 0 && maxQueueWaitTime ("
+                   + maxQueueWaitTime
+                   + ") <= 0L";
          } else if (queueSize < 0) {
-            message = "queueSize (" + queueSize + ") < 0";
+            detail = "queueSize (" + queueSize + ") < 0";
          } else {
-            message = "maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L";
+            detail = "maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L";
          }
          // TODO: Log programming error
-         throw new IllegalArgumentException(message);
+         throw new IllegalArgumentException(detail);
       }
 
       // Initialize other fields
@@ -139,7 +149,7 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Name of this doorman. Used in log and exception messages.
+    * Name of this doorman. Used for logging and exceptions.
     */
    private final String _name;
 
@@ -217,8 +227,13 @@ public final class Doorman extends Object {
    public void enterAsReader()
    throws QueueTimeOutException {
 
+      final String THIS_METHOD    = "enterAsReader()";
+      final String CALLING_CLASS  = Utils.getCallingClass();
+      final String CALLING_METHOD = Utils.getCallingMethod();
+
+
       // TRACE: Enter method
-      Log.log_1003(DOORMAN_CLASSNAME, "enterAsReader()", null);
+      Log.log_1003(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
       // TODO: Return successfully from this method in only a single place, so
       //       only log entry 1005 in that place.
@@ -229,22 +244,36 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == reader) {
-            String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.";
-            Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + reader.getName()
+                                + " attempts to enter as a reader while it is already the active writer.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD,
+                         CALLING_CLASS,     CALLING_METHOD,
+                         DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
                leaveAsWriter();
             }
          } else if (_currentReaders.contains(reader)) {
-            String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.";
-            Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + reader.getName()
+                                + " attempts to enter as a reader while it is already an active reader.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD,
+                         CALLING_CLASS,     CALLING_METHOD,
+                         DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
 
                // TRACE: Leave method
-               Log.log_1005(DOORMAN_CLASSNAME, "enterAsReader()", null);
+               Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
                return;
             }
@@ -300,17 +329,27 @@ public final class Doorman extends Object {
                _queue.remove(reader);
             }
          }
-         String message = _asString + ": Unable to add a thread named " + reader.getName() + " to queue. Time-out after " + _maxQueueWaitTime + " ms.";
-         Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
-         throw new QueueTimeOutException(message);
+         final String DETAIL = _asString
+                             + ": Unable to add a thread named "
+                             + reader.getName()
+                             + " to queue. Time-out after "
+                             + _maxQueueWaitTime
+                             + " ms.";
+         Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD,
+                      CALLING_CLASS,     CALLING_METHOD,
+                      DETAIL);
+         throw new QueueTimeOutException(DETAIL);
       } catch (InterruptedException exception) {
          // fall through
       }
 
       synchronized (_currentActorLock) {
          if (! _currentReaders.contains(reader)) {
-            String message = _asString + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.";
-            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "enterAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + reader.getName()
+                                + " was interrupted in enterAsReader(), but not in the set of current readers.";
+            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "enterAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
          }
       }
 
@@ -328,8 +367,12 @@ public final class Doorman extends Object {
    public void enterAsWriter()
    throws QueueTimeOutException {
 
+      final String THIS_METHOD    = "enterAsWriter()";
+      final String CALLING_CLASS  = Utils.getCallingClass();
+      final String CALLING_METHOD = Utils.getCallingMethod();
+
       // TRACE: Enter method
-      Log.log_1003(DOORMAN_CLASSNAME, "enterAsWriter()", null);
+      Log.log_1003(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
       Thread writer = Thread.currentThread();
 
@@ -337,21 +380,31 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == writer) {
-            String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer.";
-            Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + writer.getName()
+                                + " attempts to enter as a writer but it is already the active writer.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
 
                // TRACE: Leave method
-               Log.log_1005(DOORMAN_CLASSNAME, "enterAsReader()", null);
+               Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
                return;
             }
          } else if (_currentReaders.contains(writer)) {
-            String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already an active reader.";
-            Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + writer.getName()
+                                + " attempts to enter as a writer but it is already an active reader.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
                leaveAsReader();
             }
@@ -402,22 +455,32 @@ public final class Doorman extends Object {
             }
          }
 
-         String message = _asString + ": Unable to add a thread named " + writer.getName() + " to queue. Time-out after " + _maxQueueWaitTime + " ms.";
-         Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
-         throw new QueueTimeOutException(message);
+         final String DETAIL = _asString
+                             + ": Unable to add a thread named "
+                             + writer.getName()
+                             + " to queue. Time-out after "
+                             + _maxQueueWaitTime
+                             + " ms.";
+         Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
+         throw new QueueTimeOutException(DETAIL);
       } catch (InterruptedException exception) {
          // fall through
       }
 
       synchronized (_currentActorLock) {
          if (_currentWriter != writer) {
-            String message = _asString + " : " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.';
-            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "enterAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + " : "
+                                + writer.getName()
+                                + " was interrupted in enterAsWriter(), but the current writer is "
+                                + _currentWriter.getName()
+                                + '.';
+            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "enterAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
          }
       }
 
       // TRACE: Leave method
-      Log.log_1005(DOORMAN_CLASSNAME, "enterAsReader()", null);
+      Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
    }
 
    /**
@@ -425,8 +488,12 @@ public final class Doorman extends Object {
     */
    public void leaveAsReader() {
 
+      final String THIS_METHOD    = "leaveAsReader()";
+      final String CALLING_CLASS  = Utils.getCallingClass();
+      final String CALLING_METHOD = Utils.getCallingMethod();
+
       // TRACE: Enter method
-      Log.log_1003(DOORMAN_CLASSNAME, "leaveAsReader()", null);
+      Log.log_1003(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
       Thread reader = Thread.currentThread();
 
@@ -435,14 +502,19 @@ public final class Doorman extends Object {
 
          if (!readerRemoved) {
             // TODO: Remove from queue if it is in there?
-            String message = _asString + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader.";
-            Log.log_1050(DOORMAN_CLASSNAME, "leaveAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + reader.getName()
+                                + " attempts to leave protected area as reader, but it is not an active reader.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
 
                // TRACE: Leave method
-               Log.log_1005(DOORMAN_CLASSNAME, "leaveAsReader()", null);
+               Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
                return;
             }
@@ -465,15 +537,18 @@ public final class Doorman extends Object {
 
                   // If a reader leaves, the queue cannot contain a reader at the
                   // top, it must be either empty or have a writer at the top
-                  String message = _asString + ": Found reader at top of queue while a reader is leaving the protected area.";
-                  throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "leaveAsReader()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+                  final String DETAIL = _asString
+                                      + ": Found reader at top of queue while a reader is leaving the protected area.";
+                  throw Utils.logProgrammingError(DOORMAN_CLASSNAME, THIS_METHOD,
+                                                  CALLING_CLASS,     CALLING_METHOD,
+                                                  DETAIL,            null);
                }
             }
          }
       }
 
       // TRACE: Leave method
-      Log.log_1005(DOORMAN_CLASSNAME, "leaveAsReader()", null);
+      Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
    }
 
    /**
@@ -481,22 +556,31 @@ public final class Doorman extends Object {
     */
    public void leaveAsWriter() {
 
+      final String THIS_METHOD    = "leaveAsWriter()";
+      final String CALLING_CLASS  = Utils.getCallingClass();
+      final String CALLING_METHOD = Utils.getCallingMethod();
+
       // TRACE: Enter method
-      Log.log_1003(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
+      Log.log_1003(DOORMAN_CLASSNAME, THIS_METHOD,  null);
 
       Thread writer = Thread.currentThread();
 
       synchronized (_currentActorLock) {
 
          if (_currentWriter != writer) {
-            String message = _asString + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer.";
-            Log.log_1050(DOORMAN_CLASSNAME, "leaveAsWriter()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + writer.getName()
+                                + " attempts to leave protected area as writer, but it is not the current writer.";
+            Log.log_1050(DOORMAN_CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), DETAIL);
             if (_strict) {
-               throw new ProgrammingError(message); // TODO: Pass all details
+               throw new ProgrammingException(DOORMAN_CLASSNAME, THIS_METHOD,
+                                              CALLING_CLASS,     CALLING_METHOD,
+                                              DETAIL,            null);
             } else {
 
                // TRACE: Leave method
-               Log.log_1005(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
+               Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
 
                return;
             }
@@ -531,7 +615,7 @@ public final class Doorman extends Object {
       }
 
       // TRACE: Leave method
-      Log.log_1005(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
+      Log.log_1005(DOORMAN_CLASSNAME, THIS_METHOD, null);
    }
 
    /**
@@ -546,7 +630,7 @@ public final class Doorman extends Object {
 
 
    //-------------------------------------------------------------------------
-   // Inner class
+   // Inner classes
    //-------------------------------------------------------------------------
 
    /**
@@ -663,11 +747,31 @@ public final class Doorman extends Object {
       public void add(Thread thread, QueueEntryType type)
       throws Error {
 
+         final String THIS_METHOD = "add(java.lang.Thread,"
+                                  + QueueEntryType.class.getName()
+                                  + ')';
+         final String CALLING_CLASS  = Utils.getCallingClass();
+         final String CALLING_METHOD = Utils.getCallingMethod();
+
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
             QueueEntryType existingType = (QueueEntryType) _entryTypes.get(thread);
-            String message = _asString + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.';
-            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "add(Thread,QueueEntryType)", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            final String DETAIL = _asString
+                                + ": "
+                                + thread.getName()
+                                + " is already in this queue as a "
+                                + existingType
+                                + ", cannot add it as a "
+                                + type
+                                + '.';
+
+            // XXX: We have to throw an Error, because the API docs state it
+            //      (since XINS 1.0.0)
+            ProgrammingException e =
+               Utils.logProgrammingError(QUEUE_CLASSNAME, THIS_METHOD,
+                                         CALLING_CLASS,   CALLING_METHOD,
+                                         DETAIL,          null);
+            throw new Error(e);
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -693,10 +797,20 @@ public final class Doorman extends Object {
        */
       public Thread pop() throws Error {
 
+         final String THIS_METHOD    = "pop()";
+         final String CALLING_CLASS  = Utils.getCallingClass();
+         final String CALLING_METHOD = Utils.getCallingMethod();
+
          // Check preconditions
          if (_first == null) {
-            String message = "This queue is empty.";
-            throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "pop()", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+            // XXX: We have to throw an Error, because the API docs state it
+            //      (since XINS 1.0.0)
+            final String DETAIL = "This queue is empty.";
+            ProgrammingException e =
+               Utils.logProgrammingError(QUEUE_CLASSNAME, THIS_METHOD,
+                                         CALLING_CLASS,   CALLING_METHOD,
+                                         DETAIL,          null);
+            throw new Error(e);
          }
 
          Thread oldFirst = _first;
@@ -726,6 +840,10 @@ public final class Doorman extends Object {
       public void remove(Thread thread)
       throws Error {
 
+         final String THIS_METHOD    = "remove(java.lang.Thread)";
+         final String CALLING_CLASS  = Utils.getCallingClass();
+         final String CALLING_METHOD = Utils.getCallingMethod();
+
          if (thread == _first) {
 
             // Remove the current first
@@ -735,12 +853,18 @@ public final class Doorman extends Object {
             boolean empty = _entries.isEmpty();
             _first        = empty ? null : (Thread)         _entries.getFirst();
             _typeOfFirst  = empty ? null : (QueueEntryType) _entryTypes.get(_first);
+
          } else {
 
             // Remove the thread from the list
             if (! _entries.remove(thread)) {
-               String message = _asString + ": " + thread.getName() + " is not in this queue.";
-               throw Utils.logProgrammingError(DOORMAN_CLASSNAME, "remove(Thread)", Utils.getCallingClass(), Utils.getCallingMethod(), message);
+               final String DETAIL = _asString
+                                   + ": "
+                                   + thread.getName()
+                                   + " is not in this queue.";
+               throw Utils.logProgrammingError(QUEUE_CLASSNAME, THIS_METHOD,
+                                               CALLING_CLASS,   CALLING_METHOD,
+                                               DETAIL,          null);
             }
          }
 

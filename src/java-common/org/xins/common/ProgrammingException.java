@@ -7,16 +7,15 @@
 package org.xins.common;
 
 /**
- * Indication of a programming error.
+ * Exception thrown when a programming error is detected.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 1.0.1
+ * @since XINS 1.1.0
  */
-public final class ProgrammingError extends Error {
-
-   // TODO: Review this class
+public final class ProgrammingException
+extends RuntimeException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -31,33 +30,9 @@ public final class ProgrammingError extends Error {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ProgrammingError</code> with the specified detail
-    * message.
-    *
-    * @param detail
-    *    the detail message, can be <code>null</code>.
-    */
-   public ProgrammingError(String detail) {
-      this(null, null, null, null, detail, null);
-   }
-
-   /**
-    * Constructs a new <code>ProgrammingError</code> with the specified detail
-    * message and cause exception.
-    *
-    * @param detail
-    *    the detail message, can be <code>null</code>.
-    *
-    * @param cause
-    *    the cause exception, can be <code>null</code>.
-    */
-   public ProgrammingError(String detail, Throwable cause) {
-      this(null, null, null, null, detail, cause);
-   }
-
-   /**
-    * Constructs a new <code>ProgrammingError</code> for the specified class
-    * and method, indicating which class and method detected the problem.
+    * Constructs a new <code>ProgrammingException</code> for the specified
+    * class and method, indicating which class and method detected the
+    * problem.
     *
     * @param detectingClass
     *    the name of the class that detected the problem, or
@@ -80,18 +55,18 @@ public final class ProgrammingError extends Error {
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
-    *
-    * @since XINS 1.1.0
     */
-   public ProgrammingError(String    detectingClass,
-                           String    detectingMethod,
-                           String    subjectClass,
-                           String    subjectMethod,
-                           String    detail,
-                           Throwable cause) {
+   public ProgrammingException(String    detectingClass,
+                               String    detectingMethod,
+                               String    subjectClass,
+                               String    subjectMethod,
+                               String    detail,
+                               Throwable cause) {
       super(detail, cause);
 
       // TODO: Include all arguments in the exception message
+      // TODO: Store arguments in fields
+      // TODO: Add getters for arguments stored in fields
    }
 
 

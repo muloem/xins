@@ -6,10 +6,21 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1099406: ProgrammingError should be RuntimeException.
+    Replaced class ProgrammingError with class ProgrammingException and
+    changed code accordingly.
+
+* XINS/Java Client Framework:
+  - Impact of fix for SF.net bug #1099406: Class ProgrammingError was replaced
+    with class ProgrammingException. Changed the code accordingly.
+
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1099473: Pattern for incoming parameters breaks
     compatibility. The change has been reverted. It is scheduled for
     re-introduction in XINS 2.0.0.
+  - Impact of fix for SF.net bug #1099406: Class ProgrammingError was replaced
+    with class ProgrammingException. Changed the code accordingly.
   - Only the "_function" parameter is supported when using either the standard
     or the XML calling convention. The "function" parameter is treated as a
     normal parameter.

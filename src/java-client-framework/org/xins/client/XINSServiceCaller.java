@@ -9,7 +9,7 @@ package org.xins.client;
 import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
@@ -316,10 +316,14 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      final String METHODNAME = "call(XINSCallRequest,XINSCallConfig)";
+      final String THIS_METHOD = "call("
+                               + XINSCallRequest.class.getName()
+                               + ','
+                               + XINSCallConfig.class.getName()
+                               + ')';
 
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, METHODNAME, null);
+      Log.log_2003(CLASSNAME, THIS_METHOD, null);
 
       long start = System.currentTimeMillis();
 
@@ -344,27 +348,22 @@ public final class XINSServiceCaller extends ServiceCaller {
             throw (XINSCallException) exception;
 
          // Unknown kind of exception. This should never happen. Log and
-         // re-throw the exception, packed up as an Error.
+         // re-throw the exception, wrapped within a ProgrammingException
          } else {
-            final String DOCALL_METHODNAME = "doCall(CallRequest,CallConfig)";
-            Log.log_2052(exception, CLASSNAME, DOCALL_METHODNAME);
-
-            FastStringBuffer message = new FastStringBuffer(190);
-            message.append(CLASSNAME);
-            message.append('.');
-            message.append(DOCALL_METHODNAME);
-            message.append(" threw unexpected ");
-            message.append(exception.getClass().getName());
-            message.append(". Message: ");
-            message.append(TextUtils.quote(exception.getMessage()));
-            message.append('.');
-
-            throw new ProgrammingError(message.toString(), exception);
+            final String SUBJECT_CLASS  = ServiceCaller.class.getName();
+            final String SUBJECT_METHOD = "doCall("
+                                        + CallRequest.class.getName()
+                                        + ','
+                                        + CallConfig.class.getName()
+                                        + ')';
+            throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                            SUBJECT_CLASS, SUBJECT_METHOD,
+                                            null,          exception);
          }
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, METHODNAME, null);
+      Log.log_2005(CLASSNAME, THIS_METHOD, null);
 
       return result;
    }

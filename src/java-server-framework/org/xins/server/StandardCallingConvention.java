@@ -9,16 +9,20 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
+
 import org.xins.common.collections.ProtectedPropertyReader;
+
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -35,6 +39,11 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The fully-qualified name of this class.
+    */
+   static final String CLASSNAME = StandardCallingConvention.class.getName();
 
    /**
     * The enconding for the data section
@@ -104,6 +113,10 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
+      final String THIS_METHOD = "convertRequestImpl("
+                               + HttpServletRequest.class.getName()
+                               + ')';
+
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
       // Determine function name
@@ -129,10 +142,12 @@ extends CallingConvention {
             ElementParser parser = new ElementParser();
             dataElement = parser.parse(dataSectionValue.getBytes(DATA_ENCODING));
          } catch (UnsupportedEncodingException ex) {
-            final String DETAIL = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
-            Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", DETAIL);
-            throw new ProgrammingError(DETAIL);
-            // TODO: Log everything, as in 1050
+            final String SUBJECT_CLASS  = "java.lang.String";
+            final String SUBJECT_METHOD = "getBytes(java.lang.String)";
+            final String DETAIL         = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
+            throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                            SUBJECT_CLASS, SUBJECT_METHOD,
+                                            DETAIL,        ex);
          } catch (ParseException ex) {
             throw new InvalidRequestException("Cannot parse the data section.", ex);
          }
