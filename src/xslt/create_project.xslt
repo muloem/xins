@@ -137,8 +137,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN" "http://xins.sourceforge.net/dtd/type_1_0.dtd">
 
-<type name="]]>${type.name}<![CDATA[" extends="_text"
-rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
+<type name="]]>${type.name}<![CDATA[" rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description>]]>${type.description}<![CDATA[</description>
 

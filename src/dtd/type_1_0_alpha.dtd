@@ -6,7 +6,7 @@
 <!ELEMENT type (description, (pattern | enum | properties)?)>
 <!ATTLIST type
           name       NMTOKEN #REQUIRED
-          extends    NMTOKEN #REQUIRED
+          extends    NMTOKEN #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >

@@ -1,4 +1,18 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.184:
+
+* Specification:
+  - Set the extends attribute optional for type.
+  - Added new types in the DTD.
+
+* Generated build file:
+  - The create-type target doesn't create the extends attribute anymore.
+
+* Generated Java code:
+  - Introduced the extends functionality back as some types did extend
+    something else than _text.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.183:
 
 * XINS/Java Server Framework:

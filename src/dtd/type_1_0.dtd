@@ -3,7 +3,7 @@
  project by adding the following lines at the top of the .typ file :
 <!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN" "http://xins.sourceforge.net/dtd/type_1_0.dtd">
 -->
-<!ELEMENT type (description, (pattern | enum | properties)?)>
+<!ELEMENT type (description, (pattern | enum | properties | int8 | int16 | int32 | int64 | set | list)?)>
 <!ATTLIST type
           name       NMTOKEN #REQUIRED
           rcsversion CDATA #IMPLIED
@@ -22,4 +22,32 @@
 <!ATTLIST properties
           nameType    NMTOKEN #IMPLIED
           valueType   NMTOKEN #REQUIRED
+>
+<!ELEMENT int8 EMPTY>
+<!ATTLIST int8
+          min    NMTOKEN #IMPLIED
+          max    NMTOKEN #IMPLIED
+>
+<!ELEMENT int16 EMPTY>
+<!ATTLIST int16
+          min    NMTOKEN #IMPLIED
+          max    NMTOKEN #IMPLIED
+>
+<!ELEMENT int32 EMPTY>
+<!ATTLIST int32
+          min    NMTOKEN #IMPLIED
+          max    NMTOKEN #IMPLIED
+>
+<!ELEMENT int64 EMPTY>
+<!ATTLIST int64
+          min    NMTOKEN #IMPLIED
+          max    NMTOKEN #IMPLIED
+>
+<!ELEMENT set EMPTY>
+<!ATTLIST set
+          type   NMTOKEN #IMPLIED
+>
+<!ELEMENT list EMPTY>
+<!ATTLIST list
+          type   NMTOKEN #IMPLIED
 >
