@@ -4,6 +4,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 * XINS/Java Server Framework:
   - Removed unused imports.
   - Set the log numbers in a sequential order.
+  - Added missing tranlations for some logging messages.
 
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.
@@ -12,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 
 * XINS/Java Client Framework:
   - Removed unused imports.
+  - Removed unused log numbers.
+  - Added missing tranlations for some logging messages.
 
 * Specific documentation:
   - Fixed a missing forward slash for the url generated for broken links.
