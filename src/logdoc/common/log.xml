@@ -218,14 +218,7 @@
 		</entry>
 	</group>
 
-	<group id="threads" name="Threading">
-		<entry id="1420" level="ERROR">
-			<description>Unable to add Thread to Doorman queue due to a time-out.</description>
-			<param name="className"	type="text"  nullable="false" />
-			<param name="thread"	   type="text"  nullable="false" />
-			<param name="maxQueueWaitTime" type="int64" nullable="false" />
-		</entry>
-	</group>
+	<group id="threads" name="Threading" />
 
 	<group id="types" name="Types" />
 </log>

@@ -50,6 +50,4 @@
 	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
 	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
 
-	<translation entry="1420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
-
 </translation-bundle>
