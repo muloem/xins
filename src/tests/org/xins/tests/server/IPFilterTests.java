@@ -124,6 +124,7 @@ public class IPFilterTests extends TestCase {
       doTestParseFilter("1.2.3.4/32",               true);
       doTestParseFilter("01.2.3.4/32",              false);
       doTestParseFilter("1.02.3.4/32",              false);
+      doTestParseFilter("1.102.3.4/32",             true);
       doTestParseFilter("1.2.3.4/00",               false);
       doTestParseFilter("1.2.3.4/01",               false);
       doTestParseFilter("1.2.3.4/032",              false);
@@ -187,8 +188,10 @@ public class IPFilterTests extends TestCase {
       doTestIsAuthorized(filter, "1.2.3.4.5",                false, false);
       doTestIsAuthorized(filter, "01.2.3.4/32",              false, false);
       doTestIsAuthorized(filter, "1.02.3.4/32",              false, false);
+      doTestIsAuthorized(filter, "1.102.3.4/32",             false, false);
       doTestIsAuthorized(filter, "1.2.3.4/00",               false, false);
       doTestIsAuthorized(filter, "1.2.3.4/01",               false, false);
+      doTestIsAuthorized(filter, "194.103.168.213",          true,  false);
       doTestIsAuthorized(filter, "194.134.168.213",          true,  true);
       doTestIsAuthorized(filter, "194.134.168.212",          true,  false);
       doTestIsAuthorized(filter, "194.134.168.214",          true,  false);
