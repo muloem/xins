@@ -23,8 +23,13 @@ public interface XINSCallResultData {
     * successful and thus no error code was returned. Otherwise the call was
     * unsuccessful.
     *
+    * <p>This method will never return an empty string, so if the result is
+    * not <code>null</code>, then it is safe to assume the length of the
+    * string is at least 1 character.
+    *
     * @return
-    *    the returned error code, or <code>null</code>.
+    *    the returned error code, or <code>null</code> if the call was
+    *    successful.
     */
    String getErrorCode();
 

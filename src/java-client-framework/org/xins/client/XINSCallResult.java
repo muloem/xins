@@ -104,11 +104,17 @@ implements XINSCallResultData {
    //----------------------------------------------------------------------
 
    /**
-    * Returns the error code. If the result was successful, then no error code
-    * is returned. In this case this method will return <code>null</code>.
+    * Returns the error code. If <code>null</code> is returned the call was
+    * successful and thus no error code was returned. Otherwise the call was
+    * unsuccessful.
+    *
+    * <p>This method will never return an empty string, so if the result is
+    * not <code>null</code>, then it is safe to assume the length of the
+    * string is at least 1 character.
     *
     * @return
-    *    the error code or <code>null</code> if no code was returned.
+    *    the returned error code, or <code>null</code> if the call was
+    *    successful.
     */
    public String getErrorCode() {
       return _data.getErrorCode();
@@ -163,7 +169,6 @@ implements XINSCallResultData {
     *    the extra data as an XML {@link DataElement}, can be <code>null</code>;
     */
    public DataElement getDataElement() {
-
       return _data.getDataElement();
    }
 }
