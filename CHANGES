@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 0.196:
   - Added log message 3315-3318, which describe the decision making process
     for fail-over, depending on available targets and whether or not fail-over
     is in principle allowed, considering the problem at hand.
+  - Added append(boolean) method to class FastStringBuffer.
 
 * XINS/Java Client Framework:
   - Added classes in org.xins.common.service: ConnectionException,
@@ -25,6 +26,12 @@ CHANGES INTRODUCED IN XINS 0.196:
 * Build and release process:
   - CSS stylesheet for the Javadoc generated for XINS now no longer specifies
     explicit font names.
+
+* Logdoc:
+  - Supporting format="hex" in value-of-param elements in the translation
+    files, for integer type parameters.
+  - Fixed some bugs in class LogdocStringBuffer that were already fixed in
+    class FastStringBuffer, before the latter was copied to create the former.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
