@@ -257,9 +257,7 @@ public abstract class ServiceCaller extends Object {
       // If no CallConfig is specified, then use a default one
       if (callConfig == null) {
 
-         String actualClass = getClass().getName();
-
-         String SUBJECT_METHOD = "getDefaultCallConfig()";
+         final String SUBJECT_METHOD = "getDefaultCallConfig()";
 
          // Call getDefaultCallConfig() to get the default config...
          try {
