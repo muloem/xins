@@ -87,6 +87,13 @@ $Id$
 						<xsl:text>.fnc</xsl:text>
 					</xsl:for-each>
 				</xsl:variable>
+				<xsl:variable name="typeIncludes">
+					<xsl:for-each select="document($api_file)/api/type">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:value-of select="@name" />
+						<xsl:text>.typ</xsl:text>
+					</xsl:for-each>
+				</xsl:variable>
 				
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
@@ -111,10 +118,10 @@ $Id$
 					</style>
 					<!-- TODO: Include only types in api.xml -->
 					<style
-						basedir="{$specsdir}"
-						destdir="{$project_home}/build/specdocs"
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
 						style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
-						includes="{$api}/*.typ">
+						includes="{$typeIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
