@@ -3,6 +3,8 @@
  */
 package org.xins.util.collections;
 
+import org.xins.util.MandatoryArgumentChecker;
+
 /**
  * Utility functions for dealing with <code>PropertyReader</code> objects.
  *
