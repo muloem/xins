@@ -90,6 +90,12 @@ extends AbstractMap {
     */
    private final Map[] _slots;
 
+   /**
+    * Modification counter. Initialized to 0 and increased with every single
+    * change.
+    */
+   private int _modificationCount;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -211,6 +217,7 @@ extends AbstractMap {
    public Object put(Object key, Object value) {
       synchronized (_recentlyAccessed) {
          _recentlyAccessed.put(key, value);
+         _modificationCount++;
       }
 
       // XXX: Returning null violates the contract of the interface
@@ -229,12 +236,13 @@ extends AbstractMap {
    public void clear() {
       synchronized (_recentlyAccessed) {
          _recentlyAccessed.clear();
-      }
+         _modificationCount++;
 
-      for (int i = 0; i < _slots.length; i++) {
-         Map slot = _slots[i];
-         synchronized (slot) {
-            slot.clear();
+         for (int i = 0; i < _slots.length; i++) {
+            Map slot = _slots[i];
+            synchronized (slot) {
+               slot.clear();
+            }
          }
       }
    }
