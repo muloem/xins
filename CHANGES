@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.84:
+
+* Generated test forms:
+  - Fixed a bug in the generated SELECTs for enums.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.83:
 
 * Generated CAPI classes:
