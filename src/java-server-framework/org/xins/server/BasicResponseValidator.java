@@ -145,7 +145,7 @@ implements ResponseValidator {
     *    the message, can be <code>null</code>.
     *
     * @throws InvalidResponseException
-    *    always, right after cleanup is performed.
+    *    always thrown, right after cleanup is performed.
     */
    protected final void fail(String message)
    throws InvalidResponseException {
@@ -155,6 +155,10 @@ implements ResponseValidator {
 
    public final void startResponse(boolean success, String code)
    throws InvalidResponseException {
+
+      // Reset in case endResponse() or cancelResponse() were not called
+      reset();
+
       boolean succeeded = false;
       try {
          startResponseImpl(success, code);
