@@ -79,11 +79,16 @@ public abstract class PatternType extends Type {
 
       try {
          synchronized (PATTERN_COMPILER) {
-            _pattern = PATTERN_COMPILER.compile(pattern, Perl5Compiler.READ_ONLY_MASK);
+            _pattern = PATTERN_COMPILER.compile(pattern,
+                                                Perl5Compiler.READ_ONLY_MASK);
          }
       } catch (MalformedPatternException mpe) {
-         throw new PatternCompileException(mpe.getMessage());
+         PatternCompileException e = new PatternCompileException(pattern);
+         e.initCause(mpe);
+         throw e;
       }
+
+      _patternString = pattern;
    }
 
 
@@ -92,8 +97,14 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Compiled pattern. This is the compiled version of {@link #_pattern}.
+    * Pattern string. This is the uncompiled version of {@link #_pattern}.
     * This field cannot be <code>null</code>.
+    */
+   private final String _patternString;
+
+   /**
+    * Compiled pattern. This is the compiled version of
+    * {@link #_patternString}. This field cannot be <code>null</code>.
     */
    private final Pattern _pattern;
 
@@ -109,7 +120,11 @@ public abstract class PatternType extends Type {
          final String THIS_METHOD    = "isValidValueImpl(java.lang.String)";
          final String SUBJECT_CLASS  = PATTERN_MATCHER.getClass().getName();
          final String SUBJECT_METHOD = "matches(java.lang.String," + _pattern.getClass().getName() + ')';
-         final String DETAIL         = "Assuming the value \"" + value + "\" is invalid.";
+         final String DETAIL         = "Assuming the value \""
+                                     + value
+                                     + "\" is invalid for the pattern \""
+                                     + _patternString
+                                     + "\".";
          Log.log_1052(exception, CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
          return false;
       }
