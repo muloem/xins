@@ -47,8 +47,13 @@
  * Result of a call to the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
+ *
+ * @see CAPI
+ * @see ]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>Request
  */
-public final class ]]></xsl:text>
+public final class </xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>
 extends org.xins.client.AbstractCAPICallResult {
