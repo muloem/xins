@@ -43,7 +43,7 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>XINSCallConfig</code> objcet.
+    * Constructs a new <code>XINSCallConfig</code> object.
     */
    public XINSCallConfig() {
       _httpCallConfig = new HTTPCallConfig();

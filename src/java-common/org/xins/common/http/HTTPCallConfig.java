@@ -40,7 +40,7 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>HTTPCallConfig</code> objcet.
+    * Constructs a new <code>HTTPCallConfig</code> object.
     */
    public HTTPCallConfig() {
       _method = HTTPMethod.POST;
