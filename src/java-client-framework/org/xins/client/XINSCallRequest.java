@@ -26,11 +26,12 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
 
-import org.xins.common.service.CallRequest;
-
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
+
+import org.xins.common.service.CallRequest;
+import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
@@ -191,6 +192,10 @@ public final class XINSCallRequest extends CallRequest {
       setParameters(parameters);
       setDataSection(dataSection);
 
+      // Initialize the UnsuccessfulXINSCallExceptionFactory
+      _uxceFactory = new BasicUnsuccessfulXINSCallExceptionFactory();
+      // TODO: Use shared BasicUnsuccessfulXINSCallExceptionFactory instance
+
       // TRACE: Leave constructor
       Log.log_2002(CLASSNAME, "#" + _instanceNumber);
 
@@ -275,6 +280,9 @@ public final class XINSCallRequest extends CallRequest {
       callConfig.setFailOverAllowed(failOverAllowed);
       callConfig.setHTTPMethod(method);
       setXINSCallConfig(callConfig);
+
+      // Initialize the UnsuccessfulXINSCallExceptionFactory
+      _uxceFactory = new BasicUnsuccessfulXINSCallExceptionFactory();
    }
 
 
@@ -323,6 +331,13 @@ public final class XINSCallRequest extends CallRequest {
     * <code>null</code>.
     */
    private ProtectedPropertyReader _httpParams;
+
+   /**
+    * The <code>UnsuccessfulXINSCallExceptionFactory</code> used for creating
+    * <code>UnsuccessfulXINSCallException</code> instances. Never
+    * <code>null</code>.
+    */
+   private UnsuccessfulXINSCallExceptionFactory _uxceFactory;
 
 
    //-------------------------------------------------------------------------
@@ -400,6 +415,51 @@ public final class XINSCallRequest extends CallRequest {
     */
    public void setXINSCallConfig(XINSCallConfig callConfig) {
       setCallConfig(callConfig);
+   }
+
+   // FIXME: Document
+   UnsuccessfulXINSCallException
+   createUnsuccessfulXINSCallException(TargetDescriptor   target,
+                                       long               duration,
+                                       XINSCallResultData resultData) {
+      return _uxceFactory.create(this, target, duration, resultData);
+   }
+
+   /**
+    * Sets the <code>UnsuccessfulXINSCallException</code> factory to use. If
+    * <code>null</code> is passed, then a default one is used, which always
+    * returns an instance of class {@link UnsuccessfulXINSCallException} self,
+    * not of a subclass.
+    *
+    * @param factory
+    *    the {@link UnsuccessfulXINSCallExceptionFactory} to use when creating
+    *    {@link UnsuccessfulXINSCallException} instances, or <code>null</code>
+    *    if a default one should be used.
+    *
+    * @since XINS 1.1.0
+    */
+   public void setUnsuccessfulXINSCallExceptionFactory(
+   UnsuccessfulXINSCallExceptionFactory factory) {
+
+      _uxceFactory = (factory != null)
+                   ? factory
+                   : new BasicUnsuccessfulXINSCallExceptionFactory();
+   }
+
+   /**
+    * Retrieves the current <code>UnsuccessfulXINSCallException</code> factory
+    * in use.
+    *
+    * @return
+    *    the {@link UnsuccessfulXINSCallExceptionFactory} used for creating
+    *    {@link UnsuccessfulXINSCallException} instances, never
+    *    <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public UnsuccessfulXINSCallExceptionFactory
+   getUnsuccessfulXINSCallExceptionFactory() {
+      return _uxceFactory;
    }
 
    /**
