@@ -52,6 +52,10 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="type"     />
 
+		<xsl:if test="string-length($type) &lt; 1">
+			<xsl:message terminate="yes">No type specified.</xsl:message>
+		</xsl:if>
+
 		<xsl:choose>
 			<xsl:when test="starts-with($type, '_')">
 				<span>
