@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.64:
+
+* Added Library class to both XINS/Java Client Framework and to the XINS/Java
+  Common Library
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.63:
 
 * XINS/Java Server Framework:
