@@ -56,6 +56,7 @@ implements DefaultResultCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
+      _startupTimestamp  = System.currentTimeMillis();
       _log               = Logger.getLogger(getClass().getName());
       _instances         = new ArrayList();
       _sessionsByID      = new HashMap();
@@ -152,10 +153,27 @@ implements DefaultResultCodes {
     */
    private boolean _shutDown;
 
+   /**
+    * Timestamp indicating when this API instance was created.
+    */
+   private final long _startupTimestamp;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets the timestamp that indicates when this <code>API</code> instance
+    * was created.
+    *
+    * @return
+    *    the time this instance was constructed, as a number of milliseconds
+    *    since midnight January 1, 1970.
+    */
+   public final long getStartupTimestamp() {
+      return _startupTimestamp;
+   }
 
    /**
     * Initializes this API. The properties are stored internally and then
@@ -183,7 +201,7 @@ implements DefaultResultCodes {
       // TODO: Allow configuration of session ID type
       _sessionIDType = Text.SINGLETON;
       // TODO: Allow configuration of session ID generator
-      _sessionIDGenerator = new CountingSessionIDGenerator(this);
+      _sessionIDGenerator = new BasicSessionIDGenerator(this);
 
       // TODO: Set state to INITIALIZING
       initImpl(properties);
