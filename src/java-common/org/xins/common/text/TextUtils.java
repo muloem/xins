@@ -66,6 +66,22 @@ public final class TextUtils extends Object {
       return quote(s);
    }
 
+   /**
+    * Determines if the specified string is <code>null</code> or an empty
+    * string.
+    *
+    * @param s
+    *    the string, or <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if <code>s == null || s.length() &lt; 1</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public static final boolean isEmpty(String s) {
+      return (s == null) || (s.length() < 1);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
