@@ -574,7 +574,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:when test="output/data/element">
 				<xsl:text>
       if (result.isSuccess()) {
-         return result.getDataElement();
+         org.jdom.Element element = result.getDataElement();
+         if (element != null) {
+            return (org.jdom.Element) element.clone();
+         } else {
+            return null;
+         }
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
