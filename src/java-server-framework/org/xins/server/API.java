@@ -115,7 +115,7 @@ implements DefaultReturnCodes {
     *    the function with the specified name, or <code>null</code> if there
     *    is no match.
     */
-   public final Function getFunction(String name) {
+   final Function getFunction(String name) {
       return (Function) _functionsByName.get(name);
    }
 
