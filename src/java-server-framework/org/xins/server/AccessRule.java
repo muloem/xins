@@ -131,6 +131,16 @@ extends Object {
    }
 
    /**
+    * Returns the IP filter.
+    *
+    * @return
+    *    the IP filter, cannot be <code>null</code>.
+    */
+   public IPFilter getIPFilter() {
+      return null; // TODO
+   }
+
+   /**
     * Determines if the specified IP address and function match this rule.
     *
     * @param ip
