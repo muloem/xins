@@ -1,6 +1,16 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.155:
 
+* XINS/Java Server Framework:
+  - Introducing 'logdoc', a system for documenting and managing log messages.
+    The purpose is that all log messages are both documented and managed
+    external to the source code and that log messages can be output in
+    different locales. The locale can be changed at runtime.
+    To generate the logdoc HTML documentation, run 'ant logdoc-html'.
+    To change the locale at runtime, change the 'org.xins.server.log.locale'
+    property in the runtime properties file (typically 'xins.properties').
+    The logdoc files are in: src/logdoc.
+
 * Generated specification documentation:
   - Now one style.css per API, so that if only the specdocs/[api] directory
     can be read by a client, for example because of an access restriction,
