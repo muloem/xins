@@ -10,7 +10,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Implentation of a Map that only contains 1 entry.
+ * Implementation of a <code>Map</code> that only contains 1 entry.
+ * 
+ * This <code>Map</code> accept a <code>null</code> key and/or a 
+ * <code>null</code> value.
+ * To key and value of the entry are passed when you create the new 
+ * <code>SingleEntryMap</code>, then you can change the value of the 
+ * entry  by using the {@link #put(int, int) put} method.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -33,19 +39,13 @@ public class SingleEntryMap implements Map {
     * Constructs a new <code>SingleEntryMap</code>.
     * 
     * @param key
-    *    the key for the single entry, cannot be
+    *    the key for the single entry, can be
     *    <code>null</code>.
     * @param value
     *    the value for the single entry, can be
     *    <code>null</code>.
-    * 
-    * @throw NullPointerException
-    *    if the key is <code>null</code>.
     */
    public SingleEntryMap(Object key, Object value) {
-      if (key == null) {
-         throw new NullPointerException("The key cannot be null."); 
-      }
       _key = key;
       _value = value;
    }
@@ -80,9 +80,9 @@ public class SingleEntryMap implements Map {
    
    public boolean containsKey(Object key) {
       if (key == null) {
-         throw new NullPointerException("The key cannot be null."); 
+         return (_key == null);
       }
-      return key.equals(_key);
+      return (_key != null && _key.equals(key));
    }
    
    public boolean containsValue(Object value) {
@@ -94,9 +94,12 @@ public class SingleEntryMap implements Map {
    
    public Object get(Object key) {
       if (key == null) {
-         throw new NullPointerException("The key cannot be null."); 
-      }
-      if (key.equals(_key)) {
+         if (_key == null) {
+            return _value; 
+         } else {
+            return null;  
+         }
+      } else if (key.equals(_key)) {
          return _value; 
       } else {
          return null; 
@@ -104,14 +107,17 @@ public class SingleEntryMap implements Map {
    }
    
    public Object put(Object key, Object value) {
-      if (key == null) {
-         throw new NullPointerException("The key cannot be null."); 
-      }
       Object oldKey = _key;
       Object oldValue = _value;
       _key = key;
       _value = value;
-      if (oldKey.equals(key)) {
+      if (oldKey == null) {
+         if (key == null) {
+            return oldValue; 
+         } else {
+            return null;  
+         }
+      } else if (oldKey.equals(key)) {
          return oldValue;
       } else {
          return null; 
@@ -119,15 +125,15 @@ public class SingleEntryMap implements Map {
    }
     
    public Object remove(Object key) {
-      throw new UnsupportedOperationException("This map must contain one and only one entry.");
+      throw new UnsupportedOperationException();
    }
     
    public void putAll(Map t) {
-      throw new UnsupportedOperationException("This map must contain one and only one entry.");
+      throw new UnsupportedOperationException();
    }
    
    public void clear() {
-      throw new UnsupportedOperationException("This map must contain one and only one entry.");
+      throw new UnsupportedOperationException();
    }
    
    public Set keySet() {
@@ -140,7 +146,7 @@ public class SingleEntryMap implements Map {
    
    public Collection values() {
     
-   	// XXX This could be optimized by creating a SingleEntryList
+      // XXX This could be optimized by creating a SingleEntryList
       Collection values = new ArrayList(1);
       values.add(_value);
       return values;
@@ -148,7 +154,7 @@ public class SingleEntryMap implements Map {
    
    public Set entrySet() {
       Set entries = new TreeSet();
-      entries.add(this);
+      entries.add(new SingleEntry());
       return entries;
    }
    
@@ -158,15 +164,22 @@ public class SingleEntryMap implements Map {
    }
    
    public boolean equals(Object o) {
-      if (!(o instanceof SingleEntryMap)) {
+      if (!(o instanceof Map)) {
          return false; 
       }
       Map e2 = (SingleEntryMap)o;
       return entrySet().equals(e2.entrySet());
    }
    
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
    /**
-    * The Map.Entry for this SingleEntryMap.
+    * The <code>Map.Entry</code> for this <code>SingleEntryMap</code>.
+    * 
+    * @version $Revision$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */ 
    private class SingleEntry implements Map.Entry {
    
@@ -185,8 +198,7 @@ public class SingleEntryMap implements Map {
        }
        
        public int hashCode() {
-          return (_key == null ? 0 : _key.hashCode()) ^ 
-                 (_value == null ? 0 : _value.hashCode());   
+          return SingleEntryMap.this.hashCode();   
        }
        
        public boolean equals(Object o) {
