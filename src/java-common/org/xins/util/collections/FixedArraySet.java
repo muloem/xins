@@ -37,7 +37,7 @@ extends AbstractSet {
     * @throws IllegalArgumentException
     *    if <code>array == null</code>.
     */
-   private FixedArraySet(Object[] array)
+   public FixedArraySet(Object[] array)
    throws IllegalArgumentException {
       if (array == null) {
          throw new IllegalArgumentException("array == null");
