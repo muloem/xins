@@ -520,8 +520,9 @@
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
-		<cvs command="commit">
+		<cvs>
 			<commandline>
+				<argument value="commit" />
 				<argument value="-m" />
 				<argument value="Unmarked -dev." />
 				<argument value="${version.file}" />
@@ -572,8 +573,9 @@
 			<entry key="version.minor" type="int" operation="+" value="1"    />
 			<entry key="version.suffix"           operation="=" value="-dev" />
 		</propertyfile>
-		<cvs command="commit">
+		<cvs>
 			<commandline>
+				<argument value="commit" />
 				<argument value="-m" />
 				<argument value="Bumped version, marked -dev." />
 				<argument value="${version.file}" />
