@@ -6,6 +6,7 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
@@ -48,6 +49,12 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * An empty access rule list.
+    */
+   static final AccessRuleList EMPTY = new AccessRuleList(new AccessRule[0]);
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -108,14 +115,17 @@ extends Object {
     *    the list of rules, should not be <code>null</code> and should not
     *    contain any <code>null</code> elements; if these constraints are
     *    violated, the behaviour is undefined.
+    *
+    * @throws NullPointerException
+    *    if <code>rules == null</code>.
     */
-   private AccessRuleList(AccessRule[] rules) {
+   private AccessRuleList(AccessRule[] rules)
+   throws NullPointerException {
 
-      // Store the rules
-      _rules = rules;
+      // Count number of rules (may throw NPE)
+      int ruleCount = rules.length;
 
       // Build string representation
-      int ruleCount = rules.length;
       FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
          String s = rules[0].toString();
@@ -131,6 +141,9 @@ extends Object {
          Log.log_4036(i, s);
       }
       _asString = buffer.toString();
+
+      // Store the rules
+      _rules = rules;
    }
 
 
@@ -216,6 +229,7 @@ extends Object {
          }
       }
 
+      // Log: No access rule match
       Log.log_5503(ip, functionName);
 
       return false;
