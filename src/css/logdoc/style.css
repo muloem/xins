@@ -67,3 +67,11 @@ table tr td {
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
+
+.value-of-param {
+	color: #ddddff;
+	background-color: #8888dd;
+	font-style: italic;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
