@@ -127,7 +127,7 @@
 	<xsl:template match="translation-bundle">
 		<xsl:variable name="translation-bundle-doc">
 			<xsl:value-of select="$sourcedir" />
-			<xsl:text>/messages-</xsl:text>
+			<xsl:text>/translation-bundle-</xsl:text>
 			<xsl:value-of select="@locale" />
 			<xsl:text>.xml</xsl:text>
 		</xsl:variable>

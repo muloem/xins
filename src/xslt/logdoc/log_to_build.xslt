@@ -63,7 +63,7 @@
 				</style>
 				<xsl:for-each select="translation-bundle">
 					<style
-					in="{$sourcedir}/messages-{@locale}.xml"
+					in="{$sourcedir}/translation-bundle-{@locale}.xml"
 					out="{$java_destdir}/TranslationBundle_{@locale}.java"
 					style="{$logdoc_xslt_dir}/translation-bundle_to_java.xslt">
 						<param name="locale"       expression="{@locale}" />
