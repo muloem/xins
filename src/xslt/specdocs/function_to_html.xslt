@@ -641,37 +641,39 @@
 				</span>
 			</td>
 		</tr>
-		<tr>
-			<th>Test on:</th>
-			<td>
-				<xsl:for-each select="document($api_file)/api/environment">
-					<a>
-						<xsl:attribute name="href">
-							<xsl:value-of select="@url" />
-							<xsl:text>?_function=</xsl:text>
-							<xsl:value-of select="$function_name" />
-							<xsl:if test="$sessionBased = 'true'">
-								<xsl:text>&amp;_session=</xsl:text>
-								<xsl:value-of select="$sessionID" />
-							</xsl:if>
-							<xsl:for-each select="$example-inputparams">
-								<xsl:text>&amp;</xsl:text>
-								<xsl:value-of select="../@name" />
-								<xsl:text>=</xsl:text>
-								<xsl:call-template name="urlencode">
-									<xsl:with-param name="text">
-										<xsl:value-of select="text()" />
-									</xsl:with-param>
-								</xsl:call-template>
-							</xsl:for-each>
-						</xsl:attribute>
+		<xsl:if test="count(document($api_file)/api/environment) &gt; 0">
+			<tr>
+				<th>Test on:</th>
+				<td>
+					<xsl:for-each select="document($api_file)/api/environment">
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="@url" />
+								<xsl:text>?_function=</xsl:text>
+								<xsl:value-of select="$function_name" />
+								<xsl:if test="$sessionBased = 'true'">
+									<xsl:text>&amp;_session=</xsl:text>
+									<xsl:value-of select="$sessionID" />
+								</xsl:if>
+								<xsl:for-each select="$example-inputparams">
+									<xsl:text>&amp;</xsl:text>
+									<xsl:value-of select="../@name" />
+									<xsl:text>=</xsl:text>
+									<xsl:call-template name="urlencode">
+										<xsl:with-param name="text">
+											<xsl:value-of select="text()" />
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:for-each>
+							</xsl:attribute>
 
-						<xsl:value-of select="@id" />
-					</a>
-					<xsl:text> </xsl:text>
-				</xsl:for-each>
-			</td>
-		</tr>
+							<xsl:value-of select="@id" />
+						</a>
+						<xsl:text> </xsl:text>
+					</xsl:for-each>
+				</td>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 
 <!-- element examples -->

@@ -27,6 +27,10 @@ CHANGES INTRODUCED IN XINS 0.166:
 * Generated build file:
   - Removed the display of the user directory when starting the 'xins' script.
 
+* Generated specification documentation:
+  - Only generating 'Test on' row per example, if at least one environment is
+    defined.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:
 
