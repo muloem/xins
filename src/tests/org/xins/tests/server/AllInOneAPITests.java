@@ -111,6 +111,8 @@ public class AllInOneAPITests extends TestCase {
       DataElement nextDestination = (DataElement) destination.next();
       assertEquals("Incorrect elements.", "packet", nextDestination.getName());
       assertNotNull("No destination specified.", nextDestination.get("destination"));
+      Iterator products = nextDestination.getChildren();
+      assertNotNull("No product specified.", products);
    }
    
    /**

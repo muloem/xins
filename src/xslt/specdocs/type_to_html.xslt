@@ -155,7 +155,7 @@
 				<xsl:when test="document($project_file)/project/patterntest">
 					<xsl:value-of select="document($project_file)/project/patterntest/@href" />
 				</xsl:when>
-				<xsl:otherwise>http://xins.sourceforge.net/patterntest.php</xsl:otherwise>
+				<xsl:otherwise>http://www.xins.org/patterntest.php</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<a>

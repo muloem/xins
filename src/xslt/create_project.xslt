@@ -27,7 +27,7 @@
 			<available property="owner.author" value=" owner=&quot;${{user.name}}&quot;" file="authors.xml" />
 			<property name="owner.author" value="" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://xins.sourceforge.net/dtd/api_1_0.dtd">
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://www.xins.org/dtd/api_1_0.dtd">
 
 <api name="]]>${api.name}"${owner.author}<![CDATA[
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -66,7 +66,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="impl.exists" file="${{impl.file}}" />
 			<fail message="The file ${{impl.file}} already exists!" if="impl.exists" />
 			<echo file="${{impl.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.0//EN" "http://xins.sourceforge.net/dtd/impl_1_0.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.0//EN" "http://www.xins.org/dtd/impl_1_0.dtd">
 
 <impl>
 </impl>
@@ -85,7 +85,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="environments.exists" file="${{environments.file}}" />
 			<fail message="The file ${{environments.file}} already exists!" if="environments.exists" />
 			<echo file="${{environments.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE environments PUBLIC "-//XINS//DTD Environments 1.0//EN" "http://xins.sourceforge.net/dtd/environments_1_0.dtd">
+<!DOCTYPE environments PUBLIC "-//XINS//DTD Environments 1.0//EN" "http://www.xins.org/dtd/environments_1_0.dtd">
 
 <environments>
 
@@ -122,7 +122,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="function.description"
 						 message="Please, enter the description of the new function:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://www.xins.org/dtd/function_1_0.dtd">
 
 <function name="]]>${function.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -163,7 +163,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="rcd.description"
 						 message="Please, enter the description of the new result code:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.0//EN" "http://xins.sourceforge.net/dtd/resultcode_1_0.dtd">
+<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.0//EN" "http://www.xins.org/dtd/resultcode_1_0.dtd">
 
 <resultcode name="]]>${rcd.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -194,7 +194,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="type.description"
 						 message="Please, enter the description of the new type:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN" "http://xins.sourceforge.net/dtd/type_1_0.dtd">
+<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN" "http://www.xins.org/dtd/type_1_0.dtd">
 
 <type name="]]>${type.name}<![CDATA[" rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
@@ -215,7 +215,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
 			<fail message="The file ${{xml.file2}} already exists!" if="xml.exists2" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://xins.sourceforge.net/dtd/log_1_0.dtd">
+<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://www.xins.org/dtd/log_1_0.dtd">
 
 <log>
 
@@ -234,7 +234,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 </log>
 ]]></echo>
 			<echo file="${{xml.file2}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://xins.sourceforge.net/dtd/translation-bundle_1_0.dtd">
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://www.xins.org/dtd/translation-bundle_1_0.dtd">
 
 <translation-bundle>
 	<translation entry="10000">Example of logdoc with the parameter <value-of-param name="parameter" format="quoted" /> and <value-of-param name="number" />.</translation>

@@ -1,7 +1,7 @@
 <!--
  XINS project DTD. This DTD should be added to all xins-project.xml file
  by adding the following lines at the top of the file :
-<!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 1.0//EN" "http://xins.sourceforge.net/dtd/xins-project_1_0.dtd">
+<!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 1.0//EN" "http://www.xins.org/dtd/xins-project_1_0.dtd">
 -->
 <!-- @deprecated With the new directory structure "specsdir" and "javadir" should be removed. -->
 <!ELEMENT project (specdocs?, cvsweb?, patterntest?, api*)>

@@ -1,7 +1,7 @@
 <!--
  XINS api DTD. This DTD should be added to the api.xml file of the
  project by adding the following lines at the top of the file :
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://xins.sourceforge.net/dtd/api_1_0.dtd">
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://www.xins.org/dtd/api_1_0.dtd">
 -->
 <!-- @deprecated With the new directory structure impl-java should be removed. -->
 <!ELEMENT api (description, function*, type*, resultcode*, environment*, impl-java?)>

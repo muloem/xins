@@ -1,7 +1,7 @@
 <!--
  XINS Implementation DTD. This DTD should be added to the impl.xml file of the
  project by adding the following line at the top of the file :
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.0//EN" "http://xins.sourceforge.net/dtd/impl_1_0.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.0//EN" "http://www.xins.org/dtd/impl_1_0.dtd">
 -->
 <!ELEMENT impl (logdoc?, dependency*, instance*)>
 <!ELEMENT logdoc EMPTY>

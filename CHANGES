@@ -13,9 +13,15 @@ CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
   - If the result has no parameters, getParameters() returns null.
   - If a DataElement has no children or no attributes, null is returned.
 
-* Logdoc
+* Logdoc:
   - The validation of the Logdoc XML files is now done using the local files
     when the declaration uses 1.0 alpha.
+
+* DTD:
+  - Linked DTDs to www.xins.org instead of xins.sourceforge.net.
+
+* Generated build file:
+  - Linked the Javadoc to www.xins.org instead of xins.sourceforge.net.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
