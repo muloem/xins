@@ -27,6 +27,11 @@ import org.xins.common.text.TextUtils;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @deprecated
+ *    Deprecated since XINS 1.1.0.
+ *    Use <code>synchronized</code> sections instead.
+ *    This implementation of this class is flawed.
  */
 public final class Doorman extends Object {
 
