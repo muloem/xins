@@ -46,6 +46,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     Javadoc API documentation.
   - Added getter for additional detailed information (called 'getDetail()') in
     class TypeValueException.
+  - Added package org.xins.common.specs which provides an abstraction of a
+    XINS API specification.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
