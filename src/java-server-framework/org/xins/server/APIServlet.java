@@ -117,36 +117,15 @@ extends HttpServlet {
     */
    private void configureLogger(Properties settings) {
 
-      setPropertyIfMissing(settings, "log4j.rootCategory",                              "DEBUG, console");
-      setPropertyIfMissing(settings, "log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      setPropertyIfMissing(settings, "log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      setPropertyIfMissing(settings, "log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
+      String value = settings.getProperty("log4j.rootCategory");
+      if (value == null || "".equals(value)) {
+         settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
+         settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+         settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+         settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
+      }
 
       PropertyConfigurator.configure(settings);
-   }
-
-   /**
-    * Sets a property in a <code>Properties</code> object if it is not set.
-    *
-    * @param properties
-    *    the properties object, should not be <code>null</code>.
-    *
-    * @param key
-    *    the key of the property to get, should not be <code>null</code>.
-    *
-    * @param fallback
-    *    the value to set the property to if it is not set yet, can be
-    *    <code>null</code> (although that would not make any sense).
-    *
-    * @throws NullPointerException
-    *    if <code>properties == null</code>.
-    */
-   private void setPropertyIfMissing(Properties properties, String key, String fallback)
-   throws NullPointerException {
-      String value = properties.getProperty(key);
-      if (value == null || "".equals(value)) {
-         properties.setProperty(key, fallback);
-      }
    }
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
