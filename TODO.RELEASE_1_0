@@ -59,12 +59,13 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Make HTTPCallResult extend CallResult (research if this is wise)
 [x] Implement createCallResult method in class HTTPServiceCaller
 [ ] Document what kind of exception to expect in what case
-[ ] Document when fail-over will be applied and when not
+[x] Document when fail-over will be applied and when not
 [ ] Do not access (private) HTTPCallResult.Data fields directly
 [ ] Externalize inner class HTTPCallResult.Data to interface HTTPCallResultData
 [ ] Make HTTPCallResultParser.Handler implement HTTPCallResultData
 [ ] Return HTTPCallResultData from HTTPCallResultParser
 [ ] Make call(HTTPCallRequest,TargetDescriptor) static  [LOW PRIO]
+[ ] Support failOverAllowed property in HTTPCallRequest
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
