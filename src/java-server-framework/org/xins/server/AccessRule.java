@@ -98,7 +98,7 @@ extends Object {
       } else {
          throw new ParseException("First token of descriptor is \"" + token + "\", instead of either 'allow' or 'deny'.");
       }
-      FastStringBuffer asString = new FastStringBuffer(40, token);
+      FastStringBuffer asString = new FastStringBuffer(70, token);
 
       // Determine the IP address to be checked
       token = nextToken(descriptor, tokenizer);
