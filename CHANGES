@@ -10,8 +10,13 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
   - Added the possibility to point to an ACL file in the ACL runtime property.
 
 * XINS/Java Client Framework:
+  - Fixed SF.net bug #1069436: No function name included in the description of
+    a XINSCallRequest object and consequently in the message for
+    CallExceptions for a XINS call request. Improved the XINSCallRequest
+    description string.
   - The AbstractCAPI class now supports specifying the HTTPMethod. The
     HTTPMethod can be passed to the AbstractCAPI constructor.
+  - Added tests for class XINSCallRequest.
 
 * Generated CAPI classes:
   - The generated CAPI classes now support specifying the HTTPMethod. The
