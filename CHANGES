@@ -3,8 +3,13 @@ CHANGES INTRODUCED IN XINS 0.147:
 
 * Added j2h.jar to depends/compile. See: http://www.java2html.com/.
 
+* XINS/Java Common Library:
+  - Replaced class org.xins.util.LifespanManager with class
+    org.xins.util.manageable.Manageable.
+
 * XINS/Java Server Framework:
   - Added support for OPTIONS (HTTP request method).
+  - Class API now derives from class Manageable.
 
 * Dependencies:
   - Updated commons-httpclient to 2.0rc2.
