@@ -29,36 +29,42 @@ public final class ParseException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ParseException</code> with no detail message and
-    * no cause exception.
+    * Constructs a new <code>ParseException</code> with no message, no cause
+    * exception and no detailed description of the parse problem.
     */
    public ParseException() {
-      this(null, null);
+      this(null, null, null);
    }
 
    /**
-    * Constructs a new <code>ParseException</code> with the specified detail
-    * message and no cause exception.
+    * Constructs a new <code>ParseException</code> with the specified message.
     *
     * @param message
-    *    the detail message, can be <code>null</code>.
+    *    the message, can be <code>null</code>.
     */
    public ParseException(String message) {
-      this(message, null);
+      this(message, null, null);
    }
 
    /**
-    * Constructs a new <code>ParseException</code> with the specified detail
+    * Constructs a new <code>ParseException</code> with the specified
     * message and cause exception.
     *
     * @param message
-    *    the detail message, can be <code>null</code>.
+    *    the message to be returned by {@link #getMessage()}, can be
+    *    <code>null</code>.
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
+    *
+    * @param detail
+    *    description of the parse problem only, to be returned by
+    *    {@link #getDetail()}, can be <code>null</code>.
     */
-   public ParseException(String message, Throwable cause) {
+   public ParseException(String message, Throwable cause, String detail) {
       super(message, cause);
+
+      _detail = detail;
    }
 
 
@@ -66,7 +72,24 @@ public final class ParseException extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Description of the parse error. Can be <code>null</code>.
+    */
+   private final String _detail;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns a description of the parse error.
+    *
+    * @return
+    *    a description of the parse error, or <code>null</code> if none is
+    *    available.
+    */
+   public String getDetail() {
+      return _detail;
+   }
 }
