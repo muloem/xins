@@ -150,7 +150,7 @@ extends Object {
    }
 
    /**
-    * Checks if this folder contains a specific key.
+    * Gets the value associated with a key.
     *
     * @param key
     *    the key to lookup, cannot be <code>null</code>.
