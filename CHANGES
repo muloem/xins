@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.84:
 * Generated test forms:
   - Fixed a bug in the generated SELECTs for enums.
 
+* Supporting deployment-required="true" in api.xml, in the element
+  api/impl-java.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.83:
 
