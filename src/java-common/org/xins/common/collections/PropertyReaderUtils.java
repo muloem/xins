@@ -452,6 +452,14 @@ extends Object {
       //----------------------------------------------------------------------
 
       
+      /**
+       * Initializes this <code>AbstractLogdocSerializable</code> object.
+       *
+       * @return
+       *    the serialized form of this object which will from then on be
+       *    returned from serialize(LogdocStringBuffer), never
+       *    <code>null</code>.
+       */
       protected String initialize() {
 
          Iterator names = _propertyReader.getNames();
