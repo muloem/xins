@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.66:
   - Added InvalidSessionIDException.
   - Removed Session.touch(). It is not needed, since the ExpiryFolder will
     take care of this.
+  - Added some missing Javadoc comments to class API.
 
 * XINS/Java Common Library:
   - Added ArrayIterator class.
