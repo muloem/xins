@@ -12,13 +12,13 @@
 	<code value="NoSuchFunction" success="false">
 		<description>There is no function with the specified name in this API implementation.</description>
 	</code>
-	<code value="InvalidParameters" success="false">
-		<description>At least one parameter has an invalid value, or the combination of parameter values is invalid.</description>
-	</code>
-	<code value="MissingParameters" success="false">
-		<description>There is at least one mandatory input parameter missing.</description>
-	</code>
 	<code value="InternalError" success="false">
 		<description>There was an internal error.</description>
+	</code>
+	<code value="InvalidParameters" success="false" onlyIfInputParameters="true">
+		<description>At least one parameter has an invalid value, or the combination of parameter values is invalid.</description>
+	</code>
+	<code value="MissingParameters" success="false" onlyIfInputParameters="true">
+		<description>There is at least one mandatory input parameter missing.</description>
 	</code>
 </returncodes>
