@@ -175,8 +175,10 @@ extends Object {
       _slotsDoorman.leaveAsWriter();
 
       // Adjust the size
-      synchronized (_sizeLock) {
-         _size -= toBeExpired.size();
+      if (toBeExpired != null && toBeExpired.size() > 0) {
+         synchronized (_sizeLock) {
+            _size -= toBeExpired.size();
+         }
       }
 
       // TODO: Should we do this in a separate thread, so all locks held by
@@ -282,6 +284,12 @@ extends Object {
             o = _slots[i].get(key);
          }
          _slotsDoorman.leaveAsReader();
+
+         if (o != null) {
+            _recentlyAccessedDoorman.enterAsWriter();
+            _recentlyAccessed.put(key, o);
+            _recentlyAccessedDoorman.leaveAsWriter();
+         }
       }
 
       return o;
