@@ -115,25 +115,31 @@ final class RandomCallTargetGroup extends CallTargetGroup {
          // Attempt the call
          result = tryCall(caller, sessionID, functionName, parameters);
 
-         if (LOG.isDebugEnabled()) {
-            if (result instanceof Throwable) {
-               LOG.debug("Call attempt " + i + '/' + count + " failed.");
-            } else {
-               LOG.debug("Call attempt " + i + '/' + count + " succeeded.");
-            }
-         }
-
          // Determine if the call failed
+         String code = "";
          if (i == count) {
             divert = false;
          } else {
             divert = result instanceof Throwable;
             if (!divert) {
                CallResult callResult = (CallResult) result;
-               String code = callResult.getCode();
+               code = callResult.getCode();
                if (code != null) {
                   divert = divertOnCode(code);
                }
+            }
+         }
+
+         // Log wether the call was successful
+         if (LOG.isDebugEnabled()) {
+            if (divert) {
+               if (result instanceof Throwable) {
+                  LOG.debug("Call attempt " + i + '/' + count + " failed due to " + result.getClass().getName() + '.');
+               } else {
+                  LOG.debug("Call attempt " + i + '/' + count + " failed due to result code \"" + code + "\".");
+               }
+            } else {
+               LOG.debug("Call attempt " + i + '/' + count + " succeeded.");
             }
          }
       } while (divert);
