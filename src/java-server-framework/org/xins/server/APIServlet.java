@@ -260,18 +260,21 @@ implements Servlet {
     *        {@link PropertyConfigurator#doConfigure(String,org.apache.log4j.spi.LoggerRepository) the Log4J documentation};
     *    <li>the logging system is investigated to check if it is properly
     *        initialized, if it is not then it will be configured to log to
-    *        the console using a simple output method; in this case a warning
-    *        message is immediately logged;
+    *        the console using a simple output method, with no log level
+    *        threshold; in this case a warning message is immediately logged;
     *    <li>at this point the logging subsystem is definitely initialized;
     *        the interval for the configuration file modification checks is
     *        determined by reading the
     *        {@link #CONFIG_RELOAD_INTERVAL_PROPERTY} configuration property;
-    *        if this property exists but has an invalid value, then a
-    *        <em>warning</em> message is logged; in both cases
+    *        if this property is not set, then
     *        {@link #DEFAULT_CONFIG_RELOAD_INTERVAL} is assumed;
+    *        if this property exists but has an invalid value, then a
+    *        <em>warning</em> message is logged and
+    *        {@link #DEFAULT_CONFIG_RELOAD_INTERVAL} is also assumed;
     *    <li>the configuration file watch thread is started;
     *    <li>the initialization property {@link #API_CLASS_PROPERTY} is read
-    *        from {@link ServletConfig config}; if it is not set then a
+    *        from the {@link ServletConfig servlet configuration} (not from
+    *        the configuration file); if it is not set then a
     *        {@link ServletException} is thrown.
     *    <li>the API class, specified in the {@link #API_CLASS_PROPERTY}
     *        property, is loaded; it must be derived from the {@link API}
