@@ -631,6 +631,7 @@ implements DefaultResultCodes {
       log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Initialize ACL subsystem
+      log = Library.INIT_ACL_LOG;
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          try {
@@ -643,13 +644,19 @@ implements DefaultResultCodes {
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
-            log.info("Access rule list loaded.");
+            int ruleCount = _accessRuleList.getRuleCount();
+            if (ruleCount == 1) {
+               log.info("Access rule list loaded, with 1 rule.");
+            } else {
+               log.info("Access rule list loaded, with " + ruleCount + " rules.");
+            }
          } catch (ParseException exception) {
             throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
          }
       }
 
       // Initialize all instances
+      log = Library.INIT_LOG;
       int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
@@ -993,7 +1000,13 @@ implements DefaultResultCodes {
 
       // Check the access rule list
       String ip = request.getRemoteAddr();
-      if (_accessRuleList.allow(ip, functionName) == false) {
+      boolean allow;
+      try {
+         allow = _accessRuleList.allow(ip, functionName);
+      } catch (ParseException exception) {
+         throw new Error("Malformed IP address: " + ip + '.');
+      }
+      if (allow == false) {
          throw new AccessDeniedException(ip, functionName);
       }
 
