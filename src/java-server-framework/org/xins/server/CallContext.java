@@ -372,7 +372,10 @@ implements Responder, Log {
       }
 
       // Check arguments
-      MandatoryArgumentChecker.check("name", name, "value", value);
+      MandatoryArgumentChecker.check("name", name);
+      if (name.length() < 1) {
+         throw new IllegalArgumentException("name.length() == " + name.length());
+      }
 
       // TODO: Disallow parameters that start with an underscore?
 
@@ -381,11 +384,15 @@ implements Responder, Log {
          startResponse(true, null);
       }
 
-      // Temporarily enter the ERROR state
-      _state = ERROR;
+      // Short-circuit if the value is null or empty
+      if (value != null && value.length() > 0) {
 
-      // Set the parameter
-      _builder.param(name, value);
+         // Temporarily enter the ERROR state
+         _state = ERROR;
+
+         // Set the parameter
+         _builder.param(name, value);
+      }
 
       // Reset the state
       _state = WITHIN_PARAMS;

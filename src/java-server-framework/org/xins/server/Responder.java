@@ -194,22 +194,22 @@ extends ResponderStates, Log {
    throws IllegalStateException, InvalidResponseException;
 
    /**
-    * Adds an output parameter to the response. The name and the value must
-    * both be specified.
+    * Adds an output parameter to the response. The name must be specified. If
+    * the value is specified, then this method does not do anything.
     *
     * @param name
-    *    the name of the output parameter, not <code>null</code>.
+    *    the name of the output parameter, not <code>null</code> and not an
+    *    empty string.
     *
     * @param value
-    *    the value of the output parameter, not <code>null</code>.
+    *    the value of the output parameter, can be <code>null</code>.
     *
     * @throws IllegalStateException
     *    if the current state is either within the data section or after the
     *    end of the response.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || value == null
-    *          || "".equals(name) || "".equals(value)</code>.
+    *    if <code>name == null || name.{@link String#length() length()} &lt; 1</code>.
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
