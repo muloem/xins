@@ -243,7 +243,7 @@ implements Result {
 				<xsl:text>has</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>doesn't need</xsl:text>
+				<xsl:text>does not need</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text> to be called before returning the
