@@ -293,12 +293,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Read response body (mandatory operation)
       //SAX String body = method.getResponseBodyAsString();
-      InputStream xmlStream = null;
-      try {
-         xmlStream = method.getResponseBodyAsStream();
-      } catch (IOException ioe) {
-         // Fall through. This will dealt with further down the code.
-      }
+      byte[] xml = method.getResponseBody();
 
       // Release the connection
       method.releaseConnection();
@@ -375,7 +370,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // If the stream is null, then there was an error
-      if (xmlStream == null) {
+      if (xml == null) {
          Log.log_2009(duration, url, functionName, serParams);
          throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
@@ -383,7 +378,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Parse the result
       Result result;
       try {
-         result = _parser.parse(request, target, duration, xmlStream);
+         result = _parser.parse(request, target, duration, xml);
       } catch (ParseException parseException) {
          throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
       }

@@ -4,6 +4,13 @@ CHANGES INTRODUCED IN XINS 0.204:
 * XINS/Java Common Library:
   - Improved the CallFailedException message to return more information.
 
+* XINS/Java Client Framework:
+  - The SaxParser parse the response from the byte[] instead of the
+    InputStream as the InputStream may be closed before parsing.
+    This bug has been in XINS since 0.203.
+  - Fixed some bugs that existed since 0.203 and that prevented the SaxParser
+    to parse the returned result.
+
 * Logdoc:
   - Fixed a bug in XINS 0.203 that failed the creation of the HTML logdoc
     pages.
@@ -11,6 +18,7 @@ CHANGES INTRODUCED IN XINS 0.204:
     The property org.xins.server.log.locale is now deprecated.
   - The domain attribute for the log.xml is no longer used. The package name
     is used instead.
+  - Default locale changed from "us_US" to "en_US".
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.203:

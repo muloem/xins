@@ -3,7 +3,7 @@
  */
 package org.xins.client;
 
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.util.Hashtable;
 import java.util.Properties;
 
@@ -87,13 +87,13 @@ public class ResultParser {
    public XINSServiceCaller.Result parse(CallRequest      request,
                                          TargetDescriptor target,
                                          long             duration,
-                                         InputStream      xmlStream)
+                                         byte[]           xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request",   request,
                                      "target",    target,
-                                     "xmlStream", xmlStream);
+                                     "xml",       xml);
       if (duration < 0) {
          throw new IllegalArgumentException("duration (" + duration + ") < 0");
       }
@@ -102,7 +102,9 @@ public class ResultParser {
       try {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
-        saxParser.parse(xmlStream, handler);
+        ByteArrayInputStream bais = new ByteArrayInputStream(xml);
+        saxParser.parse(bais, handler);
+        bais.close();
       } catch (Throwable exception) {
          String detail = exception.getMessage();
          FastStringBuffer buffer = new FastStringBuffer(250);
@@ -147,12 +149,12 @@ public class ResultParser {
 
       private String _errorCode;
 
-      private Properties _parameters;
+      private Properties _parameters = new Properties();
       private String _parameterKey;
       private FastStringBuffer _pcdata;
 
       //private DataElement _dataElement;
-      private Hashtable _elements;
+      private Hashtable _elements = new Hashtable();
       private int _level = -1;
 
       //-------------------------------------------------------------------------

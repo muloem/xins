@@ -27,7 +27,7 @@ extends Object {
     * The default locale used for starting up when the locale is not defined in
     * command line arguments.
     */
-   public static final String DEFAULT_LOCALE = "us_US";
+   public static final String DEFAULT_LOCALE = "en_US";
 
    /**
     * All registered <code>LogController</code> instances.

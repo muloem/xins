@@ -165,14 +165,6 @@ import org.xins.logdoc.LogStatistics;
       // Constructors
       //----------------------------------------------------------------------
 
-      /**
-       * Constructs a new <code>Controller</code>.
-       */
-      /*private Controller() {
-         // empty
-      }*/
-
-
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
@@ -183,11 +175,8 @@ import org.xins.logdoc.LogStatistics;
 
       protected boolean isLocaleSupported(String locale) {
 
-         // Fetch the translation bundle
-         TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(locale);
-
          // Return true if the bundle exists
-         return (bundle != null);
+         return TRANSLATION_BUNDLES_BY_NAME.containsKey(locale);
       }
 
       protected void setLocale(String newLocale) {
