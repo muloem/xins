@@ -4,12 +4,12 @@
 package org.xins.server;
 
 /**
- * State of a <code>Responder</code>.
+ * Result from a function call.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class FunctionResult {
+public class FunctionResult extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -41,8 +41,9 @@ public class FunctionResult {
 
    /**
     * The object used to create and store the XML structure of the result.
+    * This field cannot be <code>null</code>.
     */
-   private CallResultBuilder _builder;
+   private final CallResultBuilder _builder;
 
 
    //-------------------------------------------------------------------------
@@ -51,12 +52,12 @@ public class FunctionResult {
 
    /**
     * Returns the object that is responsible for constructing the call result
-    * object.
+    * object. This method should only be called by subclasses.
     *
     * @return
     *    the {@link CallResultBuilder}, never <code>null</code>.
     */
-   protected CallResultBuilder getResultBuilder() {
+   CallResultBuilder getResultBuilder() {
       return _builder;
    }
 
