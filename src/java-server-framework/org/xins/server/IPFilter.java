@@ -170,10 +170,12 @@ extends Object {
     * count. The bit count indicates how many bits in an IP address must match
     * the bits in the base IP address. 
     *
-    * @param baseIP
-    *    the base IP address, should not be <code>null</code> and must match the
-    *    form: <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em></code>, where
-    *    <em>a</em> is a number between 0 and 255, with no leading zeroes.
+    * @param ipString
+    *    the base IP address, as a character string, should not be
+    *    <code>null</code>.
+    *
+    * @param ip
+    *    the base IP address, as an <code>int</code>.
     *
     * @param mask
     *    the mask, between 0 and 32 (inclusive).
