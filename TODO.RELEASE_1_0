@@ -1,4 +1,4 @@
-List of things to be done for XINS release 1.0:
+List of things to be done for XINS release 1.0.0:
 
 - Create a branch called BRANCH_1_0_x
 - First tag on the BRANCH_1_0_x branch should be RELEASE_1_0_0
@@ -29,7 +29,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallRequest class (final, extends CallRequest)
 [x] Add StatusCodeHTTPCallException (extends HTTPCallException)
 [x] Add HTTPStatusCodeVerifier interface
-[ ] Allow HTTPStatusCodeVerifier object in HTTPCallRequest
+[x] Store HTTPStatusCodeVerifier object in HTTPCallRequest
 [ ] Call HTTPStatusCodeVerifier from HTTPServiceCaller
 [x] Throw SocketTimeOutCallException when appropriate
 [x] Throw ConnectionRefusedCallException when appropriate
