@@ -83,6 +83,69 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
+    * Authenticates using the specified details. If this succeeds with one of
+    * the targets, then a {@link NamingEnumeration} is returned. Otherwise, if
+    * none of the targets could successfully be called, a
+    * {@link CallFailedException} is thrown.
+    *
+    * @param method
+    *    the authentication method, for example {@link #NO_AUTHENTICATION}
+    *    or {@link #SIMPLE_AUTHENTICATION}, cannot be <code>null</code>.
+    *
+    * @param principal
+    *    the principal, cannot be <code>null</code> unless
+    *    <code>method == </code>{@link #NO_AUTHENTICATION}.
+    *
+    * @param credentials
+    *    the credentials, can be <code>null</code>.
+    *
+    * @return
+    *    the result of the call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>method == null
+    *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
+    *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
+    *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
+    *
+    * @throws CallFailedException
+    *    if the call failed.
+    */
+   public NamingEnumeration call(AuthenticationMethod method,
+                                 String               principal,
+                                 String               credentials)
+   throws CallFailedException {
+      return call(new AuthenticationDetails(method, principal, credentials),
+                  null);
+   }
+
+   /**
+    * Performs the specified LDAP query using with no authentication details.
+    * If this succeeds with one of the targets, then a
+    * {@link NamingEnumeration} is returned. Otherwise, if none of the targets
+    * could successfully be called, a {@link CallFailedException} is thrown.
+    *
+    * @param query
+    *    the query to be executed, may be <code>null</code>.
+    *
+    * @return
+    *    the result of the call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>method == null
+    *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
+    *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
+    *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
+    *
+    * @throws CallFailedException
+    *    if the call failed.
+    */
+   public NamingEnumeration call(Query query)
+   throws IllegalArgumentException, CallFailedException {
+      return call(null, query);
+   }
+
+   /**
     * Performs the specified LDAP query using the specified authentication
     * details. If this succeeds with one of the targets, then a
     * {@link NamingEnumeration} is returned. Otherwise, if none of the targets
@@ -226,7 +289,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
          SearchControls.SUBTREE_SCOPE, // scope
          0L,                           // return all entries that match, no maximum
          target.getTimeOut(),          // time-out (in ms) or 0 if unlimited
-         query._attributes,            // TODO: Use getter method?
+         query._attributes,            // IDs of attributres to return
          false,                        // do not return named objects
          false                         // do not dereference links
       );
