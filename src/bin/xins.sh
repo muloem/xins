@@ -68,7 +68,7 @@ ant -f ${xins_home}/src/ant/transform.xml \
 	-Dstyle=${style} \
     -Dxins_home=${xins_home} \
     -Dproject_home=${project_home} \
-	-Dbuilddir=${builddir} > ${tmpout}
+	-Dbuilddir=${builddir} > ${tmpout} 2> /dev/null
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo " [ FAILED ]"
