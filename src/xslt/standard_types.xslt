@@ -19,6 +19,7 @@
 			<xsl:when test="$type = '_text'">Plain text.</xsl:when>
 			<xsl:when test="$type = '_properties'">Set of properties.</xsl:when>
 			<xsl:when test="$type = '_date'">Date, in the format YYYYMMDD.</xsl:when>
+			<xsl:when test="$type = '_timestamp'">Timestamp, in the format YYYYMMDDhhmmss.</xsl:when>
 			<xsl:when test="$type = '_boolean'">Boolean. Can be either true or false.</xsl:when>
 			<xsl:when test="$type = '_int8'">Signed integer number, 8 bit.</xsl:when>
 			<xsl:when test="$type = '_int16'">Signed integer number, 16 bit.</xsl:when>
@@ -62,6 +63,7 @@
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.util.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.types.standard.Date.Value</xsl:when>
+					<xsl:when test="$type = '_timestamp'">org.xins.types.standard.Timestamp.Value</xsl:when>
 					<xsl:when test="$type = '_boolean'">java.lang.Boolean</xsl:when>
 					<xsl:when test="$type = '_int8'">java.lang.Byte</xsl:when>
 					<xsl:when test="$type = '_int16'">java.lang.Short</xsl:when>
@@ -81,6 +83,7 @@
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.util.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.types.standard.Date.Value</xsl:when>
+					<xsl:when test="$type = '_timestamp'">org.xins.types.standard.Timestamp.Value</xsl:when>
 					<xsl:when test="$type = '_boolean'">boolean</xsl:when>
 					<xsl:when test="$type = '_int8'">byte</xsl:when>
 					<xsl:when test="$type = '_int16'">short</xsl:when>

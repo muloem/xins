@@ -6,7 +6,6 @@ package org.xins.client;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 
@@ -23,13 +22,6 @@ public final class CallRequest extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(CallRequest.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="US-ASCII" ?>
+<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://xins.sourceforge.net/dtd/log_1_0.dtd">
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+-->
+
+<log default-locale="en_US" domain="org.xins.server">
+
+	<translation-bundle locale="en_US" />
+
+	<group id="type" name="Type logdoc">
+		<entry id="8000" level="ERROR" exception="true">
+			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
+			<param name="pattern_class" />
+			<param name="value" />
+		</entry>
+	</group>
+
+	<group id="util" name="Common logdoc">
+		<entry id="9000" level="DEBUG">
+			<description>Some expired entries remain.</description>
+			<param name="folder_name" nullable="false" />
+			<param name="to_be_expired_size" type="int32" nullable="false" />
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="9001" level="DEBUG">
+			<description>One expired entry remains.</description>
+			<param name="folder_name" nullable="false" />
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="9002" level="ERROR">
+			<description>The size of expiry folder is adjusted to 0.</description>
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="9003" level="DEBUG">
+			<description>Creating an expiry strategy.</description>
+			<param name="strategy" nullable="false" />
+			<param name="time_out" type="int32" nullable="false" />
+			<param name="precision" type="int32" nullable="false" />
+		</entry>
+		<entry id="9004" level="DEBUG">
+			<description>Associating an expiry folder with an expiry stategy.</description>
+			<param name="folder" nullable="false" />
+			<param name="strategy" nullable="false" />
+		</entry>
+		<entry id="9005" level="DEBUG">
+			<description>Strategy started.</description>
+			<param name="strategy" nullable="false" />
+		</entry>
+		<entry id="9006" level="DEBUG">
+			<description>Strategy stopped.</description>
+			<param name="strategy" nullable="false" />
+		</entry>
+		<entry id="9007" level="ERROR" exception="true">
+			<description>I/O error while attempting to close input stream. Ignoring.</description>
+		</entry>
+		<entry id="9008" level="ERROR" exception="true">
+			<description>I/O error while attempting to disconnect. Ignoring.</description>
+		</entry>
+		<entry id="9009" level="INFO">
+			<description>Starting watch thread for a file.</description>
+			<param name="file" nullable="false" />
+		</entry>
+		<entry id="9010" level="INFO">
+			<description>Changing the watch interval for a file.</description>
+			<param name="file" nullable="false" />
+			<param name="old_interval" type="int32" nullable="false" />
+			<param name="new_interval" type="int32" nullable="false" />
+		</entry>
+		<entry id="9011" level="INFO">
+			<description>Stopping watch thread for a file.</description>
+			<param name="file" nullable="false" />
+		</entry>
+		<entry id="9012" level="WARN">
+			<description>Failed to generate secure random int, falling back to pseudo-random.</description>
+			<param name="class_name" nullable="false" />
+		</entry>
+		<entry id="9013" level="WARN">
+			<description>Failed to generate secure random long, falling back to pseudo-random.</description>
+			<param name="class_name" />
+		</entry>
+		<entry id="9014" level="ERROR" exception="true">
+			<description>URL is malformed.</description>
+			<param name="url" />
+		</entry>
+		<entry id="9015" level="ERROR" exception="true">
+			<description>Caught exception while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</description>
+			<param name="exception_name" />
+		</entry>
+		<entry id="9016" level="INFO">
+			<description>Authenticated with a URL.</description>
+			<param name="url" />
+		</entry>
+		<entry id="9017" level="INFO">
+			<description>Authenticated with a URL as principal.</description>
+			<param name="url" />
+			<param name="principal" />
+		</entry>
+		<entry id="9018" level="INFO">
+			<description>Failed to authenticate with a URL.</description>
+			<param name="url" />
+		</entry>
+		<entry id="9019" level="INFO">
+			<description>Failed to authenticate with a URL as principal.</description>
+			<param name="url" />
+			<param name="principal" />
+		</entry>
+		<entry id="9020" level="ERROR">
+			<description>Failed to perform search with a specified base and filter.</description>
+			<param name="search_base" />
+			<param name="filter" />
+		</entry>
+		<entry id="9021" level="DEBUG">
+			<description>Performed search with a specified base and filter.</description>
+			<param name="search_base" />
+			<param name="filter" />
+		</entry>
+		<entry id="9022" level="ERROR" exception="true">
+			<description>Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</description>
+		</entry>
+		<entry id="9023" level="DEBUG">
+			<description>Call to a specified target succeeded.</description>
+			<param name="target" />
+		</entry>
+		<entry id="9024" level="WARN">
+			<description>Call to a specified target failed for a specified reason.</description>
+			<param name="target" />
+			<param name="reason" />
+		</entry>
+		<entry id="9025" level="ERROR">
+			<description>Failed to call any of the targets.</description>
+		</entry>
+		<entry id="9026" level="DEBUG">
+			<description>Increasing capacity of the FastStringBuffer.</description>
+			<param name="current_capacity" type="int32" nullable="false" />
+			<param name="new_capacity" type="int32" nullable="false" />
+		</entry>
+		<entry id="9027" level="DEBUG">
+			<description>Constructed new Doorman.</description>
+			<param name="class_name" nullable="false" />
+			<param name="queue_size" type="int32" nullable="false" />
+			<param name="max_queue_size" type="int32" nullable="false" />
+			<param name="strict" nullable="false" />
+		</entry>
+		<entry id="9028" level="DEBUG">
+			<description>enterAsReader() called for a reader.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9029" level="WARN">
+			<description>A reader attempts to enter as a reader while it is already the active writer.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9030" level="WARN">
+			<description>A reader attempts to enter as a reader while it is already an active reader.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9031" level="DEBUG">
+			<description>enterAsWriter() called for a writer.</description>
+			<param name="class_name" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="9032" level="WARN">
+			<description>A writer attempts to enter as a writer but it is already the active writer.</description>
+			<param name="class_name" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="9033" level="WARN">
+			<description>A writer attempts to enter as a writer but it is already an active reader.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9034" level="DEBUG">
+			<description>leaveAsReader() called for a reader.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9035" level="WARN">
+			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
+			<param name="class_name" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="9036" level="DEBUG">
+			<description>leaveAsWriter() called for a writer.</description>
+			<param name="class_name" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="9037" level="WARN">
+			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
+			<param name="class_name" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+	</group>
+
+</log>

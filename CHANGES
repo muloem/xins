@@ -13,12 +13,15 @@ CHANGES INTRODUCED IN XINS 0.173:
     a null value instead of removing it.
     This means that now if you send a property with no value, it will now be
     present in the PropertyReader with a value null.
+  - Added _timestamp type.
 
 * Generated specification documentation:
   - Updated DTD to be more restrictive.
 
 * Logdoc:
   - Added an HTML page that contains all the entries is also generated.
+  - Added the logdoc xml files for the client and common part. Note that the
+    files are not used yet in the code.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.172:
