@@ -417,8 +417,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
     *
     * @throws org.xins.client.CallException
-    *    if the call failed, see the subclasses of class
-    *    {@link org.xins.client.CallException} for more details.
+    *    if the call failed for any reason.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
@@ -436,16 +435,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<xsl:text>)
    throws </xsl:text>
-		<xsl:if test="$kind = 'nonSharedSessionBased'">
-			<xsl:text>org.xins.types.TypeValueException, org.xins.client.NoSuchSessionException, </xsl:text>
-		</xsl:if>
 		<xsl:text>org.xins.client.CallException {</xsl:text>
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
 			<xsl:text>
 
       // Split the client-side session ID
       java.lang.String[] arr = new java.lang.String[2];
-      _sessionIDSplitter.splitSessionID(session, arr);
+      try {
+         _sessionIDSplitter.splitSessionID(session, arr);
+      } catch (org.xins.types.TypeValueException exception) {
+         throw new org.xins.client.NoSuchSessionException();
+      }
       org.xins.client.ActualFunctionCaller afc = getFunctionCaller().getActualFunctionCallerByCRC32(arr[0]);
       if (afc == null) {
          throw new org.xins.client.NoSuchSessionException();
