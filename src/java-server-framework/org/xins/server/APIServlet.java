@@ -148,8 +148,8 @@ implements Servlet {
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
-      _stateLock                 = new Object();
-      _state                     = INITIAL;
+      _stateLock          = new Object();
+      _state              = INITIAL;
       _configFileListener = new ConfigurationFileListener();
    }
 
