@@ -1,5 +1,5 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.205:
+CHANGES INTRODUCED IN XINS 0.206:
 
 * XINS/Java Server Framework:
   - Removed the _GetLogStatistics meta function.
