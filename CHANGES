@@ -99,6 +99,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
       generated CAPI class.
     . Generating one call(<Function>Request,XINSCallConfig) method per
       function in the generated CAPI class.
+  - Implemented RFE #1110691: Deprecate create methods in CAPI class. These
+    have been replaced by equivalent constructors.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:

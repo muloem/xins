@@ -73,6 +73,74 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    //-------------------------------------------------------------------------
 
    /**
+    * Creates a <code>Descriptor</code> based on the specified properties and
+    * API name.
+    *
+    * @param properties
+    *    the properties to create a {@link org.xins.common.service.Descriptor}
+    *    object from, cannot be <code>null</code>.
+    *
+    * @param apiName
+    *    the name of the API to create a
+    *    {@link org.xins.common.service.Descriptor} object for, cannot be
+    *    <code>null</code> and must be a valid API name.
+    *
+    * @return
+    *    the constructed {@link org.xins.common.service.Descriptor} object,
+    *    never <code>null</code>.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>properties == null || apiName == null</code> or if
+    *    <code>apiName</code> is not considered to be a valid API name.
+    *
+    * @throws org.xins.common.collections.MissingRequiredPropertyException
+    *    if a required property is missing in the specified properties set.
+    *
+    * @throws org.xins.common.collections.InvalidPropertyValueException
+    *    if one of the properties in the specified properties set is used to
+    *    create a <code>CAPI</code> instance but its value is considered
+    *    invalid.
+    */
+   private static final org.xins.common.service.Descriptor
+   createDescriptor(org.xins.common.collections.PropertyReader properties,
+                    java.lang.String                           apiName)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.collections.MissingRequiredPropertyException,
+          org.xins.common.collections.InvalidPropertyValueException {
+
+      // Check arguments
+      org.xins.common.MandatoryArgumentChecker.check("properties", properties,
+                                                     "apiName",    apiName);
+
+      // TODO: Check validity of API name
+
+      // Determine property name
+      java.lang.String propertyName = "capis." + apiName;
+
+      // Build a descriptor from the properties
+      org.xins.common.service.Descriptor descriptor = org.xins.common.service.DescriptorBuilder.build(properties, propertyName);
+
+      // Test the protocol for the descriptor
+      try {
+         XINSServiceCaller.testProtocol(descriptor);
+
+      // Invalid property value due to unsupported protocol
+      } catch (org.xins.common.service.UnsupportedProtocolException e) {
+         // TODO: Use correct property name for specific target descriptor
+         // TODO: Use correct property value for specific target descriptor
+         org.xins.common.service.TargetDescriptor target = e.getTargetDescriptor();
+         final String PROPERTY_VALUE = properties.get(propertyName);
+         final String DETAIL         = "Protocol in URL \""
+                                     + target.getURL()
+                                     + "\" is not supported.";
+         throw new org.xins.common.collections.InvalidPropertyValueException(
+            propertyName, PROPERTY_VALUE, DETAIL);
+      }
+
+      return descriptor;
+   }
+
+   /**
     * Creates a new <code>CAPI</code> object for the specified API from a set
     * of properties, with a specific call configuration.
     *
@@ -104,6 +172,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    invalid.
     *
     * @since XINS 1.1.0
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.2.0.
+    *    Use the equivalent
+    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String,org.xins.client.XINSCallConfig) constructor}
+    *    instead.
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
                                    java.lang.String                           apiName,
@@ -112,29 +186,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
 
-      // Check arguments
-      org.xins.common.MandatoryArgumentChecker.check("properties", properties,
-                                                     "apiName",    apiName);
-
-      // TODO: Check validity of API name
-
-      // Determine property name
-      java.lang.String propertyName = "capis." + apiName;
-
-      // Build a descriptor from the properties
-      org.xins.common.service.Descriptor descriptor = org.xins.common.service.DescriptorBuilder.build(properties, propertyName);
-
-      // Create and return a CAPI instance
-      try {
-         return new CAPI(descriptor, callConfig);
-
-      // Invalid property value due to unsupported protocol
-      } catch (org.xins.common.service.UnsupportedProtocolException e) {
-         // TODO: Use correct property name for specific target descriptor
-         // TODO: Use correct property value for specific target descriptor
-         org.xins.common.service.TargetDescriptor target = e.getTargetDescriptor();
-         throw new org.xins.common.collections.InvalidPropertyValueException(propertyName, properties.get(propertyName), "Protocol in URL \"" + target.getURL() + "\" is not supported.");
-      }
+      return new CAPI(properties, apiName, callConfig);
    }
 
    /**
@@ -165,13 +217,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    invalid.
     *
     * @since XINS 1.1.0
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.2.0.
+    *    Use the equivalent
+    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String) constructor}
+    *    instead.
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
                                    java.lang.String                           apiName)
    throws java.lang.IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
-      return create(properties, apiName, null);
+      return new CAPI(properties, apiName, null);
    }
 
 
@@ -239,11 +297,86 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 
 	<!-- ***************************************************************** -->
-	<!-- Print the constructor                                             -->
+	<!-- Print the constructors                                            -->
 	<!-- ***************************************************************** -->
 
 	<xsl:template name="constructor">
 		<xsl:text><![CDATA[
+
+   /**
+    * Constructs a new <code>CAPI</code> object for the specified API from a
+    * set of properties, with a specific call configuration.
+    *
+    * @param properties
+    *    the properties to create a <code>CAPI</code> object for, cannot be
+    *    <code>null</code>.
+    *
+    * @param apiName
+    *    the name of the API to create a <code>CAPI</code> object for, cannot
+    *    be <code>null</code> and must be a valid API name.
+    *
+    * @param callConfig
+    *    configuration to be used when making calls, or <code>null</code> if a
+    *    default should be applied.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>properties == null || apiName == null</code> or if
+    *    <code>apiName</code> is not considered to be a valid API name.
+    *
+    * @throws org.xins.common.collections.MissingRequiredPropertyException
+    *    if a required property is missing in the specified properties set.
+    *
+    * @throws org.xins.common.collections.InvalidPropertyValueException
+    *    if one of the properties in the specified properties set is used to
+    *    create a <code>CAPI</code> instance but its value is considered
+    *    invalid.
+    *
+    * @since XINS 1.2.0
+    */
+   public CAPI(org.xins.common.collections.PropertyReader properties,
+               java.lang.String                           apiName,
+               org.xins.client.XINSCallConfig             callConfig)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.collections.MissingRequiredPropertyException,
+          org.xins.common.collections.InvalidPropertyValueException {
+
+      this(createDescriptor(properties, apiName), callConfig);
+   }
+
+   /**
+    * Constructs a new <code>CAPI</code> object for the specified API from a
+    * set of properties.
+    *
+    * @param properties
+    *    the properties to create a <code>CAPI</code> object for, cannot be
+    *    <code>null</code>.
+    *
+    * @param apiName
+    *    the name of the API to create a <code>CAPI</code> object for, cannot
+    *    be <code>null</code> and must be a valid API name.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>properties == null || apiName == null</code> or if
+    *    <code>apiName</code> is not considered to be a valid API name.
+    *
+    * @throws org.xins.common.collections.MissingRequiredPropertyException
+    *    if a required property is missing in the specified properties set.
+    *
+    * @throws org.xins.common.collections.InvalidPropertyValueException
+    *    if one of the properties in the specified properties set is used to
+    *    create a <code>CAPI</code> instance but its value is considered
+    *    invalid.
+    *
+    * @since XINS 1.2.0
+    */
+   public CAPI(org.xins.common.collections.PropertyReader properties,
+               java.lang.String                           apiName)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.collections.MissingRequiredPropertyException,
+          org.xins.common.collections.InvalidPropertyValueException {
+      this(properties, apiName, null);
+   }
+
 
    /**
     * Constructs a new <code>CAPI</code> object, using the specified
@@ -262,10 +395,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws org.xins.common.service.UnsupportedProtocolException
     *    if any of the target descriptors specifies an unsupported protocol.
     *
-    * @since XINS 1.1.0
+    * @since XINS 1.2.0
     */
-   private CAPI(org.xins.common.service.Descriptor descriptor,
-                org.xins.client.XINSCallConfig     callConfig)
+   public CAPI(org.xins.common.service.Descriptor descriptor,
+               org.xins.client.XINSCallConfig     callConfig)
    throws java.lang.IllegalArgumentException,
           org.xins.common.service.UnsupportedProtocolException {
 
