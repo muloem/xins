@@ -37,7 +37,7 @@ public final class ExpiryStrategy extends Object {
     *          || precision &lt; 1
     *          || timeOut &lt; precision</code>
     */
-   private ExpiryStrategy(long timeOut, long precision)
+   public ExpiryStrategy(long timeOut, long precision)
    throws IllegalArgumentException {
 
       // Check preconditions
