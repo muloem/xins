@@ -3,7 +3,6 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
