@@ -286,7 +286,7 @@ extends AbstractFunctionCaller {
 
       // Initialize a buffer
       StringBuffer buffer = new StringBuffer(PARAMETER_STRING_BUFFER_SIZE);
-      buffer.append("function=");
+      buffer.append("_function=");
       buffer.append(functionName);
 
       // If there is a session identifier, process it
