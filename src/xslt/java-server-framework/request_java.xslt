@@ -75,7 +75,7 @@ public final static class Request {
    /**
     * Constructs a new <code>Request</code> instance.
     */
-   public Request(String _ip]]></xsl:text>
+   public Request(String __ip]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
@@ -92,7 +92,8 @@ public final static class Request {
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>) {
-      __ip = _ip;</xsl:text>
+      this.__ip = __ip;
+</xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>      _</xsl:text>
 			<xsl:value-of select="@name" />
