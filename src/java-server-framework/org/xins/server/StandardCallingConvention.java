@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.ProgrammingError;
 import org.xins.common.collections.ProtectedPropertyReader;
-import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -80,6 +79,24 @@ extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Converts an HTTP request to a XINS request (implementation method). This
+    * method should only be called from class {@link CallingConvention}. Only
+    * then it is guaranteed that the <code>httpRequest</code> argument is not
+    * <code>null</code>.
+    *
+    * @param httpRequest
+    *    the HTTP request, will not be <code>null</code>.
+    *
+    * @return
+    *    the XINS request object, never <code>null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the request is considerd to be invalid.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the request does not indicate the name of the function to execute.
+    */
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
@@ -104,8 +121,9 @@ extends CallingConvention {
             ElementParser parser = new ElementParser();
             dataElement = parser.parse(dataSectionValue.getBytes(ENCODING));
          } catch (UnsupportedEncodingException ex) {
-            // TODO: Log
-            throw new ProgrammingError("Encoding \"" + ENCODING + "\" is not supported.");
+            final String message = "Encoding \"" + ENCODING + "\" is not supported.";
+            Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", message);
+            throw new ProgrammingError(message);
          } catch (ParseException ex) {
             throw new InvalidRequestException("Cannot parse the data section.", ex);
          }
@@ -138,8 +156,22 @@ extends CallingConvention {
       return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
+   /**
+    * Converts a XINS result to an HTTP response (implementation method).
+    *
+    * @param xinsResult
+    *    the XINS result object that should be converted to an HTTP response,
+    *    will not be <code>null</code>.
+    *
+    * @param httpResponse
+    *    the HTTP response object to configure, will not be <code>null</code>.
+    *
+    * @throws IOException
+    *    if calling any of the methods in <code>httpResponse</code> causes an
+    *    I/O error.
+    */
    protected void convertResultImpl(FunctionResult      xinsResult,
-                          HttpServletResponse httpResponse)
+                                    HttpServletResponse httpResponse)
    throws IOException {
 
       // Send the XML output to the stream and flush

@@ -19,6 +19,10 @@ import org.xins.common.ProgrammingError;
  * HTTP request is converted to a XINS request and how a XINS response is
  * converted back to an HTTP response.
  *
+ * <p>Calling convention implementations are thread-safe. Hence if a calling
+ * convention does not have any configuration parameters per instance, then
+ * the <em>Singleton</em> pattern can be applied.
+ *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
