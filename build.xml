@@ -493,6 +493,24 @@ ${sf.file}</fail>
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
+	<target name="tests-ui" depends="classes-tests" description="Runs the unit tests in a graphical environment">
+		<java fork="true" classname="junit.swingui.TestRunner">
+			<arg value="-noloading"/>
+			<arg value="org.xins.tests.AllTests"/>
+			<classpath>
+				<pathelement location="build/classes/tests" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</java>
+	</target>
+	
 	<target name="clean-coverage">
 		<delete file="jcoverage.ser" />
 		<delete dir="build/instrumented-classes" />

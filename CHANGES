@@ -21,6 +21,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
   - The create-api target invokes the create-function target as APIs must have
     at least one function.
 
+* Build and release process:
+  - Added the target "tests-ui" to run the unit tests in a graphical
+    environment.
+
 * Libraries:
   - Updated xmlenc from 0.45 to 0.46, which should result in a performance
     improvement.
