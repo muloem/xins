@@ -83,6 +83,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     Compilation and Javadoc generation will be faster.
   - Fixed netbeans-debug target.
 
+* Libraries
+  - Upgraded xmlenc library to version 0.45 which should result in a 
+    performance improvement.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
