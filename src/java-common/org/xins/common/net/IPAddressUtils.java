@@ -150,12 +150,13 @@ public final class IPAddressUtils extends Object {
    }
 
    /**
-    * Retrieves the localhost host name.
-    * This method uses several ways to retrieve the localhost name.
+    * Retrieves the localhost host name. This method applies several
+    * techniques to attempt to retrieve the localhost host name.
     *
     * @return
-    *    the fully qualified host name for the localhost, if it is not possible
-    *    the host name for the localhost, otherwise "localhost".
+    *    if possible the fully qualified host name for localhost, otherwise if
+    *    possible the non-qualified host name for the localhost, otherwise
+    *    the string <code>"localhost"</code>.
     */
    public static final String getLocalHost() {
       try {
@@ -171,7 +172,7 @@ public final class IPAddressUtils extends Object {
                   try {
                      return address.getLocalHost().getCanonicalHostName();
                   } catch (UnknownHostException unknownHostException2) {
-                     // Ignore maybe another network interface will find it
+                     // Ignore; perhaps another network interface will find it
                   }
                }
             }
@@ -195,14 +196,27 @@ public final class IPAddressUtils extends Object {
     * IP address.
     *
     * @param ip
-    *    the malformed IP address, not <code>null</code>; if it is, then the
-    *    behaviour is undefined.
+    *    the malformed IP address, not <code>null</code>.
     *
     * @return
     *    the {@link ParseException} to throw.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ip == null</code>.
     */
-   private static final ParseException newParseException(String ip) {
-      return new ParseException("The string \"" + ip + "\" is not a valid IP address.");
+   private static final ParseException newParseException(String ip)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("ip", ip);
+
+      // Construct the message for the exception
+      FastStringBuffer buffer = new FastStringBuffer(63, "The string \"");
+      buffer.append(ip);
+      buffer.append("\" is not a valid IP address.");
+
+      // Return the exception
+      return new ParseException(buffer.toString());
    }
 
 
@@ -212,6 +226,10 @@ public final class IPAddressUtils extends Object {
 
    /**
     * Constructs a new <code>IPAddressUtils</code> object.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0. This constructor should never be used
+    *    since this class is a utility class.
     */
    private IPAddressUtils() {
       // empty
