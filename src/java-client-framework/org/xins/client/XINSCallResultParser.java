@@ -102,7 +102,7 @@ extends Object {
             buffer.append('.');
          }
          String message = buffer.toString();
-         Log.log_2005(exception, detail);
+         Log.log_2105(exception, detail);
          throw new ParseException(message);
       }
 
@@ -231,7 +231,7 @@ extends Object {
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
 
          if (!_parsingStarted && !qName.equals("result")) {
-            Log.log_2006(qName);
+            Log.log_2106(qName);
          }
 
          if (_level >= 0) {
@@ -311,14 +311,14 @@ extends Object {
             boolean noKey   = (_parameterKey == null || _parameterKey.length() < 1);
             boolean noValue = (value == null || value.length() < 1);
             if (noKey && noValue) {
-               Log.log_2001(ELEMENT_NAME);
+               Log.log_2101(ELEMENT_NAME);
             } else if (noKey) {
-               Log.log_2002(ELEMENT_NAME, KEY_ATTRIBUTE);
+               Log.log_2102(ELEMENT_NAME, KEY_ATTRIBUTE);
             } else if (noValue) {
-               Log.log_2003(ELEMENT_NAME, KEY_ATTRIBUTE, _parameterKey);
+               Log.log_2103(ELEMENT_NAME, KEY_ATTRIBUTE, _parameterKey);
             } else {
 
-               Log.log_2004(ELEMENT_NAME, "name", _parameterKey, value);
+               Log.log_2104(ELEMENT_NAME, "name", _parameterKey, value);
                if (_parameters == null) {
                   _parameters = new Properties();
                } else if (_parameters.get(_parameterKey) != null) {

@@ -293,7 +293,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Log that we are about to call the API
       // TODO: Either uncomment or remove the following line
-      // Log.log_2011(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
+      // Log.log_2111(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Delegate the actual HTTP call to the HTTPServiceCaller. This may
       // cause a CallException

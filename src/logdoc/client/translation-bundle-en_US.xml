@@ -8,22 +8,22 @@
 -->
 
 <translation-bundle>
-	<translation entry="2001">Found &lt;<value-of-param name="elementName" /> /&gt; with an empty key and empty value.</translation>
-	<translation entry="2002">Found &lt;<value-of-param name="elementName" /> /&gt; with an empty key.</translation>
-	<translation entry="2003">Found &lt;<value-of-param name="elementName" /> /&gt; with <value-of-param name="keyAttribute" /> <value-of-param name="key" format="quoted" /> but an empty value.</translation>
-	<translation entry="2004">Found &lt;<value-of-param name="elementName" /> /&gt; with <value-of-param name="keyAttribute" /> <value-of-param name="key" format="quoted" /> and value <value-of-param name="value" format="quoted" />.</translation>
-	<translation entry="2005">Unable to convert the specified character string to XML: <value-of-param name="detail" />.</translation>
-	<translation entry="2006">The returned XML is invalid. The type of the root element is <value-of-param name="elementName" format="quoted" /> instead of "result".</translation>
-	<translation entry="2007">Caught <value-of-param name="exceptionClass" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
-	<translation entry="2008">Received HTTP status code <value-of-param name="code" /> while calling URL <value-of-param name="url" format="quoted" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2009">Failed to read the response body.</translation>
-	<translation entry="2010">Unexpected <value-of-param name="exceptionClass" /> caught while calling doCall(org.xins.util.service.CallRequest).</translation>
-	<translation entry="2011">Calling <value-of-param name="url" />, function <value-of-param name="function" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
-	<translation entry="2012">Connection refused while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2013">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2014">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2015">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2016">Received HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" format="quoted" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2017">I/O error while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
-	<translation entry="2018">Unexpected exception while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2101">Found &lt;<value-of-param name="elementName" /> /&gt; with an empty key and empty value.</translation>
+	<translation entry="2102">Found &lt;<value-of-param name="elementName" /> /&gt; with an empty key.</translation>
+	<translation entry="2103">Found &lt;<value-of-param name="elementName" /> /&gt; with <value-of-param name="keyAttribute" /> <value-of-param name="key" format="quoted" /> but an empty value.</translation>
+	<translation entry="2104">Found &lt;<value-of-param name="elementName" /> /&gt; with <value-of-param name="keyAttribute" /> <value-of-param name="key" format="quoted" /> and value <value-of-param name="value" format="quoted" />.</translation>
+	<translation entry="2105">Unable to convert the specified character string to XML: <value-of-param name="detail" />.</translation>
+	<translation entry="2106">The returned XML is invalid. The type of the root element is <value-of-param name="elementName" format="quoted" /> instead of "result".</translation>
+	<translation entry="2107">Caught <value-of-param name="exceptionClass" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
+	<translation entry="2108">Received HTTP status code <value-of-param name="code" /> while calling URL <value-of-param name="url" format="quoted" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2109">Failed to read the response body.</translation>
+	<translation entry="2110">Unexpected <value-of-param name="exceptionClass" /> caught while calling doCall(org.xins.util.service.CallRequest).</translation>
+	<translation entry="2111">Calling <value-of-param name="url" />, function <value-of-param name="function" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
+	<translation entry="2112">Connection refused while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2113">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2114">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2115">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2116">Received HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" format="quoted" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2117">I/O error while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2118">Unexpected exception while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
 </translation-bundle>

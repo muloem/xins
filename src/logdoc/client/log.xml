@@ -8,38 +8,37 @@
 -->
 
 <log>
-
 	<translation-bundle locale="en_US" />
 
 	<group id="trace" name="Tracing of constructors, class functions and instance methods">
-		<entry id="2900" level="DEBUG">
+		<entry id="2000" level="DEBUG">
 			<description>Entering constructor.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="2901" level="DEBUG" exception="true">
+		<entry id="2001" level="DEBUG" exception="true">
 			<description>Returning from constructor with exception.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="2902" level="DEBUG">
+		<entry id="2002" level="DEBUG">
 			<description>Returning from constructor successfully.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="2903" level="DEBUG">
+		<entry id="2003" level="DEBUG">
 			<description>Entering method.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="2904" level="DEBUG" exception="true">
+		<entry id="2004" level="DEBUG" exception="true">
 			<description>Returning from method with exception.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="2905" level="DEBUG">
+		<entry id="2005" level="DEBUG">
 			<description>Returning from method successfully.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
@@ -48,13 +47,13 @@
 	</group>
 
 	<group id="lowlevel" name="Low-level generic issues">
-		<entry id="2950" level="ERROR">
+		<entry id="2050" level="ERROR">
 			<description>Programming error detected.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="2951" level="ERROR" exception="true">
+		<entry id="2051" level="ERROR" exception="true">
 			<description>Ignoring exception.</description>
 			<param name="exceptionClass"   type="text" nullable="false" />
 			<param name="exceptionMessage" type="text" nullable="true"  />
@@ -64,59 +63,58 @@
 
 
 	<group id="client" name="Generic client-side">
-		<!-- TODO: <reserved id="2000" /> -->
-		<entry id="2001" level="ERROR">
+		<entry id="2101" level="ERROR">
 			<description>Found element with an empty key and empty value.</description>
 			<param name="elementName" nullable="false" />
 		</entry>
-		<entry id="2002" level="ERROR">
+		<entry id="2102" level="ERROR">
 			<description>Found element with an empty key.</description>
 			<param name="elementName"  type="text" nullable="false" />
 			<param name="keyAttribute" type="text" nullable="false" />
 		</entry>
-		<entry id="2003" level="ERROR">
+		<entry id="2103" level="ERROR">
 			<description>Found element attribute with an empty value.</description>
 			<param name="elementName"  type="text" nullable="false" />
 			<param name="keyAttribute" type="text" nullable="false" />
 			<param name="key"          type="text" nullable="false" />
 		</entry>
-		<entry id="2004" level="DEBUG">
+		<entry id="2104" level="DEBUG">
 			<description>Found element attribute with a non-empty value.</description>
 			<param name="elementName"  />
 			<param name="keyAttribute" />
 			<param name="key"          />
 			<param name="value"        />
 		</entry>
-		<entry id="2005" level="ERROR" exception="true">
+		<entry id="2105" level="ERROR" exception="true">
 			<description>Unable to convert the specified character string to XML.</description>
 			<param name="detail" type="text" nullable="true" />
 		</entry>
-		<entry id="2006" level="ERROR">
+		<entry id="2106" level="ERROR">
 			<description>The returned XML is invalid. The type of the root element is not "result".</description>
-			<param name="elementName" type="text"         nullable="false" />
+			<param name="elementName" type="text" nullable="false" />
 		</entry>
-		<entry id="2007" level="ERROR" exception="true">
+		<entry id="2107" level="ERROR" exception="true">
 			<description>Caught exception while releasing HTTP connection after request failed.</description>
 			<param name="url"            type="text"         nullable="false" />
 			<param name="function"       type="text"         nullable="false" />
 			<param name="inputParams"    type="serializable" nullable="false" />
 			<param name="exceptionClass" type="text"         nullable="false" />
 		</entry>
-		<entry id="2008" level="ERROR">
+		<entry id="2108" level="ERROR">
 			<description>HTTP status code is not in 2xx range.</description>
 			<param name="url"         type="text"         nullable="false" />
 			<param name="function"    type="text"         nullable="false" />
 			<param name="inputParams" type="serializable" nullable="false" />
 			<param name="code"        type="int32"        nullable="false" />
 		</entry>
-		<entry id="2009" level="ERROR">
+		<entry id="2109" level="ERROR">
 			<description>Failed to read the response body.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
 			<param name="function"    type="text"         nullable="false" />
 			<param name="inputParams" type="serializable" nullable="false" />
 		</entry>
-		<entry id="2010" level="ERROR" exception="true">
+		<entry id="2110" level="ERROR" exception="true">
 			<description>Unexpected exception caught while calling doCall(org.xins.util.service.CallRequest).</description>
 			<param name="duration"       type="int64"        nullable="false" />
 			<param name="url"            type="text"         nullable="false" />
@@ -124,7 +122,7 @@
 			<param name="inputParams"    type="serializable" nullable="false" />
 			<param name="exceptionClass" type="text"         nullable="false" />
 		</entry>
-		<entry id="2011" level="INFO">
+		<entry id="2111" level="INFO">
 			<description>Calling API function.</description>
 			<param name="url"               type="text"         nullable="false" />
 			<param name="function"          type="text"         nullable="false" />
@@ -133,14 +131,14 @@
 			<param name="connectionTimeOut" type="int32"        nullable="false" />
 			<param name="socketTimeOut"     type="int32"        nullable="false" />
 		</entry>
-		<entry id="2012" level="NOTICE">
+		<entry id="2112" level="NOTICE">
 			<description>Connection refused while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
 			<param name="function"    type="text"         nullable="false" />
 			<param name="inputParams" type="serializable" nullable="false" />
 		</entry>
-		<entry id="2013" level="NOTICE">
+		<entry id="2113" level="NOTICE">
 			<description>Connection time-out while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
@@ -148,7 +146,7 @@
 			<param name="inputParams" type="serializable" nullable="false" />
 			<param name="timeOut"     type="int32"        nullable="false" />
 		</entry>
-		<entry id="2014" level="NOTICE">
+		<entry id="2114" level="NOTICE">
 			<description>Socket time-out while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
@@ -156,7 +154,7 @@
 			<param name="inputParams" type="serializable" nullable="false" />
 			<param name="timeOut"     type="int32"        nullable="false" />
 		</entry>
-		<entry id="2015" level="NOTICE">
+		<entry id="2115" level="NOTICE">
 			<description>Total call time-out while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
@@ -164,7 +162,7 @@
 			<param name="inputParams" type="serializable" nullable="false" />
 			<param name="timeOut"     type="int32"        nullable="false" />
 		</entry>
-		<entry id="2016" level="INFO">
+		<entry id="2116" level="INFO">
 			<description>HTTP result received</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
@@ -172,14 +170,14 @@
 			<param name="inputParams" type="serializable" nullable="false" />
 			<param name="code"        type="int32"        nullable="false" />
 		</entry>
-		<entry id="2017" level="NOTICE" exception="true">
+		<entry id="2117" level="NOTICE" exception="true">
 			<description>Unrecognized I/O error while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
 			<param name="function"    type="text"         nullable="false" />
 			<param name="inputParams" type="serializable" nullable="false" />
 		</entry>
-		<entry id="2018" level="NOTICE" exception="true">
+		<entry id="2118" level="NOTICE" exception="true">
 			<description>Unexpected exception while calling API function.</description>
 			<param name="duration"    type="int64"        nullable="false" />
 			<param name="url"         type="text"         nullable="false" />
