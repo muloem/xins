@@ -31,6 +31,9 @@ extends RuntimeException {
    /**
     * Constructs a new <code>InvalidResponseException</code> with the
     * specified detail message.
+    *
+    * @param message
+    *    the detail message, can be <code>null</code>.
     */
    InvalidResponseException(String message) {
       super(message);
