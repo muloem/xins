@@ -1141,19 +1141,19 @@ implements DefaultResultCodes {
       context.endTag();
 
       // System properties
-      Properties properties = System.getProperties();
-      names = properties.propertyNames();
+      names = System.getProperties().propertyNames();
       context.startTag("system-properties");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
-         String value = _initSettings.getProperty(key);
+         String value = System.getProperty(key);
 
-         context.startTag("property");
-         context.attribute("name", key);
-         context.pcdata(value);
-         context.endTag();
+         if (key != null && value != null && key.length() > 0 && value.length() > 0) {
+            context.startTag("property");
+            context.attribute("name", key);
+            context.pcdata(value);
+            context.endTag();
+         }
       }
-      context.endTag();
       context.endTag();
    }
 }
