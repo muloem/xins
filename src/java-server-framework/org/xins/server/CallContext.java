@@ -481,7 +481,7 @@ implements Responder, Log {
       _state = ERROR;
 
       // Validate
-      // TODO: _responseValidator.startTag(name, value);
+      _responseValidator.startTag(type);
 
       // Write the start tag
       _xmlOutputter.startTag(type);
@@ -500,7 +500,7 @@ implements Responder, Log {
       }
 
       // Validate
-      // TODO: _responseValidator.attribute(name, value);
+      _responseValidator.attribute(name, value);
 
       // Temporarily enter the ERROR state
       _state = ERROR;
@@ -521,7 +521,7 @@ implements Responder, Log {
       }
 
       // Validate
-      // TODO: _responseValidator.pcdata(text);
+      _responseValidator.pcdata(text);
 
       // Temporarily enter the ERROR state
       _state = ERROR;
@@ -548,7 +548,7 @@ implements Responder, Log {
       _state = ERROR;
 
       // Validate
-      // TODO: _responseValidator.endTag(text);
+      _responseValidator.endTag();
 
       // End the tag
       _xmlOutputter.endTag();
