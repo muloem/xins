@@ -95,6 +95,10 @@ extends Object {
     */
    private static final State FINISHED = new State("FINISHED");
 
+   /**
+    * The factory for SAX parsers. This field is never <code>null</code>, it
+    * is initialized by a class initializer.
+    */
    private static final SAXParserFactory SAX_PARSER_FACTORY;
 
 
@@ -525,14 +529,17 @@ extends Object {
        * @return
        *    the element resulting of the parsing of the XML.
        */
-      public Element getElement() throws IllegalStateException {
+      public Element getElement() {
 
          final String THIS_METHOD = "getElement()";
 
          // Check state
          if (_state != FINISHED) {
-            String detail = "State is " + _state + " instead of " + FINISHED;
-            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
+            final String DETAIL = "State is "
+                                + _state
+                                + " instead of "
+                                + FINISHED;
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, DETAIL);
          }
 
          return _element;
