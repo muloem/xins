@@ -123,6 +123,9 @@ public abstract class ServiceCaller extends Object {
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
 
+      // TRACE: Enter method
+      Log.log_3003(CLASSNAME, "doCall", null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
@@ -145,7 +148,9 @@ public abstract class ServiceCaller extends Object {
 
       // There should be at least one target
       if (! iterator.hasNext()) {
-         throw new Error("Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.");
+         String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
+         Log.log_3006(_descriptor.getClass().getName(), "iterateTargets()", message);
+         throw new Error(message);
       }
 
       // Loop over all TargetDescriptors
@@ -230,13 +235,24 @@ public abstract class ServiceCaller extends Object {
          // The call succeeded
          if (succeeded) {
             long duration = System.currentTimeMillis() - start;
+
+            // TRACE: Leave method
+            Log.log_3005(CLASSNAME, "doCall", null);
+
             return createCallResult(request, target, duration, exceptions, result);
          }
       }
 
       // Loop ended, call failed completely
       Log.log_3314();
-      throw exceptions.get(0);
+
+      // Get the first exception from the list, this one should be thrown
+      CallException first = exceptions.get(0);
+
+      // TRACE: Leave method with exception
+      Log.log_3004(first, CLASSNAME, "doCall", null);
+
+      throw first;
    }
 
    /**

@@ -132,6 +132,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = HTTPServiceCaller.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

@@ -3,6 +3,7 @@
  */
 package org.xins.common.types;
 
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -16,6 +17,12 @@ public abstract class Type extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = Type.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -203,7 +210,9 @@ public abstract class Type extends Object {
       Object value = fromStringImpl(string);
 
       if (_valueClass.isInstance(value) == false) {
-         throw new Error("The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.');
+         String message = "The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.';
+         Log.log_3006(CLASSNAME, "fromString(String)", message);
+         throw new Error(message);
       }
 
       return value;

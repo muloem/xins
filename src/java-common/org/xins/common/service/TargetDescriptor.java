@@ -94,7 +94,9 @@ public final class TargetDescriptor extends Descriptor {
       try {
          PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
-         throw new Error("The pattern \"" + PATTERN_STRING + "\" is malformed.");
+         String message = "The pattern \"" + PATTERN_STRING + "\" is malformed.";
+         Log.log_3006(CLASSNAME, "<clinit>()", message);
+         throw new Error(message);
       }
    }
 
@@ -123,7 +125,9 @@ public final class TargetDescriptor extends Descriptor {
       try {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
-         throw new Error("Encoding \"" + ENCODING + "\" is not supported.");
+         String message = "Encoding \"" + ENCODING + "\" is not supported.";
+         Log.log_3006(CLASSNAME, "computeCRC32(String)", message);
+         throw new Error(message);
       }
       checksum.update(bytes, 0, bytes.length);
       return (int) (checksum.getValue() & 0x00000000ffffffffL);
