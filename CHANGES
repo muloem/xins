@@ -5,6 +5,10 @@ CHANGES INTRODUCED IN XINS 0.149:
 
 * Fixed typo in INFO log message from API.
 
+* XINS/Java Common Library:
+  - Added '_' and '.' to the pattern for url matching in the TargetDescriptor.
+    This will allow urls such as http://blah.blah.com/some_file.html
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.148:
 
