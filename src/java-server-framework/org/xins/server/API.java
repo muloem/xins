@@ -712,8 +712,6 @@ implements DefaultResultCodes {
             } else {
                return doGetStatistics();
             }
-         } else if ("_GetLogStatistics".equals(functionName)) {
-            return doGetLogStatistics();
          } else if ("_GetVersion".equals(functionName)) {
             return doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
@@ -935,33 +933,6 @@ implements DefaultResultCodes {
 
          builder.add(functionElem);
       }
-
-      return builder;
-   }
-
-   /**
-    * Returns the log statistics for all functions in this API.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    */
-   private final FunctionResult doGetLogStatistics() {
-
-      // Initialize a builder
-      FunctionResult builder = new FunctionResult();
-      Element statistics = new Element("statistics");
-
-      LogStatistics.Entry[] entries = Log.getStatistics().getEntries();
-      int entryCount = entries.length;
-      for (int i = 0; i < entryCount; i++) {
-         LogStatistics.Entry entry = entries[i];
-         Element entryElem = new Element("entry");
-         entryElem.addAttribute("id", entry.getID());
-         entryElem.addAttribute("count", String.valueOf(entry.getCount()));
-         statistics.add(entryElem);
-      }
-
-      builder.add(statistics);
 
       return builder;
    }

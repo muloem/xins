@@ -49,8 +49,6 @@ public final class Element {
     */
    public Element(String type) throws IllegalArgumentException {
 
-      // TODO: Check that name is valid
-
       // Check preconditions
       MandatoryArgumentChecker.check("type", type);
 
@@ -115,6 +113,8 @@ public final class Element {
 
    /**
     * Adds an attribute.
+    * If the attribute was already set the previous value is replaced
+    * by the new one.
     *
     * @param name
     *    the name of the attribute, cannot be <code>null</code>.
@@ -130,8 +130,6 @@ public final class Element {
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name, "value", value);
-
-      // TODO: Check attribute is not yet set
 
       _attributes.set(SECRET_KEY, name, value);
    }

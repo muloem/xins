@@ -106,10 +106,8 @@ import org.xins.logdoc.LogdocStringBuffer;
 
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
-			<xsl:text>(int id</xsl:text>
-			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
-				<xsl:with-param name="had-argument" select="'true'" />
-			</xsl:apply-templates>
+			<xsl:text>(</xsl:text>
+			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument" />
 			<xsl:text>) {
       LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
 			<xsl:apply-templates />

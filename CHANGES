@@ -2,10 +2,20 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.205:
 
 * XINS/Java Server Framework:
-  - Fixed some tabs in the code instead of spaces.
+  - Removed the _GetLogStatistics meta function.
+
+* Logdoc:
+  - Removed the counter that counted the number of time that a log was
+    invoked.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.205:
+
+* XINS/Java Server Framework:
+  - Replaced some tabs in the code by spaces.
   - The functions returns _InternalError when the API is deinitializing.
   - The FileWatcher is stopped when the API is stopped.
-  - Adding some logs when bootstrapping or stoping the API.
+  - Adding some logs when bootstrapping or stopping the API.
   - Improved exception message for the AccessDeniedException and the
     NoSuchFunctionException.
   - Added some getter methods to get more information for the
@@ -16,12 +26,10 @@ CHANGES INTRODUCED IN XINS 0.205:
     is now stored in FunctionResult.
 
 * XINS/Java Common Library:
-  - Fixed some tabs in the code instead of spaces.
-  - Set constants in HexConverter as static class field.
-  - Added the possibility for the HexConverter to convert hexadecimal number
-    that contains uppercases A to F.
-  - Added a getAttributes() method in ldap/Query.
-  - Modified LDAPServiceCaller to use the getAttributes method.
+  - Replaced some tabs in the code by spaces.
+  - Set constants in HexConverter as static class fields.
+  - Added the possibility for the HexConverter to convert hexadecimal numbers
+    that contain uppercases A to F.
   - Fixed some Javadoc.
   - Removed unused files BooleanConstants, FastStack, FixedArraySet,
     ArrayIterator, CollectionUtils, IndexedMap, PropertyReaderConverter,

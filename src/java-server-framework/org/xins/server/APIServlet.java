@@ -894,8 +894,6 @@ extends HttpServlet {
       } finally {
          NDC.pop();
       }
-
-      // TODO: Document _context somewhere
    }
 
    /**

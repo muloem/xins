@@ -71,8 +71,6 @@ import org.xins.logdoc.LogStatistics;
     */
    private static TranslationBundle TRANSLATION_BUNDLE;]]></xsl:text>
 
-		<xsl:apply-templates select="group/entry" mode="counter" />
-
 		<xsl:text><![CDATA[
 
 
@@ -110,20 +108,7 @@ import org.xins.logdoc.LogStatistics;
     */
    public static final TranslationBundle getTranslationBundle() {
       return TRANSLATION_BUNDLE;
-   }
-
-   /**
-    * Returns the statistics for all log entries.
-    *
-    * @return
-    *    the statistics, never <code>null</code>.
-    */
-   public static LogStatistics getStatistics() {
-      return new LogStatistics(new LogStatistics.Entry[] {]]></xsl:text>
-		<xsl:apply-templates select="group/entry" mode="log_entry" />
-		<xsl:text>
-      });
-   }</xsl:text>
+   }]]></xsl:text>
 
 		<xsl:apply-templates select="group/entry" />
 
@@ -232,18 +217,7 @@ import org.xins.logdoc.LogStatistics;
 			</xsl:if>
 		</xsl:if>
 		<xsl:apply-templates select="param" mode="method-argument" />
-		<!-- TODO: Performance improvement: Do not synchronize on
-		     TODO: COUNT_xxx_LOCK if the value is not needed, since the log
-		     TODO: level is not enabled. -->
 		<xsl:text>) {
-      int id;
-      synchronized (COUNT_</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>_LOCK) {
-         id = COUNT_</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>++;
-      }
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
@@ -254,9 +228,11 @@ import org.xins.logdoc.LogStatistics;
 		<xsl:text>)) {
          String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text>(id</xsl:text>
+		<xsl:text>(</xsl:text>
 		<xsl:for-each select="param">
-			<xsl:text>, </xsl:text>
+			<xsl:if test="position() &gt; 1">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>);
@@ -280,37 +256,5 @@ import org.xins.logdoc.LogStatistics;
 		<xsl:text>
       }
    }</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="group/entry" mode="counter">
-		<xsl:text>
-
-   /**
-    * Counter for log entry </xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>.
-    */
-   private static int COUNT_</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>;
-
-   /**
-    * Lock object for the counter for log entry </xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>.
-    */
-   private static Object COUNT_</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>_LOCK = new Object();</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="group/entry" mode="log_entry">
-		<xsl:if test="not (position() = 1)">,</xsl:if>
-		<xsl:text>
-         new LogStatistics.Entry("</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>", COUNT_</xsl:text>
-		<xsl:value-of select="@id" />
-		<xsl:text>)</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>

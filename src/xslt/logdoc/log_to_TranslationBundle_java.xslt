@@ -129,22 +129,14 @@ import org.xins.logdoc.LogdocStringBuffer;
    public String translation_]]></xsl:text>
 		<!-- TODO: Generate @param tags for parameters -->
 		<xsl:value-of select="@id" />
-		<xsl:text>(int id</xsl:text>
-		<xsl:apply-templates select="param" mode="method-argument">
-			<xsl:with-param name="had-argument" select="'true'" />
-		</xsl:apply-templates>
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates select="param" mode="method-argument" />
 		<xsl:text>) {
-      LogdocStringBuffer buffer = new LogdocStringBuffer(</xsl:text>
-		<xsl:value-of select="string-length($description) + 11" />
-		<xsl:text>);
-      buffer.append(id);
-      buffer.append(' ');
-      buffer.append("</xsl:text>
+      return "</xsl:text>
 		<xsl:call-template name="xml_to_java_string">
 			<xsl:with-param name="text" select="$description" />
 		</xsl:call-template>
-		<xsl:text>");
-      return buffer.toString();
+		<xsl:text>";
    }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>

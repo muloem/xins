@@ -9,7 +9,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:template match="param" mode="method-argument">
-		<xsl:param name="had-argument" />
 		<xsl:variable name="nullable">
 			<xsl:choose>
 				<xsl:when test="@nullable = 'true'">true</xsl:when>
@@ -24,13 +23,12 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:if test="@name = 'id'">
-			<xsl:message terminate="yes">Parameter cannot be called 'id'.</xsl:message>
-		</xsl:if>
 		<xsl:if test="@name = 'exception'">
 			<xsl:message terminate="yes">Parameter cannot be called 'exception'.</xsl:message>
 		</xsl:if>
-		<xsl:if test="(position() &gt; 1) or ($had-argument = 'true')">, </xsl:if>
+		<xsl:if test="position() &gt; 1">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
 				<xsl:text>java.lang.String</xsl:text>
