@@ -67,10 +67,12 @@ public final class Main extends Object {
 
       // Initialize Log4J
       Properties settings = new Properties();
-      settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
+      settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
       settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p [%c] %m%n");
+      settings.setProperty("log4j.logger.httpclient.wire",                    "WARN");
+      settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
       PropertyConfigurator.configure(settings);
       Logger log = Logger.getLogger(Main.class.getName());
 
@@ -93,9 +95,11 @@ public final class Main extends Object {
       CallRequest request = callRequestParser.parse(requestFile);
 
       // Execute the call(s)
+      XINSServiceCaller.Result result;
       try {
          for (int i = 0; i < count; i++) {
-            caller.call(request);
+            result = caller.call(request);
+            log.info("Call " + i + " performed (success=" + result.isSuccess() + ").");
          }
       } catch (Throwable exception) {
          log.error("Failed to execute call.", exception);
