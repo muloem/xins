@@ -140,7 +140,7 @@
 			</target>
 
 			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-				<xsl:variable name="api"      select="@name"                                                         />
+				<xsl:variable name="api"      select="@name"                                     />
 				<xsl:variable name="api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
