@@ -17,6 +17,15 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:include href="../java.xslt" />
+	<xsl:include href="../rcs.xslt"  />
+
+	<xsl:variable name="version">
+		<xsl:call-template name="revision2string">
+			<xsl:with-param name="revision">
+				<xsl:value-of select="document($function_file)/function/@rcsversion" />
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:variable>
 
 	<xsl:template match="function">
 		<xsl:call-template name="java-header" />
@@ -63,6 +72,8 @@ public abstract class ]]></xsl:text>
 		<xsl:text>(APIImpl api) {
       super(api, "</xsl:text>
 		<xsl:value-of select="@name" />
+		<xsl:text>", "</xsl:text>
+		<xsl:value-of select="$version" />
 		<xsl:text>");</xsl:text>
 		<xsl:for-each select="document($api_file)/api/impl-java/instance">
 			<xsl:text>
