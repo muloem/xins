@@ -989,7 +989,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * Runs this thread. It will call the HTTP service. If that call was
+       * Runs this thread (wrapper method). It will call the HTTP service. If that call was
        * successful, then the result is stored in this object. Otherwise
        * there is an exception, in which case that exception is stored in this
        * object instead.
@@ -1007,7 +1007,24 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Activate the diagnostic context ID
          if (_context != null) {
             NDC.push(_context);
+            try {
+               runImpl();
+            } finally {
+               NDC.pop();
+            }
+         } else {
+            runImpl();
          }
+
+         // TODO: Mark this CallExecutor object as executed, so it may not be
+         //       run again
+      }
+
+      /**
+       * Runs this thread (implementation method). This method is called from
+       * {@link #run()}.
+       */
+      private void runImpl() {
 
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
@@ -1049,22 +1066,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
             _exception = exception;
-         }
 
          // Release the HTTP connection immediately
-         try {
-            method.releaseConnection();
-         } catch (Throwable exception) {
-            Log.log_1052(exception, method.getClass().getName(), "releaseConnection()");
+         } finally {
+            try {
+               method.releaseConnection();
+            } catch (Throwable exception) {
+               Log.log_1052(exception, method.getClass().getName(), "releaseConnection()");
+            }
          }
-
-         // Unset the diagnostic context ID
-         if (_context != null) {
-            NDC.pop();
-         }
-
-         // TODO: Mark this CallExecutor object as executed, so it may not be
-         //       run again
       }
 
       /**
