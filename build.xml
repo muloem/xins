@@ -8,6 +8,15 @@
 
 <project name="xins" default="all" basedir=".">
 
+	<target name="-checkstyle-avail">
+		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available" />
+		<fail unless="checkstyle.available" message="Checkstyle not available" />
+	</target>
+
+	<target name="-checkstyle-task" depends="-checkstyle-avail">
+		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
+	</target>
+
 	<target name="-init">
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
@@ -151,6 +160,38 @@
 			<arg value="${www.target}/javadoc/${version}/" />
 		</exec>
 	</target>
+
+	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
+
+	<target name="checkstyle-text" depends="-prepare-checkstyle" description="Prints checkstyle errors">
+		<checkstyle properties="src/config/checkstyle/checkstyle.properties" failOnViolation="false">
+			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<formatter type="plain" />
+		</checkstyle>
+	</target>
+
+	<target name="checkstyle-xml" depends="-prepare-checkstyle" description="Checks the style of the source code">
+		<mkdir dir="build/checkstyle" />
+		<mkdir dir="build/checkstyle/xml" />
+		<checkstyle properties="src/config/checkstyle/checkstyle.properties" failOnViolation="false">
+			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<formatter type="xml" tofile="build/checkstyle/xml/results.xml"/>
+		</checkstyle>
+	</target>
+
+	<target name="checkstyle-report" description="Generates the checkstyle report">
+		<mkdir dir="build/checkstyle/html" />
+		<style
+		in="build/checkstyle/xml/results.xml"
+		out="build/checkstyle/html/index.html"
+		style="src/xslt/checkstyle/index.xslt" />
+		<copy
+		file="src/css/checkstyle/style.css"
+		tofile="build/checkstyle/html/stylesheet.css" />
+	</target>
+
+	<target name="checkstyle" depends="checkstyle-xml,checkstyle-report" description="Checks the style of the source code" />
+
 
 	<target name="src-package" depends="-prepare" description="Builds a distribution archive with all source files">
 		<tar tarfile="build/${src-package-tarfile}">
