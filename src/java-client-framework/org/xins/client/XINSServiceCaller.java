@@ -161,6 +161,11 @@ public final class XINSServiceCaller extends ServiceCaller {
       return descriptor;
    }
 
+   // FIXME: Document
+   public static void testProtocol(Descriptor descriptor) {
+      // TODO
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
