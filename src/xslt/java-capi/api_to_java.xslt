@@ -188,7 +188,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
 
-      return new CAPI(properties, apiName, callConfig);
+      CAPI capi = new CAPI(properties, apiName);
+      capi.configure(callConfig);
+      return capi;
    }
 
    /**
@@ -231,7 +233,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    throws java.lang.IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
-      return new CAPI(properties, apiName, null);
+      return new CAPI(properties, apiName);
    }
 
 
@@ -336,7 +338,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    throws java.lang.IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
-      this(createDescriptor(properties, apiName));
+      super(createDescriptor(properties, apiName));
    }
 
    /**
@@ -356,7 +358,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    public CAPI(org.xins.common.service.Descriptor descriptor)
    throws java.lang.IllegalArgumentException,
           org.xins.common.service.UnsupportedProtocolException {
-      this(descriptor, null);
+      super(descriptor);
    }]]></xsl:text>
 	</xsl:template>
 
