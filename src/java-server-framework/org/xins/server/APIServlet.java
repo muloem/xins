@@ -433,6 +433,11 @@ implements Servlet {
       }
    }
 
+   /**
+    * Reads the configuration file and applies the settings in it. If this
+    * fails, then an error is logged on the {@link Library#LIFESPAN_LOG}
+    * logger.
+    */
    private void applyConfigFile() {
       try {
          FileInputStream in = new FileInputStream(_configFile);
