@@ -11,10 +11,12 @@ CHANGES INTRODUCED IN XINS 0.166:
 
 * XINS/Java Server Framework:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
+  - Generated logdoc classes are now package-private.
 
 * Logdoc:
   - Logging the sequential counter identifier with a log message.
   - Parameters cannot be called 'id'.
+  - Support making generated classes package-private.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:
