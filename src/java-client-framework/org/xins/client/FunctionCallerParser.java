@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import java.io.StringReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.net.URL;
@@ -95,9 +96,35 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
+      return parse(new StringReader(xml));
+   }
+
+   /**
+    * Parses the XML in the specified input stream to create a
+    * <code>FunctionCaller</code> object.
+    *
+    * @param in
+    *    the input stream to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    a {@link FunctionCaller}, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>xml == null</code>
+    *
+    * @throws ParseException
+    *    if there was an I/O error, if the data on the stream is not valid XML
+    *    or if the structure of the XML is not valid for the definition of a
+    *    {@link CallRequest}.
+    */
+   public FunctionCaller parse(Reader in)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("in", in);
+
       try {
-         StringReader reader = new StringReader(xml);
-         return parse(_xmlBuilder.build(reader));
+         return parse(_xmlBuilder.build(in));
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);

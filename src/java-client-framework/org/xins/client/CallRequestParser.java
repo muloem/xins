@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
@@ -90,9 +91,36 @@ public final class CallRequestParser extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
+      StringReader reader = new StringReader(xml);
+      return parse(new StringReader(xml));
+   }
+
+   /**
+    * Parses the XML in the specified input stream to create a
+    * <code>CallRequest</code> object.
+    *
+    * @param in
+    *    the input stream to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    a {@link CallRequest}, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>in == null</code>
+    *
+    * @throws ParseException
+    *    if there was an I/O error, if the data on the stream is not valid XML
+    *    or if the structure of the XML is not valid for the definition of a
+    *    {@link CallRequest}.
+    */
+   public CallRequest parse(Reader in)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("in", in);
+
       try {
-         StringReader reader = new StringReader(xml);
-         return parse(_xmlBuilder.build(reader));
+         return parse(_xmlBuilder.build(in));
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);
