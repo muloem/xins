@@ -93,7 +93,6 @@ implements Servlet {
       synchronized (_stateLock) {
          initImpl(config);
       }
-      _log.info("XINS/Java Server Framework is initialized.");
    }
 
    private void initImpl(ServletConfig config)
@@ -122,50 +121,46 @@ implements Servlet {
       _log.debug("XINS/Java Server Framework is initializing.");
 
       // Get the API class
-      _log.debug("Loading API class: " + apiClassName);
       Class apiClass;
       try {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
-         String message = "Failed to load API class: " + apiClassName;
+         String message = "Failed to load API class: \"" + apiClassName + "\".";
          _log.error(message, e);
          throw new ServletException(message);
       }
-      _log.debug("Loaded API class.");
 
       // Get the SINGLETON field
-      _log.debug("Looking up declared field SINGLETON of API class.");
       Field singletonField;
       try {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
-         String message = "Failed to obtain class field SINGLETON of API class.";
+         String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
          _log.error(message, e);
          throw new ServletException(message);
       }
-      _log.debug("Looked up declared field SINGLETON of API class.");
 
       // Get the value of the SINGLETON field
-      _log.debug("Getting value of SINGLETON field of API class.");
       try {
          _api = (API) singletonField.get(null);
       } catch (Exception e) {
-         String message = "Failed to get value of SINGLETON field of API class.";
+         String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
          _log.error(message, e);
          throw new ServletException(message);
       }
-      _log.info("Obtained API instance of class: " + apiClassName);
+      _log.debug("Obtained API instance of class: \"" + apiClassName + "\".");
 
       // Initialize the API
       try {
          _log.debug("Initializing API.");
          _api.init(settings);
-         _log.info("Initialized API.");
       } catch (Throwable e) {
          String message = "Failed to initialize API.";
          _log.error(message, e);
          throw new ServletException(message);
       }
+
+      _log.info("XINS/Java Server Framework is initialized.");
 
       _state = READY;
    }
