@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.35:
+
+* Fixed some Checkstyle warnings.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.34:
 
 * Fixed XINS-based project build problems introduced in 0.33.
