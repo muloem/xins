@@ -22,7 +22,7 @@ import org.xins.common.text.ParseException;
 
 /**
  * Call result parser. XML is parsed to produce a
- * {@link XINSServiceCaller.Result} object.
+ * {@link Result} object.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -53,7 +53,7 @@ public class ResultParser {
 
    /**
     * Parses the given XML string to create a
-    * <code>XINSServiceCaller.Result</code> object with the specified
+    * <code>Result</code> object with the specified
     * <code>TargetDescriptor</code>.
     *
     * @param request
@@ -83,7 +83,7 @@ public class ResultParser {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public XINSServiceCaller.Result parse(CallRequest      request,
+   public Result parse(CallRequest      request,
                                          TargetDescriptor target,
                                          long             duration,
                                          byte[]           xml)
@@ -119,7 +119,7 @@ public class ResultParser {
          throw new ParseException(message);
       }
 
-      return new XINSServiceCaller.Result(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
+      return new Result(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
    }
 
    //-------------------------------------------------------------------------

@@ -376,7 +376,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>);
 
       // Execute the call request
-      org.xins.client.XINSServiceCaller.Result result = caller.execute(request);</xsl:text>
+      org.xins.client.Result result = caller.execute(request);</xsl:text>
 		<xsl:choose>
 			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 				<xsl:text>

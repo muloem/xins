@@ -35,7 +35,7 @@ public final class UnacceptableCallResultException extends CallException {
     * Constructs a new <code>UnacceptableCallResultException</code>.
     *
     * @param result
-    *    the {@link XINSServiceCaller.Result} that is considered
+    *    the {@link Result} that is considered
     *    unacceptable, never <code>null</code>.
     *
     * @param detail
@@ -47,9 +47,9 @@ public final class UnacceptableCallResultException extends CallException {
     *
     * @since XINS 0.202
     */
-   public UnacceptableCallResultException(XINSServiceCaller.Result result,
-                                          String                   detail,
-                                          Throwable                cause)
+   public UnacceptableCallResultException(Result    result,
+                                          String    detail,
+                                          Throwable cause)
    throws IllegalArgumentException {
 
       super("Unacceptable call result", result, detail, cause);
@@ -66,7 +66,7 @@ public final class UnacceptableCallResultException extends CallException {
    /**
     * The result that is considered unacceptable. Never <code>null</code>.
     */
-   private final XINSServiceCaller.Result _result;
+   private final Result _result;
 
 
    //-------------------------------------------------------------------------

@@ -126,7 +126,7 @@ public final class ]]></xsl:text>
     */
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text>(org.xins.client.XINSServiceCaller.Result result)
+		<xsl:text>(org.xins.client.Result result)
    throws java.lang.IllegalArgumentException,
           org.xins.client.UnacceptableCallResultException {
 

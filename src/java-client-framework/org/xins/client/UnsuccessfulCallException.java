@@ -44,22 +44,22 @@ public final class UnsuccessfulCallException extends CallException {
     * @param result
     *    the call result that is unsuccessful, cannot be <code>null</code>,
     *    and
-    *    <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
+    *    <code>result.</code>{@link Result#isSuccess() isSuccess()}
     *    should be <code>false</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
     *          || result      == null
-    *          || result.{@link XINSServiceCaller.Result#getErrorCode() getErrorCode()} == null
+    *          || result.{@link Result#getErrorCode() getErrorCode()} == null
     *          || duration  &lt; 0</code>
     *
     * @since XINS 0.202
     */
-   private static final String createDetailMessage(CallRequest              request,
-                                                   TargetDescriptor         target,
-                                                   long                     duration,
-                                                   XINSServiceCaller.Result result)
+   private static final String createDetailMessage(CallRequest      request,
+                                                   TargetDescriptor target,
+                                                   long             duration,
+                                                   Result           result)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -96,7 +96,7 @@ public final class UnsuccessfulCallException extends CallException {
     *
     * @since XINS 0.203
     */
-   UnsuccessfulCallException(XINSServiceCaller.Result result)
+   UnsuccessfulCallException(Result result)
    throws IllegalArgumentException {
       super("Unsuccessful result", result, null, null);
 
@@ -111,7 +111,7 @@ public final class UnsuccessfulCallException extends CallException {
    /**
     * The call result. The value of this field cannot be <code>null</code>.
     */
-   private final XINSServiceCaller.Result _result;
+   private final Result _result;
 
 
    //-------------------------------------------------------------------------

@@ -173,9 +173,7 @@ public abstract class CallException extends Exception {
     *
     * @since XINS 0.203
     */
-   private static final String createMessage(String                   shortReason,
-                                             XINSServiceCaller.Result result,
-                                             String                   detail)
+   private static final String createMessage(String shortReason, Result result, String detail)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -290,10 +288,7 @@ public abstract class CallException extends Exception {
     *
     * @since XINS 0.203
     */
-   CallException(String                   shortReason,
-                 XINSServiceCaller.Result result,
-                 String                   detail,
-                 Throwable                cause)
+   CallException(String shortReason, Result result, String detail, Throwable cause)
    throws IllegalArgumentException {
 
       // Call superconstructor with fabricated message
