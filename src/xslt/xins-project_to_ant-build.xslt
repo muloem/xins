@@ -164,9 +164,10 @@ $Id$
 					<target name="-impl-{$api}-existencechecks">
 						<xsl:for-each select="document($api_file)/api/function">
 							<xsl:variable name="function" select="@name" />
+							<xsl:variable name="classname" select="concat(@name, 'Impl')" />
 							<available
 								property="exists-{$api}-{$function}Impl"
-								file="{$javaImplDir}/{$packageAsDir}/{$function}.java"
+								file="{$javaImplDir}/{$packageAsDir}/{$classname}.java"
 								type="file" />
 						</xsl:for-each>
 					</target>
@@ -314,6 +315,7 @@ $Id$
 								</lib>
 							</xsl:for-each>
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
+							<classes dir="{$javaImplDir}"    excludes="**/*.java" />
 						</war>
 					</target>
 				</xsl:if>
