@@ -133,9 +133,8 @@ extends HttpServlet {
       // Set the content output type to XML
       response.setContentType("text/xml");
 
-      // Reset the XMLOutputter
-      StringWriter stringWriter = new StringWriter();
-      XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
+      // Get the output stream
+      PrintWriter out = response.getWriter();
 
       // Stick all parameters in a map
       Map map = new HashMap();
@@ -146,11 +145,19 @@ extends HttpServlet {
          map.put(name, value);
       }
 
+      handleCall(out, map); 
+   }
+
+   private void handleCall(PrintWriter out, Map map) throws IOException {
+
+      // Reset the XMLOutputter
+      StringWriter stringWriter = new StringWriter();
+      XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
+
       // Create a new call context
       CallContext context = new CallContext(xmlOutputter, map);
 
       // Forward the call
-      PrintWriter out = response.getWriter();
       boolean succeeded = false;
       try {
          _api.handleCall(context);
