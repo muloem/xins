@@ -10,7 +10,7 @@
 	<messageset id="en_US" />
 	<messageset id="nl_NL" />
 
-	<entry id="1" level="info" category="org.xins.server.lifespan.init">
+	<entry id="1" level="INFO" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework initialized or re-initialized.</description>
 	</entry>
 </log>
