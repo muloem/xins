@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.121:
+
+* XINS/Java Server Framework:
+  - Some small improvements.
+  - The _NoOp function now also works if the API is in the process of shutting
+    down.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.120:
 
 * XINS/Java Server Framework:
