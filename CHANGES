@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.62:
+
+* Removed deprecated class org.xins.server.RemoteAPI.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.61:
 
 * Improved generated CAPI classes. This includes a fix for unsuccessful call
