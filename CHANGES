@@ -7,6 +7,8 @@ CHANGES INTRODUCED IN XINS 0.23:
 
 * ResultCode class is now public.
 
+* Cleaned up generated code in the API class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.22:
 
