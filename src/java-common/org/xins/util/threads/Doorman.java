@@ -35,12 +35,12 @@ public final class Doorman extends Object {
    /**
     * The type for readers in the queue.
     */
-   private static final Queue.EntryType READ_QUEUE_ENTRY_TYPE = new Queue.EntryType("reader");
+   private static final QueueEntryType READ_QUEUE_ENTRY_TYPE = new QueueEntryType("reader");
 
    /**
     * The type for writers in the queue.
     */
-   private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType("writer");
+   private static final QueueEntryType WRITE_QUEUE_ENTRY_TYPE = new QueueEntryType("writer");
 
    /**
     * The number of instances of this class.
@@ -65,6 +65,10 @@ public final class Doorman extends Object {
     * Constructs a new <code>Doorman</code> with the specified initial queue
     * size.
     *
+    * @param name
+    *    the name for the protected area this doorman guards, to be used in
+    *    logging and exception messages, cannot be <code>null</code>.
+    *
     * @param queueSize
     *    the initial queue size, must be &gt;= 0.
     *
@@ -73,12 +77,13 @@ public final class Doorman extends Object {
     *    in the queue, must be &gt;= 0.
     *
     * @throws IllegalArgumentException
-    *    if <code>queueSize &lt; 0 || maxQueueWaitTime &lt; 0L</code>.
+    *    if <code>name == null || queueSize &lt; 0 || maxQueueWaitTime &lt; 0L</code>.
     */
-   public Doorman(int queueSize, long maxQueueWaitTime)
+   public Doorman(String name, int queueSize, long maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
       if (queueSize < 0 || maxQueueWaitTime <= 0L) {
          if (queueSize < 0 && maxQueueWaitTime <= 0L) {
             throw new IllegalArgumentException("queueSize (" + queueSize + ") < 0 && maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L");
@@ -95,6 +100,7 @@ public final class Doorman extends Object {
       }
 
       // Initialize other fields
+      _name             = name;
       _currentActorLock = new Object();
       _currentReaders   = new HashSet();
       _queue            = new Queue(queueSize);
@@ -109,6 +115,11 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Name of this doorman. Used in log and exception messages .
+    */
+   private final String _name;
 
    /**
     * Maximum wait time in the queue. After reaching this period of time, a
@@ -149,6 +160,16 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Gets the name of this doorman.
+    *
+    * @return
+    *    the name, never <code>null</code>
+    */
+   public String getName() {
+      return _name;
+   }
+
+   /**
     * Gets the maximum time to wait in the queue.
     *
     * @return
@@ -178,9 +199,9 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == reader) {
-            throw new IllegalStateException(reader.getName() + " cannot enter as a reader if it is already the active writer.");
+            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already the active writer.");
          } else if (_currentReaders.contains(reader)) {
-            throw new IllegalStateException(reader.getName() + " cannot enter as a reader if it is already an active reader.");
+            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already an active reader.");
          }
 
          // If there is a current writer, then we need to wait in the queue
@@ -215,7 +236,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
          if (! _currentReaders.contains(reader)) {
-            throw new IllegalStateException(reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.");
+            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.");
          }
       }
    }
@@ -240,9 +261,9 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == writer) {
-            throw new IllegalStateException(writer.getName() + " cannot enter as a writer if it is already the active writer.");
+            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already the active writer.");
          } else if (_currentReaders.contains(writer)) {
-            throw new IllegalStateException(writer.getName() + " cannot enter as a writer if it is already an active reader.");
+            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already an active reader.");
          }
 
          // If there is a current writer or one or more current readers, then
@@ -266,14 +287,14 @@ public final class Doorman extends Object {
       // Wait for write access
       try {
          Thread.sleep(_maxQueueWaitTime);
-         throw new QueueTimeOutException();
+         throw new QueueTimeOutException(); // TODO: Message ?
       } catch (InterruptedException exception) {
          // fall through
       }
 
       synchronized (_currentActorLock) {
          if (_currentWriter != writer) {
-            throw new IllegalStateException("Thread was interrupted in enterAsWriter(), but is not set as the current writer.");
+            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.');
          }
       }
    }
@@ -293,7 +314,7 @@ public final class Doorman extends Object {
          boolean readerRemoved = _currentReaders.remove(reader);
 
          if (!readerRemoved) {
-            throw new IllegalStateException(reader.getName() + " cannot leave protected area as reader, because it has not entered as a reader.");
+            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot leave protected area as reader, since it has not entered as a reader.");
          }
 
          if (_currentReaders.isEmpty()) {
@@ -302,7 +323,7 @@ public final class Doorman extends Object {
 
                // Determine if the queue has a writer atop, a reader atop or is
                // empty
-               Queue.EntryType type = _queue.getTypeOfFirst();
+               QueueEntryType type = _queue.getTypeOfFirst();
 
                if (type == WRITE_QUEUE_ENTRY_TYPE) {
 
@@ -313,7 +334,7 @@ public final class Doorman extends Object {
 
                   // If a reader leaves, the queue cannot contain a reader at the
                   // top, it must be either empty or have a writer at the top
-                  throw new IllegalStateException("Found writer at top of queue while a reader is leaving the protected area.");
+                  throw new IllegalStateException("Doorman " + _name + ": Found writer at top of queue while a reader is leaving the protected area.");
                }
             }
          }
@@ -334,14 +355,14 @@ public final class Doorman extends Object {
       synchronized (_currentActorLock) {
 
          if (_currentWriter != writer) {
-            throw new IllegalStateException(writer.getName() + " cannot leave protected area as writer, because it has not entered as a writer.");
+            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot leave protected area as writer, since it has not entered as a writer.");
          }
 
          synchronized (_queue) {
 
             // Determine if the queue has a writer atop, a reader atop or is
             // empty
-            Queue.EntryType type = _queue.getTypeOfFirst();
+            QueueEntryType type = _queue.getTypeOfFirst();
 
             // If a writer is waiting, activate it alone
             if (type == WRITE_QUEUE_ENTRY_TYPE) {
@@ -379,7 +400,7 @@ public final class Doorman extends Object {
     *
     * @since XINS 0.66
     */
-   private static final class Queue
+   private final class Queue
    extends Object {
 
       //----------------------------------------------------------------------
@@ -420,7 +441,7 @@ public final class Doorman extends Object {
 
       /**
        * The entry types, by entry. This map has the {@link Thread threads} as
-       * keys and their {@link EntryType types} as values.
+       * keys and their {@link QueueEntryType types} as values.
        */
       private final Map _entryTypes;
 
@@ -433,10 +454,10 @@ public final class Doorman extends Object {
       /**
        * Cached type of the first entry. This field is either
        * <code>null</code> (if {@link #_entries} is empty), or
-       * <code>(EntryType) </code>{@link #_entries}<code>.</code>{@link LinkedList#get(int) get}<code>(0)</code>
+       * <code>({@link QueueEntryType}) </code>{@link #_entries}<code>.</code>{@link LinkedList#get(int) get}<code>(0)</code>
        * (if {@link #_entries} is not empty).
        */
-      private EntryType _typeOfFirst;
+      private QueueEntryType _typeOfFirst;
 
 
       //----------------------------------------------------------------------
@@ -465,7 +486,7 @@ public final class Doorman extends Object {
        *    {@link #WRITE_QUEUE_ENTRY_TYPE} is the first thread in this queue
        *    is waiting for write access;
        */
-      public EntryType getTypeOfFirst() {
+      public QueueEntryType getTypeOfFirst() {
          return _typeOfFirst;
       }
 
@@ -482,13 +503,13 @@ public final class Doorman extends Object {
        * @throws IllegalStateException
        *    if the specified thread is already in this queue.
        */
-      public void add(Thread thread, EntryType type)
+      public void add(Thread thread, QueueEntryType type)
       throws IllegalStateException {
 
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
-            EntryType existingType = (EntryType) _entryTypes.get(thread);
-            throw new IllegalStateException(thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
+            QueueEntryType existingType = (QueueEntryType) _entryTypes.get(thread);
+            throw new IllegalStateException("Doorman " + _name + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -527,8 +548,8 @@ public final class Doorman extends Object {
 
          // Get the new first, now that the other one is removed
          boolean empty = _entries.isEmpty();
-         _first        = empty ? null : (Thread)    _entries.getFirst();
-         _typeOfFirst  = empty ? null : (EntryType) _entryTypes.get(_first);
+         _first        = empty ? null : (Thread)         _entries.getFirst();
+         _typeOfFirst  = empty ? null : (QueueEntryType) _entryTypes.get(_first);
 
          return oldFirst;
       }
@@ -553,71 +574,66 @@ public final class Doorman extends Object {
 
             // Get the new first, now that the other one is removed
             Object newFirst = _entries.getFirst();
-            _first       = newFirst == null ? null : (Thread) _entries.getFirst();
-            _typeOfFirst = newFirst == null ? null : (EntryType) _entryTypes.get(_first);
+            _first       = newFirst == null ? null : (Thread)         _entries.getFirst();
+            _typeOfFirst = newFirst == null ? null : (QueueEntryType) _entryTypes.get(_first);
          } else {
 
             // Remove the thread from the list
             if (! _entries.remove(thread)) {
-               throw new IllegalStateException(thread.getName() + " is not in this queue.");
+               throw new IllegalStateException("Doorman " + _name + ": " + thread.getName() + " is not in this queue.");
             }
          }
 
          _entryTypes.remove(thread);
       }
+   }
 
+   /**
+    * Type of an entry in a queue for a doorman.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.66
+    */
+   public static final class QueueEntryType
+   extends Object {
 
       //----------------------------------------------------------------------
-      // Inner classes
+      // Constructors
       //----------------------------------------------------------------------
 
       /**
-       * Type of an entry in a queue for a doorman.
+       * Creates a new <code>QueueEntryType</code> with the specified
+       * description.
        *
-       * @version $Revision$ $Date$
-       * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-       *
-       * @since XINS 0.66
+       * @param description
+       *    the description of this entry type, cannot be
+       *    <code>null</code>.
        */
-      public static final class EntryType
-      extends Object {
-
-         //-------------------------------------------------------------------
-         // Constructors
-         //-------------------------------------------------------------------
-
-         /**
-          * Creates a new <code>EntryType</code> with the specified
-          * description.
-          *
-          * @param description
-          *    the description of this entry type, cannot be
-          *    <code>null</code>.
-          */
-         public EntryType(String description)
-         throws IllegalArgumentException {
-            MandatoryArgumentChecker.check("description", description);
-            _description = description;
-         }
+      public QueueEntryType(String description)
+      throws IllegalArgumentException {
+         MandatoryArgumentChecker.check("description", description);
+         _description = description;
+      }
 
 
-         //-------------------------------------------------------------------
-         // Fields
-         //-------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
 
-         /**
-          * Description of this entry type. Never <code>null</code>.
-          */
-         private final String _description;
+      /**
+       * Description of this entry type. Never <code>null</code>.
+       */
+      private final String _description;
 
 
-         //-------------------------------------------------------------------
-         // Methods
-         //-------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
 
-         public String toString() {
-            return _description;
-         }
+      public String toString() {
+         return _description;
       }
    }
 }

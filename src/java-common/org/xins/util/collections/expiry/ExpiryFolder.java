@@ -92,8 +92,8 @@ extends Object {
       _listeners        = new ArrayList(5);
 
       // Create the doormen
-      _recentlyAccessedDoorman = new Doorman(INITIAL_QUEUE_SIZE, maxQueueWaitTime);
-      _slotsDoorman            = new Doorman(INITIAL_QUEUE_SIZE, maxQueueWaitTime);
+      _recentlyAccessedDoorman = new Doorman("recentlyAccessed", INITIAL_QUEUE_SIZE, maxQueueWaitTime);
+      _slotsDoorman            = new Doorman("slots",            INITIAL_QUEUE_SIZE, maxQueueWaitTime);
 
       // Notify the strategy
       strategy.folderAdded(this);
