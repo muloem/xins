@@ -295,7 +295,7 @@ extends HttpServlet {
     * Changes the current state. This method first synchronizes on
     * {@link #_stateLock} and then sets the value of {@link #_state}.
     *
-    * @param
+    * @param newState
     *    the new state, cannot be <code>null</code>.
     */
    private void setState(State newState)
@@ -388,7 +388,7 @@ extends HttpServlet {
       // Check preconditions
       synchronized (_stateLock) {
          if (_state != INITIAL) {
-            Log.log_101(_state == null ? null : _state.toString());
+            Log.log_101(_state == null ? null : _state._name);
             throw new ServletException("state is " + _state);
          } else if (config == null) {
             final String reason = "config == null";
@@ -927,6 +927,23 @@ extends HttpServlet {
          // Apply the new runtime settings to the logging subsystem
          PropertyReader runtimeProperties = applyConfigFile(log);
 
+         // Determine the log locale
+         String newLocale = runtimeProperties.get(LOG_LOCALE_PROPERTY);
+
+         // If the log locale is set, apply it
+         if (newLocale != null) {
+            String currentLocale = Log.getTranslationBundle().getName();
+            if (currentLocale.equals(newLocale) == false) {
+               Log.log_201(currentLocale, newLocale);
+               try {
+                  Log.setTranslationBundle(newLocale);
+                  Log.log_202(currentLocale, newLocale);
+               } catch (NoSuchTranslationBundleException exception) {
+                  Log.log_203(currentLocale, newLocale);
+               }
+            }
+         }
+
          // Re-initialize the API
          initAPI(runtimeProperties);
 
@@ -953,18 +970,6 @@ extends HttpServlet {
          } else {
             log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-         }
-
-         // Determine the log locale
-         s = runtimeProperties.get(LOG_LOCALE_PROPERTY);
-
-         // If the log locale is set, apply it
-         if (s != null) {
-            try {
-               Log.setTranslationBundle(s);
-            } catch (NoSuchTranslationBundleException exception) {
-               // TODO: Log
-            }
          }
 
          // Update the file watch interval
