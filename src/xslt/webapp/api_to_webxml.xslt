@@ -56,7 +56,7 @@
 				<xsl:for-each select="param">
 					<init-param>
 						<param-name>
-							<xsl:value-of select="$api" />
+							<xsl:value-of select="@name" />
 						</param-name>
 						<param-value>
 							<xsl:value-of select="text()" />
