@@ -123,4 +123,12 @@ public abstract class EnumType extends Type {
    protected Object fromStringImpl(String value) {
       return value;
    }
+
+   public String getByName(String name) {
+      return _namesToValues(name);
+   }
+
+   public String getByValue(String value) {
+      return _valuesToNames(value);
+   }
 }
