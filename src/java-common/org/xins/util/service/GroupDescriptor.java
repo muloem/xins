@@ -111,8 +111,8 @@ public final class GroupDescriptor extends Descriptor {
 
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
-      int count = members.length;
-      for (int i = 0; i < count; i++) {
+      int size = members.length;
+      for (int i = 0; i < size; i++) {
          Descriptor d = members[i];
          if (d == null) {
             throw new IllegalArgumentException("members[" + i + "] == null");
@@ -121,8 +121,8 @@ public final class GroupDescriptor extends Descriptor {
 
       // Store members
       _type    = type;
-      _members = new Descriptor[count];
-      System.arraycopy(members, 0, _members, 0, count);
+      _members = new Descriptor[size];
+      System.arraycopy(members, 0, _members, 0, size);
    }
 
 
@@ -183,9 +183,9 @@ public final class GroupDescriptor extends Descriptor {
     *    the members of this group as a new array, not <code>null</code>.
     */
    public Descriptor[] getMembers() {
-      int count = _members.length;
-      Descriptor[] array = new Descriptor[count];
-      System.arraycopy(_members, 0, array, 0, count);
+      int size = _members.length;
+      Descriptor[] array = new Descriptor[size];
+      System.arraycopy(_members, 0, array, 0, size);
       return array;
    }
 
@@ -265,11 +265,20 @@ public final class GroupDescriptor extends Descriptor {
        * Constructs a new <code>RandomIterator</code>.
        */
       private RandomIterator() {
-         int count = _members.length;
-         _remaining = new ArrayList(count);
-         for (int i = 0; i < count; i++) {
+
+         // Copy all members to _remaining
+         int size = _members.length;
+         _remaining = new ArrayList(size);
+         for (int i = 0; i < size; i++) {
             _remaining.add(_members[i]);
          }
+
+         // Pick a member randomly
+         int index = Math.abs(RANDOM.nextInt() % size);
+         Descriptor member = (Descriptor) _remaining.remove(index);
+
+         // Initialize the current iterator to link to that member's services
+         _currentIterator = member.iterateServices();
       }
 
 
@@ -280,11 +289,18 @@ public final class GroupDescriptor extends Descriptor {
       /**
        * The set of remaining descriptors. One is removed from a random index
        * each time {@link #next()} is called.
+       *
+       * <p>This field will be set to <code>null</code> as soon as there are
+       * no more remaining members. Still {@link #_currentIterator} could have
+       * more elements.
        */
       private List _remaining;
 
       /**
        * Current iterator of one of the members.
+       *
+       * <p>This field will be set to <code>null</code> as soon as there are
+       * no more remaining services to be iterated over.
        */
       private Iterator _currentIterator;
 
@@ -294,24 +310,38 @@ public final class GroupDescriptor extends Descriptor {
       //----------------------------------------------------------------------
 
       public boolean hasNext() {
-         return (_remaining != null);
+         return (_currentIterator != null);
       }
 
-      public Object next() {
-         if (_remaining == null) {
+      public Object next() throws NoSuchElementException {
+
+         // Check preconditions
+         if (_currentIterator == null) {
             throw new NoSuchElementException();
          }
 
+         // Get the next service
          Object o = _currentIterator.next();
-         if (! _currentIterator.hasNext()) {
-            int size = _remaining.size();
-            int index = RANDOM.nextInt() % size;
-            Descriptor member = (Descriptor) _remaining.remove(index);
 
-            if (size == 1) {
-               _remaining = null;
+         // Check if this member/iterator has any more
+         if (! _currentIterator.hasNext()) {
+
+            // If there are no remaining members, set _currentIterator to null
+            if (_remaining == null) {
+               _currentIterator = null;
+
             } else {
+               // Pick one of the remaining members
+               int size = _remaining.size();
+               int index = (size == 1) ? 0 : Math.abs(RANDOM.nextInt() % size);
+               Descriptor member = (Descriptor) _remaining.remove(index);
                _currentIterator = member.iterateServices();
+
+               // If there are now no additional remaining members, set
+               // _remaining to null
+               if (size == 1) {
+                  _remaining = null;
+               }
             }
          }
 
