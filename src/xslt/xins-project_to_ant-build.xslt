@@ -161,7 +161,7 @@
 							<xsl:value-of select="concat($specsdir, '/', $api)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat('apis/', $api, '/spec')" />
+							<xsl:value-of select="concat($project_home, '/apis/', $api, '/spec')" />
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -307,7 +307,7 @@
 							<param name="env_url"      expression="{@url}"          />
 						</style>
 					</xsl:for-each>
-					<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 						<xsl:for-each select="document($env_file)/environments/environment">
 							<style
@@ -414,7 +414,7 @@
 					</target>
 				</xsl:if>
 
-				<xsl:if test="document($api_file)/api/impl-java or document($project_file)/api[@name = $api]/impl">
+				<xsl:if test="document($api_file)/api/impl-java or document($project_file)/project/api[@name = $api]/impl">
 					<xsl:variable name="package">
 						<xsl:call-template name="package_for_server_api">
 							<xsl:with-param name="project_file">
@@ -1009,13 +1009,13 @@
 
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document($project_file)/api/impl]">
+					<xsl:for-each select="api[document($project_file)/project/api/impl]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-						<xsl:if test="position() &gt; 1 or count(document($project_file)/api/impl) &gt; 1">,</xsl:if>
+						<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
@@ -1024,13 +1024,13 @@
 
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document($project_file)/api/impl]">
+					<xsl:for-each select="api[document($project_file)/project/api/impl]">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-						<xsl:if test="position() &gt; 1 or count(document($project_file)/api/impl) &gt; 1">,</xsl:if>
+						<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 1">,</xsl:if>
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
