@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 0.201:
   - Removed log messages 1514, 1516 and 1517. The information these messages
     provided is all bundled in log message 1540.
 
+* Logdoc:
+  - Added class AbstractLogdocSerializable. It supports lazy initialization.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.200:
 
