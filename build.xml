@@ -87,7 +87,7 @@
 		<property name="www.host"            value="${name}.sourceforge.net" />
 		<property name="www.dir"             value="/home/groups/x/xi/xins/htdocs" />
 		<property name="www.target"          value="${www.user}@${www.host}:${www.dir}" />
-		<property name="www.url"             value="http://${www.host}/" />
+		<property name="www.url"             value="http://www.xins.org/" />
 
 		<!-- Java compiler-related properties -->
 		<property name="javac.targetvm"      value="1.4" />
