@@ -45,9 +45,10 @@ public class InvalidRequestResult extends FunctionResult {
     *    the missing parameter.
     */
    public void addMissingParameter(String parameter) {
-      getResultBuilder().startTag("missing-param");
-      getResultBuilder().attribute("param", parameter);
-      getResultBuilder().endTag();
+      CallResultBuilder builder = getResultBuilder();
+      builder.startTag("missing-param");
+      builder.attribute("param", parameter);
+      builder.endTag();
    }
 
    /**
@@ -59,10 +60,11 @@ public class InvalidRequestResult extends FunctionResult {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      getResultBuilder().startTag("invalid-value-for-type");
-      getResultBuilder().attribute("param", parameter);
-      getResultBuilder().attribute("type", type);
-      getResultBuilder().endTag();
+      CallResultBuilder builder = getResultBuilder();
+      builder.startTag("invalid-value-for-type");
+      builder.attribute("param", parameter);
+      builder.attribute("type", type);
+      builder.endTag();
    }
 
    /**
@@ -70,18 +72,26 @@ public class InvalidRequestResult extends FunctionResult {
     *
     * @param type
     *    the type of the combination.
+    *
     * @param elements
-    *    list of the elements in the combination passed as a list of <code>String</code>.
+    *    list of the elements in the combination passed as a list of
+    *    {@link String} objects.
     */
    public void addParamCombo(String type, List elements) {
-      getResultBuilder().startTag("param-combo");
-      getResultBuilder().attribute("type", type);
+
+      CallResultBuilder builder = getResultBuilder();
+
+      builder.startTag("param-combo");
+      builder.attribute("type", type);
+
+      // Iterate ober all elements
       Iterator itElements = elements.iterator();
       while(itElements.hasNext()) {
-         getResultBuilder().startTag("param");
-         getResultBuilder().attribute("name", (String)itElements.next());
-         getResultBuilder().endTag();
+         builder.startTag("param");
+         builder.attribute("name", (String) itElements.next());
+         builder.endTag();
       }
-      getResultBuilder().endTag();
+
+      builder.endTag();
    }
 }
