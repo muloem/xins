@@ -26,9 +26,7 @@
 	<xsl:template match="project">
 		<project default="all" basedir="..">
 
-			<target name="-prepare">
-				<echo message="xins_home: {$xins_home}" />
-			</target>
+			<target name="-prepare" />
 
 			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="build/specdocs" />
