@@ -4,12 +4,12 @@ znerd    - Create a branch called STABLE
 znerd    - First tag on the STABLE branch should be RELEASE_1_0_BETA_1
 znerd    - Start with empty CHANGES file
 ?        - Set @since tags on all classes to 1.0
-znerd    - Support logdoc for API implementations
-znerd    - Convert XINS/Java Client Framework to use logdoc
-znerd    - Convert XINS/Java Common Library to use logdoc
-agoubard - Have DTD-based validation in place
+X znerd    - Support logdoc for API implementations
+X znerd    - Convert XINS/Java Client Framework to use logdoc
+X znerd    - Convert XINS/Java Common Library to use logdoc
+X agoubard - Have DTD-based validation in place
 znerd    - Make sure empty directories are not included in the new branch
-znerd    - Remove all deprecated methods, fields and classes
+X znerd    - Remove all deprecated methods, fields and classes
 znerd    - Remove unused methods, fields and classes
 znerd    - Finalize log entry ID's.
 znerd    - Change all packages in java-common to start with org.xins.common

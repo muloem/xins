@@ -1,4 +1,17 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.176:
+
+* Specification:
+  - A description is now required for each element of a data section.
+  - The <param> element has been removed from the <impl-java> element for
+    XINS 1.0.
+
+* Generated build file:
+  - Fixed a bug that would put the dependencies jar files in the incorrect
+    directory of the war file.
+    This bug has been in XINS since version 0.175.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.175:
 
 * Generated build file:

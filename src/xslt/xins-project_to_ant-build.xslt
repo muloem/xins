@@ -683,7 +683,7 @@
 							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
 							<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 							<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
-							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" />
+							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
 							<xsl:if test="$apiHasTypes = 'true'">
 								<classes dir="{$typeClassesDir}" includes="**/*.class" />
@@ -1052,5 +1052,18 @@
 				</xsl:choose>
 			</xsl:attribute>
 		</fileset>
+	</xsl:template>
+
+	<xsl:template match="dependency" mode="lib">
+		<lib dir="{$dependenciesDir}/{@dir}">
+			<xsl:attribute name="includes">
+				<xsl:choose>
+					<xsl:when test="@includes">
+						<xsl:value-of select="@includes" />
+					</xsl:when>
+					<xsl:otherwise>**/*.jar</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</lib>
 	</xsl:template>
 </xsl:stylesheet>

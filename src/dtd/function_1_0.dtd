@@ -38,7 +38,7 @@
           contains   CDATA #REQUIRED
           multiplicity CDATA #IMPLIED
 >
-<!ELEMENT element (description?, deprecated?, contains?, attribute*)>
+<!ELEMENT element (description, deprecated?, contains?, attribute*)>
 <!ATTLIST element
           name       NMTOKEN #REQUIRED
 >
