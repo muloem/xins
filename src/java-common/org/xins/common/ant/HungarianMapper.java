@@ -89,7 +89,7 @@ public class HungarianMapper implements FileNameMapper {
       } else {
          String dir = sourceFileName.substring(0, sourceFileName.lastIndexOf(fileName));
          fileName = fileName.substring(0,1).toUpperCase() + fileName.substring(1);
-	 result = dir + fileName;
+         result = dir + fileName;
       }
 
       return new String[] { result };
