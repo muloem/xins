@@ -331,7 +331,7 @@ public final class Doorman extends Object {
                _queue.remove(writer);
             }
          }
-         throw new QueueTimeOutException(_asString + ": Unable to add " + writer.getName() + " to queue.");
+         throw new QueueTimeOutException(_asString + ": Unable to add a thread named " + writer.getName() + " to queue. Time-out after " + _maxQueueWaitTime + " ms.");
       } catch (InterruptedException exception) {
          // fall through
       }
