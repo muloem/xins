@@ -21,8 +21,6 @@
 	<xsl:include href="../types.xslt"  />
 
 	<xsl:template match="function">
-		<xsl:variable name="api" select="@api" />
-
 		<xsl:variable name="sessionBased">
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
