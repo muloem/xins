@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 0.159:
     used to set it as the NDC (nested diagnostic context). The nested
     diagnostic context can be output in the log. With the pattern layout,
     use %x.
+  - Added the _ResetStatistics meta function. This function set all the 
+    statistics to their initial values.
 
 * XINS/Java Client Framework:
   - Added an abstract getXINSVersion() method in the AbstractCAPI class that
