@@ -211,7 +211,7 @@ table.outputparameters tr td.required {
 	/* font-variant: small-caps; */
 }
 
-table.returncodes {
+table.resultcodes {
 	border: none;
 	background-color: #ddddff;
 	border-collapse: collapse;
@@ -219,7 +219,7 @@ table.returncodes {
 	width: 95%;
 }
 
-table.returncodes tr th {
+table.resultcodes tr th {
 	color: #ffffff;
 	background-color: #7777dd;
 	vertical-align: text-top;
@@ -228,29 +228,29 @@ table.returncodes tr th {
 	font-weight: bold;
 }
 
-table.returncodes tr td {
+table.resultcodes tr td {
 	vertical-align: text-top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
 
-table.returncodes tr td.value {
+table.resultcodes tr td.value {
 	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
-table.returncodes tr.default td.value {
+table.resultcodes tr.default td.value {
 	font-style: italic;
 }
 
-table.returncodes tr td.name {
+table.resultcodes tr td.name {
 	vertical-align: text-top;
 	font-family: monospace;
 	font-size: 90%;
 }
 
-table.returncodes tr td.required {
+table.resultcodes tr td.required {
 	vertical-align: text-top;
 	/* font-variant: small-caps; */
 }
