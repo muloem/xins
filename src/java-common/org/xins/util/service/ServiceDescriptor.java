@@ -150,6 +150,10 @@ public final class ServiceDescriptor extends Descriptor {
       return new Iterator();
    }
 
+   public String toString() {
+      return "ServiceDescriptor(url=\"" + _url + "\"; timeOut=" + _timeOut + ')';
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
