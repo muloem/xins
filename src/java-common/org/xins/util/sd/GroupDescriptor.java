@@ -91,6 +91,6 @@ public abstract class GroupDescriptor extends Descriptor {
    public Descriptor[] getMembers() {
       int count = _members.length;
       Descriptor[] array = new Descriptor[count];
-      System.arraycopy(members, 0, _members, array, 0, count);
+      System.arraycopy(_members, 0, array, 0, count);
    }
 }
