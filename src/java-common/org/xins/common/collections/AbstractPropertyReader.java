@@ -9,7 +9,8 @@ import java.util.Map;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Implementation of some methods for the PropertyReader.
+ * Base for <code>PropertyReader</code> implementations that use an underlying
+ * <code>Properties</code> object.
  *
  * @version $Revision$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>), Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -55,16 +56,44 @@ implements PropertyReader {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Gets the value of the property with the specified name.
+    *
+    * @param name
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the property, or <code>null</code> if it is not set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
    public String get(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
       Object value = _properties.get(name);
       return (String) value;
    }
 
+   /**
+    * Gets an iterator that iterates over all the property names. The
+    * {@link Iterator} will return only {@link String} instances.
+    *
+    * @return
+    *    the {@link Iterator} that will iterate over all the names, never
+    *    <code>null</code>.
+    */
    public Iterator getNames() {
       return _properties.keySet().iterator();
    }
 
+   /**
+    * Returns the number of entries.
+    *
+    * @return
+    *    the size, always &gt;= 0.
+    *
+    * @since XINS 0.202
+    */
    public int size() {
       return _properties.size();
    }

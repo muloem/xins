@@ -194,35 +194,97 @@ extends Object {
       // Methods
       //-------------------------------------------------------------------------
 
-      public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+      /**
+       * Receive notification of the beginning of an element.
+       *
+       * @param namespaceURI
+       *    the namespace URI, can be <code>null</code>.
+       *
+       * @param localName
+       *    the local name (without prefix); the empty string indicates that
+       *    Namespace processing is not being performed; can be
+       *    <code>null</code>.
+       *
+       * @param qName
+       *    the qualified name (with prefix); the empty string indicates that
+       *    qualified names are not available; cannot be <code>null</code>.
+       *
+       * @param atts
+       *    the attributes attached to the element; if there are no
+       *    attributes, it shall be an empty {@link Attributes} object; cannot
+       *    be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>qName == null || atts == null</code>.
+       *
+       * @throws SAXException
+       *    if the element is unknown.
+       */
+      public void startElement(String     namespaceURI,
+                               String     localName,
+                               String     qName,
+                               Attributes atts)
+      throws IllegalArgumentException, SAXException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("qName", qName, "atts", atts);
+
          if (_level >= 0) {
             _level++;
             DataElement element = new DataElement(qName);
 
-            for (int i = 0; i < attributes.getLength(); i++) {
-               String key = attributes.getQName(i);
-               String value = attributes.getValue(i);
+            for (int i = 0; i < atts.getLength(); i++) {
+               String key = atts.getQName(i);
+               String value = atts.getValue(i);
                element.addAttribute(key, value);
             }
             _elements.put(new Integer(_level), element);
          } else if (qName.equals("result")) {
-            _errorCode = attributes.getValue("errorcode");
+            _errorCode = atts.getValue("errorcode");
             if (_errorCode == null) {
-               _errorCode = attributes.getValue("code");
+               _errorCode = atts.getValue("code");
             }
          } else if (qName.equals("param")) {
-            _parameterKey = attributes.getValue("name");
+            _parameterKey = atts.getValue("name");
             _pcdata = new FastStringBuffer(20);
          } else if (qName.equals("data")) {
             _elements = new Hashtable();
             _elements.put(new Integer(0), new DataElement("data"));
             _level = 0;
          } else {
-            throw new SAXException("Starting to parse an unknown element \"" + qName + "\".");
+            throw new SAXException("Unknown element \"" + qName + "\".");
          }
       }
 
-      public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+      /**
+       * Receive notification of the end of an element.
+       *
+       * @param namespaceURI
+       *    the namespace URI, can be <code>null</code>.
+       *
+       * @param localName
+       *    the local name (without prefix); the empty string indicates that
+       *    Namespace processing is not being performed; can be
+       *    <code>null</code>.
+       *
+       * @param qName
+       *    the qualified name (with prefix); the empty string indicates that
+       *    qualified names are not available; cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>qName == null</code>.
+       *
+       * @throws SAXException
+       *    if the element is unknown.
+       */
+      public void endElement(String namespaceURI,
+                             String localName,
+                             String qName)
+      throws IllegalArgumentException, SAXException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("qName", qName);
+
          if (_level > 0) {
             DataElement child = (DataElement)_elements.get(new Integer(_level));
             if (_pcdata != null) {
@@ -231,7 +293,9 @@ extends Object {
             _level--;
             DataElement parent = (DataElement)_elements.get(new Integer(_level));
             parent.addChild(child);
-         } if (qName.equals("param")) {
+         }
+
+         if (qName.equals("param")) {
             final String ELEMENT_NAME  = "param";
             final String KEY_ATTRIBUTE = "name";
             String value = _pcdata.toString();
@@ -253,12 +317,31 @@ extends Object {
             }
             _parameterKey = null;
             _pcdata = null;
+
          } else if (!qName.equals("result")) {
-            throw new SAXException("Ending to parse an unknown element \"" + qName + "\".");
+            throw new SAXException("Unknown element \"" + qName + "\".");
          }
       }
 
-      public void characters(char[] ch, int start, int length) {
+      /**
+       * Receive notification of character data.
+       *
+       * @param ch
+       *    the <code>char</code> array that contains the characters from the
+       *    XML document, cannot be <code>null</code>.
+       *
+       * @param start
+       *    the start index within <code>ch</code>.
+       *
+       * @param length
+       *    the number of characters to take from <code>ch</code>.
+       *
+       * @throws ArrayIndexOutOfBoundsException
+       *    if characters outside the allowed range are specified.
+       */
+      public void characters(char[] ch, int start, int length)
+      throws ArrayIndexOutOfBoundsException {
+
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
          }

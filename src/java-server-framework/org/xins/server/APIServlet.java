@@ -387,11 +387,8 @@ extends HttpServlet {
     * @param newState
     *    the new state, cannot be <code>null</code>.
     *
-    * @throws IllegalStateException
-    *    if the new state cannot be a successor of the old state.
-    *
     * @throws IllegalArgumentException
-    *    if <code>newState == null</code>
+    *    if <code>newState == null</code>.
     */
    private void setState(State newState)
    throws IllegalArgumentException {
@@ -409,7 +406,7 @@ extends HttpServlet {
           (_state == READY && newState != DISPOSING) ||
           (_state == DISPOSING && newState != DISPOSED)) {
          Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
-         throw new IllegalStateException("The state " + newState + " cannot follow the state  " + _state + '.');
+         throw new IllegalArgumentException("The state " + newState + " cannot follow the state  " + _state + '.');
       }
 
       State oldState;

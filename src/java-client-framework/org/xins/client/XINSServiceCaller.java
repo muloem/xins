@@ -220,7 +220,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @since XINS 0.207
     */
    public XINSCallResult call(XINSCallRequest request)
-   throws GenericCallException, HTTPCallException, XINSCallException {
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException,
+          XINSCallException {
 
       CallResult callResult;
       try {
@@ -260,8 +263,15 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>target == null || request == null</code>.
     *
+    * @throws GenericCallException
+    *    if the call attempt failed due to a generic reason.
+    *    other call attempts failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the call attempt failed due to an HTTP-related reason.
+    *
     * @throws XINSCallException
-    *    if the call to the specified target failed.
+    *    if the call attempt failed due to a XINS-related reason.
     *
     * @since XINS 0.207
     */

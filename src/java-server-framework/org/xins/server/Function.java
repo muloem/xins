@@ -328,7 +328,8 @@ implements DefaultResultCodes {
                                     String         ip,
                                     long           start,
                                     int            callID,
-                                    FunctionResult result) {
+                                    FunctionResult result)
+   throws NullPointerException {
 
       // Get the error code
       String code = result.getErrorCode();

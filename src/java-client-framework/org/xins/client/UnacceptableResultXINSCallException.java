@@ -45,6 +45,9 @@ extends XINSCallException {
     *    a detailed description of why the result is considered unacceptable,
     *    or <code>null</code> if such a description is not available.
     *
+    * @param cause
+    *    the optional cause exception, or <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>result == null</code>.
     */

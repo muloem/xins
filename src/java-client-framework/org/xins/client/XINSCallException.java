@@ -44,9 +44,12 @@ public abstract class XINSCallException extends CallException {
     * @param result
     *    the call result, cannot be <code>null</code>.
     *
+    * @return
+    *    the short reason as given in the argument <code>shortReason</code>,
+    *    never <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>shortReason == null
-    *          || result      == null</code>
+    *    if <code>shortReason == null || result == null</code>
     */
    private static final String checkArguments(String         shortReason,
                                               XINSCallResult result)

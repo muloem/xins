@@ -27,12 +27,19 @@ extends Exception {
     *
     * @param functionName
     *    the name of the function, or <code>null</code>.
+    *
+    * @return
+    *    the error message, never <code>null</code>.
     */
    private static String createMessage(String functionName) {
+
+      // Function name specified
       if (functionName != null) {
          return "The function \"" + functionName + "\" cannot be found.";
+
+      // Function name not specified
       } else {
-         return "An undefined function cannot be found.";
+         return "An unspecified function cannot be found.";
       }
    }
 
