@@ -440,11 +440,11 @@ $Id$
 					</style>
 				</target>
 
-				<target name="classes-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
-					<mkdir dir="{$project_home}/build/classes/{$api}/{$clientPackageAsDir}" />
+				<target name="jar-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
 					<javac
-					srcdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
-					destdir="{$project_home}/build/classes/{$api}/{$clientPackageAsDir}"
+					srcdir="{$project_home}/build/java-capi/{$api}/"
+					destdir="{$project_home}/build/classes-capi/{$api}"
 					debug="true"
 					deprecation="true">
 						<classpath>
@@ -454,6 +454,10 @@ $Id$
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						</classpath>
 					</javac>
+					<mkdir dir="{$project_home}/build/capis/" />
+					<jar
+					destfile="{$project_home}/build/capis/{$api}-capi.jar"
+					basedir="{$project_home}/build/classes-capi/{$api}" />
 				</target>
 					
 				<target name="javadoc-capi-{$api}" depends="-stubs-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
