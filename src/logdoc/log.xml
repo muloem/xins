@@ -178,7 +178,7 @@
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="253" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="253" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file watch interval successfully parsed.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
@@ -208,8 +208,11 @@
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
+	<entry id="199" level="NOTICE" category="org.xins.server.lifespan.init">
+		<description>XINS/Java Server Framework has been initialized.</description>
+	</entry>
 	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
-		<description>XINS/Java Server Framework initialized or re-initialized.</description>
+		<description>XINS/Java Server Framework has been re-initialized.</description>
 	</entry>
 
 
