@@ -102,7 +102,9 @@ extends Object {
     * @throws NoSuchEntryException
     *    if <code>get(key) == null</code>.
     */
-   public abstract void touch(Object key) throws NoSuchEntryException;
+   public void touch(Object key) throws NoSuchEntryException {
+      // TODO
+   }
 
    /**
     * Notifies this map that the precision time frame has passed since the
