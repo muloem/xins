@@ -141,7 +141,7 @@ implements DefaultResultCodes {
     * The type that applies for session identifiers. Will be set in
     * {@link #init(Properties)}.
     */
-   private Type _sessionIDType;
+   private SessionID _sessionIDType;
 
    /**
     * The session ID generator. Will be set in {@link #init(Properties)}.
