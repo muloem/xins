@@ -227,7 +227,7 @@ public class Log extends AbstractLog {
 			<xsl:value-of select="../@id" />
 		</xsl:variable>
 
-		<xsl:variable name="$exception">
+		<xsl:variable name="exception">
 			<xsl:choose>
 				<xsl:when test="@exception = 'true'">true</xsl:when>
 				<xsl:when test="@exception = 'false'">false</xsl:when>
