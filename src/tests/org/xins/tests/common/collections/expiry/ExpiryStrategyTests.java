@@ -91,29 +91,50 @@ public class ExpiryStrategyTests extends TestCase {
          // as expected
       }
 
-      ExpiryStrategy strategy;
+      ExpiryStrategy strategy = null;;
       long timeOut;
       long precision;
 
       timeOut   = 2000L;
       precision = 1001L;
-      strategy  = new ExpiryStrategy(timeOut, precision);
-      assertEquals(timeOut,   strategy.getTimeOut());
-      assertEquals(precision, strategy.getPrecision());
-      assertEquals(2, strategy.getSlotCount());
+      try {
+         strategy  = new ExpiryStrategy(timeOut, precision);
+         assertEquals(timeOut,   strategy.getTimeOut());
+         assertEquals(precision, strategy.getPrecision());
+         assertEquals(2, strategy.getSlotCount());
+      } finally {
+         if (strategy != null) {
+            strategy.stop();
+         }
+         strategy = null;
+      }
 
       timeOut   = 2000L;
       precision = 1000L;
-      strategy  = new ExpiryStrategy(timeOut, precision);
-      assertEquals(timeOut,   strategy.getTimeOut());
-      assertEquals(precision, strategy.getPrecision());
-      assertEquals(2, strategy.getSlotCount());
+      try {
+         strategy  = new ExpiryStrategy(timeOut, precision);
+         assertEquals(timeOut,   strategy.getTimeOut());
+         assertEquals(precision, strategy.getPrecision());
+         assertEquals(2, strategy.getSlotCount());
+      } finally {
+         if (strategy != null) {
+            strategy.stop();
+         }
+         strategy = null;
+      }
 
       timeOut   = 2000L;
       precision = 999L;
-      strategy  = new ExpiryStrategy(timeOut, precision);
-      assertEquals(timeOut,   strategy.getTimeOut());
-      assertEquals(precision, strategy.getPrecision());
-      assertEquals(3, strategy.getSlotCount());
+      try {
+         strategy  = new ExpiryStrategy(timeOut, precision);
+         assertEquals(timeOut,   strategy.getTimeOut());
+         assertEquals(precision, strategy.getPrecision());
+         assertEquals(3, strategy.getSlotCount());
+      } finally {
+         if (strategy != null) {
+            strategy.stop();
+         }
+         strategy = null;
+      }
    }
 }
