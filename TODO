@@ -43,6 +43,8 @@ XINS/JAVA SERVER FRAMEWORK
   the InternalError result code is returned instead of an InvalidParameters.
 * Support ACLs for the complete API and/or specific functions.
 * Generated Javadoc should include package-private and private members.
+* Allow an IPFilter descriptor to be in the form "a.b.c.d" instead of
+  "a.b.c.d./32".
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
