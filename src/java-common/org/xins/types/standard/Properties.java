@@ -4,7 +4,6 @@
 package org.xins.types.standard;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import org.xins.types.Type;
@@ -13,6 +12,7 @@ import org.xins.util.BooleanConstants;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
+import org.xins.util.net.URLEncoding;
 import org.xins.util.text.FastStringBuffer;
 
 /**
@@ -145,12 +145,12 @@ public final class Properties extends Type {
          String v = value.get(n);
 
          // Append the name encoded
-         buffer.append(URLEncoder.encode(n));
+         buffer.append(URLEncoding.encode(n));
          buffer.append('=');
 
          // Append the value encoded, iff it is not null
          if (v != null) {
-            buffer.append(URLEncoder.encode(v));
+            buffer.append(URLEncoding.encode(v));
          }
       }
 
