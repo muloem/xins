@@ -24,13 +24,13 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
 * XINS/Java Client Framework:
   - Hid some classes by changing the access level from public to
     package-private:
-    . AbstractCAPICallRequest.java
-    . AbstractCAPIErrorCodeException.java
+    . AbstractCAPICallRequest
+    . AbstractCAPIErrorCodeException
     . BasicUnsuccessfulXINSCallExceptionFactory
-    . InternalErrorException.java
-    . InvalidRequestException.java
-    . InvalidResponseException.java
-    . UnsuccessfulXINSCallExceptionFactory.java
+    . InternalErrorException
+    . InvalidRequestException
+    . InvalidResponseException
+    . UnsuccessfulXINSCallExceptionFactory
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1100765: The API name is no longer mandatory.
