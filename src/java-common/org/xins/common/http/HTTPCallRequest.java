@@ -39,6 +39,22 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
+    * method. No arguments are be passed to the URL. Fail-over is disallowed,
+    * unless the request was definitely not processed by the other end.
+    *
+    * @param method
+    *    the HTTP method to use, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>method == null</code>.
+    */
+   public HTTPCallRequest(HTTPMethod method)
+   throws IllegalArgumentException {
+      this(method, null, false, null);
+   }
+
+   /**
+    * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
     * method and parameters. Fail-over is disallowed, unless the request was
     * definitely not processed by the other end.
     *
@@ -46,10 +62,10 @@ public final class HTTPCallRequest extends CallRequest {
     *    the HTTP method to use, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the parameters for the HTTP call, cannot be <code>null</code>.
+    *    the parameters for the HTTP call, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>method == null || parameters == null</code>.
+    *    if <code>method == null</code>.
     */
    public HTTPCallRequest(HTTPMethod     method,
                           PropertyReader parameters)
@@ -66,7 +82,7 @@ public final class HTTPCallRequest extends CallRequest {
     *    the HTTP method to use, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the parameters for the HTTP call, cannot be <code>null</code>.
+    *    the parameters for the HTTP call, can be <code>null</code>.
     *
     * @param failOverAllowed
     *    flag that indicates whether fail-over is in principle allowed, even
@@ -86,8 +102,7 @@ public final class HTTPCallRequest extends CallRequest {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("method",     method,
-                                     "parameters", parameters);
+      MandatoryArgumentChecker.check("method", method);
 
       // Store information
       _instanceNumber     = ++INSTANCE_COUNT;
@@ -181,7 +196,7 @@ public final class HTTPCallRequest extends CallRequest {
     * Returns the parameters associated with this call request.
     *
     * @return
-    *    the parameters, never <code>null</code>.
+    *    the parameters, can be <code>null</code>.
     */
    public PropertyReader getParameters() {
       return _parameters;

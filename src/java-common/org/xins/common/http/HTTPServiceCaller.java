@@ -29,7 +29,7 @@ import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
-import org.xins.common.net.URLEncoding;
+import org.xins.common.text.URLEncoding;
 
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
@@ -169,21 +169,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
          PostMethod postMethod = new PostMethod(url);
 
          // Loop through the parameters
-         Iterator keys = parameters.getNames();
-         while (keys.hasNext()) {
+         if (parameters != null) {
+            Iterator keys = parameters.getNames();
+            while (keys.hasNext()) {
 
-            // Get the parameter key
-            String key = (String) keys.next();
+               // Get the parameter key
+               String key = (String) keys.next();
 
-            // Get the value
-            String value = parameters.get(key);
-            if (value == null) {
-               value = "";
-            }
+               // Get the value
+               String value = parameters.get(key);
+               if (value == null) {
+                  value = "";
+               }
 
-            // Add this parameter key/value combination.
-            if (key != null) {
-               postMethod.addParameter(key, value);
+               // Add this parameter key/value combination.
+               if (key != null) {
+                  postMethod.addParameter(key, value);
+               }
             }
          }
          return postMethod;
@@ -193,32 +195,34 @@ public final class HTTPServiceCaller extends ServiceCaller {
          GetMethod getMethod = new GetMethod(url);
 
          // Loop through the parameters
-         FastStringBuffer query = new FastStringBuffer(255);
-         Iterator keys = parameters.getNames();
-         while (keys.hasNext()) {
+         if (parameters != null) {
+            FastStringBuffer query = new FastStringBuffer(255);
+            Iterator keys = parameters.getNames();
+            while (keys.hasNext()) {
 
-            // Get the parameter key
-            String key = (String) keys.next();
+               // Get the parameter key
+               String key = (String) keys.next();
 
-            // Get the value
-            String value = parameters.get(key);
-            if (value == null) {
-               value = "";
-            }
-
-            // Add this parameter key/value combination.
-            if (key != null) {
-
-               if (query.getLength() > 0) {
-                  query.append(",");
+               // Get the value
+               String value = parameters.get(key);
+               if (value == null) {
+                  value = "";
                }
-               query.append(URLEncoding.encode(key));
-               query.append("=");
-               query.append(URLEncoding.encode(value));
+
+               // Add this parameter key/value combination.
+               if (key != null) {
+
+                  if (query.getLength() > 0) {
+                     query.append(",");
+                  }
+                  query.append(URLEncoding.encode(key));
+                  query.append("=");
+                  query.append(URLEncoding.encode(value));
+               }
             }
-         }
-         if (query.getLength() > 0) {
-            getMethod.setQueryString(query.toString());
+            if (query.getLength() > 0) {
+               getMethod.setQueryString(query.toString());
+            }
          }
          return getMethod;
 

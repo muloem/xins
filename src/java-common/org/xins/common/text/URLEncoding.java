@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.common.net;
+package org.xins.common.text;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;

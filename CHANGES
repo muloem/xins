@@ -7,14 +7,18 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Fixed bug . The context identifier uses now the localhost hostname
     instead of the hostname of the remote host.
     This bug has been in XINS since version 0.203.
+  - Fixed bug 1042113. 	Function without parms generates NullPointerException.
+    This bug has been in XINS since version 0.207.
 
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
+  - Added the possibility to use the HTTPServiceCaller without parameters.
+  - Moved the URLEncoding class from the net package to the text package.
   - Added unit test class for Int8, Int16, Int32 and Int64 types.
   - removed redundant code from all the Intxx type classes.
   - Added unit test class for Boolean type.
   - Removed redundant TypeValueException calls from Text class.
- 
+
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
 
@@ -26,6 +30,8 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is
     not declared in the api.xml.
     This bug has been in XINS since version 0.207.
+  - The create-logdoc doesn't generated the domain and default-locale
+    attributes in the log.xml file.
 
 * Build and release process:
   - Added the possibility to release with a specific version

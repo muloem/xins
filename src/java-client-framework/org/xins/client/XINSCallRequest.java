@@ -184,19 +184,21 @@ public final class XINSCallRequest extends CallRequest {
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
 
       // Check and copy all XINS parameters to HTTP parameters
-      Iterator names = parameters.getNames();
-      while (names.hasNext()) {
-         String name  = (String) names.next();
-         String value = parameters.get(name);
+      if (parameters != null) {
+         Iterator names = parameters.getNames();
+         while (names.hasNext()) {
+            String name  = (String) names.next();
+            String value = parameters.get(name);
 
-         if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
-            // XXX: Consider using a different kind of exception for this
-            //      specific case. This exception may or may not derive from
-            //      IllegalArgumentException.
-            throw new IllegalArgumentException("The parameter name \"" + name + "\" does not match the pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\".");
+            if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
+               // XXX: Consider using a different kind of exception for this
+               //      specific case. This exception may or may not derive from
+               //      IllegalArgumentException.
+               throw new IllegalArgumentException("The parameter name \"" + name + "\" does not match the pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\".");
+            }
+
+            httpParams.set(SECRET_KEY, name, value);
          }
-
-         httpParams.set(SECRET_KEY, name, value);
       }
 
       // Add the function to the parameter list

@@ -5,7 +5,7 @@ package org.xins.common.types;
 
 import java.util.StringTokenizer;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.net.URLEncoding;
+import org.xins.common.text.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.types.standard.Text;
 
