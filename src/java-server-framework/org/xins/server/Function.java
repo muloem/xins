@@ -275,9 +275,8 @@ implements DefaultResultCodes {
     * <p />This method does not <em>have</em> to be called. If statistics
     * gathering is disabled, then this method should not be called.
     *
-    * @param start
-    *    the timestamp indicating when the call was started, as a number of
-    *    milliseconds since midnight January 1, 1970 UTC.
+    * @param context
+    *    the used call context, not <code>null</code>.
     *
     * @param duration
     *    the duration of the function call, as a number of milliseconds.
@@ -288,8 +287,10 @@ implements DefaultResultCodes {
     * @param code
     *    the function result code, or <code>null</code>.
     */
-   final void performedCall(long start, long duration, boolean success, String code) {
-      boolean debugEnabled = _log.isDebugEnabled();
+   final void performedCall(CallContext context, boolean success, String code) {
+      long start    = context.getStart();
+      long duration = System.currentTimeMillis() - start;
+      boolean debugEnabled = context.isDebugEnabled();
       String message = null;
       if (success) {
          if (debugEnabled) {
@@ -345,7 +346,7 @@ implements DefaultResultCodes {
          }
 
          if (debugEnabled) {
-            _log.debug(message);
+            context.debug(message);
          }
       }
    }

@@ -278,9 +278,7 @@ implements DefaultResultCodes {
       if (!exceptionThrown) {
          out.print(stringWriter.toString());
       }
-      long start    = context.getStart();
-      long duration = System.currentTimeMillis() - start;
-      f.performedCall(start, duration, success, code);
+      f.performedCall(context, success, code);
    }
 
    /**
