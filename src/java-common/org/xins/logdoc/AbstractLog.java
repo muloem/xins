@@ -135,6 +135,18 @@ extends Object {
       //----------------------------------------------------------------------
 
       /**
+       * Checks if the specified locale is supported.
+       *
+       * @param locale
+       *    the locale, not <code>null</code>.
+       *
+       * @return
+       *    <code>true</code> if the locale is supported, <code>false</code>
+       *    if it is not.
+       */
+      protected abstract boolean isLocaleSupported(String locale);
+
+      /**
        * Activates the specified locale.
        *
        * @param newLocale
