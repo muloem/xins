@@ -29,6 +29,7 @@ import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
+import org.xins.util.manageable.BootstrapException;
 import org.xins.util.manageable.InitializationException;
 import org.xins.util.servlet.ServletConfigPropertyReader;
 import org.xins.util.text.FastStringBuffer;
@@ -582,20 +583,23 @@ extends HttpServlet {
          setState(BOOTSTRAPPING_API);
 
          // Bootstrap the API
+         boolean succeeded = false;
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
+            succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
             Log.log_109(exception.getPropertyName());
-            setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException();
          } catch (InvalidPropertyValueException exception) {
             Log.log_110(exception.getPropertyName(), exception.getPropertyValue());
-            setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException();
+         } catch (BootstrapException exception) {
+            // TODO: Log.log_xxx(exception.getMesssage());
          } catch (Throwable exception) {
             Log.log_111(exception.getClass().getName(), exception.getMessage());
-            setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException();
+         } finally {
+            if (succeeded == false) {
+               setState(API_BOOTSTRAP_FAILED);
+               throw new ServletException();
+            }
          }
 
 
