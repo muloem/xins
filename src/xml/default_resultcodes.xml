@@ -24,4 +24,13 @@
 	<code name="MissingParameters" value="MissingParameters" success="false" onlyIfInputParameters="true">
 		<description>There is at least one mandatory input parameter missing.</description>
 	</code>
+	<code name="MissingSessionID" value="MissingSessionID" success="false" onlyIfSessionBased="true">
+		<description>No session identifier is specified.</description>
+	</code>
+	<code name="InvalidSessionID" value="InvalidSessionID" success="false" onlyIfSessionBased="true">
+		<description>The specified session identifier has an invalid format.</description>
+	</code>
+	<code name="UnknownSessionID" value="UnknownSessionID" success="false" onlyIfSessionBased="true">
+		<description>The specified session identifier is unknown.</description>
+	</code>
 </resultcodes>
