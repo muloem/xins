@@ -92,7 +92,7 @@ implements Servlet {
 
       // Apply replacements
       try {
-         settings = Replacer.replace(settings, '{', '}', System.getProperties());
+         settings = Replacer.replace(settings, '[', ']', System.getProperties());
       } catch (Replacer.Exception exception) {
          configureLoggerFallback();
          String message = "Failed to apply replacements to servlet initialization settings.";
