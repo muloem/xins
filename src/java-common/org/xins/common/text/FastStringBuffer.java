@@ -137,7 +137,7 @@ public class FastStringBuffer extends Object {
 
       // Increase capacity if needed
       if (current < needed) {
-         int newCapacity = needed + 16; // XXX: Is this okay?
+         int newCapacity = needed * 2; // XXX: Is this okay?
 
          Log.log_3205(current, newCapacity);
 
