@@ -40,13 +40,21 @@ public abstract class EnumType extends Type {
     * to be specified. The value class (see {@link Type#getValueClass()}) is
     * set to {@link String String.class}.
     *
+    * <p />The items this type accepts should be passed. If
+    * <code>items == null</code>, then this type will contain no items. This
+    * is the same as passing a zero-size {@link EnumItem} array.
+    *
     * @param name
     *    the name of the type, not <code>null</code>.
+    *
+    * @param items
+    *    the items for the type, or <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   protected EnumType(String name) throws IllegalArgumentException {
+   protected EnumType(String name, EnumItem[] items)
+   throws IllegalArgumentException {
       super(name, String.class);
    }
 
