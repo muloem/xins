@@ -5,6 +5,7 @@ package org.xins.client;
 
 import java.net.InetAddress;
 import org.xins.util.text.FastStringBuffer;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Exception that indicates that a host name resolved to multiple IP
@@ -49,19 +50,43 @@ extends Exception {
    private static final String createMessage(String hostName, InetAddress[] addresses)
    throws IllegalArgumentException {
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("hostName", hostName, "addresses", addresses);
+
       FastStringBuffer buffer = new FastStringBuffer(255);
       buffer.append("The host name \"");
       buffer.append(hostName);
       buffer.append("\" resolved to multiple IP addresses: ");
-      for (int i = 0; i < (addresses.length - 2); i++) {
-         InetAddress a = addresses[i];
+
+      // Append all but last 2 IP addresses
+      InetAddress a;
+      int i;
+      for (i = 0; i < (addresses.length - 2); i++) {
+         a = addresses[i];
+         if (a == null) {
+            throw new IllegalArgumentException("addresses[" + i + "] == null");
+         }
          buffer.append(a.getHostAddress());
          buffer.append(", ");
       }
-      buffer.append(addresses[addresses.length - 2].getHostAddress());
+
+      // Append one before last
+      a = addresses[i++];
+      if (a == null) {
+         throw new IllegalArgumentException("addresses[" + i + "] == null");
+      }
+      buffer.append(a.getHostAddress());
+
+      // Append last
       buffer.append(" and ");
-      buffer.append(addresses[addresses.length - 1].getHostAddress());
+      a = addresses[i++];
+      if (a == null) {
+         throw new IllegalArgumentException("addresses[" + i + "] == null");
+      }
+      buffer.append(a.getHostAddress());
       buffer.append('.');
+
+      return buffer.toString();
    }
 
 
@@ -97,13 +122,7 @@ extends Exception {
 
       // Store IP addresses
       _addresses = new InetAddress[addresses.length];
-      for (int i = 0; i < addresses.length; i++) {
-         InetAddress a = addresses[i];
-         if (a == null) {
-            throw new IllegalArgumentException("addresses[" + i + "] == null");
-         }
-         _addresses[i] = a;
-      }
+      System.arraycopy(addresses, 0, _addresses, 0, addresses.length);
    }
 
 
