@@ -452,6 +452,7 @@
 				<include name="CHANGES"                        />
 				<include name="COPYRIGHT"                      />
 				<include name="README"                         />
+				<include name="TODO"                           />
 				<include name="src/ant/**/*"                   />
 				<include name="src/bin/xins.bat"               />
 				<include name="src/config/**/*"                />
@@ -487,6 +488,7 @@
 				<include name="CHANGES"                        />
 				<include name="COPYRIGHT"                      />
 				<include name="README"                         />
+				<include name="TODO"                           />
 				<include name="build/javadoc/**/*"             />
 				<include name="build/*.jar"                    />
 				<include name="src/ant/**/*"                   />
