@@ -11,6 +11,7 @@
 
 <project name="xins-bootstrap-ant" default="transform" basedir=".">
 	<target name="transform">
+		<delete file="${out}" />
 		<style in="${in}" out="${out}" style="${style}">
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />

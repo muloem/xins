@@ -49,17 +49,8 @@ if [ ! -d ${builddir} ]; then
 	mkdir ${builddir}
 fi
 
-# Delete the Ant build file if it exists
-buildfile=${builddir}/build.xml
-if [ -f ${buildfile} ]; then
-	rm -f ${buildfile} 2> /dev/null
-	if [ -f ${buildfile} ]; then
-		echo "${prog}: ERROR: Failed to remove ${buildfile}"
-	fi
-fi
-
 # Create the Ant build file
-out=${buildfile}
+buildfile=${builddir}/build.xml
 project_home=`pwd`
 mktemp_template="/tmp/${prog}.XXXXXXXX"
 tmpout=`mktemp -q ${mktemp_template}`
@@ -68,10 +59,10 @@ if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template}"
 	exit 1
 fi
-echo -n ">> Generating `basename ${out}`..."
+echo -n ">> Generating `basename ${buildfile}`..."
 ant -f ${xins_home}/src/ant/transform.xml \
     -Din=${in} \
-	-Dout=${out} \
+	-Dout=${buildfile} \
 	-Dstyle=${style} \
     -Dxins_home=${xins_home} \
     -Dproject_home=${project_home} \
