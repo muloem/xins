@@ -7,6 +7,7 @@ import java.io.File;
 
 import org.apache.tools.ant.util.FileNameMapper;
 
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Apache Ant mapper that change the case of the first character of a filename
