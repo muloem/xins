@@ -111,7 +111,7 @@ public abstract class ServiceCaller extends Object {
       boolean debugEnabled = LOG.isDebugEnabled();
 
       // Iterate over all targets
-      Iterator iterator = _descriptor.iterateServices();
+      Iterator iterator = _descriptor.iterateTargets();
       while (iterator.hasNext()) {
 
          // Determine the service descriptor target

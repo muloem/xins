@@ -53,7 +53,7 @@ public abstract class Descriptor extends Object {
    public abstract boolean isGroup();
 
    /**
-    * Iterates over all leaves, the service descriptors.
+    * Iterates over all leaves, the target descriptors.
     *
     * <p>The returned {@link Iterator} will not support
     * {@link Iterator#remove()}. The iterator will only return
@@ -67,5 +67,5 @@ public abstract class Descriptor extends Object {
     *    iterator over the service descriptors on any level in this
     *    descriptor, in the correct order, never <code>null</code>.
     */
-   public abstract Iterator iterateServices();
+   public abstract Iterator iterateTargets();
 }

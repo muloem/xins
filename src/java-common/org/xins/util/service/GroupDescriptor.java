@@ -205,7 +205,7 @@ public final class GroupDescriptor extends Descriptor {
       return true;
    }
 
-   public Iterator iterateServices() {
+   public Iterator iterateTargets() {
       if (_type == RANDOM_TYPE) {
          return new RandomIterator();
       } else if (_type == ORDERED_TYPE) {
@@ -310,7 +310,7 @@ public final class GroupDescriptor extends Descriptor {
    /**
     * Random iterator over the leaf service descriptors contained in this
     * group descriptor. Needed for the implementation of
-    * {@link #iterateServices()}.
+    * {@link #iterateTargets()}.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -342,7 +342,7 @@ public final class GroupDescriptor extends Descriptor {
          Descriptor member = (Descriptor) _remaining.remove(index);
 
          // Initialize the current iterator to link to that member's services
-         _currentIterator = member.iterateServices();
+         _currentIterator = member.iterateTargets();
       }
 
 
@@ -399,7 +399,7 @@ public final class GroupDescriptor extends Descriptor {
                int size = _remaining.size();
                int index = (size == 1) ? 0 : Math.abs(RANDOM.nextInt() % size);
                Descriptor member = (Descriptor) _remaining.remove(index);
-               _currentIterator = member.iterateServices();
+               _currentIterator = member.iterateTargets();
 
                // If there are now no additional remaining members, set
                // _remaining to null
@@ -420,7 +420,7 @@ public final class GroupDescriptor extends Descriptor {
    /**
     * Ordered iterator over the leaf service descriptors contained in this
     * group descriptor. Needed for the implementation of
-    * {@link #iterateServices()}.
+    * {@link #iterateTargets()}.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -444,7 +444,7 @@ public final class GroupDescriptor extends Descriptor {
          _currentIndex = 0;
 
          // Initialize the current iterator to link to that member's services
-         _currentIterator = _members[0].iterateServices();
+         _currentIterator = _members[0].iterateTargets();
       }
 
 
@@ -496,7 +496,7 @@ public final class GroupDescriptor extends Descriptor {
                _currentIndex++;
 
                if (_currentIndex < _members.length) {
-                  _currentIterator = _members[_currentIndex].iterateServices();
+                  _currentIterator = _members[_currentIndex].iterateTargets();
                } else {
                   _currentIndex = -1;
                }

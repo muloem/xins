@@ -199,7 +199,7 @@ public final class TargetDescriptor extends Descriptor {
       return _crc32;
    }
 
-   public java.util.Iterator iterateServices() {
+   public java.util.Iterator iterateTargets() {
       return new Iterator();
    }
 
@@ -214,7 +214,7 @@ public final class TargetDescriptor extends Descriptor {
 
    /**
     * Iterator over this (single) service descriptor. Needed for the
-    * implementation of {@link #iterateServices()}.
+    * implementation of {@link #iterateTargets()}.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
