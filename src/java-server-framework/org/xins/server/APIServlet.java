@@ -228,6 +228,7 @@ implements Servlet {
    public void destroy() {
       synchronized (_stateLock) {
          _state = DISPOSING;
+         _api.destroy();
          if (_log != null) {
             _log.info("Destroyed API servlet.");
          }

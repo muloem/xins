@@ -183,9 +183,6 @@ implements DefaultResultCodes {
       // TODO: Allow configuration of session ID generator
       _sessionIDGenerator = new CountingSessionIDGenerator(this);
 
-      // Register shutdown hook
-      Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
-
       // TODO: Set state to INITIALIZING
       initImpl(properties);
       // TODO: Set state to INITIALIZED
@@ -318,7 +315,7 @@ implements DefaultResultCodes {
    /**
     * Performs shutdown of this XINS API.
     */
-   private final void shutDown() {
+   final void destroy() {
       _shutDown = true;
 
       for (int i = 0; i < _instances.size(); i++) {
@@ -744,48 +741,5 @@ implements DefaultResultCodes {
          context.endTag();
       }
       context.endTag();
-   }
-
-   /**
-    * Shutdown handler.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    */
-   private class ShutdownHandler
-   extends Thread {
-
-      //----------------------------------------------------------------------
-      // Class fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Class functions
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Creates a new <code>ShutdownHandler</code>.
-       */
-      private ShutdownHandler() {
-         // empty
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      public void run() {
-         _log.info("XINS API shut down sequence initiated.");
-         shutDown();
-      }
    }
 }
