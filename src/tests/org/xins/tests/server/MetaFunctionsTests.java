@@ -263,7 +263,7 @@ public class MetaFunctionsTests extends TestCase {
          try {
             Double.parseDouble(version);
          } catch (NumberFormatException exception) {
-            fail("Inccorect version number: " + exception.getMessage());
+            fail("Incorrect version number: " + exception.getMessage());
          }
          // By default all function are enabled
          assertEquals("The function is not enabled.", "true", enabled);

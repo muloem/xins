@@ -327,6 +327,15 @@ public class AllInOneAPITests extends TestCase {
    }
 
    /**
+    * Tests a function that get values from the runtime property file.
+    */
+   public void testRuntimeProps() throws Exception {
+      RuntimePropsResult result = _capi.callRuntimeProps(100);
+      assertEquals(20.6f, result.getTaxes(), 0.01f);
+      assertEquals("Euros", result.getCurrency());
+   }
+
+   /**
     * Tests a function that returns a data section containing elements with
     * PCDATA.
     */

@@ -221,6 +221,28 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
+				<h2>Properties</h2>
+				<xsl:choose>
+					<xsl:when test="document($project_file)/project/api[@name = $api]/impl">
+						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+						<xsl:choose>
+							<xsl:when test="document($impl_file)/impl/runtime-properties/property">
+								<a href="properties.html" title="Specification of the runtime properties used by this API">Runtime properties</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<p>
+									<em>No runtime properties have been defined for this API.</em>
+								</p>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<p>
+							<em>No implementation information available for this API.</em>
+						</p>
+					</xsl:otherwise>
+				</xsl:choose>
+
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>

@@ -78,4 +78,48 @@
 		</xsl:if>
 	</xsl:template>
 
+	<!--
+	- Transform a property name in a hungarian-formatted string starting with an 
+	- uppercase.
+	-->
+	<xsl:template name="hungarianPropertyUpper">
+		<xsl:param name="text" />
+		<xsl:param name="startWithUpperCase" select="'true'" />
+		<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
+		<xsl:if test="string-length($firstChar) &gt; 0">
+			<xsl:variable name="isDot">
+				<xsl:choose>
+					<xsl:when test="$firstChar = '.'">true</xsl:when>
+					<xsl:otherwise>false</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:if test="$isDot = 'false'">
+				<xsl:choose>
+					<xsl:when test="$startWithUpperCase = 'true'">
+						<xsl:value-of select="translate($firstChar,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$firstChar" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+			<xsl:variable name="rest" select="substring($text, 2)" />
+			<xsl:call-template name="hungarianPropertyUpper">
+				<xsl:with-param name="text"               select="$rest"  />
+				<xsl:with-param name="startWithUpperCase" select="$isDot" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+	
+	<!--
+	- Transform a property name in a hungarian-formatted string starting with an 
+	- uppercase.
+	-->
+	<xsl:template name="hungarianPropertyLower">
+		<xsl:param name="text" />
+		<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:with-param name="text"               select="$text"  />
+			<xsl:with-param name="startWithUpperCase" select="'false'" />
+		</xsl:call-template>
+	</xsl:template>
 </xsl:stylesheet>

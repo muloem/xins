@@ -84,6 +84,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - If available the version of the API is set in the manifest of the WAR file
     and in the web.xml file. The _GetVersion meta function now returns the
     version of the API.
+  - Added possibility to have comma separated list of functions for the 
+    ACL permissions.
+  - Added the possibility to define the properties in the impl.xml file.
+    If defined a class is created. This class checks the properties and 
+    provides methods to access the value of the properties.
 
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
@@ -95,6 +100,12 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Completed implementation of RFE #1110484 (make CAPI call with request
     object).
 
+* Generated specification documentation:
+  - Added "Result code" in the header of the HTML pages.
+  - Activated the link to the API for types and result codes.
+  - Added the possibility to define the properties in the impl.xml file.
+    If defined a page containing the description of the properties is created.
+
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
   - Slightly improved output of 'help' target.
@@ -104,6 +115,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added 'javaclass_for_javatype' template to types.xslt. For a Java primary
     data type it returns the fully-qualified name of the corresponding wrapper
     class. E.g. for 'int' it returns 'java.lang.Integer'.
+  - Added two method in hungarian.xslt to translate a property name to
+    a well written Java variable name.
 
 * Build- and release-process:
   - Fixed SF.net bug #1113838: CAPI Javadoc does not link to XINS Javadoc

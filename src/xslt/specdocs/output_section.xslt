@@ -23,7 +23,7 @@
 		</h3>
 
 		<xsl:choose>
-			<xsl:when test="param">
+			<xsl:when test="param | property">
 				<table class="parameters">
 					<xsl:attribute name="class">
 						<xsl:value-of select="$class" />
@@ -34,7 +34,7 @@
 						<th>Description</th>
 						<th>Required</th>
 					</tr>
-					<xsl:for-each select="param[not(@required='true') and not(@required='false')]">
+					<xsl:for-each select="param[not(@required='true') and not(@required='false')] | property[not(@required='true') and not(@required='false')]">
 						<xsl:message terminate="yes">
 							<xsl:text>Parameter '</xsl:text>
 							<xsl:value-of select="@name" />
@@ -46,6 +46,7 @@
 						</xsl:message>
 					</xsl:for-each>
 					<xsl:apply-templates select="param" />
+					<xsl:apply-templates select="property" />
 				</table>
 			</xsl:when>
 			<xsl:otherwise>
@@ -61,7 +62,7 @@
 
 	</xsl:template>
 
-	<xsl:template match="param">
+	<xsl:template match="param | property">
 
 		<xsl:if test="boolean(deprecated) and (@required = 'true')">
 			<xsl:message terminate="yes">

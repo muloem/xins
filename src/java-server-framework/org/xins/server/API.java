@@ -114,6 +114,7 @@ implements DefaultResultCodes {
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
       _resultCodeList    = new ArrayList();
+      _emptyProperties   = new RuntimeProperties();
    }
 
 
@@ -176,6 +177,12 @@ implements DefaultResultCodes {
    private PropertyReader _buildSettings;
 
    /**
+    * The {@link RuntimeProperies} containing the method to verify and access
+    * the defined runtime properties.
+    */
+   private RuntimeProperties _emptyProperties;
+
+   /**
     * The runtime-time settings. This field is initialized by
     * {@link #init(PropertyReader)}. It can be <code>null</code> before that.
     */
@@ -236,6 +243,16 @@ implements DefaultResultCodes {
     */
    public final String getName() {
       return _name;
+   }
+
+   /**
+    * Gets the properties specified in the implementation.
+    *
+    * @return
+    *    the runtime properties for the API, cannot be <code>null</code>.
+    */
+   public RuntimeProperties getProperties() {
+      return _emptyProperties;
    }
 
    /**
@@ -508,6 +525,9 @@ implements DefaultResultCodes {
          }
       }
 
+      // Initialize the RuntimeProperties object.
+      getProperties().init(runtimeSettings);
+      
       // Initialize all instances
       int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {

@@ -193,6 +193,8 @@ APIs in this project are:
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN"
 					     location="{$xins_home}/src/dtd/translation-bundle_1_1.dtd" />
 
+					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
+					     location="{$xins_home}/src/dtd/impl_1_2.dtd" />
 				</xmlcatalog>
 			</target>
 
@@ -412,6 +414,26 @@ APIs in this project are:
 							</style>
 						</xsl:for-each>
 					</xsl:if>
+					<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+						<xmlvalidate file="{$impl_file}" warn="false">
+							<xmlcatalog refid="all-dtds" />
+						</xmlvalidate>
+						<xsl:if test="document($impl_file)/impl/runtime-properties/property/description">
+							<style
+							in="{$impl_file}"
+							out="{$project_home}/build/specdocs/{$api}/properties.html"
+							style="{$xins_home}/src/xslt/specdocs/impl_to_html.xslt">
+								<xmlcatalog refid="all-dtds" />
+								<param name="xins_version" expression="{$xins_version}" />
+								<param name="project_home" expression="{$project_home}" />
+								<param name="project_file" expression="{$project_file}" />
+								<param name="specsdir"     expression="{$api_specsdir}" />
+								<param name="api"          expression="{$api}"          />
+								<param name="api_file"     expression="{$api_file}"     />
+							</style>
+						</xsl:if>
+					</xsl:if>
 				</target>
 
 				<xsl:if test="$apiHasTypes = 'true'">
@@ -625,6 +647,23 @@ APIs in this project are:
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
 						style="{$xins_home}/src/xslt/java-server-framework/api_to_java.xslt">
+							<xmlcatalog refid="all-dtds" />
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$api_specsdir}" />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+							<param name="package"      expression="{$package}"      />
+						</style>
+						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+						<xmlvalidate file="{$impl_file}" warn="false">
+							<xmlcatalog refid="all-dtds" />
+						</xmlvalidate>
+						<style
+						in="{$impl_file}"
+						out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
+						style="{$xins_home}/src/xslt/java-server-framework/impl_to_java.xslt">
 							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />

@@ -154,7 +154,8 @@ public class APIImpl extends API {
    private APIImpl() {
       super("]]></xsl:text>
 		<xsl:value-of select="$api" />
-		<xsl:text>");</xsl:text>
+		<xsl:text>");
+		_runtimeProperties = new RuntimeProperties();</xsl:text>
 		<xsl:choose>
 			<xsl:when test="instance">
 				<xsl:for-each select="instance">
@@ -181,6 +182,8 @@ public class APIImpl extends API {
 		<xsl:for-each select="instance">
 			<xsl:text>
 
+   private final RuntimeProperties _runtimeProperties;
+
    private final </xsl:text>
 			<xsl:value-of select="@class" />
 			<xsl:text> </xsl:text>
@@ -201,6 +204,13 @@ public class APIImpl extends API {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets the class used to access the defined runtime properties
+    */
+   public org.xins.server.RuntimeProperties getProperties() {
+      return _runtimeProperties;
+   }
 
    /**
     * Triggers re-initialization of this API.

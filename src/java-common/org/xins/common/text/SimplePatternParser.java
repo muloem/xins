@@ -173,6 +173,8 @@ public class SimplePatternParser extends Object {
             buffer.append(".*");
          } else if (currChar == '?') {
             buffer.append('.');
+         } else if (currChar == ',') {
+            buffer.append('|');
          } else {
             throw new ParseException("The pattern \"" + pattern + "\" is invalid. The character '" + currChar + "' is not allowed.");
          }

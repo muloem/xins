@@ -47,6 +47,11 @@
 						<xsl:with-param name="item">type</xsl:with-param>
 						<xsl:with-param name="active" select="$active" />
 					</xsl:call-template>
+					<xsl:text> | </xsl:text>
+					<xsl:call-template name="header_item">
+						<xsl:with-param name="item">resultcode</xsl:with-param>
+						<xsl:with-param name="active" select="$active" />
+					</xsl:call-template>
 				</td>
 				<xsl:if test="boolean($prev) or boolean($next)">
 					<td class="prevnext">
@@ -106,7 +111,7 @@
 					</xsl:call-template>
 				</span>
 			</xsl:when>
-			<xsl:when test="$item='api' and not($active='function' or $active='testform' or $active='type')">
+			<xsl:when test="$item='api' and not($active='function' or $active='testform' or $active='type' or $active='resultcode' or $active='properties')">
 				<span class="disabled">
 					<xsl:call-template name="header_item_caption">
 						<xsl:with-param name="item" select="$item" />
@@ -114,6 +119,13 @@
 				</span>
 			</xsl:when>
 			<xsl:when test="$item='type' or ($item='function' and not($active='testform'))">
+				<span class="disabled">
+					<xsl:call-template name="header_item_caption">
+						<xsl:with-param name="item" select="$item" />
+					</xsl:call-template>
+				</span>
+			</xsl:when>
+			<xsl:when test="$item='resultcode' or ($item='function' and not($active='testform'))">
 				<span class="disabled">
 					<xsl:call-template name="header_item_caption">
 						<xsl:with-param name="item" select="$item" />
@@ -158,6 +170,7 @@
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
+			<xsl:when test="$item='resultcode'">Result code</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
@@ -170,6 +183,7 @@
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form for this function</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
+			<xsl:when test="$item='resultcode'">Result code</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 

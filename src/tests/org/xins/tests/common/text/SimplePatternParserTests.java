@@ -102,7 +102,7 @@ public class SimplePatternParserTests extends TestCase {
 
       doTestParseSimplePattern("abcdefghijklmnopqrstuvwxyz1234567890-_.", "abcdefghijklmnopqrstuvwxyz1234567890-_\\.");
 
-      final String invalidChars = "~`!@#$%^&()=+[]{}|\\:;\"'<>,/";
+      final String invalidChars = "~`!@#$%^&()=+[]{}|\\:;\"'<>/";
       for (int i = 0; i < invalidChars.length(); i++) {
          char invalidChar = invalidChars.charAt(i);
          doTestParseSimplePattern(""   + invalidChar + "");
