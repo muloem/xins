@@ -276,11 +276,14 @@ implements Servlet {
 
    /**
     * Actually initializes this servlet.  This method is called from
-    * {@link #initi(ServletConfig)}.
+    * {@link #init(ServletConfig)}.
     *
     * @param config
     *    the servlet configuration object, guaranteed not to be
     *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the initialization fails.
     */
    private void initImpl(ServletConfig config)
    throws ServletException {
