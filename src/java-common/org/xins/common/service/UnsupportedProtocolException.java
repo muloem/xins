@@ -38,6 +38,31 @@ extends RuntimeException {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates the message for the constructor to pass up to the
+    * superconstructor.
+    *
+    * @param target
+    *    the {@link TargetDescriptor} that has an unsupported protocol, cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null</code>.
+    */
+   private static final String createMessage(TargetDescriptor target)
+   throws IllegalArgumentException {
+
+      // TRACE: Enter constructor
+      Log.log_1000(CLASSNAME, null);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target", target);
+
+      return "Unsupported protocol \""
+           + target.getProtocol()
+           + "\".";
+   }
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -56,16 +81,10 @@ extends RuntimeException {
    public UnsupportedProtocolException(TargetDescriptor target)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("target", target);
+      super(createMessage(target));
 
       // Store
       _target = target;
-
-      // TODO: Create the message for this exception
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
