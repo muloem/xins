@@ -1,5 +1,5 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.139:
+CHANGES INTRODUCED IN XINS 0.140:
 
 * XINS/Java Client Framework:
   - Added NoSuchSessionException.
