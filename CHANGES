@@ -33,6 +33,9 @@ CHANGES INTRODUCED IN XINS 0.201:
     deprecated the old constructors:
     . CallIOException
     . ConnectException
+    . InvalidCallResultException
+  - Removed all existing constructors from class InvalidCallResultException,
+    except the one that is used, that accepts a String argument only.
 
 * XINS/Java Common Library:
   - PropertyReader interface no longer directly extends LogdocSerializable.
