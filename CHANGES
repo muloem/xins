@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.7:
+
+* Refactorings applied to create less objects during a function call.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.6:
 
 * Keeping track of last successful and last unsuccessful call start and
