@@ -70,7 +70,7 @@ implements DefaultResultCodes {
     * String returned by the function <code>_GetStatistics</code> when certain
     * information is not available.
     */
-   private static final String NOT_AVAILABLE = "N/A"
+   private static final String NOT_AVAILABLE = "N/A";
 
 
    //-------------------------------------------------------------------------
@@ -321,7 +321,13 @@ implements DefaultResultCodes {
 
       // Set the time zone
       _timeZone = TimeZone.getDefault();
-      LOG.info("Local time zone is " + _timeZone.getDisplayName() + '.');
+      String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
+      String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
+      if (tzLongName.equals(tzShortName)) {
+         LOG.info("Local time zone is " + tzLongName + '.');
+      } else {
+         LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
+      }
 
       // Store the settings
       if (properties == null) {
@@ -1060,18 +1066,18 @@ implements DefaultResultCodes {
          } else if (successfulDuration == 0) {
             successfulAverage      = "0";
             successfulMin          = String.valueOf(stats.getSuccessfulMin());
-            successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
+            successfulMinStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMinStart());
             successfulMax          = String.valueOf(stats.getSuccessfulMax());
-            successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
-            lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
+            successfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMaxStart());
+            lastSuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          } else {
             successfulAverage      = String.valueOf(successfulDuration / successfulCalls);
             successfulMin          = String.valueOf(stats.getSuccessfulMin());
-            successfulMinStart     = String.valueOf(stats.getSuccessfulMinStart());
+            successfulMinStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMinStart());
             successfulMax          = String.valueOf(stats.getSuccessfulMax());
-            successfulMaxStart     = String.valueOf(stats.getSuccessfulMaxStart());
-            lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
+            successfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMaxStart());
+            lastSuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastSuccessfulStart());
             lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          }
 
@@ -1093,18 +1099,18 @@ implements DefaultResultCodes {
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage      = "0";
             unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
-            unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
+            unsuccessfulMinStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMinStart());
             unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
-            unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
-            lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
+            unsuccessfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMaxStart());
+            lastUnsuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          } else {
             unsuccessfulAverage      = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
             unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
-            unsuccessfulMinStart     = String.valueOf(stats.getUnsuccessfulMinStart());
+            unsuccessfulMinStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMinStart());
             unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
-            unsuccessfulMaxStart     = String.valueOf(stats.getUnsuccessfulMaxStart());
-            lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
+            unsuccessfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMaxStart());
+            lastUnsuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastUnsuccessfulStart());
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          }
 
