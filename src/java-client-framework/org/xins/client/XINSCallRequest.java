@@ -200,7 +200,7 @@ public final class XINSCallRequest extends CallRequest {
       final String CONSTRUCTOR_DETAIL = "#"
                                       + _instanceNumber;
 
-/* FIXME:
+/* TODO:
                                       + " [functionName="
                                       + TextUtils.quote(functionName)
                                       + "; parameters="
