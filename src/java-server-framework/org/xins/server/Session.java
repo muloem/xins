@@ -208,13 +208,6 @@ extends Object {
       }
    }
 
-   /**
-    * Touches this session so the expiry timer will be reset.
-    */
-   public void touch() {
-      // TODO
-   }
-
    public String toString() {
       return _id.toString();
    }
