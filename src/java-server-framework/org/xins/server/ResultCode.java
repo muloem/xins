@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -51,7 +50,6 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("value", value);
 
-      _log     = Logger.getLogger(getClass().getName());
       _api     = null;
       _success = success;
       _name    = name;
@@ -82,13 +80,11 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("api", api, "value", value);
 
-      _log     = Logger.getLogger(getClass().getName());
       _api     = api;
       _success = success;
       _name    = name;
       _value   = value;
 
-      // TODO: Remove _log ?
       _api.resultCodeAdded(this);
    }
 
@@ -96,12 +92,6 @@ extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logger used by this <code>ResultCode</code> instance. This field is
-    * initialized by the constructor and set to a non-<code>null</code> value.
-    */
-   private final Logger _log;
 
    /**
     * The API implementation this result code is defined within. Cannot be
