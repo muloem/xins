@@ -175,9 +175,11 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @deprecated
     *    Deprecated since XINS 1.2.0.
-    *    Use the equivalent
-    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String,org.xins.client.XINSCallConfig) constructor}
-    *    instead.
+    *    Use the
+    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String) CAPI(PropertyReader,String)}
+    *    constructor in combination with the
+    *    {@link #configure(org.xins.client.XINSCallConfig) configure(XINSCallConfig)}
+    *    method instead.
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
                                    java.lang.String                           apiName,
@@ -220,9 +222,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @deprecated
     *    Deprecated since XINS 1.2.0.
-    *    Use the equivalent
-    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String) constructor}
-    *    instead.
+    *    Use the
+    *    {@link #CAPI(org.xins.common.collections.PropertyReader,java.lang.String) CAPI(PropertyReader,String)}
+    *    constructor instead.
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
                                    java.lang.String                           apiName)
@@ -305,46 +307,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
    /**
     * Constructs a new <code>CAPI</code> object for the specified API from a
-    * set of properties, with a specific call configuration.
-    *
-    * @param properties
-    *    the properties to create a <code>CAPI</code> object for, cannot be
-    *    <code>null</code>.
-    *
-    * @param apiName
-    *    the name of the API to create a <code>CAPI</code> object for, cannot
-    *    be <code>null</code> and must be a valid API name.
-    *
-    * @param callConfig
-    *    configuration to be used when making calls, or <code>null</code> if a
-    *    default should be applied.
-    *
-    * @throws java.lang.IllegalArgumentException
-    *    if <code>properties == null || apiName == null</code> or if
-    *    <code>apiName</code> is not considered to be a valid API name.
-    *
-    * @throws org.xins.common.collections.MissingRequiredPropertyException
-    *    if a required property is missing in the specified properties set.
-    *
-    * @throws org.xins.common.collections.InvalidPropertyValueException
-    *    if one of the properties in the specified properties set is used to
-    *    create a <code>CAPI</code> instance but its value is considered
-    *    invalid.
-    *
-    * @since XINS 1.2.0
-    */
-   public CAPI(org.xins.common.collections.PropertyReader properties,
-               java.lang.String                           apiName,
-               org.xins.client.XINSCallConfig             callConfig)
-   throws java.lang.IllegalArgumentException,
-          org.xins.common.collections.MissingRequiredPropertyException,
-          org.xins.common.collections.InvalidPropertyValueException {
-
-      this(createDescriptor(properties, apiName), callConfig);
-   }
-
-   /**
-    * Constructs a new <code>CAPI</code> object for the specified API from a
     * set of properties.
     *
     * @param properties
@@ -374,36 +336,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    throws java.lang.IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
-      this(properties, apiName, null);
-   }
-
-
-   /**
-    * Constructs a new <code>CAPI</code> object, using the specified
-    * <code>Descriptor</code>, with a specific call configuration.
-    *
-    * @param descriptor
-    *    the descriptor for the service(s), cannot be <code>null</code>.
-    *
-    * @param callConfig
-    *    the call configuration object, or <code>null</code> if a default
-    *    should be used.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws org.xins.common.service.UnsupportedProtocolException
-    *    if any of the target descriptors specifies an unsupported protocol.
-    *
-    * @since XINS 1.2.0
-    */
-   public CAPI(org.xins.common.service.Descriptor descriptor,
-               org.xins.client.XINSCallConfig     callConfig)
-   throws java.lang.IllegalArgumentException,
-          org.xins.common.service.UnsupportedProtocolException {
-
-      // Call the superclass constructor
-      super(descriptor, callConfig);
+      this(createDescriptor(properties, apiName));
    }
 
    /**
@@ -437,8 +370,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<!-- Define parameters -->
 		<xsl:param name="name" />
 
-		<!-- Determine the name of the method that accepts all
-		     individual parameters -->
+		<!-- Determine the name of the call methods -->
 		<xsl:variable name="methodName">
 			<xsl:text>call</xsl:text>
 			<xsl:value-of select="$name" />
@@ -454,74 +386,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:if test="string-length(@name) &gt; 0 and not($name = @name)">
 			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file.</xsl:message>
 		</xsl:if>
-
-		<!-- Print method that accepts the a request and a config -->
-		<xsl:text><![CDATA[
-
-   /**
-    * Calls the <em>]]></xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[</em>
-    * function using the specified request and call configuration.
-    *
-    * <p>Generated from function specification version ]]></xsl:text>
-		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision" select="@rcsversion" />
-		</xsl:call-template>
-		<xsl:text><![CDATA[.
-    * See the
-    * <a href="]]></xsl:text>
-		<xsl:value-of select="$specdocsURL" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[.html">online function specification</a>.
-    *
-    * @param request
-    *    the request, cannot be <code>null</code>.
-    *
-    * @param config
-    *    the configuration to apply to this call, or <code>null</code>.
-    *
-    * @return
-    *    the result, not <code>null</code>.
-    *
-    * @throws java.lang.IllegalArgumentException
-    *    if <code>request == null</code>.
-    *
-    * @throws org.xins.client.UnacceptableRequestException
-    *    if the request is considered to be unacceptable; this is determined
-    *    by calling
-    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#validate() validate()}.
-    *
-    * @throws org.xins.common.service.GenericCallException
-    *    if the first call attempt failed due to a generic reason and all the
-    *    other call attempts (if any) failed as well.
-    *
-    * @throws org.xins.common.http.HTTPCallException
-    *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts (if any) failed as well.
-    *
-    * @throws org.xins.client.XINSCallException
-    *    if the first call attempt failed due to a XINS-related reason and
-    *    all the other call attempts (if any) failed as well.
-    *
-    * @since XINS 1.2.0
-    */
-   public ]]></xsl:text>
-		<xsl:value-of select="$returnType" />
-		<xsl:text> call(</xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text>Request request, org.xins.client.XINSCallConfig config)
-   throws java.lang.IllegalArgumentException,
-          org.xins.client.UnacceptableRequestException,
-          org.xins.common.service.GenericCallException,
-          org.xins.common.http.HTTPCallException,
-          org.xins.client.XINSCallException {
-      return null; // FIXME
-   }</xsl:text>
-
 
 		<!-- Print method that accepts the a request object only -->
 		<xsl:text><![CDATA[
@@ -576,7 +440,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
-		<xsl:text> call(</xsl:text>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$methodName" />
+		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>Request request)
    throws java.lang.IllegalArgumentException,
@@ -584,7 +450,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
           org.xins.client.XINSCallException {
-      return call(request, null);
+      return null; // TODO
    }</xsl:text>
 
 		<!-- Print method that accepts the individual parameters -->
