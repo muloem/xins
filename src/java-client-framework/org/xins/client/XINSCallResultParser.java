@@ -4,7 +4,8 @@
 package org.xins.client;
 
 import java.io.ByteArrayInputStream;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
@@ -81,7 +82,7 @@ extends Object {
     * State for the SAX event handler for the level within the output
     * parameter element (<code>param</code>).
     */
-   private static final State IN_PARAM_TAG = new State("IN_PARAM_TAG");
+   private static final State IN_PARAM_ELEMENT = new State("IN_PARAM_ELEMENT");
 
    /**
     * State for the SAX event handler for the level within the data section
@@ -174,8 +175,8 @@ extends Object {
 
          Log.log_2206(exception, detail);
 
-         throw new ParseException(buffer.toString());
-         // TODO: throw new ParseException(buffer.toString(), exception);
+         // Throw exception with message, and register cause exception
+         throw new ParseException(buffer.toString(), exception);
       }
 
       // TRACE: Leave method
@@ -236,25 +237,26 @@ extends Object {
       private ProtectedPropertyReader _parameters;
 
       /**
-       * The parameter name of the parameter that is actually parsed.
+       * The name of the output parameter that is currently being parsed.
        */
-      private String _parameterKey;
+      private String _parameterName;
 
       /**
-       * The PCDATA element of the tag that is actually parsed.
+       * The PCDATA content of the element currently being parsed.
        */
       private FastStringBuffer _pcdata;
 
       /**
-       * The content of the data element that is actually parsed.
+       * The child elements of the data element that is currently being
+       * parsed.
        */
-      private Hashtable _elements = new Hashtable();
+      private Map _elements;
 
       /**
-       * The level of the element that is actually parsed in the data section.
-       * Initially this field is set to -1, which means that no element is parsed;
-       * 0 means that the parser just read the &lt;data&gt; tag;
-       * 1 means that the parser entered in an direct sub-element of the
+       * The level of the element that is currently being parsed in the data
+       * section. Initially this field is set to -1, which means that no
+       * element is parsed; 0 means that the parser just read the &lt;data&gt;
+       * tag; 1 means that the parser entered in an direct sub-element of the
        * &lt;data&gt; tag, etc.
        */
       private int _level = -1;
@@ -328,6 +330,47 @@ extends Object {
                throw new SAXException("Found conflicting duplicate value for error code. First is \"" + code1 + "\". Second is \"" + code2 + "\".");
             }
 
+            // Change state
+            _state = AT_ROOT_LEVEL;
+
+         // Start of data section
+         } else if (_state == AT_ROOT_LEVEL) {
+
+            // Output parameter
+            if (qName.equals("param")) {
+
+               // Store the name of the parameter. It may be null, but that will
+               // be checked only after the element end tag is processed.
+               _parameterName = atts.getValue("name");
+
+               // Reserve a buffer for the PCDATA content already
+               _pcdata = new FastStringBuffer(20);
+
+               // Update the state
+               _state = IN_PARAM_ELEMENT;
+
+            // Start of data section
+            } else if (qName.equals("data")) {
+
+               // Maintain a list of the elements, with data as the root
+               _elements = new HashMap();
+               _elements.put(ZERO, new DataElement("data"));
+               _level = 0;
+
+               // Update the state
+               _state = IN_DATA_SECTION;
+
+            // Unknown elements at the root level are okay
+            } else {
+               // TODO: Log
+               // Ignore
+            }
+
+         // Within output parameter element
+         } else if (_state == IN_PARAM_ELEMENT) {
+            // TODO: Log
+            throw new SAXException("Found \"" + qName + "\" element within \"param\" element.");
+
          // Within the data section
          } else if (_state == IN_DATA_SECTION) {
 
@@ -348,20 +391,12 @@ extends Object {
             // Reserve buffer for PCDATA
             _pcdata = new FastStringBuffer(20);
 
-         // Output parameter
-         } else if (qName.equals("param")) {
-            _parameterKey = atts.getValue("name");
-            _pcdata = new FastStringBuffer(20);
-
-         // Start of data section
-         } else if (qName.equals("data")) {
-            _elements = new Hashtable();
-            _elements.put(ZERO, new DataElement("data"));
-            _level = 0;
 
          // Unknown element in data section
          } else {
-            // Ignore this element
+            // Apparently there is an unrecognized state
+            // TODO: Log programming error
+            throw new Error("Unrecognized state: " + _state + '.');
          }
       }
 
@@ -395,21 +430,49 @@ extends Object {
          MandatoryArgumentChecker.check("qName", qName);
 
          // Within data section
-         if (_level > 0) {
-            DataElement child = (DataElement)_elements.get(new Integer(_level));
-            if (_pcdata != null && _pcdata.getLength() > 0) {
-               child.setText(_pcdata.toString());
+         if (_state == IN_DATA_SECTION) {
+
+            // Get the DataElement for which we process the end tag
+            DataElement child = (DataElement) _elements.get(new Integer(_level));
+
+            // If at the <data/> element level, then return to AT_ROOT_LEVEL
+            if (_level == 0) {
+               if (! qName.equals("data")) {
+                  // TODO: Log programming error
+                  throw new Error("Expected element name \"param\" instead of \"" + qName + "\"."); 
+               }
+
+               // Reset the state
+               _level = -1;
+               _state = AT_ROOT_LEVEL;
+
+            // Otherwise it's a custom element
+            } else {
+
+               // Set the PCDATA content on the element
+               if (_pcdata != null && _pcdata.getLength() > 0) {
+                  child.setText(_pcdata.toString());
+               }
+
+               // Reset the PCDATA content and the level
+               _pcdata = null;
+               _level--;
+
+               // Add the child to the parent
+               DataElement parent = (DataElement) _elements.get(new Integer(_level));
+               parent.addChild(child);
             }
-            _pcdata = null;
-            _level--;
-            DataElement parent = (DataElement)_elements.get(new Integer(_level));
-            parent.addChild(child);
 
          // Output parameter
-         } else if (qName.equals("param")) {
+         } else if (_state == IN_PARAM_ELEMENT) {
+
+            if (! qName.equals("param")) {
+               // TODO: Log programming error
+               throw new Error("Expected element name \"param\" instead of \"" + qName + "\"."); 
+            }
 
             // Retrieve name and value for output parameter
-            String name  = _parameterKey;
+            String name  = _parameterName;
             String value = _pcdata.toString();
 
             // Both name and value should be set
@@ -448,12 +511,9 @@ extends Object {
             }
 
             // Reset the state
-            _parameterKey = null;
-            _pcdata = null;
-
-         // End of data section
-         } else if (_level == 0 && qName.equals("data")) {
-            _level--;
+            _parameterName = null;
+            _pcdata       = null;
+            _state        = AT_ROOT_LEVEL;
          }
 
          // Otherwise do nothing
@@ -523,7 +583,11 @@ extends Object {
        *    return any data element.
        */
       public DataElement getDataElement() {
-         return (DataElement) _elements.get(ZERO);
+         if (_elements == null) {
+            return null;
+         } else {
+            return (DataElement) _elements.get(ZERO);
+         }
       }
    }
 
