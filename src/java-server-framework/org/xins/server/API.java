@@ -638,7 +638,8 @@ implements DefaultResultCodes {
     * will be thrown.
     *
     * <p>The initialization will be performed by calling
-    * {@link LifespanManager#init(PropertyReader,PropertyReader)}.
+    * {@link LifespanManager#bootstrap(PropertyReader)} and
+    * {@link LifespanManager#init(PropertyReader)}.
     *
     * <p>At shutdown time {@link LifespanManager#destroy()} will be called.
     *
