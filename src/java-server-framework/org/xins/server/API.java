@@ -6,7 +6,10 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.znerd.xmlenc.XMLOutputter;
@@ -53,7 +56,9 @@ implements DefaultReturnCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
-      _functionsByName = new HashMap();
+      _functionsByName          = new HashMap();
+      _functionList             = new ArrayList();
+      _unmodifiableFunctionList = Collections.unmodifiableList(_functionList);
    }
 
 
@@ -69,6 +74,17 @@ implements DefaultReturnCodes {
     * constructor.
     */
    private final Map _functionsByName;
+
+   /**
+    * List of all functions. This field cannot be <code>null</code>.
+    */
+   private final List _functionList;
+
+   /**
+    * Unmodifiable view of the list of all functions. This field cannot be
+    * <code>null</code>.
+    */
+   private final List _unmodifiableFunctionList;
 
 
    //-------------------------------------------------------------------------
@@ -102,6 +118,7 @@ implements DefaultReturnCodes {
     */
    final void functionAdded(Function function) {
       _functionsByName.put(function.getName(), function);
+      _functionList.add(function);
    }
 
    /**
