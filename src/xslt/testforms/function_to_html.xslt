@@ -46,8 +46,7 @@
 					<xsl:value-of select="$functionName" />
 					<xsl:text> test form</xsl:text>
 				</title>
-				<!-- TODO: Use separate stylesheet? -->
-				<link rel="stylesheet" type="text/css" href="../style.css" />
+				<link rel="stylesheet" type="text/css" href="style.css" />
 				<link rel="top" href="../index.html" title="API index" />
 			</head>
 			<body>
