@@ -3,8 +3,8 @@
  */
 package org.xins.server;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.PropertyReader;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
 
 /**
  * Basic implementation of a <code>CallResult</code>.

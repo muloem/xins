@@ -10,9 +10,9 @@ import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.types.TypeValueException;
-import org.xins.types.standard.Properties;
-import org.xins.util.collections.PropertyReader;
+import org.xins.common.types.TypeValueException;
+import org.xins.common.types.standard.Properties;
+import org.xins.common.collections.PropertyReader;
 
 /**
  * Tests for class <code>Properties</code>.

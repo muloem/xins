@@ -4,7 +4,7 @@
 package org.xins.client;
 
 import java.io.IOException;
-import org.xins.util.MandatoryArgumentChecker;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Exception thrown to indicate that a XINS API call failed due to an I/O

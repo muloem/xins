@@ -26,8 +26,6 @@
 	</xsl:variable>
 
 	<xsl:template name="request">
-		<xsl:param name="sessionBased"   />
-		<xsl:param name="createsSession" />
 
 <xsl:text><![CDATA[
 /**
@@ -49,22 +47,13 @@ public final static class Request {
    // Constructors
    //-------------------------------------------------------------------------
 ]]></xsl:text>
-		<xsl:call-template name="constructor_request">
-			<xsl:with-param name="sessionBased"   select="$sessionBased"   />
-			<xsl:with-param name="createsSession" select="$createsSession" />
-		</xsl:call-template>
+		<xsl:call-template name="constructor_request" />
 		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="input/param" mode="field" />
-
-	 	<!-- If this function is session based also has a session field. -->
-		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:text>
-   private final org.xins.server.Session __session;</xsl:text>
-		</xsl:if>
 
 		<xsl:text>
 
@@ -73,21 +62,6 @@ public final static class Request {
    //-------------------------------------------------------------------------</xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="method" />
-
-	 	<!-- If this function is session based also generates a getSession() method. -->
-		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:text><![CDATA[
-
-   /**
-    * Retrieves the user's session.
-    *
-    * @return
-    *    the session of the user, never <code>null</code>.
-    */
-   org.xins.server.Session retrieveSession() {
-      return __session;
-   }]]></xsl:text>
-		</xsl:if>
 
 		<xsl:text>
 }
@@ -98,8 +72,6 @@ public final static class Request {
 	     The contructor sets the input values.
 	-->
 	<xsl:template name="constructor_request">
-		<xsl:param name="sessionBased"   />
-		<xsl:param name="createsSession" />
 
 		<xsl:text><![CDATA[
    /**
@@ -121,9 +93,6 @@ public final static class Request {
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
-		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:text>, org.xins.server.Session _session</xsl:text>
-		</xsl:if>
 		<xsl:text>) {
 </xsl:text>
 		<xsl:for-each select="input/param">
@@ -134,9 +103,6 @@ public final static class Request {
 			<xsl:text>;
 </xsl:text>
 		</xsl:for-each>
-		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:text>      __session = _session;</xsl:text>
-		</xsl:if>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>

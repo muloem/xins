@@ -19,7 +19,6 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../function.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
@@ -158,7 +157,7 @@ public final class ]]></xsl:text>
 </xsl:text>
 			<xsl:apply-templates select="output/param" mode="setfield" />
 			<xsl:text>
-      } catch (org.xins.types.TypeValueException exception) {
+      } catch (org.xins.common.types.TypeValueException exception) {
          throw new org.xins.client.InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
       }</xsl:text>
 		</xsl:if>

@@ -3,8 +3,6 @@
  */
 package org.xins.logdoc;
 
-import org.xins.util.MandatoryArgumentChecker;
-
 /**
  * Exception thrown if a specified locale is not supported by at least one
  * <em>logdoc</em> <code>Log</code> class.

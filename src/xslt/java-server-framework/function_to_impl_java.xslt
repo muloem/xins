@@ -20,13 +20,9 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../function.xslt" />
 	<xsl:include href="../types.xslt"  />
 
 	<xsl:template match="function">
-		<xsl:variable name="sessionBased">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:variable>
 
 		<xsl:text><![CDATA[/*
  * $]]><![CDATA[Id$

@@ -3,7 +3,7 @@
  */
 package org.xins.server;
 
-import org.xins.util.MandatoryArgumentChecker;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * A result code. Result codes are either generic or API-specific. Result

@@ -5,8 +5,6 @@ package org.xins.logdoc;
 
 import org.apache.log4j.NDC;
 
-import org.xins.util.MandatoryArgumentChecker;
-
 /**
  * Central class for <em>logdoc</em> logging.
  *

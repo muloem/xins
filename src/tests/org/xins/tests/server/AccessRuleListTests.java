@@ -7,8 +7,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.server.AccessRuleList;
-import org.xins.util.text.FastStringBuffer;
-import org.xins.util.text.ParseException;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
 
 /**
  * Tests for class <code>AccessRuleList</code>.

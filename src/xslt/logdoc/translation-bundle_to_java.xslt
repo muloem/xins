@@ -38,8 +38,7 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
+import org.xins.logdoc.FastStringBuffer;
 
 /**
  * Translation bundle for the <em>]]></xsl:text>

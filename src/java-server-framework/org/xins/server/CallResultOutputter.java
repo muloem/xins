@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import org.xins.util.collections.PropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -64,7 +64,7 @@ final class CallResultOutputter extends Object {
       if (code != null) {
          outputter.attribute("code", code);
       }
-         
+
       // Write the output parameters
       PropertyReader params = result.getParameters();
       if (params != null) {

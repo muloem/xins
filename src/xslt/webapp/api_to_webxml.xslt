@@ -17,13 +17,6 @@
 	<xsl:param name="hostname"     />
 	<xsl:param name="timestamp"    />
 
-	<xsl:variable name="sessionBased">
-		<xsl:choose>
-			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
-			<xsl:otherwise>false</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
 	<xsl:output
 	doctype-public="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 	doctype-system="http://java.sun.com/dtd/web-app_2_3.dtd"
@@ -74,26 +67,6 @@
 						<xsl:text>.APIImpl</xsl:text>
 					</param-value>
 				</init-param>
-				<init-param>
-					<param-name>org.xins.api.sessionBased</param-name>
-					<param-value>
-						<xsl:value-of select="$sessionBased" />
-					</param-value>
-				</init-param>
-				<xsl:if test="$sessionBased = 'true'">
-					<init-param>
-						<param-name>org.xins.api.sessionTimeOut</param-name>
-						<param-value>
-							<xsl:value-of select="//api/session-based/@timeout" />
-						</param-value>
-					</init-param>
-					<init-param>
-						<param-name>org.xins.api.sessionTimeOutPrecision</param-name>
-						<param-value>
-							<xsl:value-of select="//api/session-based/@precision" />
-						</param-value>
-					</init-param>
-				</xsl:if>
 				<xsl:for-each select="param">
 					<init-param>
 						<param-name>

@@ -5,8 +5,8 @@ package org.xins.client;
 
 import java.util.Map;
 import org.jdom.Element;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception that indicates that an API call result was unsuccessful.

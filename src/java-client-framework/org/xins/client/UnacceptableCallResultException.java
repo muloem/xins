@@ -3,7 +3,7 @@
  */
 package org.xins.client;
 
-import org.xins.util.text.FastStringBuffer;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception that indicates that an API call returned a result that was

@@ -25,15 +25,15 @@ import org.apache.log4j.helpers.NullEnumeration;
 
 import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.InvalidPropertyValueException;
-import org.xins.util.collections.MissingRequiredPropertyException;
-import org.xins.util.collections.PropertiesPropertyReader;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.io.FileWatcher;
-import org.xins.util.manageable.BootstrapException;
-import org.xins.util.manageable.InitializationException;
-import org.xins.util.servlet.ServletConfigPropertyReader;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.InvalidPropertyValueException;
+import org.xins.common.collections.MissingRequiredPropertyException;
+import org.xins.common.collections.PropertiesPropertyReader;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.io.FileWatcher;
+import org.xins.common.manageable.BootstrapException;
+import org.xins.common.manageable.InitializationException;
+import org.xins.common.servlet.ServletConfigPropertyReader;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.

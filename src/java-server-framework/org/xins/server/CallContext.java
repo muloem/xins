@@ -4,8 +4,8 @@
 package org.xins.server;
 
 import javax.servlet.ServletRequest;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -54,13 +54,10 @@ public final class CallContext {
     * @param callID
     *    the assigned call ID.
     *
-    * @param session
-    *    the session, if any, or <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>request == null || function == null</code>.
     */
-   CallContext(ServletRequest request, long start, Function function, int callID, Session session)
+   CallContext(ServletRequest request, long start, Function function, int callID)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -73,7 +70,6 @@ public final class CallContext {
       _function     = function;
       _functionName = function.getName();
       _callID       = callID;
-      _session      = session;
       _builder      = new CallResultBuilder();
    }
 
@@ -121,17 +117,6 @@ public final class CallContext {
    private final Function _function;
 
    /**
-    * The session for this call.
-    */
-   private Session _session;
-
-   /**
-    * Flag that indicates if the session ID should be added as a parameter to
-    * the response.
-    */
-   private boolean _returnSessionID;
-
-   /**
     * The call ID, unique in the context of the pertaining function.
     */
    private final int _callID;
@@ -144,10 +129,6 @@ public final class CallContext {
    // TODO: Document
    // TODO: Probably take a different approach
    CallResult getCallResult() {
-      if (_builder.isSuccess() && _returnSessionID) {
-         _builder.param("_session", _session.getIDString());
-         _returnSessionID = false;
-      }
       return _builder;
    }
 
@@ -182,45 +163,6 @@ public final class CallContext {
     */
    final String getCode() {
       return _builder.getCode();
-   }
-
-   /**
-    * Returns the session for this call, if any.
-    *
-    * @return
-    *    the session for this call, not <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the current function is not session-based.
-    */
-   public Session getSession() throws IllegalStateException {
-
-      // Check preconditions
-      if (_function.isSessionBased() == false) {
-         throw new IllegalStateException("The function " + _functionName + " is not session-based.");
-      }
-
-      // Get the session
-      return _session;
-   }
-
-   /**
-    * Creates a session, stores it and remembers that it will have to be
-    * returned in the result.
-    *
-    * @return
-    *    the constructed session, cannot be <code>null</code>.
-    */
-   public Session createSession() {
-
-      // Create the session
-      Session session = _api.createSession();
-
-      // Store the session and remember that we have to send it down
-      _session         = session;
-      _returnSessionID = true;
-
-      return session;
    }
 
    /**

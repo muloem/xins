@@ -7,7 +7,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.server.IPFilter;
-import org.xins.util.text.ParseException;
+import org.xins.common.text.ParseException;
 
 /**
  * Tests for class <code>IPFilter</code>.

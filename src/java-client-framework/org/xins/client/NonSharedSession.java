@@ -3,8 +3,8 @@
  */
 package org.xins.client;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.service.TargetDescriptor;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.service.TargetDescriptor;
 
 /**
  * Non-shared session. Consists of a session identifier and a reference to the

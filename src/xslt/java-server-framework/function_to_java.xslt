@@ -22,7 +22,6 @@
 	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
-	<xsl:include href="../function.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
@@ -38,13 +37,6 @@
 	</xsl:variable>
 
 	<xsl:template match="function">
-		<!-- Initialize the session related variables. -->
-		<xsl:variable name="sessionBased">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:variable>
-		<xsl:variable name="createsSession">
-			<xsl:call-template name="does_function_creates_session" />
-		</xsl:variable>
 
 		<!-- Create the function abstract class. -->
 		<xsl:call-template name="java-header" />
@@ -90,9 +82,7 @@ public abstract class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>", "</xsl:text>
 		<xsl:value-of select="$version" />
-		<xsl:text>", </xsl:text>
-		<xsl:value-of select="$sessionBased" />
-		<xsl:text>);</xsl:text>
+		<xsl:text>");</xsl:text>
 		<xsl:for-each select="document($api_file)/api/impl-java/instance">
 			<xsl:text>
       </xsl:text>
@@ -126,18 +116,6 @@ public abstract class ]]></xsl:text>
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
    throws Throwable {</xsl:text>
-
-
-		<!-- ************************************************************* -->
-		<!-- Retrieve session                                              -->
-		<!-- ************************************************************* -->
-
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>
-
-      // Get the session
-      org.xins.server.Session _session = context.getSession();</xsl:text>
-		</xsl:if>
 
 
 		<!-- ************************************************************* -->
@@ -334,21 +312,6 @@ public abstract class ]]></xsl:text>
 		<!-- Invoke the abstract call method                               -->
 		<!-- ************************************************************* -->
 
-		<xsl:choose>
-			<xsl:when test="$createsSession = 'true'">
-				<xsl:text>
-      // Create the session
-      org.xins.server.Session _session = context.createSession();
-</xsl:text>
-			</xsl:when>
-			<xsl:when test="$sessionBased = 'true'">
-				<xsl:text>
-
-      // Lock on the session and then call the subclass
-      synchronized (_session) {
-         </xsl:text>
-			</xsl:when>
-		</xsl:choose>
 		<xsl:text>
       Request _callRequest = new Request(</xsl:text>
 
@@ -362,21 +325,10 @@ public abstract class ]]></xsl:text>
 				<xsl:with-param name="variable" select="@name"     />
 			</xsl:call-template>
 		</xsl:for-each>
-		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:if test="input/param">
-				<xsl:text>, </xsl:text>
-			</xsl:if>
-			<xsl:text>_session</xsl:text>
-		</xsl:if>
 		<xsl:text>);
       Result _result = call(_callRequest);
 
       return (org.xins.server.FunctionResult) _result;</xsl:text>
-		<!-- TODO: Dispose the session if appropriate -->
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>
-      }</xsl:text>
-		</xsl:if>
 		<xsl:text><![CDATA[
    }
 
@@ -385,7 +337,7 @@ public abstract class ]]></xsl:text>
     * exception. All exceptions will be handled by the caller.
     *
     * @param request
-    *    the container that contains the input value and the session if needed, never <code>null</code>.
+    *    the container that contains the input values, never <code>null</code>.
     *
     * @return Result
     *    the result of your function, cannot be <code>null</code>.
@@ -407,8 +359,6 @@ public abstract class ]]></xsl:text>
 			<xsl:with-param name="api"            select="$api"            />
 			<xsl:with-param name="api_file"       select="$api_file"       />
 			<xsl:with-param name="specsdir"       select="$specsdir"       />
-			<xsl:with-param name="sessionBased"   select="$sessionBased"   />
-			<xsl:with-param name="createsSession" select="$createsSession" />
 		</xsl:call-template>
 <xsl:text>
 </xsl:text>
@@ -419,7 +369,6 @@ public abstract class ]]></xsl:text>
 			<xsl:with-param name="api"            select="$api"            />
 			<xsl:with-param name="api_file"       select="$api_file"       />
 			<xsl:with-param name="specsdir"       select="$specsdir"       />
-			<xsl:with-param name="createsSession" select="$createsSession" />
 		</xsl:call-template>
 <xsl:text>
 }</xsl:text>

@@ -7,13 +7,13 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.collections.MissingRequiredPropertyException;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.PropertiesPropertyReader;
-import org.xins.util.service.Descriptor;
-import org.xins.util.service.DescriptorBuilder;
-import org.xins.util.service.GroupDescriptor;
-import org.xins.util.service.TargetDescriptor;
+import org.xins.common.collections.MissingRequiredPropertyException;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertiesPropertyReader;
+import org.xins.common.service.Descriptor;
+import org.xins.common.service.DescriptorBuilder;
+import org.xins.common.service.GroupDescriptor;
+import org.xins.common.service.TargetDescriptor;
 
 /**
  * Tests for class <code>DescriptorBuilder</code>.

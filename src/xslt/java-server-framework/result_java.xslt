@@ -28,7 +28,6 @@
 	<xsl:variable name="className" select="'SuccessfulResult'" />
 
 	<xsl:template name="result">
-		<xsl:param name="createsSession" />
 
 		<!-- ************************************************************* -->
 		<!-- Generate the Result interface                                 -->
@@ -84,19 +83,10 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    /**
     * Creates a new SuccessfulResult.
     */
-   public SuccessfulResult(]]></xsl:text>
-	  <xsl:if test="$createsSession = 'true'">
-			<xsl:text>org.xins.server.Session session</xsl:text>
-		</xsl:if>
-		<xsl:text>) {
+   public SuccessfulResult() {
 
       // Report the success
-      super(true, null);</xsl:text>
-	  <xsl:if test="$createsSession = 'true'">
-			<xsl:text>
-      param("_session", session.getIDString());</xsl:text>
-		</xsl:if>
-		<xsl:text>
+      super(true, null);
    }
 
    //-------------------------------------------------------------------------
@@ -105,7 +95,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------</xsl:text>
+   //-------------------------------------------------------------------------]]></xsl:text>
 		<xsl:apply-templates select="output/param">
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>

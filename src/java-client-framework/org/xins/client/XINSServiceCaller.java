@@ -14,14 +14,14 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.apache.log4j.NDC;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.CollectionUtils;
-import org.xins.util.service.CallFailedException;
-import org.xins.util.service.CallResult;
-import org.xins.util.service.Descriptor;
-import org.xins.util.service.ServiceCaller;
-import org.xins.util.service.TargetDescriptor;
-import org.xins.util.text.ParseException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.CollectionUtils;
+import org.xins.common.service.CallFailedException;
+import org.xins.common.service.CallResult;
+import org.xins.common.service.Descriptor;
+import org.xins.common.service.ServiceCaller;
+import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.ParseException;
 
 /**
  * XINS service caller.

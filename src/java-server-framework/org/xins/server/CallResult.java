@@ -3,7 +3,7 @@
  */
 package org.xins.server;
 
-import org.xins.util.collections.PropertyReader;
+import org.xins.common.collections.PropertyReader;
 
 /**
  * A call result.

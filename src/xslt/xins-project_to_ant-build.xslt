@@ -134,7 +134,7 @@
 				</xmlcatalog>
 			</target>
 
-			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
+			<target name="index-specdocs" depends="-prepare-specdocs" description="Generates the API index">
 				<xmlvalidate file="{$project_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
@@ -654,7 +654,7 @@
 
 					<target name="war-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
 						<mkdir dir="build/webapps/{$api}" />
-						<taskdef name="hostname" classname="org.xins.util.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
+						<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 						<tstamp>
 							<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
 						</tstamp>
@@ -971,7 +971,7 @@
 
 			<target name="specdocs" description="Generates all specification docs">
 				<xsl:attribute name="depends">
-					<xsl:text>specdocs-index</xsl:text>
+					<xsl:text>index-specdocs</xsl:text>
 					<xsl:for-each select="api">
 						<xsl:text>,specdocs-</xsl:text>
 						<xsl:value-of select="@name" />

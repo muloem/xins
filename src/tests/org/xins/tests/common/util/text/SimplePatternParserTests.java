@@ -7,8 +7,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.oro.text.regex.Perl5Pattern;
-import org.xins.util.text.ParseException;
-import org.xins.util.text.SimplePatternParser;
+import org.xins.common.text.ParseException;
+import org.xins.common.text.SimplePatternParser;
 
 /**
  * Tests for class <code>SimplePatternParser</code>.

@@ -165,25 +165,14 @@ public class APIImpl extends API {
 		<xsl:value-of select="$api" />
 		<xsl:text>");</xsl:text>
 		<xsl:choose>
-			<xsl:when test="instance or property">
+			<xsl:when test="instance">
 				<xsl:for-each select="instance">
 					<xsl:text>
       </xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text> = new </xsl:text>
 					<xsl:value-of select="@class" />
-					<xsl:text>()</xsl:text>
-					<xsl:text>;</xsl:text>
-				</xsl:for-each>
-				<xsl:for-each select="property">
-					<xsl:text>
-      _</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text> = </xsl:text>
-					<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
-					<xsl:value-of select="text()" />
-					<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
-					<xsl:text>;</xsl:text>
+					<xsl:text>(this);</xsl:text>
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
@@ -224,10 +213,10 @@ public class APIImpl extends API {
 </xsl:text>
 	<xsl:if test="instance">
 		<xsl:text>
-   protected void bootstrapImpl2(org.xins.util.collections.PropertyReader properties)
-   throws org.xins.util.collections.MissingRequiredPropertyException,
-          org.xins.util.collections.InvalidPropertyValueException,
-          org.xins.util.manageable.BootstrapException {</xsl:text>
+   protected void bootstrapImpl2(org.xins.common.collections.PropertyReader properties)
+   throws org.xins.common.collections.MissingRequiredPropertyException,
+          org.xins.common.collections.InvalidPropertyValueException,
+          org.xins.common.manageable.BootstrapException {</xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>
       add(</xsl:text>

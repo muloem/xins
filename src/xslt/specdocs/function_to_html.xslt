@@ -22,7 +22,6 @@
 	<!-- Perform includes -->
 	<xsl:include href="../header.xslt"    />
 	<xsl:include href="../footer.xslt"    />
-	<xsl:include href="../function.xslt"  />
 	<xsl:include href="../types.xslt"     />
 	<xsl:include href="../urlencode.xslt" />
 
@@ -30,11 +29,6 @@
 	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
 	<xsl:variable name="function_name"    select="//function/@name"                                          />
 	<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
-	<xsl:variable name="sessionBased">
-		<xsl:for-each select="//function">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:for-each>
-	</xsl:variable>
 
 	<xsl:output
 	method="html"
@@ -86,12 +80,6 @@
 
 				<!-- Description -->
 				<xsl:call-template name="description" />
-
-				<!-- Session-based -->
-				<xsl:if test="$sessionBased = 'true'">
-					<p />
-					<em>This function is session-based.</em>
-				</xsl:if>
 
 				<!-- References to other functions -->
 				<xsl:if test="see">
@@ -394,18 +382,6 @@
 				<!-- TODO: Check that the result code exists? -->
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="sessionID">
-			<xsl:if test="$sessionBased = 'true'">
-				<xsl:if test="string-length(@sessionID) = 0">
-					<xsl:message terminate="yes">
-						<xsl:text>No sessionID specified for example </xsl:text>
-						<xsl:value-of select="$examplenum" />
-						<xsl:text>.</xsl:text>
-					</xsl:message>
-				</xsl:if>
-				<xsl:value-of select="@sessionID" />
-			</xsl:if>
-		</xsl:variable>
 
 		<xsl:if test="not($success='true' or $success='false')">
 			<xsl:message terminate="yes">
@@ -496,16 +472,6 @@
 							<xsl:value-of select="$function_name" />
 						</span>
 					</span>
-					<xsl:if test="$sessionBased = 'true'">
-						<xsl:text>&amp;</xsl:text>
-						<span class="param">
-							<span class="name">_session</span>
-						</span>
-						<xsl:text>=</xsl:text>
-						<span class="value">
-							<xsl:value-of select="$sessionID" />
-						</span>
-					</xsl:if>
 					<xsl:for-each select="$example-inputparams">
 						<xsl:text>&amp;</xsl:text>
 						<span class="param">
@@ -667,10 +633,6 @@
 								<xsl:value-of select="@url" />
 								<xsl:text>?_function=</xsl:text>
 								<xsl:value-of select="$function_name" />
-								<xsl:if test="$sessionBased = 'true'">
-									<xsl:text>&amp;_session=</xsl:text>
-									<xsl:value-of select="$sessionID" />
-								</xsl:if>
 								<xsl:for-each select="$example-inputparams">
 									<xsl:text>&amp;</xsl:text>
 									<xsl:value-of select="../@name" />
@@ -695,10 +657,6 @@
 									<xsl:value-of select="@url" />
 									<xsl:text>?_function=</xsl:text>
 									<xsl:value-of select="$function_name" />
-									<xsl:if test="$sessionBased = 'true'">
-										<xsl:text>&amp;_session=</xsl:text>
-										<xsl:value-of select="$sessionID" />
-									</xsl:if>
 									<xsl:for-each select="$example-inputparams">
 										<xsl:text>&amp;</xsl:text>
 										<xsl:value-of select="../@name" />
@@ -850,7 +808,6 @@
 			<xsl:choose>
 				<xsl:when test="@value = 'MissingFunctionName'" />
 				<xsl:when test="@value = 'NoSuchFunction'"      />
-				<xsl:when test="$sessionBased = 'false' and @onlyIfSessionBased    = 'true'" />
 				<xsl:when test="$haveParams   = 'false' and @onlyIfInputParameters = 'true'" />
 				<xsl:otherwise>
 					<xsl:call-template name="default_resultcode">

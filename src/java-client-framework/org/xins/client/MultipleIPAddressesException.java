@@ -4,8 +4,8 @@
 package org.xins.client;
 
 import java.net.InetAddress;
-import org.xins.util.text.FastStringBuffer;
-import org.xins.util.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Exception that indicates that a host name resolved to multiple IP

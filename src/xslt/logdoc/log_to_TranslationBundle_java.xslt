@@ -30,8 +30,7 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
+import org.xins.logdoc.FastStringBuffer;
 
 /**
  * Translation bundle for log messages.
@@ -70,7 +69,9 @@ import org.xins.util.text.FastStringBuffer;
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
+			if (name == null) {
+			   throw new IllegalArgumentException("name == null");
+			}
 
       // TODO: Check the name
 

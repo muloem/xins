@@ -3,8 +3,6 @@
  */
 package org.xins.logdoc;
 
-import org.xins.util.MandatoryArgumentChecker;
-
 /**
  * Statistics for a <em>logdoc</em> <code>Log</code> class. It contains the
  * number of occurrences per log entry.

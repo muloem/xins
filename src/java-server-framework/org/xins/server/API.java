@@ -14,20 +14,20 @@ import java.util.TimeZone;
 import javax.servlet.ServletRequest;
 
 import org.xins.logdoc.LogStatistics;
-import org.xins.types.TypeValueException;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.InvalidPropertyValueException;
-import org.xins.util.collections.MissingRequiredPropertyException;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.PropertyReaderUtils;
-import org.xins.util.collections.expiry.ExpiryFolder;
-import org.xins.util.collections.expiry.ExpiryStrategy;
-import org.xins.util.manageable.BootstrapException;
-import org.xins.util.manageable.DeinitializationException;
-import org.xins.util.manageable.InitializationException;
-import org.xins.util.manageable.Manageable;
-import org.xins.util.text.DateConverter;
-import org.xins.util.text.ParseException;
+import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.InvalidPropertyValueException;
+import org.xins.common.collections.MissingRequiredPropertyException;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.collections.expiry.ExpiryFolder;
+import org.xins.common.collections.expiry.ExpiryStrategy;
+import org.xins.common.manageable.BootstrapException;
+import org.xins.common.manageable.DeinitializationException;
+import org.xins.common.manageable.InitializationException;
+import org.xins.common.manageable.Manageable;
+import org.xins.common.text.DateConverter;
+import org.xins.common.text.ParseException;
 
 /**
  * Base class for API implementation classes.
@@ -110,36 +110,12 @@ implements DefaultResultCodes {
    private final String _name;
 
    /**
-    * Flag that indicates if this API is session-based.
-    */
-   private boolean _sessionBased;
-
-   /**
     * List of registered manageable objects. See {@link #add(Manageable)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
     * constructor.
     */
    private final List _manageableObjects;
-
-   /**
-    * Expiry strategy for <code>_sessionsByID</code>.
-    *
-    * <p />For session-based APIs, this field is initialized to a
-    * non-<code>null</code> value by the initialization method
-    * {@link #init(PropertyReader)}.
-    */
-   private ExpiryStrategy _sessionExpiryStrategy;
-
-   /**
-    * Collection that maps session identifiers to <code>Session</code>
-    * instances. Contains all sessions associated with this API.
-    *
-    * <p />For session-based APIs, this field is initialized to a
-    * non-<code>null</code> value by the initialization method
-    * {@link #init(PropertyReader)}.
-    */
-   private ExpiryFolder _sessionsByID;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
@@ -181,18 +157,6 @@ implements DefaultResultCodes {
     * {@link #init(PropertyReader)}. It can be <code>null</code> before that.
     */
    private PropertyReader _runtimeSettings;
-
-   /**
-    * The type that applies for session identifiers. For session-based APIs
-    * this will be set in {@link #init(PropertyReader)}.
-    */
-   private SessionIDType _sessionIDType;
-
-   /**
-    * The session ID generator. For session-based APIs this will be set in
-    * {@link #init(PropertyReader)}.
-    */
-   private SessionIDType.Generator _sessionIDGenerator;
 
    /**
     * Flag that indicates if the shutdown sequence has been initiated.
@@ -276,28 +240,6 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Returns the current number of sessions.
-    *
-    * @return
-    *    the current number of sessions, always &gt;= 0.
-    *
-    * @throws IllegalStateException
-    *    if this API is not session-based.
-    *
-    * @since XINS 0.95
-    */
-   public final int getCurrentSessions()
-   throws IllegalStateException {
-
-      // Check preconditions
-      if (! _sessionBased) {
-         throw new IllegalStateException("This API is not session-based.");
-      }
-
-      return _sessionsByID.size();
-   }
-
-   /**
     * Bootstraps this API (wrapper method). This method calls
     * {@link #bootstrapImpl2(PropertyReader)}.
     *
@@ -327,40 +269,6 @@ implements DefaultResultCodes {
 
       // Store the build-time settings
       _buildSettings = buildSettings;
-
-      // Check if this API is session-based
-      _sessionBased = PropertyReaderUtils.getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
-      if (_sessionBased) {
-         Log.log_1213();
-      } else {
-         Log.log_1214();
-      }
-
-      // XXX: Allow configuration of session ID type ?
-
-      // Initialize session-based API
-      if (_sessionBased) {
-         Log.log_1215();
-
-         // Initialize session ID type
-         _sessionIDType      = new BasicSessionIDType(this);
-         _sessionIDGenerator = _sessionIDType.getGenerator();
-
-         // Determine session time-out duration and precision (in seconds)
-         int timeOut   = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
-         int precision = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
-
-         Log.log_1217(timeOut, precision);
-
-         // Create expiry strategy and folder
-         final long MINUTE_IN_MS = 60000L;
-         _sessionExpiryStrategy = new ExpiryStrategy(timeOut * MINUTE_IN_MS, precision * MINUTE_IN_MS);
-         _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
-                                                   _sessionExpiryStrategy, // expiry strategy
-                                                   false,                  // strict thread sync checking? (TODO)
-                                                   5000L);                 // max queue wait time in ms    (TODO)
-         Log.log_1216();
-      }
 
       // Get build-time properties
       _buildHost    = _buildSettings.get("org.xins.api.build.host");
@@ -598,14 +506,6 @@ implements DefaultResultCodes {
 
       _shutDown = true;
 
-      // Stop expiry strategy
-      _sessionExpiryStrategy.stop();
-
-      // Destroy all sessions
-      Log.log_1603(_sessionsByID.size());
-
-      _sessionsByID = null;
-
       // Deinitialize instances
       int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {
@@ -641,141 +541,6 @@ implements DefaultResultCodes {
             Log.log_1611(exception, _name, functionName);
          }
       }
-   }
-
-   /**
-    * Returns if this API is session-based.
-    *
-    * @return
-    *    <code>true</code> if this API is session-based, or <code>false</code>
-    *    if it is not.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not 'usable'.
-    */
-   public boolean isSessionBased()
-   throws IllegalStateException {
-
-      assertUsable();
-
-      return _sessionBased;
-   }
-
-   /**
-    * Gets the session ID type.
-    *
-    * @return
-    *    the type for session IDs in this API, unless otherwise defined this
-    *    is {@link BasicSessionIDType}.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not 'usable' or if it is not session-based.
-    */
-   public final SessionIDType getSessionIDType()
-   throws IllegalStateException {
-
-      // Check preconditions
-      assertUsable();
-      if (! _sessionBased) {
-         throw new IllegalStateException("This API is not session-based.");
-      }
-
-      return _sessionIDType;
-   }
-
-   /**
-    * Creates a new session for this API.
-    *
-    * @return
-    *    the newly constructed session, never <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not 'usable' or if it is not session-based.
-    */
-   final Session createSession()
-   throws IllegalStateException {
-
-      // Check preconditions
-      assertUsable();
-      if (! _sessionBased) {
-         throw new IllegalStateException("This API is not session-based.");
-      }
-
-      // Generate a session ID that does not yet exist
-      Object sessionID;
-      int count = 0;
-      do {
-         sessionID = _sessionIDGenerator.generateSessionID();
-         count++;
-      } while (_sessionsByID.get(sessionID) != null);
-
-      // Construct a Session object...
-      Session session = new Session(this, sessionID);
-
-      // ...store it...
-      _sessionsByID.put(sessionID, session);
-
-      // ...log it...
-      Log.log_1510(sessionID, count);
-
-      // ...and then return it
-      return session;
-   }
-
-   /**
-    * Gets the session with the specified identifier.
-    *
-    * @param id
-    *    the identifier for the session, can be <code>null</code>.
-    *
-    * @return
-    *    the session with the specified identifier, or <code>null</code> if
-    *    there is no match; if <code>id == null</code>, then <code>null</code>
-    *    is returned.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not 'usable' or if it is not session-based.
-    */
-   final Session getSession(Object id)
-   throws IllegalStateException {
-
-      // Check preconditions
-      assertUsable();
-      if (! _sessionBased) {
-         throw new IllegalStateException("This API is not session-based.");
-      }
-
-      return (Session) _sessionsByID.get(id);
-   }
-
-   /**
-    * Gets the session with the specified identifier as a string.
-    *
-    * @param idString
-    *    the string representation of the identifier for the session, can be <code>null</code>.
-    *
-    * @return
-    *    the session with the specified identifier, or <code>null</code> if
-    *    there is no match; if <code>idString == null</code>, then
-    *    <code>null</code> is returned.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not 'usable' or if it is not session-based.
-    *
-    * @throws TypeValueException
-    *    if the specified string is not a valid representation for a value for
-    *    the specified type.
-    */
-   final Session getSessionByString(String idString)
-   throws IllegalStateException, TypeValueException {
-
-      // Check preconditions
-      assertUsable();
-      if (! _sessionBased) {
-         throw new IllegalStateException("This API is not session-based.");
-      }
-
-      return getSession(_sessionIDType.fromString(idString));
    }
 
    /**

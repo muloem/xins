@@ -61,9 +61,9 @@
 			<xsl:when test="$requiredBool = 'false'">
 				<xsl:choose>
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
-					<xsl:when test="$type = '_properties'">org.xins.util.collections.PropertyReader</xsl:when>
-					<xsl:when test="$type = '_date'">org.xins.types.standard.Date.Value</xsl:when>
-					<xsl:when test="$type = '_timestamp'">org.xins.types.standard.Timestamp.Value</xsl:when>
+					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
+					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
+					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
 					<xsl:when test="$type = '_boolean'">java.lang.Boolean</xsl:when>
 					<xsl:when test="$type = '_int8'">java.lang.Byte</xsl:when>
 					<xsl:when test="$type = '_int16'">java.lang.Short</xsl:when>
@@ -81,9 +81,9 @@
 			<xsl:otherwise> <!-- $requiredBool = 'true' -->
 				<xsl:choose>
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
-					<xsl:when test="$type = '_properties'">org.xins.util.collections.PropertyReader</xsl:when>
-					<xsl:when test="$type = '_date'">org.xins.types.standard.Date.Value</xsl:when>
-					<xsl:when test="$type = '_timestamp'">org.xins.types.standard.Timestamp.Value</xsl:when>
+					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
+					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
+					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
 					<xsl:when test="$type = '_boolean'">boolean</xsl:when>
 					<xsl:when test="$type = '_int8'">byte</xsl:when>
 					<xsl:when test="$type = '_int16'">short</xsl:when>
@@ -104,7 +104,7 @@
 	<xsl:template name="javatypeclass_for_standardtype">
 		<xsl:param name="type" />
 
-		<xsl:text>org.xins.types.standard.</xsl:text>
+		<xsl:text>org.xins.common.types.standard.</xsl:text>
 		<xsl:call-template name="hungarianUpper">
 			<xsl:with-param name="text">
 				<xsl:value-of select="substring($type, 2)" />

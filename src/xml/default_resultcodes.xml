@@ -16,10 +16,10 @@
 		<description>There was an internal error.</description>
 	</code>
 	<code name="_InvalidRequest" value="_InvalidRequest" success="false" onlyIfInputParameters="true">
-		<description>At least one of the input parameter has an invalid value, or the combination of input parameter values is invalid or a required input parameter is missing.</description>
+		<description>Indicates that the request is considered invalid since it does not match the criteria defined by the specification.</description>
 	</code>
 	<code name="_InvalidResponse" value="_InvalidResponse" success="false" onlyIfInputParameters="false">
-		<description>At least one of the output parameter has an invalid value or a required output parameter is missing.</description>
+		<description>Indicates that the implementation produced a response that does not match the criteria defined by the specification. Typical callers should treat this like an internal error.</description>
 	</code>
 	<code name="_MissingSessionID" value="_MissingSessionID" success="false" onlyIfSessionBased="true">
 		<description>No session identifier is specified.</description>

@@ -11,10 +11,10 @@ import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.service.TargetDescriptor;
-import org.xins.util.text.FastStringBuffer;
-import org.xins.util.text.ParseException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
 
 /**
  * Call result parser. XML is parsed to produce a

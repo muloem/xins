@@ -6,7 +6,7 @@ package org.xins.tests.common.util.collections;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.collections.SingleEntryMap;
+import org.xins.common.collections.SingleEntryMap;
 
 /**
  * Tests for class <code>SingleEntryMapTests</code>.
@@ -79,11 +79,11 @@ public class SingleEntryMapTests extends TestCase {
       String value = "test value";
       String key2 = "test key2";
       String value2 = "test value2";
-      
+
       // Test that a null argument fails for the key
       try {
          SingleEntryMap entry1 = new SingleEntryMap(null, value);
-      } catch (NullPointerException exception) { 
+      } catch (NullPointerException exception) {
          fail("A null key for the SingleEntryMap should be possible.");
       }
 
@@ -99,13 +99,13 @@ public class SingleEntryMapTests extends TestCase {
     * Tests if the content of the Map is as expected.
     */
    public void testMapContent() throws Throwable {
-    
+
       String key = "test key";
       String value = "test value";
       String key2 = "test key2";
       String value2 = "test value2";
-      
-      // Test the content of a SingleEntryMap 
+
+      // Test the content of a SingleEntryMap
       SingleEntryMap entry3 = new SingleEntryMap(key, value);
       assertTrue("The map has a different size than one.", entry3.size() == 1);
       assertTrue("The map does not contain the same key as expected.", entry3.containsKey("test key"));
@@ -115,16 +115,16 @@ public class SingleEntryMapTests extends TestCase {
 
       assertTrue("The map does not contain the same value as expected.", entry3.get(key).equals(value));
       assertTrue("The map get a value from a not existing key.", entry3.get(key2) == null);
-      
+
       try {
       	entry3.put(key2, value2);
          fail("The key can be modified using the put method.");
       } catch (IllegalArgumentException iae) {
-        
-         // as expected 
+
+         // as expected
       }
       entry3.put(key, value2);
-      
+
       assertTrue("The map has a different size than one.", entry3.size() == 1);
       assertTrue("The map does not contain the same key as expected.", entry3.containsKey("test key"));
       assertFalse("The map found a key that should be there.", entry3.containsKey(key2));

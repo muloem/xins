@@ -19,14 +19,6 @@
 	<xsl:param name="api_file"     />
 	<xsl:param name="xins_version" />
 
-	<!-- Determine if this API is session-based -->
-	<xsl:variable name="apiSessionBased">
-		<xsl:choose>
-			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
-			<xsl:otherwise>false</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
 	<!-- Determine the location of the online specification docs -->
 	<xsl:variable name="specdocsURL">
 		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
@@ -37,7 +29,6 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../function.xslt"   />
 	<xsl:include href="../java.xslt"       />
 	<xsl:include href="../rcs.xslt"        />
 	<xsl:include href="../types.xslt"      />
@@ -76,10 +67,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Class functions
-   //-------------------------------------------------------------------------]]></xsl:text>
-
-		<xsl:if test="$apiSessionBased = 'true'">
-			<xsl:text><![CDATA[
+   //-------------------------------------------------------------------------
 
    /**
     * Checks the arguments for the constructor and returns the
@@ -89,31 +77,20 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    the {@link org.xins.client.XINSServiceCaller}, cannot be
     *    <code>null</code>.
     *
-    * @param sessionIDSplitter
-    *    the session ID splitter, cannot be <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>caller == null || sessionIDSplitter == null</code>.
+    *    if <code>caller == null</code>.
     */
    private static final org.xins.client.XINSServiceCaller checkArguments(
-      org.xins.client.XINSServiceCaller caller,
-      org.xins.client.SessionIDSplitter sessionIDSplitter
+      org.xins.client.XINSServiceCaller caller
    )
    throws IllegalArgumentException {
 
       // Check preconditions
-      org.xins.util.MandatoryArgumentChecker.check(
-         "caller", caller,
-         "sessionIDSplitter", sessionIDSplitter
-      );
+      org.xins.common.MandatoryArgumentChecker.check("caller", caller);
 
       return caller;
    }
 
-]]></xsl:text>
-		</xsl:if>
-
-		<xsl:text><![CDATA[
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -129,17 +106,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:if test="$apiSessionBased = 'true'">
-			<xsl:text><![CDATA[
-
-   /**
-    * Splitter of the client-side session identifier. Cannot be
-    * <code>null</code>.
-    */
-   private final org.xins.client.SessionIDSplitter _sessionIDSplitter;]]></xsl:text>
-		</xsl:if>
 		<xsl:text><![CDATA[
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -179,40 +146,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 	<!-- ***************************************************************** -->
 
 	<xsl:template name="constructor">
-		<xsl:choose>
-			<xsl:when test="$apiSessionBased = 'true'">
-				<xsl:text><![CDATA[
-
-   /**
-    * Constructs a new <code>CAPI</code> object for the specified XINS service
-    * caller and session ID splitter.
-    *
-    * @param caller
-    *    the XINS service caller, cannot be <code>null</code>.
-    *
-    * @param sessionIDSplitter
-    *    splitter that converts a client-side session identifier to a target
-    *    API checksum and a target API-specific session ID.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>caller == null || sessionIDSplitter == null</code>.
-    */
-   public CAPI(org.xins.client.XINSServiceCaller caller,
-               org.xins.client.SessionIDSplitter sessionIDSplitter)
-   throws IllegalArgumentException {
-
-      // Check preconditions and then call superclass constructor
-      super(checkArguments(caller, sessionIDSplitter));
-
-      // Check preconditions
-      org.xins.util.MandatoryArgumentChecker.check("sessionIDSplitter", sessionIDSplitter);
-
-      // Store data
-      _sessionIDSplitter = sessionIDSplitter;
-   }]]></xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text><![CDATA[
+		<xsl:text><![CDATA[
 
    /**
     * Constructs a new <code>CAPI</code> object for the specified XINS service
@@ -230,8 +164,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       // Call the superclass constructor
       super(caller);
    }]]></xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 
 
@@ -251,31 +183,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:value-of select="$name" />
 		</xsl:variable>
 
-		<!-- Determine if this function is session-based. -->
-		<xsl:variable name="sessionBased">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:variable>
-
-		<!-- Determine the kind of function, one of:
-		     - 'sessionBased'
-		     - 'createsSession'
-		     - 'sessionLess'
-		-->
-		<xsl:variable name="kind">
-			<xsl:choose>
-				<xsl:when test="$sessionBased = 'true'">sessionBased</xsl:when>
-				<xsl:when test="@createsSession = 'true'">createsSession</xsl:when>
-				<xsl:otherwise>sessionLess</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
 		<!-- Determine the return type of the method, either a Java primary
 		     data type or a Java class name. -->
 		<xsl:variable name="returnType">
 			<xsl:choose>
-				<xsl:when test="$kind = 'createsSession'">
-					<xsl:text>org.xins.client.NonSharedSession</xsl:text>
-				</xsl:when>
 				<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 					<xsl:value-of select="$name" />
 					<xsl:text>Result</xsl:text>
@@ -321,25 +232,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
-		<xsl:choose>
-			<xsl:when test="$kind = 'sessionBased'">
-				<xsl:text><![CDATA[
-    *
-    * @param session
-    *    the client-side session, cannot be <code>null</code>.]]></xsl:text>
-			</xsl:when>
-		</xsl:choose>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
 		<xsl:choose>
-			<xsl:when test="$kind = 'createsSession'">
-				<xsl:text><![CDATA[
-    *
-    * @return
-    *    the non-shared session (not <code>null</code>), a combination of the
-    *    identifier of the created session and a link to the
-    *    {@link org.xins.util.service.TargetDescriptor} that identifies the
-    *    service target that actually created the session.]]></xsl:text>
-			</xsl:when>
 			<xsl:when test="output/param and output/data/element">
 				<xsl:text><![CDATA[
     *
@@ -418,13 +312,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
-			<xsl:if test="$sessionBased = 'true'">
-				<xsl:text>java.lang.String session</xsl:text>
-			</xsl:if>
 
-			<xsl:apply-templates select="input/param" mode="methodSignature">
-				<xsl:with-param name="sessionBased" select="$sessionBased" />
-			</xsl:apply-templates>
+			<xsl:apply-templates select="input/param" mode="methodSignature" />
 
 		<xsl:text>)
    throws org.xins.client.CallException {
@@ -432,23 +321,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    // Get the XINS service caller
    org.xins.client.XINSServiceCaller caller = getCaller();
 </xsl:text>
-		<xsl:if test="$kind = 'sessionBased'">
-			<xsl:text>
-      // Split the client-side session ID
-      java.lang.String[] arr = new java.lang.String[2];
-      int crc;
-      try {
-         _sessionIDSplitter.splitSessionID(session, arr);
-         crc = org.xins.util.text.HexConverter.parseHexInt(arr[0]);
-      } catch (Throwable t) {
-         throw new org.xins.client.NoSuchSessionException("Unable to convert \"" + arr[0] + "\" to an integer number to be interpreted as the CRC-32 of the service target URL.");
-      }
-      org.xins.util.service.TargetDescriptor target = caller.getDescriptor().getTargetByCRC(crc);
-      if (target == null) {
-         throw new org.xins.client.NoSuchSessionException("No target service found of which the CRC-32 of the URL is " + arr[0] + '.');
-      }
-      session = arr[1];</xsl:text>
-		</xsl:if>
 		<xsl:if test="input/param">
 			<xsl:text>
 
@@ -459,9 +331,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:if>
 		<xsl:text>
       org.xins.client.XINSServiceCaller.Result result = caller.call(</xsl:text>
-		<xsl:if test="$kind = 'sessionBased'">
-			<xsl:text>target, session, </xsl:text>
-		</xsl:if>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>
@@ -475,20 +344,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:text>);</xsl:text>
 		<xsl:choose>
-			<xsl:when test="$kind = 'createsSession'">
-				<xsl:text>
-      if (result.isSuccess()) {
-         java.lang.String session = result.getParameter("_session");
-         if (session == null) {
-            throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>\" returned no session ID.");
-         }
-         return new org.xins.client.NonSharedSession(result.getTarget(), session);
-      } else {
-         throw new org.xins.client.UnsuccessfulCallException(result);
-      }</xsl:text>
-			</xsl:when>
 			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 				<xsl:text>
       if (result.isSuccess()) {
@@ -532,7 +387,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text>;
-         } catch (org.xins.types.TypeValueException exception) {
+         } catch (org.xins.common.types.TypeValueException exception) {
             // fall through
          }
       }
@@ -658,8 +513,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 	<xsl:template match="input/param" mode="methodSignature">
 
-		<xsl:param name="sessionBased" />
-
 		<!-- Determine if this parameter is required -->
 		<xsl:variable name="required">
 			<xsl:choose>
@@ -687,7 +540,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="$sessionBased = 'true' or position() &gt; 1">
+		<xsl:if test="position() &gt; 1">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 		<xsl:value-of select="$javatype" />

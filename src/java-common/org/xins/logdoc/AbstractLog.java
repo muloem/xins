@@ -4,7 +4,6 @@
 package org.xins.logdoc;
 
 import org.apache.log4j.Level;
-import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Abstract base class for <em>logdoc</em> <code>Log</code> classes.

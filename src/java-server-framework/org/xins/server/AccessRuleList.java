@@ -5,9 +5,9 @@ package org.xins.server;
 
 import java.util.StringTokenizer;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
-import org.xins.util.text.ParseException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
 
 /**
  * Access rule list.

@@ -29,22 +29,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="sessionBased">
-		<xsl:choose>
-			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
-			<xsl:otherwise>false</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	<xsl:variable name="sessionTimeout">
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:value-of select="//api/session-based/@timeout" />
-		</xsl:if>
-	</xsl:variable>
-	<xsl:variable name="sessionTimeoutPrecision">
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:value-of select="//api/session-based/@precision" />
-		</xsl:if>
-	</xsl:variable>
 
 	<xsl:output
 	method="html"
@@ -156,19 +140,6 @@
 				</h1>
 
 				<xsl:apply-templates select="description" />
-
-				<xsl:if test="$sessionBased = 'true'">
-					<p />
-					<xsl:text>This API is session-based. The session time-out is set to </xsl:text>
-					<xsl:value-of select="$sessionTimeout" />
-					<xsl:text> minute</xsl:text>
-					<xsl:if test="not ($sessionTimeout = 1)">s</xsl:if>
-					<xsl:text>, precision is </xsl:text>
-					<xsl:value-of select="$sessionTimeoutPrecision" />
-					<xsl:text> minute</xsl:text>
-					<xsl:if test="not ($sessionTimeoutPrecision = 1)">s</xsl:if>
-					<xsl:text>. The functions marked with an asterisk (*) are session-based.</xsl:text>
-				</xsl:if>
 
 				<h2>Functions</h2>
 				<xsl:choose>
@@ -345,12 +316,6 @@
 					</xsl:attribute>
 					<xsl:value-of select="@name" />
 				</a>
-				<xsl:if test="document($function_file)/function/@sessionBased = 'true'">
-					<span title="This function is session-based">*</span>
-				</xsl:if>
-				<xsl:if test="@name = /api/@default">
-					<xsl:text> (default)</xsl:text>
-				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="$version" />

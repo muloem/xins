@@ -46,9 +46,9 @@
 	</xsl:variable>
 	<xsl:variable name="superclass">
 		<xsl:choose>
-			<xsl:when test="$kind = 'enum'">org.xins.types.EnumType</xsl:when>
-			<xsl:when test="$kind = 'pattern'">org.xins.types.PatternType</xsl:when>
-			<xsl:when test="$kind = 'properties'">org.xins.types.standard.Properties</xsl:when>
+			<xsl:when test="$kind = 'enum'">org.xins.common.types.EnumType</xsl:when>
+			<xsl:when test="$kind = 'pattern'">org.xins.common.types.PatternType</xsl:when>
+			<xsl:when test="$kind = 'properties'">org.xins.common.types.standard.Properties</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 
@@ -59,9 +59,9 @@
 		<xsl:value-of select="$package" />
 		<xsl:text>;
 
-import org.xins.types.EnumItem;
-import org.xins.types.TypeValueException;
-import org.xins.util.MandatoryArgumentChecker;
+import org.xins.common.types.EnumItem;
+import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * </xsl:text>

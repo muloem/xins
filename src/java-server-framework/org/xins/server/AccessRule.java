@@ -6,10 +6,10 @@ package org.xins.server;
 import java.util.StringTokenizer;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Pattern;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
-import org.xins.util.text.ParseException;
-import org.xins.util.text.SimplePatternParser;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
+import org.xins.common.text.SimplePatternParser;
 
 /**
  * Access rule. This class can take a character string to produce an

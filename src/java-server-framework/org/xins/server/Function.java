@@ -6,11 +6,11 @@ package org.xins.server;
 import java.io.PrintWriter;
 import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
-import org.xins.types.TypeValueException;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.BasicPropertyReader;
-import org.xins.util.manageable.Manageable;
-import org.xins.util.io.FastStringWriter;
+import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.manageable.Manageable;
+import org.xins.common.io.FastStringWriter;
 
 /**
  * Base class for function implementation classes.
@@ -42,7 +42,7 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new session-less <code>Function</code>.
+    * Constructs a new <code>Function</code>.
     *
     * @param api
     *    the API to which this function belongs, not <code>null</code>.
@@ -59,31 +59,6 @@ implements DefaultResultCodes {
     */
    protected Function(API api, String name, String version)
    throws IllegalArgumentException {
-      this(api, name, version, false);
-   }
-
-   /**
-    * Constructs a new <code>Function</code>.
-    *
-    * @param api
-    *    the API to which this function belongs, not <code>null</code>.
-    *
-    * @param name
-    *    the name, not <code>null</code>.
-    *
-    * @param version
-    *    the version of the specification this function implements, not
-    *    <code>null</code>.
-    *
-    * @param sessionBased
-    *    flag that indicates if this function is session-based
-    *    (if <code>true</code>) or session-less (if <code>false</code>).
-    *
-    * @throws IllegalArgumentException
-    *    if <code>api == null || name == null || version == null</code>.
-    */
-   protected Function(API api, String name, String version, boolean sessionBased)
-   throws IllegalArgumentException {
 
       // Check arguments
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
@@ -92,7 +67,6 @@ implements DefaultResultCodes {
       _api          = api;
       _name         = name;
       _version      = version;
-      _sessionBased = sessionBased;
       _enabled      = true;
 
       _api.functionAdded(this);
@@ -123,11 +97,6 @@ implements DefaultResultCodes {
     * The version of the specification this function implements.
     */
    private final String _version;
-
-   /**
-    * Flag that indicates if this function is session-based.
-    */
-   private final boolean _sessionBased;
 
    /**
     * Flag that indicates if this function is currently accessible.
@@ -182,19 +151,6 @@ implements DefaultResultCodes {
     */
    final String getVersion() {
       return _version;
-   }
-
-   /**
-    * Checks if this function is session-based or not.
-    *
-    * @return
-    *    <code>true</code> if this function is session-based,
-    *    <code>false</code> if this function is session-less.
-    *
-    * @since XINS 0.52
-    */
-   final boolean isSessionBased() {
-      return _sessionBased;
    }
 
    /**
@@ -267,12 +223,12 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (!_enabled) {
-         performedCall(start, callID, null, false, "DisabledFunction");
+         performedCall(start, callID, false, "DisabledFunction");
          return DISABLED_FUNCTION_RESULT;
       }
 
       // Determine the session identifier
-      Session session;
+      /*Session session;
       if (!isSessionBased()) {
          session = null;
       } else {
@@ -297,10 +253,10 @@ implements DefaultResultCodes {
                return new BasicCallResult(false, "UnknownSessionID", null, null);
             }
          }
-      }
+      }*/
 
       // Construct a CallContext object
-      CallContext context = new CallContext(request, start, this, callID, session);
+      CallContext context = new CallContext(request, start, this, callID);
 
       CallResult result;
       try {
@@ -338,7 +294,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(start, callID, session, result.isSuccess(), result.getCode());
+      performedCall(start, callID, result.isSuccess(), result.getCode());
 
       return result;
    }
@@ -372,17 +328,13 @@ implements DefaultResultCodes {
     * @param callID
     *    the assigned call ID.
     *
-    * @param session
-    *    the session, if and only if this function is session-based, otherwise
-    *    <code>null</code>.
-    *
     * @param success
     *    indication if the call was successful.
     *
     * @param code
     *    the function result code, or <code>null</code>.
     */
-   private final void performedCall(long start, int callID, Session session, boolean success, String code) {
+   private final void performedCall(long start, int callID, boolean success, String code) {
 
       // TODO: Accept ResultCode
 
@@ -393,18 +345,10 @@ implements DefaultResultCodes {
 
       // Call succeeded
       if (success) {
-         if (session == null) {
-            Log.log_1514(_name, callID, duration);
-         } else {
-            Log.log_1515(_name, callID, duration, session);
-         }
+         Log.log_1514(_name, callID, duration);
       // Call failed
       } else {
-         if (session == null) {
-            Log.log_1516(_name, callID, duration, code);
-         } else {
-            Log.log_1517(_name, callID, duration, code, session);
-         }
+         Log.log_1516(_name, callID, duration, code);
       }
    }
 }

@@ -8,9 +8,9 @@ import java.net.URLEncoder;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.net.URLEncoding;
-import org.xins.util.text.FormatException;
-import org.xins.util.text.NonASCIIException;
+import org.xins.common.net.URLEncoding;
+import org.xins.common.text.FormatException;
+import org.xins.common.text.NonASCIIException;
 
 /**
  * Tests for class <code>URLEncoding</code>.

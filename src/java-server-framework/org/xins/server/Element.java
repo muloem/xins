@@ -5,9 +5,9 @@ package org.xins.server;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.ProtectedPropertyReader;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
 
 /**
  * Simple representation of an XML element.

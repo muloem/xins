@@ -3,9 +3,9 @@
  */
 package org.xins.server;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.net.IPAddressUtils;
-import org.xins.util.text.ParseException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.net.IPAddressUtils;
+import org.xins.common.text.ParseException;
 
 /**
  * Filter for IP addresses.

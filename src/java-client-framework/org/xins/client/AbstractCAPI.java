@@ -3,7 +3,7 @@
  */
 package org.xins.client;
 
-import org.xins.util.MandatoryArgumentChecker;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Base class for client-side calling interface classes.
@@ -71,11 +71,11 @@ extends Object {
    protected XINSServiceCaller getCaller() {
       return _caller;
    }
-   
+
    /**
     * Returns the version of XINS used to build this API.
     *
-    * @return 
+    * @return
     *    the version as a {@link String}, cannot be <code>null</code>.
     */
    public abstract String getXINSVersion();

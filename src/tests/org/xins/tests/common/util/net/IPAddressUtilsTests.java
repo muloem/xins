@@ -8,8 +8,8 @@ import java.net.URLEncoder;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.net.IPAddressUtils;
-import org.xins.util.text.ParseException;
+import org.xins.common.net.IPAddressUtils;
+import org.xins.common.text.ParseException;
 
 /**
  * Tests for class <code>IPAddressUtils</code>.
@@ -112,5 +112,5 @@ public class IPAddressUtilsTests extends TestCase {
       } catch (ParseException exception) {
          // as expected
       }
-   } 
+   }
 }

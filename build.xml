@@ -133,7 +133,7 @@
 			<fileset dir="src/java-common" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-common/org/xins/util">
+		<copy todir="build/src/java-common/org/xins/common">
 			<fileset dir="build/logdoc/common/java" includes="**/*.java" />
 		</copy>
 	</target>
@@ -259,7 +259,6 @@
 	<target name="-prepare-logdoc-common">
 		<antcall target="-prepare-logdoc">
 			<param name="side" value="common"/>
-			<param name="package" value="util"/>
 		</antcall>
 	</target>
 
@@ -450,7 +449,7 @@
 			<packageset dir="build/src/java-common" />
 			<packageset dir="build/src/java-server-framework" />
 			<packageset dir="build/src/java-client-framework" />
-			<group title="XINS/Java Common Library"   packages="org.xins.logdoc*,org.xins.util*,org.xins.types*,org.xins.tools*" />
+			<group title="XINS/Java Common Library"   packages="org.xins.logdoc*,org.xins.common*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
@@ -664,7 +663,7 @@
 	</target>
 
 	<target name="sfaddrelease" depends="java-common" description="Adds a release to the SourceForge package [BROKEN]">
-		<taskdef name="sfaddrelease" classname="org.xins.util.ant.sourceforge.AddReleaseTask">
+		<taskdef name="sfaddrelease" classname="org.xins.common.ant.sourceforge.AddReleaseTask">
 			<classpath>
 				<fileset dir="build"                       includes="xins-common.jar"        />
 				<fileset dir="depends/compile"             includes="commons-net.jar"        />

@@ -22,16 +22,10 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:include href="../footer.xslt" />
-	<xsl:include href="../function.xslt"  />
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../types.xslt" />
 
 	<xsl:variable name="functionName" select="//function/@name" />
-	<xsl:variable name="sessionBased">
-		<xsl:for-each select="//function">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:for-each>
-	</xsl:variable>
 
 	<xsl:output
 	method="xml"
@@ -126,19 +120,8 @@
 				</xsl:attribute>
 			</input>
 			<xsl:choose>
-				<xsl:when test="input/param or $sessionBased = 'true'">
+				<xsl:when test="input/param">
 					<table>
-						<xsl:if test="$sessionBased = 'true'">
-							<tr>
-								<td class="name">
-									<span title="session identifier">_session</span>
-								</td>
-								<td class="value">
-									<input type="text" name="_session" class="required" />
-									<xsl:text> *</xsl:text>
-								</td>
-							</tr>
-						</xsl:if>
 						<xsl:apply-templates select="input/param" />
 						<tr>
 							<td colspan="2">

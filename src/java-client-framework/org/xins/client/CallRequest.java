@@ -6,8 +6,8 @@ package org.xins.client;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.CollectionUtils;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.CollectionUtils;
 
 /**
  * Abstraction of a XINS request.

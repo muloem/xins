@@ -3,9 +3,9 @@
  */
 package org.xins.server;
 
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.ProtectedPropertyReader;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
 
 /**
  * Builder for a call result. The result is built as the function call is

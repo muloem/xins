@@ -7,7 +7,7 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.text.Replacer;
+import org.xins.common.text.Replacer;
 
 /**
  * Tests for class <code>Replacer</code>.
