@@ -980,16 +980,33 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	</target>
         
 	<target name="netbeans-debug" depends="classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
-		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket" />
+		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket">
+			<classpath>
+				<pathelement location="build/classes/tests" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+			<sourcepath>
+				<pathelement location="src/java-client-framework" />
+				<pathelement location="src/java-server-framework" />
+				<pathelement location="src/java-common" />
+			</sourcepath>
+		</nbjpdastart>
                 
-                <mkdir dir="build/testresults" />
+		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		
 		<junit printsummary="true" failureproperty="tests.failed" fork="true">
-                        <jvmarg value="-Xdebug" />
-                        <jvmarg value="-Xnoagent" />
-                        <jvmarg value="-Djava.compiler=none" />
-                        <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xnoagent" />
+			<jvmarg value="-Djava.compiler=none" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
 
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />

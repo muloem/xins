@@ -34,8 +34,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     properties.
   - Fixed bug #1076638: The generated context ID was not conform to the
     architect group recommendation.
-  - Changed the deprecated org.xins.server.Element with 
-    org.xins.common.xml.Element.
+  - The server classes now use the org.xins.common.xml.Element class instead of
+    the deprecated org.xins.server.Element class.
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
@@ -55,6 +55,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 
 * Generation of CAPI classes:
   - Slightly improved performance by making SECRET_KEY a class field.
+
+* Build and release process:
+  - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
+    Compilation and Javadoc generation will be faster.
+  - Fixed netbeans-debug target.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
