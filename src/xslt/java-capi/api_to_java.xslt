@@ -177,6 +177,13 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Secret key used when creating <code>ProtectedPropertyReader</code>
+    * instances.
+    */
+   private static final Object SECRET_KEY = new Object();
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------]]></xsl:text>
@@ -373,8 +380,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:if>
 			<xsl:text>org.xins.common.xml.Element _dataSection</xsl:text>
 		</xsl:if>
-		<!-- TODO: Make SECRET_KEY a private class field for slightly
-		improved performance and reduced memory footprint -->
 		<xsl:text>)
    throws org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
@@ -384,10 +389,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       org.xins.client.XINSServiceCaller caller = getCaller();</xsl:text>
 		<xsl:if test="input/param">
 			<xsl:text>
-
-      // Create a temporary secret key for the ProtectedPropertyReader so it
-      // cannot be modified after this method has filled it.
-      final Object SECRET_KEY = new Object();
 
       // Store the input parameters in a PropertyReader
       org.xins.common.collections.ProtectedPropertyReader params = new org.xins.common.collections.ProtectedPropertyReader(SECRET_KEY);</xsl:text>
