@@ -29,12 +29,14 @@ import org.xins.common.text.ParseException;
  * this element, <code>param</code> elements optionally define parameters and
  * an optional <code>data</code> element defines a data section.
  *
- * <p>If the result element contains an <code>error</code> or a
+ * <p>If the result element contains an <code>errorcode</code> or a
  * <code>code</code> attribute, then the value of the attribute is interpreted
  * as the error code. If both these attributes are set and conflicting, then
  * this is considered a showstopper.
  *
  * <p>TODO: Describe rest of parse process.
+ *
+ * <p>Note: This parser does not support XML Namespaces.
  *
  * @version $Revision$ $Date$
  *
@@ -163,7 +165,8 @@ extends Object {
          SAXParserFactory factory   = SAXParserFactory.newInstance();
          SAXParser        saxParser = factory.newSAXParser();
 
-         // TODO: Disable namespace processing
+         // TODO: Enable namespace processing and use localName instead of
+         //       qName in the startElement and endElement methods
 
          // Convert the byte array to an input stream
          ByteArrayInputStream bais = new ByteArrayInputStream(xml);
