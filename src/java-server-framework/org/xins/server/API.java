@@ -96,6 +96,12 @@ implements DefaultReturnCodes {
     */
    private final Map _contextsByThread;
 
+   /**
+    * The initialization settings. This field is initialized by
+    * {@link #init(Properties)}. It can be <code>null</code>.
+    */
+   private Properties _initSettings;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -116,6 +122,14 @@ implements DefaultReturnCodes {
     */
    public final void init(Properties properties)
    throws IllegalStateException, Throwable {
+
+      // Store the settings
+      if (properties == null) {
+         _initSettings = null;
+      } else {
+         _initSettings = (Properties) properties.clone();
+      }
+
       initImpl(properties);
    }
 
