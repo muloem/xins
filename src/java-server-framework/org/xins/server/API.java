@@ -16,15 +16,20 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
+
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
+
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
+
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
@@ -45,6 +50,11 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = API.class.getName();
 
    /**
     * String returned by the function <code>_GetStatistics</code> when certain
@@ -294,6 +304,7 @@ implements DefaultResultCodes {
       }
 
       // Let the subclass perform initialization
+      // TODO: What if bootstrapImpl2 throws an unexpected exception?
       bootstrapImpl2(buildSettings);
 
       // Bootstrap all instances
@@ -729,11 +740,17 @@ implements DefaultResultCodes {
     *    if access is denied for the specified combination of IP address and
     *    function name.
     */
-   final FunctionResult handleCall(long start, FunctionRequest functionRequest, String ip)
+   final FunctionResult handleCall(long            start,
+                                   FunctionRequest functionRequest,
+                                   String          ip)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
           AccessDeniedException {
+
+      final String THIS_METHOD = "handleCall(long,"
+                               + FunctionRequest.class.getName()
+                               + ",java.lang.String)";
 
       // Check state first
       assertUsable();
@@ -745,9 +762,19 @@ implements DefaultResultCodes {
       boolean allow;
       try {
          allow = _accessRuleList.allow(ip, functionName);
+
+      // If the IP address cannot be parsed there is a programming error
+      // somewhere
       } catch (ParseException exception) {
-         // FIXME: Review this code.
-         throw new Error("Malformed IP address: " + ip + '.');
+         final String SUBJECT_CLASS  = _accessRuleList.getClass().getName();
+         final String SUBJECT_METHOD = "allow(java.lang.String,java.lang.String)";
+         final String DETAIL         = "Malformed IP address: \"" + ip + "\".";
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL,
+                                         exception);
       }
       if (!allow) {
          throw new AccessDeniedException(ip, functionName);
