@@ -103,19 +103,22 @@ public final class TargetDescriptor extends Descriptor {
    static {
       final String THIS_METHOD = "<clinit>()";
       try {
-         PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, 
-                                            Perl5Compiler.READ_ONLY_MASK | 
-                                            Perl5Compiler.CASE_INSENSITIVE_MASK);
+         PATTERN = PATTERN_COMPILER.compile(
+            PATTERN_STRING, 
+            Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
+
       } catch (MalformedPatternException exception) {
-         String message = "The pattern \""
-                        + PATTERN_STRING
-                        + "\" is considered malformed.";
+         final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
+         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
+         final String DETAIL = "The pattern \""
+                             + PATTERN_STRING
+                             + "\" is considered malformed.";
 
          throw Utils.logProgrammingError(CLASSNAME,
                                          THIS_METHOD,
-                                         PATTERN_COMPILER.getClass().getName(),
-                                         "compile(java.lang.String,int)",
-                                         message,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL,
                                          exception);
       }
    }
@@ -146,13 +149,20 @@ public final class TargetDescriptor extends Descriptor {
       final String ENCODING = "US-ASCII";
       try {
          bytes = s.getBytes(ENCODING);
+
+      // Unsupported exception
       } catch (UnsupportedEncodingException exception) {
-         String message = "Encoding \"" + ENCODING + "\" is not supported by String.getBytes(String).";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                         "java.lang.String",
-                                         "getBytes(java.lang.String)",
-                                         message, exception);
+         final String DETAIL = "Encoding \"" + ENCODING + "\" is not supported.";
+         final String SUBJECT_CLASS = "java.lang.String";
+         final String SUBJECT_METHOD = "getBytes(java.lang.String)";
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL,
+                                         exception);
       }
+
       checksum.update(bytes, 0, bytes.length);
       return (int) (checksum.getValue() & 0x00000000ffffffffL);
    }
