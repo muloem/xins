@@ -148,7 +148,7 @@ final class CallResultOutputter extends Object {
       }
 
       // Process all contained elements and PCDATA sections
-      List content = element.getContent();
+      List content = element.getChildren();
       int count = content == null ? 0 : content.size();
       for (int i = 0; i < count; i++) {
          Object o = content.get(i);

@@ -995,7 +995,7 @@ implements DefaultResultCodes {
 
          Element property = new Element("property");
          property.addAttribute("name", key);
-         property.pcdata(value);
+         property.setText(value);
          build.add(property);
       }
       builder.add(build);
@@ -1009,7 +1009,7 @@ implements DefaultResultCodes {
 
          Element property = new Element("property");
          property.addAttribute("name", key);
-         property.pcdata(value);
+         property.setText(value);
          runtime.add(property);
       }
       builder.add(runtime);
@@ -1024,7 +1024,7 @@ implements DefaultResultCodes {
          if (key != null && value != null && key.length() > 0 && value.length() > 0) {
             Element property = new Element("property");
             property.addAttribute("name", key);
-            property.pcdata(value);
+            property.setText(value);
             system.add(property);
          }
       }
