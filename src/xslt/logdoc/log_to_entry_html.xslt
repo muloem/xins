@@ -128,13 +128,13 @@
 		<xsl:variable name="translation-bundle-doc">
 			<xsl:value-of select="$sourcedir" />
 			<xsl:text>/messages-</xsl:text>
-			<xsl:value-of select="@id" />
+			<xsl:value-of select="@locale" />
 			<xsl:text>.xml</xsl:text>
 		</xsl:variable>
 
 		<tr>
 			<th>
-				<xsl:value-of select="@id" />
+				<xsl:value-of select="@locale" />
 			</th>
 			<td>
 				<xsl:apply-templates select="document($translation-bundle-doc)/messages/message[@entry=$entry]" />

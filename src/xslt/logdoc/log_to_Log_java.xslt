@@ -23,7 +23,7 @@
 			<xsl:value-of select="@default-locale" />
 		</xsl:variable>
 
-		<xsl:if test="not(boolean(translation-bundle[@id=$default_locale]))">
+		<xsl:if test="not(boolean(translation-bundle[@locale=$default_locale]))">
 			<xsl:message terminate="yes">
 				<xsl:text>The default locale "</xsl:text>
 				<xsl:value-of select="$default_locale" />
@@ -125,9 +125,9 @@ public class Log extends Object {
 			<xsl:for-each select="translation-bundle">
 				<xsl:text>
       TRANSLATION_BUNDLES_BY_NAME.put("</xsl:text>
-				<xsl:value-of select="@id" />
+				<xsl:value-of select="@locale" />
 				<xsl:text>", TranslationBundle_</xsl:text>
-				<xsl:value-of select="@id" />
+				<xsl:value-of select="@locale" />
 				<xsl:text>.SINGLETON);</xsl:text>
 			</xsl:for-each>
 			<xsl:text>

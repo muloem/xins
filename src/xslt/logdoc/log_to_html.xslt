@@ -65,8 +65,8 @@
 				<ul>
 					<xsl:for-each select="translation-bundle">
 						<li>
-							<xsl:value-of select="@id" />
-							<xsl:if test="$default_locale = @id"> (default)</xsl:if>
+							<xsl:value-of select="@locale" />
+							<xsl:if test="$default_locale = @locale"> (default)</xsl:if>
 						</li>
 					</xsl:for-each>
 				</ul>
