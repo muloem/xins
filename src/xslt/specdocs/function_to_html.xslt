@@ -385,17 +385,7 @@
 				<xsl:otherwise>false</xsl:otherwise>
 
 				<!-- TODO: Check that the result code is not defined in 2 places? -->
-
-				<!-- Unrecognised result code -->
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>Non-existent result code '</xsl:text>
-						<xsl:value-of select="$resultcode" />
-						<xsl:text>' used in example </xsl:text>
-						<xsl:value-of select="@num" />
-						<xsl:text>.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
+				<!-- TODO: Check that the result code exists? -->
 			</xsl:choose>
 		</xsl:variable>
 
