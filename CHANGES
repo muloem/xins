@@ -52,6 +52,9 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 * Added support for the -version argument for the xins commands.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 3:
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
 
 * XINS/Java Client Framework:
