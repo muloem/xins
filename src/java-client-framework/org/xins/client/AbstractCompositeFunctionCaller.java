@@ -47,7 +47,7 @@ implements CompositeFunctionCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("members", members);
 
-      _members = members;
+      _members = Collections.unmodifiableList(members);
    }
 
 
@@ -73,7 +73,6 @@ implements CompositeFunctionCaller {
     *    an unmodifiable view of the list of members, never <code>null</code>.
     */
    public final List getMembers() {
-      // TODO: Cache the unmodifiable list ?
-      return Collections.unmodifiableList(_members);
+      return _members;
    }
 }
