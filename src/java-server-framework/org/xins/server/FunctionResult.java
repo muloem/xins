@@ -41,32 +41,38 @@ public class FunctionResult {
     */
    private CallResultBuilder _builder;
 
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the object that construct the XML structure.
+    * Returns the object that is responsible for constructing the call result
+    * object.
     *
     * @return
-    *    the CallResultBuilder with the XML structure.
+    *    the {@link CallResultBuilder}, never <code>null</code>.
     */
-    protected CallResultBuilder getResultBuilder() {
-       return _builder;
-    }
+   protected CallResultBuilder getResultBuilder() {
+      return _builder;
+   }
 
    /**
-    * Returns the object that constructs the XML structure.
+    * Returns the <code>CallResult</code>
     *
     * @return
-    *    the CallResultBuilder with the XML structure.
+    *    the {@link CallResult}, never <code>null</code>.
     */
    CallResult getCallResult() {
-      InvalidResponseResult _errorOutputResult = checkOutputParameters();
-      if (_errorOutputResult != null) {
+
+      // If the output parameters are invalid, return an error result
+      if (checkOutputParameters() != null) {
          return _errorOutputResult.getResultBuilder();
+
+      // Otherwise return the built result
+      } else {
+         return _builder;
       }
-      return _builder;
    }
 
    /**
