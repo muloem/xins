@@ -226,76 +226,81 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>;
    }</xsl:text>
 
-		<!-- Print setter method that accepts a Java object -->
-		<xsl:text><![CDATA[
-
-   /**
-    * Sets or resets the <em>]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em> parameter.
-    *
-    * @param ]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[
-    *    the new value for the parameter, can be <code>null</code>.
-    */
-   public void ]]></xsl:text>
-		<xsl:value-of select="$setMethod" />
-		<xsl:text>(</xsl:text>
-		<xsl:value-of select="$javaclass" />
-		<xsl:text> </xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>) {
-      _</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text> = </xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>;
-   }</xsl:text>
-
-		<xsl:if test="$isJavaDatatype = 'true'">
+		<xsl:choose>
 
 			<!-- Print setter method that accepts a Java primary data type -->
-			<xsl:text><![CDATA[
+			<xsl:when test="$isJavaDatatype = 'true'">
+
+				<xsl:text><![CDATA[
 
    /**
     * Sets the <em>]]></xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em> parameter as ]]></xsl:text>
-			<xsl:choose>
-				<xsl:when test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
-					<xsl:text>an </xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>a </xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<code>
+				<xsl:value-of select="@name" />
+				<xsl:text><![CDATA[</em> parameter as ]]></xsl:text>
+				<xsl:choose>
+					<xsl:when test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
+						<xsl:text>an </xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>a </xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text><![CDATA[<code>]]></xsl:text>
 				<xsl:value-of select="$javatype" />
-			</code>
-			<xsl:text>.
+				<xsl:text><![CDATA[</code>.
     *
-    * @param </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[
+    * @param ]]></xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text><![CDATA[
     *    the new value for the parameter.
     */
    public void ]]></xsl:text>
-			<xsl:value-of select="$setMethod" />
-			<xsl:text>(</xsl:text>
-			<xsl:value-of select="$javatype" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>) {
-      </xsl:text>
-			<xsl:value-of select="$setMethod" />
-			<xsl:text>(new </xsl:text>
-			<xsl:value-of select="$javaclass" />
-			<xsl:text>(</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>));
+				<xsl:value-of select="$setMethod" />
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="$javatype" />
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>) {
+      _</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> = new </xsl:text>
+				<xsl:value-of select="$javaclass" />
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>);
    }</xsl:text>
-		</xsl:if>
+			</xsl:when>
+
+			<!-- Print setter method that accepts a Java object -->
+			<xsl:otherwise>
+				<xsl:text><![CDATA[
+
+   /**
+    * Sets or resets the <em>]]></xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text><![CDATA[</em> parameter.
+    *
+    * @param ]]></xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text><![CDATA[
+    *    the new value for the parameter, can be <code>null</code>.
+    */
+   public void ]]></xsl:text>
+				<xsl:value-of select="$setMethod" />
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="$javaclass" />
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>) {
+      _</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> = </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>;
+   }</xsl:text>
+
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>
