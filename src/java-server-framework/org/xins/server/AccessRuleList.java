@@ -49,7 +49,7 @@ import org.xins.common.text.ParseException;
  * @since XINS 1.0.0
  */
 public final class AccessRuleList
-extends Object {
+extends Object implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -216,6 +216,20 @@ extends Object {
    public boolean allow(String ip, String functionName)
    throws IllegalArgumentException, ParseException {
 
+      Boolean allowed = isAllowed(ip, functionName);
+      
+      if (allowed != null) {
+         return allowed.booleanValue();
+      } else {
+         
+         // Log: No access rule match
+         Log.log_3553(ip, functionName);
+
+         return false;
+      }
+   }
+
+   public Boolean isAllowed(String ip, String functionName) throws IllegalArgumentException, ParseException {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
@@ -238,16 +252,12 @@ extends Object {
                Log.log_3551(ip, functionName, i, ruleString);
             }
 
-            return allow;
+            return allowed;
          } else {
             Log.log_3552(ip, functionName, i, ruleString);
          }
       }
-
-      // Log: No access rule match
-      Log.log_3553(ip, functionName);
-
-      return false;
+      return null;
    }
 
    /**

@@ -315,7 +315,7 @@
 	</xsl:template>
 
 	<xsl:template match="input/param-combo" priority="-1">
-		<xsl:message terminate="yes">Unrecognised type of param-combo.</xsl:message>
+		<xsl:message terminate="yes">Unrecognized type of param-combo.</xsl:message>
 	</xsl:template>
 
 	<xsl:template match="input/param-combo" mode="textlist">
@@ -336,13 +336,13 @@
 	</xsl:template>
 
 	<xsl:template match="input/param-combo" priority="-1">
-		<xsl:message terminate="yes">Unrecognised type of param-combo.</xsl:message>
+		<xsl:message terminate="yes">Unrecognized type of param-combo.</xsl:message>
 	</xsl:template>
 
 	<xsl:template match="function/example">
 		<xsl:param name="function_name" />
 
-		<xsl:variable name="examplenum"           select="@num" />
+		<xsl:variable name="examplenum" select="@num" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-inputparams2"  select="input-example" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />

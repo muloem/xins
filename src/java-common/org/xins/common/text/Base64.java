@@ -8,7 +8,7 @@ package org.xins.common.text;
  *
  * @version $Revision$ $Date$
  * @author Robert Harder (<a href="mailto:rob@iharder.net">rob@iharder.net</a>)
- * @author Ernst de Haan (<a href="mailto:rob@iharder.net">rob@iharder.net</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.1.0
  */
