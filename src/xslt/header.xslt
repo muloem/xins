@@ -19,11 +19,6 @@
 			<tr>
 				<td>
 					<xsl:call-template name="header_item">
-						<xsl:with-param name="item">frontpage</xsl:with-param>
-						<xsl:with-param name="active" select="$active" />
-					</xsl:call-template>
-					<xsl:text> | </xsl:text>
-					<xsl:call-template name="header_item">
 						<xsl:with-param name="item">apilist</xsl:with-param>
 						<xsl:with-param name="active" select="$active" />
 					</xsl:call-template>
@@ -153,7 +148,6 @@
 		<xsl:param name="item" />
 
 		<xsl:choose>
-			<xsl:when test="$item='frontpage'">Front Page</xsl:when>
 			<xsl:when test="$item='apilist'">API Index</xsl:when>
 			<xsl:when test="$item='api'">Overview</xsl:when>
 			<xsl:when test="$item='help'">Help</xsl:when>
@@ -166,7 +160,6 @@
 		<xsl:param name="item" />
 
 		<xsl:choose>
-			<xsl:when test="$item='frontpage'">Front page</xsl:when>
 			<xsl:when test="$item='apilist'">Overview of all API specifications</xsl:when>
 			<xsl:when test="$item='api'">Overview of the current API</xsl:when>
 			<xsl:when test="$item='help'">Help documentation</xsl:when>
@@ -183,7 +176,6 @@
 		<xsl:choose>
 			<xsl:when test="$active='apilist'">
 				<xsl:choose>
-					<xsl:when test="$item='frontpage'">../index.html</xsl:when>
 					<xsl:when test="$item='help'">help/index.html</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
