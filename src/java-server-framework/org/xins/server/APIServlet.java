@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -34,6 +35,7 @@ import org.xins.common.io.FileWatcher;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.servlet.ServletConfigPropertyReader;
+import org.xins.common.text.HexConverter;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -203,7 +205,8 @@ extends HttpServlet {
 
    /**
     * Initializes the loggers to log to the console using a simple format
-    * and no threshold.
+    * and no threshold. This is done by calling
+    * {@link #configureLoggerFallback()}.
     */
    static {
       configureLoggerFallback();
@@ -217,7 +220,7 @@ extends HttpServlet {
       settings.setProperty("log4j.rootLogger",                                "ALL, console");
       settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%-4c{1} %-6p %m%n");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%-6c{1} %-6p %m%n");
       PropertyConfigurator.configure(settings);
    }
 
@@ -233,6 +236,7 @@ extends HttpServlet {
       _stateLock          = new Object();
       _state              = INITIAL;
       _configFileListener = new ConfigurationFileListener();
+      _random             = new Random();
    }
 
 
@@ -241,14 +245,27 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
+    * Lock for the <code>_state</code> field. This object must be locked on
+    * before {@link _state} may be read or changed.
+    */
+   private final Object _stateLock;
+
+   /**
     * The current state.
     */
    private State _state;
 
    /**
-    * Lock for <code>_state</code>
+    * The listener that is notified when the configuration file changes. Only
+    * one instance is created ever.
     */
-   private final Object _stateLock;
+   private final ConfigurationFileListener _configFileListener;
+
+   /**
+    * Pseudo-random number generator. Used for the automatic generation of
+    * diagnostic context identifiers. See {@link #generateContextID()}.
+    */
+   private final Random _random;
 
    /**
     * The stored servlet configuration object.
@@ -266,12 +283,6 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * The listener that is notified when the configuration file changes. Only
-    * one instance is created ever.
-    */
-   private final ConfigurationFileListener _configFileListener;
-
-   /**
     * Configuration file watcher.
     */
    private FileWatcher _configFileWatcher;
@@ -280,6 +291,17 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Generates a random diagnostic context identifier.
+    *
+    * @return
+    *    the generated diagnostic context identifier, never <code>null</code>
+    *    but always a 16-character string.
+    */
+   private String generateContextID() {
+      return HexConverter.toHexString(_random.nextLong());
+   }
 
    /**
     * Gets the current state. This method first synchronizes on
@@ -338,7 +360,7 @@ extends HttpServlet {
     * @return
     *    the interval to use, always &gt;= 1.
     */
-   private final int determineConfigReloadInterval(PropertyReader properties) {
+   private int determineConfigReloadInterval(PropertyReader properties) {
 
       // Get the runtime property
       String s = properties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -346,7 +368,6 @@ extends HttpServlet {
 
       // If the property is set, parse it
       if (s != null && s.length() >= 1) {
-         Log.log_1409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
          try {
             interval = Integer.parseInt(s);
             if (interval < 1) {
@@ -613,7 +634,7 @@ extends HttpServlet {
     * @param runtimeProperties
     *    the runtime settings, guaranteed not to be <code>null</code>.
     */
-   private final void initAPI(PropertyReader runtimeProperties) {
+   private void initAPI(PropertyReader runtimeProperties) {
 
       setState(INITIALIZING_API);
 
@@ -744,20 +765,21 @@ extends HttpServlet {
       // Determine diagnostic context ID
       String contextID = request.getParameter("_context");
 
-      // If there is a diagnostic context ID, then apply it and perform the
-      // request...
-      boolean haveContextID = (contextID != null) && (contextID.length() > 0);
-      if (haveContextID) {
-         NDC.push(contextID);
-         try {
-            doService(request, response);
-         } finally {
-            NDC.pop();
-         }
+      // If there is no diagnostic context ID, then generate one.
+      if ((contextID == null) || (contextID.length() < 1)) {
+         contextID = generateContextID();
+      }
 
-      // ...otherwise just perform the request.
-      } else {
+      // Associate the context ID with this thread
+      NDC.push(contextID);
+
+      // Handle the request
+      try {
          doService(request, response);
+
+      // And disassociate the context ID from this thread
+      } finally {
+         NDC.pop();
       }
 
       // TODO: Document _context somewhere
