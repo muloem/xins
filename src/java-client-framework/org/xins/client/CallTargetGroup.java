@@ -431,10 +431,10 @@ extends AbstractCompositeFunctionCaller {
     *    if <code>caller.</code>{@link FunctionCaller#call(String,String,Map)}
     *    returned <code>null</code>.
     */
-   protected final Object tryCall(FunctionCaller caller,
-                                  String         sessionID,
-                                  String         functionName,
-                                  Map            parameters)
+   final Object tryCall(FunctionCaller caller,
+                        String         sessionID,
+                        String         functionName,
+                        Map            parameters)
    throws InternalError {
 
       // Perform the call
@@ -484,7 +484,7 @@ extends AbstractCompositeFunctionCaller {
     * @throws InvalidCallResultException
     *    if <code>result instanceof InvalidCallResultException</code>.
     */
-   protected final CallResult callImplResult(Object result)
+   final CallResult callImplResult(Object result)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
 
       MandatoryArgumentChecker.check("result", result);
