@@ -45,6 +45,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
   - Fixed SF.net bug #1100792: Conflicting duplicate names for input param
     'ip'.
 
+* Logdoc:
+  - Translated some English logs to French.
+
 * Tests:
   - Added performance tests. Execute the "perftests" ant target to execute the
     test.

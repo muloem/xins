@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.1//EN" "http://www.xins.org/dtd/translation-bundle_1_1.dtd">
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
@@ -15,9 +15,9 @@
 	<translation entry="1004">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" /> avec une exception. Détail: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="1005">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
 
-<!-- FIXME --> <translation entry="1050">Programming error detected by class <value-of-param name="detectingClass" />, method <value-of-param name="detectingMethod" /> in class <value-of-param name="subjectClass" />, method <value-of-param name="subjectMethod" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-<!-- FIXME --> <translation entry="1051">Ignoring caught <exception-property name="class" />. Exception message: <exception-property name="message" format="quoted" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-<!-- FIXME --> <translation entry="1052">Programming error detected by class <value-of-param name="detectingClass" />, method <value-of-param name="detectingMethod" /> in class <value-of-param name="subjectClass" />, method <value-of-param name="subjectMethod" />. Caught unexpected <exception-property name="class" />. Exception message: <exception-property name="message" format="quoted" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1050">Une erreur de programmation dans <value-of-param name="subjectClass" />#<value-of-param name="subjectMethod" />() a été détectée par <value-of-param name="detectingClass" />#<value-of-param name="detectingMethod" />(). Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1051">Ignore la <exception-property name="class" /> attrapée. Message de l'exception: <exception-property name="message" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1052">Une erreur de programmation dans <value-of-param name="subjectClass" />#<value-of-param name="subjectMethod" />() a été détectée par <value-of-param name="detectingClass" />#<value-of-param name="detectingMethod" />(). Attrapé une <exception-property name="class" /> non-attendue. Message de l'exception: <exception-property name="message" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
 
 	<translation entry="1100">Appel de <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />, le time-out total est de <value-of-param name="totalTimeOut" /> ms, the time-out de la connection est de <value-of-param name="connectionTimeOut" /> ms, le time-out de la socket est de <value-of-param name="socketTimeOut" /> ms.</translation>
 	<translation entry="1101">La tentative d'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> a terminé en <value-of-param name="duration" /> ms.</translation>
