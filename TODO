@@ -88,6 +88,9 @@ ______________________________________________________________________________
 LOGDOC
 
 * Allow locales for all logs to be set at once.
+* Add AbstractLog class that defines getDomain() method.
+* Add org.logdoc package with class LogCentral with method 'void
+  registerLog(AbstractLog)' and 'AbstractLog getLogByDomain(String)'.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
