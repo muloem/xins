@@ -45,6 +45,7 @@ implements Responder {
       _code         = null;
       _stringWriter = new FastStringWriter();
       _xmlOutputter = new XMLOutputter();
+      _callID       = -1;
    }
 
    /**
@@ -123,6 +124,11 @@ implements Responder {
     */
    private String _code;
 
+   /**
+    * The call ID, unique in the context of the pertaining function.
+    */
+   private int _callID;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -140,6 +146,7 @@ implements Responder {
       _state   = UNINITIALIZED;
       _success = true;
       _code    = null;
+      _callID  = -1;
    }
 
    /**
@@ -166,6 +173,7 @@ implements Responder {
       _state   = BEFORE_START;
       _success = true;
       _code    = null;
+      _callID  = -1;
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
@@ -277,6 +285,35 @@ implements Responder {
       } else {
          return null;
       }
+   }
+
+   /**
+    * Sets the assigned call ID.
+    *
+    * @param callID
+    *    the new call ID, must be &gt;= 0.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>callID &lt; 0</code>.
+    */
+   void setCallID(int callID) throws IllegalArgumentException {
+      if (callID < 0) {
+         throw new IllegalArgumentException("callID (" + callID + ") < 0");
+      }
+      _callID = callID;
+   }
+
+   /**
+    * Returns the assigned call ID. This ID is unique within the context of
+    * the pertaining function. If no call ID is assigned, then <code>-1</code>
+    * is returned.
+    *
+    * @return
+    *    the assigned call ID for the function, or <code>-1</code> if none is
+    *    assigned.
+    */
+   int getCallID() {
+      return _callID;
    }
 
    public final void startResponse(ResultCode resultCode)
