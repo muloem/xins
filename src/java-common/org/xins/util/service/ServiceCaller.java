@@ -139,15 +139,6 @@ public abstract class ServiceCaller extends Object {
 
       // Loop ended, all calls failed
       LOG.error("Failed to call any of the targets.");
-      int failureCount = failedTargets.size();
-      for (int i = 0; i < failureCount; i++) {
-         // Get the failed target and the corresponding exception
-         ServiceDescriptor target    = (ServiceDescriptor) failedTargets.get(i);
-         Throwable         exception = (Throwable)         exceptions.get(i);
-
-         // Log an error for this target and exception
-         LOG.error("Call to target " + target + " failed.", exception);
-      }
       throw new CallFailedException(subject, failedTargets, exceptions);
    }
 
