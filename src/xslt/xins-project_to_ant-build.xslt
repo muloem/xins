@@ -797,7 +797,7 @@
 								<packageset dir="build/java-types/{$api}" />
 							</xsl:if>
 							<link
-							href="http://www.xins.org/javadoc/${{version.major}}.${{version.minor}}/"
+							href="http://www.xins.org/javadoc/${{version.major}}.${{version.middle}}.${{version.minor}}${{version.build}}/"
 							offline="true"
 							packagelistloc="{$xins_home}/docs/javadoc/" />
 							<link

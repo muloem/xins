@@ -25,7 +25,7 @@
 		<mkdir dir="${project_home}/build" />
 
 		<property file="${xins_home}/.version.properties" />
-		<property name="version" value="${version.major}.${version.minor}${version.suffix}" />
+		<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}${version.suffix}" />
 		<dependset>
 			<srcfileset    file="${xins_home}/.version.properties"                 />
 			<srcfileset    dir="${project_home}"    includes="**/api.xml"          />
