@@ -5,6 +5,15 @@ CHANGES INTRODUCED IN XINS 0.109:
   - Main class is now called 'CAPI' instead of 'API' to reduce confusion with
     other classes named 'RemoteAPI', 'API' or 'APIImpl'.
   - Applied some refactorings to make the XSLT easier to read and maintain.
+  - Now using <enumtype>.Item classes as the type for input parameters that
+    denote enumeration types. This may break existing code that expects a
+    java.lang.String object instead.
+
+* Generated fundament classes:
+  - Now using <enumtype>.Item classes as the type for input parameters that
+    denote enumeration types. This may break existing implementation code that
+    expects that the signature of the call method accepts a java.lang.String
+    instead.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.108:
