@@ -112,6 +112,7 @@ public abstract class CallException extends Exception {
       super(message, rootCauseFor(cause));
 
       _request = null;
+      _target  = null;
    }
 
    /**
@@ -137,8 +138,9 @@ public abstract class CallException extends Exception {
       super(createMessage(request, target, message, cause), // message
             rootCauseFor(cause));                           // cause
 
-      // Store request
+      // Store request and target
       _request = request;
+      _target  = target;
    }
 
 
@@ -149,7 +151,14 @@ public abstract class CallException extends Exception {
    /**
     * The original request.
     */
+   // TODO: Cannot be <code>null</code>.
    private final CallRequest _request;
+
+   /**
+    * Descriptor for the target that was attempted to be called.
+    */
+   // TODO: Cannot be <code>null</code>.
+   private final TargetDescriptor _target;
 
 
    //-------------------------------------------------------------------------
@@ -168,5 +177,19 @@ public abstract class CallException extends Exception {
    // TODO: Change @return to: the original request, cannot be <code>null</code>.
    public final CallRequest getRequest() {
       return _request;
+   }
+
+   /**
+    * Returns the descriptor for the target that was attempted to be called.
+    *
+    * @return
+    *    the target descriptor, or <code>null</code> if the deprecated
+    *    constructor was used.
+    *
+    * @since XINS 0.201
+    */
+   // TODO: Change @return to: the original request, cannot be <code>null</code>.
+   public final TargetDescriptor getTarget() {
+      return _target;
    }
 }
