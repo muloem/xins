@@ -3,8 +3,12 @@
  */
 package org.xins.demos.caller;
 
+import java.io.FileReader;
+import java.io.Reader;
 import org.xins.client.CallRequest;
 import org.xins.client.CallRequestParser;
+import org.xins.client.FunctionCaller;
+import org.xins.client.FunctionCallerParser;
 
 /**
  * Executes a call to a XINS API.
@@ -59,15 +63,18 @@ public final class Main extends Object {
       int count = (argCount > 2) ? Integer.parseInt(args[2]) : 1;
 
       // Read the config file
-      FileInputStream configFile = new FileInputStream(configFileName);
-      
+      Reader configFile = new FileReader(configFileName);
+      FunctionCallerParser functionCallerParser = new FunctionCallerParser();
+      FunctionCaller caller = functionCallerParser.parse(configFile);
 
       // Read the request file
-      FileInputStream configFile = new FileInputStream(configFileName);
+      Reader requestFile = new FileReader(requestFileName);
+      CallRequestParser callRequestParser = new CallRequestParser();
+      CallRequest request = callRequestParser.parse(requestFile);
 
       // Execute the call(s)
       for (int i = 0; i < count; i++) {
-         
+         caller.call(request);
       }
    }
 
