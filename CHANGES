@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.116:
     iterating has been implemented but is yet untested.
   - ServiceCaller: Improved logging.
   - ServiceDescriptor: Improved (fixed) URL matching pattern.
+  - DescriptorBuilder: Logging exception if ServiceDescriptor cannot be
+    constructed.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.115:
