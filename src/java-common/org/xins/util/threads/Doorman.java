@@ -38,7 +38,7 @@ public final class Doorman extends Object {
     * The maximum time an entry can be in the queue. This is currently set to
     * 30 seconds.
     */
-   private static final long MAX_QUEUE_WAIT_TIME = 30000L;
+   private static final long MAX_QUEUE_WAIT_TIME = 10000L;
 
 
    //-------------------------------------------------------------------------
@@ -119,7 +119,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
 
-         // Short-circuit if this thread is already entered
+         // Check preconditions
          if (_currentWriter == reader) {
             throw new IllegalStateException("Thread cannot enter as a reader if it is already an active writer.");
          } else if (_currentReaders.contains(reader)) {
@@ -155,6 +155,12 @@ public final class Doorman extends Object {
       } catch (InterruptedException exception) {
          // fall through
       }
+
+      synchronized (_currentActorLock) {
+         if (! _currentReaders.contains(reader)) {
+            throw new IllegalStateException("Thread was interrupted in enterAsReader(), but not in the set of current readers.");
+         }
+      }
    }
 
    /**
@@ -171,7 +177,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
 
-         // Short-circuit if this thread is already entered
+         // Check preconditions
          if (_currentWriter == writer) {
             throw new IllegalStateException("Thread cannot enter as a writer if it is already an active writer.");
          } else if (_currentReaders.contains(writer)) {
@@ -180,18 +186,17 @@ public final class Doorman extends Object {
 
          // If there is a current writer or one or more current readers, then
          // we need to wait in the queue
-         boolean enterQueue = _currentWriter != null || !_currentReaders.isEmpty();
+         boolean enterQueue = ! (_currentWriter == null && _currentReaders.isEmpty());
 
          // Join the queue if necessary
          if (enterQueue) {
             synchronized (_queue) {
                _queue.add(writer, WRITE_QUEUE_ENTRY_TYPE);
             }
-         }
 
          // If we don't have to join the queue, become the current writer and
          // return
-         if (!enterQueue) {
+         } else {
             _currentWriter = writer;
             return;
          }
@@ -203,6 +208,12 @@ public final class Doorman extends Object {
          throw new QueueTimeOutException();
       } catch (InterruptedException exception) {
          // fall through
+      }
+
+      synchronized (_currentActorLock) {
+         if (_currentWriter != writer) {
+            throw new IllegalStateException("Thread was interrupted in enterAsWriter(), but is not set as the current writer.");
+         }
       }
    }
 
