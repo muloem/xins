@@ -18,7 +18,7 @@ $Id$
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
 	
-	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+	<xsl:variable name="project_file"    select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins-common.jar" select="concat($xins_home, '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar" select="concat($xins_home, '/build/xins-server.jar')" />
 	<xsl:variable name="xins-client.jar" select="concat($xins_home, '/build/xins-client.jar')" />
@@ -400,6 +400,19 @@ $Id$
 				</xsl:if>
 
 				<target name="-stubs-capi-{$api}">
+					<xsl:variable name="functionResultIncludes">
+						<xsl:for-each select="document($api_file)/api/function">
+							<xsl:variable name="functionName" select="@name" />
+							<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
+							<xsl:for-each select="document($functionFile)/function">
+								<xsl:if test="output/param">
+									<xsl:value-of select="@name" />
+									<xsl:text>.fnc,</xsl:text>
+								</xsl:if>
+							</xsl:for-each>
+						</xsl:for-each>
+					</xsl:variable>
+
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 					<style
 					in="{$api_file}"
@@ -414,7 +427,7 @@ $Id$
 					destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 					style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
 					extension="Result.java"
-					includes="{$functionIncludes}">
+					includes="{$functionResultIncludes}">
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="specsdir"     expression="{$specsdir}"      />
 						<param name="package"      expression="{$clientPackage}" />
