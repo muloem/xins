@@ -2,18 +2,21 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Server Framework:
+  - Cleaned up and improved Logdoc.
+  - Fixed SF.net bug #1042113. Function without input parameters no longer
+    generates a NullPointerException. This bug has been in XINS since version
+    0.207.
+  - Fixed SF.net bug #1049146. The recognition of the hostname on the local
+    machine has now been improved.
+  - Fixed SF.net bug #1049149. The 'bootstrapped' message is now only printed
+    once when the framework is bootstrapped (during the initialization of the
+    servlet).
+  - Fixed SF.net bug #1049162. APIServlet now allows the state to change from
+    READY to INITIALIZING_API. This bug has been in XINS since XINS 0.207.
   - Fixed bug. The context identifier uses now the localhost hostname
     instead of the hostname of the remote host.
     This bug has been in XINS since version 0.203.
-  - Fixed SF.net bug #1042113. Function without input parameters generates
-    NullPointerException. This bug has been in XINS since version 0.207.
   - Removed Dutch Logdoc translations.
-  - Fixed bug #1049149. The bootstrapped message is only printed once when
-    the servlet is initialized.
-  - Changed the logdoc entry "1309" to "1233" and its message from 
-    "boostrapping" to "bootstrapped".
-  - Fixed bug #1049162. The servlet allows the state to change from READY to
-    INITIALIZING_API. This bug has been in XINS since XINS 0.207.
 
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
