@@ -116,6 +116,9 @@ public final class FastStack extends Object {
     * Pops the top element from this stack. This reduces the size of the stack
     * with 1.
     *
+    * @return
+    *    the top element, cannot be <code>null</code>.
+    *
     * @throws EmptyStackException
     *    if there are no elements on this stack.
     */
@@ -131,6 +134,9 @@ public final class FastStack extends Object {
 
    /**
     * Gets the top element from this stack. This does not modify this stack.
+    *
+    * @return
+    *    the top element, cannot be <code>null</code>.
     *
     * @throws EmptyStackException
     *    if there are no elements on this stack.
