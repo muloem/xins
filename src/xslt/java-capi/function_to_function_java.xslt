@@ -97,11 +97,11 @@ extends org.xins.client.AbstractCAPIFunction {
       super("</xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text>",
-            new org.xins.client.Constraint[] {</xsl:text>
+            new org.xins.common.constraint.Constraint[] {</xsl:text>
 		<!-- Required input parameters -->
 		<xsl:for-each select="input/param[@required='true']">
 			<xsl:text>
-               new org.xins.client.RequiredParamConstraint("</xsl:text>
+               new org.xins.common.constraint.RequiredParamConstraint("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>"),</xsl:text>
 		</xsl:for-each>
@@ -109,7 +109,7 @@ extends org.xins.client.AbstractCAPIFunction {
 		<!-- TODO: Input parameter types -->
 		<xsl:for-each select="input/param[string-length(@type) &gt; 1 and not (@type = '_text')]">
 			<xsl:text>
-               new org.xins.client.TypedParamConstraint("</xsl:text>
+               new org.xins.common.constraint.TypedParamConstraint("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>", </xsl:text>
 
@@ -127,12 +127,12 @@ extends org.xins.client.AbstractCAPIFunction {
 		<!-- TODO: Input parameter combos type 2 -->
 		<!-- TODO: Input parameter combos type 3 -->
 		<xsl:text>},
-            new org.xins.client.Constraint[] {</xsl:text>
+            new org.xins.common.constraint.Constraint[] {</xsl:text>
 
 		<!-- Required output parameters -->
 		<xsl:for-each select="output/param[@required='true']">
 			<xsl:text>
-               new org.xins.client.RequiredParamConstraint("</xsl:text>
+               new org.xins.common.constraint.RequiredParamConstraint("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>"),</xsl:text>
 		</xsl:for-each>
@@ -140,7 +140,7 @@ extends org.xins.client.AbstractCAPIFunction {
 		<!-- Output parameter types -->
 		<xsl:for-each select="output/param[string-length(@type) &gt; 1 and not (@type = '_text')]">
 			<xsl:text>
-               new org.xins.client.TypedParamConstraint("</xsl:text>
+               new org.xins.common.constraint.TypedParamConstraint("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>", </xsl:text>
 

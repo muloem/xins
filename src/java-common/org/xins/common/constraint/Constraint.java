@@ -100,7 +100,7 @@ extends Object {
     *    flag that indicates if this constraint was violated,
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
-   protected abstract boolean checkImpl(ConstraintContext context);
+   abstract boolean checkImpl(ConstraintContext context);
 
    /**
     * Describes a violation of this constraint.
