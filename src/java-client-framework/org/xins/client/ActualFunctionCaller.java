@@ -71,7 +71,7 @@ extends AbstractFunctionCaller {
     * @param b
     *    the new value for the flag.
     */
-   public void setCallAtConstruction(boolean b) {
+   public static void setCallAtConstruction(boolean b) {
       CALL_AT_CONSTRUCTION = b;
    }
 
