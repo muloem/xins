@@ -188,13 +188,6 @@ public final class ]]></xsl:text>
 				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
 				<xsl:when test="@required = 'false'">false</xsl:when>
 				<xsl:when test="@required = 'true'">true</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-						<xsl:value-of select="@required" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:text>
@@ -267,13 +260,6 @@ public final class ]]></xsl:text>
 				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
 				<xsl:when test="@required = 'false'">false</xsl:when>
 				<xsl:when test="@required = 'true'">true</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-						<xsl:value-of select="@required" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 

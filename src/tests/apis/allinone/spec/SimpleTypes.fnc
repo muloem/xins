@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
 
 <function name="SimpleTypes"
 rcsversion="$Revision$" rcsdate="$Date$">

@@ -40,6 +40,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="kind">
+			<!-- XXX Can this be optimized ? -->
 			<xsl:choose>
 				<xsl:when test="enum">enum</xsl:when>
 				<xsl:when test="pattern">pattern</xsl:when>
@@ -53,11 +54,6 @@
 				<xsl:when test="base64">base64</xsl:when>
 				<xsl:when test="list">list</xsl:when>
 				<xsl:when test="set">set</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>Unable to determine kind of type.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="superclass">

@@ -164,13 +164,6 @@
 								<xsl:when test="string-length(@nullable) &lt; 1">true</xsl:when>
 								<xsl:when test="@nullable = 'true'">true</xsl:when>
 								<xsl:when test="@nullable = 'false'">false</xsl:when>
-								<xsl:otherwise>
-									<xsl:message terminate="yes">
-										<xsl:text>The 'nullable' attribute is set to '</xsl:text>
-										<xsl:value-of select="@nullable" />
-										<xsl:text>', which is invalid. It should be either 'true' or 'false'.</xsl:text>
-									</xsl:message>
-								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
 						<tr>

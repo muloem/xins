@@ -89,8 +89,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     in the input.
   - Renamed data-example element to output-data-example element. The old
     data-example is still supported for compatibility issues.
-  - Removed element or attribute checking already done by the DTD.
 
+* DTD:
+  - Remove element or attribute checking already done by the DTD.
+  - Added type_1_1.dtd that contains the new types float32, float64, and
+    base64.
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 

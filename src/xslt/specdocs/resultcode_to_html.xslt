@@ -94,18 +94,9 @@
 		<xsl:if test="output">
 			<h2>Output section</h2>
 			<blockquote>
-				<xsl:choose>
-					<xsl:when test="count(output) &gt; 1">
-						<xsl:message terminate="yes">
-							<xsl:text>Found </xsl:text>
-							<xsl:value-of select="count(output)" />
-							<xsl:text> output sections. Only one is allowed.</xsl:text>
-						</xsl:message>
-					</xsl:when>
-					<xsl:when test="output">
-						<xsl:apply-templates select="output" />
-					</xsl:when>
-				</xsl:choose>
+				<xsl:if test="output">
+					<xsl:apply-templates select="output" />
+				</xsl:if>
 			</blockquote>
 		</xsl:if>
 	</xsl:template>

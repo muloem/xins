@@ -17,7 +17,7 @@
 <!ATTLIST entry
           id               NMTOKEN #REQUIRED
           level            NMTOKEN #IMPLIED
-          exception        CDATA #IMPLIED
+          exception        (true | false) #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>

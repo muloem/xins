@@ -196,13 +196,6 @@ import org.xins.logdoc.UnsupportedLocaleException;
 				<xsl:when test="@exception = 'true'">true</xsl:when>
 				<xsl:when test="@exception = 'false'">false</xsl:when>
 				<xsl:when test="string-length(@exception) = 0">false</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>Element 'entry', parameter 'exception' is set to '</xsl:text>
-						<xsl:value-of select="@exception" />
-						<xsl:text>', which is considered invalid. It should be either 'true', 'false' or empty.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 

@@ -17,13 +17,6 @@
 				<xsl:when test="@nullable = 'true'">true</xsl:when>
 				<xsl:when test="@nullable = 'false'">false</xsl:when>
 				<xsl:when test="string-length(@nullable) &lt; 1">true</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The value '</xsl:text>
-						<xsl:value-of select="@type" />
-						<xsl:text>' is not allowed for the 'nullable' attribute.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="@name = 'exception'">
