@@ -328,6 +328,7 @@ extends AbstractCompositeFunctionCaller {
                                 String functionName,
                                 Map    parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
+      MandatoryArgumentChecker.check("functionName", functionName);
       return callImpl(sessionID, functionName, parameters);
    }
 
@@ -371,6 +372,7 @@ extends AbstractCompositeFunctionCaller {
     */
    public final CallResult call(String url, String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, NoSuchActualFunctionCallerException, IOException, InvalidCallResultException {
+      MandatoryArgumentChecker.check("functionName", functionName);
       if (url == null) {
          return callImpl(sessionID, functionName, parameters);
       } else {
@@ -388,7 +390,8 @@ extends AbstractCompositeFunctionCaller {
     *    is session-less.
     *
     * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
+    *    the name of the function to be called, guaranteed not to be
+    *    <code>null</code>.
     *
     * @param parameters
     *    the parameters to be passed to that function, or
@@ -397,9 +400,6 @@ extends AbstractCompositeFunctionCaller {
     *
     * @return
     *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
     *
     * @throws IOException
     *    if the API could not be contacted due to an I/O error.
@@ -411,7 +411,7 @@ extends AbstractCompositeFunctionCaller {
    abstract CallResult callImpl(String sessionID,
                                 String functionName,
                                 Map    parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException;
+   throws IOException, InvalidCallResultException;
 
 
    //-------------------------------------------------------------------------
