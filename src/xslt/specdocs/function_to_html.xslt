@@ -63,16 +63,6 @@
 				<xsl:call-template name="broken_freeze" />
 				<xsl:apply-templates select="description" />
 
-				<p>
-					<xsl:text>DTD: </xsl:text>
-					<code>
-						<a href="{@name}.dtd">
-							<xsl:value-of select="@name" />
-							<xsl:text>.dtd</xsl:text>
-						</a>
-					</code>
-				</p>
-
 				<xsl:if test="see">
 					<table class="metadata">
 						<tr>
