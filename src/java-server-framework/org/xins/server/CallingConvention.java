@@ -11,7 +11,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.xins.common.text.ParseException;
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 /**
  * Abstraction of a calling convention. A calling convention determines how an
@@ -56,7 +57,9 @@ extends Object {
    //------------------------------------------------------------------------
 
    /**
-    * Converts an HTTP request to a XINS request.
+    * Converts an HTTP request to a XINS request (wrapper method). This method
+    * checks the arguments, then calls the implementation method and then
+    * checks the return value from that method.
     *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
@@ -67,14 +70,69 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws ParseException
+    * @throws InvalidRequestException
     *    if the request is considerd to be invalid.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the request does not indicate the name of the function to execute.
     */
-   abstract FunctionRequest convertRequest(HttpServletRequest httpRequest)
+   final FunctionRequest convertRequest(HttpServletRequest httpRequest)
    throws IllegalArgumentException,
           InvalidRequestException,
+          FunctionNotSpecifiedException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("httpRequest", httpRequest);
+
+      // Delegate to the implementation method
+      FunctionRequest xinsRequest;
+      try {
+         xinsRequest = convertRequestImpl(httpRequest);
+
+      // Filter any thrown exceptions
+      } catch (Throwable t) {
+         if (t instanceof InvalidRequestException) {
+            throw (InvalidRequestException) t;
+         } else if (t instanceof FunctionNotSpecifiedException) {
+            throw (FunctionNotSpecifiedException) t;
+         } else {
+            // TODO: Log
+            String actualClass = getClass().getName(); // XXX: Cache
+            throw new ProgrammingError(actualClass + ".convertRequestImpl(HttpServletRequest) has thrown an unexpected " + t.getClass().getName() + '.', t);
+         }
+      }
+
+      // Make sure the returned value is not null
+      if (xinsRequest == null) {
+         // TODO: Log
+         String actualClass = getClass().getName(); // XXX: Cache
+         throw new ProgrammingError(actualClass + ".convertRequestImpl(HttpServletRequest) returned null.");
+      }
+
+      return xinsRequest;
+   }
+
+   /**
+    * Converts an HTTP request to a XINS request (implementation method). This
+    * method should only be called from class {@link CallingConvention}. Only
+    * then it is guaranteed that the <code>httpRequest</code> argument is not
+    * <code>null</code>.
+    *
+    * @param httpRequest
+    *    the HTTP request, will not be <code>null</code>.
+    *
+    * @return
+    *    the XINS request object, should not be <code>null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the request is considerd to be invalid.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the request does not indicate the name of the function to execute.
+    */
+   protected abstract FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
+   throws InvalidRequestException,
           FunctionNotSpecifiedException;
-   // TODO: Use "Wrapper/Implementation Method" pattern
    
    /**
     * Converts a XINS result to an HTTP response.

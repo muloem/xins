@@ -80,13 +80,9 @@ extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   FunctionRequest convertRequest(HttpServletRequest httpRequest)
-   throws IllegalArgumentException,
-          InvalidRequestException,
+   protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
+   throws InvalidRequestException,
           FunctionNotSpecifiedException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
