@@ -10,8 +10,8 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="deployment"   />
-	<xsl:param name="hostname"   />
-	<xsl:param name="timestamp"   />
+	<xsl:param name="hostname"     />
+	<xsl:param name="timestamp"    />
 
 	<xsl:variable name="api"          select="//api/@name"                                />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
