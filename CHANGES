@@ -5,6 +5,15 @@ CHANGES INTRODUCED IN XINS 0.157:
   - Indenting text 'This function supports no input parameters', to have a
     more consistent layout.
 
+* XINS/Java Server Framework:
+  - Trimming API class name property value.
+  - Consistently logging an error first and then setting the state.
+  - Always throwing a ServletException if the bootstrap failed. This fixes the
+    issue that the servlet container assumes the servlet is initialized while
+    it is not.
+  - Consistently not passing any information to a ServletException when it is
+    thrown.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.156:
 
