@@ -9,6 +9,7 @@ package org.xins.server;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -1279,11 +1280,15 @@ extends HttpServlet {
          }
          String conventionClass = _servletConfig.getInitParameter(API_CALLING_CONVENTION_CLASS_PROPERTY);
          try {
-            CallingConvention convention = (CallingConvention) Class.forName(conventionClass).newInstance();
+            Class[] constructorClasses = {PropertyReader.class};
+            Object[] constructorValues = {_runtimeProperties};
+            Constructor conventionConst = Class.forName(conventionClass).getConstructor(constructorClasses);
+            CustomCallingConvention convention = (CustomCallingConvention) conventionConst.newInstance(constructorValues);
             return convention;
          } catch (Exception ex) {
 
             // TODO Log
+            ex.printStackTrace();
             return null;
          }
 

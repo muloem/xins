@@ -12,7 +12,7 @@ package org.xins.server;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-final class InvalidRequestException
+public final class InvalidRequestException
 extends Exception {
 
    //-------------------------------------------------------------------------
@@ -37,7 +37,7 @@ extends Exception {
     * @param cause
     *    the cause exception, can be <code>null</code>.
     */
-   InvalidRequestException(String message, Throwable cause) {
+   public InvalidRequestException(String message, Throwable cause) {
       super(message, cause);
    }
 
@@ -48,7 +48,7 @@ extends Exception {
     * @param message
     *    the message, can be <code>null</code>.
     */
-   InvalidRequestException(String message) {
+   public InvalidRequestException(String message) {
       this(message, null);
    }
 

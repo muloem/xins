@@ -25,8 +25,7 @@ import org.xins.common.xml.Element;
  *
  * @since XINS 1.2.0
  */
-class FunctionRequest
-extends Object {
+public class FunctionRequest {
 
    //-------------------------------------------------------------------------
    // Class fields

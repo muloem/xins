@@ -40,6 +40,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
     class FunctionRequest.
+  - Added CustomCallingConvention class.
+  - Made methods and classes that could be used by a custom calling convention
+    public.
 
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online

@@ -13,7 +13,7 @@ package org.xins.server;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-final class FunctionNotSpecifiedException
+public final class FunctionNotSpecifiedException
 extends Exception {
 
    //-------------------------------------------------------------------------
@@ -31,7 +31,7 @@ extends Exception {
    /**
     * Constructs a new <code>FunctionNotSpecifiedException</code>.
     */
-   FunctionNotSpecifiedException() {
+   public FunctionNotSpecifiedException() {
       super("Function not specified in incoming request.");
    }
 

@@ -149,7 +149,7 @@ public class FunctionResult extends Object {
     *    <code>null</code>), the values will be the parameter values
     *    ({@link String} objects as well, cannot be <code>null</code>).
     */
-   PropertyReader getParameters() {
+   public PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -186,7 +186,7 @@ public class FunctionResult extends Object {
     * @return
     *    the data element of the result, can be <code>null</code>.
     */
-   Element getDataElement() {
+   public Element getDataElement() {
       if (_dataElementBuilder == null) {
          return null;
       } else {
