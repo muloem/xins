@@ -16,7 +16,7 @@ import java.util.TreeSet;
  * <code>null</code> value.
  * To key and value of the entry are passed when you create the new 
  * <code>SingleEntryMap</code>, then you can change the value of the 
- * entry  by using the {@link #put(int, int) put} method.
+ * entry  by using the {@link #put(Object, Object) put} method.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
