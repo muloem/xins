@@ -231,9 +231,10 @@ extends HttpServlet {
     */
    private static final void configureLoggerFallback() {
       Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",              "ALL, console");
-      settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
+      settings.setProperty("log4j.rootLogger",                                "ALL, console");
+      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%-4c{1} %-6p %m%n");
       PropertyConfigurator.configure(settings);
    }
 
