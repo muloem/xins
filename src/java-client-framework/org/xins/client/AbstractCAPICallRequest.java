@@ -66,6 +66,16 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the wrapped <code>XINSCallRequest</code> object.
+    *
+    * @return
+    *    the wrapped {@link XINSCallRequest} object, never <code>null</code>.
+    */
+   XINSCallRequest getXINSCallRequest() {
+      return _request;
+   }
+
+   /**
     * Assigns the specified call configuration to this request.
     *
     * @param config
