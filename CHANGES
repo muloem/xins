@@ -30,6 +30,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - Implemented SF.net RFE #1071756: The MANIFEST.MF file in generated CAPI
     JAR file now contains the version of XINS used to generate the JAR file.
 
+* Generation of server-side Java code:
+  - The MANIFEST.MF file in generated WAR file now contains the version of 
+    XINS used to generate the WAR file.
+
 * Generated Javadoc now lists the groups of packages in the following order:
   Logdoc, Common, Client and finally Server. This should now generally be
   applied as the preferred order.

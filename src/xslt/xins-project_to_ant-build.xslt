@@ -759,9 +759,13 @@
 							<param name="timestamp"    expression="${{timestamp}}"  />
 						</style>
 						<fixcrlf srcdir="build/webapps/{$api}" includes="web.xml" eol="unix" />
+						<manifest file="build/webapps/{$api}/MANIFEST.MF">
+							<attribute name="XINS-Version" value="{$xins_version}" />
+						</manifest>
 						<war
 							webxml="build/webapps/{$api}/web.xml"
-							destfile="build/webapps/{$api}/{$api}.war">
+							destfile="build/webapps/{$api}/{$api}.war"
+							manifest="build/webapps/{$api}/MANIFEST.MF">
 							<lib dir="{$xins_home}/build" includes="logdoc.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-server.jar" />
