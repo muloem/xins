@@ -210,7 +210,7 @@ public class CAPITests extends TestCase {
       try {
          CAPI.create(properties, "allinone");
       } catch (InvalidPropertyValueException exception) {
-         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + '"', "capis.allinone.two", exception.getPropertyName());
+         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + "\".", "capis.allinone.two", exception.getPropertyName());
          assertEquals(properties.get("capis.allinone.two"), exception.getPropertyValue());
          Throwable cause = ExceptionUtils.getCause(exception);
          assertNotNull("Expected InvalidPropertyValueException to have an UnsupportedProtocolException as the cause.", cause);
@@ -221,7 +221,7 @@ public class CAPITests extends TestCase {
       try {
          CAPI.create(properties, "allinone", (XINSCallConfig) null);
       } catch (InvalidPropertyValueException exception) {
-         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + '"', "capis.allinone.two", exception.getPropertyName());
+         assertEquals("Expected invalid property value on property \"capis.allinone.two\" instead of on property \"" + exception.getPropertyName() + "\".", "capis.allinone.two", exception.getPropertyName());
          assertEquals(properties.get("capis.allinone.two"), exception.getPropertyValue());
          Throwable cause = ExceptionUtils.getCause(exception);
          assertNotNull("Expected InvalidPropertyValueException to have an UnsupportedProtocolException as the cause.", cause);
