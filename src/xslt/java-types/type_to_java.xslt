@@ -470,15 +470,45 @@ public final class ]]></xsl:text>
     * @throws TypeValueException
     *    if the specified value does not denote an existing item.
     */
-   public Item getItemByValue(String value)
+   public static Item getItemByValue(String value)
    throws TypeValueException {
 
       if (value != null) {
-         Object o = _valuesToItems.get(value);
+         Object o = SINGLETON._valuesToItems.get(value);
          if (o != null) {
             return (Item) o;
          } else {
-            throw new TypeValueException(this, value);
+            throw new TypeValueException(SINGLETON, value);
+         }
+      } else {
+         return null;
+      }
+   }
+
+   /**
+    * Gets the <code>Item</code> for the specified string name.
+    *
+    * @param name
+    *    the name for which to lookup the matching {@link Item} instance,
+    *    can be <code>null</code>, in which case <code>null</code> is also
+    *    returned.
+    *
+    * @return
+    *    the matching {@link Item} instance, or <code>null</code> if and only
+    *    if <code>name == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified name does not denote an existing item.
+    */
+   public static Item getItemByName(String name)
+   throws TypeValueException {
+
+      if (name != null) {
+         Object o = SINGLETON._namesToItems.get(name);
+         if (o != null) {
+            return (Item) o;
+         } else {
+            throw new TypeValueException(SINGLETON, name);
          }
       } else {
          return null;

@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.202:
+
+* XINS/Java Common Library:
+  - Added a new static method getItemByName() in EnumItem.
+  - Changed the getItemByValue() to a static method.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.201:
 
 * XINS/Java Server Framework:
