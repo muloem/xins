@@ -107,16 +107,17 @@ implements Responder {
    /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
-    * {@link #startResponse(boolean,String} is called with the first parameter
-    * (<em>success</em>) set to <code>false</code>.
+    * {@link #startResponse(boolean,String)} is called with the first
+    * parameter (<em>success</em>) set to <code>false</code>.
     */
    private boolean _success = true;
 
    /**
     * Return code. The default is <code>null</code> and will <em>only</em> be
     * set to something else if and only if
-    * {@link #startResponse(boolean,String} is called with the second parameter
-    * (<em>code</em>) set to a non-<code>null</code>, non-empty value.
+    * {@link #startResponse(boolean,String)} is called with the second
+    * parameter (<em>code</em>) set to a non-<code>null</code>, non-empty
+    * value.
     */
    private String _code;
 
@@ -199,8 +200,8 @@ implements Responder {
    /**
     * Returns the stored success indication. The default is <code>true</code>
     * and it will <em>only</em> be set to <code>false</code> if and only if
-    * {@link #startResponse(boolean,String} is called with the first parameter
-    * (<em>success</em>) set to <code>false</code>.
+    * {@link #startResponse(boolean,String)} is called with the first
+    * parameter (<em>success</em>) set to <code>false</code>.
     *
     * @return
     *    the success indication.
@@ -212,8 +213,9 @@ implements Responder {
    /**
     * Returns the stored return code. The default is <code>null</code>
     * and it will <em>only</em> be set to something else if and only if
-    * {@link #startResponse(boolean,String} is called with the second parameter
-    * (<em>code</em>) set to a non-<code>null</code>, non-empty value.
+    * {@link #startResponse(boolean,String)} is called with the second
+    * parameter (<em>code</em>) set to a non-<code>null</code>, non-empty
+    * value.
     *
     * @return
     *    the return code, can be <code>null</code>.
