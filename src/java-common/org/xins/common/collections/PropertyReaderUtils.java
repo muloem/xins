@@ -128,6 +128,48 @@ extends Object {
    }
 
    /**
+    * Retrieves the specified property and throws a
+    * <code>MissingRequiredPropertyException</code> if it is not set.
+    *
+    * @param properties
+    *    the set of properties to retrieve a specific proeprty from, cannot be
+    *    <code>null</code>.
+    *
+    * @param name
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the property, guaranteed not to be <code>null</code> and
+    *    guaranteed to contain at least one character.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || name == null</code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if the value of the property is either <code>null</code> or an empty
+    *    string.
+    */
+   public static final String getRequiredProperty(PropertyReader properties,
+                                                  String         name)
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties,
+                                     "name",       name);
+
+      // Retrieve the value
+      String value = properties.get(name);
+
+      // The property is required
+      if (value == null || value.length() < 1) {
+         throw new MissingRequiredPropertyException(name);
+      }
+
+      return value;
+   }
+
+   /**
     * Constructs a <code>PropertyReader</code> from the specified input
     * stream.
     *
