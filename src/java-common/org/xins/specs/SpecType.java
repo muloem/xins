@@ -42,7 +42,8 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      _name    = name;
+      _typeName = name;
+      _nameRE   = null; // TODO
    }
 
 
@@ -53,7 +54,13 @@ extends Object {
    /**
     * The name of the type. Cannot be <code>null</code>.
     */
-   private final String _name;
+   private final String _typeName;
+
+   /**
+    * The regular expression that names for components must match. Is
+    * <code>null</code> if there are no restrictions on the name.
+    */
+   private final String _nameRE;
 
 
    //-------------------------------------------------------------------------
@@ -67,6 +74,18 @@ extends Object {
     *    the name, cannot be <code>null</code>.
     */
    public final String getTypeName() {
-      return _name;
+      return _typeName;
+   }
+
+   /**
+    * Returns the regular expression that names for components of this type
+    * must match.
+    *
+    * @return
+    *    the regular expression that names for components must match, or
+    *    <code>null</code> if there are no restrictions on the name.
+    */
+   public final String getNameRE() {
+      return _nameRE;
    }
 }
