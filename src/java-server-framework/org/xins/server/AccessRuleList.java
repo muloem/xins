@@ -77,6 +77,7 @@ extends Object {
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
       // Tokenize the descriptor
+      descriptor = descriptor.trim();
       StringTokenizer tokenizer = new StringTokenizer(descriptor, ";");
       int ruleCount = tokenizer.countTokens();
 
