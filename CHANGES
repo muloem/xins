@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 0.107:
     that only return a data section and no output parameters.
 
 * Fixed Javadoc generation for both generated API classes and CAPI classes.
+  Both now include the generated classes for the types in a separate package
+  per API.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.106:
