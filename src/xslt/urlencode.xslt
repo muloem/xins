@@ -23,6 +23,7 @@
 			<xsl:when test="string-length($text) &lt; 1" />
 			<xsl:otherwise>
 				<xsl:choose>
+					<xsl:when test="$firstchar='%'">%25</xsl:when>
 					<xsl:when test="$firstchar=' '">+</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
