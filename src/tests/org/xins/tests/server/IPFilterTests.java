@@ -184,7 +184,7 @@ public class IPFilterTests extends TestCase {
       doTestIsAuthorized(filter, "194.134.168.212",          true,  false);
       doTestIsAuthorized(filter, "194.134.168.214",          true,  false);
 
-      IPFilter filter = IPFilter.parseFilter("194.134.168.213/31");
+      filter = IPFilter.parseFilter("194.134.168.213/31");
       assertNotNull(filter);
 
       doTestIsAuthorized(filter, "194.134.168.213",          true,  true);
