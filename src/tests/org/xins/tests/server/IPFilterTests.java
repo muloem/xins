@@ -111,10 +111,10 @@ public class IPFilterTests extends TestCase {
       doTestParseFilter("1.2.3.4/1234567890123456", false);
    }
 
-   private void doTestParseFilter(String expression, boolean shouldFail)
+   private void doTestParseFilter(String expression, boolean okay)
    throws Throwable {
 
-      if (shouldFail) {
+      if (! okay) {
          try {
             IPFilter.parseFilter(expression);
             fail("IPFilter.parse(\"" + expression + "\") should throw a ParseException.");
