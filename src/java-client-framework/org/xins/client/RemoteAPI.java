@@ -268,6 +268,9 @@ implements FunctionCaller {
     *    the parameters to be passed, or <code>null</code>; keys must be
     *    {@link String Strings}, values can be of any class.
     *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    *
     * @return
     *    the string that can be used in an HTTP GET call, never
     *    <code>null</code> nor empty.
