@@ -9,6 +9,8 @@ import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception thrown to indicate that a <code>ServiceCaller</code> call failed.
+ * This exception is typically only called from {@link ServiceCaller} and
+ * subclasses.
  *
  * <p>When a cause exception is passed to any of the constructors, then the
  * root cause of that exception is passed up to the {@link Exception} class.
