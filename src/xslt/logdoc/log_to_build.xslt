@@ -57,12 +57,14 @@
 				out="{$java_destdir}/Log.java"
 				style="{$logdoc_xslt_dir}/log_to_Log_java.xslt">
 					<param name="package_name" expression="{$package_name}" />
+					<param name="accesslevel" expression="${{accesslevel}}" />
 				</style>
 				<style
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/TranslationBundle.java"
 				style="{$logdoc_xslt_dir}/log_to_TranslationBundle_java.xslt">
 					<param name="package_name" expression="{$package_name}" />
+					<param name="accesslevel"  expression="${{accesslevel}}" />
 				</style>
 				<xsl:for-each select="translation-bundle">
 					<style
@@ -72,6 +74,7 @@
 						<param name="locale"       expression="{@locale}" />
 						<param name="package_name" expression="{$package_name}" />
 						<param name="log_file"     expression="{$sourcedir}/log.xml" />
+						<param name="accesslevel" expression="${{accesslevel}}" />
 					</style>
 				</xsl:for-each>
 			</target>
