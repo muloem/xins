@@ -1534,7 +1534,7 @@ extends HttpServlet {
                if (newInterval == 0 && _configFileWatcher != null) {
                   _configFileWatcher.end();
                   _configFileWatcher = null;
-               } else if (newInterval > 0 && _configFileWatcher != null) {
+               } else if (newInterval > 0 && _configFileWatcher == null) {
                   _configFileWatcher = new FileWatcher(_configFile, newInterval, _configFileListener);
                   _configFileWatcher.start();
                } else {
