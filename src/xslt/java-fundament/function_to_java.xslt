@@ -169,18 +169,30 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 			<xsl:text>) {
          context.startResponse(MISSING_PARAMETERS);</xsl:text>
-			<xsl:for-each select="input/param[@required='true']">
-				<xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(input/param[@required='true']) &gt; 1">
+					<xsl:for-each select="input/param[@required='true']">
+						<xsl:text>
          if (</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> == null) {
+						<xsl:value-of select="@name" />
+						<xsl:text> == null) {
             context.startTag("missing-param");
             context.attribute("name", "</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>");
+						<xsl:value-of select="@name" />
+						<xsl:text>");
             context.endTag();
          }</xsl:text>
-			</xsl:for-each>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>
+         context.startTag("missing-param");
+         context.attribute("name", "</xsl:text>
+					<xsl:value-of select="input/param[@required='true']/@name" />
+						<xsl:text>");
+         context.endTag();</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>
          return;
       }</xsl:text>
@@ -235,14 +247,14 @@ public abstract class ]]></xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:text>
-      if (!isMissing(</xsl:text>
+      if (</xsl:text>
 					<xsl:value-of select="$active" />
-					<xsl:text>) &amp;&amp; (</xsl:text>
+					<xsl:text>!= null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
-						<xsl:text>!isMissing(</xsl:text>
+						<xsl:text></xsl:text>
 						<xsl:value-of select="@name" />
-						<xsl:text>)</xsl:text>
+						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
          context.startResponse(INVALID_PARAMETERS);
@@ -276,16 +288,14 @@ public abstract class ]]></xsl:text>
       if (!(</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:text>isMissing(</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>)</xsl:text>
+					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) &amp;&amp; (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:if test="position() &gt; 1"> || </xsl:if>
-					<xsl:text>isMissing(</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>)</xsl:text>
+					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
          context.startResponse(INVALID_PARAMETERS);
@@ -315,9 +325,7 @@ public abstract class ]]></xsl:text>
       // Check values are valid for the associated types</xsl:text>
 			<xsl:for-each select="input/param[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
-      if (</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> != null &amp;&amp; !</xsl:text>
+      if (!</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="specsdir" select="$specsdir" />
