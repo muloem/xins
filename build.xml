@@ -57,18 +57,44 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-server-framework" depends="-prepare-classes" description="Compiles the XINS/Java server framework">
+	<target name="-prepare-java-common" depends="-prepare">
+		<mkdir dir="build/src/java-common" />
+		<copy todir="build/src/java-common">
+			<fileset dir="src/java-common" includes="**/*.java" />
+		</copy>
+		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
+	</target>
+
+	<target name="java-common" depends="-prepare-java-common,-prepare-classes" description="Compiles the XINS/Java common code">
+		<mkdir dir="build/classes/java-common" />
+		<javac
+		srcdir="build/src/java-common"
+		destdir="build/classes/java-common"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		target="1.2">
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="-prepare-java-server-framework" depends="-prepare">
 		<mkdir dir="build/src/java-server-framework" />
 		<style
 		in="src/xml/default_resultcodes.xml"
 		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
 		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
-		<mkdir dir="build/src/java-server-framework" />
 		<copy todir="build/src/java-server-framework">
-			<fileset dir="build/src/java-server-framework" includes="**/*.java" />
-			<fileset dir="src/java-server-framework"   includes="**/*.java" />
+			<fileset dir="src/java-server-framework" includes="**/*.java" />
 		</copy>
 		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
+	</target>
+
+	<target name="java-server-framework" depends="java-common,-prepare-java-server-framework" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/classes/java-server-framework" />
 		<javac
 		srcdir="build/src/java-server-framework"
@@ -78,6 +104,7 @@
 		optimize="${javac.optimize}"
 		target="1.2">
 			<classpath>
+				<pathelement path="build/classes/java-common" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
 				<fileset dir="depends/runtime"             includes="**/*.jar" />
@@ -115,7 +142,7 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="-prepare-java-server-framework,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
