@@ -8,7 +8,7 @@ CHANGES INTRODUCED IN XINS 0.190:
 * Generated build file:
   - Added commons-httpclient.jar and jakarta-oro.jar to the classpath for the
     creation of the javadoc.
-  - The create targets now creates XML files with the encoding set to UTF-8.
+  - The create targets now create XML files with the encoding set to UTF-8.
 
 * Logdoc:
   - Changed the logdoc domain for common from org.xins.util to
