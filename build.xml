@@ -9,12 +9,7 @@
 <project name="xins" default="all" basedir=".">
 
 	<target name="-junit-task">
-		<available classname="junit.framework.TestListener" property="junit.available">
-			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</available>
+		<available classname="junit.framework.TestListener" property="junit.available" />
 		<fail unless="junit.available" message="JUnit not available" />
 		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
 	</target>
