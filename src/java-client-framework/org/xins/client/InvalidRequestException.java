@@ -73,7 +73,7 @@ extends UnsuccessfulXINSCallException {
 
       // Handle all missing parameters
       List missingParamElements = element.getChildElements("missing-param");
-      if (missingParamElements != null && missingParamElements.size() >= 1) {
+      if (missingParamElements != null) {
          int size = missingParamElements.size();
          for (int i = 0; i < size; i++) {
             DataElement e = (DataElement) missingParamElements.get(i);
@@ -86,7 +86,23 @@ extends UnsuccessfulXINSCallException {
          }
       }
 
-      // TODO: Handle all invalid parameter values
+      // Handle all invalid parameter values
+      List invalidValueElements = element.getChildElements("invalid-value-for-type");
+      if (invalidValueElements != null) {
+         int size = invalidValueElements.size();
+         for (int i = 0; i < size; i++) {
+            DataElement e = (DataElement) invalidValueElements.get(i);
+            String parameterName = e.getAttribute("param");
+            String typeName      = e.getAttribute("type");
+            if (parameterName != null && parameterName.length() >= 1) {
+               detail.append("The value for parameter \""
+                           + parameterName
+                           + "\" is considered invalid. ");
+            }
+            // XXX: typeName is not used
+            // XXX: actual value is not specified in message
+         }
+      }
 
       // Remove the last space from the string, if there is any
       if (detail.getLength() >= 1) {
