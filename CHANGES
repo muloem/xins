@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.25:
+
+* Code cleanup.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.24:
 
 * Separating words with an underscore in generated name of result code in API
