@@ -421,6 +421,7 @@
 						out="build/logdoc/{$api}/build.xml"
 						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 							<xmlcatalog refid="all-dtds" />
+							<param name="xins_home"       expression="{$xins_home}" />
 							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
 							<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
 							<param name="html_destdir"    expression="html" />

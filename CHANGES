@@ -4,6 +4,7 @@ CHANGES INTRODUCED IN XINS 0.172:
 * XINS/Java Server Framework:
   - If the parameter is deprecated the javadoc for the Request and Result
     generated classes also is marked as deprecated.
+  - Removed deprecated methods in the package org.xins.server.
 
 * XINS/Java Common Library:
   - Implemented the isValidValueImpl() method in class
@@ -37,6 +38,7 @@ CHANGES INTRODUCED IN XINS 0.172:
   - Added the DTD for the logdoc xml files.
   - Added a target create-logdoc to create a basis log.xml with a
     translation-bundle.xml for a specified API.
+  - Added the DTD validation for the Logdoc.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.171:

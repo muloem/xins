@@ -298,23 +298,6 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Checks if response validation is enabled.
-    *
-    * @return
-    *    <code>true</code> if response validation is enabled,
-    *    <code>false</code> otherwise.
-    *
-    * @since XINS 0.98
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.157, with no replacement. This method always
-    *    returns <code>false</code>.
-    */
-   public final boolean isResponseValidationEnabled() {
-      return false;
-   }
-
-   /**
     * Bootstraps this API (wrapper method). This method calls
     * {@link #bootstrapImpl2(PropertyReader)}.
     *
@@ -661,21 +644,6 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Returns the name of the default function, if any.
-    *
-    * @return
-    *    the name of the default function, or <code>null</code> if there is
-    *    none.
-    *
-    * @deprecated
-    *    This method is deprecated since XINS 0.157, with no replacement. This
-    *    method will always return <code>null</code>.
-    */
-   public String getDefaultFunctionName() {
-      return null;
-   }
-
-   /**
     * Returns if this API is session-based.
     *
     * @return
@@ -891,9 +859,6 @@ implements DefaultResultCodes {
       String functionName = request.getParameter("_function");
       if (functionName == null || functionName.length() == 0) {
          functionName = request.getParameter("function");
-      }
-      if (functionName == null || functionName.length() == 0) {
-         functionName = getDefaultFunctionName();
       }
 
       // The function name is required

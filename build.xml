@@ -249,6 +249,7 @@
 		in="src/logdoc/${side}/log.xml"
 		out="build/logdoc/${side}/build.xml"
 		style="src/xslt/logdoc/log_to_build.xslt">
+			<param name="xins_home"       expression="."                           />
 			<param name="logdoc_xslt_dir" expression="../../../src/xslt/logdoc"    />
 			<param name="sourcedir"       expression="../../../src/logdoc/${side}" />
 			<param name="html_destdir"    expression="html"                        />

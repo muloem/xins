@@ -11,6 +11,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
+	<xsl:param name="xins_home"       />
 	<xsl:param name="logdoc_xslt_dir" />
 	<xsl:param name="sourcedir"       />
 	<xsl:param name="html_destdir"    />
@@ -27,15 +28,27 @@
 		<project default="all" basedir="..">
 			<target name="html" description="Generates HTML documentation">
 				<mkdir dir="{$html_destdir}" />
+				<xmlcatalog id="log-dtds">
+					<dtd location="{$xins_home}/src/dtd/log_1_0.dtd"
+					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
+					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd"
+					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
+				</xmlcatalog>
+				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
+					<xmlcatalog refid="log-dtds" />
+				</xmlvalidate>
 				<style
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/index.html"
-				style="{$logdoc_xslt_dir}/log_to_html.xslt" />
+				style="{$logdoc_xslt_dir}/log_to_html.xslt">
+					<xmlcatalog refid="log-dtds" />
+				</style>
 				<xsl:for-each select="group">
 					<style
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/group-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_group_html.xslt">
+						<xmlcatalog refid="log-dtds" />
 						<param name="sourcedir" expression="../../{$sourcedir}" />
 						<param name="group"     expression="{@id}"              />
 					</style>
@@ -45,6 +58,7 @@
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/entry-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
+						<xmlcatalog refid="log-dtds" />
 						<param name="sourcedir" expression="{$sourcedir}" />
 						<param name="entry"     expression="{@id}"              />
 					</style>
@@ -53,10 +67,20 @@
 
 			<target name="java" description="Generates Java code">
 				<mkdir dir="{$java_destdir}" />
+				<xmlcatalog id="log-dtds">
+					<dtd location="c:\projects\xins/src/dtd/log_1_0.dtd"
+					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
+					<dtd location="c:\projects\xins/src/dtd/translation-bundle_1_0.dtd"
+					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
+				</xmlcatalog>
+				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
+					<xmlcatalog refid="log-dtds" />
+				</xmlvalidate>
 				<style
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/Log.java"
 				style="{$logdoc_xslt_dir}/log_to_Log_java.xslt">
+					<xmlcatalog refid="log-dtds" />
 					<param name="package_name" expression="{$package_name}" />
 					<param name="accesslevel" expression="${{accesslevel}}" />
 				</style>
@@ -64,14 +88,19 @@
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/TranslationBundle.java"
 				style="{$logdoc_xslt_dir}/log_to_TranslationBundle_java.xslt">
+					<xmlcatalog refid="log-dtds" />
 					<param name="package_name" expression="{$package_name}" />
 					<param name="accesslevel"  expression="${{accesslevel}}" />
 				</style>
 				<xsl:for-each select="translation-bundle">
+					<xmlvalidate warn="false" file="{$sourcedir}/translation-bundle-{@locale}.xml">
+						<xmlcatalog refid="log-dtds" />
+					</xmlvalidate>
 					<style
 					in="{$sourcedir}/translation-bundle-{@locale}.xml"
 					out="{$java_destdir}/TranslationBundle_{@locale}.java"
 					style="{$logdoc_xslt_dir}/translation-bundle_to_java.xslt">
+						<xmlcatalog refid="log-dtds" />
 						<param name="locale"       expression="{@locale}" />
 						<param name="package_name" expression="{$package_name}" />
 						<param name="log_file"     expression="{$sourcedir}/log.xml" />

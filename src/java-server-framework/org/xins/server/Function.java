@@ -155,21 +155,6 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the logger associated with this function.
-    *
-    * @return
-    *    the associated logger, constant, and cannot be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.158 with no replacement. Instead of using a
-    *    <code>Logger</code>, use the <em>logdoc</em> approach. Although this
-    *    method is deprecated, it still works as specified.
-    */
-   final Logger getLogger() {
-      return _log;
-   }
-
-   /**
     * Returns the API that contains this function.
     *
     * @return
