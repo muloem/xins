@@ -57,7 +57,7 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-server-framework" depends="-prepare,-prepare-classes" description="Compiles the XINS/Java server framework">
+	<target name="java-server-framework" depends="-prepare-classes" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/src/java-server-framework" />
 		<style
 		in="src/xml/default_resultcodes.xml"
