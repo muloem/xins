@@ -32,6 +32,9 @@ import org.xins.common.MandatoryArgumentChecker;
  *    <dd>the maximum time for attempting to receive data on a socket.</dd>
  * </dl>
  *
+ * <p>To all these time-outs applies that if the value is either 0 or
+ * negative, then it is not in effect.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -127,8 +130,8 @@ public final class TargetDescriptor extends Descriptor {
     *    the URL of the service, cannot be <code>null</code>.
     *
     * @param timeOut
-    *    the total time-out for the service, in milliseconds; or a negative
-    *    value for no total time-out.
+    *    the total time-out for the service, in milliseconds; or a
+    *    non-positive value for no total time-out.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
@@ -154,12 +157,12 @@ public final class TargetDescriptor extends Descriptor {
     *    the URL of the service, cannot be <code>null</code>.
     *
     * @param timeOut
-    *    the total time-out for the service, in milliseconds; or a negative
-    *    value for no total time-out.
+    *    the total time-out for the service, in milliseconds; or a
+    *    non-positive value for no total time-out.
     *
     * @param connectionTimeOut
     *    the connection time-out for the service, in milliseconds; or a
-    *    negative value for no connection time-out.
+    *    non-positive value for no connection time-out.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
@@ -189,16 +192,16 @@ public final class TargetDescriptor extends Descriptor {
     *    the URL of the service, cannot be <code>null</code>.
     *
     * @param timeOut
-    *    the total time-out for the service, in milliseconds; or a negative
-    *    value for no total time-out.
+    *    the total time-out for the service, in milliseconds; or a
+    *    non-positive value for no total time-out.
     *
     * @param connectionTimeOut
     *    the connection time-out for the service, in milliseconds; or a
-    *    negative value for no connection time-out.
+    *    non-positive value for no connection time-out.
     *
     * @param socketTimeOut
     *    the socket time-out for the service, in milliseconds; or a
-    *    negative value for no socket time-out.
+    *    non-positive value for no socket time-out.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
@@ -239,20 +242,20 @@ public final class TargetDescriptor extends Descriptor {
    private final String _url;
 
    /**
-    * The total time-out for the service. Is set to a negative value if no
-    * total time-out should be applied.
+    * The total time-out for the service. Is set to a 0 if no total time-out
+    * should be applied.
     */
    private final int _timeOut;
 
    /**
-    * The connection time-out for the service. Is set to a negative value if
-    * no connection time-out should be applied.
+    * The connection time-out for the service. Is set to 0 if no connection
+    * time-out should be applied.
     */
    private final int _connectionTimeOut;
 
    /**
-    * The socket time-out for the service. Is set to a negative value if no
-    * socket time-out should be applied.
+    * The socket time-out for the service. Is set to 0 if no socket time-out
+    * should be applied.
     */
    private final int _socketTimeOut;
 
@@ -287,24 +290,26 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the total time-out for a call to the service. A negative
-    * value indicates there is no time-out.
+    * Returns the total time-out for a call to the service. The value 0
+    * is returned if there is no total time-out.
     *
     * @return
-    *    the total time-out for the service, in milli-seconds, or a
-    *    negative number if there is no total time-out.
+    *    the total time-out for the service, as a positive number, in
+    *    milli-seconds, or 0 if there is no total time-out.
+    *
+    * @since XINS 0.195
     */
    public int getTimeOut() {
       return _timeOut;
    }
 
    /**
-    * Returns the connection time-out for a call to the service. A negative
-    * value indicates there is no connection time-out.
+    * Returns the connection time-out for a call to the service. The value 0
+    * is returned if there is no connection time-out.
     *
     * @return
-    *    the connection time-out for the service, in milli-seconds, or a
-    *    negative number if there is no connection time-out.
+    *    the connection time-out for the service, as a positive number, in
+    *    milli-seconds, or 0 if there is no connection time-out.
     *
     * @since XINS 0.195
     */
@@ -313,12 +318,12 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the socket time-out for a call to the service. A negative
-    * value indicates there is no socket time-out.
+    * Returns the socket time-out for a call to the service. The value 0
+    * is returned if there is no socket time-out.
     *
     * @return
-    *    the socket time-out for the service, in milli-seconds, or a
-    *    negative number if there is no socket time-out.
+    *    the socket time-out for the service, as a positive number, in
+    *    milli-seconds, or 0 if there is no socket time-out.
     *
     * @since XINS 0.195
     */
