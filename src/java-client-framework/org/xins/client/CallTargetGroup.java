@@ -6,6 +6,7 @@ package org.xins.client;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -63,9 +64,15 @@ extends AbstractCompositeFunctionCaller {
     *    if <code>type == null || members == null</code>.
     */
    CallTargetGroup(Type type, List members) throws IllegalArgumentException {
+
       super(members);
+
+      // Check preconditions
       MandatoryArgumentChecker.check("type", type);
-      _type = type;
+
+      // Initialize fields
+      _type                            = type;
+      _actualFunctionCallersByHostName = new HashMap();
    }
 
 
@@ -77,6 +84,12 @@ extends AbstractCompositeFunctionCaller {
     * The type of this group. This field cannot be <code>null</code>.
     */
    private final Type _type;
+
+   /**
+    * Mappings from host nams to <code>ActualFunctionCaller</code>. This
+    * {@link Map} cannot be <code>null</code>.
+    */
+   private final Map _actualFunctionCallersByHostName;
 
 
    //-------------------------------------------------------------------------
@@ -114,8 +127,16 @@ extends AbstractCompositeFunctionCaller {
     */
    public final ActualFunctionCaller getActualFunctionCaller(String hostName)
    throws IllegalArgumentException, NoSuchActualFunctionCallerException {
+
+      // Check preconditions
       MandatoryArgumentChecker.check("hostName", hostName);
-      return null; // TODO
+
+      Object o = _actualFunctionCallersByHostName.get(hostName);
+      if (o == null) {
+         throw new NoSuchActualFunctionCallerException(hostName);
+      }
+
+      return (ActualFunctionCaller) o;
    }
 
    public final CallResult call(String sessionID,
