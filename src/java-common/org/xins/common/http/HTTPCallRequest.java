@@ -5,8 +5,12 @@ package org.xins.common.http;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
+
 import org.xins.common.text.FastStringBuffer;
+
 import org.xins.common.service.CallRequest;
+
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -22,6 +26,11 @@ public final class HTTPCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = HTTPCallRequest.class.getName();
 
    /**
     * The number of instances of this class. Initially zero.
@@ -101,17 +110,37 @@ public final class HTTPCallRequest extends CallRequest {
                           HTTPStatusCodeVerifier statusCodeVerifier)
    throws IllegalArgumentException {
 
+      // Determine instance number first
+      _instanceNumber = ++INSTANCE_COUNT;
+      FastStringBuffer buffer = new FastStringBuffer(137, "HTTPCallRequest #");
+      buffer.append(_instanceNumber);
+      String asString = buffer.toString();
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, "#" + _instanceNumber);
+
       // Check preconditions
       MandatoryArgumentChecker.check("method", method);
 
       // Store information
-      _instanceNumber     = ++INSTANCE_COUNT;
       _method             = method;
       _parameters         = parameters;
       _failOverAllowed    = failOverAllowed;
       _statusCodeVerifier = statusCodeVerifier;
 
-      // XXX: Note that _asString is lazily initialized.
+      // Complete the description of this object
+      buffer.append(" [method=");
+      buffer.append(_method.toString());
+      buffer.append(", failOverAllowed=");
+      buffer.append(failOverAllowed);
+      buffer.append(", parameters=");
+      PropertyReaderUtils.serialize(_parameters, buffer, "(null)");
+      buffer.append(']');
+      asString = buffer.toString();
+      _asString = asString;
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, asString);
    }
 
 
@@ -167,17 +196,6 @@ public final class HTTPCallRequest extends CallRequest {
     *    the description of this request, never <code>null</code>.
     */
    public String describe() {
-
-      // Lazily initialize the description of this call request object
-      if (_asString == null) {
-         FastStringBuffer buffer = new FastStringBuffer(137, "HTTP ");
-         buffer.append(_method.toString());
-         buffer.append(" request #");
-         buffer.append(_instanceNumber);
-         buffer.append(", parameters: ");
-         PropertyReaderUtils.serialize(_parameters, buffer, "-");
-         _asString = buffer.toString();
-      }
 
       return _asString;
    }
