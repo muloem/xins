@@ -467,7 +467,7 @@
 		<entry id="5006" level="INFO">
 			<description>Setting session attribute value.</description>
 			<param name="name" nullable="false" />
-			<param name="valueClass" nullable="true" />
+			<param name="valueClass" nullable="false" />
 			<param name="valueString" nullable="true" />
 		</entry>
 		<entry id="5007" level="INFO">
@@ -475,10 +475,14 @@
 			<param name="name" nullable="false" />
 		</entry>
 		<entry id="5008" level="INFO">
-			<description>Getting session attribute value.</description>
+			<description>Getting session attribute value, value is not null.</description>
 			<param name="name" nullable="false" />
-			<param name="valueClass" nullable="true" />
+			<param name="valueClass" nullable="false" />
 			<param name="valueString" nullable="true" />
+		</entry>
+		<entry id="5009" level="INFO">
+			<description>Getting session attribute value, value is null.</description>
+			<param name="name" nullable="false" />
 		</entry>
 	</group>
 
