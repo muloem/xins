@@ -5,7 +5,8 @@
 
  $Id$
 -->
-
+<!-- This stylesheet generates the abstract class as
+     specified in the function. -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="text" />
@@ -35,6 +36,7 @@
 	</xsl:variable>
 
 	<xsl:template match="function">
+		<!-- Initialize the session related variables. -->
 		<xsl:variable name="sessionBased">
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
@@ -53,6 +55,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<!-- Create the function abstract class. -->
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
@@ -393,7 +396,10 @@ public abstract class ]]></xsl:text>
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>, session</xsl:text>
+			<xsl:if test="input/param">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+			<xsl:text>session</xsl:text>
 		</xsl:if>
 		<xsl:text>);
       Result callResult = call(callRequest);</xsl:text>

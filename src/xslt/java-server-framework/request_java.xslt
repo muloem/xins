@@ -55,42 +55,13 @@ public final static class Request {
    // Fields
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="input/param" mode="field" />
-		<xsl:if test="input/data/element">
-			<xsl:text><![CDATA[
 
-   /**
-    * The input data element. This field will be <code>null</code> if no data
-    * element is entered.
-    */
-   private final org.jdom.Element _dataElement;]]></xsl:text>
-		</xsl:if>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="input/param" mode="method" />
-		<xsl:if test="input/data/element">
-			<xsl:text><![CDATA[
-
-   /**
-    * Gets the data element, if any. If there is no data element, then
-    * <code>null</code> is returned.
-    *
-    * <p>This method will always {@link org.jdom.Element#clone() clone}
-    * the underlying element and return the clone.
-    *
-    * @return
-    *    the data element, or <code>null</code> if there is none.
-    */
-   public org.jdom.Element getDataElement() {
-      if (_dataElement != null) {
-         return (org.jdom.Element) _dataElement.clone();
-      } else {
-         return null;
-      }
-   }]]></xsl:text>
-		</xsl:if>
 		<xsl:text>
 }
 </xsl:text>
