@@ -54,8 +54,8 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * The logging category used by this servlet. This field is initialized by
-    * {@link #init(ServletConfig)} to a non-<code>null</code> value.
+    * The logger used by this servlet. This field is initialized by
+    * {@link #init(ServletConfig)} and set to a non-<code>null</code> value.
     */
    private Logger _log;
 
