@@ -364,7 +364,9 @@ implements DefaultResultCodes {
          // Create expiry strategy and folder, max queue wait time is set to
          // half of the time-out duration
          ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
-         _sessionsByID = new ExpiryFolder(expiryStrategy, timeOut / 2L);
+
+         // TODO: Allow configuration of queue time-out
+         _sessionsByID = new ExpiryFolder("sessionsByID", expiryStrategy, false, 5000L); // 5 seconds
       }
 
       // Get build-time properties
@@ -1040,13 +1042,24 @@ implements DefaultResultCodes {
 
       // Currently available processors
       Runtime rt = Runtime.getRuntime();
-      context.param("availableProcessors", String.valueOf(rt.availableProcessors()));
+      try {
+         context.param("availableProcessors", String.valueOf(rt.availableProcessors()));
+      } catch (NoSuchMethodError error) {
+         // ignore: Runtime.availableProcessors() is not available in Java 1.3
+      }
 
       // Heap memory statistics
       context.startTag("heap");
-      context.attribute("free",  String.valueOf(rt.freeMemory()));
-      context.attribute("total", String.valueOf(rt.totalMemory()));
-      context.attribute("max",   String.valueOf(rt.maxMemory()));
+      long free  = rt.freeMemory();
+      long total = rt.totalMemory();
+      context.attribute("used",  String.valueOf(total - free));
+      context.attribute("free",  String.valueOf(free));
+      context.attribute("total", String.valueOf(total));
+      try {
+         context.attribute("max", String.valueOf(rt.maxMemory()));
+      } catch (NoSuchMethodError error) {
+         // ignore: Runtime.maxMemory() is not available in Java 1.3
+      }
       context.endTag(); // heap
 
       // Function-specific statistics
