@@ -15,18 +15,36 @@
 	<xsl:param name="enable_statistics">true</xsl:param>
 
 	<xsl:variable name="api" select="//api/@name" />
+	<xsl:variable name="sessionBased">
+		<xsl:choose>
+			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="sessionIDJavaType">
-		<xsl:call-template name="javatype_for_type">
-			<xsl:with-param name="api"      select="$api"      />
-			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="required" select="'true'"    />
-			<xsl:with-param name="type"     select="_text"     />
-		</xsl:call-template>
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="'true'"    />
+				<xsl:with-param name="type"     select="_text"     />
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:variable>
 	<xsl:variable name="sessionIDJavaTypeIsPrimary">
-		<xsl:call-template name="is_java_datatype">
-			<xsl:with-param name="text" select="$sessionIDJavaType" />
-		</xsl:call-template>
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$sessionIDJavaType" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:variable>
+	<xsl:variable name="sessionsShared">
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:choose>
+				<xsl:when test="//api/session-based/@shared-sessions = 'true'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:variable>
 
 	<xsl:output method="text" />
@@ -119,8 +137,11 @@ public final class API extends Object {
 				</xsl:variable>
 				<xsl:variable name="returnType">
 					<xsl:choose>
-						<xsl:when test="@createsSession = 'true'">
+						<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
 							<xsl:text>java.lang.String</xsl:text>
+						</xsl:when>
+						<xsl:when test="@createsSession = 'true'">
+							<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 						</xsl:when>
 						<xsl:when test="output/param">
 							<xsl:value-of select="$functionName" />
@@ -199,11 +220,19 @@ public final class API extends Object {
 					</xsl:if>
 				</xsl:for-each>
 				<xsl:choose>
+					<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
+						<xsl:text><![CDATA[
+    *
+    * @return
+    *    the shared session identifier, not <code>null</code>.]]></xsl:text>
+					</xsl:when>
 					<xsl:when test="@createsSession = 'true'">
 						<xsl:text><![CDATA[
     *
     * @return
-    *    the generated session identifier, not <code>null</code>.]]></xsl:text>
+    *    the non-shared session (not <code>null</code>), a combination of the
+    *    identifier of the created session and a link to the function caller
+    *    that actually created the session.]]></xsl:text>
 					</xsl:when>
 					<xsl:when test="output/param">
 						<xsl:text><![CDATA[
@@ -330,8 +359,17 @@ public final class API extends Object {
          throw new InvalidCallResultException("The call to function \"</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>\" returned no session ID.");
-      }
+      }</xsl:text>
+						<xsl:choose>
+							<xsl:when test="$sessionsShared = 'true'">
+								<xsl:text>
       return session;</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>
+      return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
 
 					</xsl:when>
 					<xsl:when test="output/param">
