@@ -15,7 +15,7 @@ import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Abstract base class for enumeration types. An enumeration type only accepts
- * a defined set of possible values.
+ * a defined set of values.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
