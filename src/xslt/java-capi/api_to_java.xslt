@@ -427,12 +427,14 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:text>
       // Split the client-side session ID
       java.lang.String[] arr = new java.lang.String[2];
+      int crc;
       try {
          _sessionIDSplitter.splitSessionID(session, arr);
-      } catch (org.xins.types.TypeValueException exception) {
-         throw new org.xins.client.NoSuchSessionException();
+         crc = org.xins.util.text.HexConverter.parseHexInt(arr[0]);
+      } catch (Throwable t) {
+         throw new org.xins.client.NoSuchSessionException(); // TODO: Message
       }
-      org.xins.util.service.TargetDescriptor target = caller.getDescriptor().getTargetByCRC(arr[0]);
+      org.xins.util.service.TargetDescriptor target = caller.getDescriptor().getTargetByCRC(crc);
       if (target == null) {
          throw new org.xins.client.NoSuchSessionException(); // TODO: Message
       }
