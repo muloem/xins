@@ -8,6 +8,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.util.net.URLEncoding;
+import org.xins.util.text.NonASCIIException;
 
 /**
  * Tests for class <code>URLEncoding</code>.
@@ -83,7 +84,7 @@ public class URLEncodingTests extends TestCase {
       try {
          URLEncoding.encode("\u0080");
          fail("URLEncoding.encode(\\u0080) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) { /* as expected */ }
+      } catch (NonASCIIException exception) { /* as expected */ }
 
       String s = "HelloThere0999";
       String result = URLEncoding.encode(s);
