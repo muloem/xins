@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.15:
+
+* Javadoc API documentation now links to Log4J API documentation.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.14:
 
 * The files CHANGES, COPYRIGHT and README are now in both distribution files.
