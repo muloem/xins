@@ -183,10 +183,7 @@
 			<td class="value">
 				<xsl:choose>
 					<xsl:when test="$isenum = 'true'">
-						<select>
-							<xsl:attribute name="name">
-								<xsl:value-of select="@name" />
-							</xsl:attribute>
+						<select name="@name">
 							<xsl:attribute name="class">
 								<xsl:choose>
 									<xsl:when test="@required = 'true'">required</xsl:when>
@@ -209,6 +206,13 @@
 									</xsl:choose>
 								</option>
 							</xsl:for-each>
+						</select>
+					</xsl:when>
+					<xsl:when test="$type = '_boolean'">
+						<select name="{@name}">
+							<option></option>
+							<option name="true"  value="true"></option>
+							<option name="false" value="false"></option>
 						</select>
 					</xsl:when>
 					<xsl:otherwise>
