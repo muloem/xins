@@ -35,24 +35,63 @@ extends AbstractCompositeFunctionCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * The <em>ordered</em> call target group type.
+    * The <em>ordered</em> call target group type. The name of this type is:
+    * <code>"ordered"</code>.
     */
-   public static final Type ORDERED_TYPE = new Type();
+   public static final Type ORDERED_TYPE = new Type("ordered");
 
    /**
-    * The <em>random</em> call target group type.
+    * The <em>random</em> call target group type. The name of this type is:
+    * <code>"random"</code>.
     */
-   public static final Type RANDOM_TYPE = new Type();
+   public static final Type RANDOM_TYPE = new Type("random");
 
    /**
-    * The <em>round robin</em> call target group type.
+    * The <em>round robin</em> call target group type. The name of this type
+    * is: <code>"round robin"</code>.
     */
-   public static final Type ROUND_ROBIN_TYPE = new Type();
+   public static final Type ROUND_ROBIN_TYPE = new Type("round robin");
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets the type with the specified name.
+    *
+    * @param name
+    *    the name of the type, cannot be <code>null</code>.
+    *
+    * @return
+    *    the type with the specified name, or <code>null</code> if there is no
+    *    type with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
+    * @since XINS 0.45
+    */
+   public final Type getTypeByName(String name)
+   throws IllegalArgumentException {
+
+      // Recognize existing types
+      if (ORDERED_TYPE.getName().equals(name)) {
+         return ORDERED_TYPE;
+      } else if (RANDOM_TYPE.getName().equals(name)) {
+         return RANDOM_TYPE;
+      } else if (ROUND_ROBIN_TYPE.getName().equals(name)) {
+         return ROUND_ROBIN_TYPE;
+
+      // Fail if name is null
+      } else if (name == null) {
+         throw new IllegalArgumentException("name == null");
+
+      // Otherwise: not found, return null
+      } else {
+         return null;
+      }
+   }
 
    /**
     * Creates a new <code>CallTargetGroup</code> of the specified type, using
@@ -395,9 +434,13 @@ extends AbstractCompositeFunctionCaller {
 
       /**
        * Constructs a new <code>Type</code>.
+       *
+       * @param name
+       *    the name of this type, not <code>null</code>.
        */
-      private Type() {
-         // empty
+      private Type(String name) throws IllegalArgumentException {
+         MandatoryArgumentChecker.check("name", name);
+         _name = name;
       }
 
 
@@ -405,8 +448,25 @@ extends AbstractCompositeFunctionCaller {
       // Fields
       //----------------------------------------------------------------------
 
+      /**
+       * The name of this type.
+       */
+      private final String _name;
+
+
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Returns the name of this type. The name uniquely identifies this
+       * type.
+       *
+       * @return
+       *    the name of this type, not <code>null</code>.
+       */
+      public final String getName() {
+         return _name;
+      }
    } 
 }
