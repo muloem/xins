@@ -100,6 +100,38 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Log controller. Can be used by the <code>LogCentral</code> class to set
+    * the locale on a specific <code>Log</code> class. Each <code>Log</code>
+    * class should create exactly one <code>LogController</code> object, in a
+    * class initializer.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    */
+   protected static class LogController extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>LogController</code> object.
+       */
+      protected LogController() {
+         // TODO
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+   }
+
+   /**
     * Custom log level.
     *
     * @version $Revision$ $Date$
