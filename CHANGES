@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.73:
   -dev versions of XINS. When determining the version of the online XINS API
   documentation to link to, the -dev part is removed.
 
+* Renamed class org.xins.util.LongUtils to org.xins.util.text.HexConverter.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.72:
 
