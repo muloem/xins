@@ -122,11 +122,11 @@ public class APIImpl extends API {
    // Methods
    //-------------------------------------------------------------------------
 </xsl:text>
-	<xsl:if test="document($impllist_file)/impllist/impl[@api=$api]/instance">
+	<xsl:if test="instance">
 		<xsl:text>
    public void init(Properties properties)
    throws Throwable {</xsl:text>
-		<xsl:for-each select="document($impllist_file)/impllist/impl[@api=$api]/instance">
+		<xsl:for-each select="instance">
 			<xsl:text>
       </xsl:text>
 			<xsl:value-of select="@name" />
