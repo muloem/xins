@@ -292,6 +292,38 @@ extends HttpServlet {
    }
 
    /**
+    * Changes the current state. This method first synchronizes on
+    * {@link #_stateLock} and then sets the value of {@link #_state}.
+    *
+    * @param
+    *    the new state, cannot be <code>null</code>.
+    */
+   private void setState(State newState)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("newState", newState);
+
+      State oldState;
+
+      synchronized (_stateLock) {
+
+         // Short-circuit if the current is the new state
+         if (_state == newState) {
+            return;
+         }
+
+         // Store the old state
+         oldState = _state;
+
+         // Change the current state
+         _state = newState;
+      }
+
+      Log.log_0(oldState._name, newState._name);
+   }
+
+   /**
     * Initializes this servlet using the specified configuration. The
     * (required) {@link ServletConfig} argument is stored internally and is
     * returned from {@link #getServletConfig()}.
@@ -334,8 +366,14 @@ extends HttpServlet {
     *    the {@link ServletConfig} object which contains build properties for
     *    this servlet, as specified by the <em>assembler</em>, cannot be
     *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the servlet could not be initialized.
     */
-   public void init(ServletConfig config) {
+   public void init(ServletConfig config)
+   throws ServletException {
+
+      Log.log_100();
 
       //-------------------------------------------------------------------//
       //                     Checks and preparations                       //
@@ -350,30 +388,29 @@ extends HttpServlet {
       // Check preconditions
       synchronized (_stateLock) {
          if (_state != INITIAL) {
-            String message = "Application server malfunction detected. Cannot initialize servlet. State is " + _state + " instead of " + INITIAL + '.';
-            // This is not fatal, but an error, since the framework is already
-            // initialized.
-            log.error(message);
-            throw new Error(message);
+            Log.log_101(_state == null ? null : _state.toString());
+            throw new ServletException("state is " + _state);
          } else if (config == null) {
-            String message = "Application server malfunction detected. Cannot initialize servlet. No servlet configuration object passed.";
-            log.fatal(message);
-            throw new Error(message);
+            final String reason = "config == null";
+            Log.log_102(reason);
+            throw new ServletException(reason);
          }
 
          // Get the ServletContext
          ServletContext context = config.getServletContext();
          if (context == null) {
-            String message = "Application server malfunction detected. Cannot initialize servlet. No servlet context available.";
-            log.fatal(message);
-            throw new Error(message);
+            final String reason = "config.getServletContext() == null";
+            Log.log_102(reason);
+            throw new ServletException(reason);
          }
 
          // Check the expected vs implemented Java Servlet API version
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
          if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
-            log.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
+            String expected = "" + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR;
+            String actual   = "" + major + '.' + minor;
+            Log.log_103(actual, expected);
          }
 
          // Store the ServletConfig object, per the Servlet API Spec, see:
@@ -386,14 +423,13 @@ extends HttpServlet {
          //----------------------------------------------------------------//
 
          // Proceed to first actual stage
-         _state = BOOTSTRAPPING_FRAMEWORK;
-         log.debug("Bootstrapping XINS/Java Server Framework.");
+         setState(BOOTSTRAPPING_FRAMEWORK);
 
          // Determine configuration file location
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
-            _state = FRAMEWORK_BOOTSTRAP_FAILED;
+            setState(FRAMEWORK_BOOTSTRAP_FAILED);
             _error = "System administration issue detected. Unable to get system property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" due to a security restriction.";
             log.error(_error, exception);
             return;
@@ -403,7 +439,7 @@ extends HttpServlet {
          // NOTE: Don't trim the configuration file name, since it may start
          //       with a space or other whitespace character.
          if (_configFile == null || _configFile.length() < 1) {
-            _state = FRAMEWORK_BOOTSTRAP_FAILED;
+            setState(FRAMEWORK_BOOTSTRAP_FAILED);
             _error = "System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.";
             log.error(_error);
             return;
@@ -418,13 +454,13 @@ extends HttpServlet {
          //----------------------------------------------------------------//
 
          // Proceed to next stage
-         _state = CONSTRUCTING_API;
+         setState(CONSTRUCTING_API);
          log.debug("Constructing API.");
 
          // Determine the API class
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
          if (apiClassName == null || apiClassName.trim().length() < 1) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. API class name not set in build property \"" + API_CLASS_PROPERTY + "\".";
             log.fatal(_error);
             return;
@@ -435,7 +471,7 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. Failed to load API class \"" + apiClassName + "\", as set in build property \"" + API_CLASS_PROPERTY + "\" " + dueToUnexpected(exception);
             log.fatal(_error);
             return;
@@ -443,7 +479,7 @@ extends HttpServlet {
 
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
             log.fatal(_error);
             return;
@@ -454,7 +490,7 @@ extends HttpServlet {
          try {
             singletonField = apiClass.getDeclaredField("SINGLETON");
          } catch (Exception exception) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\" " + dueToUnexpected(exception);
             log.fatal(_error, exception);
             return;
@@ -464,7 +500,7 @@ extends HttpServlet {
          try {
             _api = (API) singletonField.get(null);
          } catch (Exception exception) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\". Caught unexpected " + exception.getClass().getName() + '.';
             log.fatal(_error, exception);
             return;
@@ -472,12 +508,12 @@ extends HttpServlet {
 
          // Make sure that the field is an instance of that same class
          if (_api == null) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
             log.fatal(_error);
             return;
          } else if (_api.getClass() != apiClass) {
-            _state = API_CONSTRUCTION_FAILED;
+            setState(API_CONSTRUCTION_FAILED);
             _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
             log.fatal(_error);
             return;
@@ -493,13 +529,13 @@ extends HttpServlet {
          //----------------------------------------------------------------//
 
          // Proceed to next stage
-         _state = BOOTSTRAPPING_API;
+         setState(BOOTSTRAPPING_API);
          log.debug("Bootstrapping " + apiName + " API.");
 
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
          } catch (Throwable exception) {
-            _state = API_BOOTSTRAP_FAILED;
+            setState(API_BOOTSTRAP_FAILED);
             _error = "Application package may be invalid. Unable to bootstrap \"" + apiName + "\" API " + dueToUnexpected(exception);
             log.fatal(_error, exception);
             return;
@@ -561,12 +597,12 @@ extends HttpServlet {
 
       // TODO: Check state and lock on state
 
-      _state = INITIALIZING_API;
+      setState(INITIALIZING_API);
 
       try {
          _api.init(runtimeProperties);
       } catch (Throwable e) {
-         _state = API_INITIALIZATION_FAILED;
+         setState(API_INITIALIZATION_FAILED);
          if (e instanceof InvalidPropertyValueException || e instanceof MissingRequiredPropertyException || e instanceof InitializationException) {
             _error = "Failed to initialize " + _api.getName() + " API: " + e.getMessage();
             Library.INIT_LOG.error(_error);
@@ -577,7 +613,7 @@ extends HttpServlet {
          return;
       }
 
-      _state = READY;
+      setState(READY);
    }
 
    /**
@@ -762,9 +798,7 @@ extends HttpServlet {
       Library.SHUTDOWN_LOG.debug("Shutting down XINS/Java Server Framework.");
 
       // Set the state temporarily to DISPOSING
-      synchronized (_stateLock) {
-         _state = DISPOSING;
-      }
+      setState(DISPOSING);
 
       // Destroy the API
       if (_api != null) {
@@ -776,9 +810,7 @@ extends HttpServlet {
       }
 
       // Set the state to DISPOSED
-      synchronized (_state) {
-         _state = DISPOSED;
-      }
+      setState(DISPOSED);
 
       Library.SHUTDOWN_LOG.info("XINS/Java Server Framework shutdown completed.");
    }
