@@ -84,7 +84,7 @@ public final class TargetDescriptor extends Descriptor {
    /**
     * The pattern for a URL, as a character string.
     */
-   private static final String PATTERN_STRING = "[a-zA-Z][a-zA-Z0-9]*:\\/\\/[a-zA-Z0-9\\-]+(\\.[a-zA-Z0-9\\-]+)*(:[1-9][0-9]*)?(\\/([a-zA-Z0-9\\-_~\\.]*))*";
+   private static final String PATTERN_STRING = "[a-z][a-z\\d]*(:[a-z\\d]+)?:\\/\\/[a-z\\d-]+(\\.[a-z\\d-]+)*(:[1-9][\\d]*)?(\\/([a-z\\d%_~.-]*))*";
 
    /**
     * The pattern for a URL.
@@ -102,7 +102,9 @@ public final class TargetDescriptor extends Descriptor {
     */
    static {
       try {
-         PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
+         PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, 
+                                            Perl5Compiler.READ_ONLY_MASK | 
+                                            Perl5Compiler.CASE_INSENSITIVE_MASK);
       } catch (MalformedPatternException mpe) {
          String message = "The pattern \"" + PATTERN_STRING + "\" is malformed.";
          Log.log_1050(CLASSNAME, "<clinit>()", message);
