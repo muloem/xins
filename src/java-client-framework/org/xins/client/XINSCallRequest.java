@@ -16,9 +16,9 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.service.CallRequest;
-import org.xins.common.service.http.HTTPCallRequest;
-import org.xins.common.service.http.HTTPMethod;
-import org.xins.common.service.http.HTTPServiceCaller;
+import org.xins.common.http.HTTPCallRequest;
+import org.xins.common.http.HTTPMethod;
+import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.text.FastStringBuffer;
 
 /**
@@ -38,7 +38,7 @@ public final class XINSCallRequest extends CallRequest {
    /**
     * HTTP status code verifier that will only approve 2xx codes.
     */
-   private static final org.xins.common.service.http.HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
+   private static final org.xins.common.http.HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
 
    /**
     * Perl 5 pattern compiler.
@@ -340,7 +340,7 @@ public final class XINSCallRequest extends CallRequest {
     */
    private static final class HTTPStatusCodeVerifier
    extends Object
-   implements org.xins.common.service.http.HTTPStatusCodeVerifier {
+   implements org.xins.common.http.HTTPStatusCodeVerifier {
 
       //----------------------------------------------------------------------
       // Constructors

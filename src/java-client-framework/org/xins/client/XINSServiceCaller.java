@@ -27,11 +27,11 @@ import org.xins.common.service.GenericCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
-import org.xins.common.service.http.HTTPCallException;
-import org.xins.common.service.http.HTTPCallRequest;
-import org.xins.common.service.http.HTTPCallResult;
-import org.xins.common.service.http.HTTPServiceCaller;
-import org.xins.common.service.http.StatusCodeHTTPCallException;
+import org.xins.common.http.HTTPCallException;
+import org.xins.common.http.HTTPCallRequest;
+import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPServiceCaller;
+import org.xins.common.http.StatusCodeHTTPCallException;
 
 import org.xins.common.text.ParseException;
 
