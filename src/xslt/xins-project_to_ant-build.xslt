@@ -98,6 +98,22 @@
 				</echo>
 			</target>
 
+			<target name="run">
+				<input addproperty="command"
+				       message="Command "
+							 validargs="war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server" />
+				<input addproperty="api"
+				       message="API ">
+					<xsl:attribute name="validargs">
+						<xsl:for-each select="api">
+							<xsl:if test="position() &gt; 1">,</xsl:if>
+							<xsl:value-of select="@name" />
+						</xsl:for-each>
+					</xsl:attribute>
+				</input>
+				<antcall target="${{command}}-${{api}}" />
+			</target>
+
 			<xsl:call-template name="createproject" />
 
 			<target name="-prepare" />

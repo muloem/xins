@@ -24,6 +24,9 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Removed the counter that counted the number of time that a log was
     invoked.
 
+* Generated build file
+  - Added a run target that asks for the command and API to execute.
+
 * Moved the bin directory from xins/src to xins directory.
 
 ______________________________________________________________________________
