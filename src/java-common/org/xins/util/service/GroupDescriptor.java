@@ -156,6 +156,7 @@ public final class GroupDescriptor extends Descriptor {
          if (d instanceof TargetDescriptor) {
             TargetDescriptor target = (TargetDescriptor) d;
             _targetsByCRC32.put(new Integer(target.getCRC32()), target);
+            _targetCount++;
 
          // Otherwise it is assumed to be a GroupDescriptor, recurse
          } else {
@@ -190,6 +191,11 @@ public final class GroupDescriptor extends Descriptor {
     */
    private final Map _targetsByCRC32;
 
+   /**
+    * The total number of targets in this group.
+    */
+   private int _targetCount;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -213,6 +219,10 @@ public final class GroupDescriptor extends Descriptor {
       } else {
          throw new Error("Unexpected condition: Unknown type: " + _type + '.');
       }
+   }
+
+   public int getTargetCount() {
+      return _targetCount;
    }
 
    /**
