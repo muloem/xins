@@ -87,7 +87,7 @@ extends VersionedSpec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("function");
+         super("function", "^([A-Z][a-z0-9]+)+$");
       }
 
 
