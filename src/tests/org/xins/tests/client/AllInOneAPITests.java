@@ -8,6 +8,7 @@ package org.xins.tests.client;
 
 import com.mycompany.allinone.capi.CAPI;
 import com.mycompany.allinone.capi.DefinedTypesResult;
+import com.mycompany.allinone.capi.SimpleTypesRequest;
 import com.mycompany.allinone.capi.SimpleTypesResult;
 import com.mycompany.allinone.types.Salutation;
 import com.mycompany.allinone.types.TextList;
@@ -149,7 +150,6 @@ public class AllInOneAPITests extends TestCase {
     * call methods.
     */
    public void testSimpleTypes2() throws Exception {
-/*
       SimpleTypesRequest request = new SimpleTypesRequest();
       request.setInputByte((byte) 8);
       request.setInputShort((Short) null);
@@ -160,11 +160,12 @@ public class AllInOneAPITests extends TestCase {
       request.setInputText("text");
       request.setInputText2(null);
       request.setInputProperties(null);
-      request.setInputDate(Date.fromStringForRequired("20041213")),
-      request.setInputTimestamp(Timestamp.fromStringForOptional("20041225153255")),
+      request.setInputDate(Date.fromStringForRequired("20041213"));
+      request.setInputTimestamp(Timestamp.fromStringForOptional("20041225153255"));
       request.setInputBinary(new byte[] {25,88,66});
 
       SimpleTypesResult result = _capi.callSimpleTypes(request);
+      assertNotNull("Result returned from CAPI.callSimpleTypes(SimpleTypesRequest) is null.", result);
 
       assertNull(result.getOutputByte());
       assertEquals((short) -1, result.getOutputShort());
@@ -179,7 +180,6 @@ public class AllInOneAPITests extends TestCase {
       assertEquals((byte) 25, result.getOutputBinary()[0]);
       assertEquals((byte) 88, result.getOutputBinary()[1]);
       assertEquals((byte) 66, result.getOutputBinary()[2]);
-*/
    }
 
    /**
