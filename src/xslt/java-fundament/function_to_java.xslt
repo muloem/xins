@@ -19,6 +19,7 @@
 	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
+	<xsl:include href="../types.xslt"  />
 
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
@@ -248,18 +249,18 @@ public abstract class ]]></xsl:text>
          }</xsl:text>
 
 			</xsl:for-each>
-			<xsl:if test="input/param[not(@type='text' or string-length(@type) = 0)]">
+			<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
 
       // Check values are valid for the associated types</xsl:text>
 			</xsl:if>
-			<xsl:for-each select="input/param[not(@type='text' or string-length(@type) = 0)]">
+			<xsl:for-each select="input/param[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
       } else if (!isMissing(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>) &amp;&amp; !</xsl:text>
-				<xsl:call-template name="hungarianUpper">
-					<xsl:with-param name="text">
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="type">
 						<xsl:value-of select="@type" />
 					</xsl:with-param>
 				</xsl:call-template>
