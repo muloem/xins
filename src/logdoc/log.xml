@@ -328,36 +328,36 @@
 		<entry id="4019" level="DEBUG">
 			<description>Initializing manageable object.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 		</entry>
 		<entry id="4020" level="DEBUG">
 			<description>Initialized manageable object.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 		</entry>
 		<entry id="4021" level="ERROR">
 			<description>Manageable object could not be initialized due to a missing required property.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 			<param name="propertyName" />
 		</entry>
 		<entry id="4022" level="ERROR">
 			<description>Manageable object could not be initialized due to an invalid property value.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
 		<entry id="4023" level="ERROR">
 			<description>Manageable object could not be initialized.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 			<param name="message" />
 		</entry>
 		<entry id="4024" level="ERROR">
 			<description>Manageable object could not be initialized due to an unexpected exception.</description>
 			<param name="api" />
-			<param name="function" />
+			<param name="className" />
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
 		</entry>
