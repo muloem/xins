@@ -228,7 +228,7 @@ extends Object {
       } catch (SAXException exception) {
 
          // TODO: Log: Parsing failed
-         final String exMessage = exception.getMessage();
+         String exMessage = exception.getMessage();
 
          // Construct complete message
          String message = "Failed to parse XML";

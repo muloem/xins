@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
 
 * XINS/Java Common Library:
   - Added a toHexString(char) method to the HexConverter class.
+  - Fixed various Checkstyle-reported issues.
 
 * Logdoc:
   - Improved transformation of XML to a Java String object for foreign
