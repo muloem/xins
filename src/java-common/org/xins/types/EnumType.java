@@ -56,6 +56,8 @@ public class EnumType extends Type {
 
       Map namesToValues = new HashMap();
       Map valuesToNames = new HashMap();
+      Map namesToItems  = new HashMap();
+      Map valuesToItems = new HashMap();
 
       // TODO: Use ArrayMap ?
 
@@ -71,6 +73,8 @@ public class EnumType extends Type {
             namesToValues.put(itemName,  itemValue);
             valuesToNames.put(itemValue, itemName);
             values[actualItems++] = itemValue;
+            namesToItems.put(itemName,   item);
+            valuesToItems.put(itemValue, item);
          }
       }
 
@@ -79,6 +83,8 @@ public class EnumType extends Type {
 
       _namesToValues = Collections.unmodifiableMap(namesToValues);
       _valuesToNames = Collections.unmodifiableMap(valuesToNames);
+      _namesToItems  = Collections.unmodifiableMap(namesToItems);
+      _valuesToItems = Collections.unmodifiableMap(valuesToItems);
    }
 
 
@@ -97,6 +103,18 @@ public class EnumType extends Type {
     * unmodifiable.
     */
    protected final Map _valuesToNames;
+
+   /**
+    * Map that links symbolic names to enumeration item objects. This map is
+    * unmodifiable.
+    */
+   protected final Map _namesToItems;
+
+   /**
+    * Map that links enumeration values to enumeration item objects. This map
+    * is unmodifiable.
+    */
+   protected final Map _valuesToItems;
 
    /**
     * The list of accepted values.
