@@ -24,6 +24,8 @@ import org.xins.util.text.FastStringBuffer;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @since XINS 0.41
  */
 public class ActualFunctionCaller
 extends AbstractFunctionCaller {

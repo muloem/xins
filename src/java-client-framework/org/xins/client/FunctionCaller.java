@@ -11,6 +11,8 @@ import java.util.Map;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @since XINS 0.33
  */
 public interface FunctionCaller {
 
