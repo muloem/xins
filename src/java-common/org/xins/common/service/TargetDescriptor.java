@@ -21,15 +21,15 @@ import org.xins.common.MandatoryArgumentChecker;
  * kinds of time-out:
  *
  * <dl>
- *    <dt>total time-out</dt>
+ *    <dt><em>total time-out</em></dt>
  *    <dd>the maximum duration of a call, including connection time, time used
  *    to send the request, time used to receive the response, etc.</dd>
  *
- *    <dt>connection time-out</dt>
- *    <dd>the maximum time for attempting to establish a connection</dd>
+ *    <dt><em>connection time-out</em></dt>
+ *    <dd>the maximum time for attempting to establish a connection.</dd>
  *
- *    <dt>socket time-out</dt>
- *    <dd>the maximum time for attempting to receive data on a socket</dd>
+ *    <dt><em>socket time-out</em></dt>
+ *    <dd>the maximum time for attempting to receive data on a socket.</dd>
  * </dl>
  *
  * @version $Revision$ $Date$
