@@ -60,6 +60,10 @@ public final class Doorman extends Object {
     *    the name for the protected area this doorman guards, to be used in
     *    logging and exception messages, cannot be <code>null</code>.
     *
+    * @param strict
+    *    flag that indicates if strict thread synchronization checking should
+    *    be performed.
+    *
     * @param queueSize
     *    the initial queue size, must be &gt;= 0.
     *
