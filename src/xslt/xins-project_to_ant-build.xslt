@@ -142,6 +142,7 @@
 			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 				<xsl:variable name="api"      select="@name"                                     />
 				<xsl:variable name="api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
+				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
 						<xsl:with-param name="project_file">
@@ -243,22 +244,6 @@
 						</classpath>
 					</javac>
 				</target>
-			</xsl:for-each>
-
-			<target name="classes" description="Compiles all Java classes">
-				<xsl:attribute name="depends">
-					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-						<xsl:if test="position() &gt; 1">,</xsl:if>
-						<xsl:text>classes-api-</xsl:text>
-						<xsl:value-of select="@name" />
-					</xsl:for-each>
-				</xsl:attribute>
-			</target>
-
-			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-				<xsl:variable name="api"            select="@name" />
-				<xsl:variable name="api_file"       select="concat($specsdir, '/', @name, '/api.xml')" />
-				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
 
 				<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
 					<mkdir dir="build/webapps/{$api}" />
@@ -290,6 +275,16 @@
 					</war>
 				</target>
 			</xsl:for-each>
+
+			<target name="classes" description="Compiles all Java classes">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>classes-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
 
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
