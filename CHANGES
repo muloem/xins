@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 0.146:
     errors (in class API).
   - Removed org.xins.server.LifespanManager class (moved to XINS/Java Common
     Library).
+  - Servlet now explicitly supports the GET, POST and HEAD HTTP request types
+    only. With the HEAD request no XML output is returned. Requests with a
+    different method get a '405 Method Not Allowed'.
 
 * XINS/Java Common Library:
   - Small improvements to the org.xins.util.service package, such as new and
