@@ -4,6 +4,13 @@ CHANGES INTRODUCED IN XINS 0.193:
 * XINS/Java Common Framework:
   - Fixed bug in GroupDescriptor.hasNext(). Previously it could incorrectly
     return true instead of false.
+  - Deprecated getException() method in classes BootstrapException,
+    DeinitializationException and InitializationException, in favor of the
+    getCause() method in class Throwable, which was introduced in Java 1.4.
+
+* XINS/Java Client Framework:
+  - Deprecated getException() method in class CallException, in favor of the
+    getCause() method in class Throwable, which was introduced in Java 1.4.
 
 * XINS/Java Server Framework:
   - Outputting log message 1430 instead of 1429 if a cause exception is
