@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     type specify certain aspects of how a call is executed. For example, for
     an HTTP service caller, a CallConfig object could specify what HTTP method
     (GET, POST, etc.) to use.
+  - Added HTTPCallConfig class (derives from CallConfig).
   - Changed ServiceCaller to work with CallConfig objects. Some members have
     been deprecated in favour of newer ones that work with CallConfig objects.
     Greatly improved the documentation in the ServiceCaller class [work in
@@ -19,6 +20,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     Documented in ServiceCaller class that this exception should be thrown by
     ServiceCaller subclasses if a TargetDescriptor with an unsupported
     protocol is passed.
+  - Changed TargetDescriptor to support capitals in the protocol part of the
+    URL. This fixes SF.net bug #1075248.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1071731: UnacceptableResultXINSCallException constructor
@@ -30,14 +33,27 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     . CallExceptionList exceptions()     -- Returns the list of CallExceptions.
     . TargetDescriptor succeededTarget() -- Returns the target for which the
                                             call succeeded.
- - Refactored the XINSCallRequest and added new set methods.
- - Added the possibility to have a data element as input.
+  - Refactored the XINSCallRequest and added new setter methods.
+  - Added possibility to have a data element as input.
+  - Removed the constructor that accepts a XINSServiceCaller from the
+    AbstractCAPI class. This constructor was added in XINS 1.1.0-alpha3. Added
+    a new constructor that accepts a Descriptor and a XINSCallConfig object
+    instead. The other constructor (which accepts a Descriptor only) remains
+    deprecated. There should still be no effect, since the constructors are
+    considered internal to XINS.
+  - Added XINSCallConfig class (derives from CallConfig).
+  - Removed the XINSServiceCaller constructor that accepts an HTTPMethod and
+    replaced it by one that accepts a XINSCallConfig object. The removed
+    constructor was added in XINS 1.1.0-alpha3.
 
 * XINS/Java Server Framework:
   - The _GetStatistics meta-function now supports statistics per error code.
     To retrieve these details, pass "detailed=true" to this function.
+  - If the bootstrap of the API failed, then the APIServlet now throws a
+    ServletException that contains a reference to the cause exception, for
+    improved exception handling. Also, if an InvalidPropertyValueException is
+    thrown during this bootstrap process, the reason is now logged as well.
   - Added the possibility to have a data element as input.
-  - If an InvalidPropertyValueException is thrown, the reason is also logged.
 
 * Generated CAPI classes:
   - All call methods now return a function result object, never void. This
@@ -48,6 +64,14 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - Implemented SF.net RFE #1071756: The MANIFEST.MF file in generated CAPI
     JAR file now contains the version of XINS used to generate the JAR file.
   - Added the possibility to have a data element as input.
+  - The generated CAPI classes now no longer offers a constructor that takes a
+    XINSServiceCaller. This constructor was introduced in XINS 1.1.0-alpha3.
+    Instead, a factory method is introduced. There are 2 forms:
+    . public static final CAPI create(PropertyReader, String, XINSCallConfig)
+    . public static final CAPI create(PropertyReader, String)
+    These methods construct a CAPI instance based on a set of properties and
+    the name of an API. The optional XINSCallConfig object can be used to
+    configure the XINS service caller.
 
 * Generation of server-side Java code:
   - The MANIFEST.MF file in generated WAR file now contains the version of 
