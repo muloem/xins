@@ -375,23 +375,31 @@ extends Object {
       MandatoryArgumentChecker.check("xinsResult",   xinsResult,
                                      "httpResponse", httpResponse);
 
-      final String SUBJECT_CLASS  = getClass().getName(); // XXX: Cache?
-      final String SUBJECT_METHOD = "convertResultImpl("
-                                  + HttpServletRequest.class.getName()
-                                  + ')'; // XXX: Cache?
-
       // Delegate to the implementation method
       try {
          convertResultImpl(xinsResult, httpResponse);
 
       // Filter any thrown exceptions
-      } catch (Throwable t) {
-         if (t instanceof IOException) {
-            throw (IOException) t;
+      } catch (Throwable exception) {
+         if (exception instanceof IOException) {
+            throw (IOException) exception;
          } else {
-            Log.log_3052(t, SUBJECT_CLASS, SUBJECT_METHOD);
-            throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " has thrown an unexpected " + t.getClass().getName() + '.', t);
-            // TODO: Log everything as in 1052
+            final String THIS_METHOD    = "convertResult("
+                                        + FunctionResult.class.getName()
+                                        + ','
+                                        + HttpServletResponse.class.getName()
+                                        + ')';
+            final String SUBJECT_CLASS  = getClass().getName();
+            final String SUBJECT_METHOD = "convertResultImpl("
+                                        + HttpServletRequest.class.getName()
+                                        + ')';
+
+            throw Utils.logProgrammingError(CLASSNAME,
+                                            THIS_METHOD,
+                                            SUBJECT_CLASS,
+                                            SUBJECT_METHOD,
+                                            null,
+                                            exception);
          }
       }
    }
