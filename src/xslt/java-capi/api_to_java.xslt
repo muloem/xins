@@ -303,7 +303,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision" select="@rcsversion" />
 		</xsl:call-template>
-		<xsl:text><![CDATA[. See the <a href="]]></xsl:text>
+		<xsl:text><![CDATA[.
+    * See the
+    * <a href="]]></xsl:text>
 		<xsl:value-of select="$specdocsURL" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$api" />
