@@ -118,7 +118,11 @@ extends Object {
        * Constructs a new <code>LogController</code> object.
        */
       protected LogController() {
-         // TODO
+
+         // Register this Log with the LogCentral, so that
+         // LogCentral.setLocale(String) may call doSetLocale(String) on this
+         // instance
+         LogCentral.registerLog(this);
       }
 
 
