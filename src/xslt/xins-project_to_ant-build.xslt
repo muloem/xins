@@ -136,6 +136,19 @@
 				</xsl:variable>
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
 				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
+				<xsl:variable name="javaImplDir">
+					<xsl:value-of select="$project_home" />
+					<xsl:text>/</xsl:text>
+					<xsl:choose>
+						<xsl:when test="document($project_file)/project/@javadir">
+							<xsl:value-of select="document($project_file)/project/@javadir" />
+						</xsl:when>
+						<xsl:otherwise>src/impl-java</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>/</xsl:text>
+					<xsl:value-of select="$api" />
+				</xsl:variable>
+				<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
 
 				<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
 					<mkdir dir="{$project_home}/build/java-fundament/{$packageAsDir}" />
@@ -160,9 +173,20 @@
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
+
+					<!-- Copy all .java files to a single directory -->
+					<mkdir dir="{$javaCombinedDir}" />
+					<copy todir="{$javaCombinedDir}">
+						<fileset dir="{$javaImplDir}" includes="**/*.java" />
+					</copy>
+					<copy todir="{$javaCombinedDir}" overwrite="true">
+						<fileset dir="{$javaDestDir}" includes="**/*.java" />
+					</copy>
+
+					<!-- Compile all classes -->
 					<mkdir dir="{$classesDestDir}" />
 					<javac
-					srcdir="{$javaDestDir}"
+					srcdir="{$javaCombinedDir}"
 					destdir="{$classesDestDir}"
 					debug="true"
 					deprecation="true">
