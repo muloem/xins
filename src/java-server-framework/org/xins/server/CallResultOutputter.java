@@ -25,8 +25,6 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- *
- * @since XINS 1.0.0
  */
 final class CallResultOutputter extends Object {
 
