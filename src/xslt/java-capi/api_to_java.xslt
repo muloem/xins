@@ -122,7 +122,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
       // Test the protocol for the descriptor
       try {
-         XINSServiceCaller.testProtocol(descriptor);
+         org.xins.client.XINSServiceCaller.testProtocol(descriptor);
 
       // Invalid property value due to unsupported protocol
       } catch (org.xins.common.service.UnsupportedProtocolException e) {
