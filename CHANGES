@@ -9,6 +9,10 @@ CHANGES INTRODUCED IN XINS 0.105:
 * XINS/Java Common Library:
   - Added org.xins.util.sd package.
 
+* Generated specification documentation:
+  - Function parameter in examples is now called '_function' instead of
+    'function'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.104:
 
