@@ -170,7 +170,8 @@ extends Object {
       // If there is no acceptable UnsuccessfulXINSCallException yet, then
       // create one now
       if (e == null) {
-         e = new UnsuccessfulXINSCallException(request, target, duration, resultData);
+         e = new UnsuccessfulXINSCallException(request, target, duration,
+                                               resultData, null);
       }
 
       return e;
