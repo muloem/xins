@@ -3,6 +3,7 @@
  */
 package org.xins.types.standard;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import org.xins.types.Type;
@@ -187,8 +188,46 @@ public class Properties extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected final boolean isValidValueImpl(String value) {
-      return true; // TODO
+   protected final boolean isValidValueImpl(String string) {
+
+      // Store the property keys
+      HashSet propertyKeys = new HashSet();
+
+      if (string == null) {
+         return false;
+      }
+
+      // Separate the string by ampersands
+      StringTokenizer tokenizer = new StringTokenizer(string, "&");
+      while (tokenizer.hasMoreTokens()) {
+         String token = tokenizer.nextToken();
+         int index = token.indexOf('=');
+         if (index < 1) {
+            return false;
+         } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
+            return false;
+         } else {
+            String name  = URLEncoding.decode(token.substring(0, index));
+            if (propertyKeys.contains(name)) {
+               return false;
+            }
+            propertyKeys.add(name);
+            String value = token.substring(index + 1);
+            if (value.length() < 1) {
+               value = null;
+            } else {
+               value = URLEncoding.decode(value);
+            }
+
+            if (!_nameType.isValidValue(name)) {
+               return false;
+            }
+            if (!_valueType.isValidValue(value)) {
+               return false;
+            }
+         }
+      }
+      return true;
    }
 
    protected final Object fromStringImpl(String string)
@@ -196,6 +235,9 @@ public class Properties extends Type {
 
       // Construct a PropertyReader to store the properties in
       BasicPropertyReader pr = new BasicPropertyReader();
+
+      // Store the property keys
+      HashSet propertyKeys = new HashSet();
 
       // Separate the string by ampersands
       StringTokenizer tokenizer = new StringTokenizer(string, "&");
@@ -208,6 +250,10 @@ public class Properties extends Type {
             throw new TypeValueException(SINGLETON, string);
          } else {
             String name  = URLEncoding.decode(token.substring(0, index));
+            if (propertyKeys.contains(name)) {
+               throw new TypeValueException(SINGLETON, string, "The key \"" + name + "\" is already set.");
+            }
+            propertyKeys.add(name);
             String value = token.substring(index + 1);
             if (value.length() < 1) {
                value = null;

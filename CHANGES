@@ -5,6 +5,11 @@ CHANGES INTRODUCED IN XINS 0.172:
   - If the parameter is deprecated the javadoc for the Request and Result
     generated classes also is marked as deprecated.
 
+* XINS/Java Common Library:
+  - Implemented the isValidValueImpl() method in class
+    org.xins.types.standard.Properties.
+  - The _properties type does not allow a single key to be used multiple times.
+
 * Generated specification documentation:
   - Set some attributes from required to implied for xins-project_1_0.dtd.
   - If api.xml has changed only regenerate index.html and the test forms.
