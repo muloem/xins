@@ -204,32 +204,4 @@ implements DefaultReturnCodes {
     */
    protected abstract void handleCall(CallContext context)
    throws Throwable;
-
-   /**
-    * Callback method invoked when a function throws an exception. This method
-    * will be invoked if and only if {@link #handleCall(CallContext)} throws
-    * an exception of some sort.
-    *
-    * @param function
-    *    the name of the function, will not be <code>null</code>.
-    *
-    * @param start
-    *    the timestamp indicating when the call was started, as a number of
-    *    milliseconds since midnight January 1, 1970 UTC.
-    *
-    * @param duration
-    *    the duration of the function call, as a number of milliseconds.
-    *
-    * @param code
-    *    the function result code, or <code>null</code>.
-    */
-   protected void callFailed(String function, long start, long duration, String code) {
-      Function f = getFunction(function);
-      if (f == null) {
-         // TODO: Should we throw an exception? Probably just log an error
-         return;
-      }
-
-      f.performedCall(start, duration, false, code);
-   }
 }
