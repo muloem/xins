@@ -271,8 +271,8 @@ public class HexConverter extends Object {
 
       final int CHAR_ZERO = (int) '0';
       final int CHAR_NINE = (int) '9';
-      final int CHAR_A = (int) 'a';
-      final int CHAR_F = (int) 'f';
+      final int CHAR_A    = (int) 'a';
+      final int CHAR_F    = (int) 'f';
 
       final int CHAR_A_FACTOR = CHAR_A - 10;
 
