@@ -75,11 +75,12 @@
 				<p>The following message entries are declared:</p>
 				<table type="entries">
 					<tr>
-						<th>ID</th>
-						<th>Description</th>
-						<th>Level</th>
-						<th>Category</th>
-						<th>Parameters</th>
+						<th title="The unique identifier of the entry">ID</th>
+						<th title="A description of the message entry, in US English">Description</th>
+						<th title="The log level for the message, ranging from DEBUG to FATAL">Level</th>
+						<th title="The logging category">Category</th>
+						<th title="Number of parameters the message accepts">Parameters</th>
+						<th title="Number of available translations for this message entry">Parameters</th>
 					</tr>
 					<xsl:for-each select="entry">
 						<xsl:variable name="entry_link">
