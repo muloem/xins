@@ -11,6 +11,8 @@
 	<!-- Define parameters -->
 	<xsl:param name="package_name"    />
 
+	<xsl:include href="../xml_to_java.xslt" />
+
 	<!-- Set output method -->
 	<xsl:output method="text" />
 
@@ -44,13 +46,6 @@ public abstract class TranslationBundle extends Object {
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a new <code>TranslationBundle</code> instance, not a subclass.
-    */
-   private TranslationBundle() {
-      _name = "_raw";
-   }
 
    /**
     * Constructs a new <code>TranslationBundle</code> subclass instance.
@@ -126,7 +121,11 @@ public abstract class TranslationBundle extends Object {
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>) {
-      return null; // TODO
+      return "</xsl:text>
+		<xsl:call-template name="xml_to_java_string">
+			<xsl:with-param name="text" select="description/text()" />
+		</xsl:call-template>
+		<xsl:text>";
    }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
