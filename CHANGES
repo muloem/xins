@@ -90,8 +90,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
 * Generation of CAPI classes:
   - Added proper @since tag (for XINS 1.1.0) on the generated create methods.
-  - Started implementation of RFE #1110484: Make CAPI call with request
-    object:
+  - Implemented RFE #1080066 (allow HTTP method to be specified for CAPI call)
+    and RFE #1080065 (allow unconditional fail-over to be specified for CAPI
+    call) and started implementation of RFE #1110484 (make CAPI call with
+    request object):
     . Renamed function_to_java.xslt to function_to_result_java.xslt.
     . Added function_to_request_java.xslt which produces a <Function>Request
       object. 
