@@ -399,7 +399,8 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Initializes this API. The properties are stored internally and then
+    * Initializes this API (wrapper method). The properties are stored
+    * internally before the actual implementation method
     * {@link #initImpl(Properties)} is called.
     *
     * @param properties
@@ -447,7 +448,7 @@ implements DefaultResultCodes {
       if (_defaultFunction != null) {
          Library.LIFESPAN_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
-      // TODO: Chech that default function exists
+      // TODO: Check that default function exists
 
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
@@ -551,9 +552,11 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Actually initializes this API.
+    * Initializes this API (implementation method).
     *
     * <p />The implementation of this method in class {@link API} is empty.
+    * Custom subclasses can perform any necessary initialization in this
+    * class.
     *
     * @param properties
     *    the properties, can be <code>null</code>.
