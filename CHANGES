@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.101:
+
+* XINS/Java Common Library:
+  - Fixed bug in FastStack class: Changed clear() method so it unlinks all
+    objects so they can be garbage collected.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.100:
 
 * XINS/Java Server Framework:
