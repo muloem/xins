@@ -114,5 +114,18 @@ public class TargetDescriptorTests extends TestCase {
          String url = validURLs[i];
          new TargetDescriptor(url);
       }
+
+      // Test protocols
+      doTestProtocol("file",      "home/ernst/something.xml");
+      doTestProtocol("FILE",      "C/Documents%20and%20Settings/");
+      doTestProtocol("ftp",       "someserver.co.au/");
+      doTestProtocol("jdbc:odbc", "dataserv:80/mydomain");
+   }
+
+   private void doTestProtocol(String protocol, String rest)
+   throws Exception {
+      String url = protocol + "://" + rest;
+      TargetDescriptor td = new TargetDescriptor(url);
+      assertEquals(protocol, td.getProtocol());
    }
 }
