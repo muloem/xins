@@ -36,11 +36,14 @@ extends VersionedSpec {
     * Constructs a new <code>TypeSpec</code> for a type with the specified
     * name and version.
     *
+    * @param parent
+    *    the API the type is part of, not <code>null</code>.
+    *
     * @param name
-    *    the name for the component, not <code>null</code>.
+    *    the name for the type, not <code>null</code>.
     *
     * @param version
-    *    the version for the component, not <code>null</code>.
+    *    the version for the type, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || version == null</code>.
@@ -56,6 +59,7 @@ extends VersionedSpec {
           InvalidNameException,
           InvalidVersionException {
       super(TYPE, name, version);
+      // TODO: super(TYPE, parent, name, version);
    }
 
 
