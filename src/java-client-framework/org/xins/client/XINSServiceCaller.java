@@ -161,23 +161,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       return descriptor;
    }
 
-   /**
-    * Tests whether the given descriptor is or contains a
-    * <code>TargetDescriptor</code> which specifies an unsupported protocol.
-    *
-    * @param descriptor
-    *    the descriptor to test, cannot be <code>null</code>.
-    *
-    * @throws UnsupportedProtocolException
-    *    if the given descriptor is or contains a {@link TargetDescriptor}
-    *    which specifies an unsupported protocol.
-    */
-   public static void testProtocol(Descriptor descriptor)
-   throws UnsupportedProtocolException {
-      // FIXME: Unit test this testProtocol(Descriptor) method
-      // FIXME: Implement this testProtocol(Descriptor) method
-   }
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -209,16 +192,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Trace and then call constructor of superclass
       super(trace(descriptor), callConfig);
-
-      // Check that all targets have a supported protocol
-      Iterator iterator = descriptor.iterateTargets();
-      while (iterator.hasNext()) {
-         TargetDescriptor target = (TargetDescriptor) iterator.next();
-         String url = target.getURL().toLowerCase();
-         if (! url.startsWith("http://")) {
-            throw new UnsupportedProtocolException(target);
-         }
-      }
 
       // Initialize the fields
       _parser      = new XINSCallResultParser();
@@ -275,6 +248,29 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Checks if the specified protocol is supported (implementation method).
+    * The protocol is the part in a URL before the string <code>"://"</code>).
+    *
+    * <p>This method should only ever be called from the
+    * {@link #isProtocolSupported(String)} method.
+    *
+    * <p>The implementation of this method in class <code>ServiceCaller</code>
+    * throws an {@link UnsupportedOperationException}.
+    *
+    * @param protocol
+    *    the protocol, guaranteed not to be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the specified protocol is supported, or
+    *    <code>false</code> if it is not.
+    *
+    * @since XINS 1.2.0
+    */
+   protected boolean isProtocolSupportedImpl(String protocol) {
+      return _httpCaller.isProtocolSupported(protocol);
+   }
 
    /**
     * Sets the associated <code>CAPI</code> instance.
