@@ -164,30 +164,34 @@
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
-					<style
-					basedir="{$specsdir}/{$api}"
-					destdir="{$project_home}/build/specdocs/{$api}"
-					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
-					includes="{$typeIncludes}">
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$specsdir}"     />
-						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
-					</style>
-					<style
-					basedir="{$specsdir}/{$api}"
-					destdir="{$project_home}/build/specdocs/{$api}"
-					style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
-					includes="{$resultcodeIncludes}">
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$specsdir}"     />
-						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
-					</style>
+					<xsl:if test="string-length($typeIncludes) &gt; 0">
+						<style
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
+						style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
+						includes="{$typeIncludes}">
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+						</style>
+					</xsl:if>
+					<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+						<style
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
+						style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
+						includes="{$resultcodeIncludes}">
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+						</style>
+					</xsl:if>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
 						basedir="{$specsdir}/{$api}"
