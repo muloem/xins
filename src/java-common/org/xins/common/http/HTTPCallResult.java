@@ -61,7 +61,8 @@ public final class HTTPCallResult extends CallResult {
     *    call attempt succeeded.
     *
     * @param data
-    *    the {@link Data} returned from the call, cannot be <code>null</code>.
+    *    the {@link HTTPCallResultData} object returned from the call, cannot
+    *    be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request         ==   null
@@ -69,11 +70,11 @@ public final class HTTPCallResult extends CallResult {
     *          || data            ==   null
     *          || duration        &lt; 0L</code>.
     */
-   HTTPCallResult(HTTPCallRequest   request,
-                  TargetDescriptor  succeededTarget,
-                  long              duration,
-                  CallExceptionList exceptions,
-                  Data              data)
+   HTTPCallResult(HTTPCallRequest    request,
+                  TargetDescriptor   succeededTarget,
+                  long               duration,
+                  CallExceptionList  exceptions,
+                  HTTPCallResultData data)
    throws IllegalArgumentException {
 
       super(request, succeededTarget, duration, exceptions);
@@ -93,10 +94,10 @@ public final class HTTPCallResult extends CallResult {
    //-------------------------------------------------------------------------
 
    /**
-    * The <code>Data</code> object that contains the information returned from
-    * the call. This field cannot be <code>null</code>.
+    * The <code>HTTPCallResultData</code> object that contains the information
+    * returned from the call. This field cannot be <code>null</code>.
     */
-   private final Data _data;
+   private final HTTPCallResultData _data;
 
 
    //-------------------------------------------------------------------------
@@ -110,7 +111,7 @@ public final class HTTPCallResult extends CallResult {
     *    the HTTP status code.
     */
    public int getStatusCode() {
-      return _data._code;
+      return _data.getStatusCode();
    }
 
    /**
@@ -122,7 +123,7 @@ public final class HTTPCallResult extends CallResult {
     *    a byte array of the result data, never <code>null</code>.
     */
    public byte[] getData() {
-      return _data._data;
+      return _data.getData();
    }
 
    /**
@@ -172,70 +173,6 @@ public final class HTTPCallResult extends CallResult {
     *    <code>null</code>.
     */
    public InputStream getStream() {
-      return new ByteArrayInputStream(_data._data);
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Data part of an HTTP call result.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.207
-    */
-   static final class Data extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Data</code> object.
-       *
-       * @param code
-       *    the HTTP status code.
-       *
-       * @param data
-       *    the data returned from the call, as a set of bytes.
-       */
-      Data(int code, byte[] data) {
-         _code = code;
-         _data = data;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The HTTP status code.
-       */
-      private final int _code;
-
-      /**
-       * The data returned.
-       */
-      private final byte[] _data;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the HTTP status code.
-       *
-       * @return
-       *    the HTTP status code.
-       */
-      int getStatusCode() {
-         return _code;
-      }
+      return new ByteArrayInputStream(getData());
    }
 }
