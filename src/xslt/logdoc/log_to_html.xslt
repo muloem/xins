@@ -17,6 +17,7 @@
 	omit-xml-declaration="yes" />
 
 	<xsl:template match="log">
+		<xsl:variable name="default_locale" select="@default-locale" />
 		<html>
 			<head>
 				<title>Log documentation</title>
@@ -62,10 +63,10 @@
 				<h2>Message sets</h2>
 				<p>The following message sets are available:</p>
 				<ul>
-					<li>RAW (default)</li>
 					<xsl:for-each select="messageset">
 						<li>
 							<xsl:value-of select="@id" />
+							<xsl:if test="$default_locale = @id"> (default)</xsl:if>
 						</li>
 					</xsl:for-each>
 				</ul>
