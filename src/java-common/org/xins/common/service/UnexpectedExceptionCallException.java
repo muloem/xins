@@ -4,15 +4,16 @@
 package org.xins.common.service;
 
 /**
- * Exception that indicates the total time-out for a request was reached, so
- * the request was aborted.
+ * Exception that indicates an unexpected exception was caught while
+ * performing a call.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.207
  */
-public final class UnexpectedExceptionCallException extends GenericCallException {
+public final class UnexpectedExceptionCallException
+extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
