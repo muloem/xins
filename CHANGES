@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.153:
   - Renamed class function parseFilter() to parseIPFilter() in class IPFilter.
   - Renamed class AccessRuleParser to AccessRuleList.
   - Extended AccessRuleList and AccessRule classes.
+  - Changed level for log message indicating whether API is session-oriented
+    from INFO to DEBUG, since this is not of interest to non-developers.
 
 * XINS/Java Common Library:
   - Changed the level for the log messages in class FileWatcher from DEBUG to
