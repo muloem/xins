@@ -69,7 +69,10 @@ public class APIImpl extends API {
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
 					<xsl:with-param name="text">
-						<xsl:value-of select="$name" />
+						<xsl:call-template name="hungarianWordSplit">
+							<xsl:with-param name="text" select="$name" />
+							<xsl:with-param name="separator" select="'_'" />
+						</xsl:call-template>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:variable>

@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.24:
+
+* Separating words with an underscore in generated name of result code in API
+  class.
+
+* Removed class DefaultReturnCodes (deprecated since 0.15).
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.23:
 
 * Generating static final fields for result codes in API class.
