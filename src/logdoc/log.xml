@@ -264,7 +264,7 @@
 		<param name="newInterval" nullable="false" />
 	</entry>
 	<entry id="234" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Local timezone.</description>
+		<description>Determined local timezone.</description>
 		<param name="shortName" />
 		<param name="longName"  />
 	</entry>
