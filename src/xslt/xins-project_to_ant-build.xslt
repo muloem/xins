@@ -30,7 +30,7 @@ $Id$
 			<xsl:otherwise>src/specs</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="javaImplDir">
+	<xsl:variable name="javaImplBaseDir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
 		<xsl:choose>
@@ -156,7 +156,7 @@ $Id$
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:variable name="javaImplDir"    select="concat($project_home, '/src/impl/', $api)" />
+					<xsl:variable name="javaImplDir"    select="concat($javaImplBaseDir, '/', $api)" />
 					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
 					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)"        />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
@@ -165,13 +165,49 @@ $Id$
 						<xsl:for-each select="document($api_file)/api/function">
 							<xsl:variable name="function" select="@name" />
 							<available
-								property="impl-{$api}-{$function}-exists"
+								property="exists-{$api}-{$function}Impl"
 								file="{$javaImplDir}/{$packageAsDir}/{$function}.java"
 								type="file" />
 						</xsl:for-each>
 					</target>
 
-					<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
+					<xsl:for-each select="document($api_file)/api/function">
+						<xsl:variable name="function"  select="@name" />
+						<xsl:variable name="classname" select="concat(@name, 'Impl')" />
+						<target
+							name="-impl-{$api}-{$function}-unavail"
+							depends="-impl-{$api}-existencechecks"
+							if="exists-{$api}-{$function}Impl">
+							<echo message="Not overwriting existing file: {$javaImplDir}/{$packageAsDir}/{$function}.java" />
+						</target>
+						<target
+							name="-skeleton-impl-{$api}-{$function}"
+							depends="-impl-{$api}-{$function}-unavail"
+							unless="exists-{$api}-{$function}Impl">
+							<style
+								in="{$specsdir}/{$api}/{$function}.fnc"
+								out="{$javaImplDir}/{$packageAsDir}/{$classname}.java"
+								style="{$xins_home}/src/xslt/java-skeleton/function_to_java.xslt">
+								<param name="package"   expression="{$package}"   />
+								<param name="classname" expression="{$classname}" />
+							</style>
+						</target>
+					</xsl:for-each>
+
+					<target name="-skeletons-impl-{$api}">
+						<xsl:attribute name="depends">
+							<xsl:for-each select="document($api_file)/api/function">
+								<xsl:variable name="function" select="@name" />
+								<xsl:if test="position() &gt; 1">,</xsl:if>
+								<xsl:text>-skeleton-impl-</xsl:text>
+								<xsl:value-of select="$api" />
+								<xsl:text>-</xsl:text>
+								<xsl:value-of select="$function" />
+							</xsl:for-each>
+						</xsl:attribute>
+					</target>
+
+					<target name="classes-api-{$api}" depends="-prepare-classes,-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API">
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
 							in="{$api_file}"
@@ -218,7 +254,7 @@ $Id$
 						<!-- Copy all .java files to a single directory -->
 						<mkdir dir="{$javaCombinedDir}" />
 						<copy todir="{$javaCombinedDir}">
-							<fileset dir="{$javaImplDir}/{$api}" includes="**/*.java" />
+							<fileset dir="{$javaImplDir}" includes="**/*.java" />
 						</copy>
 						<copy todir="{$javaCombinedDir}" overwrite="true">
 							<fileset dir="{$javaDestDir}" includes="**/*.java" />
