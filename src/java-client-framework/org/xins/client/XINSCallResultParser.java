@@ -4,10 +4,13 @@
 package org.xins.client;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 import java.util.Stack;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -36,7 +39,8 @@ import org.xins.common.text.TextUtils;
  *
  * <p>TODO: Describe rest of parse process.
  *
- * <p>Note: This parser does not support XML Namespaces.
+ * <p>Note: This parser is
+ * <a href="http://www.w3.org/TR/REC-xml-names/">XML Namespaces</a>-aware.
  *
  * @version $Revision$ $Date$
  *
@@ -81,39 +85,50 @@ extends Object {
    private static final State INITIAL = new State("INITIAL");
 
    /**
-    * State for the SAX event handler for the level just within the root
-    * element (<code>result</code>) before a data section is parsed.
+    * State for the SAX event handler just within the root element
+    * (<code>result</code>).
     */
    private static final State AT_ROOT_LEVEL = new State("AT_ROOT_LEVEL");
 
    /**
-    * State for the SAX event handler for the level within an ignorable
+    * State for the SAX event handler at any depth within an ignorable
     * element.
     */
-   private static final State WITHIN_IGNORABLE_ELEMENT = new State("WITHIN_IGNORABLE_ELEMENT");
+   private static final State IN_IGNORABLE_ELEMENT = new State("IN_IGNORABLE_ELEMENT");
 
    /**
-    * State for the SAX event handler for the level within the output
-    * parameter element (<code>param</code>).
+    * State for the SAX event handler within the output parameter element
+    * (<code>param</code>).
     */
    private static final State IN_PARAM_ELEMENT = new State("IN_PARAM_ELEMENT");
 
    /**
-    * State for the SAX event handler for the level within the data section
-    * (within the <code>data</code> element).
+    * State for the SAX event handler in the data section (at any depth within
+    * the <code>data</code> element).
     */
    private static final State IN_DATA_SECTION = new State("IN_DATA_SECTION");
 
    /**
     * State for the SAX event handler for the final state, when parsing is
-    * effectively done.
+    * finished.
     */
    private static final State FINISHED = new State("FINISHED");
+
+   private static final SAXParserFactory SAX_PARSER_FACTORY;
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Initializes this class.
+    */
+   static {
+      SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+      SAX_PARSER_FACTORY.setNamespaceAware(true);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -170,24 +185,20 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
-      // Initialize a SAX event handler
+      // Initialize our SAX event handler
       Handler handler = new Handler();
 
+      ByteArrayInputStream bais = null;
       try {
 
          // Construct a SAX parser
-         SAXParserFactory factory = SAXParserFactory.newInstance();
-         factory.setNamespaceAware(true);
-         SAXParser saxParser = factory.newSAXParser();
+         SAXParser saxParser = SAX_PARSER_FACTORY.newSAXParser();
 
          // Convert the byte array to an input stream
-         ByteArrayInputStream bais = new ByteArrayInputStream(xml);
+         bais = new ByteArrayInputStream(xml);
 
          // Let SAX parse the XML, using our handler
          saxParser.parse(bais, handler);
-
-         // Dispose the constructed input stream
-         bais.close();
 
       } catch (Throwable exception) {
 
@@ -208,6 +219,16 @@ extends Object {
 
          // Throw exception with message, and register cause exception
          throw new ParseException(buffer.toString(), exception, detail);
+
+      // Always dispose the ByteArrayInputStream
+      } finally {
+         if (bais != null) {
+            try {
+               bais.close();
+            } catch (IOException ioException) {
+               Log.log_2052(ioException, bais.getClass().getName(), "close()");
+            }
+         }
       }
 
       // TRACE: Leave method
@@ -247,9 +268,10 @@ extends Object {
          // TRACE: Enter constructor
          Log.log_2000(HANDLER_CLASSNAME, null);
 
-         _state      = INITIAL;
-         _level      = -1;
-         _characters = new FastStringBuffer(45);
+         _state            = INITIAL;
+         _level            = -1;
+         _characters       = new FastStringBuffer(45);
+         _dataElementStack = new Stack();
 
          // TRACE: Leave constructor
          Log.log_2002(HANDLER_CLASSNAME, null);
@@ -295,15 +317,10 @@ extends Object {
       private Stack _dataElementStack;
 
       /**
-       * The data element.
-       */
-      private DataElement _dataElement;
-
-      /**
-       * The level within the XML document. Initially this field is
-       * <code>0</code>, which indicates the current element is outside the
-       * document. The value <code>1</code> is for the root element
-       * (<code>result</code>).
+       * The level for the element pointer within the XML document. Initially
+       * this field is <code>-1</code>, which indicates the current element
+       * pointer is outside the document. The value <code>0</code> is for the
+       * root element (<code>result</code>), etc.
        */
       private int _level;
 
@@ -319,13 +336,12 @@ extends Object {
        *    the namespace URI, can be <code>null</code>.
        *
        * @param localName
-       *    the local name (without prefix); the empty string indicates that
-       *    namespace processing is not being performed; can be
-       *    <code>null</code>.
+       *    the local name (without prefix); cannot be <code>null</code>.
        *
        * @param qName
-       *    the qualified name (with prefix); the empty string indicates that
-       *    qualified names are not available; cannot be <code>null</code>.
+       *    the qualified name (with prefix), can be <code>null</code> since
+       *    <code>namespaceURI</code> and <code>localName</code> are always
+       *    used instead.
        *
        * @param atts
        *    the attributes attached to the element; if there are no
@@ -333,10 +349,10 @@ extends Object {
        *    be <code>null</code>.
        *
        * @throws IllegalArgumentException
-       *    if <code>qName == null || atts == null</code>.
+       *    if <code>localName == null || atts == null</code>.
        *
        * @throws SAXException
-       *    if the element is unknown.
+       *    if the parsing failed.
        */
       public void startElement(String     namespaceURI,
                                String     localName,
@@ -365,7 +381,7 @@ extends Object {
                     + "; qName="        + TextUtils.quote(qName));
 
          // Check preconditions
-         MandatoryArgumentChecker.check("qName", qName, "atts", atts);
+         MandatoryArgumentChecker.check("localName", localName, "atts", atts);
 
          // Increase the element depth level
          _level++;
@@ -373,7 +389,7 @@ extends Object {
          if (currentState == ERROR) {
             String message = "_state=" + currentState + "; _level=" + _level;
             Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message);
+            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
 
          } else if (currentState == INITIAL) {
 
@@ -381,7 +397,7 @@ extends Object {
             if (_level != 0) {
                String message = "_state=" + currentState + "; _level=" + _level;
                Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-               throw new SAXException("Unexpected state: " + message);
+               throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
             }
 
             // Root element must be 'result' without namespace
@@ -432,12 +448,12 @@ extends Object {
             // Start of data section
             } else if (namespaceURI == null && "data".equals(localName)) {
 
-               if (_dataElement != null) {
+               // A data element stack should really be empty
+               if (_dataElementStack.size() > 0) {
                   throw new SAXException("Found second data section.");
                }
 
                // Maintain a list of the elements, with data as the root
-               _dataElementStack = new Stack();
                _dataElementStack.push(new DataElement("data"));
 
                // Update the state
@@ -445,7 +461,7 @@ extends Object {
 
             // Ignore unrecognized element at root level
             } else {
-               _state = WITHIN_IGNORABLE_ELEMENT;
+               _state = IN_IGNORABLE_ELEMENT;
                Log.log_2206(namespaceURI, localName);
             }
 
@@ -468,6 +484,8 @@ extends Object {
                String value = atts.getValue(i);
                element.addAttribute(key, value);
             }
+
+            // Push the element on the stack
             _dataElementStack.push(element);
 
             // Reserve buffer for PCDATA
@@ -477,14 +495,14 @@ extends Object {
             _state = IN_DATA_SECTION;
 
          // Deeper level within ignorable element
-         } else if (currentState == WITHIN_IGNORABLE_ELEMENT) {
-            _state = WITHIN_IGNORABLE_ELEMENT;
+         } else if (currentState == IN_IGNORABLE_ELEMENT) {
+            _state = IN_IGNORABLE_ELEMENT;
 
          // Unrecognized state
          } else {
             String message = "_state=" + currentState + "; _level=" + _level;
             Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message);
+            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
          }
 
          Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
@@ -502,19 +520,18 @@ extends Object {
        *    the namespace URI, can be <code>null</code>.
        *
        * @param localName
-       *    the local name (without prefix); the empty string indicates that
-       *    namespace processing is not being performed; can be
-       *    <code>null</code>.
+       *    the local name (without prefix); cannot be <code>null</code>.
        *
        * @param qName
-       *    the qualified name (with prefix); the empty string indicates that
-       *    qualified names are not available; cannot be <code>null</code>.
+       *    the qualified name (with prefix), can be <code>null</code> since
+       *    <code>namespaceURI</code> and <code>localName</code> are only
+       *    used.
        *
        * @throws IllegalArgumentException
-       *    if <code>qName == null</code>.
+       *    if <code>localName == null</code>.
        *
        * @throws SAXException
-       *    if the element is unknown.
+       *    if the parsing failed.
        */
       public void endElement(String namespaceURI,
                              String localName,
@@ -535,36 +552,36 @@ extends Object {
 
          // TRACE: Enter method
          Log.log_2003(HANDLER_CLASSNAME, METHODNAME,
-                        "_state="       + _state
+                        "_state="       + currentState
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
                     + "; localName="    + TextUtils.quote(localName)
                     + "; qName="        + TextUtils.quote(qName));
 
          // Check preconditions
-         MandatoryArgumentChecker.check("qName", qName);
+         MandatoryArgumentChecker.check("localName", localName);
 
          if (currentState == ERROR) {
             String message = "_state=" + currentState + "; _level=" + _level;
             Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message);
+            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
 
          // At root level
          } else if (currentState == AT_ROOT_LEVEL) {
 
             if (! (namespaceURI == null && "result".equals(localName))) {
-               String detail = "Expected end of element of type \"result\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
+               String detail = "Expected end of element of type \"result\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
                Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
                throw new SAXException(detail);
             }
             _state = FINISHED;
 
          // Ignorable element
-         } else if (currentState == WITHIN_IGNORABLE_ELEMENT) {
+         } else if (currentState == IN_IGNORABLE_ELEMENT) {
             if (_level == 1) {
                _state = AT_ROOT_LEVEL;
             } else {
-               _state = WITHIN_IGNORABLE_ELEMENT;
+               _state = IN_IGNORABLE_ELEMENT;
             }
 
          // Within data section
@@ -574,15 +591,15 @@ extends Object {
             DataElement child = (DataElement) _dataElementStack.pop();
 
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
-            if (_dataElementStack.size() < 1) {
+            if (_dataElementStack.size() == 0) {
                if (! (namespaceURI == null && "data".equals(localName))) {
-                  String detail = "Expected end of element of type \"data\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
+                  String detail = "Expected end of element of type \"data\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
                   Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
                   throw new SAXException(detail);
                }
 
-               // Store the root DataElement
-               _dataElement = child;
+               // Push the root DataElement back
+               _dataElementStack.push(child);
 
                // Reset the state
                _state = AT_ROOT_LEVEL;
@@ -607,7 +624,7 @@ extends Object {
          } else if (currentState == IN_PARAM_ELEMENT) {
 
             if (! (namespaceURI == null && "param".equals(localName))) {
-               String detail = "Expected end of element of type \"param\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
+               String detail = "Expected end of element of type \"param\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
                Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
                throw new SAXException(detail);
             }
@@ -656,9 +673,9 @@ extends Object {
 
          // Unknown state
          } else {
-            String detail = "Unrecognized state: " + currentState + '.';
+            String detail = "Unrecognized state: " + currentState + ". Programming error suspected.";
             Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-            throw new Error(detail);
+            throw new SAXException(detail);
          }
 
          _level--;
@@ -707,7 +724,7 @@ extends Object {
          // Check state
          if (currentState != IN_PARAM_ELEMENT
           && currentState != IN_DATA_SECTION
-          && currentState != WITHIN_IGNORABLE_ELEMENT) {
+          && currentState != IN_IGNORABLE_ELEMENT) {
             String text = new String(ch, start, length);
             if (text.trim().length() > 0) {
                // NOTE: This will be logged already (message 2205)
@@ -733,7 +750,7 @@ extends Object {
       private void assertFinished()
       throws IllegalStateException {
          if (_state != FINISHED) {
-            String detail = "State is " + _state + " instead of " + FINISHED + '.';
+            String detail = "State is " + _state + " instead of " + FINISHED + ". Programming error suspected.";
             Log.log_2050(HANDLER_CLASSNAME, "getDataElement()", detail);
             throw new IllegalStateException(detail);
          }
@@ -793,7 +810,11 @@ extends Object {
          // Check state
          assertFinished();
 
-         return _dataElement;
+         if (_dataElementStack.isEmpty()) {
+            return null;
+         } else {
+            return (DataElement) _dataElementStack.peek();
+         }
       }
    }
 
