@@ -512,11 +512,11 @@
 
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
-	<target name="-check-release-version" depends="-init-release,-init">
+	<target name="-check-release-version" depends="-init-release,-init" unless="force">
 		<condition property="version.suffix.set">
 			<equals arg1="${version.suffix}" arg2="-dev" />
 		</condition>
-		<fail unless="version.suffix.set" message="Version suffix is not set to -dev." />
+		<fail unless="version.suffix.set" message="Version suffix is not set to -dev. If you do want to release, please set 'force'." />
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
