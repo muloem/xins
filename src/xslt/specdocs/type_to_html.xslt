@@ -29,6 +29,16 @@
 
 	<xsl:template match="type">
 
+		<xsl:variable name="supertype">
+			<xsl:choose>
+				<xsl:when test="string-length(@extends) &gt; 0">
+					<xsl:value-of select="@extends" />
+				</xsl:when>
+				<xsl:when test="count(properties) = 1">_properties</xsl:when>
+				<xsl:otherwise>_text</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
@@ -51,21 +61,19 @@
 					</em>
 				</h1>
 
-				<xsl:if test="boolean(@extends)">
-					<blockquote>
-						<pre>
-							<xsl:call-template name="extends_tree">
-								<xsl:with-param name="type_name">
-									<xsl:value-of select="@name" />
-								</xsl:with-param>
-								<xsl:with-param name="supertype_name">
-									<xsl:value-of select="@extends" />
-								</xsl:with-param>
-							</xsl:call-template>
-						</pre>
-					</blockquote>
-					<br />
-				</xsl:if>
+				<blockquote>
+					<pre>
+						<xsl:call-template name="extends_tree">
+							<xsl:with-param name="type_name">
+								<xsl:value-of select="@name" />
+							</xsl:with-param>
+							<xsl:with-param name="supertype_name">
+								<xsl:value-of select="$supertype" />
+							</xsl:with-param>
+						</xsl:call-template>
+					</pre>
+				</blockquote>
+				<br />
 
 				<xsl:apply-templates select="description" />
 
@@ -201,13 +209,11 @@
 		<xsl:param name="type_name" />
 		<xsl:param name="supertype_name" />
 
-		<a>
-			<xsl:attribute name="href">
-				<xsl:value-of select="supertype_name" />
-				<xsl:text>.html</xsl:text>
-			</xsl:attribute>
-			<xsl:value-of select="$supertype_name" />
-		</a>
+		<xsl:call-template name="typelink">
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="type"     select="$supertype_name" />
+		</xsl:call-template>
 		<br />
 		<xsl:text> |</xsl:text>
 		<br />
