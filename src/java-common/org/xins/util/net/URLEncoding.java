@@ -3,6 +3,7 @@
  */
 package org.xins.util.net;
 
+import java.net.URLDecoder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
@@ -90,6 +91,30 @@ public final class URLEncoding extends Object {
       }
       
       return buffer.toString();
+   }
+
+   /**
+    * Decodes the specified URL encoded character string.
+    *
+    * @param s
+    *    the URL encoded string to decode, not <code>null</code>.
+    *
+    * @return
+    *    unencoded version of the specified URL encoded character string,
+    *    never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null || s.charAt(<em>n</em>) &gt; 127</code>
+    *    (where <code>0 &lt;= <em>n</em> &lt; s.length</code>).
+    */
+   public static final String decode(String s)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // TODO: Use own method, throw exception if not 7-bit ASCII
+      return URLDecoder.decode(s);
    }
 
 
