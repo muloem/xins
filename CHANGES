@@ -13,9 +13,12 @@ CHANGES INTRODUCED IN XINS 0.196:
     is in principle allowed, considering the problem at hand.
   - Added log message 3319: Target descriptor constructed.
   - Added append(boolean) method to class FastStringBuffer.
+  - No longer logging reason with log message 3313 in class ServiceCaller. The
+    reason should be logged in the subclass. It is virtually impossible to log
+    the correct reason in log message 3313 in the correct translation.
 
 * XINS/Java Client Framework:
-  - Added classes in org.xins.common.service: ConnectionException,
+  - Added new CallException subclasses: ConnectionException,
     ConnectionRefusedException, ConnectionTimeOutException and
     SocketTimeOutException.
   - Added log messages 2012-2015 which describe different causes for a failure
