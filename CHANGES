@@ -6,6 +6,17 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
 
+* XINS/Java Common Library:
+  - Fixed various Checkstyle-reported issues.
+  - Added EMPTY_PROPERTY_READER class field in class PropertyReaderUtils.
+  - Changed HTTPCallRequest.getParameters() so it never returns null anymore.
+    This helps to avoid NullPointerExceptions.
+
+* XINS/Java Client Framework:
+  - Fixed various Checkstyle-reported issues.
+
+* XINS/Java Server Framework:
+  - Fixed various Checkstyle-reported issues.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
