@@ -561,7 +561,7 @@ implements Responder, Log {
    }
 
    public void trace(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t);
    }
 
    public void debug(Object message) {
@@ -569,39 +569,39 @@ implements Responder, Log {
    }
 
    public void debug(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t);
    }
 
    public void info(Object message) {
-      _logger.log(FQCN, Priority.INFO, _logPrefix + message, null );
+      _logger.log(FQCN, Priority.INFO, _logPrefix + message, null);
    }
 
    public void info(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.INFO, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.INFO, _logPrefix + message, t);
    }
 
    public void warn(Object message) {
-      _logger.log(FQCN, Priority.WARN, _logPrefix + message, null );
+      _logger.log(FQCN, Priority.WARN, _logPrefix + message, null);
    }
 
    public void warn(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.WARN, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.WARN, _logPrefix + message, t);
    }
 
    public void error(Object message) {
-      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, null );
+      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, null);
    }
 
    public void error(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, t);
    }
 
    public void fatal(Object message) {
-      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, null );
+      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, null);
    }
 
    public void fatal(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, t );
+      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, t);
    }
 
    public boolean isDebugEnabled() {
