@@ -6,6 +6,7 @@
  */
 package org.xins.server;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -707,6 +708,9 @@ extends HttpServlet {
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
+         
+         // Set the path separator correctly if needed
+         _configFile = _configFile.replace('/', File.separatorChar).replace('\\', File.separatorChar);
 
          // Initialize the logging subsystem
          readRuntimeProperties();

@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added support for param-combo in the output section.
   - The CallingConvention class now extends the Manageable class.
   - Added a template cache system for the XSLT calling convention.
+  - The config file name is now path separator independent.
 
 * Generation of server-side Java code:
   - Code generated to check input and output parameters is now merged in a 
