@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.168:
+
+* Generated specification documentation:
+  - Added the version number to the DTD files.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.167:
 
 * Generated type classes:

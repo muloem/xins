@@ -1,8 +1,8 @@
 <!--
  XINS Function DTD. This DTD should be added to all function files created in
  your project by adding the following lines at the top of the .fnc file :
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function//EN"
-"http://xins.sourceforge.net/dtd/function.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN"
+"http://xins.sourceforge.net/dtd/function_1_0.dtd">
 -->
 <!ELEMENT function (description?, input?, output?, example*)>
 <!ATTLIST function
@@ -13,17 +13,26 @@
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
-<!ELEMENT input (param*)>
+<!ELEMENT input (param*, param-combo*)>
 <!ELEMENT param (description, example-value*)>
 <!ATTLIST param
           name       CDATA #REQUIRED
           required   CDATA #REQUIRED
           type       CDATA #IMPLIED
 >
+<!ELEMENT param-combo (description, param-ref*)>
+<!ATTLIST param-combo
+          type       CDATA #IMPLIED
+>
+<!ELEMENT param-ref EMPTY>
+<!ATTLIST param-ref
+          name       CDATA #REQUIRED
+>
 <!ELEMENT output (param*, resultcode-ref*, resultcode*, data?)>
 <!ELEMENT data (element*)>
 <!ATTLIST data
           contains   CDATA #REQUIRED
+          multiplicity CDATA #IMPLIED
 >
 <!ELEMENT element (description, contains?, attribute*)>
 <!ATTLIST element
@@ -39,6 +48,7 @@
 <!ATTLIST attribute
           name       CDATA #REQUIRED
           required   CDATA #IMPLIED
+          type       CDATA #IMPLIED
 >
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref

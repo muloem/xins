@@ -1,8 +1,8 @@
 <!--
- Result Code DTD. This DTD should be added to all .rcd files in your 
+ Result Code DTD. This DTD should be added to all .rcd files in your
  project by adding the following lines at the top of your .rcd file :
-<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code//EN"
-"http://xins.sourceforge.net/dtd/resultcode.dtd"> 
+<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.0//EN"
+"http://xins.sourceforge.net/dtd/resultcode_1_0.dtd">
 -->
 <!ELEMENT resultcode (description?)>
 <!ATTLIST resultcode
