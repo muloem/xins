@@ -27,6 +27,9 @@ CHANGES INTRODUCED IN XINS 0.196:
   - Not logging query string with log message 2011 anymore, since POST is used
     and consequently the query string is always null.
   - Changed log message 2008 to log the URL and the function name too.
+  - Added INFO-level message 2016 that logs the HTTP status code, with the URL
+    and the name of the function being called. If the HTTP status code is not
+    in the 2xx range, then this log message will be followed by a 2008 message.
 
 * Build and release process:
   - CSS stylesheet for the Javadoc generated for XINS now no longer specifies
