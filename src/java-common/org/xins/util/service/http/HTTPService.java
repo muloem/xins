@@ -66,7 +66,7 @@ public final class HTTPService extends Service {
    public Result call(PropertyReader parameters)
    throws CallFailedException {
       CallResult callResult = doCall(parameters);
-      return callResult.getResult();
+      return (Result) callResult.getResult();
    }
 
    protected Object doCallImpl(ServiceDescriptor target,
