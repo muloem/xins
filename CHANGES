@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.5:
 
 * Refactored quite some code in the API, Function and CallContext classes.
 
+* Gathering statistics, which can be retrieved by calling _GetStatistics.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.4:
 
