@@ -159,7 +159,8 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>function == null</code>.
     */
-   final void functionAdded(Function function) {
+   final void functionAdded(Function function)
+   throws NullPointerException {
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);
    }
@@ -173,7 +174,8 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>resultCode == null</code>.
     */
-   final void resultCodeAdded(ResultCode resultCode) {
+   final void resultCodeAdded(ResultCode resultCode)
+   throws NullPointerException {
       _resultCodesByName.put(resultCode.getName(), resultCode);
       _resultCodeList.add(resultCode);
    }
