@@ -75,6 +75,16 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the filter expression.
+    *
+    * @return
+    *    the original filter expression, never <code>null</code>.
+    */
+   public final String getExpression() {
+      return null; // TODO
+   }
+
+   /**
     * Determines if the specified IP address is authorized.
     *
     * @param ip
@@ -97,5 +107,16 @@ extends Object {
    public final boolean isAuthorized(String ip)
    throws IllegalArgumentException, ParseException {
       return false; // TODO
+   }
+
+   /**
+    * Returns a textual representation of this filter. The implementation of
+    * this method returns the filter expression passed.
+    *
+    * @return
+    *    a textual presentation, never <code>null</code>.
+    */
+   public final String toString() {
+      return getExpression();
    }
 }
