@@ -101,7 +101,7 @@ implements DefaultResultCodes {
    /**
     * The API implementation this function is part of.
     */
-   private final API _api;
+   protected final API _api;
 
    /**
     * The name of this function.
