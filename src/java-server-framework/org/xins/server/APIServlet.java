@@ -118,8 +118,6 @@ implements Servlet {
    private static API loadAPI(ServletConfig config)
    throws ServletException { 
 
-      API api;
-
       // Determine the API class
       String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
       if (apiClassName == null || apiClassName.trim().length() < 1) {
@@ -156,6 +154,7 @@ implements Servlet {
       }
 
       // Get the value of the SINGLETON field
+      API api;
       try {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
@@ -288,17 +287,20 @@ implements Servlet {
       // Make sure the Library class is initialized
       String version = Library.getVersion();
 
+      // Get a reference to the appropriate logger
+      Logger log = Library.STARTUP_LOG;
+
       // Hold the state lock
       synchronized (_stateLock) {
 
          // Check preconditions
          if (_state != UNINITIALIZED) {
             String message = "Application server malfunction detected. State is " + _state + " instead of " + UNINITIALIZED + '.';
-            Library.STARTUP_LOG.fatal(message);
+            log.fatal(message);
             throw new ServletException(message);
          } else if (config == null) {
             String message = "Application server malfunction detected. No servlet configuration object passed.";
-            Library.STARTUP_LOG.fatal(message);
+            log.fatal(message);
             throw new ServletException(message);
          }
 
@@ -306,7 +308,7 @@ implements Servlet {
          ServletContext context = config.getServletContext();
          if (context == null) {
             String message = "Application server malfunction detected. No servlet context available.";
-            Library.STARTUP_LOG.fatal(message);
+            log.fatal(message);
             throw new ServletException(message);
          }
 
@@ -314,7 +316,7 @@ implements Servlet {
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
          if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
-            Library.STARTUP_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
+            log.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
          }
 
          // Set the state
@@ -327,29 +329,29 @@ implements Servlet {
             // Read properties from the config file
             Properties runtimeProperties = null;
             if (_configFile == null || _configFile.length() < 1) {
-               Library.STARTUP_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
+               log.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
             } else {
-               runtimeProperties = applyConfigFile(Library.STARTUP_LOG);
+               runtimeProperties = applyConfigFile(log);
             }
 
             // Initialization starting
-            Library.STARTUP_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
+            log.debug("XINS/Java Server Framework " + version + " is initializing.");
 
             // Load the API instance
             _api = loadAPI(config);
             String apiName = _api.getName();
 
             // Initialize the API
-            Library.STARTUP_LOG.debug("Initializing \"" + apiName + "\" API.");
+            log.debug("Initializing \"" + apiName + "\" API.");
             try {
                // TODO: Use ServletConfigPropertyReader
                _api.init(new PropertiesPropertyReader(ServletUtils.settingsAsProperties(config)),
                          new PropertiesPropertyReader(runtimeProperties));
 
-               Library.STARTUP_LOG.debug("Initialized \"" + apiName + "\" API.");
+               log.debug("Initialized \"" + apiName + "\" API.");
             } catch (Throwable e) {
                String message = "Failed to initialize \"" + apiName + "\" API.";
-               Library.STARTUP_LOG.error(message, e);
+               log.error(message, e);
             }
 
             // Watch the configuration file
@@ -358,11 +360,11 @@ implements Servlet {
                int interval = 10; // TODO: Read from config file
                FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
                watcher.start();
-               Library.STARTUP_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+               log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
             }
 
             // Initialization done
-            Library.STARTUP_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
+            log.info("XINS/Java Server Framework " + version + " is initialized.");
 
             // Finally enter the ready state
             _state = READY;
