@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 
+* XINS/Java Common Library:
+  - Fixed bug in class function toHexString(int) in class HexConverter.
+
 * XINS/Java Client Framework:
   - Improved ActualFunctionCaller class:
     . If a parameter key is null or empty string, it is ignored.
