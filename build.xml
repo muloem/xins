@@ -474,7 +474,7 @@
 		<delete file="build/${src-package-tarfile}" />
 	</target>
 
-	<target name="bin-package" depends="javadoc,java-server-framework" description="Builds a complete distribution archive">
+	<target name="bin-package" depends="javadoc,java-server-framework,java-client-framework" description="Builds a complete distribution archive">
 		<tar tarfile="build/${bin-package-tarfile}">
 			<tarfileset
 			dir="${basedir}"
