@@ -538,8 +538,7 @@
 		</entry>
 		<entry id="5018" level="ERROR">
 			<description>Failed to convert session ID to character string.</description>
-			<param name="exceptionClass" nullable="false" />
-			<param name="exceptionMessage" nullable="true" />
+			<param name="reason" nullable="true" />
 		</entry>
 	</group>
 
