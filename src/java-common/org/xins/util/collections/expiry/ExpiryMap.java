@@ -6,8 +6,10 @@ package org.xins.util.collections.expiry;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -292,8 +294,7 @@ extends AbstractMap {
       }
 
       public java.util.Iterator iterator() {
-         return null;
-         // TODO: return new Iterator();
+         return new Iterator();
       }
 
 
@@ -302,10 +303,13 @@ extends AbstractMap {
       //----------------------------------------------------------------------
 
       /**
-       * Iterator for the entry set of the expiry map.
+       * Iterator for the entry set of the expiry map. This class is
+       * <em>not</em> thread-safe, so instances should not be used from
+       * different threads.
        *
        * @version $Revision$ $Date$
        * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+       */
       private class Iterator
       extends Object
       implements java.util.Iterator {
@@ -314,18 +318,111 @@ extends AbstractMap {
          // Constructors
          //-------------------------------------------------------------------
 
+         private Iterator() {
+            synchronized (_recentlyAccessed) {
+               _modificationCount = ExpiryMap.this._modificationCount;
+               _currentSlot     = -1;
+               _currentIterator = _recentlyAccessed.entrySet().iterator();
+            }
+         }
+
+
          //-------------------------------------------------------------------
          // Fields
          //-------------------------------------------------------------------
+
+         /**
+          * The modification count of the <code>ExpiryMap</code> when this
+          * <code>Iterator</code> was constructed.
+          *
+          * <p>The value of this field will be set to a negative value as soon
+          * as a concurrent modification is detected. From then on,
+          * {@link #hasNext()} and {@link #next()} will throw a
+          * {@link ConcurrentModificationException}.
+          */
+         private int _modificationCount;
+
+         /**
+          * The current slot. A negative value indicates
+          * {@link _recentlyAccessed} is the current map to get entries from.
+          */
+         private int _currentSlot;
+
+         /**
+          * The current iterator. This iterator iterates over either
+          * {@link #_recentlyAccessed} or over one of the {@link Map Maps} in
+          * {@link #_slots}.
+          *
+          * <p>This field will be set to <code>null</code> as soon as the
+          * iteration has finished and {@link #hasNext()} will from then on
+          * always return <code>false</code>.
+          */
+         private java.util.Iterator _currentIterator;
+
 
          //-------------------------------------------------------------------
          // Methods
          //-------------------------------------------------------------------
 
          public boolean hasNext() {
-            
+
+            // Check if we had a concurrent modification previously
+            if (_modificationCount == -1) {
+               throw new ConcurrentModificationException();
+
+            // We may have finished previously
+            } else if (_currentIterator == null) {
+               return false;
+            }
+
+            // See if we had a concurrent modification now
+            synchronized (_recentlyAccessed) {
+               if (_modificationCount != ExpiryMap.this._modificationCount) {
+                  _modificationCount = -1;
+                  throw new ConcurrentModificationException();
+               }
+            }
+
+            // Get new iterators until we find one that has its hasNext()
+            // return true
+            if (_currentIterator.hasNext()) {
+               return true;
+            } else {
+               while (_currentIterator != null) {
+                  _currentSlot++;
+
+                  // If we've had all slots, finish
+                  if (_currentSlot == _slots.length) {
+                     _currentIterator = null;
+                     return false;
+                  }
+
+                  // Otherwise get the next slot
+                  _currentIterator = _slots[_currentSlot].entrySet().iterator();
+
+                  // If this next slot has a next item, return true, otherwise
+                  // just continue the search loop
+                  if (_currentIterator.hasNext()) {
+                     return true;
+                  }
+               }
+            }
+
+            return false;
+         }
+
+         public Object next()
+         throws ConcurrentModificationException, NoSuchElementException {
+            if (hasNext()) {
+               return _currentIterator.next();
+            } else {
+               throw new NoSuchElementException();
+            }
+         }
+
+         public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
          }
       }
-       */
    }
 }
