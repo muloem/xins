@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.166:
     . org.xins.specs
     . org.xins.tools.security
     . org.xins.util.ant.sourceforge
+  - EnumItem.equals now returns true if two EnumItem's are from the same
+    class, have the same name and the same value.
 
 * XINS/Java Server Framework:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
