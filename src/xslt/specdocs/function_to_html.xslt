@@ -960,7 +960,7 @@
 							<xsl:when test="boolean(@type)">
 								<xsl:value-of select="@type" />
 							</xsl:when>
-							<xsl:otherwise>text</xsl:otherwise>
+							<xsl:otherwise>_text</xsl:otherwise>
 						</xsl:choose>
 					</xsl:with-param>
 				</xsl:call-template>
@@ -1154,7 +1154,7 @@
 				<xsl:when test="@type">
 					<xsl:value-of select="@type" />
 				</xsl:when>
-				<xsl:otherwise>text</xsl:otherwise>
+				<xsl:otherwise>_text</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
