@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.124:
 * Generation of Java fundament classes:
   - Fixed a bug that kept the APIImpl class from being initialized properly.
 
+* XINS/Java Client Framework:
+  - Exception class UnsuccessfulCallException now constructs a message. If
+    there is a result code, it will be in the message.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.123:
 
