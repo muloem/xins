@@ -134,9 +134,15 @@ implements DefaultResultCodes {
 
    /**
     * The initialization settings. This field is initialized by
-    * {@link #init(Properties)}. It can be <code>null</code>.
+    * {@link #init(Properties)}. It can be <code>null</code> before that.
     */
    private Properties _initSettings;
+
+   /**
+    * A reader for the initialization settings. This field is initialized by
+    * {@link #init(Properties)}. It can be <code>null</code> before that.
+    */
+   private PropertyReader _initSettingsReader;
 
    /**
     * The type that applies for session identifiers. Will be set in
@@ -194,10 +200,11 @@ implements DefaultResultCodes {
 
       // Store the settings
       if (properties == null) {
-         _initSettings = null;
+         _initSettings = new Properties();
       } else {
          _initSettings = (Properties) properties.clone();
       }
+      _initSettingsReader = new PropertiesPropertyReader(_initSettings);
 
       // TODO: Allow configuration of session ID type
       _sessionIDType      = new BasicSessionID(this);
@@ -263,8 +270,7 @@ implements DefaultResultCodes {
       String className = instance.getClass().getName();
       LOG.debug("Initializing instance of class \"" + className + "\".");
       try {
-         // TODO: Use one instance of PropertiesPropertyReader
-         instance.init(new PropertiesPropertyReader(_initSettings));
+         instance.init(_initSettingsReader);
          succeeded = true;
       } finally {
          if (succeeded) {
