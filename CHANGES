@@ -10,6 +10,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
   - If no build version is provided, just set a warning in the log instead of
     throwing a exception.
 
+* XINS/Java Client Framework:
+  - Improved XINSCallResultParser with regard to logging, documentation,
+    memory use and performance.
+
 * Generation of server-side Java code:
   - Import type classes for the generated implementation class.
 
