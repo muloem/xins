@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.74:
+
+* XINS/Java Client Framework:
+  - Added class SessionIDSplitter.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.73:
 
 * Resolved some Checkstyle warnings.
