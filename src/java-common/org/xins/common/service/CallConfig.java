@@ -37,16 +37,16 @@ import org.xins.common.threads.Doorman;
  * this class could be implemented as follows:
  *
  * <blockquote><pre>public final boolean isFailOverAllowed() {
- *   _doorman.enterAsReader();
+ *   {@link #_doorman}.{@link Doorman#enterAsReader() enterAsReader()};
  *   boolean b = _failOverAllowed;
- *   _doorman.leaveAsReader();
+ *   {@link #_doorman}.{@link Doorman#leaveAsReader() leaveAsReader()};
  *   return b;
  *}
  *
  *public final void setFailOverAllowed(boolean allowed) {
- *   _doorman.enterAsWriter();
+ *   {@link #_doorman}.{@link Doorman#enterAsWriter() enterAsWriter()};
  *   _failOverAllowed = allowed;
- *   _doorman.leaveAsWriter();
+ *   {@link #_doorman}.{@link Doorman#leaveAsWriter() leaveAsWriter()};
  *}</pre></blockquote>
  *
  * @version $Revision$ $Date$
