@@ -3,8 +3,10 @@
  */
 package org.xins.util.collections;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +25,11 @@ public final class CollectionUtils extends Object {
     * An unmodifiable empty map.
     */
    public final static Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap());
+
+   /**
+    * An unmodifiable empty list.
+    */
+   public final static List EMPTY_LIST = Collections.unmodifiableList(new ArrayList(0));
 
 
    //-------------------------------------------------------------------------
