@@ -30,6 +30,16 @@
 				<link rel="stylesheet" type="text/css" href="style.css" />
 			</head>
 			<body>
+				<table class="headerlinks">
+					<tr>
+						<td>
+							<a href="index.html">Logdoc index</a>
+							<xsl:text> | </xsl:text>
+							<span class="active">Log entry</span>
+						</td>
+					</tr>
+				</table>
+
 				<h1>
 					<xsl:text>Log entry </xsl:text>
 					<xsl:value-of select="$entry" />

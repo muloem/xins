@@ -25,6 +25,16 @@
 				<link rel="stylesheet" type="text/css" href="style.css" />
 			</head>
 			<body>
+				<table class="headerlinks">
+					<tr>
+						<td>
+							<span class="active">Logdoc index</span>
+							<xsl:text> | </xsl:text>
+							<span class="disabled">Log entry</span>
+						</td>
+					</tr>
+				</table>
+
 				<h1>Log documentation</h1>
 
 				<h2>Log levels</h2>
