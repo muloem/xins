@@ -46,10 +46,63 @@
 		<description>API class name not set in build property.</description>
 		<param name="propertyName" />
 	</entry>
+	<entry id="107" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>API class cannot be loaded.</description>
+		<param name="propertyName" />
+		<param name="apiClass" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="108" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>API class is invalid, since it does not derive from the correct class.</description>
+		<param name="propertyName" />
+		<param name="apiClass" />
+		<param name="superClass" />
+	</entry>
+	<entry id="109" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrap of API class failed due to a missing but required property.</description>
+		<param name="propertyName" />
+	</entry>
+	<entry id="110" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrap of API class failed due to an invalid property value.</description>
+		<param name="propertyName" />
+		<param name="propertyValue" />
+	</entry>
+	<entry id="111" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrap of API class failed due to an exception.</description>
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+
+	<entry id="150" level="DEBUG" category="org.xins.server.log">
+		<description>Initializing logging subsystem.</description>
+	</entry>
+	<entry id="151" level="ERROR" category="org.xins.server.log">
+		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
+		<param name="configFile" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="152" level="ERROR" category="org.xins.server.log">
+		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
+		<param name="configFile" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="153" level="ERROR" category="org.xins.server.log">
+		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
+		<param name="configFile" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="154" level="DEBUG" category="org.xins.server.log">
+		<description>Logging subsystem initialized.</description>
+	</entry>
+
 	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework initialized or re-initialized.</description>
 	</entry>
-	<entry id="201" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="201" level="INFO" category="org.xins.server.log">
 		<description>About to change locale for the log messages.</description>
 		<param name="oldLocale" />
 		<param name="newLocale" />
