@@ -13,9 +13,6 @@ agoubard - Finish refactoring of generated 'fundament classes' for API
 znerd    - Make sure empty directories are not included in the new branch
 znerd    - Remove all deprecated methods, fields and classes
 znerd    - Remove unused methods, fields and classes
-agoubard - Have the DTD in an online location that includes a version number,
-           so that if XINS 2.0 is released with a different specification
-           format, it just refers to a different location for the DTDs
 znerd    - Finalize log entry ID's.
 znerd    - Change all packages in java-common to start with org.xins.common
 znerd    - Change email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com
