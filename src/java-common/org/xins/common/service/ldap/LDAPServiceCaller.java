@@ -209,17 +209,6 @@ public final class LDAPServiceCaller extends ServiceCaller {
       }
    }
 
-   protected final String reasonForImpl(Throwable exception) {
-      if (exception instanceof NamingException) {
-         NamingException ne = (NamingException) exception;
-         Throwable rootCause = ne.getRootCause();
-         if (rootCause != null) {
-            return reasonFor(rootCause);
-         }
-      }
-      return null;
-   }
-
    /**
     * Attempts to authenticate with a target service, using the specified
     * authentication details.

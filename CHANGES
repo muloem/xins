@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.198:
 
+* XINS/Java Common Library:
+  - Removed reasonFor(Throwable) method and it's brother
+    reasonForImpl(Throwable) from class ServiceCaller and from
+    LDAPServiceCaller. These methods is no longer used.
+
 * Unit tests:
   - Added BasicPropertyReader tests.
 
