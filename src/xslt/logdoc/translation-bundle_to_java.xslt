@@ -29,8 +29,8 @@
 
 		<xsl:variable name="accessmodifier">
 			<xsl:choose>
-				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'public'">public </xsl:when>
-				<xsl:when test="$accesslevel = 'package'"></xsl:when>
+				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'package'" />
+				<xsl:when test="$accesslevel = 'public'">public </xsl:when>
 			</xsl:choose>
 		</xsl:variable>
 
