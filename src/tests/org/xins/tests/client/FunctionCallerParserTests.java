@@ -6,6 +6,7 @@ package org.xins.tests.client;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.client.CallTargetGroup;
 import org.xins.client.FunctionCaller;
 import org.xins.client.FunctionCallerParser;
 import org.xins.client.ParseException;
@@ -114,5 +115,10 @@ public class FunctionCallerParserTests extends TestCase {
          "</group>";
 
       FunctionCaller caller = _parser.parse(xml);
+      assertNotNull(caller);
+      assertEquals(CallTargetGroup.class.getName(), caller.getClass().getName());
+
+      CallTargetGroup group = (CallTargetGroup) caller;
+      assertEquals(CallTargetGroup.ORDERED_TYPE, group.getType());
    }
 }
