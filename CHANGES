@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.149:
+
+* Added package.html for package org.xins.util.manageable.
+
+* Fixed typo in INFO log message from API.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.148:
 
 * Generation of specification documentation:
