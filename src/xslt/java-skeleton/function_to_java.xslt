@@ -106,6 +106,14 @@ public class ]]></xsl:text>
 		<xsl:text><![CDATA[)
    throws Throwable {
       // TODO
+]]></xsl:text>
+		<xsl:for-each select="output/param">
+			<xsl:text><![CDATA[
+      responder.param("]]></xsl:text>
+			<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[", "TODO");]]></xsl:text>
+		</xsl:for-each>
+		<xsl:text><![CDATA[
    }
 }
 ]]></xsl:text>

@@ -7,6 +7,9 @@ CHANGES INTRODUCED IN XINS 0.159:
 * Generated specification documentation:
   - The examples listed in the html page can be executed by clicking
     on the links to the test forms.
+  - If an <output><param> section exists for a function the generation of 
+    the implementation generates the responder.param("...", "TODO"); 
+    automiatically.
 
 * XINS/Java Client Framework:
   - Added a getXINSVersion in the class CAPI that returns the version upon
