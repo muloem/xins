@@ -125,9 +125,9 @@ public final class ]]></xsl:text>
     * @throws java.lang.IllegalArgumentException
     *    if <code>result == null || result.getErrorCode() != null</code>.
     *
-    * @throws org.xins.client.InvalidCallResultException
-    *    if the specified call result is not valid as a result from the
-    *    <em>]]></xsl:text>
+    * @throws org.xins.client.UnacceptableCallResultException
+    *    if the specified call result is considered unacceptable as a result
+    *    from the <em>]]></xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[</em> function.
     */
@@ -135,7 +135,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>(org.xins.client.XINSServiceCaller.Result result)
    throws java.lang.IllegalArgumentException,
-          org.xins.client.InvalidCallResultException {
+          org.xins.client.UnacceptableCallResultException {
 
       // Check preconditions
       if (result == null) {
