@@ -27,6 +27,14 @@ import java.io.IOException;
  *       <th><acronym title="AFTER_END">S4</acronym></th>
  *    </tr>
  *    <tr>
+ *       <th>{@link #startResponse(ResultCode)}</th>
+ *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *    <tr>
+ *    <tr>
  *       <th>{@link #startResponse(boolean,String)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -94,15 +102,32 @@ import java.io.IOException;
  *    <li>S4: AFTER_END</li>
  * </ul>
  *
- * <p />If {@link #startResponse(boolean,String)} is not called, then a
+ * <p />If {@link #startResponse(boolean,String)} or
+ * {@link #startResponse(ResultCode)} is not called, then a
  * <code>result</code> element is written with <code>success="true"</code> and
- * no return code.
+ * no result code.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public interface Responder
 extends ResponderStates {
+
+   /**
+    * Starts the response output. This is done by writing a
+    * <code>result</code> start tag.
+    *
+    * @param resultCode
+    *    the result code, can be <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the response output has already started.
+    *
+    * @throws IOException
+    *    if an I/O error occurred.
+    */
+   void startResponse(ResultCode resultCode)
+   throws IllegalStateException, IOException;
 
    /**
     * Starts the response output. This is done by writing a
@@ -119,6 +144,10 @@ extends ResponderStates {
     *
     * @throws IOException
     *    if an I/O error occurred.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.15.
+    *    Use {@link #startResponse(ResultCode)}.
     */
    void startResponse(boolean success, String returnCode)
    throws IllegalStateException, IOException;

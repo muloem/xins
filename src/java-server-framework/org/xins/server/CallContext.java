@@ -279,6 +279,15 @@ implements Responder {
       }
    }
 
+   public final void startResponse(ResultCode resultCode)
+   throws IllegalStateException, IOException {
+      if (resultCode == null) {
+         startResponse(true, null);
+      } else {
+         startResponse(resultCode.getSuccess(), resultCode.getValue());
+      }
+   }
+
    public final void startResponse(boolean success, String returnCode)
    throws IllegalStateException, IOException {
 
