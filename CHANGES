@@ -4,24 +4,19 @@ CHANGES INTRODUCED IN XINS 0.177:
 This version includes several incompatibilities with the previous version:
   - All packages org.xins.util has been renamed to org.xins.common.
   - The package org.xins.types has been renamed to org.xins.common.types.
-  - The <instance> in <impl-java> now have a APIImpl object passed in the
-    constructor.
+  - The <instance> elements in <impl-java> have now a APIImpl object passed
+    in the constructor.
   - The session system has been removed from XINS.
 
 * XINS/Java Server Framework:
   - New description for InvalidRequest result code and InvalidResponse
     result code.
-  - Changed the code to access the new package org.xins.common instead of
-    org.xins.util and org.xins.types.
   - Removed all code related to the sessions.
   - The shared instance now receive the APIImpl object in the constructor.
 
 * XINS/Java Common Library:
   - Renamed the package org.xins.types to org.xins.common.types and the
     package org.xins.util to org.xins.common.
-    This renaming will break compatibility with the previous version in the
-    case that your code is using classes from org.xins.types or org.xins.util.
-    To make your code compatible, just use the new packages.
   - Added new methods in ExpiryFolder.
 
 * XINS/Java Client Framework:
@@ -30,18 +25,13 @@ This version includes several incompatibilities with the previous version:
   - Removed all code related to the sessions.
 
 * Generated build file:
-  - Changed the code to access the new package org.xins.common instead of
-    org.xins.util and org.xins.types.
   - Renamed target "specdocs-index" to "index-specdocs".
-
-* Build and release process:
-  - Adapted code for the new org.xins.common package.
 
 * Specification:
   - Removed all tags related to the session.
 
 * Logdoc:
-  - Removed all dependencies to xins-common.jar.
+  - Removed all dependencies to the package org.xins.common.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.176:
