@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.142:
+
+* Generation of specification documentation:
+  - Shortened title of link to other function to the first line of the
+    description for that function.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.141:
 
 * XINS/Java Client Framework:
