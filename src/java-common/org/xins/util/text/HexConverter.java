@@ -253,7 +253,7 @@ public class HexConverter extends Object {
     *    a hex digit (<code>'0'</code> to <code>'9'</code> and
     *    <code>'a'</code> to <code>'f'</code>).
     */
-   public static long parseHexString(String s, int index)
+   public static long parseHexLong(String s, int index)
    throws IllegalArgumentException, NumberFormatException {
 
       // Check preconditions
@@ -308,7 +308,7 @@ public class HexConverter extends Object {
     *    (<code>'0'</code> to <code>'9'</code> and <code>'a'</code> to
     *    <code>'f'</code>).
     */
-   public static long parseHexString(String s)
+   public static long parseHexLong(String s)
    throws IllegalArgumentException, NumberFormatException {
 
       // Check preconditions
@@ -318,7 +318,7 @@ public class HexConverter extends Object {
          throw new IllegalArgumentException("s.length() != 16");
       }
 
-      return parseHexString(s, 0);
+      return parseHexLong(s, 0);
    }
 
 

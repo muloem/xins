@@ -79,7 +79,7 @@ public final class BasicSessionIDType extends SessionIDType {
       }
 
       try {
-         HexConverter.parseHexString(value, 17);
+         HexConverter.parseHexLong(value, 17);
          return true;
       } catch (NumberFormatException nfe) {
          return false;
@@ -99,7 +99,7 @@ public final class BasicSessionIDType extends SessionIDType {
       }
 
       try {
-         return new SessionID(HexConverter.parseHexString(string, 17));
+         return new SessionID(HexConverter.parseHexLong(string, 17));
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(this, string);
       }

@@ -117,20 +117,20 @@ public class HexConverterTests extends TestCase {
 
       if (illegalArg) {
          try {
-            HexConverter.parseHexString(arg);
-            fail("HexConverter.parseHexString(" + s + ") should throw an IllegalArgumentException.");
+            HexConverter.parseHexLong(arg);
+            fail("HexConverter.parseHexLong(" + s + ") should throw an IllegalArgumentException.");
          } catch (IllegalArgumentException exception) {
             // as expected
          }
       } else if (invalidNumberFormat) {
          try {
-            HexConverter.parseHexString(arg);
-            fail("HexConverter.parseHexString(" + s + ") should throw a NumberFormatException.");
+            HexConverter.parseHexLong(arg);
+            fail("HexConverter.parseHexLong(" + s + ") should throw a NumberFormatException.");
          } catch (NumberFormatException exception) {
             // as expected
          }
       } else {
-         assertEquals(expected, HexConverter.parseHexString(arg));
+         assertEquals(expected, HexConverter.parseHexLong(arg));
       }
    }
 }
