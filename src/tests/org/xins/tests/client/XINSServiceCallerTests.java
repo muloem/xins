@@ -77,16 +77,20 @@ public class XINSServiceCallerTests extends TestCase {
     * Tests the constructor arguments.
     */
    public void testXINSServiceCaller_constructor() throws Throwable {
+      XINSServiceCaller caller = new XINSServiceCaller(null);
+      assertEquals(null, caller.getDescriptor());
+
+      // TODO: Move this test to a different function
       try {
-         XINSServiceCaller upe = new XINSServiceCaller(null);
-         fail("HTTPServiceCaller did not throw an exception with a <null> argument for the constructor.");
-      } catch (IllegalArgumentException ex) {
-         // As excepted
+         TargetDescriptor descriptor2 = new TargetDescriptor("blah://127.0.0.1:8080/");
+         caller.setDescriptor(descriptor2);
+         fail("The \"blah\" protocol should not be supported.");
+      } catch (UnsupportedProtocolException upe) {
+         // As expected.
       }
 
       TargetDescriptor descriptor = new TargetDescriptor("hTtP://127.0.0.1:8080/");
-      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
-
+      caller = new XINSServiceCaller(descriptor);
 
       try {
          TargetDescriptor descriptor2 = new TargetDescriptor("blah://127.0.0.1:8080/");

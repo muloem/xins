@@ -111,12 +111,8 @@ public class HTTPServiceCallerTests extends TestCase {
       TargetDescriptor descriptor;
 
       // One-argument constructor
-      try {
-         new HTTPServiceCaller(null);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException ex) {
-         // As excepted
-      }
+      HTTPServiceCaller caller = new HTTPServiceCaller(null);
+      assertEquals(null, caller.getDescriptor());
 
       try {
          descriptor = new TargetDescriptor("blah://www.google.com");
@@ -127,13 +123,16 @@ public class HTTPServiceCallerTests extends TestCase {
       }
 
       descriptor = new TargetDescriptor("http://www.google.com");
-      new HTTPServiceCaller(descriptor);
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
 
       descriptor = new TargetDescriptor("hTTp://www.google.com");
-      new HTTPServiceCaller(descriptor);
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
 
       descriptor = new TargetDescriptor("HTTP://www.google.com");
-      new HTTPServiceCaller(descriptor);
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
 
       // TODO: Add tests for 2-argument constructor
    }
