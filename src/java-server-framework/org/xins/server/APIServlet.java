@@ -636,7 +636,7 @@ implements Servlet {
 
       public void fileModified() {
          Library.REINIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
-         applyConfigFile(REINIT_LOG);
+         applyConfigFile(Library.REINIT_LOG);
          // TODO: reinit API
          Library.REINIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
