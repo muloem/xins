@@ -4,6 +4,15 @@ CHANGES INTRODUCED IN XINS 0.107:
 * Generated specification documentation:
   - Improved URL encoding of the links to the test forms.
 
+* Generated API classes:
+  - Now supporting properties types.
+
+* Generated CAPI classes:
+  - Fixed bug so that Result classes are now properly generated for functions
+    that only return a data section and no output parameters.
+
+* Fixed Javadoc generation for both generated API classes and CAPI classes.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.106:
 
