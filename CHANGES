@@ -21,7 +21,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
                                             milliseconds.
     . CallExceptionList exceptions()     -- Returns the list of CallExceptions.
     . TargetDescriptor succeededTarget() -- Returns the target for which the
-                                            call succeeded. 
+                                            call succeeded.
+ - Refactored the XINSCallRequest and added new set methods.
 
 * XINS/Java Server Framework:
   - The _GetStatistics meta-function now supports statistics per error code.
