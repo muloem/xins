@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.83:
+
+* Generated CAPI classes:
+  - Fixed bug. All generated function calling methods now correctly check
+    result.isSuccess(). If it returns false, then an UnsuccessfulCallException
+    is thrown.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.82:
 
 * XINS/Java Common Library:
