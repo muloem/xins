@@ -22,6 +22,12 @@ public final class CallExceptionList extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final CLASSNAME = CallExceptionList.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -34,7 +40,14 @@ public final class CallExceptionList extends Object {
     * Constructs a new <code>CallExceptionList</code> object.
     */
    public CallExceptionList() {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
       _exceptions = new ArrayList();
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 
@@ -43,8 +56,8 @@ public final class CallExceptionList extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The underlying collection to store the <code>CallException</code> objects
-    * in.
+    * The underlying collection to store the <code>CallException</code>
+    * objects in.
     */
    private final List _exceptions;
 
@@ -54,12 +67,17 @@ public final class CallExceptionList extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Adds a <code>CallException</code>.
+    * Adds a <code>CallException</code> to this list.
     *
     * @param exception
     *    the {@link CallException} to add, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>exception == null</code>.
     */
-   void add(CallException exception) {
+   void add(CallException exception)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("exception", exception);
       _exceptions.add(exception);
    }
 
@@ -83,11 +101,11 @@ public final class CallExceptionList extends Object {
     *    the {@link CallException} element at the specified index, never
     *    <code>null</code>.
     *
-    * @throws ArrayIndexOutOfBoundsException
+    * @throws IndexOutOfBoundsException
     *    if <code>index &lt; 0 || index &gt;= {@link #size()}</code>.
     */
    public CallException get(int index)
-   throws ArrayIndexOutOfBoundsException {
+   throws IndexOutOfBoundsException {
       return (CallException) _exceptions.get(index);
    }
 }
