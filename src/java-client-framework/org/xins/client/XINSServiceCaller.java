@@ -77,21 +77,17 @@ import org.xins.logdoc.LogdocSerializable;
  * the following situations:
  *
  * <ul>
- *    <li>connection refusal;
- *    <li>a connection time-out;
- *    <li>an HTTP status code other than 200-299;
- *    <li>the XINS error code <em>_InvalidRequest</em>;
- *    <li>the XINS error code <em>_DisabledFunction</em>.
+ *    <li>if the <code>failOver</code> property is set to <code>true</code>
+ *    for the {@link XINSCallRequest};
+ *    <li>on connection refusal;
+ *    <li>if a connection attempt times out;
+ *    <li>if an HTTP status code other than 200-299 is returned;
+ *    <li>if the XINS error code <em>_InvalidRequest</em> is returned;
+ *    <li>if the XINS error code <em>_DisabledFunction</em> is returned.
  * </ul>
  *
- * <p>In other situations, like socket time-outs, total time-outs, other XINS
- * error codes, fail-over is normally not considered acceptable. There is one
- * exception, and that is when the call request explicitly allows fail-over in
- * all situations. Then a {@link XINSCallRequest} should be created with the
- * <code>failOverAllowed</code> property set to <code>true</code>. For this,
- * the constructor
- * {@link XINSCallRequest#XINSCallRequest(String,PropertyReader,boolean,HTTPMethod)}
- * can be used.
+ * <p>If none of these conditions holds, then fail-over is not considered
+ * acceptable and will not be performed.
  *
  * <h2>Example code</h2>
  *
