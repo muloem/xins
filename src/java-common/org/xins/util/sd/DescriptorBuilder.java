@@ -86,11 +86,43 @@ public final class DescriptorBuilder extends Object {
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+      return build(properties, propertyName, null);
+   }
+
+   /**
+    * Builds a <code>Descriptor</code> based on the specified set of
+    * properties, specifying base property and reference.
+    *
+    * @param properties
+    *    the properties to read from, should not be <code>null</code>.
+    *
+    * @param baseProperty
+    *    the name of the base property, should not be <code>null</code>.
+    *
+    * @param reference
+    *    the name of the reference, relative to the base property, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the {@link Descriptor} that was built, never <code>null</code>.
+    *
+    * @throws DescriptorBuilder.Exception
+    *    if <code>properties == null || propertyName == null</code>.
+    */
+   private Descriptor build(PropertyReader properties,
+                            String         baseProperty,
+                            String         reference)
+   throws DescriptorBuilder.Exception {
+
+      // Determine the property name
+      String propertyName = reference == null
+                          ? baseProperty
+                          : baseProperty + '.' + reference;
 
       // Get the value of the property
       String value = properties.get(propertyName);
       if (value == null) {
-         throw new DescriptorBuilder.Exception("Base property \"" + propertyName + "\" not found.");
+         throw new DescriptorBuilder.Exception("Property \"" + propertyName + "\" not found.");
       }
 
       // Tokenize the value
@@ -130,7 +162,7 @@ public final class DescriptorBuilder extends Object {
          int memberCount = tokenCount - 2;
          Descriptor[] members = new Descriptor[memberCount];
          for (int i = 0; i < memberCount; i++) {
-            
+            members[i] = build(properties, baseProperty, tokens[i + 2]);
          }
          return new GroupDescriptor(groupType, members);
 
