@@ -26,7 +26,7 @@ public class HostnameTask extends Task {
    /**
     * Default name for the property to set.
     */
-   private static final String DEFAULT_PROPERTY_NAME = "hostname";
+   public static final String DEFAULT_PROPERTY_NAME = "hostname";
 
 
    //-------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class HostnameTask extends Task {
     * Name of the property to store the host name in. Default is
     * {@link #DEFAULT_PROPERTY_NAME}.
     */
-   public String _propertyName = DEFAULT_PROPERTY_NAME;
+   private String _propertyName = DEFAULT_PROPERTY_NAME;
 
 
    //-------------------------------------------------------------------------
