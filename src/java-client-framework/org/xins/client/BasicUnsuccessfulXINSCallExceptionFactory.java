@@ -10,9 +10,7 @@ import org.xins.common.service.TargetDescriptor;
 
 /**
  * Basic implementation of a factory for
- * <code>UnsuccessfulXINSCallException</code> instances. This implementation
- * always returns an instance of the {@link UnsuccessfulXINSCallException}
- * class itself, never of any subclass.
+ * <code>UnsuccessfulXINSCallException</code> instances.
  *
  * <p>Although this class is currently package-private, it is expected to be
  * marked as public at some point.
@@ -80,6 +78,19 @@ extends UnsuccessfulXINSCallExceptionFactory {
                                                       TargetDescriptor   target,
                                                       long               duration,
                                                       XINSCallResultData resultData) {
-      return new UnsuccessfulXINSCallException(request, target, duration, resultData);
+
+      // Determine error code
+      String errorCode = resultData.getErrorCode();
+
+      // Invalid request
+      if ("_InvalidRequest".equals(errorCode)
+       || "MissingParameters".equals(errorCode)
+       || "InvalidParameters".equals(errorCode)) {
+         return new InvalidRequestException(request, target, duration, resultData);
+
+      // Otherwise just return a plain UnsuccessfulXINSCallException
+      } else {
+         return new UnsuccessfulXINSCallException(request,  target, duration, resultData, null);
+      }
    }
 }
