@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
 
 /**
  * Monitor that acts like a doorman. It implements a variation of the
@@ -25,6 +26,12 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(Doorman.class.getName());
+
+   /**
     * The type for readers in the queue.
     */
    private static final Queue.EntryType READ_QUEUE_ENTRY_TYPE = new Queue.EntryType();
@@ -39,6 +46,16 @@ public final class Doorman extends Object {
     * 30 seconds.
     */
    private static final long MAX_QUEUE_WAIT_TIME = 10000L;
+
+   /**
+    * The number of instances of this class.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * The lock object for <code>INSTANCE_COUNT</code>.
+    */
+   private static final Object INSTANCE_COUNT_LOCK = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -68,9 +85,16 @@ public final class Doorman extends Object {
       }
 
       // Initialize fields
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceID = INSTANCE_COUNT++;
+      }
       _currentActorLock = new Object();
       _currentReaders   = new HashSet();
       _queue            = new Queue(queueSize);
+
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Constructed Doorman #" + _instanceID + '.');
+      }
    }
 
 
@@ -100,6 +124,11 @@ public final class Doorman extends Object {
     */
    private final Queue _queue;
 
+   /**
+    * Unique numeric identifier for this instance.
+    */
+   private final int _instanceID;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -116,6 +145,10 @@ public final class Doorman extends Object {
    throws QueueTimeOutException {
 
       Thread reader = Thread.currentThread();
+
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Doorman #" + _instanceID + ", enterAsReader() called for thread " + reader + '.');
+      }
 
       synchronized (_currentActorLock) {
 
@@ -175,6 +208,10 @@ public final class Doorman extends Object {
 
       Thread writer = Thread.currentThread();
 
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for thread " + writer + '.');
+      }
+
       synchronized (_currentActorLock) {
 
          // Check preconditions
@@ -221,7 +258,12 @@ public final class Doorman extends Object {
     * Leaves the 'protected area' as a reader.
     */
    public void leaveAsReader() {
+
       Thread reader = Thread.currentThread();
+
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Doorman #" + _instanceID + ", leaveAsReader() called for thread " + reader + '.');
+      }
 
       synchronized (_currentActorLock) {
          boolean readerRemoved = _currentReaders.remove(reader);
@@ -258,7 +300,12 @@ public final class Doorman extends Object {
     * Leaves the 'protected area' as a writer.
     */
    public void leaveAsWriter() {
+
       Thread writer = Thread.currentThread();
+
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Doorman #" + _instanceID + ", leaveAsWriter() called for thread " + writer + '.');
+      }
 
       synchronized (_currentActorLock) {
 
@@ -272,17 +319,24 @@ public final class Doorman extends Object {
             // empty
             Queue.EntryType type = _queue.getTypeOfFirst();
 
+            // If a writer is waiting, activate it alone
             if (type == WRITE_QUEUE_ENTRY_TYPE) {
 
-               // If a writer is waiting, activate it
                _currentWriter = _queue.pop();
                _currentWriter.interrupt();
-            } else if (type == READ_QUEUE_ENTRY_TYPE) {
 
-               // If there are multiple readers atop, activate all of them
+            // If readers are on top, active all readers atop
+            } else if (type == READ_QUEUE_ENTRY_TYPE) {
                do {
-                  _queue.pop().interrupt();
+                  Thread reader = _queue.pop();
+                  _currentReaders.add(reader);
+                  reader.interrupt();
                } while (_queue.getTypeOfFirst() == READ_QUEUE_ENTRY_TYPE);
+
+            // Otherwise there is no active thread, make sure to reset the
+            // current writer
+            } else {
+               _currentWriter = null;
             }
          }
       }
