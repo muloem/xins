@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>XINS README</title>
+		<!-- $Id$ -->
+	</head>
+	<body bgcolor="white">
+		<center>
+			<font color="#8888dd" size="8">XINS</font><br>
+			<font color="#8888dd" size="5">XML Interface for Network Services</font>
+		</center>
+
+		<p>
+		<font color="#8888dd" size="4">Description:</font>
+		<ul>
+			<li>XINS is a web application framework.</li>
+			<li>XINS is design to be able to create web applications based on defined specifications.</li>
+			<li>XINS is based on a simple way to send requests (using URLs) and handle result (Simple XML format).</li>
+			<li>XINS generates a set of HTML pages from the specification and some test forms to test the application.</li>
+			<li>XINS generates Java code to invoke the web application and to develop it.</li>
+			<li>XINS also includes detects if the parameters are conform to the specification.</li>
+			<li>XINS includes concepts like load balancing, fail over, logging, security, properties and statistics.</li>
+		</ul>
+
+		<p>
+		<font color="#8888dd" size="4">Documentation:</font>
+		<ul>
+			<li>XINS User Guide in <a href="docs/index.html">HTML</a> and <a href="docs/XINSGuide">PDF</a>.</li>
+			<li><a href="docs/javadoc/index.html">Javadoc</a> (<a href="docs/javadoc/overview-summary.html">no frames</a>).</li>
+			<li>Logdoc for the <a href="docs/logdoc/client/index.html">client</a>,
+			    <a href="docs/logdoc/common/index.html">common</a> and
+			    <a href="docs/logdoc/server/index.html">server</a>.</li>
+			<li><a href="CHANGES">Last changes</a>, <a href="COPYRIGHT">Copyright</a>.</li>
+		</ul>
+
+		<p>
+		<font color="#8888dd" size="4">Quick start:</font>
+		<ul>
+			<li>Check that <a href="http://java.sun.com/j2se/1.4.2/download.html">Java</a>, <a href="http://ant.apache.org/">ANT</a> and <a href="http://www.mortbay.org/jetty/index.html">Jetty</a> are properly installed.<br>
+			    Note that any other application server such as <a href="http://jakarta.apache.org/tomcat/">Tomcat</a> or <a href="http://www.orionserver.com/">Orion</a> could replace Jetty.</li>
+			<li>Set the <i>XINS_HOME</i> environment variable to the installed xins directory</li>
+			<li>Add %XINS_HOME%\bin to your PATH environment variable.</li>
+			<li>In the <i>demo\xins-projects</i> directory execute <i>xins all-myproject</i>.</li>
+			<li>Start Jetty in the same directory with with<br>
+			    <i>java -Dorg.xins.server.config=..\xins.properties -Djetty.home=%JETTY_HOME% -jar %JETTY_HOME%\start.jar ..\jetty_myproject.xml</i>.</li>
+			<li>Run your browser to the web page <a href="demo\xins-project\specdocs\myproject\index.html">demo\xins-project\specdocs\myproject\index.html</a></li>
+		</ul>
+		<i>More detailed information can be found in the <a href="docs/index.html">Documentation</a>.</i>
+
+		<P>
+		<font color="#8888dd" size="4">links:</font>
+		<ul>
+			<li><a href="http://www.xins.org">Web site</a>.</li>
+			<li><a href="http://xins.sf.net/demo.html">On line demo</a>.</li>
+			<li><a href="http://sourceforge.net/project/showfiles.php?group_id=71598">Download page</a>.</li>
+		</ul>
+	</body>
+</html>

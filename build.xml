@@ -595,6 +595,7 @@
 			<fileset dir="../${name}-examples">
 				<include name="build.xml" />
 				<include name="xins.properties" />
+				<include name="jetty_myproject.xml" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
 				<include name="xins-project/**/*.xml" />
@@ -653,7 +654,7 @@
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
 			<include name="COPYRIGHT"                      />
-			<include name="README"                         />
+			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
 		</patternset>

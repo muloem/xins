@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 0.207:
 
 * Build and release process:
   - Removed the TODO file from the release.
+  - Replaced the README file with README.html.
+  - Added the example for Jetty in the demo.
 
 * Libraries
   - Updated some incorrect license files.
