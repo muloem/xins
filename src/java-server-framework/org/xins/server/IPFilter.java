@@ -199,8 +199,8 @@ extends Object {
     *    a boolean with the value <code>true</code> when the expression
     *    is a valid IP filter, otherwise <code>false</code>.
     *
-    * @throws
-    *    NullPointerException when <code>expression == null</code>.
+    * @throws NullPointerException
+    *    when <code>expression == null</code>.
     */
    private static boolean isValidFilter(String expression) {
       String ip = null;
@@ -240,6 +240,8 @@ extends Object {
     *    otherwise false.
     */
    private static boolean isValidIP(String ip) {
+      // NOTE: This method depends on the reliability of the getIPFields()
+      //       method.
       String[] ipFields = getIPFields(ip);
       boolean validIP = ipFields == null ? false : true;
       return validIP;
@@ -255,8 +257,8 @@ extends Object {
     *    boolean with the value <code>true</code> if the mask is valid,
     *    otherwise false.
     *
-    * @throws
-    *    NullPointerException when <code>mask == null</code>.
+    * @throws NullPointerException
+    *    when <code>mask == null</code>.
     */
    private static boolean isValidMask(String mask) {
       int maskLength = mask.length();
@@ -284,8 +286,8 @@ extends Object {
     *    boolean with the value <code>true</code> if the IP section is
     *    valid, otherwise false.
     *
-    * @throws
-    *    NullPointerException when <code>ipSection == null</code>.
+    * @throws NullPointerException
+    *    when <code>ipSection == null</code>.
     */
    private static boolean isValidIPSection(String ipSection) {
       int sectionLength = ipSection.length();
@@ -307,7 +309,8 @@ extends Object {
     * specified maximum allowed value.
     *
     * @param value
-    *    the value to be checked.
+    *    the value to be checked, should not be <code>null</code>; if it is
+    *    than the behaviour is undefined.
     *
     * @param maxAllowedValue
     *    the maximum allowed integer value.
@@ -345,8 +348,8 @@ extends Object {
     *    an array with the strings representing the value of each IP field
     *    or <code>null</code> if the provided IP is invalid.
     *
-    * @throws
-    *    NullPointerException when <code>ip == null</code>.
+    * @throws NullPointerException
+    *    when <code>ip == null</code>.
     */
    private static String[] getIPFields(String ip) {
       StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
@@ -385,8 +388,8 @@ extends Object {
     * @return
     *    An integer representing the value of the mask of this expression.
     *
-    * @throws
-    *    NullPointerException when <code>expression == null</code>.
+    * @throws NullPointerException
+    *    when <code>expression == null</code>.
     */
    private int determineMask(String expression) {
       int mask = -1;
@@ -416,8 +419,8 @@ extends Object {
     * @return
     *    A string with the IP address of this expression.
     *
-    * @throws
-    *    NullPointerException when <code>expression == null</code>.
+    * @throws NullPointerException
+    *    when <code>expression == null</code>.
     */
    private String determineIP(String expression) {
       String ip = null;
@@ -445,11 +448,13 @@ extends Object {
     *    authorized, otherwise <code>false</code>.
     */
    private boolean determineAuthorized(String[] ipFields) {
+      // NOTE: This method depends on the reliability of the determineIP(),
+      //       getIPFields() and getIPBinaryValue() methods.
       String filterIp = determineIP(_expression);
       String[] ipFilterFields = getIPFields(filterIp);
 
-      String filterIpBinary = getIpBinaryValue(ipFilterFields);
-      String ipBinary = getIpBinaryValue(ipFields);
+      String filterIpBinary = getIPBinaryValue(ipFilterFields);
+      String ipBinary = getIPBinaryValue(ipFields);
 
       if (filterIpBinary.length() != 32 || ipBinary.length() != 32) {
          return false;
@@ -474,10 +479,10 @@ extends Object {
     *    String with the binary value of the IP that was provided through the
     *    the string array with the values of each IP section.
     *
-    * @throws
-    *    NullPointerException when <code>ipFields == null</code>.
+    * @throws NullPointerException
+    *    when <code>ipFields == null</code>.
     */
-   private String getIpBinaryValue(String[] ipFields) {
+   private String getIPBinaryValue(String[] ipFields) {
       int ipFieldLength = ipFields.length;
       StringBuffer buffer = new StringBuffer(32);
       String currFieldBinaryString = null;
