@@ -195,13 +195,15 @@ implements Servlet {
    public void service(ServletRequest request, ServletResponse response)
    throws ServletException, IOException {
 
+      int state = _state;
+
       // Check state
-      if (_state != READY) {
-         if (_state == UNINITIALIZED) {
+      if (state != READY) {
+         if (state == UNINITIALIZED) {
             throw new ServletException("This servlet is not yet initialized.");
-         } else if (_state == DISPOSING) {
+         } else if (state == DISPOSING) {
             throw new ServletException("This servlet is currently being disposed.");
-         } else if (_state == DISPOSED) {
+         } else if (state == DISPOSED) {
             throw new ServletException("This servlet is disposed.");
          } else {
             throw new InternalError("This servlet is not ready, the state is unknown.");
