@@ -38,7 +38,9 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>propertyName == null || propertyValue == null</code>.
     */
-   private static final String createMessage(String propertyName, String propertyValue)
+   private static final String createMessage(String propertyName,
+                                             String propertyValue,
+                                             String reason)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -51,7 +53,12 @@ extends Exception {
       buffer.append(propertyValue);
       buffer.append("\" is invalid for property \"");
       buffer.append(propertyName);
-      buffer.append("\".");
+      if (reason == null) {
+         buffer.append("\".");
+      } else {
+         buffer.append("\": ");
+         buffer.append(reason);
+      }
 
       return buffer.toString();
    }
@@ -78,15 +85,44 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>propertyName == null || propertyValue == null</code>.
     */
-   public InvalidPropertyValueException(String propertyName, String propertyValue)
+   public InvalidPropertyValueException(String propertyName,
+                                        String propertyValue)
+   throws IllegalArgumentException {
+
+      this(propertyName, propertyValue, null);
+   }
+
+   /**
+    * Constructs a new <code>InvalidPropertyValueException</code> with the
+    * specified reason.
+    *
+    * @param propertyName
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @param propertyValue
+    *    the (invalid) value set for the property, cannot be
+    *    <code>null</code>.
+    *
+    * @param reason
+    *    additional description of the problem, or <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>propertyName == null || propertyValue == null</code>.
+    *
+    * @since XINS 0.150
+    */
+   public InvalidPropertyValueException(String propertyName,
+                                        String propertyValue,
+                                        String reason)
    throws IllegalArgumentException {
 
       // Construct message and call superclass constructor
-      super(createMessage(propertyName, propertyValue));
+      super(createMessage(propertyName, propertyValue, reason));
 
       // Store data
       _propertyName  = propertyName;
       _propertyValue = propertyValue;
+      _reason        = reason;
    }
 
 
@@ -95,14 +131,19 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * The name of the property.
+    * The name of the property. Cannot be <code>null</code>.
     */
    private final String _propertyName;
 
    /**
-    * The (invalid) value of the property.
+    * The (invalid) value of the property. Cannot be <code>null</code>.
     */
    private final String _propertyValue;
+
+   /**
+    * The detailed reason. Can be <code>null</code>.
+    */
+   private final String _reason;
 
 
    //-------------------------------------------------------------------------
@@ -127,5 +168,17 @@ extends Exception {
     */
    public String getPropertyValue() {
       return _propertyValue;
+   }
+
+   /**
+    * Returns the description of the reason.
+    *
+    * @return
+    *    the reason, or <code>null</code>.
+    *
+    * @since XINS 0.150
+    */
+   public String getReason() {
+      return _reason;
    }
 }
