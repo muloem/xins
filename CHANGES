@@ -3,9 +3,17 @@ CHANGES INTRODUCED IN XINS 0.71:
 
 * Added missing Javadoc comments for some private members.
 
-* Configuration of time-out and time-out precision is now done in api.xml and
-  this information is sent down to and interpreted by the API class (in the
-  XINS/Java Server Framework).
+* Configuration of time-out duration and precision is now done in api.xml.
+
+* XINS/Java Common Library:
+  - No longer allowing initial queue size to be set for ExpiryFolder. This is
+    overkill.
+  - ExpiryStrategy class now logs a debug message at construction.
+
+* XINS/Java Server Framework:
+  - API class now gets and interprets session time-out duration and precision.
+  - Maximum queue wait time (for the ExpiryFolder containing the sessions) is
+    automatically set to half of the session time-out duration.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.70:
