@@ -242,7 +242,7 @@ public abstract class ServiceCaller extends Object {
     *    be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>thread == null</code>.
+    *    if <code>thread == null || descriptor == null</code>.
     *
     * @throws IllegalThreadStateException
     *    if the thread was already started.
@@ -266,7 +266,8 @@ public abstract class ServiceCaller extends Object {
           TimeOutException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("thread", thread);
+      MandatoryArgumentChecker.check("thread",     thread,
+                                     "descriptor", descriptor);
 
       // Start the thread. This may throw an IllegalThreadStateException.
       thread.start();
