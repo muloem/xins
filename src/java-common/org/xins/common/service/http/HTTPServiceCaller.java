@@ -25,6 +25,7 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
@@ -54,16 +55,17 @@ import org.xins.common.text.FastStringBuffer;
  * <code>HTTPServiceCaller</code> instance:
  *
  * <blockquote><code>{@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, PROPERTY_NAME);
- * <br />HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor,HTTPServiceCaller.Method) HTTPServiceCaller}(descriptor, HTTPServiceCaller.{@link #GET GET});</code></blockquote>
+ * <br />HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor) HTTPServiceCaller}(descriptor);</code></blockquote>
  *
- * <p>A call can be executed as follows, using this <code>HTTPServiceCaller</code>:
+ * <p>Then the following code snippet uses this <code>HTTPServiceCaller</code>
+ * to perform an HTTP GET call:
  *
- * <blockquote><code>{@link org.xins.common.collections.PropertyReader PropertyReader} params = new {@link org.xins.common.collections.BasicPropertyReader BasicPropertyReader}();
+ * <blockquote><code>{@link PropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
  * <br />params.set("street",      "Broadband Avenue");
  * <br />params.set("houseNumber", "12");
- * <br />{@link HTTPServiceCaller.Result HTTPServiceCaller.Result} result = caller.{@link #call(PropertyReader) call}(params);</code></blockquote>
- *
- * <p>TODO: Fix the example code for XINS 0.207.
+ * <br />
+ * <br />{@link HTTPCallRequest} request = new {@link HTTPCallRequest#HTTPCallRequest(HTTPMethod,PropertyReader) HTTPCallRequest}({@link HTTPMethod}.{@link HTTPMethod#GET GET}, params);
+ * <br />{@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</code></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -192,9 +194,41 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Calls the specified target using the specified subject. If the call
+    * succeeds, then a {@link HTTPCallResult} object is returned, otherwise a
+    * {@link CallException} is thrown.
+    *
+    * <p>The implementation of this method in class
+    * <code>HTTPServiceCaller</code> delegates to
+    * {@link #call(TargetDescriptor,HTTPCallRequest)}.
+    *
+    * @param target
+    *    the target to call, cannot be <code>null</code>.
+    *
+    * @param request
+    *    the call request to be executed, must be an instance of class
+    *    {@link HTTPCallRequest}, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result, if and only if the call succeeded, always an instance of
+    *    class {@link HTTPCallResult}, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if the specified <code>request</code> object is not <code>null</code>
+    *    and not an instance of class {@link HTTPCallRequest}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || request == null</code>.
+    *
+    * @throws CallException
+    *    if the call to the specified target failed.
+    *
+    * @since XINS 0.207
+    */
    protected Object doCallImpl(TargetDescriptor target,
                                CallRequest      request)
-   throws Throwable {
+   throws ClassCastException, IllegalArgumentException, CallException {
 
       // Delegate to method with more specialized interface
       return call(target, (HTTPCallRequest) request);
