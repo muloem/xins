@@ -38,7 +38,8 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * Generated server-side Java code:
   - The TypeValueException is no longer catched is the parameter is a String.
-  - Fixed a compilatino error when a function had no input arguments.
+  - Fixed a compilation error when a function had no input arguments.
+    This bug has been in XINS since version 0.208.
 
 * Generated specification documentation:
   - Added the broken freeze warning message for types and result codes.

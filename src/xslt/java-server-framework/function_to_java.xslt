@@ -338,10 +338,10 @@ public abstract class ]]></xsl:text>
 		<!-- ************************************************************* -->
 
 		<xsl:text>
-      Request _callRequest = new Request(context.getRemoteAddr(), </xsl:text>
+      Request _callRequest = new Request(context.getRemoteAddr()</xsl:text>
 
 		<xsl:for-each select="input/param">
-			<xsl:if test="not(position() = 1)">, </xsl:if>
+			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_from_string_for_type">
 				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="required" select="@required" />
