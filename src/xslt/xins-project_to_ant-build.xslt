@@ -849,17 +849,6 @@
 				</xsl:if>
 
 				<target name="-stubs-capi-{$api}" depends="-prepare-classes" >
-					<xsl:variable name="functionResultIncludes">
-						<xsl:for-each select="document($api_file)/api/function">
-							<xsl:variable name="functionName" select="@name" />
-							<xsl:variable name="functionFile" select="concat($api_specsdir, '/', $functionName, '.fnc')" />
-							<xsl:for-each select="document($functionFile)/function">
-								<xsl:value-of select="$functionName" />
-								<xsl:text>.fnc,</xsl:text>
-							</xsl:for-each>
-						</xsl:for-each>
-					</xsl:variable>
-
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 					<xmlvalidate file="{$api_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
@@ -890,9 +879,9 @@
 						<param name="api_file"     expression="{$api_file}"      />
 						<param name="package"      expression="{$clientPackage}" />
 					</style>
-					<xsl:if test="string-length($functionResultIncludes) &gt; 0">
+					<xsl:if test="string-length($functionIncludes) &gt; 0">
 						<xmlvalidate warn="false">
-							<fileset dir="{$api_specsdir}" includes="{$functionResultIncludes}"/>
+							<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
@@ -900,7 +889,7 @@
 						destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 						style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
 						extension="Result.java"
-						includes="{$functionResultIncludes}">
+						includes="{$functionIncludes}">
 							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}"  />
 							<param name="project_home" expression="{$project_home}"  />
