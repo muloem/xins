@@ -84,6 +84,10 @@ public class IPAddressUtilsTests extends TestCase {
       doTestIpToInt_INVALID("1111.1.1.1");
       doTestIpToInt_INVALID("1.1.1.1111");
       doTestIpToInt_INVALID("1.1.1.1111");
+      doTestIpToInt_INVALID("01.2.3.4");
+      doTestIpToInt_INVALID("001.2.3.4");
+      doTestIpToInt_INVALID("1.2.3.04");
+      doTestIpToInt_INVALID("1.2.3.004");
 
       assertEquals(0x00000000, IPAddressUtils.ipToInt("0.0.0.0"));
       assertEquals(0x00000001, IPAddressUtils.ipToInt("0.0.0.1"));
@@ -93,6 +97,7 @@ public class IPAddressUtilsTests extends TestCase {
       assertEquals(0x0000000a, IPAddressUtils.ipToInt("0.0.0.10"));
       assertEquals(0x0000000f, IPAddressUtils.ipToInt("0.0.0.15"));
       assertEquals(0x00000010, IPAddressUtils.ipToInt("0.0.0.16"));
+      assertEquals(0x00000065, IPAddressUtils.ipToInt("0.0.0.101"));
       assertEquals(0x000000ff, IPAddressUtils.ipToInt("0.0.0.255"));
       assertEquals(0x0000ff00, IPAddressUtils.ipToInt("0.0.255.0"));
       assertEquals(0x00ff0000, IPAddressUtils.ipToInt("0.255.0.0"));
