@@ -125,7 +125,8 @@ public final class Doorman extends Object {
    private final String _asString;
 
    /**
-    * Flag that indicates if state checking should be strict or loose.
+    * Flag that indicates if thread synchronization state checking should be
+    * strict or loose.
     */
    private final boolean _strict;
 
