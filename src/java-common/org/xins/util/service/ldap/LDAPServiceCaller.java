@@ -169,7 +169,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
       // Initialize connection settings
       Hashtable env = new Hashtable();
-      env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY);
+      env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY); // TODO: Allow configuration of initial context factory ?
       env.put(Context.PROVIDER_URL,            url);
       env.put(Context.SECURITY_AUTHENTICATION, authenticationDetails.getMethod().getName());
       env.put(Context.SECURITY_PRINCIPAL,      authenticationDetails.getPrincipal());
@@ -428,9 +428,43 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Constructors
       //----------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>Query</code>.
+       *
+       * @param searchBase
+       *    the search base, can be <code>null</code>.
+       *
+       * @param filter
+       *    the filter expression, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>filter == null</code>.
+       */
+      public Query(String searchBase, String filter)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("filter", filter);
+
+         _searchBase = searchBase;
+         _filter     = filter;
+      }
+
+
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
+
+      /**
+       * The search base. Can be <code>null</code>.
+       */
+      private final String _searchBase;
+
+      /**
+       * The filter expression. Cannot be <code>null</code>.
+       */
+      private final String _filter;
+
 
       //----------------------------------------------------------------------
       // Methods
@@ -443,17 +477,17 @@ public final class LDAPServiceCaller extends ServiceCaller {
        *    the search base, can be <code>null</code>.
        */
       public String getSearchBase() {
-         return null; // TODO
+         return _searchBase;
       }
 
       /**
-       * Returns the filter.
+       * Returns the filter expression to use for the search.
        *
        * @return
-       *    the filter, can be <code>null</code>.
+       *    the filter expression, cannot be <code>null</code>.
        */
       public String getFilter() {
-         return null; // TODO
+         return _filter;
       }
    }
 
