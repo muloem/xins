@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.io.PrintWriter;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.servlet.ServletRequest;
@@ -16,6 +17,7 @@ import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.WhislEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
@@ -235,6 +237,7 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (!_enabled) {
+
          performedCall(request, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
@@ -277,6 +280,8 @@ implements DefaultResultCodes {
          result = new BasicCallResult("_InternalError", parameters, null);
       }
 
+      // TODO: Do this within a try-catch block, log a specific message
+
       // Update function statistics
       performedCall(request, start, callID, result);
 
@@ -299,48 +304,52 @@ implements DefaultResultCodes {
    throws Throwable;
 
    /**
-    * Callback method that may be called after a call to this function. This
-    * method will store statistics-related information.
+    * Callback method that should be called after a call to this function.
+    * This method will update the statistics for this funciton and perform
+    * transaction logging.
     *
-    * <p />This method does not <em>have</em> to be called. If statistics
-    * gathering is disabled, then this method should not be called.
+    * <p />This method should <em>never</em> throw any
+    * {@link RuntimeException}. If it does, then that should be considered a
+    * serious bug.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
     *
     * @param start
-    *    the start time, in milliseconds since January 1, 1970, not
-    *    <code>null</code>.
+    *    the start time, as a number of milliseconds since January 1, 1970.
     *
     * @param callID
     *    the assigned call ID.
     *
     * @param result
-    *    the function result code, cannot be <code>null</code>.
+    *    the call result, should not be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null || result == null</code>.
     */
    private final void performedCall(ServletRequest request,
                                     long           start,
                                     int            callID,
                                     CallResult     result) {
 
-      String ip = request.getRemoteAddr();
-
-      // XXX: Accept input parameters
-
-      // XXX: If the Logging is moved somewhere else then
-      //      the method invoking this method (performedCall) can directly
-      //      invoke recordCall and this method can be removed.
-
+      // Update statistics and determine the duration of the call
       long duration = _statistics.recordCall(start, result.isSuccess());
 
+      // Determine the IP address of the remote host
+      String ip = request.getRemoteAddr();
+
+      // Serialize the date, input parameters and output parameters
+      LogdocSerializable serStart  = new FormattedDate(start);
+      LogdocSerializable inParams  = new FormattedInputParameters(request);
+      LogdocSerializable outParams = new FormattedOutputParameters(result);
+
+      // Get the error code, fallback is a zero character
       String code = result.getErrorCode();
+      if (code == null) {
+         code = "0";
+      }
 
-      LogdocSerializable serStart = new FormattedDate(start);
-      // TODO: LogdocSerializable inParams = new FormattedInputParameters(request);
-      // TODO: LogdocSerializable inParams = new FormattedOutputParameters(result);
-      LogdocSerializable inParams  = new ServletRequestPropertyReader(request);
-      LogdocSerializable outParams = result.getParameters();
-
+      // Perform transaction logging, with and without parameters
       Log.log_1540(serStart, ip, _name, callID, duration, code, inParams, outParams);
       Log.log_1541(serStart, ip, _name, callID, duration, code);
    }
@@ -350,6 +359,8 @@ implements DefaultResultCodes {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.198
     */
    private static final class FormattedDate
    extends AbstractLogdocSerializable {
@@ -387,11 +398,6 @@ implements DefaultResultCodes {
       //---------------------------------------------------------------------
       // Methods
       //---------------------------------------------------------------------
-
-      public void serializeImpl(LogdocStringBuffer buffer)
-      throws NullPointerException {
-         buffer.append(_asString);
-      }
 
       public void initialize() {
 
@@ -471,6 +477,213 @@ implements DefaultResultCodes {
          assert buffer.getLength() == BUFFER_SIZE : "buffer.getLength() (" + buffer.getLength() + ") == BUFFER_SIZE (" + BUFFER_SIZE + ')';
 
          _asString = buffer.toString();
+      }
+
+      public void serializeImpl(LogdocStringBuffer buffer)
+      throws NullPointerException {
+         buffer.append(_asString);
+      }
+   }
+
+   /**
+    * Logdoc-serializable for the input parameters in a
+    * <code>ServletRequest</code>.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.201
+    */
+   private static final class FormattedInputParameters
+   extends AbstractLogdocSerializable {
+
+      //---------------------------------------------------------------------
+      // Constructor
+      //---------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>FormattedInputParameters</code> object.
+       *
+       * @param request
+       *    the servlet request, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>request == null</code>.
+       */
+      private FormattedInputParameters(ServletRequest request)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("request", request);
+
+         _request = request;
+      }
+
+
+      //---------------------------------------------------------------------
+      // Fields
+      //---------------------------------------------------------------------
+
+      /**
+       * The servlet request. This field is never <code>null</code>.
+       */
+      private final ServletRequest _request;
+
+      /**
+       * Lazily initialized string that represents the input parameters.
+       */
+      private String _asString;
+
+
+      //---------------------------------------------------------------------
+      // Methods
+      //---------------------------------------------------------------------
+
+      public void initialize() {
+
+         Enumeration names = _request.getParameterNames();
+
+         // If there are no parameters, then just return a hyphen
+         if (! names.hasMoreElements()) {
+            _asString = "-";
+            return;
+         }
+
+         FastStringBuffer buffer = new FastStringBuffer(93);
+
+         boolean first = true;
+         do {
+
+            // Get the name and value
+            String name  = (String) names.nextElement();
+            String value = _request.getParameter(name);
+
+            // If the value is null or an empty string, then output nothing
+            if (value == null || value.length() == 0) {
+               continue;
+            }
+
+            // Append an ampersand, except for the first entry
+            if (!first) {
+               buffer.append('&');
+            } else {
+               first = false;
+            }
+
+            // Append the key and the value, separated by an equals sign
+            buffer.append(WhislEncoding.encode(name));
+            buffer.append('=');
+            buffer.append(WhislEncoding.encode(value));
+         } while (names.hasMoreElements());
+
+         _asString = buffer.toString();
+      }
+
+      public void serializeImpl(LogdocStringBuffer buffer)
+      throws NullPointerException {
+         buffer.append(_asString);
+      }
+   }
+
+   /**
+    * Logdoc-serializable for the output parameters in a
+    * <code>CallResult</code>.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.201
+    */
+   private static final class FormattedOutputParameters
+   extends AbstractLogdocSerializable {
+
+      //---------------------------------------------------------------------
+      // Constructor
+      //---------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>FormattedOutputParameters</code> object.
+       *
+       * @param result
+       *    the call result, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>result == null</code>.
+       */
+      private FormattedOutputParameters(CallResult result)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("result", result);
+
+         _result = result;
+      }
+
+
+      //---------------------------------------------------------------------
+      // Fields
+      //---------------------------------------------------------------------
+
+      /**
+       * The call result. This field is never <code>null</code>.
+       */
+      private final CallResult _result;
+
+      /**
+       * Lazily initialized string that represents the output parameters.
+       */
+      private String _asString;
+
+
+      //---------------------------------------------------------------------
+      // Methods
+      //---------------------------------------------------------------------
+
+      public void initialize() {
+
+         // Get the names of all parameters
+         PropertyReader params = _result.getParameters();
+         Iterator names = (params == null) ? null : params.getNames();
+
+         // If there are no parameters, then just return a hyphen
+         if (names == null || !names.hasNext()) {
+            _asString = "-";
+            return;
+         }
+            
+         FastStringBuffer buffer = new FastStringBuffer(93);
+
+         boolean first = true;
+         do {
+
+            // Get the name and value
+            String name  = (String) names.next();
+            String value = params.get(name);
+
+            // If the value is null or an empty string, then output nothing
+            if (value == null || value.length() == 0) {
+               continue;
+            }
+
+            // Append an ampersand, except for the first entry
+            if (!first) {
+               buffer.append('&');
+            } else {
+               first = false;
+            }
+
+            // Append the key and the value, separated by an equals sign
+            buffer.append(WhislEncoding.encode(name));
+            buffer.append('=');
+            buffer.append(WhislEncoding.encode(value));
+         } while (names.hasNext());
+
+         _asString = buffer.toString();
+      }
+
+      public void serializeImpl(LogdocStringBuffer buffer)
+      throws NullPointerException {
+         buffer.append(_asString);
       }
    }
 }
