@@ -45,6 +45,8 @@ XINS/JAVA SERVER FRAMEWORK
 * Log an INFO message if some runtime properties are unused.
 * Implement a _ResetStatistics function.
 * Implement a _DumpStatistics function.
+* Number all requests and log this number with all or most log messages.
+* Make generated logdoc classes package-private.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -87,6 +89,7 @@ XINS/JAVA COMMON LIBRARY
 ______________________________________________________________________________
 LOGDOC
 
+* Support making generated classes package-private.
 * Allow locales for all logs to be set at once.
 * Add AbstractLog class that defines getDomain() method.
 * Add org.logdoc package with class LogCentral with method 'void
