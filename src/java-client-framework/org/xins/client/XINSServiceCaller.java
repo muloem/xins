@@ -419,6 +419,31 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
    }
 
+   /**
+    * Determines whether a call to a XINS API should fail-over to the next
+    * selected target.
+
+    * The implementation of this method in class
+    * <code>XINSServiceCaller</code> allows fail-over if and only if the
+    * specified exception indicates a connection problem (i.e. if it is an
+    * instance of class {@link ConnectionException}.
+    *
+    * @param subject
+    *    the subject for the call, as passed to {@link #doCall(Object)}, can
+    *    be <code>null</code>.
+    *
+    * @param exception
+    *    the exception caught while calling the most recently called target,
+    *    never <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the call should fail-over to the next target, or
+    *    <code>false</code> if it should not.
+    */
+   protected boolean shouldFailOver(Object subject, Throwable exception) {
+      return (exception instanceof ConnectionException);
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
