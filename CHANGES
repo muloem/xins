@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.11:
+
+* Supporting _function as the parameter specifying the function name.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.10:
 
 * Generating private Javadoc API documentation.
