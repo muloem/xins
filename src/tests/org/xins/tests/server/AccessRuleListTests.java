@@ -85,5 +85,15 @@ public class AccessRuleListTests extends TestCase {
       arl = AccessRuleList.parseAccessRuleList(" \t\n\r");
       assertNotNull(arl);
       assertEquals(0, arl.getRuleCount());
+
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t");
+      assertNotNull(arl);
+      assertEquals(1, arl.getRuleCount());
+      // TODO: More tests
+
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ");
+      assertNotNull(arl);
+      assertEquals(2, arl.getRuleCount());
+      // TODO: More tests
    }
 }
