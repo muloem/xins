@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 0.159:
   - The examples listed in the html page can be executed by clicking
     on the links to the test forms.
 
+* XINS/Java Client Framework:
+  - Added a getXINSVersion in the class CAPI that returns the version upon
+    which the classes has been built.
+  
 * Build and release process:
   - Generation of the MD5 after the creation of the war file.
 

@@ -15,6 +15,7 @@
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
+	<xsl:param name="xins_version" />
 
 	<!-- Determine if this API is session-based -->
 	<xsl:variable name="apiSessionBased">
@@ -158,6 +159,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:with-param name="name" select="$functionName" />
 			</xsl:apply-templates>
 		</xsl:for-each>
+
+		<xsl:text><![CDATA[
+   /**
+    * Returns the version of XINS used to build this API.
+    *
+    * @return 
+    *    the version as a {@link String}, cannot be <code>null</code>.
+    */
+   public String getXINSVersion() {
+      return "]]></xsl:text>
+			<xsl:value-of select="$xins_version" />
+			<xsl:text><![CDATA[";
+   }]]></xsl:text>
 
 		<xsl:text><![CDATA[
 }
