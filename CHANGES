@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 * XINS/Java Common Library:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
     appropriate.
+  - Extended tests in ServiceCaller class to make sure the implementation is
+    implementing the correct methods.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
