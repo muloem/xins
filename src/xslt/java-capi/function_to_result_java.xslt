@@ -50,7 +50,8 @@
  */
 public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text> extends org.xins.client.AbstractCAPICallResult {
+		<xsl:text>
+extends org.xins.client.AbstractCAPICallResult {
 
    //-------------------------------------------------------------------------
    // Class fields

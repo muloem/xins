@@ -163,6 +163,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    if one of the properties in the specified properties set is used to
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
+    *
+    * @since XINS 1.1.0
     */
    public static final CAPI create(org.xins.common.collections.PropertyReader properties,
                                    java.lang.String                           apiName)
@@ -302,15 +304,14 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<!-- Define parameters -->
 		<xsl:param name="name" />
 
-		<!-- Determine the name of the method in the API class that will call
-		     this function. -->
+		<!-- Determine the name of the method that accepts all
+		     individual parameters -->
 		<xsl:variable name="methodName">
 			<xsl:text>call</xsl:text>
 			<xsl:value-of select="$name" />
 		</xsl:variable>
 
-		<!-- Determine if this methods returns a <FunctionName>Result
-		     object or just void -->
+		<!-- Always return a <FunctionName>Result object -->
 		<xsl:variable name="returnType">
 			<xsl:value-of select="$name" />
 			<xsl:text>Result</xsl:text>
@@ -321,12 +322,146 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file.</xsl:message>
 		</xsl:if>
 
+		<!-- Print method that accepts the a request and a config -->
 		<xsl:text><![CDATA[
 
    /**
     * Calls the <em>]]></xsl:text>
 		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[</em> function.
+		<xsl:text><![CDATA[</em>
+    * function using the specified request and call configuration.
+    *
+    * <p>Generated from function specification version ]]></xsl:text>
+		<xsl:call-template name="revision2string">
+			<xsl:with-param name="revision" select="@rcsversion" />
+		</xsl:call-template>
+		<xsl:text><![CDATA[.
+    * See the
+    * <a href="]]></xsl:text>
+		<xsl:value-of select="$specdocsURL" />
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$api" />
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text><![CDATA[.html">online function specification</a>.
+    *
+    * @param request
+    *    the request, cannot be <code>null</code>.
+    *
+    * @param config
+    *    the configuration to apply to this call, or <code>null</code>.
+    *
+    * @return
+    *    the result, not <code>null</code>.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws org.xins.client.UnacceptableRequestException
+    *    if the request is considered to be unacceptable; this is determined
+    *    by calling
+    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#validate() validate()}.
+    *
+    * @throws org.xins.common.service.GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts (if any) failed as well.
+    *
+    * @throws org.xins.common.http.HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @throws org.xins.client.XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @since XINS 1.2.0
+    */
+   public ]]></xsl:text>
+		<xsl:value-of select="$returnType" />
+		<xsl:text> call(</xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text>Request request, org.xins.client.XINSCallConfig config)
+   throws java.lang.IllegalArgumentException,
+          org.xins.client.UnacceptableRequestException,
+          org.xins.common.service.GenericCallException,
+          org.xins.common.http.HTTPCallException,
+          org.xins.client.XINSCallException {
+      return null; // FIXME
+   }</xsl:text>
+
+
+		<!-- Print method that accepts the a request object only -->
+		<xsl:text><![CDATA[
+
+   /**
+    * Calls the <em>]]></xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text><![CDATA[</em>
+    * function using the specified request.
+    *
+    * <p>Generated from function specification version ]]></xsl:text>
+		<xsl:call-template name="revision2string">
+			<xsl:with-param name="revision" select="@rcsversion" />
+		</xsl:call-template>
+		<xsl:text><![CDATA[.
+    * See the
+    * <a href="]]></xsl:text>
+		<xsl:value-of select="$specdocsURL" />
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$api" />
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text><![CDATA[.html">online function specification</a>.
+    *
+    * @param request
+    *    the request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result, not <code>null</code>.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws org.xins.client.UnacceptableRequestException
+    *    if the request is considered to be unacceptable; this is determined
+    *    by calling
+    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#validate() validate()}.
+    *
+    * @throws org.xins.common.service.GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts (if any) failed as well.
+    *
+    * @throws org.xins.common.http.HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @throws org.xins.client.XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts (if any) failed as well.
+    *
+    * @since XINS 1.2.0
+    */
+   public ]]></xsl:text>
+		<xsl:value-of select="$returnType" />
+		<xsl:text> call(</xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text>Request request)
+   throws java.lang.IllegalArgumentException,
+          org.xins.client.UnacceptableRequestException,
+          org.xins.common.service.GenericCallException,
+          org.xins.common.http.HTTPCallException,
+          org.xins.client.XINSCallException {
+      return call(config, null);
+   }</xsl:text>
+
+		<!-- Print method that accepts the individual parameters -->
+		<xsl:text><![CDATA[
+
+   /**
+    * Calls the <em>]]></xsl:text>
+		<xsl:value-of select="$name" />
+		<xsl:text><![CDATA[</em>
+    * function with the specified parameters.
     *
     * <p>Generated from function specification version ]]></xsl:text>
 		<xsl:call-template name="revision2string">
