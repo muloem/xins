@@ -9,6 +9,7 @@ package org.xins.common.collections;
 import java.io.InputStream;
 import java.io.IOException;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -29,6 +30,8 @@ import org.xins.logdoc.LogdocStringBuffer;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see PropertyReader
  */
 public final class PropertyReaderUtils
 extends Object {
@@ -44,6 +47,12 @@ extends Object {
     * @since XINS 1.1.0
     */
    public static final PropertyReader EMPTY_PROPERTY_READER = new ProtectedPropertyReader(new Object());
+
+   /**
+    * Secret key object used when dealing with
+    * <code>ProtectedPropertyReader</code> instances.
+    */
+   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -196,6 +205,10 @@ extends Object {
     * Constructs a <code>PropertyReader</code> from the specified input
     * stream.
     *
+    * <p>The parsing done is similar to the parsing done by the
+    * {@link Properties#load(InputStream)} method. Empty values will be
+    * ignored.
+    *
     * @param in
     *    the input stream to read from, cannot be <code>null</code>.
     *
@@ -220,7 +233,18 @@ extends Object {
       properties.load(in);
 
       // Convert from java.util.Properties to PropertyReader
-      return new PropertiesPropertyReader(properties);
+      ProtectedPropertyReader r = new ProtectedPropertyReader(SECRET_KEY);
+      Enumeration names = properties.propertyNames();
+      while (names.hasMoreElements()) {
+         String key   = (String) names.nextElement();
+         String value = properties.getProperty(key);
+
+         if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+            r.set(SECRET_KEY, key, value);
+         }
+      }
+
+      return r;
    }
 
    /**
@@ -370,6 +394,38 @@ extends Object {
    public static final LogdocSerializable
    serialize(PropertyReader p, String valueIfEmpty) {
       return new SerializedPropertyReader(p, valueIfEmpty);
+   }
+
+   /**
+    * Serializes the specified <code>PropertyReader</code> to a
+    * <code>String</code>. For each entry, both the key and the
+    * value are encoded using the Whisl encoding (see {@link WhislEncoding}),
+    * which is similar to URL encoding. The key and value are separated by a
+    * literal equals sign (<code>'='</code>). The entries are separated using
+    * an ampersand (<code>'&amp;'</code>).
+    *
+    * <p>If the value for an entry is either <code>null</code> or an empty
+    * string (<code>""</code>), then nothing is added to the buffer for that
+    * entry.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to serialize, can be <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the string to append to the buffer in case
+    *    <code>properties == null || properties.size() == 0</code>; if this
+    *    argument is <code>null</code>, however, then nothing will be appended
+    *    in the mentioned case..
+    *
+    * @return
+    *    the character string with the serialized data, never
+    *    <code>null</code>.
+    */
+   public static final String toString(PropertyReader properties,
+                                       String         valueIfEmpty) {
+      FastStringBuffer buffer = new FastStringBuffer(129);
+      serialize(properties, buffer, valueIfEmpty);
+      return buffer.toString();
    }
 
 
