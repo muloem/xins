@@ -338,4 +338,10 @@
 		</tr>
 	</xsl:template>
 
+	<xsl:template match="type/description">
+		<xsl:call-template name="firstline">
+			<xsl:with-param name="text" select="text()" />
+		</xsl:call-template>
+	</xsl:template>
+
 </xsl:stylesheet>
