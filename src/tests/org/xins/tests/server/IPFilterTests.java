@@ -113,6 +113,9 @@ public class IPFilterTests extends TestCase {
       doTestParseFilter("1.2.3./0",                 false);
       doTestParseFilter("1.2.3.4/a",                false);
       doTestParseFilter("1.2.3.4/-1",               false);
+      doTestParseFilter(" 1.2.3.4/0",               false);
+      doTestParseFilter("1.2.3.4/0 ",               false);
+      doTestParseFilter(" 1.2.3.4/0 ",              false);
       doTestParseFilter("1.2.3.4/0",                true);
       doTestParseFilter("1.2.3.4/5",                true);
       doTestParseFilter("1.2.3.4/5a",               false);
