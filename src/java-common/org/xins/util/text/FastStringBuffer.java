@@ -65,6 +65,32 @@ public class FastStringBuffer extends Object {
       _length = _buffer.length;
    }
 
+   /**
+    * Constructs a new <code>FastStringBuffer</code> object with the specified
+    * initial capacity and content.
+    *
+    * @param capacity
+    *    the initial capacity, must be
+    *    &gt;= <code>s.</code>{@link String#length()}.
+    *
+    * @param s
+    *    the initial content, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>capacity &lt; <code>s.</code>{@link String#length()} || s == null</code>.
+    */
+   public FastStringBuffer(int capacity, String s) {
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      } else if (capacity < s.length()) {
+         throw new IllegalArgumentException("capacity (" + capacity + ") < s.length() (" + s.length() + ')');
+      }
+
+      _buffer = new char[capacity];
+      _length = s.length;
+      s.getChars(0, _length, _buffer, 0);
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields
