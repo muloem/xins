@@ -30,6 +30,7 @@
 	<message entry="201">Taal voor de log-berichten wordt veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
 	<message entry="202">Taal voor de log-berichten is veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
 	<message entry="203">Taal voor de log-berichten kan niet veranderd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</message>
+	<message entry="230">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopened worden.</message>
 	<message entry="300">XINS/Java Server Framework wordt gedeinitialiseerd.</message>
 	<message entry="305">Fout bij de-initialisatie van de API tijdens deinitialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="310">XINS/Java Server Framework is gedeinitialiseerd.</message>

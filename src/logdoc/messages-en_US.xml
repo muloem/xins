@@ -30,6 +30,7 @@
 	<message entry="201">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</message>
 	<message entry="202">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</message>
 	<message entry="203">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</message>
+	<message entry="230">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</message>
 	<message entry="300">Shutting down XINS/Java Server Framework.</message>
 	<message entry="305">Deinitialization of API failed during XINS/Java Server Framework shutdown. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="310">XINS/Java Server Framework shutdown completed.</message>
