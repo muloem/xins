@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
 
+* XINS/Java Client Framework:
+  - Improved Javadoc documentation.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
 
@@ -11,7 +14,8 @@ CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
     API as these are added during the initialisation.
 
 * XINS/Java Client Framework:
-  - Fixed parsing problem that occurred when a result had a data section.
+  - Fixed SF.net bug #1053573. A parsing problem that occurred when a result
+    had a data section.
   - Added a getName() method to the DataElement class.
 
 * Build and release process:
