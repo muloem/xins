@@ -151,7 +151,7 @@
 					<xsl:apply-templates select="output" />
 				</xsl:when>
 				<xsl:otherwise>
-					<em>This function supports no output parameters nor data section.</em>
+					<em>This function supports no output parameters and no data section.</em>
 				</xsl:otherwise>
 			</xsl:choose>
 		</blockquote>
