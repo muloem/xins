@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.33:
+
+* Renamed xins.jar to xins-server.jar.
+
+* Added XINS/Java Client Framework. Translates into a xins-client.jar.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.32:
 
 * If a value for an input parameter is empty, then don't check the type for
