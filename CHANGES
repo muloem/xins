@@ -61,6 +61,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Added methods to the AbstractCAPI class:
     . public final XINSCallConfig configuration()
     . public final void configure(XINSCallConfig)
+  - Added 'public final void setXINSCallConfig(XINSCallConfig)' and
+    'public final XINSCallConfig getXINSCallConfig()' methods to the
+    XINSServiceCaller class.
 
 * XINS/Java Server Framework:
   - Added support for custom calling conventions.
