@@ -53,8 +53,8 @@ public class EnumType extends Type {
    throws IllegalArgumentException {
       super(name, String.class);
 
-      _namesToValues = new HashMap();
-      _valuesToNames = new HashMap();
+      Map namesToValues = new HashMap();
+      Map valuesToNames = new HashMap();
 
       // TODO: Use ArrayMap ?
 
@@ -67,14 +67,17 @@ public class EnumType extends Type {
             String itemName  = item.getName();
             String itemValue = item.getValue();
 
-            _namesToValues.put(itemName,  itemValue);
-            _valuesToNames.put(itemValue, itemName);
+            namesToValues.put(itemName,  itemValue);
+            valuesToNames.put(itemValue, itemName);
             values[actualItems++] = itemValue;
          }
       }
 
       _values = new String[actualItems];
       System.arraycopy(values, 0, _values, 0, actualItems);
+
+      _namesToValues = Collections.unmodifiableMap(namesToValues);
+      _valuesToNames = Collections.unmodifiableMap(valuesToNames);
    }
 
 
@@ -83,14 +86,16 @@ public class EnumType extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Map that links symbolic names to enumeration values.
+    * Map that links symbolic names to enumeration values. This map is
+    * unmodifiable.
     */
-   private final Map _namesToValues;
+   protected final Map _namesToValues;
 
    /**
-    * Map that links enumeration values to their symbolic names.
+    * Map that links enumeration values to their symbolic names. This map is
+    * unmodifiable.
     */
-   private final Map _valuesToNames;
+   protected final Map _valuesToNames;
 
    /**
     * The list of accepted values.
@@ -125,10 +130,82 @@ public class EnumType extends Type {
       return s;
    }
 
+   /**
+    * Gets the value matching the specified name.
+    *
+    * @param name
+    *    the name to match a corresponding value by, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the corresponding value, or <code>null</code> if there is none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
+    * @since XINS 0.109
+    */
+   public final String getValueByName(String name) {
+      return (String) _namesToValues.get(name);
+   }
+
+   /**
+    * Gets the name matching the specified value.
+    *
+    * @param value
+    *    the value to match a corresponding name by, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the corresponding name, or <code>null</code> if there is none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @since XINS 0.109
+    */
+   public final String getNameByValue(String value) {
+      return (String) _valuesToNames.get(value);
+   }
+
+   /**
+    * Gets the value matching the specified name.
+    *
+    * @param name
+    *    the name to match a corresponding value by, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the corresponding value, or <code>null</code> if there is none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.109, use {@link #getValueByName(String)}
+    *    instead.
+    */
    public final String getByName(String name) {
       return (String) _namesToValues.get(name);
    }
 
+   /**
+    * Gets the name matching the specified value.
+    *
+    * @param value
+    *    the value to match a corresponding name by, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the corresponding name, or <code>null</code> if there is none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.109, use {@link #getNameByValue(String)}
+    *    instead.
+    */
    public final String getByValue(String value) {
       return (String) _valuesToNames.get(value);
    }
