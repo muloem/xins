@@ -9,16 +9,16 @@ package org.xins.client;
 import org.xins.common.service.TargetDescriptor;
 
 /**
- * Abstract base class for exceptions that indicate a specific error code was
- * received.
+ * Abstract base class for generated CAPI exceptions that map to an
+ * API-specific error code.
  *
- * <p>Although this class is currently package-private, it is expected to be
- * marked as public at some point.
+ * <p>This class should not be derived from directly. Only generated CAPI
+ * classes should derive from this class.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-abstract class AbstractCAPIErrorCodeException
+public abstract class AbstractCAPIErrorCodeException
 extends UnsuccessfulXINSCallException {
 
    //-------------------------------------------------------------------------
@@ -34,20 +34,32 @@ extends UnsuccessfulXINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>AbstractCAPIErrorCodeException</code> based on an
-    * <code>UnsuccessfulXINSCallException</code>.
+    * Constructs a new <code>AbstractCAPIErrorCodeException</code>.
     *
-    * @param e
-    *    the {@link UnsuccessfulXINSCallException} to base this
-    *    <code>AbstractCAPIErrorCodeException</code> on, cannot be
+    * @param request
+    *    the original request, guaranteed not to be <code>null</code>.
+    *
+    * @param target
+    *    the target on which the request was executed, guaranteed not to be
     *    <code>null</code>.
     *
+    * @param duration
+    *    the call duration, guaranteed to be &gt;= <code>0L</code>.
+    *
+    * @param resultData
+    *    the data returned from the call, guaranteed to be <code>null</code>
+    *    and must have an error code set.
+    *
     * @throws IllegalArgumentException
-    *    if <code>e == null</code>.
+    *    if <code>result == null
+    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
     */
-   protected AbstractCAPIErrorCodeException(UnsuccessfulXINSCallException e)
+   protected AbstractCAPIErrorCodeException(XINSCallRequest    request,
+                                            TargetDescriptor   target,
+                                            long               duration,
+                                            XINSCallResultData resultData)
    throws IllegalArgumentException {
-      super(e);
+      super(request, target, duration, resultData, null);
    }
 
 
