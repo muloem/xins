@@ -3,6 +3,8 @@
  */
 package org.xins.client;
 
+import org.xins.common.collections.PropertyReader;
+
 /**
  * Exception that indicates that an API call returned a result that was
  * considered unacceptable by the application layer.
@@ -15,9 +17,10 @@ package org.xins.client;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.136
+ * @since XINS 0.207
  */
-public final class UnacceptableCallResultException extends CallException {
+public final class UnacceptableResultXINSCallException
+extends XINSCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -35,8 +38,8 @@ public final class UnacceptableCallResultException extends CallException {
     * Constructs a new <code>UnacceptableCallResultException</code>.
     *
     * @param result
-    *    the {@link Result} that is considered
-    *    unacceptable, never <code>null</code>.
+    *    the {@link XINSCallResult} that is considered unacceptable, never
+    *    <code>null</code>.
     *
     * @param detail
     *    a detailed description of why the result is considered unacceptable,
@@ -44,15 +47,13 @@ public final class UnacceptableCallResultException extends CallException {
     *
     * @throws IllegalArgumentException
     *    if <code>result == null</code>.
-    *
-    * @since XINS 0.202
     */
-   public UnacceptableCallResultException(Result    result,
-                                          String    detail,
-                                          Throwable cause)
+   public UnacceptableResultXINSCallException(XINSCallResult result,
+                                              String         detail,
+                                              Throwable      cause)
    throws IllegalArgumentException {
 
-      super("Unacceptable call result", result, detail, cause);
+      super("Unacceptable XINS call result", result, detail, cause);
 
       // Store the result
       _result = result;
@@ -66,12 +67,59 @@ public final class UnacceptableCallResultException extends CallException {
    /**
     * The result that is considered unacceptable. Never <code>null</code>.
     */
-   private final Result _result;
+   private final XINSCallResult _result;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   // TODO: Add methods to retrieve result
+   /**
+    * Returns the error code.
+    *
+    * @return
+    *    the error code or <code>null</code> if the call was successful and no
+    *    error code was returned.
+    */
+   public String getErrorCode() {
+      return _result.getErrorCode();
+   }
+
+   /**
+    * Gets all returned parameters.
+    *
+    * @return
+    *    a {@link PropertyReader} containing all parameters, or
+    *    <code>null</code> if there are none.
+    */
+   public PropertyReader getParameters() {
+      return _result.getParameters();
+   }
+
+   /**
+    * Gets the value of the specified returned parameter.
+    *
+    * @param name
+    *    the parameter name, not <code>null</code>.
+    *
+    * @return
+    *    the value of the parameter, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   public String getParameter(String name)
+   throws IllegalArgumentException {
+      return _result.getParameter(name);
+   }
+
+   /**
+    * Returns the optional extra data.
+    *
+    * @return
+    *    the extra data as a {@link DataElement}, can be <code>null</code>;
+    */
+   public DataElement getDataElement() {
+      return _result.getDataElement();
+   }
 }
