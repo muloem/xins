@@ -121,6 +121,23 @@ public final class LDAPServiceCaller extends ServiceCaller {
       return null; // TODO
    }
 
+   /**
+    * Attempts to authenticate with a target service, using the specified
+    * authentication details.
+    *
+    * @param target
+    *    descriptor of the target service to connect to, cannot be
+    *    <code>null</code>.
+    *
+    * @param authenticationDetails
+    *    the authentication details, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || authenticationDetails == null</code>.
+    *
+    * @throws NamingException
+    *    if the connection failed.
+    */
    private InitialDirContext authenticate(ServiceDescriptor     target,
                                           AuthenticationDetails authenticationDetails)
    throws IllegalArgumentException, NamingException {
@@ -132,8 +149,6 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Determine what location to connect to
       String url = target.getURL();
 
-      // TODO: Time-out
-
       // Initialize connection settings
       Hashtable env = new Hashtable();
       env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY);
@@ -143,6 +158,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       env.put(Context.SECURITY_CREDENTIALS,    authenticationDetails.getCredentials());
 
       // Connect
+      // TODO: Connection time-out
       return new InitialDirContext(env);
    }
 
