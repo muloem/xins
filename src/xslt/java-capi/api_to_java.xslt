@@ -191,7 +191,9 @@ public final class API extends Object {
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>);
-      return null; // TODO
+      return new </xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text>Result(result);
    }</xsl:text>
 			</xsl:for-each>
 		</xsl:for-each>
