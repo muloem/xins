@@ -104,7 +104,7 @@ MISCELLANEOUS
 
 * The standard result codes should be documented online.
 * A pattern test script should be provided on http://xins.sourceforge.net/.
-* Add a SourceForgeUpload task to smoothens the release process by uploading
+* Add a SourceForgeUpload task to smoothen the release process by uploading
   the distribution file(s) to ftp://upload.sourceforge.net/incoming/, then
   create a release on the SourceForge site, then add the corresponding file,
   then set the type of the file to 'tar.gz' and finally let SourceForge send
