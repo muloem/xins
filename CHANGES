@@ -1,7 +1,10 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.45:
+CHANGES INTRODUCED IN XINS 0.46:
 
 * Added first (limited) set of unit tests.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.45:
 
 * XINS/Java Client Framework: Introduced FunctionCallerParser that parses an
   XML configuration document that defines CallTargetGroups and
