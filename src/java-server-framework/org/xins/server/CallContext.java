@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.servlet.ServletRequest;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -33,10 +34,10 @@ implements Responder {
    /**
     * Constructs a new <code>CallContext</code> object.
     */
-   CallContext(XMLOutputter xmlOutputter, Map parameters) {
+   CallContext(ServletRequest request, XMLOutputter xmlOutputter) {
       _start        = System.currentTimeMillis();
+      _request      = request;
       _xmlOutputter = xmlOutputter;
-      _parameters   = parameters;
       _state        = BEFORE_START;
    }
 
@@ -52,14 +53,14 @@ implements Responder {
    private final long _start;
 
    /**
+    * The original servlet request.
+    */
+   private final ServletRequest _request;
+
+   /**
     * The XML outputter.
     */
    private final XMLOutputter _xmlOutputter;
-
-   /**
-    * The parameters for this call.
-    */
-   private final Map _parameters;
 
    /**
     * The current state.
@@ -139,8 +140,8 @@ implements Responder {
    public String getFunction() {
 
       // Check arguments
-      if (_parameters != null) {
-         return (String) _parameters.get("function");
+      if (_request != null) {
+         return _request.getParameter("function");
       } else {
          return null;
       }
@@ -167,8 +168,8 @@ implements Responder {
          throw new IllegalArgumentException("name == null");
       }
 
-      if (_parameters != null && !"function".equals(name)) {
-         return (String) _parameters.get(name);
+      if (_request != null && !"function".equals(name)) {
+         return _request.getParameter(name);
       } else {
          return null;
       }

@@ -131,18 +131,7 @@ extends HttpServlet {
       // Set the content output type to XML
       response.setContentType("text/xml");
 
-      // Get the output stream
-      PrintWriter out = response.getWriter();
-
-      // Stick all parameters in a map
-      Map map = new HashMap();
-      Enumeration names = request.getParameterNames();
-      while (names.hasMoreElements()) {
-         String name = (String) names.nextElement();
-         String value = request.getParameter(name);
-         map.put(name, value);
-      }
-
-      _api.handleCall(out, map); 
+      // Call the API
+      _api.handleCall(request, response.getWriter()); 
    }
 }

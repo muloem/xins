@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.servlet.ServletRequest;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -132,23 +133,23 @@ implements DefaultReturnCodes {
    /**
     * Forwards a call to the <code>handleCall(CallContext)</code> method.
     *
+    * @param request
+    *    the original servlet request, not <code>null</code>.
+    *
     * @param out
     *    the output stream to write to, not <code>null</code>.
-    *
-    * @param map
-    *    the parameters, not <code>null</code>.
     *
     * @throws IOException
     *    if an I/O error occurs.
     */
-   final void handleCall(PrintWriter out, Map map) throws IOException {
+   final void handleCall(ServletRequest request, PrintWriter out) throws IOException {
 
       // Reset the XMLOutputter
       StringWriter stringWriter = new StringWriter();
       XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
 
       // Create a new call context
-      CallContext context = new CallContext(xmlOutputter, map);
+      CallContext context = new CallContext(request, xmlOutputter);
 
       // Determine the function name
       String functionName = context.getFunction();
