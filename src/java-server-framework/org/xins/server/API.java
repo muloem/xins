@@ -242,13 +242,13 @@ implements DefaultResultCodes {
       _instances.add(instance);
 
       boolean succeeded = false;
+      String className = instance.getClass().getName();
       LOG.debug("Initializing instance of class \"" + className + "\".");
       try {
          // TODO: Use one instance of PropertiesPropertyReader
          instance.init(new PropertiesPropertyReader(_initSettings));
          succeeded = true;
       } finally {
-         String className = instance.getClass().getName();
          if (succeeded) {
             LOG.info("Initialized instance of class \"" + className + "\".");
          } else {
