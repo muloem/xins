@@ -303,43 +303,25 @@
 						<xsl:with-param name="type"     select="$type"     />
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:variable name="supertype">
-					<xsl:value-of select="document($typefile)/type/@extends" />
-				</xsl:variable>
 
 				<xsl:choose>
-					<xsl:when test="starts-with($supertype, '_')">
-						<xsl:value-of select="$supertype" />
+					<xsl:when test="document($typefile)/type/properties">
+						<xsl:text>_properties</xsl:text>
 					</xsl:when>
-					<xsl:when test="string-length($supertype) &gt; 0">
-						<xsl:call-template name="basetype_for_type">
-							<xsl:with-param name="api"      select="$api"       />
-							<xsl:with-param name="specsdir" select="$specsdir"  />
-							<xsl:with-param name="type"     select="$supertype" />
-						</xsl:call-template>
+					<xsl:when test="document($typefile)/type/int8">
+						<xsl:text>_int8</xsl:text>
+					</xsl:when>
+					<xsl:when test="document($typefile)/type/int16">
+						<xsl:text>_int16</xsl:text>
+					</xsl:when>
+					<xsl:when test="document($typefile)/type/int32">
+						<xsl:text>_int32</xsl:text>
+					</xsl:when>
+					<xsl:when test="document($typefile)/type/int64">
+						<xsl:text>_int64</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<!-- no extends attribute, use the defined element -->
-						<xsl:choose>
-							<xsl:when test="document($typefile)/type/properties">
-								<xsl:text>_properties</xsl:text>
-							</xsl:when>
-							<xsl:when test="document($typefile)/type/int8">
-								<xsl:text>_int8</xsl:text>
-							</xsl:when>
-							<xsl:when test="document($typefile)/type/int16">
-								<xsl:text>_int16</xsl:text>
-							</xsl:when>
-							<xsl:when test="document($typefile)/type/int32">
-								<xsl:text>_int32</xsl:text>
-							</xsl:when>
-							<xsl:when test="document($typefile)/type/int64">
-								<xsl:text>_int64</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>_text</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:text>_text</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>
@@ -541,7 +523,7 @@
 	* @return
 	*    the string 'true' if and only if the specified text is either
 	*    'boolean', 'char', 'byte', 'short', 'int', 'long', 'float' or
-	*    'double'.
+	*    'double'; otherwise the string 'false'.
 	-->
 	<xsl:template name="is_java_datatype">
 		<xsl:param name="text" />
