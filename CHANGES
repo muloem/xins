@@ -61,6 +61,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     properties. It now succeeds without throwing an exception even if a
     SecurityManager denies access to system properties.
     This fixes an issue with the integration with NetBeans 4.0-beta2.
+  - Slightly changed exception handling in bootstrapping code in API class.
+    The behavior should remain the same, though.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.
@@ -72,8 +74,13 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Changed UnexpectedExceptionCallException constructor: The 'cause' argument
     is now mandatory.
   - Changed FileWatcher class: Logging message 1052 each time a callback
-    method throws an exception. The exception is still ignored, like was done
-    previously.
+    method throws an exception. The exception is still ignored, as before.
+  - Changed HTTPServiceCaller class: Logging message 1052 when
+    HttpMethod.releaseConnection() throws an exception. The exception is still
+    ignored, as before.
+  - Changed TimeOutController class: Logging message 1052 when
+    Thread.join(int) throws an InterruptedException. The exception is still
+    ignored, as before.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
