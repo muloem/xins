@@ -125,19 +125,18 @@ public final class ]]></xsl:text>
 				<xsl:text>new EnumItem[] {</xsl:text>
 				<xsl:for-each select="enum/item">
 					<xsl:if test="position() &gt; 1">,</xsl:if>
-					<xsl:text>
-         new Item("</xsl:text>
-					<xsl:choose>
-						<xsl:when test="@name">
-							<xsl:value-of select="@name" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="@value" />
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>", "</xsl:text>
-					<xsl:value-of select="@value" />
-					<xsl:text>")</xsl:text>
+					<xsl:call-template name="name_for_itemfield">
+						<xsl:with-param name="itemName">
+							<xsl:choose>
+								<xsl:when test="@name">
+									<xsl:value-of select="@name" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@value" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:with-param>
+					</xsl:call-template>
 				</xsl:for-each>
 				<xsl:text>}</xsl:text>
 			</xsl:when>

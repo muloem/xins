@@ -4,12 +4,16 @@ CHANGES INTRODUCED IN XINS 0.180:
 * XINS/Java Server Framework:
   - Replaced some tabs that were in the generated function with 3 spaces.
 
-* Generated build file:
-  - Improved the logdoc skeleton used for xins create-logdoc.
+* XINS/Java Common Library:
+  - The EnumItem generated class now uses the static Item included in the
+    class. The method equals() and hashcode don't need then to be overridden.
 
 * XINS/Java Client Framework:
   - Removed files and methods related to the session ID.
   - Removed methods related to the success.
+
+* Generated build file:
+  - Improved the logdoc skeleton used for xins create-logdoc.
 
 * Build and release process:
   - Renamed the depends directory to lib.

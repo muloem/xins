@@ -88,18 +88,4 @@ public class EnumItem extends Object {
    public String getValue() {
       return _value;
    }
-
-   public int hashCode() {
-   	return (_name == null ? 0 : _name.hashCode()) ^
-         (_value == null ? 0 : _value.hashCode());
-   }
-
-   public boolean equals(Object obj) {
-      if (!(obj.getClass().equals(getClass()))) {
-         return false;
-      }
-      EnumItem other = (EnumItem)obj;
-      return (_name == null ? other.getName() == null : _name.equals(other.getName()))  &&
-         (_value == null ? other.getValue() == null : _value.equals(other.getValue()));
-   }
 }
