@@ -174,7 +174,7 @@ extends Object {
          throw new ParseException("The provided IP " + ip + " is invalid.");
       }
 
-      return false;
+      return determineAuthorized(ipFields);
    }
 
    /**
@@ -191,8 +191,8 @@ extends Object {
    /**
     * Determines whether the provided expression is a valid IP filter.
     *
-    * @param
-    *    expression the IP filter expression.
+    * @param expression
+    *    the IP filter expression.
     *
     * @return
     *    a boolean with the value <code>true</code> when the expression
@@ -228,8 +228,8 @@ extends Object {
    /**
     * Determines whether the provided IP address is of a valid format.
     *
-    * @param
-    *    ip the IP address.
+    * @param ip
+    *    the IP address.
     *
     * @return
     *    boolean with the value <code>true</code> if the IP is valid,
@@ -244,8 +244,8 @@ extends Object {
    /**
     * Determines whether the provided mask is of a valid format.
     *
-    * @param
-    *    mask the mask.
+    * @param mask
+    *    the mask.
     *
     * @return
     *    boolean with the value <code>true</code> if the mask is valid,
@@ -269,8 +269,8 @@ extends Object {
     * Determines whether the provided IP section (the part of the IP address)
     * is of a valid format, i.e. an integer between 0 and 255.
     *
-    * @param
-    *    ipSection the IP section.
+    * @param ipSection
+    *    the IP section.
     *
     * @return
     *    boolean with the value <code>true</code> if the IP section is
@@ -283,11 +283,7 @@ extends Object {
          return false;
       }
 
-      if (sectionLength == 2 && ipSection.charAt(0) == LEADING_ZERO_CHAR) {
-         return false;
-      }
-
-      if (sectionLength == 3 && (ipSection.charAt(0) == LEADING_ZERO_CHAR || ipSection.charAt(1) == LEADING_ZERO_CHAR)) {
+      if (sectionLength > 1 && ipSection.charAt(0) == LEADING_ZERO_CHAR) {
          return false;
       }
 
@@ -299,11 +295,11 @@ extends Object {
     * can be translated into an integer value that lies between zero and the
     * specified maximum allowed value.
     *
-    * @param
-    *    value the value to be checked.
+    * @param value
+    *    the value to be checked.
     *
-    * @param
-    *    maxAllowedValue the maximum allowed integer value.
+    * @param maxAllowedValue
+    *    the maximum allowed integer value.
     *
     * @return
     *    boolean with the value <code>true</code> if the provided value
@@ -332,8 +328,8 @@ extends Object {
     * the provided IP. If the provided IP is invalid <code>null</code> is
     * returned.
     *
-    * @param
-    *    ip the IP address.
+    * @param ip
+    *    the IP address.
     *
     * @return
     *    an array with the strings representing the value of each IP field
@@ -370,8 +366,8 @@ extends Object {
    /**
     * Determines what the mask is of the provided expression.
     *
-    * @param
-    *    expression the expression.
+    * @param expression
+    *    the expression.
     *
     * @return
     *    An integer representing the value of the mask of this expression.
@@ -396,7 +392,15 @@ extends Object {
       return mask;
    }
 
-
+   /**
+    * Determines what the IP address is of the provided expression.
+    *
+    * @param expression
+    *    the expression.
+    *
+    * @return
+    *    A string with the IP address of this expression.
+    */
    private String determineIP(String expression) {
       String ip = null;
       int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
@@ -410,10 +414,61 @@ extends Object {
       return ip;
    }
 
-
+   /**
+    * Determines whether the IP address that is represented by the string
+    * array is authorized.
+    *
+    * @param ipFields
+    *    the array containing the values of each IP section separated by the
+    *    dots.
+    *
+    * @return
+    *    a boolean with the value <code>true</code> if the IP address is 
+    *    authorized, otherwise <code>false</code>.
+    */
    private boolean determineAuthorized(String[] ipFields) {
-//      String[] ipFilterFields =
-      return false;
+      String filterIp = determineIP(_expression);
+      String[] ipFilterFields = getIPFields(filterIp);
+
+      String filterIpBinary = getIpBinaryValue(ipFilterFields);
+      String ipBinary = getIpBinaryValue(ipFields);
+
+      if (filterIpBinary.length() != 32 || ipBinary.length() != 32) {
+         return false;
+      }
+
+      String filterIpBinaryCompare = filterIpBinary.substring(0, _mask);
+      String ipBinaryCompare = ipBinary.substring(0, _mask);
+
+      return filterIpBinaryCompare.equals(ipBinaryCompare);
+   }
+
+   /**
+    * Determines the binary value of the IP address that is represented by
+    * the string array that contains the values of the fields of the IP
+    * address.
+    *
+    * @param ipFields
+    *    the array containing the values of each IP section separated by the
+    *    dots.
+    *
+    * @return
+    *    String with the binary value of the IP that was provided through the
+    *    the string array with the values of each IP section.
+    */
+   private String getIpBinaryValue(String[] ipFields) {
+      int ipFieldLength = ipFields.length;
+      StringBuffer buffer = new StringBuffer(32);
+      String currFieldBinaryString = null;
+      int currFieldInteger = 0;
+
+      for (int i = 0;i < ipFieldLength; i++) {
+         currFieldInteger = Integer.parseInt(ipFields[i]);
+         currFieldBinaryString = Integer.toBinaryString(currFieldInteger);
+         buffer.append(currFieldBinaryString);
+      }
+
+      return buffer.toString();
    }
 
 }
