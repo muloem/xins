@@ -149,13 +149,6 @@ public class APIImpl extends API {
 			<xsl:value-of select="@name" />
 			<xsl:text>;&#10;</xsl:text>
 		</xsl:for-each>
-		<xsl:for-each select="//api/function">
-			<xsl:text>   private final </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> _function</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>;&#10;</xsl:text>
-		</xsl:for-each>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
