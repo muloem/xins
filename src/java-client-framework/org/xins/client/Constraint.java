@@ -11,10 +11,15 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Constraint.
  *
+ * <p><em>This class should not be used directly. It may be moved or removed
+ * in an upcoming minor XINS release.</em>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-abstract class Constraint
+public abstract class Constraint
 extends Object {
 
    //-------------------------------------------------------------------------

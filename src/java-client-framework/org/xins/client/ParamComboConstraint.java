@@ -15,10 +15,15 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Constraint on a combination of parameters.
  *
+ * <p><em>This class should not be used directly. It may be moved or removed
+ * in an upcoming minor XINS release.</em>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-abstract class ParamComboConstraint
+public abstract class ParamComboConstraint
 extends Constraint {
 
    //-------------------------------------------------------------------------

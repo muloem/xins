@@ -11,10 +11,15 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Constraint that mandates that a parameter value is not <em>null</em>.
  *
+ * <p><em>This class should not be used directly. It may be moved or removed
+ * in an upcoming minor XINS release.</em>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-final class RequiredParamConstraint
+public final class RequiredParamConstraint
 extends ParamConstraint {
 
    //-------------------------------------------------------------------------
@@ -49,7 +54,7 @@ extends ParamConstraint {
     * @throws IllegalArgumentException
     *    if <code>name == null || name.length() &lt; 1</code>.
     */
-   RequiredParamConstraint(String name)
+   public RequiredParamConstraint(String name)
    throws IllegalArgumentException {
       super(name);
    }
@@ -81,7 +86,20 @@ extends ParamConstraint {
     *    flag that indicates if this constraint was violated,
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
-   boolean checkParameterValue(String value) {
+   boolean checkParameterValue(Object value) {
       return (value != null);
+   }
+
+   /**
+    * Describes a violation of this constraint.
+    *
+    * @return
+    *    a description of a violation of this constraint, never
+    *    <code>null</code> and never an empty string.
+    */
+   public String describeViolation() {
+      return "Parameter \""
+           + getParameterName()
+           + "\" is required, but the value is null.";
    }
 }

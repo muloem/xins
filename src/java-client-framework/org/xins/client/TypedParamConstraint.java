@@ -7,16 +7,23 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.types.Type;
+import org.xins.common.types.TypeValueException;
 
 /**
  * Constraint that mandates that a parameter value matches a specified type.
  *
+ * <p><em>This class should not be used directly. It may be moved or removed
+ * in an upcoming minor XINS release.</em>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-final class TypedParamConstraint
+public final class TypedParamConstraint
 extends ParamConstraint {
 
    //-------------------------------------------------------------------------
@@ -56,7 +63,7 @@ extends ParamConstraint {
     *          || name.length() &lt; 1
     *          || type == null</code>.
     */
-   TypedParamConstraint(String name, Type type)
+   public TypedParamConstraint(String name, Type type)
    throws IllegalArgumentException {
       super(name);
 
@@ -119,6 +126,23 @@ extends ParamConstraint {
          return _type.isValidValue(string);
       } catch (ClassCastException exception) {
          return false;
+      } catch (TypeValueException exception) {
+         return false;
       }
+   }
+
+   /**
+    * Describes a violation of this constraint.
+    *
+    * @return
+    *    a description of a violation of this constraint, never
+    *    <code>null</code> and never an empty string.
+    */
+   public String describeViolation() {
+      return "Value for parameter \""
+           + getParameterName()
+           + "\" does not match type "
+           + _type.getName()
+           + '.';
    }
 }
