@@ -4,6 +4,9 @@
 package org.xins.client;
 
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -180,7 +183,27 @@ extends Object {
     */
    private CallTargetGroup parseCallTargetGroup(Element element)
    throws NullPointerException, ParseException {
-      return null; // TODO
+
+      // Determine the type of the group
+      String typeName = element.getAttributeValue("type");
+      if (typeName == null) {
+         throw new ParseException("The definition for a CallTargetGroup needs to specify the type in the attribute \"type\".");
+      }
+      CallTargetGroup.Type type = CallTargetGroup.getTypeByName(typeName);
+      if (type == null) {
+         throw new ParseException("The definition for a CallTargetGroup specifies \"" + typeName + "\" as the type but that is not an existing type.");
+      }
+
+      // Add all the members
+      List members       = new ArrayList();
+      List childElements = element.getChildren();
+      int  childCount    = childElements.size();
+      for (int i = 0; i < childCount; i++) {
+         Element child = (Element) childElements.get(i);
+         members.add(parse(child));
+      }
+
+      return CallTargetGroup.create(type, members);
    }
 
    /**
@@ -202,6 +225,29 @@ extends Object {
     */
    private ActualFunctionCaller parseActualFunctionCaller(Element element)
    throws NullPointerException, ParseException {
-      return null; // TODO
+
+      // Determine the URL of the API
+      String urlString = element.getAttributeValue("url");
+      if (urlString == null) {
+         throw new ParseException("The definition for an ActualFunctionCaller needs to specify the URL in the attribute \"url\".");
+      }
+
+      // Create a URL object
+      URL url;
+      try {
+         url = new URL(urlString);
+      } catch (MalformedURLException mue) {
+         throw new ParseException("The URL specified for ActualFunctionCaller is invalid: \"" + urlString + "\".");
+      }
+
+      try {
+         return new ActualFunctionCaller(url);
+      } catch (SecurityException exception) {
+         throw new ParseException("DNS lookup disallowed of ActualFunctionCaller URL \"" + urlString + "\". Message: \"" + exception.getMessage() + '"');
+      } catch (UnknownHostException exception) {
+         throw new ParseException("Unknown host specified in ActualFunctionCaller URL \"" + urlString + "\".");
+      } catch (MultipleIPAddressesException exception) {
+         throw new ParseException("Multiple IP addresses found for host specified in ActualFunctionCaller URL \"" + urlString + "\".");
+      }
    }
 }
