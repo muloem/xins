@@ -372,13 +372,14 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Parse the result
       Result result;
       try {
-         result = _parser.parse(target, body);
+         result = _parser.parse(request, target, duration, body);
       } catch (ParseException parseException) {
          throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
       }
 
+      // On failure, throw UnsuccessfulCallException, otherwise return result
       if (result.getErrorCode() != null) {
-         throw new UnsuccessfulCallException(request, target, duration, result);
+         throw new UnsuccessfulCallException(result);
       } else {
          return result;
       }
@@ -510,9 +511,16 @@ public final class XINSServiceCaller extends ServiceCaller {
       /**
        * Constructs a new <code>Result</code> object.
        *
+       * @param request
+       *    the original {@link CallRequest} that was used to perform the
+       *    call, cannot be <code>null</code>.
+       *
        * @param target
        *    the {@link TargetDescriptor} that was used to successfully get the
        *    result, cannot be <code>null</code>.
+       *
+       * @param duration
+       *    the call duration, should be &gt;= 0.
        *
        * @param code
        *    the return code, if any, can be <code>null</code>.
@@ -526,18 +534,27 @@ public final class XINSServiceCaller extends ServiceCaller {
        *    namespace.
        *
        * @throws IllegalArgumentException
-       *    if <code>target == null || (dataElement != null &amp;&amp;
+       *    if <code>request    == null
+       *          || target     == null
+       *          || duration &lt; 0
+       *          || (dataElement != null &amp;&amp;
        *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
        *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>)))</code>
        */
-      public Result(TargetDescriptor target,
+      public Result(CallRequest      request,
+                    TargetDescriptor target,
+                    long             duration,
                     String           code,
                     PropertyReader   parameters,
                     Element          dataElement)
       throws IllegalArgumentException {
 
-         // Clone the data element if there is one
-         MandatoryArgumentChecker.check("target", target);
+         // Check preconditions
+         MandatoryArgumentChecker.check("request", request, "target", target);
+         if (duration < 0) {
+            throw new IllegalArgumentException("duration (" + duration + ") < 0");
+         }
+
          if (dataElement != null) {
             String    dataElementName = dataElement.getName();
             Namespace ns              = dataElement.getNamespace();
@@ -546,11 +563,15 @@ public final class XINSServiceCaller extends ServiceCaller {
             } else if (!Namespace.NO_NAMESPACE.equals(ns)) {
                throw new IllegalArgumentException("dataElement.getNamespace() returned a namespace with URI \"" + ns.getURI() + "\", instead of no namespace.");
             }
+
+            // Clone the data element if there is one
             dataElement = (Element) dataElement.clone();
          }
 
          // Store all the information
+         _request     = request;
          _target      = target;
+         _duration    = duration;
          _code        = code;
          _parameters  = parameters;
          _dataElement = dataElement;
@@ -562,11 +583,22 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
+       * The original <code>CallRequest</code>. Cannot be <code>null</code>.
+       */
+      private final CallRequest _request;
+
+      /**
        * The <code>TargetDescriptor</code> that was used to produce this
        * result. Cannot be <code>null</code>.
        */
       private final TargetDescriptor _target;
 
+      /**
+       * The call duration. Guaranteed to be &gt;= 0.
+       */
+      private final long _duration;
+
+      /**
       /**
        * The error code. This field is <code>null</code> if the call was
        * successful and thus no error code was returned.
@@ -590,6 +622,18 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
+       * Returns the original <code>CallRequest</code>.
+       *
+       * @return
+       *    the {@link CallRequest}, cannot be <code>null</code>.
+       *
+       * @since XINS 0.203
+       */
+      public CallRequest getRequest() {
+         return _request;
+      }
+
+      /**
        * Returns the <code>TargetDescriptor</code> that was used to generate
        * this result.
        *
@@ -601,21 +645,36 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       /**
-       * Returns the result code.
+       * Returns the call duration in milliseconds.
        *
        * @return
-       *    the result code or <code>null</code> if no code was returned.
-       * @deprecated Use getErrorCode().
+       *    the call duration in milliseconds, guaranteed to be &gt;= 0.
+       *
+       * @since XINS 0.203
+       */
+      public long getDuration() {
+         return _duration;
+      }
+
+      /**
+       * Returns the error code.
+       *
+       * @return
+       *    the error code or <code>null</code> if no code was returned.
+       *
+       * @deprecated
+       *    Deprecated since XINS 0.182.
+       *    Use {@link #getErrorCode()} instead.
        */
       public String getCode() {
          return _code;
       }
 
       /**
-       * Returns the result code.
+       * Returns the error code.
        *
        * @return
-       *    the result code or <code>null</code> if no code was returned.
+       *    the error code or <code>null</code> if no code was returned.
        */
       public String getErrorCode() {
          return _code;
@@ -624,8 +683,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       /**
        * Returns the success indication.
        *
-       * @return true if the result is successful, false otherwise.
-       * @deprecated Use getErrorCode() == null.
+       * @return
+       *    <code>true</code> if the result is successful, <code>false</code>
+       *    otherwise.
+       *
+       * @deprecated
+       *    Deprecated since XINS 0.182.
+       *    Use {@link #getErrorCode()}<code> == null</code> instead.
        */
       public boolean isSuccess() {
          return getErrorCode() == null;
