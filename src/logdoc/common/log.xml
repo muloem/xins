@@ -8,20 +8,14 @@
 -->
 
 <log>
-
 	<translation-bundle locale="en_US" />
 
 	<group id="collections.expiry">
 		<entry id="3400" level="DEBUG">
-			<description>Tick processed; multiple entries expired.</description>
-			<param name="folderName"      type="text"  nullable="false" />
-			<param name="toBeExpiredSize" type="int32" nullable="false" />
-			<param name="newSize"         type="int32" nullable="false" />
-		</entry>
-		<entry id="3401" level="DEBUG">
-			<description>Tick processed; one entry expired.</description>
+			<description>Tick processed.</description>
 			<param name="folderName" type="text"  nullable="false" />
-			<param name="newSize"    type="int32" nullable="false" />
+			<param name="expired"    type="int32" nullable="false" />
+			<param name="remaining"  type="int32" nullable="false" />
 		</entry>
 		<entry id="3402" level="ERROR">
 			<description>The expiry folder size was negative and has been adjusted to 0.</description>
@@ -86,10 +80,10 @@
 			<description>No more targets and no fail-over</description>
 		</entry>
 		<entry id="3316" level="INFO">
-			<description>No more targets but fail-over would be allowed</description>
+			<description>No more targets, but fail-over would be allowed</description>
 		</entry>
 		<entry id="3317" level="INFO">
-			<description>More targets available but fail-over is not allowed</description>
+			<description>More targets available, but fail-over is not allowed</description>
 		</entry>
 		<entry id="3318" level="INFO">
 			<description>More targets available and fail-over is allowed</description>
@@ -158,7 +152,7 @@
 			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3415" level="WARNING">
-			<description>Thread attempts to leave protected area as reader, but it is not an active reader.</description>
+			<description>Thread attempts to leave protected area as reader, while not an active reader.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="reader"    type="text" nullable="false" />
 		</entry>
@@ -168,7 +162,7 @@
 			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3417" level="WARNING">
-			<description>Thread attempts to leave protected area as writer, but it is not the current writer.</description>
+			<description>Thread attempts to leave protected area as writer, while not the current writer.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="writer"    type="text" nullable="false" />
 		</entry>
@@ -183,15 +177,13 @@
 			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3420" level="ERROR">
-			<description>Unable to add a thread due to a time-out.</description>
-			<!-- TODO: Make description more elaborate -->
+			<description>Unable to add Thread to Doorman queue due to a time-out.</description>
 			<param name="className"        type="text"  nullable="false" />
 			<param name="thread"           type="text"  nullable="false" />
 			<param name="maxQueueWaitTime" type="int64" nullable="false" />
 		</entry>
 		<entry id="3421" level="ERROR">
-			<description>A reader was interrupted in enterAsReader(), but not in the set of current readers.</description>
-			<!-- TODO: Make description more elaborate -->
+			<description>Thread interrupted in enterAsReader(), while not in the set of current readers.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="reader"    type="text" nullable="false" />
 		</entry>
@@ -206,13 +198,13 @@
 			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3424" level="ERROR">
-			<description>A writer was interrupted in enterAsWriter().</description>
+			<description>Thread interrupted in enterAsWriter().</description>
 			<param name="className"     type="text" nullable="false" />
 			<param name="writer"        type="text" nullable="false" />
 			<param name="currentWriter" type="text" nullable="false" />
 		</entry>
 		<entry id="3425" level="ERROR">
-			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
+			<description>Reader attempts to leave protected area as reader, while not an active reader.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="reader"    type="text" nullable="false" />
 		</entry>
@@ -221,7 +213,7 @@
 			<param name="className" type="text" nullable="false" />
 		</entry>
 		<entry id="3427" level="ERROR">
-			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
+			<description>Thread attempts to leave protected area as writer, while it is not the current writer.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="writer"    type="text" nullable="false" />
 		</entry>
@@ -236,8 +228,7 @@
 			<description>Attempt to pop empty queue.</description>
 		</entry>
 		<entry id="3430" level="ERROR">
-			<description>The thread is not in the queue.</description>
-			<!-- TODO: Improve description -->
+			<description>Attempt to remove thread from Doorman queue, while it is not in the queue.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="thread"    type="text" nullable="false" />
 		</entry>

@@ -8,8 +8,7 @@
 -->
 
 <translation-bundle>
-	<translation entry="3400"><value-of-param name="folderName" />: Expired <value-of-param name="toBeExpiredSize" /> entries ( <value-of-param name="newSize" /> remaining).</translation>
-	<translation entry="3401"><value-of-param name="folderName" />: Expired 1 entry ( <value-of-param name="newSize" /> remaining).</translation>
+	<translation entry="3400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
 	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="size" />, adjusted to 0.</translation>
 	<translation entry="3403">Created expiry strategy thread <value-of-param name="name" format="quoted" />, time-out duration is <value-of-param name="timeOut" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
