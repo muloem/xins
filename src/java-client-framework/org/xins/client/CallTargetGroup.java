@@ -261,7 +261,8 @@ extends AbstractCompositeFunctionCaller {
          // If the member is an actual function caller, store a reference
          if (member instanceof ActualFunctionCaller) {
             ActualFunctionCaller afc = (ActualFunctionCaller) member;
-            _actualFunctionCallersByURL.put(afc.getURL().toString(), afc);
+            String url = afc.getURL().toString();
+            _actualFunctionCallersByURL.put(url, afc);
 
          // If the member is composite, get all its members
          } else if (member instanceof CompositeFunctionCaller) {
