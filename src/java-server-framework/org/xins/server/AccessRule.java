@@ -156,11 +156,15 @@ extends Object {
     *    filter used for matching (or not) IP addresses, cannot be
     *    <code>null</code>.
     *
+    * @param asString
+    *    textual presentation of this access rule, cannot be
+    *    <code>null</code>.
+    *
     * @param functionNamePattern
     *    regular expression used for matching (or not) a function name; cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>ipFilter == null || functionNamePattern == null</code>.
+    *    if <code>ipFilter == null || functionNamePattern == null || asString == null</code>.
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
@@ -169,8 +173,9 @@ extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("ipFilter", ipFilter,
-                                     "functionNamePattern", functionNamePattern);
+      MandatoryArgumentChecker.check("ipFilter",            ipFilter,
+                                     "functionNamePattern", functionNamePattern,
+				     "asString",            asString);
 
       // Store the data
       _allow               = allow;
