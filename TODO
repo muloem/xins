@@ -23,7 +23,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Change implementation of meta-functions from one method per meta-function to
   one class per meta-function.
 * Include the timezone in every message that contains a time.
-* Change the function performance logging to the logdoc-approach.
 * A new maximum call duration (for a specific function) could be logged.
 * CallContext should not rely on CallResultBuilder but implement the
   CallResult interface self.
@@ -44,7 +43,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Implement a _ResetStatistics function.
 * Implement a _DumpStatistics function that writes the statistics in a comma
   separated line in a text file.
-* Number all requests and log this number with all or most log messages.
 * Make generated logdoc classes package-private.
 * Stop runtime configuration file watch thread when the servlet is disposed.
 * Access control rules: Make default behaviour to deny requests. We should
