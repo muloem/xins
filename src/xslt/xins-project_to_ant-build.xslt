@@ -93,6 +93,7 @@ The following commands assist in authoring specifications:
 - create-type         Generates a new type specification file.
 
 The following targets are specific for a single API, replace <api> with the name of an existing API:
+- run-<api>           Runs the WAR file for the API.
 - war-<api>           Creates the WAR file for the API.
 - specdocs-<api>      Generates all specification docs for the API.
 - javadoc-api-<api>   Generates Javadoc for the API implementation (server).
