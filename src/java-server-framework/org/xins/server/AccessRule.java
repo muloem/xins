@@ -54,11 +54,6 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Log for this class.
-    */
-   private static final Logger LOG = Logger.getLogger(AccessRule.class.getName());
-
-   /**
     * Pattern matcher.
     */
    private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
@@ -261,14 +256,24 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      boolean matchIP       = _ipFilter.match(ip);
-      boolean matchFunction = PATTERN_MATCHER.matches(functionName, _functionNamePattern);
+      Logger log = Library.RUNTIME_ACL_LOG;
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("AccessRule \"" + _asString + "\" IP=\"" + ip + "\"; function=\"" + functionName + "\": IP match=" + matchIP + "; Function match=" + matchFunction + '.');
-      }
-
-      return matchIP && matchFunction;
+      if (_ipFilter.match(ip) == false) {
+         if (log.isDebugEnabled()) {
+            log.debug("AccessRule \"" + _asString + "\" mismatch. IP address \"" + ip + "\" unmatched.");
+         }
+         return false;
+      } else if (PATTERN_MATCHER.matches(functionName, _functionNamePattern) == false) {
+         if (log.isDebugEnabled()) {
+            log.debug("AccessRule \"" + _asString + "\" mismatch. IP address \"" + ip + "\" matches. Function name \"" + functionName + "\" unmatched.");
+         }
+         return false;
+      } else {
+         if (log.isDebugEnabled()) {
+            log.debug("AccessRule \"" + _asString + "\" match for IP address \"" + ip + "\"; function name \"" + functionName + "\".");
+         }
+         return true;
+      } 
    }
 
    /**
