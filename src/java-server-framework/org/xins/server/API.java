@@ -944,6 +944,8 @@ implements DefaultResultCodes {
             return doDisableFunction(request);
          } else if ("_EnableFunction".equals(functionName)) {
             return doEnableFunction(request);
+         } else if ("_ResetStatistics".equals(functionName)) {
+            return doResetStatistics();
          } else {
             throw new NoSuchFunctionException(functionName);
          }
@@ -1298,4 +1300,21 @@ implements DefaultResultCodes {
 
       return SUCCESSFUL_RESULT;
    }
+
+   /**
+    * Resets the statistics.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    */
+   private final CallResult doResetStatistics() {
+      // Function-specific statistics
+      int count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function function = (Function) _functionList.get(i);
+         function.resetStatistics();
+      }
+      return SUCCESSFUL_RESULT;
+   }
+
 }

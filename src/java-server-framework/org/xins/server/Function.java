@@ -341,6 +341,32 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Resets the statistics for this function.
+    */
+   final void resetStatistics() {
+      synchronized (_successfulCallLock) {
+         _successfulCalls = 0;
+         _lastSuccessfulStart = 0L;
+         _lastSuccessfulDuration = 0L;
+         _successfulDuration = 0L;
+         _successfulMin = Long.MAX_VALUE;
+         _successfulMinStart = 0L;
+         _successfulMax = 0L;
+         _successfulMaxStart = 0L;
+      }
+      synchronized (_unsuccessfulCallLock) {
+         _unsuccessfulCalls = 0;
+         _lastUnsuccessfulStart = 0L;
+         _lastUnsuccessfulDuration = 0L;
+         _unsuccessfulDuration = 0L;
+         _unsuccessfulMin = Long.MAX_VALUE;
+         _unsuccessfulMinStart = 0L;
+         _unsuccessfulMax = 0L;
+         _unsuccessfulMaxStart = 0L;
+      }
+   }
+
+   /**
     * Assigns a new call ID for the caller. Every call to this method will
     * return an increasing number.
     *
