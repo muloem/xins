@@ -130,8 +130,8 @@ extends Object {
     * Gets the type for parents.
     *
     * @return
-    *    the parent type, or <code>null</code> if components of this type have
-    *    no parent.
+    *    the type that parents of actual components of this type should be, or
+    *    <code>null</code> if components of this type have no parent.
     */
    public final SpecType getParentType() {
       return _parentType;
