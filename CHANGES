@@ -2,6 +2,14 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.153:
 
 * XINS/Java Server Framework:
+  - Completed ACL support. The access rule list is to be defined in a runtime
+    property 'org.xins.server.acl'. If this property is not set in the runtime
+    configuration file, then all requests are allowed. This behaviour is for
+    backwards-compatibility and will be changed in the future, so that if the
+    property is not defined, then no request will be allowed.
+    The property value must match the format for an access rule list
+    descriptor. This format is documented here:
+    http://xins.sf.net/javadoc/0.153/org/xins/server/AccessRuleList.html
   - Renamed class function parseFilter() to parseIPFilter() in class IPFilter.
   - Renamed class AccessRuleParser to AccessRuleList.
   - Extended AccessRuleList and AccessRule classes.
