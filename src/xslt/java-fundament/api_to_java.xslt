@@ -34,8 +34,8 @@
 
 import java.io.IOException;
 import java.util.Map;
-import nl.wanadoo.xins.framework.API;
-import nl.wanadoo.xins.framework.CallContext;
+import org.xins.server.API;
+import org.xins.server.CallContext;
 
 /**
  * Implementation of <code>]]></xsl:text>
