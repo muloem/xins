@@ -472,6 +472,9 @@ extends AbstractCompositeFunctionCaller {
        *
        * @param name
        *    the name of this type, not <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null</code>.
        */
       private Type(String name) throws IllegalArgumentException {
          MandatoryArgumentChecker.check("name", name);
