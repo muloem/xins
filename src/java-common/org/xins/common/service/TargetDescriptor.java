@@ -323,34 +323,7 @@ public final class TargetDescriptor extends Descriptor {
       _socketTimeOut     = socketTimeOut;
       _crc               = computeCRC32(url);
 
-      // Convert to a string
-      // TODO: Lazily initialize _asString
-      FastStringBuffer buffer = new FastStringBuffer(233, "TargetDescriptor #");
-      buffer.append(_instanceNumber);
-      buffer.append(" [url=\"");
-      buffer.append(url);
-      buffer.append("\"; crc=\"");
-      buffer.append(HexConverter.toHexString(_crc));
-      buffer.append("\"; total time-out is ");
-      if (_timeOut < 1) {
-         buffer.append("disabled; connection time-out is ");
-      } else {
-         buffer.append(_timeOut);
-         buffer.append(" ms; connection time-out is ");
-      }
-      if (_connectionTimeOut < 1) {
-         buffer.append("disabled; socket time-out is ");
-      } else {
-         buffer.append(_connectionTimeOut);
-         buffer.append(" ms; socket time-out is ");
-      }
-      if (_socketTimeOut < 1) {
-         buffer.append("disabled]");
-      } else {
-         buffer.append(_socketTimeOut);
-         buffer.append(" ms]");
-      }
-      _asString = buffer.toString();
+      // NOTE: _asString is lazily initialized
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, "#" + _instanceNumber);
@@ -534,6 +507,37 @@ public final class TargetDescriptor extends Descriptor {
     *    <code>null</code>.
     */
    public String toString() {
+
+      // Lazily initialize
+      if (_asString == null) {
+         FastStringBuffer buffer = new FastStringBuffer(233, "TargetDescriptor #");
+         buffer.append(_instanceNumber);
+         buffer.append(" [url=\"");
+         buffer.append(url);
+         buffer.append("\"; crc=\"");
+         buffer.append(HexConverter.toHexString(_crc));
+         buffer.append("\"; total time-out is ");
+         if (_timeOut < 1) {
+            buffer.append("disabled; connection time-out is ");
+         } else {
+            buffer.append(_timeOut);
+            buffer.append(" ms; connection time-out is ");
+         }
+         if (_connectionTimeOut < 1) {
+            buffer.append("disabled; socket time-out is ");
+         } else {
+            buffer.append(_connectionTimeOut);
+            buffer.append(" ms; socket time-out is ");
+         }
+         if (_socketTimeOut < 1) {
+            buffer.append("disabled]");
+         } else {
+            buffer.append(_socketTimeOut);
+            buffer.append(" ms]");
+         }
+         _asString = buffer.toString();
+      }
+
       return _asString;
    }
 
