@@ -342,16 +342,13 @@ implements Responder, Log {
 
       // Check preconditions
       if (_function == null) {
-         throw new InternalError("There is no current function.");
-      // TODO:
-      /*
+         throw new IllegalStateException("There is no current function.");
       } else if (_function.isSessionBased() == false) {
          throw new IllegalStateException("The function " + _functionName + " is not session-based.");
-      */
       }
 
       // Get the session
-      return null; // TODO
+      return _session;
    }
 
    public Session createSession() {
