@@ -25,10 +25,6 @@ public class ExpiryFolderTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-   // Use max queue wait time of 2 seconds
-   private static final long MAX_QUEUE_WAIT_TIME = 2000L;
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -70,86 +66,85 @@ public class ExpiryFolderTests extends TestCase {
    // TODO: Stop all expiry strategies globally
 
    public void testExpiryFolder() throws Throwable {
-      final int DURATION  = 60;
-      final int PRECISION =  15;
+      final int    DURATION  = 500;
+      final int    PRECISION = 100;
+      final String NAME      = "TestFolder";
+
+      // Construct an ExpiryStrategy
       ExpiryStrategy strategy = new ExpiryStrategy(DURATION, PRECISION);
-      ExpiryFolder folder = new ExpiryFolder("Test1", strategy);
-      assertEquals("Incorrect name.", "Test1", folder.getName());
-      assertEquals("Incorrect strategy.", strategy, folder.getStrategy());
-      assertNull(folder.get("hello"));
-      assertNull(folder.find("hello"));
+      assertEquals(DURATION,             strategy.getTimeOut());
+      assertEquals(PRECISION,            strategy.getPrecision());
+      assertEquals(DURATION / PRECISION, strategy.getSlotCount());
+
+      // Construct an ExpiryFolder
+      ExpiryFolder folder = new ExpiryFolder(NAME, strategy);
+      assertEquals(NAME,     folder.getName());
+      assertEquals(strategy, folder.getStrategy());
+
+      // Nothing should be in the ExpiryFolder
+      final String KEY_1 = "hello";
+      final String VAL_1 = "world";
+      assertNull(folder.get(KEY_1));
+      assertNull(folder.find(KEY_1));
+
+      // Test get, find and put with null values
       try {
          folder.get(null);
-         fail("Invalid argument accepted.");
+         fail("IllegalArgumentException accepted.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          folder.find(null);
-         fail("Invalid argument accepted.");
+         fail("IllegalArgumentException accepted.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
-         folder.put("hello", null);
-         fail("Invalid argument accepted.");
+         folder.put(KEY_1, null);
+         fail("IllegalArgumentException accepted.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
-         folder.put(null, "hello");
-         fail("Invalid argument accepted.");
+         folder.put(null, VAL_1);
+         fail("IllegalArgumentException accepted.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      try {
+         folder.remove(null);
+         fail("IllegalArgumentException accepted.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
-      folder.put("hello", "world");
-      assertEquals("Incorrect value found.", "world", folder.find("hello"));
-      assertEquals("Got incorrect value.",   "world", folder.get("hello"));
+      // Put something in and make sure it is in there indeed
+      folder.put(KEY_1, VAL_1);
+      assertEquals(VAL_1, folder.find(KEY_1));
+      assertEquals(VAL_1, folder.get(KEY_1));
 
-      Thread.sleep(10);
-      assertEquals("Entry should not have expired yet.", "world", folder.get("hello"));
-
-      folder.put("key", "value");
-      assertEquals("Incorrect value found.", "value", folder.find("key"));
+      // Check expiry
+      final String KEY_2 = "something";
+      final String VAL_2 = "else";
+      folder.put(KEY_2, VAL_2);
+      assertEquals(VAL_2, folder.find(KEY_2));
+      assertEquals(VAL_2, folder.get(KEY_2));
       Thread.sleep(DURATION + 1);
-      assertNull("Entry should have expired.", folder.find("key"));
-      assertNull("Entry should have expired.", folder.find("key"));
+      assertNull("Entry should have expired.", folder.find(KEY_2));
+      assertNull("Entry should have expired.", folder.find(KEY_2));
 
-      strategy.stop();
-   }
+      // Test entry removal
+      folder.put(KEY_2, VAL_2);
+      assertEquals(VAL_2, folder.find(KEY_2));
+      assertEquals(VAL_2, folder.get(KEY_2));
+      assertEquals(VAL_2, folder.remove(KEY_2));
+      assertNull(folder.remove(KEY_2));
+      assertNull(folder.find(KEY_2));
+      assertNull(folder.get(KEY_2));
+      assertNull(folder.remove("key that was never entered"));
 
-   public void testStategy() throws Throwable {
-      ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
-      assertEquals(15, strategy.getPrecision());
-      assertEquals(60, strategy.getTimeOut());
-      assertEquals(4, strategy.getSlotCount());
-
-      strategy.stop();
-   }
-
-   public void testRemove() throws Throwable {
-      ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", strategy);
-      folder.put("hello", "world");
-      try {
-         Thread.sleep(20);
-      } catch (Exception ex) {
-         fail("Sleeping thread interrupted.");
-      }
-      assertEquals("Incorrect value found.", "world", folder.get("hello"));
-      assertEquals("world", folder.remove("hello"));
-      try {
-         Thread.sleep(20);
-      } catch (Exception ex) {
-         fail("Sleeping thread interrupted.");
-      }
-      assertNull("Incorrect value found.", folder.find("hello"));
-      assertNull("Incorrect value found.", folder.get("hello"));
-
-      // remove a non existing object
-      assertNull(folder.remove("hello2"));
-
+      // Stop the ExpiryStrategy
       strategy.stop();
    }
 }
