@@ -686,7 +686,9 @@ extends HttpServlet {
          } catch (Throwable exception) {
             Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
             setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
+            ServletException servletException = new ServletException();
+            servletException.initCause(exception);
+            throw servletException;
          }
 
          // Load the Logdoc if available
@@ -701,9 +703,12 @@ extends HttpServlet {
          } catch (Throwable t) {
 
             // The locale is not supported by the API
+            // FIXME: How do we know the locale is not supported?
             Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
+            ServletException servletException = new ServletException();
+            servletException.initCause(t);
+            throw servletException;
          }
 
          // Check that the loaded API class is derived from the API base class
@@ -721,7 +726,9 @@ extends HttpServlet {
          } catch (Throwable exception) {
             Log.log_3208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
+            ServletException servletException = new ServletException();
+            servletException.initCause(exception);
+            throw servletException;
          }
 
          // Make sure that the field is an instance of that same class
