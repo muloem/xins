@@ -15,6 +15,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     . Sun Java 1.4.2_06 (Windows 2000/x86)
     . Sun Java 1.5.0_01 (Linux 2.6/x86)
     . Sun Java 1.6.0 Early Access, Jan 20 2005 (Linux 2.6/x86)
+  - Changed the xins shell script and the xins.bat batch file to pass the -lib
+    option to Ant to pass the XINS lib directory. This is required when using
+    Java 1.3. Otherwise it may not be able to find the proper XML/XSLT
+    libraries.
 
 * Logdoc:
   - Deprecated the LogdocExceptionUtils class in favor of a new ExceptionUtils

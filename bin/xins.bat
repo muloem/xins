@@ -29,7 +29,7 @@ CALL ant -q -f %XINS_HOME%\build.xml version
 GOTO end
 
 :start_build
-CALL ant -q -f %XINS_HOME%\src\ant\make-build.xml -Dxins_home=%XINS_HOME%
+CALL ant -q -lib %XINS_HOME%\lib -f %XINS_HOME%\src\ant\make-build.xml -Dxins_home=%XINS_HOME%
 
-IF NOT ERRORLEVEL 1 CALL ant -f build\build.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
+IF NOT ERRORLEVEL 1 CALL ant -lib %XINS_HOME%\lib -f build\build.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
 :end
