@@ -16,6 +16,9 @@ CHANGES INTRODUCED IN XINS 0.145:
     API and <function> is the name of the function.
   - Changed internal logging categories to be all lower case.
 
+* XINS/Java Client Framework:
+  - NoSuchSessionException now extends CallException.
+
 * Generated CAPI classes:
   - Not throwing TypeValueException anymore, but NoSuchSessionException
     instead, from session-based function call methods.
