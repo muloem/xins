@@ -2,10 +2,10 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
 
 * XINS/Java Server Framework:
-  - The statitics which were in Function are now in a separated 
-    FunctionStatistics class. This class has also a method to
-    update the statistics.
-  
+  - The statistics which were in Function are now in a separate
+    FunctionStatistics class. This class has also a method to update the
+    statistics.
+
 * XINS/Java Common Library:
   - Added class org.xins.logdoc.AbstractLog.
 
@@ -14,8 +14,7 @@ CHANGES INTRODUCED IN XINS 0.162:
   - Logdoc Log classes now extend org.xins.logdoc.AbstractLog.
 
 * Generated specification documentation:
-  - Added the DTD files associated to xins.project.xml, api.xml, 
-    the type XML file, the result code XML file and the function XML file.
+  - Added DTD's for to project, API, type, result code and function XML files.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.161:
@@ -29,17 +28,17 @@ CHANGES INTRODUCED IN XINS 0.161:
   - Changed levels for log message entry 3005 from DEBUG to INFO (Logging
     subsystem has been properly initialized)
   - Changed fallback default log message output pattern to:
-    "%-4c{1} %-6p %m%n" (without the quotes). 
+    "%-4c{1} %-6p %m%n" (without the quotes).
   - Improved translations for log message 5018.
   - Added log entry group runtime.http. Moved log messages 5000 and 5001 in
     this group.
 
 * XINS/Java Common Library:
-  - Added the SingleEntryMap class. This class is the implementation of a 
+  - Added the SingleEntryMap class. This class is the implementation of a
     Map that can only include one entry. Some unit tests testing this class
     have also been added.
-  - Added an AbstractPropertyReader class that provides a default 
-    implementation of a few methods for the different existing 
+  - Added an AbstractPropertyReader class that provides a default
+    implementation of a few methods for the different existing
     PropertyReader implementations.
 
 * Logdoc:
@@ -126,7 +125,7 @@ CHANGES INTRODUCED IN XINS 0.159:
     used to set it as the NDC (nested diagnostic context). The nested
     diagnostic context can be output in the log. With the pattern layout,
     use %x.
-  - Added the _ResetStatistics meta function. This function set all the 
+  - Added the _ResetStatistics meta function. This function set all the
     statistics to their initial values.
 
 * XINS/Java Client Framework:
@@ -138,7 +137,7 @@ CHANGES INTRODUCED IN XINS 0.159:
 * Generated CAPI classes:
   - Generating implementation for getXINSVersion() method, defined in
     AbstractCAPI class.
-  
+
 * Generated specification documentation:
   - Added links to allow the execution of the examples listed for a function
     on a specific environment.
