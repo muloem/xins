@@ -59,8 +59,8 @@ extends Object {
       _recentlyAccessedDoorman = new Doorman(89);
       _slotsDoorman            = new Doorman(89);
 
-      // TODO
-      // strategy.folderAdded(this);
+      // Notify the strategy
+      strategy.folderAdded(this);
    }
 
 
@@ -131,7 +131,7 @@ extends Object {
     *
     * <p>If any entries are expirable, they will be removed from this folder.
     */
-   void tick() throws InterruptedException {
+   void tick() {
 
       // First enter the protected area for '_recentlyAccessed', because that
       // is the most difficult to enter
