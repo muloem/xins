@@ -19,7 +19,7 @@ $Id$
 	<xsl:param name="builddir"     />
 	
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
-	<xsl:variable name="xins_jar"     select="concat($xins_home,    '/build/xins.jar')" />
+	<xsl:variable name="xins_jar"     select="concat($xins_home, '/build/xins-server.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
@@ -314,7 +314,7 @@ $Id$
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">
-							<lib dir="{$xins_home}/build"                       includes="xins.jar" />
+							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
 							<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 							<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
 							<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']">
@@ -348,7 +348,7 @@ $Id$
 						bottom="TODO">
 							<packageset dir="build/java-combined/{$api}" />
 							<link
-							href="http://xins.sourceforge.net/javadoc/0.31/"
+							href="http://xins.sourceforge.net/javadoc/0.33/"
 							offline="true"
 							packagelistloc="{$xins_home}/build/javadoc/" />
 							<link
