@@ -374,15 +374,6 @@
 			<description>No access rule list defined.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="4032" level="NOTICE">
-			<description>Applying fallback default access rule list.</description>
-			<param name="defaultACL" />
-		</entry>
-		<entry id="4033" level="ERROR">
-			<description>Unable to apply default access rule list.</description>
-			<param name="defaultACL" />
-			<param name="message" />
-		</entry>
 		<entry id="4034" level="INFO">
 			<description>Access rule list defined and successfully loaded.</description>
 			<param name="ruleCount" type="int32" nullable="false" />
@@ -515,7 +506,7 @@
 			<param name="rule"  nullable="false" />
 		</entry>
 		<entry id="5503" level="INFO">
-			<description>Request matches none of the access rules. Denying function call.</description>
+			<description>No access rule matched. Denying function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
 		</entry>
