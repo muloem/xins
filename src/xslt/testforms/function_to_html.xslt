@@ -192,18 +192,13 @@
 							</xsl:attribute>
 							<option></option>
 							<xsl:for-each select="document($type_file)/type/enum/item">
-								<option>
-									<xsl:attribute name="value">
+								<option name="{@name}">
+									<xsl:when test="@name">
+										<xsl:value-of select="@name" />
+									</xsl:when>
+									<xsl:otherwise>
 										<xsl:value-of select="@value" />
-									</xsl:attribute>
-									<xsl:choose>
-										<xsl:when test="@name">
-											<xsl:value-of select="@name" />
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="@value" />
-										</xsl:otherwise>
-									</xsl:choose>
+									</xsl:otherwise>
 								</option>
 							</xsl:for-each>
 						</select>
@@ -211,8 +206,8 @@
 					<xsl:when test="$type = '_boolean'">
 						<select name="{@name}">
 							<option></option>
-							<option name="true"  value="true"></option>
-							<option name="false" value="false"></option>
+							<option name="true">true</option>
+							<option name="false">false</option>
 						</select>
 					</xsl:when>
 					<xsl:otherwise>
