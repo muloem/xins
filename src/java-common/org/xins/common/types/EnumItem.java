@@ -102,8 +102,9 @@ public class EnumItem extends Object {
 
    /**
     * Checks if this object is considered equal to the specified object. In
-    * order for it to qualify as equals, it needs to be an instance of this
-    * class (not a subclass), and it needs to have the same name and value.
+    * order for it to qualify as equals, it needs to be an instance of the
+    * very same class as this object (not even a subclass), and it needs to
+    * have the same name and value.
     * 
     * @param obj
     *    the object to compare, or <code>null</code>.
