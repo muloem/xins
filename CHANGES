@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.89:
   - Added 'startup' attribute to 'initialization' tag in output of function
     _GetSettings.
 
+* XINS/Java Common Library:
+  - Added DateConverter that produces a human-readable date.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.88:
 
