@@ -338,6 +338,17 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Checks if response validation is enabled.
+    *
+    * @return
+    *    <code>true</code> if response validation is enabled,
+    *    <code>false</code> otherwise.
+    */
+   public final boolean isResponseValidationEnabled() {
+      return true;
+   }
+
+   /**
     * Initializes this API. The properties are stored internally and then
     * {@link #initImpl(Properties)} is called.
     *
