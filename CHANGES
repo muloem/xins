@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.8:
+
+* Refactoring: Creating StringWriter and XMLOutputter in CallContext instead
+  of API class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.7:
 
 * Refactorings applied to create less objects during a function call.
