@@ -18,12 +18,14 @@ $Id$
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
 	
-	<xsl:variable name="xins_buildfile"  select="concat($xins_home, '/build.xml')" />
-	<xsl:variable name="xins_version"    select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version']/@value" />
-	<xsl:variable name="project_file"    select="concat($project_home, '/xins-project.xml')" />
-	<xsl:variable name="xins-common.jar" select="concat($xins_home, '/build/xins-common.jar')" />
-	<xsl:variable name="xins-server.jar" select="concat($xins_home, '/build/xins-server.jar')" />
-	<xsl:variable name="xins-client.jar" select="concat($xins_home, '/build/xins-client.jar')" />
+	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
+	<xsl:variable name="xins_majorversion" select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version.major']/@value" />
+	<xsl:variable name="xins_minorversion" select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version.minor']/@value" />
+	<xsl:variable name="xins_version"      select="concat($xins_majorversion, '.', $xins_minorversion)" />
+	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
+	<xsl:variable name="xins-common.jar"   select="concat($xins_home, '/build/xins-common.jar')" />
+	<xsl:variable name="xins-server.jar"   select="concat($xins_home, '/build/xins-server.jar')" />
+	<xsl:variable name="xins-client.jar"   select="concat($xins_home, '/build/xins-client.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
