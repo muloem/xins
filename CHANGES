@@ -4,6 +4,11 @@ CHANGES INTRODUCED IN XINS 0.32:
 * If a value for an input parameter is empty, then don't check the type for
   that parameter.
 
+* Added shutdown hook. If the JVM is being shut down, then all request to
+  regular functions will get an InternalError result code.
+
+* Changed the names of the responder states to match the field names.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.31:
 
