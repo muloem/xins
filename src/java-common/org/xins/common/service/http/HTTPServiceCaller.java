@@ -4,6 +4,7 @@
 package org.xins.common.service.http;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -11,11 +12,13 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.net.URLEncoding;
 import org.xins.common.service.CallFailedException;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * HTTP service caller.
@@ -141,14 +144,67 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    the URL for which to create a {@link HttpMethod} object, should not
     *    be <code>null</code>.
     *
+    * @param parameters
+    *    the HTTP parameters to send down, or <code>null</code> if none should
+    *    be sent.
+    *
     * @return
     *    the constructed {@link HttpMethod} object, never <code>null</code>.
     */
-   private HttpMethod createMethod(String url) {
+   private HttpMethod createMethod(String url, PropertyReader parameters) {
       if (_method == POST) {
-         return new PostMethod(url);
+         PostMethod method = new PostMethod(url);
+
+         // Loop through them paramters
+         if (parameters != null) {
+            Iterator keys = parameters.getNames();
+            while (keys.hasNext()) {
+
+               // Get the parameter key
+               String key = (String) keys.next();
+
+               // Get the value
+               Object value = parameters.get(key);
+
+               // Add this parameter key/value combination
+               if (key != null && value != null) {
+
+                  method.addParameter(key, value.toString());
+               }
+            }
+         }
+         return method;
       } else if (_method == GET) {
-         return new GetMethod(url);
+         GetMethod method = new GetMethod(url);
+
+         // Loop through them paramters
+         if (parameters != null) {
+            FastStringBuffer query = new FastStringBuffer(255);
+            Iterator keys = parameters.getNames();
+            while (keys.hasNext()) {
+
+               // Get the parameter key
+               String key = (String) keys.next();
+
+               // Get the value
+               Object value = parameters.get(key);
+
+               // Add this parameter key/value combination
+               if (key != null && value != null) {
+
+                  if (query.getLength() > 0) {
+                     query.append(",");
+                  }
+                  query.append(URLEncoding.encode(key));
+                  query.append("=");
+                  query.append(URLEncoding.encode(value.toString()));
+               }
+            }
+            if (query.getLength() > 0) {
+               method.setQueryString(query.toString());
+            }
+         }
+         return method;
       } else {
          throw new Error("Value of _method is unrecognized.");
       }
@@ -168,7 +224,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       client.setTimeout(target.getTimeOut());
 
       // Use the right method, depends on _method
-      HttpMethod method = createMethod(target.getURL());
+      HttpMethod method = createMethod(target.getURL(), reader);
 
       boolean succeeded = false;
       byte[] data;

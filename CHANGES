@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.187:
   - If the LDAP path cannot be found, the LDAPServiceCaller return an empty
     QueryResult with isAuthenticated() returning false.
   - Fixed Javadoc in QueryResult.
+  - Fixed: HTTPServiceCaller now also passes the arguments.
+    This bug has been in XINS since version 0.116.
 
 * Generated build file:
   - The generated java files are removed if the impl.xml file has changed.
