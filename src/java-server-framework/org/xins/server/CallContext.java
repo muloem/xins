@@ -196,17 +196,17 @@ implements Responder, Log {
     * {@link #reset(ServletRequest)} must be called.
     */
    void reset() {
-      _request      = null;
-      _state        = UNINITIALIZED;
-      _success      = true;
-      _code         = null;
-      _functionName = null;
-      _function     = null;
+      _request           = null;
+      _state             = UNINITIALIZED;
+      _success           = true;
+      _code              = null;
+      _functionName      = null;
+      _function          = null;
       _responseValidator = null;
-      _logger       = null;
-      _callID       = -1;
-      _logPrefix    = null;
-      _session      = null;
+      _logger            = null;
+      _callID            = -1;
+      _logPrefix         = null;
+      _session           = null;
    }
 
    /**
