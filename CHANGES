@@ -5,6 +5,11 @@ CHANGES INTRODUCED IN XINS 0.167:
   - Changed log messages 5000 and 5001 to log the query string.
   - Removed unused package-private dueToUnexpected(Throwable) class function
     from class APIServlet.
+  - Changed behaviour when no access rule list is defined in the runtime
+    properties file. Previously all requests would then be allowed. New
+    behaviour is that all requests are then denied. Removed log messages 4032
+    and 4033 as a result of this. Slightly improved description and
+    translations for log message 5503.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.166:
