@@ -10,6 +10,8 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="deployment"   />
+	<xsl:param name="hostname"   />
+	<xsl:param name="timestamp"   />
 
 	<xsl:variable name="api"          select="//api/@name"                                />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
@@ -29,6 +31,12 @@
 	<xsl:include href="../package_for_api.xslt" />
 
 	<xsl:template match="api">
+		<xsl:if test="string-length($hostname) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'hostname' is not specified.</xsl:message>
+		</xsl:if>
+		<xsl:if test="string-length($timestamp) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'timestamp' is not specified.</xsl:message>
+		</xsl:if>
 		<xsl:apply-templates select="impl-java" />
 	</xsl:template>
 
@@ -141,6 +149,18 @@
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
+				<init-param>
+					<param-name>org.xins.api.build.host</param-name>
+					<param-value>
+						<xsl:value-of select="$hostname" />
+					</param-value>
+				</init-param>
+				<init-param>
+					<param-name>org.xins.api.build.time</param-name>
+					<param-value>
+						<xsl:value-of select="$timestamp" />
+					</param-value>
+				</init-param>
 				<load-on-startup>
 					<!-- XXX: Should we be able to configure the load-on-startup setting ? -->
 					<xsl:text>0</xsl:text>
