@@ -15,7 +15,11 @@ CHANGES INTRODUCED IN XINS 0.158:
   - Added log message 5015 (Call to session-oriented function succeeded).
   - Added log message 5016 (Call to session-less function failed).
   - Added log message 5017 (Call to session-oriented function failed).
+  - Added log message 5018 (Failed to convert session ID to character string).
   - Changed level of log message 6001 from ERROR to WARNING.
+  - Completed removing all statically shared Logger instances from Library
+    class.
+  - Deprecated Function.getLogger().
 
 * Dependencies:
   - Some JAR files were commited in CVS as ASCII files, this is fixed.
