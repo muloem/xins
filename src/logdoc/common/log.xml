@@ -11,16 +11,44 @@
 
 	<translation-bundle locale="en_US" />
 
-	<group id="type" name="Types">
-		<entry id="3100" level="ERROR" exception="true">
-			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
-			<param name="pattern_matcher" />
-			<param name="pattern_class" />
-			<param name="value" />
+	<group id="collections.expiry">
+		<entry id="3400" level="DEBUG">
+			<description>Some expired entries remain.</description>
+			<param name="folderName" nullable="false" />
+			<param name="to_be_expired_size" type="int32" nullable="false" />
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="3401" level="DEBUG">
+			<description>One expired entry remains.</description>
+			<param name="folderName" nullable="false" />
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="3402" level="ERROR">
+			<description>The size of expiry folder is adjusted to 0.</description>
+			<param name="new_size" type="int32" nullable="false" />
+		</entry>
+		<entry id="3403" level="DEBUG">
+			<description>Creating an expiry strategy.</description>
+			<param name="strategy" nullable="false" />
+			<param name="time_out" type="int64" nullable="false" />
+			<param name="precision" type="int64" nullable="false" />
+		</entry>
+		<entry id="3404" level="DEBUG">
+			<description>Associating an expiry folder with an expiry stategy.</description>
+			<param name="folder" nullable="false" />
+			<param name="strategy" nullable="false" />
+		</entry>
+		<entry id="3405" level="DEBUG">
+			<description>Strategy started.</description>
+			<param name="strategy" nullable="false" />
+		</entry>
+		<entry id="3406" level="DEBUG">
+			<description>Strategy stopped.</description>
+			<param name="strategy" nullable="false" />
 		</entry>
 	</group>
 
-	<group id="utilities" name="Utilities classes">
+	<group id="io" name="General I/O">
 		<entry id="3200" level="INFO">
 			<description>Starting watch thread for a file.</description>
 			<param name="file" nullable="false" />
@@ -35,14 +63,9 @@
 			<description>Stopping watch thread for a file.</description>
 			<param name="file" nullable="false" />
 		</entry>
-		<entry id="3205" level="DEBUG">
-			<description>Increasing capacity of the FastStringBuffer.</description>
-			<param name="current_capacity" type="int32" nullable="false" />
-			<param name="new_capacity" type="int32" nullable="false" />
-		</entry>
 	</group>
 
-	<group id="io_connection" name="I/O operations">
+	<group id="service" name="Service calling framework">
 		<entry id="3303" level="ERROR" exception="true">
 			<description>URL is malformed.</description>
 			<param name="url" />
@@ -80,41 +103,15 @@
 		</entry>
 	</group>
 
-	<group id="expiry" name="Expiry-related classes">
-		<entry id="3400" level="DEBUG">
-			<description>Some expired entries remain.</description>
-			<param name="folderName" nullable="false" />
-			<param name="to_be_expired_size" type="int32" nullable="false" />
-			<param name="new_size" type="int32" nullable="false" />
+	<group id="text" name="Text">
+		<entry id="3205" level="DEBUG">
+			<description>Increasing capacity of the FastStringBuffer.</description>
+			<param name="current_capacity" type="int32" nullable="false" />
+			<param name="new_capacity" type="int32" nullable="false" />
 		</entry>
-		<entry id="3401" level="DEBUG">
-			<description>One expired entry remains.</description>
-			<param name="folderName" nullable="false" />
-			<param name="new_size" type="int32" nullable="false" />
-		</entry>
-		<entry id="3402" level="ERROR">
-			<description>The size of expiry folder is adjusted to 0.</description>
-			<param name="new_size" type="int32" nullable="false" />
-		</entry>
-		<entry id="3403" level="DEBUG">
-			<description>Creating an expiry strategy.</description>
-			<param name="strategy" nullable="false" />
-			<param name="time_out" type="int64" nullable="false" />
-			<param name="precision" type="int64" nullable="false" />
-		</entry>
-		<entry id="3404" level="DEBUG">
-			<description>Associating an expiry folder with an expiry stategy.</description>
-			<param name="folder" nullable="false" />
-			<param name="strategy" nullable="false" />
-		</entry>
-		<entry id="3405" level="DEBUG">
-			<description>Strategy started.</description>
-			<param name="strategy" nullable="false" />
-		</entry>
-		<entry id="3406" level="DEBUG">
-			<description>Strategy stopped.</description>
-			<param name="strategy" nullable="false" />
-		</entry>
+	</group>
+
+	<group id="threads" name="Threading">
 		<entry id="3407" level="DEBUG">
 			<description>Constructed new Doorman.</description>
 			<param name="className" nullable="false" />
@@ -237,6 +234,15 @@
 			<description>The thread is not in the queue.</description>
 			<param name="className" nullable="false" />
 			<param name="thread" nullable="false" />
+		</entry>
+	</group>
+
+	<group id="types" name="Types">
+		<entry id="3100" level="ERROR" exception="true">
+			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
+			<param name="pattern_matcher" />
+			<param name="pattern_class" />
+			<param name="value" />
 		</entry>
 	</group>
 </log>
