@@ -21,10 +21,5 @@ if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
 	exit 0
 fi
 
-# Generate the build file
-ant -q -f ${XINS_HOME}/src/ant/make-build.xml -Dxins_home=${XINS_HOME}
-
-# Run Ant against the build file
-if [ "$?" = "0" ]; then
-	ant -f build/build.xml $*
-fi
+# Generate the build file and run it
+ant -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home=${XINS_HOME} -Dargs="$*"
