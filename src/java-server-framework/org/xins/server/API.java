@@ -163,8 +163,8 @@ implements DefaultReturnCodes {
 
    /**
     * Callback method invoked when a function throws an exception. This method
-    * will be invoked if and only if {@link #handleCall(context)} throws an
-    * exception of some sort.
+    * will be invoked if and only if {@link #handleCall(CallContext)} throws
+    * an exception of some sort.
     *
     * @param function
     *    the name of the function, will not be <code>null</code>.
