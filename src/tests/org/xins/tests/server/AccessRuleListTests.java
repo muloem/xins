@@ -69,6 +69,21 @@ public class AccessRuleListTests extends TestCase {
    }
 
    public void testParseAccessRuleList() throws Throwable {
-      // TODO
+
+      try {
+         AccessRuleList.parseAccessRuleList(null);
+         fail("AccessRule.parseAccessRuleList(null) should throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      AccessRuleList arl = AccessRuleList.parseAccessRuleList("");
+      assertNotNull(arl);
+      assertEquals(0, arl.getRuleCount());
+
+      arl = AccessRuleList.parseAccessRuleList(" \t\n\r");
+      assertNotNull(arl);
+      assertEquals(0, arl.getRuleCount());
    }
 }
