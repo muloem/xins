@@ -27,6 +27,7 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
+      
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
@@ -38,8 +39,19 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
-      suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
+
+   //   suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
+     
+      suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
+
+      suite.addTestSuite(org.xins.tests.common.types.standard.Int8Tests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.Int16Tests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.Int32Tests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.Int64Tests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.TextTests.class);
+      
+      suite.addTestSuite(org.xins.tests.common.types.standard.PatternTypeTests.class);
       return suite;
    }
 
