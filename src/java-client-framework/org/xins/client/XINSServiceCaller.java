@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnection;
+import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.apache.log4j.NDC;
@@ -311,19 +312,37 @@ public final class XINSServiceCaller extends ServiceCaller {
             Log.log_2013(url, functionName, connectionTimeOut);
             throw new ConnectionTimeOutException();
 
-         // TODO: Socket time-out
-         /* } else if .... {
-            Log.log_2014(url, functionName, socketTimeOut);
-            // TODO: Throw some kind of CallException
-            throw new SocketTimeOutException();
-         } */
+         // Socket time-out
+         } else if (exception instanceof HttpRecoverableException) {
+
+            // XXX: This is an ugly way to detect a socket time-out, but there
+            //      does not seem to be a better way in HttpClient 2.0. This
+            //      will, however, be fixed in HttpClient 3.0. See:
+            //      http://issues.apache.org/bugzilla/show_bug.cgi?id=19868
+
+            String exMessage = exception.getMessage();
+            if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
+               Log.log_2014(url, functionName, socketTimeOut);
+               throw new SocketTimeOutException();
+            } else {
+               // TODO: Log this?
+               throw new CallIOException((IOException) exception);
+            }
 
          } else if (exception instanceof IOException) {
+            // TODO: Log this?
             throw new CallIOException((IOException) exception);
+
+         } else if (exception instanceof RuntimeException) {
+            throw (RuntimeException) exception;
+
+         } else if (exception instanceof Error) {
+            throw (Error) exception;
          }
 
-         // TODO: Probably not throw an InvalidCallResultException
-         throw new InvalidCallResultException(exception);
+         // Unknown kind of exception caught
+         // XXX: Could this be improved?
+         throw new Error(exception);
       }
 
       // Check the code
