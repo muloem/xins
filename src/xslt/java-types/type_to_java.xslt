@@ -77,10 +77,6 @@
 		<xsl:value-of select="$package" />
 		<xsl:text>;
 
-import org.xins.common.types.EnumItem;
-import org.xins.common.types.TypeValueException;
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * </xsl:text>
 		<xsl:call-template name="hungarianUpper">
@@ -120,72 +116,151 @@ public final class ]]></xsl:text>
    // Class functions
    //-------------------------------------------------------------------------]]></xsl:text>
 
-		<xsl:if test="$kind = 'pattern'">
-			<xsl:text>
-   public static String fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
+		<!-- Pattern type -->
+		<xsl:choose>
+			<xsl:when test="$kind = 'pattern'">
+				<xsl:text><![CDATA[
+
+   /**
+    * Converts the specified character string to a value for this type. The
+    * character string cannot be <code>null</code>. If it is, then an
+    * exception is thrown.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, never <code>null</code>.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static java.lang.String fromStringForRequired(java.lang.String string)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("string", string);
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
 
-      return (String) SINGLETON.fromString(string);
+      return (java.lang.String) SINGLETON.fromString(string);
    }
 
-   public static String fromStringForOptional(String string)
-   throws TypeValueException {
-      return (String) SINGLETON.fromString(string);
+   /**
+    * Converts the specified character string -or <code>null</code>- to a
+    * value for this type. The character string can be <code>null</code> in
+    * which case <code>null</code> is also returned.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, or <code>null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static java.lang.String fromStringForOptional(java.lang.String string)
+   throws org.xins.common.types.TypeValueException {
+      return (java.lang.String) SINGLETON.fromString(string);
    }
-</xsl:text>
-		</xsl:if>
+]]></xsl:text>
+			</xsl:when>
 
-		<xsl:if test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
-			<xsl:variable name="optional_object">
-				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file"     select="$project_file" />
-					<xsl:with-param name="specsdir"     select="$specsdir" />
-					<xsl:with-param name="api"     select="$api" />
-					<xsl:with-param name="type"     select="concat('_', $kind)" />
-					<xsl:with-param name="required" select="'false'" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:text>
+			<!-- Number type -->
+			<xsl:when test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
+				<xsl:variable name="required_object">
+					<xsl:call-template name="javatype_for_type">
+						<xsl:with-param name="project_file"     select="$project_file" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"     select="$api" />
+						<xsl:with-param name="type"     select="concat('_', $kind)" />
+						<xsl:with-param name="required" select="'true'" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="optional_object">
+					<xsl:call-template name="javatype_for_type">
+						<xsl:with-param name="project_file"     select="$project_file" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"     select="$api" />
+						<xsl:with-param name="type"     select="concat('_', $kind)" />
+						<xsl:with-param name="required" select="'false'" />
+					</xsl:call-template>
+				</xsl:variable>
 
-   public static </xsl:text>
-			<xsl:value-of select="$optional_object"/>
-			<xsl:text> fromStringForOptional(String string)
-   throws TypeValueException {
-      return (</xsl:text>
-			<xsl:value-of select="$optional_object"/>
-			<xsl:text>) SINGLETON.fromString(string);
-   }</xsl:text>
+				<xsl:text><![CDATA[
 
-			<xsl:variable name="required_object">
-				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file"     select="$project_file" />
-					<xsl:with-param name="specsdir"     select="$specsdir" />
-					<xsl:with-param name="api"     select="$api" />
-					<xsl:with-param name="type"     select="concat('_', $kind)" />
-					<xsl:with-param name="required" select="'true'" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:text>
-
-   public static </xsl:text>
-			<xsl:value-of select="$required_object"/>
-			<xsl:text> fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
+   /**
+    * Converts the specified character string to a value for this type. The
+    * character string cannot be <code>null</code>. If it is, then an
+    * exception is thrown.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static ]]></xsl:text>
+				<xsl:value-of select="$required_object"/>
+				<xsl:text> fromStringForRequired(java.lang.String string)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("string", string);
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
 
       return ((</xsl:text>
-			<xsl:value-of select="$optional_object"/>
-			<xsl:text>)SINGLETON.fromString(string)).</xsl:text>
-			<xsl:value-of select="$required_object"/>
-			<xsl:text>Value();
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text>)SINGLETON.fromString(string)).</xsl:text>
+				<xsl:value-of select="$required_object"/>
+				<xsl:text>Value();
    }
 </xsl:text>
-		</xsl:if>
+				<xsl:text><![CDATA[
+
+   /**
+    * Converts the specified character string -or <code>null</code>- to a
+    * value for this type. The character string can be <code>null</code> in
+    * which case <code>null</code> is also returned.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, or <code>null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static ]]></xsl:text>
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text> fromStringForOptional(java.lang.String string)
+   throws org.xins.common.types.TypeValueException {
+      return (</xsl:text>
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text>) SINGLETON.fromString(string);
+   }</xsl:text>
+
+			</xsl:when>
+			<!-- XXX: otherwise? -->
+		</xsl:choose>
 
 		<xsl:text><![CDATA[
 
@@ -209,7 +284,7 @@ public final class ]]></xsl:text>
 		<xsl:text>", </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$kind = 'enum'">
-				<xsl:text>new EnumItem[] {</xsl:text>
+				<xsl:text>new org.xins.common.types.EnumItem[] {</xsl:text>
 				<xsl:for-each select="enum/item">
 					<xsl:if test="position() &gt; 1">,</xsl:if>
 					<xsl:text>
@@ -512,7 +587,7 @@ public final class ]]></xsl:text>
 			<xsl:if test="not($typeIsPrimary = 'true')">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>.
        *
-       * @throws IllegalArgumentException
+       * @throws java.lang.IllegalArgumentException
        *    if <code>value == null</code>]]></xsl:text>
 			</xsl:if>
 			<xsl:text>.
@@ -523,7 +598,7 @@ public final class ]]></xsl:text>
 
 			</xsl:text>
 			<xsl:if test="not($typeIsPrimary = 'true')">
-         MandatoryArgumentChecker.check("value", value);
+         org.xins.common.MandatoryArgumentChecker.check("value", value);
 			</xsl:if>
 			<xsl:variable name="valueasobject">
 				<xsl:choose>
@@ -601,18 +676,18 @@ public final class ]]></xsl:text>
     *    the matching {@link Item} instance, or <code>null</code> if and only
     *    if <code>value == null</code>.
     *
-    * @throws TypeValueException
+    * @throws org.xins.common.types.TypeValueException
     *    if the specified value does not denote an existing item.
     */
-   public static Item getItemByValue(String value)
-   throws TypeValueException {
+   public static Item getItemByValue(java.lang.String value)
+   throws org.xins.common.types.TypeValueException {
 
       if (value != null) {
          Object o = SINGLETON._valuesToItems.get(value);
          if (o != null) {
             return (Item) o;
          } else {
-            throw new TypeValueException(SINGLETON, value);
+            throw new org.xins.common.types.TypeValueException(SINGLETON, value);
          }
       } else {
          return null;
@@ -631,26 +706,26 @@ public final class ]]></xsl:text>
     *    the matching {@link Item} instance, or <code>null</code> if and only
     *    if <code>name == null</code>.
     *
-    * @throws TypeValueException
+    * @throws org.xins.common.types.TypeValueException
     *    if the specified name does not denote an existing item.
     */
-   public static Item getItemByName(String name)
-   throws TypeValueException {
+   public static Item getItemByName(java.lang.String name)
+   throws org.xins.common.types.TypeValueException {
 
       if (name != null) {
          Object o = SINGLETON._namesToItems.get(name);
          if (o != null) {
             return (Item) o;
          } else {
-            throw new TypeValueException(SINGLETON, name);
+            throw new org.xins.common.types.TypeValueException(SINGLETON, name);
          }
       } else {
          return null;
       }
    }
 
-   public Object fromStringImpl(String value)
-   throws TypeValueException {
+   public Object fromStringImpl(java.lang.String value)
+   throws org.xins.common.types.TypeValueException {
       return getItemByValue(value);
    }
 
@@ -694,7 +769,7 @@ public final class ]]></xsl:text>
     * </ul>
     */
    public static final class Item
-   extends EnumItem {
+   extends org.xins.common.types.EnumItem {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -710,11 +785,11 @@ public final class ]]></xsl:text>
        * @param value
        *    the actual value of the enumeration item, not <code>null</code>.
        *
-       * @throws IllegalArgumentException
+       * @throws java.lang.IllegalArgumentException
        *    if <code>name == null || value == null</code>.
        */
-      private Item(String name, String value)
-      throws IllegalArgumentException {
+      private Item(java.lang.String name, java.lang.String value)
+      throws java.lang.IllegalArgumentException {
          super(name, value);
       }
 
