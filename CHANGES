@@ -123,6 +123,10 @@ CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 3:
     . 2112 (was INFO).
   - Added log message 2113: XINS call request completely failed.
 
+* XINS/Java Common Library:
+  - Changed UnexpectedExceptionCallException constructor: The 'cause' argument
+    is now mandatory.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
 
