@@ -72,6 +72,8 @@ implements DefaultResultCodes {
       _name    = name;
       _version = version;
 
+      _responseValidator = BasicResponseValidator.SINGLETON;
+
       _api.functionAdded(this);
    }
 
@@ -256,6 +258,16 @@ implements DefaultResultCodes {
     */
    final String getVersion() {
       return _version;
+   }
+
+   /**
+    * Returns the response validator for this function.
+    *
+    * @return
+    *    the response validator, never <code>null</code>.
+    */
+   final ResponseValidator getResponseValidator() {
+      return _responseValidator;
    }
 
    /**
