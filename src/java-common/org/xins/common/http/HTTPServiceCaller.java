@@ -61,9 +61,9 @@ import org.xins.common.text.FastStringBuffer;
  * <p>Then the following code snippet uses this <code>HTTPServiceCaller</code>
  * to perform an HTTP GET call:
  *
- * <blockquote><code>{@link PropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
- * <br />params.set("street",      "Broadband Avenue");
- * <br />params.set("houseNumber", "12");
+ * <blockquote><code>{@link BasicPropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
+ * <br />params.{@link BasicPropertyReader#set(String,String) set}("street",      "Broadband Avenue");
+ * <br />params.{@link BasicPropertyReader#set(String,String) set}("houseNumber", "12");
  * <br />
  * <br />{@link HTTPCallRequest} request = new {@link HTTPCallRequest#HTTPCallRequest(HTTPMethod,PropertyReader) HTTPCallRequest}({@link HTTPMethod}.{@link HTTPMethod#GET GET}, params);
  * <br />{@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</code></blockquote>
