@@ -45,8 +45,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Implement a _DumpStatistics function that writes the statistics in a comma
   separated line in a text file.
 * Stop runtime configuration file watch thread when the servlet is disposed.
-* Access control rules: Make default behaviour to deny requests. We should
-  then be able to remove log message 4033.
 * Move the logs in the Function#performedCall() method somewhere else
   and remove this method from Function.
 * Log that the runtime properties file is opened at startup (DEBUG level).
@@ -65,6 +63,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Improve the performance of the parsing of the query string by using a custom
   method to do this. Return an HTTP error code if the query string is invalid,
   for example if it contains duplicate parameter names.
+* Log 5014/5015 for meta-functions.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
