@@ -563,28 +563,29 @@ public final class XINSServiceCaller extends ServiceCaller {
       // The request must be a XINS call request
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
 
-      // First let the superclass do it's job
       boolean should;
-      if (super.shouldFailOver(request, exception)) {
-         should = true;
 
       // If fail-over is allowed even if request is already sent, then
-      // short-circuit and allow fail-over
+      // short-circuit and allow fail-over.
       //
       // XXX: Note that fail-over will even be allowed if there was an
-      //      internal error that does not have anything to do with the
+      //      internal error that may not have anything to do with the
       //      service being called, e.g. an OutOfMemoryError or an
-      //      InterruptedException. This could be improved by checking the
-      //      type of exception and only allowing fail-over if the exception
-      //      indicates an I/O error.
-      } else if (xinsRequest.isFailOverAllowed()) {
+      //      InterruptedException.
+      if (xinsRequest.isFailOverAllowed()) {
          should = true;
 
-      // Check if the request may fail-over from HTTP point-of-view
+      // Otherwise let the superclass look at the exception and determine
+      // whether it allows fail-over in all instances, for example when a
+      // connection is refused.
+      } else if (super.shouldFailOver(request, exception)) {
+         should = true;
+
+      // Otherwise check if the request may fail-over from HTTP point-of-view
       //
       // XXX: Note that this duplicates code that is already in the
       //      HTTPServiceCaller. This may need to be refactored at some point.
-      //      It has been decided to take this approach, since the
+      //      It has been decided to take this approach since the
       //      shouldFailOver method in class HTTPServiceCaller has protected
       //      access.
       //
