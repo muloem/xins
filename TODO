@@ -35,12 +35,12 @@ XINS/JAVA SERVER FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
-* None
+* Support non-200 HTTP return codes.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
-* None
+* Change Type class to add a 'version' property.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
