@@ -141,7 +141,7 @@ public final class GroupDescriptor extends Descriptor {
     *    the set of {@link Descriptor} instances, cannot be <code>null</code>.
     *
     * @throws NullPointerException
-    *    if <code>members == null || <em>group</em>.</code>{@link #_member}<code> == null</code>,
+    *    if <code>members == null || <em>group</em>.</code>{@link #_members}<code> == null</code>,
     *    where <em>group</em> is any {@link GroupDescriptor} instance found in
     *    <code>members</code> (at any level).
     */
