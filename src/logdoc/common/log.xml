@@ -141,7 +141,8 @@
 	<group id="io" name="General I/O">
 		<entry id="3200" level="INFO">
 			<description>Starting file watch thread.</description>
-			<param name="file" type="text" nullable="false" />
+			<param name="file"     type="text"  nullable="false" />
+			<param name="interval" type="int32" nullable="false" />
 		</entry>
 		<entry id="3201" level="INFO">
 			<description>Changing file watch interval.</description>
