@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Removed unused import statements.
   - Added some getter methods for the DataElement.
   - Each DataElement now must have a qualified name.
+  - Fixed the bug 1010776 that did not close the sockets with CAPI.
+    This bug has been in XINS since version 0.195.
 
 * Logdoc:
   - Removed the counter that counted the number of time that a log was
@@ -28,6 +30,8 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Added a run target that asks for the command and API to execute.
 
 * Moved the bin directory from xins/src to xins directory.
+
+* Removed some TODOs done.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.205:

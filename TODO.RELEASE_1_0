@@ -4,7 +4,6 @@ List of things to be done for XINS release 1.0:
 - First tag on the BRANCH_1_0_x branch should be RELEASE_1_0_0
 - Start with empty CHANGES file
 - Make sure empty directories are not included in the new branch
-- Remove unused methods, fields and classes
 - Finalize log entry ID's.
 - Prepare the annoucement (text + web sites where it will be posted)
 - Set @since tags on all classes to 1.0 (should we really do this?)

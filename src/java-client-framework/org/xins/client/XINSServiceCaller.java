@@ -850,6 +850,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          } catch (Throwable exception) {
             _exception = exception;
          }
+         _call.releaseConnection();
       }
    }
 }

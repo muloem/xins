@@ -6,8 +6,6 @@ This file lists the planned changes for XINS.
 ______________________________________________________________________________
 XINS PROTOCOL AND SPECIFICATION FORMAT
 
-* Result codes should be allowed to have their own specification for output
-  parameters and data section.
 * Support API inheritance.
 * Define regular expression for input parameter names.
 * Allow the following type of constraint to be specified in a function
@@ -25,8 +23,6 @@ XINS/JAVA SERVER FRAMEWORK
   --> No, if this information is required it should be printed by Log4J. In
       general all timestamps should be printed using Log4J.
 * A new maximum call duration (for a specific function) could be logged.
-* CallContext should not rely on CallResultBuilder but implement the
-  CallResult interface self.
 * CallContext.getCallResult() should either be removed or it should return
   'this'.
 * Check state transitions in APIServlet class.
@@ -36,7 +32,6 @@ XINS/JAVA SERVER FRAMEWORK
   is. Change the setState(State) methods to check this.
 * Support returning of call ID in function output, as an output parameter
   named '_callID'.
-* CallResultBuilder should perhaps not implement CallResult.
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
 * Generated Javadoc should include package-private and private members.
@@ -47,9 +42,6 @@ XINS/JAVA SERVER FRAMEWORK
   --> After XINS 1.0, perhaps in 1.1.
 * Stop runtime configuration file watch thread when the servlet is disposed.
   --> After XINS 1.0, perhaps in 1.1.
-* Move the logs in the Function#performedCall() method somewhere else
-  and remove this method from Function.
-  --> To be investigated.
 * Log that the runtime properties file is opened at startup (DEBUG level).
   --> Before XINS 1.0.
 * When the runtime properties file is marked as -r (not readable) at startup,
@@ -93,9 +85,6 @@ XINS/JAVA CLIENT FRAMEWORK
   --> This should be given some more thought.
 * Send "_function=<name>" instead of "function=<name>" as soon as all existing
   backends support this (in class XINSServiceCaller).
-* Abandon JDOM completely, favour SAX for parsing and a custom Document Object
-  Model implementation, where appropriate.
-  --> This is currently being investigated by Peter Troon.
 * Make sure that the XINSServiceCaller properly supports HTTP result codes
   other than 200. Document the behaviour. Redirects should probably not be
   followed, but this has to be determined. Perhaps a configuration setting
@@ -113,12 +102,11 @@ ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
 * Change the service caller framework to distinguish between connection and
-  socket time-outs. 
+  socket time-outs.
   --> This should preferrably be done before XINS 1.0.
 * Improve description of class Manageable. It still refers to the term
   'lifespan manager'.
   --> This should be fixed ASAP.
-* Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
   --> This should be given some more thought.
 * Change ExpiryFolder to allow retrieval of slot info.
@@ -136,7 +124,6 @@ LOGDOC
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
 
-* Display specified output parameters and data section per result code.
 * Check all names using regular expressions.
 * Have a page per environment with links to _GetVersion, _GetStatistics,
   _GetSettings, etc. Let the link on the page for an API link to that page.
@@ -149,7 +136,6 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Have an item for a result code page in the header.
 * Per type have a list of input parameters, output parameters and data element
   attributes that are defined as of this type.
-* Display the name of each item in the generated HTML for an enum type.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
@@ -186,7 +172,5 @@ MISCELLANEOUS
   task would need to be developed for this.
 * Support the Freshmeat.net XML-RPC interface for notification of new
   releases.
-* Refactor documentation.
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
-* Investigate the unused classes/methods.
