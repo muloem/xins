@@ -435,7 +435,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>)
    throws </xsl:text>
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
-			<xsl:text>org.xins.types.TypeValueException, org.xins.client.NoSuchSessionException</xsl:text>
+			<xsl:text>org.xins.types.TypeValueException, org.xins.client.NoSuchSessionException, </xsl:text>
 		</xsl:if>
 		<xsl:text>org.xins.client.CallException {</xsl:text>
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
