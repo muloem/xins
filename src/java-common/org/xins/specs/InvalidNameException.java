@@ -44,15 +44,11 @@ public final class InvalidNameException extends Exception {
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "name", name);
 
-      String typeName = type.getTypeName();
-
-      boolean vowel = isVowel(typeName.charAt(0));
-
       FastStringBuffer buffer = new FastStringBuffer(80);
       buffer.append("The specified name \"");
       buffer.append(name);
       buffer.append("\" is invalid for a component of type \"");
-      buffer.append(typeName);
+      buffer.append(type.getTypeName());
       buffer.append("\".");
 
       return buffer.toString();
