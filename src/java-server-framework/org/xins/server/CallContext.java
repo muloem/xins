@@ -40,8 +40,9 @@ implements Responder {
     * be called.
     */
    CallContext() {
-      _state = UNINITIALIZED;
+      _state        = UNINITIALIZED;
       _success      = true;
+      _code         = null;
       _stringWriter = new FastStringWriter();
       _xmlOutputter = new XMLOutputter();
    }
@@ -138,6 +139,7 @@ implements Responder {
       _request = null;
       _state   = UNINITIALIZED;
       _success = true;
+      _code    = null;
    }
 
    /**
@@ -163,6 +165,7 @@ implements Responder {
       _request = request;
       _state   = BEFORE_START;
       _success = true;
+      _code    = null;
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
