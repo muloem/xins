@@ -190,40 +190,6 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a string for use in an error message in case an unexpected
-    * exception is caught.
-    *
-    * @param exception
-    *    the caught exception, cannot be <code>null</code>.
-    *
-    * @return
-    *    the character string to use in an error message, never
-    *    <code>null</code>, always starts with <code>"due to
-    *    unexpected"</code> and always ends with a full stop character
-    *    (<code>'.'</code>).
-    */
-   static final String dueToUnexpected(Throwable exception)
-   throws NullPointerException {
-
-      // TODO: Remove this function
-
-      FastStringBuffer buffer = new FastStringBuffer(4014);
-      buffer.append("due to unexpected ");
-      buffer.append(exception.getClass().getName());
-
-      String message = exception.getMessage();
-      if (message == null || message.length() < 1) {
-         buffer.append(" with no message.");
-      } else {
-         buffer.append(" with message \"");
-         buffer.append(message);
-         buffer.append("\".");
-      }
-
-      return buffer.toString();
-   }
-
-   /**
     * Initializes the loggers to log to the console using a simple format
     * and no threshold.
     */
