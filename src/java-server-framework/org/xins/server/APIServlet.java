@@ -617,7 +617,7 @@ extends HttpServlet {
 
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         Log.log_4012(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, String.valueOf(interval));
+         Log.log_4012(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, interval);
          _configFileWatcher.start();
 
          Log.log_4017();
@@ -980,7 +980,7 @@ extends HttpServlet {
          int oldInterval = _configFileWatcher.getInterval();
          if (oldInterval != newInterval) {
             _configFileWatcher.setInterval(newInterval);
-            Log.log_4003(_configFile, String.valueOf(oldInterval), String.valueOf(newInterval));
+            Log.log_4003(_configFile, oldInterval, newInterval);
          }
 
          Log.log_4018();

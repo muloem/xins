@@ -95,8 +95,8 @@
 		</entry>
 		<entry id="2017" level="INFO">
 			<description>Session time-out and time-out precision are set.</description>
-			<param name="timeOut" />
-			<param name="timeOutPrecision" />
+			<param name="timeOut" type="int32" nullable="false" />
+			<param name="timeOutPrecision" type="int32" nullable="false" />
 		</entry>
 		<entry id="2018" level="INFO">
 			<description>Determining build-time settings.</description>
@@ -252,8 +252,8 @@
 		<entry id="4003" level="NOTICE">
 			<description>Runtime properties file watch interval changed.</description>
 			<param name="configFile" nullable="false" />
-			<param name="oldInterval" nullable="false" />
-			<param name="newInterval" nullable="false" />
+			<param name="oldInterval" type="int32" nullable="false" />
+			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
 		<entry id="4004" level="INFO">
 			<description>Determined local timezone.</description>
@@ -298,8 +298,8 @@
 		<entry id="4012" level="INFO">
 			<description>Commencing runtime properties file watching.</description>
 			<param name="configFile" />
-			<param name="propertyName" />
-			<param name="propertyValue" />
+			<param name="intervalPropertyName" />
+			<param name="interval" />
 		</entry>
 		<entry id="4013" level="ERROR">
 			<description>API could not be initialized due to a missing required property.</description>
@@ -412,7 +412,7 @@
 		</entry>
 		<entry id="4034" level="INFO">
 			<description>Access rule list defined and successfully loaded.</description>
-			<param name="ruleCount" nullable="false" />
+			<param name="ruleCount" type="int32" nullable="false" />
 		</entry>
 		<entry id="4035" level="ERROR">
 			<description>Error loading access rule list.</description>
@@ -422,7 +422,7 @@
 		</entry>
 		<entry id="4036" level="INFO">
 			<description>Access rule parsed.</description>
-			<param name="index" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
 			<param name="rule" nullable="false" />
 		</entry>
 	</group>
@@ -500,7 +500,7 @@
 		</entry>
 		<entry id="6003" level="NOTICE">
 			<description>Closing open sessions.</description>
-			<param name="sessionCount" />
+			<param name="sessionCount" type="int32" nullable="false" />
 		</entry>
 		<entry id="6004" level="DEBUG">
 			<description>Deinitializing manageable object.</description>

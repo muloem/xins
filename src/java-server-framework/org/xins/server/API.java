@@ -374,7 +374,7 @@ implements DefaultResultCodes {
          int timeOut   = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
          int precision = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
-         Log.log_2017(String.valueOf(timeOut), String.valueOf(precision));
+         Log.log_2017(timeOut, precision);
 
          // Create expiry strategy and folder
          final long MINUTE_IN_MS = 60000L;
@@ -522,7 +522,7 @@ implements DefaultResultCodes {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
             int ruleCount = _accessRuleList.getRuleCount();
-            Log.log_4034(String.valueOf(ruleCount));
+            Log.log_4034(ruleCount);
          } catch (ParseException exception) {
             Log.log_4035(ACL_PROPERTY, acl, exception.getMessage());
             throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
@@ -632,7 +632,7 @@ implements DefaultResultCodes {
       _sessionExpiryStrategy.stop();
 
       // Destroy all sessions
-      Log.log_6003(String.valueOf(_sessionsByID.size()));
+      Log.log_6003(_sessionsByID.size());
 
       _sessionsByID = null;
 
