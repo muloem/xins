@@ -254,7 +254,7 @@ implements Responder, Log {
       // Determine the active session
       if (_function != null && _function.isSessionBased()) {
          String sessionID = request.getParameter("_session");
-         if (sessionID == null) {
+         if (sessionID == null || sessionID.length() == 0) {
             throw new MissingSessionIDException();
          } else {
             _session = _api.getSession(sessionID);
