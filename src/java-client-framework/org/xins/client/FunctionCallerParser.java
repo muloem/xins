@@ -28,7 +28,7 @@ import org.xins.util.collections.CollectionUtils;
  *
  * @since XINS 0.45
  */
-public abstract class FunctionCallerParser
+public class FunctionCallerParser
 extends Object {
 
    //-------------------------------------------------------------------------
