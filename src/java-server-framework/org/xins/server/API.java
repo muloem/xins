@@ -701,6 +701,7 @@ implements DefaultResultCodes {
             try {
                wait();
             } catch (InterruptedException iex) {
+               // empty
             }
          }
       }
