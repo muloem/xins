@@ -472,7 +472,7 @@ public final class GroupDescriptor extends Descriptor {
       //----------------------------------------------------------------------
 
       public boolean hasNext() {
-         return (_currentIterator != null);
+         return (_currentIterator != null) && _currentIterator.hasNext();
       }
 
       public Object next() throws NoSuchElementException {

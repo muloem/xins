@@ -1,6 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.193:
 
+* XINS/Java Common Framework:
+  - Fixed bug in GroupDescriptor.hasNext(). Previously it could incorrectly
+    return true instead of false.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.192:
 
