@@ -11,6 +11,7 @@ import org.xins.specs.FunctionSpec;
 import org.xins.specs.InputParamSpec;
 import org.xins.specs.InvalidNameException;
 import org.xins.specs.InvalidVersionException;
+import org.xins.specs.TypeSpec;
 
 /**
  * Tests for class <code>InputParamSpec</code>.
@@ -74,22 +75,27 @@ public class InputParamSpecTests extends TestCase {
 
       APISpec      api = new APISpec("api", "1.0");
       FunctionSpec fnc = new FunctionSpec(api, "Function", "1.0");
+      TypeSpec     typ = new TypeSpec(api, "type", "1.0");
       InputParamSpec spec;
 
       // Test null arguments
-      int argCount = 2;
-      int combinations = 3; // (2 ** 2) - 1
+      int argCount = 3;
+      int combinations = 7; // (2 ** 3) - 1
       for (int i = 0; i < combinations; i++) {
          boolean arg1 = (i & 1) > 0;
          boolean arg2 = (i & 2) > 0;
+         boolean arg3 = (i & 4) > 0;
          try {
             spec = new InputParamSpec(
                (arg1 ? fnc    : null),
-               (arg2 ? "type" : null)
+               (arg2 ? "par"  : null),
+               (arg3 ? typ    : null),
+               false
             );
             fail("InputParamSpec() should throw an IllegalArgumentException. Configuration: "
                  + (arg1 ? "non-null" : "null") + ", "
-                 + (arg2 ? "non-null" : "null") + '.');
+                 + (arg2 ? "non-null" : "null") + ", "
+                 + (arg3 ? "non-null" : "null") + ", false.");
          } catch (IllegalArgumentException iae) { /* as expected */ }
       }
 
@@ -102,7 +108,7 @@ public class InputParamSpecTests extends TestCase {
       for (int i = 0; i < invalidNames.length; i++) {
          try {
             String name = invalidNames[i];
-            spec = new InputParamSpec(fnc, name);
+            spec = new InputParamSpec(fnc, name, typ, false);
             fail("InputParamSpec(FunctionSpec, \"" + name + "\") should throw an InvalidNameException.");
          } catch (InvalidNameException ine) { /* as expected */ }
       }
@@ -112,7 +118,8 @@ public class InputParamSpecTests extends TestCase {
          "type", "someType", "someType2", "some2", "s", "s2", "typeAB"};
       for (int i = 0; i < names.length; i++) {
          String name = names[i];
-         spec = new InputParamSpec(fnc, name);
+         spec = new InputParamSpec(fnc, name, typ, false);
+         spec = new InputParamSpec(fnc, name, typ, true);
       }
    }
 
