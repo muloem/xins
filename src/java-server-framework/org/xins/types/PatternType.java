@@ -64,19 +64,23 @@ public abstract class PatternType extends Type {
     * @throws IllegalArgumentException
     *    if <code>name == null || pattern == null</code>.
     *
-    * @throws MalformedPatternException
+    * @throws PatternCompileException
     *    if the specified pattern is considered invalid.
     */
    protected PatternType(String name, String pattern)
-   throws IllegalArgumentException, MalformedPatternException {
+   throws IllegalArgumentException, PatternCompileException {
       super(name, String.class);
 
       if (pattern == null) {
          throw new IllegalArgumentException("pattern == null");
       }
 
-      synchronized (PATTERN_COMPILER) {
-         _pattern = PATTERN_COMPILER.compile(pattern, Perl5Compiler.READ_ONLY_MASK);
+      try {
+         synchronized (PATTERN_COMPILER) {
+            _pattern = PATTERN_COMPILER.compile(pattern, Perl5Compiler.READ_ONLY_MASK);
+         }
+      } catch (MalformedPatternException mpe) {
+         throw new PatternCompileException(mpe.getMessage());
       }
    }
 
