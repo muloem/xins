@@ -124,7 +124,7 @@ public class ExpiryFolderTests extends TestCase {
          fail("Sleeping thread interrupted.");
       }
       assertEquals("Incorrect value found.", "world", folder.get("hello"));
-      folder.remove("hello");
+      assertEquals("world", folder.remove("hello"));
       try {
          Thread.sleep(20);
       } catch (Exception ex) {
@@ -132,5 +132,8 @@ public class ExpiryFolderTests extends TestCase {
       }
       assertNull("Incorrect value found.", folder.find("hello"));
       assertNull("Incorrect value found.", folder.get("hello"));
+      
+      // remove a non existing object
+      assertNull(folder.remove("hello2"));
    }
 }

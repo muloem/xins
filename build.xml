@@ -442,7 +442,7 @@
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
-		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="true">
+		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="false">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>

@@ -94,6 +94,18 @@ public class HexConverterTests extends TestCase {
       doTestParseHexString_String("ffffffffffffffff",             -1L);
       doTestParseHexString_String("fffffffffffffffe",             -2L);
       doTestParseHexString_String(String.valueOf(Long.MIN_VALUE), Long.MIN_VALUE);
+      
+      // Test other methods
+      assertTrue(HexConverter.isHexDigit('6'));
+      assertTrue(HexConverter.isHexDigit('b'));
+      assertTrue(HexConverter.isHexDigit('F'));
+      
+      assertEquals("ANT", new String(HexConverter.parseHexBytes("414e54", 0, 6)));
+      assertEquals(2, HexConverter.parseHexBytes("414e54", 2, 4).length);
+      assertEquals((byte)78, HexConverter.parseHexBytes("414e54", 2, 2)[0]);
+      
+      assertEquals(0x123b56F, HexConverter.parseHexInt("Testing 0123b56F", 8));
+      assertEquals(0x123b56F, HexConverter.parseHexInt("0123b56F"));
    }
 
    private void doTestParseHexString_String(String arg, long expected) {
@@ -137,6 +149,18 @@ public class HexConverterTests extends TestCase {
       doTestToHexString("", 0x1234567890123456L, "1234567890123456");
       doTestToHexString("Testing ", 1L, "Testing 0000000000000001");
       doTestToHexString("Testing ", 0x1234567890123456L, "Testing 1234567890123456");
+      
+      byte[] input1 = { (byte)56, (byte)10, (byte) 230};
+      String output1 = HexConverter.toHexString(input1);
+      assertEquals("380ae6", output1);
+      assertEquals("e2", HexConverter.toHexString((byte)226));
+      assertEquals("1234", HexConverter.toHexString((short)0x1234));
+      assertEquals("000000e2", HexConverter.toHexString(226));
+      assertEquals("1234567890123456", HexConverter.toHexString(0x1234567890123456L));
+      
+      FastStringBuffer buffer = new FastStringBuffer("Testing ");
+      HexConverter.toHexString(buffer, 0x123456);
+      assertEquals("Testing 00123456", buffer.toString());
    }
 
    private void doTestToHexString(String arg, long value, String expectedResult) {
@@ -144,4 +168,5 @@ public class HexConverterTests extends TestCase {
       HexConverter.toHexString(buffer, value);
       assertEquals(expectedResult, buffer.toString());
    }
+   
 }
