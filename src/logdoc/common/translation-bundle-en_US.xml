@@ -8,12 +8,12 @@
 -->
 
 <translation-bundle>
-	<translation entry="3100"><value-of-param name="pattern_matcher" />.matches(java.lang.String,<value-of-param name="pattern_class" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
+	<translation entry="3100"><value-of-param name="patternMatcher" />.matches(java.lang.String,<value-of-param name="patternClass" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
 
 	<translation entry="3200">Starting watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="old_interval" /> to <value-of-param name="new_interval" /> seconds.</translation>
+	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</translation>
 	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="3205">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
+	<translation entry="3205">Increasing capacity from <value-of-param name="currentCapacity" /> to <value-of-param name="newCapacity" />.</translation>
 
 	<translation entry="3303">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
 	<translation entry="3312">Call to service at URL <value-of-param name="url" /> succeeded.</translation>
@@ -25,14 +25,14 @@
 	<translation entry="3318">More targets available and fail-over is allowed.</translation>
 	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
 
-	<translation entry="3400"><value-of-param name="folderName" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
-	<translation entry="3401"><value-of-param name="folderName" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
-	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="new_size" />, adjusted to 0.</translation>
-	<translation entry="3403">Created <value-of-param name="strategy" />, time-out duration is <value-of-param name="time_out" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
+	<translation entry="3400"><value-of-param name="folderName" />: Expired <value-of-param name="toBeExpiredSize" /> entries ( <value-of-param name="newSize" /> remaining).</translation>
+	<translation entry="3401"><value-of-param name="folderName" />: Expired 1 entry ( <value-of-param name="newSize" /> remaining).</translation>
+	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="newSize" />, adjusted to 0.</translation>
+	<translation entry="3403">Created <value-of-param name="strategy" />, time-out duration is <value-of-param name="timeOut" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="3405"><value-of-param name="strategy" /> started.</translation>
 	<translation entry="3406"><value-of-param name="strategy" /> stopped.</translation>
-	<translation entry="3407">Constructed <value-of-param name="className" />, initial queue size is <value-of-param name="queue_size" />, maximum queue wait time is <value-of-param name="max_queue_size" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
+	<translation entry="3407">Constructed <value-of-param name="className" />, initial queue size is <value-of-param name="queueSize" />, maximum queue wait time is <value-of-param name="maxQueueSize" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
 	<translation entry="3408"><value-of-param name="className" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
 	<translation entry="3409"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
 	<translation entry="3410"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>

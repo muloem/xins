@@ -15,22 +15,22 @@
 		<entry id="3400" level="DEBUG">
 			<description>Some expired entries remain.</description>
 			<param name="folderName" nullable="false" />
-			<param name="to_be_expired_size" type="int32" nullable="false" />
-			<param name="new_size" type="int32" nullable="false" />
+			<param name="toBeExpiredSize" type="int32" nullable="false" />
+			<param name="newSize" type="int32" nullable="false" />
 		</entry>
 		<entry id="3401" level="DEBUG">
 			<description>One expired entry remains.</description>
 			<param name="folderName" nullable="false" />
-			<param name="new_size" type="int32" nullable="false" />
+			<param name="newSize" type="int32" nullable="false" />
 		</entry>
 		<entry id="3402" level="ERROR">
 			<description>The size of expiry folder is adjusted to 0.</description>
-			<param name="new_size" type="int32" nullable="false" />
+			<param name="newSize" type="int32" nullable="false" />
 		</entry>
 		<entry id="3403" level="DEBUG">
 			<description>Creating an expiry strategy.</description>
 			<param name="strategy" nullable="false" />
-			<param name="time_out" type="int64" nullable="false" />
+			<param name="timeOut" type="int64" nullable="false" />
 			<param name="precision" type="int64" nullable="false" />
 		</entry>
 		<entry id="3404" level="DEBUG">
@@ -56,8 +56,8 @@
 		<entry id="3201" level="INFO">
 			<description>Changing the watch interval for a file.</description>
 			<param name="file" nullable="false" />
-			<param name="old_interval" type="int32" nullable="false" />
-			<param name="new_interval" type="int32" nullable="false" />
+			<param name="oldInterval" type="int32" nullable="false" />
+			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
 		<entry id="3202" level="INFO">
 			<description>Stopping watch thread for a file.</description>
@@ -106,8 +106,8 @@
 	<group id="text" name="Text">
 		<entry id="3205" level="DEBUG">
 			<description>Increasing capacity of the FastStringBuffer.</description>
-			<param name="current_capacity" type="int32" nullable="false" />
-			<param name="new_capacity" type="int32" nullable="false" />
+			<param name="currentCapacity" type="int32" nullable="false" />
+			<param name="newCapacity" type="int32" nullable="false" />
 		</entry>
 	</group>
 
@@ -115,8 +115,8 @@
 		<entry id="3407" level="DEBUG">
 			<description>Constructed new Doorman.</description>
 			<param name="className" nullable="false" />
-			<param name="queue_size" type="int32" nullable="false" />
-			<param name="max_queue_size" type="int64" nullable="false" />
+			<param name="queueSize" type="int32" nullable="false" />
+			<param name="maxQueueSize" type="int64" nullable="false" />
 			<param name="strict" nullable="false" />
 		</entry>
 		<entry id="3408" level="DEBUG">
@@ -240,8 +240,8 @@
 	<group id="types" name="Types">
 		<entry id="3100" level="ERROR" exception="true">
 			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
-			<param name="pattern_matcher" />
-			<param name="pattern_class" />
+			<param name="patternMatcher" />
+			<param name="patternClass" />
 			<param name="value" />
 		</entry>
 	</group>
