@@ -342,38 +342,15 @@
 				<fileset dir="depends/runtime"             includes="**/*.jar" />
 				<fileset dir="${ant.home}/lib"             includes="**/*.jar" />
 			</classpath>
-			<link
-			href="http://java.sun.com/products/servlet/2.3/javadoc/"
-			offline="true"
-			packagelistloc="src/package-lists/servlet/" />
-			<link
-			href="http://java.sun.com/j2se/1.3/docs/api"
-			offline="true"
-			packagelistloc="src/package-lists/j2se/" />
-			<link
-			href="http://jakarta.apache.org/log4j/docs/api/"
-			offline="true"
-			packagelistloc="src/package-lists/log4j/" />
-			<link
-			href="http://jakarta.apache.org/commons/logging/api/"
-			offline="true"
-			packagelistloc="src/package-lists/commons-logging/" />
-			<link
-			href="http://jakarta.apache.org/oro/api/"
-			offline="true"
-			packagelistloc="src/package-lists/oro/" />
-			<link
-			href="http://xmlenc.sourceforge.net/javadoc/0.37/"
-			offline="true"
-			packagelistloc="src/package-lists/xmlenc/" />
-			<link
-			href="http://www.jdom.org/docs/apidocs/"
-			offline="true"
-			packagelistloc="src/package-lists/jdom/" />
-			<link
-			href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
-			offline="true"
-			packagelistloc="src/package-lists/ant/" />
+			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://java.sun.com/products/servlet/2.3/javadoc/"         />
+			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.3/docs/api"                     />
+			<link offline="true" packagelistloc="src/package-lists/log4j/"              href="http://jakarta.apache.org/log4j/docs/api/"                 />
+			<link offline="true" packagelistloc="src/package-lists/commons-logging/"    href="http://jakarta.apache.org/commons/logging/api/"            />
+			<link offline="true" packagelistloc="src/package-lists/commons-httpclient/" href="http://jakarta.apache.org/commons/httpclient/apidocs/"     />
+			<link offline="true" packagelistloc="src/package-lists/oro/"                href="http://jakarta.apache.org/oro/api/"                        />
+			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.37/"               />
+			<link offline="true" packagelistloc="src/package-lists/jdom/"               href="http://www.jdom.org/docs/apidocs/"                         />
+			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/" />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
