@@ -13,7 +13,7 @@
 	<xsl:param name="environment"  />
 
 	<xsl:variable name="api"          select="//function/@api" />
-	<xsl:variable name="api_file"     select="$specsdir, '/', $api, '/api.xml')" />
+	<xsl:variable name="api_file"     select="concat($specsdir, '/', $api, '/api.xml')" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:output
