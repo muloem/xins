@@ -50,14 +50,6 @@
 			</xsl:message>
 		</xsl:if>
 
-		<xsl:if test="not(@api)">
-			<xsl:message terminate="yes">
-				<xsl:text>Function '</xsl:text>
-				<xsl:value-of select="$function_name" />
-				<xsl:text>' does not specify the mandatory 'api' attribute.</xsl:text>
-			</xsl:message>
-		</xsl:if>
-
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
