@@ -241,6 +241,11 @@ implements DefaultResultCodes {
     */
    private AccessRuleList _accessRuleList;
 
+   /**
+    * Lock object for the getting and resetting the statistics.
+    */
+   private final Object _statisticsLock = new Object();
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -919,6 +924,10 @@ implements DefaultResultCodes {
          throw new AccessDeniedException(ip, functionName);
       }
 
+      // Wait until the statistics are returned
+      synchronized(_statisticsLock) {
+      }
+
       // Detect special functions
       if (functionName.charAt(0) == '_') {
          if ("_NoOp".equals(functionName)) {
@@ -928,7 +937,16 @@ implements DefaultResultCodes {
          } else if ("_GetFunctionList".equals(functionName)) {
             return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
-            return doGetStatistics();
+            String resetArgument = request.getParameter("reset");
+            if (resetArgument != null && resetArgument.equals("true")) {
+               synchronized(_statisticsLock) {
+                  CallResult result = doGetStatistics();
+                  doResetStatistics();
+                  return result;
+               }
+            } else {
+               return doGetStatistics();
+            }
          } else if ("_GetLogStatistics".equals(functionName)) {
             return doGetLogStatistics();
          } else if ("_GetVersion".equals(functionName)) {

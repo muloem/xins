@@ -322,15 +322,8 @@ implements DefaultResultCodes {
       CallResult result;
       try {
 
-         // Old call method
-         // Think to change also the signature of the abstract method in this class
-         handleCall(context);
-         result = context.getCallResult();
-
-         // New call method
-         // Think to change also the signature of the abstract method in this class
-         //FunctionResult functionResult = handleCall(context);
-         //result = functionResult.getCallResult();
+         FunctionResult functionResult = handleCall(context);
+         result = functionResult.getCallResult();
 
       } catch (Throwable exception) {
 
@@ -379,7 +372,7 @@ implements DefaultResultCodes {
     * @throws Throwable
     *    if anything goes wrong.
     */
-   protected abstract void handleCall(CallContext context)
+   protected abstract FunctionResult handleCall(CallContext context)
    throws Throwable;
 
    /**
