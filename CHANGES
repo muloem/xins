@@ -1,12 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.17:
 
-* Refactorings applied: Moved handleCall(CallContext) from API class to
+* Greatly improved logging. Using Jakarta Commons library. Added it to the
+  dependencies.
+
+* Moved handleCall(CallContext) from API class to
   Function class.
-
-* Added Jakarta Commons Logging library to dependencies.
-
-* Logging from Function classes using CallContext, not using Log4J directly.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.16:
