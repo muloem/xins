@@ -1157,10 +1157,10 @@ extends HttpServlet {
       State state = getState();
       if (state == READY) {
 
-         final String SUBJECT_CLASS  = callingConvention.getClass().getName();
-         final String SUBJECT_METHOD = "convertRequest("
-                                     + HttpServletRequest.class.getName()
-                                     + ')';
+         String SUBJECT_CLASS  = callingConvention.getClass().getName();
+         String SUBJECT_METHOD = "convertRequest("
+                                 + HttpServletRequest.class.getName()
+                                 + ')';
          try {
 
             // Convert the HTTP request to an incoming XINS request
