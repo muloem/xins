@@ -98,41 +98,6 @@ extends org.xins.client.AbstractCAPICallRequest {
    //-------------------------------------------------------------------------
 
    /**
-    * The underlying XINS call request. Initialized to a non-<code>null</code>
-    * value in the constructor.
-    */
-   private final org.xins.client.XINSCallRequest _request;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
-   /**
-    * Assigns the specified call configuration to this request.
-    *
-    * @param config
-    *    the call configuration to apply when executing this request, or
-    *    <code>null</code> if no specific call configuration should be
-    *    associated with this request.
-    */
-   public void configure(org.xins.client.XINSCallConfig config) {
-      _request.setXINSCallConfig(config);
-   }
-
-   /**
-    * Retrieves the call configuration currently associated with this request.
-    *
-    * @return
-    *    the call configuration currently associated with this request, which
-    *    will be applied when executing this request, or <code>null</code> if
-    *    no specific call configuration is associated with this request.
-    */
-   public org.xins.client.XINSCallConfig configuration() {
-      return _request.getXINSCallConfig();
-   }
-
-   /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
     * values are out of bounds, then a description or the problem is returned.
