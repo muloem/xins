@@ -8,6 +8,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:include href="package_to_dir.xslt" />
+
 	<xsl:output indent="yes" />
 
 	<xsl:param name="xins_home"    />
@@ -22,9 +24,14 @@
 			<xsl:otherwise>src/specs</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
+
+			<target name="clean" description="Removes all generated files">
+				<delete dir="build" />
+			</target>
 
 			<target name="-prepare" />
 
@@ -108,7 +115,32 @@
 			</target>
 
 			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-				<target name="classes-api-{@name}" depends="-prepare-classes" description="Compiles the Java classes for the '{@name}' API" />
+				<xsl:variable name="package">
+					<xsl:call-template name="package_for_api">
+						<xsl:with-param name="api">
+							<xsl:value-of select="@name" />
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="packageAsDir">
+					<xsl:call-template name="package2dir">
+						<xsl:with-param name="package">
+							<xsl:value-of select="$package" />
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+
+				<target name="classes-api-{@name}" depends="-prepare-classes" description="Compiles the Java classes for the '{@name}' API">
+					<mkdir dir="{$project_home}/build/java-fundament/{$packageAsDir}" />
+					<style
+					in="{$project_home}/{$specsdir}/{@name}/api.xml"
+					out="{$project_home}/build/java-fundament/{$packageAsDir}/APIImpl.java"
+					style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
+						<param name="project_home" expression="{$project_home}" />
+						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="package"      expression="{$package}"      />
+					</style>
+				</target>
 			</xsl:for-each>
 
 			<target name="classes" description="Compiles all Java classes">
@@ -137,5 +169,24 @@
 
 			<target name="all" depends="specdocs,wars" description="Generates everything" />
 		</project>
+	</xsl:template>
+
+	<xsl:template name="package_for_api">
+		<xsl:param name="api" />
+
+		<xsl:variable name="prefix" select="document($project_file)/project/java-impls/@packageprefix" />
+		<xsl:variable name="suffix" select="document($project_file)/project/java-impls/@packagesuffix" />
+
+		<xsl:if test="string-length($prefix) &gt; 0">
+			<xsl:value-of select="$prefix" />
+			<xsl:text>.</xsl:text>
+		</xsl:if>
+
+		<xsl:value-of select="$api" />
+
+		<xsl:if test="string-length($suffix) &gt; 0">
+			<xsl:text>.</xsl:text>
+			<xsl:value-of select="$suffix" />
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>
