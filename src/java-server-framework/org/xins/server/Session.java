@@ -184,6 +184,20 @@ extends Object {
    }
 
    /**
+    * Gets the all attributes and their values.
+    *
+    * @return
+    *    the modifiable map of attributes, or <code>null</code> if there are
+    *    no attributes.
+    */
+   public Map getAttributes() {
+
+      // TODO: Return an unmodifiable Map ?
+
+      return _attributes;
+   }
+
+   /**
     * Gets the value of the attribute with the specified key.
     *
     * @param key
