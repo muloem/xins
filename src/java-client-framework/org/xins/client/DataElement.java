@@ -17,8 +17,13 @@ import java.util.Set;
 
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.text.TextUtils;
+
 /**
  * Element in a XINS result data section.
+ *
+ * <p>Note that this class is not thread-safe. It should not be used from
+ * different threads at the same time. This applies even to read operations.
  *
  * <p><em>Note that the behavior of this class has been slightly redefined in XINS
  * 1.1. In XINS 1.0, the name for a <code>DataElement</code> was a combination
@@ -191,6 +196,23 @@ public class DataElement implements Cloneable {
 
       // Set or reset the attribute
       _attributes.put(qn, value);
+
+      // Check postconditions
+      String getValue = getAttribute(namespaceURI, localName);
+      if ((value != null && getValue == null)
+       || (value == null && getValue != null)
+       || (!value.equals(getValue))) {
+         String message = "Postcondition failed"
+           + "; namespaceURI="      + TextUtils.quote(namespaceURI)
+           + "; qn.namespaceURI="   + TextUtils.quote(qn.getNamespaceURI())
+           + "; localName="         + TextUtils.quote(localName)
+           + "; qn.localName="      + TextUtils.quote(qn.getLocalName())
+           + "; value="             + TextUtils.quote(value)
+           + "; getAttribute(...)=" + TextUtils.quote(getValue)
+           + '.';
+         // TODO: Log.log_2050(CLASSNAME, METHODNAME, message);
+         throw new Error(message);
+      }
    }
 
    /**
@@ -381,7 +403,7 @@ public class DataElement implements Cloneable {
       List children;
 
       // If there are no children, then return an immutable empty List
-      if (_children.size() == 0) {
+      if (_children == null || _children.size() == 0) {
          children = Collections.EMPTY_LIST;
 
       // Otherwise return an immutable view of the list of children
@@ -543,6 +565,7 @@ public class DataElement implements Cloneable {
          // TODO: Check format of localName
 
          // Initialize fields
+         _hashCode     = localName.hashCode();
          _namespaceURI = namespaceURI;
          _localName    = localName;
       }
@@ -551,6 +574,11 @@ public class DataElement implements Cloneable {
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
+
+      /**
+       * The hash code for this object.
+       */
+      private final int _hashCode;
 
       /**
        * The namespace URI. Can be <code>null</code>.
@@ -568,31 +596,34 @@ public class DataElement implements Cloneable {
       //----------------------------------------------------------------------
 
       /**
+       * Returns the hash code value for this object.
+       *
+       * @return
+       *    the hash code value.
+       */
+      public int hashCode() {
+         return _hashCode;
+      }
+
+      /**
        * Compares this object with the specified object for equality.
        *
-       * @param o
+       * @param obj
        *    the object to compare with, or <code>null</code>.
        *
        * @return
        *    <code>true</code> if this object and the argument are considered
        *    equal, <code>false</code> otherwise.
        */
-      public boolean equals(Object o) {
+      public boolean equals(Object obj) {
 
-         boolean equal = false;
-
-         if (o instanceof QualifiedName) {
-            QualifiedName qn = (QualifiedName) o;
-            if (_namespaceURI == null) {
-               if (qn._namespaceURI == null) {
-                  equal = _localName.equals(qn._localName);
-               }
-            } else if (_namespaceURI.equals(qn._namespaceURI)) {
-               equal = _localName.equals(qn._localName);
-            }
+         if (! (obj instanceof QualifiedName)) {
+            return false;
          }
 
-         return equal;
+         QualifiedName qn = (QualifiedName) obj;
+         return ((_namespaceURI == null && qn._namespaceURI == null) || (_namespaceURI.equals(qn._namespaceURI)))
+            &&  _localName.equals(qn._localName);
       }
 
       /**
@@ -601,7 +632,7 @@ public class DataElement implements Cloneable {
        * @return
        *    the namespace URI, can be <code>null</code>.
        */
-      private String getNamespaceURI() {
+      public String getNamespaceURI() {
          return _namespaceURI;
       }
 
@@ -611,7 +642,7 @@ public class DataElement implements Cloneable {
        * @return
        *    the local name, never <code>null</code>.
        */
-      private String getLocalName() {
+      public String getLocalName() {
          return _localName;
       }
    }
