@@ -693,8 +693,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                                     CallExceptionList exceptions)
    throws ClassCastException {
 
-      // FIXME: Implement other shouldFailOver method
-
       final String METHODNAME = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
 
       // TRACE: Enter method
