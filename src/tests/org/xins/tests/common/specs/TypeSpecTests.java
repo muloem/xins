@@ -71,21 +71,28 @@ public class TypeSpecTests extends TestCase {
 
    public void testTypeSpec_java_lang_String__java_lang_String() throws Throwable {
 
+      APISpec api = new APISpec("api", "1.0");
       TypeSpec spec;
 
       // Test null arguments
-      try {
-         spec = new TypeSpec(null, null);
-         fail("TypeSpec(null,null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
-      try {
-         spec = new TypeSpec(null, "1.1");
-         fail("TypeSpec(null,non-null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
-      try {
-         spec = new TypeSpec("name", null);
-         fail("TypeSpec(non-null,null) should throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) { /* as expected */ }
+      int argCount = 3;
+      int combinations = 7; // (2 ** 3) - 1
+      for (int i = 0; i < combinations; i++) {
+         boolean arg1 = (i & 1) > 0;
+         boolean arg2 = (i & 2) > 0;
+         boolean arg3 = (i & 4) > 0;
+         try {
+            spec = new TypeSpec(
+               (arg1 ? api    : null),
+               (arg2 ? "type" : null),
+               (arg3 ? "1.1"  : null)
+            );
+            fail("TypeSpec() should throw an IllegalArgumentException. Configuration: "
+                 + (arg1 ? "non-null" : "null") + ", "
+                 + (arg2 ? "non-null" : "null") + ", "
+                 + (arg3 ? "non-null" : "null") + '.');
+         } catch (IllegalArgumentException iae) { /* as expected */ }
+      }
 
       // Test invalid names
       String[] invalidNames = new String[] {
@@ -97,7 +104,7 @@ public class TypeSpecTests extends TestCase {
          try {
             String name = invalidNames[i];
             String version = "1.1";
-            spec = new TypeSpec(name, version);
+            spec = new TypeSpec(api, name, version);
             fail("TypeSpec(\"" + name + "\", \"" + version + "\") should throw an InvalidNameException.");
          } catch (InvalidNameException ine) { /* as expected */ }
       }
@@ -111,27 +118,36 @@ public class TypeSpecTests extends TestCase {
             String name    = "type";
             String version = invalidVersions[i];
 
-            spec = new TypeSpec(name, version);
+            spec = new TypeSpec(api, name, version);
             fail("TypeSpec(\"" + name + "\", \"" + version + "\") should throw an InvalidVersionException.");
          } catch (InvalidVersionException ive) { /* as expected */ }
       }
 
       // Name must be checked before version
       try {
-         spec = new TypeSpec("1", "a");
+         spec = new TypeSpec(api, "1", "a");
+      } catch (InvalidVersionException ive) {
+         fail("Name should be checked before version, but version is checked first.");
+      } catch (InvalidNameException ine) { /* as expected */ }
+
+      // Name must be checked before version
+      try {
+         spec = new TypeSpec(api, "1", "a");
       } catch (InvalidVersionException ive) {
          fail("Name should be checked before version, but version is checked first.");
       } catch (InvalidNameException ine) { /* as expected */ }
 
       // Test valid constructions
-      spec = new TypeSpec("type",      "1");
-      spec = new TypeSpec("someType",  "1.1");
-      spec = new TypeSpec("someType2", "1.12");
-      spec = new TypeSpec("some2",     "1.12.1");
-      spec = new TypeSpec("someType",  "12.1.2");
-      spec = new TypeSpec("s",         "1.2.3.4.5.6.7.8.9.10");
-      spec = new TypeSpec("s2",        "1.2.3.4.5.6.7.8.9.10");
-      spec = new TypeSpec("typeAB",    "10.2.3.4.5.6.7.8.9.0");
+      String[] names = new String[] {
+         "type", "someType", "someType2", "some2", "s", "s2", "typeAB"};
+      String[] versions = new String[] {
+         "1", "1.1", "1.12", "1.12.1", "12.1.2", "1.2.3.4.5.6.7.8.9.10", "100.2.10" };
+      int max = Math.max(names.length, versions.length);
+      for (int i = 0; i < max; i++) {
+         String name    = names   [(i < names.length    ? i : names.length    - 1)];
+         String version = versions[(i < versions.length ? i : versions.length - 1)];
+         spec = new TypeSpec(api, name, version);
+      }
    }
 
    public void testGetTypeName() throws Throwable {
