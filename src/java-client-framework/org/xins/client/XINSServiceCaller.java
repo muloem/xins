@@ -27,6 +27,8 @@ import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.service.http.HTTPCallException;
+import org.xins.common.service.http.HTTPCallRequest;
+import org.xins.common.service.http.HTTPCallResult;
 
 import org.xins.common.text.ParseException;
 
@@ -49,7 +51,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 /*
       method.addParameter("_function", functionName);
 
-      // If a diagnostic context is available, pass it on
+      // If a diagnostic context ID is available, pass it on
       String contextID = NDC.peek();
       if (contextID != null && contextID.length() > 0) {
          method.addParameter("_context", contextID);
@@ -242,101 +244,24 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Delegate the actual HTTP call to the HTTPServiceCaller. This may
       // cause a CallException
-      _httpCaller.call(target, request.getHTTPCallRequest());
-
-      // Read response body (mandatory operation)
-      byte[] xml = method.getResponseBody();
-
-      // Check for exceptions
-      Throwable exception = executor.getException();
-      if (exception != null) {
-
-         // Connection refusal
-         if (exception instanceof ConnectException) {
-            Log.log_2012(duration, url, functionName, serParams);
-            throw new ConnectionRefusedException(request, target, duration);
-
-         // Connection time-out
-         } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_2013(duration, url, functionName, serParams, connectionTimeOut);
-            throw new ConnectionTimeOutException(request, target, duration);
-
-         // Socket time-out
-         } else if (exception instanceof HttpRecoverableException) {
-
-            // XXX: This is an ugly way to detect a socket time-out, but there
-            //      does not seem to be a better way in HttpClient 2.0. This
-            //      will, however, be fixed in HttpClient 3.0. See:
-            //      http://issues.apache.org/bugzilla/show_bug.cgi?id=19868
-
-            String exMessage = exception.getMessage();
-            if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_2014(duration, url, functionName, serParams, socketTimeOut);
-               throw new SocketTimeOutException(request, target, duration);
-
-            // Unspecific I/O error
-            } else {
-               Log.log_2017(exception, duration, url, functionName, serParams);
-               throw new CallIOException(request, target, duration, (IOException) exception);
-            }
-
-         // Unspecific I/O error
-         } else if (exception instanceof IOException) {
-            Log.log_2017(exception, duration, url, functionName, serParams);
-            throw new CallIOException(request, target, duration, (IOException) exception);
-
-         /* TODO: (1/2) add the lines below
-         } else {
-            Log.log_2018(exception, duration, url, functionName, serParams);
-            throw new UnexpectedExceptionException(request, target, duration, exception);
-         }
-
-         // TODO: (2/2) remove the lines below
-         */
-
-         } else if (exception instanceof RuntimeException) {
-            Log.log_2018(exception, duration, url, functionName, serParams);
-            throw (RuntimeException) exception;
-
-         } else if (exception instanceof Error) {
-            Log.log_2018(exception, duration, url, functionName, serParams);
-            throw (Error) exception;
-         }
-
-         // Unknown kind of exception caught
-         throw new Error(exception);
-      }
-
-      // Check the code
-      int code = executor.getStatusCode();
-
-      Log.log_2016(System.currentTimeMillis() - start, url, functionName, serParams, code);
-
-      // If HTTP status code is not in 2xx range, abort
-      if (code < 200 || code > 299) {
-         Log.log_2008(url, functionName, serParams, code);
-         throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
-      }
-
-      // If the stream is null, then there was an error
-      if (xml == null) {
-         Log.log_2009(duration, url, functionName, serParams);
-         throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
-      }
+      HTTPCallRequest httpRequest = request.getHTTPCallRequest();
+      HTTPCallResult  httpResult  = _httpCaller.call(target, httpRequest);
 
       // Parse the result
-      XINSCallResult result;
+      XINSCallResult xinsResult;
       try {
-         result = _parser.parse(request, target, duration, xml);
+         xinsResult = _parser.parse(request, target, duration, httpResult.getData());
       } catch (ParseException parseException) {
-         throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
+         throw new InvalidResultXINSCallException(request, target, duration, "Failed to parse result.", parseException);
       }
 
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
-      if (result.getErrorCode() != null) {
-         throw new UnsuccessfulXINSCallException(result);
+      if (xinsResult.getErrorCode() != null) {
+         throw new UnsuccessfulXINSCallException(xinsResult);
+
+      // Otherwise just return the result
       } else {
-         return result;
+         return xinsResult;
       }
    }
 
@@ -356,39 +281,18 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws XINSCallException
     *    if the call failed.
     *
-    * @since XINS 0.198
+    * @since XINS 0.207
     */
-   public XINSCallResult execute(CallRequest request)
-   throws IllegalArgumentException, XINSCallException {
+   public XINSCallResult execute(XINSCallRequest request)
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException,
+          XINSCallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
-      try {
-         return (Result) doCall(request).getResult();
-
-      // Link the XINSCallException instances together and throw the first one
-      } catch (CallFailedException cfe) {
-
-         // Retrieve all XINSCallExceptions
-         List exceptions = cfe.getExceptions();
-
-         // Remember the first one, since this one should be thrown
-         XINSCallException first = (CallException) exceptions.get(0);
-
-         // Loop through all following XINSCallExceptions to link them to the
-         // previous one
-         int count = exceptions.size();
-         XINSCallException previous = first;
-         for (int i = 1; i < count; i++) {
-            XINSCallException current = (CallException) exceptions.get(i);
-            previous.setNext(current);
-            previous = current;
-         }
-
-         // Throw the first XINSCallException
-         throw first;
-      }
+      return (XINSCallResult) doCall(request).getResult();
    }
 
    /**
@@ -428,7 +332,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       //      InterruptedException. This could be improved by checking the
       //      type of exception and only allowingt fail-over if the exception
       //      indicates an I/O error.
-      if (request.isFailOverAllowed()) {
+      if (xinsRequest.isFailOverAllowed()) {
          return true;
       }
 
@@ -443,55 +347,13 @@ public final class XINSServiceCaller extends ServiceCaller {
          return true;
 
       // Some XINS error codes indicate the request was not accepted
-      } else if (exception instanceof UnsuccessfulCallException) {
-         String code = ((UnsuccessfulCallException) exception).getErrorCode();
-         return ("_InvalidRequest".equals(code)
-              || "_DisabledFunction".equals(code));
+      } else if (exception instanceof UnsuccessfulXINSCallException) {
+         String s = ((UnsuccessfulXINSCallException) exception).getErrorCode();
+         return ("_InvalidRequest".equals(s) || "_DisabledFunction".equals(s));
 
       // Otherwise do not fail over
       } else {
          return false;
-      }
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   // TODO: In the executing thread:
-
-         // Execute the call to the XINS API
-         try {
-            _statusCode = _httpClient.executeMethod(_call);
-
-         // If an exception is thrown, store it for processing at later stage
-         } catch (Throwable exception) {
-            _exception = exception;
-         }
-
-         _call.releaseConnection();
-      }
-
-      /**
-       * Gets the returned HTTP code of the call.
-       *
-       * @return
-       *    the returned HTTP status code, or -1 if the call has not be performed.
-       */
-      public int getStatusCode() {
-         return _statusCode;
-      }
-
-      /**
-       * Gets the exception if any generated when calling the method.
-       *
-       * @return
-       *    the invocation exception or <code>null</code> if the call
-       *    performed successfully.
-       */
-      public Throwable getException() {
-         return _exception;
       }
    }
 }
