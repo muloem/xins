@@ -45,9 +45,9 @@ public final class ConnectionRefusedCallException extends ConnectionCallExceptio
     *          || duration  &lt; 0</code>.
     *
     */
-   ConnectionRefusedCallException(CallRequest      request,
-                                  TargetDescriptor target,
-                                  long             duration)
+   public ConnectionRefusedCallException(CallRequest      request,
+                                         TargetDescriptor target,
+                                         long             duration)
    throws IllegalArgumentException {
       super("Connection refused", request, target, duration, null, null);
    }
