@@ -13,6 +13,12 @@ CHANGES INTRODUCED IN XINS 0.168:
     the newCallFramework variable in xins-project_to_ant-build.xslt and
     editing the src/java-server-framework/org/xins/server/Function.java file.
 
+* XINS/Java Common Library:
+  - Fixed : Creating a Date from a string thow a IndexOutOfBoundsException in
+    the type _date.
+    This bug has been in the code since the introduction of the
+    Date class in XINS 0.166
+
 * Generated build file:
   - The build targets creating the APIs, functions, types and result codes
     have been updated to link to the correct DTD, to include the description

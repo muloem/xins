@@ -178,8 +178,8 @@ public class Date extends Type {
       int y, m, d;
       try {
          y = Integer.parseInt(value.substring(0, 4));
-         m = Integer.parseInt(value.substring(4, 2));
-         d = Integer.parseInt(value.substring(6, 2));
+         m = Integer.parseInt(value.substring(4, 6));
+         d = Integer.parseInt(value.substring(6, 8));
       } catch (NumberFormatException nfe) {
          return false;
       }
@@ -195,8 +195,8 @@ public class Date extends Type {
       int y, m, d;
       try {
          y = Integer.parseInt(string.substring(0, 4));
-         m = Integer.parseInt(string.substring(4, 2));
-         d = Integer.parseInt(string.substring(6, 2));
+         m = Integer.parseInt(string.substring(4, 6));
+         d = Integer.parseInt(string.substring(6, 8));
       } catch (NumberFormatException nfe) {
 
          // Should never happen, since isValidValueImpl(String) will have been
