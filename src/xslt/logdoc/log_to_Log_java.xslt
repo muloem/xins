@@ -259,6 +259,8 @@ public class Log extends Object {
 		<xsl:text>) {
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="@category" />
+		<xsl:text>.</xsl:text>
+		<xsl:value-of select="@id" />
 		<xsl:text>");
       LOG.log(FQCN, </xsl:text>
 		<xsl:value-of select="@level" />
