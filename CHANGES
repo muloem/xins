@@ -1,8 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.8:
 
-* Refactoring: Creating StringWriter and XMLOutputter in CallContext instead
-  of API class.
+* Pooling CallContext instances per thread.
+
+* Using custom FastStringWriter for improved performance.
+
+* Including XINS version in output of generic function _GetStatistics.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.7:
