@@ -1,8 +1,18 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.112:
+
+* Generated CAPI classes:
+  - Changed the contract of the generated getItemByValue(String) methods for
+    enum types to behave like the Type.fromString(String) method. A null
+    argument will cause null to be returned. An unrecognized value will cause
+    a TypeValueException.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.111:
 
 * Generated CAPI classes:
-  - The generated Item classes for enum types now link to their instances.
+  - The Javadoc for the generated Item classes for enum types now link to
+    their instances.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.110:
