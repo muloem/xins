@@ -138,9 +138,13 @@ public final class ]]></xsl:text>
       // Check preconditions
       if (result.getErrorCode() != null) {
          throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");
-      }
+      }</xsl:text>
+
+		<xsl:if test="output/param">
+			<xsl:text>
 
       java.lang.String currentParam = "";</xsl:text>
+		</xsl:if>
 		<xsl:if test="output/data/element">
 			<xsl:text>
 
