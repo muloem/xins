@@ -145,13 +145,17 @@ extends Object {
    private FunctionCaller parse(Element element)
    throws NullPointerException, ParseException {
 
+      String elementName = element.getName();
+
       // Check that the root element is either <group/> or <api/>
-      if ("group".equals(element.getName()) == false) {
-         String message = "The returned XML is invalid. The type of the root element is \"" + element.getName() + "\" instead of \"group\".";
-         LOG.error(message);
-         throw new ParseException(message);
+      if ("group".equals(elementName)) {
+         return null; // TODO
+      } else if ("api".equals(elementName)) {
+         return null; // TODO
       }
 
-      return null; // TODO
+      String message = "The returned XML is invalid. The type of the root element is \"" + elementName + "\" instead of \"group\".";
+      LOG.error(message);
+      throw new ParseException(message);
    }
 }
