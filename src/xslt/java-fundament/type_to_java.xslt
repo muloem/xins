@@ -8,8 +8,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:output method="text" />
-
+	<!-- Define parameters -->
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
@@ -17,6 +16,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt"    />
 	<xsl:include href="../escapepattern.xslt" />
 	<xsl:include href="../java.xslt"          />
@@ -49,6 +49,8 @@
 			<xsl:when test="$kind = 'properties'">org.xins.types.standard.Properties</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
+
+	<xsl:output method="text" />
 
 	<xsl:template match="type">
 		<xsl:text>package </xsl:text>
@@ -232,8 +234,8 @@ public final class ]]></xsl:text>
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="fieldName">
-				<xsl:call-template name="toupper">
-					<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
+				<xsl:call-template name="name_for_itemfield">
+					<xsl:with-param name="itemName" select="$itemName" />
 				</xsl:call-template>
 			</xsl:variable>
 
@@ -308,8 +310,8 @@ public final class ]]></xsl:text>
 		<xsl:text><![CDATA[</em> item.
     */
    public static final Item ]]></xsl:text>
-		<xsl:call-template name="toupper">
-			<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
+		<xsl:call-template name="name_for_itemfield">
+			<xsl:with-param name="itemName" select="$itemName" />
 		</xsl:call-template>
 		<xsl:text> = new Item("</xsl:text>
 		<xsl:value-of select="$itemName" />
@@ -317,5 +319,12 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="@value" />
 		<xsl:text>");
 </xsl:text>
+	</xsl:template>
+
+	<xsl:template name="name_for_itemfield">
+		<xsl:param name="itemName" />
+		<xsl:call-template name="toupper">
+			<xsl:with-param name="text" select="translate($itemName, ' .-', '___')" />
+		</xsl:call-template>
 	</xsl:template>
 </xsl:stylesheet>
