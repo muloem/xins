@@ -301,9 +301,10 @@ public final class XINSServiceCaller extends ServiceCaller {
                String detail = exception.getDetail();
                Log.log_2110(url, function, params, duration, detail);
             } else if (exception instanceof UnsuccessfulXINSCallException) {
-               // Log.log_TODO
+               String errorCode = (UnsuccessfulXINSCallException) exception.getErrorCode();
+               Log.log_2112(url, function, params, duration, errorCode);
             } else if (exception instanceof UnacceptableResultXINSCallException) {
-               // Log: Unexpected exception. This should never happen.
+               // This should never happen. Log and re-throw the exception.
                Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
             } else {
                Log.log_2050(CLASSNAME, METHODNAME,
@@ -312,7 +313,8 @@ public final class XINSServiceCaller extends ServiceCaller {
             }
             throw (XINSCallException) exception;
 
-         // Unknown kind of CallException
+         // Unknown kind of CallException. This should never happen. Log and
+         // re-throw the exception, wrapped in an Error.
          } else {
             Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
 
@@ -326,9 +328,9 @@ public final class XINSServiceCaller extends ServiceCaller {
             throw new Error(message.toString(), exception);
          }
 
-      // Not a CallException but other kind of exception
+      // Not a CallException but other kind of exception. This should never
+      // happen. Log and re-throw the exception, wrapped in an Error.
       } catch (Throwable exception) {
-         // Log: Unexpected exception
          Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
 
          FastStringBuffer message = new FastStringBuffer(190);
