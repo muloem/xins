@@ -7,8 +7,14 @@ CHANGES INTRODUCED IN XINS 0.115:
 * XINS/Java Common Library:
   - Added class NonASCIIException to class org.xins.util.text.
   - Added decode(String) method to org.xins.util.net.URLEncoding.
+  - Changed encode(String) method in org.xins.util.net.URLEncoding to throw a
+    NonASCIIException when appropriate.
   - Moved service descriptor classes from package org.xins.util.sd to package
     org.xins.util.service.
+
+* XINS/Java Client Framework:
+  - UnsuccessfulCallException and InvalidCallResultException now both derive
+    from a new exception class CallException.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.114:
