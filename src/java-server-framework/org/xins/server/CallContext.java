@@ -161,7 +161,7 @@ implements Responder {
       _request = request;
       _state   = BEFORE_START;
 
-      _stringWriter.getBuffer().setLength(0);
+      _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
    }
 

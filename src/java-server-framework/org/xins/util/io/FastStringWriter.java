@@ -6,6 +6,7 @@ package org.xins.util.io;
 import java.io.IOException;
 import java.io.Writer;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * A non-synchronized equivalent of <code>StringWriter</code>. This class
@@ -34,7 +35,7 @@ public class FastStringWriter extends Writer {
     * string buffer size.
     */
    public FastStringWriter() {
-      _buffer = new StringBuffer();
+      _buffer = new FastStringBuffer(128); // TODO: Configure constant
    }
 
    /**
@@ -51,7 +52,7 @@ public class FastStringWriter extends Writer {
       if (initialSize < 0) {
          throw new IllegalArgumentException("initialSize (" + initialSize + ") < 0");
       }
-      _buffer = new StringBuffer(initialSize);
+      _buffer = new FastStringBuffer(initialSize);
    }
 
 
@@ -62,7 +63,7 @@ public class FastStringWriter extends Writer {
    /**
     * The buffer to write to.
     */
-   private StringBuffer _buffer;
+   private FastStringBuffer _buffer;
 
    /**
     * Flag that indicates if this stream has been closed.
@@ -143,7 +144,7 @@ public class FastStringWriter extends Writer {
     * @return
     *    the underlying string buffer, not <code>null</code>.
     */
-   public StringBuffer getBuffer() {
+   public FastStringBuffer getBuffer() {
       return _buffer;
    }
 }
