@@ -19,9 +19,9 @@
 	<xsl:output method="text" />
 
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
+	<xsl:include href="../types.xslt"  />
 
 	<xsl:template match="api">
 		<xsl:call-template name="java-header" />
@@ -151,14 +151,32 @@ public final class API extends Object {
 				<xsl:value-of select="$methodName" />
 				<xsl:text>(</xsl:text>
 					<xsl:for-each select="input/param">
+						<xsl:variable name="required">
+							<xsl:choose>
+								<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+								<xsl:when test="@required = 'false'">false</xsl:when>
+								<xsl:when test="@required = 'true'">true</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+										<xsl:value-of select="@required" />
+										<xsl:text>'.</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:variable name="javatype">
+							<xsl:call-template name="javatype_for_type">
+								<xsl:with-param name="api"      select="$api"      />
+								<xsl:with-param name="specsdir" select="$specsdir" />
+								<xsl:with-param name="required" select="$required" />
+								<xsl:with-param name="type" select="@type" /> <!-- TODO: Use $baseType -->
+							</xsl:call-template>
+						</xsl:variable>
 						<xsl:if test="position() &gt; 1">
 							<xsl:text>, </xsl:text>
 						</xsl:if>
-						<xsl:call-template name="class_for_type">
-							<xsl:with-param name="type">
-								<xsl:value-of select="@type" />
-							</xsl:with-param>
-						</xsl:call-template>
+						<xsl:value-of select="$javatype" />
 						<xsl:text> </xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
@@ -168,19 +186,31 @@ public final class API extends Object {
 					<xsl:text>
       Map params = new HashMap();</xsl:text>
 					<xsl:for-each select="input/param">
+						<xsl:variable name="required">
+							<xsl:choose>
+								<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+								<xsl:when test="@required = 'false'">false</xsl:when>
+								<xsl:when test="@required = 'true'">true</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+										<xsl:value-of select="@required" />
+										<xsl:text>'.</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<xsl:text>
       params.put("</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>", </xsl:text>
-						<xsl:choose> 
-							<xsl:when test="@type = 'boolean'">
-								<xsl:value-of select="@name" />
-								<xsl:text> ? "true" : "false"</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="@name" />
-							</xsl:otherwise>
-						</xsl:choose> 
+						<xsl:call-template name="javatype_to_string_for_type">
+							<xsl:with-param name="api"      select="$api" />
+							<xsl:with-param name="specsdir" select="$specsdir" />
+							<xsl:with-param name="required" select="$required" />
+							<xsl:with-param name="type"     select="@type" />
+							<xsl:with-param name="variable" select="@name" />
+						</xsl:call-template> 
 						<xsl:text>);</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
@@ -215,17 +245,5 @@ public final class API extends Object {
 		<xsl:text><![CDATA[
 }
 ]]></xsl:text>
-	</xsl:template>
-
-	<xsl:template name="class_for_type">
-		<xsl:param name="type" />
-		<xsl:choose> <!-- XXX: This is a bit dirty -->
-			<xsl:when test="$type = 'boolean'">
-				<xsl:text>boolean</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>java.lang.String</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
