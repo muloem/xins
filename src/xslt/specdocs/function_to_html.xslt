@@ -58,7 +58,7 @@
 
 				<meta name="generator" content="XINS" />
 
-				<link rel="stylesheet" type="text/css" href="style.css"                               />
+				<link rel="stylesheet" type="text/css" href="style.css"                                  />
 				<link rel="top"                        href="../index.html" title="API index"            />
 				<link rel="up"                         href="index.html"    title="Overview of this API" />
 			</head>
@@ -237,22 +237,23 @@
 		<xsl:call-template name="additional-constraints">
 			<xsl:with-param name="side" select="'input'" />
 		</xsl:call-template>
-		<xsl:call-template name="datasection" />
+		<xsl:call-template name="datasection">
+			<xsl:with-param name="side" select="'input'" />
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="additional-constraints">
 		<xsl:if test="param-combo">
 			<h4>Additional constraints</h4>
-			<xsl:text>The following </xsl:text>
+			<xsl:text>The following constraint</xsl:text>
 			<xsl:choose>
 				<xsl:when test="count(param-combo) &lt; 2">
-					<xsl:text>constraint applies</xsl:text>
+					<xsl:text> applies to the </xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>constraints apply</xsl:text>
+					<xsl:text>s apply to the </xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text> to the </xsl:text>
 			<xsl:value-of select="local-name()" />
 			<xsl:text> parameters, additional to the </xsl:text>
 			<xsl:value-of select="local-name()" />
@@ -1057,29 +1058,53 @@
 		<xsl:call-template name="additional-constraints">
 			<xsl:with-param name="side" select="'output'" />
 		</xsl:call-template>
-		<xsl:call-template name="datasection" />
+		<xsl:call-template name="datasection">
+			<xsl:with-param name="side" select="'output'" />
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="datasection">
+		<xsl:param name="side" />
+
 		<h3>Data section</h3>
 		<xsl:choose>
-			<xsl:when test="data/contains">
-				<p>Root element(s):
-					<ul>
-						<xsl:for-each select="data/contains/contained">
-							<li><code>
-								<xsl:text>&lt;</xsl:text>
-								<xsl:value-of select="@element" />
-								<xsl:text>/&gt;</xsl:text>
-							</code>.</li>
-						</xsl:for-each>
-					</ul>
+			<xsl:when test="count(data/contains/contained) &gt; 1">
+				<p>
+					<em>The data section may contain the elements </em>
+					<xsl:for-each select="data/contains/contained">
+						<xsl:choose>
+							<xsl:when test="position() = last()">
+								<em> and </em>
+							</xsl:when>
+							<xsl:when test="position() != 1">
+								<xsl:text>, </xsl:text>
+							</xsl:when>
+						</xsl:choose>
+						<code>
+							<xsl:text>&lt;</xsl:text>
+							<xsl:value-of select="@element" />
+							<xsl:text>/&gt;</xsl:text>
+						</code>
+					</xsl:for-each>
+					<xsl:text>.</xsl:text>
+				</p>
+				<xsl:apply-templates select="data/element" />
+			</xsl:when>
+			<xsl:when test="count(data/contains/contained) = 1">
+				<p>
+					<em>The data section may only contain the element </em>
+					<code>
+						<xsl:text>&lt;</xsl:text>
+						<xsl:value-of select="data/contains/contained/@element" />
+						<xsl:text>/&gt;</xsl:text>
+					</code>
+					<xsl:text>.</xsl:text>
 				</p>
 				<xsl:apply-templates select="data/element" />
 			</xsl:when>
 			<xsl:when test="data/@contains">
 				<p>
-					<xsl:text>Root element: </xsl:text>
+					<em>The data section may only contain the element </em>
 					<code>
 						<xsl:text>&lt;</xsl:text>
 						<xsl:value-of select="data/@contains" />
@@ -1091,7 +1116,11 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<p>
-					<em>This function has no data section.</em>
+					<em>
+						<xsl:text>This function defines no </xsl:text>
+						<xsl:value-of select="$side" />
+						<xsl:text> data section.</xsl:text>
+					</em>
 				</p>
 			</xsl:otherwise>
 		</xsl:choose>

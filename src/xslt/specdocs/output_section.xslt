@@ -123,15 +123,16 @@
 
 		<table class="element_details">
 			<tr>
-				<th>Name:</th>
+				<th>Description:</th>
 				<td>
-					<a>
-						<xsl:attribute name="name">
-							<xsl:text>element_</xsl:text>
-							<xsl:value-of select="@name" />
-						</xsl:attribute>
-					</a>
-					<xsl:value-of select="@name" />
+					<xsl:choose>
+						<xsl:when test="description">
+							<xsl:apply-templates select="description" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text> </xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
 				</td>
 			</tr>
 			<tr>
@@ -143,27 +144,18 @@
 								<xsl:if test="position() != 1">
 									<xsl:text>, </xsl:text>
 								</xsl:if>
-								<xsl:value-of select="@element" />
+								<code>
+									<xsl:text>&lt;</xsl:text>
+									<xsl:value-of select="@element" />
+									<xsl:text>/&gt;</xsl:text>
+								</code>
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:when test="contains/pcdata">
-							<em>pcdata</em>
+							<xsl:text>Character data.</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
-							<em>nothing</em>
-						</xsl:otherwise>
-					</xsl:choose>
-				</td>
-			</tr>
-			<tr>
-				<th>Description:</th>
-				<td>
-					<xsl:choose>
-						<xsl:when test="description">
-							<xsl:apply-templates select="description" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text> </xsl:text>
+							<em>Nothing.</em>
 						</xsl:otherwise>
 					</xsl:choose>
 				</td>
