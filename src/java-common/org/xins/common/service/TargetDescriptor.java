@@ -428,6 +428,19 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
+    * Returns the protocol in the URL for the service.
+    *
+    * @return
+    *    the protocol in the URL, not <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public String getProtocol() {
+      int index = _url.indexOf("://");
+      return _url.substring(0, index);
+   }
+
+   /**
     * Returns the total time-out for a call to the service. The value 0
     * is returned if there is no total time-out.
     *
