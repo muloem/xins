@@ -2,6 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.158:
 
 * XINS/Java Server Framework:
+  - Completely converted to logdoc-approach.
   - Interface Responder and implementation in CallContext: The method
     param(String,String) now allows a null or empty value. In that case
     nothing is output.
