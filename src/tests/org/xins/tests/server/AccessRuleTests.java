@@ -148,8 +148,14 @@ public class AccessRuleTests extends TestCase {
       AccessRule rule = AccessRule.parseAccessRule(buffer.toString());
       assertNotNull(rule);
       assertEquals(allow, rule.isAllowRule());
-      assertEquals(allow, rule.match(ip, "_GetVersion"));
-      assertEquals(allow, rule.match(ip, "GetVersion"));
+      String function = "_GetVersion";
+      if (! rule.match(ip, function)) {
+         fail("AccessRule(" + rule + ") should match(\"" + ip + "\", \"" + function + "\").");
+      }
+      function = "GetVersion";
+      if (rule.match(ip, function)) {
+         fail("AccessRule(" + rule + ") should not match(\"" + ip + "\", \"" + function + "\").");
+      }
 
       String asString = (allow ? "allow" : "deny") + ' ' + ip + '/' + mask + ' ' + pattern;
       assertEquals(asString, rule.toString());
