@@ -45,16 +45,16 @@
 	</xsl:variable>
 	<xsl:variable name="dependenciesDir">
 		<xsl:value-of select="$project_home" />
-		<xsl:if test="document($project_file)/project/@dependenciesdir">
+		<xsl:if test="//project/@dependenciesdir">
 			<xsl:text>/</xsl:text>
-			<xsl:value-of select="document($project_file)/project/@dependenciesdir" />
+			<xsl:value-of select="//project/@dependenciesdir" />
 		</xsl:if>
 	</xsl:variable>
 
 	<xsl:template match="project">
 		<project default="help" basedir="..">
 			<xsl:attribute name="name">
-				<xsl:value-of select="document($project_file)/project/@name" />
+				<xsl:value-of select="//project/@name" />
 			</xsl:attribute>
 
 			<target name="clean" description="Removes all generated files">
@@ -92,15 +92,14 @@ The following commands assist in authoring specifications:
 - create-rcd          Generates a new result code specification file.
 - create-type         Generates a new type specification file.
 
-The following targets are specific for a single API, replace <api> with the
-name of an existing API:
+The following targets are specific for a single API, replace <api> with the name of an existing API:
 - war-<api>           Creates the WAR file for the API.
 - specdocs-<api>      Generates all specification docs for the API.
 - javadoc-api-<api>   Generates Javadoc for the API implementation (server).
-- server-<api>        Generates the WAR file, Javadoc API docs for the server side and the specdocs for the API.
+- server-<api>        Generates the WAR file, the API Javadoc for the server side and the specdocs for the API.
 - jar-<api>           Generates and compiles the CAPI classes.
-- javadoc-capi-<api>  Generates Javadoc docs for the CAPI classes (client).
-- client-<api>        Generates the CAPI JAR file and corresponding Javadoc.
+- javadoc-capi-<api>  Generates the Javadoc for the CAPI classes (client).
+- client-<api>        Generates the CAPI JAR file and the corresponding Javadoc.
 - clean-<api>         Cleans everything for the API.
 - rebuild-<api>       Regenerates everything for the API.
 - all-<api>           Generates everything for the API.
@@ -108,8 +107,9 @@ name of an existing API:
 APIs in this project are:
 ]]></echo>
 				<echo><xsl:for-each select="api">
-						<xsl:text>- </xsl:text>
-						<xsl:value-of select="@name" />
+						<xsl:text>"</xsl:text>
+							<xsl:value-of select="@name" />
+						<xsl:text>" </xsl:text>
 					</xsl:for-each>
 				</echo>
 			</target>
@@ -294,7 +294,7 @@ APIs in this project are:
 						<srcfilelist   dir="{$api_specsdir}"    files="api.xml" />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
 					</dependset>
-					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
+					<xsl:if test="environments">
 						<xsl:variable name="env_dir" select="concat($project_home, '/apis/', $api)" />
 						<dependset>
 							<srcfilelist   dir="{$env_dir}"    files="environments.xml" />
@@ -390,7 +390,7 @@ APIs in this project are:
 							<param name="env_url"      expression="{@url}"          />
 						</style>
 					</xsl:for-each>
-					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
+					<xsl:if test="environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 						<xmlvalidate file="{$env_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
@@ -414,7 +414,7 @@ APIs in this project are:
 							</style>
 						</xsl:for-each>
 					</xsl:if>
-					<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+					<xsl:if test="impl">
 						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 						<xsl:if test="document($impl_file)/impl/runtime-properties">
 							<xmlvalidate file="{$impl_file}" warn="false">
@@ -511,7 +511,7 @@ APIs in this project are:
 					</target>
 				</xsl:if>
 
-				<xsl:if test="document($api_file)/api/impl-java or document($project_file)/project/api[@name = $api]/impl">
+				<xsl:if test="document($api_file)/api/impl-java or impl">
 					<xsl:variable name="package">
 						<xsl:call-template name="package_for_server_api">
 							<xsl:with-param name="project_file">
@@ -535,8 +535,8 @@ APIs in this project are:
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:choose>
-									<xsl:when test="document($project_file)/project/@javadir">
-										<xsl:value-of select="document($project_file)/project/@javadir" />
+									<xsl:when test="//project/@javadir">
+										<xsl:value-of select="//project/@javadir" />
 									</xsl:when>
 									<xsl:otherwise>src/impl-java</xsl:otherwise>
 								</xsl:choose>
@@ -749,7 +749,7 @@ APIs in this project are:
 							</style>
 							<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 						</xsl:if>
-						<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+						<xsl:if test="impl">
 							<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl')" />
 							<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
 							<xmlvalidate file="{$impl_file}" warn="false">
@@ -802,7 +802,7 @@ APIs in this project are:
 								<pathelement path="{$xins-client.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+								<xsl:if test="impl">
 									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 								</xsl:if>
@@ -850,7 +850,7 @@ APIs in this project are:
 							<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 							<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
 							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
-							<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+							<xsl:if test="impl">
 								<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 								<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 							</xsl:if>
@@ -915,7 +915,7 @@ APIs in this project are:
 								<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+								<xsl:if test="impl">
 									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 								</xsl:if>
@@ -1144,7 +1144,7 @@ APIs in this project are:
 					<xsl:attribute name="depends">
 						<xsl:text>client-</xsl:text>
 						<xsl:value-of select="$api" />
-						<xsl:if test="document($api_file)/api/impl-java or document($project_file)/project/api[@name = $api]/impl">
+						<xsl:if test="document($api_file)/api/impl-java or impl">
 							<xsl:text>, server-</xsl:text>
 							<xsl:value-of select="$api" />
 						</xsl:if>
@@ -1189,7 +1189,7 @@ APIs in this project are:
 
 			<target name="classes" description="Compiles all Java classes">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="document($project_file)/project/api/impl">
+					<xsl:for-each select="//project/api/impl">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="../@name" />
@@ -1199,7 +1199,7 @@ APIs in this project are:
 						<xsl:variable name="api"      select="@name" />
 						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
 							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
-								<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
+								<xsl:if test="position() &gt; 1 or count(//project/api/impl) &gt; 0">,</xsl:if>
 								<xsl:text>classes-api-</xsl:text>
 								<xsl:value-of select="@name" />
 							</xsl:if>
@@ -1240,7 +1240,7 @@ APIs in this project are:
 
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="document($project_file)/project/api/impl">
+					<xsl:for-each select="//project/api/impl">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="../@name" />
@@ -1250,7 +1250,7 @@ APIs in this project are:
 						<xsl:variable name="api"      select="@name" />
 						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
 							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
-								<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
+								<xsl:if test="position() &gt; 1 or count(//project/api/impl) &gt; 0">,</xsl:if>
 								<xsl:text>war-</xsl:text>
 								<xsl:value-of select="@name" />
 							</xsl:if>

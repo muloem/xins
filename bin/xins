@@ -28,4 +28,4 @@ if [ "$1" = "clean" ] && [ -f build/build.xml ]; then
 fi
 
 # Generate the Ant build file and execute it
-ant -lib ${XINS_HOME}/lib -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home="${XINS_HOME}" -Dpwd="`pwd`" -Dargs="$*"
+ant -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home="${XINS_HOME}" -Dpwd="`pwd`" -Dargs="$*"
