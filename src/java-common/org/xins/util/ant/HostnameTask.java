@@ -62,12 +62,12 @@ public class HostnameTask extends Task {
 
    /**
     * Sets the name of the property. If <code>null</code> or <code>""</code>
-    * is passed as the argument, then {@link DEFAULT_PROPERTY_NAME} is
+    * is passed as the argument, then {@link #DEFAULT_PROPERTY_NAME} is
     * assumed.
     *
     * @param newPropertyName
     *    the name of the property to store the host name in, or
-    *    <code>null</code> if the {@link DEFAULT_PROPERTY_NAME} should be
+    *    <code>null</code> if the {@link #DEFAULT_PROPERTY_NAME} should be
     *    assumed.
     */
    public void setProperty(String newPropertyName) {

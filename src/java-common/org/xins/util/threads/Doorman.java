@@ -520,7 +520,7 @@ public final class Doorman extends Object {
 
       /**
        * The entry types, by entry. This map has the {@link Thread threads} as
-       * keys and their {@link QueueEntryType types} as values.
+       * keys and their {@link Doorman.QueueEntryType types} as values.
        */
       private final Map _entryTypes;
 
@@ -533,7 +533,7 @@ public final class Doorman extends Object {
       /**
        * Cached type of the first entry. This field is either
        * <code>null</code> (if {@link #_entries} is empty), or
-       * <code>({@link QueueEntryType}) </code>{@link #_entries}<code>.</code>{@link LinkedList#get(int) get}<code>(0)</code>
+       * <code>({@link Doorman.QueueEntryType}) </code>{@link #_entries}<code>.</code>{@link LinkedList#get(int) get}<code>(0)</code>
        * (if {@link #_entries} is not empty).
        */
       private QueueEntryType _typeOfFirst;
