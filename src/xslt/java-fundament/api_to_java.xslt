@@ -78,6 +78,7 @@ public class APIImpl extends API {
 						</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
+			</xsl:variable>
 			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
