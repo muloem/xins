@@ -50,7 +50,9 @@ extends Object {
     */
    public AuthenticationDetails(AuthenticationMethod method,
 				String               principal,
-				String               credentials) {
+				String               credentials)
+   throws IllegalArgumentException {
+
       // Check preconditions
       if (method == null) {
 	 throw new IllegalArgumentException("method == null");

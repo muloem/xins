@@ -107,7 +107,8 @@ public final class GroupDescriptor extends Descriptor {
     *          || members[<em>n</em>] == null</code>
     *    (where <code>0 &lt;= <em>n</em> &lt; members.length</code>).
     */
-   public GroupDescriptor(Type type, Descriptor[] members) {
+   public GroupDescriptor(Type type, Descriptor[] members)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
