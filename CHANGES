@@ -1,7 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.125:
 
-* Response validation is now a runtime configuration settings.
+* XINS/Java Server Framework:
+  - Response validation is now a runtime configuration settings.
+
+* XINS/Java Common Library:
+  - Changed FileWatcher class: A null listener is now declined by the
+    constructor. This fixes the issue that a null listener would cause
+    NullPointerExceptions at runtime.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.124:
