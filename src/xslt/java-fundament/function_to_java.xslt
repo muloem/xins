@@ -403,7 +403,8 @@ public abstract class ]]></xsl:text>
    }
 
    /**
-    * Calls this function.
+    * Calls this function. If the function fails, it may throw any kind of
+    * exception. All exceptions will be handled by the caller.
     *
     * @param responder
     *    the responder to be used, never <code>null</code>.]]></xsl:text>
@@ -432,6 +433,9 @@ public abstract class ]]></xsl:text>
 			<xsl:value-of select="description/text()" />
 		</xsl:for-each>
 		<xsl:text><![CDATA[
+    *
+    * @throws Throwable
+    *    if anything went wrong.
     */
    public abstract void call(org.xins.server.Responder responder]]></xsl:text>
 		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
