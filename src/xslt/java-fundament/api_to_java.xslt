@@ -101,27 +101,37 @@ public class APIImpl extends API {
    /**
     * Constructs a new <code>APIImpl</code> instance.
     */
-   private APIImpl() {
-]]></xsl:text>
-		<xsl:for-each select="instance">
-			<xsl:text>      </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> = new </xsl:text>
-			<xsl:value-of select="@class" />
-			<xsl:text>()</xsl:text>
-			<xsl:text>;&#10;</xsl:text>
-		</xsl:for-each>
-		<xsl:for-each select="property">
-			<xsl:text>      _</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> = </xsl:text>
-			<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
-			<xsl:value-of select="text()" />
-			<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
-			<xsl:text>;&#10;</xsl:text>
-		</xsl:for-each>
-		<xsl:text>   }
-		
+   private APIImpl() {]]></xsl:text>
+		<xsl:choose>
+			<xsl:when test="instance or property">
+				<xsl:for-each select="instance">
+					<xsl:text>
+      </xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text> = new </xsl:text>
+					<xsl:value-of select="@class" />
+					<xsl:text>()</xsl:text>
+					<xsl:text>;</xsl:text>
+				</xsl:for-each>
+				<xsl:for-each select="property">
+					<xsl:text>
+      _</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text> = </xsl:text>
+					<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
+					<xsl:value-of select="text()" />
+					<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
+					<xsl:text>;</xsl:text>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>
+      // empty</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields
