@@ -51,7 +51,17 @@
 				</style>
 			</target>
 
-			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions" />
+			<target name="specdocs-types" depends="-specdocs-prepare">
+				<style
+				basedir="${{project_home}}/src/specs"
+				destdir="${{project_home}}/build/specdocs"
+				style="${{xins_home}}/src/xslt/specdocs/type_to_html.xslt"
+				includes="**/*.typ">
+					<param name="project_home" expression="${{project_home}}" />
+				</style>
+			</target>
+
+			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types" />
 
 			<target name="all" depends="specdocs" />
 		</project>
