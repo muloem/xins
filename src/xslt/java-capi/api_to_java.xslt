@@ -24,45 +24,6 @@
 		</xsl:choose>
 	</xsl:variable>
 
-	<!-- If this API is session-based, determine if sessions are shared among
-	     different instances of the API -->
-	<xsl:variable name="sessionsShared">
-		<xsl:choose>
-			<xsl:when test="$apiSessionBased = 'true' and //api/session-based/@shared-sessions = 'true'">true</xsl:when>
-			<xsl:otherwise>false</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
-	<!-- If this API is session-based, determine the Java type for session
-	     identifiers, either a Java primary data type (byte, short, int, char,
-	     etc.) or a Java class (java.lang.String, etc.) -->
-	<xsl:variable name="sessionIDJavaType">
-		<xsl:choose>
-			<xsl:when test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
-				<xsl:text>java.lang.String</xsl:text>
-			</xsl:when>
-			<xsl:when test="$apiSessionBased = 'true'">
-				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
-					<xsl:with-param name="api"          select="$api"          />
-					<xsl:with-param name="specsdir"     select="$specsdir"     />
-					<xsl:with-param name="required"     select="'true'"        />
-					<xsl:with-param name="type"         select="_text"         />
-				</xsl:call-template>
-			</xsl:when>
-		</xsl:choose>
-	</xsl:variable>
-
-	<!-- For the sessionIDJavaType, determine if this is a Java primary data
-	     type or a Java class. -->
-	<xsl:variable name="sessionIDJavaTypeIsPrimary">
-		<xsl:if test="$apiSessionBased = 'true'">
-			<xsl:call-template name="is_java_datatype">
-				<xsl:with-param name="text" select="$sessionIDJavaType" />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:variable>
-
 	<!-- Determine the location of the online specification docs -->
 	<xsl:variable name="specdocsURL">
 		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
@@ -122,7 +83,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:if test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
+		<xsl:if test="$apiSessionBased = 'true'">
 			<xsl:text><![CDATA[
 
    /**
@@ -167,19 +128,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 	<xsl:template name="constructor">
 		<xsl:choose>
-			<xsl:when test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:when test="$apiSessionBased = 'true'">
 				<xsl:text><![CDATA[
 
    /**
     * Constructs a new <code>CAPI</code> object for the specified function
-    * caller.
+    * caller and session ID splitter.
     *
     * @param functionCaller
     *    the function caller, cannot be <code>null</code>.
     *
     * @param sessionIDSplitter
     *    splitter that converts a client-side session identifier to a target
-    *    API checksum and a target API-specific session ID.</xsl:text>
+    *    API checksum and a target API-specific session ID.
     *
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null || sessionIDSplitter == null</code>.
@@ -188,6 +149,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                org.xins.client.SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
+      // Call superconstructor
       super(functionCaller);
 
       // Check preconditions
@@ -241,18 +203,14 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:variable>
 
 		<!-- Determine the kind of function, one of:
-		     - 'sharedSessionBased'
-		     - 'nonSharedSessionBased'
-		     - 'createsSharedSessions'
-		     - 'createsNonSharedSessions'
+		     - 'sessionBased'
+		     - 'createsSession'
 		     - 'sessionLess'
 		-->
 		<xsl:variable name="kind">
 			<xsl:choose>
-				<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'true'">sharedSessionBased</xsl:when>
-				<xsl:when test="$sessionBased = 'true'">nonSharedSessionBased</xsl:when>
-				<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">createsSharedSessions</xsl:when>
-				<xsl:when test="@createsSession = 'true'">createsNonSharedSessions</xsl:when>
+				<xsl:when test="$sessionBased = 'true'">sessionBased</xsl:when>
+				<xsl:when test="@createsSession = 'true'">createsSession</xsl:when>
 				<xsl:otherwise>sessionLess</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -261,10 +219,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		     data type or a Java class name. -->
 		<xsl:variable name="returnType">
 			<xsl:choose>
-				<xsl:when test="$kind = 'createsSharedSessions'">
-					<xsl:text>java.lang.String</xsl:text>
-				</xsl:when>
-				<xsl:when test="$kind = 'createsNonSharedSessions'">
+				<xsl:when test="$kind = 'createsSession'">
 					<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 				</xsl:when>
 				<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
@@ -313,17 +268,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="$kind = 'sharedSessionBased'">
-				<xsl:text>
-    *
-    * @param session
-    *    the session identifier</xsl:text>
-				<xsl:if test="$sessionIDJavaTypeIsPrimary = 'false'">
-					<xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
-				</xsl:if>
-				<xsl:text>.</xsl:text>
-			</xsl:when>
-			<xsl:when test="$kind = 'nonSharedSessionBased'">
+			<xsl:when test="$kind = 'sessionBased'">
 				<xsl:text><![CDATA[
     *
     * @param session
@@ -332,13 +277,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
 		<xsl:choose>
-			<xsl:when test="$kind = 'createsSharedSessions'">
-				<xsl:text><![CDATA[
-    *
-    * @return
-    *    the shared session identifier, not <code>null</code>.]]></xsl:text>
-			</xsl:when>
-			<xsl:when test="$kind = 'createsNonSharedSessions'">
+			<xsl:when test="$kind = 'createsSession'">
 				<xsl:text><![CDATA[
     *
     * @return
@@ -425,8 +364,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
 			<xsl:if test="$sessionBased = 'true'">
-				<xsl:value-of select="$sessionIDJavaType" />
-				<xsl:text> session</xsl:text>
+				<xsl:text>java.lang.String session</xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="input/param" mode="methodSignature">
@@ -436,7 +374,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>)
    throws </xsl:text>
 		<xsl:text>org.xins.client.CallException {</xsl:text>
-		<xsl:if test="$kind = 'nonSharedSessionBased'">
+		<xsl:if test="$kind = 'sessionBased'">
 			<xsl:text>
 
       // Split the client-side session ID
@@ -463,7 +401,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>
       org.xins.client.XINSServiceCaller.Result result = </xsl:text>
 		<xsl:choose>
-			<xsl:when test="$kind = 'nonSharedSessionBased'">
+			<xsl:when test="$kind = 'sessionBased'">
 				<xsl:text>afc</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -472,12 +410,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:text>.call(</xsl:text>
 		<xsl:choose>
-			<xsl:when test="$kind = 'nonSharedSessionBased'">
-				<!-- TODO: Split the session ID -->
-				<xsl:text>session, </xsl:text>
-			</xsl:when>
-			<xsl:when test="$kind = 'sharedSessionBased'">
-				<!-- TODO: Convert the session ID correctly to a String -->
+			<xsl:when test="$kind = 'sessionBased'">
 				<xsl:text>session, </xsl:text>
 			</xsl:when>
 		</xsl:choose>
@@ -494,7 +427,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:text>);</xsl:text>
 		<xsl:choose>
-			<xsl:when test="$kind = 'createsNonSharedSessions'">
+			<xsl:when test="$kind = 'createsSession'">
 				<xsl:text>
       if (result.isSuccess()) {
          java.lang.String session = result.getParameter("_session");
@@ -504,20 +437,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text>\" returned no session ID.");
          }
          return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);
-      } else {
-         throw new org.xins.client.UnsuccessfulCallException(result);
-      }</xsl:text>
-			</xsl:when>
-			<xsl:when test="$kind = 'createsSharedSessions'">
-				<xsl:text>
-      if (result.isSuccess()) {
-         java.lang.String session = result.getParameter("_session");
-         if (session == null) {
-            throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>\" returned no session ID.");
-         }
-         return session;
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
