@@ -92,7 +92,6 @@ implements DefaultResultCodes {
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
       _resultCodeList    = new ArrayList();
-      _contextsByThread  = new HashMap();
    }
 
 
@@ -168,14 +167,6 @@ implements DefaultResultCodes {
     * List of all result codes. This field cannot be <code>null</code>.
     */
    private final List _resultCodeList;
-
-   /**
-    * Map that maps threads to <code>CallContext</code> instances.
-    *
-    * <p />This field is initialized to a non-<code>null</code> value by the
-    * constructor.
-    */
-   private final Map _contextsByThread;
 
    /**
     * The initialization settings. This field is initialized by
@@ -919,12 +910,7 @@ implements DefaultResultCodes {
    throws IOException {
 
       // Get call context
-      Thread thread = Thread.currentThread();
-      CallContext context = (CallContext) _contextsByThread.get(thread);
-      if (context == null) {
-         context = new CallContext(this);
-         _contextsByThread.put(thread, context);
-      }
+      CallContext context = new CallContext(this);
 
       // Configure the call context
       try {
