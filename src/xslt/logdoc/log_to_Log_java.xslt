@@ -152,7 +152,7 @@ public class Log extends Object {
       MandatoryArgumentChecker.check("name", name);
 
       // Get the bundle by name
-      TranslationBundle bundle = TRANSLATION_BUNDLES_BY_NAME.get(name);
+      TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(name);
 
       // Make sure there is such a bundle
       if (bundle == null) {
