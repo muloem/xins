@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 0.166:
   - Logging the sequential counter identifier with a log message.
   - Parameters cannot be called 'id'.
   - Support making generated classes package-private.
+  - Changed the generated HTML for a log entry slightly. One of the changes is
+    that it is now displayed whether the log entry supports an exception or
+    not.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:

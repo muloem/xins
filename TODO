@@ -116,7 +116,6 @@ LOGDOC
 * Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
 * Support element in log.xml to reserve an ID that was previously used. For
   example <reserve id="5002" />
-* Display whether a log entry accepts an exception.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
