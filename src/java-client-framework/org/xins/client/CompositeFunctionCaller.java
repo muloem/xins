@@ -23,4 +23,17 @@ public interface CompositeFunctionCaller extends FunctionCaller {
     *    an unmodifiable view of the members, cannot be <code>null</code>.
     */
    List getMembers();
+
+   /**
+    * Returns the list of <code>ActualFunctionCaller</code> instances as a
+    * result of a deep search. All instances in the
+    * returned list are guaranteed to be {@link ActualFunctionCaller}
+    * instances.
+    *
+    * @return
+    *    an unmodifiable view of the {@link ActualFunctionCaller} instances in
+    *    this composite function caller and in all underlying composite
+    *    function callers (if any), cannot be <code>null</code>.
+    */
+   List getActualFunctionCallers();
 }

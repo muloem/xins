@@ -205,6 +205,7 @@ extends AbstractCompositeFunctionCaller {
 
       // Initialize fields
       _type                               = type;
+      _actualFunctionCallers              = new ArrayList();
       _actualFunctionCallersByURL         = new HashMap();
       _actualFunctionCallersByURLChecksum = new HashMap();
 
@@ -220,6 +221,12 @@ extends AbstractCompositeFunctionCaller {
     * The type of this group. This field cannot be <code>null</code>.
     */
    private final Type _type;
+
+   /**
+    * List of <code>ActualFunctionCaller</code> instances. This {@link List}
+    * cannot be <code>null</code>.
+    */
+   private final List _actualFunctionCallers;
 
    /**
     * Mappings from URLs to <code>ActualFunctionCaller</code>. The URLs are
@@ -271,8 +278,15 @@ extends AbstractCompositeFunctionCaller {
          // If the member is an actual function caller, store a reference
          if (member instanceof ActualFunctionCaller) {
             ActualFunctionCaller afc = (ActualFunctionCaller) member;
+
+            // Store the ActualFunctionCaller self
+            _actualFunctionCallers.add(afc);
+
+            // Store the ActualFunctionCaller by URL
             String url = afc.getURL().toString();
             _actualFunctionCallersByURL.put(url, afc);
+
+            // Store the ActualFunctionCaller by URL checksum
             long checksum = afc.getCRC32();
             _actualFunctionCallersByURLChecksum.put(new Long(checksum), afc);
 
@@ -282,6 +296,10 @@ extends AbstractCompositeFunctionCaller {
             addActualFunctionCallers(cfc.getMembers());
          }
       }
+   }
+
+   public List getActualFunctionCallers() {
+      return Collections.unmodifiableList(_actualFunctionCallers);
    }
 
    /**
