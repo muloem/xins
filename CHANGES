@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.56:
+
+* Slightly improved logging in XINS/Java Server Framework:
+
+* Improved generated CAPI classes, now support sessions.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.55:
 
 * XINS/Java Server Framework:
