@@ -15,13 +15,12 @@
 	<xsl:param name="enable_statistics">true</xsl:param>
 
 	<xsl:variable name="api" select="//api/@name" />
-	<xsl:variable name="sessionIDType" select="//api/@sessionIDType" />
 	<xsl:variable name="sessionIDJavaType">
 		<xsl:call-template name="javatype_for_type">
-			<xsl:with-param name="api"      select="$api"           />
-			<xsl:with-param name="specsdir" select="$specsdir"      />
-			<xsl:with-param name="required" select="'true'"         />
-			<xsl:with-param name="type"     select="$sessionIDType" />
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="required" select="'true'"    />
+			<xsl:with-param name="type"     select="_text"     />
 		</xsl:call-template>
 	</xsl:variable>
 	<xsl:variable name="sessionIDJavaTypeIsPrimary">
@@ -132,10 +131,10 @@ public final class API extends Object {
    /**
     * Calls the <em>]]></xsl:text>
 				<xsl:value-of select="$functionName" />
-				<xsl:text><![CDATA[</em> function.
-    *]]></xsl:text>
+				<xsl:text><![CDATA[</em> function.]]></xsl:text>
 				<xsl:if test="$sessionBased = 'true'">
 					<xsl:text>
+    *
     * @param session
     *    the session identifier</xsl:text>
 					<xsl:if test="$sessionIDJavaTypeIsPrimary = 'false'">
@@ -172,6 +171,7 @@ public final class API extends Object {
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:text>
+    *
     * @param </xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>
@@ -186,18 +186,17 @@ public final class API extends Object {
 						<xsl:choose>
 							<xsl:when test="$required = 'true'">
 								<xsl:text><![CDATA[
-    *     Cannot be <code>null</code>.]]></xsl:text>
+    *    Cannot be <code>null</code>.]]></xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:text><![CDATA[
-    *     Can be <code>null</code>.]]></xsl:text>
+    *    Can be <code>null</code>.]]></xsl:text>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:if>
-					<xsl:text>
-    *</xsl:text>
 				</xsl:for-each>
 				<xsl:text><![CDATA[
+    *
     * @return
     *    the result of the call, not <code>null</code>.
     *
@@ -290,7 +289,12 @@ public final class API extends Object {
 				<xsl:if test="not ($returnType = 'void')">
 					<xsl:text>CallResult result = </xsl:text>
 				</xsl:if>
-				<xsl:text>_functionCaller.call("</xsl:text>
+				<xsl:text>_functionCaller.call(</xsl:text>
+				<xsl:if test="$sessionBased = 'true'">
+					<!-- TODO: Convert the session ID correctly to a String -->
+					<xsl:text>session, </xsl:text>
+				</xsl:if>
+				<xsl:text>"</xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text>", </xsl:text>
 				<xsl:choose>
