@@ -11,7 +11,7 @@ import java.util.HashMap;
  * were found missing (<code>null</code>).
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class MissingArgumentException
 extends IllegalArgumentException {

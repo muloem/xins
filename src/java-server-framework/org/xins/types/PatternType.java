@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import nl.wanadoo.util.MandatoryArgumentChecker;
 import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -17,6 +16,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Patterns type. An enumeration type only accepts values that match a certain

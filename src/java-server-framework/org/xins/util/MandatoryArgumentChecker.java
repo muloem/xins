@@ -10,7 +10,7 @@ import java.util.List;
  * Utility class used to check mandatory method arguments.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class MandatoryArgumentChecker extends Object {
 

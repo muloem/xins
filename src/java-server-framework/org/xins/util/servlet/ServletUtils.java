@@ -11,7 +11,7 @@ import java.util.Properties;
  * Utility functions for servlets.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class ServletUtils extends Object {
 
