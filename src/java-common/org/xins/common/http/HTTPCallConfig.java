@@ -61,6 +61,8 @@ public final class HTTPCallConfig extends CallConfig {
    // Methods
    //-------------------------------------------------------------------------
 
+   // TODO: Override describe()
+
    /**
     * Returns the HTTP method associated with this configuration.
     *
@@ -73,5 +75,16 @@ public final class HTTPCallConfig extends CallConfig {
       }
    }
 
-   // TODO: Add setter for HTTPMethod
+   /**
+    * Sets the HTTP method associated with this configuration.
+    *
+    * @param method
+    *    the HTTP method to be associated with this configuration, can be
+    *    <code>null</code>.
+    */
+   public void setMethod(HTTPMethod method) {
+      synchronized (_lock) {
+         _method = method;
+      }
+   }
 }
