@@ -18,7 +18,7 @@ import org.xins.util.text.HexConverter;
  *
  * @since XINS 0.57
  */
-public final class BasicSessionID extends SessionIDType {
+public final class BasicSessionIDType extends SessionIDType {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -33,7 +33,7 @@ public final class BasicSessionID extends SessionIDType {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>BasicSessionID</code> type for the specified API.
+    * Constructs a new <code>BasicSessionIDType</code> for the specified API.
     *
     * @param api
     *    the API for which to create the type, cannot be <code>null</code>.
@@ -41,7 +41,7 @@ public final class BasicSessionID extends SessionIDType {
     * @throws IllegalArgumentException
     *    if <code>api == null</code>.
     */
-   BasicSessionID(API api) throws IllegalArgumentException {
+   BasicSessionIDType(API api) throws IllegalArgumentException {
       super("basicSessionID", java.lang.Long.class, api);
       FastStringBuffer buffer = new FastStringBuffer(17, HexConverter.toHexString(api.getStartupTimestamp()));
       buffer.append(':');
@@ -122,7 +122,7 @@ public final class BasicSessionID extends SessionIDType {
    //-------------------------------------------------------------------------
 
    /**
-    * Session ID generator for <code>BasicSessionID</code>.
+    * Session ID generator for <code>BasicSessionIDType</code>.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)

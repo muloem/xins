@@ -501,7 +501,7 @@ implements DefaultResultCodes {
             Library.BOOTSTRAP_LOG.debug("Performing session-related initialization.");
 
             // Initialize session ID type
-            _sessionIDType      = new BasicSessionID(this);
+            _sessionIDType      = new BasicSessionIDType(this);
             _sessionIDGenerator = _sessionIDType.getGenerator();
 
             // Determine session time-out duration and precision
