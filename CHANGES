@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.142:
   - Shortened title of link to other function to the first line of the
     description for that function.
 
+* XINS/Java Common Library:
+  - Continued work on org.xins.specs package.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.141:
 
