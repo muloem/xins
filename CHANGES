@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.111:
+
+* Generated CAPI classes:
+  - The generated Item classes for enum types now link to their instances.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.110:
 
 * Generated CAPI classes:
