@@ -35,7 +35,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Add state management to the LifespanManagers class.
 * Set state in APIServlet and API classes using private setState(State) method
   that could check that the state transition is valid.
-* Per State in the APIServlet and API classesdefine what a valid next state
+* Per State in the APIServlet and API classes define what a valid next state
   is. Change the setState(State) methods to check this.
 * Support returning of call ID in function output, as an output parameter
   named '_callID'.
