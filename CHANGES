@@ -18,6 +18,11 @@ CHANGES INTRODUCED IN XINS 0.155:
   - Changed the bootstrapping, initialization and deinitialization of
     manageable objects in the API class so that normal exceptions are not
     reported as 'unexpected'.
+  - Fixed bug in APIServlet class. The only allowed state in
+    init(ServletConfig) was INITIAL, while a few others are also acceptable.
+    For example, if at startup the initialization failed due to a missing
+    required property in the runtime properties file, then the framework would
+    not recover from this.
 
 * Generated specification documentation:
   - Now one style.css per API, so that if only the specdocs/[api] directory
