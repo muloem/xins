@@ -106,6 +106,7 @@ public abstract class ]]></xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text><![CDATA[
     *    ]]></xsl:text>
+			<!-- TODO: Use an intelligent template -->
 			<xsl:value-of select="description/text()" />
 		</xsl:for-each>
 		<xsl:text><![CDATA[
