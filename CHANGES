@@ -58,6 +58,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     1.1.0 but already marked as deprecated and it had a note stating that it
     could be removed at anytime.
   - Added getProtocol() method to class TargetDescriptor (with unit tests).
+  - Changed ServiceCaller to support that the descriptor is null.
+  - Added no-arg HTTPServiceCaller constructor.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
@@ -65,6 +67,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Reworked the framework around the UnsuccessfulXINSCallException class.
     Removed the UnsuccessfulXINSCallExceptionFactory class and added quite a
     few UnsuccessfulXINSCallException subclasses.
+  - Added no-arg XINSServiceCaller constructor.
 
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
