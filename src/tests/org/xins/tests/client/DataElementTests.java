@@ -16,7 +16,7 @@ import junit.framework.TestSuite;
 import org.xins.client.DataElement;
 
 /**
- * Tests for class <code>XINSCallResultParser</code>.
+ * Tests for class <code>DataElement</code>.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
