@@ -96,6 +96,13 @@ public abstract class PatternType extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
+   protected final void checkValueImpl(String value)
+   throws TypeValueException {
+      if (! PATTERN_MATCHER.matches(value, _pattern)) {
+         throw new TypeValueException(this, value);
+      }
+   }
+
    /**
     * Returns the pattern.
     *
