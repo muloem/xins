@@ -27,39 +27,37 @@ Improve service framework in org.xins.common.service:
 Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
 [x] Add HTTPCallRequest class (final, extends CallRequest)
-[ ] Specify allowed HTTP status codes in HTTPCallRequest         [LOW PRIO]
-[ ] Add StatusCodeHTTPCallException (extends HTTPCallException)  [LOW PRIO]
+[ ] Specify allowed HTTP status codes in HTTPCallRequest
+[ ] Add StatusCodeHTTPCallException (extends HTTPCallException)
 [x] Throw SocketTimeOutCallException when appropriate
 [x] Throw ConnectionRefusedCallException when appropriate
 [x] Throw ConnectionTimeOutCallException when appropriate
 [x] Throw TotalTimeOutCallException when appropriate
 [x] Throw UnexpectedExceptionCallException when appropriate
 [x] Throw IOCallException when appropriate
-[ ] Throw StatusCodeHTTPCallException when appropriate           [LOW PRIO]
+[ ] Throw StatusCodeHTTPCallException when appropriate
 [x] Add call(TargetDescriptor,HTTPCallRequest) to HTTPServiceCaller
 [x] Add getResult() to HTTPServiceCaller.Result
 [x] Remove getErrorCode() in class HTTPServiceCaller.Result
 [x] Make inner class HTTPServiceCaller.Result static
-[ ] Log all events properly                                      [LOW PRIO]
+[ ] Log all events properly                                         [LOW PRIO]
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
-[ ] Rename CallException to XINSCallException
-[ ] Rename CallRequest to XINSCallRequest
+[x] Rename CallException to XINSCallException
+[x] Rename CallRequest to XINSCallRequest
 [ ] Let XINSCallException extend CallException
 [ ] Let XINSCallRequest extend CallRequest
 [ ] Use ConnectionCallException instead of ConnectionException
-[ ] Remove ConnectionException class
+[x] Remove ConnectionException class
 [ ] Use ConnectionRefusedCallException instead of ConnectionRefusedException
-[ ] Remove ConnectionRefusedException class
+[x] Remove ConnectionRefusedException class
 [ ] Use ConnectionTimeOutCallException instead of ConnectionTimeOutException
-[ ] Remove ConnectionTimeOutException class
+[x] Remove ConnectionTimeOutException class
 [ ] Use SocketTimeOutCallException instead of SocketTimeOutException
-[ ] Remove SocketTimeOutException class
+[x] Remove SocketTimeOutException class
 [ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
 [ ] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
-[ ] Construct the HttpMethod object in the CallExecutor class
-[ ] Always throw XINSCallException, never RuntimeException/Error
 [ ] Use HTTPServiceCaller for the actual call
 
 Adapt CAPI generation:
