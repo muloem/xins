@@ -27,8 +27,8 @@ Improve service framework in org.xins.common.service:
 Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
 [x] Add HTTPCallRequest class (final, extends CallRequest)
-[ ] Specify allowed HTTP status codes in HTTPCallRequest        [LOW PRIO]
-[ ] Add StatusCodeHTTPCallException (extends HTTPCallException) [LOW PRIO]
+[ ] Specify allowed HTTP status codes in HTTPCallRequest         [LOW PRIO]
+[ ] Add StatusCodeHTTPCallException (extends HTTPCallException)  [LOW PRIO]
 [ ] Throw SocketTimeOutCallException when appropriate
 [ ] Throw ConnectionRefusedCallException when appropriate
 [ ] Throw ConnectionTimeOutCallException when appropriate
@@ -54,7 +54,8 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
 [ ] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
-[ ] Construct the HttpMethod object in the CallExecutor class [LOW PRIO]
+[ ] Construct the HttpMethod object in the CallExecutor class    [LOW PRIO]
+[ ] Always throw XINSCallException, never RuntimeException/Error [LOW PRIO]
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
