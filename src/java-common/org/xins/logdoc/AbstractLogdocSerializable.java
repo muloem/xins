@@ -55,7 +55,7 @@ implements LogdocSerializable {
    /**
     * Serializes this object for logging to the specified string buffer
     * (wrapper method). This method first checks if this object is already
-    * initialized. If it is, then {@link #serializeImpl(LogdocStringBuffer)}
+    * initialized. If it is, then {@link #serialize(LogdocStringBuffer)}
     * is immediately called, otherwise {@link #initialize()} is called first,
     * to initialize this object.
     *

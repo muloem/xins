@@ -236,7 +236,7 @@ public final class Result {
     * <code>null</code>.
     *
     * @return
-    *    the extra data as an XML {@link Element}, can be <code>null</code>;
+    *    the extra data as an XML {@link DataElement}, can be <code>null</code>;
     */
    public DataElement getDataElement() {
 

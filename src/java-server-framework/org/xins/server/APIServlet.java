@@ -255,7 +255,7 @@ extends HttpServlet {
 
    /**
     * Lock for the <code>_state</code> field. This object must be locked on
-    * before {@link #_state} may be read or changed.
+    * before _state may be read or changed.
     */
    private final Object _stateLock;
 
