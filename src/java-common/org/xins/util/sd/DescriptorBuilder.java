@@ -22,8 +22,25 @@ public final class DescriptorBuilder extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   public static final String DELIMITERS = ",";
+   /**
+    * Delimiter between tokens within a property value. This is the comma
+    * character <code>','</code>.
+    */
+   public static final char DELIMITER = ',';
+
+   /**
+    * Delimiters between tokens within a property value.
+    */
+   private static final String DELIMITER_AS_STRING = String.valueOf(DELIMITER);
+
+   /**
+    * Name identifying an actual service descriptor.
+    */
    public static final String SERVICE_DESCRIPTOR_TYPE = "service";
+
+   /**
+    * Name identifying a group of service descriptors.
+    */
    public static final String GROUP_DESCRIPTOR_TYPE = "group";
 
 
@@ -32,7 +49,7 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
 
    private static String[] tokenize(String s) {
-      StringTokenizer tokenizer = new StringTokenizer(s, DELIMITERS);
+      StringTokenizer tokenizer = new StringTokenizer(s, DELIMITER_AS_STRING);
       int count = tokenizer.countTokens();
       String[] tokens = new String[count];
       for (int i = 0; i < count; i++) {
@@ -40,27 +57,6 @@ public final class DescriptorBuilder extends Object {
       }
       return tokens;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a new <code>DescriptorBuilder</code>.
-    */
-   public DescriptorBuilder() {
-      // empty
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Builds a <code>Descriptor</code> based on the specified set of
@@ -81,7 +77,8 @@ public final class DescriptorBuilder extends Object {
     * @throws DescriptorBuilder.Exception
     *    if <code>properties == null || propertyName == null</code>.
     */
-   public Descriptor build(PropertyReader properties, String propertyName)
+   public static Descriptor build(PropertyReader properties,
+                                  String         propertyName)
    throws IllegalArgumentException, DescriptorBuilder.Exception {
 
       // Check preconditions
@@ -109,9 +106,9 @@ public final class DescriptorBuilder extends Object {
     * @throws DescriptorBuilder.Exception
     *    if <code>properties == null || propertyName == null</code>.
     */
-   private Descriptor build(PropertyReader properties,
-                            String         baseProperty,
-                            String         reference)
+   private static Descriptor build(PropertyReader properties,
+                                   String         baseProperty,
+                                   String         reference)
    throws DescriptorBuilder.Exception {
 
       // Determine the property name
@@ -172,6 +169,26 @@ public final class DescriptorBuilder extends Object {
       }
    }
 
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>DescriptorBuilder</code>.
+    */
+   private DescriptorBuilder() {
+      // empty
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Inner classes
