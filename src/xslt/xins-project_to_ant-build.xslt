@@ -110,7 +110,7 @@
 
 			<target name="classes" depends="-prepare-classes" description="Compiles all Java classes" />
 
-			<target name="all" depends="specdocs" description="Generates everything" />
+			<target name="all" depends="specdocs,classes" description="Generates everything" />
 		</project>
 	</xsl:template>
 </xsl:stylesheet>
