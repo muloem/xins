@@ -10,7 +10,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
   - Fixed SF.net bug #1099358: Num of descriptors in GroupDescriptor. A
     GroupDescriptor now always contains at least 2 other descriptors.
   - Added a ProtectedList class which implements a java.util.List where
-    elements can be added or removed only using the key passed in the 
+    elements can be added or removed only using the key passed in the
     constructor.
     This object is now used in the org.xins.common.xml.Element.
     Typical impact on performance: Small.
@@ -18,7 +18,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
     Typical impact on performance: Small.
 
 * XINS/Java Server Framework:
-  - Fixed SF.net bug #1100765: The API name is no longer mandatory. 
+  - Fixed SF.net bug #1100765: The API name is no longer mandatory.
     It is scheduled for re-introduction in XINS 2.0.0.
   - Fixed SF.net bug #1100805: Standard calling convention does not check
     whether function name is null.
@@ -33,6 +33,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
 * Tests:
   - Added performance tests. Execute the "perftests" ant target to execute the
     test.
+
+* Examples
+  - Fixed incorrect DTD declaration.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 1:
@@ -127,7 +130,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 * Tests:
   - Added new tests for the base64 type, the param combos and the input data
     sections.
-  - Adapted the framework to facilitate the testing of the XML calling 
+  - Adapted the framework to facilitate the testing of the XML calling
     convention.
 
 ______________________________________________________________________________
