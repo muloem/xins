@@ -13,7 +13,7 @@
 	<xsl:output
 	method="xml"
 	indent="no"
-	encoding="iso-8859-1"
+	encoding="US-ASCII"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
