@@ -13,6 +13,8 @@ import org.xins.common.Log;
  * service callers typically only accept a single type of request, derived
  * from this class.
  *
+ * <p>This class is not thread-safe.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -60,6 +62,13 @@ public abstract class CallRequest extends Object {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The <code>CallConfig</code> associated with this request, if any. Can be
+    * -and initially is- <code>null</code>.
+    */
+   private CallConfig _callConfig;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -88,5 +97,30 @@ public abstract class CallRequest extends Object {
     */
    public String toString() {
       return describe();
+   }
+
+   /**
+    * Retrieves the associated call configuration, if any.
+    *
+    * @return
+    *    the associated call configuration, or <code>null</code> if none is.
+    *
+    * @since XINS 1.1.0
+    */
+   public CallConfig getCallConfig() {
+      return _callConfig;
+   }
+
+   /**
+    * Sets the call configuration associated with this request.
+    *
+    * @param config
+    *    the call configuration to associate with this request, or
+    *    <code>null</code> if none should be.
+    *
+    * @since XINS 1.1.0
+    */
+   public void setCallConfig(CallConfig config) {
+      _callConfig = config;
    }
 }
