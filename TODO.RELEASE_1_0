@@ -16,3 +16,4 @@ znerd    - Remove unused methods, fields and classes
 agoubard - Have the DTD in an online location that includes a version number,
            so that if XINS 2.0 is released with a different specification
            format, it just refers to a different location for the DTDs
+znerd    - Finalize log entry ID's.
