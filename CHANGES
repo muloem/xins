@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.159:
+
+* XINS/Java Server Framework:
+  - The examples listed in the html page can be executed by clicking
+    on the links to the test forms.
+
+* Build and release process:
+  - Generation of the MD5 after the creation of the war file.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.158:
 
 * XINS/Java Server Framework:
