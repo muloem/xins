@@ -23,47 +23,26 @@ public class ServletUtils extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
-   /**
-    * Creates a new <code>ServletUtils</code>. This constructor is
-    * <code>private</code>, since no instances of this class should be
-    * created.
-    */
-   private ServletUtils() {
-      // empty
-   }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Gets the initialization settings from the specified servlet
     * configuration object.
     *
     * @param config
-    *    The servlet configuration object, not <code>null</code>.
+    *    the servlet configuration object, not <code>null</code>.
     * 
     * @return
-    *    A <code>Properties</code> object containing all initialization
+    *    a <code>Properties</code> object containing all initialization
     *    parameters from the servlet configuration object.
     *
     * @throws IllegalArgumentException
-    *    If <code>config == null</code>.
+    *    if <code>config == null</code>.
     */
    public static Properties settingsAsProperties(ServletConfig config)
    throws IllegalArgumentException {
 
       // Check preconditions
       if (config == null) {
-         throw new IllegalArgumentException("The specified servlet configuration is null.");
+         throw new IllegalArgumentException("config == null");
       }
 
       Properties properties = new Properties();
@@ -81,4 +60,27 @@ public class ServletUtils extends Object {
 
       return properties;
    }
+
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
+
+   /**
+    * Creates a new <code>ServletUtils</code>. This constructor is
+    * <code>private</code>, since no instances of this class should be
+    * created.
+    */
+   private ServletUtils() {
+      // empty
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 }
