@@ -200,7 +200,9 @@ $Id$
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/',    $api)"    />
+					<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/', $api)" />
 
+					<delete dir="{$copiedTypesDir}" />
 					<xsl:for-each select="document($api_file)/api/type">
 						<xsl:variable name="type" select="@name" />
 						<xsl:variable name="classname">
@@ -210,19 +212,24 @@ $Id$
 								</xsl:with-param>
 							</xsl:call-template>
 						</xsl:variable>
-						
-						<!-- XXX: Change the base dir for the XSLT file ? -->
-						<style
-						in="{$specsdir}/{$api}/{$type}.typ"
-						out="{$javaDestDir}/{$packageAsDir}/{$classname}.java"
-						style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt">
-							<param name="project_home" expression="{$project_home}" />
-							<param name="specsdir"     expression="{$specsdir}"     />
-							<param name="package"      expression="{$package}"      />
-							<param name="api"          expression="{$api}"          />
-							<param name="api_file"     expression="{$api_file}"     />
-						</style>
+						<copy
+						file="{$specsdir}/{$api}/{$type}.typ"
+						tofile="{$copiedTypesDir}/{$classname}.typ" />
 					</xsl:for-each>
+						
+					<!-- XXX: Change the base dir for the XSLT file ? -->
+					<style
+					basedir="{$copiedTypesDir}"
+					destdir="{$javaDestDir}/{$packageAsDir}/"
+					style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt"
+					extension=".java">
+						<param name="project_home" expression="{$project_home}" />
+						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="package"      expression="{$package}"      />
+						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
+					</style>
+					<delete dir="{$copiedTypesDir}" />
 
 					<mkdir dir="{$typeClassesDir}" />
 					<javac
