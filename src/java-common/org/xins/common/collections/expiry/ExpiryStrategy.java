@@ -8,6 +8,8 @@ package org.xins.common.collections.expiry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.ref.WeakReference;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -160,8 +162,7 @@ public final class ExpiryStrategy extends Object {
    /**
     * The list of folders associated with this strategy.
     */
-   private final List _folders;
-   // TODO: Store WeakReferences in the list
+   private final ArrayList _folders;
 
    /**
     * The timer thread. Not <code>null</code>.
@@ -231,7 +232,7 @@ public final class ExpiryStrategy extends Object {
       Log.log_1401(folder.toString(), toString());
 
       synchronized (_folders) {
-         _folders.add(folder);
+         _folders.add(new WeakReference(folder));
       }
    }
 
@@ -259,11 +260,24 @@ public final class ExpiryStrategy extends Object {
     * called from (and on) the timer thread.
     */
    private void doTick() {
+
+      int emptyRefIndex = -1;
+
       synchronized (_folders) {
          int count = _folders.size();
          for (int i = 0; i < count; i++) {
-            ExpiryFolder folder = (ExpiryFolder) _folders.get(i);
-            folder.tick();
+            WeakReference ref = (WeakReference) _folders.get(i);
+            ExpiryFolder folder = (ExpiryFolder) ref.get();
+            if (folder != null) {
+               folder.tick();
+            } else {
+               emptyRefIndex = i;
+            }
+         }
+
+         // Remove all empty WeakReferences
+         if (emptyRefIndex >= 0) {
+            _folders.remove(emptyRefIndex);
          }
       }
    }
