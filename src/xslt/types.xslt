@@ -8,8 +8,9 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:include href="standard_types.xslt" />
-	<xsl:include href="firstline.xslt"      />
+	<xsl:include href="standard_types.xslt"  />
+	<xsl:include href="firstline.xslt"       />
+	<xsl:include href="package_for_api.xslt" />
 
 	<!--
 	* Returns the name of the file for the specified type in the specified
@@ -116,9 +117,14 @@
 	</xsl:template>
 
 	<xsl:template name="javatypeclass_for_type">
-		<xsl:param name="api"      />
-		<xsl:param name="specsdir" />
-		<xsl:param name="type" />
+		<xsl:param name="project_file" />
+		<xsl:param name="api"          />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="type"         />
+
+		<xsl:if test="string-length($project_file) &lt; 1">
+			<xsl:message terminate="yes">Mandatory parameter 'project_file' is not defined.</xsl:message>
+		</xsl:if>
 
 		<xsl:choose>
 			<xsl:when test="starts-with($type, '_')">
@@ -127,6 +133,15 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:call-template name="package_for_type_classes">
+					<xsl:with-param name="project_file">
+						<xsl:value-of select="$project_file" />
+					</xsl:with-param>
+					<xsl:with-param name="api">
+						<xsl:value-of select="$api" />
+					</xsl:with-param>
+				</xsl:call-template>
+				<xsl:text>.</xsl:text>
 				<xsl:call-template name="hungarianUpper">
 					<xsl:with-param name="text">
 						<xsl:value-of select="$type" />
