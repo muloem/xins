@@ -1068,6 +1068,17 @@ extends HttpServlet {
          out.close();
       }
    }
+   
+   /**
+    * Re-initialise the properties if the property file has changed.
+    */
+   void reloadPropertiesIfChanged() {
+      if (_configFileWatcher == null) {
+         _configFileListener.reinit();
+      } else {
+         _configFileWatcher.interrupt();         
+      }  
+   }
 
    /**
     * Destroys this servlet. A best attempt will be made to release all

@@ -372,6 +372,20 @@ public class MetaFunctionsTests extends TestCase {
    }
 
    /**
+    * Tests the _ReloadProperties meta function.
+    * This test just tests if the meta function return succeeded.
+    */
+   public void testReloadProperties() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_ReloadProperties", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+      assertNull("The function returned a data element.", result.getDataElement());
+      assertNull("The function returned some parameters.", result.getParameters());
+   }
+
+   /**
     * Tests a meta function that does not exists.
     */
    public void testUnknownMetaFunction() throws Throwable {

@@ -766,6 +766,9 @@ implements DefaultResultCodes {
             result = doEnableFunction(parameters);
          } else if ("_ResetStatistics".equals(functionName)) {
             result = doResetStatistics();
+         } else if ("_ReloadProperties".equals(functionName)) {
+            _apiServlet.reloadPropertiesIfChanged();
+            result = SUCCESSFUL_RESULT;
          } else {
             throw new NoSuchFunctionException(functionName);
          }
