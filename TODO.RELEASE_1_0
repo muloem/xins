@@ -13,3 +13,6 @@ List of things to be done for XINS release 1.0:
 - Client Framework: Rethink and re-implement the failover. Distinguish between
   connection and socket time-outs and do not fail-over on the latter, except
   if the function is explicitly as supporting fail-over.
+- Server Framework: Allow configuration of diagnostic context identifier
+  generation. A flag (enable/disable automatic generation) and a prefix
+  ("sso-", "webmail-", etc.) is probably enough.
