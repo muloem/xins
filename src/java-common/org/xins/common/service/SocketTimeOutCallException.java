@@ -10,7 +10,7 @@ package org.xins.common.service;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.196
+ * @since XINS 0.207
  */
 public final class SocketTimeOutCallException extends GenericCallException {
 
@@ -43,8 +43,6 @@ public final class SocketTimeOutCallException extends GenericCallException {
     *    if <code>request     == null
     *          || target      == null
     *          || duration  &lt; 0</code>.
-    *
-    * @since XINS 0.202
     */
    public SocketTimeOutCallException(CallRequest      request,
                                      TargetDescriptor target,
