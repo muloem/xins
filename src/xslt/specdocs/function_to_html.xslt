@@ -778,7 +778,7 @@
 	</xsl:template>
 
 	<xsl:template name="resultcodes">
-		<h3>Return codes</h3>
+		<h3>Result codes</h3>
 		<table class="resultcodes">
 			<tr>
 				<th>Code</th>
@@ -793,7 +793,7 @@
 
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
-			<xsl:variable name="code" select="@code" />
+			<xsl:variable name="code" select="@name" />
 			<!-- TODO: Use name of result code, not value -->
 			<xsl:for-each select="document($api_file)/api/resultcode[@value = $code]">
 				<tr>
