@@ -188,3 +188,5 @@ MISCELLANEOUS
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.
+* The xins script files should use the ANT_HOME environment variable to
+  locate the ant binary to start.
