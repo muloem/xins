@@ -6,7 +6,6 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.net.IPAddressUtils;
 import org.xins.util.text.ParseException;
@@ -293,12 +292,6 @@ extends Object {
 
       // Perform the match
       boolean match = (ip >> _shift) == (_baseIP >> _shift);
-
-      Logger log = Library.RUNTIME_ACL_LOG;
-      if (log.isInfoEnabled()) {
-         String s = match ? " matches" : " does not match";
-         log.info("IP " + ipString + s + " the filter " + _expression + '.');
-      }
 
       return match;
    }
