@@ -12,6 +12,14 @@ CHANGES INTRODUCED IN XINS 0.192:
     exactly 16 hex digits, which represent a random 64-bit number. It is
     currently not possible to change the algorithm and have a different
     identifier generated.
+  - Slightly changed the fallback default log pattern, from:
+       %-4c{1} %-6p %m%n
+    to:
+       %16x %6c{1} %-6p %m%n
+  - Fixed bug in the CallResultOutputter class: The 'success' attribute on a
+    'result' element would always be set to 'false', even on successful
+    execution of the function.
+    This bug was introduced in XINS 0.191.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
