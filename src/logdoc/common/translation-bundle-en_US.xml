@@ -30,7 +30,7 @@
 	<translation entry="3310">Performed search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
 	<translation entry="3311">Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</translation>
 	<translation entry="3312">Call to <value-of-param name="url" /> succeeded.</translation>
-	<translation entry="3313">Call to <value-of-param name="url" /> failed. Reason: <value-of-param name="reason" />.</translation>
+	<translation entry="3313">Call to <value-of-param name="url" /> failed.</translation>
 	<translation entry="3314">Call completely failed.</translation>
 	<translation entry="3315">No more targets and no fail-over.</translation>
 	<translation entry="3316">No more targets but fail-over would be allowed.</translation>

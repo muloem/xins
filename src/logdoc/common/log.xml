@@ -106,7 +106,6 @@
 		<entry id="3313" level="WARNING">
 			<description>Call to a specific target failed.</description>
 			<param name="url" />
-			<param name="reason" />
 		</entry>
 		<entry id="3314" level="ERROR">
 			<description>Call completely failed.</description>
