@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 0.165:
 * Logdoc:
   - Added a note to the generated Logdoc index page, about deciding whether a
     log message should be at the FATAL message.
+  - Added support for exceptions. These are always logged at DEBUG level.
 
 * Generated build file:
   - Moved most of the command executed in the xins script shell files
