@@ -26,7 +26,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
     environment.
 
 * Libraries:
-  - Updated xmlenc from 0.45 to 0.46, which should result in a performance
+  - Updated xmlenc from 0.45 to 0.47, which should result in a performance
     improvement.
     Typical impact on performance: Small.
 
