@@ -299,6 +299,10 @@ extends Object {
       /**
        * The error code returned by the function or <code>null</code>, if no
        * error code is returned.
+       *
+       * <p>The value will never return an empty string, so if the result is
+       * not <code>null</code>, then it is safe to assume the length of the
+       * string is at least 1 character.
        */
       private String _errorCode;
 
@@ -429,6 +433,14 @@ extends Object {
             // Get the 'errorcode' and 'code attributes
             String code1 = atts.getValue("errorcode");
             String code2 = atts.getValue("code");
+
+            // Convert an empty string to null
+            if (code1 == null || code1.length() == 0) {
+               code1 = null;
+            }
+            if (code2 == null || code2.length() == 0) {
+               code2 = null;
+            }
 
             // Only one error code attribute set
             if (code1 != null && code2 == null) {
@@ -820,11 +832,17 @@ extends Object {
       }
 
       /**
-       * Gets the error code returned by the function if any.
+       * Returns the error code. If <code>null</code> is returned the call was
+       * successful and thus no error code was returned. Otherwise the call
+       * was unsuccessful.
+       *
+       * <p>This method will never return an empty string, so if the result is
+       * not <code>null</code>, then it is safe to assume the length of the
+       * string is at least 1 character.
        *
        * @return
-       *    the error code returned by the function or <code>null<code>
-       *    if no error code has been returned from the function.
+       *    the returned error code, or <code>null</code> if the call was
+       *    successful.
        *
        * @throws IllegalStateException
        *    if the current state is invalid.
