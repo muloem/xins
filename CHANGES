@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 0.115:
     NonASCIIException when appropriate.
   - Moved service descriptor classes from package org.xins.util.sd to package
     org.xins.util.service.
+  - Property 'timeOut' in class ServiceDescriptor is now an int instead of a
+    long.
 
 * XINS/Java Client Framework:
   - UnsuccessfulCallException and InvalidCallResultException now both derive
