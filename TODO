@@ -48,8 +48,6 @@ XINS/JAVA SERVER FRAMEWORK
   separated line in a text file.
 * Number all requests and log this number with all or most log messages.
 * Make generated logdoc classes package-private.
-* If an <output><param> section exists for a function the generation of the
-  implementation should generate the responder.param("...", "TODO");
 * Create an apart Statistics object that would contain the statistics and
   the methods to update them.
 
@@ -138,8 +136,7 @@ GENERATED XINS/JAVA SERVER FUNDAMENT CLASSES
 ______________________________________________________________________________
 GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
-* Add a method to the CAPI class that provides functionality to determine
-  what XINS version was used to generate the class.
+* None
 
 ______________________________________________________________________________
 MISCELLANEOUS
