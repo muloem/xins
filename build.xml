@@ -144,7 +144,7 @@
 		overwrite="true" />
 	</target>
 
-	<target name="javadoc" description="Generates Javadoc API documentation">
+	<target name="javadoc" depends="-init" description="Generates Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="build/javadoc" />
@@ -153,7 +153,7 @@
 		</antcall>
 	</target>
 
-	<target name="javadoc-private" description="Generates private Javadoc API documentation">
+	<target name="javadoc-private" depends="-init" description="Generates private Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="yes" />
 			<param name="javadoc.destdir" value="build/javadoc-private" />
@@ -221,6 +221,19 @@
 
 	<target name="checkstyle" depends="checkstyle-xml,checkstyle-report" description="Checks the style of the source code" />
 
+	<target name="upload-checkstyle" depends="-init,checkstyle">
+		<echo message="Uploading ${title} ${version} Checkstyle report to ${www.host}" />
+		<echo level="verbose" message="Creating directory ${www.dir}/checkstyle/${version} on ${www.host}" />
+		<exec executable="ssh" failonerror="true">
+			<arg value="${www.user}@${www.host}" />
+			<arg value="mkdir -p ${www.dir}/checkstyle/${version}" />
+		</exec>
+		<exec dir="build/checkstyle/html" executable="scp" failonerror="true">
+			<arg value="-r" />
+			<arg value="." />
+			<arg value="${www.target}/checkstyle/${version}" />
+		</exec>
+	</target>
 
 	<target name="src-package" depends="-prepare" description="Builds a distribution archive with all source files">
 		<tar tarfile="build/${src-package-tarfile}">
