@@ -11,7 +11,7 @@
 	<target name="-init">
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version"             value="0.2" />
+		<property name="version"             value="0.3-dev" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
 		<property name="debug"               value="true" />
@@ -161,7 +161,7 @@
 
 	<target name="bin-package" depends="javadoc,java-server-framework" description="Builds a complete distribution archive">
 		<tar tarfile="build/${bin-package-tarfile}">
-			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,src/**/*,build/javadoc/**,build/${name}.jar" />
+			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,src/**/*,depends/**,build/javadoc/**,build/${name}.jar" />
 		</tar>
 		<gzip zipfile="build/${bin-package-tarfile}.gz" src="build/${bin-package-tarfile}" />
 		<delete file="build/${bin-package-tarfile}" />
