@@ -24,6 +24,8 @@ import org.xins.common.service.TargetDescriptor;
 public class UnsuccessfulXINSCallException
 extends XINSCallException {
 
+   // XXX: Implement XINSCallResultData interface?
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -34,41 +36,14 @@ extends XINSCallException {
 
    /**
     * Delegate for the constructor that determines the detail message based on
-    * a <code>XINSCallResult</code> object.
-    *
-    * @param result
-    *    the {@link XINSCallResult} instance, should not be <code>null</code>.
-    *
-    * @return
-    *    the detail message for the constructor to use, never
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
-    */
-   private static final String determineDetail(XINSCallResult result)
-   throws IllegalArgumentException {
-
-      // Argument cannot be null
-      MandatoryArgumentChecker.check("result", result);
-
-      // Result must be unsuccessful
-      String errorCode = result.getErrorCode();
-      if (errorCode == null) {
-         throw new IllegalArgumentException("result.getErrorCode() == null");
-      }
-
-      return "Error code \"" + errorCode + "\".";
-   }
-
-   /**
-    * Delegate for the constructor that determines the detail message based on
     * a <code>XINSCallResultData</code> object.
     *
     * @param result
     *    the {@link XINSCallResultData} instance, should not be
     *    <code>null</code>.
+    *
+    * @param detail
+    *    detailed description to include, or <code>null</code> if unavailable.
     *
     * @return
     *    the detail message for the constructor to use, never
@@ -78,7 +53,8 @@ extends XINSCallException {
     *    if <code>result == null
     *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
     */
-   private static final String determineDetail(XINSCallResultData result)
+   private static final String determineDetail(XINSCallResultData result,
+                                               String             detail)
    throws IllegalArgumentException {
 
       // Argument cannot be null
@@ -90,7 +66,11 @@ extends XINSCallException {
          throw new IllegalArgumentException("result.getErrorCode() == null");
       }
 
-      return "Error code \"" + errorCode + "\".";
+      if (detail == null || detail.length() < 1) {
+         return "Error code \"" + errorCode + "\".";
+      } else {
+         return "Error code \"" + errorCode + "\": " + detail;
+      }
    }
 
 
@@ -142,7 +122,7 @@ extends XINSCallException {
    throws IllegalArgumentException {
 
       super("Unsuccessful XINS call result", result,
-            determineDetail(result), null);
+            determineDetail(result, null), null);
 
       // Store details
       _errorCode   = result.getErrorCode();
@@ -167,6 +147,9 @@ extends XINSCallException {
     * @param resultData
     *    the result data, cannot be <code>null</code>.
     *
+    * @param detail
+    *    detail message, or <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
@@ -177,11 +160,12 @@ extends XINSCallException {
    UnsuccessfulXINSCallException(XINSCallRequest    request,
                                  TargetDescriptor   target,
                                  long               duration,
-                                 XINSCallResultData resultData)
+                                 XINSCallResultData resultData,
+                                 String             detail)
    throws IllegalArgumentException {
 
       super("Unsuccessful XINS call result", request, target, duration,
-            determineDetail(resultData), null);
+            determineDetail(resultData, detail), null);
 
       // Check additional precondition
       MandatoryArgumentChecker.check("resultData", resultData);
