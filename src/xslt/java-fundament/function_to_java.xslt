@@ -109,7 +109,8 @@ public abstract class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    protected final void handleCall(CallContext context)
-   throws Throwable {]]></xsl:text>
+   throws Throwable {
+      boolean debugEnabled = _log.isDebugEnabled();]]></xsl:text>
 		<xsl:if test="input/param">
 			<xsl:text>
       // Get the input parameters</xsl:text>
@@ -138,7 +139,20 @@ public abstract class ]]></xsl:text>
 				<xsl:text>)</xsl:text>
 			</xsl:for-each>
 			<xsl:text>) {
-         context.startResponse(false, MISSING_PARAMETERS);</xsl:text>
+         context.startResponse(MISSING_PARAMETERS);
+         if (debugEnabled) {</xsl:text>
+			<xsl:for-each select="input/param[@required='true']">
+				<xsl:text>
+            if (isMissing(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>)) {
+               _log.debug("Missing parameter \"</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>\".");
+            }</xsl:text>
+			</xsl:for-each>
+			<xsl:text>
+         }</xsl:text>
 			<xsl:if test="input/param-combo[@type='inclusive-or']">
 				<xsl:text>
 
@@ -154,7 +168,7 @@ public abstract class ]]></xsl:text>
 					<xsl:text>)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);</xsl:text>
 			</xsl:for-each>
 			<xsl:if test="input/param-combo[@type='exclusive-or']">
 				<xsl:text>
@@ -175,7 +189,7 @@ public abstract class ]]></xsl:text>
 						<xsl:text>)</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);</xsl:text>
 				</xsl:for-each>
 			</xsl:for-each>
 			<xsl:if test="input/param-combo[@type='exclusive-or']">
@@ -200,7 +214,7 @@ public abstract class ]]></xsl:text>
 					<xsl:text>)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
-         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);</xsl:text>
 			</xsl:for-each>
 			<xsl:if test="input/param[not(@type='text' or string-length(@type) = 0)]">
 				<xsl:text>
@@ -218,7 +232,7 @@ public abstract class ]]></xsl:text>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);</xsl:text>
 			</xsl:for-each>
 			<xsl:text>
 
