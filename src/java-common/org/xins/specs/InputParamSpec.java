@@ -21,7 +21,7 @@ extends Spec {
    /**
     * The type for input parameter components.
     */
-   private static final Type TYPE = new Type();
+   public static final Type TYPE = new Type();
 
 
    //-------------------------------------------------------------------------
@@ -41,8 +41,12 @@ extends Spec {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if {@link #TYPE}<code>.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
     */
-   public InputParamSpec(String name) throws IllegalArgumentException {
+   public InputParamSpec(String name)
+   throws IllegalArgumentException, InvalidNameException {
       super(TYPE, name);
    }
 

@@ -21,7 +21,7 @@ extends Spec {
    /**
     * The type for element attribute components.
     */
-   private static final Type TYPE = new Type();
+   public static final Type TYPE = new Type();
 
 
    //-------------------------------------------------------------------------
@@ -41,8 +41,12 @@ extends Spec {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if {@link #TYPE}<code>.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
     */
-   public ElementAttributeSpec(String name) throws IllegalArgumentException {
+   public ElementAttributeSpec(String name)
+   throws IllegalArgumentException, InvalidNameException {
       super(TYPE, name);
    }
 

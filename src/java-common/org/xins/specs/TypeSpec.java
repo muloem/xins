@@ -21,7 +21,7 @@ extends VersionedSpec {
    /**
     * The type for type components.
     */
-   private static final Type TYPE = new Type();
+   public static final Type TYPE = new Type();
 
 
    //-------------------------------------------------------------------------
@@ -44,9 +44,12 @@ extends VersionedSpec {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || version == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if {@link #TYPE}<code>.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
     */
    public TypeSpec(String name, String version)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, InvalidNameException {
       super(TYPE, name, version);
    }
 
