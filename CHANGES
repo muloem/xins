@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.146:
 
+* XINS Javadoc API documentation now linked to online Jakarta Commons
+  HttpClient API documentation.
+
 * XINS/Java Common Library:
   - Small improvements to the org.xins.util.service package, such as new and
     improved Javadoc comments, improved exception messages, improved exception
