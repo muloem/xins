@@ -30,6 +30,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
   - Added an input example when creating a new function.
   - Fixed missing DTD declaration for the 1.1 DTDs.
 
+* Tests:
+  - All IPs are granted to access all functions, so that the the test
+    can run everywhere.
+
 * DTD:
   - Added missing DTD files for the 1.1 version.
 
@@ -82,7 +86,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
     test.
   - Changed references to "localhost" to the IP address "127.0.0.1".
 
-* Examples
+* Examples:
   - Fixed incorrect DTD declaration.
 
 * Build and release process:
