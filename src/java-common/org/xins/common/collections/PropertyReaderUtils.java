@@ -356,10 +356,8 @@ extends Object {
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     */
-   public static final LogdocSerializable serialize(PropertyReader p,
-                                                    String         valueIfEmpty)
-   throws IllegalArgumentException {
-
+   public static final LogdocSerializable
+   serialize(PropertyReader p, String valueIfEmpty) {
       return new SerializedPropertyReader(p, valueIfEmpty);
    }
 
