@@ -213,6 +213,12 @@ public final class IPAddressUtils extends Object {
                      return address.getLocalHost().getCanonicalHostName();
                   } catch (UnknownHostException unknownHostException2) {
                      // Ignore; perhaps another network interface will find it
+
+                  // Catch NPE. This works around SF.net bug #1113862
+                  // ("IPAddressUtils.getLocalHost gets NPE on Blackdown JVM
+                  // 1.4.1")
+                  } catch (NullPointerException unknownHostException2) {
+                     // Ignore; perhaps another network interface will find it
                   }
                }
             }
