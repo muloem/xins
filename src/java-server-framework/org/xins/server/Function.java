@@ -293,6 +293,25 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Handles a call to this function (wrapper method). This method will call
+    * {@link #handleCall(CallContext context)}.
+    *
+    * @param context
+    *    the context for this call, never <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws Throwable
+    *    if anything goes wrong.
+    */
+   CallResult handleCall0(CallContext context)
+   throws Throwable {
+      handleCall(context);
+      return context.getCallResult();
+   }
+
+   /**
     * Handles a call to this function.
     *
     * @param context

@@ -343,19 +343,19 @@ implements Servlet {
          }
       }
 
-      // TODO: Only set the content type to XML if there is no uncaught exception
-
-      // Set the content output type to XML
-      response.setContentType("text/xml");
-
-      // Call the API
-      PrintWriter out = response.getWriter(); 
-      _api.handleCall(request, out);
-
       // TODO: Support and use OutputStream instead of Writer, for improved
       //       performance
 
-      // Flush
+      // Call the API
+      CallResult result = _api.handleCall(request);
+
+      // Determine the XSLT to link to
+      String xslt = request.getParameter("_xslt");
+
+      // Send the XML output to the stream and flush
+      PrintWriter out = response.getWriter(); 
+      response.setContentType("text/xml");
+      CallResultOutputter.output(out, result, xslt);
       out.flush();
    }
 

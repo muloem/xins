@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
 import javax.servlet.ServletRequest;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
@@ -70,16 +69,12 @@ implements Responder, Log {
     *
     * @throws UnknownSessionIDException
     *    if the session ID specified in the request is valid, but unknown.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
     */
    CallContext(API api, ServletRequest request)
    throws IllegalArgumentException,
           MissingSessionIDException,
           InvalidSessionIDException,
-          UnknownSessionIDException,
-          IOException {
+          UnknownSessionIDException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("api", api, "request", request);
@@ -89,14 +84,7 @@ implements Responder, Log {
       _request      = request;
       _state        = BEFORE_START;
       _start        = System.currentTimeMillis();
-      _success      = true;
-      _code         = null;
-      _stringWriter = new FastStringWriter();
-      _xmlOutputter = new XMLOutputter();
-
-      // Reset the XMLOutputter
-      _xmlOutputter.reset(_stringWriter, "UTF-8");
-      _xmlOutputter.declaration();
+      _builder      = new CallResultBuilder();
 
       // Determine the function name
       String functionName = request.getParameter("_function");
@@ -107,12 +95,6 @@ implements Responder, Log {
          functionName = _api.getDefaultFunctionName();
       }
       _functionName = functionName;
-
-      // Determine the XSLT stylesheet, if any
-      String xslt = request.getParameter("_xslt");
-      if (xslt != null) {
-         _xmlOutputter.pi("xml-stylesheet", "type=\"text/xsl\" href=\"" + xslt + "\"");
-      }
 
       // Determine the function object, logger, call ID, log prefix
       _function  = (functionName == null) ? null : _api.getFunction(functionName);
@@ -155,27 +137,20 @@ implements Responder, Log {
    private final API _api;
 
    /**
-    * The start time of the call, as a number of milliseconds since midnight
-    * January 1, 1970 UTC.
-    */
-   private final long _start;
-
-   /**
     * The original servlet request.
     */
    private final ServletRequest _request;
 
    /**
-    * The character stream to send the output to. This field is initialized by
-    * the constructor and can never be <code>null</code>.
+    * The call result builder. Cannot be <code>null</code>.
     */
-   private final FastStringWriter _stringWriter;
+   private final CallResultBuilder _builder;
 
    /**
-    * The XML outputter. It is initialized by the constructor and sends its
-    * output to {@link #_stringWriter}.
+    * The start time of the call, as a number of milliseconds since midnight
+    * January 1, 1970 UTC.
     */
-   private final XMLOutputter _xmlOutputter;
+   private final long _start;
 
    /**
     * The current state.
@@ -221,23 +196,6 @@ implements Responder, Log {
    private boolean _returnSessionID;
 
    /**
-    * Success indication. Defaults to <code>true</code> and will <em>only</em>
-    * be set to <code>false</code> if and only if
-    * {@link #startResponse(boolean,String)} is called with the first
-    * parameter (<em>success</em>) set to <code>false</code>.
-    */
-   private boolean _success;
-
-   /**
-    * Return code. The default is <code>null</code> and will <em>only</em> be
-    * set to something else if and only if
-    * {@link #startResponse(boolean,String)} is called with the second
-    * parameter (<em>code</em>) set to a non-<code>null</code>, non-empty
-    * value.
-    */
-   private String _code;
-
-   /**
     * The call ID, unique in the context of the pertaining function.
     */
    private final int _callID;
@@ -246,6 +204,11 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   // TODO: Document
+   CallResult getCallResult() {
+      return _builder;
+   }
 
    /**
     * Returns the start time of the call.
@@ -259,16 +222,6 @@ implements Responder, Log {
    }
 
    /**
-    * Returns the character stream the XML output is sent to.
-    *
-    * @return
-    *    the underlying {@link FastStringWriter}, not <code>null</code>.
-    */
-   FastStringWriter getStringWriter() {
-      return _stringWriter;
-   }
-
-   /**
     * Returns the stored success indication. The default is <code>true</code>
     * and it will <em>only</em> be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -278,7 +231,7 @@ implements Responder, Log {
     *    the success indication.
     */
    final boolean getSuccess() {
-      return _success;
+      return _builder.isSuccess();
    }
 
    /**
@@ -292,7 +245,7 @@ implements Responder, Log {
     *    the return code, can be <code>null</code>.
     */
    final String getCode() {
-      return _code;
+      return _builder.getCode();
    }
 
    /**
@@ -406,7 +359,7 @@ implements Responder, Log {
    }
 
    public final void startResponse(ResultCode resultCode)
-   throws IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalStateException, InvalidResponseException {
       if (resultCode == null) {
          startResponse(true, null);
       } else {
@@ -415,12 +368,12 @@ implements Responder, Log {
    }
 
    public final void startResponse(boolean success)
-   throws IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalStateException, InvalidResponseException {
       startResponse(success, null);
    }
 
    public final void startResponse(boolean success, String returnCode)
-   throws IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalStateException, InvalidResponseException {
 
       // Check state
       if (_state != BEFORE_START) {
@@ -430,35 +383,19 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
-      _xmlOutputter.startTag("result");
+      _builder.startResponse(success, returnCode);
 
-      if (success) {
-         _xmlOutputter.attribute("success", "true");
-      } else {
-         _success = false;
-         _xmlOutputter.attribute("success", "false");
-      }
-
-      if (returnCode != null && returnCode.length() > 0) {
-         _code = returnCode;
-         _xmlOutputter.attribute("code", returnCode);
+      // Add the session ID, if any
+      if (_returnSessionID) {
+         _builder.param("_session", _session.getIDString());
       }
 
       // Reset the state
       _state = WITHIN_PARAMS;
-
-      // Add the session ID, if any
-      if (_returnSessionID) {
-         _xmlOutputter.startTag("param");
-         _xmlOutputter.attribute("name", "_session");
-         _xmlOutputter.pcdata(_session.getIDString());
-         _xmlOutputter.endTag();
-         _returnSessionID = false;
-      }
    }
 
    public final void param(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException {
 
       // Check state
       if (_state != BEFORE_START && _state != WITHIN_PARAMS) {
@@ -466,15 +403,7 @@ implements Responder, Log {
       }
 
       // Check arguments
-      if (name == null || value == null) {
-         if (name == null && value == null) {
-            throw new IllegalArgumentException("name == null && value == null");
-         } else if (name == null) {
-            throw new IllegalArgumentException("name == null");
-         } else {
-            throw new IllegalArgumentException("value == null");
-         }
-      }
+      MandatoryArgumentChecker.check("name", name, "value", value);
 
       // Start the response if necesary
       if (_state == BEFORE_START) {
@@ -484,27 +413,15 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
-      // Write <param name="name">value</param>
-      _xmlOutputter.startTag("param");
-      _xmlOutputter.attribute("name", name);
-      _xmlOutputter.pcdata(value);
-      _xmlOutputter.endTag();
+      // Set the parameter
+      _builder.param(name, value);
 
       // Reset the state
       _state = WITHIN_PARAMS;
    }
 
-   private final void startDataSection()
-   throws IOException {
-      _state = ERROR;
-      _xmlOutputter.startTag("data");
-      _state = WITHIN_ELEMENT;
-
-      _elementDepth = 0;
-   }
-
    public final void startTag(String type)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException {
 
       // Check state
       if (_state == AFTER_END) {
@@ -523,16 +440,11 @@ implements Responder, Log {
          startResponse(true, null);
       }
 
-      // Enter the <data/> section if necessary
-      if (_state == WITHIN_PARAMS) {
-         startDataSection();
-      }
-
       // Temporarily enter the ERROR state
       _state = ERROR;
 
       // Write the start tag
-      _xmlOutputter.startTag(type);
+      _builder.startTag(type);
       _elementDepth++;
 
       // Reset the state
@@ -540,7 +452,7 @@ implements Responder, Log {
    }
 
    public final void attribute(String name, String value)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException {
 
       // Check state
       if (_state != START_TAG_OPEN) {
@@ -551,14 +463,14 @@ implements Responder, Log {
       _state = ERROR;
 
       // Write the attribute
-      _xmlOutputter.attribute(name, value);
+      _builder.attribute(name, value);
 
       // Reset the state
       _state = START_TAG_OPEN;
    }
 
    public final void pcdata(String text)
-   throws IllegalStateException, IllegalArgumentException, InvalidResponseException, IOException {
+   throws IllegalStateException, IllegalArgumentException, InvalidResponseException {
 
       // Check state
       if (_state != START_TAG_OPEN && _state != WITHIN_ELEMENT) {
@@ -569,14 +481,14 @@ implements Responder, Log {
       _state = ERROR;
 
       // Write the PCDATA
-      _xmlOutputter.pcdata(text);
+      _builder.pcdata(text);
 
       // Reset the state
       _state = WITHIN_ELEMENT;
    }
 
    public final void endTag()
-   throws IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalStateException, InvalidResponseException {
 
       // Check state
       if (_state != START_TAG_OPEN && _state != WITHIN_ELEMENT) {
@@ -590,7 +502,7 @@ implements Responder, Log {
       _state = ERROR;
 
       // End the tag
-      _xmlOutputter.endTag();
+      _builder.endTag();
       _elementDepth--;
 
       // Reset the state
@@ -598,12 +510,12 @@ implements Responder, Log {
    }
 
    public void fail(ResultCode resultCode)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException {
       fail(resultCode, null);
    }
 
    public void fail(ResultCode resultCode, String message)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException {
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException {
 
       // Check state
       if (_state != BEFORE_START) {
@@ -631,7 +543,7 @@ implements Responder, Log {
       endResponse();
    }
 
-   public final void endResponse() throws InvalidResponseException, IOException {
+   public final void endResponse() throws InvalidResponseException {
 
       // Short-circuit if the response is already ended
       if (_state == AFTER_END) {
@@ -647,7 +559,7 @@ implements Responder, Log {
       _state = ERROR;
 
       // Close all open elements
-      _xmlOutputter.endDocument();
+      _builder.endResponse();
 
       // Set the state
       _state = AFTER_END;

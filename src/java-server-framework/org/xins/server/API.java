@@ -20,6 +20,7 @@ import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
@@ -947,59 +948,33 @@ implements DefaultResultCodes {
 
    /**
     * Forwards a call to a function. The call will actually be handled by
-    * {@link Function#handleCall(CallContext)}.
+    * {@link Function#handleCall0(CallContext)}.
     *
     * @param request
     *    the original servlet request, not <code>null</code>.
     *
-    * @param out
-    *    the output stream to write to, not <code>null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
+    * @return
+    *    the result of the call, never <code>null</code>.
     */
-   final void handleCall(ServletRequest request, PrintWriter out)
-   throws IOException {
+   final CallResult handleCall(ServletRequest request) {
 
       // Configure the call context
       CallContext context;
       try {
          context = new CallContext(this, request);
+         // TODO: Do not check session ID here, but at a later stage
       } catch (MissingSessionIDException exception) {
-         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
-         xmlOutputter.declaration();
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "MissingSessionID");
-         xmlOutputter.endDocument();
-         return;
+         return new BasicCallResult(false, "MissingSessionID", null, null);
       } catch (InvalidSessionIDException exception) {
-         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
-         xmlOutputter.declaration();
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "InvalidSessionID");
-         xmlOutputter.endDocument();
-         return;
+         return new BasicCallResult(false, "InvalidSessionID", null, null);
       } catch (UnknownSessionIDException exception) {
-         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
-         xmlOutputter.declaration();
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "UnknownSessionID");
-         xmlOutputter.endDocument();
-         return;
+         return new BasicCallResult(false, "UnknownSessionID", null, null);
       }
-
-      FastStringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
       String functionName = context.getFunctionName();
       if (functionName == null || functionName.length() == 0) {
-         context.startResponse(MISSING_FUNCTION_NAME);
-         context.endResponse();
-         out.print(stringWriter.toString());
-         return;
+         return new BasicCallResult(false, "MissingFunctionName", null, null);
       }
 
       // Detect special functions
@@ -1007,31 +982,25 @@ implements DefaultResultCodes {
          if ("_NoOp".equals(functionName)) {
             // empty
          } else if ("_PerformGC".equals(functionName)) {
+            // TODO: return doPerformGC();
             System.gc();
+            return new BasicCallResult(true, null, null, null);
          } else if ("_GetFunctionList".equals(functionName)) {
-            doGetFunctionList(context);
+            return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
-            doGetStatistics(context);
+            return doGetStatistics();
          } else if ("_GetVersion".equals(functionName)) {
-            doGetVersion(context);
+            return doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
-            doGetSettings(context);
+            return doGetSettings();
          } else {
-            context.startResponse(NO_SUCH_FUNCTION);
+            return new BasicCallResult(false, "NoSuchFunction", null, null);
          }
-         context.endResponse();
-         out.print(stringWriter.toString());
-         return;
       }
 
       // Short-circuit if we are shutting down
       if (_shutDown) {
-         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code",    INTERNAL_ERROR.getValue());
-         // TODO: Add _message parameter
-         xmlOutputter.endDocument();
+         return new BasicCallResult(false, "InternalError", null, null);
       }
 
       // Get the function object
@@ -1039,121 +1008,115 @@ implements DefaultResultCodes {
 
       // Detect case where function is not recognized
       if (f == null) {
-         context.startResponse(NO_SUCH_FUNCTION);
-         context.endResponse();
-         out.print(stringWriter.toString());
-         return;
+         return new BasicCallResult(false, "NoSuchFunction", null, null);
       }
 
-      // Forward the call
-      boolean exceptionThrown = true;
-      boolean success;
-      // XXX: Use ResultCode here, instead of String ?
-      String code;
+      // Forward the call to the function
+      return handleCall(f, context);
+   }
+
+   private CallResult handleCall(Function f, CallContext context) {
+
+      CallResult result;
       try {
-         f.handleCall(context);
-         context.endResponse();
-         success = context.getSuccess();
-         code    = context.getCode();
-         exceptionThrown = false;
+
+         // TODO: Check session ID in Function.handleCall(CallContext) ?
+         result = f.handleCall0(context);
+
       } catch (Throwable exception) {
+
+         // TODO: Allow customization of what exceptions are logged?
          LOG.error("Caught exception while calling API.", exception);
 
-         success = false;
-         code    = INTERNAL_ERROR.getValue();
+         // Create a set of parameters for the result
+         BasicPropertyReader parameters = new BasicPropertyReader();
 
-         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", code);
-         xmlOutputter.startTag("param");
-         xmlOutputter.attribute("name", "_exception.class");
-         xmlOutputter.pcdata(exception.getClass().getName());
+         // Add the exception class
+         parameters.set("_exception.class", exception.getClass().getName());
 
+         // Add the exception message, if any
          String message = exception.getMessage();
          if (message != null && message.length() > 0) {
-            xmlOutputter.endTag();
-            xmlOutputter.startTag("param");
-            xmlOutputter.attribute("name", "_exception.message");
-            xmlOutputter.pcdata(message);
+            parameters.set("_exception.message", message);
          }
 
+         // Add the stack trace, if any
          FastStringWriter stWriter = new FastStringWriter();
          PrintWriter printWriter = new PrintWriter(stWriter);
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
          if (stackTrace != null && stackTrace.length() > 0) {
-            xmlOutputter.endTag();
-            xmlOutputter.startTag("param");
-            xmlOutputter.attribute("name", "_exception.stacktrace");
-            xmlOutputter.pcdata(stackTrace);
+            parameters.set("_exception.stacktrace", stackTrace);
          }
-         xmlOutputter.close();
+
+         result = new BasicCallResult(false, "InternalError", parameters, null);
       }
 
-      if (!exceptionThrown) {
-         out.print(stringWriter.toString());
-      }
-      f.performedCall(context, success, code);
+      // Update function statistics
+      f.performedCall(context, result.isSuccess(), result.getCode());
+
+      return result;
    }
 
    /**
     * Returns a list of all functions in this API. Per function the name and
     * the version are returned.
     *
-    * @param context
-    *    the context, guaranteed to be not <code>null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
+    * @return
+    *    the call result, never <code>null</code>.
     */
-   private final void doGetFunctionList(CallContext context)
-   throws IOException {
+   private final CallResult doGetFunctionList() {
+
+      // Initialize a builder
+      CallResultBuilder builder = new CallResultBuilder();
+
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         context.startTag("function");
-         context.attribute("name",    function.getName());
-         context.attribute("version", function.getVersion());
-         context.endTag();
+         builder.startTag("function");
+         builder.attribute("name",    function.getName());
+         builder.attribute("version", function.getVersion());
+         builder.endTag();
       }
+
+      return builder;
    }
 
    /**
     * Returns the call statistics for all functions in this API.
     *
-    * @param context
-    *    the context, guaranteed to be not <code>null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
+    * @return
+    *    the call result, never <code>null</code>.
     */
-   private final void doGetStatistics(CallContext context)
-   throws IOException {
-      context.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
-      context.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
+   private final CallResult doGetStatistics() {
+
+      // Initialize a builder
+      CallResultBuilder builder = new CallResultBuilder();
+
+      builder.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
+      builder.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
 
       // Currently available processors
       Runtime rt = Runtime.getRuntime();
       try {
-         context.param("availableProcessors", String.valueOf(rt.availableProcessors()));
+         builder.param("availableProcessors", String.valueOf(rt.availableProcessors()));
       } catch (NoSuchMethodError error) {
          // ignore: Runtime.availableProcessors() is not available in Java 1.3
       }
 
       // Heap memory statistics
-      context.startTag("heap");
+      builder.startTag("heap");
       long free  = rt.freeMemory();
       long total = rt.totalMemory();
-      context.attribute("used",  String.valueOf(total - free));
-      context.attribute("free",  String.valueOf(free));
-      context.attribute("total", String.valueOf(total));
+      builder.attribute("used",  String.valueOf(total - free));
+      builder.attribute("free",  String.valueOf(free));
+      builder.attribute("total", String.valueOf(total));
       try {
-         context.attribute("max", String.valueOf(rt.maxMemory()));
+         builder.attribute("max", String.valueOf(rt.maxMemory()));
       } catch (NoSuchMethodError error) {
          // ignore: Runtime.maxMemory() is not available in Java 1.3
       }
-      context.endTag(); // heap
+      builder.endTag(); // heap
 
       // Function-specific statistics
       int count = _functionList.size();
@@ -1232,105 +1195,108 @@ implements DefaultResultCodes {
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          }
 
-         context.startTag("function");
-         context.attribute("name", function.getName());
+         builder.startTag("function");
+         builder.attribute("name", function.getName());
 
          // Successful
-         context.startTag("successful");
-         context.attribute("count",    String.valueOf(successfulCalls));
-         context.attribute("average",  successfulAverage);
-         context.startTag("min");
-         context.attribute("start",    successfulMinStart);
-         context.attribute("duration", successfulMin);
-         context.endTag(); // min
-         context.startTag("max");
-         context.attribute("start",    successfulMaxStart);
-         context.attribute("duration", successfulMax);
-         context.endTag(); // max
-         context.startTag("last");
-         context.attribute("start",    lastSuccessfulStart);
-         context.attribute("duration", lastSuccessfulDuration);
-         context.endTag(); // last
-         context.endTag(); // successful
+         builder.startTag("successful");
+         builder.attribute("count",    String.valueOf(successfulCalls));
+         builder.attribute("average",  successfulAverage);
+         builder.startTag("min");
+         builder.attribute("start",    successfulMinStart);
+         builder.attribute("duration", successfulMin);
+         builder.endTag(); // min
+         builder.startTag("max");
+         builder.attribute("start",    successfulMaxStart);
+         builder.attribute("duration", successfulMax);
+         builder.endTag(); // max
+         builder.startTag("last");
+         builder.attribute("start",    lastSuccessfulStart);
+         builder.attribute("duration", lastSuccessfulDuration);
+         builder.endTag(); // last
+         builder.endTag(); // successful
 
          // Unsuccessful
-         context.startTag("unsuccessful");
-         context.attribute("count",    String.valueOf(unsuccessfulCalls));
-         context.attribute("average",  unsuccessfulAverage);
-         context.startTag("min");
-         context.attribute("start",    unsuccessfulMinStart);
-         context.attribute("duration", unsuccessfulMin);
-         context.endTag(); // min
-         context.startTag("max");
-         context.attribute("start",    unsuccessfulMaxStart);
-         context.attribute("duration", unsuccessfulMax);
-         context.endTag(); // max
-         context.startTag("last");
-         context.attribute("start",    lastUnsuccessfulStart);
-         context.attribute("duration", lastUnsuccessfulDuration);
-         context.endTag(); // last
-         context.endTag(); // unsuccessful
+         builder.startTag("unsuccessful");
+         builder.attribute("count",    String.valueOf(unsuccessfulCalls));
+         builder.attribute("average",  unsuccessfulAverage);
+         builder.startTag("min");
+         builder.attribute("start",    unsuccessfulMinStart);
+         builder.attribute("duration", unsuccessfulMin);
+         builder.endTag(); // min
+         builder.startTag("max");
+         builder.attribute("start",    unsuccessfulMaxStart);
+         builder.attribute("duration", unsuccessfulMax);
+         builder.endTag(); // max
+         builder.startTag("last");
+         builder.attribute("start",    lastUnsuccessfulStart);
+         builder.attribute("duration", lastUnsuccessfulDuration);
+         builder.endTag(); // last
+         builder.endTag(); // unsuccessful
 
-         context.endTag(); // function
+         builder.endTag(); // function
       }
+
+      return builder;
    }
 
    /**
     * Returns the XINS version.
     *
-    * @param context
-    *    the context, guaranteed to be not <code>null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
+    * @return
+    *    the call result, never <code>null</code>.
     */
-   private final void doGetVersion(CallContext context)
-   throws IOException {
-      context.param("java.version",   System.getProperty("java.version"));
-      context.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
-      context.param("xins.version",   Library.getVersion());
+   private final CallResult doGetVersion() {
+
+      CallResultBuilder builder = new CallResultBuilder();
+
+      builder.param("java.version",   System.getProperty("java.version"));
+      builder.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
+      builder.param("xins.version",   Library.getVersion());
+
+      return builder;
    }
 
    /**
     * Returns the settings.
     *
-    * @param context
-    *    the context, guaranteed to be not <code>null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
+    * @return
+    *    the call result, never <code>null</code>.
     */
-   private final void doGetSettings(CallContext context)
-   throws IOException {
+   private final CallResult doGetSettings() {
+
+      CallResultBuilder builder = new CallResultBuilder();
 
       // Initialization settings
       Enumeration names = _initSettings.propertyNames();
-      context.startTag("initialization");
+      builder.startTag("initialization");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = _initSettings.getProperty(key);
 
-         context.startTag("property");
-         context.attribute("name", key);
-         context.pcdata(value);
-         context.endTag();
+         builder.startTag("property");
+         builder.attribute("name", key);
+         builder.pcdata(value);
+         builder.endTag();
       }
-      context.endTag();
+      builder.endTag();
 
       // System properties
       names = System.getProperties().propertyNames();
-      context.startTag("runtime");
+      builder.startTag("runtime");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = System.getProperty(key);
 
          if (key != null && value != null && key.length() > 0 && value.length() > 0) {
-            context.startTag("property");
-            context.attribute("name", key);
-            context.pcdata(value);
-            context.endTag();
+            builder.startTag("property");
+            builder.attribute("name", key);
+            builder.pcdata(value);
+            builder.endTag();
          }
       }
-      context.endTag();
+      builder.endTag();
+
+      return builder;
    }
 }
