@@ -535,7 +535,7 @@ implements Responder, Log {
    throws IllegalArgumentException, IllegalStateException, IOException {
 
       // Check state
-      if (_state != START_TAG_OPEN) {
+      if (_state != BEFORE_START) {
          throw new IllegalStateException("The state is " + _state + '.');
       }
 
