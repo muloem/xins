@@ -17,14 +17,20 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
+
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
+
 import org.xins.common.service.CallRequest;
+
+import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
@@ -52,7 +58,7 @@ public final class XINSCallRequest extends CallRequest {
    /**
     * HTTP status code verifier that will only approve 2xx codes.
     */
-   private static final org.xins.common.http.HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
+   private static final HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
 
    /**
     * Perl 5 pattern compiler.
@@ -99,9 +105,10 @@ public final class XINSCallRequest extends CallRequest {
       try {
          PARAMETER_NAME_PATTERN = PATTERN_COMPILER.compile(PARAMETER_NAME_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
-         throw new Error("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.");
+         throw new Error("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.", mpe);
       }
    }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -120,7 +127,7 @@ public final class XINSCallRequest extends CallRequest {
     */
    public XINSCallRequest(String functionName)
    throws IllegalArgumentException {
-      this(functionName, null, false, null);
+      this(functionName, null, null);
    }
 
    /**
@@ -140,7 +147,7 @@ public final class XINSCallRequest extends CallRequest {
     */
    public XINSCallRequest(String functionName, PropertyReader parameters)
    throws IllegalArgumentException {
-      this(functionName, parameters, false, null);
+      this(functionName, parameters, null);
    }
 
    /**
@@ -164,10 +171,29 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @since XINS 1.1.0
     */
-   public XINSCallRequest(String functionName, PropertyReader parameters, Element dataSection)
+   public XINSCallRequest(String         functionName,
+                          PropertyReader parameters,
+                          Element        dataSection)
    throws IllegalArgumentException {
-      this(functionName, parameters, false, null);
+
+      // Determine instance number first
+      _instanceNumber = ++INSTANCE_COUNT;
+
+      // TRACE: Enter constructor
+      Log.log_2000(CLASSNAME, "#" + _instanceNumber);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
+
+      // Store function name, parameters and data section
+      _functionName = functionName;
+      setParameters(parameters);
       setDataSection(dataSection);
+
+      // TRACE: Leave constructor
+      Log.log_2002(CLASSNAME, "#" + _instanceNumber);
+
+      // Note that _asString is lazily initialized.
    }
 
    /**
@@ -188,6 +214,12 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #XINSCallRequest(String,PropertyReader} in combination
+    *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public XINSCallRequest(String         functionName,
                           PropertyReader parameters,
@@ -222,6 +254,12 @@ public final class XINSCallRequest extends CallRequest {
     *    contains a name that does not match the constraints for a parameter
     *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
     *    <code>"function"</code>, which is currently still reserved.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #XINSCallRequest(String,PropertyReader} in combination
+    *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public XINSCallRequest(String         functionName,
                           PropertyReader parameters,
@@ -229,29 +267,13 @@ public final class XINSCallRequest extends CallRequest {
                           HTTPMethod     method)
    throws IllegalArgumentException {
 
-      // Determine instance number first
-      _instanceNumber = ++INSTANCE_COUNT;
+      this(functionName, parameters);
 
-      // TRACE: Enter constructor
-      Log.log_2000(CLASSNAME, "#" + _instanceNumber);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("functionName", functionName);
-
-      // Construct a call configuration
+      // Create an associated XINSCallConfig object
       XINSCallConfig callConfig = new XINSCallConfig();
       callConfig.setFailOverAllowed(failOverAllowed);
       callConfig.setHTTPMethod(method);
-
-      // Initialize fields
-      _functionName    = functionName;
-      setParameters(parameters);
-      setCallConfig(callConfig);
-
-      // TRACE: Enter constructor
-      Log.log_2002(CLASSNAME, "#" + _instanceNumber);
-
-      // Note that _asString is lazily initialized.
+      setXINSCallConfig(callConfig);
    }
 
 
@@ -406,6 +428,9 @@ public final class XINSCallRequest extends CallRequest {
     */
    public void setParameters(PropertyReader parameters) {
 
+      // TODO: Optimize this method. Try not to recreate
+      //       ProtectedPropertyReader objects.
+
       // Create PropertyReader for the HTTP parameters
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
       ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
@@ -500,34 +525,33 @@ public final class XINSCallRequest extends CallRequest {
     * Sets the data section for the input.
     *
     * @param dataSection
-    *    the data section for the input, if any, can be <code>null</code> if 
-    *    there are none.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>dataSection == null</code>.
+    *    the data section for the input, or <code>null</code> if there is
+    *    none.
     *
     * @since XINS 1.1.0
     */
-   public void setDataSection(Element dataSection) throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("dataSection", dataSection);
+   public void setDataSection(Element dataSection) {
 
       // Store the data section
       _dataSection = dataSection;
 
-      // Add the data section to the parameter list
-      ElementSerializer serializer = new ElementSerializer();
-      String xmlDataSection = serializer.serialize(dataSection);
-      _httpParams.set(SECRET_KEY, "_data", xmlDataSection);
+      // Add the data section to the HTTP parameter list
+      if (dataSection == null) {
+         _httpParams.set(SECRET_KEY, "_data", null);
+      } else {
+         // TODO: Do not recreate ElementSerializer each time
+         ElementSerializer serializer = new ElementSerializer();
+         String xmlDataSection = serializer.serialize(dataSection);
+         _httpParams.set(SECRET_KEY, "_data", xmlDataSection);
+      }
    }
 
    /**
-    * Gets the data section for the input.
+    * Retrieves the data section for the input.
     *
     * @return
-    *    the data section for the input, if any, can be <code>null</code> if 
-    *    there are none.
+    *    the data section for the input, or <code>null</code> if there is
+    *    none.
     *
     * @since XINS 1.1.0
     */
@@ -542,9 +566,21 @@ public final class XINSCallRequest extends CallRequest {
     *    <code>true</code> if fail-over is unconditionally allowed, even if the
     *    request was already received or even processed by the other end,
     *    <code>false</code> otherwise.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Call {@link #getXINSCallConfig()} instead and then call
+    *    {@link XINSCallConfig#isFailOverAllowed() isFailOverAllowed()} on the
+    *    returned call configuration object.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    public boolean isFailOverAllowed() {
-      return getXINSCallConfig().isFailOverAllowed();
+      XINSCallConfig callConfig = getXINSCallConfig();
+      if (callConfig == null) {
+         return false;
+      } else {
+         return getXINSCallConfig().isFailOverAllowed();
+      }
    }
 
    /**
@@ -556,11 +592,21 @@ public final class XINSCallRequest extends CallRequest {
     *    <code>null</code>.
     */
    HTTPCallRequest getHTTPCallRequest() {
-      XINSCallConfig callConfig = getXINSCallConfig();
-      return new HTTPCallRequest(callConfig.getHTTPMethod(),
-                                 _httpParams,
-                                 callConfig.isFailOverAllowed(),
-                                 HTTP_STATUS_CODE_VERIFIER);
+
+      // Construct an HTTP call request
+      HTTPCallRequest httpRequest = new HTTPCallRequest(_httpParams,
+                                                        HTTP_STATUS_CODE_VERIFIER);
+
+      // If there is a XINS call config, create an HTTP call config
+      XINSCallConfig xinsConfig = getXINSCallConfig();
+      if (xinsConfig != null) {
+         HTTPCallConfig httpConfig = new HTTPCallConfig();
+         httpConfig.setFailOverAllowed(xinsConfig.isFailOverAllowed());
+         httpConfig.setMethod(xinsConfig.getHTTPMethod());
+         httpRequest.setHTTPCallConfig(httpConfig);
+      }
+
+      return httpRequest;
    }
 
 

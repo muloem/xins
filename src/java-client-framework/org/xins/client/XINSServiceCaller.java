@@ -251,6 +251,23 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns a default <code>CallConfig</code> object. This method is called
+    * by the <code>ServiceCaller</code> constructor if no
+    * <code>CallConfig</code> object was given.
+    *
+    * <p>The implementation of this method in class {@link XINSServiceCaller}
+    * returns a standard {@link XINSCallConfig} object which has unconditional
+    * fail-over disabled and the HTTP method set to
+    * {@link HTTPMethod#POST POST}.
+    *
+    * @return
+    *    a new {@link XINSCallConfig} instance, never <code>null</code>.
+    */
+   protected CallConfig getDefaultCallConfig() {
+      return new XINSCallConfig();
+   }
+
+   /**
     * Executes the specified XINS call request towards one of the associated
     * targets. If the call succeeds with one of these targets, then a
     * {@link XINSCallResult} object is returned. Otherwise, if none of the

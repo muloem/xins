@@ -57,6 +57,63 @@ public final class HTTPCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a new <code>HTTPCallRequest</code> with the specified
+    * parameters and status code verifier.
+    *
+    * @param parameters
+    *    the parameters for the HTTP call, can be <code>null</code> if there
+    *    are none to pass down.
+    *
+    * @param statusCodeVerifier
+    *    the HTTP status code verifier, or <code>null</code> if all HTTP
+    *    status codes are allowed.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPCallRequest(PropertyReader         parameters,
+                          HTTPStatusCodeVerifier statusCodeVerifier)
+   throws IllegalArgumentException {
+
+      // Determine instance number first
+      _instanceNumber = ++INSTANCE_COUNT;
+
+      // TRACE: Enter constructor
+      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
+
+      // Store information
+      _parameters         = parameters;
+      _statusCodeVerifier = statusCodeVerifier;
+
+      // TRACE: Leave constructor
+      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
+
+      // Note that _asString is lazily initialized.
+   }
+
+   /**
+    * Constructs a new <code>HTTPCallRequest</code> with the specified
+    * parameters.
+    *
+    * @param parameters
+    *    the parameters for the HTTP call, can be <code>null</code> if there
+    *    are none to pass down.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPCallRequest(PropertyReader parameters) {
+      this(parameters, (HTTPStatusCodeVerifier) null);
+   }
+
+   /**
+    * Constructs a new <code>HTTPCallRequest</code> with no parameters.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPCallRequest() {
+      this((PropertyReader) null, (HTTPStatusCodeVerifier) null);
+   }
+
+   /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
     * method. No arguments are be passed to the URL. Fail-over is disallowed,
     * unless the request was definitely not processed by the other end.
@@ -65,6 +122,13 @@ public final class HTTPCallRequest extends CallRequest {
     *    the HTTP method to use, or <code>null</code> if the method should be
     *    determined when the call is made
     *    (<em>since XINS 1.1.0 this argument can be null</em>).
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #HTTPCallRequest(PropertyReader)}
+    *    instead, in combination with
+    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPCallRequest(HTTPMethod method) {
       this(method, null, false, null);
@@ -82,6 +146,13 @@ public final class HTTPCallRequest extends CallRequest {
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #HTTPCallRequest(PropertyReader)}
+    *    instead, in combination with
+    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPCallRequest(HTTPMethod     method,
                           PropertyReader parameters) {
@@ -108,6 +179,13 @@ public final class HTTPCallRequest extends CallRequest {
     * @param statusCodeVerifier
     *    the HTTP status code verifier, or <code>null</code> if all HTTP
     *    status codes are allowed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #HTTPCallRequest(PropertyReader,HTTPStatusCodeVerifier)}
+    *    instead, in combination with
+    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
+    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPCallRequest(HTTPMethod             method,
                           PropertyReader         parameters,
@@ -115,11 +193,7 @@ public final class HTTPCallRequest extends CallRequest {
                           HTTPStatusCodeVerifier statusCodeVerifier)
    throws IllegalArgumentException {
 
-      // Determine instance number first
-      _instanceNumber = ++INSTANCE_COUNT;
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
+      this(parameters, statusCodeVerifier);
 
       // Create an HTTPCallConfig object
       HTTPCallConfig callConfig = new HTTPCallConfig();
@@ -128,19 +202,7 @@ public final class HTTPCallRequest extends CallRequest {
          callConfig.setMethod(method);
       }
       setCallConfig(callConfig);
-
-      // Store information
-      _parameters         = parameters;
-      _statusCodeVerifier = statusCodeVerifier;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
-
-      // Note that _asString is lazily initialized.
    }
-
-   // TODO: Add constructor that accepts HTTPCallConfig
-   // TODO: Deprecate constructors that accept failOverAllowed and/or method
 
 
    //-------------------------------------------------------------------------
@@ -243,9 +305,19 @@ public final class HTTPCallRequest extends CallRequest {
     *
     * @return
     *    the HTTP method, or <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0.
+    *    Use {@link #getHTTPCallConfig()} instead.
+    *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPMethod getMethod() {
-      return getHTTPCallConfig().getMethod();
+      HTTPCallConfig callConfig = getHTTPCallConfig();
+      if (callConfig == null) {
+         return null;
+      } else {
+         return callConfig.getMethod();
+      }
    }
 
    /**

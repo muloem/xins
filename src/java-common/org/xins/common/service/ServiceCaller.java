@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 import org.xins.common.TimeOutController;
 import org.xins.common.TimeOutException;
 
@@ -159,7 +160,26 @@ public abstract class ServiceCaller extends Object {
     */
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
-      this(descriptor, null);
+
+      // TRACE: Enter constructor
+      Log.log_1000(CLASSNAME, null);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("descriptor", descriptor);
+
+      // Set fields
+      _newStyle   = false;
+      _descriptor = descriptor;
+      _callConfig = null;
+
+      // TODO: Make sure the old-style doCallImpl     method is implemented
+      // TODO: Make sure the old-style shouldFailOver method is implemented
+
+      // TODO: Make sure the new-style doCallImpl     method is not implemented
+      // TODO: Make sure the new-style shouldFailOver method is not implemented
+
+      // TRACE: Leave constructor
+      Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -192,25 +212,37 @@ public abstract class ServiceCaller extends Object {
 
          String actualClass = getClass().getName();
 
-         // Get the default config
+         // Call getDefaultCallConfig() to get the default config...
          try {
             callConfig = getDefaultCallConfig();
 
-         // No exception should be thrown by getDefaultCallConfig()
+         // ...the method must be implemented...
+         } catch (MethodNotImplementedError e) {
+            Log.log_1050(getClass().getName(), "getDefaultCallConfig()", "The method is not implemented although it should be.");
+            throw new ProgrammingError(getClass().getName() + ".getDefaultCallConfig() is not implemented although it should be, according to the ServiceCaller class contract.");
+
+         // ...it should not throw any exception...
          } catch (Throwable t) {
             Log.log_1052(t, actualClass, "getDefaultCallConfig()");
-            throw new Error(actualClass + ".getDefaultCallConfig() has thrown an unexpected " + t.getClass().getName() + '.', t);
+            throw new ProgrammingError(actualClass + ".getDefaultCallConfig() has thrown an unexpected " + t.getClass().getName() + '.', t);
          }
 
-         // And getDefaultCallConfig() should never return null
+         // ...and it should never return null.
          if (callConfig == null) {
             String detail = "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
             Log.log_1050(actualClass, "getDefaultCallConfig()", detail);
-            throw new Error(detail);
+            throw new ProgrammingError(detail);
          }
       }
 
+      // TODO: Make sure the old-style doCallImpl     method is not implemented
+      // TODO: Make sure the old-style shouldFailOver method is not implemented
+
+      // TODO: Make sure the new-style doCallImpl     method is implemented
+      // TODO: Make sure the new-style shouldFailOver method is implemented
+
       // Set fields
+      _newStyle   = true;
       _descriptor = descriptor;
       _callConfig = callConfig;
 
@@ -222,6 +254,12 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Flag that indicates if the new-style (since XINS 1.1.0) or the old-style
+    * (XINS 1.0.0) behavior is expected from the subclass.
+    */
+   private final boolean _newStyle;
 
    /**
     * The descriptor for this service. Cannot be <code>null</code>.
@@ -267,20 +305,20 @@ public abstract class ServiceCaller extends Object {
     * by the <code>ServiceCaller</code> constructor if no
     * <code>CallConfig</code> object was given.
     *
-    * <p>The implementation of this method in class {@link ServiceCaller}
-    * returns a standard {@link CallConfig} object which has unconditional
-    * fail-over disabled.
+    * <p>Subclasses that support the new service calling framework (introduced
+    * in XINS 1.1.0) <em>must</em> override this method to return a more
+    * suitable <code>CallConfig</code> instance.
     *
-    * <p>Subclasses are free to override this method to return a more suitable
-    * <code>CallConfig</code> instance.
+    * <p>This method should never be called by subclasses.
     *
     * @return
-    *    a new {@link CallConfig} instance, never <code>null</code>.
+    *    a new, appropriate, {@link CallConfig} instance, never
+    *    <code>null</code>.
     *
     * @since XINS 1.1.0
     */
    protected CallConfig getDefaultCallConfig() {
-      return new CallConfig();
+      throw new MethodNotImplementedError();
    }
 
    /**
@@ -326,10 +364,18 @@ public abstract class ServiceCaller extends Object {
                                      CallConfig  callConfig)
    throws IllegalArgumentException, CallException {
 
-      final String METHODNAME = "doCall(CallRequest,CallConfig)";
+      final String THIS_CLASS  = getClass().getName();
+      final String THIS_METHOD = "doCall(CallRequest,CallConfig)";
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, METHODNAME, null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
+
+      // This method should only be called if the subclass uses the new style
+      if (! _newStyle) {
+         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses old-style constructor.";
+         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         throw new ProgrammingError(message);
+      }
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -365,7 +411,7 @@ public abstract class ServiceCaller extends Object {
       if (! iterator.hasNext()) {
          String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
          Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
-         throw new Error(message);
+         throw new ProgrammingError(message);
       }
 
       // Loop over all TargetDescriptors
@@ -400,7 +446,7 @@ public abstract class ServiceCaller extends Object {
                currentException = (CallException) exception;
             } else if (exception instanceof MethodNotImplementedError) {
                Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
-               throw new Error(getClass().getName() + ".doCallImpl(CallRequest,CallConfig,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
+               throw new ProgrammingError(getClass().getName() + ".doCallImpl(CallRequest,CallConfig,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
             } else {
                currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
             }
@@ -425,7 +471,7 @@ public abstract class ServiceCaller extends Object {
 
             // Determine whether fail-over is allowed and whether we have
             // another target to fail-over to
-            boolean failOver = shouldFailOver(request, exception);
+            boolean failOver = shouldFailOver(request, callConfig, exceptions);
             boolean haveNext = iterator.hasNext();
 
             // No more targets and no fail-over
@@ -455,7 +501,7 @@ public abstract class ServiceCaller extends Object {
             long duration = System.currentTimeMillis() - start;
 
             // TRACE: Leave method
-            Log.log_1005(CLASSNAME, METHODNAME, null);
+            Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
             return createCallResult(request, target, duration, exceptions, result);
          }
@@ -468,7 +514,7 @@ public abstract class ServiceCaller extends Object {
       CallException first = exceptions.get(0);
 
       // TRACE: Leave method with exception
-      Log.log_1004(first, CLASSNAME, METHODNAME, null);
+      Log.log_1004(first, CLASSNAME, THIS_METHOD, null);
 
       throw first;
    }
@@ -511,10 +557,18 @@ public abstract class ServiceCaller extends Object {
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
 
-      final String METHODNAME = "doCall(CallRequest)";
+      final String THIS_CLASS  = getClass().getName();
+      final String THIS_METHOD = "doCall(CallRequest)";
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, METHODNAME, null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
+
+      // This method should only be called if the subclass uses the old style
+      if (_newStyle) {
+         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses new-style constructor.";
+         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         throw new ProgrammingError(message);
+      }
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -540,7 +594,7 @@ public abstract class ServiceCaller extends Object {
       if (! iterator.hasNext()) {
          String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
          Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
-         throw new Error(message);
+         throw new ProgrammingError(message);
       }
 
       // Loop over all TargetDescriptors
@@ -575,7 +629,7 @@ public abstract class ServiceCaller extends Object {
                currentException = (CallException) exception;
             } else if (exception instanceof MethodNotImplementedError) {
                Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
-               throw new Error(getClass().getName() + ".doCallImpl(CallRequest,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
+               throw new ProgrammingError(getClass().getName() + ".doCallImpl(CallRequest,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
             } else {
                currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
             }
@@ -630,7 +684,7 @@ public abstract class ServiceCaller extends Object {
             long duration = System.currentTimeMillis() - start;
 
             // TRACE: Leave method
-            Log.log_1005(CLASSNAME, METHODNAME, null);
+            Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
             return createCallResult(request, target, duration, exceptions, result);
          }
@@ -643,7 +697,7 @@ public abstract class ServiceCaller extends Object {
       CallException first = exceptions.get(0);
 
       // TRACE: Leave method with exception
-      Log.log_1004(first, CLASSNAME, METHODNAME, null);
+      Log.log_1004(first, CLASSNAME, THIS_METHOD, null);
 
       throw first;
    }
@@ -856,13 +910,32 @@ public abstract class ServiceCaller extends Object {
     * @deprecated
     *    Deprecated since XINS 1.1.0. Implement
     *    {@link #shouldFailOver(CallRequest,CallConfig,CallExceptionList)}
-    *    instead of this method. Although deprecated, this method still works
-    *    the same as in XINS 1.0.x.
+    *    instead of this method.
     *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception) {
-      return (exception instanceof ConnectionCallException);
+
+      final String THIS_CLASS  = getClass().getName();
+      final String THIS_METHOD = "shouldFailOver(CallRequest,Throwable)";
+
+      // TRACE: Enter method
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
+
+      // This method should only be called if the subclass uses the old style
+      if (_newStyle) {
+         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses new-style constructor.";
+         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         throw new ProgrammingError(message);
+      }
+
+      // Determine if fail-over is applicable
+      boolean should = (exception instanceof ConnectionCallException);
+
+      // TRACE: Leave method
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
+
+      return should;
    }
 
    /**
@@ -901,8 +974,28 @@ public abstract class ServiceCaller extends Object {
    protected boolean shouldFailOver(CallRequest       request,
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
-      return callConfig.isFailOverAllowed()
+
+      final String THIS_CLASS  = getClass().getName();
+      final String THIS_METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
+
+      // TRACE: Enter method
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
+
+      // This method should only be called if the subclass uses the new style
+      if (! _newStyle) {
+         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses old-style constructor.";
+         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         throw new ProgrammingError(message);
+      }
+
+      // Determine if fail-over is applicable
+      boolean should = callConfig.isFailOverAllowed()
           || (exceptions.last() instanceof ConnectionCallException);
+
+      // TRACE: Leave method
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
+
+      return should;
    }
 
 
@@ -912,8 +1005,7 @@ public abstract class ServiceCaller extends Object {
 
    /**
     * Error used to indicate a method should be implemented in a subclass, but
-    * is not. Specifically, this is used for the
-    * {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} method.
+    * is not.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)

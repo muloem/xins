@@ -184,6 +184,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param request
     *    the HTTP call request, not <code>null</code>.
     *
+    * @param request
+    *    the HTTP call configuration object, not <code>null</code>.
+    *
     * @return
     *    the constructed {@link HttpMethod} object, not <code>null</code>.
     *
@@ -191,17 +194,20 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if <code>url == null || request == null</code>.
     */
    private static HttpMethod createMethod(String          url,
-                                          HTTPCallRequest request)
+                                          HTTPCallRequest request,
+                                          HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "createMethod(String,HTTPCallConfig,HTTPCallRequest)";
+
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url, "request", request);
 
       // Get the HTTP method (like GET and POST) and parameters
-      HTTPMethod     method     = request.getMethod();
+      HTTPMethod     method     = callConfig.getMethod();
       PropertyReader parameters = request.getParameters();
 
       // HTTP POST request
@@ -230,7 +236,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
 
          // TRACE: Leave method
-         Log.log_1005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+         Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
          return postMethod;
 
@@ -270,15 +276,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
 
          // TRACE: Leave method
-         Log.log_1005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+         Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
          return getMethod;
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
          String message = "Unrecognized method \"" + method + "\".";
-         Log.log_1050(CLASSNAME, "createMethod(String,HTTPCallResult)",
-                      message);
+         Log.log_1050(CLASSNAME, THIS_METHOD, message);
          throw new Error(message);
       }
    }
@@ -880,8 +885,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the call request to execute, cannot be <code>null</code>.
        *
        * @param callConfig
-       *    the call configuration, never <code>null</code> and should always
-       *    be an instance of class {@link HTTPCallConfig}.
+       *    the call configuration, never <code>null</code>.
        *
        * @param target
        *    the service target on which to execute the request, cannot be
@@ -906,12 +910,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
          _asString = "HTTP call executor #" + (++CALL_EXECUTOR_COUNT);
 
          // Check preconditions
-         MandatoryArgumentChecker.check("request", request, "target", target);
+         MandatoryArgumentChecker.check("request",    request,
+                                        "callConfig", callConfig,
+                                        "target",     target);
 
          // Store data for later use in the run() method
-         _request = request;
-         _target  = target;
-         _context = context;
+         _request    = request;
+         _callConfig = callConfig;
+         _target     = target;
+         _context    = context;
       }
 
 
@@ -928,6 +935,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * The call request to execute. Never <code>null</code>.
        */
       private final HTTPCallRequest _request;
+
+      /**
+       * The call configuration. Never <code>null</code>.
+       */
+      private final HTTPCallConfig _callConfig;
 
       /**
        * The service target on which to execute the request. Never
@@ -1006,7 +1018,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          client.setTimeout          (socketTimeOut);
 
          // Construct the method object
-         HttpMethod method = createMethod(url, _request);
+         HttpMethod method = createMethod(url, _request, _callConfig);
 
          // Perform the HTTP call
          try {
