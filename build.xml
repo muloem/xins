@@ -754,8 +754,8 @@
 		<fail message="../${name}-examples not found, please check it out from CVS." unless="examples.installed" />
 		<property environment="env" />
 		<fail unless="env.DOCBOOK_XSLT_HOME">
-Please set the environment variable DOCBOOK_XSLT_HOME to the correct directory.
-If not install, download docbook-xsl 1.65.1 at
+Please point the environment variable DOCBOOK_XSLT_HOME to the correct directory.
+If necessary, download docbook-xsl 1.65.1 at
 http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		</fail>
 	</target>
