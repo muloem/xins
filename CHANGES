@@ -20,13 +20,17 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
     appropriate.
-  - Made some preparations for implementing SF.net RFE #1054504: Added class
-    AbstractCAPIErrorCodeException, which extends the class
-    UnsuccessfulXINSCallException. Had to change the latter to allow the
-    subclass. Also added subclasses for some of the standard result codes:
-    InternalErrorException, InvalidRequestException and
-    InvalidResponseException. [work in progress, since there are more standard
-    result codes]
+  - Made some preparations for implementing SF.net RFE #1054504:
+    - changed class UnsuccessfulXINSCallException to non-final, although all
+      methods remain final;
+    - added UnsuccessfulXINSCallException subclasses:
+      . AbstractCAPIErrorCodeException;
+      . InternalErrorException;
+      . InvalidRequestException;
+      . InvalidResponseException.
+    - added UnsuccessfulXINSCallExceptionFactory class.
+    [ work in progress, XINSServiceCaller needs to support the factory, CAPI
+      needs to create and set the factory ]
 
 * XINS/Java Server Framework:
   - If the org.xins.server.config is not set as a system property, the server
