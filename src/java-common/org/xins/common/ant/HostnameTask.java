@@ -122,6 +122,7 @@ public class HostnameTask extends Task {
 
       if (hostname == null || "".equals(hostname.trim()) || "localhost".equals(hostname.trim())) {
          log("Determining hostname of localhost failed. Not setting property \"" + _propertyName + "\".");
+         return;
       }
 
       getProject().setUserProperty(_propertyName, hostname);
