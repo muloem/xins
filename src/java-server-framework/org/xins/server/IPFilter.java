@@ -202,7 +202,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>expression == null</code>.
     */
-   private static boolean isValidFilter(String expression) {
+   private static boolean isValidFilter(String expression)
+   throws NullPointerException {
       String ip = null;
       String mask = null;
       boolean validFilter = true;
@@ -260,7 +261,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>mask == null</code>.
     */
-   private static boolean isValidMask(String mask) {
+   private static boolean isValidMask(String mask)
+   throws NullPointerException {
       int maskLength = mask.length();
 
       if (maskLength < 1 || maskLength > 2) {
@@ -289,7 +291,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>ipSection == null</code>.
     */
-   private static boolean isValidIPSection(String ipSection) {
+   private static boolean isValidIPSection(String ipSection)
+   throws NullPointerException {
       int sectionLength = ipSection.length();
 
       if (sectionLength < 1 || sectionLength > 3) {
@@ -351,7 +354,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>ip == null</code>.
     */
-   private static String[] getIPFields(String ip) {
+   private static String[] getIPFields(String ip)
+   throws NullPointerException {
       StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
       String[] ipFields = new String[4];
       String currIPSection = null;
@@ -391,7 +395,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>expression == null</code>.
     */
-   private int determineMask(String expression) {
+   private int determineMask(String expression)
+   throws NullPointerException {
       int mask = -1;
       int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
 
@@ -422,7 +427,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>expression == null</code>.
     */
-   private String determineIP(String expression) {
+   private String determineIP(String expression)
+   throws NullPointerException {
       String ip = null;
       int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
 
@@ -482,7 +488,8 @@ extends Object {
     * @throws NullPointerException
     *    when <code>ipFields == null</code>.
     */
-   private String getIPBinaryValue(String[] ipFields) {
+   private String getIPBinaryValue(String[] ipFields)
+   throws NullPointerException {
       int ipFieldLength = ipFields.length;
       StringBuffer buffer = new StringBuffer(32);
       String currFieldBinaryString = null;
