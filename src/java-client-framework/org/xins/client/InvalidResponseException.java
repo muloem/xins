@@ -9,15 +9,16 @@ package org.xins.client;
 import org.xins.common.service.TargetDescriptor;
 
 /**
- * Exception thrown to indicate an <code>_InvalidResponse</code> error code
- * was received.
+ * Exception thrown to indicate that an error code was received that indicates
+ * the other end detected an invalid response.
+ *
+ * <p>Although this class is currently package-private, it is expected to be
+ * marked as public at some point.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- *
- * @since XINS 1.1.0
  */
-public abstract class InvalidResponseException
+abstract class InvalidResponseException
 extends UnsuccessfulXINSCallException {
 
    //-------------------------------------------------------------------------

@@ -16,12 +16,13 @@ import org.xins.common.service.TargetDescriptor;
  * configured what {@link UnsuccessfulXINSCallException} subclass is
  * constructed.
  *
+ * <p>Although this class is currently package-private, it is expected to be
+ * marked as public at some point.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- *
- * @since XINS 1.1.0
  */
-public abstract class UnsuccessfulXINSCallExceptionFactory
+abstract class UnsuccessfulXINSCallExceptionFactory
 extends Object {
 
    //-------------------------------------------------------------------------

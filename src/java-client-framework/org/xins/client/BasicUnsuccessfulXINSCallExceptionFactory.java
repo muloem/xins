@@ -14,12 +14,13 @@ import org.xins.common.service.TargetDescriptor;
  * always returns an instance of the {@link UnsuccessfulXINSCallException}
  * class itself, never of any subclass.
  *
+ * <p>Although this class is currently package-private, it is expected to be
+ * marked as public at some point.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- *
- * @since XINS 1.1.0
  */
-public final class BasicUnsuccessfulXINSCallExceptionFactory
+final class BasicUnsuccessfulXINSCallExceptionFactory
 extends UnsuccessfulXINSCallExceptionFactory {
 
    //-------------------------------------------------------------------------
