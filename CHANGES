@@ -1,14 +1,23 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 1:
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 8:
 
 * XINS/Java Server Framework:
   - Added log message for an unexpected exception.
 
 * XINS/Java Client Framework:
+  - Improved logging.
   - Added log message for an unexpected exception.
+  - Added missing translations for some log messages.
 
 * XINS/Java Common Library:
   - Added log message for an unexpected exception.
+
+* Generated CAPI classes:
+  - All generated callXxxx methods now return either void or a
+    <FunctionName>Result object. This change is required in order to allow an
+    UnacceptableResultXINSCallException to be thrown, even if the function
+    only returns a data section or a single output parameter.
+    WARNING: This may break existing code.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
