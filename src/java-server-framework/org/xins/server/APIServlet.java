@@ -778,7 +778,6 @@ extends HttpServlet {
 
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         Log.log_1412(_configFile, interval);
          _configFileWatcher.start();
       }
    }

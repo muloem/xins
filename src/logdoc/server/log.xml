@@ -321,11 +321,6 @@
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1412" level="INFO">
-			<description>Commencing runtime properties file watching.</description>
-			<param name="configFile" />
-			<param name="interval" type="int32" nullable="false" />
-		</entry>
 		<entry id="1413" level="FATAL">
 			<description>API could not be initialized due to a missing required property.</description>
 			<param name="propertyName" />
