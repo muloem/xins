@@ -20,7 +20,6 @@ import org.apache.log4j.NDC;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
-import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
@@ -284,9 +283,8 @@ public final class XINSServiceCaller extends ServiceCaller {
             try {
                method.releaseConnection();
 
-            // If there was an exception, then log the root cause for it
+            // If there was an exception, then log it
             } catch (Throwable exception) {
-               exception = ExceptionUtils.getRootCause(exception);
                Log.log_2007(exception, exception.getClass().getName());
             }
          }

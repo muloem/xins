@@ -3,7 +3,6 @@
  */
 package org.xins.common;
 
-import org.xins.common.ExceptionUtils;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 

@@ -306,7 +306,7 @@ import org.xins.logdoc.LogStatistics;
 		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
-				<xsl:text>exception);</xsl:text>
+				<xsl:text>org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));</xsl:text>
 			</xsl:when>
 			<xsl:when test="$exception = 'true'">
 				<xsl:text>null);

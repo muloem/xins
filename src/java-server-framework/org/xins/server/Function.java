@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import javax.servlet.ServletRequest;
 
-import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
@@ -232,9 +231,6 @@ implements DefaultResultCodes {
          result = functionResult.getCallResult();
 
       } catch (Throwable exception) {
-
-         // Get the root cause of the exception
-         exception = ExceptionUtils.getRootCause(exception);
 
          // TODO: Allow customization of what exceptions are logged?
          Log.log_1513(exception, _name, callID);
