@@ -1,9 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.68:
 
-* Added package.html for package org.xins.util.threads.
-* Removed unused class NoSuchEntryException.
 * Improved Javadoc comments.
+
+* XINS/Java Common Library:
+  - Removed unused class NoSuchEntryException.
+  - Added package.html for package org.xins.util.threads.
+  - Fixed bug in standard type classes Int8, Int16, Int32 and Int64, method
+    fromStringForOptional(String).
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.67:
