@@ -66,6 +66,11 @@ public class Log extends AbstractLog {
 		<xsl:text><![CDATA[.Log";
 
    /**
+    * Controller for this <em>logdoc</em> <code>Log</code> class.
+    */
+   private static final LogController CONTROLLER;
+
+   /**
     * Associations from name to translation bundle.
     */
    private static final HashMap TRANSLATION_BUNDLES_BY_NAME;
@@ -88,6 +93,9 @@ public class Log extends AbstractLog {
     * Initializes this class.
     */
    static {
+
+      // Create LogController instance
+      CONTROLLER = new Controller();
 
       // Reference all translation bundles by name
       TRANSLATION_BUNDLES_BY_NAME = new HashMap();]]></xsl:text>
@@ -139,6 +147,9 @@ public class Log extends AbstractLog {
     *
     * @throws NoSuchTranslationBundleException
     *    if there is no translation bundle by that name.
+    *
+    * @deprecated
+    *    Use {@link LogCentral#setLocale(String)} instead.
     */
    public static final void setTranslationBundle(String name)
    throws IllegalArgumentException, NoSuchTranslationBundleException {
@@ -197,6 +208,47 @@ public class Log extends AbstractLog {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Controller for this <code>Log</code> class.
+    */
+   private static final class Controller extends LogController {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Controller</code>.
+       */
+      private Controller() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      protected void setLocale(String newLocale) {
+
+         // Fetch the translation bundle
+         TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(newLocale);
+
+         // Use this bundle
+         if (bundle != null) {
+            TRANSLATION_BUNDLE = bundle;
+         }
+      }
+   }
 }
 ]]></xsl:text>
 	</xsl:template>
