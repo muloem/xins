@@ -10,8 +10,11 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.WhislEncoding;
 
+import org.xins.logdoc.AbstractLogdocSerializable;
+import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.LogdocStringBuffer;
 
 /**
@@ -261,6 +264,34 @@ extends Object {
       }
    }
 
+   /**
+    * Constructs a <code>LogdocSerializable</code> for the specified
+    * <code>PropertyReader</code>.
+    *
+    * @param p
+    *    the {@link PropertyReader} to construct a {@link LogdocSerializable}
+    *    for, cannot be <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if the specified set of properties is empty,
+    *    can be <code>null</code>.
+    *
+    * @return
+    *    a new {@link LogdocSerializable}, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>p == null</code>.
+    */
+   public static final LogdocSerializable createLogdocSerializable(PropertyReader p,
+                                                                   String         valueIfEmpty)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("p", p);
+
+      return new SerializedPropertyReader(p, valueIfEmpty);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -283,4 +314,107 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * A <code>LogdocSerializable</code> implementation for a
+    * <code>PropertyReader</code>.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private static final class SerializedPropertyReader
+   extends AbstractLogdocSerializable {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>SerializedPropertyReader</code> for the
+       * specified <code>PropertyReader</code>.
+       *
+       * @param p
+       *    the {@link PropertyReader}, cannot be <code>null</code>.
+       *
+       * @param valueIfEmpty
+       *    the value to return if the specified set of properties is empty,
+       *    can be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>p == null</code>.
+       */
+      private SerializedPropertyReader(PropertyReader p, String valueIfEmpty)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("p", p);
+
+         _propertyReader = p;
+         _valueIfEmpty   = valueIfEmpty;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The <code>PropertyReader<code> to serialize. Never <code>null</code>.
+       */
+      private final PropertyReader _propertyReader;
+
+      /**
+       * The value to return if the property reader is empty.
+       */
+      private final String _valueIfEmpty;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      
+      protected String initialize() {
+
+         Iterator names = _propertyReader.getNames();
+
+         // If there are no parameters, then just return a hyphen
+         if (! names.hasNext()) {
+            return _valueIfEmpty;
+         }
+
+         FastStringBuffer buffer = new FastStringBuffer(99);
+
+         boolean first = true;
+         do {
+
+            // Get the name and value
+            String name  = (String) names.next();
+            String value = _propertyReader.get(name);
+
+            // If the value is null or an empty string, then output nothing
+            if (value == null || value.length() == 0) {
+               continue;
+            }
+
+            // Append an ampersand, except for the first entry
+            if (!first) {
+               buffer.append('&');
+            } else {
+               first = false;
+            }
+
+            // Append the key and the value, separated by an equals sign
+            buffer.append(WhislEncoding.encode(name));
+            buffer.append('=');
+            buffer.append(WhislEncoding.encode(value));
+         } while (names.hasNext());
+
+         return buffer.toString();
+      }
+   }
 }

@@ -42,10 +42,10 @@ implements LogdocSerializable {
    //-------------------------------------------------------------------------
 
    /**
-    * Flag that indicates whether this object has been successfully
-    * initialized. Initially it is <code>false</code>.
+    * The serialized version of this object. The value is <code>null</code> as
+    * long as it has not been initialized yet.
     */
-   private boolean _initialized;
+   private String _asString;
 
 
    //-------------------------------------------------------------------------
@@ -71,36 +71,28 @@ implements LogdocSerializable {
    throws NullPointerException {
 
       // Initialize this object if that is not done yet
-      if (! _initialized) {
-         initialize();
-         _initialized = true;
+      if (_asString == null) {
+         _asString = initialize();
+         if (_asString == null) {
+            _asString = "";
+         }
       }
 
-      // Hand control to the implementation method
-      serializeImpl(buffer);
+      buffer.append(_asString);
    }
 
    /**
     * Initializes this object. This method will be called the first time
-    * {@link #serialize(LogdocStringBuffer)} is called.
-    */
-   protected abstract void initialize();
-
-   /**
-    * Serializes this object for logging to the specified string buffer
-    * (implementation method). This method is called from
-    * {@link #serialize(LogdocStringBuffer)}, but not before
-    * {@link #initialize()} is called exactly once, from that method.
+    * {@link #serialize(LogdocStringBuffer)} is called. It should return the
+    * serialized form of this object which will from then on be returned from
+    * {@link #serialize(LogdocStringBuffer)}.
     *
-    * @param buffer
-    *    the {@link LogdocStringBuffer} to serialize to, cannot be
-    *    <code>null</code>.
+    * @return
+    *    the serialized form of this object which will from then on be
+    *    returned from {@link #serialize(LogdocStringBuffer)}, a
+    *    <code>null</code> will be interpreted as an empty string.
     *
-    * @throws NullPointerException
-    *    if <code>buffer == null</code> (this can be accomplished by just
-    *    accessing the object by calling one of the <code>append()</code>
-    *    methods on it.
+    * @since XINS 0.203
     */
-   protected abstract void serializeImpl(LogdocStringBuffer buffer)
-   throws NullPointerException;
+   protected abstract String initialize();
 }

@@ -389,17 +389,12 @@ implements DefaultResultCodes {
        */
       private final long _epochDate;
 
-      /**
-       * Lazily initialized string that represents the date.
-       */
-      private String _asString;
-
 
       //---------------------------------------------------------------------
       // Methods
       //---------------------------------------------------------------------
 
-      public void initialize() {
+      protected String initialize() {
 
          // Create a FastStringBuffer with an initial size as follows:
          //  2 for the century     (e.g.  20)
@@ -476,12 +471,7 @@ implements DefaultResultCodes {
 
          assert buffer.getLength() == BUFFER_SIZE : "buffer.getLength() (" + buffer.getLength() + ") == BUFFER_SIZE (" + BUFFER_SIZE + ')';
 
-         _asString = buffer.toString();
-      }
-
-      public void serializeImpl(LogdocStringBuffer buffer)
-      throws NullPointerException {
-         buffer.append(_asString);
+         return buffer.toString();
       }
    }
 
@@ -529,24 +519,18 @@ implements DefaultResultCodes {
        */
       private final ServletRequest _request;
 
-      /**
-       * Lazily initialized string that represents the input parameters.
-       */
-      private String _asString;
-
 
       //---------------------------------------------------------------------
       // Methods
       //---------------------------------------------------------------------
 
-      public void initialize() {
+      protected String initialize() {
 
          Enumeration names = _request.getParameterNames();
 
          // If there are no parameters, then just return a hyphen
          if (! names.hasMoreElements()) {
-            _asString = "-";
-            return;
+            return "-";
          }
 
          FastStringBuffer buffer = new FastStringBuffer(93);
@@ -576,12 +560,7 @@ implements DefaultResultCodes {
             buffer.append(WhislEncoding.encode(value));
          } while (names.hasMoreElements());
 
-         _asString = buffer.toString();
-      }
-
-      public void serializeImpl(LogdocStringBuffer buffer)
-      throws NullPointerException {
-         buffer.append(_asString);
+         return buffer.toString();
       }
    }
 
@@ -629,17 +608,12 @@ implements DefaultResultCodes {
        */
       private final CallResult _result;
 
-      /**
-       * Lazily initialized string that represents the output parameters.
-       */
-      private String _asString;
-
 
       //---------------------------------------------------------------------
       // Methods
       //---------------------------------------------------------------------
 
-      public void initialize() {
+      protected String initialize() {
 
          // Get the names of all parameters
          PropertyReader params = _result.getParameters();
@@ -647,8 +621,7 @@ implements DefaultResultCodes {
 
          // If there are no parameters, then just return a hyphen
          if (names == null || !names.hasNext()) {
-            _asString = "-";
-            return;
+            return "-";
          }
             
          FastStringBuffer buffer = new FastStringBuffer(93);
@@ -678,12 +651,7 @@ implements DefaultResultCodes {
             buffer.append(WhislEncoding.encode(value));
          } while (names.hasNext());
 
-         _asString = buffer.toString();
-      }
-
-      public void serializeImpl(LogdocStringBuffer buffer)
-      throws NullPointerException {
-         buffer.append(_asString);
+         return buffer.toString();
       }
    }
 }
