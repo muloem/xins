@@ -104,12 +104,12 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // If there are parameters, then process them
-      if (parameters != null) {
+      int paramCount = (parameters == null) ? 0 : parameters.size();
+      if (paramCount > 0) {
 
          // Loop through them all
          Iterator keys = parameters.keySet().iterator();
-         // TODO: Use for() loop
-         while (keys.hasNext()) {
+         for (int i = 0; i < paramCount; i++) {
 
             // Get the parameter key
             String key = (String) keys.next();
