@@ -43,7 +43,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Authentication details to be used when none are specified.
     */
-   public static final AuthenticationDetails FALLBACK_AUTHENTICATION_DETAILS = new AuthenticationDetails(NO_AUTHENTICATION, null, null);
+   private static final AuthenticationDetails FALLBACK_AUTHENTICATION_DETAILS = new AuthenticationDetails(NO_AUTHENTICATION, null, null);
 
    /**
     * The initial context factory.
