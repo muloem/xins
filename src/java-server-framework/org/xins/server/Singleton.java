@@ -16,40 +16,11 @@ import org.xins.util.collections.PropertyReader;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
  * @since XINS 0.55
+ *
+ * @deprecated
+ *    Deprecated since XINS 0.120. Implement the {@link LifespanManager}
+ *    interface instead.
  */
-public interface Singleton {
-
-   /**
-    * Initializes this instance.
-    *
-    * @param properties
-    *    the initialization properties, can be <code>null</code>.
-    *
-    * @throws InitializationException
-    *    if the initialization failed, for any reason.
-    */
-   void init(PropertyReader properties)
-   throws InitializationException;
-
-   /**
-    * Reinitializes this instance.
-    *
-    * @param properties
-    *    the initialization properties, can be <code>null</code>.
-    *
-    * @throws InitializationException
-    *    if the initialization failed, for any reason.
-    *
-    * @since XINS 0.97
-    */
-   void reinit(PropertyReader properties)
-   throws InitializationException;
-
-   /**
-    * Deinitializes this instance.
-    *
-    * @throws Throwable
-    *    if the deinitialization fails.
-    */
-   void destroy() throws Throwable;
+public interface Singleton extends LifespanManager{
+   // empty
 }

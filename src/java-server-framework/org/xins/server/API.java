@@ -570,8 +570,43 @@ implements DefaultResultCodes {
     *    if the initialization of the instance failed.
     *
     * @since XINS 0.55
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.120. Use
+    *    {@link #addInstance(LifespanManager)} instead.
     */
    protected final void addInstance(Singleton instance)
+   throws IllegalStateException,
+          IllegalArgumentException,
+          InitializationException {
+      addInstance((LifespanManager) instance);
+   }
+
+   /**
+    * Adds the specified lifespan manager. It will immediately be initialized.
+    * If the initialization fails, then an {@link InitializationException}
+    * will be thrown.
+    *
+    * <p>The initialization will be performed by calling
+    * {@link LifespanManager#init(PropertyReader)}.
+    *
+    * <p>At shutdown time {@link LifespanManager#destroy()} will be called.
+    *
+    * @param instance
+    *    the lifespan manager to initialize now and deinitialize at shutdown time, not <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not in the initializing state.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>instance == null</code>.
+    *
+    * @throws InitializationException
+    *    if the initialization of the instance failed.
+    *
+    * @since XINS 0.120
+    */
+   protected final void addInstance(LifespanManager instance)
    throws IllegalStateException,
           IllegalArgumentException,
           InitializationException {
@@ -636,7 +671,7 @@ implements DefaultResultCodes {
     *    if the initialization of the instance failed.
     *
     * @deprecated
-    *    Deprecated since XINS 0.55. Use {@link #addInstance(Singleton)}
+    *    Deprecated since XINS 0.55. Use {@link #addInstance(LifespanManager)}
     *    instead.
     */
    protected final void addInstance(Object instance)
@@ -645,10 +680,10 @@ implements DefaultResultCodes {
           InitializationException {
 
       // Forward call to non-deprecated method, if possible
-      if (instance instanceof Singleton) {
-         addInstance((Singleton) instance);
+      if (instance instanceof LifespanManager) {
+         addInstance((LifespanManager) instance);
+         return;
       }
-
 
       // Check state
       if (_state != INITIALIZING) {
@@ -658,10 +693,7 @@ implements DefaultResultCodes {
       // Check preconditions
       MandatoryArgumentChecker.check("instance", instance);
 
-      if ((instance instanceof Singleton) == false) {
-         Library.LIFESPAN_LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
-      }
-
+      Library.LIFESPAN_LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
       _instances.add(instance);
 
       boolean succeeded = callMethod(Library.LIFESPAN_LOG, instance, "init", new Class[] { Properties.class }, new Object[] { _initSettings.clone() });
