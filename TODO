@@ -64,6 +64,8 @@ XINS/JAVA CLIENT FRAMEWORK
   result code.
 * Send "_function=<name>" instead of "function=<name>" as soon as all existing
   backends support this (in class XINSServiceCaller).
+* Abandon JDOM completely, favour SAX for parsing and a custom Document Object
+  Model implementation, where appropriate.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
