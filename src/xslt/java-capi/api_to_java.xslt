@@ -395,10 +395,7 @@ public final class API extends Object {
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:text>
-      </xsl:text>
-				<xsl:if test="output/param or @createsSession = 'true'">
-					<xsl:text>CallResult result = </xsl:text>
-				</xsl:if>
+      CallResult result = </xsl:text>
 				<xsl:choose>
 					<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
 						<xsl:text>afc</xsl:text>
@@ -433,23 +430,27 @@ public final class API extends Object {
 				<xsl:choose>
 					<xsl:when test="@createsSession = 'true'">
 						<xsl:text>
-      String session = result.getParameter("_session");
-      if (session == null) {
-         throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
+      if (result.isSuccess()) {
+         String session = result.getParameter("_session");
+         if (session == null) {
+            throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>\" returned no session ID.");
-      }</xsl:text>
+         }</xsl:text>
 						<xsl:choose>
 							<xsl:when test="$sessionsShared = 'true'">
 								<xsl:text>
-      return session;</xsl:text>
+         return session;</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:text>
-      return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);</xsl:text>
+         return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);</xsl:text>
 							</xsl:otherwise>
 						</xsl:choose>
-
+						<xsl:text>
+      } else {
+         throw new org.xins.client.UnsuccessfulCallException(result);
+      }</xsl:text>
 					</xsl:when>
 					<xsl:when test="output/param">
 						<xsl:text>
@@ -461,6 +462,12 @@ public final class API extends Object {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+      if (! result.isSuccess()) {
+         throw new org.xins.client.UnsuccessfulCallException(result);
+      }</xsl:text>
+					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>
    }</xsl:text>
