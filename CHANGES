@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.125:
   - Fixed some Checkstyle-reported issues.
 
 * XINS/Java Client Framework:
+  - Simplified implementation of CallResultParser slightly.`
   - Fixed some Checkstyle-reported issues.
 
 * XINS/Java Common Library:
