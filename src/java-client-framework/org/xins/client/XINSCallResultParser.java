@@ -1,8 +1,5 @@
 /*
  * $Id$
- *
- * Copyright 2004 Wanadoo Nederland B.V.
- * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client;
 
@@ -59,6 +56,12 @@ extends Object {
    private static final String CLASSNAME = XINSCallResultParser.class.getName();
 
    /**
+    * Fully-qualified name of the inner class <code>Handler</code>. This field
+    * is not <code>null</code>.
+    */
+   private static final String HANDLER_CLASSNAME = XINSCallResultParser.Handler.class.getName();
+
+   /**
     * Constant for an <code>Integer</code> object representing the number
     * zero. This field is not <code>null</code>.
     */
@@ -93,6 +96,12 @@ extends Object {
     * (within the <code>data</code> element).
     */
    private static final State IN_DATA_SECTION = new State("IN_DATA_SECTION");
+
+   /**
+    * State for the SAX event handler for the final state, when parsing is
+    * effectively done.
+    */
+   private static final State FINISHED = new State("FINISHED");
 
 
    //-------------------------------------------------------------------------
@@ -200,6 +209,7 @@ extends Object {
     *
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
     * @since XINS 0.207
     */
@@ -364,6 +374,12 @@ extends Object {
                // Update the state
                _state = IN_DATA_SECTION;
 
+            // No 'result' element allowed within 'result' element
+            } else if (qName.equals("result")) {
+               String detail = "Found \"result\" element within \"result\" element.";
+               // TODO: Log
+               throw new SAXException(detail);
+
             // Unknown elements at the root level are okay
             } else {
                // TODO: Log
@@ -372,8 +388,9 @@ extends Object {
 
          // Within output parameter element
          } else if (_state == IN_PARAM_ELEMENT) {
+            String detail = "Found \"" + qName + "\" element within \"param\" element.";
             // TODO: Log
-            throw new SAXException("Found \"" + qName + "\" element within \"param\" element.");
+            throw new SAXException(detail);
 
          // Within the data section
          } else if (_state == IN_DATA_SECTION) {
@@ -395,12 +412,11 @@ extends Object {
             // Reserve buffer for PCDATA
             _pcdata = new FastStringBuffer(20);
 
-
-         // Unknown element in data section
+         // Unrecognized state
          } else {
-            // Apparently there is an unrecognized state
-            // TODO: Log programming error
-            throw new Error("Unrecognized state: " + _state + '.');
+            String detail = "Unrecognized state: " + _state + '.';
+            Log.log_2050(HANDLER_CLASSNAME, "startElement(String,String,String,Attributes)", detail);
+            throw new Error(detail);
          }
       }
 
@@ -433,8 +449,17 @@ extends Object {
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName);
 
+         // At root level
+         if (_state == AT_ROOT_LEVEL) {
+
+            if ("result".equals(qName)) {
+               _state = FINISHED;
+            } else {
+               // ignorable element
+            }
+
          // Within data section
-         if (_state == IN_DATA_SECTION) {
+         } else if (_state == IN_DATA_SECTION) {
 
             // Get the DataElement for which we process the end tag
             DataElement child = (DataElement) _elements.get(new Integer(_level));
@@ -442,8 +467,9 @@ extends Object {
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
             if (_level == 0) {
                if (! qName.equals("data")) {
+                  String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
                   // TODO: Log programming error
-                  throw new Error("Expected element name \"param\" instead of \"" + qName + "\".");
+                  throw new Error(detail);
                }
 
                // Reset the state
@@ -471,8 +497,9 @@ extends Object {
          } else if (_state == IN_PARAM_ELEMENT) {
 
             if (! qName.equals("param")) {
+               String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
                // TODO: Log programming error
-               throw new Error("Expected element name \"param\" instead of \"" + qName + "\".");
+               throw new Error(detail);
             }
 
             // Retrieve name and value for output parameter
@@ -516,9 +543,10 @@ extends Object {
             _parameterName = null;
             _pcdata       = null;
             _state        = AT_ROOT_LEVEL;
-         }
 
-         // Otherwise do nothing
+         // Unknown state
+         } else {
+         }
       }
 
       /**
@@ -538,7 +566,7 @@ extends Object {
        *    if characters outside the allowed range are specified.
        */
       public void characters(char[] ch, int start, int length)
-      throws IndexOutOfBoundsException {
+      throws IllegalStateException, IndexOutOfBoundsException {
 
          // TODO: Check state
 
@@ -550,15 +578,36 @@ extends Object {
       }
 
       /**
+       * Checks if the state is <code>FINISHED</code> and if not throws an
+       * <code>IllegalStateException</code>.
+       *
+       * @throws IllegalStateException
+       *    if the current state is not {@link #FINISHED}.
+       */
+      private void assertFinished()
+      throws IllegalStateException {
+         if (_state != FINISHED) {
+            String detail = "State is " + _state + " instead of " + FINISHED + '.';
+            Log.log_2050(HANDLER_CLASSNAME, "getDataElement()", detail);
+            throw new IllegalStateException(detail);
+         }
+      }
+
+      /**
        * Gets the error code returned by the function if any.
        *
        * @return
        *    the error code returned by the function or <code>null<code>
        *    if no error code has been returned from the function.
+       *
+       * @throws IllegalStateException
+       *    if the current state is invalid.
        */
-      public String getErrorCode() {
+      public String getErrorCode()
+      throws IllegalStateException {
 
-         // TODO: Check state
+         // Check state
+         assertFinished();
 
          return _errorCode;
       }
@@ -569,10 +618,15 @@ extends Object {
        * @return
        *    the parameters (name/value) or <code>null</code> if the function
        *    does not have any parameters.
+       *
+       * @throws IllegalStateException
+       *    if the current state is invalid.
        */
-      public PropertyReader getParameters() {
+      public PropertyReader getParameters()
+      throws IllegalStateException {
 
-         // TODO: Check state
+         // Check state
+         assertFinished();
 
          return _parameters;
       }
@@ -583,8 +637,16 @@ extends Object {
        * @return
        *    the data element, or <code>null</code> if the function did not
        *    return any data element.
+       *
+       * @throws IllegalStateException
+       *    if the current state is invalid.
        */
-      public DataElement getDataElement() {
+      public DataElement getDataElement()
+      throws IllegalStateException {
+
+         // Check state
+         assertFinished();
+
          if (_elements == null) {
             return null;
          } else {
