@@ -916,8 +916,9 @@ implements DefaultResultCodes {
     */
    private final void doGetVersion(CallContext context)
    throws IOException {
-      context.param("xins.version",   Library.getVersion());
+      context.param("java.version",   System.getProperty("java.version"));
       context.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
+      context.param("xins.version",   Library.getVersion());
    }
 
    /**
