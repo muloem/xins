@@ -539,26 +539,22 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         log.debug("Initializing manageable object of class " + className + " for " + _name + " API.");
+         Log.log_4019(_name, className);
          try {
             m.init(runtimeSettings);
-            log.debug("Initialized manageable object of class " + className + " for " + _name + " API.");
+            Log.log_4020(_name, className);
          } catch (MissingRequiredPropertyException exception) {
+            Log.log_4021(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
+            Log.log_4022(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (InitializationException exception) {
+            Log.log_4023(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize manageable object of class ");
-            buffer.append(className);
-            buffer.append(" for ");
-            buffer.append(_name);
-            buffer.append(" API ");
-            buffer.append(APIServlet.dueToUnexpected(exception));
-            String message = buffer.toString();
-            log.error(message, exception);
-            throw new InitializationException(message);
+            Log.log_4024(_name, className, exception.getClass().getName(), exception.getMessage());
+            throw new InitializationException(exception);
          }
       }
 
@@ -567,26 +563,22 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         log.debug("Initializing function " + functionName + " for " + _name + " API.");
+         Log.log_4025(_name, functionName);
          try {
             f.init(runtimeSettings);
-            log.debug("Initialized function " + functionName + " for " + _name + " API.");
+            Log.log_4026(_name, functionName);
          } catch (MissingRequiredPropertyException exception) {
+            Log.log_4027(_name, functionName, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
+            Log.log_4028(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (InitializationException exception) {
+            Log.log_4029(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize function ");
-            buffer.append(functionName);
-            buffer.append(" for ");
-            buffer.append(_name);
-            buffer.append(" API ");
-            buffer.append(APIServlet.dueToUnexpected(exception));
-            String message = buffer.toString();
-            log.error(message, exception);
-            throw new InitializationException(message);
+            Log.log_4030(_name, functionName, exception.getClass().getName(), exception.getMessage());
+            throw new InitializationException(exception);
          }
       }
 
