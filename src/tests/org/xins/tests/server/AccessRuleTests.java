@@ -79,6 +79,9 @@ public class AccessRuleTests extends TestCase {
       }
 
       doTestParseAccessRule("1.2.3.4");
+      doTestParseAccessRule("1.101.3.4");
+      doTestParseAccessRule("194.134.168.213");
+      doTestParseAccessRule("104.1.2.254");
    }
 
    private void doTestParseAccessRule(String ip)
