@@ -29,6 +29,17 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
     logged). Each individual failure is now logged, per target.
   - Unified translations in the 21xx range.
+  - Changed level of the following log messages to WARNING:
+    . 2102 (was INFO);
+    . 2103 (was INFO);
+    . 2104 (was INFO);
+    . 2105 (was INFO);
+    . 2106 (was INFO);
+    . 2108 (was INFO);
+    . 2109 (was NOTICE);
+    . 2110 (was NOTICE);
+    . 2111 (was INFO);
+    . 2112 (was INFO).
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.

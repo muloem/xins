@@ -83,21 +83,21 @@
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2102" level="NOTICE" exception="false">
+		<entry id="2102" level="WARNING" exception="false">
 			<description>Unknown host error while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2103" level="NOTICE">
+		<entry id="2103" level="WARNING">
 			<description>Connection refused while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2104" level="NOTICE">
+		<entry id="2104" level="WARNING">
 			<description>Connection time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
@@ -105,7 +105,7 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
-		<entry id="2105" level="NOTICE">
+		<entry id="2105" level="WARNING">
 			<description>Socket time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
@@ -113,7 +113,7 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
-		<entry id="2106" level="NOTICE">
+		<entry id="2106" level="WARNING">
 			<description>Total call time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
@@ -122,7 +122,7 @@
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
 		<!-- XXX: 2107 -->
-		<entry id="2108" level="INFO">
+		<entry id="2108" level="WARNING">
 			<description>Unacceptable status code received while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
@@ -130,14 +130,14 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="code"       type="int32"        nullable="false" />
 		</entry>
-		<entry id="2109" level="NOTICE" exception="true">
+		<entry id="2109" level="WARNING" exception="true">
 			<description>Unrecognized I/O error while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2110" level="NOTICE" exception="false">
+		<entry id="2110" level="WARNING" exception="false">
 			<description>Invalid result received from XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
@@ -145,7 +145,7 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="detail"     type="text"         nullable="false" />
 		</entry>
-		<entry id="2111" level="INFO" exception="true">
+		<entry id="2111" level="WARNING" exception="true">
 			<description>Unexpected exception while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
