@@ -3,6 +3,8 @@
  */
 package org.xins.common.service;
 
+import org.xins.common.Log;
+
 /**
  * Exception that indicates the total time-out for a request was reached, so
  * the request was aborted.
@@ -12,15 +14,42 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public final class TotalTimeOutCallException extends GenericCallException {
+public final class TotalTimeOutCallException
+extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = TotalTimeOutCallException.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Logs the fact that the constructor was entered. The short reason passed
+    * to the constructor is both the input and the output for this class
+    * function.
+    *
+    * @param shortReason
+    *    the short reason, could be <code>null</code>.
+    *
+    * @return
+    *    <code>shortReason</code>.
+    */
+   private static final String trace(String shortReason) {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
+      return shortReason;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -48,7 +77,13 @@ public final class TotalTimeOutCallException extends GenericCallException {
                                     TargetDescriptor target,
                                     long             duration)
    throws IllegalArgumentException {
-      super("Total time-out", request, target, duration, null, null);
+
+      // Trace and then call constructor of superclass
+      super(trace("Total time-out"),
+            request, target, duration, null, null);
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 

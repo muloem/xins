@@ -3,6 +3,8 @@
  */
 package org.xins.common.service;
 
+import org.xins.common.Log;
+
 /**
  * Exception that indicates that a connection to a service could not be
  * established.
@@ -12,15 +14,42 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public abstract class ConnectionCallException extends GenericCallException {
+public abstract class ConnectionCallException
+extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = ConnectionCallException.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Logs the fact that the constructor was entered. The short reason passed
+    * to the constructor is both the input and the output for this class
+    * function.
+    *
+    * @param shortReason
+    *    the short reason, could be <code>null</code>.
+    *
+    * @return
+    *    <code>shortReason</code>.
+    */
+   private static final String trace(String shortReason) {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
+      return shortReason;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -63,7 +92,13 @@ public abstract class ConnectionCallException extends GenericCallException {
                            String           detail,
                            Throwable        cause)
    throws IllegalArgumentException {
-      super(shortReason, request, target, duration, detail, cause);
+
+      // Trace and then call constructor of superclass
+      super(trace(shortReason),
+            request, target, duration, detail, cause);
+
+      // TRACE: Leave constructor
+      Log.log_3000(CLASSNAME, null);
    }
 
 

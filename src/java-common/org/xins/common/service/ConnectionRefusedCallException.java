@@ -3,6 +3,8 @@
  */
 package org.xins.common.service;
 
+import org.xins.common.Log;
+
 /**
  * Exception that indicates that a connection to a service could not be
  * established since it was refused.
@@ -12,15 +14,42 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public final class ConnectionRefusedCallException extends ConnectionCallException {
+public final class ConnectionRefusedCallException
+extends ConnectionCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = ConnectionRefusedCallException.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Logs the fact that the constructor was entered. The short reason passed
+    * to the constructor is both the input and the output for this class
+    * function.
+    *
+    * @param shortReason
+    *    the short reason, could be <code>null</code>.
+    *
+    * @return
+    *    <code>shortReason</code>.
+    */
+   private static final String trace(String shortReason) {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
+      return shortReason;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -49,7 +78,13 @@ public final class ConnectionRefusedCallException extends ConnectionCallExceptio
                                          TargetDescriptor target,
                                          long             duration)
    throws IllegalArgumentException {
-      super("Connection refused", request, target, duration, null, null);
+
+      // Trace and then call constructor of superclass
+      super(trace("Connection refused"),
+            request, target, duration, null, null);
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 

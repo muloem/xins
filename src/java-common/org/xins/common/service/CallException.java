@@ -4,6 +4,7 @@
 package org.xins.common.service;
 
 import org.xins.common.ExceptionUtils;
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
@@ -35,7 +36,7 @@ public abstract class CallException extends Exception {
    /**
     * Fully-qualified name of this class.
     */
-   private static final CLASSNAME = CallException.class.getName();
+   private static final String CLASSNAME = CallException.class.getName();
 
 
    //-------------------------------------------------------------------------
@@ -198,7 +199,7 @@ public abstract class CallException extends Exception {
                            Throwable        cause)
    throws IllegalArgumentException {
 
-      // Call superconstructor with fabricated message
+      // Trace, construct message and then call superconstructor
       super(createMessage(shortReason, request, target, duration, detail),
             rootCauseFor(cause));
 

@@ -6,6 +6,7 @@ package org.xins.common.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -25,7 +26,7 @@ public final class CallExceptionList extends Object {
    /**
     * Fully-qualified name of this class.
     */
-   private static final CLASSNAME = CallExceptionList.class.getName();
+   private static final String CLASSNAME = CallExceptionList.class.getName();
 
 
    //-------------------------------------------------------------------------

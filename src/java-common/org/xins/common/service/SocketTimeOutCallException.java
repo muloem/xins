@@ -3,6 +3,8 @@
  */
 package org.xins.common.service;
 
+import org.xins.common.Log;
+
 /**
  * Exception that indicates that data was not received on a socket within a
  * designated time-out period.
@@ -12,15 +14,42 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public final class SocketTimeOutCallException extends GenericCallException {
+public final class SocketTimeOutCallException
+extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = SocketTimeOutCallException.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Logs the fact that the constructor was entered. The short reason passed
+    * to the constructor is both the input and the output for this class
+    * function.
+    *
+    * @param shortReason
+    *    the short reason, could be <code>null</code>.
+    *
+    * @return
+    *    <code>shortReason</code>.
+    */
+   private static final String trace(String shortReason) {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
+
+      return shortReason;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -48,7 +77,13 @@ public final class SocketTimeOutCallException extends GenericCallException {
                                      TargetDescriptor target,
                                      long             duration)
    throws IllegalArgumentException {
-      super("Socket time-out", request, target, duration, null, null);
+
+      // Trace and then call constructor of superclass
+      super(trace("Socket time-out"),
+            request, target, duration, null, null);
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 

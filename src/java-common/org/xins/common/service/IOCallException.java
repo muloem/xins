@@ -5,6 +5,7 @@ package org.xins.common.service;
 
 import java.io.IOException;
 
+import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -15,11 +16,18 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 0.207
  */
-public final class IOCallException extends GenericCallException {
+public final class IOCallException
+extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = IOCallException.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -51,6 +59,9 @@ public final class IOCallException extends GenericCallException {
                                         TargetDescriptor target,
                                         IOException      ioException)
    throws IllegalArgumentException {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request",     request,
@@ -94,7 +105,7 @@ public final class IOCallException extends GenericCallException {
                           IOException      ioException)
    throws IllegalArgumentException {
 
-      // Check arguments first and then call superconstructor
+      // Trace, check arguments and then call constructor of superclass
       super(getShortReason(request, target, ioException),
             request,
             target,
@@ -102,6 +113,8 @@ public final class IOCallException extends GenericCallException {
             null,
             ioException);
 
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 
