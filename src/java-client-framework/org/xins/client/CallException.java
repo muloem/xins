@@ -198,9 +198,6 @@ public abstract class CallException extends Exception {
     * @param cause
     *    the cause exception, can be <code>null</code>.
     *
-    * @return
-    *    the exception message, never <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>shortReason == null
     *          || request == null
