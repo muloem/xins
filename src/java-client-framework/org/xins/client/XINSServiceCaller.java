@@ -200,49 +200,41 @@ public final class XINSServiceCaller extends ServiceCaller {
                                Object           subject)
    throws Throwable {
 
-      // Convert subject to a CallRequest
-      CallRequest request = (CallRequest) subject;
-
-      // Disect the CallRequest and forward the method call
-      return call(target,
-                  request.getFunctionName(),
-                  request.getParameters());
+      // Forward the call
+      return call(target, (CallRequest) subject);
    }
 
    /**
-    * Calls the XINS service at the specified target.
+    * Executes the specified call request on the specified XINS API.
     *
     * @param target
     *    the service target on which to execute the request, cannot be
     *    <code>null</code>.
     *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed to that function, or
-    *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class; this {@link Map} may be unmodifiable, since it is
-    *    guaranteed that it will not be changed.
+    * @param request
+    *    the call request to execute, cannot be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>target == null || functionName == null</code>.
+    *    if <code>target == null || request == null</code>.
     *
     * @throws CallException
     *    if the call to the specified target failed.
+    *
+    * @since XINS 0.198
     */
    public Result call(TargetDescriptor target,
-                      String           functionName,
-                      Map              parameters)
+                      CallRequest      request)
    throws IllegalArgumentException,
           CallException {
-
+      
       // Check preconditions
-      MandatoryArgumentChecker.check("target",       target,
-                                     "functionName", functionName);
+      MandatoryArgumentChecker.check("target",  target, "request", request);
+
+      String functionName = request.getFunctionName();
+      Map    parameters   = request.getParameters();
 
       // Construct new HttpClient object
       HttpClient client = new HttpClient();
@@ -349,8 +341,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Check the code
-      // TODO: Throw specific exception that stores the HTTP code so it can be
-      //       used to determine whether or not fail-over should be attempted.
       int code = executor._statusCode;
 
       Log.log_2016(url, functionName, code);
@@ -376,6 +366,48 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
+    * Calls the XINS service at the specified target.
+    *
+    * @param target
+    *    the service target on which to execute the request, cannot be
+    *    <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed to that function, or
+    *    <code>null</code>; keys must be {@link String Strings}, values can be
+    *    of any class; this {@link Map} may be unmodifiable, since it is
+    *    guaranteed that it will not be changed.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || functionName == null</code>.
+    *
+    * @throws CallException
+    *    if the call to the specified target failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.198. Use
+    *    {@link #call(TargetDescriptor,CallRequest)} instead.
+    */
+   public Result call(TargetDescriptor target,
+                      String           functionName,
+                      Map              parameters)
+   throws IllegalArgumentException,
+          CallException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target",       target,
+                                     "functionName", functionName);
+
+      return call(target, new CallRequest(functionName, parameters));
+   }
+
+   /**
     * Calls the specified API function with the specified
     * parameters.
     *
@@ -396,6 +428,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws CallException
     *    if the call failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.198. Use {@link #execute(CallRequest)}
+    *    instead.
     */
    public Result call(String functionName, Map parameters)
    throws IllegalArgumentException, CallException {
@@ -416,6 +452,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws CallException
     *    if the call failed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.198. Use {@link #execute(CallRequest)}
+    *    instead.
     */
    public Result call(CallRequest request)
    throws IllegalArgumentException, CallException {
@@ -425,9 +465,9 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Attempt to perform the call
       try {
-         CallResult callResult = doCall(request);
-         return (Result) callResult.getResult();
+         return execute(request);
 
+      // Convert the CallFailedException to a CallException
       } catch (CallFailedException cfe) {
 
          // TODO: Improve this code
@@ -435,10 +475,12 @@ public final class XINSServiceCaller extends ServiceCaller {
          Throwable ex = (Throwable) exceptions.get(0);
          if (ex instanceof CallException) {
             throw (CallException) ex;
+         } else if (ex instanceof RuntimeException) {
+            throw (RuntimeException) ex;
          } else if (ex instanceof Error) {
             throw (Error) ex;
          } else {
-            String message = "Unexpected " + ex.getClass().getName() + " caught while calling doCall(org.xins.util.service.CallRequest).";
+            String message = "Unexpected " + ex.getClass().getName() + " caught while calling execute(" + request.getClass().getName() + ").";
             Log.log_2010(ex, ex.getClass().getName());
             throw new Error(message);
          }
@@ -446,9 +488,35 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
+    * Executes the specified request.
+    *
+    * @param request
+    *    the request to execute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws CallFailedException
+    *    if the call failed.
+    *
+    * @since XINS 0.198
+    */
+   public Result execute(CallRequest request)
+   throws IllegalArgumentException, CallFailedException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      return (Result) doCall(request).getResult();
+   }
+
+   /**
     * Determines whether a call to a XINS API should fail-over to the next
     * selected target.
-
+    *
     * The implementation of this method in class
     * <code>XINSServiceCaller</code> allows fail-over if and only if the
     * specified exception indicates a connection problem (i.e. if it is an
