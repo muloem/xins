@@ -120,9 +120,11 @@ public final class GroupDescriptor extends Descriptor {
 
    /**
     * Constructs a new <code>GroupDescriptor</code>. The members to be
-    * included must be passed. The array of members may be empty, but it
-    * cannot contain any <code>null</code> elements. It may contain
-    * duplicates, though.
+    * included must be passed. The array of members cannot contain any
+    * <code>null</code> elements. It may contain duplicates, though.
+    *
+    * <p>Since XINS 1.1.0, the array of members cannot be empty, but needs to
+    * contain at least 2 descriptors.
     *
     * @param type
     *    the type of group, cannot be <code>null</code>.
@@ -133,6 +135,7 @@ public final class GroupDescriptor extends Descriptor {
     * @throws IllegalArgumentException
     *    if <code>type == null
     *          || members == null
+    *          || members.length &lt; 2
     *          || members[<em>n</em>] == null</code>
     *    (where <code>0 &lt;= <em>n</em> &lt; members.length</code>).
     */
@@ -280,7 +283,7 @@ public final class GroupDescriptor extends Descriptor {
     * Counts the total number of target descriptors in/under this descriptor.
     *
     * @return
-    *    the total number of target descriptors, always &gt;= 1.
+    *    the total number of target descriptors, always &gt;= 2.
     */
    public int getTargetCount() {
       return _targetCount;
