@@ -12,9 +12,12 @@
 		<xsl:param name="project_file" />
 		<xsl:param name="api" />
 
-		<xsl:variable name="prefix" select="document($project_file)/project/java-impls/@packageprefix" />
-		<xsl:variable name="suffix" select="document($project_file)/project/java-impls/@packagesuffix" />
+		<xsl:variable name="prefix" select="document($project_file)/project/@domain" />
+		<xsl:variable name="suffix" select="api"                                     />
 
+		<xsl:if test="string-length($prefix) = 0">
+			<xsl:message terminate="yes">No domain specified for project.</xsl:message>
+		</xsl:if>
 		<xsl:if test="string-length($project_file) = 0">
 			<xsl:message terminate="yes">Mandatory parameter 'project_file' is not defined.</xsl:message>
 		</xsl:if>
@@ -39,9 +42,12 @@
 		<xsl:param name="project_file" />
 		<xsl:param name="api" />
 
-		<xsl:variable name="prefix" select="document($project_file)/project/java-clients/@packageprefix" />
-		<xsl:variable name="suffix" select="document($project_file)/project/java-clients/@packagesuffix" />
+		<xsl:variable name="prefix" select="document($project_file)/project/@domain" />
+		<xsl:variable name="suffix" select="capi"                                    />
 
+		<xsl:if test="string-length($prefix) = 0">
+			<xsl:message terminate="yes">No domain specified for project.</xsl:message>
+		</xsl:if>
 		<xsl:if test="string-length($project_file) = 0">
 			<xsl:message terminate="yes">Mandatory parameter 'project_file' is not defined.</xsl:message>
 		</xsl:if>
@@ -66,9 +72,12 @@
 		<xsl:param name="project_file" />
 		<xsl:param name="api" />
 
-		<xsl:variable name="prefix" select="document($project_file)/project/java-types/@packageprefix" />
-		<xsl:variable name="suffix" select="document($project_file)/project/java-types/@packagesuffix" />
+		<xsl:variable name="prefix" select="document($project_file)/project/@domain" />
+		<xsl:variable name="suffix" select="types"                                   />
 
+		<xsl:if test="string-length($prefix) = 0">
+			<xsl:message terminate="yes">No domain specified for project.</xsl:message>
+		</xsl:if>
 		<xsl:if test="string-length($project_file) = 0">
 			<xsl:message terminate="yes">Mandatory parameter 'project_file' is not defined.</xsl:message>
 		</xsl:if>
