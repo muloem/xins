@@ -842,8 +842,8 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	<target
 	name="-prepare-release"
 	depends="-pre-release-checks">
-		<!-- FIXME: This is hard-coded and should be changed for a new release -->
-		<property name="tagname" value="RELEASE_1_0_0_BETA8" />
+		<!-- TODO: FIXME: This is hard-coded and should be changed for a new release -->
+		<property name="tagname" value="RELEASE_1_0_0_BETA9" />
 		<echo message="Tagging ${tagname}" />
 		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="tag ${tagname}" quiet="true" />
