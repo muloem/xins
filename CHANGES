@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.130:
+
+* XINS/Java Server Framework:
+  - Fixed a bug that caused the _GetSettings function to fail.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.129:
 
 * XINS/Java Server Framework:
