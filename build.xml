@@ -17,6 +17,11 @@
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
 	</target>
 
+	<target name="-init-release">
+		<property name="javac.debug"         value="false" />
+		<property name="javac.deprecation"   value="false" />
+	</target>
+
 	<target name="-init">
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
@@ -205,7 +210,7 @@
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
 
 	<target name="checkstyle-text" depends="-prepare-checkstyle" description="Prints checkstyle errors">
-		<checkstyle properties="src/config/checkstyle/checkstyle.properties" failOnViolation="false">
+		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
 			<formatter type="plain" />
 		</checkstyle>
@@ -214,7 +219,7 @@
 	<target name="checkstyle-xml" depends="-prepare-checkstyle" description="Checks the style of the source code">
 		<mkdir dir="build/checkstyle" />
 		<mkdir dir="build/checkstyle/xml" />
-		<checkstyle properties="src/config/checkstyle/checkstyle.properties" failOnViolation="false">
+		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
 			<formatter type="xml" tofile="build/checkstyle/xml/results.xml"/>
 		</checkstyle>
@@ -277,7 +282,7 @@
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
 
-	<target name="upload-release" depends="clean,upload-packages,upload-javadoc,upload-checkstyle" description="Uploads everything" />
+	<target name="upload-release" depends="-init-release,clean,upload-packages,upload-javadoc,upload-checkstyle" description="Uploads everything" />
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 

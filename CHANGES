@@ -1,6 +1,8 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.27:
 
+* Disabled deprecation warnings and debug info when building a release.
+
 * Enabled javac optimizations.
 
 * Switched from Checkstyle 2.x to Checkstyle 3.0.
