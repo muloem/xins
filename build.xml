@@ -270,8 +270,8 @@
 	</target>
 
 	<target name="logdoc-html" depends="-prepare-logdoc">
-		<ant dir="build" antfile="logdoc-build.xml" target="html" inheritall="false" />
 		<copy file="src/css/logdoc/style.css" todir="build/logdoc/html" />
+		<ant dir="build" antfile="logdoc-build.xml" target="html" inheritall="false" />
 	</target>
 
 	<target name="upload-logdoc" depends="-init,logdoc-html">
