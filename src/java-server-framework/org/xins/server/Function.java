@@ -102,6 +102,11 @@ implements DefaultResultCodes {
    private final String _version;
 
    /**
+    * The current response validator.
+    */
+   private ResponseValidator _responseValidator;
+
+   /**
     * Lock object for <code>_callCount</code>.
     */
    private final Object _callCountLock = new Object();
