@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.167:
 
 * XINS/Java Server Framework:
   - Changed log messages 5000 and 5001 to log the query string.
+  - Removed unused package-private dueToUnexpected(Throwable) class function
+    from class APIServlet.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.166:
