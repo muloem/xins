@@ -20,6 +20,7 @@
 	<xsl:include href="../java.xslt"           />
 	<xsl:include href="../types.xslt"          />
 
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="type" select="//type/@name" />
 	<xsl:variable name="classname">
 		<xsl:call-template name="hungarianUpper">
@@ -140,15 +141,17 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="$kind = 'properties'">
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="type"     select="properties/@nameType" />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"      />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="type"         select="properties/@nameType" />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON, </xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="type"     select="properties/@valueType" />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"      />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="type"         select="properties/@valueType" />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON</xsl:text>
 			</xsl:when>

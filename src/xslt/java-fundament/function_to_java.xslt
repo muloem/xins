@@ -21,6 +21,7 @@
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
 
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision">
@@ -327,9 +328,10 @@ public abstract class ]]></xsl:text>
 				<xsl:text>
       if (!</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="type"         select="@type"         />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
