@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.150:
+
+* XINS/Java Server Framework:
+  - Added ACL support.
+
+* XINS/Java Common Library:
+  - Moved MissingRequiredPropertyException and InvalidPropertyValueException
+    from org.xins.util.manageable to org.xins.util.collections.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.149:
 
 * Added package.html for package org.xins.util.manageable.

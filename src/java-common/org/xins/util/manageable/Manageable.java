@@ -4,6 +4,8 @@
 package org.xins.util.manageable;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.InvalidPropertyValueException;
+import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
 
 /**
