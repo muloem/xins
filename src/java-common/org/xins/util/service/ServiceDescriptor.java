@@ -54,7 +54,7 @@ public final class ServiceDescriptor extends Descriptor {
       try {
          PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
-         throw new Error("Unable to compile pattern: " + PATTERN_STRING);
+         throw new Error("The pattern \"" + PATTERN_STRING + "\" is malformed.);
       }
    }
 
