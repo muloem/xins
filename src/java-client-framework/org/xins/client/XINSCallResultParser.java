@@ -46,11 +46,9 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>XINSCallResultParser</code> instance. This
-    * constructor is <code>private</code> because this is a utility class. No
-    * instances should be constructed.
+    * Constructs a new <code>XINSCallResultParser</code>.
     */
-   private XINSCallResultParser() {
+   public XINSCallResultParser() {
       // empty
    }
 
@@ -296,7 +294,7 @@ extends Object {
          if (_level > 0) {
             DataElement child = (DataElement)_elements.get(new Integer(_level));
             if (_pcdata != null) {
-               child.setPCData(_pcdata.toString());
+               child.setText(_pcdata.toString());
             }
             _level--;
             DataElement parent = (DataElement)_elements.get(new Integer(_level));
