@@ -1,8 +1,11 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.3:
+CHANGES INTRODUCED IN XINS 0.4:
 
 * Only generating files if the concerning APIs, function and types are
   explicitly mentioned in the concerning lists in xins-project.xml or api.xml.
+
+* Generating skeleton .java files if function implementation files do not
+  exist.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.3:
