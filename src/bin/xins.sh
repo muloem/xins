@@ -50,12 +50,16 @@ if [ ! -d ${builddir} ]; then
 fi
 
 # Delete the Ant build file if it exists
-if [ -f ${builddir}/build.xml ]; then
-	rm ${builddir}/build.xml
+buildfile=${builddir}/build.xml
+if [ -f ${buildfile} ]; then
+	rm -f ${buildfile} 2> /dev/null
+	if [ -f ${buildfile} ]; then
+		echo "${prog}: ERROR: Failed to remove ${buildfile}"
+	fi
 fi
 
 # Create the Ant build file
-out=${builddir}/build.xml
+out=${buildfile}
 project_home=`pwd`
 mktemp_template="/tmp/${prog}.XXXXXXXX"
 tmpout=`mktemp -q ${mktemp_template}`
@@ -84,4 +88,4 @@ rm ${tmpout}
 echo " [ DONE ]"
 
 # Run Ant against the build file
-(cd ${builddir} && ant $*)
+(cd ${builddir} && ant -f `basename ${buildfile}` $*)
