@@ -1084,18 +1084,18 @@ public final class HTTPServiceCaller extends ServiceCaller {
             }
          }
          
+         // Remove the diagnostic context ID
+         if (_context != null) {
+            NDC.pop();
+            NDC.remove();
+         }
+         
          // Set objects to null for garbage collection
          _asString = null;
          _callConfig = null;
          _context = null;
          _request = null;
          _target = null;
-         
-         // Remove the diagnostic context ID
-         if (_context != null) {
-            NDC.pop();
-            NDC.remove();
-         }
       }
 
       /**

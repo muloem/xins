@@ -252,6 +252,9 @@ public class AccessRuleFile implements AccessRuleContainer {
          } else if (nextLine.startsWith("allow") || nextLine.startsWith("deny")) {
             rules.add(AccessRule.parseAccessRule(nextLine));
          } else if (nextLine.startsWith("file")) {
+            if (nextLine.substring(5).equals(file)) {
+               throw new ParseException("The access rule file  \"" + file + "\" cannot include itself.");
+            }
             rules.add(new AccessRuleFile(nextLine, interval));
          } else {
 

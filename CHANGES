@@ -16,6 +16,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
   - Added class CollectionUtils with one class function called "list". This
     function converts an Iterator to an ArrayList.
   - Improved tests for class HTTPServiceCaller.
+  - Set the unused values to null in the HTTPServiceCaller after poping the
+    diagnotisc context identifier.
 
 * XINS/Java Server Framework:
   - Changed some classes to use the Common log messages for programming
@@ -29,6 +31,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
     All incoming parameters that do not match the pattern "[a-z][a-z0-9_]*"
     (without the quotes) are considered ignorable and will not be sent down to
     the function.
+  - If an access rule file contains itself, the parsing will fail.
 
 * Documentation:
   - Added the documentation about the XINS protocol to the release.
