@@ -69,6 +69,18 @@
 	<translation entry="4016">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="4017">XINS/Java Server Framework has been initialized.</translation>
 	<translation entry="4018">XINS/Java Server Framework has been re-initialized.</translation>
+	<translation entry="4019">Initializing manageable <value-of-param name="className" />.</translation>
+	<translation entry="4020">Initialized manageable <value-of-param name="className" />.</translation>
+	<translation entry="4021">Initialization of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="4022">Initialization of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="4023">Initialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="4024">Initialization of manageable <value-of-param name="className" /> failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="4025">Initializing <value-of-param name="function" /> function.</translation>
+	<translation entry="4026">Initialized <value-of-param name="function" /> function.</translation>
+	<translation entry="4027">Initialization of <value-of-param name="function" /> function failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="4028">Initialization of <value-of-param name="function" /> function failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="4029">Initialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="4030">Initialization of <value-of-param name="function" /> function failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="5000">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed.</translation>
 	<translation entry="5001">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />.</translation>
 	<translation entry="6000">Shutting down XINS/Java Server Framework.</translation>
