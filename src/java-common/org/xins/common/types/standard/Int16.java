@@ -52,11 +52,7 @@ public class Int16 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            short number = Short.parseShort(string);
-            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
-               throw new TypeValueException(SINGLETON, string);
-            }
-            return number;
+            return Short.parseShort(string);
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -85,12 +81,7 @@ public class Int16 extends Type {
       }
 
       try {
-         Short number = Short.valueOf(string);
-         short numberAsShort = number.shortValue();
-         if (numberAsShort < SINGLETON._minimum || numberAsShort > SINGLETON._maximum) {
-            throw new TypeValueException(SINGLETON, string);
-         }
-         return number;
+         return  Short.valueOf(string);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }

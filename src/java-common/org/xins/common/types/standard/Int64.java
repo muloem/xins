@@ -52,11 +52,7 @@ public class Int64 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            long number = Long.parseLong(string);
-            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
-               throw new TypeValueException(SINGLETON, string);
-            }
-            return number;
+            return Long.parseLong(string);
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -85,12 +81,7 @@ public class Int64 extends Type {
       }
 
       try {
-         Long number = Long.valueOf(string);
-         long numberAsLong = number.longValue();
-         if (numberAsLong < SINGLETON._minimum || numberAsLong > SINGLETON._maximum) {
-            throw new TypeValueException(SINGLETON, string);
-         }
-         return number;
+         return Long.valueOf(string);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }

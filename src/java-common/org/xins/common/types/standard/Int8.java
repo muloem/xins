@@ -52,11 +52,7 @@ public class Int8 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            byte number = Byte.parseByte(string);
-            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
-               throw new TypeValueException(SINGLETON, string);
-            }
-            return number;
+            return Byte.parseByte(string);
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -85,12 +81,7 @@ public class Int8 extends Type {
       }
 
       try {
-         Byte number = Byte.valueOf(string);
-         byte numberAsByte = number.byteValue();
-         if (numberAsByte < SINGLETON._minimum || numberAsByte > SINGLETON._maximum) {
-            throw new TypeValueException(SINGLETON, string);
-         }
-         return number;
+         return Byte.valueOf(string);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }

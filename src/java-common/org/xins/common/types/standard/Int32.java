@@ -52,11 +52,7 @@ public class Int32 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            int number = Integer.parseInt(string);
-            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
-               throw new TypeValueException(SINGLETON, string);
-            }
-            return number;
+            return Integer.parseInt(string);
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -85,12 +81,7 @@ public class Int32 extends Type {
       }
 
       try {
-         Integer number = Integer.valueOf(string);
-         int numberAsInt = number.intValue();
-         if (numberAsInt < SINGLETON._minimum || numberAsInt > SINGLETON._maximum) {
-            throw new TypeValueException(SINGLETON, string);
-         }
-         return number;
+         return Integer.valueOf(string);
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
