@@ -43,7 +43,7 @@ implements PropertyReader {
     *    the map containing the data of this <code>PropertyReader</code>,
     *    cannot be <code>null</code>.
     */
-   public AbstractPropertyReader(Map map) {
+   AbstractPropertyReader(Map map) {
       _properties = map;
    }
 
@@ -109,7 +109,7 @@ implements PropertyReader {
     *    the {@link Map} used to store the properties in, cannot be
     *    <code>null</code>.
     */
-   protected Map getPropertiesMap() {
+   Map getPropertiesMap() {
       return _properties;
    }
 }
