@@ -104,6 +104,10 @@
          }
          _errorResult.addMissingParameter("</xsl:text>
 					<xsl:value-of select="@name" />
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:text>", "</xsl:text>
+						<xsl:value-of select="../@name" />
+					</xsl:if>
 					<xsl:text>");
       }</xsl:text>
 			</xsl:for-each>
@@ -137,8 +141,12 @@
          _errorResult.addInvalidValueForType("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
-				<xsl:value-of select="@type" />
-				<xsl:text>");
+					<xsl:value-of select="@type" />
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:text>", "</xsl:text>
+						<xsl:value-of select="../@name" />
+					</xsl:if>
+					<xsl:text>");
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
