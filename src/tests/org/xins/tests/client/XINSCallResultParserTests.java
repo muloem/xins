@@ -274,8 +274,8 @@ public class XINSCallResultParserTests extends TestCase {
       XINSCallResultData result;
       PropertyReader params;
 
-      // Result with error code defined in 'error' attribute
-      xml = "<result error='SomeError'/>";
+      // Result with error code defined in 'errorcode' attribute
+      xml = "<result errorcode='SomeError'/>";
       result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
       assertEquals("SomeError", result.getErrorCode());
@@ -287,7 +287,7 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals("SomeError", result.getErrorCode());
 
       // Error code both in 'error' and in 'code' attribute (non-conflicting)
-      xml = "<result code='SomeError' error='SomeError'/>";
+      xml = "<result code='SomeError' errorcode='SomeError'/>";
       result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
       assertEquals("SomeError", result.getErrorCode());
