@@ -32,7 +32,7 @@ if [ ! -d ${builddir} ]; then
 fi
 
 # Create the Ant build file
-in="xins-project.xml"
+in=xins-project.xml
 out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
 returncode=$?
