@@ -12,9 +12,9 @@
 prog=`basename $0`
 project_home=`pwd`
 
-
 # Make sure XINS_HOME is set
 xins_home=${XINS_HOME}
+guessed_xins_home=false
 if [ "${xins_home}a" = "a" ]; then
 	echo "${prog}: ERROR: XINS_HOME not set. Guessing."
 	xins_home=`dirname $0`
@@ -26,6 +26,20 @@ if [ "${xins_home}a" = "a" ]; then
 		exit 1
 	fi
 	echo "${prog}: INFO: Assuming XINS_HOME is ${xins_home}."
+	guessed_xins_home=true
+fi
+
+# Recognise -version option
+if [ "$1" = "-version" ]; then
+	if [ "${guessed_xins_home}" = "true" ]; then
+		echo
+	fi
+	java -version
+	echo
+	ant -version
+	echo
+	ant -f ${xins_home}/build.xml -listener org.apache.tools.ant.NoBannerLogger version
+	exit 0
 fi
 
 # Make sure the XSLT style sheet exists
