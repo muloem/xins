@@ -200,7 +200,7 @@ public final class ExpiryStrategy extends Object {
     * @throws IllegalStateException
     *    if this strategy was already stopped.
     */
-   public void stop() {
+   public void stop() throws IllegalStateException {
 
       // Check preconditions
       if (_stop) {
