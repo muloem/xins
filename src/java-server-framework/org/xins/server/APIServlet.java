@@ -339,7 +339,7 @@ implements Servlet {
          } else if (_state == DISPOSED) {
             throw new ServletException("This servlet is disposed.");
          } else {
-            throw new InternalError("This servlet is not ready, the state is unknown.");
+            throw new Error("This servlet is not ready, the state is unknown.");
          }
       }
 

@@ -170,7 +170,7 @@ public abstract class Type extends Object {
     * to check if the value is in principle valid. If it is, then
     * {@link #fromStringImpl(String)} is called. If the result of that call is
     * <em>not</em> an instance of the value class, then an
-    * {@link InternalError} is thrown. Notice that this error is also thrown
+    * {@link Error} is thrown. Notice that this error is also thrown
     * if {@link #fromStringImpl(String)} returns <code>null</code>.
     *
     * @param string
@@ -185,12 +185,12 @@ public abstract class Type extends Object {
     *    if the specified string does not represent a valid value for this
     *    type.
     *
-    * @throws InternalError
+    * @throws Error
     *    if <code>fromStringImpl(string) == null
     *          || !getValueClass().isInstance(fromString(string))</code>.
     */
    public final Object fromString(String string)
-   throws TypeValueException, InternalError {
+   throws TypeValueException, Error {
 
       if (string == null) {
          return null;
@@ -203,7 +203,7 @@ public abstract class Type extends Object {
       Object value = fromStringImpl(string);
 
       if (_valueClass.isInstance(value) == false) {
-         throw new InternalError("The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.');
+         throw new Error("The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.');
       }
 
       return value;

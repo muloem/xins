@@ -123,7 +123,7 @@ extends Object {
       } catch (TypeValueException exception) {
          String message = "Caught unexpected " + exception.getClass().getName() + '.';
          LOG.error(message, exception);
-         throw new InternalError(message);
+         throw new Error(message);
       }
    }
 

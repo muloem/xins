@@ -102,7 +102,7 @@ extends AbstractFunctionCaller {
       try {
          bytes = string.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
-         throw new InternalError("Encoding \"" + ENCODING + "\" is not supported.");
+         throw new Error("Encoding \"" + ENCODING + "\" is not supported.");
       }
       checksum.update(bytes, 0, bytes.length);
       return checksum.getValue();
@@ -205,7 +205,7 @@ extends AbstractFunctionCaller {
                         url.getPort(),                 // port
                         url.getFile());                // file
       } catch (MalformedURLException mue) {
-         throw new InternalError("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
+         throw new Error("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
       }
 
       // Initialize fields

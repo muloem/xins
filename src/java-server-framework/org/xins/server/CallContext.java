@@ -388,7 +388,7 @@ implements Responder, Log {
 
       // Check preconditions
       if (_function == null) {
-         throw new InternalError("There is no current function.");
+         throw new Error("There is no current function.");
       }
 
       // Create the session

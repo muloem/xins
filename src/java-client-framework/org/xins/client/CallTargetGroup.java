@@ -136,9 +136,9 @@ extends AbstractCompositeFunctionCaller {
             members.add(new ActualFunctionCaller(afcURL, hostName));
          }
       } catch (MalformedURLException mue) {
-         throw new InternalError("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
+         throw new Error("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
       } catch (MultipleIPAddressesException miae) {
-         throw new InternalError("Caught MultipleIPAddressesException while only using resolved IP addresses.");
+         throw new Error("Caught MultipleIPAddressesException while only using resolved IP addresses.");
       }
 
       return create(type, members);
@@ -174,7 +174,7 @@ extends AbstractCompositeFunctionCaller {
       } else if (type == RANDOM_TYPE) {
          return new RandomCallTargetGroup(members);
       } else {
-         throw new InternalError("Type not recognized.");
+         throw new Error("Type not recognized.");
       }
    }
 
@@ -435,7 +435,7 @@ extends AbstractCompositeFunctionCaller {
     *    throws an exception, otherwise the return value of that call, but
     *    never <code>null</code>.
     *
-    * @throws InternalError
+    * @throws Error
     *    if <code>caller.</code>{@link FunctionCaller#call(String,String,Map)}
     *    returned <code>null</code>.
     */
@@ -443,7 +443,7 @@ extends AbstractCompositeFunctionCaller {
                         String         sessionID,
                         String         functionName,
                         Map            parameters)
-   throws InternalError {
+   throws Error {
 
       // Perform the call
       CallResult result;
@@ -458,7 +458,7 @@ extends AbstractCompositeFunctionCaller {
 
       // otherwise if the result was null, then throw an error...
       if (result == null) {
-         throw new InternalError(caller.getClass().getName() + ".call(String,String,Map) returned null.");
+         throw new Error(caller.getClass().getName() + ".call(String,String,Map) returned null.");
       }
 
       // otherwise return the CallResult object
@@ -508,7 +508,7 @@ extends AbstractCompositeFunctionCaller {
       } else if (result instanceof RuntimeException) {
          throw (RuntimeException) result;
       } else {
-         throw new InternalError("CallTargetGroup.tryCall() returned an instance of class " + result.getClass().getName() + ", which is unsupported.");
+         throw new Error("CallTargetGroup.tryCall() returned an instance of class " + result.getClass().getName() + ", which is unsupported.");
       }
    }
 
