@@ -82,7 +82,7 @@ public final class DescriptorBuilder extends Object {
                                      "propertyValue", propertyValue);
 
       // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(70);
+      FastStringBuffer buffer = new FastStringBuffer(150);
       buffer.append("Property \"");
       buffer.append(propertyName);
       buffer.append("\" is set to invalid value \"");
