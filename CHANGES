@@ -6,7 +6,21 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
-* Slightly improved and cleaned the 'xins' shell script.
+* Slightly improved and cleaned the 'xins' shell script. Now the '-version'
+  and the 'version' argument both work the same. Also, the shell script now
+  calls Ant only once. Then Ant first does the transformation from
+  xins-project.xml to build.xml and then executes the generated build.xml
+  directly. This does not work good yet, though, since now only one target can
+  be specified. This will need to be fixed in a later release of XINS 1.1.
+  Note that the batch file has not been changed yet.
+
+* XINS/Java Client Framework:
+  - The AbstractCAPI class now supports specifying the HTTPMethod. The
+    HTTPMethod can be passed to the AbstractCAPI constructor.
+
+* Generated CAPI classes:
+  - The generated CAPI classes now support specifying the HTTPMethod. The
+    HTTPMethod can be passed to the CAPI constructor.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
