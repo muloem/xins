@@ -93,11 +93,13 @@ public class PropertiesTests extends TestCase {
       String name3 = "-123^  \t\n",    value3 = " "  ;
 
       String string = URLEncoder.encode(name1) + '=' + URLEncoder.encode(value1)
-              + '&' + URLEncoder.encode(name2)
+              + '&' + URLEncoder.encode(name2) + '='
               + '&' + URLEncoder.encode(name3) + '=' + URLEncoder.encode(value3);
 
+      // Create a PropertyReader object from the string
       pr = (PropertyReader) TYPE.fromString(string);
 
+      // Loop over all combinations
       Iterator iterator = pr.getNames();
       int count = 0;
       Map m = new HashMap();
@@ -108,11 +110,13 @@ public class PropertiesTests extends TestCase {
       }
       assertEquals(2, count);
 
-      assertEquals(name1, value1);
-      assertEquals(name2, null);
-      assertEquals(name3, value3);
+      assertEquals(m.get(name1), value1);
+      assertEquals(m.get(name2), null);
+      assertEquals(m.get(name3), value3);
 
-      String string2 = string + "&&c=d";
+      // The conversion should fail, since the last token does not contain an
+      // equals sign
+      String string2 = string + "&&cd";
       try {
          TYPE.fromString(string2);
          fail("Expected Properties.SINGLETON.fromString(\"" + string2 + "\") to throw a TypeValueException.");
