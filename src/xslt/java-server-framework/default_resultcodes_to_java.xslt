@@ -28,6 +28,7 @@ import java.util.List;
 		<xsl:value-of select="@rcsversion" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@rcsdate" />
+		<!-- TODO: Pass down version of .rcd file -->
 		<xsl:text><![CDATA[); XSLT file ($Revision$ $Date$)
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
@@ -49,13 +50,14 @@ public interface DefaultResultCodes {]]></xsl:text>
    final ResultCode ]]></xsl:text>
 			<xsl:call-template name="toupper">
 				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
+					<xsl:call-template name="hungarianWordSplit">
+						<xsl:with-param name="text" select="@name" />
+						<xsl:with-param name="separator" select="'_'" />
+					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>
-			<xsl:text> = new ResultCode(</xsl:text>
-			<!-- TODO: Make sure success is either 'true' or 'false' -->
-			<xsl:value-of select="@success" />
-			<xsl:text>, "</xsl:text>
+			<xsl:text> = new ResultCode(false, "</xsl:text>
+			<!-- TODO: Make sure @success is 'false' -->
 			<xsl:value-of select="@name" />
 			<xsl:text>", "</xsl:text>
 			<xsl:value-of select="@value" />
