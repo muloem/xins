@@ -71,11 +71,17 @@ import org.xins.common.TimeOutException;
  * <ol>
  *    <li>There should be a constructor that accepts only a {@link Descriptor}
  *        object. This constructor should call
- *        <code>super(descriptor, null)</code>.
+ *        <code>super(descriptor, null)</code>. If this descriptor contains
+ *        any {@link TargetDescriptor} instances that have an unsupported
+ *        protocol, then an {@link UnsupportedProtocolException} should be
+ *        thrown.
  *    <li>There should be a constructor that accepts both a
  *        {@link Descriptor} and a service-specific call config object
  *        (derived from {@link CallConfig}).  This constructor should call
- *        <code>super(descriptor, callConfig)</code>.
+ *        <code>super(descriptor, callConfig)</code>. If this descriptor
+ *        contains any {@link TargetDescriptor} instances that have an
+ *        unsupported protocol, then an {@link UnsupportedProtocolException}
+ *        should be thrown.
  *    <li>There should be a <code>call</code> method that accepts only a
  *        service-specific request object (derived from {@link CallRequest}).
  *        It should call
