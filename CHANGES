@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Removed the org.xins.common.specs package, for now. It will probably be
     re-introduced later.
 
+* Generated specification documentation:
+  - The multiplicity attribute is no longer supported.
+
 * Generated build file:
   - Fixed a bug that prevented APIs using the old directory structure to
     compile.

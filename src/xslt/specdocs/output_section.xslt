@@ -144,31 +144,6 @@
 									<xsl:text>, </xsl:text>
 								</xsl:if>
 								<xsl:value-of select="@element" />
-								<xsl:choose>
-									<xsl:when test="@multiplicity = '0+'">
-										<xsl:text>*</xsl:text>
-									</xsl:when>
-									<xsl:when test="@multiplicity = '1'" />
-									<xsl:when test="@multiplicity = '1+'">
-										<xsl:text>+</xsl:text>
-									</xsl:when>
-									<xsl:when test="not(@multiplicity)">
-										<xsl:message>
-											<xsl:text>No multiplicity set for element '</xsl:text>
-											<xsl:value-of select="../../@name" />
-											<xsl:text>'.</xsl:text>
-										</xsl:message>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:message>
-											<xsl:text>Unable to parse multiplicity for element '</xsl:text>
-											<xsl:value-of select="../../@name" />
-											<xsl:text>'. It should be either '0+', '1', or '1+', not '</xsl:text>
-											<xsl:value-of select="@multiplicity" />
-											<xsl:text>'.</xsl:text>
-										</xsl:message>
-									</xsl:otherwise>
-								</xsl:choose>
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:when test="contains/pcdata">
