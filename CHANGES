@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.44:
   performed at construction time. No longer are DNS names accepted that
   resolve to multiple IP addresses. Use CallTargetGroups for this.
 
+* Fixed problem in specdocs/type_to_html.xslt. It used the template
+  'urlencode' without including urlencode.xslt.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.43:
 
@@ -17,8 +20,7 @@ CHANGES INTRODUCED IN XINS 0.43:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.42:
 
-* Fixed problem in specdocs/type_to_html.xslt. It used the template
-  'urlencode' without including urlencode.xslt.
+(none)
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.41:
