@@ -139,6 +139,7 @@
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.typ"         />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
+					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 					<style
 					in="{$specsdir}/{$api}/api.xml"
 					out="{$project_home}/build/specdocs/{$api}/index.html"
@@ -206,7 +207,6 @@
 							<param name="environment"  expression="{@id}"           />
 						</style>
 					</xsl:for-each>
-					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 				</target>
 
 				<xsl:if test="$apiHasTypes = 'true'">
