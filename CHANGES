@@ -68,8 +68,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Improved handling of exception in the servlet container.
   - Added the possibility to load the servlet from the WAR file even if
     the classes and libraries are not in the classpath.
-  - Added the possibility to start the Servlet container from the command line.
-  - Added support of HTTPS for the HTTPServiceCaller.
+  - Added the possibility to start the Servlet container from the command
+    line.
+  - Implemented SF.net RFE #1107386: Support HTTP/S in HTTPServiceCaller.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
@@ -78,8 +79,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     Removed the UnsuccessfulXINSCallExceptionFactory class and added quite a
     few UnsuccessfulXINSCallException subclasses.
   - Added no-arg XINSServiceCaller constructor.
-  - If available the version of the API is set in the manifest of the JAR file.
-  - Added support of HTTPS for the XINSServiceCaller.
+  - If available the version of the API is set in the manifest of the JAR
+    file.
+  - Implemented SF.net RFE #1107386: Support HTTP/S in XINSServiceCaller.
 
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
