@@ -149,7 +149,7 @@
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="build/javadoc" />
 			<param name="javadoc.title"   value="${title} ${version}" />
-			<param name="javadoc.footer"  value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;." />
+			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${url}'&gt;${url}&lt;/a&gt;." />
 		</antcall>
 	</target>
 
@@ -158,12 +158,13 @@
 			<param name="javadoc.private" value="yes" />
 			<param name="javadoc.destdir" value="build/javadoc-private" />
 			<param name="javadoc.title"   value="${title} ${version}" />
-			<param name="javadoc.footer"  value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;.&lt;br /&gt;This Javadoc API documentation set contains private and package private members as well." />
+			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${url}'&gt;${url}&lt;/a&gt;.&lt;br /&gt;This Javadoc API documentation set contains private and package private members as well." />
 		</antcall>
 	</target>
 
-	<target name="upload-javadoc" depends="javadoc" description="Uploads the Javadoc documentation to the webserver">
-		<echo message="Uploading API documentation to ${www.host}" />
+	<target name="upload-javadoc" depends="-init, javadoc" description="Uploads the Javadoc documentation to the webserver">
+		<echo message="Uploading ${title} ${version} API docs to ${www.host}" />
+
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
 		<exec executable="ssh" failonerror="true">
 			<arg value="${www.user}@${www.host}" />
@@ -174,6 +175,18 @@
 			<arg value="-r" />
 			<arg value="." />
 			<arg value="${www.target}/javadoc/${version}/" />
+		</exec>
+
+		<echo level="verbose" message="Creating directory ${www.dir}/javadoc-private/${version} on ${www.host}" />
+		<exec executable="ssh" failonerror="true">
+			<arg value="${www.user}@${www.host}" />
+			<arg value="mkdir -p ${www.dir}/javadoc-private/${version}" />
+		</exec>
+		<echo level="verbose" message="Copying files to ${www.dir}/javadoc-private/${version} on ${www.host}" />
+		<exec dir="build/javadoc-private" executable="scp" failonerror="true">
+			<arg value="-r" />
+			<arg value="." />
+			<arg value="${www.target}/javadoc-private/${version}/" />
 		</exec>
 	</target>
 
