@@ -105,7 +105,7 @@ public final class XINSCallRequest extends CallRequest {
       try {
          PARAMETER_NAME_PATTERN = PATTERN_COMPILER.compile(PARAMETER_NAME_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
-         throw new Error("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.", mpe);
+         throw new ProgrammingError("The pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\" is malformed.", mpe);
       }
    }
 

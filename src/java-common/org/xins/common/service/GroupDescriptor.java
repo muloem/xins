@@ -16,6 +16,7 @@ import java.util.Random;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 /**
  * Descriptor for a group of services. Each <code>GroupDescriptor</code> has
@@ -267,7 +268,7 @@ public final class GroupDescriptor extends Descriptor {
       } else {
          String message = "Unexpected condition: Unknown type: " + _type + '.';
          Log.log_1050(CLASSNAME, "iterateTargets()", message);
-         throw new Error(message);
+         throw new ProgrammingError(message);
       }
    }
 

@@ -9,6 +9,7 @@ package org.xins.common.xml;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.Map;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
+
 import org.xins.common.io.FastStringWriter;
 
 import org.znerd.xmlenc.XMLOutputter;
@@ -90,7 +93,8 @@ public final class ElementSerializer extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Serializes the element to XML.
+    * Serializes the element to XML. This method is not reentrant. Hence, it
+    * should only be used from a single thread.
     *
     * @param element
     *    the element to serialize, cannot be <code>null</code>.
@@ -99,14 +103,11 @@ public final class ElementSerializer extends Object {
     *    an XML document that is represents <code>element</code>, never
     *    <code>null</code>.
     *
-    * @throws IllegalStateException
-    *    if this serializer is already in use.
-    *
     * @throws IllegalArgumentException
     *    if <code>element == null</code>.
     */
    public String serialize(Element element)
-   throws IllegalStateException, IllegalArgumentException {
+   throws IllegalArgumentException {
 
       // TODO: TRACE logging
 
@@ -114,8 +115,9 @@ public final class ElementSerializer extends Object {
 
          // Make sure this serializer is not yet in use
          if (_inUse) {
-            // TODO: Log programming error
-            throw new IllegalStateException("This ElementSerializer is currently already in use.");
+            String message = "serialize(Element)", "ElementSerializer instance already in use.";
+            Log.log_1050(CLASSNAME, "serialize(Element)", message);
+            throw new ProgrammingError(message);
          }
 
          // Lock this serializer
@@ -130,10 +132,10 @@ public final class ElementSerializer extends Object {
       XMLOutputter out;
       final String ENCODING = "UTF-8";
       try {
-         out = new XMLOutputter(fsw, "UTF-8");
+         out = new XMLOutputter(fsw, ENCODING);
       } catch (UnsupportedEncodingException uee) {
          Log.log_1052(uee, XMLOutputter.class.getName(), "<init>(Writer,String)");
-         throw new Error(uee); // TODO
+         throw new ProgrammingError("Expected XMLOutputter to support encoding \"" + ENCODING + "\".", uee);
       }
 
       // XXX: Allow output of declaration to be configured?
@@ -145,7 +147,7 @@ public final class ElementSerializer extends Object {
       // I/O errors should not happen on a FastStringWriter
       } catch (IOException exception) {
          Log.log_1052(exception, CLASSNAME, "output(XMLOutputter,Element)");
-         throw new Error(CLASSNAME + ".output(XMLOutputter,Element) threw unexpected " + exception.getClass().getName() + '.', exception);
+         throw new ProgrammingError(CLASSNAME + ".output(XMLOutputter,Element) threw unexpected " + exception.getClass().getName() + '.', exception);
 
       // Always close the FastStringWriter
       } finally {

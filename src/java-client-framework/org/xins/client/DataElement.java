@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.text.TextUtils;
 
@@ -227,7 +228,7 @@ public class DataElement implements Cloneable {
            + "; getAttribute(...)=" + TextUtils.quote(getValue)
            + '.';
          Log.log_2050(CLASSNAME, METHODNAME, message);
-         throw new Error(message);
+         throw new ProgrammingError(message);
       }
    }
 

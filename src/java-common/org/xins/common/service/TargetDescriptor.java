@@ -18,6 +18,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
@@ -105,7 +106,7 @@ public final class TargetDescriptor extends Descriptor {
       } catch (MalformedPatternException mpe) {
          String message = "The pattern \"" + PATTERN_STRING + "\" is malformed.";
          Log.log_1050(CLASSNAME, "<clinit>()", message);
-         throw new Error(message);
+         throw new ProgrammingError(message, mpe);
       }
    }
 
@@ -135,10 +136,9 @@ public final class TargetDescriptor extends Descriptor {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
          // TODO: Is log message 1052 not more appropriate?
-         // TODO: Should the caught exception not be set as the cause for the Error?
          String message = "Encoding \"" + ENCODING + "\" is not supported.";
          Log.log_1050(CLASSNAME, "computeCRC32(String)", message);
-         throw new Error(message);
+         throw new ProgrammingError(message, exception);
       }
       checksum.update(bytes, 0, bytes.length);
       return (int) (checksum.getValue() & 0x00000000ffffffffL);

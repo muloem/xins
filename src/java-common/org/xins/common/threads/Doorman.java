@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.text.TextUtils;
 
@@ -211,7 +212,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.";
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
                leaveAsWriter();
             }
@@ -219,7 +220,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.";
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
 
                // TRACE: Leave method
@@ -290,7 +291,7 @@ public final class Doorman extends Object {
          if (! _currentReaders.contains(reader)) {
             String message = _asString + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.";
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsReader()", message);
-            throw new Error(message);
+            throw new ProgrammingError(message);
          }
       }
 
@@ -320,7 +321,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer.";
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
 
                // TRACE: Leave method
@@ -331,7 +332,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already an active reader.";
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
                leaveAsReader();
             }
@@ -393,7 +394,7 @@ public final class Doorman extends Object {
          if (_currentWriter != writer) {
             String message = _asString + " : " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.';
             Log.log_1050(DOORMAN_CLASSNAME, "enterAsWriter()", message);
-            throw new Error(message);
+            throw new ProgrammingError(message);
          }
       }
 
@@ -419,7 +420,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader.";
             Log.log_1050(DOORMAN_CLASSNAME, "leaveAsReader()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
 
                // TRACE: Leave method
@@ -448,7 +449,7 @@ public final class Doorman extends Object {
                   // top, it must be either empty or have a writer at the top
                   String message = _asString + ": Found reader at top of queue while a reader is leaving the protected area.";
                   Log.log_1050(DOORMAN_CLASSNAME, "leaveAsReader()", message);
-                  throw new Error(message);
+                  throw new ProgrammingError(message);
                }
             }
          }
@@ -474,7 +475,7 @@ public final class Doorman extends Object {
             String message = _asString + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer.";
             Log.log_1050(DOORMAN_CLASSNAME, "leaveAsWriter()", message);
             if (_strict) {
-               throw new Error(message);
+               throw new ProgrammingError(message);
             } else {
 
                // TRACE: Leave method
@@ -650,7 +651,7 @@ public final class Doorman extends Object {
             QueueEntryType existingType = (QueueEntryType) _entryTypes.get(thread);
             String message = _asString + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.';
             Log.log_1050(DOORMAN_CLASSNAME, "add(Thread,QueueEntryType)", message);
-            throw new Error(message);
+            throw new ProgrammingError(message);
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -680,7 +681,7 @@ public final class Doorman extends Object {
          if (_first == null) {
             String message = "This queue is empty.";
             Log.log_1050(DOORMAN_CLASSNAME, "pop()", message);
-            throw new Error(message);
+            throw new ProgrammingError(message);
          }
 
          Thread oldFirst = _first;
@@ -725,7 +726,7 @@ public final class Doorman extends Object {
             if (! _entries.remove(thread)) {
                String message = _asString + ": " + thread.getName() + " is not in this queue.";
                Log.log_1050(DOORMAN_CLASSNAME, "remove(Thread)", message);
-               throw new Error(message);
+               throw new ProgrammingError(message);
             }
          }
 

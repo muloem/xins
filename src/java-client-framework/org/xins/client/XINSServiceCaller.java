@@ -9,6 +9,7 @@ package org.xins.client;
 import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
@@ -356,7 +357,7 @@ public final class XINSServiceCaller extends ServiceCaller {
             message.append(TextUtils.quote(exception.getMessage()));
             message.append('.');
 
-            throw new Error(message.toString(), exception);
+            throw new ProgrammingError(message.toString(), exception);
          }
       }
 

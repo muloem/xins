@@ -24,6 +24,7 @@ import org.apache.log4j.NDC;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 import org.xins.common.TimeOutException;
 
 import org.xins.common.collections.PropertyReader;
@@ -282,9 +283,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
-         String message = "Unrecognized method \"" + method + "\".";
+         String message = "Unrecognized HTTP method \"" + method + "\".";
          Log.log_1050(CLASSNAME, THIS_METHOD, message);
-         throw new Error(message);
+         throw new ProgrammingError(message);
       }
    }
 
@@ -420,10 +421,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {
 
-      final String METHODNAME = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
+      final String THIS_METHOD = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, METHODNAME, null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Delegate to method with more specialized interface
       Object ret = call((HTTPCallRequest) request,
@@ -431,7 +432,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                         target);
 
       // TRACE: Leave method
-      Log.log_1005(CLASSNAME, METHODNAME, null);
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return ret;
    }
@@ -468,10 +469,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
           GenericCallException,
           HTTPCallException {
 
-      final String METHODNAME = "call(HTTPCallRequest,HTTPCallConfig)";
+      final String THIS_METHOD = "call(HTTPCallRequest,HTTPCallConfig)";
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, METHODNAME, null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -488,17 +489,21 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (HTTPCallException exception) {
          throw exception;
       } catch (Exception exception) {
-         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
-         message.append(".doCall(CallRequest,CallConfig) threw ");
+         final String METHOD = "doCall(CallRequest,CallConfig)";
+         FastStringBuffer message = new FastStringBuffer(190, CLASSNAME);
+         message.append('.');
+         message.append(METHOD);
+         message.append(" threw ");
          message.append(exception.getClass().getName());
          message.append(". Message: ");
          message.append(TextUtils.quote(exception.getMessage()));
          message.append('.');
-         throw new Error(message.toString(), exception);
+         Log.log_1052(exception, CLASSNAME, METHOD);
+         throw new ProgrammingError(message.toString(), exception);
       }
 
       // TRACE: Leave method
-      Log.log_1005(CLASSNAME, METHODNAME, null);
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return (HTTPCallResult) callResult;
    }

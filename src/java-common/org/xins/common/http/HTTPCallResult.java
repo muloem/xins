@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallResult;
@@ -142,7 +143,7 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
       } catch (UnsupportedEncodingException exception) {
          String message = "Default encoding \"" + ENCODING + "\" is unsupported.";
          Log.log_1050(CLASSNAME, "getString()", message);
-         throw new Error(message);
+         throw new ProgrammingError(message, uue);
       }
    }
 
