@@ -8,6 +8,9 @@ CHANGES INTRODUCED IN XINS 0.157:
   - Indenting text 'This function supports no input parameters', to have a
     more consistent layout.
 
+* XINS/Java Common Library:
+  - Added PropertyReaderUtils class.
+
 * XINS/Java Server Framework:
   - Removed support for default functions (introduced in XINS 0.78).
   - Removed support for deployments (introduced in XINS 0.79).
