@@ -3,6 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the resultcode.html files which contains
+ the description of the result code.
+
  $Id$
 -->
 

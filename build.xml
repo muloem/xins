@@ -292,29 +292,6 @@
 		</ant>
 	</target>
 
-	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
-		<echo message="Uploading JAR files to ${www.host}" />
-		<copy todir="build">
-			<fileset dir="build">
-				<include name="xins-common.jar" />
-				<include name="xins-client.jar" />
-				<include name="xins-server.jar" />
-			</fileset>
-			<mapper type="glob" from="xins-*.jar" to="xins-*-${version}.jar" />
-		</copy>
-		<scp todir="${www.target}"
-		     password="${sf.password}" trust="true">
-			<fileset dir="build">
-				<include name="xins-*-${version}.jar" />
-			</fileset>
-		</scp>
-		<delete>
-			<fileset dir="build">
-				<include name="xins-*-${version}.jar" />
-			</fileset>
-		</delete>
-	</target>
-
 	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
 		<mkdir dir="build/classes/tests" />
 		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="false">
@@ -623,6 +600,10 @@
 		<scp file="build/${package-basename}.tgz"
 		     todir="${www.target}/"
 		     password="${sf.password}" trust="true" />
+		<ftp server="upload.sf.net" remotedir="incoming"
+		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
+			<fileset dir="build" includes="${package-basename}.tgz" />
+		</ftp>
 	</target>
 
 	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
@@ -636,6 +617,7 @@
 	<target name="-check-release-version" depends="-check-version-suffix" unless="force">
 		<fail unless="version.suffix.set" message="Version suffix is not set to -dev. If you do want to release, please set 'force'." />
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
+			<entry key="version.prev.minor" type="int" operation="+" value="1" />
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
 		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins"
@@ -699,11 +681,10 @@
 
 	<target
 	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor"      type="int" operation="+" value="1"      />
-			<entry key="version.prev.minor" type="int" operation="+" value="1" />
 			<entry key="version.suffix"                operation="=" value="-dev"   />
 		</propertyfile>
 		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins" failonerror="true">

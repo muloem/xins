@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the CAPI.java class.
+
  $Id$
 -->
 
@@ -731,7 +733,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="@type" />
 					<xsl:with-param name="variable" select="@name" />
-				</xsl:call-template> 
+				</xsl:call-template>
 				<xsl:text>);
       }</xsl:text>
 			</xsl:when>
@@ -746,7 +748,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="@type" />
 					<xsl:with-param name="variable" select="@name" />
-				</xsl:call-template> 
+				</xsl:call-template>
 				<xsl:text>);</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>

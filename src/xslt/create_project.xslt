@@ -3,6 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates ANT targets that can be used to create a new api,
+ a new function, a new type or a new result code.
+
  $Id$
 -->
 

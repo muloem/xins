@@ -66,8 +66,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Log 5014/5015 for meta-functions.
 * Return InvalidParameters if an input parameter of type _properties has a
   single key used multiple times.
-* Optional parameters should generate a isSet<ParamName> and throw an
-  exception is the get<ParamName> is called and the value is not set.
 * Verify the required 'set' methods in the SuccessfulResult are set.
 
 ______________________________________________________________________________
@@ -146,16 +144,11 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Use an image to indicate the inheritance relationship between one type and
   another.
 * Generate Docbook from the specifications.
-* If the api.xml has changed, the specification documentation should be
-  regenerated.
 * Have an item for a result code page in the header.
 * Add standard type '_list': Support <list type="TYPE" /> in .typ files.
 * Per type have a list of input parameters, output parameters and data element
   attributes that are defined as of this type.
 * Display the name of each item in the generated HTML for an enum type.
-* If the api.xml file changes, then all files generated for that API should be
-  regenerated. For example, the freeze version for a function may change in
-  the api.xml file. This changes the generated content for that function.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS

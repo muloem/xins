@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generated the APIImpl.java class.
+
  $Id$
 -->
 

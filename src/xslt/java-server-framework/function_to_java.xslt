@@ -3,10 +3,12 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the abstract class as specified in the function.
+ The abtract class is responsible for checking the parameters.
+ It also includes the style sheets request_java.xslt and result_java.xslt.
+
  $Id$
 -->
-<!-- This stylesheet generates the abstract class as
-     specified in the function. -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="text" />

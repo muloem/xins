@@ -3,6 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the function-testform-environment HTML form.
+ This form is use to test an API on a given environment.
+
  $Id$
 -->
 

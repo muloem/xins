@@ -3,10 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the different classes used to specify the result of a function.
+
  $Id$
--->
-<!-- This stylesheet generated the different classes used to
-     specify the result of a function.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 

@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the index.html of the specification documentation.
+
  $Id$
 -->
 
@@ -268,6 +270,31 @@
 										</xsl:attribute>
 										<xsl:value-of select="@id" />
 									</a>
+									<!-- Generate the ( version statistics settings ) links. -->
+									<font size="-1">(
+										<a>
+											<xsl:attribute name="href">
+												<xsl:value-of select="@url" />
+												<xsl:text>?_function=_GetVersion</xsl:text>
+											</xsl:attribute>
+											version
+										</a>
+										<a>
+											<xsl:attribute name="href">
+												<xsl:value-of select="@url" />
+												<xsl:text>?_function=_GetStatistics</xsl:text>
+											</xsl:attribute>
+											statistics
+										</a>
+										<a>
+											<xsl:attribute name="href">
+												<xsl:value-of select="@url" />
+												<xsl:text>?_function=_GetSettings</xsl:text>
+											</xsl:attribute>
+											settings
+										</a>
+										)
+									</font>
 								</li>
 							</xsl:for-each>
 						</ul>

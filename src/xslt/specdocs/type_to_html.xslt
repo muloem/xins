@@ -3,6 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the type.html files that conatins
+ the description of the type.
+
  $Id$
 -->
 
@@ -165,9 +168,18 @@
 		<xsl:if test="document($project_file)/project/patterntest">
 			<xsl:variable name="pattern" select="text()" />
 			<p />
+			<!-- If no pattern URL is provided, use the default one on sourceforge. -->
+			<xsl:variable name="pattern_url">
+				<xsl:choose>
+					<xsl:when test="document($project_file)/project/patterntest">
+						<xsl:value-of select="document($project_file)/project/patterntest/@href" />
+					</xsl:when>
+					<xsl:otherwise>http://xins.sourceforge.net/patterntest.php</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<a>
 				<xsl:attribute name="href">
-					<xsl:value-of select="document($project_file)/project/patterntest/@href" />
+					<xsl:value-of select="$pattern_url" />
 					<xsl:text>?pattern=</xsl:text>
 					<xsl:call-template name="urlencode">
 						<xsl:with-param name="text">

@@ -3,10 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the result code used in the functions of the api.
+
  $Id$
--->
-<!-- This stylesheet generates the result code used in the
-     functions of the api.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 

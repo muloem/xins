@@ -655,6 +655,7 @@
 					</target>
 
 					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
+						<property file="{$xins_home}/.version.properties" />
 						<mkdir dir="build/javadoc-api/{$api}" />
 						<javadoc
 						sourcepath="build/java-combined/{$api}"
@@ -670,7 +671,7 @@
 								<packageset dir="build/java-types/{$api}" />
 							</xsl:if>
 							<link
-							href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
+							href="http://xins.sourceforge.net/javadoc/${{version.prev.minor}}/"
 							offline="true"
 							packagelistloc="{$xins_home}/build/javadoc/" />
 							<link

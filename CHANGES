@@ -1,8 +1,22 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.171:
 
+* Generated specification documentation:
+  - If no pattern test is provided in the project, the default one on
+    sourceforge.net is provided.
+  - Generate the links to the version, the statistics and the settings for
+    each environment.
+
 * Build and release process:
   - Updated some javadoc to remove the warning due to links not found.
+  - The previous version.prev.minor property in .version.property is
+    incremented just before making the release.
+  - Included the third party licenses in the release.
+  - Removed the upload of the xins jar files to sourceforge.
+
+* Linked the generated Javadoc to the correct version on sourceforge.
+
+* Added the description of the stylesheets in the header.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.170:

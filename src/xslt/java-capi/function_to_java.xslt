@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the Result classes for the functions that return a result.
+
  $Id$
 -->
 
@@ -155,7 +157,7 @@ public final class ]]></xsl:text>
       try {
 </xsl:text>
 			<xsl:apply-templates select="output/param" mode="setfield" />
-			<xsl:text> 
+			<xsl:text>
       } catch (org.xins.types.TypeValueException exception) {
          throw new org.xins.client.InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
       }</xsl:text>

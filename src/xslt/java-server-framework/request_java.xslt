@@ -3,11 +3,11 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ This stylesheet transform the input parameters of a function
+ to a Request object with get method that will be used by the user
+ in the call method of the implementation.
+
  $Id$
--->
-<!-- This stylesheet transform the input parameters of a function
-     to a Request object with get method that will be used by the user
-     in the call method of the implementation.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 

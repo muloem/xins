@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the web.xml file that is included in the WAR file.
+
  $Id$
 -->
 

@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the package.html used by the Javadoc.
+
  $Id$
 -->
 

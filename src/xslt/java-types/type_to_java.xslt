@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the java representation of the type.
+
  $Id$
 -->
 
@@ -264,7 +266,7 @@ public final class ]]></xsl:text>
        *    <code>null</code>.
        *
        * @param value
-       *    the actual value of the enumeration item, not <code>null</code>. 
+       *    the actual value of the enumeration item, not <code>null</code>.
        *
        * @throws IllegalArgumentException
        *    if <code>name == null || value == null</code>.
