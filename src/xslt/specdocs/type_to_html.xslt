@@ -94,6 +94,14 @@
 					</table>
 				</xsl:if>
 
+				<xsl:if test="not(enum or pattern)">
+					<xsl:message terminate="yes">
+						<xsl:text>Type </xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text> defines neither an enum nor a pattern.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+
 				<xsl:if test="enum and pattern">
 					<xsl:message terminate="yes">
 						<xsl:text>Type </xsl:text>
