@@ -5,6 +5,10 @@ CHANGES INTRODUCED IN XINS 0.192:
   - Setting connection time-out as well. Previously, a socket time-out would
     only be set. The connection time-out is assumed to be the same as the
     socket time-out (specified in the ServiceDescriptor class).
+  - Added constructor to AbstractCAPI class that accepts a Descriptor
+    instance. This is from now on the preferred way of constructing an
+    AbstractCAPI instance. The other constructor, which takes a
+    XINSServiceCaller argument, is now marked as deprecated.
 
 * XINS/Java Server Framework:
   - Automatically generating a diagnostic context identifier if none is given
