@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 0.106:
     org.xins.util.net.URLEncoding.
   - Added method checkValue(String) to class Type.
 
+* Generated specification documentation:
+  - Improved generated specifications for types.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.105:
 
