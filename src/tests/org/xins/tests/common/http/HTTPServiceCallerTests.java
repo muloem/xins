@@ -104,7 +104,7 @@ public class HTTPServiceCallerTests extends TestCase {
       parameters.set("submit", "submit");
       // XXX GET method doesn't work
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php");
+      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", 50000);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
@@ -145,7 +145,7 @@ public class HTTPServiceCallerTests extends TestCase {
    public void testFailOverPost() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, null, true, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org");
-      TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php");
+      TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", 50000);
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
