@@ -80,6 +80,18 @@ implements DefaultReturnCodes {
       // empty
    }
 
+   /**
+    * Returns the function with the specified name.
+    *
+    * @param name
+    *    the name of the function, will not be checked if it is
+    *    <code>null</code>.
+    *
+    * @return
+    *    the function with the specified name, or <code>null</code> if there
+    *    is no match.
+    */
+   protected abstract Function getFunction(String name);
 
    /**
     * Forwards a call to the <code>handleCall(CallContext)</code> method.
