@@ -127,9 +127,10 @@
 				</xsl:attribute>
 			</input>
 			<xsl:choose>
-				<xsl:when test="input/param">
+				<xsl:when test="input/param or input/data/element">
 					<table>
 						<xsl:apply-templates select="input/param" />
+						<xsl:apply-templates select="input/data/element" />
 						<tr>
 							<td colspan="2">
 								<input type="submit" name="submit" value="Submit" />
@@ -260,6 +261,22 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:if test="@required = 'true'"> *</xsl:if>
+			</td>
+		</tr>
+	</xsl:template>
+	
+	<!-- 
+		Write the row for the data section.
+	-->
+	<xsl:template match="element">
+		<tr>
+			<td class="name">
+				<span title="data section of the request">
+					Data section
+				</span> (_text)
+			</td>
+			<td class="value">
+				<input type="text" name="_data" class="optional" />
 			</td>
 		</tr>
 	</xsl:template>

@@ -322,7 +322,7 @@ implements Result {
 		<xsl:text>.getElement().clone());
    }
 </xsl:text>
-</xsl:template>
+	</xsl:template>
 
 	<!-- ************************************************************* -->
 	<!-- Generate the data/element classes.                            -->

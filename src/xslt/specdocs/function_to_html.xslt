@@ -125,6 +125,13 @@
 		<h2>Input section</h2>
 		<blockquote>
 			<xsl:choose>
+				<xsl:when test="count(input) &gt; 1">
+					<xsl:message terminate="yes">
+						<xsl:text>Found </xsl:text>
+						<xsl:value-of select="count(input)" />
+						<xsl:text> input sections. Only one is allowed.</xsl:text>
+					</xsl:message>
+				</xsl:when>
 				<xsl:when test="input">
 					<xsl:apply-templates select="input" />
 				</xsl:when>
@@ -251,6 +258,7 @@
 			<xsl:message terminate="yes">Found param-combo with no param-ref children.</xsl:message>
 		</xsl:if>
 		<xsl:call-template name="additional-constraints" />
+		<xsl:call-template name="datasection" />
 	</xsl:template>
 
 	<xsl:template name="additional-constraints">

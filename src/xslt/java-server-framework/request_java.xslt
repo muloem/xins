@@ -43,8 +43,20 @@ public final static class Request {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The IP address from where the call came from.
+    */
    private final String __ip;</xsl:text>
 		<xsl:apply-templates select="input/param" mode="field" />
+
+		<xsl:if test="input/data/element">
+			<xsl:text>
+
+   /**
+    * The data section for the request.
+    */
+   private final org.xins.common.xml.Element __dataSection;</xsl:text>
+		</xsl:if>
 
 		<xsl:text>
 
@@ -62,6 +74,20 @@ public final static class Request {
       return __ip;
    }</xsl:text>
 
+		<xsl:if test="input/data/element">
+			<xsl:text>
+
+   /**
+    * Gets the data section of the request.
+    *
+    * @return
+    *    the data section, cannot be &lt;code&gt;null&lt;/code&gt;.
+    */
+   public final org.xins.common.xml.Element dataSection() {
+      return __dataSection;
+   }</xsl:text>
+		</xsl:if>
+
 		<xsl:apply-templates select="input/param" mode="method" />
 
 		<xsl:text>
@@ -78,7 +104,7 @@ public final static class Request {
    /**
     * Constructs a new <code>Request</code> instance.
     */
-   public Request(String __ip]]></xsl:text>
+   public Request(String _ip]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
@@ -94,8 +120,11 @@ public final static class Request {
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
+		<xsl:if test="input/data/element">
+			<xsl:text>, org.xins.common.xml.Element _dataSection</xsl:text>
+		</xsl:if>
 		<xsl:text>) {
-      this.__ip = __ip;
+      __ip = _ip;
 </xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>      _</xsl:text>
@@ -105,6 +134,10 @@ public final static class Request {
 			<xsl:text>;
 </xsl:text>
 		</xsl:for-each>
+		<xsl:if test="input/data/element">
+			<xsl:text>
+      __dataSection = _dataSection;</xsl:text>
+		</xsl:if>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>

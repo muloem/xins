@@ -21,6 +21,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ * @deprecated use org.xins.common.collection.Element class.
  */
 public final class Element implements Cloneable {
 

@@ -8,6 +8,7 @@ package org.xins.server;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.xml.ElementParser;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -161,6 +162,28 @@ public final class CallContext {
       if (_parameters != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
          String value = _parameters.get(name);
          return "".equals(value) ? null : value;
+      }
+      return null;
+   }
+
+   /**
+    * Returns the data section of the request, if any.
+    *
+    * @return
+    *    the element representing the data section or <code>null</code> if the
+    *    function does not define a data section or if the data section sent is
+    *    empty.
+    */
+   public org.xins.common.xml.Element getDataSection() {
+      String dataSectionValue = _parameters.get("_data");
+      ElementParser parser = new ElementParser();
+      try {
+         if (dataSectionValue != null) {
+            System.err.println("value " + dataSectionValue);
+            System.err.println("parsed " + parser.parse(dataSectionValue.getBytes("UTF-8")));
+            return parser.parse(dataSectionValue.getBytes("UTF-8"));
+         }
+      } catch (Exception ex) {
       }
       return null;
    }

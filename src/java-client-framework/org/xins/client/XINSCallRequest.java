@@ -6,6 +6,7 @@
  */
 package org.xins.client;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.NDC;
@@ -16,6 +17,8 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementSerializer;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -135,6 +138,33 @@ public final class XINSCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
+    * and parameters, disallowing fail-over unless the request was definitely
+    * not (yet) accepted by the service.
+    *
+    * @param functionName
+    *    the name of the function to call, cannot be <code>null</code>.
+    *
+    * @param parameters
+    *    the input parameters, if any, can be <code>null</code> if there are
+    *    none.
+    *
+    * @param dataSection
+    *    the data section for the input, if any, can be <code>null</code> if 
+    *    there are none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public XINSCallRequest(String functionName, PropertyReader parameters, Element dataSection)
+   throws IllegalArgumentException {
+      this(functionName, parameters, false, null);
+      setDataSection(dataSection);
+   }
+
+   /**
+    * Constructs a new <code>XINSCallRequest</code> for the specified function
     * and parameters, possibly allowing fail-over even if the request was
     * possibly already received by a target service.
     *
@@ -211,6 +241,11 @@ public final class XINSCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
+    * Secret key used to set the HTTP parameters.
+    */
+   private final Object SECRET_KEY = new Object();
+
+   /**
     * The 1-based sequence number of this instance. Since this number is
     * 1-based, the first instance of this class will have instance number 1
     * assigned to it.
@@ -240,6 +275,12 @@ public final class XINSCallRequest extends CallRequest {
     * {@link XINSServiceCaller} will determine which HTTP method to use.
     */
    private HTTPMethod _httpMethod;
+
+   /**
+    * The data section to pass in the request. This field can be 
+    * <code>null</code>.
+    */
+   private Element _dataSection;
 
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
@@ -330,11 +371,12 @@ public final class XINSCallRequest extends CallRequest {
     *    contains a name that does not match the constraints for a parameter
     *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
     *    <code>"function"</code>, which is currently still reserved.
+    *
+    * @since XINS 1.1.0
     */
    public void setParameters(PropertyReader parameters) {
 
       // Create PropertyReader for the HTTP parameters
-      final Object SECRET_KEY = new Object();
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
       ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
 
@@ -425,11 +467,54 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
+    * Sets the data section for the input.
+    *
+    * @param dataSection
+    *    the data section for the input, if any, can be <code>null</code> if 
+    *    there are none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>dataSection == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public void setDataSection(Element dataSection) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("dataSection", dataSection);
+
+      _dataSection = dataSection;
+
+      // Add the data section to the parameter list
+      try {
+         String xmlDataSection = ElementSerializer.serialize(dataSection);
+         ((ProtectedPropertyReader) _httpParams).set(SECRET_KEY, "_data", xmlDataSection);
+      } catch (IOException ioe) {
+         throw new IllegalArgumentException("Data section not serializable");
+      }
+   }
+
+   /**
+    * Gets the data section for the input.
+    *
+    * @return
+    *    the data section for the input, if any, can be <code>null</code> if 
+    *    there are none.
+    *
+    * @since XINS 1.1.0
+    */
+   public Element getDataSection() {
+      return _dataSection;
+   }
+
+   /**
     * Sets whether fail-over is unconditionally allowed
     *
     * @param allowed
     *    flag that indicates whether fail-over is in principle allowed, even
     *    if the request was already sent to the other end.
+    *
+    * @since XINS 1.1.0
     */
    public void setFailOverAllowed(boolean allowed) {
       _failOverAllowed = allowed;
@@ -455,6 +540,8 @@ public final class XINSCallRequest extends CallRequest {
     *    the HTTP method to use, or <code>null</code> if the used
     *    <code>XINSServiceCaller</code> should determine what HTTP method to
     *    use.
+    *
+    * @since XINS 1.1.0
     */
    public void setHTTPMethod(HTTPMethod method) {
       _httpMethod = method;

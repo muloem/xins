@@ -220,6 +220,13 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
+		<xsl:if test="input/data/element">
+			<xsl:text><![CDATA[
+    *
+    * @param _dataSection
+    *    the data section for the request, or <code>null</code> if the data
+    *    section should be empty.]]></xsl:text>
+		</xsl:if>
 		<xsl:text><![CDATA[
     *
     * @return
@@ -243,6 +250,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
 		<xsl:apply-templates select="input/param" mode="methodSignature" />
+		<xsl:if test="input/data/element">
+			<xsl:if test="input/param">
+				<xsl:text>, </xsl:text>
+			</xsl:if>
+			<xsl:text>org.xins.common.xml.Element _dataSection</xsl:text>
+		</xsl:if>
 		<xsl:text>)
    throws org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
@@ -277,6 +290,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text>null</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if test="input/data/element">
+			<xsl:text>, _dataSection</xsl:text>
+		</xsl:if>
 		<xsl:text>);
 
       // Execute the call request

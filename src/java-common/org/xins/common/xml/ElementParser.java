@@ -465,6 +465,7 @@ extends Object {
                // Reset the state back from ERROR to IN_DATA_SECTION
                _state = IN_DATA_SECTION;
             } else {
+               _element = child;
                _state = FINISHED;
             }
 
@@ -551,11 +552,7 @@ extends Object {
          // Check state
          assertFinished();
 
-         if (_dataElementStack.isEmpty()) {
-            return null;
-         } else {
-            return (Element) _dataElementStack.peek();
-         }
+         return _element;
       }
    }
 

@@ -25,10 +25,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     . TargetDescriptor succeededTarget() -- Returns the target for which the
                                             call succeeded.
  - Refactored the XINSCallRequest and added new set methods.
+ - Added the possibility to have a data element as input.
 
 * XINS/Java Server Framework:
   - The _GetStatistics meta-function now supports statistics per error code.
     To retrieve these details, pass "detailed=true" to this function.
+  - Added the possibility to have a data element as input.
 
 * Generated CAPI classes:
   - All call methods now return a function result object, never void. This
@@ -38,10 +40,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     AbstractCAPICallResult class for details.
   - Implemented SF.net RFE #1071756: The MANIFEST.MF file in generated CAPI
     JAR file now contains the version of XINS used to generate the JAR file.
+  - Added the possibility to have a data element as input.
 
 * Generation of server-side Java code:
   - The MANIFEST.MF file in generated WAR file now contains the version of 
     XINS used to generate the WAR file.
+  - Added the possibility to have a data element as input.
 
 * Generated Javadoc now lists the groups of packages in the following order:
   - Logdoc, Common, Client and finally Server. This should now generally be
@@ -49,6 +53,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
 * Generation of specification documentation:
   - The num attribute for the examples is now optional.
+  - Added the possibility to have a data element as input.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:

@@ -11,7 +11,7 @@
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
-<!ELEMENT input (param*, param-combo*)>
+<!ELEMENT input (param*, param-combo*, data?)>
 <!ELEMENT param (description, deprecated?)>
 <!ATTLIST param
           name       NMTOKEN #REQUIRED

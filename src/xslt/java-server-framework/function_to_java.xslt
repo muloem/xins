@@ -165,6 +165,11 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
+		<xsl:if test="input/data/element">
+			<xsl:text>
+      org.xins.common.xml.Element _dataSection = context.getDataSection();</xsl:text>
+		</xsl:if>
+
 		<xsl:text>
       org.xins.server.InvalidRequestResult _errorInputResult = null;</xsl:text>
 
@@ -353,6 +358,9 @@ public abstract class ]]></xsl:text>
 				<xsl:with-param name="variable" select="@name"     />
 			</xsl:call-template>
 		</xsl:for-each>
+		<xsl:if test="input/data/element">
+			<xsl:text>, _dataSection</xsl:text>
+		</xsl:if>
 		<xsl:text>);
       Result _result = call(_callRequest);
 
