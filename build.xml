@@ -60,13 +60,13 @@
 		<fail message="The property sf.user or sf.password is not set." unless="sf.isset" />
 	</target>
 
-	<target name="-init-release-properties" depends="-determine-version">
+	<target name="-init-release-properties">
 		<property name="version" value="${version.major}.${version.minor}" />
 	</target>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
 
-	<target name="-init" depends="-determine-version">
+	<target name="-init">
 
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
