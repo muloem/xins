@@ -215,19 +215,6 @@ implements DefaultReturnCodes {
    }
 
    /**
-    * Gets a list of the defined return codes. Default return (not specific to
-    * any API or function) codes are not returned in this list.
-    *
-    * @return
-    *    the defined return codes as a {@link List} containing only
-    *    {@link String} instances, can be <code>null</code> if no return codes
-    *    are defined.
-    */
-   final List getReturnCodes() {
-      return null; // TODO
-   }
-
-   /**
     * Returns the call statistics for this function.
     *
     * @return
