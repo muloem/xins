@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.208:
   - Added the remove() method in PropectedPropertyReader. The set() method
     does not remove the property anymore if the value is null.
 
+* XINS/Java Client Framework:
+  - Applied some refactorings and improved documentation.
+
 * Logdoc
   - Removed unused log entries.
 
