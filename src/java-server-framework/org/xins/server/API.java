@@ -970,6 +970,8 @@ implements DefaultResultCodes {
       if (functionName.charAt(0) == '_') {
          if ("_NoOp".equals(functionName)) {
             // empty
+         } else if ("_PerformGC".equals(functionName)) {
+            System.gc();
          } else if ("_GetFunctionList".equals(functionName)) {
             doGetFunctionList(context);
          } else if ("_GetStatistics".equals(functionName)) {
