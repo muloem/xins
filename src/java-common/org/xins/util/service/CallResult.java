@@ -213,9 +213,10 @@ public final class CallResult extends Object {
 
    /**
     * The list of caught exceptions, one per failed target. The returned
-    * {@link List} be <code>null</code>, but if it is not then all elements in
-    * the {@link List} are {@link Throwable} objects, and it contains no
-    * <code>null</code> elements. It may contain duplicates, though.
+    * {@link List} can be <code>null</code>, but if it is not then all
+    * elements in the {@link List} are {@link Throwable} objects, and it
+    * contains no <code>null</code> elements. It may contain duplicates,
+    * though.
     *
     * <p>The returned {@link List} is unmodifiable.
     *
