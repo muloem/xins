@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -478,7 +478,7 @@ implements DefaultResultCodes {
       if (aclInterval != null && aclInterval.trim().length() > 0) {
          interval = Integer.parseInt(aclInterval);
       }
-      
+
       // Close the previous ACL
       if (_accessRuleList != null) {
          _accessRuleList.dispose();
@@ -899,7 +899,7 @@ implements DefaultResultCodes {
     * Returns the call statistics for all functions in this API.
     *
     * @param detailed
-    *    If <code>true</code>, the unsuccessful result will be returned sorted 
+    *    If <code>true</code>, the unsuccessful result will be returned sorted
     *    per error code. Otherwise the unsuccessful result won't be displayed
     *    by error code.
     *

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server;
@@ -149,7 +149,7 @@ public class CallingConventionTests extends TestCase {
       assertNull("The method returned an error code for the first call: " + result1.getAttribute("errorcode"), result1.getAttribute("errorcode"));
       assertNull("The method returned a code attribute for the first call: " + result1.getAttribute("code"), result1.getAttribute("code"));
       assertNull("The method returned a success attribute for the first call: " + result1.getAttribute("success"), result1.getAttribute("success"));
-      
+
       Element result2 = callResultCode(convention, randomFive);
       assertNotNull("The method did not return an error code for the second call.", result2.getAttribute("errorcode"));
       assertNull("The method returned a code attribute for the second call: " + result2.getAttribute("code"), result2.getAttribute("code"));
@@ -168,7 +168,7 @@ public class CallingConventionTests extends TestCase {
       assertNull("The method returned an error code for the first call: " + result1.getAttribute("errorcode"), result1.getAttribute("errorcode"));
       assertNull("The method returned a code attribute for the first call: " + result1.getAttribute("code"), result1.getAttribute("code"));
       assertNotNull("The method did not return a success attribute for the first call.", result1.getAttribute("success"));
-      
+
       Element result2 = callResultCode("_xins-old", randomFive);
       assertNotNull("The method did not return an error code for the second call.", result2.getAttribute("errorcode"));
       assertNotNull("The method did not return a code attribute for the second call.", result2.getAttribute("code"));
@@ -221,18 +221,18 @@ public class CallingConventionTests extends TestCase {
 
       // Successful call
       postXMLRequest(randomFive, true);
-      
+
       // Unsuccessful call
       postXMLRequest(randomFive, false);
    }*/
-   
+
    /**
     * Posts XML request.
-    * 
+    *
     * @param randomFive
     *    A randomly generated String.
     * @param success
-    *    <code>true</code> if the expected result should be successfal, 
+    *    <code>true</code> if the expected result should be successfal,
     *    <code>false</code> otherwise.
     *
     * @throws Exception
@@ -275,7 +275,7 @@ public class CallingConventionTests extends TestCase {
             assertEquals("1", param.getText());
          }
       } finally {
-         
+
          // Release current connection to the connection pool once you are done
          post.releaseConnection();
       }

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.service;
@@ -104,7 +104,7 @@ public final class TargetDescriptor extends Descriptor {
       final String THIS_METHOD = "<clinit>()";
       try {
          PATTERN = PATTERN_COMPILER.compile(
-            PATTERN_STRING, 
+            PATTERN_STRING,
             Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
 
       } catch (MalformedPatternException exception) {

@@ -8,7 +8,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -115,7 +115,7 @@
 
 	<xsl:template name="input_section">
 		<xsl:param name="functionName" />
-		
+
 		<h2>Test form</h2>
 		<form method="GET">
 			<xsl:attribute name="action">
@@ -265,8 +265,8 @@
 			</td>
 		</tr>
 	</xsl:template>
-	
-	<!-- 
+
+	<!--
 		Write the row for the data section.
 	-->
 	<xsl:template match="element">

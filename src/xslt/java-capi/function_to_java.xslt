@@ -7,7 +7,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -108,7 +108,7 @@ public final class ]]></xsl:text>
 
 	<xsl:template name="constructor">
 		<xsl:param name="className" />
-		
+
 		<xsl:text><![CDATA[
    /**
     * Constructs a new <code>]]></xsl:text>

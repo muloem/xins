@@ -9,7 +9,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -345,7 +345,7 @@ public final static class Request {
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code> included the data section.
     *
-    * @return 
+    * @return
     *    A list of <code>Request.]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code>, cannot be <code>null</code>.]]></xsl:text>
@@ -475,7 +475,7 @@ public final static class Request {
 		<xsl:value-of select="$methodName" />
 		<xsl:text><![CDATA[</code> included in this element.
     *
-    * @return 
+    * @return
     *    A list of <code>Request.]]></xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text><![CDATA[</code>, cannot be <code>null</code>.]]></xsl:text>

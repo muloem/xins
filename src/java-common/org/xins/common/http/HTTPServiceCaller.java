@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.http;
@@ -1083,13 +1083,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
                Log.log_1052(exception, EXECUTOR_CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
             }
          }
-         
+
          // Remove the diagnostic context ID
          if (_context != null) {
             NDC.pop();
             NDC.remove();
          }
-         
+
          // Set objects to null for garbage collection
          _asString = null;
          _callConfig = null;
@@ -1142,7 +1142,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       private HTTPCallResultData getData() {
          return _result;
       }
-      
+
       /**
        * Disposes the result variables, so that the variables could be
        * garbage collected.

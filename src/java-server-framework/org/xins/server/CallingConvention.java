@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -86,7 +86,7 @@ extends Object {
       final String THIS_METHOD = "<clinit>()";
       try {
          PATTERN = PATTERN_COMPILER.compile(
-            PATTERN_STRING, 
+            PATTERN_STRING,
             Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
 
       } catch (MalformedPatternException exception) {
@@ -119,7 +119,7 @@ extends Object {
     */
    void cleanUpParameters(ProtectedPropertyReader parameters,
                           Object                  secretKey) {
-      
+
       // TODO: Should we not let the diagnostic context ID through?
 
       // If the set of parameters passed is null, then nothing is done.
@@ -269,7 +269,7 @@ extends Object {
    protected abstract FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException;
-   
+
    /**
     * Converts a XINS result to an HTTP response (wrapper method). This method
     * checks the arguments, then calls the implementation method and then
@@ -325,7 +325,7 @@ extends Object {
          }
       }
    }
-   
+
    /**
     * Converts a XINS result to an HTTP response (implementation method).
     *

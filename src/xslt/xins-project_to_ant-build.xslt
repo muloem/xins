@@ -7,7 +7,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -141,7 +141,7 @@
 					     location="{$xins_home}/src/dtd/type_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" 
+					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/log_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/translation-bundle_1_0_alpha.dtd" />
@@ -162,7 +162,7 @@
 					     location="{$xins_home}/src/dtd/environments_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
 					     location="{$xins_home}/src/dtd/log_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" 
+					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN"
 					     location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd" />
 
 					<dtd publicId="-//XINS//DTD Function 1.1//EN"

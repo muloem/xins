@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -18,7 +18,7 @@ import org.xins.common.xml.Element;
  */
 class FunctionRequest
 extends Object {
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -60,7 +60,7 @@ extends Object {
       _dataElement = dataElement;
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -69,12 +69,12 @@ extends Object {
     * The name of the function.
     */
    private final String _functionName;
-   
+
    /**
     * The parameters of the function.
     */
    private final PropertyReader _parameters;
-   
+
    /**
     * The data section of the function.
     */
@@ -109,7 +109,7 @@ extends Object {
     * Gets the data section of the request.
     *
     * @return
-    *    the data section of the function or <code>null</code> if there is no 
+    *    the data section of the function or <code>null</code> if there is no
     *    data section.
     */
    Element getDataElement() {

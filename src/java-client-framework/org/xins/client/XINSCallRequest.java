@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client;
@@ -134,7 +134,7 @@ public final class XINSCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
-    * with no parameters, disallowing fail-over unless the request was 
+    * with no parameters, disallowing fail-over unless the request was
     * definitely not (yet) accepted by the service.
     *
     * @param functionName
@@ -181,7 +181,7 @@ public final class XINSCallRequest extends CallRequest {
     *    none.
     *
     * @param dataSection
-    *    the data section for the input, if any, can be <code>null</code> if 
+    *    the data section for the input, if any, can be <code>null</code> if
     *    there are none.
     *
     * @throws IllegalArgumentException
@@ -342,7 +342,7 @@ public final class XINSCallRequest extends CallRequest {
    private PropertyReader _parameters;
 
    /**
-    * The data section to pass in the request. This field can be 
+    * The data section to pass in the request. This field can be
     * <code>null</code>.
     */
    private Element _dataSection;

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.server.servlet;
@@ -214,7 +214,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
    }
 
    public String getContentType() {
-      
+
       // This method is only used by the XMLCallingConvention
       // so it returns what the calling convention expects.
       return "text/xml; charset=UTF-8";

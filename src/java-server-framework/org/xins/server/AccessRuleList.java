@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -219,11 +219,11 @@ extends Object implements AccessRuleContainer {
    throws IllegalArgumentException, ParseException {
 
       Boolean allowed = isAllowed(ip, functionName);
-      
+
       if (allowed != null) {
          return allowed.booleanValue();
       } else {
-         
+
          // Log: No access rule match
          // TODO: Should this logging really be done in this class?
          Log.log_3553(ip, functionName);
@@ -263,7 +263,7 @@ extends Object implements AccessRuleContainer {
    throws IllegalArgumentException, ParseException {
 
       // TODO: If disposed, then throw a ProgrammingError
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
@@ -309,7 +309,7 @@ extends Object implements AccessRuleContainer {
          }
       }
    }
-   
+
    /**
     * Returns a character string representation of this object. The returned
     * string is in the form:

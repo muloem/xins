@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.collections;
@@ -47,7 +47,7 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     */
    public ProtectedList(Object key)
    throws IllegalArgumentException {
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
@@ -78,11 +78,11 @@ public final class ProtectedList extends AbstractList implements Cloneable {
    public Object get(int index) {
       return _list.get(index);
    }
-   
+
    public int size() {
       return _list.size();
    }
-   
+
    /**
     * Adds the specified element to the list.
     *
@@ -145,7 +145,7 @@ public final class ProtectedList extends AbstractList implements Cloneable {
    }
 
    /**
-    * Clones this list. The cloned list will only be ediatable by using the 
+    * Clones this list. The cloned list will only be ediatable by using the
     * same secret key.
     *
     * @return

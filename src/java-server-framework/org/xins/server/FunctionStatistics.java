@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -29,7 +29,7 @@ class FunctionStatistics {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * String returned by the function <code>_GetStatistics</code> when certain
     * information is not available.
@@ -58,7 +58,7 @@ class FunctionStatistics {
     * Statistic over the successful calls.
     */
    private Statistic _successful = new Statistic();
-   
+
    /**
     * Statistic over the unsuccessful calls.
     */
@@ -66,12 +66,12 @@ class FunctionStatistics {
 
    /**
     * Statistics over the unsuccessful calls sorted by error code.
-    * The key of the map is the error code and the Statistic object 
+    * The key of the map is the error code and the Statistic object
     * corresponding to the error code.
     */
    private Map _errorCodeStatistics = new TreeMap();
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -113,7 +113,7 @@ class FunctionStatistics {
       } else {
 
          _unsuccessful.recordCall(start, duration);
-         
+
          Statistic errorCodeStat = (Statistic)_errorCodeStatistics.get(errorCode);
          if (errorCodeStat == null) {
             errorCodeStat = new Statistic();
@@ -132,7 +132,7 @@ class FunctionStatistics {
       _unsuccessful.reset();
       _errorCodeStatistics.clear();
    }
-   
+
    /**
     * Get the successful statistic as an {@link org.xins.common.xml.Element}.
     *
@@ -143,13 +143,13 @@ class FunctionStatistics {
       return _successful.getElement(true, null);
    }
 
-   
+
    /**
     * Get the unsuccessful statistics as an array of {@link org.xins.common.xml.Element}.
     *
     * @param detailed
     *    If <code>true</code>, the unsuccessful results will be returned
-    *    per error code. Otherwise only one unsuccessful containing all 
+    *    per error code. Otherwise only one unsuccessful containing all
     *    unsuccessful result will be returned.
     *
     * @return
@@ -263,7 +263,7 @@ class FunctionStatistics {
             _maxStart = (_max == duration) ? start : _maxStart;
          }
       }
-      
+
       /**
        * Get this statistic as an {@link Element}.
        *
@@ -329,7 +329,7 @@ class FunctionStatistics {
          element.addChild(lastElem.createElement());
          return element.createElement();
       }
-      
+
       /**
        * Resets this statistic.
        */

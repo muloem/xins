@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.xml;
@@ -489,7 +489,7 @@ extends Object {
             if (_dataElementStack.size() > 0) {
                Element parent = (Element) _dataElementStack.peek();
                parent.addChild(child);
-               
+
                // Reset the state back from ERROR to PARSING
                _state = PARSING;
             } else {

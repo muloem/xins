@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
@@ -120,7 +120,7 @@ public class AllInOneAPITests extends TestCase {
    public void testSimpleTypes() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2), 
+      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2),
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
       assertNull(result.getOutputByte());
       assertEquals((short)-1, result.getOutputShort());
@@ -301,7 +301,7 @@ public class AllInOneAPITests extends TestCase {
    }
 
   /**
-   * Tests a function that passes a data section as input and an output data 
+   * Tests a function that passes a data section as input and an output data
    * section with mutiple data element types.
    */
    public void testDataSection3() throws Throwable {
@@ -320,13 +320,13 @@ public class AllInOneAPITests extends TestCase {
       builder3.addChild(address1);
       builder3.addChild(address2);
       Element dataSection = builder3.createElement();
-      
+
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection3("hello", dataSection).dataElement();
       List packets = element.getChildElements();
       assertTrue("No packets or envelopes found.", packets.size() == 4);
-      
+
       DataElement envelope1 = (DataElement) packets.get(0);
       assertEquals("Incorrect elements.", "envelope", envelope1.getLocalName());
       assertEquals("1234", envelope1.getAttribute("destination"));

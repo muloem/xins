@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -26,7 +26,7 @@ import org.xins.common.text.ParseException;
  * @since XINS 1.1.0
  */
 public class AccessRuleFile implements AccessRuleContainer {
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class AccessRuleFile implements AccessRuleContainer {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    /**
     * Returns the next token in the descriptor
     *
@@ -68,7 +68,7 @@ public class AccessRuleFile implements AccessRuleContainer {
 
    /**
     * Constructs a new <code>AccessRuleFile</code>.
-    * 
+    *
     * @param descriptor
     *    the access rule descriptor, the character string to parse, cannot be <code>null</code>.
     *    It also cannot be empty <code>(" ")</code>.
@@ -199,7 +199,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * called.
     */
    public void dispose() {
-      
+
       // Close all the children
       if (_rules != null) {
          for (int i = 0; i < _rules.length; i++) {
@@ -266,7 +266,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       _rules = (AccessRuleContainer[])rules.toArray(new AccessRuleContainer[0]);
 
    }
-   
+
    /**
     * Listener that reloads the ACL file if it changes.
     *
@@ -303,7 +303,7 @@ public class AccessRuleFile implements AccessRuleContainer {
        * Re-initializes the ACL rules for this file.
        */
       private void reinit() {
-         
+
          // Close the children
          if (_rules != null) {
             for (int i = 0; i < _rules.length; i++) {
@@ -313,7 +313,7 @@ public class AccessRuleFile implements AccessRuleContainer {
          try {
             parseAccessRuleFile(_file, _interval);
          } catch (Exception ioe) {
-            
+
             // XXX log error
             _rules = new AccessRuleContainer[0];
          }

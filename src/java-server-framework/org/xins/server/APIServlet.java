@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -812,7 +812,7 @@ extends HttpServlet {
             // Should never happen
             _apiName= "-";
          }
-         
+
          // TODO: Enable this for XINS 2.0.0:
 /*
          if (TextUtils.isEmpty(_apiName)) {

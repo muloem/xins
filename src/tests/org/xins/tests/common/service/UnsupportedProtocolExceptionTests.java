@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.service;
@@ -45,8 +45,8 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnsupportedProtocolExceptionTests</code> test 
-    * suite with the specified name. The name will be passed to the 
+    * Constructs a new <code>UnsupportedProtocolExceptionTests</code> test
+    * suite with the specified name. The name will be passed to the
     * superconstructor.
     *
     * @param name

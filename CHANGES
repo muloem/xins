@@ -15,10 +15,13 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
     languages.
 
 * Generated build file:
-  - Directories with spaces are now supported for Windows.
+  - Fixed SF.net bug #1102205: Directories with spaces are now supported
+    for Windows.
 
 * DTD:
   - Added missing DTD files for the 1.1 version.
+
+* Changed "Copyright 2004" to "Copyright 2003-2005".
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:

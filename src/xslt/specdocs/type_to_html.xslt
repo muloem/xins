@@ -8,7 +8,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -232,7 +232,7 @@
 			<xsl:text> bytes.</xsl:text><br />
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template match="list | set">
 		<p />
 		<xsl:text>This is a </xsl:text>

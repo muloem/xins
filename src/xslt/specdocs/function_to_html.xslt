@@ -8,7 +8,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -146,7 +146,7 @@
 
 	<xsl:template name="testforms_section">
 		<xsl:param name="function_name" />
-		
+
 		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/project/api[@name = $api]/environments">
 			<h2>Test forms</h2>
 			<ul>
@@ -185,7 +185,7 @@
 
 	<xsl:template name="examples_section">
 		<xsl:param name="function_name" />
-		
+
 		<h2>Examples section</h2>
 		<blockquote>
 			<xsl:choose>

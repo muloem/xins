@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
@@ -231,7 +231,7 @@ public class XINSCallResultParserTests extends TestCase {
                    "</data></result>";
       XINSCallResultData result = parser.parse(xml.getBytes(ENCODING));
       verifyCorrectResult(result);
-      
+
       // Parse the same XML with spaces between elements
       String xml2 = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
                     " <result>\n\t<data>\n" +
@@ -241,7 +241,7 @@ public class XINSCallResultParserTests extends TestCase {
       XINSCallResultData result2 = parser.parse(xml2.getBytes(ENCODING));
       verifyCorrectResult(result2);
    }
-   
+
    /**
     * Verifies that the result is correctly formatted as expected.
     *

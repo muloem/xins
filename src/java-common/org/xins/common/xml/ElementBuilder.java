@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.xml;
@@ -108,7 +108,7 @@ public class ElementBuilder extends Object {
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -188,7 +188,7 @@ public class ElementBuilder extends Object {
     * @throws IllegalArgumentException
     *    if <code>child == null || child == <em>this</em></code>.
     */
-   public void addChild(Element child) 
+   public void addChild(Element child)
    throws IllegalArgumentException {
 
       final String THIS_METHOD = "addChild(" + Element.class.getName() + ')';
@@ -282,7 +282,7 @@ public class ElementBuilder extends Object {
    /**
     * Creates the <code>Element</code>.
     * If you want to reuse this <code>ElementBuilder</code> you will need
-    * to call the {@link #startElement(String)} or 
+    * to call the {@link #startElement(String)} or
     * {@link #startElement(String,String)} method.
     *
     * @return

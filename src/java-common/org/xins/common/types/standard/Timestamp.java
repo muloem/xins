@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.types.standard;
@@ -462,7 +462,7 @@ public class Timestamp extends Type {
       }
 
       /**
-       * @return 
+       * @return
        *    The textual representation of this timestamp. Composed of the year (YYYY),
        *    month (MM), day (DD), hour (hh), minute (mm) and second (ss)
        *    in the format: <em>YYYYMMDDhhmmss</em>.

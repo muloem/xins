@@ -7,7 +7,7 @@
 
  $Id$
 
- Copyright 2004 Wanadoo Nederland B.V.
+ Copyright 2003-2005 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -535,9 +535,9 @@
 			<xsl:with-param name="text" select="$type" />
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
-	* Returns the Java class to import for the specified XINS type. 
+	* Returns the Java class to import for the specified XINS type.
 	* This Java data type or class is what values for the specified XINS
 	* type will be instances of.
 	*
@@ -552,9 +552,9 @@
 	*    the name of the type to lookup the base type for, can be empty.
 	*
 	* @return
-	*    the Java type for the specified XINS type, for example 
+	*    the Java type for the specified XINS type, for example
 	*    'java.lang.Boolean', 'org.xins.common.collections.PropertyReader',
-  *    'org.xins.common.types.standard.Date', 
+  *    'org.xins.common.types.standard.Date',
 	*    'com.mycompany.allinone.types.Salutation'.
 	-->
 	<xsl:template name="javaimport_for_type">
@@ -564,7 +564,7 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
-		
+
 		<!-- Determine file that defines type -->
 		<xsl:variable name="type_file">
 			<xsl:value-of select="$specsdir" />

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.perftests;
@@ -157,7 +157,7 @@ public class AllInOneTests extends TestCase {
          if (! real) {
             continue;
          }
-         
+
          callAllFunctionsAllInOne();
       }
    }
@@ -166,14 +166,14 @@ public class AllInOneTests extends TestCase {
     * Call all the functions of the AllInOne API.
     */
    public void callAllFunctionsAllInOne() throws Exception {
-      
+
       // Test the function the one after each other
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      SimpleTypesResult result1 = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2), 
+      SimpleTypesResult result1 = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2),
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
       assertEquals("hello", result1.getOutputText());
-      
+
       try {
          allInOne.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
@@ -181,26 +181,26 @@ public class AllInOneTests extends TestCase {
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
       }
-      
+
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
       DefinedTypesResult result2 = allInOne.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList);
       assertEquals("127.0.0.1", result2.getOutputIP());
-      
+
       try {
          allInOne.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
       }
-      
+
       try {
          allInOne.callResultCode("hello");
       } catch (UnsuccessfulXINSCallException exception) {
          // Expected after the first call
       }
-      
+
       try {
          allInOne.callLogdoc("hello");
          fail("The logdoc call should return an InvalidNumber error code.");
@@ -208,15 +208,15 @@ public class AllInOneTests extends TestCase {
          assertEquals("InvalidNumber", exception.getErrorCode());
       }
       allInOne.callLogdoc("12000");
-      
+
       DataElement element1 = allInOne.callDataSection("Doe").dataElement();
       List users = element1.getChildElements();
       assertTrue("No users found.", users.size() > 0);
-      
+
       DataElement element2 = allInOne.callDataSection2("hello").dataElement();
       List packets = element2.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
-      
+
       try {
          allInOne.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
          fail("The param-combo call should return an _InvalidRequest error code.");

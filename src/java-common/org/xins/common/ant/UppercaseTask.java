@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2004 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.ant;
@@ -11,7 +11,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 /**
- * Apache Ant task that uppercase a text. Note that hyphens '-' are 
+ * Apache Ant task that uppercase a text. Note that hyphens '-' are
  * translated to underscores '_'.
  *
  * @version $Revision$ $Date$
@@ -46,7 +46,7 @@ public class UppercaseTask extends Task {
     * The text that has to be set in uppercase.
     */
    private String _text;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -83,18 +83,18 @@ public class UppercaseTask extends Task {
       if (_propertyName == null) {
          throw new BuildException("A property value needs to be specified.");
       }
-      
+
       if (_text == null) {
          throw new BuildException("A property value needs to be specified.");
       }
-      
+
       if (getProject().getUserProperty(_propertyName) != null) {
          log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
          return;
       }
 
       String uppercase = _text.toUpperCase();
-      
+
       uppercase = uppercase.replace('-', '_');
 
       getProject().setUserProperty(_propertyName, uppercase);
