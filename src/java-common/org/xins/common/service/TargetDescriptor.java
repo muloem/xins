@@ -35,9 +35,6 @@ import org.xins.common.text.FastStringBuffer;
  *    <dd>the maximum time for attempting to receive data on a socket.</dd>
  * </dl>
  *
- * <p>To all these time-outs applies that if the value is either 0 or
- * negative, then it is not in effect.
- *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -141,6 +138,10 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @throws MalformedURLException
     *    if the specified URL is malformed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.203.
+    *    Use {@link #TargetDescriptor(String,int,int,int)} instead.
     */
    public TargetDescriptor(String url, int timeOut)
    throws IllegalArgumentException, MalformedURLException {
@@ -151,10 +152,11 @@ public final class TargetDescriptor extends Descriptor {
     * Constructs a new <code>TargetDescriptor</code> for the specified URL,
     * with the specifed total time-out and connection time-out.
     *
-    * <p>Note: The socket time-out will be set to equal the total time-out.
+    * <p>Note: If the passed connection time-out is smaller than 1 ms, or
+    * greater than the total time-out, then it will be adjusted to equal the
+    * total time-out.
     *
-    * <p>Note: If the passed connection time-out is greater than the total
-    * time-out, then it will be adjusted to equal the total time-out.
+    * <p>Note: The socket time-out will be set to equal the total time-out.
     *
     * @param url
     *    the URL of the service, cannot be <code>null</code>.
@@ -165,7 +167,8 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @param connectionTimeOut
     *    the connection time-out for the service, in milliseconds; or a
-    *    non-positive value for no connection time-out.
+    *    non-positive value if the connection time-out should equal the total
+    *    time-out.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
@@ -174,6 +177,10 @@ public final class TargetDescriptor extends Descriptor {
     *    if the specified URL is malformed.
     *
     * @since XINS 0.195
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.203.
+    *    Use {@link #TargetDescriptor(String,int,int,int)} instead.
     */
    public TargetDescriptor(String url, int timeOut, int connectionTimeOut)
    throws IllegalArgumentException, MalformedURLException {
@@ -185,11 +192,13 @@ public final class TargetDescriptor extends Descriptor {
     * with the specifed total time-out, connection time-out and socket
     * time-out.
     *
-    * <p>Note: If the passed connection time-out is greater than the total
-    * time-out, then it will be adjusted to equal the total time-out.
+    * <p>Note: If the passed connection time-out is smaller than 1 ms, or
+    * greater than the total time-out, then it will be adjusted to equal the
+    * total time-out.
     *
-    * <p>Note: If the passed socket time-out is greater than the total
-    * time-out, then it will be adjusted to equal the total time-out.
+    * <p>Note: If the passed socket time-out is smaller than 1 ms or greater
+    * than the total time-out, then it will be adjusted to equal the total
+    * time-out.
     *
     * @param url
     *    the URL of the service, cannot be <code>null</code>.
@@ -200,7 +209,8 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @param connectionTimeOut
     *    the connection time-out for the service, in milliseconds; or a
-    *    non-positive value for no connection time-out.
+    *    non-positive value if the connection time-out should equal the total
+    *    time-out.
     *
     * @param socketTimeOut
     *    the socket time-out for the service, in milliseconds; or a
@@ -226,10 +236,13 @@ public final class TargetDescriptor extends Descriptor {
          throw new MalformedURLException(url);
       }
 
-      // Convert negative time-outs to 0
-      timeOut           = (timeOut           > 0) ? timeOut           : 0;
-      connectionTimeOut = (connectionTimeOut > 0) ? connectionTimeOut : 0;
-      socketTimeOut     = (socketTimeOut     > 0) ? socketTimeOut     : 0;
+      // Convert negative total time-out to 0
+      timeOut = (timeOut > 0) ? timeOut : 0;
+
+      // If connection time-out or socket time-out is not set, then set it to
+      // the total time-out
+      connectionTimeOut = (connectionTimeOut > 0) ? connectionTimeOut : timeOut;
+      socketTimeOut     = (socketTimeOut     > 0) ? socketTimeOut     : timeOut;
 
       // If either connection or socket time-out is greater than total
       // time-out, then limit it to the total time-out
@@ -293,14 +306,14 @@ public final class TargetDescriptor extends Descriptor {
    private final int _timeOut;
 
    /**
-    * The connection time-out for the service. Is set to 0 if no connection
-    * time-out should be applied.
+    * The connection time-out for the service. Always greater than 0 and
+    * smaller than or equal to the total time-out.
     */
    private final int _connectionTimeOut;
 
    /**
-    * The socket time-out for the service. Is set to 0 if no socket time-out
-    * should be applied.
+    * The socket time-out for the service. Always greater than 0 and smaller
+    * than or equal to the total time-out.
     */
    private final int _socketTimeOut;
 
@@ -366,12 +379,11 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the connection time-out for a call to the service. The value 0
-    * is returned if there is no connection time-out.
+    * Returns the connection time-out for a call to the service.
     *
     * @return
-    *    the connection time-out for the service, as a positive number, in
-    *    milli-seconds, or 0 if there is no connection time-out.
+    *    the connection time-out for the service; always greater than 0 and
+    *    smaller than or equal to the total time-out.
     *
     * @since XINS 0.195
     */
@@ -380,12 +392,11 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the socket time-out for a call to the service. The value 0
-    * is returned if there is no socket time-out.
+    * Returns the socket time-out for a call to the service.
     *
     * @return
-    *    the socket time-out for the service, as a positive number, in
-    *    milli-seconds, or 0 if there is no socket time-out.
+    *    the socket time-out for the service; always greater than 0 and
+    *    smaller than or equal to the total time-out.
     *
     * @since XINS 0.195
     */
