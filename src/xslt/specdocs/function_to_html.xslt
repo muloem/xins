@@ -375,7 +375,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:if test="not(@resultcode)">
+		<xsl:if test="not($resultcode)">
 			<!--
 			If this is an example of a successful case, then all required
 			input parameters need to be set.
@@ -417,9 +417,8 @@
 		<!--
 		Same applies to result code with required output parameters.
 		-->
-		<xsl:if test="@resultcode">
-			<xsl:variable name="errorcode" select="@resultcode" />
-			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $errorcode, '.rcd')" />
+		<xsl:if test="string-length($resultcode) &gt; 0 and not(starts-with($resultcode, '_'))">
+			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $resultcode, '.rcd')" />
 			<xsl:for-each select="document($rcd_file)/output/param[@required='true']">
 				<xsl:variable name="required_attr">
 					<xsl:value-of select="@name" />
@@ -429,7 +428,7 @@
 						<xsl:text>Example </xsl:text>
 						<xsl:value-of select="$examplenum" />
 						<xsl:text> is marked with the error code '</xsl:text>
-						<xsl:value-of select="$errorcode" />
+						<xsl:value-of select="$resultcode" />
 						<xsl:text>', but it does not specify a value for the required output parameter '</xsl:text>
 						<xsl:value-of select="$required_attr" />
 						<xsl:text>'.</xsl:text>

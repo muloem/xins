@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 0.190:
   - Removed the "success" attribute from the "example" element for functions.
   - Added the elements "input-example" and "output-example" in the "example"
     element. The "example-value" element is now deprecated.
+  - Added a "pcdata" element to be able to set PCDATA content in an element
+    of the data section.
 
 * Logdoc:
   - Changed the logdoc domain for common from org.xins.util to

@@ -390,7 +390,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
        */
       private final org.jdom.Element _jdomElement = new org.jdom.Element("</xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>");
+		<xsl:text><![CDATA[");
 
 
       //-------------------------------------------------------------------------
@@ -398,13 +398,33 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
       //-------------------------------------------------------------------------
 
       /**
-       * Returns the element containing the informations about the
+       * Returns the element containing the informations about the element.
+       *
+       * @return
+       *    the JDOM element created by invoking the different set methods, never
+       *    <code>null</code>
        */
       final org.jdom.Element getDOMElement() {
          return _jdomElement;
       }
 
-			</xsl:text>
+]]></xsl:text>
+
+			<xsl:if test="contains/pcdata">
+				<xsl:text><![CDATA[");
+      /**
+       * Sets a <code>PCDATA</code> to the element. This method erases previous
+       * <code>PCDATA</code> set by invoking this method.
+       * @param data
+       *    the PCDATA for this element.
+       */
+      final void pcdata(String data) {
+         _jdomElement.setText(data);
+      }
+
+]]></xsl:text>
+			</xsl:if>
+
 			<xsl:apply-templates select="attribute">
 				<xsl:with-param name="methodImpl" select="'_jdomElement.setAttribute'" />
 			</xsl:apply-templates>
