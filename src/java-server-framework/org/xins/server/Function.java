@@ -89,22 +89,22 @@ extends Object {
    /**
     * The number of successful calls executed up until now.
     */
-   private int _successfulCalls;
+   int _successfulCalls;
 
    /**
     * The number of unsuccessful calls executed up until now.
     */
-   private int _unsuccessfulCalls;
+   int _unsuccessfulCalls;
 
    /**
     * The total duration of all successful calls up until now.
     */
-   private long _successfulDuration;
+   long _successfulDuration;
 
    /**
     * The total duration of all unsuccessful calls up until now.
     */
-   private long _unsuccessfulDuration;
+   long _unsuccessfulDuration;
 
 
    //-------------------------------------------------------------------------
