@@ -85,7 +85,7 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   BootstrapException(Throwable exception)
+   public BootstrapException(Throwable exception)
    throws IllegalArgumentException {
       super(createMessage(exception));
       _exception = exception;
