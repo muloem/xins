@@ -129,7 +129,7 @@ public abstract class ServiceCaller extends Object {
 
          // And getDefaultCallConfig() should never return null
          if (callConfig == null) {
-            String detail = "getDefaultCallConfig()", "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
+            String detail = "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
             Log.log_1050(actualClass, "getDefaultCallConfig()", detail);
             throw new Error(detail);
          }
