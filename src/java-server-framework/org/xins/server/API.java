@@ -200,7 +200,6 @@ implements DefaultResultCodes {
 
       // TODO: Allow configuration of session ID type
       _sessionIDType = new BasicSessionID(this);
-      // TODO: Allow configuration of session ID generator
       _sessionIDGenerator = _sessionIDType.getGenerator();
 
       // TODO: Set state to INITIALIZING
