@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII" ?>
+<?xml version="1.0" encoding="US-ASCII"?>
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
