@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.189:
 
 * Build and release process:
   - Check for the required directories before making a release.
+  - The default dependencies directory has changed from "depends" to the
+    project home directory.
 
 * XINS/Java Common Library:
   - Added the static methods today() in Date and now() in Timestamp.

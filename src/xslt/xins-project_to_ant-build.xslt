@@ -42,13 +42,10 @@
 	</xsl:variable>
 	<xsl:variable name="dependenciesDir">
 		<xsl:value-of select="$project_home" />
-		<xsl:text>/</xsl:text>
-		<xsl:choose>
-			<xsl:when test="document($project_file)/project/@dependenciesdir">
-				<xsl:value-of select="document($project_file)/project/@dependenciesdir" />
-			</xsl:when>
-			<xsl:otherwise>depends</xsl:otherwise>
-		</xsl:choose>
+		<xsl:if test="document($project_file)/project/@dependenciesdir">
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="document($project_file)/project/@dependenciesdir" />
+		</xsl:if>
 	</xsl:variable>
 
 	<xsl:template match="project">
