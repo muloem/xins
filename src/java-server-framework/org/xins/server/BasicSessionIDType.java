@@ -70,6 +70,8 @@ public final class BasicSessionIDType extends SessionIDType {
    //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
+
+      // Make sure the length of the string is correct
       if (value.length() != 33) {
          return false;
       } else if (_prefix.equals(value.substring(0, 17)) == false) {
