@@ -57,7 +57,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     */
-   public HTTPServiceCaller(Descriptor descriptor, String baseURL)
+   public HTTPServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
       super(descriptor);
    }
