@@ -62,6 +62,11 @@
 		</xsl:if>
 	</xsl:variable>
 
+	<!-- Determine the location of the online specification docs -->
+	<xsl:variable name="specdocsURL">
+		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+	</xsl:variable>
+
 	<!-- Output is text/plain -->
 	<xsl:output method="text" />
 
@@ -88,7 +93,7 @@
 		<xsl:text><![CDATA[</em> API.
  *
  * <p>See the <a href="]]></xsl:text>
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+		<xsl:value-of select="$specdocsURL" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[/">API specification</a>.
@@ -109,7 +114,6 @@ public final class API extends Object {
 
 		<xsl:call-template name="constructor" />
 		<xsl:text><![CDATA[
-
 
    //-------------------------------------------------------------------------
    // Fields
@@ -171,50 +175,58 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
 	<!-- Print the constructor -->
 	<xsl:template name="constructor">
-		<xsl:text><![CDATA[
+		<xsl:choose>
+			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+				<xsl:text><![CDATA[
 
    /**
     * Constructs a new <code>API</code> object for the specified remote API.
     *
     * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
-			<xsl:text>
+    *    the function caller, cannot be <code>null</code>.
     *
     * @param sessionIDSplitter
     *    splitter that converts a client-side session identifier to a target
     *    API checksum and a target API-specific session ID.</xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[
     *
     * @throws IllegalArgumentException
-    *    if <code>functionCaller == null]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
-			<xsl:text> || sessionIDSplitter == null</xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[</code>.
+    *    if <code>functionCaller == null || sessionIDSplitter == null</code>.
     */
-   public API(FunctionCaller functionCaller]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
-			<xsl:text>, SessionIDSplitter sessionIDSplitter</xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[) throws IllegalArgumentException {
+   public API(FunctionCaller functionCaller, SessionIDSplitter sessionIDSplitter)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller", functionCaller]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
-			<xsl:text>, "sessionIDSplitter", sessionIDSplitter</xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[);
+      MandatoryArgumentChecker.check("functionCaller",    functionCaller,
+                                     "sessionIDSplitter", sessionIDSplitter);
 
       // Store data
-      _functionCaller = functionCaller;]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
-			<xsl:text>
+      _functionCaller    = functionCaller;
       _sessionIDSplitter = sessionIDSplitter;</xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[
    }]]></xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text><![CDATA[
+
+   /**
+    * Constructs a new <code>API</code> object for the specified remote API.
+    *
+    * @param functionCaller
+    *    the function caller, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionCaller == null</code>.
+    */
+   public API(FunctionCaller functionCaller)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionCaller", functionCaller);
+
+      // Store data
+      _functionCaller = functionCaller;
+   }]]></xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- Print a method to call a single function -->
