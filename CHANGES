@@ -1,4 +1,19 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.45:
+
+* XINS/Java Client Framework: Introduced FunctionCallerParser that parses an
+  XML configuration document that defines CallTargetGroups and
+  ActualFunctionCallers. An example of such a configuration is:
+
+      <group type="ordered">
+         <group type="round robin">
+            <api url="http://apihost0.company.com:2087/auth.pl" />
+            <api url="http://apihost1.company.com:2087/auth.pl" />
+         </group>
+         <api url="http://ext-apihost1.company.com:2088/auth.pl" />
+      </group>
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.44:
 
 * Major change to the way ActualFunctionCaller works: DNS lookups are now
