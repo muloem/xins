@@ -921,7 +921,7 @@ extends HttpServlet {
          _configFileWatcher.setInterval(interval);
          log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
 
-         log.info("XINS/Java Server Framework re-initialized.");
+         Log.log_1();
       }
 
       public void fileNotFound() {
