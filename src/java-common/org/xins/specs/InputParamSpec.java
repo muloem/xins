@@ -12,7 +12,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class InputParamSpec
-extends Spec {
+extends ParamSpec {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -50,7 +50,7 @@ extends Spec {
     */
    public InputParamSpec(FunctionSpec parent, String name)
    throws IllegalArgumentException, InvalidNameException {
-      super(TYPE, parent, name);
+      super((Type) TYPE, parent, name);
    }
 
 
@@ -72,7 +72,7 @@ extends Spec {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
     */
-   private static class Type extends SpecType {
+   private static class Type extends ParamSpec.Type {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -82,7 +82,7 @@ extends Spec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super(FunctionSpec.TYPE, "function input parameter", "^[a-z]+[A-Za-z0-9]*$");
+         super("function input parameter");
       }
 
 
