@@ -71,8 +71,14 @@
 	</xsl:template>
 
 	<xsl:template match="api">
-		<!-- This test is not garanted to work with all XSLT processors. -->
-		<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
+		<!-- This test is not guaranteed to work with all XSLT
+		     processors. -->
+		<xsl:variable name="new_api_file">
+			<xsl:value-of select="$project_home" />
+			<xsl:text>/apis/</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>/spec/api.xml</xsl:text>
+		</xsl:variable>
 		<xsl:variable name="path">
 			<xsl:choose>
 				<xsl:when test="impl or environments or document($new_api_file)">
@@ -83,17 +89,19 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
+		<xsl:variable
+		name="functioncount"
+		select="count(document($path)/api/function)" />
 
 		<xsl:if test="not(document($path)/api/@name = @name)">
 			<xsl:message terminate="yes">
-				<xsl:text>API name specified in project.xml ('</xsl:text>
+				<xsl:text>API name specified in xins-project.xml ('</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>') does not match the name specified in </xsl:text>
+				<xsl:text>') does not match the name specified in the api.xml file ('</xsl:text>
 				<xsl:value-of select="$path" />
-				<xsl:text> ('</xsl:text>
+				<xsl:text>'), which is: '</xsl:text>
 				<xsl:value-of select="document($path)/api/@name" />
-				<xsl:text>').</xsl:text>
+				<xsl:text>'.</xsl:text>
 			</xsl:message>
 		</xsl:if>
 		<tr>
