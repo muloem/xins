@@ -271,30 +271,19 @@ public final class AddReleaseTask extends Task {
       createRelease();
    }
 
+   /**
+    * Attempts to disable certicate validation for HTTPS connections.
+    */
    private void disableCertificateValidation() {
 
       // Create a trust manager that does not validate certificate chains
-      TrustManager[] trustAllCerts = new TrustManager[] {
-         new X509TrustManager() {
-            public X509Certificate[] getAcceptedIssuers() {
-               return null;
-            }
-
-            public void checkClientTrusted(X509Certificate[] certs, String authType) {
-               // empty
-            }
-
-            public void checkServerTrusted(X509Certificate[] certs, String authType) {
-               // empty
-            }
-         }
-      };
+      TrustManager[] tm = new TrustManager[] { new NaiveTrustManager() };
     
       // Install the all-trusting trust manager
       try {
          log("Disabling SSL certificate validation.", Project.MSG_VERBOSE);
          SSLContext sc = SSLContext.getInstance("SSLv3");
-         sc.init(null, trustAllCerts, new SecureRandom());
+         sc.init(null, tm, new SecureRandom());
          HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
          log("Disabled SSL certificate validation.", Project.MSG_DEBUG);
       } catch (Exception e) {
