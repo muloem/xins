@@ -97,26 +97,17 @@ public final class ]]></xsl:text>
 
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
-			<xsl:text>(</xsl:text>
-			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument" />
-			<xsl:text>) {</xsl:text>
-			<xsl:choose>
-				<xsl:when test="count(value-of-param) &lt; 1">
-					<xsl:text>
-      return "</xsl:text>
-					<xsl:call-template name="xml_to_java_string">
-						<xsl:with-param name="text" select="text()" />
-					</xsl:call-template>
-					<xsl:text>";</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>
-      FastStringBuffer buffer = new FastStringBuffer(205);</xsl:text>
-					<xsl:apply-templates />
-					<xsl:text>
+			<xsl:text>(int id</xsl:text>
+			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
+				<xsl:with-param name="had-argument" select="'true'" />
+			</xsl:apply-templates>
+			<xsl:text>) {
+      FastStringBuffer buffer = new FastStringBuffer(255);
+      buffer.append(id);
+      buffer.append(' ');</xsl:text>
+			<xsl:apply-templates />
+			<xsl:text>
       return buffer.toString();</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
 			<xsl:text>
    }</xsl:text>
 		</xsl:for-each>

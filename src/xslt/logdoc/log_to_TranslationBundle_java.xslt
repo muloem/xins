@@ -23,6 +23,7 @@
 		<xsl:text><![CDATA[;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Translation bundle for log messages.
@@ -100,6 +101,7 @@ public abstract class TranslationBundle extends Object {
 	</xsl:template>
 
 	<xsl:template match="group/entry">
+		<xsl:variable name="description" select="description/text()" />
 		<xsl:text>
 
    /**
@@ -114,15 +116,24 @@ public abstract class TranslationBundle extends Object {
 		<xsl:text><![CDATA[</em></blockquote>
     */
    public String translation_]]></xsl:text>
+		<!-- TODO: Generate @param tags for parameters -->
 		<xsl:value-of select="@id" />
-		<xsl:text>(</xsl:text>
-		<xsl:apply-templates select="param" mode="method-argument" />
+		<xsl:text>(int id</xsl:text>
+		<xsl:apply-templates select="param" mode="method-argument">
+			<xsl:with-param name="had-argument" select="'true'" />
+		</xsl:apply-templates>
 		<xsl:text>) {
-      return "</xsl:text>
+      FastStringBuffer buffer = new FastStringBuffer(</xsl:text>
+		<xsl:value-of select="string-length($description) + 11" />
+		<xsl:text>);
+      buffer.append(id);
+      buffer.append(' ');
+      buffer.append("</xsl:text>
 		<xsl:call-template name="xml_to_java_string">
-			<xsl:with-param name="text" select="description/text()" />
+			<xsl:with-param name="text" select="$description" />
 		</xsl:call-template>
-		<xsl:text>";
+		<xsl:text>");
+      return buffer.toString();
    }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>

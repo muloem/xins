@@ -265,11 +265,18 @@ public class Log extends AbstractLog {
 			</xsl:if>
 		</xsl:if>
 		<xsl:apply-templates select="param" mode="method-argument" />
-		<!-- XXX: Lock before updating COUNTER? Probably not needed on int -->
+		<!-- TODO: Performance improvement: Do not synchronize on
+		     TODO: COUNT_xxx_LOCK if the value is not needed, since the log
+		     TODO: level is not enabled. -->
 		<xsl:text>) {
-      COUNT_</xsl:text>
+      int id;
+      synchronized (COUNT_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>_LOCK) {
+         id = COUNT_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>++;
+      }
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
@@ -282,9 +289,9 @@ public class Log extends AbstractLog {
 		<xsl:value-of select="@level" />
 		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text>(</xsl:text>
+		<xsl:text>(id</xsl:text>
 		<xsl:for-each select="param">
-			<xsl:if test="position() &gt; 1">, </xsl:if>
+			<xsl:text>, </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>), </xsl:text>
@@ -318,7 +325,16 @@ public class Log extends AbstractLog {
     */
    private static int COUNT_</xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text>;</xsl:text>
+		<xsl:text>;
+
+   /**
+    * Lock object for the counter for log entry </xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>.
+    */
+   private static Object COUNT_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>_LOCK = new Object();</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="group/entry" mode="log_entry">
