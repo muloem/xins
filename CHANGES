@@ -63,6 +63,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - Added the possibility to have a data element as input.
   - Added the input-data-example element to specify a data section example 
     in the input.
+  - Renamed data-example element to output-data-example element. The old
+    data-example is still supported for compatibility issues.
+  - Removed element or attribute checking already done by the DTD.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:

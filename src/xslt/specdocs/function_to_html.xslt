@@ -50,12 +50,6 @@
 		<xsl:variable name="function_name"    select="//function/@name"                               />
 		<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
 
-		<xsl:if test="not(@name)">
-			<xsl:message terminate="yes">
-				<xsl:text>Function does not specify the mandatory 'name' attribute.</xsl:text>
-			</xsl:message>
-		</xsl:if>
-
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
@@ -125,13 +119,6 @@
 		<h2>Input section</h2>
 		<blockquote>
 			<xsl:choose>
-				<xsl:when test="count(input) &gt; 1">
-					<xsl:message terminate="yes">
-						<xsl:text>Found </xsl:text>
-						<xsl:value-of select="count(input)" />
-						<xsl:text> input sections. Only one is allowed.</xsl:text>
-					</xsl:message>
-				</xsl:when>
 				<xsl:when test="input">
 					<xsl:apply-templates select="input" />
 				</xsl:when>
@@ -147,13 +134,6 @@
 		<blockquote>
 			<xsl:call-template name="resultcodes" />
 			<xsl:choose>
-				<xsl:when test="count(output) &gt; 1">
-					<xsl:message terminate="yes">
-						<xsl:text>Found </xsl:text>
-						<xsl:value-of select="count(output)" />
-						<xsl:text> output sections. Only one is allowed.</xsl:text>
-					</xsl:message>
-				</xsl:when>
 				<xsl:when test="output">
 					<xsl:apply-templates select="output" />
 				</xsl:when>
@@ -254,9 +234,6 @@
 			<xsl:with-param name="class">inputparameters</xsl:with-param>
 		</xsl:call-template>
 		<xsl:apply-templates select="note" />
-		<xsl:if test="param-combo[count(param-ref) = 0]">
-			<xsl:message terminate="yes">Found param-combo with no param-ref children.</xsl:message>
-		</xsl:if>
 		<xsl:call-template name="additional-constraints" />
 		<xsl:call-template name="datasection" />
 	</xsl:template>
@@ -615,7 +592,7 @@
 							</span>
 						</xsl:if>
 						<xsl:choose>
-							<xsl:when test="$example-outputparams or $example-outputparams2 or data-example">
+							<xsl:when test="$example-outputparams or $example-outputparams2 or output-data-example or data-example">
 								<xsl:text>&gt;</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -624,7 +601,7 @@
 						</xsl:choose>
 					</span>
 					<xsl:choose>
-						<xsl:when test="$example-outputparams or $example-outputparams2 or data-example">
+						<xsl:when test="$example-outputparams or $example-outputparams2 or output-data-example or data-example">
 							<xsl:if test="$example-outputparams">
 								<xsl:for-each select="$example-outputparams">
 									<xsl:text>
@@ -685,7 +662,7 @@
 									</span>
 								</xsl:for-each>
 							</xsl:if>
-							<xsl:if test="data-example">
+							<xsl:if test="output-data-example or data-example">
 								<xsl:text>
 </xsl:text>
 								<xsl:value-of disable-output-escaping="yes" select="$indentation" />
@@ -695,7 +672,7 @@
 									<xsl:text>&gt;</xsl:text>
 								</span>
 								<!-- First call, use $indent to set the start value of the indent param -->
-								<xsl:apply-templates select="data-example/element-example">
+								<xsl:apply-templates select="output-data-example/element-example | data-example/element-example">
 									<!-- Insert the indentation -->
 									<xsl:with-param name="indent" select="concat($indentation,$indentation)" />
 								</xsl:apply-templates>
