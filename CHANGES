@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.119:
+
+* XINS/Java Server Framework:
+  - Refactored CallContext and API classes.
+  - Removed ResponseValidator class.
+  - Removed UNININITIALIZED state in class ResponderStates.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.118:
 
 * XINS/Java Common Library:
