@@ -22,32 +22,32 @@ extends Object {
    /**
     * The <em>debug</em> log level.
     */
-   private static final Level DEBUG;
+   public static final Level DEBUG;
 
    /**
     * The <em>info</em> log level.
     */
-   private static final Level INFO;
+   public static final Level INFO;
 
    /**
     * The <em>notice</em> log level.
     */
-   private static final Level NOTICE;
+   public static final Level NOTICE;
 
    /**
     * The <em>warning</em> log level.
     */
-   private static final Level WARNING;
+   public static final Level WARNING;
 
    /**
     * The <em>error</em> log level.
     */
-   private static final Level ERROR;
+   public static final Level ERROR;
 
    /**
     * The <em>fatal</em> log level.
     */
-   private static final Level FATAL;
+   public static final Level FATAL;
 
 
    //-------------------------------------------------------------------------
