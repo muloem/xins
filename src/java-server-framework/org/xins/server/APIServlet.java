@@ -1184,6 +1184,12 @@ extends HttpServlet {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Re-initializes the framework. The run-time properties are re-read,
+       * the configuration file reload interval is determined, the API is
+       * re-initialized and then the new interval is applied to the watch
+       * thread for the configuration file.
+       */
       private void reinit() {
 
          Log.log_1407(_configFile);
@@ -1214,22 +1220,57 @@ extends HttpServlet {
          }
       }
 
+      /**
+       * Callback method called when the configuration file is found while it
+       * was previously not found.
+       *
+       * <p>This will trigger re-initialization.
+       */
       public void fileFound() {
          reinit();
       }
 
+      /**
+       * Callback method called when the configuration file is (still) not
+       * found.
+       *
+       * <p>The implementation of this method does not perform any actions.
+       */
       public void fileNotFound() {
          Log.log_1400(_configFile);
       }
 
+      /**
+       * Callback method called when the configuration file is (still) not
+       * modified.
+       *
+       * <p>The implementation of this method does not perform any actions.
+       */
       public void fileNotModified() {
          Log.log_1402(_configFile);
       }
 
+      /**
+       * Callback method called when the configuration file could not be
+       * examined due to a <code>SecurityException</code>.
+       * modified.
+       *
+       * <p>The implementation of this method does not perform any actions.
+       *
+       * @param exception
+       *    the caught security exception, should not be <code>null</code>
+       *    (although this is not checked).
+       */
       public void securityException(SecurityException exception) {
          Log.log_1401(exception, _configFile);
       }
 
+      /**
+       * Callback method called when the configuration file is modified since
+       * the last time it was checked.
+       *
+       * <p>This will trigger re-initialization.
+       */
       public void fileModified() {
          reinit();
       }
