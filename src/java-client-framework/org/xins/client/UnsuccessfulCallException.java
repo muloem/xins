@@ -33,7 +33,7 @@ extends Exception {
     * specified call result.
     *
     * @throws IllegalArgumentException
-    *    if <code>result == null || result.isSuccess()</code>.
+    *    if <code>result == null || result.</code>{@link CallResult#isSuccess() isSuccess()}.
     */
    public UnsuccessfulCallException(CallResult result)
    throws IllegalArgumentException {
