@@ -81,7 +81,22 @@ public final class ]]></xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------</xsl:text>
+
+		<xsl:for-each select="message">
+			<xsl:text>
+
+   public String translation_</xsl:text>
+			<xsl:value-of select="@entry" />
+			<xsl:text>() {
+      return "</xsl:text>
+			<xsl:value-of select="text()" />
+			<!-- TODO: Escape characters -->
+			<xsl:text>";
+   }</xsl:text>
+		</xsl:for-each>
+
+		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
