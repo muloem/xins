@@ -30,4 +30,4 @@ ant -q -f ${xins_home}/src/ant/make-build.xml \
 -Dxins_home=${xins_home}
 
 # Run Ant against the build file
-(cd ${builddir} && ant -f ${buildfile_base} $*)
+ant -f build/build.xml $*
