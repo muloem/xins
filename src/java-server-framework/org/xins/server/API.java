@@ -443,7 +443,12 @@ implements DefaultResultCodes {
             Log.log_1428(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (InitializationException exception) {
-            Log.log_1429(_name, functionName, exception.getMessage());
+	    Throwable cause = exception.getException();
+	    if (cause != null) {
+               Log.log_1430(cause, _name, functionName);
+	    } else {
+               Log.log_1429(_name, functionName, exception.getMessage());
+	    }
             throw exception;
          } catch (Throwable exception) {
             Log.log_1430(exception, _name, functionName);

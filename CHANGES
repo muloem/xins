@@ -5,6 +5,10 @@ CHANGES INTRODUCED IN XINS 0.193:
   - Fixed bug in GroupDescriptor.hasNext(). Previously it could incorrectly
     return true instead of false.
 
+* XINS/Java Server Framework:
+  - Outputting log message 1430 instead of 1429 if a cause exception is
+    available. The cause exception will be logged.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.192:
 
