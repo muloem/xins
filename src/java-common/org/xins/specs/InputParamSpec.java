@@ -21,7 +21,7 @@ extends Spec {
    /**
     * The type for input parameter components.
     */
-   public static final Type TYPE = new Type();
+   public static final SpecType TYPE = new Type();
 
 
    //-------------------------------------------------------------------------

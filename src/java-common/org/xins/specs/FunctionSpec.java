@@ -21,7 +21,7 @@ extends VersionedSpec {
    /**
     * The type for function components.
     */
-   public static final Type TYPE = new Type();
+   public static final SpecType TYPE = new Type();
 
 
    //-------------------------------------------------------------------------
