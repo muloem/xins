@@ -283,12 +283,12 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the result, if and only if the call succeeded, always an instance of
     *    class {@link XINSCallResult}, never <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>request == null || target == null</code>.
+    *
     * @throws ClassCastException
     *    if the specified <code>request</code> object is not <code>null</code>
     *    and not an instance of class {@link XINSCallRequest}.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null || target == null</code>.
     *
     * @throws GenericCallException
     *    if the call attempt failed due to a generic reason.
@@ -305,6 +305,7 @@ public final class XINSServiceCaller extends ServiceCaller {
    protected Object doCallImpl(CallRequest      request,
                                TargetDescriptor target)
    throws IllegalArgumentException,
+          ClassCastException,
           GenericCallException,
           HTTPCallException,
           XINSCallException {

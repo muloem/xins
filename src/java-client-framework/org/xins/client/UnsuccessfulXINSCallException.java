@@ -90,7 +90,8 @@ extends XINSCallException {
    UnsuccessfulXINSCallException(XINSCallRequest    request,
                                  TargetDescriptor   target,
                                  long               duration,
-                                 XINSCallResultData resultData) {
+                                 XINSCallResultData resultData)
+   throws IllegalArgumentException {
 
       super("Unsuccessful XINS call result", request, target, duration, null, null);
 
