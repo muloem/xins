@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.136:
+
+* XINS/Java Client Framework:
+  - Copied all getter methods from CallResult to UnsuccessfulCallException,
+    except isSuccess(). Deprecated getCallResult() in the latter class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.135:
 
 * XINS/Java Client Framework:
