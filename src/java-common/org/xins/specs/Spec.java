@@ -40,12 +40,18 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if <code>type.isValidName(name) == false</code>.
     */
    Spec(SpecType type, String name)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, InvalidNameException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "name", name);
+      if (type.isValidName(name) == false) {
+         throw new InvalidNameException(type, name);
+      }
 
       _type    = type;
       _name    = name;

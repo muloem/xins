@@ -72,9 +72,12 @@ extends Spec {
     *
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null || version == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if <code>type.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
     */
    VersionedSpec(SpecType type, String name, String version)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, InvalidNameException {
 
       // Check preconditions and call superconstructor
       super(checkArguments(type, name, version), name);
