@@ -200,6 +200,21 @@ implements DefaultResultCodes {
     */
    private final long _startupTimestamp;
 
+   /**
+    * Deployment identifier.
+    */
+   private String _deployment;
+
+   /**
+    * Host name for the machine that was used for this build.
+    */
+   private String _buildHost;
+
+   /**
+    * Time stamp that indicates when this build was done.
+    */
+   private String _buildTime;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -329,10 +344,21 @@ implements DefaultResultCodes {
          _sessionsByID = new ExpiryFolder(expiryStrategy, timeOut / 2L);
       }
 
-      // If a deployment has been set, log it
-      String deployment = properties.getProperty("org.xins.api.deployment");
-      if (deployment != null && deployment.length() > 0) {
-         LOG.info("Settings applied for deployment \"" + deployment + "\".");
+      // Get build-time properties
+      _deployment = properties.getProperty("org.xins.api.deployment");
+      _buildHost  = properties.getProperty("org.xins.api.build.host");
+      _buildTime  = properties.getProperty("org.xins.api.build.time");
+      if (_buildHost == null) {
+         throw new Exception("Build host name is not set.");
+      } else if (_buildTime == null) {
+         throw new Exception("Build time stamp is not set.");
+      }
+
+      // Log build-time properties
+      if (_deployment != null) {
+         LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
+      } else {
+         LOG.info("Built deployment \"" + _deployment + "\" on " + _buildHost + " (" + _buildTime + ").");
       }
 
       // Let the subclass perform initialization
@@ -1126,14 +1152,32 @@ implements DefaultResultCodes {
    private final void doGetSettings(CallContext context)
    throws IOException {
 
+      // Build: deployment, host name and time stamp
+      context.startTag("build");
+      if (_deployment != null) {
+         context.startTag("property");
+         context.attribute("name", "deployment");
+         context.pcdata(_deployment);
+         context.endTag();
+      }
+      context.startTag("property");
+      context.attribute("name", "host");
+      context.pcdata(_buildHost);
+      context.endTag();
+      context.startTag("property");
+      context.attribute("name", "time");
+      context.pcdata(_buildTime);
+      context.endTag();
+      context.endTag();
+
       // Initialization settings
       Enumeration names = _initSettings.propertyNames();
-      context.startTag("init-settings");
+      context.startTag("initialization");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = _initSettings.getProperty(key);
 
-         context.startTag("param");
+         context.startTag("property");
          context.attribute("name", key);
          context.pcdata(value);
          context.endTag();
@@ -1142,7 +1186,7 @@ implements DefaultResultCodes {
 
       // System properties
       names = System.getProperties().propertyNames();
-      context.startTag("system-properties");
+      context.startTag("runtime");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = System.getProperty(key);
