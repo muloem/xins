@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.122:
 
+* Generation of Java classes for types:
+  - Fixed bug in generated getItemByValue(String) method.
+
 * XINS/Java Server Framework:
   - Improved Javadoc documentation of a few classes, like APIServlet and API.
   - Improved error-checking and logging.
@@ -8,6 +11,9 @@ CHANGES INTRODUCED IN XINS 0.122:
   - Changed the interface of LifespanManager in an incompatible way. Warning:
     This may break existing code.
   - Supporting re-initialization of a LifespanManager.
+  - Successful result codes are no longer supported. Removed the corresponding
+    constructors and methods from the ResultCode class. This may break
+    existing code.
 
 * XINS/Java Client Framework:
   - Improved Javadoc for MultipleIPAddressesException class.
