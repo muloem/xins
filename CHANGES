@@ -2,7 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.208:
 
 * XINS/Java Common Library:
-  - Added the remove() method in PropectedPropertyReader. The set() method
+  - Added the remove() method in ProtectedPropertyReader. The set() method
     does not remove the property anymore if the value is null.
 
 * XINS/Java Client Framework:
@@ -10,6 +10,10 @@ CHANGES INTRODUCED IN XINS 0.208:
 
 * Logdoc
   - Removed unused log entries.
+
+* Generated specification documentation:
+  - Fixed the API owner is now printed correctly on the API page.
+    This bug has been in XINS since version 0.207.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.207:

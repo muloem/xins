@@ -61,14 +61,12 @@
 				<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@email" />
 			</xsl:variable>
 
-				<xsl:value-of select="$owner_name" />
-				(<a>
-					<xsl:attribute name="href">
-						<xsl:text>mailto:</xsl:text>
-						<xsl:value-of select="$owner_email" />
-					</xsl:attribute>
-				<xsl:value-of select="$owner_email" />
-				</a>)
+			<xsl:value-of select="$owner_name" />
+			<xsl:text> (&lt;a href="mailto:</xsl:text>
+			<xsl:value-of select="$owner_email" />
+			<xsl:text>"&gt;</xsl:text>
+			<xsl:value-of select="$owner_email" />
+			<xsl:text>&lt;/a&gt;)</xsl:text>
 		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

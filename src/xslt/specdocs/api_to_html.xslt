@@ -190,7 +190,7 @@
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="$owner_info != ''">
-						<xsl:value-of select="$owner_info"/>
+						<xsl:value-of select="$owner_info" disable-output-escaping="yes"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<em>No API Owner has been assigned to this API.</em>

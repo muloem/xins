@@ -44,7 +44,7 @@ package ]]></xsl:text>
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="$owner_info != ''">
-						<xsl:value-of select="$owner_info"/>
+						<xsl:value-of select="$owner_info" disable-output-escaping="yes"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>TODO</xsl:text>
