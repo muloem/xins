@@ -457,7 +457,7 @@ implements DefaultResultCodes {
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
-      Library.BOOTSTRAP_LOG.info("Session is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
+      Library.BOOTSTRAP_LOG.info("API is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
 
       // XXX: Allow configuration of session ID type ?
 
