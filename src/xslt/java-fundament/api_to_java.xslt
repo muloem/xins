@@ -130,7 +130,7 @@ public class APIImpl extends API {
          context.startResponse(false, "MissingFunctionName");
 </xsl:text>
 		<xsl:for-each select="//api/function">
-			<xsl:variable name="function_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', @name, '.fnc')" />
+			<xsl:variable name="function_file" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
 
 			<xsl:text>      } else if ("</xsl:text>
 			<xsl:value-of select="@name" />
@@ -177,7 +177,7 @@ public class APIImpl extends API {
 		<xsl:text>      } else if ("_GetFunctionList".equals(function)) {
          context.startResponse(true, null);</xsl:text>
 		<xsl:for-each select="//api/function">
-			<xsl:variable name="function_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', @name, '.fnc')" />
+			<xsl:variable name="function_file" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
 			<xsl:text>&#10;         context.startTag("function");</xsl:text>
 			<xsl:text>&#10;         context.attribute("name", "</xsl:text>
 			<xsl:value-of select="@name" />
