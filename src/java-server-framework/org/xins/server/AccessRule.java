@@ -4,7 +4,6 @@
 package org.xins.server;
 
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
@@ -256,22 +255,11 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      Logger log = Library.RUNTIME_ACL_LOG;
-
       if (_ipFilter.match(ip) == false) {
-         if (log.isDebugEnabled()) {
-            log.debug("AccessRule \"" + _asString + "\" mismatch. IP address \"" + ip + "\" unmatched.");
-         }
          return false;
       } else if (PATTERN_MATCHER.matches(functionName, _functionNamePattern) == false) {
-         if (log.isDebugEnabled()) {
-            log.debug("AccessRule \"" + _asString + "\" mismatch. IP address \"" + ip + "\" matches. Function name \"" + functionName + "\" unmatched.");
-         }
          return false;
       } else {
-         if (log.isDebugEnabled()) {
-            log.debug("AccessRule \"" + _asString + "\" match for IP address \"" + ip + "\"; function name \"" + functionName + "\".");
-         }
          return true;
       } 
    }
