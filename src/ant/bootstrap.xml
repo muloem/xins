@@ -13,7 +13,8 @@
 <project name="xins-bootstrap-ant" default="run" basedir=".">
 
 	<target name="run" depends="make-build">
-		<ant antfile="${project_home}/build/build.xml" target="${args}" dir="${pwd}"/>
+		<taskdef name="calltargets" classname="org.xins.common.ant.CallTargetsTask" classpath="${xins_home}/build/xins-common.jar" />
+		<calltargets antfile="${project_home}/build/build.xml" targets="${args}" dir="${pwd}"/>
 	</target>
 
 	<target name="make-build">
