@@ -37,6 +37,7 @@
 	<message entry="231">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime properties (<value-of-param name="configFile" format="quoted" />) kan niet uitgelezen worden vanwege een veiligheidsrestrictie. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="232">Het bestand met runtime properties (<value-of-param name="configFile" format="quoted" />) is niet gewijzigd.</message>
 	<message entry="233">De interval voor het controleren van het bestand met runtime-properties is gewijzigd van <value-of-param name="oldInterval" /> naar <value-of-param name="newInterval" /> seconden.</message>
+	<message entry="240">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is gewijzigs. XINS/Java Server Framework wordt opnieuw geinitialiseerd.</message>
 	<message entry="300">XINS/Java Server Framework wordt gedeinitialiseerd.</message>
 	<message entry="305">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="310">XINS/Java Server Framework is gedeinitialiseerd.</message>
