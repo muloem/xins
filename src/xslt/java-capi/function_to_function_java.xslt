@@ -96,9 +96,68 @@ extends org.xins.client.AbstractCAPIFunction {
 		<xsl:text>() {
       super("</xsl:text>
 		<xsl:value-of select="$functionName" />
-		<xsl:text><![CDATA[", null, null);
-      // TODO: Pass input constraints to superclass
-      // TODO: Pass output constraints to superclass
+		<xsl:text>",
+            new org.xins.client.Constraint[] {</xsl:text>
+		<!-- Required input parameters -->
+		<xsl:for-each select="input/param[@required='true']">
+			<xsl:text>
+               new org.xins.client.RequiredParamConstraint("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>"),</xsl:text>
+		</xsl:for-each>
+
+		<!-- TODO: Input parameter types -->
+		<xsl:for-each select="input/param[string-length(@type) &gt; 1 and not (@type = '_text')]">
+			<xsl:text>
+               new org.xins.client.TypedParamConstraint("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", </xsl:text>
+
+			<xsl:call-template name="javatypeclass_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+
+			<xsl:text>.SINGLETON),</xsl:text>
+		</xsl:for-each>
+
+		<!-- TODO: Input parameter combos type 1 -->
+		<!-- TODO: Input parameter combos type 2 -->
+		<!-- TODO: Input parameter combos type 3 -->
+		<xsl:text>},
+            new org.xins.client.Constraint[] {</xsl:text>
+
+		<!-- Required output parameters -->
+		<xsl:for-each select="output/param[@required='true']">
+			<xsl:text>
+               new org.xins.client.RequiredParamConstraint("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>"),</xsl:text>
+		</xsl:for-each>
+
+		<!-- Output parameter types -->
+		<xsl:for-each select="output/param[string-length(@type) &gt; 1 and not (@type = '_text')]">
+			<xsl:text>
+               new org.xins.client.TypedParamConstraint("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", </xsl:text>
+
+			<xsl:call-template name="javatypeclass_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+
+			<xsl:text>.SINGLETON),</xsl:text>
+		</xsl:for-each>
+
+		<!-- TODO: Output parameter combos type 1 -->
+		<!-- TODO: Output parameter combos type 2 -->
+		<!-- TODO: Output parameter combos type 3 -->
+		<xsl:text>});
    }
 
 
@@ -109,7 +168,7 @@ extends org.xins.client.AbstractCAPIFunction {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-}]]>
+}
 </xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
