@@ -68,6 +68,7 @@ XINS/JAVA CLIENT FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
+* Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
 * Add DateType class to represent standard type '_date'. Add Date class to
   represent an actual date and make this the value class for the DateType.
