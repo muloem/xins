@@ -100,7 +100,7 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Make XINSCallResult extend CallResult
 [x] Implement createCallResult method in class XINSServiceCaller
 [ ] Document what kind of exception to expect in what case
-[ ] Document when fail-over will be applied and when not
+[x] Document when fail-over will be applied and when not
 [x] Do not access (private) XINSCallResult.Data fields directly
 [x] Externalize inner class XINSCallResult.Data to interface XINSCallResultData
 [x] Make XINSCallResultParser.Handler implement XINSCallResultData
