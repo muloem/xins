@@ -50,15 +50,15 @@ import org.xins.util.servlet.ServletConfigPropertyReader;
  * response code will be returned:
  *
  * <table class="APIServlet_HTTP_response_codes">
- *    <tr><th>State</th>                     <th>HTTP response code</th>     </tr>
- *    <tr><td>Initial</td>                   <td>503 Service Unavailable</td></tr>
- *    <tr><td>Bootstrapping framework</td>   <td>503 Service Unavailable</td></tr>
+ *    <tr><th>State</th>                     <th>HTTP response code</th>       </tr>
+ *    <tr><td>Initial</td>                   <td>503 Service Unavailable</td>  </tr>
+ *    <tr><td>Bootstrapping framework</td>   <td>503 Service Unavailable</td>  </tr>
  *    <tr><td>Framework bootstrap failed</td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Constructing API</td>          <td>503 Service Unavailable</td></tr>
+ *    <tr><td>Constructing API</td>          <td>503 Service Unavailable</td>  </tr>
  *    <tr><td>API construction failed</td>   <td>500 Internal Server Error</td></tr>
- *    <tr><td>Bootstrapping API</td>         <td>503 Service Unavailable</td></tr>
+ *    <tr><td>Bootstrapping API</td>         <td>503 Service Unavailable</td>  </tr>
  *    <tr><td>API bootstrap failed</td>      <td>500 Internal Server Error</td></tr>
- *    <tr><td>Initializing API</td>          <td>503 Service Unavailable</td></tr>
+ *    <tr><td>Initializing API</td>          <td>503 Service Unavailable</td>  </tr>
  *    <tr><td>API initialization failed</td> <td>500 Internal Server Error</td></tr>
  *    <tr><td>Disposing</td>                 <td>500 Internal Server Error</td></tr>
  *    <tr><td>Disposed</td>                  <td>500 Internal Server Error</td></tr>
