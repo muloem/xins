@@ -19,7 +19,8 @@ $Id$
 	<xsl:param name="builddir"     />
 	
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
-	<xsl:variable name="xins_jar"     select="concat($xins_home, '/build/xins-server.jar')" />
+	<xsl:variable name="xins-common.jar" select="concat($xins_home, '/build/xins-common.jar')" />
+	<xsl:variable name="xins-server.jar" select="concat($xins_home, '/build/xins-server.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
@@ -284,7 +285,8 @@ $Id$
 							debug="true"
 							deprecation="true">
 							<classpath>
-								<pathelement path="{$xins_jar}" />
+								<pathelement path="{$xins-common.jar}" />
+								<pathelement path="{$xins-server.jar}" />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
@@ -314,6 +316,7 @@ $Id$
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">
+							<lib dir="{$xins_home}/build"                       includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
 							<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 							<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
