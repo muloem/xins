@@ -64,7 +64,7 @@
 		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
 	</target>
 
-	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
+	<target name="-javadoc-sourcepath-nojdksrc" depends="-servlet-avail,-prepare,-jdksrc-avail" unless="jdksrc.available">
 		<property name="javadoc.sourcepath" value="src/java-server-framework" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
