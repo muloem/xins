@@ -8,18 +8,17 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
 * General:
   - Changed all Java code and the tests so that the XINS code now executes on
-    Java 1.3 as well. In fact all unit tests were tested successfully on the
-    following Java VMs:
-    . Sun Java 1.3.1_15 (Linux/x86)
-    . Sun Java 1.4.2_06 (Linux/x86)
-    . Sun Java 1.5.0_01 (Linux/x86)
-    . Sun Java 1.6.0 Early Access, Jan 20 2005 (Linux/x86)
+    Java 1.3 as well (SF.net RFE #1108205). All unit tests were tested
+    successfully on the following Java VMs:
+    . Sun Java 1.3.1_15 (Linux 2.6/x86)
+    . Sun Java 1.4.2_06 (Linux 2.6/x86)
+    . Sun Java 1.4.2_06 (Windows 2000/x86)
+    . Sun Java 1.5.0_01 (Linux 2.6/x86)
+    . Sun Java 1.6.0 Early Access, Jan 20 2005 (Linux 2.6/x86)
 
 * Logdoc:
-  - Changed LogdocExceptionUtils class to be compatible with Java 1.3 (part of
-    SF.net RFE #1108205). Used the unit tests to confirm it still works
-    correctly under Java 1.4.  Although it indeed compiles with Java 1.3 now,
-    the unit tests cannot be run with Java 1.3 yet.
+  - Deprecated the LogdocExceptionUtils class in favor of a new ExceptionUtils
+    class.
 
 * XINS/Java Common Library:
   - Fixed SF.net bug #1105761: ExpiryFolder constructor log message incorrect.
@@ -29,22 +28,21 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     classes. The tests have been extended a lot. They now also test the
     addListener and removeListener methods and the listener callback. Improved
     the logging in the ExpiryStrategy; added log messages 1404-1407.
-  - Changed ExceptionUtils class to be compatible with Java 1.3 (part of
-    SF.net RFE #1108205). Used the unit tests to confirm it still works
-    correctly under Java 1.4.  Although it indeed compiles with Java 1.3 now,
-    the unit tests cannot be run with Java 1.3 yet.
-  - Added Java version retrieval function to Utils class.
-  - Implemented SF.net RFE #1107376: Added test for socket time-outs in the
-    HTTPServiceCaller class.
+  - Deprecated the org.xins.common.ExceptionUtils class in favor of the
+    org.xins.logdoc.ExceptionUtils class.
+    correctly under Java 1.4.
+  - Added a Java version retrieval function to the Utils class.
+  - Implemented SF.net RFE #1107376: Added a unit test for socket time-outs in
+    the HTTPServiceCaller class.
 
 * XINS/Java Client Framework:
-  - Changed access level of setUnsuccessfulXINSCallExceptionFactory and
-    getUnsuccessfulXINSCallExceptionFactory in class XINSCallRequest from
-    public to package-private.
   - Fixed bug 1109810: Incorrect parsing of the returned XML.
+  - Changed access level of the setUnsuccessfulXINSCallExceptionFactory and
+    getUnsuccessfulXINSCallExceptionFactory methods in class XINSCallRequest
+    from public to package-private.
 
 * XINS/Java Server Framework:
-  - Added custom calling convention.
+  - Added support for custom calling conventions.
 
 * Build and release process:
   - Added -init-release in the dependencies to facilitate the making of a
@@ -66,6 +64,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Improved performance of tests. Starting server before any of the tests.
     After all tests are run, the server is stopped.
   - Showing standard output and standard error in the generated HTML page.
+  - Now logging the output to the console (so it is displayed in the HTML
+    page) instead of to a file.
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.2 to 3.0-beta1.
