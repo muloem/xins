@@ -23,21 +23,34 @@ import org.xins.common.collections.PropertyReader;
  *
  * <blockquote><code>backend=service, http://somehost/, 20000</code></blockquote>
  *
- * <p>The next example is the definition of 2 backends, of which one will be
- * chosen randomly. The time-out is set to 10 seconds for one, and to 12.5
- * seconds for the other. This setting is identified by the property name
+ * <p>The next example is the definition of 4 backends, of which one will be
+ * chosen randomly. This setting is identified by the property name
  * <code>"capi.sso"</code>:
  *
- * <blockquote><code>capi.sso=group, random, host1a, host3c
- * <br>capi.sso.host1a=service, http://somehost/, 10000
- * <br>capi.sso.host3c=service, http://othrhost/, 12500</code></blockquote>
+ * <blockquote><code># The root definition "capi.sso"
+ * <br>capi.sso=group, random, target1, target2, target3, target4
+ * <br>
+ * <br># Total time-out is 12.5 seconds, no connection time-out and no socket
+ * <br># time-out
+ * <br>capi.sso.target1=service, http://somehost/, 12500
+ * <br>
+ * <br># Total time-out is 12.5 seconds, connection time-out is 4 seconds and
+ * <br># no socket time-out
+ * <br>capi.sso.target2=service, http://othrhost/, 12500, 4000
+ * <br>
+ * <br># Total time-out is 12.5 seconds, connection time-out is 4 seconds,
+ * <br># socket time-out is 2 seconds
+ * <br>capi.sso.target3=service, http://othrhost:2001/, 12500, 4000, 2000
+ * <br>
+ * <br># Total time-out is not set, connection time-out is not set and socket
+ * <br># time-out is 2 seconds
+ * <br>capi.sso.target4=service, http://othrhost:2002/, 0, 0, 2000</code></blockquote>
  *
- * <p>The last example is the most complex. It defines 2 backends at a more
- * preferred location and one at a less-preferred location. Normally one of
- * the 2 backends at the preferred location will be chosen randomly, but if
- * none is available, then the backend at the less preferred location will be
- * tried. The time-out for all backends in 8 seconds. The name of the property
- * is <code>"ldap"</code>.
+ * <p>The last example defines 2 backends at a more preferred location and 1
+ * at a less-preferred location. Normally one of the 2 backends at the
+ * preferred location will be chosen randomly, but if none is available, then
+ * the backend at the less preferred location will be tried. The time-out for
+ * all backends in 8 seconds. The name of the property is <code>"ldap"</code>:
  *
  * <blockquote><code>ldap=group, ordered, loc1, host2a
  * <br>ldap.loc1=group, random, host1a, host1b
@@ -213,19 +226,56 @@ public final class DescriptorBuilder extends Object {
 
       // Parse service descriptor
       if (SERVICE_DESCRIPTOR_TYPE.equals(descriptorType)) {
-         if (tokenCount != 3) {
+         if (tokenCount < 3 || tokenCount > 5) {
             throw new InvalidPropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
+
+         // Determine URL
          String url = tokens[1];
+
+         // Determine the total time-out (mandatory)
          int timeOut;
          try {
             timeOut = Integer.parseInt(tokens[2]);
          } catch (NumberFormatException nfe) {
-            throw new InvalidPropertyValueException(propertyName, value, "Unable to parse time-out.");
+            throw new InvalidPropertyValueException(propertyName, value, "Unable to parse total time-out as a 32-bit integer number.");
+         }
+         if (timeOut < 0) {
+            throw new InvalidPropertyValueException(propertyName, value, "Total time-out is negative.");
+         }
+
+         // Determine the connection time-out (optional)
+         int connectionTimeOut;
+         if (tokenCount > 3) {
+            try {
+               connectionTimeOut = Integer.parseInt(tokens[3]);
+            } catch (NumberFormatException nfe) {
+               throw new InvalidPropertyValueException(propertyName, value, "Unable to parse connection time-out as a 32-bit integer number.");
+            }
+            if (connectionTimeOut < 0) {
+               throw new InvalidPropertyValueException(propertyName, value, "Connection time-out is negative.");
+            }
+         } else {
+            connectionTimeOut = 0;
+         }
+
+         // Determine the socket time-out (optional)
+         int socketTimeOut;
+         if (tokenCount > 4) {
+            try {
+               socketTimeOut = Integer.parseInt(tokens[4]);
+            } catch (NumberFormatException nfe) {
+               throw new InvalidPropertyValueException(propertyName, value, "Unable to parse socket time-out as a 32-bit integer number.");
+            }
+            if (socketTimeOut < 0) {
+               throw new InvalidPropertyValueException(propertyName, value, "Socket time-out is negative.");
+            }
+         } else {
+            socketTimeOut = 0;
          }
 
          try {
-            return new TargetDescriptor(url, timeOut);
+            return new TargetDescriptor(url, timeOut, connectionTimeOut, socketTimeOut);
          } catch (MalformedURLException exception) {
             Log.log_3303(exception, url);
             throw new InvalidPropertyValueException(propertyName, value, "Malformed URL.");
