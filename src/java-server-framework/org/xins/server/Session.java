@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.types.Type;
+import org.xins.types.TypeValueException;
 
 /**
  * Session.
@@ -42,14 +43,18 @@ extends Object {
    /**
     * Constructs a new <code>Session</code> with the specified ID.
     *
+    * @param api
+    *    the API this session is associated with, cannot be <code>null</code>.
+    *
     * @param id
     *    the identifier for this session, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>id == null</code>.
+    *    if <code>api == null || id == null</code>.
     */
-   public Session(String id) {
-      MandatoryArgumentChecker.check("id", id);
+   public Session(API api, Object id) {
+      MandatoryArgumentChecker.check("api", api, "id", id);
+      _sessionIDType = api.getSessionIDType();
       _id  = id;
    }
 
@@ -59,9 +64,15 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The session ID type associated with this session, never
+    * <code>null</code>.
+    */
+   private final SessionID _sessionIDType;
+
+   /**
     * The identifier for this session.
     */
-   private final String _id;
+   private final Object _id;
 
    /**
     * Attributes for this session. This map contains {@link String} keys and
@@ -78,13 +89,41 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Gets the session ID type for this session.
+    *
+    * @return
+    *    the session ID type associated with this session, never
+    *    <code>null</code>.
+    */
+   public SessionID getSessionIDType() {
+      return _sessionIDType;
+   }
+
+   /**
     * Gets the identifier.
     *
     * @return
     *    the identifier, never <code>null</code>.
     */
-   public String getID() {
+   public Object getID() {
       return _id;
+   }
+
+   /**
+    * Gets the identifier, converted to a string.
+    *
+    * @return
+    *    the session ID, converted to a {@link String}, never
+    *    <code>null</code>.
+    */
+   public String getIDString() {
+      try {
+         return getSessionIDType().toString(_id);
+      } catch (TypeValueException exception) {
+         String message = "Caught unexpected " + exception.getClass().getName() + '.';
+         LOG.error(message, exception);
+         throw new InternalError(message);
+      }
    }
 
    /**
