@@ -4,17 +4,13 @@
 package org.xins.logdoc;
 
 /**
- * Fast, unsynchronized string buffer implementation.
- * This class is a copy of the FastStringBuffer class in the package
- * org.xins.common.text. This file has been copied to make the library
- * logdoc.jar independant from the xins-commons.jar file.
- * The reference to org.xins.common.Log and
- * org.xins.common.MandatoryArgumentChecker have been removed.
+ * Fast, unsynchronized string buffer implementation, specifically for Logdoc
+ * classes.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public class LogdocStringBuffer {
+public class LogdocStringBuffer extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -29,8 +25,8 @@ public class LogdocStringBuffer {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>LogdocStringBuffer</code> object with the specified
-    * initial capacity.
+    * Constructs a new <code>LogdocStringBuffer</code> object with the
+    * specified initial capacity.
     *
     * @param capacity
     *    the initial capacity, must be &gt;= 0.
@@ -139,7 +135,7 @@ public class LogdocStringBuffer {
 
       // Increase capacity if needed
       if (current < needed) {
-         int newCapacity = needed + 16; // XXX: Is this okay?
+         int newCapacity = needed * 2; // XXX: Is this okay?
 
          char[] newBuffer = new char[newCapacity];
          System.arraycopy(_buffer, 0, newBuffer, 0, current);
@@ -152,15 +148,12 @@ public class LogdocStringBuffer {
     * string buffer will be increased.
     *
     * @param b
-    *    the boolean to append.
+    *    the boolean to append, if it is <code>true</code> then the string
+    *    <code>"true"</code> will be appended, otherwise the string
+    *    <code>"false"</code> will be appended..
     */
    public void append(boolean b) {
-
-      if (b) {
-         append("true");
-      } else {
-         append("false");
-      }
+      append(b ? "true" : "false");
    }
 
    /**
@@ -195,11 +188,15 @@ public class LogdocStringBuffer {
       // Check preconditions
       MandatoryArgumentChecker.check("cbuf", cbuf);
 
+      int newLength = _length + cbuf.length;
+
       // Ensure there is enough capacity
-      ensureCapacity(_length + cbuf.length);
+      ensureCapacity(newLength);
 
       // Copy the data into the internal buffer
       System.arraycopy(cbuf, 0, _buffer, _length, cbuf.length);
+
+      _length = newLength;
    }
 
    /**
@@ -239,11 +236,15 @@ public class LogdocStringBuffer {
          throw new IllegalArgumentException("off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
       }
 
+      int newLength = _length + len;
+
       // Ensure there is enough capacity
-      ensureCapacity(_length + len);
+      ensureCapacity(newLength);
 
       // Copy the data into the internal buffer
       System.arraycopy(cbuf, off, _buffer, _length, len);
+
+      _length = newLength;
    }
 
    /**
@@ -405,6 +406,14 @@ public class LogdocStringBuffer {
       _length = 0;
    }
 
+   /**
+    * Converts the contents of this buffer to a <code>String</code> object. A
+    * new {@link String} object is created each time this method is called.
+    *
+    * @return
+    *    a newly constructed {@link String} that contains the same characters
+    *    as this string buffer object, never <code>null</code>.
+    */
    public String toString() {
       return new String(_buffer, 0, _length);
    }
