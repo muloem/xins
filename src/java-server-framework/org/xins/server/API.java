@@ -596,9 +596,9 @@ implements DefaultResultCodes {
 
       // Check state
       Manageable.State state = getState();
-      if (state != BOOTSTRAPPING) {
+      if (state != UNUSABLE) {
          Log.log_1437(state.getName());
-         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
+         throw new IllegalStateException("State is " + state + " instead of " + UNUSABLE + '.');
       }
 
       _functionsByName.put(function.getName(), function);

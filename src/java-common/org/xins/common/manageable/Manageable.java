@@ -401,7 +401,7 @@ public abstract class Manageable extends Object {
       } finally {
          synchronized (_stateLock) {
             if (done) {
-               _state = USABLE;
+               _state = UNUSABLE;
             } else {
                _state = BOOTSTRAPPED;
             }
