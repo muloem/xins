@@ -36,7 +36,9 @@ Adapt HTTP service caller to build upon improved service framework:
 [ ] Throw UnexpectedExceptionCallException when appropriate
 [ ] Throw IOCallException when appropriate
 [ ] Throw StatusCodeHTTPCallException when appropriate
-[ ] Add call(TargetDescriptor,HTTPCallRequest) to HTTPServiceCaller
+[x] Add call(TargetDescriptor,HTTPCallRequest) to HTTPServiceCaller
+[x] Add getStatusCode() to HTTPServiceCaller.Result to replace getErrorCode()
+[x] Remove getErrorCode() in class HTTPServiceCaller.Result
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Rename CallException to XINSCallException
@@ -54,8 +56,9 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
 [ ] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
-[ ] Construct the HttpMethod object in the CallExecutor class    [LOW PRIO]
-[ ] Always throw XINSCallException, never RuntimeException/Error [LOW PRIO]
+[ ] Construct the HttpMethod object in the CallExecutor class
+[ ] Always throw XINSCallException, never RuntimeException/Error
+[ ] Use HttpServiceCaller for the actual call
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
