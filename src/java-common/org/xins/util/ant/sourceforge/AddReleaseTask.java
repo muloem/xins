@@ -118,6 +118,25 @@ public class AddReleaseTask extends Task {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the given <code>String</code> unless it is an empty string, in
+    * which case <code>null</code> is returned.
+    *
+    * @param s
+    *    the input {@link String}, can be <code>null</code>.
+    *
+    * @return
+    *    the input {@link String}, unless it is empty, in which case
+    *    <code>null</code> is returned.
+    */
+   private String nullIfEmpty(String s) {
+      if (s == null || s.length() < 1) {
+         return null;
+      } else {
+         return s;
+      }
+   }
+
+   /**
     * Indicates if upload failures should be ignored.
     *
     * @param cond
@@ -135,11 +154,7 @@ public class AddReleaseTask extends Task {
     *    the SourceForge user.
     */
    public void setUser(String user) {
-      if (user == null || user.length() < 1) {
-         _user = null;
-      } else {
-         _user = user;
-      }
+      _user = nullIfEmpty(user);
    }
 
    /**
@@ -150,11 +165,7 @@ public class AddReleaseTask extends Task {
     *    the password for the SourceForge user.
     */
    public void setPassword(String password) {
-      if (password == null || password.length() < 1) {
-         _password = null;
-      } else {
-         _password = password;
-      }
+      _password = nullIfEmpty(password);;
    }
 
    /**
@@ -165,11 +176,7 @@ public class AddReleaseTask extends Task {
     *    the path to the file to upload.
     */
    public void setFile(String file) {
-      if (file == null || file.length() < 1) {
-         _file = null;
-      } else {
-         _file = file;
-      }
+      _file = nullIfEmpty(file);;
    }
 
    /**
@@ -180,11 +187,7 @@ public class AddReleaseTask extends Task {
     *    the SourceForge group ID.
     */
    public void setGroup(String groupID) {
-      if (groupID == null || groupID.length() < 1) {
-         _groupID = null;
-      } else {
-         _groupID = groupID;
-      }
+      _groupID = nullIfEmpty(groupID);;
    }
 
    /**
@@ -195,11 +198,7 @@ public class AddReleaseTask extends Task {
     *    the SourceForge package ID.
     */
    public void setPackage(String packageID) {
-      if (packageID == null || packageID.length() < 1) {
-         _packageID = null;
-      } else {
-         _packageID = packageID;
-      }
+      _packageID = nullIfEmpty(packageID);
    }
 
    /**
@@ -210,11 +209,7 @@ public class AddReleaseTask extends Task {
     *    the name for this release.
     */
    public void setRelease(String releaseName) {
-      if (releaseName == null || releaseName.length() < 1) {
-         _releaseName = null;
-      } else {
-         _releaseName = releaseName;
-      }
+      _releaseName = nullIfEmpty(releaseName);
    }
 
    /**
@@ -225,11 +220,7 @@ public class AddReleaseTask extends Task {
     *    the location of the keystore file.
     */
    public void setKeystore(String keystore) {
-      if (keystore == null || keystore.length() < 1) {
-         _keystore = null;
-      } else {
-         _keystore = keystore;
-      }
+      _keystore = nullIfEmpty(keystore);
    }
 
    /**
