@@ -121,7 +121,7 @@ public class APIImpl extends API {
    //-------------------------------------------------------------------------
 
    protected void handleCall(CallContext context)
-   throws IOException {
+   throws Throwable {
       String function = context.getParameter("function");
 </xsl:text>
 		<!-- TODO: Default functions -->
