@@ -58,9 +58,6 @@ final class CallResultOutputter extends Object {
     * @param result
     *    the call result to convert to XML, cannot be <code>null</code>.
     *
-    * @param xslt
-    *    the URL of the XSLT to link to, can be <code>null</code>.
-    *
     * @param compatibility
     *    the compatibility format for the generated output,
     *    can be <code>null</code>.
@@ -73,12 +70,10 @@ final class CallResultOutputter extends Object {
     * @throws IOException
     *    if there was an I/O error while writing to the output stream.
     */
-   public static void output(PrintWriter out,
-                             String encoding,
+   public static void output(PrintWriter    out,
+                             String         encoding,
                              FunctionResult result,
-                             String xslt,
-                             String compatibility,
-                             String xsltUrl)
+                             String         compatibility)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
@@ -86,34 +81,20 @@ final class CallResultOutputter extends Object {
                                      "encoding", encoding,
                                      "result",   result);
 
-      // If the XML should be tranformed store the result in a String
-      Writer output = null;
-      if (xsltUrl == null) {
-         output = out;
-      } else {
-         output = new StringWriter();
-      }
-
       // Create an XMLOutputter
-      XMLOutputter outputter = new XMLOutputter(output, encoding);
+      XMLOutputter xmlout = new XMLOutputter(out, encoding);
 
       // Output the declaration
       // XXX: Make it configurable whether the declaration is output or not?
-      outputter.declaration();
-
-      // Output an xml-stylesheet processing instruction, if appropriate
-      if (xslt != null) {
-         outputter.pi("xml-stylesheet",
-                      "type=\"text/xsl\" href=\"" + xslt + "\"");
-      }
+      xmlout.declaration();
 
       // Write the result start tag
-      outputter.startTag("result");
+      xmlout.startTag("result");
 
       // Write the error code
       String code = result.getErrorCode();
       if (code != null) {
-         outputter.attribute("errorcode", code);
+         xmlout.attribute("errorcode", code);
       }
 
       if (compatibility != null && compatibility.equals("alpha")) {
@@ -121,13 +102,13 @@ final class CallResultOutputter extends Object {
          if (code != null) {
             // XXX: For backwards compatibility, write the error code in the
             //      'code' attribute and set the 'success' attribute to 'false'
-            outputter.attribute("code", code);
-            outputter.attribute("success", "false");
+            xmlout.attribute("code", code);
+            xmlout.attribute("success", "false");
 
          // XXX: For backwards compatibility, set the 'success' attribute to
          //      'true'
          } else {
-            outputter.attribute("success", "true");
+            xmlout.attribute("success", "true");
          }
       }
 
@@ -139,66 +120,43 @@ final class CallResultOutputter extends Object {
             String name  = (String) names.next();
             String value = params.get(name);
 
-            outputter.startTag("param");
-            outputter.attribute("name", name);
-            outputter.pcdata(value);
-            outputter.endTag(); // param
+            xmlout.startTag("param");
+            xmlout.attribute("name", name);
+            xmlout.pcdata(value);
+            xmlout.endTag(); // param
          }
       }
 
       // Write the data element
       Element dataElement = result.getDataElement();
       if (dataElement != null) {
-         output(outputter, dataElement);
+         output(xmlout, dataElement);
       }
 
-      outputter.endTag(); // result
-
-      // Transform the result with the given XSLT.
-      if (xsltUrl != null) {
-         String originalResult = output.toString();
-         try {
-            Source xmlSource = new StreamSource(originalResult);
-            Result xmlResult = new StreamResult(out);
-
-            // Create transformer factory
-            TransformerFactory factory = TransformerFactory.newInstance();
-
-            // Use the factory to create a template containing the xsl file
-            InputStream urlStream = new URL(xsltUrl).openStream();
-            Templates template = factory.newTemplates(new StreamSource(urlStream));
-            urlStream.close();
-
-            // Use the template to create a transformer
-            Transformer xformer = template.newTransformer();
-            xformer.transform(xmlSource, xmlResult);
-         } catch (Exception ex) {
-            out.write(originalResult);
-         }
-      }
+      xmlout.endTag(); // result
    }
 
    /**
     * Generates XML for the specified element.
     *
-    * @param outputter
-    *    the XML outputter to use, cannot be <code>null</code>.
+    * @param xmlout
+    *    the {@link XMLOutputter} to use, cannot be <code>null</code>.
     *
     * @param element
     *    the {@link Element} object to convert to XML, cannot be
     *    <code>null</code>.
     *
     * @throws NullPointerException
-    *    if <code>outputter == null || element == null</code>.
+    *    if <code>xmlout == null || element == null</code>.
     *
     * @throws IOException
     *    if there is an I/O error.
     */
-   private static final void output(XMLOutputter outputter, Element element)
+   private static final void output(XMLOutputter xmlout, Element element)
    throws NullPointerException, IOException {
 
       // Start the tag
-      outputter.startTag(element.getType());
+      xmlout.startTag(element.getType());
 
       // Write the attributes
       PropertyReader attributes = element.getAttributes();
@@ -206,7 +164,7 @@ final class CallResultOutputter extends Object {
       while (names.hasNext()) {
          String name  = (String) names.next();
          String value = attributes.get(name);
-         outputter.attribute(name, value);
+         xmlout.attribute(name, value);
       }
 
       // Process all contained elements and PCDATA sections
@@ -215,14 +173,14 @@ final class CallResultOutputter extends Object {
       for (int i = 0; i < count; i++) {
          Object o = content.get(i);
          if (o instanceof Element) {
-            output(outputter, (Element) o);
+            output(xmlout, (Element) o);
          } else {
-            outputter.pcdata((String) o);
+            xmlout.pcdata((String) o);
          }
       }
 
       // End the tag
-      outputter.endTag();
+      xmlout.endTag();
    }
 
 
