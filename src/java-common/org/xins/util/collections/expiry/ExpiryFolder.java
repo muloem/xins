@@ -138,32 +138,35 @@ extends Object {
       _recentlyAccessedDoorman.enterAsWriter();
 
       // Then enter the protected area for '_slots' as well
-      // is the most difficult to enter
       _slotsDoorman.enterAsWriter();
 
+      // Keep a link to the old map with recently accessed elements and then
+      // reset _recentlyAccessed so we can leave the protected area for
+      // '_recentlyAccessed' right away
+      Map oldRecentlyAccessed = _recentlyAccessed;
+      _recentlyAccessed = new HashMap();
+
+      // Leave the protected area for '_recentlyAccessed' first, because that
+      // is the heaviest used
+      _recentlyAccessedDoorman.leaveAsWriter();
+
+      // Shift the slots
+      Map toBeExpired = _slots[_lastSlot];
+      for (int i = _lastSlot; i > 0; i--) {
+         _slots[i] = _slots[i - 1];
+      }
+      _slots[0] = oldRecentlyAccessed;
+
+      // Leave the protected area for '_slots' as well.
+      _slotsDoorman.leaveAsWriter();
+
+      // Adjust the size
       synchronized (_sizeLock) {
-
-         // Keep a link to the old map with recently accessed elements and then
-         // reset _recentlyAccessed so we can leave the protected area for
-         // '_recentlyAccessed' right away
-         Map oldRecentlyAccessed = _recentlyAccessed;
-         _recentlyAccessed = new HashMap();
-
-         // Leave the protected area for '_recentlyAccessed' first, because that
-         // is the heaviest used
-         _recentlyAccessedDoorman.leaveAsWriter();
-
-         // Shift the slots
-         Map toBeExpired = _slots[_lastSlot];
          _size -= toBeExpired.size();
-         for (int i = _lastSlot; i > 0; i--) {
-            _slots[i] = _slots[i - 1];
-         }
-         _slots[0] = oldRecentlyAccessed;
       }
 
-      // Then leave the protected area for '_slots' as well.
-      _slotsDoorman.leaveAsWriter();
+      // Invalidate the reference to the set of expired entries
+      toBeExpired = null;
    }
 
    /**
@@ -182,6 +185,9 @@ extends Object {
     * Gets the value associated with a key. If the key is found, then the
     * expiry time-out for the matching entry will be reset.
     *
+    * <p>The more recently the specified entry accessed, the faster the
+    * lookup.
+    *
     * @param key
     *    the key to lookup, cannot be <code>null</code>.
     *
@@ -198,9 +204,21 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // TODO
+      // Search in the recently accessed map before
+      _recentlyAccessedDoorman.enterAsReader();
+      Object o = _recentlyAccessed.get(key);
+      _recentlyAccessedDoorman.leaveAsReader();
 
-      return null;
+      // If not found, then look in the slots
+      if (o == null) {
+         _slotsDoorman.enterAsReader();
+         for (int i = 0; i < _slotCount && o == null; i++) {
+            o = _slots[i].get(key);
+         }
+         _slotsDoorman.leaveAsReader();
+      }
+
+      return o;
    }
 
    /**
@@ -221,8 +239,12 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key, "value", value);
 
-      // TODO
+      // Store the association in the set of recently accessed entries
+      _recentlyAccessedDoorman.enterAsWriter();
+      _recentlyAccessed.put(key, value);
+      _recentlyAccessedDoorman.leaveAsWriter();
 
+      // Bump the size
       synchronized (_sizeLock) {
          _size++;
       }
