@@ -21,7 +21,7 @@ extends Object {
    /**
     * All registered <code>LogController</code> instances.
     *
-    * @see #registerLog(LogController)
+    * @see #registerLog(AbstractLog.LogController)
     */
    private static AbstractLog.LogController[] CONTROLLERS;
 
