@@ -20,7 +20,6 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
 
-* Complete to logdoc-approach.
 * Log calls to meta-functions, especially _PerformGC, _DisableFunction and
   _EnableFunction.
 * Include the timezone in every message that contains a time.
@@ -110,7 +109,9 @@ LOGDOC
 * Add AbstractLog class that defines getDomain() method.
 * Add org.logdoc package with class LogCentral with method 'void
   registerLog(AbstractLog)' and 'AbstractLog getLogByDomain(String)'.
-* Add the French translation : xins\src\logdoc\translation-bundle-fr_FR.xml
+* Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
+* Support element in log.xml to reserve an ID that was previously used. For
+  example <reserve id="5002" />
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
