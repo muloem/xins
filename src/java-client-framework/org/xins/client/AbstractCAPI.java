@@ -51,6 +51,10 @@ public abstract class AbstractCAPI extends Object {
     * @param descriptor
     *    the descriptor for the service(s), cannot be <code>null</code>.
     *
+    * @param callConfig
+    *    fallback configuration for the calls, or <code>null</code> if a
+    *    default should be used.
+    *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     *

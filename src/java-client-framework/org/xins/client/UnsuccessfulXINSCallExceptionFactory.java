@@ -108,7 +108,7 @@ extends Object {
          throw new IllegalArgumentException("resultData.getErrorCode() == null");
       }
 
-      String       THIS_CLASS  = getClass().getName();
+      final String THIS_CLASS  = getClass().getName();
       final String IMPL_METHOD = "createImpl(XINSCallRequest,TargetDescriptor,long,XINSCallResultData)";
 
       // Delegate to the implementation method

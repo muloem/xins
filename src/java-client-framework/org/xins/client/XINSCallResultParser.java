@@ -114,6 +114,10 @@ extends Object {
     */
    private static final State FINISHED = new State("FINISHED");
 
+   /**
+    * The factory for SAX parsers. This field is never <code>null</code>, it
+    * is initialized by a class initializer.
+    */
    private static final SAXParserFactory SAX_PARSER_FACTORY;
 
 

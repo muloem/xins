@@ -93,6 +93,11 @@ public final class XINSCallRequest extends CallRequest {
     */
    private static int INSTANCE_COUNT;
 
+   /**
+    * Secret key used to set the HTTP parameters.
+    */
+   private static final Object SECRET_KEY = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -291,11 +296,6 @@ public final class XINSCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
-    * Secret key used to set the HTTP parameters.
-    */
-   private final Object SECRET_KEY = new Object();
-
-   /**
     * The 1-based sequence number of this instance. Since this number is
     * 1-based, the first instance of this class will have instance number 1
     * assigned to it.
@@ -445,7 +445,8 @@ public final class XINSCallRequest extends CallRequest {
    UnsuccessfulXINSCallException
    createUnsuccessfulXINSCallException(TargetDescriptor   target,
                                        long               duration,
-                                       XINSCallResultData resultData) {
+                                       XINSCallResultData resultData)
+   throws IllegalArgumentException {
       return _uxceFactory.create(this, target, duration, resultData);
    }
 
@@ -504,17 +505,18 @@ public final class XINSCallRequest extends CallRequest {
     *    none.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionName == null</code> or if <code>parameters</code>
-    *    contains a name that does not match the constraints for a parameter
-    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
+    *    if <code>parameters</code> contains a name that does not match the
+    *    constraints for a parameter name, see
+    *    {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
     *    <code>"function"</code>, which is currently still reserved.
     *
     * @since XINS 1.1.0
     */
-   public void setParameters(PropertyReader parameters) {
+   public void setParameters(PropertyReader parameters)
+   throws IllegalArgumentException {
 
-      // TODO: Optimize this method. Try not to recreate
-      //       ProtectedPropertyReader objects.
+      // TODO: Optimize this method. Do not create ProtectedPropertyReader
+      //       objects unless necessary.
 
       // Create PropertyReader for the HTTP parameters
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
@@ -538,8 +540,8 @@ public final class XINSCallRequest extends CallRequest {
             if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
                // XXX: Consider using a different kind of exception for this
                //      specific case. For backwards compatibility, this
-               //      exception class should derive from
-               //      IllegalArgumentException.
+               //      exception class must be converted to an
+               //      IllegalArgumentException by the constructor.
 
                FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
                buffer.append(name);

@@ -694,10 +694,15 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    protected boolean shouldFailOver(CallRequest       request,
                                     CallConfig        callConfig,
-                                    CallExceptionList exceptions)
-   throws ClassCastException {
+                                    CallExceptionList exceptions) {
 
-      final String METHODNAME = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
+      final String METHODNAME = "shouldFailOver("
+                              + CallRequest.class.getName()
+                              + ','
+                              + CallConfig.class.getName()
+                              + ','
+                              + CallExceptionList.class.getName()
+                              + ')';
 
       // TRACE: Enter method
       Log.log_2003(CLASSNAME, METHODNAME, null);
