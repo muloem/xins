@@ -71,4 +71,19 @@ extends Object {
    protected FunctionCaller getFunctionCaller() {
       return _functionCaller;
    }
+
+   /**
+    * Pings the API. This is done by calling the <strong>_NoOp</strong>
+    * function. If it returns an unsuccessful result, then this is ignored.
+    *
+    * @throws CallIOException
+    *    if the call failed due to an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the call result was not a valid XINS result document.
+    */
+   public void ping()
+   throws CallIOException, InvalidCallResultException {
+      _functionCaller.call(null, "_NoOp", null);
+   }
 }
