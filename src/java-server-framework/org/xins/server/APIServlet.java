@@ -216,9 +216,7 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * Description of the current error, if any. Will be returned by
-    * {@link #service(HttpServletRequest,HttpServletResponse)} if and only if
-    * the state is not {@link #READY}.
+    * Description of the current error, if any.
     */
    private String _error;
 
