@@ -276,6 +276,13 @@ public abstract class Type extends Object {
       return value.toString();
    }
 
+   /**
+    * Returns a textual presentation of this object. The implementation of
+    * this method just returns the name of this type.
+    *
+    * @return
+    *    the textual presentation, never <code>null</code>.
+    */
    public final String toString() {
       return _name;
    }
