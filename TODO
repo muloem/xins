@@ -20,14 +20,12 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
 
-* Not log the timezone at startup, but include it in every message that
-  contains a time.
-* The used logging categories should stabilize and they should be documented
-  properly and extensively.
-* A specific category should be used for function performance logging.
-* Log messages for a function should be logged to a category that excludes the
-  'Impl' suffix.
-* A new maximum call duration (for a specific function) should be logged.
+* Complete to logdoc-approach.
+* Log calls to meta-functions, especially _PerformGC, _DisableFunction and
+  _EnableFunction.
+* Include the timezone in every message that contains a time.
+* Change the function performance logging to the logdoc-approach.
+* A new maximum call duration (for a specific function) could be logged.
 * CallContext should not rely on CallResultBuilder but implement the
   CallResult interface self.
 * CallContext.getCallResult() should either be removed or it should return
@@ -47,12 +45,11 @@ XINS/JAVA SERVER FRAMEWORK
 * Log an INFO message if some runtime properties are unused.
 * Implement a _ResetStatistics function.
 * Implement a _DumpStatistics function.
-* Log calls to meta-functions, especially _PerformGC, _DisableFunction and
-  _EnableFunction.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
+* Convert to logdoc-approach.
 * Support non-200 HTTP return codes.
 * Replace FunctionCaller / ActualFunctionCaller / CallTargetGroup hierarchy
   with Service-based solution, implemented in XINS/Java Common Library,
@@ -75,6 +72,7 @@ XINS/JAVA CLIENT FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
+* Convert to logdoc-approach.
 * Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
 * Add DateType class to represent standard type '_date'. Add Date class to
@@ -85,6 +83,11 @@ XINS/JAVA COMMON LIBRARY
   method set(Object key, Object value).
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
+
+______________________________________________________________________________
+LOGDOC
+
+* Allow locales for all logs to be set at once.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
@@ -138,3 +141,5 @@ MISCELLANEOUS
 * Fix 'xins -projecthelp'.
 * Add date to CHANGES file when a release is created. A (small) custom Ant
   task would need to be developed for this.
+* Support the Freshmeat.net XML-RPC interface for notification of new
+  releases.
