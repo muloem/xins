@@ -61,38 +61,7 @@
 		</entry>
 	</group>
 
-
-	<group id="client" name="Generic client-side">
-		<entry id="2101" level="ERROR">
-			<description>Found element with an empty key and empty value.</description>
-			<param name="elementName" nullable="false" />
-		</entry>
-		<entry id="2102" level="ERROR">
-			<description>Found element with an empty key.</description>
-			<param name="elementName"  type="text" nullable="false" />
-			<param name="keyAttribute" type="text" nullable="false" />
-		</entry>
-		<entry id="2103" level="ERROR">
-			<description>Found element attribute with an empty value.</description>
-			<param name="elementName"  type="text" nullable="false" />
-			<param name="keyAttribute" type="text" nullable="false" />
-			<param name="key"          type="text" nullable="false" />
-		</entry>
-		<entry id="2104" level="DEBUG">
-			<description>Found element attribute with a non-empty value.</description>
-			<param name="elementName"  />
-			<param name="keyAttribute" />
-			<param name="key"          />
-			<param name="value"        />
-		</entry>
-		<entry id="2105" level="ERROR" exception="true">
-			<description>Unable to convert the specified character string to XML.</description>
-			<param name="detail" type="text" nullable="true" />
-		</entry>
-		<entry id="2106" level="ERROR">
-			<description>The returned XML is invalid. The type of the root element is not "result".</description>
-			<param name="elementName" type="text" nullable="false" />
-		</entry>
+	<group id="call" name="XINS service calling">
 		<entry id="2107" level="ERROR" exception="true">
 			<description>Caught exception while releasing HTTP connection after request failed.</description>
 			<param name="url"            type="text"         nullable="false" />
@@ -183,6 +152,39 @@
 			<param name="url"         type="text"         nullable="false" />
 			<param name="function"    type="text"         nullable="false" />
 			<param name="inputParams" type="serializable" nullable="false" />
+		</entry>
+	</group>
+
+	<group id="parse" name="XINS call result parsing">
+		<entry id="2200" level="ERROR">
+			<description>Root element is not "result".</description>
+			<param name="elementName" type="text" nullable="false" />
+		</entry>
+		<entry id="2201" level="WARNING">
+			<description>Found output parameter with name nor value.</description>
+		</entry>
+		<entry id="2202" level="WARNING">
+			<description>Found output parameter without name.</description>
+			<param name="value" type="text" nullable="false" />
+		</entry>
+		<entry id="2203" level="WARNING">
+			<description>Found output parameter without value.</description>
+			<param name="name" type="text" nullable="false" />
+		</entry>
+		<entry id="2204" level="DEBUG">
+			<description>Parsed output parameter.</description>
+			<param name="name"  type="text" nullable="false" />
+			<param name="value" type="text" nullable="false" />
+		</entry>
+		<entry id="2205" level="ERROR">
+			<description>Found conflicting duplicate value for output parameter.</description>
+			<param name="name"     type="text" nullable="false" />
+			<param name="oldValue" type="text" nullable="false" />
+			<param name="newValue" type="text" nullable="false" />
+		</entry>
+		<entry id="2206" level="ERROR" exception="true">
+			<description>Unable to convert the specified character string to XML.</description>
+			<param name="detail" type="text" nullable="true" />
 		</entry>
 	</group>
 </log>
