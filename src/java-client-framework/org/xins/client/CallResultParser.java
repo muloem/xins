@@ -116,7 +116,14 @@ public class CallResultParser extends Object {
       MandatoryArgumentChecker.check("xml", xml);
 
       StringReader reader = new StringReader(xml);
-      return parse(functionCaller, _xmlBuilder.build(reader));
+      Document document;
+      try {
+         document = _xmlBuilder.build(reader);
+      } catch (Throwable exception) {
+         throw new ParseException("Unable to convert the specified character string to XML.", exception);
+      }
+
+      return parse(functionCaller, document);
    }
 
    /**
