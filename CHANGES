@@ -10,6 +10,11 @@ CHANGES INTRODUCED IN XINS 0.158:
   - Fixed Dutch (nl_NL) translation of log message 5010.
   - Added log message 5011 (Received session ID is invalid).
   - Added log message 5012 (Received session ID is valid but unknown).
+  - Added log message 5013 (Exception thrown during function call).
+  - Added log message 5014 (Call to session-less function succeeded).
+  - Added log message 5015 (Call to session-oriented function succeeded).
+  - Added log message 5016 (Call to session-less function failed).
+  - Added log message 5017 (Call to session-oriented function failed).
   - Changed level of log message 6001 from ERROR to WARNING.
 
 * Dependencies:
