@@ -114,8 +114,7 @@
 	<xsl:template match="enum">
 		<xsl:if test="item">
 			<p />
-			This is an enumeration type.<br />
-			The only possible items are:
+			<xsl:text>This is an enumeration type. Acceptable values are limited to the following list:</xsl:text>
 			<table class="typelist">
 				<tr>
 					<th>Name</th>
