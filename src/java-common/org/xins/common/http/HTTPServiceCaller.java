@@ -207,7 +207,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                           HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "createMethod(String,HTTPCallRequest,HTTPCallConfig)";
+      final String THIS_METHOD = "createMethod(java.lang.String,"
+                               + HTTPCallRequest.class.getName()
+                               + ','
+                               + HTTPCallConfig.class.getName()
+                               + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
@@ -293,7 +297,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } else {
          final String SUBJECT_CLASS  = Utils.getCallingClass();
          final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL         = "Unrecognized HTTP method \"" + method + "\".";
+         final String DETAIL         = "Unrecognized HTTP method \""
+                                     + method
+                                     + "\".";
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
    }
@@ -389,6 +395,41 @@ public final class HTTPServiceCaller extends ServiceCaller {
       return new HTTPCallConfig();
    }
 
+   /**
+    * Sets the <code>HTTPCallConfig</code> associated with this HTTP service
+    * caller.
+    *
+    * @param config
+    *    the fall-back {@link HTTPCallConfig} object for this service caller,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>config == null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   protected final void setHTTPCallConfig(HTTPCallConfig config)
+   throws IllegalArgumentException {
+      super.setCallConfig(config);
+   }
+
+   /**
+    * Returns the <code>HTTPCallConfig</code> associated with this service
+    * caller.
+    *
+    * <p>This method is the type-safe equivalent of {@link #getCallConfig()}.
+    *
+    * @return
+    *    the fall-back {@link HTTPCallConfig} object for this HTTP service
+    *    caller, never <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public final HTTPCallConfig getHTTPCallConfig() {
+      return (HTTPCallConfig) getCallConfig();
+   }
+
+   /**
    /**
     * Executes a request towards the specified target. If the call succeeds,
     * then a {@link HTTPCallResult} object is returned, otherwise a
