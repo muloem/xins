@@ -112,17 +112,17 @@ public class CallingConventionTests extends TestCase {
    }
 
    /**
-    * Tests the standard calling convention by passing xins-std as argument.
+    * Tests the standard calling convention.
     */
    public void testStandardCallingConvention2() throws Throwable {
-      callResultCodeStandard("xins-std");
+      callResultCodeStandard("_xins-std");
    }
 
    /**
     * Tests the standard calling convention by passing an unknown calling convention.
     */
    public void testStandardCallingConvention3() throws Throwable {
-      callResultCodeStandard("xins-bla");
+      callResultCodeStandard("_xins-bla");
    }
 
    /**
@@ -159,12 +159,12 @@ public class CallingConventionTests extends TestCase {
       HexConverter.toHexString(buffer, RANDOM.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
 
-      Element result1 = callResultCode("xins-old", randomFive);
+      Element result1 = callResultCode("_xins-old", randomFive);
       assertNull("The method returned an error code for the first call: " + result1.getAttribute("errorcode"), result1.getAttribute("errorcode"));
       assertNull("The method returned a code attribute for the first call: " + result1.getAttribute("code"), result1.getAttribute("code"));
       assertNotNull("The method did not return a success attribute for the first call.", result1.getAttribute("success"));
       
-      Element result2 = callResultCode("xins-old", randomFive);
+      Element result2 = callResultCode("_xins-old", randomFive);
       assertNotNull("The method did not return an error code for the second call.", result2.getAttribute("errorcode"));
       assertNotNull("The method did not return a code attribute for the second call.", result2.getAttribute("code"));
       assertNotNull("The method did not return a success attribute for the second call.", result2.getAttribute("success"));
