@@ -11,9 +11,11 @@ CHANGES INTRODUCED IN XINS 0.185:
 * XINS/Java Common Library:
   - Fixed a bug in FastStringBuffer where the method append(char[]) did not
     update the length of the FastStringBuffer.
+    This bug existed since 0.8.
   - SF.net bug #973251: Fixed a bug in HexConverter where the toHexString(...)
     methods overwrote the content of the FastStringBuffer when it was not
     empty.
+    This bug existed since 0.72.
 
 * Specification:
   - Added the element int8, int16, int32 and int64 to to the type XML file.
