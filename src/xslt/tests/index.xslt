@@ -167,12 +167,6 @@
 
 		<xsl:variable name="name"    select="concat($name_start, $name_end)" />
 
-		<xsl:variable name="details_orig"            select="failure/text()" />
-		<xsl:variable name="details_orig_length"     select="string-length($details_orig)" />
-		<xsl:variable name="details_after_at"        select="substring-after($details_orig, 'at ')" />
-		<xsl:variable name="details_after_at_length" select="string-length(details_after_at)" />
-		<xsl:variable name="details"                 select="$details_after_at" />
-
 		<a>
 			<xsl:attribute name="name">
 				<xsl:text>test-</xsl:text>
@@ -218,7 +212,7 @@
 			<tr>
 				<th>Details:</th>
 				<td class="testdetails_details">
-					<pre><xsl:value-of select="$details" /></pre>
+					<pre><xsl:value-of select="failure/text()" /></pre>
 				</td>
 			</tr>
 		</table>
@@ -230,12 +224,6 @@
 		<xsl:variable name="name_end"   select="substring($name_orig, 2, string-length($name_orig) - 1)" />
 
 		<xsl:variable name="name"    select="concat($name_start, $name_end)" />
-
-		<xsl:variable name="details_orig"        select="error/text()" />
-		<xsl:variable name="details_orig_length" select="string-length($details_orig)" />
-		<xsl:variable name="details_after_at"   select="substring-after($details_orig, 'at ')" />
-		<xsl:variable name="details_after_at_length" select="string-length(details_after_at)" />
-		<xsl:variable name="details"             select="$details_after_at" />
 
 		<a>
 			<xsl:attribute name="name">
@@ -282,7 +270,7 @@
 			<tr>
 				<th>Details:</th>
 				<td class="testdetails_details">
-					<pre><xsl:value-of select="$details" /></pre>
+					<pre><xsl:value-of select="error/text()" /></pre>
 				</td>
 			</tr>
 		</table>
