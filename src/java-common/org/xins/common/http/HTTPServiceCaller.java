@@ -451,17 +451,18 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // TODO: Log parameters everywhere
 
-      // NOTE: Preconditions are checked by the CallExecutor constructor
       // Prepare a thread for execution of the call
+      // NOTE: Preconditions are checked by the CallExecutor constructor
       CallExecutor executor = new CallExecutor(request, target, NDC.peek());
 
-      String url = target.getURL();
+      // Get URL and time-out values
+      String url               = target.getURL();
+      int    totalTimeOut      = target.getTotalTimeOut();
+      int    connectionTimeOut = target.getConnectionTimeOut();
+      int    socketTimeOut     = target.getSocketTimeOut();
 
       // About to make an HTTP call
-      Log.log_1100(url,
-                   target.getTotalTimeOut(),
-                   target.getConnectionTimeOut(),
-                   target.getSocketTimeOut());
+      Log.log_1100(url, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Perform the HTTP call
       long start = System.currentTimeMillis();
@@ -472,7 +473,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Total time-out exceeded
       } catch (TimeOutException exception) {
          duration = System.currentTimeMillis() - start;
-         Log.log_1105(url, target.getTotalTimeOut());
+         Log.log_1105(url, totalTimeOut);
          throw new TotalTimeOutCallException(request, target, duration);
 
       } finally {
@@ -490,7 +491,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       Throwable exception = executor.getException();
       if (exception != null) {
 
-         // Connection refusal
+         // Unknown host
          if (exception instanceof UnknownHostException) {
             Log.log_1110(url);
             throw new UnknownHostCallException(request, target, duration);
@@ -502,7 +503,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_1103(url, target.getConnectionTimeOut());
+            Log.log_1103(url, connectionTimeOut);
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -515,7 +516,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_1104(url, target.getSocketTimeOut());
+               Log.log_1104(url, socketTimeOut);
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
