@@ -1,5 +1,5 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.209:
+CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
 
 * XINS/Java Server Framework:
   - Cleaned up and improved Logdoc.
@@ -106,7 +106,7 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Removed support for the 'extends' attribute in type classes.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.208:
+CHANGES INTRODUCED IN XINS 0.208:                                (1.0.0-beta1)
 
 * XINS/Java Common Library:
   - Added the remove() method in ProtectedPropertyReader. The set() method
