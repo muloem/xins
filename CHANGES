@@ -36,8 +36,10 @@ CHANGES INTRODUCED IN XINS 0.198:
   - Added classes:
     . WhislEncoding
     . ServletRequestPropertyReader
-  - Added constructor to class InitializationException that takes both message
-    and cause exception.
+  - Added constructor that takes both a message and a cause exception to the
+    following classes:
+    . InitializationException
+    . ParseException
 
 * Unit tests:
   - Added BasicPropertyReader tests.
