@@ -130,17 +130,6 @@ public interface Responder
 extends ResponderStates {
 
    /**
-    * Creates a new session and associates it with this call.
-    *
-    * <p>Calling this method will trigger the return of the
-    * <code>_session</code> output parameter from the call.
-    *
-    * @return
-    *    the created session, not <code>null</code>.
-    */
-   public Session createSession();
-
-   /**
     * Starts the response output. This is done by writing a
     * <code>result</code> start tag.
     *
