@@ -133,5 +133,8 @@ extends HttpServlet {
 
       // Call the API
       _api.handleCall(request, response.getWriter()); 
+
+      // Flush
+      out.flush();
    }
 }

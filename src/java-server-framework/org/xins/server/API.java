@@ -233,8 +233,6 @@ implements DefaultReturnCodes {
       long start    = context.getStart();
       long duration = System.currentTimeMillis() - start;
       f.performedCall(start, duration, success, code);
-
-      out.flush(); // TODO: Move to APIServlet
    }
 
    /**
