@@ -743,9 +743,13 @@ extends HttpServlet {
 
          } catch (Throwable t) {
 
+            // FIXME for Anthony: Distinguish between case where locale is not
+            //                    supported (handled here) and other cases.
+
+            // TODO: Should this not be an _init_ instead of a _bootstrap_
+            //       issue?
+
             // The locale is not supported by the API
-            // FIXME: How do we know the locale is not supported?
-            // TODO: Is this not an _init_ and not a _bootstrap_ issue?
             Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
