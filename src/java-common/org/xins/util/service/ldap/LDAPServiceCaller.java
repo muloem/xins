@@ -31,19 +31,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Constant representing the <em>none</em> authentication method.
-    */
-   public static final AuthenticationMethod NO_AUTHENTICATION = new AuthenticationMethod("none");
-
-   /**
-    * Constant representing the <em>simple</em> authentication method.
-    */
-   public static final AuthenticationMethod SIMPLE_AUTHENTICATION = new AuthenticationMethod("simple");
-
-   /**
     * Authentication details to be used when none are specified.
     */
-   private static final AuthenticationDetails FALLBACK_AUTHENTICATION_DETAILS = new AuthenticationDetails(NO_AUTHENTICATION, null, null);
+   private static final AuthenticationDetails FALLBACK_AUTHENTICATION_DETAILS = new AuthenticationDetails(AuthenticationMethod.NONE, null, null);
 
    /**
     * The initial context factory.
@@ -89,12 +79,13 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * {@link CallFailedException} is thrown.
     *
     * @param method
-    *    the authentication method, for example {@link #NO_AUTHENTICATION}
-    *    or {@link #SIMPLE_AUTHENTICATION}, cannot be <code>null</code>.
+    *    the authentication method, for example
+    *    {@link #AuthenticationMethod#NONE} or
+    *    {@link #AuthenticationMethod#SIMPLE}, cannot be <code>null</code>.
     *
     * @param principal
     *    the principal, cannot be <code>null</code> unless
-    *    <code>method == </code>{@link #NO_AUTHENTICATION}.
+    *    <code>method == </code>{@link #AuthenticationMethod#NONE}.
     *
     * @param credentials
     *    the credentials, can be <code>null</code>.
@@ -104,9 +95,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>method == null
-    *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
-    *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
-    *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
+    *    || (method != {@link #AuthenticationMethod#NONE} &amp;&amp; principal == null)
+    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; principal != null)
+    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
     *
     * @throws CallFailedException
     *    if the call failed.
@@ -133,9 +124,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>method == null
-    *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
-    *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
-    *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
+    *    || (method != {@link #AuthenticationMethod#NONE} &amp;&amp; principal == null)
+    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; principal != null)
+    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
     *
     * @throws CallFailedException
     *    if the call failed.
@@ -187,7 +178,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       Request request = (Request) subject;
 
       // Authenticate and connect
-      AuthenticationDetails authenticationDetails = request._authenticationDetails;
+      AuthenticationDetails authenticationDetails = request.getAuthenticationDetails();
       if (authenticationDetails == null) {
          authenticationDetails = FALLBACK_AUTHENTICATION_DETAILS;
       }
@@ -195,7 +186,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
       // Perform a query if applicable
       try {
-         Query query = request._query;
+         Query query = request.getQuery();
          if (query != null) {
             return query(target, context, query);
          } else {
@@ -296,360 +287,6 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
       // Perform the search and return the result
       return context.search(searchBase, filter, searchControls);
-   }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * LDAP authentication method.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.115
-    */
-   public static final class AuthenticationMethod
-   extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>AuthenticationMethod</code> object.
-       *
-       * @param name
-       *    the name of this authentication method, for example
-       *    <code>"none"</code> or <code>"simple"</code>.
-       */
-      private AuthenticationMethod(String name) {
-         _name = name;
-      }
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of this authentication method. Cannot be <code>null</code>.
-       */
-      private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the name of this authentication method. For example,
-       * <code>"none"</code> or <code>"simple"</code>.
-       *
-       * @return
-       *    the name of this authentication method, not <code>null</code>.
-       */
-      public String getName() {
-         return _name;
-      }
-
-      public String toString() {
-         return _name;
-      }
-   }
-
-   /**
-    * LDAP authentication details. Combines authentication method, principal
-    * and credentials.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.115
-    */
-   public static final class AuthenticationDetails
-   extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>AuthenticationDetails</code> object.
-       *
-       * @param method
-       *    the authentication method, for example {@link #NO_AUTHENTICATION}
-       *    or {@link #SIMPLE_AUTHENTICATION}, cannot be <code>null</code>.
-       *
-       * @param principal
-       *    the principal, cannot be <code>null</code> unless
-       *    <code>method == </code>{@link #NO_AUTHENTICATION}.
-       *
-       * @param credentials
-       *    the credentials, can be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>method == null
-       *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
-       *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
-       *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
-       */
-      public AuthenticationDetails(AuthenticationMethod method,
-                                   String               principal,
-                                   String               credentials) {
-         // Check preconditions
-         if (method == null) {
-            throw new IllegalArgumentException("method == null");
-         } else if (method != NO_AUTHENTICATION && principal == null) {
-            throw new IllegalArgumentException("method (" + method + ") != NO_AUTHENTICATION && principal == null");
-         } else if (method == NO_AUTHENTICATION && principal != null) {
-            throw new IllegalArgumentException("method == NO_AUTHENTICATION && principal != null");
-         } else if (method == NO_AUTHENTICATION && credentials != null) {
-            throw new IllegalArgumentException("method == NO_AUTHENTICATION && credentials != null");
-         }
-
-         // Set fields
-         _method      = method;
-         _principal   = principal;
-         _credentials = credentials;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The authentication method. Cannot be <code>null</code>.
-       */
-      private final AuthenticationMethod _method;
-
-      /**
-       * The principal. Is <code>null</code> if and only if
-       * {@link #_method}<code> == </code>{@link #NO_AUTHENTICATION}.
-       */
-      private final String _principal;
-
-      /**
-       * The credentials. Can be <code>null</code>. This field is always
-       * <code>null</code> if
-       * {@link #_method}<code> == </code>{@link #NO_AUTHENTICATION}.
-       */
-      private final String _credentials;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the authentication method.
-       *
-       * @return
-       *    the authentication method, not <code>null</code>.
-       */
-      public final AuthenticationMethod getMethod() {
-         return _method;
-      }
-
-      /**
-       * Returns the principal. Is <code>null</code> if and only if
-       * {@link #getMethod()}<code> == </code>{@link #NO_AUTHENTICATION}.
-       *
-       * @return
-       *    the principal, possibly <code>null</code>.
-       */
-      public final String getPrincipal() {
-         return _principal;
-      }
-
-      /**
-       * The credentials. Can be <code>null</code>. This field is always
-       * <code>null</code> if
-       * {@link #getMethod()}<code> == </code>{@link #NO_AUTHENTICATION}.
-       *
-       * @return
-       *    the credentials, possibly <code>null</code>.
-       */
-      public final String getCredentials() {
-         return _credentials;
-      }
-   }
-
-   /**
-    * LDAP query.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.115
-    */
-   public static final class Query
-   extends Object {
-
-      // TODO: Accept optionally list of attributes to fetch
-      // TODO: Be able to set flag to return named objects or not
-      // TODO: Be able to set flag to dereference links or not
-      // TODO: Allow configuration of maximum items
-      // TODO: Allow configuration of scope
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Query</code>.
-       *
-       * @param searchBase
-       *    the search base, cannot be <code>null</code>.
-       *
-       * @param filter
-       *    the filter expression, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>searchBase == null || filter == null</code>.
-       */
-      public Query(String searchBase, String filter)
-      throws IllegalArgumentException {
-         this(searchBase, filter, null);
-      }
-
-      /**
-       * Constructs a new <code>Query</code>, specifying the attributes to be
-       * returned with an entry.
-       *
-       * @param searchBase
-       *    the search base, cannot be <code>null</code>.
-       *
-       * @param filter
-       *    the filter expression, cannot be <code>null</code>.
-       *
-       * @param attributes
-       *    identifiers of the attributes to return; if this is
-       *    <code>null</code> then all attributes are returned; if this is an
-       *    empty array then no attributes are returned.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>searchBase == null || filter == null</code>.
-       */
-      public Query(String searchBase, String filter, String[] attributes)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("searchBase", searchBase,
-                                        "filter",     filter);
-
-         // Store data in fields
-         _searchBase = searchBase;
-         _filter     = filter;
-         if (attributes == null) {
-            _attributes = null;
-         } else {
-            _attributes = new String[attributes.length];
-            System.arraycopy(attributes, 0, _attributes, 0, attributes.length);
-         }
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The search base. Cannot be <code>null</code>.
-       */
-      private final String _searchBase;
-
-      /**
-       * The filter expression. Cannot be <code>null</code>.
-       */
-      private final String _filter;
-
-      /**
-       * The attributes to be returned with an entry. If this field is
-       * <code>null</code> then all attributes are returned; if this is an
-       * empty array then no attributes are returned.
-       */
-      private final String[] _attributes;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the search base.
-       *
-       * @return
-       *    the search base, cannot be <code>null</code>.
-       */
-      public String getSearchBase() {
-         return _searchBase;
-      }
-
-      /**
-       * Returns the filter expression to use for the search.
-       *
-       * @return
-       *    the filter expression, cannot be <code>null</code>.
-       */
-      public String getFilter() {
-         return _filter;
-      }
-
-      // TODO: Add getter for attributes
-   }
-
-   /**
-    * LDAP search request. Combines
-    * {@link LDAPServiceCaller.AuthenticationDetails authentication details}
-    * and a {@link LDAPServiceCaller.Query query}.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.115
-    */
-   private static final class Request
-   extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Request</code> object.
-       *
-       * @param authenticationDetails
-       *    the authentication details, can be <code>null</code>.
-       *
-       * @param query
-       *    the query to be executed, can be <code>null</code>.
-       */
-      private Request(AuthenticationDetails authenticationDetails, Query query) {
-         _authenticationDetails = authenticationDetails;
-         _query                 = query;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The authentication details. Can be <code>null</code>.
-       */
-      private final AuthenticationDetails _authenticationDetails;
-
-      /**
-       * The query. Can be <code>null</code>.
-       */
-      private final Query _query;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
    }
 
    /**
