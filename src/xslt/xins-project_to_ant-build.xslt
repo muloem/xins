@@ -736,7 +736,7 @@
 							<lib dir="{$xins_home}/build" includes="logdoc.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build" includes="xins-server.jar" />
-							<lib dir="{$xins_home}/lib"   includes="commons-httpclient.jar commons-logging.jar jakarta-oro.jar jdom.jar log4j.jar xmlenc.jar" />
+							<lib dir="{$xins_home}/lib"   includes="commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
 							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 							<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
 								<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
@@ -783,10 +783,6 @@
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 							<link
-							href="http://www.jdom.org/docs/apidocs/"
-							offline="true"
-							packagelistloc="{$xins_home}/src/package-lists/jdom/" />
-							<link
 							href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
@@ -798,7 +794,6 @@
 								<pathelement location="{$xins_home}/build/logdoc.jar"       />
 								<pathelement location="{$xins_home}/build/xins-common.jar"   />
 								<pathelement location="{$xins_home}/build/xins-server.jar"   />
-								<pathelement location="{$xins_home}/lib/jdom.jar"            />
 								<pathelement location="{$xins_home}/lib/log4j.jar"           />
 								<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
 								<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />
@@ -972,10 +967,6 @@
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 						<link
-						href="http://www.jdom.org/docs/apidocs/"
-						offline="true"
-						packagelistloc="{$xins_home}/src/package-lists/jdom/" />
-						<link
 						href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
@@ -987,7 +978,6 @@
 							<pathelement location="{$xins_home}/build/logdoc.jar"       />
 							<pathelement location="{$xins_home}/build/xins-common.jar"   />
 							<pathelement location="{$xins_home}/build/xins-client.jar"   />
-							<pathelement location="{$xins_home}/lib/jdom.jar"            />
 							<pathelement location="{$xins_home}/lib/log4j.jar"           />
 							<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
 							<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />

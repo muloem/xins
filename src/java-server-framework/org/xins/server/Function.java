@@ -15,7 +15,6 @@ import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
-import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.WhislEncoding;
 

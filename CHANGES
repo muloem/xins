@@ -23,6 +23,10 @@ CHANGES INTRODUCED IN XINS 0.205:
   - Added a getAttributes() method in ldap/Query.
   - Modified LDAPServiceCaller to use the getAttributes method.
   - Fixed some Javadoc.
+  - Removed unused files BooleanConstants, FastStack, FixedArraySet,
+    ArrayIterator, CollectionUtils, IndexedMap, PropertyReaderConverter,
+    SingleEntryMap, ServletRequestPropertyReader, ServletUtils and Replacer.
+  - Removed the tests for SingleEntryMap and Replacer.
 
 * XINS/Java Client Framework:
   - Fixed some Javadoc.

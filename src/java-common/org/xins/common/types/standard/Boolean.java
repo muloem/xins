@@ -5,7 +5,6 @@ package org.xins.common.types.standard;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
-import org.xins.common.BooleanConstants;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -78,9 +77,9 @@ public final class Boolean extends Type {
    public static java.lang.Boolean fromStringForOptional(String string)
    throws TypeValueException {
       if ("true".equals(string)) {
-         return BooleanConstants.TRUE;
+         return java.lang.Boolean.TRUE;
       } else if ("false".equals(string)) {
-         return BooleanConstants.FALSE;
+         return java.lang.Boolean.FALSE;
       } else if (string == null) {
          return null;
       } else {
@@ -147,7 +146,7 @@ public final class Boolean extends Type {
    }
 
    protected Object fromStringImpl(String string) {
-      return "true".equals(string) ? BooleanConstants.TRUE : BooleanConstants.FALSE;
+      return "true".equals(string) ? java.lang.Boolean.TRUE : java.lang.Boolean.FALSE;
    }
 
    public final String toString(Object value)

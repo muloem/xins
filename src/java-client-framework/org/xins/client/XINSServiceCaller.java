@@ -20,7 +20,6 @@ import org.apache.log4j.NDC;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
-import org.xins.common.collections.CollectionUtils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 

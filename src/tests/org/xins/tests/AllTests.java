@@ -29,13 +29,11 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.collections.SingleEntryMapTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.PatternParserTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.text.ReplacerTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.SimplePatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
