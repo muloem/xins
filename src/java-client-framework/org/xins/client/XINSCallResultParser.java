@@ -377,19 +377,19 @@ extends Object {
             // No 'result' element allowed within 'result' element
             } else if (qName.equals("result")) {
                String detail = "Found \"result\" element within \"result\" element.";
-               // TODO: Log
+               // TODO: Log parse error
                throw new SAXException(detail);
 
             // Unknown elements at the root level are okay
             } else {
-               // TODO: Log
+               // TODO: Log ignore unrecognized element
                // Ignore
             }
 
          // Within output parameter element
          } else if (_state == IN_PARAM_ELEMENT) {
             String detail = "Found \"" + qName + "\" element within \"param\" element.";
-            // TODO: Log
+            // TODO: Log parse error
             throw new SAXException(detail);
 
          // Within the data section
@@ -468,7 +468,7 @@ extends Object {
             if (_level == 0) {
                if (! qName.equals("data")) {
                   String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
-                  // TODO: Log programming error
+                  Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
                   throw new Error(detail);
                }
 
@@ -498,7 +498,7 @@ extends Object {
 
             if (! qName.equals("param")) {
                String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
-               // TODO: Log programming error
+               Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
                throw new Error(detail);
             }
 
@@ -568,9 +568,12 @@ extends Object {
       public void characters(char[] ch, int start, int length)
       throws IllegalStateException, IndexOutOfBoundsException {
 
-         // TODO: Check state
-
-         // TODO: Ignore, but log, PCDATA outside expected regions
+         // Check state
+         if (_state != IN_PARAM_ELEMENT && state != IN_DATA_SECTION) {
+            String detail = "Found PCDATA content in state " + _state + '.';
+            // TODO: Log parse error
+            throw new IllegalStateException(detail);
+         }
 
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
