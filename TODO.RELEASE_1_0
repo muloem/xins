@@ -62,12 +62,14 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
 [ ] Use HTTPServiceCaller for the actual call
-[ ] Rename Result to XINSCallResult
-[ ] Rename ResultParser to XINSCallResultParser
+[x] Rename Result to XINSCallResult
+[x] Rename ResultParser to XINSCallResultParser
 [ ] Rename UnacceptableCallResultException to UnacceptableResultXINSCallException
 [ ] Make UnacceptableResultXINSCallException extend XINSCallException
-[ ] Rename UnsuccessfulCallException to UnsuccessfulXINSCallException
-[ ] Make UnsuccessfulXINSCallException extend XINSCallException
+[x] Rename UnsuccessfulCallException to UnsuccessfulXINSCallException
+[x] Make UnsuccessfulXINSCallException extend XINSCallException
+[ ] Rename InvalidCallResultException to InvalidResultXINSCallException
+[ ] Make InvalidResultXINSCallException extend XINSCallException
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
