@@ -74,10 +74,13 @@ public final class BasicSessionIDType extends SessionIDType {
       // Make sure the length of the string is correct
       if (value.length() != 33) {
          return false;
+
+      // Check string starts with prefix
       } else if (_prefix.equals(value.substring(0, 17)) == false) {
          return false;
       }
 
+      // Convert the rest of the string to a hex number
       try {
          HexConverter.parseHexLong(value, 17);
          return true;
@@ -88,16 +91,22 @@ public final class BasicSessionIDType extends SessionIDType {
 
    protected Object fromStringImpl(String string)
    throws TypeValueException {
+
+      // Check argument is not null
       if (string == null) {
          throw new IllegalArgumentException("string == null");
+
+      // Check argument has length 33
       } else if (string.length() != 33) {
          throw new TypeValueException(this, string);
       }
 
+      // Check string starts with prefix
       if (_prefix.equals(string.substring(0, 17)) == false) {
          throw new TypeValueException(this, string);
       }
 
+      // Convert the rest of the string to a hex number
       try {
          return new SessionID(HexConverter.parseHexLong(string, 17));
       } catch (NumberFormatException nfe) {
@@ -105,9 +114,16 @@ public final class BasicSessionIDType extends SessionIDType {
       }
    }
 
-   public String toString(Object value) {
+   public String toString(Object value)
+   throws IllegalArgumentException, ClassCastException {
+
+      // Check argument
       MandatoryArgumentChecker.check("value", value);
+
+      // Convert the Object to the right class
       SessionID sessionID = (SessionID) value;
+
+      // Create and return a textual presentation
       FastStringBuffer buffer = new FastStringBuffer(33, _prefix);
       buffer.append(sessionID.toString());
       return buffer.toString();
