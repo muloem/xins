@@ -426,9 +426,7 @@
 			Same applies to output parameters.
 			-->
 			<xsl:for-each select="parent::function/output/param[@required='true']">
-				<xsl:variable name="required_attr">
-					<xsl:value-of select="@name" />
-				</xsl:variable>
+				<xsl:variable name="required_attr" select="@name" />
 				<xsl:if test="not(/function/output/param[@name=$required_attr]/example-value[@example=$examplenum]) and not($examplenode/output-example[@name=$required_attr])">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
@@ -445,9 +443,7 @@
 			of the input section.
 			-->
 			<xsl:for-each select="input-example">
-				<xsl:variable name="examplename">
-					<xsl:value-of select="@name" />
-				</xsl:variable>
+				<xsl:variable name="examplename" select="@name" />
 				<xsl:if test="not(boolean(/function/input/param[@name=$examplename]))">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
@@ -462,9 +458,7 @@
 			Same applies to output parameters.
 			-->
 			<xsl:for-each select="output-example">
-				<xsl:variable name="examplename">
-					<xsl:value-of select="@name" />
-				</xsl:variable>
+				<xsl:variable name="examplename" select="@name" />
 				<xsl:if test="not(boolean(/function/output/param[@name=$examplename]))">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
@@ -562,9 +556,7 @@
 		<xsl:if test="string-length($resultcode) &gt; 0 and not(starts-with($resultcode, '_'))">
 			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $resultcode, '.rcd')" />
 			<xsl:for-each select="document($rcd_file)/output/param[@required='true']">
-				<xsl:variable name="required_attr">
-					<xsl:value-of select="@name" />
-				</xsl:variable>
+				<xsl:variable name="required_attr" select="@name" />
 				<xsl:if test="not(boolean(/function/example[@num=$examplenum]/output-example[@name=$required_attr]))">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
@@ -944,9 +936,7 @@
 	<xsl:template match="element-example">
 		<xsl:param name="indent" />
 
-		<xsl:variable name="text">
-			<xsl:value-of select="pcdata-example/text()" />
-		</xsl:variable>
+		<xsl:variable name="text" select="pcdata-example/text()" />
 
 		<xsl:text>
 </xsl:text>
@@ -1023,9 +1013,7 @@
 
 	<xsl:template match="element-example" mode="input">
 
-		<xsl:variable name="text">
-			<xsl:value-of select="pcdata-example/text()" />
-		</xsl:variable>
+		<xsl:variable name="text" select="pcdata-example/text()" />
 
 		<xsl:text>&lt;</xsl:text>
 		<xsl:value-of select="@name" />

@@ -368,9 +368,7 @@ APIs in this project are:
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="clientPackageAsDir">
-			<xsl:value-of select="translate($clientPackage, '.','/')" />
-		</xsl:variable>
+		<xsl:variable name="clientPackageAsDir" select="translate($clientPackage, '.','/')" />
 		<xsl:variable name="apiHasTypes">
 			<xsl:choose>
 				<xsl:when test="document($api_file)/api/type">true</xsl:when>
@@ -542,9 +540,7 @@ APIs in this project are:
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:variable name="packageAsDir">
-					<xsl:value-of select="translate($package, '.','/')" />
-				</xsl:variable>
+				<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 				<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
@@ -616,9 +612,7 @@ APIs in this project are:
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:variable name="packageAsDir">
-				<xsl:value-of select="translate($package, '.','/')" />
-			</xsl:variable>
+			<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 			<!-- This test is not garanted to work with all XSLT processors. -->
 			<xsl:variable name="javaImplDir">
 				<xsl:value-of select="$project_home" />

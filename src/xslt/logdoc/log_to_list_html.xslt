@@ -56,11 +56,7 @@
 					</tr>
 					<xsl:for-each select="group">
 						<xsl:for-each select="entry">
-							<xsl:variable name="entry_link">
-								<xsl:text>entry-</xsl:text>
-								<xsl:value-of select="@id" />
-								<xsl:text>.html</xsl:text>
-							</xsl:variable>
+							<xsl:variable name="entry_link" select="concat('entry-', @id, '.html')" />
 							<tr>
 								<td>
 									<a>

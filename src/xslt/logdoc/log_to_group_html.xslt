@@ -58,11 +58,7 @@
 	</xsl:template>
 
 	<xsl:template match="group">
-		<xsl:variable name="category">
-			<xsl:value-of select="$package_name" />
-			<xsl:text>.</xsl:text>
-			<xsl:value-of select="@id" />
-		</xsl:variable>
+		<xsl:variable name="category" select="concat($package_name, '.', @id)" />
 
 		<h1>
 			<xsl:text>Log entry group '</xsl:text>
@@ -82,11 +78,7 @@
 				<th title="Number of parameters the message accepts">Parameters</th>
 			</tr>
 			<xsl:for-each select="entry">
-				<xsl:variable name="entry_link">
-					<xsl:text>entry-</xsl:text>
-					<xsl:value-of select="@id" />
-					<xsl:text>.html</xsl:text>
-				</xsl:variable>
+				<xsl:variable name="entry_link" select=concat('entry-', @id, '.html')" />
 				<tr>
 					<td>
 						<a>

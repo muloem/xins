@@ -16,13 +16,9 @@
 	<xsl:template name="urlencode">
 		<xsl:param name="text" />
 
-		<xsl:variable name="firstchar">
-			<xsl:value-of select="substring($text, 1, 1)" />
-		</xsl:variable>
+		<xsl:variable name="firstchar" select="substring($text, 1, 1)" />
 
-		<xsl:variable name="rest">
-			<xsl:value-of select="substring($text, 2)" />
-		</xsl:variable>
+		<xsl:variable name="rest" select="substring($text, 2)" />
 
 		<xsl:choose>
 			<xsl:when test="string-length($text) &lt; 1" />

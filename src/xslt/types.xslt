@@ -179,12 +179,7 @@
 		<xsl:param name="required"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file">
-			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$type" />
-			<xsl:text>.typ</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($project_file) &lt; 1">
@@ -341,12 +336,7 @@
 		<xsl:param name="variable"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file">
-			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$type" />
-			<xsl:text>.typ</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($specsdir) &lt; 1">
@@ -448,12 +438,7 @@
 		<xsl:param name="variable"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file">
-			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$type" />
-			<xsl:text>.typ</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($specsdir) &lt; 1">
@@ -587,12 +572,7 @@
 		<xsl:param name="type"         />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file">
-			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$type" />
-			<xsl:text>.typ</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($project_file) &lt; 1">

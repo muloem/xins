@@ -57,12 +57,8 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="owner_name">
-				<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@name" />
-			</xsl:variable>
-			<xsl:variable name="owner_email">
-				<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@email" />
-			</xsl:variable>
+			<xsl:variable name="owner_name" select="document($authors_file)/authors/author[@id=$owner]/@name" />
+			<xsl:variable name="owner_email" select="document($authors_file)/authors/author[@id=$owner]/@email" />
 
 			<xsl:value-of select="$owner_name" />
 			<xsl:text> (&lt;a href="mailto:</xsl:text>

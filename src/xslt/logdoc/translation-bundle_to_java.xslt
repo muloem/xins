@@ -26,10 +26,7 @@
 
 	<!-- Match the root element 'translation-bundle' -->
 	<xsl:template match="translation-bundle">
-		<xsl:variable name="classname">
-			<xsl:text>TranslationBundle_</xsl:text>
-			<xsl:value-of select="$locale" />
-		</xsl:variable>
+		<xsl:variable name="classname" select="concat('TranslationBundle_', $locale)" />
 
 		<xsl:variable name="accessmodifier">
 			<xsl:choose>

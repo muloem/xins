@@ -36,10 +36,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="functionName" select="@name" />
-		<xsl:variable name="className">
-			<xsl:value-of select="$functionName" />
-			<xsl:text>Function</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="className" select="concat($functionName, 'Function')" />
 
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>

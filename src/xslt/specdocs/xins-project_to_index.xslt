@@ -73,12 +73,7 @@
 	<xsl:template match="api">
 		<!-- This test is not guaranteed to work with all XSLT
 		     processors. -->
-		<xsl:variable name="new_api_file">
-			<xsl:value-of select="$project_home" />
-			<xsl:text>/apis/</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>/spec/api.xml</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
 		<xsl:variable name="path">
 			<xsl:choose>
 				<xsl:when test="impl or environments or document($new_api_file)">
@@ -89,9 +84,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable
-		name="functioncount"
-		select="count(document($path)/api/function)" />
+		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
 
 		<xsl:if test="not(document($path)/api/@name = @name)">
 			<xsl:message terminate="yes">

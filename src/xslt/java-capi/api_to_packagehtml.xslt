@@ -30,9 +30,7 @@
 	<xsl:include href="../types.xslt"      />
 
 	<!-- Determine the location of the online specification docs -->
-	<xsl:variable name="specdocsURL">
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
-	</xsl:variable>
+	<xsl:variable name="specdocsURL" select="document($project_file)/project/specdocs/@href" />
 
 	<!-- ***************************************************************** -->
 	<!-- Match the root element: api                                       -->

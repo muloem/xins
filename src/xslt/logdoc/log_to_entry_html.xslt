@@ -60,11 +60,7 @@
 	</xsl:template>
 
 	<xsl:template match="group/entry">
-		<xsl:variable name="category">
-			<xsl:value-of select="$package_name" />
-			<xsl:text>.</xsl:text>
-			<xsl:value-of select="../@id" />
-		</xsl:variable>
+		<xsl:variable name="category" select="concat($package_name, '.', ../@id)" />
 
 		<table class="headerlinks">
 			<tr>
@@ -191,12 +187,7 @@
 	</xsl:template>
 
 	<xsl:template match="translation-bundle">
-		<xsl:variable name="translation-bundle-doc">
-			<xsl:value-of select="$sourcedir" />
-			<xsl:text>/translation-bundle-</xsl:text>
-			<xsl:value-of select="@locale" />
-			<xsl:text>.xml</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="translation-bundle-doc" select="concat($sourcedir, '/translation-bundle-', @locale, '.xml')" />
 
 		<tr>
 			<th>

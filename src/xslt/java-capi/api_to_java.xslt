@@ -32,9 +32,7 @@
 	<xsl:include href="../types.xslt"      />
 
 	<!-- Determine the location of the online specification docs -->
-	<xsl:variable name="specdocsURL">
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
-	</xsl:variable>
+	<xsl:variable name="specdocsURL" select="document($project_file)/project/specdocs/@href" />
 	<xsl:variable name="hasSpecdocsURL">
 		<xsl:choose>
 			<xsl:when test="string-length($specdocsURL) &gt; 0">true</xsl:when>
@@ -209,12 +207,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		     and process the corresponding .fnc function definition files. -->
 		<xsl:for-each select="function">
 			<xsl:variable name="functionName" select="@name" />
-			<xsl:variable name="functionFile">
-				<xsl:value-of select="$specsdir" />
-				<xsl:text>/</xsl:text>
-				<xsl:value-of select="$functionName" />
-				<xsl:text>.fnc</xsl:text>
-			</xsl:variable>
+			<xsl:variable name="functionFile" select="concat($specsdir, '/', $functionName, '.fnc')" />
 			<xsl:apply-templates select="document($functionFile)/function">
 				<xsl:with-param name="name" select="$functionName" />
 			</xsl:apply-templates>
@@ -344,16 +337,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:param name="name" />
 
 		<!-- Determine the name of the call methods -->
-		<xsl:variable name="methodName">
-			<xsl:text>call</xsl:text>
-			<xsl:value-of select="$name" />
-		</xsl:variable>
+		<xsl:variable name="methodName" select="concat('call', $name)" />
 
 		<!-- Always return a <FunctionName>Result object -->
-		<xsl:variable name="returnType">
-			<xsl:value-of select="$name" />
-			<xsl:text>Result</xsl:text>
-		</xsl:variable>
+		<xsl:variable name="returnType" select="concat($name, 'Result')" />
 
 		<!-- Check name set in function definition file -->
 		<xsl:if test="string-length(@name) &gt; 0 and not($name = @name)">
@@ -590,9 +577,7 @@ TODO for Ernst: Catch all expected error codes and throw a specific error code e
 		</xsl:variable>
 
 		<!-- Determine the description for the input parameter -->
-		<xsl:variable name="origDescription">
-			<xsl:value-of select="normalize-space(description/text())" />
-		</xsl:variable>
+		<xsl:variable name="origDescription" select="normalize-space(description/text())" />
 		<xsl:variable name="description">
 			<xsl:choose>
 				<xsl:when test="string-length($origDescription) = 0">

@@ -32,6 +32,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     single file.
   - The generated code now checks also the attributes passed to the data 
     sections for the required parameters and for the invalid parameters.
+  - The xsl:variable element now uses the select attribute whenever possible.
+
+* Generation of client-side Java code:
+  - The xsl:variable element now uses the select attribute whenever possible.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
@@ -42,6 +46,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Name for attribute-example is now checked.
   - The system check that a file exists for each function, type and result code
     defined in api.xml.
+  - The xsl:variable element now uses the select attribute whenever possible.
 
 * Generated build file:
   - Fixed a bug that prevented APIs using the old directory structure to
