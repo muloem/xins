@@ -303,6 +303,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/logdoc/${version}/server" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/logdoc/${version}/server"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/logdoc/server/html" />
@@ -311,6 +312,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/logdoc/${version}/client" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/client on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/logdoc/${version}/client"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/logdoc/client/html" />
@@ -319,6 +321,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/logdoc/${version}/common" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/common on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/logdoc/${version}/common"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/logdoc/common/html" />
@@ -565,6 +568,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/javadoc/${version}" />
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc/${version} on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/javadoc/${version}"
 		     password="${sf.password}" trust="true">
 			<fileset dir="docs/javadoc" />
@@ -578,6 +582,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/javadoc-private/${version}" />
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc-private/${version} on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/javadoc-private/${version}"
 		     password="${sf.password}" trust="true">
 			<fileset dir="docs/javadoc-private" />
@@ -629,6 +634,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/checkstyle/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/checkstyle/${version} on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/checkstyle/${version}"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/checkstyle/html" />
@@ -645,6 +651,7 @@
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="mkdir -p ${www.dir}/j2h/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/j2h/${version} on ${www.host}" />
+		<!-- TODO: Send compressed archive and unpack remotely -->
 		<scp todir="${www.target}/j2h/${version}"
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/j2h" />
