@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.134:
+
+* XINS/Java Client Framework:
+  - Fixed bug. Now correctly URL encoding parameter values.
+
+* XINS/Java Common Library:
+  - Fixed bug in the toString() method in the Properties class, in the types
+    package. Previously it did not include any ampersands.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.133:
 
 * Generated build file:
