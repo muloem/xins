@@ -69,7 +69,7 @@ extends Object {
     *    if <code>descriptor == null</code>.
     *
     * @throws ParseException
-    *    if there was a parsing error.
+    *    If there was a parsing error.
     */
    public static AccessRule parseAccessRule(String descriptor)
    throws IllegalArgumentException, ParseException {
@@ -81,7 +81,7 @@ extends Object {
 
       // determine if it is an 'allow' or a 'deny' rule
       boolean allow;
-      String token = tokenizer.nextToken();
+      String token = nextToken(tokenizer);
       if ("allow".equals(token)) {
          allow = true;
       } else if ("deny".equals(token)) {
@@ -156,8 +156,6 @@ extends Object {
 
       _ipFilter = ipFilter;
       _allow = allow;
-      // TODO
-
    }
 
 
