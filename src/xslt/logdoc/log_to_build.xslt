@@ -13,6 +13,7 @@
 	<!-- Define parameters -->
 	<xsl:param name="xins_home"       />
 	<xsl:param name="logdoc_xslt_dir" />
+	<xsl:param name="logdoc_dtd_dir"  />
 	<xsl:param name="sourcedir"       />
 	<xsl:param name="html_destdir"    />
 	<xsl:param name="java_destdir"    />
@@ -74,9 +75,9 @@
 			<target name="java" description="Generates Java code">
 				<mkdir dir="{$java_destdir}" />
 				<xmlcatalog id="log-dtds">
-					<dtd location="c:\projects\xins/src/dtd/log_1_0.dtd"
+					<dtd location="{$logdoc_dtd_dir}/log_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-					<dtd location="c:\projects\xins/src/dtd/translation-bundle_1_0.dtd"
+					<dtd location="{$logdoc_dtd_dir}/translation-bundle_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
 				</xmlcatalog>
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">

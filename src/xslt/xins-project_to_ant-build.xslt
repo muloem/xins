@@ -620,6 +620,7 @@
 								<xmlcatalog refid="all-dtds" />
 								<param name="xins_home"       expression="{$xins_home}" />
 								<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
+								<param name="logdoc_dtd_dir"  expression="{$xins_home}/src/dtd" />
 								<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
 								<param name="html_destdir"    expression="html" />
 								<param name="java_destdir"    expression="{$javaDestFileDir}" />
