@@ -51,7 +51,8 @@ CHANGES INTRODUCED IN XINS 0.160:
     . 5009 from INFO to DEBUG (Getting session attribute value, value is null)
   - Improved description of messages 4000 and 4001.
   - Added a new group: 'Access rule matching', with category
-    org.xins.server.runtime.acl. Moved messages 5002-5005 to this group.
+    org.xins.server.runtime.acl. Moved messages 5002-5005 to this group and
+    changed their IDs to 5500-5503.
 
 * Logdoc:
   - Changed description/definition of FATAL level. Previously the description
