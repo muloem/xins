@@ -4,6 +4,7 @@ CHANGES INTRODUCED IN XINS 0.166:
 * XINS/Java Common Library:
   - Added class function getContext() to class LogCentral. This class function
     returns the current diagnostic context identifier.
+  - Removed org.xins.specs package, since it is not used.
 
 * XINS/Java Server Framework:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
