@@ -97,9 +97,9 @@ public final class ExpiryStrategy extends Object {
       }
 
       // Create and start the timer thread
-      TimerThread timer = new TimerThread();
-      timer.setDaemon(true);
-      timer.start();
+      _timerThread = new TimerThread();
+      _timerThread.setDaemon(true);
+      _timerThread.start();
    }
 
 
@@ -132,6 +132,17 @@ public final class ExpiryStrategy extends Object {
     * The list of folders associated with this strategy.
     */
    private final List _folders;
+
+   /**
+    * The timer thread. Not <code>null</code>.
+    */
+   private final TimerThread _timerThread;
+
+   /**
+    * Flag that indicates if the time thread should stop or not. Initially
+    * <code>false</code>, ofcourse.
+    */
+   private boolean _stop;
 
 
    //-------------------------------------------------------------------------
@@ -182,6 +193,24 @@ public final class ExpiryStrategy extends Object {
       }
    }
 
+   /**
+    * Stops the thread that generates ticks that are passed to the registered
+    * expiry folders.
+    *
+    * @throws IllegalStateException
+    *    if this strategy was already stopped.
+    */
+   public void stop() {
+
+      // Check preconditions
+      if (_stop) {
+         throw new IllegalStateException("Already stopped.");
+      }
+
+      _stop = true;
+      _timerThread.interrupt();
+   }
+
    private void doTick() {
       synchronized (_folders) {
          int count = _folders.size();
@@ -222,18 +251,20 @@ public final class ExpiryStrategy extends Object {
 
       public void run() {
 
-         LOG.debug("Started " + getName() + '.');
+         LOG.debug(getName() + " started.");
 
-         while (true) {
+         while (! _stop) {
             try {
-               while (true) {
+               while (! _stop) {
                   sleep(_precision);
                   doTick();
                }
             } catch (InterruptedException exception) {
-               // TODO: Do not ignore InterruptedException
+               // fall through
             }
          }
+
+         LOG.debug(getName() + " stopped.");
       }
 
       public String toString() {
