@@ -242,7 +242,7 @@
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
-						<xsl:text>?_function=_GetVersion</xsl:text>
+						<xsl:text>?_function=_GetVersion&amp;_convention=_xins-std</xsl:text>
 					</xsl:attribute>
 					<xsl:text>version</xsl:text>
 				</a>
@@ -250,7 +250,7 @@
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
-						<xsl:text>?_function=_GetStatistics</xsl:text>
+						<xsl:text>?_function=_GetStatistics&amp;_convention=_xins-std</xsl:text>
 					</xsl:attribute>
 					<xsl:text>statistics</xsl:text>
 				</a>
@@ -258,7 +258,7 @@
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
-						<xsl:text>?_function=_GetSettings</xsl:text>
+						<xsl:text>?_function=_GetSettings&amp;_convention=_xins-std</xsl:text>
 					</xsl:attribute>
 					<xsl:text>settings</xsl:text>
 				</a>
