@@ -36,7 +36,14 @@ public class AddReleaseTask extends Task {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The FTP server to upload the distribution files to.
+    */
    private static final String FTP_SERVER = "upload.sourceforge.net";
+
+   /**
+    * The directory on the FTP server to upload the distribution files to.
+    */
    private static final String FTP_DIR = "incoming";
 
 
