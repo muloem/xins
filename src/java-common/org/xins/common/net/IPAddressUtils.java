@@ -57,7 +57,7 @@ public final class IPAddressUtils extends Object {
       value = ipPartToInt(ip, tokenizer.nextToken());
 
       // Token 2 must be a dot
-      if (".".equals(tokenizer.nextToken()) == false) {
+      if (!".".equals(tokenizer.nextToken())) {
          throw newParseException(ip);
       }
 
@@ -66,7 +66,7 @@ public final class IPAddressUtils extends Object {
       value += ipPartToInt(ip, tokenizer.nextToken());
 
       // Token 4 must be a dot
-      if (".".equals(tokenizer.nextToken()) == false) {
+      if (!".".equals(tokenizer.nextToken())) {
          throw newParseException(ip);
       }
 
@@ -75,7 +75,7 @@ public final class IPAddressUtils extends Object {
       value += ipPartToInt(ip, tokenizer.nextToken());
 
       // Token 6 must be a dot
-      if (".".equals(tokenizer.nextToken()) == false) {
+      if (!".".equals(tokenizer.nextToken())) {
          throw newParseException(ip);
       }
 

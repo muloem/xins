@@ -3,8 +3,6 @@
  */
 package org.xins.client;
 
-import java.util.Collections;
-
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
@@ -153,7 +151,7 @@ public final class CallRequest extends Object {
 
    /**
     * Determines whether fail-over is in principle allowed, even if the
-    * request was already sent to the other end. 
+    * request was already sent to the other end.
     *
     * @return
     *    <code>true</code> if fail-over is in principle allowed, even if the

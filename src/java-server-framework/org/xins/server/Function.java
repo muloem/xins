@@ -5,7 +5,6 @@ package org.xins.server;
 
 import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
@@ -19,7 +18,6 @@ import org.xins.common.text.WhislEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
-import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Base class for function implementation classes.
@@ -376,7 +374,7 @@ implements DefaultResultCodes {
        * @param date
        *    the date, as a number of milliseconds since January 1, 1970.
        */
-      private FormattedDate(long date) {
+      public FormattedDate(long date) {
          _epochDate = date;
       }
 
@@ -500,7 +498,7 @@ implements DefaultResultCodes {
        * @param parameters
        *    the parameters, can be <code>null</code>.
        */
-      private FormattedParameters(PropertyReader parameters) {
+      public FormattedParameters(PropertyReader parameters) {
 
          _parameters = parameters;
       }

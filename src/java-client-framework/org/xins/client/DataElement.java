@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertiesPropertyReader;
-
 /**
  * The data element received from the server when any.
  *

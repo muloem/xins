@@ -3,12 +3,10 @@
  */
 package org.xins.client;
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collections;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnection;
@@ -24,7 +22,6 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.service.CallFailedException;
-import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
@@ -275,7 +272,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Determine the call duration
          duration = System.currentTimeMillis() - start;
 
-         if (succeeded == false) {
+         if (!succeeded) {
 
             // If there was an exception already, don't allow another one to
             // override it, so wrap the releasing of the connection in a

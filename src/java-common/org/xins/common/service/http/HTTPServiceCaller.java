@@ -305,7 +305,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * @throws IllegalArgumentException
        *    if <code>code &lt; 0 || data == null</code>.
        */
-      private Result(int code, byte[] data)
+      public Result(int code, byte[] data)
       throws IllegalArgumentException {
 
          // Check preconditions
@@ -437,7 +437,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    the name of the method, for example <code>"GET"</code> or
        *    <code>"POST"</code>.
        */
-      private Method(String name) {
+      public Method(String name) {
          _name = name;
       }
 

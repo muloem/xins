@@ -9,10 +9,7 @@ import javax.servlet.ServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.EnumerationIterator;
-import org.xins.common.collections.AbstractPropertyReader;
 import org.xins.common.collections.PropertyReader;
-
-import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Implementation of a <code>PropertyReader</code> that returns the

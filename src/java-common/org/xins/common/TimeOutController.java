@@ -3,9 +3,6 @@
  */
 package org.xins.common;
 
-import org.xins.common.Log;
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Utility class for executing a task with a certain time-out period.
  *

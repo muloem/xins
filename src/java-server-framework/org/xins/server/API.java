@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.xins.logdoc.LogStatistics;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -684,7 +683,7 @@ implements DefaultResultCodes {
       } catch (ParseException exception) {
          throw new Error("Malformed IP address: " + ip + '.');
       }
-      if (allow == false) {
+      if (!allow) {
          throw new AccessDeniedException(ip, functionName);
       }
 

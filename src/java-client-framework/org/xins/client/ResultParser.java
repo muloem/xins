@@ -8,7 +8,6 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -118,8 +117,6 @@ public class ResultParser {
          String message = buffer.toString();
          Log.log_2005(exception, detail);
          throw new ParseException(message);
-      } finally {
-         //xmlStream.close();
       }
 
       return new XINSServiceCaller.Result(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());

@@ -30,8 +30,6 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
 
-import org.xins.logdoc.LogdocStringBuffer;
-
 /**
  * Translation bundle for log messages.
  *

@@ -515,9 +515,6 @@ extends HttpServlet {
       //                     Checks and preparations                       //
       //-------------------------------------------------------------------//
 
-      // Make sure the Library class is initialized
-      String version = Library.getVersion();
-
       // Check preconditions
       synchronized (_stateLock) {
          if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED

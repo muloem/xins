@@ -7,10 +7,15 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Removed references to the ServletRequest in Function, API and CallContext.
   - Merged FormattedInputParameters and FormattedOutputParameters in one
     class FormattedParameters.
+  - Removed unused import statements.
 
 * XINS/Java Common Library:
   - Reabilitated the ServletRequestPropertyReader removed in the previous
     version as it's now used by the server framework.
+  - Removed unused import statements.
+
+* XINS/Java Client Framework:
+  - Removed unused import statements.
 
 * Logdoc:
   - Removed the counter that counted the number of time that a log was
