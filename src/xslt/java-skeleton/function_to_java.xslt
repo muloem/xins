@@ -11,6 +11,7 @@
 	<xsl:output method="text" />
 
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="classname"    />
@@ -93,10 +94,11 @@ public class ]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="type"         select="@type"         />
+				<xsl:with-param name="required"     select="@required"     />
 			</xsl:call-template>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />

@@ -11,6 +11,7 @@
 	<xsl:output method="text" />
 
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
@@ -217,10 +218,11 @@ public final class ]]></xsl:text>
 		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="@required" />
-				<xsl:with-param name="type"     select="$basetype" />
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="type"         select="$basetype"     />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -254,10 +256,11 @@ public final class ]]></xsl:text>
 		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="@required" />
-				<xsl:with-param name="type"     select="$basetype" />
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="type"         select="$basetype"     />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="required">
