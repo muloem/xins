@@ -77,9 +77,13 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="output/param" mode="field" />
 		<xsl:if test="output/data/element">
-			<xsl:text>
+			<xsl:text><![CDATA[
 
-   private final List _dataElements;</xsl:text>
+   /**
+    * The result data element. This field will be <code>null</code> if no data
+    * element was returned.
+    */
+   private final Element _dataElement;]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
 
@@ -91,16 +95,17 @@ public final class ]]></xsl:text>
 			<xsl:text><![CDATA[
 
    /**
-    * Gets the elements within the data section. If there are none, then an
-    * empty {@link List} is returned. All elements in the list are instances
-    * of class {@link Element}.
+    * Gets the data element, if any. If there is no data element, then
+    * <code>null</code> is returned.
+    *
+    * <p>This method will always {@link Element#clone()} the underlying
+    * element and return the clone.
     *
     * @return
-    *    the {@link List} of elements within the data section, never
-    *    <code>null</code>.
+    *    the data element, or <code>null</code> if there is none.
     */
-   public List getDataElements() {
-      return _dataElements;
+   public Element getDataElement() {
+      return (Element) _dataElement.clone();
    }]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
@@ -144,16 +149,7 @@ public final class ]]></xsl:text>
 			<xsl:text>
 
       Element data = result.getDataElement();
-      if (data == null) {
-         _dataElements = CollectionUtils.EMPTY_LIST;
-      } else {
-         List children = data.getChildren();
-         if (children == null || children.size() &lt; 1) {
-            _dataElements = CollectionUtils.EMPTY_LIST;
-         } else {
-            _dataElements = Collections.unmodifiableList(children);
-         }
-      }</xsl:text>
+      _dataElement = data == null ? null : (Element) data.clone();</xsl:text>
 		</xsl:if>
 		<xsl:if test="output/param">
 			<xsl:text>
