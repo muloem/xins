@@ -344,13 +344,13 @@
 			<param name="propertyValue" />
 		</entry>
 		<entry id="1429" level="ERROR">
-			<description>Function could not be initialized.</description>
+			<description>Function could not be initialized, no exception available.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
 		<entry id="1430" level="ERROR" exception="true">
-			<description>Function could not be initialized due to an unexpected exception.</description>
+			<description>Function could not be initialized, exception available.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
