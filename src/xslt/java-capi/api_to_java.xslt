@@ -446,7 +446,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       _sessionIDSplitter.splitSessionID(session, arr);
       org.xins.client.ActualFunctionCaller afc = getFunctionCaller().getActualFunctionCallerByCRC32(arr[0]);
       if (afc == null) {
-         throw new NoSuchSessionException();
+         throw new org.xins.client.NoSuchSessionException();
       }
       session = arr[1];</xsl:text>
 		</xsl:if>
