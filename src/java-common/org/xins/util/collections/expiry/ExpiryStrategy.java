@@ -5,6 +5,7 @@ package org.xins.util.collections.expiry;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -18,6 +19,23 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private static final Logger LOG = Logger.getLogger(ExpiryStrategy.class.getName());
+
+   /**
+    * The number of instances of this class.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * Lock object for <code>INSTANCE_COUNT</code>.
+    */
+   private static final Object INSTANCE_COUNT_LOCK = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -57,13 +75,18 @@ public final class ExpiryStrategy extends Object {
          throw new IllegalArgumentException("timeOut < precision");
       }
 
+      // Determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNum = INSTANCE_COUNT++;
+      }
+
       // Determine number of slots
       long slotCount = timeOut / precision;
       if ((precision % precision) > 0) {
          slotCount++;
       }
 
-      // Store data
+      // Initialize fields
       _timeOut   = timeOut;
       _precision = precision;
       _slotCount = (int) slotCount;
@@ -77,6 +100,11 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The instance number of this instance.
+    */
+   private final int _instanceNum;
 
    /**
     * The time-out, in milliseconds.
@@ -141,6 +169,8 @@ public final class ExpiryStrategy extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("folder", folder);
 
+      LOG.debug(folder.toString() + " associated with " + toString() + '.');
+
       synchronized (_folders) {
          _folders.add(folder);
       }
@@ -156,6 +186,10 @@ public final class ExpiryStrategy extends Object {
       }
    }
 
+   public String toString() {
+      return "XINS ExpiryStrategy #" + _instanceNum;
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
@@ -168,7 +202,7 @@ public final class ExpiryStrategy extends Object {
       //----------------------------------------------------------------------
 
       public TimerThread() {
-         super("XINS ExpiryStrategy timer thread");
+         super(ExpiryStrategy.this.toString() + " timer thread");
       }
 
 
@@ -181,6 +215,9 @@ public final class ExpiryStrategy extends Object {
       //----------------------------------------------------------------------
 
       public void run() {
+
+         LOG.debug("Started " + getName() + '.');
+
          while (true) {
             try {
                while (true) {
@@ -191,6 +228,10 @@ public final class ExpiryStrategy extends Object {
                // TODO: Do not ignore InterruptedException
             }
          }
+      }
+
+      public String toString() {
+         return getName();
       }
    }
 }
