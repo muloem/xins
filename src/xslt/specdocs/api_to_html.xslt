@@ -175,11 +175,11 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<h2>Return codes</h2>
+				<h2>Result codes</h2>
 				<xsl:choose>
-					<xsl:when test="count(returncode) = 0">
+					<xsl:when test="count(resultcode) = 0">
 						<p>
-							<em>This API defines no specific return codes.</em>
+							<em>This API defines no specific result codes.</em>
 						</p>
 					</xsl:when>
 					<xsl:otherwise>
@@ -189,7 +189,7 @@
 								<th>Value</th>
 								<th>Description</th>
 							</tr>
-							<xsl:apply-templates select="returncode" />
+							<xsl:apply-templates select="resultcode" />
 						</table>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -369,8 +369,7 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<!-- TODO: Rename to result code -->
-	<xsl:template match="returncode">
+	<xsl:template match="resultcode">
 		<tr>
 			<td>
 				<xsl:value-of select="@name" />
