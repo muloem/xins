@@ -5,6 +5,8 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
+import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -30,6 +33,13 @@ implements DefaultResultCodes {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(API.class.getName());
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -43,6 +53,7 @@ implements DefaultResultCodes {
     */
    protected API() {
       _log               = Logger.getLogger(getClass().getName());
+      _instances         = new ArrayList();
       _functionsByName   = new HashMap();
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
@@ -60,6 +71,11 @@ implements DefaultResultCodes {
     * constructor and set to a non-<code>null</code> value.
     */
    private final Logger _log;
+
+   /**
+    * List of registered instances. See {@link #addInstance(Object)}.
+    */
+   private final List _instances;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
@@ -139,7 +155,9 @@ implements DefaultResultCodes {
       // Register shutdown hook
       Runtime.getRuntime().addShutdownHook(new ShutdownHandler());
 
+      // TODO: Set state to INITIALIZING
       initImpl(properties);
+      // TODO: Set state to INITIALIZED
    }
 
    /**
@@ -156,6 +174,136 @@ implements DefaultResultCodes {
    protected void initImpl(Properties properties)
    throws Throwable {
       // empty
+   }
+
+   /**
+    * Adds the specified instance as an object to initialize at startup and
+    * deinitialize at shutdown. The object will immediately be initialized. If
+    * the initialization fails, then a warning will be logged.
+    *
+    * <p>The initialization will be performed by calling a method
+    * <code>init(</code>{@link Properties}<code>)</code> in the specified
+    * instance with the following characteristics:
+    *
+    * <ul>
+    *    <li>Must be <em>public</em>
+    *    <li>Cannot be <em>static</em>
+    *    <li>Cannot be <em>abstract</em>
+    * </ul>
+    *
+    * <p>At shutdown time, a method <code>destroy()</code> will be
+    * called using the same approach. The conditions for the <code>init</code>
+    * method also apply to this method.
+    *
+    * @param instance
+    *    the instance to initialize now and deinitialize at shutdown time, not
+    *    <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not in the initializing state.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>instance == null</code>.
+    */
+   protected final void addInstance(Object instance)
+   throws IllegalArgumentException {
+
+      // TODO: Check that state equals INITIALIZING
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("instance", instance);
+
+      _instances.add(instance);
+
+      boolean succeeded = callMethod(instance, "init", new Class[] { Properties.class }, new Object[] { _initSettings.clone() });
+     
+      String className = instance.getClass().getName();
+      if (succeeded) {
+         LOG.info("Initialized instance of " + className + '.');
+      } else {
+         LOG.error("Failed to initialize instance of " + className + '.');
+      }
+   }
+
+   private final boolean callMethod(Object   instance,
+                                    String   methodName,
+                                    Class[]  parameterTypes,
+                                    Object[] arguments) {
+
+      Class clazz      = instance.getClass();
+      String className = clazz.getName();
+
+      // Determine the signature
+      StringBuffer sb = new StringBuffer(128);
+      sb.append(className);
+      sb.append('.');
+      sb.append(methodName);
+      sb.append('(');
+      for (int i = 0; i < parameterTypes.length; i++) {
+         if (i > 0) {
+            sb.append(", ");
+         }
+         sb.append(parameterTypes[i].getClass().getName());
+      }
+      sb.append(')');
+      String signature = sb.toString();
+
+      // Get the method
+      Method method;
+      try {
+         method = clazz.getDeclaredMethod(methodName, parameterTypes);
+      } catch (NoSuchMethodException exception) {
+         LOG.warn("Unable to find method " + signature + '.');
+         return false;
+      } catch (SecurityException exception) {
+         LOG.warn("Access denied while attempting to lookup method " + signature + '.');
+         return false;
+      }
+
+      // The method must be public, non-abstract and non-static
+      int modifiers = method.getModifiers();
+      if (Modifier.isAbstract(modifiers)) {
+         LOG.warn("Unable to call abstract method " + signature + '.');
+         return false;
+      } else if (Modifier.isStatic(modifiers)) {
+         LOG.warn("Unable to call abstract method " + signature + '.');
+         return false;
+      } else if (Modifier.isPublic(modifiers) == false) {
+         LOG.warn("Unable to call non-public method " + signature + '.');
+         return false;
+      }
+
+      // Attempt the call
+      try {
+         method.invoke(instance, arguments);
+      } catch (Throwable exception) {
+         LOG.error("Unable to call " + signature + " due to unexpected exception.", exception);
+         return false;
+      }
+
+      return true;
+   }
+
+   /**
+    * Performs shutdown of this XINS API.
+    */
+   private final void shutDown() {
+      _shutDown = true;
+
+      for (int i = 0; i < _instances.size(); i++) {
+         Object instance = _instances.get(i);
+
+         boolean succeeded = callMethod(instance, "destroy", new Class[] {}, null);
+     
+         String className = instance.getClass().getName();
+         if (succeeded) {
+            LOG.info("Deinitialized instance of " + className + '.');
+         } else {
+            LOG.error("Failed to deinitialize instance of " + className + '.');
+         }
+      }
+
+      LOG.info("Completed XINS API shutdown sequence.");
    }
 
    /**
@@ -560,7 +708,7 @@ implements DefaultResultCodes {
 
       public void run() {
          _log.info("XINS API shut down sequence initiated.");
-         _shutDown = true;
+         shutDown();
       }
    }
 }
