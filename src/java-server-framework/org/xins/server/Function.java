@@ -27,6 +27,13 @@ implements DefaultResultCodes {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Call result to be returned when a function is currently disabled. See
+    * {@link #isEnabled()}.
+    */
+   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult(false, "DisabledFunction", null, null);
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -87,6 +94,7 @@ implements DefaultResultCodes {
       _name         = name;
       _version      = version;
       _sessionBased = sessionBased;
+      _enabled      = true;
 
       _api.functionAdded(this);
    }
@@ -121,6 +129,11 @@ implements DefaultResultCodes {
     * Flag that indicates if this function is session-based.
     */
    private final boolean _sessionBased;
+
+   /**
+    * Flag that indicates if this function is currently accessible.
+    */
+   private boolean _enabled;
 
    /**
     * Lock object for <code>_callCount</code>.
@@ -286,6 +299,32 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Checks if this function is currently accessible.
+    *
+    * @return
+    *    <code>true</code> if this function is currently accessible,
+    *    <code>false</code> otherwise.
+    *
+    * @since XINS 0.139
+    */
+   public final boolean isEnabled() {
+      return _enabled;
+   }
+
+   /**
+    * Sets if this function is currently accessible.
+    *
+    * @param enabled
+    *    <code>true</code> if this function should be accessible,
+    *    <code>false</code> if not.
+    *
+    * @since XINS 0.139
+    */
+   public final void setEnabled(boolean enabled) {
+      _enabled = enabled;
+   }
+
+   /**
     * Returns the call statistics for this function.
     *
     * @return
@@ -326,6 +365,12 @@ implements DefaultResultCodes {
 
       // Assign a call ID
       int callID = assignCallID();
+
+      // Check if this function is enabled
+      if (_enabled == false) {
+         performedCall(start, callID, null, false, "DisabledFunction");
+         return DISABLED_FUNCTION_RESULT;
+      }
 
       // Determine the session identifier
       Session session;
