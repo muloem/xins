@@ -190,13 +190,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<!-- Determine if this methods returns a <FunctionName>Result
 		     object or just void -->
 		<xsl:variable name="returnType">
-			<xsl:choose>
-				<xsl:when test="output/param or output/data/element">
-					<xsl:value-of select="$name" />
-					<xsl:text>Result</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>void</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="$name" />
+			<xsl:text>Result</xsl:text>
 		</xsl:variable>
 
 		<!-- Check name set in function definition file -->
@@ -225,13 +220,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
-		<xsl:if test="not ($returnType = 'void')">
-			<xsl:text><![CDATA[
+		<xsl:text><![CDATA[
     *
     * @return
-    *    the result, not <code>null</code>.]]></xsl:text>
-		</xsl:if>
-		<xsl:text><![CDATA[
+    *    the result, not <code>null</code>.
     *
     * @throws org.xins.common.service.GenericCallException
     *    if the first call attempt failed due to a generic reason and all the
@@ -288,13 +280,11 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>);
 
       // Execute the call request
-      org.xins.client.XINSCallResult result = caller.call(request);</xsl:text>
-		<xsl:if test="not ($returnType = 'void')">
-			<xsl:text>
+      org.xins.client.XINSCallResult result = caller.call(request);
+
       return new </xsl:text>
-			<xsl:value-of select="$returnType" />
-			<xsl:text>(result);</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="$returnType" />
+		<xsl:text>(result);</xsl:text>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>

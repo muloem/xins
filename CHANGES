@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
+* Generated CAPI classes:
+  - All call methods now return a function result object, never void. This is
+    backwards compatible with XINS 1.0.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
