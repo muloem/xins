@@ -127,7 +127,9 @@ extends Object {
 
    /**
     * Parses the given XML element to create a <code>FunctionCaller</code>
-    * object.
+    * object. This method calls either {@link #parseCallTargetGroup(Element)}
+    * or {@link #parseActualFunctionCaller(Element)}, depending on the name of
+    * the element.
     *
     * @param element
     *    the element to be parsed, not <code>null</code>.
@@ -149,13 +151,57 @@ extends Object {
 
       // Check that the root element is either <group/> or <api/>
       if ("group".equals(elementName)) {
-         return null; // TODO
+         return parseCallTargetGroup(element);
       } else if ("api".equals(elementName)) {
-         return null; // TODO
+         return parseActualFunctionCaller(element);
       }
 
-      String message = "The returned XML is invalid. The type of the root element is \"" + elementName + "\" instead of \"group\".";
+      String message = "The returned XML is invalid. The type of the root element is \"" + elementName + "\" instead of \"group\" or \"api\".";
       LOG.error(message);
       throw new ParseException(message);
+   }
+
+   /**
+    * Parses the given XML element to create a <code>CallTargetGroup</code>
+    * object.
+    *
+    * @param element
+    *    the element to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    a {@link CallTargetGroup}, not <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>element == null</code>
+    *
+    * @throws ParseException
+    *    if the specified XML element is not valid as the definition of a
+    *    {@link CallTargetGroup}.
+    */
+   private CallTargetGroup parseCallTargetGroup(Element element)
+   throws NullPointerException, ParseException {
+      return null; // TODO
+   }
+
+   /**
+    * Parses the given XML element to create a
+    * <code>ActualFunctionCaller</code> object.
+    *
+    * @param element
+    *    the element to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    a {@link ActualFunctionCaller}, not <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>element == null</code>
+    *
+    * @throws ParseException
+    *    if the specified XML element is not valid as the definition of a
+    *    {@link ActualFunctionCaller}.
+    */
+   private ActualFunctionCaller parseActualFunctionCaller(Element element)
+   throws NullPointerException, ParseException {
+      return null; // TODO
    }
 }
