@@ -894,22 +894,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
    }
    
-   private final static class HTTPCallResultDataHandler implements HTTPCallResultData {
+   /**
+    * Container of the data part of an HTTP call result.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.0.0-beta2
+    */
+   private final static class HTTPCallResultDataHandler
+   implements HTTPCallResultData {
       
-      //-------------------------------------------------------------------------
-      // Class fields
-      //-------------------------------------------------------------------------
-
-      //-------------------------------------------------------------------------
-      // Class functions
-      //-------------------------------------------------------------------------
-
       //-------------------------------------------------------------------------
       // Constructor
       //-------------------------------------------------------------------------
       
       /**
-       * Constructs a new <code>HTTPCallResultData</code> object.
+       * Constructs a new <code>HTTPCallResultDataHandler</code> object.
        *
        * @param code
        *    the HTTP status code.
