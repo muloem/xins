@@ -73,6 +73,7 @@ public class FunctionCallerParserTests extends TestCase {
     */
    protected void setUp() {
       reset();
+      ActualFunctionCaller.setCallAtConstruction(false);
    }
 
    private void reset() {
