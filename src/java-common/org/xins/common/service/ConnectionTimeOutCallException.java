@@ -12,7 +12,8 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public final class ConnectionTimeOutCallException extends ConnectionCallException {
+public final class ConnectionTimeOutCallException
+extends ConnectionCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -45,11 +46,11 @@ public final class ConnectionTimeOutCallException extends ConnectionCallExceptio
     *          || duration  &lt; 0</code>.
     *
     */
-   ConnectionTimeOutCallException(CallRequest      request,
-                                  TargetDescriptor target,
-                                  long             duration)
+   public ConnectionTimeOutCallException(CallRequest      request,
+                                         TargetDescriptor target,
+                                         long             duration)
    throws IllegalArgumentException {
-      super("Connection refused", request, target, duration, null, null);
+      super("Connection time-out", request, target, duration, null, null);
    }
 
 

@@ -44,9 +44,9 @@ public final class TotalTimeOutCallException extends GenericCallException {
     *          || target      == null
     *          || duration  &lt; 0</code>.
     */
-   TotalTimeOutCallException(CallRequest      request,
-                             TargetDescriptor target,
-                             long             duration)
+   public TotalTimeOutCallException(CallRequest      request,
+                                    TargetDescriptor target,
+                                    long             duration)
    throws IllegalArgumentException {
       super("Total time-out", request, target, duration, null, null);
    }
