@@ -35,7 +35,8 @@
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/entry-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
-						<param name="entry" expression="{@id}" />
+						<param name="sourcedir" expression="../../{$sourcedir}" />
+						<param name="entry"     expression="{@id}"        />
 					</style>
 				</xsl:for-each>
 			</target>
