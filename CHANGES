@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.198:
+
+* Tests:
+  - Added BasicPropertyReader tests.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.197:
 
 * XINS/Java Client Framework:
