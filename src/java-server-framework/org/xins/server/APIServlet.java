@@ -345,12 +345,12 @@ implements Servlet {
                // TODO: Use ServletConfigPropertyReader
                _api.init(new PropertiesPropertyReader(ServletUtils.settingsAsProperties(config)),
                          new PropertiesPropertyReader(runtimeProperties));
+
+               Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
             } catch (Throwable e) {
                String message = "Failed to initialize \"" + apiName + "\" API.";
-               Library.LIFESPAN_LOG.fatal(message, e); // TODO: Does this need to be fatal ?
-               throw new ServletException(message);
+               Library.LIFESPAN_LOG.error(message, e);
             }
-            Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
 
             // Watch the configuration file
             if (_configFile != null) {
