@@ -195,6 +195,8 @@ APIs in this project are:
 
 					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
 					     location="{$xins_home}/src/dtd/impl_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD Function 1.2//EN"
+					     location="{$xins_home}/src/dtd/function_1_2.dtd" />
 				</xmlcatalog>
 			</target>
 

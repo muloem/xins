@@ -248,6 +248,11 @@ implements DefaultResultCodes {
       try {
 
          result = handleCall(context);
+         
+         InvalidResponseResult invalidResponse = result.checkOutputParameters();
+         if (invalidResponse != null) {
+            result = invalidResponse;
+         }
 
       } catch (Throwable exception) {
 

@@ -6,6 +6,9 @@
 	<description>Test invalid responses.</description>
 
 	<output>
+		<param name="outputText1" required="true" type="_text">
+			<description>A required output parameter.</description>
+		</param>
 		<param name="pattern" required="false" type="IPAddress">
 			<description>A pattern-type parameter.</description>
 		</param>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.2//EN" "http://xins.sourceforge.net/dtd/function_1_2.dtd">
 
 <function name="ParamCombo"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -19,15 +19,15 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<description>The birth date's day.</description>
 		</param>
 		<param name="birthCountry" required="false" type="_text">
-			<description>The country where the person is born.</description>
+			<description>The country where the person is borned.</description>
 		</param>
 		<param name="birthCity" required="false" type="_text">
-			<description>The city where the person is born.</description>
+			<description>The city where the person is borned.</description>
 		</param>
 		<param name="age" required="false" type="Age">
 			<description>An example of input for a int8 type with a minimum and maximum.</description>
 		</param>
-		<!-- One of the two parameters must be filled but not both -->
+		<!-- One and only one of the three parameters must be filled -->
 		<param-combo type="exclusive-or">
 			<param-ref name="birthDate" />
 			<param-ref name="birthYear" />
@@ -46,14 +46,30 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param-combo>
 	</input>
 	<output>
-		<param name="outputMessage" required="true" type="_text">
-			<description>The output message with the information passed in the input.</description>
+		<param name="registrationDate" required="false" type="_date">
+			<description>The registration date.</description>
 		</param>
+		<param name="registrationYear" required="false" type="_int32">
+			<description>The registration year.</description>
+		</param>
+		<param name="registrationMonth" required="false" type="_int32">
+			<description>The registration month.</description>
+		</param>
+		<!-- One of the two parameters must be filled but not both-->
+		<param-combo type="exclusive-or">
+			<param-ref name="registrationDate" />
+			<param-ref name="registrationYear" />
+		</param-combo>
+		<!-- These parameters must be filled together or not filled at all -->
+		<param-combo type="all-or-none">
+			<param-ref name="registrationYear" />
+			<param-ref name="registrationMonth" />
+		</param-combo>
 	</output>
 
 	<example resultcode="_InvalidRequest">
 		<description>Invalid parameter.</description>
-		<data-example>
+		<output-data-example>
 			<element-example name="param-combo">
 				<attribute-example name="type">inclusive-or</attribute-example>
 				<element-example name="param">
@@ -75,7 +91,25 @@ rcsversion="$Revision$" rcsdate="$Date$">
 					<attribute-example name="name">age</attribute-example>
 				</element-example>
 			</element-example>
-		</data-example>
+		</output-data-example>
+	</example>
+	<example resultcode="_InvalidResponse">
+		<description>Invalid result.</description>
+		<input-example name="birthYear">2006</input-example>
+		<input-example name="birthMonth">8</input-example>
+		<input-example name="birthDay">19</input-example>
+		<input-example name="birthCountry">France</input-example>
+		<output-data-example>
+			<element-example name="param-combo">
+				<attribute-example name="type">exclusive-or</attribute-example>
+				<element-example name="param">
+					<attribute-example name="name">registrationDate</attribute-example>
+				</element-example>
+				<element-example name="param">
+					<attribute-example name="name">registrationYear</attribute-example>
+				</element-example>
+			</element-example>
+		</output-data-example>
 	</example>
 	<example>
 		<description>Correct combination.</description>
@@ -83,6 +117,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<input-example name="birthMonth">8</input-example>
 		<input-example name="birthDay">19</input-example>
 		<input-example name="birthCountry">France</input-example>
-		<output-example name="outputMessage">You are 31 years old.</output-example>
+		<output-example name="registrationDate">19740801</output-example>
 	</example>
 </function>

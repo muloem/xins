@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import java.util.Iterator;
+import java.util.List;
 import org.xins.common.xml.ElementBuilder;
 
 /**
@@ -73,5 +75,31 @@ public class InvalidResponseResult extends FunctionResult {
       invalidValue.setAttribute("param", parameter);
       invalidValue.setAttribute("type", type);
       add(invalidValue.createElement());
+   }
+
+   /**
+    * Adds an invalid combination of parameters.
+    *
+    * @param type
+    *    the type of the combination.
+    *
+    * @param elements
+    *    list of the elements in the combination passed as a list of
+    *    {@link String} objects.
+    */
+   public void addParamCombo(String type, List elements) {
+
+      ElementBuilder paramCombo = new ElementBuilder("param-combo");
+      paramCombo.setAttribute("type", type);
+
+      // Iterate ober all elements
+      Iterator itElements = elements.iterator();
+      while(itElements.hasNext()) {
+         ElementBuilder param = new ElementBuilder("param");
+         param.setAttribute("name", (String) itElements.next());
+         paramCombo.addChild(param.createElement());
+      }
+
+      add(paramCombo.createElement());
    }
 }

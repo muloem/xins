@@ -3,7 +3,8 @@
  */
 package com.mycompany.allinone.api;
 
-import java.util.GregorianCalendar;
+import java.util.Calendar;
+import org.xins.common.types.standard.Date;
 
 /**
  * Implementation of the <code>ParamCombo</code> function.
@@ -49,6 +50,12 @@ public class ParamComboImpl extends ParamCombo  {
       int age;
       if (request.isSetAge()) {
          age = request.getAge();
+
+         SuccessfulResult result = new SuccessfulResult();
+         Calendar calendar = Calendar.getInstance();
+         result.setRegistrationYear(calendar.get(Calendar.YEAR) - age + 1);
+         result.setRegistrationMonth(calendar.get(Calendar.MONTH));
+         return result;
       } else {
          int year;
          int month;
@@ -62,14 +69,17 @@ public class ParamComboImpl extends ParamCombo  {
             month = request.getBirthMonth();
             day = request.getBirthDay();
          }
-         GregorianCalendar calender = new GregorianCalendar(year, month, day);
-         long birth = calender.getTimeInMillis();
-         long now = System.currentTimeMillis();
-         age = (int) ((now - birth) / 3600000 / 24 / 365);
-      }
 
-      SuccessfulResult result = new SuccessfulResult();
-      result.setOutputMessage("You are " + age +" years old.");
-      return result;
+         // Create an invalid response
+         // This is only for demonstration purpose as no API should normally
+         // return an invalid response.
+         if (year > 2005) {
+            return new SuccessfulResult();
+         }
+
+         SuccessfulResult result = new SuccessfulResult();
+         result.setRegistrationDate(new Date.Value(year + 1, month, 1));
+         return result;
+      }
    }
 }

@@ -26,6 +26,7 @@
 	<xsl:include href="../casechange.xslt" />
 	<xsl:include href="../java.xslt"  />
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="check_params.xslt" />
 	<xsl:include href="result_java.xslt" />
 
 	<xsl:template match="resultcode">

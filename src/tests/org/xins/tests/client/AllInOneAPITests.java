@@ -495,6 +495,31 @@ public class AllInOneAPITests extends TestCase {
       // TODO
    }
 
+  /**
+   * Tests the param-combo for the output section.
+   */
+   public void testParamCombo3() throws Exception {
+      // Test 'all-or-none'
+      try {
+         _capi.callParamCombo(null, new Integer(2006), new Integer(5), new Integer(20), "France", "Paris", null);
+         fail("The param-combo call should return an _InvalidResponse error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+      }
+   }
+
    /**
     * Tests the getXINSVersion() CAPI method.
     */
@@ -524,9 +549,23 @@ public class AllInOneAPITests extends TestCase {
       XINSServiceCaller caller = new XINSServiceCaller(_target);
       try {
          caller.call(request);
+         fail("No invalid response received as expected.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidResponse", exception.getErrorCode());
-         // TODO: Extend
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
+         assertEquals("missing-param", missingParam.getName());
+         assertEquals("outputText1", missingParam.get("param"));
+         assertEquals(0, missingParam.getChildElements().size());
+         assertNull(missingParam.getText());
+         DataElement invalidParam = (DataElement) dataSection.getChildElements().get(1);
+         assertEquals("invalid-value-for-type", invalidParam.getName());
+         assertEquals("pattern", invalidParam.get("param"));
+         assertEquals(0, invalidParam.getChildElements().size());
+         assertNull(invalidParam.getText());
       }
    }
 }
