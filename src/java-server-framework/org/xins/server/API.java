@@ -301,7 +301,7 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_3213(className, _name);
+         Log.log_3213(_name, className);
          try {
             m.bootstrap(_buildSettings);
             Log.log_3214(_name, className);
@@ -740,11 +740,6 @@ implements DefaultResultCodes {
 
       // Determine the function name
       String functionName = functionRequest.getFunctionName();
-
-      // The function name is required
-      if (functionName == null || functionName.length() == 0) {
-         throw new NoSuchFunctionException(null);
-      }
 
       // Check the access rule list
       boolean allow;
