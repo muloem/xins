@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.12:
 
 * Putting dependencies in source distro.
 
+* Refactored statistics-related code.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.11:
 
