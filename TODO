@@ -8,6 +8,7 @@ XINS PROTOCOL
 
 * Result codes should be allowed to have their own specification for output
   parameters and data section.
+* Add standard type '_date'.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
@@ -28,6 +29,8 @@ XINS/JAVA SERVER FRAMEWORK
   that could check that the state transition is valid.
 * Per State in the APIServlet and API classesdefine what a valid next state
   is. Change the setState(State) methods to check this.
+* Support returning of call ID in function output, as an output parameter
+  named '_callID'.
 * Consider returning an HTTP error code if the call is unsuccessful.
 * Consider initializing all LifespanManagers at once.
 * CallResultBuilder should perhaps not implement CallResult.
@@ -41,11 +44,13 @@ ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
 * Change Type class to add a 'version' property.
+* Add DateType class to represent standard type '_date'. Add Date class to
+  represent an actual date and make this the value class for the DateType.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
 
-* None
+* Display specified output parameters and data section per result code.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
