@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 0.207:
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
   - Using the new service caller framework.
+  - Supporting checking of HTTP status codes.
 
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
