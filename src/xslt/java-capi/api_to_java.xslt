@@ -102,7 +102,7 @@
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[/">API specification</a>.
  */
-public final class CAPI extends java.lang.Object {
+public final class CAPI extends org.xins.client.AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -121,12 +121,7 @@ public final class CAPI extends java.lang.Object {
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The remote API. This field cannot be <code>null</code>.
-    */
-   private final org.xins.client.FunctionCaller _functionCaller;]]></xsl:text>
+   //-------------------------------------------------------------------------]]></xsl:text>
 		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
 			<xsl:text><![CDATA[
 
@@ -193,12 +188,12 @@ public final class CAPI extends java.lang.Object {
                org.xins.client.SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
+      super(functionCaller);
+
       // Check preconditions
-      org.xins.util.MandatoryArgumentChecker.check("functionCaller",    functionCaller,
-                                     "sessionIDSplitter", sessionIDSplitter);
+      org.xins.util.MandatoryArgumentChecker.check("sessionIDSplitter", sessionIDSplitter);
 
       // Store data
-      _functionCaller    = functionCaller;
       _sessionIDSplitter = sessionIDSplitter;
    }]]></xsl:text>
 			</xsl:when>
@@ -217,12 +212,7 @@ public final class CAPI extends java.lang.Object {
     */
    public CAPI(org.xins.client.FunctionCaller functionCaller)
    throws IllegalArgumentException {
-
-      // Check preconditions
-      org.xins.util.MandatoryArgumentChecker.check("functionCaller", functionCaller);
-
-      // Store data
-      _functionCaller = functionCaller;
+      super(functionCaller);
    }]]></xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -461,7 +451,7 @@ public final class CAPI extends java.lang.Object {
       // Split the client-side session ID
       java.lang.String[] arr = new java.lang.String[2];
       _sessionIDSplitter.splitSessionID(session, arr);
-      org.xins.client.ActualFunctionCaller afc = _functionCaller.getActualFunctionCallerByCRC32(arr[0]);
+      org.xins.client.ActualFunctionCaller afc = getFunctionCaller().getActualFunctionCallerByCRC32(arr[0]);
       session = arr[1];</xsl:text>
 		</xsl:if>
 		<xsl:if test="input/param">
@@ -479,7 +469,7 @@ public final class CAPI extends java.lang.Object {
 				<xsl:text>afc</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>_functionCaller</xsl:text>
+				<xsl:text>getFunctionCaller()</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>.call(</xsl:text>
