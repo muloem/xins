@@ -38,7 +38,9 @@ CHANGES INTRODUCED IN XINS 0.203:
   - The index of the APIs are regenerated if needed when executing
     specdocs-<api>.
 
-* Updated JDOM library to version 1.0 Beta 10 Release Candidate 1.
+* Libraries:
+  - Updated JDOM library to version 1.0 Beta 10 Release Candidate 1.
+  - Updated Apache Jakarta Commons HttpClient from 2.0 to 2.0.1.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.202:
