@@ -126,6 +126,26 @@ public final class XINSServiceCaller extends ServiceCaller {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Logs the fact that the constructor was entered. The descriptor passed
+    * to the constructor is both the input and the output for this class
+    * function.
+    *
+    * @param descriptor
+    *    the descriptor, could be <code>null</code>.
+    *
+    * @return
+    *    <code>descriptor</code>.
+    */
+   private static final Descriptor trace(Descriptor descriptor) {
+
+      // TRACE: Enter constructor
+      Log.log_2000(CLASSNAME, null);
+
+      return descriptor;
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -143,13 +163,14 @@ public final class XINSServiceCaller extends ServiceCaller {
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
 
-      // TODO: TRACE: Enter constructor
-      super(descriptor);
+      // Trace and then call constructor of superclass
+      super(trace(descriptor));
 
       _parser     = new XINSCallResultParser();
       _httpCaller = new HTTPServiceCaller(descriptor);
 
-      // TODO: TRACE: Leave constructor
+      // TRACE: Leave constructor
+      Log.log_2002(CLASSNAME, null);
    }
 
 
