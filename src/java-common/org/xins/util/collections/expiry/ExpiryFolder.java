@@ -54,9 +54,6 @@ extends Object {
     *    the maximum time a thread can wait in the queue for obtaining read or
     *    write access, must be &gt; 0L.
     *
-    * @param strategy
-    *    the strategy that should be applied, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>strategy == null</code>.
     */
