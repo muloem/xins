@@ -61,7 +61,7 @@ public class FastStringBuffer extends Object {
          throw new IllegalArgumentException("s == null");
       }
 
-      _buffer = s.toCharArray()
+      _buffer = s.toCharArray();
       _length = _buffer.length;
    }
 
