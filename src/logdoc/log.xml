@@ -20,10 +20,10 @@
 	</group>
 
 	<group id="lifespan.bootstrap" name="Bootstrapping">
-		<entry id="2000" level="DEBUG">
+		<entry id="2000" level="NOTICE">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
 		</entry>
-		<entry id="2001" level="ERROR">
+		<entry id="2001" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
 			<param name="state" />
 		</entry>
@@ -36,7 +36,7 @@
 			<param name="actual_version" />
 			<param name="expected_version" />
 		</entry>
-		<entry id="2004" level="ERROR">
+		<entry id="2004" level="FATAL">
 			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
 			<param name="exceptionClass" />
@@ -81,10 +81,10 @@
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
 		</entry>
-		<entry id="2013" level="DEBUG">
+		<entry id="2013" level="INFO">
 			<description>API is session-oriented.</description>
 		</entry>
-		<entry id="2014" level="DEBUG">
+		<entry id="2014" level="INFO">
 			<description>API is not session-oriented.</description>
 		</entry>
 		<entry id="2015" level="DEBUG">
@@ -114,26 +114,26 @@
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="2021" level="ERROR">
+		<entry id="2021" level="FATAL">
 			<description>Manageable object could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="2022" level="ERROR">
+		<entry id="2022" level="FATAL">
 			<description>Manageable object could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="2023" level="ERROR">
+		<entry id="2023" level="FATAL">
 			<description>Manageable object could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="2024" level="ERROR">
+		<entry id="2024" level="FATAL">
 			<description>Manageable object could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
@@ -160,26 +160,26 @@
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="2029" level="ERROR">
+		<entry id="2029" level="FATAL">
 			<description>Function could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="2030" level="ERROR">
+		<entry id="2030" level="FATAL">
 			<description>Function could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="2031" level="ERROR">
+		<entry id="2031" level="FATAL">
 			<description>Function could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="2032" level="ERROR">
+		<entry id="2032" level="FATAL">
 			<description>Function could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
@@ -236,11 +236,11 @@
 
 	<group id="lifespan.init" name="Initialization">
 		<entry id="4000" level="WARNING">
-			<description>Runtime properties file cannot be opened.</description>
+			<description>Runtime properties file cannot be opened while checking whether the file has been modified.</description>
 			<param name="configFile" />
 		</entry>
 		<entry id="4001" level="WARNING">
-			<description>Runtime properties file cannot be opened, due to a security restriction.</description>
+			<description>Runtime properties file cannot be opened while checking whether the file has been modified, due to a security restriction.</description>
 			<param name="configFile" />
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
@@ -268,11 +268,11 @@
 			<description>Initialized API.</description>
 			<param name="api" />
 		</entry>
-		<entry id="4007" level="DEBUG">
+		<entry id="4007" level="NOTICE">
 			<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
 			<param name="configFile" nullable="false" />
 		</entry>
-		<entry id="4008" level="DEBUG">
+		<entry id="4008" level="INFO">
 			<description>Runtime properties file watch interval not specified, using fallback default.</description>
 			<param name="configFile" />
 			<param name="propertyName" />
@@ -301,20 +301,20 @@
 			<param name="intervalPropertyName" />
 			<param name="interval" type="int32" nullable="false" />
 		</entry>
-		<entry id="4013" level="ERROR">
+		<entry id="4013" level="FATAL">
 			<description>API could not be initialized due to a missing required property.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="4014" level="ERROR">
+		<entry id="4014" level="FATAL">
 			<description>API could not be initialized due to an invalid property value.</description>
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="4015" level="ERROR">
+		<entry id="4015" level="FATAL">
 			<description>API could not be initialized.</description>
 			<param name="message" />
 		</entry>
-		<entry id="4016" level="ERROR">
+		<entry id="4016" level="FATAL">
 			<description>API could not be initialized due to an unexpected exception.</description>
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
@@ -332,26 +332,26 @@
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="4021" level="ERROR">
+		<entry id="4021" level="FATAL">
 			<description>Manageable object could not be initialized due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="4022" level="ERROR">
+		<entry id="4022" level="FATAL">
 			<description>Manageable object could not be initialized due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="4023" level="ERROR">
+		<entry id="4023" level="FATAL">
 			<description>Manageable object could not be initialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="4024" level="ERROR">
+		<entry id="4024" level="FATAL">
 			<description>Manageable object could not be initialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
@@ -425,7 +425,7 @@
 	</group>
 
 	<group id="runtime" name="Runtime">
-		<entry id="5000" level="ERROR">
+		<entry id="5000" level="INFO">
 			<description>Received HTTP request with invalid method.</description>
 			<param name="ip" />
 			<param name="method" />
@@ -435,49 +435,23 @@
 			<param name="ip" />
 			<param name="method" />
 		</entry>
-		<entry id="5002" level="INFO">
-			<description>Access rule matches. Allowing function call.</description>
-			<param name="ip" nullable="false" />
-			<param name="function" nullable="false" />
-			<param name="index" type="int32" nullable="false" />
-			<param name="rule" nullable="false" />
-		</entry>
-		<entry id="5003" level="INFO">
-			<description>Access rule matches. Denying function call.</description>
-			<param name="ip" nullable="false" />
-			<param name="function" nullable="false" />
-			<param name="index" type="int32" nullable="false" />
-			<param name="rule"  nullable="false" />
-		</entry>
-		<entry id="5004" level="INFO">
-			<description>Access rule does not match.</description>
-			<param name="ip" nullable="false" />
-			<param name="function" nullable="false" />
-			<param name="index" type="int32" nullable="false" />
-			<param name="rule"  nullable="false" />
-		</entry>
-		<entry id="5005" level="INFO">
-			<description>Request matches none of the access rules. Denying function call.</description>
-			<param name="ip" nullable="false" />
-			<param name="function" nullable="false" />
-		</entry>
-		<entry id="5006" level="INFO">
+		<entry id="5006" level="DEBUG">
 			<description>Setting session attribute value.</description>
 			<param name="name" nullable="false" />
 			<param name="valueClass" nullable="false" />
 			<param name="valueString" nullable="true" />
 		</entry>
-		<entry id="5007" level="INFO">
+		<entry id="5007" level="DEBUG">
 			<description>Resetting session attribute.</description>
 			<param name="name" nullable="false" />
 		</entry>
-		<entry id="5008" level="INFO">
+		<entry id="5008" level="DEBUG">
 			<description>Getting session attribute value, value is not null.</description>
 			<param name="name" nullable="false" />
 			<param name="valueClass" nullable="false" />
 			<param name="valueString" nullable="true" />
 		</entry>
-		<entry id="5009" level="INFO">
+		<entry id="5009" level="DEBUG">
 			<description>Getting session attribute value, value is null.</description>
 			<param name="name" nullable="false" />
 		</entry>
@@ -536,6 +510,35 @@
 		<entry id="5018" level="ERROR">
 			<description>Failed to convert session ID to character string.</description>
 			<param name="reason" nullable="true" />
+		</entry>
+	</group>
+
+	<group id="runtime.acl" name="Access rule matching">
+		<entry id="5002" level="INFO">
+			<description>Access rule matches. Allowing function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
+			<param name="rule" nullable="false" />
+		</entry>
+		<entry id="5003" level="INFO">
+			<description>Access rule matches. Denying function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
+			<param name="rule"  nullable="false" />
+		</entry>
+		<entry id="5004" level="DEBUG">
+			<description>Access rule does not match.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" type="int32" nullable="false" />
+			<param name="rule"  nullable="false" />
+		</entry>
+		<entry id="5005" level="INFO">
+			<description>Request matches none of the access rules. Denying function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
 		</entry>
 	</group>
 
