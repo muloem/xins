@@ -18,6 +18,8 @@ $Id$
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
 	
+	<xsl:variable name="xins_buildfile"  select="concat($xins_home, '/build.xml')" />
+	<xsl:variable name="xins_version"    select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version']/@value" />
 	<xsl:variable name="project_file"    select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins-common.jar" select="concat($xins_home, '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar" select="concat($xins_home, '/build/xins-server.jar')" />
@@ -373,7 +375,7 @@ $Id$
 						bottom="TODO">
 							<packageset dir="build/java-combined/{$api}" />
 							<link
-							href="http://xins.sourceforge.net/javadoc/0.56/"
+							href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 							offline="true"
 							packagelistloc="{$xins_home}/build/javadoc/" />
 							<link
@@ -474,7 +476,7 @@ $Id$
 					bottom="TODO">
 						<packageset dir="build/java-capi/{$api}" />
 						<link
-						href="http://xins.sourceforge.net/javadoc/0.56/"
+						href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 						offline="true"
 						packagelistloc="{$xins_home}/build/javadoc/" />
 						<link
