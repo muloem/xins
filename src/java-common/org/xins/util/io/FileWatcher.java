@@ -39,13 +39,17 @@ public final class FileWatcher extends Thread {
     * @param delay
     *    the delay in seconds, must be greater than or equal to 1.
     *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>file == null || delay &lt; 1</code>
+    *    if <code>file == null || listener == null || delay &lt; 1</code>
     */
-   public FileWatcher(String file, int delay, Listener listener) {
+   public FileWatcher(String file, int delay, Listener listener)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("file", file);
+      MandatoryArgumentChecker.check("file", file, "listener", listener);
       if (delay < 1) {
          throw new IllegalArgumentException("delay (" + delay + ") < 1");
       }
