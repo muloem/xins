@@ -9,8 +9,8 @@ import org.apache.tools.ant.util.FileNameMapper;
 
 
 /**
- * Apache Ant mapper that adds an upper case to the file to the first
- * character if needed.
+ * Apache Ant mapper that change the case of the first character of a filename
+ * to upper, if it is a lowercase letter.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -39,29 +39,57 @@ public class HungarianMapper implements FileNameMapper {
    // Methods
    //-------------------------------------------------------------------------
 
-    /**
-     * Ignored.
-     */
-    public void setFrom(String from) {
-    }
+   public void setFrom(String from) {
+      // empty
+   }
 
-    /**
-     * Ignored.
-     */
-    public void setTo(String to) {
-    }
+   public void setTo(String to) {
+      // empty
+   }
 
-    /**
-     * Return the file with a upper case as first letter if needed.
-     */
-    public String[] mapFileName(String sourceFileName) {
-       String fileName = new File(sourceFileName).getName();
-       if (fileName.charAt(0) >= 'A' && fileName.charAt(0) <= 'Z') {
-          return new String[] {sourceFileName};
-       } else {
-          String dir = sourceFileName.substring(0, sourceFileName.lastIndexOf(fileName));
-          fileName = fileName.substring(0,1).toUpperCase() + fileName.substring(1);
-          return new String[] {dir+fileName};
-       }
-    }
+   /**
+    * Returns an array containing the target filename(s) for the given source
+    * file.
+    *
+    * <p>The implementation of this method checks if the name of the file
+    * identified by the specified path starts with a lowercase letter. If it
+    * does, then it returns the name with the first character converted to an
+    * uppercase character.
+    *
+    * @param sourceFileName
+    *    the path to the file, should not be <code>null</code>.
+    *
+    * @return
+    *    the target filename(s) for the given source file; this implementation
+    *    always returns a 1-size array, and the element is never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>sourceFileName == null</code>.
+    */
+   public String[] mapFileName(String sourceFileName) {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("sourceFileName", sourceFileName);
+
+      // Get the file name
+      String fileName = new File(sourceFileName).getName();
+
+      String result;
+
+      // If the first character is not a lowercase letter, then return the
+      // original file name
+      if (fileName.charAt(0) < 'a' || fileName.charAt(0) > 'z') {
+         result = sourceFileName;
+
+      // Otherwise convert the first filename letter to uppercase and return
+      // that
+      } else {
+         String dir = sourceFileName.substring(0, sourceFileName.lastIndexOf(fileName));
+         fileName = fileName.substring(0,1).toUpperCase() + fileName.substring(1);
+	 result = dir + fileName;
+      }
+
+      return new String[] { result };
+   }
 }
