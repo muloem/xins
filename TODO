@@ -22,6 +22,8 @@ XINS/JAVA SERVER FRAMEWORK
 * Change implementation of meta-functions from one method per meta-function to
   one class per meta-function.
 * Include the timezone in every message that contains a time?
+  --> No, if this information is required it should be printed by Log4J. In
+      general all timestamps should be printed using Log4J.
 * A new maximum call duration (for a specific function) could be logged.
 * CallContext should not rely on CallResultBuilder but implement the
   CallResult interface self.
@@ -38,61 +40,87 @@ XINS/JAVA SERVER FRAMEWORK
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
 * Generated Javadoc should include package-private and private members.
-* Log an INFO message if some runtime properties are unused.
+* Log an INFO message for each unused runtime properties.
+  --> After XINS 1.0, perhaps in 1.1.
 * Implement a _DumpStatistics function that writes the statistics in a comma
   separated line in a text file.
+  --> After XINS 1.0, perhaps in 1.1.
 * Stop runtime configuration file watch thread when the servlet is disposed.
+  --> After XINS 1.0, perhaps in 1.1.
 * Move the logs in the Function#performedCall() method somewhere else
   and remove this method from Function.
+  --> To be investigated.
 * Log that the runtime properties file is opened at startup (DEBUG level).
+  --> Before XINS 1.0.
 * When the runtime properties file is marked as -r (not readable) at startup,
   an error will be logged (3001). After that, the file watch thread is
   started. However, when the permissions of the file are changed so that the
   file is now marked +r (readable), the change is not noticed, since the
   modification date does not change. The framework should notice this and
   reinitialize.
+  --> This is considered a bug. It should preferrably be fixed before XINS
+      1.0. If it is not, then it should be listed in a public place, as a
+      known issue.
 * Improve the performance of the parsing of the query string by using a custom
   method to do this. Return an HTTP error code if the query string is invalid,
   for example if it contains duplicate parameter names.
+  --> Can be done after XINS 1.0. Unit tests should be written before
+      development is started. This is a stand-alone task that can be done by
+      anyone.
 * Log 1514/1515 for meta-functions.
+  --> To be investigated. This is considered a bug. If this is not resolved
+      yet, then it should be listed in a public place as a known issue.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
+* Improve fail-over. In a lot of situations, fail-over should not be
+  attempted.
+  --> Exact behaviour should be defined by Ernst de Haan. Then this should be
+      a fairly simple exercise.
 * Support non-200 HTTP return codes.
 * Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
   _GetSettings and converts the result to a RemoteSettings object with build
   properties, runtime properties and system properties.
+  --> This may not be such a good idea.
+* Add multi-call functionality to CallTargetGroup.
+  --> This should be given some more thought.
 * Add class MultiCallResult that maps ActualFunctionCaller instances to a
   result. The result is either a CallException or a CallResult.
-* Add multi-call functionality to CallTargetGroup.
-* Create subclass of UnsuccessfulCallException for the InvalidParameters
-  result code.
-* Create subclass of UnsuccessfulCallException for the MissingParameters
-  result code.
+  --> This should be given some more thought.
+* Create subclass of UnsuccessfulCallException for the _InvalidRequest error
+  code.
+  --> This should be given some more thought.
 * Send "_function=<name>" instead of "function=<name>" as soon as all existing
   backends support this (in class XINSServiceCaller).
 * Abandon JDOM completely, favour SAX for parsing and a custom Document Object
   Model implementation, where appropriate.
+  --> This is currently being investigated by Peter Troon.
 * Make sure that the XINSServiceCaller properly supports HTTP result codes
   other than 200. Document the behaviour. Redirects should probably not be
-  followed, but this has to be determined.
+  followed, but this has to be determined. Perhaps a configuration setting
+  should be introduced to control the behaviour.
 * Use an IndexedMap in class XINSServiceCaller, for improved iteration
   performance.
+  --> To be investigated. Probably best to do this after XINS 1.0.
 * Throw an InvalidKeyException in class XINSServiceCaller, when and where
   appropriate.
-* Add the possibility to link CAPI to a local WAR file. The invokation of the
-  method is then done normally and not through HTTP.
+  --> To be investigated.
+* Add the possibility to link CAPI to a local WAR file. The invocation of the
+  method is then local instead of a remote call via HTTP.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
+* Change the service caller framework to distinguish between connection and
+  socket time-outs. 
+  --> This should preferrably be done before XINS 1.0.
 * Improve description of class Manageable. It still refers to the term
   'lifespan manager'.
+  --> This should be fixed ASAP.
 * Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
-* Add DateType class to represent standard type '_date'. Add Date class to
-  represent an actual date and make this the value class for the DateType.
+  --> This should be given some more thought.
 * Change ExpiryFolder to allow retrieval of slot info.
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
