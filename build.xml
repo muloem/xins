@@ -511,8 +511,8 @@
 			<packageset dir="build/src/java-client-framework" />
 			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
 			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
-			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
+			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<classpath>
 				<fileset dir="lib"             includes="*.jar" />
 				<fileset dir="${ant.home}/lib" includes="*.jar" />
