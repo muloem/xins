@@ -474,7 +474,7 @@ implements DefaultResultCodes {
       // TODO: Check that default function exists
 
       // Check if response validation is enabled
-      _responseValidationEnabled = getBooleanProperty(buildSettings, "org.xins.api.responseValidation");
+      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
       Library.LIFESPAN_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
