@@ -4,15 +4,19 @@
 package org.xins.client;
 
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+
 import org.xins.common.MandatoryArgumentChecker;
+
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
+
 import org.xins.common.service.TargetDescriptor;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
@@ -150,9 +154,9 @@ public class ResultParser extends Object {
          throw new ParseException(message);
       }
 
-      String code         = parseResultCode(element);
-      Map parameters      = parseParameters(element);
-      Element dataElement = element.getChild("data");
+      String         code        = parseResultCode(element);
+      PropertyReader parameters  = parseParameters(element);
+      Element        dataElement = element.getChild("data");
 
       return new XINSServiceCaller.Result(target, code, parameters, dataElement);
    }
@@ -190,17 +194,13 @@ public class ResultParser extends Object {
    }
 
    /**
-    * Parses the parameters in the specified result element. The returned
-    * {@link Map} will contain have the parameter names as keys
-    * ({@link String} objects) and the parameter values as values
-    * ({@link String} objects as well).
+    * Parses the parameters in the specified result element.
     *
     * @param element
     *    the <code>result</code> element to be parsed, not <code>null</code>.
     *
     * @return
-    *    a non-empty {@link Map} containing the messages, or <code>null</code>
-    *    if there are none.
+    *    the parameters, or <code>null</code> if there are none.
     *
     * @throws NullPointerException
     *    if <code>element == null</code>.
@@ -209,11 +209,12 @@ public class ResultParser extends Object {
     *    if the specified XML is not a valid part of a XINS API function call
     *    result.
     */
-   private static Map parseParameters(Element element)
+   private static PropertyReader parseParameters(Element element)
    throws NullPointerException, ParseException {
 
       final String ELEMENT_NAME  = "param";
       final String KEY_ATTRIBUTE = "name";
+      final Object SECRET_KEY    = new Object();
 
       // Get a list of all sub-elements
       List subElements = element.getChildren(ELEMENT_NAME);
@@ -222,7 +223,7 @@ public class ResultParser extends Object {
                 : subElements.size();
 
       // Loop through all sub-elements
-      Map map = null;
+      ProtectedPropertyReader parameters = null;
       for (int i = 0; i < count; i++) {
 
          // Get the current subelement
@@ -237,7 +238,7 @@ public class ResultParser extends Object {
          String key   = subElement.getAttributeValue(KEY_ATTRIBUTE);
          String value = subElement.getText();
 
-         // If key or value is empty, then ignore the whole thing
+         // If key and/or value is empty, then ignore the whole thing
          boolean noKey   = (key   == null || key.length()   < 1);
          boolean noValue = (value == null || value.length() < 1);
          if (noKey && noValue) {
@@ -250,20 +251,20 @@ public class ResultParser extends Object {
 
             Log.log_2004(ELEMENT_NAME, KEY_ATTRIBUTE, key, value);
 
-            // Lazily initialize the Map
-            if (map == null) {
-               map = new HashMap();
+            // Lazily initialize the parameter set
+            if (parameters == null) {
+               parameters = new ProtectedPropertyReader(SECRET_KEY);
 
             // Only one value per key allowed
-            } else if (map.get(key) != null) {
-               throw new ParseException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + key + "\".");
+            } else if (parameters.get(key) != null) {
+               throw new ParseException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + key + "\" attribute.");
             }
 
             // Store the mapping
-            map.put(key, value);
+            parameters.set(SECRET_KEY, key, value);
          }
       }
 
-      return map;
+      return parameters;
    }
 }
