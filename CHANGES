@@ -1,6 +1,8 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.53:
 
+* Upgraded to JDOM 1.0b9.
+
 * XINS/Java Server Framework:
   - Added getAttribute(String), setAttribute(String,String) and touch() to
     class Session.
