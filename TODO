@@ -122,3 +122,5 @@ MISCELLANEOUS
   files are valid.
 * Fix 'xins -projecthelp'.
 * Consider removing dependency on JDOM.
+* Add date to CHANGES file when a release is created. A (small) custom Ant
+  task would need to be developed for this.
