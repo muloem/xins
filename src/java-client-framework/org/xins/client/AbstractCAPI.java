@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.service.Descriptor;
 
 /**
  * Base class for client-side calling interface classes.
@@ -29,13 +30,21 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>AbstractCAPI</code> object.
+    * Creates a new <code>AbstractCAPI</code> object for the specified
+    * <code>XINSServiceCaller</code>.
+    *
+    * <p>The preferred way of constructing an <code>AbstractCAPI</code> object
+    * is using {@link #AbstractCAPI(Descriptor) the other constructor}.
     *
     * @param caller
     *    the XINS service caller, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>caller == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.192. Use {@link #AbstractCAPI(Descriptor)}
+    *    instead.
     */
    protected AbstractCAPI(XINSServiceCaller caller)
    throws IllegalArgumentException {
@@ -43,8 +52,28 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("caller", caller);
 
-      // Set fields
+      // Store service caller
       _caller = caller;
+   }
+
+   /**
+    * Creates a new <code>AbstractCAPI</code> object, using the specified
+    * <code>Descriptor</code>.
+    *
+    * @param descriptor
+    *    the descriptor for the service(s), cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    */
+   protected AbstractCAPI(Descriptor descriptor)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("descriptor", descriptor);
+
+      // Store service caller
+      _caller = new XINSServiceCaller(descriptor);
    }
 
 
