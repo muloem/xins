@@ -640,6 +640,9 @@ implements DefaultResultCodes {
       Logger log = Library.INIT_LOG;
       log.debug("Initializing " + _name + " API.");
 
+      // Store runtime settings
+      _runtimeSettings = runtimeSettings;
+
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
       log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
