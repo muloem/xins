@@ -72,35 +72,113 @@ implements Servlet {
    //-------------------------------------------------------------------------
 
    /**
-    * Configures the logger using the specified settings. This method is
-    * called from {@link #init(ServletConfig)}.
+    * Configures the logger using the specified servlet configuration. This
+    * method is called from {@link #init(ServletConfig)}.
     *
-    * @param settings
-    *    the initialization settings, not <code>null</code>.
+    * @param config
+    *    the servlet configuration, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>settings == null</code>.
+    *    if <code>config == null</code>.
     */
-   private static void configureLogger(Properties settings)
+   private static void configureLogger(ServletConfig config)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("settings", settings);
+      // Convert the ServletConfig to a Properties object
+      Properties settings = ServletUtils.settingsAsProperties(config);
 
       // Perform the actual initialization of the logger
       PropertyConfigurator.configure(settings);
 
-      // Check if Log4J is already initialized
+      // If Log4J is not initialized, use fallback defaults
       if (! LOG.getAllAppenders().hasMoreElements()) {
-         settings.setProperty("log4j.rootCategory",            "DEBUG, console");
+         settings.setProperty("log4j.rootCategory",            "ALL, console");
          settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
          settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
 
-         // Perform the actual initialization of the logger
          PropertyConfigurator.configure(settings);
 
          LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
       }
+   }
+
+   /**
+    * Initializes an API instance based on the specified servlet
+    * configuration.
+    *
+    * @param config
+    *    the servlet configuration, cannot be <code>null</code>.
+    *
+    * @throws ServletException
+    *    if an API instance could not be initialized.
+    */
+   private static API configureAPI(ServletConfig config)
+   throws ServletException { 
+
+      API api;
+
+      // Determine the API class
+      String apiClassName = config.getInitParameter("org.xins.api.class");
+      if (apiClassName == null || apiClassName.trim().length() < 1) {
+         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
+      }
+
+      // Load the API class
+      Class apiClass;
+      try {
+         apiClass = Class.forName(apiClassName);
+      } catch (Exception e) {
+         String message = "Failed to load API class: \"" + apiClassName + "\".";
+         LOG.error(message, e);
+         throw new ServletException(message);
+      }
+
+      // Get the SINGLETON field
+      Field singletonField;
+      try {
+         singletonField = apiClass.getDeclaredField("SINGLETON");
+      } catch (Exception e) {
+         String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
+         LOG.error(message, e);
+         throw new ServletException(message);
+      }
+
+      // Get the value of the SINGLETON field
+      try {
+         api = (API) singletonField.get(null);
+      } catch (Exception e) {
+         String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
+         LOG.error(message, e);
+         throw new ServletException(message);
+      }
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
+      }
+
+      // Initialize the API
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Initializing API.");
+      }
+      Properties settings = ServletUtils.settingsAsProperties(config);
+      try {
+         api.init(settings);
+      } catch (Throwable e) {
+         try {
+            api.destroy();
+         } catch (Throwable e2) {
+            LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + api.getClass().getName() + ". Ignoring.", e2);
+         }
+
+         String message = "Failed to initialize API.";
+         LOG.error(message, e);
+         throw new ServletException(message);
+      }
+
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Initialized API.");
+      }
+
+      return api;
    }
 
 
@@ -172,6 +250,8 @@ implements Servlet {
       // Check preconditions
       if (_state != UNINITIALIZED) {
          throw new ServletException("Unable to initialize, state is not UNINITIALIZED.");
+      } else if (config == null) {
+         throw new ServletException("No servlet configuration, unable to initialize.");
       }
 
       // Set the state
@@ -182,76 +262,20 @@ implements Servlet {
       _config = config;
 
       // Initialize Log4J
-      Properties settings = ServletUtils.settingsAsProperties(config);
-      configureLogger(settings);
-      boolean debugEnabled = LOG.isDebugEnabled();
-      if (debugEnabled) {
-         LOG.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
+      configureLogger(config);
+
+      // Initialization starting
+      String version = org.xins.server.Library.getVersion();
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
       }
 
-      // Determine the API class
-      String apiClassName = config.getInitParameter("org.xins.api.class");
-      if (apiClassName == null || apiClassName.trim().length() < 1) {
-         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
-      }
+      // Initialize API instance
+      _api = configureAPI(config);
 
-      // Load the API class
-      Class apiClass;
-      try {
-         apiClass = Class.forName(apiClassName);
-      } catch (Exception e) {
-         String message = "Failed to load API class: \"" + apiClassName + "\".";
-         LOG.error(message, e);
-         throw new ServletException(message);
-      }
-
-      // Get the SINGLETON field
-      Field singletonField;
-      try {
-         singletonField = apiClass.getDeclaredField("SINGLETON");
-      } catch (Exception e) {
-         String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         LOG.error(message, e);
-         throw new ServletException(message);
-      }
-
-      // Get the value of the SINGLETON field
-      try {
-         _api = (API) singletonField.get(null);
-      } catch (Exception e) {
-         String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
-         LOG.error(message, e);
-         throw new ServletException(message);
-      }
-      if (debugEnabled) {
-         LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
-      }
-
-      // Initialize the API
-      try {
-         if (debugEnabled) {
-            LOG.debug("Initializing API.");
-         }
-         _api.init(settings);
-      } catch (Throwable e) {
-
-         // Reset state
-         _state = UNINITIALIZED;
-         try {
-            _api.destroy();
-         } catch (Throwable e2) {
-            LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + _api.getClass().getName() + ". Ignoring.", e2);
-         }
-         _api = null;
-
-         String message = "Failed to initialize API.";
-         LOG.error(message, e);
-         throw new ServletException(message);
-      }
-
-      // Log startup is complete
+      // Initialization done
       if (LOG.isInfoEnabled()) {
-         LOG.info("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initialized.");
+         LOG.info("XINS/Java Server Framework " + version + " is initialized.");
       }
 
       // Finally enter the ready state
