@@ -439,7 +439,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/classes/tests" />
 		<javac
 		destdir="build/classes/tests"
-		includes="org/xins/tests/**/*.java"
+		includes="org/xins/**/*.java"
 		debug="true"
 		deprecation="true"
 		source="${javac.targetvm}"
@@ -511,12 +511,46 @@ ${sf.file}</fail>
 		</java>
 	</target>
 	
+	<target name="do-perftests" depends="classes-tests" description="Runs the performance tests">
+		<mkdir dir="build/perftestresults" />
+		<mkdir dir="build/perftestresults/xml" />
+		<junit printsummary="true" failureproperty="perftests.failed">
+			<sysproperty key="user.dir" value="${basedir}"/>
+			<formatter type="xml" />
+			<test name="org.xins.perftests.AllTests" todir="build/perftestresults/xml" outfile="perftestresults"/>
+			<classpath>
+				<pathelement location="build/classes/tests" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</junit>
+	</target>
+
+	<target name="perftestreports" description="Generates the performance test reports">
+		<mkdir dir="build/perftestresults/html" />
+		<style
+		in="build/perftestresults/xml/perftestresults.xml"
+		out="build/perftestresults/html/index.html"
+		style="src/xslt/tests/perftests.xslt" />
+		<copy
+		file="src/css/tests/stylesheet.css"
+		todir="build/perftestresults/html" />
+	</target>
+
+	<target name="perftests" depends="do-perftests,perftestreports" description="Runs the performance tests and generates reports" />
+
 	<target name="clean-coverage">
 		<delete file="jcoverage.ser" />
 		<delete dir="build/instrumented-classes" />
 		<delete dir="build/testresults/coverage" />
 	</target>
-	
+
 	<target name="-prepare-coverage">
 		<taskdef classpath="lib/jcoverage.jar" resource="tasks.properties"/>
 		<instrument todir="build/instrumented-classes/java-client">

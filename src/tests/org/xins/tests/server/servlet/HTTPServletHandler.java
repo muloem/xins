@@ -6,9 +6,8 @@
  */
 package org.xins.tests.server.servlet;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -142,18 +141,17 @@ public class HTTPServletHandler {
     *    the connection with the client.
     */
    public void serviceClient(Socket client) throws IOException {
-      DataInputStream inbound = null;
-      DataOutputStream outbound = null;
+      BufferedOutputStream outbound = null;
       try {
          // Acquire the streams for IO
-         inbound = new DataInputStream(client.getInputStream());
-         outbound = new DataOutputStream(client.getOutputStream());
+         BufferedReader inbound = new BufferedReader(new InputStreamReader(client.getInputStream()));
+         outbound = new BufferedOutputStream(client.getOutputStream());
 
          // Get the output
          String httpResult = httpQuery(inbound);
          // System.out.println("+++ Result " + httpResult);
 
-         outbound.writeBytes(httpResult);
+         outbound.write(httpResult.getBytes("ASCII"), 0, httpResult.length());
 
       } finally{
          // Clean up
@@ -177,7 +175,7 @@ public class HTTPServletHandler {
     * @return
     *    the HTTP result to send back to the client.
     */
-   public String httpQuery(DataInputStream input) throws IOException {
+   public String httpQuery(BufferedReader input) throws IOException {
       String inputLine;
       String query = null;
 
@@ -201,7 +199,7 @@ public class HTTPServletHandler {
             int postLength = Integer.parseInt(inputLine.substring(16));
             input.readLine();
             input.readLine();
-            byte[] data = new byte[postLength];
+            char[] data = new char[postLength];
             input.read(data);
             query = new String(data);
          }
