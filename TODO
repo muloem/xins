@@ -62,6 +62,8 @@ XINS/JAVA CLIENT FRAMEWORK
   result code.
 * Create subclass of UnsuccessfulCallException for the MissingParameters
   result code.
+* Send "_function=<name>" instead of "function=<name>" as soon as all existing
+  backends support this (in class XINSServiceCaller).
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
