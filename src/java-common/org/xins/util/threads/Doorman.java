@@ -121,7 +121,7 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == reader) {
-            throw new IllegalStateException("Thread cannot enter as a reader if it is already an active writer.");
+            throw new IllegalStateException("Thread cannot enter as a reader if it is already the active writer.");
          } else if (_currentReaders.contains(reader)) {
             throw new IllegalStateException("Thread cannot enter as a reader if it is already an active reader.");
          }
@@ -179,7 +179,7 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == writer) {
-            throw new IllegalStateException("Thread cannot enter as a writer if it is already an active writer.");
+            throw new IllegalStateException("Thread cannot enter as a writer if it is already the active writer.");
          } else if (_currentReaders.contains(writer)) {
             throw new IllegalStateException("Thread cannot enter as a writer if it is already an active reader.");
          }
