@@ -28,6 +28,29 @@ public final class CallResult extends Object {
     * Checks that the a list of failed targets and a list of exceptions are
     * valid individually and together.
     *
+    * @param failedTargets
+    *    the list of targets for which the call failed, can be
+    *    <code>null</code>; all elements in this {@link List} must be
+    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    allowed, but duplicates are.
+    *
+    * @param exceptions
+    *    the list of caught exceptions, matching the list of failed targets,
+    *    can be <code>null</code>; all elements in this {@link List} must be
+    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
+    *    but duplicates are.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>(failedTargets == null &amp;&amp; exceptions != null)
+    *         || (failedTargets != null &amp;&amp; (
+    *               exceptions == null
+    *            || failedTargets.size() != exceptions.size()
+    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)
+    *            || failedTargets.get(<em>i</em>) == null
+    *            || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *            || failedTargets.get(<em>x</em>).equals(failedTargets.get(<em>y</em>))))</code>,
+    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>
+    *    and   <code>0 &lt;= <em>x</em> &lt; <em>y</em> &lt; failedTargets.size()</code>.
     */
    static void checkFailureLists(List failedTargets, List exceptions)
    throws IllegalArgumentException {
