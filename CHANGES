@@ -1,6 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.197:
 
+* XINS/Java Client Framework:
+  - Improved the fail-over decision process slightly. The XINS error codes
+    "_InvalidRequest" and "_DisabledFunction" indicate that the request was
+    not handled, so if one of those error codes is returned, the call may
+    fail-over.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.196:
 
