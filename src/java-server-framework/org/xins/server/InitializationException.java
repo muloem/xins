@@ -11,7 +11,7 @@ package org.xins.server;
  *
  * @since XINS 0.55
  */
-public final class InitializationException
+final class InitializationException
 extends Exception {
 
    //-------------------------------------------------------------------------
@@ -33,7 +33,7 @@ extends Exception {
     * @param message
     *    the message, or <code>null</code>.
     */
-   public InitializationException(String message) {
+   InitializationException(String message) {
       super(message);
    }
 
