@@ -299,24 +299,35 @@ public final class XINSCallRequest extends CallRequest {
       if (_asString == null) {
          FastStringBuffer buffer = new FastStringBuffer(208, "XINS HTTP ");
          buffer.append(_httpRequest.getMethod().toString());
+
+         // Request number
          buffer.append(" request #");
          buffer.append(_instanceNumber);
-         buffer.append(", parameters: ");
-         PropertyReaderUtils.serialize(_parameters, buffer, "-");
-         if (isFailOverAllowed()) {
-            buffer.append(", fail-over allowed, ");
+
+         // Function name
+         buffer.append(" [function=\"");
+         buffer.append(_functionName);
+
+         // Parameters
+         buffer.append("\"; parameters=");
+         if (_parameters == null || _parameters.size() < 1) {
+            buffer.append("(null)");
          } else {
-            buffer.append(", fail-over disallowed, ");
+            PropertyReaderUtils.serialize(_parameters, buffer, "-");
          }
 
-         String contextID = _httpRequest.getParameters().get(CONTEXT_ID_HTTP_PARAMETER_NAME);
+         // Fail-over unconditionally allowed?
+         buffer.append("; failOver=");
+         buffer.append(isFailOverAllowed());
 
-         if (contextID == null) {
-            buffer.append("no diagnostic context ID");
+         // Diagnostic context identifier
+         String contextID = _httpRequest.getParameters().get(CONTEXT_ID_HTTP_PARAMETER_NAME);
+         if (contextID == null || contextID.length() < 1) {
+            buffer.append("; contextID=(null)]");
          } else {
-            buffer.append("diagnostic context ID: \"");
+            buffer.append("; contextID=\"");
             buffer.append(contextID);
-            buffer.append('"');
+            buffer.append("\"]");
          }
 
          _asString = buffer.toString();
