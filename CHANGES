@@ -5,6 +5,7 @@ CHANGES INTRODUCED IN XINS 0.138:
 
 * XINS/Java Common Library:
   - Added class function isHexDigit(char) to class HexConverter.
+  - Implemented URLEncoding.decode(String) without using java.net.URLDecoder.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
