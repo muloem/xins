@@ -595,7 +595,7 @@
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
 		<ant dir="../xins-docs" target="upload-homepage" inheritall="false">
-			<property name="version" value="${version.major}${version.minor}" />
+			<property name="version" value="${version.major}.${version.minor}" />
 		</ant>
 	</target>
 
