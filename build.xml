@@ -290,7 +290,9 @@
 	</target>
 
 	<target name="-logdoc-java">
-		<ant dir="build/logdoc/${side}" target="java" inheritall="false" />
+		<ant dir="build/logdoc/${side}" target="java" inheritall="false">
+			<property name="accesslevel" value="package" />
+		</ant>
 	</target>
 
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
