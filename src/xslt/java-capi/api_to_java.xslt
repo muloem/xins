@@ -584,7 +584,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
           org.xins.client.XINSCallException {
-      return call(config, null);
+      return call(request, null);
    }</xsl:text>
 
 		<!-- Print method that accepts the individual parameters -->
