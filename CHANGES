@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.14:
+
+* The files CHANGES, COPYRIGHT and README are now in both distribution files.
+
+* Refactored parameter getting and checking: Moved the functionality from API
+  class to Function class, to the handleCall(CallContext) method.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.13:
 
 * Added function _GetSettings that returns the initialization settings.
