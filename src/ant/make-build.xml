@@ -13,7 +13,6 @@
 
 	<target name="make-build">
 		<property name="project_home" value="${user.dir}" />
-		<echo message="Current directory is ${project_home}" />
 
 		<available file="${xins_home}/src/xslt/xins-project_to_ant-build.xslt"
 		           property="ant.build.xslt.exists" />

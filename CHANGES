@@ -23,6 +23,9 @@ CHANGES INTRODUCED IN XINS 0.166:
     that it is now displayed whether the log entry supports an exception or
     not.
 
+* Generated build file:
+  - Remove the display of the user directory when starting the 'xins' script.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.165:
 
