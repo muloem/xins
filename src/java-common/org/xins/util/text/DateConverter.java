@@ -83,7 +83,7 @@ public class DateConverter extends Object {
       buffer.append('.');
 
       // Append month followed by a dot, length is now 8
-      buffer.append(VALUES[month]);
+      buffer.append(VALUES[month + 1]); // Month is 0-based
       buffer.append('.');
 
       // Append day followed by a space, length is now 11
