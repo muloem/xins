@@ -175,8 +175,8 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<replace file="apis/${{api.name}}/spec/api.xml">
 				<replacetoken><![CDATA[
 </api>]]></replacetoken>
-				<replacevalue><![CDATA[	<resultcode name="]]>${rcd.name}<![CDATA[" />
-
+				<replacevalue><![CDATA[
+	<resultcode name="]]>${rcd.name}<![CDATA[" />
 </api>]]></replacevalue>
 			</replace>
 			<replace file="apis/${{api.name}}/spec/api.xml" token="$${{rcd.name}}" value="${{rcd.name}}" />
