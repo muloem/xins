@@ -582,8 +582,11 @@ extends Object {
 
          // Check state
          if (_state != IN_PARAM_ELEMENT && _state != IN_DATA_SECTION) {
-            // NOTE: This will be logged already (message 2205)
-            throw new IllegalStateException("Found PCDATA content in state " + _state + '.');
+            String text = new String(ch, start, length);
+            if (!text.trim().equals("")) {
+               // NOTE: This will be logged already (message 2205)
+               throw new IllegalStateException("Found PCDATA content in state " + _state + '.');
+            }
          }
 
          if (_pcdata != null) {

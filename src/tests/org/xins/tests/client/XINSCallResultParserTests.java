@@ -231,24 +231,37 @@ public class XINSCallResultParserTests extends TestCase {
 
       // Prepare the string to parse
       final String ENCODING = "UTF-8";
-      String xml;
-      XINSCallResultData result;
-      PropertyReader params;
 
       // The parser should not return null
-      xml = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
-            " <result><data>" +
-            "<product available='false' name=\"FOO\" />" +
-            " <product available=\"true\"  name=\"BAR\" />" +
-            "</data></result>";
-      result = parser.parse(xml.getBytes(ENCODING));
+      String xml = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
+                   " <result><data>" +
+                   "<product available='false' name=\"FOO\" />" +
+                   " <product available=\"true\"  name=\"BAR\" />" +
+                   "</data></result>";
+      XINSCallResultData result = parser.parse(xml.getBytes(ENCODING));
+      verifyCorrectResult(result);
+      
+      // Parse the same XML with spaces between elements
+      String xml2 = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
+                    " <result>\n\t<data>\n" +
+                    "\t\t<product available='false' name=\"FOO\" />\n" +
+                    "\t\t<product available=\"true\"  name=\"BAR\" />\n" +
+                    "\t</data>\n</result>";
+      XINSCallResultData result2 = parser.parse(xml2.getBytes(ENCODING));
+      verifyCorrectResult(result2);
+   }
+   
+   /**
+    * Verifies that the result is correctly formatted as expected.
+    */
+   public void verifyCorrectResult(XINSCallResultData result) throws Exception {
       assertNotNull(result);
 
       // There should be no error code
       assertNull(result.getErrorCode());
 
       // There should be no parameters
-      params = result.getParameters();
+      PropertyReader params = result.getParameters();
       assertTrue(params == null || params.size() == 0);
 
       // There should be a data section

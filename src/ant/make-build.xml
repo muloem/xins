@@ -12,7 +12,7 @@
 <project name="xins-bootstrap-ant" default="make-build" basedir=".">
 
 	<target name="make-build">
-		<property name="project_home" value="${user.dir}" />
+		<property name="project_home" location="${user.dir}" />
 
 		<available file="${xins_home}/src/xslt/xins-project_to_ant-build.xslt"
 		           property="ant.build.xslt.exists" />

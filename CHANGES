@@ -13,6 +13,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     Changed the tests accordingly.
   - Removed class field SERVICE_DESCRIPTOR_TYPE that was deprecated since XINS
     1.0.0-beta6.
+  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
+    elements.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.
@@ -61,6 +63,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
     . public Iterator getChildren(String name)
   - Removed class field SERVICE_DESCRIPTOR_TYPE that was deprecated since XINS
     1.0.0-beta6.
+  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
+    elements.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
