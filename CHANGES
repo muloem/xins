@@ -4,6 +4,7 @@ CHANGES INTRODUCED IN XINS 0.66:
 * XINS/Java Common Library:
   - Added ArrayIterator class.
   - Added FixedArraySet class.
+  - Added IndexedMap interface.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.65:
