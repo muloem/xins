@@ -215,6 +215,9 @@ implements Servlet {
       PrintWriter out = response.getWriter(); 
       _api.handleCall(request, out);
 
+      // TODO: Support and use OutputStream instead of Writer, for improved
+      //       performance
+
       // Flush
       out.flush();
    }
