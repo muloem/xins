@@ -117,9 +117,8 @@ extends Object {
       try {
          return getSessionIDType().toString(_id);
       } catch (TypeValueException exception) {
-         String message = "Caught unexpected " + exception.getClass().getName() + '.';
-         Library.RUNTIME_LOG.error(message, exception);
-         throw new Error(message);
+         Log.log_5018(exception.getClass().getName(), exception.getMessage());
+         throw new Error("Failed to convert session identifier to character string.");
       }
    }
 
