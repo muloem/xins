@@ -4,6 +4,7 @@
 package org.xins.util.sd;
 
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
@@ -143,5 +144,72 @@ public final class ServiceDescriptor extends Descriptor {
     */
    public long getTimeOut() {
       return _timeOut;
+   }
+
+   public java.util.Iterator iterateServices() {
+      return new Iterator();
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Iterator over this (single) service descriptor. Needed for the
+    * implementation of {@link #iterateServices()}.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.105
+    */
+   private final class Iterator
+   extends Object
+   implements java.util.Iterator {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Iterator</code>.
+       */
+      private Iterator() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * Flag that indicates if this iterator is already done iterating over
+       * the single element.
+       */
+      private boolean _done;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public boolean hasNext() {
+         return ! _done;
+      }
+
+      public Object next() {
+         if (_done) {
+            throw new NoSuchElementException();
+         } else {
+            _done = true;
+            return ServiceDescriptor.this;
+         }
+      }
+
+      public void remove() throws UnsupportedOperationException {
+         throw new UnsupportedOperationException();
+      }
    }
 }

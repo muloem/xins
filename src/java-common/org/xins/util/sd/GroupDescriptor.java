@@ -3,10 +3,16 @@
  */
 package org.xins.util.sd;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Random;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
- * Descriptor for a group of services.
+ * Descriptor for a group of services. Each <code>GroupDescriptor</code> has
+ * at least 2 members.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -38,6 +44,11 @@ public final class GroupDescriptor extends Descriptor {
     * The <em>ordered</em> group type.
     */
    public static final Type ORDERED_TYPE = new Type(ORDERED_TYPE_ID);
+
+   /**
+    * Pseudo-random number generator.
+    */
+   private static final Random RANDOM = new Random();
 
 
    //-------------------------------------------------------------------------
@@ -144,6 +155,17 @@ public final class GroupDescriptor extends Descriptor {
       return true;
    }
 
+   public Iterator iterateServices() {
+      if (_type == RANDOM_TYPE) {
+         return new RandomIterator();
+      } else if (_type == ORDERED_TYPE) {
+         return new RandomIterator();
+         // return new OrderedIterator(); // TODO
+      } else {
+         throw new Error("Unexpected condition: Unknown type: " + _type + '.');
+      }
+   }
+
    /**
     * Returns the type of this group.
     *
@@ -213,6 +235,91 @@ public final class GroupDescriptor extends Descriptor {
 
       public String toString() {
          return _description;
+      }
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Random iterator over the leaf service descriptors contained in this
+    * group descriptor. Needed for the implementation of
+    * {@link #iterateServices()}.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.105
+    */
+   private final class RandomIterator
+   extends Object
+   implements Iterator {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>RandomIterator</code>.
+       */
+      private RandomIterator() {
+         int count = _members.length;
+         _remaining = new ArrayList(count);
+         for (int i = 0; i < count; i++) {
+            _remaining.add(_members[i]);
+         }
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The set of remaining descriptors. One is removed from a random index
+       * each time {@link next()} is called.
+       */
+      private List _remaining;
+
+      /**
+       * Current iterator of one of the members.
+       */
+      private Iterator _currentIterator;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public boolean hasNext() {
+         return (_remaining != null);
+      }
+
+      public Object next() {
+         if (_remaining == null) {
+            throw new NoSuchElementException();
+         }
+
+         Object o = _currentIterator.next();
+         if (! _currentIterator.hasNext()) {
+            int size = _remaining.size();
+            int index = RANDOM.nextInt() % size;
+            Descriptor member = (Descriptor) _remaining.remove(index);
+
+            if (size == 1) {
+               _remaining = null;
+            } else {
+               _currentIterator = member.iterateServices();
+            }
+         }
+
+         return o;
+      }
+
+      public void remove() throws UnsupportedOperationException {
+         throw new UnsupportedOperationException();
       }
    }
 }
