@@ -710,8 +710,6 @@ implements DefaultResultCodes {
       if (functionName.charAt(0) == '_') {
          if ("_NoOp".equals(functionName)) {
             return SUCCESSFUL_RESULT;
-         } else if ("_PerformGC".equals(functionName)) {
-            return doPerformGC();
          } else if ("_GetFunctionList".equals(functionName)) {
             return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
@@ -757,17 +755,6 @@ implements DefaultResultCodes {
 
       // Forward the call to the function
       return function.handleCall(start, parameters, ip);
-   }
-
-   /**
-    * Performs garbage collection.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    */
-   private final FunctionResult doPerformGC() {
-      System.gc();
-      return SUCCESSFUL_RESULT;
    }
 
    /**
