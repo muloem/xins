@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.104:
+
+* Updated xmlenc to 0.37.
+
+* XINS/Java Client Framework:
+  - MultipleIPAddressesException: Improved message. Storing host name and
+    addresses.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.103:
 
 * Generated Java CAPI classes: Supporting data sections.
