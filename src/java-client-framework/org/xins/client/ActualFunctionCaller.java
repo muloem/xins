@@ -464,4 +464,61 @@ extends AbstractFunctionCaller {
       MandatoryArgumentChecker.check("crc32", crc32);
       return _crc32String.equals(crc32) ? this : null;
    }
+
+   /**
+    * Pings the API. This is done by calling the <strong>_NoOp</strong>
+    * function. The call result is ignored.
+    *
+    * @throws CallIOException
+    *    if the call failed due to an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the call result was not a valid XINS result document.
+    *
+    * @since XINS 0.137
+    */
+   public void ping()
+   throws CallIOException, InvalidCallResultException {
+      call(null, "_NoOp", null);
+   }
+
+   /**
+    * Returns the remote XINS version.
+    *
+    * @return
+    *    the remote XINS version, or <code>null</code> if it could not be
+    *    retrieved.
+    *
+    * @throws CallIOException
+    *    if the call failed due to an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the call result was not a valid XINS result document.
+    *
+    * @throws UnsuccessfulCallException
+    *    if the call was unsuccessful.
+    *
+    * @since XINS 0.137
+    */
+   public String getRemoteXINSVersion()
+   throws CallIOException,
+          InvalidCallResultException,
+          UnsuccessfulCallException {
+
+      // Call the function
+      CallResult result = call(null, "_GetVersion", null);
+
+      // The call must be successful
+      if (!result.isSuccess()) {
+         throw new UnsuccessfulCallException(result);
+      }
+
+      // Return the 'xins.version' parameter value
+      String version = result.getParameter("xins.version");
+      if (version == null || version.trim().length() < 1) {
+         return null;
+      } else {
+         return version;
+      }
+   }
 }
