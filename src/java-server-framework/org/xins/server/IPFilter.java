@@ -73,28 +73,7 @@ extends Object {
 
       MandatoryArgumentChecker.check("expression", expression);
 
-      String ip = null;
-      String mask = null;
-      boolean validFilter = true;
-      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
-
-      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
-         validFilter = false;
-      } else {
-         ip = expression.substring(0, slashPosition);
-      }
-
-      if (validFilter == true && isValidIp(ip) == false) {
-         validFilter = false;
-      }
-
-      if (validFilter == true) {
-         mask = expression.substring(slashPosition + 1);
-      }
-
-      if (validFilter == true && isValidMask(mask) == false) {
-         validFilter = false;
-      }
+      boolean validFilter = isValidFilter(expression);
 
       if (validFilter == false) {
          throw new ParseException("The provided filter " + expression + " is invalid.");
@@ -192,6 +171,41 @@ extends Object {
     */
    public final String toString() {
       return getExpression();
+   }
+
+   /**
+    * Determines whether the provided expression is a valid IP filter.
+    *
+    * @param expression the IP filter expression.
+    *
+    * @return a boolean with the value <code>true</code> when the expression
+    *    is a valid IP filter, otherwise <code>false</code>.
+    */
+   private static boolean isValidFilter(String expression) {
+      String ip = null;
+      String mask = null;
+      boolean validFilter = true;
+      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
+
+      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
+         validFilter = false;
+      } else {
+         ip = expression.substring(0, slashPosition);
+      }
+
+      if (validFilter == true && isValidIp(ip) == false) {
+         validFilter = false;
+      }
+
+      if (validFilter == true) {
+         mask = expression.substring(slashPosition + 1);
+      }
+
+      if (validFilter == true && isValidMask(mask) == false) {
+         validFilter = false;
+      }
+
+      return validFilter;
    }
 
    /**
