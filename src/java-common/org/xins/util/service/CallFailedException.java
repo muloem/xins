@@ -37,19 +37,20 @@ public final class CallFailedException extends Exception {
     *
     * @param failedTargets
     *    the list of targets for which the call failed, cannot be
-    *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
-    *    allowed, but duplicates are.
+    *    <code>null</code>; must contain at least 1 element; all elements in
+    *    this {@link List} must be {@link TargetDescriptor} objects, no
+    *    <code>null</code> elements are allowed, but duplicates are.
     *
     * @param exceptions
     *    the list of caught exceptions, matching the list of failed targets,
-    *    cannot be <code>null</code>; all elements in this {@link List} must be
-    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
-    *    but duplicates are.
+    *    cannot be <code>null</code>; must contain at least 1 element; all
+    *    elements in this {@link List} must be {@link Throwable} objects, no
+    *    <code>null</code> elements are allowed, but duplicates are.
     *
     * @throws IllegalArgumentException
     *    if <code>failedTargets == null || exceptions == null)
     *         || failedTargets.size() != exceptions.size()
+    *         || failedTargets.size() &lt; 1
     *         || failedTargets.get(<em>i</em>) == null
     *         || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
@@ -98,19 +99,20 @@ public final class CallFailedException extends Exception {
     *
     * @param failedTargets
     *    the list of targets for which the call failed, cannot be
-    *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
-    *    allowed, but duplicates are.
+    *    <code>null</code>; must contain at least 1 element; all elements in
+    *    this {@link List} must be {@link TargetDescriptor} objects, no
+    *    <code>null</code> elements are allowed, but duplicates are.
     *
     * @param exceptions
     *    the list of caught exceptions, matching the list of failed targets,
-    *    cannot be <code>null</code>; all elements in this {@link List} must be
-    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
-    *    but duplicates are.
+    *    cannot be <code>null</code>; must contain at least 1 element; all
+    *    elements in this {@link List} must be {@link Throwable} objects, no
+    *    <code>null</code> elements are allowed, but duplicates are.
     *
     * @throws IllegalArgumentException
     *    if <code>failedTargets == null || exceptions == null)
     *         || failedTargets.size() != exceptions.size()
+    *         || failedTargets.size() &lt; 1
     *         || failedTargets.get(<em>i</em>) == null
     *         || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
@@ -147,7 +149,7 @@ public final class CallFailedException extends Exception {
     * The {@link List} contains no <code>null</code> elements, but it may
     * contain duplicates.
     *
-    * <p>This is an unmodifiable {@link List}.
+    * <p>This is an unmodifiable {@link List}. It contains at least 1 element.
     */
    private final List _failedTargets;
 
@@ -158,7 +160,7 @@ public final class CallFailedException extends Exception {
     * The {@link List} contains no <code>null</code> elements, but it may
     * contain duplicates.
     *
-    * <p>This is an unmodifiable {@link List}.
+    * <p>This is an unmodifiable {@link List}. It contains at least 1 element.
     */
    private final List _exceptions;
 
@@ -183,7 +185,8 @@ public final class CallFailedException extends Exception {
     * {@link List} are {@link TargetDescriptor} objects, and it contains no
     * <code>null</code> elements. It may contain duplicates, though.
     *
-    * <p>The returned {@link List} is unmodifiable.
+    * <p>The returned {@link List} is unmodifiable and contains at least 1
+    * element.
     *
     * @return
     *    the {@link List} of failed targets, not <code>null</code>.
@@ -198,7 +201,8 @@ public final class CallFailedException extends Exception {
     * the {@link List} are {@link Throwable} objects, and it contains no
     * <code>null</code> elements. It may contain duplicates, though.
     *
-    * <p>The returned {@link List} is unmodifiable.
+    * <p>The returned {@link List} is unmodifiable and contains at least 1
+    * element.
     *
     * @return
     *    the {@link List} of exceptions, not <code>null</code>.
