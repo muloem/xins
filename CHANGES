@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.148:
+
+* Generation of specification documentation:
+  - Fixed bug that happened when an API defines no types but it does define
+    result codes. All result codes would be converted to HTML using the XSLT
+    template for types instead of the one for result codes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.147:
 
 * Added j2h.jar to depends/compile. See: http://www.java2html.com/.
