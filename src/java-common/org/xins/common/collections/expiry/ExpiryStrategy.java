@@ -183,12 +183,24 @@ public final class ExpiryStrategy extends Object {
       return _slotCount;
    }
 
+   /**
+    * Callback method indicating an <code>ExpiryFolder</code> is now
+    * associated with this strategy.
+    *
+    * @param folder
+    *    the {@link ExpiryFolder} that is now associated with this strategy,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>folder == null</code>.
+    */
    void folderAdded(ExpiryFolder folder)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("folder", folder);
 
+      // TODO: Review this log message. Generally, toString() is not wise.
       Log.log_3404(folder.toString(), toString());
 
       synchronized (_folders) {
