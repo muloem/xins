@@ -158,7 +158,14 @@ public final class ]]></xsl:text>
 			<xsl:apply-templates select="output/param" mode="setfield" />
 			<xsl:text>
       } catch (org.xins.common.types.TypeValueException exception) {
-         throw new org.xins.client.InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
+         org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(203, "The parameter \"");
+         buffer.append(currentParam);
+         buffer.append("\" has value \"");
+         buffer.append(exception.getValue());
+         buffer.append("\", which is invalid for the type \"");
+         buffer.append(exception.getType().getName());
+         buffer.append("\".");
+         throw new org.xins.client.UnacceptableCallResultException(result, buffer.toString(), exception);
       }</xsl:text>
 		</xsl:if>
 		<xsl:text>

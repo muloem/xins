@@ -80,9 +80,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws IllegalArgumentException
     *    if <code>caller == null</code>.
     */
-   private static final org.xins.client.XINSServiceCaller checkArguments(
-      org.xins.client.XINSServiceCaller caller
-   )
+   private static final org.xins.client.XINSServiceCaller checkArguments(org.xins.client.XINSServiceCaller caller)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -329,6 +327,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @throws org.xins.client.CallException
     *    if the call failed for any reason.
+    *
+    * @throws org.xins.client.UnacceptableCallResultException
+    *    if the call succeeded, but the result was considered incompatible
+    *    with the specification for this API.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
@@ -339,21 +341,27 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:apply-templates select="input/param" mode="methodSignature" />
 
 		<xsl:text>)
-   throws org.xins.client.CallException {
+   throws org.xins.client.CallException,
+          org.xins.client.UnacceptableCallResultException {
 
-   // Get the XINS service caller
-   org.xins.client.XINSServiceCaller caller = getCaller();
-</xsl:text>
+      // Get the XINS service caller
+      org.xins.client.XINSServiceCaller caller = getCaller();</xsl:text>
 		<xsl:if test="input/param">
 			<xsl:text>
 
-      // Store the input parameters in a map
-      java.util.Map params = new java.util.HashMap();</xsl:text>
-			<xsl:apply-templates select="input/param" mode="store" />
+      // Create a temporary secret key for the ProtectedPropertyReader so it
+      // cannot be modified after this method has filled it.
+      final Object SECRET_KEY = new Object();
 
+      // Store the input parameters in a PropertyReader
+      org.xins.common.collections.ProtectedPropertyReader params = new org.xins.common.collections.ProtectedPropertyReader(SECRET_KEY);</xsl:text>
+			<xsl:apply-templates select="input/param" mode="store" />
 		</xsl:if>
+
 		<xsl:text>
-      org.xins.client.XINSServiceCaller.Result result = caller.call(</xsl:text>
+
+      // Construct a CallRequest object
+      org.xins.client.CallRequest request = new org.xins.client.CallRequest(</xsl:text>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>
@@ -365,17 +373,16 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text>null</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>);</xsl:text>
+		<xsl:text>);
+
+      // Execute the call request
+      org.xins.client.XINSServiceCaller.Result result = caller.execute(request);</xsl:text>
 		<xsl:choose>
 			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 				<xsl:text>
-      if (result.getErrorCode() == null) {
-         return new </xsl:text>
+      return new </xsl:text>
 				<xsl:value-of select="$returnType" />
-				<xsl:text>(result);
-      } else {
-         throw new org.xins.client.UnsuccessfulCallException(result);
-      }</xsl:text>
+				<xsl:text>(result);</xsl:text>
 			</xsl:when>
 			<xsl:when test="output/param">
 				<!-- Determine if this parameter is required -->
@@ -395,9 +402,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				</xsl:variable>
 
 				<xsl:text>
-      if (result.getErrorCode() == null) {
-         try {
-            return </xsl:text>
+
+      try {
+         return </xsl:text>
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="specsdir" select="$specsdir"          />
 					<xsl:with-param name="api"      select="$api"               />
@@ -410,31 +417,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text>;
-         } catch (org.xins.common.types.TypeValueException exception) {
-            // fall through
-         }
-      }
-      throw new org.xins.client.UnsuccessfulCallException(result);</xsl:text>
+      } catch (org.xins.common.types.TypeValueException exception) {
+         throw new org.xins.client.UnacceptableCallResultException(result, null, exception);
+      }</xsl:text>
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
-      if (result.getErrorCode() == null) {
-         org.jdom.Element element = result.getDataElement();
-         if (element != null) {
-            return (org.jdom.Element) element.clone();
-         } else {
-            return null;
-         }
+      org.jdom.Element element = result.getDataElement();
+      if (element != null) {
+         return (org.jdom.Element) element.clone();
       } else {
-         throw new org.xins.client.UnsuccessfulCallException(result);
+         return null;
       }</xsl:text>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>
-      if (result.getErrorCode() != null) {
-         throw new org.xins.client.UnsuccessfulCallException(result);
-      }</xsl:text>
-			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>
    }</xsl:text>
@@ -573,7 +568,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 
 	<!-- ***************************************************************** -->
-	<!-- Print code that will store an input parameter in a map            -->
+	<!-- Print code that will store an input parameter in a variable       -->
 	<!-- ***************************************************************** -->
 
 	<xsl:template match="input/param" mode="store">
@@ -598,7 +593,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       if (</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text> != null) {
-         params.put("</xsl:text>
+         params.set(SECRET_KEY, "</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", </xsl:text>
 				<xsl:call-template name="javatype_to_string_for_type">
@@ -613,7 +608,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
-      params.put("</xsl:text>
+      params.set(SECRET_KEY, "</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", </xsl:text>
 				<xsl:call-template name="javatype_to_string_for_type">
