@@ -43,8 +43,12 @@ public class Replacer extends Object {
     *    <code>tagEnd</code>) to replace by values, cannot be
     *    <code>null</code>.
     *
+    * @return
+    *    the character string with the replacements applied, never
+    *    <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>properties == null</code>.
+    *    if <code>text == null || properties == null</code>.
     *
     * @throws Replacer.Exception
     *    if a tag start was found without a matching tag end, if an empty
