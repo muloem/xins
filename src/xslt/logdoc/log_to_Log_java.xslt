@@ -183,54 +183,6 @@ public class Log extends AbstractLog {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * The <em>notice</em> log level.
-    */
-   private static class CustomLevel extends Level {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>CustomLevel</code> object.
-       *
-       * @param value
-       *    the <code>int</code> value for this level.
-       *
-       * @param name
-       *    the name for this level, should not be <code>null</code>.
-       *
-       * @param syslogEquivalent
-       *    the syslog equivalent.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>name == null</code>.
-       */
-      private CustomLevel(int value, String name, int syslogEquivalent)
-      throws IllegalArgumentException {
-
-         // Call superconstructor
-         super(value, name, syslogEquivalent);
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-   }
 }
 ]]></xsl:text>
 	</xsl:template>
