@@ -13,9 +13,9 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Cleaned up and improved Logdoc.
   - Added the possibility to use the HTTPServiceCaller without parameters.
   - Moved the URLEncoding class from the net package to the text package.
-  - Added unit tests for the Int8, Int16, Int32 and Int64 type classes.
-  - Removed redundant code from all the Intxx type classes.
-  - Added unit test class for the Boolean type class.
+  - Added unit test class for Int8, Int16, Int32 and Int64 types.
+  - removed boundary checks on all methods except the isValidvalue method in all the Intxx type classes.
+  - Added unit test class for Boolean type.
   - Removed redundant TypeValueException calls from Text class.
 
 * XINS/Java Client Framework:
