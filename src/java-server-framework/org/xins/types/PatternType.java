@@ -100,7 +100,7 @@ public abstract class PatternType extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected final void isValidValueImpl(String value) {
+   protected final boolean isValidValueImpl(String value) {
       return PATTERN_MATCHER.matches(value, _pattern);
    }
 

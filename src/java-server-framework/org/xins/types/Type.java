@@ -120,7 +120,9 @@ public abstract class Type extends Object {
     *    <code>false</code> otherwise.
     */
    public final boolean isValidValue(String value) {
-      if (value != null) {
+      if (value == null) {
+         return true;
+      } else {
          return isValidValueImpl(value);
       }
    }
