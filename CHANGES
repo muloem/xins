@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.9:
 
 * Documented FastStringBuffer class.
 
+* Added support for Checkstyle 2.x. See: http://checkstyle.sourceforge.net/
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.8:
 
