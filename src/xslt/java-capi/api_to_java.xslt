@@ -135,6 +135,28 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
 
    /**
+    * Constructs a new <code>CAPI</code> object for the specified descriptor,
+    * with the specified HTTP method.
+    *
+    * @param descriptor
+    *    the descriptor, cannot be <code>null</code>.
+    *
+    * @param httpMethod
+    *    the HTTP method to use, or <code>null</code> if the default should be
+    *    used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    */
+   public CAPI(org.xins.common.service.Descriptor descriptor,
+               org.xins.common.http.HTTPMethod    httpMethod)
+   throws IllegalArgumentException {
+
+      // Call the superclass constructor
+      super(descriptor, httpMethod);
+   }
+
+   /**
     * Constructs a new <code>CAPI</code> object for the specified descriptor.
     *
     * @param descriptor
@@ -145,9 +167,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     */
    public CAPI(org.xins.common.service.Descriptor descriptor)
    throws IllegalArgumentException {
-
-      // Call the superclass constructor
-      super(descriptor);
+      this(descriptor, null);
    }]]></xsl:text>
 	</xsl:template>
 
@@ -254,7 +274,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>
 
       // Construct a call request
-      org.xins.client.XINSCallRequest request = new org.xins.client.XINSCallRequest(</xsl:text>
+      org.xins.client.XINSCallRequest request = createXINSCallRequest(</xsl:text>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>
