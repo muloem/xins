@@ -4,6 +4,14 @@ CHANGES INTRODUCED IN XINS 0.146:
 * XINS Javadoc API documentation now linked to online Jakarta Commons
   HttpClient API documentation.
 
+* XINS/Java Server Framework:
+  - Method init() in LifespanManager subclasses can now throw any kind of
+    exception, the method is declared to throw Throwable.
+  - Slightly changed logging of lifespan manager bootstrap and initialization
+    errors (in class API).
+  - Removed org.xins.server.LifespanManager class (moved to XINS/Java Common
+    Library).
+
 * XINS/Java Common Library:
   - Small improvements to the org.xins.util.service package, such as new and
     improved Javadoc comments, improved exception messages, improved exception
@@ -16,6 +24,8 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Improved performance of SafeRandom in case a warning is logged.
   - Renamed method iterateServices() in Descriptor to iterateTargets().
   - Added getTargetCount() method to class Descriptor (and subclasses).
+  - Added org.xins.util.LifespanManager class (moved from XINS/Java Server
+    Framework).
 
 * XINS/Java Client Framework:
   - Added XINSServiceCaller class.
@@ -24,7 +34,7 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Removed setCallAtConstruction(boolean) method in class
     ActualFunctionCaller.
 
-# Generateed CAPI classes:
+* Generateed CAPI classes:
   - Shared sessions are no longer supported. The support for it was untested
     and incomplete, so it has been removed completely, to simplify the code.
     Support may be put back in in the future.
