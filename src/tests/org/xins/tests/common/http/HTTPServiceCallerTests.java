@@ -126,7 +126,15 @@ public class HTTPServiceCallerTests extends TestCase {
       caller = new HTTPServiceCaller(descriptor);
       assertEquals(descriptor, caller.getDescriptor());
 
+      descriptor = new TargetDescriptor("https://www.google.com");
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
+
       descriptor = new TargetDescriptor("hTTp://www.google.com");
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
+
+      descriptor = new TargetDescriptor("HTTPs://www.google.com");
       caller = new HTTPServiceCaller(descriptor);
       assertEquals(descriptor, caller.getDescriptor());
 
