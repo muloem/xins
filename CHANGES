@@ -33,6 +33,8 @@ CHANGES INTRODUCED IN XINS 0.195:
 * XINS/Java Client Framework:
   - Changed XINSServiceCaller to use connection and socket time-out as
     defined in the TargetDescriptor class.
+  - Changed log message 2007. The logged exception is now always the root
+    cause exception.
 
 * Build and release process:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
