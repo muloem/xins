@@ -33,9 +33,12 @@ extends CallException {
 
    /**
     * Constructs a new <code>NoSuchSessionException</code>.
+    *
+    * @param message
+    *    description of the problem, can be <code>null</code>.
     */
-   public NoSuchSessionException() {
-      super(null, null);
+   public NoSuchSessionException(String message) {
+      super(message, null);
    }
 
 
