@@ -242,7 +242,7 @@ implements Responder, Log {
     *    the function called, or <code>null</code> if there is no function
     *    specificied.
     */
-   public String getFunction() {
+   public String getFunctionName() {
 
       // Check arguments
       if (_request != null) {

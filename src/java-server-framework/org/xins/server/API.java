@@ -209,7 +209,7 @@ implements DefaultResultCodes {
       FastStringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
-      String functionName = context.getFunction();
+      String functionName = context.getFunctionName();
       if (functionName == null || functionName.length() == 0) {
          context.startResponse(MISSING_FUNCTION_NAME);
          context.endResponse();
