@@ -89,7 +89,11 @@ public class AccessRuleListTests extends TestCase {
       arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t");
       assertNotNull(arl);
       assertEquals(1, arl.getRuleCount());
-      // TODO: More tests
+      boolean allow = arl.allow("194.134.168.213", "_GetVersion");
+      if (! allow) {
+         fail("Expected AccessRuleList(" + arl + ") to allow 194.134.168.213 to access function \"_GetVersion\".");
+         return;
+      }
 
       arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ");
       assertNotNull(arl);
