@@ -39,6 +39,8 @@ extends SessionIDGenerator {
     */
    public CountingSessionIDGenerator(API api) {
       super(api);
+
+      _lock = new Object();
    }
 
 
