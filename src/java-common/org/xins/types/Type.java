@@ -108,7 +108,8 @@ public abstract class Type extends Object {
     * @throws TypeValueException
     *    if the specified value is invalid for this type.
     */
-   public final void checkValue(String value) {
+   public final void checkValue(String value)
+   throws TypeValueException {
       if (value == null) {
          return;
       } else if (! isValidValueImpl(value)) {
