@@ -10,6 +10,8 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
+ *
+ * @see EnumType
  */
 public class EnumItem extends Object {
 
@@ -83,7 +85,7 @@ public class EnumItem extends Object {
     * @return
     *    the actual value of this enumeration item, not <code>null</code>.
     */
-   protected String getValue() {
+   public String getValue() {
       return _value;
    }
 }
