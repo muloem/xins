@@ -60,18 +60,6 @@ implements DefaultResultCodes {
     */
    private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(true, null, null, null);
 
-   /**
-    * Call result to be returned when the function name is missing in the
-    * request.
-    */
-   private static final CallResult MISSING_FUNCTION_NAME_RESULT = new BasicCallResult(false, "MissingFunctionName", null, null);
-
-   /**
-    * Call result to be returned when the function name does not denote an
-    * existing function.
-    */
-   private static final CallResult NO_SUCH_FUNCTION_RESULT = new BasicCallResult(false, "NoSuchFunction", null, null);
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -947,9 +935,12 @@ implements DefaultResultCodes {
     *
     * @throws NullPointerException
     *    if <code>request == null</code>.
+    *
+    * @throws NoSuchFunctionException
+    *    if there is no matching function for the specified request.
     */
    final CallResult handleCall(long start, ServletRequest request)
-   throws NullPointerException {
+   throws NullPointerException, NoSuchFunctionException {
 
       // Determine the function name
       String functionName = request.getParameter("_function");
@@ -962,7 +953,7 @@ implements DefaultResultCodes {
 
       // The function name is required
       if (functionName == null || functionName.length() == 0) {
-         return MISSING_FUNCTION_NAME_RESULT;
+         throw new NoSuchFunctionException(null);
       }
 
       // Detect special functions
@@ -984,7 +975,7 @@ implements DefaultResultCodes {
          } else if ("_EnableFunction".equals(functionName)) {
             return doEnableFunction(request);
          } else {
-            return NO_SUCH_FUNCTION_RESULT;
+            throw new NoSuchFunctionException(functionName);
          }
       }
 
@@ -997,7 +988,7 @@ implements DefaultResultCodes {
       // Get the function object
       Function function = getFunction(functionName);
       if (function == null)  {
-         return NO_SUCH_FUNCTION_RESULT;
+         throw new NoSuchFunctionException(functionName);
       }
 
       // Forward the call to the function
