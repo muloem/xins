@@ -78,9 +78,4 @@ implements PropertyReader {
    public Iterator getNames() {
       return new EnumerationIterator(_servletConfig.getInitParameterNames());
    }
-
-   public void serialize(LogdocStringBuffer buffer)
-   throws NullPointerException {
-      AbstractPropertyReader.serialize(this, buffer);
-   }
 }
