@@ -187,23 +187,6 @@ extends Object {
       }
    }
 
-   /**
-    * Validates whether this request is considered acceptable (implementation
-    * method). If required parameters are missing or if certain parameter
-    * values are out of bounds, then a description or the problem is returned.
-    *
-    * <p>This method is called by {@link #validate()}. It should not be called
-    * from anywhere else.
-    *
-    * @return
-    *    <code>null</code> if this request is considered acceptable or a
-    *    non-<code>null</code> description if this request is considered
-    *    unacceptable.
-    */
-   protected final String validateImpl() {
-      return null; // TODO: Remove this method
-   }
-
 
    //-------------------------------------------------------------------------
    // Inner classes
