@@ -111,10 +111,11 @@ implements DefaultReturnCodes {
          long end = System.currentTimeMillis();
          long start = context.getStart();
          long duration = end - start;
+         final String code = INTERNAL_ERROR;
          xmlOutputter.reset(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "InternalError");
+         xmlOutputter.attribute("code", code);
          xmlOutputter.startTag("param");
          xmlOutputter.attribute("name", "_exception.class");
          xmlOutputter.pcdata(exception.getClass().getName());
@@ -139,7 +140,7 @@ implements DefaultReturnCodes {
          }
          xmlOutputter.close();
 
-         callFailed(context.getFunction(), start, duration);
+         callFailed(context.getFunction(), start, duration, code);
       }
 
       if (succeeded) {
@@ -174,8 +175,11 @@ implements DefaultReturnCodes {
     *
     * @param duration
     *    the duration of the function call, as a number of milliseconds.
+    *
+    * @param code
+    *    the function result code, or <code>null</code>.
     */
-   protected void callFailed(String function, long start, long duration) {
+   protected void callFailed(String function, long start, long duration, String code) {
       // empty
    }
 }
