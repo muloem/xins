@@ -61,7 +61,7 @@ if [ ! "${returncode}a" = "0a" ]; then
 fi
 #	(echo "${prog}: ERROR: Cannot create temporary file." ; exit 1)
 echo ">> Created temporary file: ${tmpout}"
-echo -n ">> Generating ${out}..."
+echo -n ">> Generating `basename ${out}`..."
 ant -f ${xins_home}/src/ant/transform.xml \
     -Din=${in} \
 	-Dout=${out} \
@@ -72,7 +72,7 @@ ant -f ${xins_home}/src/ant/transform.xml \
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo " [ FAILED ]"
-	echo "${prog}: ERROR: Unable to transform ${in}:"
+	echo "${prog}: ERROR: Unable to transform `basename ${in}`:"
 	cat ${tmpout}
 	rm ${tmpout}
 	exit 1
