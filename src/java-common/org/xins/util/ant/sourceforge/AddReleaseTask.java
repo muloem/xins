@@ -260,7 +260,7 @@ public class AddReleaseTask extends Task {
       }
 
       // Use our own keystore
-      log("Using keystore file \"" + _keystore + "\".");
+      log("Using keystore file \"" + _keystore + "\".", Project.MSG_DEBUG);
       System.setProperty("javax.net.ssl.trustStore", _keystore);
 
       // Login to SourceForge site
