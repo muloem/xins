@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.133:
+
+* Generated build file:
+  - Printing timestamp after WAR creation.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.132:
 
 * XINS/Java Client Framework:
