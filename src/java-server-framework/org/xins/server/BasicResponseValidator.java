@@ -124,31 +124,75 @@ implements ResponseValidator {
       throw new InvalidResponseException(message);
    }
 
-   public void startResponse(boolean success, String code)
+   public final void startResponse(boolean success, String code)
+   throws InvalidResponseException {
+      boolean succeeded = false;
+      try {
+         startResponseImpl(success, code);
+         succeeded = true;
+      } finally {
+         // If an exception is thrown, then reset, just in case the subclass
+         // is malprogrammed and did not use fail(String).
+         if (succeeded == false) {
+            reset();
+         }
+      }
+   }
+
+   protected void startResponseImpl(boolean success, String code)
    throws InvalidResponseException {
       // empty
    }
 
-   public void param(String name, String value)
+   public final void param(String name, String value)
    throws InvalidResponseException {
       Map parameters = getParameters();
       Object o = parameters.get(name);
       if (o != null) {
          fail("Duplicate parameter named \"" + name + "\".");
       }
+      boolean succeeded = false;
+      try {
+         paramImpl(name, value);
+         succeeded = true;
+      } finally {
+         // If an exception is thrown, then reset, just in case the subclass
+         // is malprogrammed and did not use fail(String).
+         if (succeeded == false) {
+            reset();
+         }
+      }
       parameters.put(name, value);
    }
 
-   public void endResponse()
+   protected void paramImpl(String name, String value)
    throws InvalidResponseException {
-      // TODO: Cleanup parameter map, if any
-      // TODO: Cleanup attribute map, if any
-      reset();
+      // empty
    }
 
-   public void cancelResponse() {
-      // TODO: Cleanup parameter map, if any
-      // TODO: Cleanup attribute map, if any
-      reset();
+   public final void endResponse()
+   throws InvalidResponseException {
+      try {
+         endResponseImpl();
+      } finally {
+         reset();
+      }
+   }
+
+   protected void endResponseImpl()
+   throws InvalidResponseException {
+      // empty
+   }
+
+   public final void cancelResponse() {
+      try {
+         cancelResponseImpl();
+      } finally {
+         reset();
+      }
+   }
+
+   protected void cancelResponseImpl() {
+      // empty
    }
 }
