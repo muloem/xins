@@ -12,7 +12,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
-	<xsl:param name="enable_statistics">true</param>
+	<xsl:param name="enable_statistics">true</xsl:param>
 
 	<xsl:variable name="api" select="//api/@name" />
 
