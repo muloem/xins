@@ -187,7 +187,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       try {
          context = authenticate(target,  authenticationDetails);
       } catch (AuthenticationException exception) {
-         return null; // TODO: Return <<failed authentication>>
+         return new QueryResult(false, null);
       }
 
       // Perform a query if applicable
@@ -196,7 +196,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
          if (query != null) {
             return query(target, context, query);
          } else {
-            return null;
+            return new QueryResult(true, null);
          }
 
       // Always close the context
@@ -238,8 +238,18 @@ public final class LDAPServiceCaller extends ServiceCaller {
       env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY); // TODO: Allow configuration of initial context factory ?
       env.put(Context.PROVIDER_URL,            url);
       env.put(Context.SECURITY_AUTHENTICATION, authenticationDetails.getMethod().getName());
-      env.put(Context.SECURITY_PRINCIPAL,      authenticationDetails.getPrincipal());
-      env.put(Context.SECURITY_CREDENTIALS,    authenticationDetails.getCredentials());
+
+      // Only add principal if given
+      String principal = authenticationDetails.getPrincipal();
+      if (principal != null) {
+         env.put(Context.SECURITY_PRINCIPAL, principal);
+      }
+
+      // Only add credentials if given
+      String credentials = authenticationDetails.getCredentials();
+      if (credentials != null) {
+         env.put(Context.SECURITY_CREDENTIALS, credentials);
+      }
 
       // Connect
       // TODO: Connection time-out
