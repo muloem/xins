@@ -2,6 +2,16 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.139:
 
 * XINS/Java Client Framework:
+  - Added NoSuchSessionException.
+
+* Generated CAPI classes:
+  - Changed generated CAPI class: Throwing NoSuchSessionException if the
+    ActualFunctionCaller is null.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.139:
+
+* XINS/Java Client Framework:
   - Storing members in AbstractCompositeFunctionCaller in an unmodifiable
     list.
   - Fixed bug in ActualFunctionCaller that was introduced in 0.137. It caused
