@@ -6,6 +6,7 @@ package org.xins.client;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.net.URL;
 import java.util.Iterator;
@@ -63,16 +64,31 @@ extends AbstractFunctionCaller {
 
    /**
     * Creates a <code>ActualFunctionCaller</code> object for a XINS API at the
-    * specified URL.
+    * specified URL. If the host part of the URL (see {@link URL#getHost()})
+    * is a host name, it will be looked up immediately. This function caller
+    * will only store IP addresses, not host names.
     *
     * @param url
     *    the URL for the API, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
+    *
+    * @throws SecurityException
+    *    if a security manager does not allow the DNS lookup operation for the
+    *    host specified in the URL.
+    *
+    * @throws UnknownHostException
+    *    if no IP address could be found for the host specified in the URL.
+    *
+    * @throws MultipleIPAddressesException
+    *    if the host specified in the URL resolves to multiple IP addresses.
     */
    public ActualFunctionCaller(URL url)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException,
+          SecurityException,
+          UnknownHostException,
+          MultipleIPAddressesException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
@@ -86,13 +102,25 @@ extends AbstractFunctionCaller {
          LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url);
       }
 
-      _url      = url;
-      _protocol = url.getProtocol();
-      _host     = url.getHost();
-      _port     = url.getPort();
-      _file     = url.getFile();
+      // Store the original host name
+      _hostName = url.getHost();
 
-      _hostAddressIndexLock = new Object();
+      // Perform DNS lookup
+      InetAddress[] addresses = InetAddress.getAllByName(_hostName);
+      if (addresses.length > 1) {
+         throw new MultipleIPAddressesException(); // TODO: Pass host name and addresses
+      }
+
+      // Construct the internal URL, with absolute IP address, so no DNS
+      // lookups will be necessary anymore
+      try {
+         _url = new URL(url.getProtocol(),             // protocol
+                        addresses[0].getHostAddress(), // host
+                        url.getPort(),                 // port
+                        url.getFile());                // file
+      } catch (MalformedURLException mue) {
+         throw new InternalError("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
+      }
 
       _callResultParser = new CallResultParser();
    }
@@ -114,39 +142,10 @@ extends AbstractFunctionCaller {
    private final URL _url;
 
    /**
-    * The protocol for the URL. This field is never <code>null</code>.
+    * The host name as passed to the constructor in the URL. This field is
+    * never <code>null</code>.
     */
-   private final String _protocol;
-
-   /**
-    * The hostname for the URL. This field is never <code>null</code>.
-    */
-   private final String _host;
-
-   /**
-    * The port for the URL.
-    */
-   private final int _port;
-
-   /**
-    * The file part for the URL.
-    */
-   private final String _file;
-
-   /**
-    * Flag that indicates if DNS-based round-robin access is used.
-    */
-   private boolean _roundRobin;
-
-   /**
-    * Index of the host address last used.
-    */
-   private int _hostAddressIndex;
-
-   /**
-    * Lock object for <code>_hostAddressIndex</code>.
-    */
-   private final Object _hostAddressIndexLock;
+   private final String _hostName;
 
    /**
     * Call result parser. This field cannot be <code>null</code>.
@@ -190,48 +189,19 @@ extends AbstractFunctionCaller {
       MandatoryArgumentChecker.check("parameterString", parameterString);
 
       HTTPRequester requester = new HTTPRequester();
-
-      InetAddress[] addresses = null;
-      try {
-         addresses = InetAddress.getAllByName(_host);
-      } catch (UnknownHostException uhe) {
-         throw new IOException("Unknown host: " + _host + '.');
-      }
-
-      int addressCount = addresses.length;
-      int startIndex;
-      synchronized (_hostAddressIndexLock) {
-         _hostAddressIndex++;
-         if (_hostAddressIndex >= addressCount) {
-            _hostAddressIndex = 0;
-         }
-         startIndex = _hostAddressIndex;
-      }
-
-      // TODO: Allow configuration of soft load balancing
-      final int maxAttempts = 2;
-      Exception lastException = null;
       byte[] parameterStringBytes = parameterString.getBytes("US-ASCII");
-      for (int attempt = 0; attempt < maxAttempts; attempt++) {
-         for (int n = 0; n < addressCount; n++) {
-            int index = (startIndex + n) % addressCount;
-            InetAddress address = addresses[index];
-            String host = address.getHostAddress();
 
-            try {
-               LOG.debug("Calling API at " + _host + '/' + host + " (attempt " + attempt + ").");
-               URL url = new URL(_url.getProtocol(), host, _url.getPort(), _url.getFile());
-               return requester.post(url, parameterStringBytes, _host);
-            } catch (Exception exception) {
-               LOG.warn("Failed to access " + host + '.', exception);
-               lastException = exception;
-            }
-         }
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Calling " + _url.toString() + '?' + parameterString);
       }
 
-      String message = "Unable to access " + _url;
-      LOG.error(message, lastException);
-      throw new IOException(message);
+      try {
+         return requester.post(_url, parameterStringBytes, _hostName);
+      } catch (Throwable exception) {
+         String message = "Failed to call " + _url.toString() + '?' + parameterStringBytes;
+         LOG.error(message, exception);
+         throw new IOException(message);
+      }
    }
 
    public CallResult call(String sessionID, String functionName, Map parameters)
