@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
