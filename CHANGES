@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Fixed SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on
     Blackdown JVM 1.4.1. This problem was not really fixed, since the source
     of the problem is in the Blackdown JVM self. It was worked around though.
+  - Changed the internal names of the standard types to start with an
+    underscore. E.g. "int32" is now "_int32".
   - Changed HTTPServiceCaller to work with HttpClient 3.0 only. HttpClient 2.0
     is now no longer supported.
   - Added 'copyFrom' method to class ProtectedPropertyReader.
