@@ -496,7 +496,9 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="tests-ui" depends="classes-tests" description="Runs the unit tests in a graphical environment">
+		<mkdir dir="build/testresults" />
 		<java fork="true" classname="junit.swingui.TestRunner">
+			<sysproperty key="user.dir" value="${basedir}"/>
 			<arg value="-noloading"/>
 			<arg value="org.xins.tests.AllTests"/>
 			<classpath>
@@ -1168,14 +1170,12 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<pathelement location="src/tests/build/classes-capi/allinone" />
 				<pathelement location="src/tests/build/classes-api/allinone" />
 				<pathelement location="src/tests/build/classes-types/allinone" />
-				<pathelement location="file://C:/Java/logging-log4j-1.2.9/dist/classes" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 			<sourcepath>
 				<pathelement location="src/java-client-framework" />
 				<pathelement location="src/java-server-framework" />
 				<pathelement location="src/java-common" />
-				<pathelement location="file://C:/Java/logging-log4j-1.2.9/src/java" />
 			</sourcepath>
 		</nbjpdastart>
 
