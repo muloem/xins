@@ -157,8 +157,9 @@ public class IPFilterTests extends TestCase {
       IPFilter filter = IPFilter.parseIPFilter(expression);
       assertNotNull(filter);
 
-      assertEquals(baseIP, filter.getBaseIP());
-      assertEquals(mask,   filter.getMask());
+      assertEquals(baseIP,              filter.getBaseIP());
+      assertEquals(mask,                filter.getMask());
+      assertEquals(baseIP + '/' + mask, filter.toString());
    }
 
    public void testIsAuthorized() throws Throwable {
