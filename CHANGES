@@ -5,6 +5,14 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Small improvements to the org.xins.util.service package, such as new and
     improved Javadoc comments, improved exception messages, improved exception
     handling, etc.
+  - Renamed ServiceDescriptor class to TargetDescriptor.
+
+* XINS/Java Client Framework:
+  - Added XINSServiceCaller class.
+  - Moved CallResult class to XINSServiceCaller.Result, to resolve clash with
+    CallResult class in package org.xins.util.service.
+  - Removed setCallAtConstruction(boolean) method in class
+    ActualFunctionCaller.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.145:
