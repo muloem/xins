@@ -11,6 +11,7 @@ import org.xins.common.service.CallConfig;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPMethod;
 
 /**
@@ -45,7 +46,7 @@ public final class XINSCallConfig extends CallConfig {
     * Constructs a new <code>XINSCallConfig</code> objcet.
     */
    public XINSCallConfig() {
-      _method = HTTPMethod.POST;
+      _httpCallConfig = new HTTPCallConfig();
    }
 
 
@@ -54,14 +55,27 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
 
    /**
-    * The HTTP method to use. This field cannot be <code>null</code>.
+    * The underlying HTTP call config. Cannot be <code>null</code>.
     */
-   private HTTPMethod _method;
+   private HTTPCallConfig _httpCallConfig;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   // TODO: Override describe()
+
+   /**
+    * Returns an <code>HTTPCallConfig</code> object that corresponds with this
+    * XINS call configuration object.
+    *
+    * @return
+    *    an {@link HTTPCallConfig} object, never <code>null</code>.
+    */
+   HTTPCallConfig getHTTPCallConfig() {
+      return _httpCallConfig;
+   }
 
    /**
     * Returns the HTTP method associated with this configuration.
@@ -69,11 +83,18 @@ public final class XINSCallConfig extends CallConfig {
     * @return
     *    the HTTP method, never <code>null</code>.
     */
-   public HTTPMethod getMethod() {
-      synchronized (_lock) {
-         return _method;
-      }
+   public HTTPMethod getHTTPMethod() {
+      return _httpCallConfig.getMethod();
    }
 
-   // TODO: Add setter for HTTPMethod
+   /**
+    * Sets the HTTP method associated with this configuration.
+    *
+    * @param method
+    *    the HTTP method to be associated with this configuration, can be
+    *    <code>null</code>.
+    */
+   public void setHTTPMethod(HTTPMethod method) {
+      _httpCallConfig.setMethod(method);
+   }
 }
