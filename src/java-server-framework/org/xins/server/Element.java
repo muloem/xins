@@ -25,6 +25,13 @@ final class Element extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Secret key used when accessing <code>ProtectedPropertyReader</code>
+    * objects.
+    */
+   private static final Object SECRET_KEY = new Object();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -50,7 +57,7 @@ final class Element extends Object {
       MandatoryArgumentChecker.check("type", type);
 
       _type       = type;
-      _attributes = new ProtectedPropertyReader(Library.RUNTIME_LOG);
+      _attributes = new ProtectedPropertyReader(SECRET_KEY);
    }
 
 
@@ -128,7 +135,7 @@ final class Element extends Object {
 
       // TODO: Check attribute is not yet set
 
-      _attributes.set(Library.RUNTIME_LOG, name, value);
+      _attributes.set(SECRET_KEY, name, value);
    }
 
    /**

@@ -298,10 +298,12 @@ final class CallResultBuilder extends Object implements CallResult {
 
       // Initialize the _parameters field
       if (_parameters == null) {
-         _parameters = new ProtectedPropertyReader(Library.RUNTIME_LOG);
+         _parameters = new ProtectedPropertyReader(START_TAG_OPEN);
+         // NOTE: The START_TAG_OPEN field is picked as the key to be used,
+         //       since it's static, private, final and not null.
       }
 
-      _parameters.set(Library.RUNTIME_LOG, name, value);
+      _parameters.set(START_TAG_OPEN, name, value);
 
       _state = WITHIN_PARAMS;
    }
