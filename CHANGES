@@ -13,6 +13,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     (GET, POST, etc.) to use.
   - Changed ServiceCaller to work with CallConfig objects. Some members have
     been deprecated in favour of newer ones that work with CallConfig objects.
+    Greatly improved the documentation in the ServiceCaller class [work in
+    progress].
+  - Added UnsupportedProtocolException in org.xins.common.service package.
+    Documented in ServiceCaller class that this exception should be thrown by
+    ServiceCaller subclasses if a TargetDescriptor with an unsupported
+    protocol is passed.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1071731: UnacceptableResultXINSCallException constructor
