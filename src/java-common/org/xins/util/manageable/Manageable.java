@@ -416,7 +416,7 @@ public abstract class Manageable extends Object {
     * @throws Throwable
     *    if the deinitialization caused an exception.
     */
-   public final void deinitImpl()
+   protected void deinitImpl()
    throws Throwable {
       // empty
    }
