@@ -312,7 +312,7 @@ implements Responder {
     *    the assigned call ID for the function, or <code>-1</code> if none is
     *    assigned.
     */
-   int getCallID() {
+   public int getCallID() {
       return _callID;
    }
 
