@@ -17,8 +17,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementParser;
 
 /**
  * Calling convention that aims to be compatible with old, pre-1.0, XINS
