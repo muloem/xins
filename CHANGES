@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 0.131:
 * Generated CAPI classes:
   - CAPI classes now extend org.xins.client.AbstractCAPI
 
+* The xins -version command now prints Java and Ant version directly from the
+  XINS build file.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.130:
 
