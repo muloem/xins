@@ -1,6 +1,18 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.179:
 
+* Generated build file:
+  - The client-<api> target now also creates the zip files containing the
+    specdocs, the CAPI jar file, the CAPI source code and the CAPI javadoc.
+  - The target used to create the project files has been changed to use
+    the new directory structure and the 1.0 DTDs.
+
+* Specification:
+  - Removed the mapping attribute in <impl> or <impl-java>, the value is
+    always "/".
+  - Removed Removed the attribute javadir and specdir from the
+    xins-project_1_0.dtd.
+
 * Generation of specification documentation:
   - Changed the style.css for the specdocs. It does not explicitly specify
     actual font families (e.g.  Arial, Verdana) anymore. Instead, it specifies

@@ -9,25 +9,16 @@
 -->
 
 <resultcodes rcsversion="$Revision$" rcsdate="$Date$">
-	<code name="_DisabledFunction" value="_DisabledFunction" success="false">
+	<code name="_DisabledFunction" success="false" value="_DisabledFunction">
 		<description>The function is currently disabled.</description>
 	</code>
-	<code name="_InternalError" value="_InternalError" success="false">
+	<code name="_InternalError" success="false" value="_InternalError">
 		<description>There was an internal error.</description>
 	</code>
-	<code name="_InvalidRequest" value="_InvalidRequest" success="false" onlyIfInputParameters="true">
+	<code name="_InvalidRequest" success="false" value="_InvalidRequest" onlyIfInputParameters="true">
 		<description>Indicates that the request is considered invalid since it does not match the criteria defined by the specification.</description>
 	</code>
-	<code name="_InvalidResponse" value="_InvalidResponse" success="false" onlyIfInputParameters="false">
+	<code name="_InvalidResponse" success="false" value="_InvalidResponse" onlyIfInputParameters="false">
 		<description>Indicates that the implementation produced a response that does not match the criteria defined by the specification. Typical callers should treat this like an internal error.</description>
-	</code>
-	<code name="_MissingSessionID" value="_MissingSessionID" success="false" onlyIfSessionBased="true">
-		<description>No session identifier is specified.</description>
-	</code>
-	<code name="_InvalidSessionID" value="_InvalidSessionID" success="false" onlyIfSessionBased="true">
-		<description>The specified session identifier has an invalid format.</description>
-	</code>
-	<code name="_UnknownSessionID" value="_UnknownSessionID" success="false" onlyIfSessionBased="true">
-		<description>The specified session identifier is unknown.</description>
 	</code>
 </resultcodes>

@@ -9,8 +9,6 @@
           name       NMTOKEN #REQUIRED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
-          specsdir   CDATA #IMPLIED
-          javadir    CDATA #IMPLIED
           dependenciesdir CDATA #IMPLIED
           domain     NMTOKEN #REQUIRED
 >
