@@ -9,6 +9,7 @@
 
 <translation-bundle>
 	<translation entry="1100">Changing APIServlet state from <value-of-param name="oldState" /> to <value-of-param name="newState" />.</translation>
+	<translation entry="1101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
 	<translation entry="1200">Bootstrapping XINS/Java Server Framework.</translation>
 	<translation entry="1201">XINS/Java Server Framework cannot be bootstrapped. State <value-of-param name="state" /> is unexpected.</translation>
 	<translation entry="1202">XINS/Java Server Framework cannot be bootstrapped. Application server is behaving unexpectedly. Reason: <value-of-param name="detail" format="quoted" />.</translation>

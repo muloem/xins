@@ -64,8 +64,6 @@ public abstract class EnumType extends Type {
       Map valuesToItems = new HashMap();
       List itemList = new ArrayList();
 
-      // TODO: Use ArrayMap ?
-
       int count = items == null ? 0 : items.length;
       String[] values = new String[count];
       int actualItems = 0;

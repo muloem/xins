@@ -199,7 +199,6 @@ extends HttpServlet {
     * The response encoding format.
     */
    public static final String RESPONSE_ENCODING = "UTF-8";
-   // TODO: Allow this to be configured
 
    /**
     * The content type of the HTTP response.
@@ -377,8 +376,11 @@ extends HttpServlet {
     * @param newState
     *    the new state, cannot be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if the new state cannot be a successor of the old state.
+    *
     * @throws IllegalArgumentException
-    *    if <code>newState == null</code>.
+    *    if <code>newState == null</code>
     */
    private void setState(State newState)
    throws IllegalArgumentException {
@@ -387,6 +389,17 @@ extends HttpServlet {
       MandatoryArgumentChecker.check("newState", newState);
 
       // TODO: Check state
+      if (newState != (INITIAL) ||
+          (_state == INITIAL) && newState != BOOTSTRAPPING_FRAMEWORK)) ||
+          (_state == BOOTSTRAPPING_FRAMEWORK) && (newState != FRAMEWORK_BOOTSTRAP_FAILED) || newState != CONSTRUCTING_API))) ||
+          (_state == CONSTRUCTING_API) && (newState != API_CONSTRUCTION_FAILED) || newState != BOOTSTRAPPING_API))) ||
+          (_state == BOOTSTRAPPING_API) && (newState != API_BOOTSTRAP_FAILED) || newState != INITIALIZING_API))) ||
+          (_state == INITIALIZING_API) && (newState != API_INITIALIZATION_FAILED) || newState != READY))) ||
+          (_state == READY) && newState != DISPOSING)) ||
+          (_state == DISPOSING) && newState != DISPOSED)) {
+         Log.log_1101(_state == null ? null : _state.getName());
+         throw new IllegalStateException("The state " + newState + " cannot follow the state  " + _state + '.');
+      }
 
       State oldState;
 
@@ -404,7 +417,7 @@ extends HttpServlet {
          _state = newState;
       }
 
-      Log.log_1100(oldState._name, newState._name);
+      Log.log_1100(oldState.getName(), newState.getName());
    }
 
    /**
@@ -520,7 +533,7 @@ extends HttpServlet {
          if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
           && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
           && _state != API_INITIALIZATION_FAILED) {
-            Log.log_1201(_state == null ? null : _state._name);
+            Log.log_1201(_state == null ? null : _state.getName());
             throw new ServletException();
          } else if (config == null) {
             Log.log_1202("config == null");
@@ -680,16 +693,9 @@ extends HttpServlet {
          } catch (InvalidPropertyValueException exception) {
             Log.log_1210(exception.getPropertyName(), exception.getPropertyValue());
 
-         // TODO: Review the catching of BootstrapException and Throwable.
-         //       Perhaps they should be treated in the same manner.
-
          // Other bootstrap error
-         } catch (BootstrapException exception) {
-            Log.log_1211(exception.getMessage());
-
-         // Unknown type of error
          } catch (Throwable exception) {
-            Log.log_1212(exception);
+            Log.log_1211(exception);
          }
 
          // Throw a ServletException if the bootstrap failed
@@ -1084,7 +1090,7 @@ extends HttpServlet {
        * @return
        *    the name of this state, cannot be <code>null</code>.
        */
-      String getName() {
+      public String getName() {
          return _name;
       }
 

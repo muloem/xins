@@ -29,39 +29,9 @@
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../footer.xslt" />
 	<xsl:include href="../firstline.xslt" />
+	<xsl:include href="../author.xslt" />
 
 	<xsl:template match="api">
-
-		<xsl:variable name="owner">
-			<xsl:if test="boolean(@owner) and not(owner = '')">
-				<xsl:variable name="new_authors_file" select="concat($project_home, '/authors.xml')" />
-				<xsl:variable name="authors_file">
-					<xsl:choose>
-						<xsl:when test="document($new_authors_file)">
-							<xsl:value-of select="$new_authors_file" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat($project_home, '/src/authors/authors.xml')" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:choose>
-					<xsl:when test="document($authors_file)/authors/author[@id=current()/@owner]">
-						<xsl:value-of select="@owner" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:message terminate="yes">
-							<xsl:text>Unable to find API owner '</xsl:text>
-							<xsl:value-of select="@owner" />
-							<xsl:text>' in </xsl:text>
-							<xsl:value-of select="$authors_file" />
-							<xsl:text>.</xsl:text>
-						</xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
-		</xsl:variable>
 
 		<xsl:variable name="prevcount" select="count(document($project_file)/project/api[@name = $api]/preceding::api)" />
 		<xsl:variable name="prev"      select="document($project_file)/project/api[$prevcount]/@name" />
@@ -138,7 +108,7 @@
 						<xsl:value-of select="@name" />
 					</em>
 					<font size="-1">
-					( <a>
+					(<a>
 							<xsl:attribute name="href">
 								<xsl:value-of select="@name" />
 								<xsl:text>-client.zip</xsl:text>
@@ -147,7 +117,7 @@
 								<xsl:text>Download the client API (Javadoc, jar, sources, specdocs) if available</xsl:text>
 							</xsl:attribute>
 							<xsl:text>Download</xsl:text>
-						</a> )
+						</a>)
 						</font>
 				</h1>
 
@@ -214,41 +184,19 @@
 				</xsl:choose>
 
 				<h2>API Owner</h2>
+				<p>
+				<xsl:variable name="owner_info">
+					<xsl:apply-templates mode="owner" />
+				</xsl:variable>
 				<xsl:choose>
-					<xsl:when test="$owner != ''">
-						<xsl:variable name="new_authors_file" select="concat($project_home, '/authors.xml')" />
-						<xsl:variable name="authors_file">
-							<xsl:choose>
-								<xsl:when test="document($new_authors_file)">
-									<xsl:value-of select="$new_authors_file" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat($project_home, '/src/authors/authors.xml')" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<xsl:variable name="owner_name">
-							<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@name" />
-						</xsl:variable>
-						<xsl:variable name="owner_email">
-							<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@email" />
-						</xsl:variable>
-
-						<p>
-							<xsl:value-of select="$owner_name" />
-							<xsl:text> (</xsl:text>
-							<a href="mailto:{$owner_email}">
-								<xsl:value-of select="$owner_email" />
-							</a>
-							<xsl:text>)</xsl:text>
-						</p>
+					<xsl:when test="$owner_info != ''">
+						<xsl:value-of select="$owner_info"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<p>
-							<em>No API Owner has been assigned to this API.</em>
-						</p>
+						<em>No API Owner has been assigned to this API.</em>
 					</xsl:otherwise>
 				</xsl:choose>
+				</p>
 
 				<h2>Environments</h2>
 				<xsl:choose>
@@ -286,29 +234,32 @@
 				<xsl:value-of select="@id" />
 			</a>
 			<!-- Generate the ( version statistics settings ) links. -->
-			<font size="-1">(
+			<font size="-1">
+				<xsl:text> (</xsl:text>
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
 						<xsl:text>?_function=_GetVersion</xsl:text>
 					</xsl:attribute>
-					version
+					<xsl:text>version</xsl:text>
 				</a>
+				<xsl:text> </xsl:text>
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
 						<xsl:text>?_function=_GetStatistics</xsl:text>
 					</xsl:attribute>
-					statistics
+					<xsl:text>statistics</xsl:text>
 				</a>
+				<xsl:text> </xsl:text>
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
 						<xsl:text>?_function=_GetSettings</xsl:text>
 					</xsl:attribute>
-					settings
+					<xsl:text>settings</xsl:text>
 				</a>
-				)
+				<xsl:text>)</xsl:text>
 			</font>
 		</li>
 	</xsl:template>

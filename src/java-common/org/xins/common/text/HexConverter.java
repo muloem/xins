@@ -443,8 +443,6 @@ public class HexConverter extends Object {
 
       byte[] bytes = new byte[(length / 2) + (length % 2)];
 
-      // TODO: Support uppercase in all methods
-
       // Loop through all characters
       int top = index + length;
       int pos = 0;

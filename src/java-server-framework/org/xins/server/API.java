@@ -253,7 +253,6 @@ implements DefaultResultCodes {
           BootstrapException {
 
       // Log the time zone
-      // TODO: Why log the time zone?
       _timeZone = TimeZone.getDefault();
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
@@ -586,11 +585,20 @@ implements DefaultResultCodes {
     *
     * @throws NullPointerException
     *    if <code>function == null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not bootstrapping.
+    *
     */
    final void functionAdded(Function function)
-   throws NullPointerException {
+   throws NullPointerException, IllegalStateException {
 
-      // TODO: Check the state here?
+      // Check state
+      Manageable.State state = getState();
+      if (state != BOOTSTRAPPING) {
+         Log.log_1437(state.getName());
+         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
+      }
 
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);

@@ -21,6 +21,7 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../author.xslt" />
 
 	<xsl:template match="function">
 
@@ -37,7 +38,19 @@ package ]]></xsl:text>
 		<xsl:text><![CDATA[</code> function.
  *
  * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
- * @author TODO
+ * @author ]]></xsl:text>
+				<xsl:variable name="owner_info">
+					<xsl:apply-templates mode="owner" />
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$owner_info != ''">
+						<xsl:value-of select="$owner_info"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>TODO</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+		<xsl:text><![CDATA[
  */
 public class ]]></xsl:text>
 		<xsl:value-of select="$classname" />

@@ -9,6 +9,7 @@
 
 <translation-bundle>
 	<translation entry="1100">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
+	<translation entry="1101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
 	<translation entry="1200">XINS/Java Server Framework wordt gestart.</translation>
 	<translation entry="1201">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</translation>
 	<translation entry="1202">XINS/Java Server Framework kan niet gestart worden. Applicatie server gedraagt zich onverwacht. Reden: <value-of-param name="detail" /></translation>

@@ -14,8 +14,6 @@ package org.xins.server;
 public final class InvalidResponseException
 extends RuntimeException {
 
-   // TODO: Extend Exception instead of RuntimeException ?
-
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------

@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.207:
 
 * XINS/Java Server Framework:
   - Removed the getCallResult() method from CallContext as it's not used.
+  - Bootstrap exception and Throwable are handled in a similar way.
+  - Removed some TODOs that are no longer relevant.
+  - Check the state of API and APIServlet before calling a method.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
@@ -13,6 +16,7 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Narrowed the definition of a service caller to TCP-based services.
   - Changed the interface and rewrote the implementation of the service caller
     framework in package org.xins.common.service.
+  - Removed some TODO done or no longer relevant.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
@@ -22,15 +26,19 @@ CHANGES INTRODUCED IN XINS 0.207:
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
     current locale.
+  - Changed levels for log message entry 1404 from INFO to DEBUG.
 
 * Generated java code:
   - Removed unused imports in the generated APIImpl.java.
   - Fixed some unused variable that conflicted with existing one that had the
     same name using the JDK 1.5.
+  - The @author tag is filled in with the name and the e-mail of the API owner
+    if the owner is specified in the API.
 
 * Generated specification documentation:
   - The optional author file is computed only when needed as it may fail
     with some XSLT processor such as JDK 1.5 when absent.
+  - Fixed the layout of some brackets in the generated API HTML page.
 
 * Generated build file
   - Added some missing description for the targets help, version and run.

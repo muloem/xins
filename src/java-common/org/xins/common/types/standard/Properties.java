@@ -268,8 +268,6 @@ public class Properties extends Type {
          }
       }
 
-      // TODO: pr.finishedModifications();
-
       return pr;
    }
 

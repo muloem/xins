@@ -18,6 +18,11 @@
 			<param name="oldState" />
 			<param name="newState" />
 		</entry>
+		<entry id="1101" level="ERROR">
+			<description>State change invalid.</description>
+			<param name="oldState" />
+			<param name="newState" />
+		</entry>
 	</group>
 
 	<group id="lifespan.bootstrap" name="Bootstrapping">
@@ -69,12 +74,8 @@
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1211" level="FATAL">
+		<entry id="1211" level="FATAL" exception="true">
 			<description>Bootstrap of API class failed.</description>
-			<param name="message" />
-		</entry>
-		<entry id="1212" level="FATAL" exception="true">
-			<description>Bootstrap of API class failed due to an exception.</description>
 		</entry>
 		<entry id="1218" level="INFO">
 			<description>Determining build-time settings.</description>
@@ -227,7 +228,7 @@
 			<param name="oldInterval" type="int32" nullable="false" />
 			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
-		<entry id="1404" level="INFO">
+		<entry id="1404" level="DEBUG">
 			<description>Determined local timezone.</description>
 			<param name="shortName" />
 			<param name="longName"  />

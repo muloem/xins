@@ -248,7 +248,6 @@ implements DefaultResultCodes {
 
       } catch (Throwable exception) {
 
-         // TODO: Allow customization of what exceptions are logged?
          Log.log_1513(exception, _name, callID);
 
          // Create a set of parameters for the result
