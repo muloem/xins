@@ -130,6 +130,16 @@ extends HttpServlet {
    private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED");
 
    /**
+    * The <em>DETERMINE_RELOAD_INTERVAL_STATE</em> state.
+    */
+   private static final State DETERMINE_RELOAD_INTERVAL_STATE = new State("DETERMINE_RELOAD_INTERVAL_STATE");
+
+   /**
+    * The <em>DETERMINE_RELOAD_INTERVAL_FAILED_STATE</em> state.
+    */
+   private static final State DETERMINE_RELOAD_INTERVAL_FAILED_STATE = new State("DETERMINE_RELOAD_INTERVAL_FAILED_STATE");
+
+   /**
     * The <em>INITIALIZING_API</em> state.
     */
    private static final State INITIALIZING_API = new State("INITIALIZING_API");
@@ -395,14 +405,16 @@ extends HttpServlet {
       MandatoryArgumentChecker.check("newState", newState);
 
       // Check state
-      if (newState == INITIAL ||
-          (_state == INITIAL && newState != BOOTSTRAPPING_FRAMEWORK) ||
-          (_state == BOOTSTRAPPING_FRAMEWORK && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API) ||
-          (_state == CONSTRUCTING_API && newState != API_CONSTRUCTION_FAILED && newState != BOOTSTRAPPING_API) ||
-          (_state == BOOTSTRAPPING_API && newState != API_BOOTSTRAP_FAILED && newState != INITIALIZING_API) ||
-          (_state == INITIALIZING_API && newState != API_INITIALIZATION_FAILED && newState != READY) ||
-          (_state == READY && newState != INITIALIZING_API && newState != DISPOSING) ||
-          (_state == DISPOSING && newState != DISPOSED)) {
+      if (newState == INITIAL
+       || (_state == INITIAL                         && newState != BOOTSTRAPPING_FRAMEWORK                                                         )
+       || (_state == BOOTSTRAPPING_FRAMEWORK         && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API                      )
+       || (_state == CONSTRUCTING_API                && newState != API_CONSTRUCTION_FAILED    && newState != BOOTSTRAPPING_API                     )
+       || (_state == BOOTSTRAPPING_API               && newState != API_BOOTSTRAP_FAILED       && newState != DETERMINE_RELOAD_INTERVAL_STATE       )
+       || (_state == DETERMINE_RELOAD_INTERVAL_STATE && newState != INITIALIZING_API           && newState != DETERMINE_RELOAD_INTERVAL_FAILED_STATE)
+       || (_state == INITIALIZING_API                && newState != API_INITIALIZATION_FAILED  && newState != READY                                 )
+       || (_state == READY                           && newState != INITIALIZING_API           && newState != DISPOSING                             )
+       || (_state == DISPOSING                       && newState != DISPOSED))
+      {
          Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
          throw new IllegalArgumentException("The state " + newState + " cannot follow the state  " + _state + '.');
       }
@@ -432,8 +444,15 @@ extends HttpServlet {
     *
     * @return
     *    the interval to use, always &gt;= 1.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the interval cannot be determined because it does not qualify as a
+    *    positive 32-bit integer number.
     */
-   private int determineConfigReloadInterval() {
+   private int determineConfigReloadInterval()
+   throws InvalidPropertyValueException {
+
+      setState(DETERMINE_RELOAD_INTERVAL_STATE);
 
       // Get the runtime property
       String s = _runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -445,20 +464,20 @@ extends HttpServlet {
             interval = Integer.parseInt(s);
             if (interval < 1) {
                Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               setState(DETERMINE_RELOAD_INTERVAL_FAILED_STATE);
+               throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
                Log.log_1411(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
             Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            setState(DETERMINE_RELOAD_INTERVAL_FAILED_STATE);
+            throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Not a 32-bit integer number.");
          }
 
       // Otherwise, if the property is not set, use the default
       } else {
          Log.log_1408(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
-      }
-
-      // If the interval is not set, using the default
-      if (interval < 0) {
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
@@ -722,7 +741,7 @@ extends HttpServlet {
          // Throw a ServletException if the bootstrap failed
          if (!succeeded) {
             setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException();
+            throw new ServletException("API bootstrap failed.");
          }
 
          // Make the API have a link to this APIServlet
@@ -730,21 +749,36 @@ extends HttpServlet {
 
 
          //----------------------------------------------------------------//
+         //                Determine config file reload interval           //
+         //----------------------------------------------------------------//
+
+         int interval;
+         boolean intervalParsed;
+         try {
+            interval = determineConfigReloadInterval();
+            intervalParsed = true;
+         } catch (InvalidPropertyValueException exception) {
+            intervalParsed = false;
+            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+         }
+
+
+         //----------------------------------------------------------------//
          //                      Initialize the API                        //
          //----------------------------------------------------------------//
 
-         initAPI();
+         if (intervalParsed) {
+            initAPI();
+         }
 
 
          //----------------------------------------------------------------//
          //                      Watch the config file                     //
          //----------------------------------------------------------------//
 
-         int interval = determineConfigReloadInterval();
-
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         Log.log_1412(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, interval);
+         Log.log_1412(_configFile, interval);
          _configFileWatcher.start();
       }
    }
@@ -1157,7 +1191,16 @@ extends HttpServlet {
             readRuntimeProperties();
 
             // Determine the interval
-            int newInterval = determineConfigReloadInterval();
+            int newInterval;
+            try {
+               newInterval = determineConfigReloadInterval();
+            } catch (InvalidPropertyValueException exception) {
+               // Logging is already done in determineConfigReloadInterval()
+               return;
+            }
+
+            // Re-initialize the API
+            initAPI();
 
             // Update the file watch interval
             int oldInterval = _configFileWatcher.getInterval();
@@ -1165,9 +1208,6 @@ extends HttpServlet {
                _configFileWatcher.setInterval(newInterval);
                Log.log_1403(_configFile, oldInterval, newInterval);
             }
-
-            // Re-initialize the API
-            initAPI();
          }
       }
 
