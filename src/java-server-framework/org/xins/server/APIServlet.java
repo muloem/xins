@@ -95,12 +95,12 @@ extends HttpServlet {
    }
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-   throws ServletException, IOException {
+   throws IOException {
       handleRequest(req, resp);
    }
 
    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-   throws ServletException, IOException {
+   throws IOException {
       handleRequest(req, resp);
    }
 
@@ -113,15 +113,12 @@ extends HttpServlet {
     * @param response
     *    the HTTP response, not <code>null</code>.
     *
-    * @throws ServletException
-    *    this servlet encountered an error.
-    *
     * @throws IOException
     *    there was an I/O problem.
     */
    private void handleRequest(HttpServletRequest request,
                               HttpServletResponse response)
-   throws ServletException, IOException {
+   throws IOException {
 
       // Set the content output type to XML
       response.setContentType("text/xml");
