@@ -1,10 +1,9 @@
 <!--
  XINS Type DTD. This DTD should be added to all type files added to your
  project by adding the following lines at the top of the .typ file :
-<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN"
-"http://xins.sourceforge.net/dtd/type_1_0.dtd">
+<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN" "http://xins.sourceforge.net/dtd/type_1_0.dtd">
 -->
-<!ELEMENT type (description?, pattern?, enum?, properties?)>
+<!ELEMENT type (description, pattern?, enum?, properties?)>
 <!ATTLIST type
           name       CDATA #REQUIRED
           extends    CDATA #REQUIRED

@@ -17,9 +17,10 @@ CHANGES INTRODUCED IN XINS 0.170:
 * Generated specification documentation:
   - Added more possible elements for api_1_0.dtd, function_1_0.dtd and
     type_1_0.dtd.
+  - Update DTD files as the declaration should be on one line.
 
 * Generated build file:
-  - The specdocs is regenerated if api.xml.
+  - The specdocs is regenerated if api.xml has changed.
   - The result code generated files are regenerated if any function
     specification has changed.
   - Added the 'help' target that prints a summary of the possible targets.
@@ -29,6 +30,11 @@ CHANGES INTRODUCED IN XINS 0.170:
 
 * Build and release process:
   - Keep the changes-<version>.txt when making a release.
+  - All files are tranformed to the correct line feed before making the
+    release.
+    This bug has been in the latest release XINS 0.169.
+  - The xins.bat files is now release with the correct line feed.
+    This bug has been in since the release XINS 0.1.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.169:

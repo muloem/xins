@@ -1,10 +1,9 @@
 <!--
  XINS Function DTD. This DTD should be added to all function files created in
  your project by adding the following lines at the top of the .fnc file :
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN"
-"http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
 -->
-<!ELEMENT function (description?, input?, output?, example*)>
+<!ELEMENT function (description, input?, output?, example*)>
 <!ATTLIST function
           name           CDATA #REQUIRED
           api            CDATA #IMPLIED
@@ -16,12 +15,13 @@
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
 <!ELEMENT input (param*, param-combo*)>
-<!ELEMENT param (description, example-value*)>
+<!ELEMENT param (description, deprecated?, example-value*)>
 <!ATTLIST param
           name       CDATA #REQUIRED
           required   (true|false) #REQUIRED
           type       CDATA #IMPLIED
 >
+<!ELEMENT deprecated (#PCDATA|em)*>
 <!ELEMENT param-combo (description?, param-ref*)>
 <!ATTLIST param-combo
           type       CDATA #IMPLIED
@@ -45,7 +45,7 @@
           contains   CDATA #REQUIRED
           multiplicity CDATA #IMPLIED
 >
-<!ELEMENT element (description?, contains?, attribute*)>
+<!ELEMENT element (description?, deprecated?, contains?, attribute*)>
 <!ATTLIST element
           name       CDATA #REQUIRED
 >
@@ -60,9 +60,7 @@
           name       CDATA #REQUIRED
           required   CDATA #IMPLIED
           type       CDATA #IMPLIED
-          deprecated CDATA #IMPLIED
 >
-<!ELEMENT deprecated (#PCDATA)>
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
           example     CDATA #REQUIRED
@@ -75,7 +73,7 @@
           success     CDATA #IMPLIED
 >
 <!ELEMENT data-example (element-example*)>
-<!ELEMENT element-example (attribute-example*, element-example*)>
+<!ELEMENT element-example (pcdata-example?, attribute-example*, element-example*)>
 <!ATTLIST element-example
           name        CDATA #REQUIRED
 >
