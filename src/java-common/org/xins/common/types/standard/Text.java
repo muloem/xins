@@ -43,12 +43,9 @@ public final class Text extends Type {
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type (never).
     */
    public static String fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
+   throws IllegalArgumentException {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {
@@ -65,13 +62,8 @@ public final class Text extends Type {
     *
     * @return
     *    the original {@link String}, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type (never).
     */
-   public static String fromStringForOptional(String string)
-   throws TypeValueException {
+   public static String fromStringForOptional(String string) {
       return string;
    }
 
@@ -102,8 +94,13 @@ public final class Text extends Type {
       return string;
    }
 
+   /**
+    * This method overrides the toString method in the Type class, however it
+    * isn't require to throw a TypeValueException as the String is always
+    * returned.
+    */
    public String toString(Object value)
-   throws IllegalArgumentException, ClassCastException, TypeValueException {
+   throws IllegalArgumentException, ClassCastException {
       return fromStringForRequired((String) value);
    }
 }
