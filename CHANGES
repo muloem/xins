@@ -49,6 +49,10 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - If the "org.xins.server.config.reload" is zero the FileWatcher won't be 
     started.
   - Added _ReloadProperties meta function.
+  - Changed the way the _GetSettings meta-functions retrieves the system
+    properties. It now succeeds without throwing an exception even if a
+    SecurityManager denies access to system properties.
+    This fixes an issue with the integration with NetBeans 4.0-beta2.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.

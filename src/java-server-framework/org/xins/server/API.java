@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -1049,13 +1050,22 @@ implements DefaultResultCodes {
       builder.add(runtime);
 
       // System properties
-      Enumeration e = System.getProperties().propertyNames();
+      Properties sysProps;
+      try {
+         sysProps = System.getProperties();
+      } catch (SecurityException ex) {
+         // TODO: Log unexpected exception
+         sysProps = new Properties();
+      }
+
+      Enumeration e = sysProps.propertyNames();
       Element system = new Element("system");
       while (e.hasMoreElements()) {
          String key   = (String) e.nextElement();
-         String value = System.getProperty(key);
+         String value = sysProps.getProperty(key);
 
-         if (key != null && value != null && key.length() > 0 && value.length() > 0) {
+         if (  key != null &&   key.trim().length() > 0
+          && value != null && value.trim().length() > 0) {
             Element property = new Element("property");
             property.addAttribute("name", key);
             property.setText(value);
