@@ -800,8 +800,7 @@
 						version="yes"
 						use="yes"
 						author="yes"
-						private="no"
-						package="yes"
+						access="package"
 						source="1.3"
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
@@ -992,7 +991,7 @@
 					version="yes"
 					use="yes"
 					author="yes"
-					private="no"
+					access="public"
 					source="1.3"
 					windowtitle="Call interface for {$api} API"
 					doctitle="Call interface for {$api} API">

@@ -50,6 +50,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
     specs.
+  - Implemented SF.net RFE #1119902: CAPI Javadoc should only contain public
+    members.
 
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
