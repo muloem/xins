@@ -75,9 +75,9 @@ public class Int16Tests extends TestCase {
    }
 
    public void testToString() {
-      lowerLimit.toString((short)12);
-      lowerLimit.toString(Short.valueOf("12"));
-      lowerLimit.toString(null);
+      assertEquals("lowerLimit.toString((short)12) should return a value of \"12\"", "12", lowerLimit.toString((short)12));
+      assertEquals("lowerLimit.toString(Short.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Short.valueOf("12")));
+      assertEquals("lowerLimit.toString(null) should return null", null, lowerLimit.toString(null));
    }
 
    public void testFromStringForRequired() throws Throwable {
@@ -94,14 +94,14 @@ public class Int16Tests extends TestCase {
 
       try { 
          lowerLimit.fromStringForRequired(null);
-         fail("Should have thrown a String is null error");
+         fail("fromStringForRequired(null) should have thrown a String is null error");
       } catch (IllegalArgumentException iae) {
          // this is good
       }
 
       try { 
          lowerLimit.fromStringForRequired("fred");
-         fail("Should have thrown a TypeValueException from a NumberFormatException.");
+         fail("lowerLimit.fromStringForRequired(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve) {
          // this is good
       }
@@ -109,7 +109,7 @@ public class Int16Tests extends TestCase {
       try {
          lowerLimit.fromStringForRequired("7");
       } catch (Exception e) {
-         fail("Caught an unexpected error.");
+         fail("lowerLimit.fromStringForRequired(\"7\") caught an unexpected error.");
       }
    }
 
@@ -117,7 +117,7 @@ public class Int16Tests extends TestCase {
 
       try { 
          lowerLimit.fromStringForOptional("fred");
-         fail("Should have thrown a TypeValueException from a NumberFormatException.");
+         fail("lowerLimit.fromStringForOptional(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve2) {
          // this is good
       }
@@ -125,10 +125,10 @@ public class Int16Tests extends TestCase {
       try {
          lowerLimit.fromStringForOptional("4");
       } catch (Exception e1) {
-         fail("Caught unexpected error.");
+         fail("lowerLimit.fromStringForOptional(\"4\") caught unexpected error.");
       }
 
-      assertNull("Null should be returned when a null is passed.",lowerLimit.fromStringForOptional(null));
+      assertEquals("lowerLimit.fromStringForOptional(null) should return a null.", null, lowerLimit.fromStringForOptional(null));
    }
 
    public void testValidValue() throws Throwable {

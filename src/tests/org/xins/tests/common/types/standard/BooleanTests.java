@@ -73,6 +73,9 @@ public class BooleanTests extends TestCase {
       // empty
    }
 
+   /**
+    * Tests the fromStringForRequired method of the Boolean type class.
+    */
    public void testFromStringForRequired() throws Throwable {
 
       // test the fromStringForRequired method with all possabilities
@@ -90,11 +93,14 @@ public class BooleanTests extends TestCase {
          // this is good
       }
 
-      assertFalse("fromStringForRequired(false) should return false.", Boolean.fromStringForRequired("false"));
+      assertEquals("fromStringForRequired(false) should return false.", false,  Boolean.fromStringForRequired("false"));
 
-      assertTrue("fromStringForRequired(true) should return true.", Boolean.fromStringForRequired("true"));
+      assertEquals("fromStringForRequired(true) should return true.", true, Boolean.fromStringForRequired("true"));
    }
 
+   /**
+    * Tests the fromStringForOptional method of the Boolean type class.
+    */
    public void testFromStringForOptional() throws Throwable {
       // test the fromStringForOptional method with all possabilities
       try { 
@@ -104,15 +110,17 @@ public class BooleanTests extends TestCase {
          // this is good
       }
 
-      assertNull("Should return a null from a null parameter.",Boolean.fromStringForOptional(null));
+      assertEquals("Should return a null from a null parameter.", null, Boolean.fromStringForOptional(null));
 
-      assertTrue("fromStringForOptional(true) should return true.", Boolean.fromStringForOptional("true").booleanValue());
+      assertEquals("fromStringForOptional(true) should return true.", true, Boolean.fromStringForOptional("true").booleanValue());
 
-      assertFalse("fromStringForOptional(false) should return a false.", Boolean.fromStringForOptional("false").booleanValue());
+      assertEquals("fromStringForOptional(false) should return a false.", false, Boolean.fromStringForOptional("false").booleanValue());
    }
 
+   /**
+    * Tests the isValidValue method of hte Boolean type class.
+    */
    public void testIsValidValue() {
-      // test the isValidValue method inherited from the TYPE class
 
       assertTrue("Boolean.SINGLETON.isValidValue('true') is valid.", Boolean.SINGLETON.isValidValue("true"));
 
@@ -121,10 +129,12 @@ public class BooleanTests extends TestCase {
       assertTrue("Boolean.SINGLETON.isValidValue(null) is valid.", Boolean.SINGLETON.isValidValue(null));
    }
 
+   /**
+    * Tests the fromString method of Boolean type class.
+    */
    public void testFromString() throws Throwable  {
-      // test the fromString class inherited from the TYPE class
 
-      assertNull("Boolean.SINGLETON.fromString(null) should return a null.", Boolean.SINGLETON.fromString(null));
+      assertEquals("Boolean.SINGLETON.fromString(null) should return a null.", null, Boolean.SINGLETON.fromString(null));
 
       try {
          Boolean.SINGLETON.fromString("fred");
@@ -141,28 +151,37 @@ public class BooleanTests extends TestCase {
       }
    }
 
+   /**
+    * Tests the toString method of the Boolean type class which is inherited from the Type class.
+    */
    public void testToString() throws Throwable {
-      // test the toString methods
       boolean t = true;
       boolean f = false;
 
-      assertNull("toString(Boolean value) should return a null for a null.", Boolean.SINGLETON.toString(null));
+      assertEquals("toString(Boolean value) should return a null for a null.", null, Boolean.SINGLETON.toString(null));
 
-      if (! "false".equals(Boolean.SINGLETON.toString(f))) {
-         fail("Should return string value of false from toString(f).");
-      }
+      assertEquals("toString(f) should return a value of \"false\"", "false", Boolean.SINGLETON.toString(f));
 
-      if (! "true".equals(Boolean.SINGLETON.toString(t))) {
-         fail("Should return string value of true from toString(t).");
-      }
+//      if (! "false".equals(Boolean.SINGLETON.toString(f))) {
+//         fail("Should return string value of false from toString(f).");
+//      }
 
-      if (! "true".equals(Boolean.SINGLETON.toString(java.lang.Boolean.TRUE))) {
-         fail("Should have returned true from Boolean.SINGLETON.toString(java.lang.Boolean.TRUE).");
-      }
+      assertEquals("toString(t) should return a value of \"true\"", "true", Boolean.SINGLETON.toString(t));
 
-      if (! "false".equals(Boolean.SINGLETON.toString(java.lang.Boolean.FALSE))) {
-         fail("Should have returned false from Boolean.SINGLETON.toString(java.lang.Boolean.FALSE).");
-      }
+//      if (! "true".equals(Boolean.SINGLETON.toString(t))) {
+//         fail("Should return string value of true from toString(t).");
+//      }
+
+
+      assertEquals("Boolean.SINGLETON.toString(java.lang.Boolean.TRUE) should return \"true\"", "true", Boolean.SINGLETON.toString(java.lang.Boolean.TRUE));
+//      if (! "true".equals(Boolean.SINGLETON.toString(java.lang.Boolean.TRUE))) {
+//         fail("Should have returned true from Boolean.SINGLETON.toString(java.lang.Boolean.TRUE).");
+//      }
+
+      assertEquals("Boolean.SINGLETON.toString(java.lang.Boolean.FALSE) should return \"false\"", "false", Boolean.SINGLETON.toString(java.lang.Boolean.FALSE));
+//      if (! "false".equals(Boolean.SINGLETON.toString(java.lang.Boolean.FALSE))) {
+//         fail("Should have returned false from Boolean.SINGLETON.toString(java.lang.Boolean.FALSE).");
+//      }
 
    }
 
