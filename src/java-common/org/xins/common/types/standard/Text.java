@@ -14,6 +14,8 @@ import org.xins.common.types.TypeValueException;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ *
+ * @since XINS 1.0.0
  */
 public final class Text extends Type {
 

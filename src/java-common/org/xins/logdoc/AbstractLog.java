@@ -13,6 +13,8 @@ import org.apache.log4j.Level;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public abstract class AbstractLog {
 
@@ -108,6 +110,8 @@ public abstract class AbstractLog {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.0.0
     */
    protected static abstract class LogController {
 
@@ -164,6 +168,8 @@ public abstract class AbstractLog {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.0.0
     */
    private static class CustomLevel extends Level {
 
