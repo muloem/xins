@@ -45,6 +45,16 @@ extends Object {
    // Constructors
    //-------------------------------------------------------------------------
 
+   /**
+    * Constructs a new <code>XINSCallResultParser</code> instance. This
+    * constructor is <code>private</code> because this is a utility class. No
+    * instances should be constructed.
+    */
+   private XINSCallResultParser() {
+      // empty
+   }
+
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
