@@ -814,6 +814,7 @@ ${sf.file}</fail>
 		<copy todir="demo">
 			<fileset dir="../${name}-examples">
 				<include name="build.xml" />
+				<include name="nbbuild.xml" />
 				<include name="xins.properties" />
 				<include name="jetty_myproject.xml" />
 				<include name="jetty_allinone.xml" />
