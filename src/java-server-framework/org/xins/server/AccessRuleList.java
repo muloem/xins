@@ -114,4 +114,14 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Counts the number of rules in this list.
+    *
+    * @return
+    *    the number of rules, always &gt;= 0.
+    */
+   public int getRuleCount() {
+      return 0; // TODO
+   }
 }
