@@ -167,18 +167,12 @@ public class SimplePatternParser extends Object {
             buffer.append(currChar);
          } else if (currChar == '.') {
             buffer.append("\\.");
+         } else if ((currChar == '*' || currChar == '?') && (prevChar == '*' || prevChar == '?')) {
+            throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
          } else if (currChar == '*') {
-            if (prevChar == '*' || prevChar == '?') {
-               throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
-            } else {
-               buffer.append(".*");
-            }
+            buffer.append(".*");
          } else if (currChar == '?') {
-            if (prevChar == '*' || prevChar == '?') {
-               throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
-            } else {
-               buffer.append('.');
-            }
+            buffer.append('.');
          } else {
             throw new ParseException("The pattern \"" + pattern + "\" is invalid. The character '" + currChar + "' is not allowed.");
          }
