@@ -330,6 +330,10 @@
 			href="http://www.jdom.org/docs/apidocs/"
 			offline="true"
 			packagelistloc="src/package-lists/jdom/" />
+			<link
+			href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
+			offline="true"
+			packagelistloc="src/package-lists/ant/" />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"

@@ -410,6 +410,10 @@ $Id$
 							href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
+							<link
+							href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
+							offline="true"
+							packagelistloc="{$xins_home}/src/package-lists/ant/" />
 							<classpath>
 								<pathelement location="{$xins_home}/build/xins-common.jar" />
 								<pathelement location="{$xins_home}/build/xins-server.jar" />
@@ -515,6 +519,10 @@ $Id$
 						href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
+						<link
+						href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/"
+						offline="true"
+						packagelistloc="{$xins_home}/src/package-lists/ant/" />
 						<classpath>
 							<pathelement location="{$xins_home}/build/xins-common.jar" />
 							<pathelement location="{$xins_home}/build/xins-client.jar" />
