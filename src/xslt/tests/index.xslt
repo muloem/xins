@@ -183,7 +183,7 @@
 			<xsl:text>Test </xsl:text>
 			<xsl:value-of select="$name" />
 			<xsl:text> (</xsl:text>
-			<span class="failure">Failed</span>
+			<span class="failure">Failure</span>
 			<xsl:text>)</xsl:text>
 		</h3>
 		<table class="testcase_details">
