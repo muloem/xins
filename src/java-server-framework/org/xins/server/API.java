@@ -154,7 +154,7 @@ implements DefaultReturnCodes {
       // Determine the function name
       String functionName = context.getFunction();
       if (functionName == null || functionName.length() == 0) {
-         context.startResponse(false, "MissingFunctionName"); // TODO: Use constant
+         context.startResponse(false, MISSING_FUNCTION_NAME);
          context.endResponse();
          out.print(stringWriter.toString());
          return;
