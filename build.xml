@@ -225,7 +225,7 @@
 
 	<target name="classes-tests" depends="-junit-avail,java" description="Compiles the test cases">
 		<mkdir dir="build/classes/tests" />
-		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="true">
+		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="false">
 			<src path="src/tests" />
 			<classpath>
 				<pathelement location="build/xins-common.jar" />
