@@ -358,17 +358,17 @@ implements DefaultReturnCodes {
          }
 
          context.startTag("function");
-         context.attribute("name",       function.getName());
+         context.attribute("name", function.getName());
          context.startTag("successful");
-         context.attribute("count",   String.valueOf(successfulCalls));
-         context.attribute("min",     successfulMin);
-         context.attribute("max",     successfulMax);
+         context.attribute("count", String.valueOf(successfulCalls));
+         context.attribute("min",   successfulMin);
+         context.attribute("max",   successfulMax);
          context.attribute("average", successfulAverage);
          context.startTag("last");
          context.attribute("start",    lastSuccessfulStart);
          context.attribute("duration", lastSuccessfulDuration);
-         context.endTag();
-         context.endTag();
+         context.endTag(); // last
+         context.endTag(); // successful
          context.startTag("unsuccessful");
          context.attribute("count",   String.valueOf(unsuccessfulCalls));
          context.attribute("min",     unsuccessfulMin);
@@ -377,9 +377,9 @@ implements DefaultReturnCodes {
          context.startTag("last");
          context.attribute("start",    lastUnsuccessfulStart);
          context.attribute("duration", lastUnsuccessfulDuration);
-         context.endTag();
-         context.endTag();
-         context.endTag();
+         context.endTag(); // last
+         context.endTag(); // unsuccessful
+         context.endTag(); // function
       }
    }
 
