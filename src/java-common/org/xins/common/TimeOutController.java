@@ -30,14 +30,14 @@ public final class TimeOutController extends Object {
     * interrupted using the {@link Thread#interrupt()} method and a
     * {@link TimeOutException} is thrown.
     *
-    * @param thread
+    * @param task
     *    the thread to run, cannot be <code>null</code>.
     *
     * @param timeOut
     *    the timeOut in milliseconds, must be &gt; 0.
     *
     * @throws IllegalArgumentException
-    *    if <code>thread == null || timeOut &lt;= 0</code>.
+    *    if <code>task == null || timeOut &lt;= 0</code>.
     *
     * @throws IllegalThreadStateException
     *    if the thread was already started.
@@ -50,17 +50,69 @@ public final class TimeOutController extends Object {
     * @throws TimeOutException
     *    if the thread did not finish within the total time-out period and was
     *    interrupted.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.204.
+    *    Use {@link #execute(Runnable,int)} instead.
     */
-   public static final void execute(Thread thread, int timeOut)
+   public static final void execute(Thread task, int timeOut)
+   throws IllegalArgumentException,
+          IllegalThreadStateException,
+          SecurityException,
+          TimeOutException {
+
+      execute((Runnable) task, timeOut);
+   }
+
+   /**
+    * Runs the specified task with a specific time-out. If the task does
+    * not finish within the specified time-out period, then the thread
+    * executing that task is interrupted using the {@link Thread#interrupt()}
+    * method and a {@link TimeOutException} is thrown.
+    *
+    * @param task
+    *    the task to run, cannot be <code>null</code>.
+    *
+    * @param timeOut
+    *    the timeOut in milliseconds, must be &gt; 0.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>task == null || timeOut &lt;= 0</code>.
+    *
+    * @throws IllegalThreadStateException
+    *    if the specified task is a {@link Thread} that is already started.
+    *
+    * @throws SecurityException
+    *    if the thread did not finish within the total time-out period, but
+    *    the interruption of the thread was disallowed (see
+    *    {@link Thread#interrupt()}).
+    *
+    * @throws TimeOutException
+    *    if the thread did not finish within the total time-out period and was
+    *    interrupted.
+    *
+    * @since XINS 0.204
+    */
+   public static final void execute(Runnable task, int timeOut)
    throws IllegalArgumentException,
           IllegalThreadStateException,
           SecurityException,
           TimeOutException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("thread", thread);
+      MandatoryArgumentChecker.check("task", task);
       if (timeOut <= 0) {
          throw new IllegalArgumentException("timeOut (" + timeOut + ") <= 0");
+      }
+
+      // We need a Thread instance. If the argument is already a Thread
+      // instance, then use it, otherwise construct a new Thread instance.
+      Thread thread;
+      if (task instanceof Thread) {
+         thread = (Thread) task;
+      } else {
+         // TODO: Use a thread pool
+         thread = new Thread(task);
       }
 
       // Start the thread. This may throw an IllegalThreadStateException.
