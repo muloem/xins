@@ -539,6 +539,12 @@ public final class Doorman extends Object {
       Log.log_3005(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
    }
 
+   /**
+    * Returns a textual representation of this object.
+    *
+    * @return
+    *    a textual representation of this object, never <code>null</code>.
+    */
    public String toString() {
       return _asString;
    }
@@ -797,6 +803,12 @@ public final class Doorman extends Object {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Returns a textual representation of this object.
+       *
+       * @return
+       *    a textual representation of this object, never <code>null</code>.
+       */
       public String toString() {
          return _description;
       }
