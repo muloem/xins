@@ -18,6 +18,7 @@ import java.util.Set;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.ProtectedList;
 
 import org.xins.common.text.TextUtils;
 
@@ -51,6 +52,11 @@ public class Element implements Cloneable {
     * Fully-qualified name of the inner class <code>QualifiedName</code>.
     */
    private static final String QN_CLASSNAME = QualifiedName.class.getName();
+
+   /**
+    * The secret key to use to add child elements.
+    */
+   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -124,7 +130,7 @@ public class Element implements Cloneable {
     * The child elements. This field is lazily initialized is initially
     * <code>null</code>.
     */
-   private ArrayList _children;
+   private ProtectedList _children;
 
    /**
     * The attributes. This field is lazily initialized and is initially
@@ -335,10 +341,10 @@ public class Element implements Cloneable {
 
       // Lazily initialize
       if (_children == null) {
-         _children = new ArrayList();
+         _children = new ProtectedList(SECRET_KEY);
       }
 
-      _children.add(child);
+      _children.add(SECRET_KEY, child);
    }
 
    /**
@@ -351,18 +357,14 @@ public class Element implements Cloneable {
     */
    public List getChildElements() {
 
-      List children;
-
       // If there are no children, then return an immutable empty List
       if (_children == null || _children.size() == 0) {
-         children = Collections.EMPTY_LIST;
+         return Collections.EMPTY_LIST;
 
       // Otherwise return an immutable view of the list of children
       } else {
-         children = Collections.unmodifiableList(_children);
+         return _children;
       }
-
-      return children;
    }
 
    /**
@@ -388,34 +390,30 @@ public class Element implements Cloneable {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      List matches;
-
       // If there are no children, then return null
       if (_children.size() == 0) {
-         matches = Collections.EMPTY_LIST;
+         return Collections.EMPTY_LIST;
 
       // There are children, find all matching ones
       } else {
-         matches = new ArrayList();
+         ProtectedList matches = new ProtectedList(SECRET_KEY);
          Iterator it = _children.iterator();
          while (it.hasNext()) {
             Element child = (Element) it.next();
             if (name.equals(child.getLocalName())) {
-               matches.add(child);
+               matches.add(SECRET_KEY, child);
             }
          }
 
          // If there are no matching children, then return null
          if (matches.size() == 0) {
-            matches = Collections.EMPTY_LIST;
+            return Collections.EMPTY_LIST;
 
          // Otherwise return an immutable list with all matches
          } else {
-            matches = Collections.unmodifiableList(matches);
+            return matches;
          }
       }
-
-      return matches;
    }
 
    /**
@@ -454,7 +452,7 @@ public class Element implements Cloneable {
 
       // Copy the children
       if (_children != null) {
-         clone._children = (ArrayList) _children.clone();
+         clone._children = (ProtectedList) _children.clone();
       }
 
       // Copy the attributes

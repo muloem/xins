@@ -6,6 +6,13 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
 
+* XINS/Java Common Library:
+  - Added a ProtectedList class which implements a java.util.List where
+    elements can be added or removed only using the key passed in the 
+    constructor.
+    This object is now used in the org.xins.common.xml.Element.
+    Typical impact on performance: Small.
+
 * XINS/Java Server Framework:
   - Small style improvements.
 
