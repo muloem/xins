@@ -38,7 +38,7 @@ public final class ServiceDescriptor extends Descriptor {
    /**
     * The pattern for a URL, as a character string.
     */
-   private static final String PATTERN_STRING = "^[a-z][a-z0-9]*:\\/\\/[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*(:[1-9][0-9]*)?(\\/([a-zA-Z0-9]*))*$"
+   private static final String PATTERN_STRING = "^[a-z][a-z0-9]*:\\/\\/[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*(:[1-9][0-9]*)?(\\/([a-zA-Z0-9]*))*$";
 
    /**
     * The pattern for a URL.
