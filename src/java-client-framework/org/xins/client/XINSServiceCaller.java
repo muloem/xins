@@ -224,16 +224,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * Constructs a new <code>XINSServiceCaller</code> with the specified
     * descriptor and the default HTTP method.
     *
-    * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws UnsupportedProtocolException
-    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
-    *    with an unsupported protocol (<em>since XINS 1.1.0</em).
-    *
     * @since XINS 1.2.0
     */
    public XINSServiceCaller() {
