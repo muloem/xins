@@ -243,7 +243,7 @@
 						<p>
 							<xsl:value-of select="$owner_name" />
 							<xsl:text> (</xsl:text>
-							<a href="{$owner_email}">
+							<a href="mailto:{$owner_email}">
 								<xsl:value-of select="$owner_email" />
 							</a>
 							<xsl:text>)</xsl:text>
