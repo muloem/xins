@@ -103,7 +103,7 @@
 			<param name="propertyName" />
 		</entry>
 		<entry id="3205" level="FATAL">
-			<description>System property that defines the runtime properties file to use is not set.</description>
+			<description>The property that defines the runtime properties file to use is not set.</description>
 			<param name="propertyName" />
 		</entry>
 		<entry id="3206" level="FATAL">
@@ -232,11 +232,20 @@
 			<param name="buildVersion" />
 			<param name="currentVersion" />
 		</entry>
+		<entry id="3230" level="WARNING" exception="true">
+			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="3231" level="INFO">
+			<description>Reading the runtime properties file to use from the bootstrap properties.</description>
+			<param name="propertyName" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
 		<entry id="3300" level="DEBUG">
 			<description>Initializing logging subsystem.</description>
+			<param name="configFile" />
 		</entry>
 		<entry id="3301" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>

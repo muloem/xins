@@ -607,9 +607,13 @@ extends HttpServlet {
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
-            Log.log_3204(exception, CONFIG_FILE_SYSTEM_PROPERTY);
-            setState(FRAMEWORK_BOOTSTRAP_FAILED);
-            throw new ServletException();
+            Log.log_3230(exception, CONFIG_FILE_SYSTEM_PROPERTY);
+         }
+
+         // If the config file is not set at start-up try to get it from the web.xml
+         if (_configFile == null) {
+            Log.log_3231(CONFIG_FILE_SYSTEM_PROPERTY);
+            _configFile = config.getInitParameter(CONFIG_FILE_SYSTEM_PROPERTY);
          }
 
          // Property value must be set
@@ -867,7 +871,7 @@ extends HttpServlet {
     */
    private void readRuntimeProperties() {
 
-      Log.log_3300();
+      Log.log_3300(_configFile);
 
       synchronized (_runtimePropertiesLock) {
 

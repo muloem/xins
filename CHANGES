@@ -14,6 +14,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
     appropriate.
 
+* XINS/Java Server Framework:
+  - If the org.xins.server.config is not set as a system property, the server
+    will also try to get the org.xins.server.config from the bootstrap
+    properties.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
@@ -108,6 +113,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - Remove element or attribute checking already done by the DTD.
   - Added type_1_1.dtd that contains the new types float32, float64, and
     base64.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
