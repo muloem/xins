@@ -116,7 +116,6 @@ $Id$
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
-					<!-- TODO: Include only types in api.xml -->
 					<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/specdocs/{$api}"
