@@ -160,7 +160,7 @@ public class ResultParser extends Object {
       Map parameters      = parseParameters(element);
       Element dataElement = element.getChild("data");
 
-      return new XINSServiceCaller.Result(target, success, code, parameters, dataElement);
+      return new XINSServiceCaller.Result(target, code, parameters, dataElement);
    }
 
    /**

@@ -50,14 +50,14 @@ extends CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);
-      if (result.isSuccess()) {
-         throw new IllegalArgumentException("result.isSuccess() == true");
+      String code = result.getCode();
+      if (code == null) {
+         throw new IllegalArgumentException("result.getCode() == null");
       }
 
       // Create message in buffer
       FastStringBuffer buffer = new FastStringBuffer(80);
       buffer.append("Call was unsuccessful");
-      String code = result.getCode();
       if (code != null && code.length() > 0) {
          buffer.append(", result code was \"");
          buffer.append(code);
