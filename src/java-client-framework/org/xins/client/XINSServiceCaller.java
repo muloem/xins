@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
@@ -31,6 +32,7 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
@@ -39,7 +41,37 @@ import org.xins.common.text.ParseException;
 import org.xins.logdoc.LogdocSerializable;
 
 /**
- * XINS service caller.
+ * XINS service caller. This class can be used to perform a call to a XINS
+ * service, over HTTP, and fail-over to other XINS services if the first one
+ * fails.
+ *
+ * <p>The following example code snippet constructs a
+ * <code>XINSServiceCaller</code> instance:
+ *
+ * <blockquote><pre>// Initialize properties for the services. Normally these
+// properties would come from a configuration source, like a file.
+{@link BasicPropertyReader} properties = new {@link BasicPropertyReader#BasicPropertyReader() BasicPropertyReader}();
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
+properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
+
+// Construct a descriptor and a XINSServiceCaller instance
+{@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, "myapi");
+XINSServiceCaller caller = new {@link #XINSServiceCaller(Descriptor) XINSServiceCaller}(descriptor);</pre></blockquote>
+ *
+ * <p>Then the following code snippet uses this <code>XINSServiceCaller</code>
+ * to perform a call to a XINS function named <em>_GetStatistics</em>, using
+ * HTTP POST:
+ *
+ * <blockquote><pre>// Prepare for the call
+{@link String}          function = "_GetStatistics";
+{@link PropertyReader}  params   = null;
+boolean         failOver = true;
+{@link HTTPMethod}      method   = {@link HTTPMethod}.{@link HTTPMethod#POST POST};
+{@link XINSCallRequest} request  = new {@link XINSCallRequest#XINSCallRequest(String,PropertyReader,boolean,HTTPMethod) XINSCallRequest}(function, params, failOver, method);
+
+// Perform the call
+{@link XINSCallResult} result = caller.{@link #call(XINSCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
