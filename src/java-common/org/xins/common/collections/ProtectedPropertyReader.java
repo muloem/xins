@@ -36,21 +36,21 @@ extends AbstractPropertyReader {
    /**
     * Constructs a new <code>ProtectedPropertyReader</code>.
     *
-    * @param key
+    * @param secretKey
     *    the secret key that must be passed to {@link #set(Object,String,String)}
     *    in order to be authorized to modify this set of properties.
     *
     * @throws IllegalArgumentException
-    *    if <code>key == null</code>.
+    *    if <code>secretKey == null</code>.
     */
-   public ProtectedPropertyReader(Object key)
+   public ProtectedPropertyReader(Object secretKey)
    throws IllegalArgumentException {
       super(new HashMap(89));
 
       // Check preconditions
-      MandatoryArgumentChecker.check("key", key);
+      MandatoryArgumentChecker.check("secretKey", secretKey);
 
-      _key        = key;
+      _secretKey = secretKey;
    }
 
 
@@ -61,7 +61,7 @@ extends AbstractPropertyReader {
    /**
     * The secret key.
     */
-   private final Object _key;
+   private final Object _secretKey;
 
 
    //-------------------------------------------------------------------------
@@ -71,15 +71,15 @@ extends AbstractPropertyReader {
    /**
     * Sets the specified property to the specified value.
     *
-    * <p>The key must be passed. If it is incorrect, then an
+    * <p>The correct secret key must be passed. If it is incorrect, then an
     * {@link IllegalArgumentException} is thrown. Note that an identity check
     * is done, <em>not</em> an equality check. So
     * {@link Object#equals(Object)} is not used, but the <code>==</code>
     * operator is.
     *
-    * @param key
-    *    the secret key, must be the same as the key specified with the
-    *    constructor, cannot be <code>null</code>.
+    * @param secretKey
+    *    the secret key, must be identity-equal to the secret key passed to
+    *    the constructor, cannot be <code>null</code>.
     *
     * @param name
     *    the name of the property to set or reset, cannot be
@@ -89,48 +89,51 @@ extends AbstractPropertyReader {
     *    the value for the property, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>name == null</code> or if <code>secretKey</code> does not
+    *    match the secret key passed to the constructor.
     */
-   public void set(Object key, String name, String value)
+   public void set(Object secretKey, String name, String value)
    throws IllegalArgumentException {
 
       // Check preconditions
-      if (key != _key) {
-         throw new IllegalArgumentException("Invalid key.");
-      }
       MandatoryArgumentChecker.check("name", name);
+      if (secretKey != _secretKey) {
+         throw new IllegalArgumentException("Incorrect secret key.");
+      }
 
       // Store the value
-     getPropertiesMap().put(name, value);
+      getPropertiesMap().put(name, value);
    }
 
    /**
     * Removes the specified property.
     *
-    * <p>The key must be passed. If it is incorrect, then an
+    * <p>The correct secret key must be passed. If it is incorrect, then an
     * {@link IllegalArgumentException} is thrown. Note that an identity check
     * is done, <em>not</em> an equality check. So
     * {@link Object#equals(Object)} is not used, but the <code>==</code>
     * operator is.
     *
-    * @param key
-    *    the secret key, must be the same as the key specified with the
-    *    constructor, cannot be <code>null</code>.
+    *
+    * @param secretKey
+    *    the secret key, must be identity-equal to the secret key passed to
+    *    the constructor, cannot be <code>null</code>.
     *
     * @param name
-    *    the name of the property to set or reset, cannot be
-    *    <code>null</code>.
+    *    the name of the property to remove, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>name == null</code> or if <code>secretKey</code> does not
+    *    match the secret key passed to the constructor.
     */
-   public void remove(Object key, String name) throws IllegalArgumentException {
+   public void remove(Object key, String name)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      if (key != _key) {
-         throw new IllegalArgumentException("Invalid key.");
-      }
       MandatoryArgumentChecker.check("name", name);
+      if (key != _key) {
+         throw new IllegalArgumentException("Incorrect secret key.");
+      }
 
       // Remove the property
       getPropertiesMap().remove(name);
