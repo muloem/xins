@@ -158,7 +158,7 @@ public class XINSCallResultParserTests extends TestCase {
       }
 
       // Unknown element as child of result should be ignored
-      xml = "<result><extra /><param name='a'>1</param>";
+      xml = "<result><extra /><param name='a'>1</param></result>";
       result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
       assertEquals(null, result.getErrorCode());
