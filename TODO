@@ -118,6 +118,8 @@ GENERATED SPECIFICATION DOCUMENTATION
 * On specification documentation page for a result code: Have a list of links
   to the functions that specify they may return the result code.
 * Remove the dependency to version controllers.
+* Use an image to indicate the inheritance relationship between one type and
+  another.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
