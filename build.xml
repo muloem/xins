@@ -162,7 +162,7 @@
 		</antcall>
 	</target>
 
-	<target name="upload-javadoc" depends="-init, javadoc" description="Uploads the Javadoc documentation to the webserver">
+	<target name="upload-javadoc" depends="-init,javadoc,javadoc-private" description="Uploads the Javadoc documentation to the webserver">
 		<echo message="Uploading ${title} ${version} API docs to ${www.host}" />
 
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
