@@ -68,10 +68,10 @@ public final class CallResult extends Object {
 
    /**
     * Constructs a new <code>CallResult</code> object, optionally specifying
-    * the <code>FunctionCaller</code> that produced it.
+    * the <code>ActualFunctionCaller</code> that produced it.
     *
     * @param functionCaller
-    *    the {@link FunctionCaller} that produced this
+    *    the {@link ActualFunctionCaller} that produced this
     *    <code>CallResult</code>, if any.
     *
     * @param success
@@ -86,11 +86,11 @@ public final class CallResult extends Object {
     * @param dataElement
     *    the data element returned by the function, or <code>null</code>.
     */
-   public CallResult(FunctionCaller functionCaller,
-                     boolean        success,
-                     String         code,
-                     Map            parameters,
-                     Element        dataElement) {
+   public CallResult(ActualFunctionCaller functionCaller,
+                     boolean              success,
+                     String               code,
+                     Map                  parameters,
+                     Element              dataElement) {
 
       // Clone the data element if there is one
       if (dataElement != null) {
@@ -110,10 +110,10 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The <code>FunctionCaller</code> that produced this object. Can be
+    * The <code>ActualFunctionCaller</code> that produced this object. Can be
     * <code>null</code>.
     */
-   private final FunctionCaller _functionCaller;
+   private final ActualFunctionCaller _functionCaller;
 
    /**
     * Success indication.
@@ -145,14 +145,14 @@ public final class CallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the <code>FunctionCaller</code> associated with this call
+    * Returns the <code>ActualFunctionCaller</code> associated with this call
     * result.
     *
     * @return
     *    the <code>FunctionCaller</code> specified at construction time, or
     *    <code>null</code> if none was specified.
     */
-   public FunctionCaller getFunctionCaller() {
+   public ActualFunctionCaller getFunctionCaller() {
       return _functionCaller;
    }
 

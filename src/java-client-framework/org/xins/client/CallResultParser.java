@@ -90,7 +90,7 @@ public class CallResultParser extends Object {
 
    /**
     * Parses the given XML string to create a <code>CallResult</code> object,
-    * optionally specifying a <code>FunctionCaller</code>.
+    * optionally specifying a <code>ActualFunctionCaller</code>.
     *
     * @param functionCaller
     *    the function caller to associate with the call result, or
@@ -109,7 +109,7 @@ public class CallResultParser extends Object {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public CallResult parse(FunctionCaller functionCaller, String xml)
+   public CallResult parse(ActualFunctionCaller functionCaller, String xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
@@ -151,7 +151,7 @@ public class CallResultParser extends Object {
     *    if the specified XML document is not a valid XINS API function call
     *    result.
     */
-   private CallResult parse(FunctionCaller functionCaller, Document document)
+   private CallResult parse(ActualFunctionCaller functionCaller, Document document)
    throws NullPointerException, ParseException {
 
       Element element = document.getRootElement();
