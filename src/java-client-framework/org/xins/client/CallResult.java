@@ -59,7 +59,10 @@ public final class CallResult extends Object {
     * @param dataElement
     *    the data element returned by the function, or <code>null</code>.
     */
-   CallResult(boolean success, String code, Map parameters, Element dataElement) {
+   public CallResult(boolean success,
+                     String  code,
+                     Map     parameters,
+                     Element dataElement) {
       this(null, success, code, parameters, dataElement);
    }
 
@@ -83,11 +86,11 @@ public final class CallResult extends Object {
     * @param dataElement
     *    the data element returned by the function, or <code>null</code>.
     */
-   CallResult(FunctionCaller functionCaller,
-              boolean        success,
-              String         code,
-              Map            parameters,
-              Element        dataElement) {
+   public CallResult(FunctionCaller functionCaller,
+                     boolean        success,
+                     String         code,
+                     Map            parameters,
+                     Element        dataElement) {
 
       // Clone the data element if there is one
       if (dataElement != null) {
