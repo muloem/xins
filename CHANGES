@@ -4,6 +4,7 @@ CHANGES INTRODUCED IN XINS 0.116:
 * XINS/Java Common Library:
   - GroupDescriptor: Now correctly iterating over services, either randomly or
     ordered.
+  - ServiceCaller: Improved logging.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.115:
