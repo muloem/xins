@@ -251,6 +251,20 @@
 
 	<target name="java" depends="java-server,java-client" />
 
+	<target name="logdoc" depends="-prepare">
+		<style
+		in="src/logdoc/log.xml"
+		out="build/logdoc-build.xml"
+		style="src/xslt/logdoc/log_to_build.xslt">
+			<param name="logdoc_xslt_dir" expression="../src/xslt/logdoc" />
+			<param name="sourcedir"       expression="../src/logdoc"      />
+			<param name="html_destdir"    expression="logdoc/html"        />
+			<param name="java_destdir"    expression="logdoc/java"        />
+			<param name="package_name"    expression="org.xins.server"    />
+		</style>
+		<ant dir="build" antfile="logdoc-build.xml" target="all" inheritall="false" />
+	</target>
+
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
 		<echo message="Uploading JAR files to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
