@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util;
+package org.xins.util.math;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -61,7 +61,7 @@ public final class SafeRandom extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Generates the next (pseudo)random <code>int</code> value.
+    * Generates the next (pseudo-)random <code>int</code> value.
     *
     * @return
     *    the next (pseudo)random number, can be any <code>int</code> value.
@@ -71,6 +71,20 @@ public final class SafeRandom extends Object {
          return _secureRandom.nextInt();
       } catch (Throwable exception) {
          return _random.nextInt();
+      }
+   }
+
+   /**
+    * Generates the next (pseudo)random <code>long</code> value.
+    *
+    * @return
+    *    the next (pseudo)random number, can be any <code>long</code> value.
+    */
+   public long nextLong() {
+      try {
+         return _secureRandom.nextLong();
+      } catch (Throwable exception) {
+         return _random.nextLong();
       }
    }
 }
