@@ -39,7 +39,7 @@ public final class NoSuchTranslationBundleException extends Exception {
    throws IllegalArgumentException {
 
       // Call superconstructor first
-      super("Translation bundle \"" + name + "\" does not exist.");
+      super("Translation bundle \"" + locale + "\" does not exist.");
 
       // Check preconditions
       MandatoryArgumentChecker.check("locale", locale);
