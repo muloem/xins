@@ -15,6 +15,9 @@
 	<code name="NoSuchFunction" value="NoSuchFunction" success="false">
 		<description>There is no function with the specified name in this API implementation.</description>
 	</code>
+	<code name="DisabledFunction" value="DisabledFunction" success="false">
+		<description>The function is currently disabled.</description>
+	</code>
 	<code name="InternalError" value="InternalError" success="false">
 		<description>There was an internal error.</description>
 	</code>
