@@ -42,7 +42,7 @@
 				<init-param>
 					<param-name>org.xins.api.class</param-name>
 					<param-value>
-						<xsl:call-template name="package_for_api">
+						<xsl:call-template name="package_for_server_api">
 							<xsl:with-param name="project_file">
 								<xsl:value-of select="$project_file" />
 							</xsl:with-param>
