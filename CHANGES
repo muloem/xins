@@ -2,6 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
 * XINS/Java Server Framework:
+  - Improved translations for log message 2026.
   - The recordCall() in FunctionStatistics now returns the duration of the
     call. It replaces the getLastDuration() method introduced in
     XINS 0.162.
