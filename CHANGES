@@ -5,6 +5,10 @@ CHANGES INTRODUCED IN XINS 0.118:
   - Changed the ServiceDescriptor class. Improved the URL pattern to accept
     hyphens.
 
+* Generation of specification documentation:
+  - Added session-related result codes. Only displaying appropriate result
+    codes.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.117:
 
