@@ -86,6 +86,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Construct PostMethod object
       PostMethod method = new PostMethod(baseURL);
 
+      // TODO: Change to _function at some point
+
       method.addParameter("function", functionName);
 
       // If a diagnostic context is available, pass it on
