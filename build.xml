@@ -333,7 +333,7 @@
 			<packageset dir="build/src/java-common" />
 			<packageset dir="build/src/java-server-framework" />
 			<packageset dir="build/src/java-client-framework" />
-			<group title="XINS/Java Common Library"   packages="org.xins.util*,org.xins.types*,org.xins.tools*" />
+			<group title="XINS/Java Common Library"   packages="org.xins.specs*,org.xins.util*,org.xins.types*,org.xins.tools*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<classpath>
