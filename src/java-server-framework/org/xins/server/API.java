@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.types.standard.Text;
-import org.xins.util.LifespanManager;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
@@ -26,6 +25,12 @@ import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
+import org.xins.util.manageable.BootstrapException;
+import org.xins.util.manageable.DeinitializationException;
+import org.xins.util.manageable.InitializationException;
+import org.xins.util.manageable.InvalidPropertyValueException;
+import org.xins.util.manageable.Manageable;
+import org.xins.util.manageable.MissingRequiredPropertyException;
 import org.xins.util.text.DateConverter;
 import org.xins.util.text.FastStringBuffer;
 import org.znerd.xmlenc.XMLOutputter;
@@ -37,57 +42,12 @@ import org.znerd.xmlenc.XMLOutputter;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public abstract class API
-extends Object
+extends Manageable
 implements DefaultResultCodes {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The <em>INITIAL</em> state.
-    */
-   private static final State INITIAL = new State("INITIAL");
-
-   /**
-    * The <em>BOOTSTRAPPING</em> state.
-    */
-   private static final State BOOTSTRAPPING = new State("BOOTSTRAPPING");
-
-   /**
-    * The <em>BOOTSTRAPPING_FAILED</em> state.
-    */
-   private static final State BOOTSTRAPPING_FAILED = new State("BOOTSTRAPPING_FAILED");
-
-   /**
-    * The <em>BOOTSTRAPPED</em> state.
-    */
-   private static final State BOOTSTRAPPED = new State("BOOTSTRAPPED");
-
-   /**
-    * The <em>INITIALIZING</em> state.
-    */
-   private static final State INITIALIZING = new State("INITIALIZING");
-
-   /**
-    * The <em>INITIALIZATION_FAILED</em> state.
-    */
-   private static final State INITIALIZATION_FAILED = new State("INITIALIZATION_FAILED");
-
-   /**
-    * The <em>INITIALIZED</em> state.
-    */
-   private static final State INITIALIZED = new State("INITIALIZED");
-
-   /**
-    * The <em>DISPOSING</em> state.
-    */
-   private static final State DISPOSING = new State("DISPOSING");
-
-   /**
-    * The <em>DISPOSED</em> state.
-    */
-   private static final State DISPOSED = new State("DISPOSED");
 
    /**
     * String returned by the function <code>_GetStatistics</code> when certain
@@ -143,10 +103,8 @@ implements DefaultResultCodes {
 
       // Initialize fields
       _name              = name;
-      _stateLock         = new Object();
-      _state             = INITIAL;
       _startupTimestamp  = System.currentTimeMillis();
-      _lifespanManagers  = new ArrayList();
+      _manageableObjects = new ArrayList();
       _functionsByName   = new HashMap();
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
@@ -165,16 +123,6 @@ implements DefaultResultCodes {
    private final String _name;
 
    /**
-    * The current state.
-    */
-   private State _state;
-
-   /**
-    * Lock object for the current state.
-    */
-   private final Object _stateLock;
-
-   /**
     * Flag that indicates if this API is session-based.
     */
    private boolean _sessionBased;
@@ -186,13 +134,12 @@ implements DefaultResultCodes {
    private boolean _responseValidationEnabled;
 
    /**
-    * List of registered lifespan managers. See
-    * {@link #add(LifespanManager)}.
+    * List of registered manageable objects. See {@link #add(Manageable)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
     * constructor.
     */
-   private final List _lifespanManagers;
+   private final List _manageableObjects;
 
    /**
     * Expiry strategy for <code>_sessionsByID</code>.
@@ -315,8 +262,6 @@ implements DefaultResultCodes {
 
    /**
     * Gets the specified property and converts it to a <code>boolean</code>.
-    * Unless the value of the property equals <code>"true"</code>
-    * <code>false</code> is returned.
     *
     * @param properties
     *    the set of properties to read from, cannot be <code>null</code>.
@@ -324,20 +269,43 @@ implements DefaultResultCodes {
     * @param propertyName
     *    the name of the property to read, cannot be <code>null</code>.
     *
+    * @param fallbackDefault
+    *    the fallback default value, returned if the value of the property is
+    *    either <code>null</code> or <code>""</code> (an empty string).
+    *
     * @return
     *    the value of the property.
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value of the property is neither <code>null</code> nor
+    *    <code>""</code> (an empty string), nor <code>"true"</code> nor
+    *    <code>"false"</code>.
     */
-   private final boolean getBooleanProperty(PropertyReader properties, String propertyName)
-   throws IllegalArgumentException {
+   private final boolean getBooleanProperty(PropertyReader properties,
+                                            String         propertyName,
+                                            boolean        fallbackDefault)
+   throws IllegalArgumentException,
+          InvalidPropertyValueException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
 
       String value = properties.get(propertyName);
-      return "true".equals(value);
+
+      if (value == null || value.length() == 0) {
+         return fallbackDefault;
+      }
+
+      if ("true".equals(value)) {
+         return true;
+      } else if ("false".equals(value)) {
+         return false;
+      } else {
+         throw new InvalidPropertyValueException(propertyName, value);
+      }
    }
 
    /**
@@ -440,176 +408,163 @@ implements DefaultResultCodes {
 
    /**
     * Bootstraps this API (wrapper method). This method calls
-    * {@link #bootstrapImpl(PropertyReader)}.
+    * {@link #bootstrapImpl2(PropertyReader)}.
     *
     * @param buildSettings
     *    the build-time configuration properties, not <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this API is already bootstrapped.
     *
     * @throws IllegalArgumentException
     *    if <code>buildSettings == null</code>.
     *
     * @throws Throwable
     *    if the bootstrapping fails.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is not given.
+    *
+    * @throws InvalidPropertyValueException
+    *    if a property has an invalid value.
+    *
+    * @throws BootstrapException
+    *    if the initialization fails.
     */
-   public final void bootstrap(PropertyReader buildSettings)
-   throws IllegalStateException, Throwable {
+   protected final void bootstrapImpl(PropertyReader buildSettings)
+   throws MissingRequiredPropertyException,
+          InvalidPropertyValueException,
+          BootstrapException {
 
-      synchronized (_stateLock) {
+      // Log the time zone
+      // TODO: Why log the time zone?
+      _timeZone = TimeZone.getDefault();
+      String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
+      String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
+      if (tzLongName.equals(tzShortName)) {
+         Library.BOOTSTRAP_LOG.info("Local time zone is " + tzLongName + '.');
+      } else {
+         Library.BOOTSTRAP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
+      }
 
-         // Check state
-         if (_state != INITIAL) {
-            throw new IllegalStateException("The current state is " + _state + " instead of " + INITIAL + '.');
-         }
+      // Store the build-time settings
+      _buildSettings = buildSettings;
 
-         // Check argument
-         MandatoryArgumentChecker.check("buildSettings", buildSettings);
+      // Check if a default function is set
+      _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
+      if (_defaultFunction != null) {
+         Library.BOOTSTRAP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
+      }
+      // TODO: Check that default function exists. If not, set state
+      //       accordingly.
 
-         // Set the state
-         _state = BOOTSTRAPPING;
+      // Check if this API is session-based
+      _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
+      Library.BOOTSTRAP_LOG.info("Session is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
 
-         // Log the time zone
-         // TODO: Why log the time zone?
-         _timeZone = TimeZone.getDefault();
-         String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
-         String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
-         if (tzLongName.equals(tzShortName)) {
-            Library.BOOTSTRAP_LOG.info("Local time zone is " + tzLongName + '.');
-         } else {
-            Library.BOOTSTRAP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
-         }
+      // XXX: Allow configuration of session ID type ?
 
-         // Store the build-time settings
-         _buildSettings = buildSettings;
+      // Initialize session-based API
+      if (_sessionBased) {
+         Library.BOOTSTRAP_LOG.debug("Performing session-related initialization.");
 
-         // Check if a default function is set
-         _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
-         if (_defaultFunction != null) {
-            Library.BOOTSTRAP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
-         }
-         // TODO: Check that default function exists. If not, set state to
-         //       INITIALIZATION_FAILED
+         // Initialize session ID type
+         _sessionIDType      = new BasicSessionIDType(this);
+         _sessionIDGenerator = _sessionIDType.getGenerator();
 
-         // Check if this API is session-based
-         _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased");
+         // Determine session time-out duration and precision
+         final long MINUTE_IN_MS = 60000L;
+         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
+         long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
-         // XXX: Allow configuration of session ID type ?
+         // Create expiry strategy and folder
+         _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
+         _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
+                                                   _sessionExpiryStrategy, // expiry strategy
+                                                   false,                  // strict thread sync checking? (TODO)
+                                                   5000L);                 // max queue wait time in ms    (TODO)
+      }
 
-         // Initialize session-based API
-         if (_sessionBased) {
-            Library.BOOTSTRAP_LOG.debug("Performing session-related initialization.");
+      // Get build-time properties
+      _deployment   = _buildSettings.get("org.xins.api.deployment");
+      _buildHost    = _buildSettings.get("org.xins.api.build.host");
+      _buildTime    = _buildSettings.get("org.xins.api.build.time");
+      _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
-            // Initialize session ID type
-            _sessionIDType      = new BasicSessionIDType(this);
-            _sessionIDGenerator = _sessionIDType.getGenerator();
+      // Log build-time properties
+      Logger log = Library.BOOTSTRAP_LOG;
+      FastStringBuffer buffer = new FastStringBuffer(160);
 
-            // Determine session time-out duration and precision
-            final long MINUTE_IN_MS = 60000L;
-            long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
-            long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
+      // - build host name
+      buffer.append("Built on ");
+      if (_buildHost != null && !("".equals(_buildHost))) {
+         buffer.append("host ");
+         buffer.append(_buildHost);
+      } else {
+         log.warn("Build host name is not set.");
+         buffer.append("unknown host");
+         _buildHost = null;
+      }
 
-            // Create expiry strategy and folder
-            _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
-            _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
-                                                      _sessionExpiryStrategy, // expiry strategy
-                                                      false,                  // strict thread sync checking? (TODO)
-                                                      5000L);                 // max queue wait time in ms    (TODO)
-         }
+      // - build time
+      if (_buildTime != null && !("".equals(_buildTime))) {
+         buffer.append(" (at ");
+         buffer.append(_buildTime);
+         buffer.append(")");
+      } else {
+         log.warn("Build time stamp is not set.");
+         _buildTime = null;
+      }
 
-         // Get build-time properties
-         _deployment   = _buildSettings.get("org.xins.api.deployment");
-         _buildHost    = _buildSettings.get("org.xins.api.build.host");
-         _buildTime    = _buildSettings.get("org.xins.api.build.time");
-         _buildVersion = _buildSettings.get("org.xins.api.build.version");
+      // - deployment
+      if (_deployment != null && !("".equals(_deployment))) {
+         buffer.append(", for deployment \"");
+         buffer.append(_deployment);
+         buffer.append('"');
+      } else {
+         _deployment = null;
+      }
 
-         // Log build-time properties
-         Logger log = Library.BOOTSTRAP_LOG;
-         FastStringBuffer buffer = new FastStringBuffer(160);
+      // - XINS version
+      if (_buildVersion != null && !("".equals(_buildVersion))) {
+         buffer.append(", using XINS ");
+         buffer.append(_buildVersion);
+      } else {
+         log.warn("Build version is not set.");
+         _buildVersion = null;
+      }
 
-         // - build host name
-         buffer.append("Built on ");
-         if (_buildHost != null && !("".equals(_buildHost))) {
-            buffer.append("host ");
-            buffer.append(_buildHost);
-         } else {
-            log.warn("Build host name is not set.");
-            buffer.append("unknown host");
-            _buildHost = null;
-         }
+      buffer.append('.');
+      log.info(buffer.toString());
 
-         // - build time
-         if (_buildTime != null && !("".equals(_buildTime))) {
-            buffer.append(" (at ");
-            buffer.append(_buildTime);
-            buffer.append(")");
-         } else {
-            log.warn("Build time stamp is not set.");
-            _buildTime = null;
-         }
+      // Let the subclass perform initialization
+      bootstrapImpl2(buildSettings);
 
-         // - deployment
-         if (_deployment != null && !("".equals(_deployment))) {
-            buffer.append(", for deployment \"");
-            buffer.append(_deployment);
-            buffer.append('"');
-         } else {
-            _deployment = null;
-         }
-
-         // - XINS version
-         if (_buildVersion != null && !("".equals(_buildVersion))) {
-            buffer.append(", using XINS ");
-            buffer.append(_buildVersion);
-         } else {
-            log.warn("Build version is not set.");
-            _buildVersion = null;
-         }
-
-         buffer.append('.');
-         log.info(buffer.toString());
-
-         // Let the subclass perform initialization
+      // Bootstrap all instances
+      int count = _manageableObjects.size();
+      for (int i = 0; i < count; i++) {
+         Manageable m = (Manageable) _manageableObjects.get(i);
+         String className = m.getClass().getName();
+         log.debug("Bootstrapping manageable object of class " + className + " for " + _name + " API.");
          try {
-            bootstrapImpl(buildSettings);
-            _state = BOOTSTRAPPED;
-
-         } finally {
-            if (_state != BOOTSTRAPPED) {
-               _state = BOOTSTRAPPING_FAILED;
+            m.bootstrap(_buildSettings);
+            log.info("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
+         } catch (Throwable exception) {
+            String exMessage = exception.getMessage();
+            buffer.clear();
+            buffer.append("Failed to bootstrap manageable object of class ");
+            buffer.append(className);
+            buffer.append(" for ");
+            buffer.append(_name);
+            buffer.append(" API due to ");
+            buffer.append(exception.getClass().getName());
+            if (exMessage == null || exMessage.length() < 1) {
+               buffer.append('.');
+            } else {
+               buffer.append(" with message \"");
+               buffer.append(exMessage);
+               buffer.append("\".");
             }
-         }
-
-         // Bootstrap all instances
-         int count = _lifespanManagers.size();
-         for (int i = 0; i < count; i++) {
-            LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
-            String className = lsm.getClass().getName();
-            log.debug("Bootstrapping lifespan manager " + className + " for " + _name + " API.");
-            try {
-               lsm.bootstrap(_buildSettings);
-               log.info("Bootstrapped lifespan manager " + className + " for " + _name +  " API.");
-            } catch (Throwable exception) {
-               String exMessage = exception.getMessage();
-               buffer.clear();
-               buffer.append("Failed to bootstrap lifespan manager ");
-               buffer.append(className);
-               buffer.append(" for ");
-               buffer.append(_name);
-               buffer.append(" API due to ");
-               buffer.append(exception.getClass().getName());
-               if (exMessage == null || exMessage.length() < 1) {
-                  buffer.append('.');
-               } else {
-                  buffer.append(" with message \"");
-                  buffer.append(exMessage);
-                  buffer.append("\".");
-               }
-               String message = buffer.toString();
-               log.error(message, exception);
-               throw new Exception(message);
-            }
+            String message = buffer.toString();
+            log.error(message, exception);
+            throw new BootstrapException(message);
          }
       }
    }
@@ -625,17 +580,25 @@ implements DefaultResultCodes {
     * includes only the one-time configuration of the API based on the
     * build-time settings, while the initialization
     *
-    * <p />The {@link #add(LifespanManager)} may be called from this method,
+    * <p />The {@link #add(Manageable)} may be called from this method,
     * and from this method <em>only</em>.
     *
     * @param buildSettings
     *    the build-time properties, guaranteed not to be <code>null</code>.
     *
-    * @throws Throwable
+    * @throws MissingRequiredPropertyException
+    *    if a required property is not given.
+    *
+    * @throws InvalidPropertyValueException
+    *    if a property has an invalid value.
+    *
+    * @throws BootstrapException
     *    if the initialization fails.
     */
-   protected void bootstrapImpl(PropertyReader buildSettings)
-   throws Throwable {
+   protected void bootstrapImpl2(PropertyReader buildSettings)
+   throws MissingRequiredPropertyException,
+          InvalidPropertyValueException,
+          BootstrapException {
       // empty
    }
 
@@ -645,11 +608,14 @@ implements DefaultResultCodes {
     * @param runtimeSettings
     *    the runtime configuration settings, cannot be <code>null</code>.
     *
-    * @throws Throwable
+    * @throws InvalidPropertyValueException
+    *    if the initialization failed.
+    *
+    * @throws InitializationException
     *    if the initialization failed.
     */
-   public void init(PropertyReader runtimeSettings)
-   throws Throwable {
+   protected final void initImpl(PropertyReader runtimeSettings)
+   throws InvalidPropertyValueException, InitializationException {
 
       // TODO: Check state
 
@@ -660,21 +626,21 @@ implements DefaultResultCodes {
       _runtimeSettings = runtimeSettings;
 
       // Check if response validation is enabled
-      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
+      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation", false);
       log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Initialize all instances
-      int count = _lifespanManagers.size();
+      int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {
-         LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
-         String className = lsm.getClass().getName();
-         log.debug("Initializing lifespan manager " + className + " for " + _name + " API.");
+         Manageable m = (Manageable) _manageableObjects.get(i);
+         String className = m.getClass().getName();
+         log.debug("Initializing manageable object of class " + className + " for " + _name + " API.");
          try {
-            lsm.init(runtimeSettings);
-            log.info("Initialized lifespan manager " + className + " for " + _name + " API.");
+            m.init(runtimeSettings);
+            log.info("Initialized manageable object of class " + className + " for " + _name + " API.");
          } catch (Throwable exception) {
             String exMessage = exception.getMessage();
-            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize lifespan manager ");
+            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize manageable object of class ");
             buffer.append(className);
             buffer.append(" for ");
             buffer.append(_name);
@@ -689,29 +655,29 @@ implements DefaultResultCodes {
             }
             String message = buffer.toString();
             log.error(message, exception);
-            throw new Exception(message);
+            throw new InitializationException(message);
          }
       }
 
-      // TODO: Call initImpl(PropertyReader)
+      // TODO: Call initImpl2(PropertyReader) ?
 
       log.debug("Initialized " + _name + " API.");
-      _state = INITIALIZED;
    }
 
    /**
-    * Adds the specified lifespan manager. It will immediately be initialized.
-    * If the initialization fails, then an exception will be thrown.
+    * Adds the specified manageable object. It will immediately be
+    * initialized. If the initialization fails, then an exception will be
+    * thrown.
     *
     * <p>The initialization will be performed by calling
-    * {@link LifespanManager#bootstrap(PropertyReader)} and
-    * {@link LifespanManager#init(PropertyReader)}.
+    * {@link Manageable#bootstrap(PropertyReader)} and
+    * {@link Manageable#init(PropertyReader)}.
     *
-    * <p>At shutdown time {@link LifespanManager#destroy()} will be called.
+    * <p>At shutdown time {@link Manageable#deinit()} will be called.
     *
-    * @param lsm
-    *    the lifespan manager to initialize now, reinitialize when appropriate
-    *    and deinitialize at shutdown time, not <code>null</code>.
+    * @param m
+    *    the manageable object to initialize now, reinitialize when
+    *    appropriate and deinitialize at shutdown time, not <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this API is currently not bootstrapping.
@@ -722,35 +688,35 @@ implements DefaultResultCodes {
     * @throws Exception
     *    if the initialization of the instance failed.
     *
-    * @since XINS 0.124
+    * @since XINS 0.147
     */
-   protected final void add(LifespanManager lsm)
+   protected final void add(Manageable m)
    throws IllegalStateException,
           IllegalArgumentException,
           Exception {
 
       // Check state
-      synchronized (_stateLock) {
-         if (_state != BOOTSTRAPPING) {
-            // TODO: Log and throw?
-            throw new IllegalStateException("State is " + _state + " instead of " + BOOTSTRAPPING + '.');
-         }
+      Manageable.State state = getState();
+      if (getState() != BOOTSTRAPPING) {
+         // TODO: Log
+         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
       }
 
       // Check preconditions
-      MandatoryArgumentChecker.check("lsm", lsm);
+      MandatoryArgumentChecker.check("m", m);
 
-      // Store the lifespan manager in the list
-      _lifespanManagers.add(lsm);
+      // Store the manageable object in the list
+      _manageableObjects.add(m);
 
-      Library.BOOTSTRAP_LOG.debug("Added lifespan manager " + lsm.getClass().getName() + " for " + _name + " API.");
+      Library.BOOTSTRAP_LOG.debug("Added manageable object " + m.getClass().getName() + " for " + _name + " API.");
    }
 
    /**
     * Performs shutdown of this XINS API. This method will never throw any
     * exception.
     */
-   final void destroy() {
+   protected final void deinitImpl() {
+
       _shutDown = true;
 
       // Stop expiry strategy
@@ -766,17 +732,17 @@ implements DefaultResultCodes {
       _sessionsByID = null;
 
       // Deinitialize instances
-      int count = _lifespanManagers.size();
+      int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {
-         LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
+         Manageable m = (Manageable) _manageableObjects.get(i);
 
-         String className = lsm.getClass().getName();
+         String className = m.getClass().getName();
 
          try {
-            lsm.destroy();
-            Library.SHUTDOWN_LOG.info("Deinitialized lifespan manager " + className + " for " + _name + " API.");
-         } catch (Throwable exception) {
-            Library.SHUTDOWN_LOG.error("Failed to deinitialize lifespan manager " + className + " for " + _name + " API.", exception);
+            m.deinit();
+            Library.SHUTDOWN_LOG.info("Deinitialized manageable object of class " + className + " for " + _name + " API.");
+         } catch (DeinitializationException exception) {
+            Library.SHUTDOWN_LOG.error("Failed to deinitialize manageable object of class " + className + " for " + _name + " API.", exception);
          }
       }
    }
@@ -801,14 +767,12 @@ implements DefaultResultCodes {
     *    if it is not.
     *
     * @throws IllegalStateException
-    *    if this API is not in the <em>initialized</em> state.
+    *    if this API is currently not 'usable'.
     */
    public boolean isSessionBased()
    throws IllegalStateException {
 
-      if (_state != INITIALIZED) {
-         throw new IllegalStateException("This API is not in the 'initialized' state.");
-      }
+      assertUsable();
 
       return _sessionBased;
    }
@@ -821,15 +785,14 @@ implements DefaultResultCodes {
     *    is {@link Text}.
     *
     * @throws IllegalStateException
-    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
+    *    if this API is currently not 'usable' or if it is not session-based.
     */
    public final SessionIDType getSessionIDType()
    throws IllegalStateException {
 
       // Check preconditions
-      if (_state != INITIALIZED) {
-         throw new IllegalStateException("This API is not in the 'initialized' state.");
-      } else if (! _sessionBased) {
+      assertUsable();
+      if (! _sessionBased) {
          throw new IllegalStateException("This API is not session-based.");
       }
 
@@ -843,14 +806,14 @@ implements DefaultResultCodes {
     *    the newly constructed session, never <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
+    *    if this API is currently not 'usable' or if it is not session-based.
     */
-   final Session createSession() throws IllegalStateException {
+   final Session createSession()
+   throws IllegalStateException {
 
       // Check preconditions
-      if (_state != INITIALIZED) {
-         throw new IllegalStateException("This API is not in the 'initialized' state.");
-      } else if (! _sessionBased) {
+      assertUsable();
+      if (! _sessionBased) {
          throw new IllegalStateException("This API is not session-based.");
       }
 
@@ -882,14 +845,14 @@ implements DefaultResultCodes {
     *    is returned.
     *
     * @throws IllegalStateException
-    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
+    *    if this API is currently not 'usable' or if it is not session-based.
     */
-   final Session getSession(Object id) throws IllegalStateException {
+   final Session getSession(Object id)
+   throws IllegalStateException {
 
       // Check preconditions
-      if (_state != INITIALIZED) {
-         throw new IllegalStateException("This API is not in the 'initialized' state.");
-      } else if (! _sessionBased) {
+      assertUsable();
+      if (! _sessionBased) {
          throw new IllegalStateException("This API is not session-based.");
       }
 
@@ -908,7 +871,7 @@ implements DefaultResultCodes {
     *    <code>null</code> is returned.
     *
     * @throws IllegalStateException
-    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
+    *    if this API is currently not 'usable' or if it is not session-based.
     *
     * @throws TypeValueException
     *    if the specified string is not a valid representation for a value for
@@ -918,9 +881,8 @@ implements DefaultResultCodes {
    throws IllegalStateException, TypeValueException {
 
       // Check preconditions
-      if (_state != INITIALIZED) {
-         throw new IllegalStateException("This API is not in the 'initialized' state.");
-      } else if (! _sessionBased) {
+      assertUsable();
+      if (! _sessionBased) {
          throw new IllegalStateException("This API is not session-based.");
       }
 
@@ -1381,77 +1343,5 @@ implements DefaultResultCodes {
       function.setEnabled(false);
 
       return SUCCESSFUL_RESULT;
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * State of an <code>API</code>.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.125
-    */
-   private static final class State extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>State</code> object.
-       *
-       * @param name
-       *    the name of this state, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>name == null</code>.
-       */
-      private State(String name) throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
-
-         _name = name;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of this state. Cannot be <code>null</code>.
-       */
-      private final String _name; 
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the name of this state.
-       *
-       * @return
-       *    the name of this state, cannot be <code>null</code>.
-       */
-      String getName() {
-         return _name;
-      }
-
-      /**
-       * Returns a textual representation of this object.
-       *
-       * @return
-       *    the name of this state, never <code>null</code>.
-       */
-      public String toString() {
-         return _name;
-      }
    }
 }

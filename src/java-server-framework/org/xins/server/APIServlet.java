@@ -657,7 +657,11 @@ extends HttpServlet {
 
          // Destroy the API
          if (_api != null) {
-            _api.destroy();
+            try {
+               _api.deinit();
+            } catch (Throwable t) {
+               Library.SHUTDOWN_LOG.error("Caught exception while deinitializing API.", t);
+            }
          }
 
          // Set the state to DISPOSED
