@@ -618,4 +618,26 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:template name="javaclass_for_javatype">
+		<xsl:param name="javatype" />
+
+		<xsl:choose>
+			<xsl:when test="$javatype = 'boolean'">java.lang.Boolean</xsl:when>
+			<xsl:when test="$javatype = 'char'">java.lang.Character</xsl:when>
+			<xsl:when test="$javatype = 'byte'">java.lang.Byte</xsl:when>
+			<xsl:when test="$javatype = 'short'">java.lang.Short</xsl:when>
+			<xsl:when test="$javatype = 'int'">java.lang.Integer</xsl:when>
+			<xsl:when test="$javatype = 'long'">java.lang.Long</xsl:when>
+			<xsl:when test="$javatype = 'float'">java.lang.Float</xsl:when>
+			<xsl:when test="$javatype = 'double'">java.lang.Double</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>Unrecognized Java datatype '</xsl:text>
+					<xsl:value-of select="$javatype" />
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>
