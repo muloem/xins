@@ -236,10 +236,23 @@ extends Object {
          synchronized (_sizeLock) {
             _size -= toBeExpiredSize;
             newSize = _size;
+            if (_size < 0) {
+               _size = 0;
+            }
          }
 
+         // Log debug message
          if (LOG.isDebugEnabled()) {
-            LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " remaining).");
+            if (toBeExpiredSize != 1) {
+               LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " remaining).");
+            } else {
+               LOG.debug(_asString + ": Expired 1 entry (" + newSize + " remaining).");
+            }
+         }
+
+         // Check that new size is at minimum zero
+         if (newSize < 0) {
+            LOG.error("Size of expiry folder dropped to " + newSize + ", adjusted to 0.");
          }
       }
 
