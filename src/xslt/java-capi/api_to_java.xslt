@@ -416,10 +416,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       // Execute the call request
       org.xins.client.XINSCallResult result = caller.call(request);
 
-      // FIXME: Catch all expected error codes and throw a specific error code
-      //        exception
-
       return new </xsl:text>
+
+<!--
+FIXME for Ernst: Catch all expected error codes and throw a specific error code exception
+-->
+
 		<xsl:value-of select="$returnType" />
 		<xsl:text>(result);</xsl:text>
 		<xsl:text>
