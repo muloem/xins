@@ -1,0 +1,9 @@
+<!ELEMENT type (description?, pattern?)>
+<!ATTLIST type
+          name       CDATA #REQUIRED
+          extends    CDATA #REQUIRED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT pattern (#PCDATA)>

@@ -1,0 +1,8 @@
+<!ELEMENT resultcode (description?)>
+<!ATTLIST resultcode
+          name       CDATA #REQUIRED
+          value      CDATA #REQUIRED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA)>

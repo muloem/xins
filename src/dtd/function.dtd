@@ -1,0 +1,25 @@
+<!ELEMENT function (description?, input?, output?, example*)>
+<!ATTLIST function
+          name       CDATA #REQUIRED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT input (param*)>
+<!ELEMENT param (description, example-value*)>
+<!ATTLIST param
+          name       CDATA #REQUIRED
+          required   CDATA #REQUIRED
+          type       CDATA #REQUIRED
+>
+<!ELEMENT output (param*)>
+<!ELEMENT example-value (#PCDATA)>
+<!ATTLIST example-value
+          example     CDATA #REQUIRED
+>
+<!ELEMENT example (description)>
+<!ATTLIST example
+          num         CDATA #REQUIRED
+          resultcode  CDATA #IMPLIED
+          success     CDATA #IMPLIED
+>

@@ -1,0 +1,34 @@
+<!ELEMENT api (description?, function*, type*, resultcode*, environment*, impl-java?)>
+<!ATTLIST api
+          name       CDATA #REQUIRED
+          owner      CDATA #REQUIRED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT function EMPTY>
+<!ATTLIST function
+          name       CDATA #REQUIRED
+>
+<!ELEMENT type EMPTY>
+<!ATTLIST type
+          name       CDATA #REQUIRED
+>
+<!ELEMENT resultcode EMPTY>
+<!ATTLIST resultcode
+          name       CDATA #REQUIRED
+>
+<!ELEMENT environment EMPTY>
+<!ATTLIST environment
+          id         CDATA #REQUIRED
+          url        CDATA #REQUIRED
+>
+<!ELEMENT impl-java (dependency*)>
+<!ATTLIST impl-java
+          mapping    CDATA #REQUIRED
+>
+<!ELEMENT dependency EMPTY>
+<!ATTLIST dependency
+          dir        CDATA #REQUIRED
+          includes   CDATA #IMPLIED
+>
