@@ -11,6 +11,57 @@
 
 	<translation-bundle locale="en_US" />
 
+	<group id="trace" name="Tracing of constructors, class functions and instance methods">
+		<entry id="1000" level="DEBUG">
+			<description>Entering constructor.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
+		</entry>
+		<entry id="1001" level="DEBUG" exception="true">
+			<description>Returning from constructor with exception.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
+		</entry>
+		<entry id="1002" level="DEBUG">
+			<description>Returning from constructor successfully.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
+		</entry>
+		<entry id="1003" level="DEBUG">
+			<description>Entering method.</description>
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
+		</entry>
+		<entry id="1004" level="DEBUG" exception="true">
+			<description>Returning from method with exception.</description>
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
+		</entry>
+		<entry id="1005" level="DEBUG">
+			<description>Returning from method successfully.</description>
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
+		</entry>
+	</group>
+
+	<group id="lowlevel" name="Low-level generic issues">
+		<entry id="1050" level="ERROR">
+			<description>Programming error detected.</description>
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
+		</entry>
+		<entry id="1051" level="ERROR" exception="true">
+			<description>Ignoring exception.</description>
+			<param name="exceptionClass"   type="text" nullable="false" />
+			<param name="exceptionMessage" type="text" nullable="true"  />
+			<param name="description"      type="text" nullable="true"  />
+		</entry>
+	</group>
+
 	<group id="lifespan" name="Internal lifespan-related">
 		<entry id="1100" level="DEBUG">
 			<description>State change in APIServlet instance.</description>

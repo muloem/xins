@@ -10,7 +10,7 @@
 <log>
 	<translation-bundle locale="en_US" />
 
-	<group id="lowlevel" name="Low-level (tracing, programming errors)">
+	<group id="trace" name="Tracing of constructors, class functions and instance methods">
 		<entry id="3000" level="DEBUG">
 			<description>Entering constructor.</description>
 			<param name="className" type="text" nullable="false" />
@@ -44,11 +44,20 @@
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="3006" level="ERROR">
+	</group>
+
+	<group id="lowlevel" name="Low-level generic issues">
+		<entry id="3050" level="ERROR">
 			<description>Programming error detected.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
+		</entry>
+		<entry id="3051" level="ERROR" exception="true">
+			<description>Ignoring exception.</description>
+			<param name="exceptionClass"   type="text" nullable="false" />
+			<param name="exceptionMessage" type="text" nullable="true"  />
+			<param name="description"      type="text" nullable="true"  />
 		</entry>
 	</group>
 
