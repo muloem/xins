@@ -106,6 +106,26 @@ extends Object {
     */
    long _unsuccessfulDuration;
 
+   /**
+    * The minimum time a successful call took.
+    */
+   long _successfulMin = Long.MAX_VALUE;
+
+   /**
+    * The minimum time an unsuccessful call took.
+    */
+   long _unsuccessfulMin = Long.MAX_VALUE;
+
+   /**
+    * The maximum time a successful call took.
+    */
+   long _successfulMax;
+
+   /**
+    * The maximum time an unsuccessful call took.
+    */
+   long _unsuccessfulMax;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -156,11 +176,15 @@ extends Object {
          synchronized (_successfulCallLock) {
             _successfulCalls++;
             _successfulDuration += duration;
+            _successfulMin = _successfulMin > duration ? duration : _successfulMin;
+            _successfulMax = _successfulMax < duration ? duration : _successfulMax;
          }
       } else {
          synchronized (_unsuccessfulCallLock) {
             _unsuccessfulCalls++;
             _unsuccessfulDuration += duration;
+            _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
+            _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
          }
       }
    }

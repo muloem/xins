@@ -291,31 +291,51 @@ implements DefaultReturnCodes {
          long unsuccessfulDuration  = function._unsuccessfulDuration;
 
          String successfulAverage;
+         String successfulMin;
+         String successfulMax;
          if (successfulCalls == 0) {
             successfulAverage = "NA";
+            successfulMin     = "NA";
+            successfulMax     = "NA";
          } else if (successfulDuration == 0) {
             successfulAverage = "0";
+            successfulMin     = String.valueOf(function._successfulMin);
+            successfulMax     = String.valueOf(function._successfulMax);
          } else {
             successfulAverage = String.valueOf(successfulDuration / successfulCalls);
+            successfulMin     = String.valueOf(function._successfulMin);
+            successfulMax     = String.valueOf(function._successfulMax);
          }
 
          String unsuccessfulAverage;
+         String unsuccessfulMin;
+         String unsuccessfulMax;
          if (unsuccessfulCalls == 0) {
             unsuccessfulAverage = "NA";
+            unsuccessfulMin     = "NA";
+            unsuccessfulMax     = "NA";
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage = "0";
+            unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
+            unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
          } else {
             unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
+            unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
+            unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
          }
 
          context.startTag("function");
          context.attribute("name",       function.getName());
          context.startTag("successful");
          context.attribute("count",   String.valueOf(successfulCalls));
+         context.attribute("min",     successfulMin);
+         context.attribute("max",     successfulMax);
          context.attribute("average", successfulAverage);
          context.endTag();
          context.startTag("unsuccessful");
          context.attribute("count",   String.valueOf(unsuccessfulCalls));
+         context.attribute("min",     unsuccessfulMin);
+         context.attribute("max",     unsuccessfulMax);
          context.attribute("average", unsuccessfulAverage);
          context.endTag();
          context.endTag();
