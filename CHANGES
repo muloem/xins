@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.158:
+
+* Libraries commited as binaries:
+  - Some jar files were commited in CVS as ASCII files, this is fixed.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.157:
 
 * Shell script 'xins':
