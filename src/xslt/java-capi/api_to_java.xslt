@@ -99,6 +99,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 ]]></xsl:text>
 		</xsl:if>
+
+		<xsl:text><![CDATA[
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
