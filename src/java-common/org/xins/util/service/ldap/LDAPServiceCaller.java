@@ -4,6 +4,7 @@
 package org.xins.util.service.ldap;
 
 import java.util.Hashtable;
+import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -74,7 +75,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
    /**
     * Authenticates using the specified details. If this succeeds with one of
-    * the targets, then a {@link NamingEnumeration} is returned. Otherwise, if
+    * the targets, then a {@link Result} object is returned. Otherwise, if
     * none of the targets could successfully be called, a
     * {@link CallFailedException} is thrown.
     *
@@ -102,9 +103,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public NamingEnumeration call(AuthenticationMethod method,
-                                 String               principal,
-                                 String               credentials)
+   public Result call(AuthenticationMethod method,
+                      String               principal,
+                      String               credentials)
    throws CallFailedException {
       return call(new AuthenticationDetails(method, principal, credentials),
                   null);
@@ -113,7 +114,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Performs the specified LDAP query using with no authentication details.
     * If this succeeds with one of the targets, then a
-    * {@link NamingEnumeration} is returned. Otherwise, if none of the targets
+    * {@link Result} object is returned. Otherwise, if none of the targets
     * could successfully be called, a {@link CallFailedException} is thrown.
     *
     * @param query
@@ -131,7 +132,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public NamingEnumeration call(Query query)
+   public Result call(Query query)
    throws IllegalArgumentException, CallFailedException {
       return call(null, query);
    }
@@ -139,7 +140,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Performs the specified LDAP query using the specified authentication
     * details. If this succeeds with one of the targets, then a
-    * {@link NamingEnumeration} is returned. Otherwise, if none of the targets
+    * {@link Result} object is returned. Otherwise, if none of the targets
     * could successfully be called, a {@link CallFailedException} is thrown.
     *
     * @param authenticationDetails
@@ -156,7 +157,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public NamingEnumeration call(AuthenticationDetails authenticationDetails,
+   public Result call(AuthenticationDetails authenticationDetails,
                                  Query                 query)
    throws CallFailedException {
 
@@ -167,7 +168,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       CallResult callResult = doCall(request);
 
       // Return the result
-      return (NamingEnumeration) callResult.getResult();
+      return (Result) callResult.getResult();
    }
 
    protected Object doCallImpl(ServiceDescriptor target,
@@ -182,7 +183,12 @@ public final class LDAPServiceCaller extends ServiceCaller {
       if (authenticationDetails == null) {
          authenticationDetails = FALLBACK_AUTHENTICATION_DETAILS;
       }
-      InitialDirContext context = authenticate(target,  authenticationDetails);
+      InitialDirContext context;
+      try {
+         context = authenticate(target,  authenticationDetails);
+      } catch (AuthenticationException exception) {
+         return null; // TODO: Return <<failed authentication>>
+      }
 
       // Perform a query if applicable
       try {
@@ -253,7 +259,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *    the query to execute, cannot be <code>null</code>.
     *
     * @return
-    *    the result of the query, cannot be <code>null</code>.
+    *    the results of the query, or <code>null</code> if there are no results.
     *
     * @throws IllegalArgumentException
     *    if <code>target == null || context == null || query == null</code>.
@@ -261,9 +267,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws NamingException
     *    if the search failed.
     */
-   private NamingEnumeration query(ServiceDescriptor target,
-                                   InitialDirContext context,
-                                   Query             query)
+   private Result query(ServiceDescriptor target,
+                        InitialDirContext context,
+                        Query             query)
    throws IllegalArgumentException, NamingException {
 
       // Check preconditions
@@ -285,7 +291,34 @@ public final class LDAPServiceCaller extends ServiceCaller {
          false                         // do not dereference links
       );
 
-      // Perform the search and return the result
-      return context.search(searchBase, filter, searchControls);
+      // Perform the search
+      NamingEnumeration ne = context.search(searchBase, filter, searchControls);
+      if (ne == null) {
+         return null;
+      }
+
+      // Convert the results
+      boolean succeeded = false;
+      try {
+         Result result = new Result(true, ne);
+         succeeded = true;
+         return result;
+      } finally {
+
+         // If no exception has been thrown yet, then still
+         // NamingEnumeration.close() could throw one
+         if (succeeded) {
+            ne.close();
+
+         // If an exception has been thrown, don't allow it to be hidden by an
+         // exception thrown by NamingEnumeration.close()
+         } else {
+            try {
+               ne.close();
+            } catch (Throwable exception) {
+               // TODO: Log and ignore
+            }
+         }
+      }
    }
 }
