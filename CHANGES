@@ -88,6 +88,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     1.3)
   - Added Xalan 2.6.0 (for use with Java 1.3).
 
+* Generation of CAPI classes:
+  - Renamed function_to_java.xslt to function_to_result_java.xslt.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
 

@@ -905,7 +905,7 @@
 						<style
 						basedir="{$api_specsdir}"
 						destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
-						style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
+						style="{$xins_home}/src/xslt/java-capi/function_to_result_java.xslt"
 						extension="Result.java"
 						includes="{$functionIncludes}">
 							<xmlcatalog refid="all-dtds" />
