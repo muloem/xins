@@ -17,9 +17,11 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.net.URLEncoding;
-import org.xins.common.service.CallFailedException;
+import org.xins.common.service.CallException;
+import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
+import org.xins.common.service.GenericCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
@@ -40,6 +42,8 @@ import org.xins.common.text.FastStringBuffer;
  * <br />params.set("street",      "Broadband Avenue");
  * <br />params.set("houseNumber", "12");
  * <br />{@link HTTPServiceCaller.Result HTTPServiceCaller.Result} result = caller.{@link #call(PropertyReader) call}(params);</code></blockquote>
+ *
+ * <p>TODO: Fix the example code for XINS 0.207.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -67,32 +71,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Checks the arguments passed to the constructor, and returns the
-    * descriptor.
-    *
-    * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
-    *
-    * @param method
-    *    the HTTP method, cannot be <code>null</code>.
-    *
-    * @return
-    *    the descriptor,
-    *    if <code>descriptor != null &amp;&amp; method != null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null || method == null</code>.
-    */
-   private static Descriptor checkConstructorArguments(Descriptor descriptor,
-                                                       Method     method)
-   throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("descriptor", descriptor,
-                                     "method",     method);
-      return descriptor;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -103,17 +81,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
     *
-    * @param method
-    *    the method for executing HTTP calls, for example {@link #GET} or
-    *    {@link #POST}, cannot be <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null || method == null</code>.
+    *    if <code>descriptor == null</code>.
+    *
+    * @since XINS 0.207
     */
-   public HTTPServiceCaller(Descriptor descriptor, Method method)
+   public HTTPServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
-      super(checkConstructorArguments(descriptor, method));
-      _method = method;
+      super(descriptor);
    }
 
 
@@ -121,36 +96,46 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The HTTP method to use. Cannot be <code>null</code>.
-    */
-   private final Method _method;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    /**
-    * Calls the HTTP service with the specified parameters. If the call
+    * Performs the specified request towards the HTTP service. If the call
     * succeeds with one of the targets, then a {@link Result} object is
     * returned, that combines the HTTP status code and the data returned.
     * Otherwise, if none of the targets could successfully be called, a
-    * {@link CallFailedException} is thrown.
+    * {@link CallException} is thrown.
     *
-    * @param parameters
-    *    the HTTP parameters to send down, or <code>null</code> if none should
-    *    be sent.
+    * @param request
+    *    the call request, not <code>null</code>.
     *
     * @return
     *    the result of the call, cannot be <code>null</code>.
     *
-    * @throws CallFailedException
-    *    if the call failed.
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws GenericCallException
+    *    if the (first) call attempt failed due to a generic reason.
     */
-   public Result call(PropertyReader parameters)
-   throws CallFailedException {
-      CallResult callResult = doCall(parameters);
+   public Result call(HTTPCallRequest request)
+   throws GenericCallException, HTTPCallException {
+
+      CallResult callResult;
+      try {
+         callResult = doCall(request);
+
+      // Allow GenericCallException, HTTPCallException and Error to proceed,
+      // but block other kinds of exceptions and throw an Error instead.
+      } catch (GenericCallException exception) {
+         throw exception;
+      } catch (HTTPCallException exception) {
+         throw exception;
+      } catch (Exception exception) {
+         throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
+      }
+
       return (Result) callResult.getResult();
    }
 
@@ -162,78 +147,85 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    the URL for which to create a {@link HttpMethod} object, should not
     *    be <code>null</code>.
     *
-    * @param parameters
-    *    the HTTP parameters to send down, or <code>null</code> if none should
+    * @param request
+    *    the HTTP call request, should not be <code>null</code>.
     *    be sent.
     *
     * @return
     *    the constructed {@link HttpMethod} object, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
     */
-   private HttpMethod createMethod(String url, PropertyReader parameters) {
-      if (_method == POST) {
-         PostMethod method = new PostMethod(url);
+   private HttpMethod createMethod(String url, HTTPCallRequest request) {
 
-         // Loop through them paramters
-         if (parameters != null) {
-            Iterator keys = parameters.getNames();
-            while (keys.hasNext()) {
+      Method method = request.getMethod();
+      PropertyReader parameters = request.getParameters();
 
-               // Get the parameter key
-               String key = (String) keys.next();
+      // HTTP POST request
+      if (method == POST) {
+         PostMethod postMethod = new PostMethod(url);
 
-               // Get the value
-               Object value = parameters.get(key);
+         // Loop through the parameters
+         Iterator keys = parameters.getNames();
+         while (keys.hasNext()) {
 
-               // Add this parameter key/value combination
-               if (key != null && value != null) {
+            // Get the parameter key
+            String key = (String) keys.next();
 
-                  method.addParameter(key, value.toString());
-               }
+            // Get the value
+            Object value = parameters.get(key);
+
+            // Add this parameter key/value combination
+            if (key != null && value != null) {
+               postMethod.addParameter(key, value.toString());
             }
          }
-         return method;
-      } else if (_method == GET) {
-         GetMethod method = new GetMethod(url);
+         return postMethod;
 
-         // Loop through them paramters
-         if (parameters != null) {
-            FastStringBuffer query = new FastStringBuffer(255);
-            Iterator keys = parameters.getNames();
-            while (keys.hasNext()) {
+      // HTTP GET request
+      } else if (method == GET) {
+         GetMethod getMethod = new GetMethod(url);
 
-               // Get the parameter key
-               String key = (String) keys.next();
+         // Loop through the parameters
+         FastStringBuffer query = new FastStringBuffer(255);
+         Iterator keys = parameters.getNames();
+         while (keys.hasNext()) {
 
-               // Get the value
-               Object value = parameters.get(key);
+            // Get the parameter key
+            String key = (String) keys.next();
 
-               // Add this parameter key/value combination
-               if (key != null && value != null) {
+            // Get the value
+            Object value = parameters.get(key);
 
-                  if (query.getLength() > 0) {
-                     query.append(",");
-                  }
-                  query.append(URLEncoding.encode(key));
-                  query.append("=");
-                  query.append(URLEncoding.encode(value.toString()));
+            // Add this parameter key/value combination
+            if (key != null && value != null) {
+
+               if (query.getLength() > 0) {
+                  query.append(",");
                }
-            }
-            if (query.getLength() > 0) {
-               method.setQueryString(query.toString());
+               query.append(URLEncoding.encode(key));
+               query.append("=");
+               query.append(URLEncoding.encode(value.toString()));
             }
          }
-         return method;
+         if (query.getLength() > 0) {
+            getMethod.setQueryString(query.toString());
+         }
+         return getMethod;
+
+      // Unrecognized HTTP method (only GET and POST are supported)
       } else {
-         throw new Error("Value of _method is unrecognized.");
+         throw new Error("Unrecognized method \"" + method + "\".");
       }
    }
 
    protected Object doCallImpl(TargetDescriptor target,
-                               Object           subject)
+                               CallRequest      request)
    throws Throwable {
 
-      // Convert subject to a PropertyReader
-      PropertyReader reader = (PropertyReader) subject;
+      // Narrow down request class
+      HTTPCallRequest httpRequest = (HTTPCallRequest) request;
 
       // Construct a new HTTP client object
       HttpClient client = new HttpClient();
@@ -241,8 +233,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Set the correct time-out
       client.setTimeout(target.getTotalTimeOut());
 
-      // Use the right method, depends on _method
-      HttpMethod method = createMethod(target.getURL(), reader);
+      // Create the required (HttpClient) HttpMethod object
+      HttpMethod method = createMethod(target.getURL(), httpRequest);
 
       boolean succeeded = false;
       byte[] data;
@@ -435,9 +427,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *
        * @param name
        *    the name of the method, for example <code>"GET"</code> or
-       *    <code>"POST"</code>.
+       *    <code>"POST"</code>; should not be <code>null</code>.
        */
-      public Method(String name) {
+      Method(String name) {
          _name = name;
       }
 
@@ -448,7 +440,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       /**
        * The name of this method. For example <code>"GET"</code> or
-       * <code>"POST"</code>.
+       * <code>"POST"</code>. This field should never be <code>null</code>.
        */
       private final String _name;
 
@@ -457,6 +449,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Returns a textual representation of this object. The implementation
+       * of this method returns the name of this HTTP method, like
+       * <code>"GET"</code> or <code>"POST"</code>.
+       *
+       * @return
+       *    the name of this method, e.g. <code>"GET"</code> or
+       *    <code>"POST"</code>; never <code>null</code>.
+       */
       public String toString() {
          return _name;
       }
