@@ -87,7 +87,7 @@ extends VersionedSpec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("type");
+         super(APISpec.TYPE, "type", "^[a-z]+[A-Za-z0-9]*$");
       }
 
 
