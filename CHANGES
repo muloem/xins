@@ -7,6 +7,9 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 
 * XINS/Java Client Framework:
+  - Fixed SF.net bug #1071731: UnacceptableResultXINSCallException constructor
+    threw a NullPointerException instead of the documented
+    IllegalArgumentException.
   - The AbstractCAPICallResult class adds the following methods:
     . long duration()                    -- Returns the call duration, in
                                             milliseconds.
