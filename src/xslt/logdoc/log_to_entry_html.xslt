@@ -229,4 +229,20 @@
 			<xsl:text>)</xsl:text>
 		</span>
 	</xsl:template>
+
+	<xsl:template match="translation/exception-property">
+		<span class="value-of-param">
+			<xsl:text>exception.</xsl:text>
+			<xsl:value-of select="@name" />
+		</span>
+	</xsl:template>
+
+	<xsl:template match="translation/exception-property[@format='quoted']">
+		<span class="value-of-param">
+			<xsl:text>"</xsl:text>
+			<xsl:text>exception.</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>"</xsl:text>
+		</span>
+	</xsl:template>
 </xsl:stylesheet>

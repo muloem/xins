@@ -20,6 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -156,10 +157,10 @@ extends Object {
    public Element parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
-      final String METHODNAME = "parse(byte[])";
+      final String THIS_METHOD = "parse(byte[])";
 
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, METHODNAME, null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
@@ -183,7 +184,7 @@ extends Object {
 
          // Log: Parsing failed
          String detail = exception.getMessage();
-         //Log.log_2205(exception, detail);
+         // XXX: Log.log_2205(exception, detail);
 
          // Construct a buffer for the error message
          FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
@@ -205,13 +206,14 @@ extends Object {
             try {
                bais.close();
             } catch (IOException ioException) {
-               Log.log_1052(ioException, bais.getClass().getName(), "close()");
+               Log.log_1051(ioException, CLASSNAME, THIS_METHOD, bais.getClass().getName(), "close()", null);
+               // ignore
             }
          }
       }
 
       // TRACE: Leave method
-      Log.log_1005(CLASSNAME, METHODNAME, null);
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return handler.getElement();
    }
@@ -330,7 +332,7 @@ extends Object {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
-         final String METHODNAME = "startElement(String,String,String,Attributes)";
+         final String THIS_METHOD = "startElement(java.lang.String,java.lang.String,java.lang.String,org.xml.sax.Attributes)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
@@ -343,7 +345,7 @@ extends Object {
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
          // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, METHODNAME,
+         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + currentState
                     + "; _level="       + _level
                     + "; namespaceURI=" + quotedNamespaceURI
@@ -357,9 +359,8 @@ extends Object {
          _level++;
 
          if (currentState == ERROR) {
-            String message = "_state=" + currentState + "; _level=" + _level;
-            Log.log_1050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+            String detail = "Unexpected state " + currentState + " (level=" + _level + ')';
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
 
          } else {
 
@@ -385,7 +386,7 @@ extends Object {
             _state = PARSING;
          }
 
-         Log.log_1005(HANDLER_CLASSNAME, METHODNAME,
+         Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + _state
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -409,16 +410,13 @@ extends Object {
        *
        * @throws IllegalArgumentException
        *    if <code>localName == null</code>.
-       *
-       * @throws SAXException
-       *    if the parsing failed.
        */
       public void endElement(String namespaceURI,
                              String localName,
                              String qName)
-      throws IllegalArgumentException, SAXException {
+      throws IllegalArgumentException {
 
-         final String METHODNAME = "endElement(String,String,String)";
+         final String THIS_METHOD = "endElement(java.lang.String,java.lang.String,java.lang.String)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
@@ -431,7 +429,7 @@ extends Object {
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
          // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, METHODNAME,
+         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + currentState
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -442,9 +440,8 @@ extends Object {
          MandatoryArgumentChecker.check("localName", localName);
 
          if (currentState == ERROR) {
-            String message = "_state=" + currentState + "; _level=" + _level;
-            Log.log_1050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+            String detail = "Unexpected state " + currentState + " (level=" + _level + ')';
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
 
          // Within data section
          } else {
@@ -475,7 +472,7 @@ extends Object {
          _characters.clear();
 
          // TRACE: Leave method
-         Log.log_1005(HANDLER_CLASSNAME, METHODNAME,
+         Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + _state
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -505,14 +502,14 @@ extends Object {
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException, SAXException {
 
-         final String METHODNAME = "characters(char[],int,int)";
+         final String THIS_METHOD = "characters(char[],int,int)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
 
          // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, METHODNAME, null);
+         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD, null);
 
          if (_characters != null) {
             _characters.append(ch, start, length);
@@ -523,34 +520,20 @@ extends Object {
       }
 
       /**
-       * Checks if the state is <code>FINISHED</code> and if not throws an
-       * <code>IllegalStateException</code>.
-       *
-       * @throws IllegalStateException
-       *    if the current state is not {@link #FINISHED}.
-       */
-      private void assertFinished()
-      throws IllegalStateException {
-         if (_state != FINISHED) {
-            String detail = "State is " + _state + " instead of " + FINISHED + ". Programming error suspected.";
-            Log.log_1050(HANDLER_CLASSNAME, "getElement()", detail);
-            throw new IllegalStateException(detail);
-         }
-      }
-
-      /**
        * Gets the parsed element.
        *
        * @return
        *    the element resulting of the parsing of the XML.
-       *
-       * @throws IllegalStateException
-       *    if the current state is invalid.
        */
       public Element getElement() throws IllegalStateException {
 
+         final String THIS_METHOD = "getElement()";
+
          // Check state
-         assertFinished();
+         if (_state != FINISHED) {
+            String detail = "State is " + _state + " instead of " + FINISHED;
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
+         }
 
          return _element;
       }

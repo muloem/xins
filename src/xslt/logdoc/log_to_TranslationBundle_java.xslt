@@ -114,6 +114,21 @@
 
 	<xsl:template match="group/entry">
 		<xsl:variable name="description" select="description/text()" />
+		<xsl:variable name="exception">
+			<xsl:choose>
+				<xsl:when test="@exception = 'true'">true</xsl:when>
+				<xsl:when test="@exception = 'false'">false</xsl:when>
+				<xsl:when test="string-length(@exception) = 0">false</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute "exception" is set to "</xsl:text>
+						<xsl:value-of select="@exception" />
+						<xsl:text>" instead of either "true" or "false".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:text>
 
    /**
@@ -131,7 +146,12 @@
 		<!-- TODO: Generate @param tags for parameters -->
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<xsl:apply-templates select="param" mode="method-argument" />
+		<xsl:if test="$exception = 'true'">
+			<xsl:text>java.lang.Throwable __exception__</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates select="param" mode="method-argument">
+			<xsl:with-param name="exception" select="$exception" />
+		</xsl:apply-templates>
 		<xsl:text>) {
       return "</xsl:text>
 		<xsl:call-template name="xml_to_java_string">

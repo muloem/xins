@@ -17,7 +17,7 @@ import java.util.Set;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
 
@@ -148,8 +148,6 @@ public class Element implements Cloneable {
     * @return
     *    the namespace URI for this element, or <code>null</code> if there is
     *    none, but never an empty string.
-    *
-    * @since XINS 1.1.0
     */
    public String getNamespaceURI() {
       return _namespaceURI;
@@ -160,8 +158,6 @@ public class Element implements Cloneable {
     *
     * @return
     *    the local name of this element, cannot be <code>null</code>.
-    *
-    * @since XINS 1.1.0
     */
    public String getLocalName() {
       return _localName;
@@ -183,13 +179,11 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @since XINS 1.1.0
     */
    void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
-      final String METHODNAME = "setAttribute(String,String,String)";
+      final String THIS_METHOD = "setAttribute(java.lang.String,java.lang.String,java.lang.String)";
 
       // Construct a QualifiedName object. This will check the preconditions.
       QualifiedName qn = new QualifiedName(namespaceURI, localName);
@@ -219,8 +213,8 @@ public class Element implements Cloneable {
            + "; value="             + TextUtils.quote(value)
            + "; getAttribute(...)=" + TextUtils.quote(getValue)
            + '.';
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new ProgrammingError(message);
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, message);
+         // TODO: Something like the following but with logging: throw ProgrammingError.forPostCondition(CLASSNAME, THIS_METHOD, message) -- message would be without "Postcondition failed"
       }
    }
 
@@ -232,8 +226,6 @@ public class Element implements Cloneable {
     *    on all the attributes; each key in the <code>Map</code> is a
     *    {@link QualifiedName} instance (not <code>null</code>) and each value
     *    in it is a <code>String</code> instance (not <code>null</code>).
-    *
-    * @since XINS 1.1.0
     */
    public Map getAttributeMap() {
       if (_attributes == null) {
@@ -259,8 +251,6 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>qn == null</code>.
-    *
-    * @since XINS 1.1.0
     */
    public String getAttribute(QualifiedName qn)
    throws IllegalArgumentException {
@@ -295,8 +285,6 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @since XINS 1.1.0
     */
    public String getAttribute(String namespaceURI, String localName)
    throws IllegalArgumentException {
@@ -317,8 +305,6 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @since XINS 1.1.0
     */
    public String getAttribute(String localName)
    throws IllegalArgumentException {
@@ -342,7 +328,8 @@ public class Element implements Cloneable {
       MandatoryArgumentChecker.check("child", child);
       if (child == this) {
          String message = "child == this";
-         Log.log_1050(CLASSNAME, METHODNAME, message);
+         Log.log_1050(CLASSNAME, METHODNAME, Utils.getCallingClass(), Utils.getCallingMethod(), message);
+         // TODO: Log.log_1050 for every IllegalArgumentException
          throw new IllegalArgumentException(message);
       }
 

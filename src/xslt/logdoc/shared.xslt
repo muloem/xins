@@ -12,17 +12,24 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:template match="param" mode="method-argument">
+		<xsl:param name="exception">false</xsl:param>
+
 		<xsl:variable name="nullable">
 			<xsl:choose>
 				<xsl:when test="@nullable = 'true'">true</xsl:when>
 				<xsl:when test="@nullable = 'false'">false</xsl:when>
 				<xsl:when test="string-length(@nullable) &lt; 1">true</xsl:when>
+				<!-- TODO: Otherwise fail -->
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:if test="@name = 'exception'">
-			<xsl:message terminate="yes">Parameter cannot be called 'exception'.</xsl:message>
+		<xsl:if test="starts-with(@name, '_')">
+			<xsl:message terminate="yes">
+				<xsl:text>Parameter name "</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>" starts with underscore.</xsl:text>
+			</xsl:message>
 		</xsl:if>
-		<xsl:if test="position() &gt; 1">
+		<xsl:if test="($exception = 'true') or (position() &gt; 1)">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 		<xsl:choose>

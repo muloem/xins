@@ -8,6 +8,7 @@ package org.xins.common.xml;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 /**
  * Builder for <code>Element</code> instances.
@@ -130,18 +131,9 @@ public class ElementBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public void setAttribute(String localName, String value)
    throws IllegalArgumentException {
-      if (_state == INITIAL) {
-         final String METHODNAME = "setAttribute(String,String)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
-      }
       setAttribute(null, localName, value);
    }
 
@@ -161,18 +153,18 @@ public class ElementBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException, IllegalStateException {
+
+      final String THIS_METHOD = "setAttribute(java.lang.String,java.lang.String,java.lang.String)";
+
+      // Check state
       if (_state == INITIAL) {
-         final String METHODNAME = "setAttribute(String,String,String)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, "Unexpected state " + _state);
       }
+
+      // Really set the attribute
       _element.setAttribute(namespaceURI, localName, value);
    }
 
@@ -184,18 +176,18 @@ public class ElementBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>child == null || child == <em>this</em></code>.
-    *
-    * @throws IllegalStateException
-    *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public void addChild(Element child) 
    throws IllegalArgumentException, IllegalStateException {
+
+      final String THIS_METHOD = "addChild(" + Element.class.getName() + ')';
+
+      // Check state
       if (_state == INITIAL) {
-         final String METHODNAME = "addChild(Element)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, "Unexpected state " + _state);
       }
+
+      // Really add the child element
       _element.addChild(child);
    }
 
@@ -205,17 +197,17 @@ public class ElementBuilder extends Object {
     *
     * @param text
     *    the character content for this element, or <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public void setText(String text) throws IllegalStateException {
+
+      final String THIS_METHOD = "setText(java.lang.String)";
+
+      // Check state
       if (_state == INITIAL) {
-         final String METHODNAME = "setText(String)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, "Unexpected state " + _state);
       }
+
+      // Really set the character content
       _element.setText(text);
    }
 
@@ -227,17 +219,8 @@ public class ElementBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public void startElement(String localName) {
-      if (_state != INITIAL) {
-         final String METHODNAME = "startElement(String)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
-      }
       startElement(null, localName);
    }
 
@@ -259,12 +242,15 @@ public class ElementBuilder extends Object {
     */
    public void startElement(String namespaceURI, String localName)
    throws IllegalArgumentException {
+
+      final String THIS_METHOD = "startElement(java.lang.String,java.lang.String)";
+
+      // Check state
       if (_state != INITIAL) {
-         final String METHODNAME = "startElement(String, String)";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, "Unexpected state " + _state);
       }
+
+      // Really start the element
       _element = new Element(namespaceURI, localName);
       _state = STARTED;
    }
@@ -279,12 +265,14 @@ public class ElementBuilder extends Object {
     *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
    public Element createElement() {
+
+      final String THIS_METHOD = "createElement()";
+
+      // Check state
       if (_state != STARTED) {
-         final String METHODNAME = "createElement()";
-         String message = "_state=" + _state;
-         Log.log_1050(CLASSNAME, METHODNAME, message);
-         throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, "Unexpected state " + _state);
       }
+
       return _element;
    }
 
@@ -292,6 +280,7 @@ public class ElementBuilder extends Object {
     * State of the builder.
     *
     * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
    private static final class State extends Object {
 

@@ -159,6 +159,12 @@ import org.xins.logdoc.UnsupportedLocaleException;
       // Constructors
       //----------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>Controller</code> for this log.
+       *
+       * @throws UnsupportedLocaleException
+       *    if the current locale is unsupported.
+       */
       public Controller() throws UnsupportedLocaleException {
          super();
       }
@@ -211,6 +217,13 @@ import org.xins.logdoc.UnsupportedLocaleException;
 				<xsl:when test="@exception = 'true'">true</xsl:when>
 				<xsl:when test="@exception = 'false'">false</xsl:when>
 				<xsl:when test="string-length(@exception) = 0">false</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute "exception" is set to "</xsl:text>
+						<xsl:value-of select="@exception" />
+						<xsl:text>" instead of either "true" or "false".</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
@@ -231,7 +244,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<xsl:if test="$exception = 'true'">
-			<xsl:text>Throwable exception</xsl:text>
+			<xsl:text>java.lang.Throwable __exception__</xsl:text>
 			<xsl:if test="count(param) &gt; 0">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
@@ -257,8 +270,11 @@ import org.xins.logdoc.UnsupportedLocaleException;
          String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
+		<xsl:if test="$exception = 'true'">
+			<xsl:text>__exception__</xsl:text>
+		</xsl:if>
 		<xsl:for-each select="param">
-			<xsl:if test="position() &gt; 1">
+			<xsl:if test="($exception = 'true') or (position() &gt; 1)">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
 			<xsl:value-of select="@name" />
@@ -271,7 +287,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
-				<xsl:text>org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));</xsl:text>
+				<xsl:text>org.xins.logdoc.LogdocExceptionUtils.getRootCause(__exception__));</xsl:text>
 			</xsl:when>
 			<xsl:when test="$exception = 'true'">
 				<xsl:text>null);
@@ -280,7 +296,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 				<xsl:text>.isEnabledFor(DEBUG)) {
             LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />
-				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));
+				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(__exception__));
          }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

@@ -24,8 +24,8 @@ import org.apache.log4j.NDC;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
 import org.xins.common.TimeOutException;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
@@ -150,6 +150,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Fully-qualified name of this class.
     */
    private static final String CLASSNAME = HTTPServiceCaller.class.getName();
+
+   /**
+    * Fully-qualified name of the inner class <code>CallExecutor</code>.
+    */
+   private static final String EXECUTOR_CLASSNAME = HTTPServiceCaller.CallExecutor.class.getName();
 
 
    //-------------------------------------------------------------------------
@@ -284,9 +289,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
-         String message = "Unrecognized HTTP method \"" + method + "\".";
-         Log.log_1050(CLASSNAME, THIS_METHOD, message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
+         final String DETAIL         = "Unrecognized HTTP method \"" + method + "\".";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
    }
 
@@ -490,17 +496,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (HTTPCallException exception) {
          throw exception;
       } catch (Exception exception) {
-         final String METHOD = "doCall(CallRequest,CallConfig)";
-         FastStringBuffer message = new FastStringBuffer(190, CLASSNAME);
-         message.append('.');
-         message.append(METHOD);
-         message.append(" threw ");
-         message.append(exception.getClass().getName());
-         message.append(". Message: ");
-         message.append(TextUtils.quote(exception.getMessage()));
-         message.append('.');
-         Log.log_1052(exception, CLASSNAME, METHOD);
-         throw new ProgrammingError(message.toString(), exception);
+         final String SUBJECT_CLASS  = ServiceCaller.class.getName(); // XXX: superclass
+         final String SUBJECT_METHOD = "doCall(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ')';
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, null, exception);
       }
 
       // TRACE: Leave method
@@ -583,8 +581,16 @@ public final class HTTPServiceCaller extends ServiceCaller {
           GenericCallException,
           HTTPCallException {
 
+      final String THIS_METHOD = "call("
+                               + HTTPCallRequest.class.getName()
+                               + ','
+                               + HTTPCallConfig.class.getName()
+                               + ','
+                               + TargetDescriptor.class.getName()
+                               + ')';
+
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
+      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Get the parameters for logging
       PropertyReader     p      = request.getParameters();
@@ -631,16 +637,19 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Unknown host
          if (exception instanceof UnknownHostException) {
             Log.log_1102(url, params, duration);
+            // TODO: executor.dispose();
             throw new UnknownHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
             Log.log_1103(url, params, duration);
+            // TODO: executor.dispose();
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
             Log.log_1104(url, params, duration, connectionTimeOut);
+            // TODO: executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -654,22 +663,29 @@ public final class HTTPServiceCaller extends ServiceCaller {
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_1105(url, params, duration, socketTimeOut);
+               // TODO: executor.dispose();
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
             } else {
                Log.log_1109(exception, url, params, duration);
+               // TODO: executor.dispose();
                throw new IOCallException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
             Log.log_1109(exception, url, params, duration);
+            // TODO: executor.dispose();
             throw new IOCallException(request, target, duration, (IOException) exception);
 
          // Unrecognized kind of exception caught
          } else {
-            Log.log_1052(exception, executor.getThrowingClass(), executor.getThrowingMethod());
+            final String SUBJECT_CLASS  = executor.getThrowingClass();
+            final String SUBJECT_METHOD = executor.getThrowingMethod();
+            final String DETAIL         = null;
+            Log.log_1052(exception, CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+            // TODO: executor.dispose();
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -693,12 +709,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // TODO: Pass down body as well. Perhaps just pass down complete
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
+
+         // TODO: executor.dispose();
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
 
       // TRACE: Leave method
-      Log.log_1005(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
+      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
+      // TODO: executor.dispose();
       return new HTTPCallResult(request, target, duration, null, data);
    }
 
@@ -859,8 +878,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
     */
    private static final class CallExecutor extends Thread {
 
@@ -872,6 +889,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * The number of constructed call executors.
        */
       private static int CALL_EXECUTOR_COUNT;
+
 
       //----------------------------------------------------------------------
       // Constructors
@@ -996,6 +1014,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       public void run() {
 
+         final String THIS_METHOD = "run()";
+
          // XXX: Note that performance could be improved by using local
          //      variables for _target and _request
 
@@ -1050,7 +1070,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
             try {
                method.releaseConnection();
             } catch (Throwable exception) {
-               Log.log_1052(exception, method.getClass().getName(), "releaseConnection()");
+               final String SUBJECT_CLASS  = method.getClass().getName();
+               final String SUBJECT_METHOD = "releaseConnection()";
+               final String DETAIL         = null;
+               Log.log_1052(exception, EXECUTOR_CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
             }
          }
          

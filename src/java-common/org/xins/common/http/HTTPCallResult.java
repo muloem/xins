@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallResult;
@@ -137,13 +137,18 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
     *    the result data as a text string, not <code>null</code>.
     */
    public String getString() {
+
+      final String THIS_METHOD = "getString()";
+
       final String ENCODING = "US-ASCII";
+
       try {
          return getString(ENCODING);
       } catch (UnsupportedEncodingException exception) {
-         String message = "Default encoding \"" + ENCODING + "\" is unsupported.";
-         Log.log_1050(CLASSNAME, "getString()", message);
-         throw new ProgrammingError(message, exception);
+         final String DETAIL         = "Default encoding \"" + ENCODING + "\" is unsupported.";
+         final String SUBJECT_CLASS  = CLASSNAME;
+         final String SUBJECT_METHOD = "getString(java.lang.String)";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL, exception);
       }
    }
 

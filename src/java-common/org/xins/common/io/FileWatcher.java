@@ -26,6 +26,12 @@ public final class FileWatcher extends Thread {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = FileWatcher.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -236,6 +242,8 @@ public final class FileWatcher extends Thread {
     */
    private void check() {
 
+      final String THIS_METHOD = "check()";
+
       // Variable to store the file modification timestamp in. The value -1
       // indicates the file does not exist.
       long lastModified;
@@ -254,7 +262,9 @@ public final class FileWatcher extends Thread {
          try {
             _listener.securityException(securityException);
          } catch (Throwable t) {
-            Log.log_1052(t, _listenerClass, "securityException(SecurityException)");
+            final String SUBJECT_METHOD = "securityException(java.lang.SecurityException)";
+            final String DETAIL         = null;
+            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
             // ignore
          }
 
@@ -272,7 +282,9 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileNotFound();
          } catch (Throwable t) {
-            Log.log_1052(t, _listenerClass, "fileNotFound()");
+            final String SUBJECT_METHOD = "fileNotFound()";
+            final String DETAIL         = null;
+            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
             // ignore
          }
 
@@ -286,7 +298,9 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileFound();
          } catch (Throwable t) {
-            Log.log_1052(t, _listenerClass, "fileFound()");
+            final String SUBJECT_METHOD = "fileFound()";
+            final String DETAIL         = null;
+            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
             // ignore
          }
 
@@ -300,7 +314,9 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileModified();
          } catch (Throwable t) {
-            Log.log_1052(t, _listenerClass, "fileModified()");
+            final String SUBJECT_METHOD = "fileModified()";
+            final String DETAIL         = null;
+            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
             // ignore
          }
 
@@ -311,7 +327,9 @@ public final class FileWatcher extends Thread {
          try {
             _listener.fileNotModified();
          } catch (Throwable t) {
-            Log.log_1052(t, _listenerClass, "fileNotModified()");
+            final String SUBJECT_METHOD = "fileNotModified()";
+            final String DETAIL         = null;
+            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
             // ignore
          }
       }

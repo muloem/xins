@@ -24,6 +24,7 @@
 	<!-- Set output method -->
 	<xsl:output method="text" />
 
+	<!-- Match the root element 'translation-bundle' -->
 	<xsl:template match="translation-bundle">
 		<xsl:variable name="classname">
 			<xsl:text>TranslationBundle_</xsl:text>
@@ -104,13 +105,19 @@ import org.xins.logdoc.LogdocStringBuffer;
 
 		<xsl:for-each select="translation">
 			<xsl:variable name="entry" select="@entry" />
+			<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception" />
 
 			<xsl:text>
 
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
 			<xsl:text>(</xsl:text>
-			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument" />
+			<xsl:if test="$exception = 'true'">
+				<xsl:text>java.lang.Throwable __exception__</xsl:text>
+			</xsl:if>
+			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
+				<xsl:with-param name="exception" select="$exception" />
+			</xsl:apply-templates>
 			<xsl:text>) {
       LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
 			<xsl:apply-templates />
@@ -125,6 +132,54 @@ import org.xins.logdoc.LogdocStringBuffer;
 </xsl:text>
 	</xsl:template>
 
+	<!-- Match <exception-property/> elements -->
+	<xsl:template match="translation/exception-property">
+		<xsl:variable name="entry" select="../@entry" />
+		<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception" />
+
+		<xsl:if test="not ($exception = 'true')">
+			<xsl:message terminate="yes">
+				<xsl:text>Translation for entry </xsl:text>
+				<xsl:value-of select="$entry" />
+				<xsl:text> contains an &lt;exception-property/&gt; element although the log entry does not declare an exception.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<xsl:choose>
+			<xsl:when test="@name = 'class'">
+				<xsl:text>
+         buffer.append(__exception__.getClass().getName());</xsl:text>
+			</xsl:when>
+			<xsl:when test="@name = 'message'">
+				<xsl:text>
+         if (__exception__.getMessage() == null) {
+            buffer.append("(null)");
+         } else {</xsl:text>
+				<xsl:choose>
+					<xsl:when test="@format = 'quoted'">
+						<xsl:text>
+            buffer.append('"');
+            buffer.append(__exception__.getMessage());
+            buffer.append('"');
+         }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+            buffer.append(__exception__.getMessage());</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>Invalid &lt;exception-property/&gt; element. There is no exception property named "</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>".</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- Match <value-of-param/> elements -->
 	<xsl:template match="translation/value-of-param">
 		<xsl:variable name="entry" select="../@entry" />
 		<xsl:variable name="param-name" select="@name" />
@@ -187,6 +242,7 @@ import org.xins.logdoc.LogdocStringBuffer;
 		</xsl:if>
 	</xsl:template>
 
+	<!-- Match character data -->
 	<xsl:template match="translation/text()">
 		<xsl:choose>
 			<xsl:when test="string-length(.) &lt; 1"></xsl:when>

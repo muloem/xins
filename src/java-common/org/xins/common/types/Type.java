@@ -8,7 +8,7 @@ package org.xins.common.types;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 /**
  * Type for a function parameter.
@@ -197,28 +197,27 @@ public abstract class Type extends Object {
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.
-    *
-    * @throws Error
-    *    if <code>fromStringImpl(string) == null
-    *          || !getValueClass().isInstance(fromString(string))</code>.
     */
    public final Object fromString(String string)
-   throws TypeValueException, Error {
+   throws TypeValueException {
 
       if (string == null) {
          return null;
       }
 
-      if (!isValidValueImpl(string)) {
+      // TODO: Catch exceptions thrown by isValidValueImpl(String)
+      if (! isValidValueImpl(string)) {
          throw new TypeValueException(this, string);
       }
 
       Object value = fromStringImpl(string);
 
       if (_valueClass.isInstance(value) == false) {
-         String message = "The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.';
-         Log.log_1050(CLASSNAME, "fromString(String)", message);
-         throw new ProgrammingError(message);
+         final String THIS_METHOD    = "fromString(java.lang.String)";
+         final String SUBJECT_CLASS  = getClass().getName();
+         final String SUBJECT_METHOD = "isValidValueImpl(java.lang.String)";
+         final String DETAIL         = "The value returned is an instance of class " + value.getClass().getName() + " instead of an instance of " + _valueClass.getName() + '.';
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
       return value;

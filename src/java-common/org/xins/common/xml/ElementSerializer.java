@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.io.FastStringWriter;
 
@@ -101,7 +101,7 @@ public final class ElementSerializer extends Object {
     *    the element to serialize, cannot be <code>null</code>.
     *
     * @return
-    *    an XML document that is represents <code>element</code>, never
+    *    an XML document that represents <code>element</code>, never
     *    <code>null</code>.
     *
     * @throws IllegalArgumentException
@@ -110,6 +110,8 @@ public final class ElementSerializer extends Object {
    public String serialize(Element element)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "serialize(" + Element.class.getName() + ')';
+
       // TODO: TRACE logging
 
       synchronized (_lock) {
@@ -117,9 +119,8 @@ public final class ElementSerializer extends Object {
          // Make sure this serializer is not yet in use
          if (_inUse) {
             // TODO: Use _instanceNumber in message
-            String message = "ElementSerializer instance already in use.";
-            Log.log_1050(CLASSNAME, "serialize(Element)", message);
-            throw new ProgrammingError(message);
+            String detail = "ElementSerializer instance already in use.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), detail);
          }
 
          // Lock this serializer
@@ -136,8 +137,8 @@ public final class ElementSerializer extends Object {
       try {
          out = new XMLOutputter(fsw, ENCODING);
       } catch (UnsupportedEncodingException uee) {
-         Log.log_1052(uee, XMLOutputter.class.getName(), "<init>(Writer,String)");
-         throw new ProgrammingError("Expected XMLOutputter to support encoding \"" + ENCODING + "\".", uee);
+         String message = "Expected XMLOutputter to support encoding \"" + ENCODING + "\".";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, XMLOutputter.class.getName(), "<init>(java.io.Writer,java.lang.String)", message, uee);
       }
 
       // XXX: Allow output of declaration to be configured?
@@ -148,8 +149,8 @@ public final class ElementSerializer extends Object {
 
       // I/O errors should not happen on a FastStringWriter
       } catch (IOException exception) {
-         Log.log_1052(exception, CLASSNAME, "output(XMLOutputter,Element)");
-         throw new ProgrammingError(CLASSNAME + ".output(XMLOutputter,Element) threw unexpected " + exception.getClass().getName() + '.', exception);
+         String throwingMethod = "output(" + out.getClass().getName() + ',' + element.getClass().getName() + ')';
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, throwingMethod, null, exception);
 
       // Always close the FastStringWriter
       } finally {

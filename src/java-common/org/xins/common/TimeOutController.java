@@ -20,6 +20,12 @@ public final class TimeOutController extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = TimeOutController.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -64,6 +70,8 @@ public final class TimeOutController extends Object {
           SecurityException,
           TimeOutException {
 
+      final String THIS_METHOD = "execute(java.lang.Runnable,int)";
+
       // Check preconditions
       MandatoryArgumentChecker.check("task", task);
       if (timeOut <= 0) {
@@ -92,7 +100,7 @@ public final class TimeOutController extends Object {
       try {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
-         Log.log_1052(exception, thread.getClass().getName(), "join(int)");
+         Log.log_1051(exception, CLASSNAME, THIS_METHOD, thread.getClass().getName(), "join(long)", null);
          // ignore
       }
 

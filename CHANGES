@@ -11,12 +11,16 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
     include the reason.
   - Fixed bug #1088500: the logdoc element set in impl.xml has now an
     accesslevel attribute.
+  - Added support for exception-property elements in translation definition
+    documents. Had to add a new version of the DTD for this.
 
 * XINS/Java Common:
   - The diagnotic context identifier is removed after being poped
     otherwise the thread stays in memory.
   - Reset some variables after the HTTP call, so that the variables can be
     garbage collected.
+  - Improved log entries 1050, 1051 and 1052.
+  - Added Utils class.
 
 * XINS/Java Client Framework:
   - Sending down _convention=_xins-std with each call.

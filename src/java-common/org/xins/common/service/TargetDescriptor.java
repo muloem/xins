@@ -18,7 +18,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
@@ -101,14 +101,22 @@ public final class TargetDescriptor extends Descriptor {
     * to a {@link Pattern} and then stores that in {@link #PATTERN}.
     */
    static {
+      final String THIS_METHOD = "<clinit>()";
       try {
          PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, 
                                             Perl5Compiler.READ_ONLY_MASK | 
                                             Perl5Compiler.CASE_INSENSITIVE_MASK);
-      } catch (MalformedPatternException mpe) {
-         String message = "The pattern \"" + PATTERN_STRING + "\" is malformed.";
-         Log.log_1050(CLASSNAME, "<clinit>()", message);
-         throw new ProgrammingError(message, mpe);
+      } catch (MalformedPatternException exception) {
+         String message = "The pattern \""
+                        + PATTERN_STRING
+                        + "\" is considered malformed.";
+
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         PATTERN_COMPILER.getClass().getName(),
+                                         "compile(java.lang.String,int)",
+                                         message,
+                                         exception);
       }
    }
 
@@ -127,6 +135,8 @@ public final class TargetDescriptor extends Descriptor {
    private static int computeCRC32(String s)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "computeCRC32(java.lang.String)";
+
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
 
@@ -138,8 +148,10 @@ public final class TargetDescriptor extends Descriptor {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
          String message = "Encoding \"" + ENCODING + "\" is not supported by String.getBytes(String).";
-         Log.log_1050(CLASSNAME, "computeCRC32(String)", message);
-         throw new ProgrammingError(message, exception);
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                         "java.lang.String",
+                                         "getBytes(java.lang.String)",
+                                         message, exception);
       }
       checksum.update(bytes, 0, bytes.length);
       return (int) (checksum.getValue() & 0x00000000ffffffffL);

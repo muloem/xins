@@ -16,7 +16,7 @@ import java.util.Random;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
+import org.xins.common.Utils;
 
 /**
  * Descriptor for a group of services. Each <code>GroupDescriptor</code> has
@@ -261,14 +261,18 @@ public final class GroupDescriptor extends Descriptor {
     *    descriptor, in the correct order, never <code>null</code>.
     */
    public Iterator iterateTargets() {
+
+      final String THIS_METHOD = "iterateTargets()";
+
       if (_type == RANDOM_TYPE) {
          return new RandomIterator();
       } else if (_type == ORDERED_TYPE) {
          return new OrderedIterator();
       } else {
-         String message = "Unexpected condition: Unknown type: " + _type + '.';
-         Log.log_1050(CLASSNAME, "iterateTargets()", message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = CLASSNAME;
+         final String SUBJECT_METHOD = THIS_METHOD;
+         final String DETAIL         = "Unknown type: " + _type + '.';
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
    }
 

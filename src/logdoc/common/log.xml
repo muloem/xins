@@ -49,21 +49,28 @@
 
 	<group id="lowlevel" name="Low-level generic issues">
 		<entry id="1050" level="ERROR">
-			<description>Programming error detected.</description>
-			<param name="className"  type="text" nullable="false" />
-			<param name="methodName" type="text" nullable="false" />
-			<param name="detail"     type="text" nullable="true" />
+			<description>Programming error (not due to an unexpected exception).</description>
+			<param name="detectingClass"  type="text" nullable="false" />
+			<param name="detectingMethod" type="text" nullable="false" />
+			<param name="subjectClass"    type="text" nullable="false" />
+			<param name="subjectMethod"   type="text" nullable="false" />
+			<param name="detail"          type="text" nullable="true"  />
 		</entry>
 		<entry id="1051" level="ERROR" exception="true">
-			<description>Ignoring exception.</description>
-			<param name="exceptionClass"   type="text" nullable="false" />
-			<param name="exceptionMessage" type="text" nullable="true"  />
-			<param name="description"      type="text" nullable="true"  />
+			<description>Ignoring allowable exception.</description>
+			<param name="detectingClass"  type="text" nullable="false" />
+			<param name="detectingMethod" type="text" nullable="false" />
+			<param name="subjectClass"    type="text" nullable="false" />
+			<param name="subjectMethod"   type="text" nullable="false" />
+			<param name="detail"          type="text" nullable="true"  />
 		</entry>
 		<entry id="1052" level="ERROR" exception="true">
-			<description>Caught unexpected exception.</description>
-			<param name="throwingClass"  type="text" nullable="false" />
-			<param name="throwingMethod" type="text" nullable="false" />
+			<description>Programming error (unexpected exception).</description>
+			<param name="detectingClass"  type="text" nullable="false" />
+			<param name="detectingMethod" type="text" nullable="false" />
+			<param name="subjectClass"    type="text" nullable="false" />
+			<param name="subjectMethod"   type="text" nullable="false" />
+			<param name="detail"          type="text" nullable="true"  />
 		</entry>
 	</group>
 

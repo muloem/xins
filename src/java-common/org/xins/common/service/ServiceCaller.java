@@ -10,9 +10,9 @@ import java.util.Iterator;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingError;
 import org.xins.common.TimeOutController;
 import org.xins.common.TimeOutException;
+import org.xins.common.Utils;
 
 /**
  * Abstraction of a service caller for a TCP-based service. Service caller
@@ -156,6 +156,8 @@ public abstract class ServiceCaller extends Object {
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD    = "<init>(" + Descriptor.class.getName() + ')';
+
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
@@ -168,55 +170,51 @@ public abstract class ServiceCaller extends Object {
       _callConfig = null;
       _className  = getClass().getName();
 
-      // Make sure the old-style doCallImpl method is implemented
+      // Make sure the old-style (XINS 1.0) doCallImpl method is implemented
       try {
          doCallImpl((CallRequest) null, (TargetDescriptor) null);
          throw new Error();
       } catch (Throwable t) {
          if (t instanceof MethodNotImplementedError) {
-            final String METHOD = "doCallImpl(CallRequest,TargetDescriptor)";
-            String message = "Method " + METHOD + " is not implemented although this class (" + _className + ") uses the old-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should be implemented since class uses old-style (XINS 1.0) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the old-style shouldFailOver method is implemented
+      // Make sure the old-style (XINS 1.0) shouldFailOver method is implemented
       try {
          shouldFailOver((CallRequest) null, (Throwable) null);
          throw new Error();
       } catch (Throwable t) {
-         final String METHOD = "shouldFailOver(CallRequest,Throwable)";
          if (t instanceof MethodNotImplementedError) {
-            String message = "Method " + METHOD + " is not implemented although this class (" + _className + ") uses the old-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "shouldFailOver(" + CallRequest.class.getName() + "java.lang.Throwable)";
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should be implemented since class uses old-style (XINS 1.0) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the new-style doCallImpl method is not implemented
+      // Make sure the new-style (XINS 1.1) doCallImpl method is not implemented
       try {
          doCallImpl((CallRequest) null, (CallConfig) null, (TargetDescriptor) null);
          throw new Error();
       } catch (Throwable t) {
          if (! (t instanceof MethodNotImplementedError)) {
-            final String METHOD = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
-            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the old-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should not be implemented since class uses old-style (XINS 1.0) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the new-style shouldFailOver method is not implemented
+      // Make sure the new-style (XINS 1.1) shouldFailOver method is not implemented
       try {
          shouldFailOver((CallRequest) null, (CallConfig) null, (CallExceptionList) null);
          throw new Error();
       } catch (Throwable t) {
-         final String METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
          if (! (t instanceof MethodNotImplementedError)) {
-            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the old-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "shouldFailOver(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + CallExceptionList.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should not be implemented since class uses old-style (XINS 1.0) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
@@ -243,6 +241,8 @@ public abstract class ServiceCaller extends Object {
    protected ServiceCaller(Descriptor descriptor, CallConfig callConfig)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "<init>(" + Descriptor.class.getName() + ',' + CallConfig.class.getName() + ')';
+
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
@@ -259,81 +259,78 @@ public abstract class ServiceCaller extends Object {
 
          String actualClass = getClass().getName();
 
+         String SUBJECT_METHOD = "getDefaultCallConfig()";
+
          // Call getDefaultCallConfig() to get the default config...
          try {
             callConfig = getDefaultCallConfig();
 
          // ...the method must be implemented...
          } catch (MethodNotImplementedError e) {
-            Log.log_1050(getClass().getName(), "getDefaultCallConfig()", "The method is not implemented although it should be.");
-            throw new ProgrammingError(getClass().getName() + ".getDefaultCallConfig() is not implemented although it should be, according to the ServiceCaller class contract.");
+            final String DETAIL = "Method " + SUBJECT_METHOD + " should be implemented since class uses new-style (XINS 1.1) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
 
          // ...it should not throw any exception...
          } catch (Throwable t) {
-            Log.log_1052(t, actualClass, "getDefaultCallConfig()");
-            throw new ProgrammingError(actualClass + ".getDefaultCallConfig() has thrown an unexpected " + t.getClass().getName() + '.', t);
+            final String DETAIL = null;
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL, t);
          }
 
          // ...and it should never return null.
          if (callConfig == null) {
-            String detail = "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
-            Log.log_1050(actualClass, "getDefaultCallConfig()", detail);
-            throw new ProgrammingError(detail);
+            final String DETAIL = "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
       // Set call configuration
       _callConfig = callConfig;
 
-      // Make sure the old-style doCallImpl method is not implemented
+      // Make sure the old-style (XINS 1.0) doCallImpl method is not implemented
       try {
          doCallImpl((CallRequest) null, (TargetDescriptor) null);
          throw new Error();
       } catch (Throwable t) {
          if (! (t instanceof MethodNotImplementedError)) {
-            final String METHOD = "doCallImpl(CallRequest,TargetDescriptor)";
-            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the new-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should not be implemented since this class (" + _className + ") uses the new-style (XINS 1.1) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the old-style shouldFailOver method is not implemented
+      // Make sure the old-style (XINS 1.0) shouldFailOver method is not implemented
       try {
          shouldFailOver((CallRequest) null, (Throwable) null);
          throw new Error();
       } catch (Throwable t) {
          if (! (t instanceof MethodNotImplementedError)) {
-            final String METHOD = "shouldFailOver(CallRequest,Throwable)";
-            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the new-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "shouldFailOver(" + CallRequest.class.getName() + ',' + Throwable.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should not be implemented since this class (" + _className + ") uses the new-style (XINS 1.1) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the new-style doCallImpl method is implemented
+      // Make sure the new-style (XINS 1.1) doCallImpl method is implemented
       try {
          doCallImpl((CallRequest) null, (CallConfig) null, (TargetDescriptor) null);
          throw new Error();
       } catch (Throwable t) {
          if (t instanceof MethodNotImplementedError) {
-            final String METHOD = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
-            String message = "Method " + METHOD + " is not implemented although this class (" + _className + ") uses the new-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should be implemented since this class (" + _className + ") uses the new-style (XINS 1.1) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
-      // Make sure the new-style shouldFailOver method is implemented
+      // Make sure the new-style (XINS 1.1) shouldFailOver method is implemented
       try {
          shouldFailOver((CallRequest) null, (CallConfig) null, (CallExceptionList) null);
          throw new Error();
       } catch (Throwable t) {
          if (t instanceof MethodNotImplementedError) {
-            final String METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
-            String message = "Method " + METHOD + " is not implemented although this class (" + _className + ") uses the new-style constructor.";
-            Log.log_1050(_className, METHOD, message);
-            throw new ProgrammingError(message);
+            final String SUBJECT_METHOD = "shouldFailOver(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + CallExceptionList.class.getName() + ')';
+            final String DETAIL         = "Method " + SUBJECT_METHOD + " should be implemented since this class (" + _className + ") uses the new-style (XINS 1.1) constructor.";
+            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
 
@@ -353,7 +350,7 @@ public abstract class ServiceCaller extends Object {
    private final String _className;
 
    /**
-    * Flag that indicates if the new-style (since XINS 1.1.0) or the old-style
+    * Flag that indicates if the new-style (XINS 1.1) (since XINS 1.1.0) or the old-style (XINS 1.0)
     * (XINS 1.0.0) behavior is expected from the subclass.
     */
    private final boolean _newStyle;
@@ -461,17 +458,20 @@ public abstract class ServiceCaller extends Object {
                                      CallConfig  callConfig)
    throws IllegalArgumentException, CallException {
 
-      final String THIS_METHOD = "doCall(CallRequest,CallConfig)";
+      final String THIS_METHOD = "doCall(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style constructor.";
-         Log.log_1050(_className, THIS_METHOD, message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
+         final String DETAIL = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style (XINS 1.0) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
+
+      // FIXME: Add unit test for Utils.getCallingClass() and Utils.getCallingMethod()
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -503,11 +503,14 @@ public abstract class ServiceCaller extends Object {
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateTargets();
 
+      // TODO: Improve performance, do not use an iterator?
+
       // There should be at least one target
       if (! iterator.hasNext()) {
-         String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
-         Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = _descriptor.getClass().getName();
+         final String SUBJECT_METHOD = "iterateTargets()";
+         final String DETAIL         = "Descriptor returns no target descriptors.";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
       // Loop over all TargetDescriptors
@@ -541,8 +544,9 @@ public abstract class ServiceCaller extends Object {
             if (exception instanceof CallException) {
                currentException = (CallException) exception;
             } else if (exception instanceof MethodNotImplementedError) {
-               Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
-               throw new ProgrammingError(getClass().getName() + ".doCallImpl(CallRequest,CallConfig,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
+               final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+               final String DETAIL         = "The method " + SUBJECT_METHOD + " is not implemented although it should be.";
+               throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
             } else {
                currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
             }
@@ -653,16 +657,17 @@ public abstract class ServiceCaller extends Object {
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
 
-      final String THIS_METHOD = "doCall(CallRequest)";
+      final String THIS_METHOD = "doCall(" + CallRequest.class.getName() + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // This method should only be called if the subclass uses the old style
       if (_newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses new-style constructor.";
-         Log.log_1050(_className, THIS_METHOD, message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
+         final String DETAIL         = "Method " + THIS_METHOD + " called while class " + _className + " uses new-style (XINS 1.1) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
       // Check preconditions
@@ -687,9 +692,10 @@ public abstract class ServiceCaller extends Object {
 
       // There should be at least one target
       if (! iterator.hasNext()) {
-         String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
-         Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = _descriptor.getClass().getName();
+         final String SUBJECT_METHOD = "iterateTargets()";
+         final String DETAIL         = "Descriptor returns no target descriptors.";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
       // Loop over all TargetDescriptors
@@ -723,8 +729,10 @@ public abstract class ServiceCaller extends Object {
             if (exception instanceof CallException) {
                currentException = (CallException) exception;
             } else if (exception instanceof MethodNotImplementedError) {
-               Log.log_1050(getClass().getName(), "doCallImpl(CallRequest,CallConfig,TargetDescriptor)", "The method is not implemented although it should be.");
-               throw new ProgrammingError(getClass().getName() + ".doCallImpl(CallRequest,TargetDescriptor) is not implemented although it should be, according to the ServiceCaller class contract.");
+               // TODO: Detail message should be reviewed
+               final String SUBJECT_METHOD = "doCallImpl(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ',' + TargetDescriptor.class.getName() + ')';
+               final String DETAIL         = "The method is not implemented although it should be.";
+               throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
             } else {
                currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
             }
@@ -1073,9 +1081,10 @@ public abstract class ServiceCaller extends Object {
 
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style constructor.";
-         Log.log_1050(_className, THIS_METHOD, message);
-         throw new ProgrammingError(message);
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
+         final String DETAIL = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style (XINS 1.0) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
       // Determine if fail-over is applicable
