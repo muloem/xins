@@ -3,6 +3,11 @@ CHANGES INTRODUCED IN XINS 0.126:
 
 * Updated xmlenc to 0.39.
 
+* Added TODO file.
+
+* There is now only a single package: xins-VERSION.tar.gz, which contains
+  source code, Javadoc, JAR files, etc.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.125:
 
