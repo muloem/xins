@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
 
@@ -274,6 +275,8 @@ extends Object {
     */
    void tick() {
 
+      final String THIS_METHOD = "tick()";
+
       // Allocate memory for the new map of recently accessed entries outside
       // the synchronized sections
       HashMap newRecentlyAccessed = new HashMap();
@@ -318,7 +321,14 @@ extends Object {
          // If the new size was negative, it has been fixed already, but
          // report it now, outside the synchronized section
          if (newSize < 0) {
-            Log.log_1050(CLASSNAME, "tick()", CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
+            final String DETAIL = "Size of expiry folder \""
+                                + _name
+                                + "\" dropped to "
+                                + newSize
+                                + ", adjusted it to 0.";
+            Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                      CLASSNAME, THIS_METHOD,
+                                      DETAIL);
          }
          Log.log_1400(_asString, toBeExpiredSize, newSize);
       } else {
@@ -331,24 +341,36 @@ extends Object {
       // Get a copy of the list of listeners
       List listeners;
       synchronized (_listeners) {
-         listeners = new ArrayList(_listeners);
+         listeners = (_listeners.size() == 0) ? null : new ArrayList(_listeners);
       }
 
       // Notify all listeners
-      int count = listeners.size();
-      if (count > 0) {
+      if (listeners != null) {
+         int count = listeners.size();
 
          // Pass object references to listeners, not Entry objects
          Map refMap = new HashMap();
          Iterator entryIterator = toBeExpired.keySet().iterator();
          while (entryIterator.hasNext()) {
             Entry entry = (Entry) entryIterator.next();
-            refMap.put(entry.getReference(), toBeExpired.get(entry));
+            if (entry.isExpired()) {
+               refMap.put(entry.getReference(), toBeExpired.get(entry));
+            } else {
+               final String DETAIL = "Entry marked for expiry should not be expired yet. Key as string is \""
+                                   + entry.getReference().toString()
+                                   + "\".";
+               Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                         CLASSNAME, THIS_METHOD,
+                                         DETAIL);
+            }
          }
-         Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
-         for (int i = 0; i < count; i++) {
-            ExpiryListener listener = (ExpiryListener) listeners.get(i);
-            listener.expired(this, unmodifiableExpired);
+
+         if (refMap.size() > 0) {
+            Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
+            for (int i = 0; i < count; i++) {
+               ExpiryListener listener = (ExpiryListener) listeners.get(i);
+               listener.expired(this, unmodifiableExpired);
+            }
          }
       }
    }
