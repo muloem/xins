@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.190:
 
+* XINS/Java Client Framework:
+  - Removed the unused CallRequestParser class.
+
 * Build and release process:
   - Check for the required directories before making a release.
 
