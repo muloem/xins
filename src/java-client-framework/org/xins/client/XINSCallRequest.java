@@ -486,12 +486,9 @@ public final class XINSCallRequest extends CallRequest {
       _dataSection = dataSection;
 
       // Add the data section to the parameter list
-      try {
-         String xmlDataSection = ElementSerializer.serialize(dataSection);
-         ((ProtectedPropertyReader) _httpParams).set(SECRET_KEY, "_data", xmlDataSection);
-      } catch (IOException ioe) {
-         throw new IllegalArgumentException("Data section not serializable");
-      }
+      ElementSerializer serializer = new ElementSerializer();
+      String xmlDataSection = serializer.serialize(dataSection);
+      ((ProtectedPropertyReader) _httpParams).set(SECRET_KEY, "_data", xmlDataSection);
    }
 
    /**

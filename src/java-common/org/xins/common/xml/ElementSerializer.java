@@ -150,14 +150,10 @@ public final class ElementSerializer extends Object {
       // Always close the FastStringWriter
       } finally {
          fsw.close();
+         _inUse = false;
       }
 
       String xml = out.toString();
-
-      // Unlock this serializer
-      synchronized (_lock) {
-         _inUse = false;
-      }
 
       // TODO: TRACE logging
 

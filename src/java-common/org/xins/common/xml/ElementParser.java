@@ -86,7 +86,7 @@ extends Object {
     * State for the SAX event handler in the data section (at any depth within
     * the <code>data</code> element).
     */
-   private static final State IN_DATA_SECTION = new State("IN_DATA_SECTION");
+   private static final State PARSING = new State("PARSING");
 
    /**
     * State for the SAX event handler for the final state, when parsing is
@@ -245,7 +245,7 @@ extends Object {
          // TRACE: Enter constructor
          Log.log_1000(HANDLER_CLASSNAME, null);
 
-         _state            = IN_DATA_SECTION;
+         _state            = PARSING;
          _level            = -1;
          _characters       = new FastStringBuffer(45);
          _dataElementStack = new Stack();
@@ -381,8 +381,8 @@ extends Object {
             // Reserve buffer for PCDATA
             _characters.clear();
 
-            // Reset the state from ERROR back to IN_DATA_SECTION
-            _state = IN_DATA_SECTION;
+            // Reset the state from ERROR back to PARSING
+            _state = PARSING;
          }
 
          Log.log_1005(HANDLER_CLASSNAME, METHODNAME,
@@ -462,8 +462,8 @@ extends Object {
                Element parent = (Element) _dataElementStack.peek();
                parent.addChild(child);
                
-               // Reset the state back from ERROR to IN_DATA_SECTION
-               _state = IN_DATA_SECTION;
+               // Reset the state back from ERROR to PARSING
+               _state = PARSING;
             } else {
                _element = child;
                _state = FINISHED;
