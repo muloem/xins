@@ -140,6 +140,9 @@ implements DefaultReturnCodes {
       // Create a new call context
       CallContext context = new CallContext(xmlOutputter, map);
 
+      // Determine the function name
+      String functionName = context.getFunction();
+
       // Forward the call
       boolean exceptionThrown = true;
       boolean success;
@@ -185,7 +188,7 @@ implements DefaultReturnCodes {
       if (!exceptionThrown) {
          out.print(stringWriter.toString());
       }
-      Function f    = getFunction(context.getFunction());
+      Function f    = getFunction(functionName);
       long start    = context.getStart();
       long duration = System.currentTimeMillis() - start;
       f.performedCall(start, duration, success, code);
