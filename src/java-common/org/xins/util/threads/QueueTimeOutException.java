@@ -11,7 +11,7 @@ package org.xins.util.threads;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class QueueTimeOutException
-extends Exception {
+extends RuntimeException {
 
    //-------------------------------------------------------------------------
    // Class fields
