@@ -303,20 +303,31 @@ implements DefaultResultCodes {
          try {
             m.bootstrap(_buildSettings);
             Log.log_3214(_name, className);
+
+         // Missing property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3215(_name, className, exception.getPropertyName());
             throw exception;
+
+         // Invalid property
          } catch (InvalidPropertyValueException exception) {
             Log.log_3216(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
-         // TODO: Review exception catching/handling
-         } catch (BootstrapException exception) {
-            Log.log_3217(exception, _name, className, exception.getMessage());
-            throw exception;
+         // Catch BootstrapException and any other exceptions not caught
+         // by previous catch statements
          } catch (Throwable exception) {
+
+            // Log event
             Log.log_3217(exception, _name, className, exception.getMessage());
-            throw new BootstrapException(exception);
+
+            // Throw a BootstrapException. If necessary, wrap around the
+            // caught exception
+            if (exception instanceof BootstrapException) {
+               throw (BootstrapException) exception;
+            } else {
+               throw new BootstrapException(exception);
+            }
          }
       }
 
@@ -329,18 +340,31 @@ implements DefaultResultCodes {
          try {
             f.bootstrap(_buildSettings);
             Log.log_3221(_name, functionName);
+
+         // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3222(_name, functionName, exception.getPropertyName());
             throw exception;
+
+         // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_3223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
-         } catch (BootstrapException exception) {
-            Log.log_3224(exception, _name, functionName, exception.getMessage());
-            throw exception;
+
+         // Catch BootstrapException and any other exceptions not caught
+         // by previous catch statements
          } catch (Throwable exception) {
+
+            // Log this event
             Log.log_3224(exception, _name, functionName, exception.getMessage());
-            throw new BootstrapException(exception);
+
+            // Throw a BootstrapException. If necessary, wrap around the
+            // caught exception
+            if (exception instanceof BootstrapException) {
+               throw (BootstrapException) exception;
+            } else {
+               throw new BootstrapException(exception);
+            }
          }
       }
    }
@@ -718,24 +742,26 @@ implements DefaultResultCodes {
       try {
          allow = _accessRuleList.allow(ip, functionName);
       } catch (ParseException exception) {
+         // TODO: Review this code.
          throw new Error("Malformed IP address: " + ip + '.');
       }
       if (!allow) {
          throw new AccessDeniedException(ip, functionName);
       }
 
-      // Wait until the statistics are returned
+      // Wait until the statistics are returned. This is indicated by
+      // interrupt()-ing this thread.
       while (_statisticsLocked) {
          synchronized (this) {
             try {
                wait();
             } catch (InterruptedException iex) {
-               // empty
+               // as expected
             }
          }
       }
 
-      // Detect special functions
+      // Handle meta-functions
       if (functionName.charAt(0) == '_') {
 
          FunctionResult result;
@@ -855,7 +881,7 @@ implements DefaultResultCodes {
       try {
          builder.param("availableProcessors", String.valueOf(rt.availableProcessors()));
       } catch (NoSuchMethodError error) {
-         // ignore: Runtime.availableProcessors() is not available in Java 1.3
+         // NOTE: Runtime.availableProcessors() is not available in Java 1.3
       }
 
       // Heap memory statistics
@@ -868,7 +894,7 @@ implements DefaultResultCodes {
       try {
          heap.addAttribute("max", String.valueOf(rt.maxMemory()));
       } catch (NoSuchMethodError error) {
-         // ignore: Runtime.maxMemory() is not available in Java 1.3
+         // NOTE: Runtime.maxMemory() is not available in Java 1.3
       }
       builder.add(heap);
 
@@ -1054,7 +1080,7 @@ implements DefaultResultCodes {
       try {
          sysProps = System.getProperties();
       } catch (SecurityException ex) {
-         // TODO: Log unexpected exception
+         Log.log_3052(ex, "java.lang.System", "getProperties()");
          sysProps = new Properties();
       }
 
