@@ -43,6 +43,9 @@ public class AllTests extends TestSuite {
 
       suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.net.URLEncodingTests.class);
+
+      suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
+
       suite.addTestSuite(org.xins.tests.common.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.service.TargetDescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.service.GroupDescriptorTests.class);
