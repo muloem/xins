@@ -44,6 +44,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . 2112 (was INFO).
   - Added log message 2113: XINS call request completely failed.
   - Changed log messages 2200 and 2206 to include namespace.
+  - Improved XINSCallResultParser behavior.
 
 * XINS/Java Server Framework:
   - Fixed bug #1036854: Reset logging subsystem when reloading.
@@ -772,7 +773,7 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Replaced the way to find the hostname for the hostname task.
   - Added serialize() function to PropertyReaderUtils that constructs a
     LogdocSerializable for a PropertyReader.
-  - Changed behaviour of TargetDescriptor:
+  - Changed behavior of TargetDescriptor:
     . if the connection time-out is not set (0 or negative int value) then it
       defaults to the total time-out;
     . if the socket time-out is not set (0 or negative int value) then it
@@ -1895,9 +1896,9 @@ CHANGES INTRODUCED IN XINS 0.167:
   - Changed log messages 5000 and 5001 to log the query string.
   - Removed unused package-private dueToUnexpected(Throwable) class function
     from class APIServlet.
-  - Changed behaviour when no access rule list is defined in the runtime
+  - Changed behavior when no access rule list is defined in the runtime
     properties file. Previously all requests would then be allowed. New
-    behaviour is that all requests are then denied. Removed log messages 4032
+    behavior is that all requests are then denied. Removed log messages 4032
     and 4033 as a result of this. Slightly improved description and
     translations for log message 5503.
 
@@ -2321,7 +2322,7 @@ CHANGES INTRODUCED IN XINS 0.153:
 * XINS/Java Server Framework:
   - Completed ACL support. The access rule list is to be defined in a runtime
     property 'org.xins.server.acl'. If this property is not set in the runtime
-    configuration file, then all requests are allowed. This behaviour is for
+    configuration file, then all requests are allowed. This behavior is for
     backwards-compatibility and will be changed in the future, so that if the
     property is not defined, then no request will be allowed.
     The property value must match the format for an access rule list
