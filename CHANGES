@@ -1,17 +1,20 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.30:
+
+* Fixed bug in CallContext.fail(ResultCode).
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.29:
 
 * Responder: Added method fail(ResultCode).
 
 * Upgraded xmlenc to release 0.33.
 
-
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.28:
 
 * FastStringBuffer: Supporting appending byte, short, int, long, float and
   double numbers.
-
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.27:
