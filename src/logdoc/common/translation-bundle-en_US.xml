@@ -49,5 +49,4 @@
 	<translation entry="1401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
 	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
-
 </translation-bundle>
