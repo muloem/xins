@@ -3,6 +3,11 @@
  */
 package org.xins.common.collections;
 
+import java.io.InputStream;
+import java.io.IOException;
+
+import java.util.Properties;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -120,6 +125,37 @@ extends Object {
       } catch (NumberFormatException exception) {
          throw new InvalidPropertyValueException(propertyName, value);
       }
+   }
+
+   /**
+    * Constructs a <code>PropertyReader</code> from the specified input
+    * stream.
+    *
+    * @param in
+    *    the input stream to read from, cannot be <code>null</code>.
+    *
+    * @return
+    *    a {@link PropertyReader} instance that contains all the properties
+    *    defined in the specified input stream.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>in == null</code>.
+    *
+    * @throws IOException
+    *    if there was an I/O error while reading from the stream.
+    */
+   public static final PropertyReader createPropertyReader(InputStream in)
+   throws IllegalArgumentException, IOException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("in", in);
+
+      // Parse the input stream using java.util.Properties
+      Properties properties = new Properties();
+      properties.load(in);
+
+      // Convert from java.util.Properties to PropertyReader
+      return new PropertiesPropertyReader(properties);
    }
 
 
