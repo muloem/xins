@@ -25,6 +25,12 @@ implements ResponseValidator {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Singleton instance.
+    */
+   public static final BasicResponseValidator SINGLETON = new BasicResponseValidator();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -32,6 +38,14 @@ implements ResponseValidator {
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>BasicResponseValidator</code>.
+    */
+   protected BasicResponseValidator() {
+      // empty
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields
