@@ -421,6 +421,15 @@ public class AllInOneAPITests extends TestCase {
       DataElement envelope3 = (DataElement) packets.get(3);
       assertEquals("Incorrect elements.", "envelope", envelope3.getLocalName());
       assertNotNull("No destination specified.", envelope3.getAttribute("destination"));
+      
+      // Call with no data section
+      _capi.callDataSection3("hello", null);
+      
+      // Call with an empty data section
+      ElementBuilder builder4 = new ElementBuilder();
+      builder4.startElement("data");
+      Element emptyDataSection = builder4.createElement();
+      _capi.callDataSection3("hello", emptyDataSection);
    }
 
   /**
