@@ -70,7 +70,7 @@ implements DefaultReturnCodes {
     * Map that maps function names to <code>Function</code> instances.
     * Contains all functions associated with this API.
     *
-    * <p />This field is initialised to a non-<code>null</code> value by the
+    * <p />This field is initialized to a non-<code>null</code> value by the
     * constructor.
     */
    private final Map _functionsByName;
@@ -86,7 +86,7 @@ implements DefaultReturnCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Initialises this API.
+    * Initializes this API.
     *
     * <p />The implementation of this method in class {@link API} is empty.
     *
@@ -176,7 +176,7 @@ implements DefaultReturnCodes {
       // Get the function object
       Function f = getFunction(functionName);
 
-      // Detect case where function is not recognised
+      // Detect case where function is not recognized
       if (f == null) {
          context.startResponse(false, NO_SUCH_FUNCTION);
          context.endResponse();

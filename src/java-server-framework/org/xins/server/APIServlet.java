@@ -57,7 +57,7 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * The logging category used by this servlet. This field is initialised by
+    * The logging category used by this servlet. This field is initialized by
     * {@link #init(ServletConfig)} to a non-<code>null</code> value.
     */
    private Logger _log;
@@ -78,7 +78,7 @@ extends HttpServlet {
 
       Properties settings = ServletUtils.settingsAsProperties(config);
 
-      // Initialise Log4J
+      // Initialize Log4J
       PropertyConfigurator.configure(settings);
       _log = Logger.getLogger(getClass().getName());
 
@@ -89,7 +89,7 @@ extends HttpServlet {
          throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", unable to instantiate an object of type " + apiClass + ", or unable to convert it to an API instance.");
       }
 
-      // Initialise the API
+      // Initialize the API
       try {
          _api.init(settings);
       } catch (Throwable e) {
