@@ -49,12 +49,9 @@
 	</xsl:template>
 
 	<xsl:template match="api">
-		<xsl:variable name="path">
-			<xsl:value-of select="concat($project_home, '/src/specs/', @name, '/api.xml')" />
-		</xsl:variable>
-		<xsl:variable name="functioncount">
-			<xsl:value-of select="count(document($path)/api/function)" />
-		</xsl:variable>
+		<xsl:variable name="path" select="concat($project_home, '/src/specs/', @name, '/api.xml')" />
+		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
+
 		<xsl:if test="not(document($path)/api/@name = @name)">
 			<xsl:message terminate="yes">
 				<xsl:text>API name specified in project.xml ('</xsl:text>
