@@ -127,18 +127,18 @@ extends HttpServlet {
          xmlOutputter.pcdata(exception.getClass().getName());
 
          String message = exception.getMessage();
-         if (message != null) {
+         if (message != null && !message.length() == 0) {
             xmlOutputter.endTag();
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.message");
-            xmlOutputter.pcdata(exception.getMessage());
+            xmlOutputter.pcdata(message);
          }
 
          StringWriter stWriter = new StringWriter();
          PrintWriter printWriter = new PrintWriter(stWriter);
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
-         if (stackTrace != null) {
+         if (stackTrace != null && !message.length() == 0) {
             xmlOutputter.endTag();
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.stacktrace");
