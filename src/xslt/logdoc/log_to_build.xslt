@@ -44,7 +44,7 @@
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/entry-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
-						<param name="sourcedir" expression="../../{$sourcedir}" />
+						<param name="sourcedir" expression="{$sourcedir}" />
 						<param name="entry"     expression="{@id}"              />
 					</style>
 				</xsl:for-each>
@@ -71,7 +71,7 @@
 					style="{$logdoc_xslt_dir}/translation-bundle_to_java.xslt">
 						<param name="locale"       expression="{@locale}" />
 						<param name="package_name" expression="{$package_name}" />
-						<param name="log_file"     expression="../../{$sourcedir}/log.xml" />
+						<param name="log_file"     expression="{$sourcedir}/log.xml" />
 					</style>
 				</xsl:for-each>
 			</target>

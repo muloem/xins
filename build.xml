@@ -143,7 +143,7 @@
 		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
 	</target>
 
-	<target name="-prepare-java-server" depends="logdoc-java">
+	<target name="-prepare-java-server" depends="logdoc-java-server">
 		<mkdir dir="build/src/java-server-framework" />
 		<style
 		in="src/xml/default_resultcodes.xml"
@@ -154,7 +154,7 @@
 		</copy>
 		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
 		<copy todir="build/src/java-server-framework/org/xins/server">
-			<fileset dir="build/logdoc/java" includes="**/*.java" />
+			<fileset dir="build/logdoc/server/java" includes="**/*.java" />
 		</copy>
 	</target>
 
@@ -238,25 +238,37 @@
 
 	<target name="java" depends="java-common,java-client,java-server" description="Compiles the XINS/Java java code (common, server and client)"/>
 
+	<target name="-prepare-logdoc-server">
+		<antcall target="-prepare-logdoc">
+			<param name="side" value="server"/>
+		</antcall>
+	</target>
+
 	<target name="-prepare-logdoc" depends="-prepare">
 		<style
-		in="src/logdoc/log.xml"
-		out="build/logdoc-build.xml"
+		in="src/logdoc/${side}/log.xml"
+		out="build/logdoc/${side}/build.xml"
 		style="src/xslt/logdoc/log_to_build.xslt">
-			<param name="logdoc_xslt_dir" expression="../src/xslt/logdoc" />
-			<param name="sourcedir"       expression="../src/logdoc"      />
-			<param name="html_destdir"    expression="logdoc/html"        />
-			<param name="java_destdir"    expression="logdoc/java"        />
-			<param name="package_name"    expression="org.xins.server"    />
+			<param name="logdoc_xslt_dir" expression="../../../src/xslt/logdoc"    />
+			<param name="sourcedir"       expression="../../../src/logdoc/${side}" />
+			<param name="html_destdir"    expression="html"                        />
+			<param name="java_destdir"    expression="java"                        />
+			<param name="package_name"    expression="org.xins.${side}"            />
 		</style>
 	</target>
 
-	<target name="logdoc-html" depends="-prepare-logdoc">
-		<copy file="src/css/logdoc/style.css" todir="build/logdoc/html" />
-		<ant dir="build" antfile="logdoc-build.xml" target="html" inheritall="false" />
+	<target name="logdoc-html-server" depends="-prepare-logdoc-server">
+		<antcall target="-logdoc-html">
+			<param name="side" value="server"/>
+		</antcall>
 	</target>
 
-	<target name="upload-logdoc" depends="-init,logdoc-html">
+	<target name="-logdoc-html">
+		<copy file="src/css/logdoc/style.css" todir="build/logdoc/${side}/html" />
+		<ant dir="build/logdoc/${side}" target="html" inheritall="false" />
+	</target>
+
+	<target name="upload-logdoc" depends="-init,logdoc-html-server">
 		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version} on ${www.host}" />
 		<exec executable="ssh" failonerror="true">
@@ -271,8 +283,14 @@
 		</exec>
 	</target>
 
-	<target name="logdoc-java" depends="-prepare-logdoc">
-		<ant dir="build" antfile="logdoc-build.xml" target="java" inheritall="false" />
+	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
+		<antcall target="-logdoc-java">
+			<param name="side" value="server"/>
+		</antcall>
+	</target>
+
+	<target name="-logdoc-java">
+		<ant dir="build/logdoc/${side}" target="java" inheritall="false" />
 	</target>
 
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
