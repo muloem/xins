@@ -30,17 +30,8 @@ public abstract class ConnectionException extends CallException {
    /**
     * Constructs a new <code>ConnectionException</code>.
     *
-    * @deprecated
-    *    Deprecated since XINS 0.201. Use
-    *    {@link #ConnectionException(CallRequest,TargetDescriptor)} instead.
-    */
-   ConnectionException() {
-      super(null, null);
-   }
-
-   /**
-    * Constructs a new <code>ConnectionException</code>, for the specified
-    * <code>CallRequest</code> and <code>TargetDescriptor</code>.
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
@@ -49,15 +40,32 @@ public abstract class ConnectionException extends CallException {
     *    descriptor for the target that was attempted to be called, cannot be
     *    <code>null</code>.
     *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
+    *
+    * @param detail
+    *    a detailed description of the problem, can be <code>null</code> if
+    *    there is no more detail.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>request == null || target == null</code>.
+    *    if <code>shortReason == null
+    *          || request     == null
+    *          || target      == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.202
     */
-   ConnectionException(CallRequest      request,
-                       TargetDescriptor target)
+   ConnectionException(String           shortReason,
+                       CallRequest      request,
+                       TargetDescriptor target,
+                       long             duration,
+                       String           detail,
+                       Throwable        cause)
    throws IllegalArgumentException {
-
-      // Call superconstructor first
-      super(request, target, null, null);
+      super(shortReason, request, target, duration, detail, cause);
    }
 
 

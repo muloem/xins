@@ -4,20 +4,23 @@
 package org.xins.client;
 
 import java.util.Map;
+
 import org.jdom.Element;
+
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Exception that indicates that an API call result was unsuccessful.
+ * Exception that indicates that data was not received on a socket within a
+ * designated time-out period.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.36
  */
-public final class UnsuccessfulCallException
-extends CallException {
+public final class UnsuccessfulCallException extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -28,45 +31,55 @@ extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a message for the constructor.
+    * Checks the arguments for the constructor and then returns the short
+    * reason.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
     *
     * @param result
     *    the call result that is unsuccessful, cannot be <code>null</code>,
-    *    and <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
+    *    and
+    *    <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
     *    should be <code>false</code>.
     *
-    * @return
-    *    the constructed message for the constructor to pass up to the
-    *    superconstructor, never <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSServiceCaller.Result#getErrorCode() getErrorCode()}
-    *          == null</code>.
+    *    if <code>request     == null
+    *          || target      == null
+    *          || result      == null
+    *          || result.{@link XINSServiceCaller.Result#getErrorCode() getErrorCode()} == null
+    *          || duration  &lt; 0</code>
     *
-    * @since XINS 0.124
+    * @since XINS 0.202
     */
-   private static final String createMessage(XINSServiceCaller.Result result)
+   private static final String createDetailMessage(CallRequest              request,
+                                                   TargetDescriptor         target,
+                                                   long                     duration,
+                                                   XINSServiceCaller.Result result)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("result", result);
+      MandatoryArgumentChecker.check("request", request,
+                                     "target",  target,
+                                     "result",  result);
       String code = result.getErrorCode();
       if (code == null) {
          throw new IllegalArgumentException("result.getErrorCode() == null");
+      } else if (duration < 0) {
+         throw new IllegalArgumentException("duration (" + duration + ") < 0");
       }
 
-      // Create message in buffer
-      FastStringBuffer buffer = new FastStringBuffer(80);
-      buffer.append("Call was unsuccessful");
-      if (code != null && code.length() > 0) {
-         buffer.append(", result code was \"");
-         buffer.append(code);
-         buffer.append('"');
-      }
-      buffer.append('.');
-
-      // Return the message string
+      // Construct and return the detail message
+      FastStringBuffer buffer = new FastStringBuffer(35, "Error code is \"");
+      buffer.append(code);
+      buffer.append("\".");
       return buffer.toString();
    }
 
@@ -76,22 +89,33 @@ extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnsuccessfulCallException</code> with the
-    * specified call result.
+    * Constructs a new <code>UnsuccessfulCallException</code>.
     *
-    * @param result
-    *    the call result that is unsuccessful, cannot be <code>null</code>,
-    *    and <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
-    *    should be <code>false</code>.
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
     *
     * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}.
+    *    if <code>request     == null
+    *          || target      == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.202
     */
-   public UnsuccessfulCallException(XINSServiceCaller.Result result)
+   UnsuccessfulCallException(CallRequest              request,
+                             TargetDescriptor         target,
+                             long                     duration,
+                             XINSServiceCaller.Result result)
    throws IllegalArgumentException {
-
-      super(createMessage(result), null);
+      super("Unsuccessful result", request, target, duration,
+            createDetailMessage(request, target, duration, result),
+            null);
 
       _result = result;
    }
@@ -112,25 +136,28 @@ extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the result code.
+    * Returns the error code.
     *
     * @return
-    *    the result code or <code>null</code> if no code was returned.
+    *    the error code or <code>null</code> if the call was successful and no
+    *    error code was returned.
     *
     * @since XINS 0.136
+    *
     * @deprecated
     *    Deprecated since XINS 0.181. Use {@link #getErrorCode()} instead,
-    *    which is in fact a renamed version of this function.
+    *    which is in fact a renamed version of this method.
     */
    public String getCode() {
       return getErrorCode();
    }
 
    /**
-    * Returns the result code.
+    * Returns the error code.
     *
     * @return
-    *    the result code or <code>null</code> if no code was returned.
+    *    the error code or <code>null</code> if the call was successful and no
+    *    error code was returned.
     *
     * @since XINS 0.181
     */
@@ -144,12 +171,14 @@ extends CallException {
     * @return
     *    a <code>Map</code> containing all parameters, never
     *    <code>null</code>; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values will be the parameter values
-    *    ({@link String} objects as well, cannot be <code>null</code>).
+    *    ({@link String} objects, cannot be <code>null</code>), the values
+    *    will be the parameter values ({@link String} objects as well, cannot
+    *    be <code>null</code>).
     *
     * @since XINS 0.136
     */
    public Map getParameters() {
+      // TODO: Return PropertyReader
       return _result.getParameters();
    }
 
@@ -157,10 +186,10 @@ extends CallException {
     * Gets the value of the specified returned parameter.
     *
     * @param name
-    *    the parameter element name, not <code>null</code>.
+    *    the parameter name, not <code>null</code>.
     *
     * @return
-    *    string containing the value of the parameter, not <code>null</code>.
+    *    the value of the parameter, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
@@ -184,6 +213,7 @@ extends CallException {
     * @since XINS 0.136
     */
    public Element getDataElement() {
+      // TODO: Do not return a JDOM Element
       return _result.getDataElement();
    }
 }

@@ -10,7 +10,9 @@ import org.xins.common.service.TargetDescriptor;
 
 /**
  * Exception thrown to indicate that a XINS API call failed due to an I/O
- * error. An {@link IOException} needs to be passed to the constructor.
+ * error. An {@link IOException} needs to be passed to the constructor. This
+ * {@link IOException} or the cause of it can be retrieved again using the
+ * method {@link #getCause()}.
  *
  * <p>If <code>{@link IOException IOException}.{@link Throwable#getCause()
  * getCause}() == null</code> then {@link #getCause()} returns the
@@ -33,39 +35,9 @@ extends CallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
-    * Constructs a new <code>CallIOException</code> based on an
-    * <code>IOException</code>.
-    *
-    * @param ioException
-    *    the cause {@link IOException}, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>ioException == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.201. Use
-    *    {@link #CallIOException(CallRequest,TargetDescriptor,IOException)}
-    *    instead.
-    */
-   CallIOException(IOException ioException)
-   throws IllegalArgumentException {
-
-      // Call superconstructor first
-      super(null, ioException);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("ioException", ioException);
-   }
-
-   /**
-    * Constructs a new <code>CallIOException</code> based on an
-    * <code>IOException</code>, for the specified <code>CallRequest</code> and
-    * <code>TargetDescriptor</code>.
+    * Checks the arguments for the constructor and then returns the short
+    * reason.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
@@ -74,25 +46,80 @@ extends CallException {
     *    descriptor for the target that was attempted to be called, cannot be
     *    <code>null</code>.
     *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
+    *
     * @param ioException
     *    the cause {@link IOException}, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
-    *          || ioException == null</code>.
+    *          || ioException == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.202
+    */
+   private static String getShortReason(CallRequest      request,
+                                        TargetDescriptor target,
+                                        long             duration,
+                                        IOException      ioException)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",     request,
+                                     "target",      target,
+                                     "ioException", ioException);
+      if (duration < 0) {
+         throw new IllegalArgumentException("duration (" + duration + ") < 0");
+      }
+
+      // Return the short reason
+      return "I/O error";
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>CallIOException</code>.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
+    *
+    * @param ioException
+    *    the cause {@link IOException}, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request     == null
+    *          || target      == null
+    *          || ioException == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.202
     */
    CallIOException(CallRequest      request,
                    TargetDescriptor target,
+                   long             duration,
                    IOException      ioException)
    throws IllegalArgumentException {
 
-      // Call superconstructor first
-      // TODO: super(request, target, checkArguments(request, target, ioException), null);
-      super(request, target, null, ioException);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("ioException", ioException);
+      // Check arguments first and then call superconstructor
+      super(getShortReason(request, target, duration, ioException),
+            request,
+            target,
+            duration,
+            null,
+            ioException);
    }
 
 

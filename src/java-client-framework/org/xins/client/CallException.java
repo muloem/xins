@@ -3,9 +3,14 @@
  */
 package org.xins.client;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.WhislEncoding;
 
 /**
  * Exception thrown to indicate that a call to a XINS API failed.
@@ -34,6 +39,9 @@ public abstract class CallException extends Exception {
     * Creates an exception message based on a <code>CallRequest</code> and a
     * reason.
     *
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
+    *
     * @param request
     *    the original request, cannot be <code>null</code>.
     *
@@ -41,31 +49,104 @@ public abstract class CallException extends Exception {
     *    descriptor for the target that was attempted to be called, cannot be
     *    <code>null</code>.
     *
-    * @param message
-    *    a description of the reason, can be <code>null</code>.
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
     *
-    * @param cause
-    *    the cause exception, can be <code>null</code>.
+    * @param detail
+    *    a detailed description of the problem, can be <code>null</code> if
+    *    there is no more detail.
     *
     * @return
     *    the exception message, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null || target == null</code>.
+    *    if <code>shortReason == null
+    *          || request == null
+    *          || target == null
+    *          || duration &lt; 0</code>.
     *
-    * @since XINS 0.198
+    * @since XINS 0.202
     */
-   private static final String createMessage(CallRequest      request,
+   private static final String createMessage(String           shortReason,
+                                             CallRequest      request,
                                              TargetDescriptor target,
-                                             String           message,
-                                             Throwable        cause)
+                                             long             duration,
+                                             String           detail)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request,
-                                     "target",  target);
+      MandatoryArgumentChecker.check("shortReason", shortReason,
+                                     "request",     request,
+                                     "target",      target);
+      if (duration < 0) {
+         throw new IllegalArgumentException("duration (" + duration + ") < 0");
+      }
 
-      return null; // TODO
+      FastStringBuffer buffer = new FastStringBuffer(293, shortReason);
+      buffer.append(" in ");
+      buffer.append(duration);
+      buffer.append(" ms while calling function ");
+      buffer.append(request.getFunctionName());
+
+      Map parameters = request.getParameters();
+      if (parameters == null || parameters.size() < 1) {
+         buffer.append(" with no parameters");
+      } else {
+         buffer.append(" with parameters ");
+         Iterator keys = parameters.keySet().iterator();
+         boolean first = true;
+         while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String val = (String) parameters.get(key);
+
+            if (first) {
+               first = false;
+            } else {
+               buffer.append('&');
+            }
+
+            buffer.append(WhislEncoding.encode(key));
+            buffer.append('=');
+            buffer.append(WhislEncoding.encode(val));
+         }
+      }
+
+      buffer.append(" at ");
+      buffer.append(target.getURL());
+
+      buffer.append(" with connection time-out ");
+      int connectionTimeOut = target.getConnectionTimeOut();
+      if (connectionTimeOut < 1) {
+         buffer.append("disabled, with socket time-out ");
+      } else {
+         buffer.append(connectionTimeOut);
+         buffer.append(" ms, with socket time-out ");
+      }
+
+      int socketTimeOut = target.getSocketTimeOut();
+      if (socketTimeOut < 1) {
+         buffer.append("disabled and with total time-out ");
+      } else {
+         buffer.append(socketTimeOut);
+         buffer.append(" ms and with total time-out ");
+      }
+
+      int totalTimeOut = target.getTotalTimeOut();
+      if (totalTimeOut < 1) {
+         buffer.append("disabled");
+      } else {
+         buffer.append(totalTimeOut);
+         buffer.append(" ms");
+      }
+
+      if (detail == null) {
+         buffer.append('.');
+      } else {
+         buffer.append(": ");
+         buffer.append(detail);
+      }
+
+      return buffer.toString();
    }
 
    /**
@@ -95,52 +176,55 @@ public abstract class CallException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallException</code> with the
-    * specified detail message and cause exception.
+    * Constructs a new <code>CallException</code>.
     *
-    * @param message
-    *    the detail message, can be <code>null</code>.
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
     *
-    * @param cause
-    *    the cause exception, can be <code>null</code>.
+    * @param request
+    *    the original request, cannot be <code>null</code>.
     *
-    * @deprecated
-    *    Deprecated since XINS 0.198. Use
-    *    {@link CallException(CallRequest,String,Throwable)} instead.
-    */
-   CallException(String message, Throwable cause) {
-      super(message, rootCauseFor(cause));
-
-      _request = null;
-      _target  = null;
-   }
-
-   /**
-    * Constructs a new <code>CallException</code> with the
-    * specified detail message and cause exception.
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
     *
-    * @param message
-    *    the detail message, can be <code>null</code>.
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
+    *
+    * @param detail
+    *    a detailed description of the problem, can be <code>null</code> if
+    *    there is no more detail.
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
+    *
+    * @return
+    *    the exception message, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null || target == null</code>.
+    *    if <code>shortReason == null
+    *          || request == null
+    *          || target == null
+    *          || duration &lt; 0</code>.
+    *
+    * @since XINS 0.202
     */
-   CallException(CallRequest      request,
+   CallException(String           shortReason,
+                 CallRequest      request,
                  TargetDescriptor target,
-                 String           message,
+                 long             duration,
+                 String           detail,
                  Throwable        cause)
    throws IllegalArgumentException {
 
       // Call superconstructor with fabricated message
-      super(createMessage(request, target, message, cause), // message
-            rootCauseFor(cause));                           // cause
+      super(createMessage(shortReason, request, target, duration, detail),
+            rootCauseFor(cause));
 
       // Store request and target
-      _request = request;
-      _target  = target;
+      _request  = request;
+      _target   = target;
+      _duration = duration;
    }
 
 
@@ -149,16 +233,22 @@ public abstract class CallException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * The original request.
+    * The original request. Cannot be <code>null</code>.
     */
-   // TODO: Cannot be <code>null</code>.
    private final CallRequest _request;
 
    /**
-    * Descriptor for the target that was attempted to be called.
+    * Descriptor for the target that was attempted to be called. Cannot be
+    * <code>null</code>.
     */
-   // TODO: Cannot be <code>null</code>.
    private final TargetDescriptor _target;
+
+   /**
+    * The time elapsed between the time the call attempt was started and the
+    * time the error was detected. The duration is in milliseconds and is
+    * always &gt;= 0.
+    */
+   private final long _duration;
 
 
    //-------------------------------------------------------------------------
@@ -169,12 +259,10 @@ public abstract class CallException extends Exception {
     * Returns the original request.
     *
     * @return
-    *    the original request, or <code>null</code> if the deprecated
-    *    constructor was used.
+    *    the original request, never <code>null</code>.
     *
     * @since XINS 0.198
     */
-   // TODO: Change @return to: the original request, cannot be <code>null</code>.
    public final CallRequest getRequest() {
       return _request;
    }
@@ -183,13 +271,24 @@ public abstract class CallException extends Exception {
     * Returns the descriptor for the target that was attempted to be called.
     *
     * @return
-    *    the target descriptor, or <code>null</code> if the deprecated
-    *    constructor was used.
+    *    the target descriptor, cannot be <code>null</code>.
     *
     * @since XINS 0.201
     */
-   // TODO: Change @return to: the original request, cannot be <code>null</code>.
    public final TargetDescriptor getTarget() {
       return _target;
+   }
+
+   /**
+    * The time elapsed between the time the call attempt was started and the
+    * time the error was detected. The duration is in milliseconds.
+    *
+    * @return
+    *    the duration in milliseconds, always &gt;= 0.
+    *
+    * @since XINS 0.202
+    */
+   public final long getDuration() {
+      return _duration;
    }
 }

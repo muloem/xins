@@ -87,8 +87,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final PostMethod createPostMethod(String baseURL,
                                                     String functionName,
-                                                    Map parameters)
+                                                    Map    parameters)
    throws IllegalArgumentException {
+
+      // TODO: Accept a PropertyReader instead of a Map?
 
       // TODO: Consider using an IndexedMap, for improved iteration
       //       performance
@@ -166,7 +168,8 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>XINSServiceCaller</code> object.
+    * Constructs a new <code>XINSServiceCaller</code> with the specified
+    * descriptor.
     *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
@@ -187,7 +190,7 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * The result parser.
+    * The result parser. This field cannot be <code>null</code>.
     */
    private final ResultParser _parser;
 
@@ -231,7 +234,7 @@ public final class XINSServiceCaller extends ServiceCaller {
           CallException {
       
       // Check preconditions
-      MandatoryArgumentChecker.check("target",  target, "request", request);
+      MandatoryArgumentChecker.check("target", target, "request", request);
 
       String functionName = request.getFunctionName();
       Map    parameters   = request.getParameters();
@@ -241,7 +244,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Determine URL and time-outs
       String url               = target.getURL();
-      int    totalTimeOut      = target.getTimeOut();
+      int    totalTimeOut      = target.getTotalTimeOut();
       int    connectionTimeOut = target.getConnectionTimeOut();
       int    socketTimeOut     = target.getSocketTimeOut();
 
@@ -258,15 +261,21 @@ public final class XINSServiceCaller extends ServiceCaller {
       CallExecutor executor = new CallExecutor(NDC.peek(), client, method);
 
       boolean succeeded = false;
+      long start = System.currentTimeMillis();
+      long duration;
       try {
          controlTimeOut(executor, target);
          succeeded = true;
 
       } catch (TimeOutException exception) {
+         duration = System.currentTimeMillis() - start;
+
          Log.log_2015(url, functionName, totalTimeOut);
-         throw new TotalTimeOutException();
+
+         throw new TotalTimeOutException(request, target, duration);
 
       } finally {
+         duration = System.currentTimeMillis() - start;
          if (succeeded == false) {
 
             // If there was an exception already, don't allow another one to
@@ -295,12 +304,12 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Connection refusal
          if (exception instanceof ConnectException) {
             Log.log_2012(url, functionName);
-            throw new ConnectionRefusedException();
+            throw new ConnectionRefusedException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
             Log.log_2013(url, functionName, connectionTimeOut);
-            throw new ConnectionTimeOutException();
+            throw new ConnectionTimeOutException(request, target, duration);
 
          // Socket time-out
          } else if (exception instanceof HttpRecoverableException) {
@@ -313,18 +322,18 @@ public final class XINSServiceCaller extends ServiceCaller {
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_2014(url, functionName, socketTimeOut);
-               throw new SocketTimeOutException();
+               throw new SocketTimeOutException(request, target, duration);
 
             // Unspecific I/O error
             } else {
                Log.log_2017(exception, url, functionName);
-               throw new CallIOException((IOException) exception);
+               throw new CallIOException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
             Log.log_2017(exception, url, functionName);
-            throw new CallIOException((IOException) exception);
+            throw new CallIOException(request, target, duration, (IOException) exception);
 
          } else if (exception instanceof RuntimeException) {
             Log.log_2018(exception, url, functionName);
@@ -348,20 +357,20 @@ public final class XINSServiceCaller extends ServiceCaller {
       // If HTTP status code is not in 2xx range, abort
       if (code < 200 || code > 299) {
          Log.log_2008(url, functionName, code);
-         throw new UnexpectedHTTPStatusCodeException(code);
+         throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
       }
 
       // If the body is null, then there was an error
       if (body == null) {
          Log.log_2009();
-         throw new InvalidCallResultException("Failed to read the response body.");
+         throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
 
       // Parse and return the result
       try {
          return _parser.parse(target, body);
       } catch (ParseException parseException) {
-         throw new InvalidCallResultException(parseException.getMessage());
+         throw new InvalidCallResultException(request, target, duration, "Failed to parse result.", parseException);
       }
    }
 

@@ -3,7 +3,7 @@
  */
 package org.xins.client;
 
-import org.xins.common.text.FastStringBuffer;
+import org.xins.common.service.TargetDescriptor;
 
 /**
  * Exception that indicates that an API call returned a result that was
@@ -14,8 +14,7 @@ import org.xins.common.text.FastStringBuffer;
  *
  * @since XINS 0.136
  */
-public final class UnacceptableCallResultException
-extends CallException {
+public final class UnacceptableCallResultException extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -25,46 +24,41 @@ extends CallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Constructs a message for the constructor.
-    *
-    * @param reason
-    *    the reason why the call result is unacceptable, or <code>null</code>.
-    *
-    * @return
-    *    the constructed message for the constructor to pass up to the
-    *    superconstructor, never <code>null</code>.
-    */
-   private static final String createMessage(String reason) {
-
-      // Create message in buffer
-      FastStringBuffer buffer = new FastStringBuffer(80);
-      buffer.append("Call result is unacceptable.");
-      if (reason != null && reason.length() > 0) {
-         buffer.append(" Reason: ");
-         buffer.append(reason);
-      }
-
-      // Return the message string
-      return buffer.toString();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnacceptableCallResultException</code> with an
-    * optional reason.
+    * Constructs a new <code>UnacceptableCallResultException</code>.
     *
-    * @param reason
-    *    the reason why the call result is unacceptable, or <code>null</code>.
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the duration in milliseconds, must be &gt;= 0.
+    *
+    * @param detail
+    *    a more detailed description of the problem, or <code>null</code> if
+    *    that is not available.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request     == null
+    *          || target      == null
+    *          || duration  &lt; 0</code>.
+    *
+    * @since XINS 0.202
     */
-   public UnacceptableCallResultException(String reason) {
-
-      super(createMessage(reason), null);
-      _reason = reason;
+   UnacceptableCallResultException(CallRequest      request,
+                                   TargetDescriptor target,
+                                   long             duration,
+                                   String           detail)
+   throws IllegalArgumentException {
+      super("Unacceptable result received", request, target, duration,
+            detail, null);
    }
 
 
@@ -72,23 +66,7 @@ extends CallException {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The reason. Can be <code>null</code>.
-    */
-   private final String _reason;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the reason.
-    *
-    * @return
-    *    the reason, can be <code>null</code>.
-    */
-   public String getReason() {
-      return _reason;
-   }
 }
