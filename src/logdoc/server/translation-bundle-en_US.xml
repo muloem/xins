@@ -35,6 +35,7 @@
 	<translation entry="1232">Bootstrap of function <value-of-param name="function" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1233">XINS/Java Server Framework version <value-of-param name="version" /> is bootstrapped.</translation>
 	<translation entry="1234">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
+	<translation entry="1235">XINS/Java Server Framework version (<value-of-param name="version" />) is not a production release.</translation>
 	<translation entry="1300">Initializing logging subsystem.</translation>
 	<translation entry="1301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="1302">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>

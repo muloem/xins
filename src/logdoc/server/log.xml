@@ -212,6 +212,10 @@
 			<param name="serverVersion" />
 			<param name="commonVersion" />
 		</entry>
+		<entry id="1235" level="WARNING">
+			<description>XINS/Java Server Framework version does not indicate a production release.</description>
+			<param name="version" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
