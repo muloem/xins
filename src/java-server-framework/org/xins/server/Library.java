@@ -39,6 +39,13 @@ public final class Library extends Object {
 
    /**
     * The logging category used by the XINS/Java Server Framework during
+    * re-initialization for ACL-related messages. This field is not
+    * <code>null</code>.
+    */
+   static final Logger INIT_ACL_LOG = Logger.getLogger("org.xins.server.lifespan.init.acl");
+
+   /**
+    * The logging category used by the XINS/Java Server Framework during
     * shutdown/deinitialization. This field is not <code>null</code>.
     */
    static final Logger SHUTDOWN_LOG = Logger.getLogger("org.xins.server.lifespan.shutdown");
