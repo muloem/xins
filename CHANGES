@@ -29,6 +29,11 @@ CHANGES INTRODUCED IN XINS 0.198:
     . BootstrapException
     . DeinitializationException
     . InitializationException
+  - Added classes:
+    . WhislEncoding
+    . ServletRequestPropertyReader
+  - Added constructor to class InitializationException that takes both message
+    and cause exception.
 
 * Unit tests:
   - Added BasicPropertyReader tests.
@@ -40,6 +45,7 @@ CHANGES INTRODUCED IN XINS 0.198:
 * Logdoc:
   - The root cause of any exception is now determined and that is logged
     instead of the passed exception object.
+  - Added LogdocSerializable interface.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.197:
