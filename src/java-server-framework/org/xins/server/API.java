@@ -236,6 +236,7 @@ implements DefaultResultCodes {
 
       // Get the function object
       Function f = getFunction(functionName);
+      context.setCallID(f.assignCallID());
 
       // Detect case where function is not recognized
       if (f == null) {
