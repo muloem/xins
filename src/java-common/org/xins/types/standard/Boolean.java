@@ -1,0 +1,73 @@
+/*
+ * $Id$
+ */
+package org.xins.types.standard;
+
+import org.xins.types.Type;
+
+/**
+ * Standard type <em>_boolean</em>.
+ *
+ * @version $Revision$ $Date$
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ */
+public final class Boolean extends Type {
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * The only instance of this class. This field is never <code>null</code>.
+    */
+   public final static Boolean SINGLETON = new Boolean();
+
+   /**
+    * Value <code>true</code>.
+    */
+   private final static java.lang.Boolean TRUE = new java.lang.Boolean(true);
+
+   /**
+    * Value <code>false</code>.
+    */
+   private final static java.lang.Boolean FALSE = new java.lang.Boolean(false);
+
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>Boolean</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Boolean() {
+      super("boolean", java.lang.Boolean.class);
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   protected boolean isValidValueImpl(String value) {
+      return "true".equals(value) || "false".equals(value);
+   }
+
+   protected Object fromStringImpl(String string) {
+      if ("true".equals(string)) {
+         return TRUE;
+      } else {
+         return FALSE;
+      }
+   }
+}
