@@ -33,6 +33,8 @@ import org.xins.util.MandatoryArgumentChecker;
 		<xsl:value-of select="$locale" />
 
 		<xsl:text><![CDATA[</em> locale.
+ *
+ * @see Log
  */
 public final class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
