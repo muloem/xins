@@ -401,12 +401,6 @@ implements DefaultResultCodes {
     * @param buildSettings
     *    the build-time configuration properties, not <code>null</code>.
     *
-    * @throws IllegalArgumentException
-    *    if <code>buildSettings == null</code>.
-    *
-    * @throws Throwable
-    *    if the bootstrapping fails.
-    *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.
     *
@@ -664,9 +658,6 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
-    *
-    * @throws Exception
-    *    if the initialization of the instance failed.
     *
     * @since XINS 0.147
     */
@@ -1275,7 +1266,8 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doEnableFunction(ServletRequest request) {
+   private final CallResult doEnableFunction(ServletRequest request)
+   throws NullPointerException {
 
       // Get the name of the function to enable
       String functionName = request.getParameter("functionName");
@@ -1307,7 +1299,8 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doDisableFunction(ServletRequest request) {
+   private final CallResult doDisableFunction(ServletRequest request)
+   throws NullPointerException {
 
       // Get the name of the function to disable
       String functionName = request.getParameter("functionName");
