@@ -27,26 +27,26 @@ extends Exception {
    /**
     * Creates a message based on the specified constructor argument.
     *
-    * @param exception
+    * @param cause
     *    the cause exception, cannot be <code>null</code>.
     *
     * @return
     *    the message, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
+    *    if <code>cause == null</code>.
     */
-   private static final String createMessage(Throwable exception)
+   private static final String createMessage(Throwable cause)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
+      MandatoryArgumentChecker.check("cause", cause);
 
-      String exceptionMessage = exception.getMessage();
+      String exceptionMessage = cause.getMessage();
 
       FastStringBuffer buffer = new FastStringBuffer(150);
       buffer.append("Caught ");
-      buffer.append(exception.getClass().getName());
+      buffer.append(cause.getClass().getName());
       if (exceptionMessage != null && exceptionMessage.length() > 0) {
          buffer.append(". Message: \"");
          buffer.append(exceptionMessage);
@@ -67,28 +67,21 @@ extends Exception {
     * Constructs a new <code>DeinitializationException</code> with the
     * specified cause exception.
     *
-    * @param exception
+    * @param cause
     *    the cause exception, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
+    *    if <code>cause == null</code>.
     */
-   DeinitializationException(Throwable exception)
+   DeinitializationException(Throwable cause)
    throws IllegalArgumentException {
-      super(createMessage(exception));
-      _exception = exception;
+      super(createMessage(cause), cause);
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The wrapped cause exception. Can be <code>null</code>.
-    */
-   private final Throwable _exception;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -99,8 +92,11 @@ extends Exception {
     *
     * @return
     *    the wrapped cause exception, can be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.193. Use {@link #getCause()} instead.
     */
    public final Throwable getException() {
-      return _exception;
+      return getCause();
    }
 }

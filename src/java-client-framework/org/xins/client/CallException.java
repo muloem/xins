@@ -32,24 +32,17 @@ public abstract class CallException extends Exception {
     * @param message
     *    the detail message, can be <code>null</code>.
     *
-    * @param exception
+    * @param cause
     *    the cause exception, can be <code>null</code>.
     */
-   protected CallException(String message, Throwable exception) {
-      super(message);
-      _exception = exception;
+   protected CallException(String message, Throwable cause) {
+      super(message, cause);
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The wrapped exception.
-    */
-   private final Throwable _exception;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -60,8 +53,11 @@ public abstract class CallException extends Exception {
     *
     * @return
     *    the wrapped exception, can be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.193. Use {@link #getCause()} instead.
     */
    public final Throwable getException() {
-      return _exception;
+      return getCause();
    }
 }
