@@ -128,8 +128,8 @@ public final class GroupDescriptor extends Descriptor {
       System.arraycopy(members, 0, _members, 0, size);
 
       // Recursively add all TargetDescriptor instances to the Map
-      _targetsByCRC32 = new HashMap();
-      addTargetsByCRC32(members);
+      _targetsByCRC = new HashMap();
+      addTargetsByCRC(members);
    }
 
    /**
@@ -145,7 +145,7 @@ public final class GroupDescriptor extends Descriptor {
     *    where <em>group</em> is any {@link GroupDescriptor} instance found in
     *    <code>members</code> (at any level).
     */
-   private final void addTargetsByCRC32(Descriptor[] members)
+   private final void addTargetsByCRC(Descriptor[] members)
    throws NullPointerException {
 
       int size = members.length;
@@ -155,13 +155,13 @@ public final class GroupDescriptor extends Descriptor {
          // If this is a TargetDescriptor, put it in the map
          if (d instanceof TargetDescriptor) {
             TargetDescriptor target = (TargetDescriptor) d;
-            _targetsByCRC32.put(new Integer(target.getCRC32()), target);
+            _targetsByCRC.put(new Integer(target.getCRC()), target);
             _targetCount++;
 
          // Otherwise it is assumed to be a GroupDescriptor, recurse
          } else {
             GroupDescriptor group = (GroupDescriptor) d;
-            addTargetsByCRC32(group._members);
+            addTargetsByCRC(group._members);
          }
       }
    }
@@ -183,13 +183,13 @@ public final class GroupDescriptor extends Descriptor {
 
    /**
     * All contained <code>TargetDescriptor</code> instances, by CRC-32. This
-    * {@link Map} is used by {@link #getTargetByCRC32()} to lookup a
+    * {@link Map} is used by {@link #getTargetByCRC(int)} to lookup a
     * {@link TargetDescriptor} by CRC-32 checksum.
     *
     * <p>This field is initialized by the constructor and can never be
     * <code>null</code>.
     */
-   private final Map _targetsByCRC32;
+   private final Map _targetsByCRC;
 
    /**
     * The total number of targets in this group. The value of this field is
@@ -253,15 +253,15 @@ public final class GroupDescriptor extends Descriptor {
     * Returns the <code>TargetDescriptor</code> that matches the specified
     * CRC-32 checksum.
     *
-    * @param crc32
+    * @param crc
     *    the CRC-32 checksum.
     *
     * @return
     *    the {@link TargetDescriptor} that matches the specified checksum, or
     *    <code>null</code>, if none could be found in this group.
     */
-   public TargetDescriptor getTargetByCRC32(int crc32) {
-      return (TargetDescriptor) _targetsByCRC32.get(new Integer(crc32));
+   public TargetDescriptor getTargetByCRC(int crc) {
+      return (TargetDescriptor) _targetsByCRC.get(new Integer(crc));
    }
 
 
