@@ -183,7 +183,7 @@
 			<td class="value">
 				<xsl:choose>
 					<xsl:when test="$isenum = 'true'">
-						<select name="@name">
+						<select name="{@name}">
 							<xsl:attribute name="class">
 								<xsl:choose>
 									<xsl:when test="@required = 'true'">required</xsl:when>
