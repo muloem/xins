@@ -60,7 +60,7 @@ public abstract class Descriptor extends Object {
     * {@link ServiceDescriptor} instances, no instances of other classes and
     * no <code>null</code> values.
     *
-    * <p>Also, this iterator is guaranteed to return <em>at least</em> 1
+    * <p>Also, this iterator is guaranteed to return <em>at least</em> one
     * {@link ServiceDescriptor} instance.
     *
     * @return
