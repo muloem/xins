@@ -6,6 +6,19 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
+* XINS/Java Common Library:
+  - Added 'copyFrom' method to class ProtectedPropertyReader.
+  - Introduced IncorrectSecretKeyException class to be used by the
+    ProtectedPropertyReader and the ProtectedList classes so clients can
+    distinguish between secret key mismatches and other illegal argument
+    exceptions. The class is derived from class IllegalArgumentException to
+    retain backwards compatibility.
+  - Added tests for class ProtectedPropertyReader.
+
+* XINS/Java Server Framework:
+  - Improved documentation and some small aspects of the implementation of
+    class FunctionRequest.
+
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
     specs.
