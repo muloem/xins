@@ -17,7 +17,8 @@ import org.xins.util.MandatoryArgumentChecker;
  * @since XINS 0.41
  */
 public abstract class AbstractCompositeFunctionCaller
-extends AbstractFunctionCaller {
+extends AbstractFunctionCaller
+implements CompositeFunctionCaller {
 
    //-------------------------------------------------------------------------
    // Class fields
