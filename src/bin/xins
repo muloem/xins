@@ -11,6 +11,16 @@
 
 prog=`basename $0`
 project_home=`pwd`
+os=`uname`
+buildfile_base=build.xml
+builddir=${project_home}/build
+
+# Distinguish between operating systems
+if [ "${os}" = "FreeBSD" ]; then
+	echo_n="echo -n"
+else
+	echo_n="echo"
+fi
 
 # Make sure XINS_HOME is set
 xins_home=${XINS_HOME}
@@ -29,81 +39,119 @@ if [ "${xins_home}a" = "a" ]; then
 	guessed_xins_home=true
 fi
 
-# Recognise -version option
-if [ "$1" = "-version" ]; then
-	if [ "${guessed_xins_home}" = "true" ]; then
-		echo
-	fi
-	java -version
-	echo
-	ant -version
-	echo
-	ant -f ${xins_home}/build.xml version
-	exit 0
-fi
+# Parse arguments
+ant_args=
+deployment=
+bypass=false
+while [ ! "$#" = "0" ]; do
+	case $1 in
 
-# Make sure the XSLT style sheet exists
-style=${xins_home}/src/xslt/xins-project_to_ant-build.xslt
-if [ ! -f ${style} ]; then
-	echo "${prog}: FATAL: Cannot find stylesheet at:"
-	echo ${style}
-	exit 1
-fi
+		-version)
+			if [ "${guessed_xins_home}" = "true" ]; then
+				echo
+			fi
+			java -version
+			echo
+			ant -version
+			echo
+			ant -f ${xins_home}/build.xml version
+			exit 0
+			;;
 
-# Make sure the input file exists
-in_base=xins-project.xml
-in="${project_home}/${in_base}"
-if [ ! -f ${in} ]; then
-	echo "${prog}: ERROR: Cannot find input file:"
-	echo ${in}
-	exit 1
-fi
+		-bypass)
+			bypass=true
+			;;
 
-# Create the build directory
-builddir=${project_home}/build
-if [ ! -d ${builddir} ]; then
-	mkdir ${builddir}
-fi
+		-deployment)
+			if [ "${deployment}" != "" ]; then
+				echo "${prog}: FATAL: -deployment option can only be specified once."
+				exit 1;
+			fi
+			if [ "$2" = "" ]; then
+				echo "${prog}: FATAL: -deployment option needs argument."
+				exit 1;
+			fi
+			deployment=$2
+			shift
+			;;
 
-# Create the Ant build file
-buildfile_base=build.xml
-buildfile=${builddir}/${buildfile_base}
-os=`uname`
-if [ "${os}" = "FreeBSD" ]; then
-	mktemp_template="/tmp/xins.XXXXXXXX.tmp"
-	tmpout=`mktemp -q ${mktemp_template}`
-	returncode=$?
-	if [ ! "${returncode}a" = "0a" ]; then
-		echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template} (return code ${returncode})"
+		-*)
+			echo "${prog}: ERROR: Unrecognized option: $1"
+			;;
+
+		*)
+			if [ "${ant_args}" != "" ]; then
+				ant_args="${ant_args} "
+			fi
+			ant_args="${ant_args}$1"
+			;;
+
+	esac
+	
+	shift
+done
+
+if [ "${bypass}" = "false" ]; then
+	# Make sure the XSLT style sheet exists
+	style=${xins_home}/src/xslt/xins-project_to_ant-build.xslt
+	if [ ! -f ${style} ]; then
+		echo "${prog}: FATAL: Cannot find stylesheet at:"
+		echo ${style}
 		exit 1
 	fi
-else
-	tmpout=/tmp/xins.`whoami`.`date "+%Y%m%d%H%M.%S"`.tmp
-	echo -n "" > ${tmpout}
-	returncode=$?
-	if [ ! "${returncode}a" = "0a" ]; then
-		echo "${prog}: ERROR: Unable to create temporary file ${tmpout} (return code ${returncode})"
+
+	# Make sure the input file exists
+	in_base=xins-project.xml
+	in="${project_home}/${in_base}"
+	if [ ! -f ${in} ]; then
+		echo "${prog}: ERROR: Cannot find input file:"
+		echo ${in}
 		exit 1
 	fi
-fi
-echo -n ">> Generating ${buildfile_base}..."
-ant -f ${xins_home}/src/ant/transform.xml \
-    -Din=${in} \
-	-Dout=${buildfile} \
-	-Dstyle=${style} \
-    -Dxins_home=${xins_home} \
-    -Dproject_home=${project_home} \
-	-Dbuilddir=${builddir} > ${tmpout} 2> /dev/null
-returncode=$?
-if [ ! "${returncode}a" = "0a" ]; then
-	echo " [ FAILED ]"
-	echo "${prog}: ERROR: Unable to transform ${in_base}:"
-	cat ${tmpout}
+
+	# Create the build directory
+	if [ ! -d ${builddir} ]; then
+		mkdir ${builddir}
+	fi
+
+	# Create the Ant build file
+	buildfile=${builddir}/${buildfile_base}
+	if [ "${os}" = "FreeBSD" ]; then
+		mktemp_template="/tmp/xins.XXXXXXXX.tmp"
+		tmpout=`mktemp -q ${mktemp_template}`
+		returncode=$?
+		if [ ! "${returncode}a" = "0a" ]; then
+			echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template} (return code ${returncode})"
+			exit 1
+		fi
+	else
+		tmpout=/tmp/xins.`whoami`.`date "+%Y%m%d%H%M.%S"`.tmp
+		${echo_n} "" > ${tmpout}
+		returncode=$?
+		if [ ! "${returncode}a" = "0a" ]; then
+			echo "${prog}: ERROR: Unable to create temporary file ${tmpout} (return code ${returncode})"
+			exit 1
+		fi
+	fi
+	${echo_n} ">> Generating ${buildfile_base}..."
+	ant -f ${xins_home}/src/ant/transform.xml \
+    	-Din=${in} \
+		-Dout=${buildfile} \
+		-Dstyle=${style} \
+    	-Dxins_home=${xins_home} \
+    	-Dproject_home=${project_home} \
+		-Dbuilddir=${builddir} > ${tmpout} 2> /dev/null
+	returncode=$?
+	if [ ! "${returncode}a" = "0a" ]; then
+		echo " [ FAILED ]"
+		echo "${prog}: ERROR: Unable to transform ${in_base}:"
+		cat ${tmpout}
+		rm ${tmpout}
+		exit 1
+	fi
 	rm ${tmpout}
-	exit 1
+	echo " [ DONE ]"
 fi
-rm ${tmpout}
-echo " [ DONE ]"
 
 # Run Ant against the build file
-(cd ${builddir} && ant -f ${buildfile_base} $*)
+(cd ${builddir} && ant -f ${buildfile_base} -Ddeployment=${deployment} ${ant_args})
