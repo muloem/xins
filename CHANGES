@@ -3,7 +3,11 @@ CHANGES INTRODUCED IN XINS 0.195:
 
 * XINS/Java Common Library:
   - Changed TargetDescriptor class: Added connection and socket time-out
-    properties.
+    properties. As input for a time-out value non-positive numbers (either
+    zero or negative) indicate the respective time-out should be disabled. The
+    returned value in such a case is, however, always 0.
+    The String returned by toString() is now constructed when the object is
+    constructed and cached in a field.
   - Added controlTimeOut() method to the ServiceCaller class.
 
 * XINS/Java Server Framework:
