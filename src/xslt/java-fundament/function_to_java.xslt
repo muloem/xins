@@ -16,6 +16,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 
@@ -34,6 +35,7 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
+import org.xins.server.CallContext;
 import org.xins.server.Function;
 import org.xins.server.Responder;
 
@@ -105,6 +107,141 @@ public abstract class ]]></xsl:text>
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   protected final void handleCall(CallContext context)
+   throws Throwable {]]></xsl:text>
+		<xsl:if test="input/param">
+			<xsl:text>
+      // Get the input parameters</xsl:text>
+		</xsl:if>
+
+		<xsl:for-each select="input/param">
+			<xsl:if test="@name = 'context'">
+				<xsl:message terminate="yes">Name 'context' is reserved. It cannot be used as a parameter name.</xsl:message>
+			</xsl:if>
+			<xsl:text>
+      String </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> = context.getParameter("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>");</xsl:text>
+		</xsl:for-each>
+		<xsl:if test="input/param[@required='true']">
+			<xsl:text>
+
+      // Check that required parameters are indeed given
+      if (</xsl:text>
+			<xsl:for-each select="input/param[@required='true']">
+				<xsl:if test="not(position() = 1)"> || </xsl:if>
+				<xsl:text>isMissing(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>)</xsl:text>
+			</xsl:for-each>
+			<xsl:text>) {
+         context.startResponse(false, MISSING_PARAMETERS);</xsl:text>
+			<xsl:if test="input/param-combo[@type='inclusive-or']">
+				<xsl:text>
+
+      // Check inclusive-or parameter combinations</xsl:text>
+			</xsl:if>
+			<xsl:for-each select="input/param-combo[@type='inclusive-or']">
+				<xsl:text>
+      } else if (</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
+					<xsl:text>isMissing(</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>)</xsl:text>
+				</xsl:for-each>
+				<xsl:text>) {
+         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+			</xsl:for-each>
+			<xsl:if test="input/param-combo[@type='exclusive-or']">
+				<xsl:text>
+
+      // Check exclusive-or parameter combinations</xsl:text>
+			</xsl:if>
+			<xsl:for-each select="input/param-combo[@type='exclusive-or']">
+				<xsl:for-each select="param-ref">
+					<xsl:variable name="active" select="@name" />
+					<xsl:text>
+      } else if (!isMissing(</xsl:text>
+					<xsl:value-of select="$active" />
+					<xsl:text>) &amp;&amp; (</xsl:text>
+					<xsl:for-each select="../param-ref[not(@name = $active)]">
+						<xsl:if test="position() &gt; 1"> || </xsl:if>
+						<xsl:text>!isMissing(</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>)</xsl:text>
+					</xsl:for-each>
+					<xsl:text>)) {
+         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+				</xsl:for-each>
+			</xsl:for-each>
+			<xsl:if test="input/param-combo[@type='exclusive-or']">
+				<xsl:text>
+
+      // Check all-or-none parameter combinations</xsl:text>
+			</xsl:if>
+			<xsl:for-each select="input/param-combo[@type='all-or-none']">
+				<xsl:text>
+      } else if (!(</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
+					<xsl:text>isMissing(</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>)</xsl:text>
+				</xsl:for-each>
+				<xsl:text>) &amp;&amp; (</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> || </xsl:if>
+					<xsl:text>isMissing(</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>)</xsl:text>
+				</xsl:for-each>
+				<xsl:text>)) {
+         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+			</xsl:for-each>
+			<xsl:if test="input/param[not(@type='text' or string-length(@type) = 0)]">
+				<xsl:text>
+
+      // Check values are valid for the associated types</xsl:text>
+			</xsl:if>
+			<xsl:for-each select="input/param[not(@type='text' or string-length(@type) = 0)]">
+				<xsl:text>
+      } else if (!</xsl:text>
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="@type" />
+					</xsl:with-param>
+				</xsl:call-template>
+				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>)) {
+         context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+			</xsl:for-each>
+			<xsl:text>
+
+      // Otherwise everything is okay, let the subclass do the thing
+      } else {
+         call(context</xsl:text>
+		</xsl:if>
+		<xsl:if test="not(input/param[@required='true'])">
+			<xsl:text>
+      // Nothing to check, just let the subclass do the thing
+      call(context</xsl:text>
+		</xsl:if>
+		<xsl:for-each select="input/param">
+			<xsl:text>, </xsl:text>
+			<xsl:value-of select="@name" />
+		</xsl:for-each>
+		<xsl:text>);</xsl:text>
+		<xsl:if test="input/param[@required='true']">
+			<xsl:text>
+      }</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
+   }
 
    /**
     * Calls this function.

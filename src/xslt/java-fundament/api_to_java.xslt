@@ -146,114 +146,15 @@ public class APIImpl extends API {
 		<!-- TODO: Default functions -->
 		<xsl:text>
       if (function == null || function.length() == 0) {
-         context.startResponse(false, "MissingFunctionName");
-</xsl:text>
+         context.startResponse(false, "MissingFunctionName");</xsl:text>
 		<xsl:for-each select="//api/function">
-			<xsl:variable name="function_file" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
-
-			<xsl:text>      } else if ("</xsl:text>
+			<xsl:text>
+      } else if ("</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>".equals(function)) {&#10;</xsl:text>
-			<xsl:for-each select="document($function_file)/function/input/param">
-				<xsl:text>         String </xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> = context.getParameter("</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>");&#10;</xsl:text>
-			</xsl:for-each>
-			<xsl:if test="document($function_file)/function/input/param[@required='true']">
-				<xsl:text>&#10;         if (</xsl:text>
-				<xsl:for-each select="document($function_file)/function/input/param[@required='true']">
-					<xsl:if test="not(position() = 1)">
-						<xsl:text> || </xsl:text>
-					</xsl:if>
-					<xsl:text>isMissing(</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>)</xsl:text>
-				</xsl:for-each>
-				<xsl:text>) {
-            context.startResponse(false, MISSING_PARAMETERS);</xsl:text>
-				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='inclusive-or']">
-					<xsl:text>
-         } else if (</xsl:text>
-					<xsl:for-each select="param-ref">
-						<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-						<xsl:text>isMissing(</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>)</xsl:text>
-					</xsl:for-each>
-					<xsl:text>) {
-            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
-				</xsl:for-each>
-				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='exclusive-or']">
-					<xsl:for-each select="param-ref">
-						<xsl:variable name="active" select="@name" />
-						<xsl:text>
-         } else if (!isMissing(</xsl:text>
-						<xsl:value-of select="$active" />
-						<xsl:text>) &amp;&amp; (</xsl:text>
-						<xsl:for-each select="../param-ref[not(@name = $active)]">
-							<xsl:if test="position() &gt; 1"> || </xsl:if>
-							<xsl:text>!isMissing(</xsl:text>
-							<xsl:value-of select="@name" />
-							<xsl:text>)</xsl:text>
-						</xsl:for-each>
-						<xsl:text>)) {
-            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
-					</xsl:for-each>
-				</xsl:for-each>
-				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='all-or-none']">
-					<xsl:text>
-         } else if (!(</xsl:text>
-					<xsl:for-each select="param-ref">
-						<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-						<xsl:text>isMissing(</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>)</xsl:text>
-					</xsl:for-each>
-					<xsl:text>) &amp;&amp; (</xsl:text>
-					<xsl:for-each select="param-ref">
-						<xsl:if test="position() &gt; 1"> || </xsl:if>
-						<xsl:text>isMissing(</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>)</xsl:text>
-					</xsl:for-each>
-					<xsl:text>)) {
-            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
-				</xsl:for-each>
-				<xsl:for-each select="document($function_file)/function/input/param[not(@type='text' or string-length(@type) = 0)]">
-					<xsl:text>
-         } else if (!</xsl:text>
-					<xsl:call-template name="hungarianUpper">
-						<xsl:with-param name="text">
-							<xsl:value-of select="@type" />
-						</xsl:with-param>
-					</xsl:call-template>
-					<xsl:text>.SINGLETON.isValidValue(</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>)) {
-            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
-				</xsl:for-each>
-				<xsl:text>
-         } else {
-   </xsl:text>
-			</xsl:if>
-			<xsl:text>         _function</xsl:text>
+			<xsl:text>".equals(function)) {
+         _function</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:if test="@name = 'context'">
-				<xsl:message terminate="yes">
-					<xsl:text>Name 'context' is reserved. It cannot be used as a parameter name.</xsl:text>
-				</xsl:message>
-			</xsl:if>
-			<xsl:text>.call(context</xsl:text>
-			<xsl:for-each select="document($function_file)/function/input/param">
-				<xsl:text>, </xsl:text>
-				<xsl:value-of select="@name" />
-			</xsl:for-each>
-			<xsl:text>);&#10;</xsl:text>
-			<xsl:if test="document($function_file)/function/input/param[@required='true']">
-				<xsl:text>         }&#10;</xsl:text>
-			</xsl:if>
+			<xsl:text>.handleCall(context);</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
       } else {
