@@ -503,7 +503,7 @@ implements Servlet {
     */
    public void destroy() {
 
-      Library.LIFESPAN_LOG.debug("XINS/Java Server Framework shutdown initiated.");
+      Library.LIFESPAN_LOG.debug("Shutting down XINS/Java Server Framework.");
 
       synchronized (_stateLock) {
          // Set the state temporarily to DISPOSING
@@ -629,7 +629,7 @@ implements Servlet {
          Library.LIFESPAN_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
          applyConfigFile();
          // TODO: reinit API
-         Library.LIFESPAN_LOG.info("Re-initialized XINS/Java Server Framework.");
+         Library.LIFESPAN_LOG.info("XINS/Java Server Framework re-initialized.");
       }
 
       public void fileNotFound() {
