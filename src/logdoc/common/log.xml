@@ -68,18 +68,19 @@
 	<group id="service" name="Service calling framework">
 		<entry id="3303" level="ERROR" exception="true">
 			<description>URL is malformed.</description>
-			<param name="url" />
+			<param name="url" type="text" nullable="false" />
 		</entry>
 		<entry id="3312" level="DEBUG">
 			<description>Call to a specific target succeeded.</description>
-			<param name="url" />
+			<param name="url" type="text" nullable="false" />
 		</entry>
 		<entry id="3313" level="WARNING">
 			<description>Call to a specific target failed.</description>
-			<param name="url" />
+			<param name="url" type="text" nullable="false" />
 		</entry>
 		<entry id="3314" level="ERROR">
 			<description>Call completely failed.</description>
+			<!-- TODO: Include call (request) ID ? -->
 		</entry>
 		<entry id="3315" level="INFO">
 			<description>No more targets and no fail-over</description>
@@ -107,133 +108,138 @@
 		<entry id="3205" level="DEBUG">
 			<description>Increasing capacity of the FastStringBuffer.</description>
 			<param name="currentCapacity" type="int32" nullable="false" />
-			<param name="newCapacity" type="int32" nullable="false" />
+			<param name="newCapacity"     type="int32" nullable="false" />
 		</entry>
 	</group>
 
 	<group id="threads" name="Threading">
 		<entry id="3407" level="DEBUG">
 			<description>Constructed new Doorman.</description>
-			<param name="className" nullable="false" />
-			<param name="queueSize" type="int32" nullable="false" />
+			<param name="className"    type="text"  nullable="false" />
+			<param name="queueSize"    type="int32" nullable="false" />
 			<param name="maxQueueSize" type="int64" nullable="false" />
-			<param name="strict" nullable="false" />
+			<param name="strict"       type="text"  nullable="false" />
 		</entry>
 		<entry id="3408" level="DEBUG">
-			<description>enterAsReader() called for a reader.</description>
+			<!-- TODO: To TRACE level ? -->
+			<description>enterAsReader().</description>
 			<param name="className" nullable="false" />
 			<param name="reader" nullable="false" />
 		</entry>
 		<entry id="3409" level="WARNING">
-			<description>A reader attempts to enter as a reader while it is already the active writer.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<description>Active writer attempts to enter as reader.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3410" level="WARNING">
-			<description>A reader attempts to enter as a reader while it is already an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<description>Active reader attempts to enter as reader.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3411" level="DEBUG">
-			<description>enterAsWriter() called for a writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>enterAsWriter() called.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3412" level="WARNING">
-			<description>A writer attempts to enter as a writer but it is already the active writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>Active writer attempts to enter as writer.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3413" level="WARNING">
-			<description>A writer attempts to enter as a writer but it is already an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>Active reader attempts to enter as writer.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3414" level="DEBUG">
-			<description>leaveAsReader() called for a reader.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<!-- TODO: To TRACE level ? -->
+			<description>leaveAsReader() called.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3415" level="WARNING">
-			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<description>Thread attempts to leave protected area as reader, but it is not an active reader.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3416" level="DEBUG">
-			<description>leaveAsWriter() called for a writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>leaveAsWriter() called.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3417" level="WARNING">
-			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>Thread attempts to leave protected area as writer, but it is not the current writer.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3418" level="ERROR">
-			<description>A reader attempts to enter as a reader while it is already the active writer.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<description>Active writer attempts to enter as reader.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3419" level="ERROR">
-			<description>A reader attempts to enter as a reader while it is already an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<description>Active reader attempts to enter as reader.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3420" level="ERROR">
 			<description>Unable to add a thread due to a time-out.</description>
-			<param name="className" nullable="false" />
-			<param name="thread" nullable="false" />
+			<!-- TODO: Make description more elaborate -->
+			<param name="className"        type="text"  nullable="false" />
+			<param name="thread"           type="text"  nullable="false" />
 			<param name="maxQueueWaitTime" type="int64" nullable="false" />
 		</entry>
 		<entry id="3421" level="ERROR">
 			<description>A reader was interrupted in enterAsReader(), but not in the set of current readers.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<!-- TODO: Make description more elaborate -->
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3422" level="ERROR">
-			<description>A writer attempts to enter as a writer but it is already the active writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>Active writer attempts to enter as writer.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3423" level="ERROR">
-			<description>A writer attempts to enter as a writer but it is already an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<description>Active reader attempts to enter as writer.</description>
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3424" level="ERROR">
 			<description>A writer was interrupted in enterAsWriter().</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
-			<param name="currentWriter" nullable="false" />
+			<param name="className"     type="text" nullable="false" />
+			<param name="writer"        type="text" nullable="false" />
+			<param name="currentWriter" type="text" nullable="false" />
 		</entry>
 		<entry id="3425" level="ERROR">
 			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
+			<param name="className" type="text" nullable="false" />
+			<param name="reader"    type="text" nullable="false" />
 		</entry>
 		<entry id="3426" level="ERROR">
 			<description>Found reader at top of queue while a reader is leaving the protected area.</description>
-			<param name="className" nullable="false" />
+			<param name="className" type="text" nullable="false" />
 		</entry>
 		<entry id="3427" level="ERROR">
 			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
-			<param name="className" nullable="false" />
-			<param name="writer" nullable="false" />
+			<param name="className" type="text" nullable="false" />
+			<param name="writer"    type="text" nullable="false" />
 		</entry>
 		<entry id="3428" level="ERROR">
 			<description>The thread cannot be added because it is already in the queue.</description>
-			<param name="className" nullable="false" />
-			<param name="thread" nullable="false" />
-			<param name="existingType" nullable="false" />
-			<param name="type" nullable="false" />
+			<param name="className"    type="text" nullable="false" />
+			<param name="thread"       type="text" nullable="false" />
+			<param name="existingType" type="text" nullable="false" />
+			<param name="type"         type="text" nullable="false" />
 		</entry>
 		<entry id="3429" level="ERROR">
-			<description>Cannot pop an empty queue.</description>
+			<description>Attempt to pop empty queue.</description>
 		</entry>
 		<entry id="3430" level="ERROR">
 			<description>The thread is not in the queue.</description>
-			<param name="className" nullable="false" />
-			<param name="thread" nullable="false" />
+			<!-- TODO: Improve description -->
+			<param name="className" type="text" nullable="false" />
+			<param name="thread"    type="text" nullable="false" />
 		</entry>
 	</group>
 
