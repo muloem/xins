@@ -67,7 +67,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Set the tar task to handle long file names as GNU tar.
   - Fixed bug 1109858: The source code is no longer copied to the build 
     directory for the javadoc or the j2h command. Only the package target will
-    copy the files to a new build-lf directory to fix the line feed problems.
+    copy the files to a new build/lf directory to unify the newline
+    characters.
   - The clean target does not delete the file that are not regenerated in
     the release anymore.
 

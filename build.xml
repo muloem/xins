@@ -946,7 +946,7 @@ ${sf.file}</fail>
 		<copy todir="build/lf" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
-				<include name="bin/*"              />
+				<include name="bin/*"                  />
 			</fileset>
 		</copy>
 		<fixcrlf srcdir="build/lf" eol="unix" eof="remove">
