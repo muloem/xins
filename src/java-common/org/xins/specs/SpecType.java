@@ -169,6 +169,12 @@ extends Object {
       return _parentType;
    }
 
+   public final boolean isValidParent(Spec parent) {
+      return (parent == null && _parentType == null)
+          || (parent != null && _parentType == parent.getType());
+      // XXX: Does not support SpecType inheritance
+   }
+
    /**
     * Checks that the specified name for a component of this type matches the
     * criteria for such a name.

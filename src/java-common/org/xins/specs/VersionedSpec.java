@@ -68,6 +68,9 @@ extends Spec {
     * @param type
     *    the type of the component, not <code>null</code>.
     *
+    * @param parent
+    *    the parent for the component, not <code>null</code>.
+    *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
@@ -86,8 +89,13 @@ extends Spec {
     * @throws InvalidVersionException
     *    if <code>version</code> is not a well-formed version number string.
     */
-   private static final SpecType checkArguments(SpecType type, String name, String version)
-   throws IllegalArgumentException, InvalidNameException, InvalidVersionException {
+   private static final SpecType checkArguments(SpecType type,
+                                                Spec     parent,
+                                                String   name,
+                                                String   version)
+   throws IllegalArgumentException,
+          InvalidNameException,
+          InvalidVersionException {
 
       // Check required arguments
       MandatoryArgumentChecker.check("type", type, "name", name, "version", version);
@@ -138,9 +146,42 @@ extends Spec {
    throws IllegalArgumentException,
           InvalidNameException,
           InvalidVersionException {
+      this(type, null, name, version);
+   }
+
+   /**
+    * Constructs a new <code>VersionedSpec</code> object with the specified
+    * type, name and version. This constructor can only be called by
+    * subclasses in the same package.
+    *
+    * @param type
+    *    the type of the component, not <code>null</code>.
+    *
+    * @param parent
+    *    the parent for the component, can be <code>null</code>.
+    *
+    * @param name
+    *    the name for the component, not <code>null</code>.
+    *
+    * @param version
+    *    the version for the component, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || name == null || version == null</code>.
+    *
+    * @throws InvalidNameException
+    *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
+    *
+    * @throws InvalidVersionException
+    *    if <code>version</code> is not a well-formed version number string.
+    */
+   VersionedSpec(SpecType type, Spec parent, String name, String version)
+   throws IllegalArgumentException,
+          InvalidNameException,
+          InvalidVersionException {
 
       // Check preconditions and call superconstructor
-      super(checkArguments(type, name, version), name);
+      super(checkArguments(type, parent, name, version), parent, name);
 
       _version = version;
    }

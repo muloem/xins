@@ -54,12 +54,11 @@ extends VersionedSpec {
     * @throws InvalidVersionException
     *    if <code>version</code> is not a well-formed version number string.
     */
-   public TypeSpec(String name, String version)
+   public TypeSpec(APISpec parent, String name, String version)
    throws IllegalArgumentException,
           InvalidNameException,
           InvalidVersionException {
-      super(TYPE, name, version);
-      // TODO: super(TYPE, parent, name, version);
+      super(TYPE, parent, name, version);
    }
 
 

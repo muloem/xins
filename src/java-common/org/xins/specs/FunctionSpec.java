@@ -58,11 +58,7 @@ extends VersionedSpec {
    throws IllegalArgumentException,
           InvalidNameException,
           InvalidVersionException {
-      super(TYPE, name, version);
-      // TODO: super(TYPE, parent, name, version);
-
-      // TODO: Remove
-      MandatoryArgumentChecker.check("parent", parent);
+      super(TYPE, parent, name, version);
    }
 
 
