@@ -76,13 +76,17 @@ public class FunctionResult {
    }
 
    /**
-    * Checks that the output parameters are set as specified.
-    * If a parameter is missing of is invalid an <code>InvalidResponseResult</code>,
-    * if the parameters are correct <code>null</code> is returned.
+    * Checks that the output parameters are set as specified. If a parameter
+    * is missing or if the value for it is invalid, then an
+    * <code>InvalidResponseResult</code> is returned. Otherwise the parameters
+    * are considered valid, and <code>null</code> is returned.
+    *
+    * <p>The implementation of this method in class {@link FunctionResult}
+    * always returns <code>null</code>.
     *
     * @return
-    *    the InvalidResponseResult if at least one output parameter is missing
-    *    or invalid, <code>null</code> otherwise.
+    *    an {@link InvalidResponseResult} instance if at least one output
+    *    parameter is missing or invalid, or <code>null</code> otherwise.
     */
    protected InvalidResponseResult checkOutputParameters() {
       return null;
