@@ -234,7 +234,7 @@ public class Properties extends Type {
    throws TypeValueException {
 
       // Construct a PropertyReader to store the properties in
-      BasicPropertyReader pr = new BasicPropertyReader(propertyKey);
+      BasicPropertyReader pr = new BasicPropertyReader();
 
       // Store the property keys
       HashSet propertyKeys = new HashSet();
