@@ -205,6 +205,7 @@ implements FunctionCaller {
          startIndex = _hostAddressIndex;
       }
 
+      // TODO: Allow configuration of soft load balancing
       final int maxAttempts = 2;
       Exception lastException = null;
       byte[] parameterStringBytes = parameterString.getBytes("US-ASCII");
