@@ -881,6 +881,7 @@ ${sf.file}</fail>
 				<include name="jetty_filteredproject.xml" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
+				<include name="xins-project/.version.properties" />
 				<include name="xins-project/**/*.xml" />
 				<include name="xins-project/**/*.fnc" />
 				<include name="xins-project/**/*.typ" />

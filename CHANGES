@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
+
+* Examples:
+  - Added .version.properties in the demo directory of the release.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
 * General:
