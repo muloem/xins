@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.156:
+
+* Generated specification documentation:
+  - First copying CSS and then generating specdocs for the API.
+  - Supporting deprecation of element attributes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.155:
 
 * XINS/Java Server Framework:
