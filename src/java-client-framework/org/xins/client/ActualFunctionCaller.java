@@ -20,6 +20,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.http.HTTPRequester;
+import org.xins.util.text.HexConverter;
 import org.xins.util.text.FastStringBuffer;
 
 /**
@@ -200,6 +201,7 @@ extends AbstractFunctionCaller {
       _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
       _crc32            = computeCRC32(_url);
+      _crc32String      = HexConverter.toHexString(_crc32);
    }
 
 
@@ -233,6 +235,11 @@ extends AbstractFunctionCaller {
     * The CRC-32 checksum for the URL.
     */
    private final long _crc32;
+
+   /**
+    * The CRC-32 checksum for the URL, as a String.
+    */
+   private final String _crc32String;
 
 
    //-------------------------------------------------------------------------
@@ -394,9 +401,25 @@ extends AbstractFunctionCaller {
     *    the CRC-32 checksum.
     */
    public long getCRC32() {
-
-      // TODO: Store the CRC-32 value in an int
-
+      // TODO: Store the CRC-32 value in an int ?
       return _crc32;
+   }
+
+   /**
+    * Returns the CRC-32 checksum for the URL of this function caller, as a
+    * String.
+    *
+    * @return
+    *    the CRC-32 checksum, as a {@link String} containing an unsigned hex
+    *    number.
+    */
+   public String getCRC32String() {
+      return _crc32String;
+   }
+
+   public ActualFunctionCaller getActualFunctionCallerByCRC32(String crc32)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("crc32", crc32);
+      return _crc32String.equals(crc32) ? this : null;
    }
 }

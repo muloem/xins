@@ -121,4 +121,22 @@ public interface FunctionCaller {
     */
    CallResult call(CallRequest request)
    throws IllegalArgumentException, IOException, InvalidCallResultException;
+
+   /**
+    * Gets the contained actual function caller by checksum.
+    *
+    * @param crc32
+    *    the CRC-32 checksum of the target API URL, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the actual function caller that matches the specified checksum, or
+    *    <code>null</code> if there is no such actual function caller within
+    *    this (composite) function caller.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>crc32 == null</code>.
+    */
+   ActualFunctionCaller getActualFunctionCallerByCRC32(String crc32)
+   throws IllegalArgumentException;
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.HexConverter;
 
 /**
  * Grouping of function callers. This grouping is of a certain type (see
@@ -204,10 +205,11 @@ extends AbstractCompositeFunctionCaller {
       MandatoryArgumentChecker.check("type", type);
 
       // Initialize fields
-      _type                               = type;
-      _actualFunctionCallers              = new ArrayList();
-      _actualFunctionCallersByURL         = new HashMap();
-      _actualFunctionCallersByURLChecksum = new HashMap();
+      _type                                     = type;
+      _actualFunctionCallers                    = new ArrayList();
+      _actualFunctionCallersByURL               = new HashMap();
+      _actualFunctionCallersByURLChecksum       = new HashMap();
+      _actualFunctionCallersByURLChecksumString = new HashMap();
 
       addActualFunctionCallers(members);
    }
@@ -241,6 +243,13 @@ extends AbstractCompositeFunctionCaller {
     * <code>null</code>.
     */
    private final Map _actualFunctionCallersByURLChecksum;
+
+   /**
+    * Mappings from URL checksum strings to <code>ActualFunctionCaller</code>.
+    * The checksums are stored as {@link String} instances. This {@link Map}
+    * cannot be <code>null</code>.
+    */
+   private final Map _actualFunctionCallersByURLChecksumString;
 
 
    //-------------------------------------------------------------------------
@@ -289,6 +298,9 @@ extends AbstractCompositeFunctionCaller {
             // Store the ActualFunctionCaller by URL checksum
             long checksum = afc.getCRC32();
             _actualFunctionCallersByURLChecksum.put(new Long(checksum), afc);
+
+            // Store the ActualFunctionCaller by URL checksum string
+            _actualFunctionCallersByURLChecksumString.put(HexConverter.toHexString(checksum), afc);
 
          // If the member is composite, get all its members
          } else if (member instanceof CompositeFunctionCaller) {
@@ -351,6 +363,11 @@ extends AbstractCompositeFunctionCaller {
     */
    public final ActualFunctionCaller getActualFunctionCaller(long checksum) {
       return (ActualFunctionCaller) _actualFunctionCallersByURLChecksum.get(new Long(checksum));
+   }
+
+   public final ActualFunctionCaller getActualFunctionCallerByCRC32(String crc32)
+   throws IllegalArgumentException {
+      return (ActualFunctionCaller) _actualFunctionCallersByURLChecksumString.get(crc32);
    }
 
    public final CallResult call(String sessionID,
