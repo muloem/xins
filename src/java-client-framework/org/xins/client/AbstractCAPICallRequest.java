@@ -59,6 +59,10 @@ extends Object {
     * <p>This method is called when the request is executed, but it may also
     * be called in advance.
     *
+    * <p>The implementation of this method is delegated to the abstract
+    * {@link #validateImpl()} method, which must be implemented by concrete
+    * subclasses.
+    *
     * @throws UnacceptableRequestException
     *    if this request is considered unacceptable.
     */
