@@ -40,6 +40,7 @@ import org.xins.util.text.SimplePatternParser;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
  */
 public final class AccessRule
 extends Object {
@@ -97,7 +98,7 @@ extends Object {
     *    regular expression used for matching (or not) a function name; cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>filter == null || functionNamePattern == null</code>.
+    *    if <code>ipFilter == null || functionNamePattern == null</code>.
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
@@ -107,13 +108,21 @@ extends Object {
       MandatoryArgumentChecker.check("ipFilter", ipFilter,
                                      "functionNamePattern", functionNamePattern);
 
+      _ipFilter = ipFilter;
       // TODO
+
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The IPFilter used to create the Access rule
+    */
+   private final IPFilter _ipFilter;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -137,7 +146,7 @@ extends Object {
     *    the IP filter, cannot be <code>null</code>.
     */
    public IPFilter getIPFilter() {
-      return null; // TODO
+      return _ipFilter;
    }
 
    /**
