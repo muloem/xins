@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.203:
 * XINS/Java Common Library:
   - Replaced the way to find the hostname for the hostname task.
 
+* XINS/Java Client Framework:
+  - Removed the deprecated getCode() method from UnsuccessfulCallException.
+  - Extended interface of UnacceptableCallResultException.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.202:
 
