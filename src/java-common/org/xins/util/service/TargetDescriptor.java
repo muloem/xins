@@ -189,6 +189,16 @@ public final class TargetDescriptor extends Descriptor {
       return _timeOut;
    }
 
+   /**
+    * Returns the CRC-32 checksum for the URL of this function caller.
+    *
+    * @return
+    *    the CRC-32 checksum.
+    */
+   public int getCRC32() {
+      return _crc32;
+   }
+
    public java.util.Iterator iterateServices() {
       return new Iterator();
    }
