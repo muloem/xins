@@ -6,6 +6,9 @@ CHANGES INTRODUCED IN XINS 0.105:
     method that controls if an ActualFunctionCaller that is being constructed
     actually checks if the API is up or not. Default remains true.
 
+* XINS/Java Common Library:
+  - Added org.xins.util.sd package.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.104:
 
