@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.146:
     improved Javadoc comments, improved exception messages, improved exception
     handling, etc.
   - Renamed ServiceDescriptor class to TargetDescriptor.
+  - Removed methods getByName(String) and getByValue(String) in EnumType.
+    These had been deprecated since XINS 0.109.
 
 * XINS/Java Client Framework:
   - Added XINSServiceCaller class.
