@@ -1035,10 +1035,21 @@ implements DefaultResultCodes {
     */
    private final void doGetStatistics(CallContext context)
    throws IOException {
-      long now = System.currentTimeMillis();
       context.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
-      context.param("now",     DateConverter.toDateString(_timeZone, now));
+      context.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
 
+      // Currently available processors
+      Runtime rt = Runtime.getRuntime();
+      context.param("availableProcessors", String.valueOf(rt.availableProcessors()));
+
+      // Heap memory statistics
+      context.startTag("heap");
+      context.attribute("free",  String.valueOf(rt.freeMemory()));
+      context.attribute("total", String.valueOf(rt.totalMemory()));
+      context.attribute("max",   String.valueOf(rt.maxMemory()));
+      context.endTag(); // heap
+
+      // Function-specific statistics
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
