@@ -355,7 +355,7 @@ implements DefaultResultCodes {
       }
 
       // Log build-time properties
-      if (_deployment != null) {
+      if (_deployment == null) {
          LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
       } else {
          LOG.info("Built deployment \"" + _deployment + "\" on " + _buildHost + " (" + _buildTime + ").");
