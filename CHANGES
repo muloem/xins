@@ -20,8 +20,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     changed [a-zA-Z] range into [a-z], using the Perl5Compiler.CASE_INSENSITIVE_MASK
     in the call to the Perl5Compiler.compile() method instead to enable case-
     insensitive matches.
-  - Extended test set for class TargetDescriptor. 
-    Fixed incorrect variable reference.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
@@ -59,8 +57,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
-  - Optimized code, the entry logger is created only the first time that the
-    log is called.
+  - Optimized performance: the Logger object is looked up only once, the first
+    time that the entry is logged.
+    Typical impact on performance: Major.
 
 * Build and release process:
   - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
@@ -76,7 +75,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - An object is created for the data input parameter.
 
 * Generation of CAPI classes:
-  - Slightly improved performance by making SECRET_KEY a class field.
+  - Optimized performance: Made SECRET_KEY a class field.
+    Typical impact on performance: Mimimal.
 
 * Build and release process:
   - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
@@ -84,8 +84,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - Fixed netbeans-debug target.
 
 * Libraries
-  - Upgraded xmlenc library to version 0.45 which should result in a 
-    performance improvement.
+  - Updated xmlenc from 0.44 to 0.45, which should result in a performance
+    improvement.
+    Typical impact on performance: Medium.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
