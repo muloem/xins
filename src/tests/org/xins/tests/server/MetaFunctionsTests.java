@@ -18,8 +18,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.client.UnsuccessfulXINSCallException;
+
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPMethod;
+import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.client.DataElement;
@@ -218,6 +223,140 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result.getErrorCode());
       assertNull("The function returned a data element.", result.getDataElement());
       assertNull("The function returned some parameters.", result.getParameters());
+   }
+   
+   public void testGetFunctionList() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_GetFunctionList", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+      assertNull("The function returned some parameters.", result.getParameters());
+      assertNotNull("The function did not return a data element.", result.getDataElement());
+      Iterator functions = result.getDataElement().getChildren();
+      while (functions.hasNext()) {
+         DataElement nextFunction = (DataElement) functions.next();
+         assertEquals("Element other than a function found.", "function", nextFunction.getName());
+         String version = nextFunction.get("version");
+         String name = nextFunction.get("name");
+         String enabled = nextFunction.get("enabled");
+         assertNotNull(version);
+         assertNotNull(name);
+         assertNotNull(enabled);
+         try {
+            Double.parseDouble(version);
+         } catch (NumberFormatException exception) {
+            fail("Inccorect version number: " + exception.getMessage());
+         }
+         // By default all function are enabled
+         assertEquals("The function is not enabled.", "true", enabled);
+      }
+   }
+   
+   public void testGetSettings() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_GetSettings", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+      assertNull("The function returned some parameters.", result.getParameters());
+      assertNotNull("The function did not return a data element.", result.getDataElement());
+      Iterator functions = result.getDataElement().getChildren();
+      
+      assertTrue("No build section defined.", functions.hasNext());
+      DataElement build = (DataElement) functions.next();
+      assertNull(build.getAttributes());
+      assertEquals("build", build.getName());
+      Iterator buildProps = build.getChildren();
+      assertNotNull(buildProps);
+      while (buildProps.hasNext()) {
+         DataElement nextProp = (DataElement) buildProps.next();
+         assertEquals("Element other than a property found.", "property", nextProp.getName());
+         assertNotNull("No name attribute for the property.", nextProp.get("name"));
+         assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
+      }
+      
+      assertTrue("No runtime section defined.", functions.hasNext());
+      DataElement runtime = (DataElement) functions.next();
+      assertNull(runtime.getAttributes());
+      assertEquals("runtime", runtime.getName());
+      Iterator runtimeProps = runtime.getChildren();
+      assertNotNull(runtimeProps);
+      while (runtimeProps.hasNext()) {
+         DataElement nextProp = (DataElement) runtimeProps.next();
+         assertEquals("Element other than a property found.", "property", nextProp.getName());
+         assertNotNull("No name attribute for the property.", nextProp.get("name"));
+         assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
+      }
+      
+      assertTrue("No system section defined.", functions.hasNext());
+      DataElement system = (DataElement) functions.next();
+      assertNull(system.getAttributes());
+      assertEquals("system", system.getName());
+      Iterator systemProps = system.getChildren();
+      assertNotNull(systemProps);
+      while (systemProps.hasNext()) {
+         DataElement nextProp = (DataElement) systemProps.next();
+         assertEquals("Element other than a property found.", "property", nextProp.getName());
+         assertNotNull("No name attribute for the property.", nextProp.get("name"));
+         assertNotNull("No value for the \"" + nextProp.get("name") + "\" property", nextProp.getText());
+      }
+   }
+   
+   public void testDisableEnableFunction() throws Throwable {
+      // Test that the function is working
+      BasicPropertyReader parameters = new BasicPropertyReader();
+      parameters.set("inputText", "12000");
+      XINSCallRequest request = new XINSCallRequest("Logdoc", parameters);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+      assertNull("The function returned some parameters.", result.getParameters());
+      assertNull("The function returned a data element.", result.getDataElement());
+      
+      // Disable the function
+      BasicPropertyReader parameters2 = new BasicPropertyReader();
+      parameters2.set("functionName", "Logdoc");
+      XINSCallRequest request2 = new XINSCallRequest("_DisableFunction", parameters2);
+      XINSCallResult result2 = caller.call(request);
+      assertNull("The function returned a result code.", result2.getErrorCode());
+      assertNull("The function returned some parameters.", result2.getParameters());
+      assertNull("The function returned a data element.", result2.getDataElement());
+      
+      // Test that the function is not working anymore
+      try {
+         XINSCallResult result3 = caller.call(request);
+         fail("The call of a disable function did not throw an exception.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("Incorrect error code.", "_DisabledFunction", exception.getErrorCode());
+         assertNull("The function returned some parameters.", exception.getParameters());
+         assertNull("The function returned a data element.", exception.getDataElement());
+      }
+      
+      // Enable the function
+      XINSCallRequest request3 = new XINSCallRequest("_EnableFunction", parameters2);
+      XINSCallResult result3 = caller.call(request);
+      assertNull("The function returned a result code.", result3.getErrorCode());
+      assertNull("The function returned some parameters.", result3.getParameters());
+      assertNull("The function returned a data element.", result3.getDataElement());
+      
+      // Test that the function is working
+      XINSCallResult result4 = caller.call(request);
+      assertNull("The function returned a result code.", result4.getErrorCode());
+      assertNull("The function returned some parameters.", result4.getParameters());
+      assertNull("The function returned a data element.", result4.getDataElement());
+   }
+   
+   public void testUnknownMetaFunction() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_Unknown", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      try {
+         XINSCallResult result = caller.call(request);
+      } catch (StatusCodeHTTPCallException exception) {
+         assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
+      }
    }
    
    /**

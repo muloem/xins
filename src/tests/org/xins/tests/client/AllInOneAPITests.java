@@ -187,24 +187,78 @@ public class AllInOneAPITests extends TestCase {
       }
    }
    
+   public void testResultCode() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      CAPI allInOne = new CAPI(descriptor);
+      String result1 = allInOne.callResultCode("hello");
+      assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
+      try {
+         String result2 = allInOne.callResultCode("hello");
+         fail("The second call with the same parameter should return an AlreadySet error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("AlreadySet", exception.getErrorCode());
+         assertEquals(descriptor, exception.getTarget());
+         assertNotNull(exception.getParameters());
+         assertEquals("Incorrect value for the count parameter.", "1", exception.getParameter("count"));
+         assertNull(exception.getDataElement());
+      }
+   }
+   
+   public void testLogdoc() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      CAPI allInOne = new CAPI(descriptor);
+      // This method write some text using the logdoc
+      // This test doesn't check that the data written in the logs are as expected
+      try {
+         allInOne.callLogdoc("hello");
+         fail("The logdoc call should return an InvalidNumber error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("InvalidNumber", exception.getErrorCode());
+         assertEquals(descriptor, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNull(exception.getDataElement());
+      }
+      allInOne.callLogdoc("12000");
+   }
+   
+   public void testDataSection() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      CAPI allInOne = new CAPI(descriptor);
+      DataElement element = allInOne.callDataSection("Doe");
+      Iterator users = element.getChildren();
+      assertTrue("No users found.", users.hasNext());
+      DataElement su = (DataElement) users.next();
+      assertEquals("Incorrect elements.", "user", su.getName());
+      assertEquals("Incorrect name for su.", "superuser", su.get("name"));
+      assertEquals("Incorrect address.", "12 Madison Avenue", su.get("address"));
+      assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
+      assertNull(su.getChildren());
+      DataElement doe = (DataElement) users.next();
+      assertEquals("Incorrect elements.", "user", doe.getName());
+      assertEquals("Incorrect name for Doe.", "Doe", doe.get("name"));
+      assertEquals("Incorrect address.", "Unknown", doe.get("address"));
+      assertNull(doe.getText());
+      assertNull(doe.getChildren());
+   }
+   
    public void testDataSection2() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection2("hello");
-      Iterator destination = element.getChildren();
-      assertTrue("No destination found.", destination.hasNext());
-      DataElement destination1 = (DataElement) destination.next();
-      assertEquals("Incorrect elements.", "packet", destination1.getName());
-      assertNotNull("No destination specified.", destination1.get("destination"));
-      Iterator products = destination1.getChildren();
+      Iterator packets = element.getChildren();
+      assertTrue("No destination found.", packets.hasNext());
+      DataElement packet1 = (DataElement) packets.next();
+      assertEquals("Incorrect elements.", "packet", packet1.getName());
+      assertNotNull("No destination specified.", packet1.get("destination"));
+      Iterator products = packet1.getChildren();
       assertNotNull("No product specified.", products);
       DataElement product1 = (DataElement) products.next();
       assertEquals("Incorrect price for product1", "12", product1.get("price"));
       
-      DataElement destination2 = (DataElement) destination.next();
-      assertEquals("Incorrect elements.", "packet", destination2.getName());
-      assertNotNull("No destination specified.", destination2.get("destination"));
-      Iterator products2 = destination2.getChildren();
+      DataElement packet2 = (DataElement) packets.next();
+      assertEquals("Incorrect elements.", "packet", packet2.getName());
+      assertNotNull("No destination specified.", packet2.get("destination"));
+      Iterator products2 = packet2.getChildren();
       assertNotNull("No product specified.", products2);
       DataElement product21 = (DataElement) products2.next();
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
