@@ -110,8 +110,7 @@ extends org.xins.client.AbstractCAPICallRequest {
     *    non-<code>null</code> description if this request is considered
     *    unacceptable.
     */
-   public java.lang.String validateImpl()
-   throws org.xins.client.UnacceptableRequestException {
+   public java.lang.String validateImpl() {
       return null; // TODO
    }]]></xsl:text>
 
