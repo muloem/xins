@@ -124,4 +124,29 @@ extends Object {
    public int getRuleCount() {
       return 0; // TODO
    }
+
+   /**
+    * Determines if the specified IP address is allowed to access the
+    * specified function. This method finds the first matching rule and then
+    * returns the <em>allow</em> property of that rule (see
+    * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
+    * <code>false</code> is returned.
+    *
+    * @param ip
+    *    the IP address, cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the request is allowed, <code>false</code> if
+    *    the request is denied.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ip == null || functionName == null</code>.
+    */
+   public boolean allow(String ip, String functionName)
+   throws IllegalArgumentException {
+      return false; // TODO
+   }
 }
