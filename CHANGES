@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
+* Build and release process:
+  - Added -init-release in the dependencies to facilitate the making of a
+    release if a target fails.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 1:
 

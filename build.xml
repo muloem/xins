@@ -1115,7 +1115,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target
 	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc,-post-commit-version"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-init-release,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc,-post-commit-version"
 	description="Performs a release">
 		<antcall target="upload-homepage" />
 		<delete>
