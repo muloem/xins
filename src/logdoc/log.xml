@@ -268,6 +268,14 @@
 		<param name="shortName" />
 		<param name="longName"  />
 	</entry>
+	<entry id="235" level="INFO" category="org.xins.server.lifespan.init">
+		<description>Initializing API.</description>
+		<param name="api" />
+	</entry>
+	<entry id="236" level="INFO" category="org.xins.server.lifespan.init">
+		<description>Initialized API.</description>
+		<param name="api" />
+	</entry>
 	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
 		<param name="configFile" nullable="false" />
