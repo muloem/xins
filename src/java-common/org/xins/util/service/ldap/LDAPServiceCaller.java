@@ -16,7 +16,7 @@ import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
 import org.xins.util.service.Descriptor;
 import org.xins.util.service.ServiceCaller;
-import org.xins.util.service.ServiceDescriptor;
+import org.xins.util.service.TargetDescriptor;
 
 /**
  * LDAP service caller.
@@ -177,7 +177,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       return (QueryResult) callResult.getResult();
    }
 
-   protected Object doCallImpl(ServiceDescriptor target,
+   protected Object doCallImpl(TargetDescriptor target,
                                Object            subject)
    throws Throwable {
 
@@ -242,7 +242,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws NamingException
     *    if the connection failed.
     */
-   private InitialDirContext authenticate(ServiceDescriptor     target,
+   private InitialDirContext authenticate(TargetDescriptor      target,
                                           AuthenticationDetails authenticationDetails)
    throws IllegalArgumentException, NamingException {
 
@@ -317,7 +317,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws NamingException
     *    if the search failed.
     */
-   private QueryResult query(ServiceDescriptor target,
+   private QueryResult query(TargetDescriptor  target,
                              InitialDirContext context,
                              Query             query)
    throws IllegalArgumentException, NamingException {

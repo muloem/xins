@@ -57,11 +57,11 @@ public abstract class Descriptor extends Object {
     *
     * <p>The returned {@link Iterator} will not support
     * {@link Iterator#remove()}. The iterator will only return
-    * {@link ServiceDescriptor} instances, no instances of other classes and
+    * {@link TargetDescriptor} instances, no instances of other classes and
     * no <code>null</code> values.
     *
     * <p>Also, this iterator is guaranteed to return <em>at least</em> one
-    * {@link ServiceDescriptor} instance.
+    * {@link TargetDescriptor} instance.
     *
     * @return
     *    iterator over the service descriptors on any level in this

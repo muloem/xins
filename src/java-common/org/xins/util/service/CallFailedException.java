@@ -38,7 +38,7 @@ public final class CallFailedException extends Exception {
     * @param failedTargets
     *    the list of targets for which the call failed, cannot be
     *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
     *    allowed, but duplicates are.
     *
     * @param exceptions
@@ -51,7 +51,7 @@ public final class CallFailedException extends Exception {
     *    if <code>failedTargets == null || exceptions == null)
     *         || failedTargets.size() != exceptions.size()
     *         || failedTargets.get(<em>i</em>) == null
-    *         || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *         || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
     *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
     */
@@ -93,7 +93,7 @@ public final class CallFailedException extends Exception {
     * @param failedTargets
     *    the list of targets for which the call failed, cannot be
     *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
     *    allowed, but duplicates are.
     *
     * @param exceptions
@@ -106,7 +106,7 @@ public final class CallFailedException extends Exception {
     *    if <code>failedTargets == null || exceptions == null)
     *         || failedTargets.size() != exceptions.size()
     *         || failedTargets.get(<em>i</em>) == null
-    *         || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *         || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
     *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
     */
@@ -137,7 +137,7 @@ public final class CallFailedException extends Exception {
 
    /**
     * The list of targets for which the call failed. Can be <code>null</code>.
-    * All elements in this {@link List} are {@link ServiceDescriptor} objects.
+    * All elements in this {@link List} are {@link TargetDescriptor} objects.
     * The {@link List} contains no <code>null</code> elements, but it may
     * contain duplicates.
     *
@@ -174,7 +174,7 @@ public final class CallFailedException extends Exception {
    /**
     * Returns the list of targets for which the call failed. The returned
     * {@link List} cannot be <code>null</code>. All elements in the
-    * {@link List} are {@link ServiceDescriptor} objects, and it contains no
+    * {@link List} are {@link TargetDescriptor} objects, and it contains no
     * <code>null</code> elements. It may contain duplicates, though.
     *
     * <p>The returned {@link List} is unmodifiable.

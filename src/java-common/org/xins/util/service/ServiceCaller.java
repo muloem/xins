@@ -83,20 +83,20 @@ public abstract class ServiceCaller extends Object {
 
    /**
     * Performs a call using the specified subject. Target
-    * {@link ServiceDescriptor service descriptors} will be picked and passed
-    * to {@link #doCallImpl(ServiceDescriptor,Object)} until there is one that
+    * {@link TargetDescriptor descriptors} will be picked and passed
+    * to {@link #doCallImpl(TargetDescriptor,Object)} until there is one that
     * succeeds. If one of the calls succeeds, then the result is returned. If
     * none succeeds, then a {@link CallFailedException} is thrown.
     *
     * <p>Each attempt consists of a call to
-    * {@link #doCallImpl(ServiceDescriptor,Object)}.
+    * {@link #doCallImpl(TargetDescriptor,Object)}.
     *
     * @param subject
     *    the subject passed, could possibly be <code>null</code>.
     *
     * @return
     *    a combination of the call result and a link to the
-    *    {@link ServiceDescriptor target} that returned this result, if and
+    *    {@link TargetDescriptor target} that returned this result, if and
     *    only if one of the calls succeeded, could be <code>null</code>.
     *
     * @throws CallFailedException
@@ -113,7 +113,7 @@ public abstract class ServiceCaller extends Object {
       while (iterator.hasNext()) {
 
          // Determine the service descriptor target
-         ServiceDescriptor target = (ServiceDescriptor) iterator.next();
+         TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
          try {
@@ -162,8 +162,8 @@ public abstract class ServiceCaller extends Object {
     * @throws Throwable
     *    if the call to the specified target failed.
     */
-   protected abstract Object doCallImpl(ServiceDescriptor target,
-                                        Object            subject)
+   protected abstract Object doCallImpl(TargetDescriptor target,
+                                        Object           subject)
    throws Throwable;
 
    /**

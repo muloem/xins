@@ -31,7 +31,7 @@ public final class CallResult extends Object {
     * @param failedTargets
     *    the list of targets for which the call failed, can be
     *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
     *    allowed, but duplicates are.
     *
     * @param exceptions
@@ -47,7 +47,7 @@ public final class CallResult extends Object {
     *            || failedTargets.size() != exceptions.size()
     *            || !(exceptions.get(<em>i</em>) instanceof Throwable)
     *            || failedTargets.get(<em>i</em>) == null
-    *            || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *            || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *            || failedTargets.get(<em>x</em>).equals(failedTargets.get(<em>y</em>))))</code>,
     *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>
     *    and   <code>0 &lt;= <em>x</em> &lt; <em>y</em> &lt; failedTargets.size()</code>.
@@ -83,8 +83,8 @@ public final class CallResult extends Object {
             throw new IllegalArgumentException("exceptions.get(" + i + ") == null");
 
          // Elements must be instance of correct class
-         } else if (!(ftElem instanceof ServiceDescriptor)) {
-            throw new IllegalArgumentException("(failedTargets.get(" + i + ") instanceof ServiceDescriptor) == false");
+         } else if (!(ftElem instanceof TargetDescriptor)) {
+            throw new IllegalArgumentException("(failedTargets.get(" + i + ") instanceof TargetDescriptor) == false");
          } else if (!(exElem instanceof Throwable)) {
             throw new IllegalArgumentException("(exceptions.get(" + i + ") instanceof Throwable) == false");
          }
@@ -106,7 +106,7 @@ public final class CallResult extends Object {
     * @param failedTargets
     *    the list of targets for which the call failed, can be
     *    <code>null</code>; all elements in this {@link List} must be
-    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    {@link TargetDescriptor} objects, no <code>null</code> elements are
     *    allowed, but duplicates are.
     *
     * @param exceptions
@@ -128,13 +128,13 @@ public final class CallResult extends Object {
     *               exceptions == null
     *            || failedTargets.size() != exceptions.size()
     *            || failedTargets.get(<em>i</em>) == null
-    *            || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *            || !(failedTargets.get(<em>i</em>) instanceof TargetDescriptor)
     *            || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
     *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
     */
    public CallResult(List              failedTargets,
                      List              exceptions,
-                     ServiceDescriptor succeededTarget,
+                     TargetDescriptor succeededTarget,
                      Object            result)
    throws IllegalArgumentException {
 
@@ -156,7 +156,7 @@ public final class CallResult extends Object {
 
    /**
     * The list of targets for which the call failed. Can be <code>null</code>.
-    * All elements in this {@link List} are {@link ServiceDescriptor} objects.
+    * All elements in this {@link List} are {@link TargetDescriptor} objects.
     * The {@link List} contains no <code>null</code> elements, but it may
     * contain duplicates.
     *
@@ -179,7 +179,7 @@ public final class CallResult extends Object {
     * The target for which the call succeeded. This field cannot be
     * <code>null</code>.
     */
-   private final ServiceDescriptor _succeededTarget;
+   private final TargetDescriptor _succeededTarget;
 
    /**
     * The actual result object. Can possibly be <code>null</code>.
@@ -194,7 +194,7 @@ public final class CallResult extends Object {
    /**
     * Returns the list of targets for which the call failed. The returned
     * {@link List} can be <code>null</code>, but if it is not then all
-    * elements in the {@link List} are {@link ServiceDescriptor} objects, and
+    * elements in the {@link List} are {@link TargetDescriptor} objects, and
     * it contains no <code>null</code> elements. It may contain duplicates,
     * though.
     *
@@ -235,10 +235,10 @@ public final class CallResult extends Object {
     * Returns the target for which the call succeeded.
     *
     * @return
-    *    the {@link ServiceDescriptor target} for which the call succeeded,
+    *    the {@link TargetDescriptor target} for which the call succeeded,
     *    not <code>null</code>.
     */
-   public ServiceDescriptor getSucceededTarget() {
+   public TargetDescriptor getSucceededTarget() {
       return _succeededTarget;
    }
 

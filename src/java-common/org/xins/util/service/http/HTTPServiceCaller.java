@@ -15,7 +15,7 @@ import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
 import org.xins.util.service.Descriptor;
 import org.xins.util.service.ServiceCaller;
-import org.xins.util.service.ServiceDescriptor;
+import org.xins.util.service.TargetDescriptor;
 
 /**
  * HTTP service caller.
@@ -159,8 +159,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
    }
 
-   protected Object doCallImpl(ServiceDescriptor target,
-                               Object            subject)
+   protected Object doCallImpl(TargetDescriptor target,
+                               Object           subject)
    throws Throwable {
 
       // Convert subject to PropertyReader
