@@ -47,7 +47,7 @@
 			<xsl:message terminate="yes">Parameter 'type' is mandatory.</xsl:message>
 		</xsl:if>
 
-		<xsl:value-of select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
+		<xsl:value-of select="concat($specsdir, '/', $type, '.typ')" />
 	</xsl:template>
 
 	<xsl:template name="typelink">
@@ -89,7 +89,7 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="type"     />
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">
@@ -182,8 +182,6 @@
 		<!-- Determine file that defines type -->
 		<xsl:variable name="type_file">
 			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$api" />
 			<xsl:text>/</xsl:text>
 			<xsl:value-of select="$type" />
 			<xsl:text>.typ</xsl:text>
@@ -331,8 +329,6 @@
 		<xsl:variable name="type_file">
 			<xsl:value-of select="$specsdir" />
 			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$api" />
-			<xsl:text>/</xsl:text>
 			<xsl:value-of select="$type" />
 			<xsl:text>.typ</xsl:text>
 		</xsl:variable>
@@ -412,8 +408,6 @@
 		<!-- Determine file that defines type -->
 		<xsl:variable name="type_file">
 			<xsl:value-of select="$specsdir" />
-			<xsl:text>/</xsl:text>
-			<xsl:value-of select="$api" />
 			<xsl:text>/</xsl:text>
 			<xsl:value-of select="$type" />
 			<xsl:text>.typ</xsl:text>

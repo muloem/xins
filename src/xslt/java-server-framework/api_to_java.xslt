@@ -67,7 +67,7 @@ public class APIImpl extends API {
    public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
 		<xsl:for-each select="//api/resultcode">
 			<xsl:variable name="name"    select="@name" />
-			<xsl:variable name="file"    select="concat($specsdir, '/', $api, '/', $name, '.rcd')" />
+			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.rcd')" />
 			<xsl:variable name="successAttr" select="document($file)/resultcode/@success" />
 			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
 			<xsl:variable name="fieldname">
@@ -117,7 +117,7 @@ public class APIImpl extends API {
 
 		<xsl:for-each select="//api/function">
 			<xsl:variable name="name"    select="@name" />
-			<xsl:variable name="file"    select="concat($specsdir, '/', $api, '/', $name, '.fnc')" />
+			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.fnc')" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
 					<xsl:with-param name="text">

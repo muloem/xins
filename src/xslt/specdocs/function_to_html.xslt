@@ -29,7 +29,7 @@
 	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
 	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
 	<xsl:variable name="function_name"    select="//function/@name"                                          />
-	<xsl:variable name="function_file"    select="concat($specsdir, '/', $api, '/', $function_name, '.fnc')" />
+	<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
 	<xsl:variable name="sessionBased">
 		<xsl:for-each select="//function">
 			<xsl:call-template name="is_function_session_based" />
@@ -777,7 +777,7 @@
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
 			<xsl:variable name="code" select="@name" />
-			<xsl:variable name="file" select="concat($specsdir, '/', $api, '/', $code, '.rcd')" />
+			<xsl:variable name="file" select="concat($specsdir, '/', $code, '.rcd')" />
 
 			<xsl:for-each select="document($file)/resultcode">
 				<tr>
@@ -1174,7 +1174,7 @@
 
 	<xsl:template match="function-ref[@name]">
 		<xsl:variable name="reffunction" select="@name" />
-		<xsl:variable name="reffunction_file" select="concat($specsdir, '/', $api, '/', $reffunction, '.fnc')" />
+		<xsl:variable name="reffunction_file" select="concat($specsdir, '/', $reffunction, '.fnc')" />
 		<a href="{$reffunction}.html">
 			<xsl:attribute name="title">
 				<xsl:call-template name="firstline">

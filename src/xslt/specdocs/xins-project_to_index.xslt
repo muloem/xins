@@ -68,7 +68,18 @@
 	</xsl:template>
 
 	<xsl:template match="api">
-		<xsl:variable name="path" select="concat($specsdir, '/', @name, '/api.xml')" />
+		<!-- This test is not garanted to work with all XSLT processors. -->
+		<xsl:variable name="old_api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
+		<xsl:variable name="path">
+			<xsl:choose>
+				<xsl:when test="document($old_api_file)">
+					<xsl:value-of select="$old_api_file" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat('apis/', @name, '/spec/api.xml')" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
 
 		<xsl:if test="not(document($path)/api/@name = @name)">

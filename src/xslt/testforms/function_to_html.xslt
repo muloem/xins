@@ -199,7 +199,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<xsl:variable name="isenum">
 			<xsl:choose>

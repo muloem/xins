@@ -110,7 +110,7 @@ final class </xsl:text>
 		<xsl:param name="functionName" />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="functionFile"    select="concat($specsdir, '/', $api, '/', $functionName, '.fnc')" />
+		<xsl:variable name="functionFile"    select="concat($specsdir, '/', $functionName, '.fnc')" />
 
 		<xsl:for-each select="document($functionFile)/function/output/resultcode-ref">
 			<xsl:if test="@name = $resultcode">

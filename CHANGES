@@ -5,8 +5,16 @@ CHANGES INTRODUCED IN XINS 0.174:
   - Removed InvalidParameters and MissingParameters.
   - Standard result codes now starts with a underscore '_' character.
 
+* Specification:
+  - The DTD files have been renamed with _1_0_alpha.dtd, the _1_0.dtd files
+    no longer contain the deprecated elements and attributes.
+
 * Logdoc:
   - Added logdoc for the client and common packages.
+
+* Generated build file:
+  - The build.xml also accepts the new directory structure.
+    The implementation settings are still expected in the api.xml file.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.173:

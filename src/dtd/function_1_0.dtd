@@ -6,8 +6,6 @@
 <!ELEMENT function (description, input?, output?, example*)>
 <!ATTLIST function
           name           NMTOKEN #REQUIRED
-          api            NMTOKEN #IMPLIED
-          createsSession (true | false) #IMPLIED
           sessionBased   (true | false) #IMPLIED
           rcsversion     CDATA #IMPLIED
           rcsdate        CDATA #IMPLIED
@@ -30,15 +28,10 @@
 <!ATTLIST param-ref
           name       NMTOKEN #REQUIRED
 >
-<!ELEMENT output (resultcode-ref*, resultcode*, param*, data?)>
+<!ELEMENT output (resultcode-ref*, param*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
           name       NMTOKEN #REQUIRED
->
-<!ELEMENT resultcode (description)>
-<!ATTLIST resultcode
-          success    (true | false) #REQUIRED
-          value      CDATA #REQUIRED
 >
 <!ELEMENT data (element+)>
 <!ATTLIST data

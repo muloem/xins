@@ -152,8 +152,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:variable name="functionFile">
 				<xsl:value-of select="$specsdir" />
 				<xsl:text>/</xsl:text>
-				<xsl:value-of select="$api" />
-				<xsl:text>/</xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text>.fnc</xsl:text>
 			</xsl:variable>

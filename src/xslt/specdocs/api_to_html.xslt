@@ -18,7 +18,17 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:variable name="authors_file" select="concat($project_home, '/src/authors/authors.xml')" />
+	<xsl:variable name="old_authors_file" select="concat($project_home, '/src/authors/authors.xml')" />
+	<xsl:variable name="">
+		<xsl:choose>
+			<xsl:when test="document($old_authors_file)">
+				<xsl:value-of select="$old_authors_file" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($project_home, '/authors.xml')" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="sessionBased">
 		<xsl:choose>
 			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
@@ -77,27 +87,15 @@
 
 		<xsl:variable name="prev_title">
 			<xsl:if test="boolean($prev) and not($prev = '')">
-				<xsl:call-template name="firstline">
-					<xsl:with-param name="text">
-						<xsl:value-of select="document(concat($specsdir, '/', $prev, '/api.xml'))/api/description/text()" />
-						<xsl:text> (</xsl:text>
-						<xsl:value-of select="$prev" />
-						<xsl:text>)</xsl:text>
-					</xsl:with-param>
-				</xsl:call-template>
+				<xsl:value-of select="$prev" />
+				<xsl:text> API</xsl:text>
 			</xsl:if>
 		</xsl:variable>
 
 		<xsl:variable name="next_title">
 			<xsl:if test="boolean($next) and not($next = '')">
-				<xsl:call-template name="firstline">
-					<xsl:with-param name="text">
-						<xsl:value-of select="document(concat($specsdir, '/', $next, '/api.xml'))/api/description/text()" />
-					</xsl:with-param>
-				</xsl:call-template>
-				<xsl:text> (</xsl:text>
 				<xsl:value-of select="$next" />
-				<xsl:text>)</xsl:text>
+				<xsl:text> API</xsl:text>
 			</xsl:if>
 		</xsl:variable>
 
@@ -321,7 +319,7 @@
 
 	<xsl:template match="function">
 
-		<xsl:variable name="function_file" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
+		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
@@ -383,7 +381,7 @@
 
 	<xsl:template match="type">
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $api, '/', @name, '.typ')" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', @name, '.typ')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
@@ -439,7 +437,7 @@
 
 	<xsl:template match="resultcode">
 
-		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', $api, '/', @name, '.rcd')" />
+		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
