@@ -9,11 +9,12 @@ package org.xins.common.http;
 import java.io.IOException;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import java.util.Iterator;
-import org.apache.commons.httpclient.ConnectTimeoutException;
 
+import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
@@ -660,14 +661,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
             executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
 
-         // Socket time-out
+         // Socket time-out (Jakarta Commons HttpClient 3.0)
+         } else if (exception instanceof SocketTimeoutException) {
+               Log.log_1105(url, params, duration, socketTimeOut);
+               executor.dispose();
+               throw new SocketTimeOutCallException(request, target, duration);
+
          } else if (exception instanceof HttpRecoverableException) {
 
-            // XXX: This is an ugly way to detect a socket time-out, but there
-            //      does not seem to be a better way in HttpClient 2.0. This
-            //      will, however, be fixed in HttpClient 3.0. See:
-            //      http://issues.apache.org/bugzilla/show_bug.cgi?id=19868
-
+            // Socket time-out (Jakarta Commons HttpClient 2.0)
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_1105(url, params, duration, socketTimeOut);
