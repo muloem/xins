@@ -146,13 +146,14 @@ public final class FileWatcher extends Thread {
 
          // ...otherwise notify the listener and return.
          } else {
-            lastModified = 0;
+            _lastModified = 0;
             _listener.fileNotFound();
             return;
          }
 
       // If there was an authorisation error, notify the listener.
       } catch (SecurityException exception) {
+         _lastModified = 0;
          _listener.securityException(exception);
          return;
       }
