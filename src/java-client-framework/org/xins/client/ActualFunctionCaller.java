@@ -49,7 +49,7 @@ extends AbstractFunctionCaller {
 
    /**
     * Initial buffer size for a parameter string. See
-    * {@link #createParameterString(String,Map)}.
+    * {@link #createParameterString(String,String,Map)}.
     */
    private static int PARAMETER_STRING_BUFFER_SIZE = 256;
 
