@@ -23,6 +23,7 @@
 
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../footer.xslt" />
+	<xsl:include href="../urlencode.xslt" />
 
 	<xsl:template match="type">
 
