@@ -16,29 +16,12 @@ import junit.framework.TestCase;
 /**
  * FastStringBuffer TestCase.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  */
-
 public class FastStringBufferTest extends TestCase {
-   /**
-    * @see junit.framework.TestCase#setUp()
-    */
-   protected void setUp()
-   throws Exception {
-      super.setUp();
-      Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
-      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %t %-5p [%c] %m%n");
-      settings.setProperty("log4j.logger.httpclient.wire",                    "WARN");
-      settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
-      PropertyConfigurator.configure(settings);
 
-
-   }
-   // -------------------------------------------------------------------------
+   //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
@@ -58,6 +41,21 @@ public class FastStringBufferTest extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * @see junit.framework.TestCase#setUp()
+    */
+   protected void setUp()
+   throws Exception {
+      super.setUp();
+      Properties settings = new Properties();
+      settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
+      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %t %-5p [%c] %m%n");
+      settings.setProperty("log4j.logger.httpclient.wire",                    "WARN");
+      settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
+      PropertyConfigurator.configure(settings);
+   }
 
 
    /*

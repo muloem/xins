@@ -26,7 +26,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * This class is an implementation of the ServletConfig that can be
  * called locally.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalServletConfig implements ServletConfig {

@@ -15,7 +15,7 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Tests for class <code>MandatoryArgumentChecker</code>
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class MandatoryArgumentCheckerTests extends TestCase {

@@ -26,7 +26,7 @@ import org.xins.server.APIServlet;
 /**
  * HTTP Server used to invoke the XINS servlet.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class HTTPServletHandler {

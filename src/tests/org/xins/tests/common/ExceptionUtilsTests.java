@@ -15,7 +15,7 @@ import org.xins.common.ExceptionUtils;
 /**
  * Tests for class <code>ExceptionUtils</code>
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class ExceptionUtilsTests extends TestCase {

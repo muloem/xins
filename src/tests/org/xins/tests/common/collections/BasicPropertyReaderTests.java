@@ -21,7 +21,7 @@ import org.xins.common.collections.BasicPropertyReader;
 /**
  * Tests for class <code>BasicPropertyReader</code>.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">Chris.gilbride@nl.wanadoo.com</a>)
  */

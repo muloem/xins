@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * This class is an implementation of the HTTPServletResponse that can be
  * invoked locally.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalHTTPServletResponse implements HttpServletResponse {

@@ -17,7 +17,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 /**
  * Tests for parsing of the regular expression in <code>PatternType</code>.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class PatternParserTests extends TestCase {

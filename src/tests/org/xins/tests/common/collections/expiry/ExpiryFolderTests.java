@@ -16,7 +16,7 @@ import org.xins.common.collections.expiry.ExpiryStrategy;
 /**
  * Tests for class <code>ExpiryFolder</code>.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ExpiryFolderTests extends TestCase {

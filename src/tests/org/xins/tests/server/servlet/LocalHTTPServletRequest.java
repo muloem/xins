@@ -27,7 +27,7 @@ import org.xins.common.text.URLEncoding;
  * This class is an implementation of the HTTPServletRequest that can be
  * called localy.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalHTTPServletRequest implements HttpServletRequest {

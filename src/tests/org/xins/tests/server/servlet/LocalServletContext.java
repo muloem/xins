@@ -19,7 +19,7 @@ import javax.servlet.ServletContext;
  * This class is an implementation of the ServletContext that can be
  * called locally.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class LocalServletContext implements ServletContext {
