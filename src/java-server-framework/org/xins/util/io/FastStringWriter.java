@@ -48,7 +48,8 @@ public class FastStringWriter extends Writer {
     * @throws IllegalArgumentException
     *    if <code>initialSize &lt; 0</code>.
     */
-   public FastStringWriter(int initialSize) {
+   public FastStringWriter(int initialSize)
+   throws IllegalArgumentException {
       if (initialSize < 0) {
          throw new IllegalArgumentException("initialSize (" + initialSize + ") < 0");
       }
