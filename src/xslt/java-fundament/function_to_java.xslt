@@ -110,9 +110,17 @@ public abstract class ]]></xsl:text>
 
    protected final void handleCall(CallContext context)
    throws Throwable {
-      boolean debugEnabled = _log.isDebugEnabled();]]></xsl:text>
+      boolean debugEnabled = context.isDebugEnabled();
+      int callID = context.getCallID();
+      String logPrefix = "";
+      if (debugEnabled) {
+         logPrefix = "Call ]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>:" + context.getCallID() + ": ";
+      }</xsl:text>
 		<xsl:if test="input/param">
 			<xsl:text>
+
       // Get the input parameters</xsl:text>
 		</xsl:if>
 
@@ -146,7 +154,7 @@ public abstract class ]]></xsl:text>
             if (isMissing(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-               _log.debug("Missing parameter \"</xsl:text>
+               context.debug(logPrefix + "Missing parameter \"</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>\".");
             }</xsl:text>
