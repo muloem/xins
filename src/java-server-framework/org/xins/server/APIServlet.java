@@ -1194,6 +1194,7 @@ extends HttpServlet {
          } catch (Exception ex) {
             
             // the calling convention could not be created or initialized
+            Log.log_3560(ex, ccParam);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
          }
