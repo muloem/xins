@@ -125,8 +125,16 @@ implements DefaultResultCodes {
    private final List _instances;
 
    /**
-    * Map that maps session identifiers to <code>Session</code> instances.
-    * Contains all sessions associated with this API.
+    * Expiry strategy for <code>_sessionsByID</code>.
+    *
+    * <p />This field is initialized to a non-<code>null</code> value by the
+    * initialization method {@link #init(Properties)}.
+    */
+   private ExpiryStrategy _sessionExpiryStrategy;
+
+   /**
+    * Collection that maps session identifiers to <code>Session</code>
+    * instances. Contains all sessions associated with this API.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
     * initialization method {@link #init(Properties)}.
@@ -395,12 +403,12 @@ implements DefaultResultCodes {
          long timeOut   = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOut");
          long precision = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOutPrecision");
 
-         // Create expiry strategy and folder, max queue wait time is set to
-         // half of the time-out duration
-         ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
-
-         // TODO: Allow configuration of queue time-out
-         _sessionsByID = new ExpiryFolder("sessionsByID", expiryStrategy, false, 5000L); // 5 seconds
+         // Create expiry strategy and folder
+         _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
+         _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
+                                                   _sessionExpiryStrategy, // expiry strategy
+                                                   false,                  // strict thread sync checking? (TODO)
+                                                   5000L);                 // max queue wait time in ms    (TODO)
       }
 
       // Get build-time properties
@@ -671,6 +679,10 @@ implements DefaultResultCodes {
    final void destroy() {
       _shutDown = true;
 
+      // Stop expiry strategy
+      _sessionExpiryStrategy.stop();
+
+      // Deinitialize instances
       for (int i = 0; i < _instances.size(); i++) {
          Object instance = _instances.get(i);
 
