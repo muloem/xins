@@ -32,13 +32,15 @@ import org.xins.common.text.ParseException;
  * <blockquote><code>allow 194.134.168.213/32 *;
  * <br>deny  194.134.168.213/24 _*;
  * <br>allow 194.134.168.213/24 *;
+ * <br>file  /var/conf/file1.acl;
  * <br>deny 0.0.0.0/0 *</code></blockquote>
  *
  * <p>The above access control list grants access to the IP address
  * 194.134.168.213 to access all functions. Then in the second rule it denies
  * access to all IP addresses in the range 194.134.168.0 to 194.134.168.255 to
  * all functions that start with an underscore (<code>'_'</code>). Then it
- * allows access for those IP addresses to all other functions, and finally
+ * allows access for those IP addresses to all other functions, then it applies
+ * the rules in the /var/conf/file1.acl file and finally
  * all other IP addresses are denied access to any of the functions.
  *
  * @version $Revision$ $Date$
@@ -56,7 +58,7 @@ extends Object {
    /**
     * An empty access rule list.
     */
-   static final AccessRuleList EMPTY = new AccessRuleList(new AccessRule[0]);
+   static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
 
 
    //-------------------------------------------------------------------------
@@ -71,6 +73,9 @@ extends Object {
     *    the access rule list descriptor, the character string to parse,
     *    cannot be <code>null</code>.
     *
+    * @param interval
+    *    the interval used to check the ACL files for modification.
+    *
     * @return
     *    an {@link AccessRuleList} instance, never <code>null</code>.
     *
@@ -80,7 +85,7 @@ extends Object {
     * @throws ParseException
     *    if there was a parsing error.
     */
-   public static final AccessRuleList parseAccessRuleList(String descriptor)
+   public static final AccessRuleList parseAccessRuleList(String descriptor, int interval)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
@@ -92,14 +97,20 @@ extends Object {
       int ruleCount = tokenizer.countTokens();
 
       // Parse all tokens
-      AccessRule[] rules = new AccessRule[ruleCount];
+      AccessRuleContainer[] rules = new AccessRuleContainer[ruleCount];
       for (int i = 0; i < ruleCount; i++) {
 
          // Remove leading and trailing whitespace from the next token
          String token = tokenizer.nextToken().trim();
 
          // Parse and add the rule
-         rules[i] = AccessRule.parseAccessRule(token);
+         if (token.startsWith("allow") || token.startsWith("deny")) {
+            rules[i] = AccessRule.parseAccessRule(token);
+         } else if (token.startsWith("file")) {
+            rules[i] = new AccessRuleFile(token, interval);
+         } else {
+            throw new ParseException("Incorrect access rule");
+         }
       }
 
       return new AccessRuleList(rules);
@@ -112,7 +123,7 @@ extends Object {
 
    /**
     * Creates a new <code>AccessRuleList</code> object. The passed
-    * {@link AccessRule} array is assumed to be owned by the constructor.
+    * {@link AccessRuleContainer} array is assumed to be owned by the constructor.
     *
     * @param rules
     *    the list of rules, should not be <code>null</code> and should not
@@ -122,7 +133,7 @@ extends Object {
     * @throws NullPointerException
     *    if <code>rules == null</code>.
     */
-   private AccessRuleList(AccessRule[] rules)
+   private AccessRuleList(AccessRuleContainer[] rules)
    throws NullPointerException {
 
       // Count number of rules (may throw NPE)
@@ -157,7 +168,7 @@ extends Object {
    /**
     * The list of rules. Cannot be <code>null</code>.
     */
-   private AccessRule[] _rules;
+   private AccessRuleContainer[] _rules;
 
    /**
     * The string representation of this instance. Cannot be <code>null</code>.
@@ -210,14 +221,15 @@ extends Object {
 
       int ruleCount = _rules.length;
       for (int i = 0; i < ruleCount; i++) {
-         AccessRule rule = _rules[i];
+         AccessRuleContainer rule = _rules[i];
 
          String ruleString = rule.toString();
 
-         if (rule.match(ip, functionName)) {
+         Boolean allowed = rule.isAllowed(ip, functionName);
+         if (allowed != null) {
 
             // Choose between 'allow' and 'deny'
-            boolean allow = rule.isAllowRule();
+            boolean allow = allowed.booleanValue();
 
             // Log this match
             if (allow) {
@@ -238,6 +250,17 @@ extends Object {
       return false;
    }
 
+   /**
+    * Closes the current rules.
+    */
+   public void close() {
+      if (_rules != null) {
+         for (int i = 0; i < _rules.length; i++) {
+            _rules[i].close();
+         }
+      }
+   }
+   
    /**
     * Returns a character string representation of this object. The returned
     * string is in the form:

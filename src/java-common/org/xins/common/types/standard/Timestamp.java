@@ -461,6 +461,12 @@ public class Timestamp extends Type {
          return _asString.hashCode();
       }
 
+      /**
+       * @return 
+       *    The textual representation of this timestamp. Composed of the year (YYYY),
+       *    month (MM), day (DD), hour (hh), minute (mm) and second (ss)
+       *    in the format: <em>YYYYMMDDhhmmss</em>.
+       */
       public String toString() {
          return _asString;
       }

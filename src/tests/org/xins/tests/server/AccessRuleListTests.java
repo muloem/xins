@@ -74,22 +74,22 @@ public class AccessRuleListTests extends TestCase {
    public void testParseAccessRuleList() throws Throwable {
 
       try {
-         AccessRuleList.parseAccessRuleList(null);
+         AccessRuleList.parseAccessRuleList(null, 0);
          fail("AccessRule.parseAccessRuleList(null) should throw an IllegalArgumentException.");
          return;
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
-      AccessRuleList arl = AccessRuleList.parseAccessRuleList("");
+      AccessRuleList arl = AccessRuleList.parseAccessRuleList("", 0);
       assertNotNull(arl);
       assertEquals(0, arl.getRuleCount());
 
-      arl = AccessRuleList.parseAccessRuleList(" \t\n\r");
+      arl = AccessRuleList.parseAccessRuleList(" \t\n\r", 0);
       assertNotNull(arl);
       assertEquals(0, arl.getRuleCount());
 
-      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t");
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t", 0);
       assertNotNull(arl);
       assertEquals(1, arl.getRuleCount());
       boolean allow = arl.allow("194.134.168.213", "_GetVersion");
@@ -98,7 +98,7 @@ public class AccessRuleListTests extends TestCase {
          return;
       }
 
-      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ");
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ", 0);
       assertNotNull(arl);
       assertEquals(2, arl.getRuleCount());
       // TODO: More tests

@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
+* XINS/Java Server Framework:
+  - Added the possibility to point to an ACL file in the ACL runtime property.
+
 * Slightly improved and cleaned the 'xins' shell script. Now the '-version'
   and the 'version' argument both work the same. Also, the shell script now
   calls Ant only once. Then Ant first does the transformation from
@@ -21,6 +24,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 * Generated CAPI classes:
   - The generated CAPI classes now support specifying the HTTPMethod. The
     HTTPMethod can be passed to the CAPI constructor.
+
+* Removed src/ant/transform.xml which was no longer used since XINS 0.165.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:

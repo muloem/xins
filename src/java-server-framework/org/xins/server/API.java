@@ -460,12 +460,22 @@ implements DefaultResultCodes {
 
       // Initialize ACL subsystem
       String acl = runtimeSettings.get(ACL_PROPERTY);
+      String aclInterval = runtimeSettings.get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+      int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+      if (aclInterval != null && aclInterval.trim().length() > 0) {
+         interval = Integer.parseInt(aclInterval);
+      }
+      
+      // Close the previous ACL
+      if (_accessRuleList != null) {
+         _accessRuleList.close();
+      }
       if (acl == null || acl.trim().length() < 1) {
          _accessRuleList = AccessRuleList.EMPTY;
          Log.log_3426(ACL_PROPERTY);
       } else {
          try {
-            _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
+            _accessRuleList = AccessRuleList.parseAccessRuleList(acl, interval);
             int ruleCount = _accessRuleList.getRuleCount();
             Log.log_3427(ruleCount);
          } catch (ParseException exception) {

@@ -350,6 +350,11 @@ public class Date extends Type {
          return _asString.hashCode();
       }
 
+      /**
+       * @return
+       *    The textual representation of this date. Composed of the year (YYYY),
+       *    month (MM) and day (DD) in the format: <em>YYYYMMDD</em>.
+       */
       public String toString() {
          return _asString;
       }

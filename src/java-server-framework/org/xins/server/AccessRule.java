@@ -47,11 +47,11 @@ import org.xins.common.text.SimplePatternParser;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
-public final class AccessRule
-extends Object {
+public final class AccessRule implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -183,7 +183,7 @@ extends Object {
                                      "asString",            asString);
 
       // Store the data
-      _allow               = allow;
+      _allow               = new Boolean(allow);
       _ipFilter            = ipFilter;
       _functionNamePattern = functionNamePattern;
       _asString            = asString;
@@ -197,7 +197,7 @@ extends Object {
    /**
     * If the access method is 'allow' or not.
     */
-   private final boolean _allow;
+   private final Boolean _allow;
 
    /**
     * The IP address filter used to create the access rule. Cannot be
@@ -228,7 +228,7 @@ extends Object {
     *    <code>false</code> if this is a <em>deny</em> rule.
     */
    public boolean isAllowRule() {
-      return _allow;
+      return _allow.booleanValue();
    }
 
    /**
@@ -261,15 +261,31 @@ extends Object {
     */
    public boolean match(String ip, String functionName)
    throws IllegalArgumentException, ParseException {
+      return isAllowed(ip, functionName) != null;
+   }
 
+   /**
+    * Returns whether the ip address is allowed to access the functionName.
+    *
+    * @return
+    *    <code>Boolean.TRUE</code> if the functionName is allowed, 
+    *    <code>Boolean.FALSE</code> if the functionName is denied or
+    *    <code>null</code> if the ip address does not match any of the rules
+    *    or if the functionName does not match the pattern.
+    */
+   public Boolean isAllowed(String ip, String functionName) throws IllegalArgumentException, ParseException {
+      
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      if (!_ipFilter.match(ip)) {
-         return false;
+      if (!_ipFilter.match(ip) || !PATTERN_MATCHER.matches(functionName, _functionNamePattern)) {
+         return null;
       } else {
-         return PATTERN_MATCHER.matches(functionName, _functionNamePattern);
+         return _allow;
       }
+   }
+
+   public void close() {
    }
 
    /**
