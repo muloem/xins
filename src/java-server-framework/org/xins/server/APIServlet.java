@@ -447,19 +447,19 @@ implements Servlet {
             try {
                interval = Integer.parseInt(s);
                if (interval < 1) {
-                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
                   interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
                } else {
-                  log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+                  log.debug("Using configuration file check interval of " + interval + " second(s) as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
                }
             } catch (NumberFormatException nfe) {
-               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
                interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
             }
 
          // Otherwise, if the property is not set, use the default
          } else {
-            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
          }
 
@@ -775,19 +775,19 @@ implements Servlet {
             try {
                interval = Integer.parseInt(s);
                if (interval < 1) {
-                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
                   interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
                } else {
-                  log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+                  log.debug("Using configuration file check interval of " + interval + " second(s) as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
                }
             } catch (NumberFormatException nfe) {
-               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
                interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
             }
 
          // Otherwise, if the property is not set, use the default
          } else {
-            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
          }
 
