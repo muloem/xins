@@ -239,6 +239,7 @@ extends Object {
       // Adjust the size
       int toBeExpiredSize = toBeExpired == null ? 0 : toBeExpired.size();
       if (toBeExpiredSize > 0) {
+         int newSize;
          synchronized (_sizeLock) {
             _size -= toBeExpiredSize;
             newSize = _size;
