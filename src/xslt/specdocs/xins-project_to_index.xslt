@@ -34,16 +34,25 @@
 				</xsl:call-template>
 
 				<h1>API index</h1>
-				<p>The following API&apos;s are specified:</p>
-				<table class="apilist">
-					<tr>
-						<th>API</th>
-						<th>Description</th>
-						<th>Function count</th>
-					</tr>
-					<xsl:apply-templates select="api" />
-				</table>
-
+				<xsl:choose>
+					<xsl:when test="api">
+						<p />
+						<xsl:text>This project defines the following API specifications:</xsl:text>
+						<table class="apilist">
+							<tr>
+								<th>API</th>
+								<th>Description</th>
+								<th>Function count</th>
+							</tr>
+							<xsl:apply-templates select="api" />
+						</table>
+					</xsl:when>
+					<xsl:otherwise>
+						<em>
+							<xsl:text>This project does not define any API specifications.</xsl:text>
+						</em>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:call-template name="footer" />
 			</body>
 		</html>
