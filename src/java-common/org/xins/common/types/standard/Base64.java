@@ -171,6 +171,7 @@ public class Base64 extends Type {
          }
          return true;
       } catch (Exception ex) {
+         // XXX: Log?
          return false;
       }
    }
