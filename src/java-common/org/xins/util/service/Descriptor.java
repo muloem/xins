@@ -60,8 +60,8 @@ public abstract class Descriptor extends Object {
     * {@link TargetDescriptor} instances, no instances of other classes and
     * no <code>null</code> values.
     *
-    * <p>Also, this iterator is guaranteed to return <em>at least</em> one
-    * {@link TargetDescriptor} instance.
+    * <p>Also, this iterator is guaranteed to return {@link #getTargetCount()}
+    * instances of class {@link TargetDescriptor}.
     *
     * @return
     *    iterator over the service descriptors on any level in this
