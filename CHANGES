@@ -1,6 +1,8 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.23:
 
+* Using Singleton pattern for API subclasses.
+
 * ResultCode class is now public.
 
 ______________________________________________________________________________

@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Properties;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -77,8 +78,8 @@ implements Servlet {
       // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
       _config = config;
 
-      String apiClass = config.getInitParameter("org.xins.api.class");
-      if (apiClass == null || apiClass.equals("")) {
+      String apiClassName = config.getInitParameter("org.xins.api.class");
+      if (apiClassName == null || apiClassName.equals("")) {
          throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
       }
 
@@ -91,16 +92,40 @@ implements Servlet {
          throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
       }
 
-      // Create an API instance
+      // Get the API class
+      _log.debug("Loading API class: " + apiClassName);
+      Class apiClass;
       try {
-         _log.debug("Attempting to create API instance of class: " + apiClass);
-         _api = (API) Class.forName(apiClass).newInstance();
-         _log.info("Created API instance of class: " + apiClass);
+         apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
-         String message = "Failed to create API instance of class: " + apiClass;
+         String message = "Failed to load API class: " + apiClassName;
          _log.error(message, e);
          throw new ServletException(message);
       }
+      _log.debug("Loaded API class.");
+
+      // Get the SINGLETON field
+      _log.debug("Looking up declared field SINGLETON of API class.");
+      Field singletonField;
+      try {
+         singletonField = apiClass.getDeclaredField("SINGLETON");
+      } catch (Exception e) {
+         String message = "Failed to obtain class field SINGLETON of API class.";
+         _log.error(message, e);
+         throw new ServletException(message);
+      }
+      _log.debug("Looked up declared field SINGLETON of API class.");
+
+      // Get the value of the SINGLETON field
+      _log.debug("Getting value of SINGLETON field of API class.");
+      try {
+         _api = (API) singletonField.get(null);
+      } catch (Exception e) {
+         String message = "Failed to get value of SINGLETON field of API class.";
+         _log.error(message, e);
+         throw new ServletException(message);
+      }
+      _log.info("Obtained API instance of class: " + apiClassName);
 
       // Initialize the API
       try {
