@@ -39,13 +39,25 @@
 		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
 	</target>
 
+	<target name="-load-sfproperties">
+		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
+		<property file="${sf.file}" />
+		<condition property="sf.isset">
+			<and>
+				<isset property="sf.user" />
+				<isset property="sf.password" />
+			</and>
+		</condition>
+		<fail unless="sf.isset" message="SourceForge user and password must be set in file ${sf.file}." />
+	</target>
+
 	<target name="-init-release" depends="-load-version">
 		<property name="javac.debug"         value="false" />
 		<property name="javac.deprecation"   value="false" />
 		<property name="version"             value="${version.major}.${version.minor}" />
 	</target>
 
-	<target name="-init" depends="-load-version">
+	<target name="-init" depends="-load-version,-load-sfproperties">
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
@@ -55,7 +67,6 @@
 		<property name="cvs.module"          value="${name}" />
 
 		<!-- SourceForge-related properties -->
-		<property name="sf.user"             value="znerd" />
 		<property name="sf.group"            value="71598" />
 		<property name="sf.package"          value="71219" />
 
@@ -487,8 +498,7 @@
 		<delete file="build/${package-tarfile}" />
 	</target>
 
-	<target name="do-upload-package" depends="java-common" description="Uploads the package to the web server">
-		<echo message="Uploading ${title} ${version} package to ${www.host}" />
+	<target name="sfaddrelease" depends="java-common" description="Adds a release to the SourceForge package [BROKEN]">
 		<taskdef name="sfaddrelease" classname="org.xins.util.ant.sourceforge.AddReleaseTask">
 			<classpath>
 				<fileset dir="build"                       includes="xins-common.jar"        />
@@ -498,7 +508,6 @@
 		</taskdef>
 
 		<sfaddrelease
-		ignoreUploadFailures="true"
 		file="build/xins-${version}.tar.gz"
 		user="${sf.user}"
 		password="${sf.password}"
@@ -506,12 +515,14 @@
 		package="${sf.package}"
 		release="${version}"
 		keystore="src/certificates/sourceforge.net.cert" />
-<!--
+	</target>
+
+	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
+		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
 			<arg value="${package-tarfile}.gz" />
 			<arg value="${www.target}" />
 		</exec>
--->
 	</target>
 
 	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
