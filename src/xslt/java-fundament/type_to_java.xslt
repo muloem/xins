@@ -166,7 +166,52 @@ public final class ]]></xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
+   //-------------------------------------------------------------------------</xsl:text>
+
+		<xsl:if test="$kind = 'enum'">
+			<xsl:text><![CDATA[
+
    //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   public static final class Item
+   extends EnumItem {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Item</code> with the specified name and value.
+       *
+       * @param name
+       *    the symbolic (friendly) name for the enumeration value, not
+       *    <code>null</code>.
+       *
+       * @param value
+       *    the actual value of the enumeration item, not <code>null</code>. 
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null || value == null</code>.
+       */
+      private Item(String name, String value)
+      throws IllegalArgumentException {
+         super(name, value);
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+   }]]></xsl:text>
+		</xsl:if>
+
+		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
