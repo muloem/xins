@@ -36,8 +36,8 @@ public class TypeValueException extends Exception {
     * @param value
     *    the value, not <code>null</code>.
     *
-    * @param additionalInfo
-    *    additional information, can be <code>null</code>.
+    * @param detail
+    *    additional detail information, can be <code>null</code>.
     *
     * @return
     *    the message to be passed up to the superconstructor, never
@@ -46,7 +46,9 @@ public class TypeValueException extends Exception {
     * @throws IllegalArgumentException
     *    if <code>type == null || value == null</code>.
     */
-   private static final String createMessage(Type type, String value, String additionalInfo)
+   private static final String createMessage(Type   type,
+                                             String value,
+                                             String detail)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -57,9 +59,9 @@ public class TypeValueException extends Exception {
       buffer.append(value);
       buffer.append("\" does not represent a valid value for the type ");
       buffer.append(type.getName());
-      if (additionalInfo != null) {
+      if (detail != null) {
          buffer.append(": ");
-         buffer.append(additionalInfo);
+         buffer.append(detail);
       } else {
          buffer.append('.');
       }
@@ -98,20 +100,21 @@ public class TypeValueException extends Exception {
     * @param value
     *    the value, not <code>null</code>.
     *
-    * @param additionalInfo
-    *    additional information, can be <code>null</code>.
+    * @param detail
+    *    additional detail information, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>type == null || value == null</code>.
     */
-   public TypeValueException(Type type, String value, String additionalInfo)
+   public TypeValueException(Type type, String value, String detail)
    throws IllegalArgumentException {
 
-      super(createMessage(type, value, additionalInfo));
+      super(createMessage(type, value, detail));
 
       // Store the arguments
-      _type  = type;
-      _value = value;
+      _type   = type;
+      _value  = value;
+      _detail = detail;
    }
 
 
@@ -128,6 +131,12 @@ public class TypeValueException extends Exception {
     * The value that is considered invalid. This field is never <code>null</code>.
     */
    private final String _value;
+
+   /**
+    * The additional detail information passed to the constructor. Can be
+    * <code>null</code>.
+    */
+   private final String _detail;
 
 
    //-------------------------------------------------------------------------
@@ -152,5 +161,18 @@ public class TypeValueException extends Exception {
     */
    public final String getValue() {
       return _value;
+   }
+
+   /**
+    * Retrieves the additional detail information passed to the constructor.
+    * This information is optional.
+    *
+    * @return
+    *    the additional detailed information, can be <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public final String getDetail() {
+      return _detail;
    }
 }
