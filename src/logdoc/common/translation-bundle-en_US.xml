@@ -9,7 +9,6 @@
 
 <translation-bundle>
 	<translation entry="3400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
-	<translation entry="3403">Created expiry strategy thread <value-of-param name="name" format="quoted" />, time-out duration is <value-of-param name="timeOut" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="3405">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
 	<translation entry="3406">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
@@ -30,8 +29,6 @@
 	<translation entry="3318">More targets available and fail-over is allowed.</translation>
 	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
 
-	<translation entry="3407">Constructed <value-of-param name="className" />, initial queue size is <value-of-param name="queueSize" />, maximum queue wait time is <value-of-param name="maxQueueSize" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
 	<translation entry="3420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
 
-	<translation entry="3100"><value-of-param name="patternMatcher" />.matches(java.lang.String,<value-of-param name="patternClass" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
 </translation-bundle>

@@ -24,6 +24,11 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    /**
+    * The cached name of this class.
+    */
+   private static final String PATTERNTYPE_CLASSNAME = PatternType.class.getName();
+
+   /**
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
@@ -96,8 +101,8 @@ public abstract class PatternType extends Type {
       try {
          return PATTERN_MATCHER.matches(value, _pattern);
       } catch (Throwable exception) {
-         //LOG.error(PATTERN_MATCHER.getClass().getName() + ".matches(java.lang.String," + _pattern.getClass().getName() + ") has thrown an unexpected exception. Assuming the value \"" + value + "\" is invalid.", exception);
-         Log.log_3100(exception, PATTERN_MATCHER.getClass().getName(), _pattern.getClass().getName(), value);
+         String message = PATTERN_MATCHER.getClass().getName() + ".matches(java.lang.String," + _pattern.getClass().getName() + ") has thrown an unexpected exception (" + exception.getMessage() + "). Assuming the value \"" + value + "\" is invalid.";
+         Log.log_3006(PATTERNTYPE_CLASSNAME, "isValidValueImpl", message);
          return false;
       }
    }

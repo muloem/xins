@@ -13,42 +13,42 @@
 	<group id="lowlevel" name="Low-level (tracing, programming errors)">
 		<entry id="3000" level="DEBUG">
 			<description>Entering constructor.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
 		</entry>
 		<entry id="3001" level="DEBUG" exception="true">
 			<description>Returning from constructor with exception.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
 		</entry>
 		<entry id="3002" level="DEBUG">
 			<description>Returning from constructor successfully.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className" type="text" nullable="false" />
+			<param name="detail"    type="text" nullable="true" />
 		</entry>
 		<entry id="3003" level="DEBUG">
 			<description>Entering method.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="method" type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
 		</entry>
 		<entry id="3004" level="DEBUG" exception="true">
 			<description>Returning from method with exception.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="method" type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
 		</entry>
 		<entry id="3005" level="DEBUG">
 			<description>Returning from method successfully.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="method" type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
 		</entry>
 		<entry id="3006" level="ERROR">
 			<description>Programming error detected.</description>
-			<param name="class"  type="text" nullable="false" />
-			<param name="method" type="text" nullable="false" />
-			<param name="detail" type="text" nullable="true" />
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true" />
 		</entry>
 	</group>
 
