@@ -105,8 +105,8 @@ public class CallTargetsTask extends Task {
    /**
     * Sets the working directory during the execution of the Ant buildfile.
     *
-    * @param targets
-    *    the targets to execute, space-separated.
+    * @param dir
+    *    the directory for the Ant buildfile.
     */
    public void setDir(String dir) {
       _dir = (dir != null && dir.length() > 0)
