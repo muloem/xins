@@ -80,10 +80,17 @@ $Id$
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
 				<xsl:variable name="api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
+				<xsl:variable name="functionIncludes">
+					<xsl:for-each select="document($api_file)/api/function">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:value-of select="@name" />
+						<xsl:text>.fnc</xsl:text>
+					</xsl:for-each>
+				</xsl:variable>
 				
 				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
-						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.fnc"         />
+						<srcfilelist   dir="{$specsdir}/{$api}"    files="{$functionIncludes}" />
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.typ"         />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
@@ -95,13 +102,14 @@ $Id$
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
 					<style
-						basedir="{$specsdir}"
-						destdir="{$project_home}/build/specdocs"
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
 						style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
-						includes="{$api}/*.fnc">
+						includes="{$functionIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 					</style>
+					<!-- TODO: Include only types in api.xml -->
 					<style
 						basedir="{$specsdir}"
 						destdir="{$project_home}/build/specdocs"
@@ -112,10 +120,10 @@ $Id$
 					</style>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
-							basedir="{$specsdir}"
-							destdir="{$project_home}/build/specdocs"
+							basedir="{$specsdir}/{$api}"
+							destdir="{$project_home}/build/specdocs/{$api}"
 							style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
-							includes="{$api}/*.fnc"
+							includes="{$functionIncludes}"
 							extension="-testform-{@id}.html">
 							<param name="project_home" expression="{$project_home}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
@@ -156,13 +164,12 @@ $Id$
 							<param name="specsdir"     expression="{$specsdir}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
-						<!-- TODO: Include only functions mentioned in api.xml -->
 						<style
 							basedir="{$specsdir}/{$api}"
 							destdir="{$javaDestDir}/{$packageAsDir}"
 							style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
-							includes="*.fnc"
 							extension=".java">
+							<xsl:attribute name="includes" select="$functionIncludes" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
 							<param name="package"      expression="{$package}"      />
