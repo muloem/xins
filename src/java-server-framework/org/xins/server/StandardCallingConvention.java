@@ -121,6 +121,9 @@ extends CallingConvention {
 
       // Determine function name
       String functionName = httpRequest.getParameter("_function");
+      if (TextUtils.isEmpty(functionName)) {
+         throw new FunctionNotSpecifiedException();
+      }
 
       // Determine function parameters
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);

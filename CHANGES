@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
     Typical impact on performance: Small.
 
 * XINS/Java Server Framework:
+  - Fixed SF.net bug #1100805: Standard calling convention does not check
+    whether function name is null.
   - Small style improvements.
   - Slightly improved performance of CallResultOutputter.
     Typical impact on performance: Small.
