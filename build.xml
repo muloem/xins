@@ -589,7 +589,7 @@
 		</cvs>
 		<antcall target="upload-homepage" />
 		<delete>
-			<fileset dir="src" includes="**/Library.java" />
+			<fileset dir="build/src" includes="**/Library.java" />
 		</delete>
 	</target>
 
