@@ -22,6 +22,8 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
+import org.xins.logdoc.LogdocStringBuffer;
+
 /**
  * Tests for class <code>PropertyReaderUtils</code>.
  *
@@ -341,5 +343,62 @@ public class PropertyReaderUtilsTests extends TestCase {
       assertEquals("1",  r.get("d"));
       assertEquals("2",  r.get("e"));
       assertEquals("3 ", r.get("f"));
+   }
+
+   /**
+    * Tests the method
+    * {PropertyReaderUtils#serialize(PropertyReader,LogdocStringBuffer)}.
+    */
+   public void testPropertyReaderUtils_serialize1()
+   throws Exception {
+
+      BasicPropertyReader r1 = new BasicPropertyReader();
+      PropertyReader      r0 = r1;
+
+      try {
+         PropertyReaderUtils.serialize((PropertyReader)     null,
+                                       (LogdocStringBuffer) null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         PropertyReaderUtils.serialize(r0, (LogdocStringBuffer) null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      LogdocStringBuffer buffer = new LogdocStringBuffer(20);
+      assertEquals("", buffer.toString());
+
+      try {
+         PropertyReaderUtils.serialize(null, buffer);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      PropertyReaderUtils.serialize(r0, buffer);
+      assertEquals("", buffer.toString());
+
+      r1.set("a", "1");
+      PropertyReaderUtils.serialize(r0, buffer);
+      assertEquals("a=1", buffer.toString());
+
+      buffer = new LogdocStringBuffer(20);
+      r1.set("b", "2");
+      PropertyReaderUtils.serialize(r0, buffer);
+      String s = buffer.toString();
+      String option1 = "a=1&b=2";
+      String option2 = "b=2&a=1";
+      if (! (option1.equals(s) || option2.equals(s))) {
+         fail("Serialized form should be either \""
+             + option1
+             + "\" or \""
+             + option2
+             + "\".");
+      }
    }
 }
