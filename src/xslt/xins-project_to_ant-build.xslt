@@ -152,8 +152,8 @@
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="package"      expression="{$package}"      />
-						<param name="api"          expression="{@api}"          />
-						<param name="api_file"     expression="{@api_file}"     />
+						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 				</target>
 			</xsl:for-each>
