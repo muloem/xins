@@ -113,6 +113,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 	<xsl:template name="validateMethod">
 		<xsl:text><![CDATA[
+
    /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
@@ -284,6 +285,12 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>);
+      super.parameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<!-- FIXME: Do not use String.valueOf() !!!!  -->
+				<xsl:text>", String.valueOf(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>));
    }</xsl:text>
 			</xsl:when>
 
@@ -313,6 +320,12 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text> = </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>;
+      super.parameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<!-- FIXME: Do not use String.valueOf() !!!!  -->
+				<xsl:text>", String.valueOf(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>));
    }</xsl:text>
 
 			</xsl:otherwise>
