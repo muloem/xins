@@ -24,6 +24,7 @@
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="$firstchar='%'">%25</xsl:when>
+					<xsl:when test="$firstchar='&amp;'">%26</xsl:when>
 					<xsl:when test="$firstchar=' '">+</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
