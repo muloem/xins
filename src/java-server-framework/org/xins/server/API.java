@@ -503,14 +503,13 @@ implements DefaultResultCodes {
 
       // TODO: Perform rollback if initialization fails at some point
 
-      Logger log = Library.INIT_LOG;
-      log.debug("Initializing " + _name + " API.");
+      Log.log_235(_name);
 
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
 
       // Initialize ACL subsystem
-      log = Library.INIT_ACL_LOG;
+      Logger log = Library.INIT_ACL_LOG;
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          try {
@@ -593,7 +592,7 @@ implements DefaultResultCodes {
 
       // TODO: Call initImpl2(PropertyReader) ?
 
-      log.debug("Initialized " + _name + " API.");
+      Log.log_236(_name);
    }
 
    /**
