@@ -87,7 +87,7 @@ public final class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
 
-		<xsl:for-each select="message">
+		<xsl:for-each select="translation">
 			<xsl:variable name="entry" select="@entry" />
 
 			<xsl:text>
@@ -127,14 +127,14 @@ public final class ]]></xsl:text>
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="message/value-of-param">
+	<xsl:template match="translation/value-of-param">
 		<xsl:text>
       buffer.append(</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>);</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="message/value-of-param[@format='quoted']">
+	<xsl:template match="translation/value-of-param[@format='quoted']">
 		<xsl:text>
       if (</xsl:text>
 		<xsl:value-of select="@name" />
@@ -149,7 +149,7 @@ public final class ]]></xsl:text>
       }</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="message/text()">
+	<xsl:template match="translation/text()">
 		<xsl:choose>
 			<xsl:when test="string-length(.) &lt; 1"></xsl:when>
 			<xsl:when test="string-length(.) = 1">
