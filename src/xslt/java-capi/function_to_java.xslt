@@ -16,6 +16,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<xsl:include href="../function.xslt" />
 	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
@@ -28,8 +29,13 @@
 		</xsl:call-template>
 	</xsl:variable>
 
+	<!-- TODO: Support session-based functions -->
 	<xsl:template match="function">
 		<xsl:variable name="className" select="concat(@name, 'Result')" />
+		<xsl:variable name="sessionBased">
+			<xsl:call-template name="is_function_session_based" />
+		</xsl:variable>
+
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
