@@ -127,7 +127,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread.currentThread() != this");
       }
 
-      Log.log_3200(_file.getPath());
+      Log.log_3200(_file.getPath(), _interval);
 
       while (! _stopped) {
          try {
