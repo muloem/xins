@@ -102,7 +102,25 @@ implements DefaultReturnCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Initializes this API.
+    * Initializes this API. The properties are stored internally and then
+    * {@link #initImpl(Properties)} is called.
+    *
+    * @param properties
+    *    the properties, can be <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is already initialized.
+    *
+    * @throws Throwable
+    *    if the initialization fails (in {@link #initImpl(Properties)}.
+    */
+   public final void init(Properties properties)
+   throws IllegalStateException, Throwable {
+      initImpl(properties);
+   }
+
+   /**
+    * Actually initializes this API.
     *
     * <p />The implementation of this method in class {@link API} is empty.
     *
@@ -110,9 +128,9 @@ implements DefaultReturnCodes {
     *    the properties, can be <code>null</code>.
     *
     * @throws Throwable
-    *    if the initialisation fails.
+    *    if the initialization fails.
     */
-   public void init(Properties properties)
+   protected void initImpl(Properties properties)
    throws Throwable {
       // empty
    }
