@@ -19,6 +19,7 @@ $Id$
 	<xsl:param name="builddir"     />
 	<xsl:param name="xins_version" />
 	
+	<xsl:variable name="xmlenc_version"    select="'0.37'" />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home, '/build/xins-common.jar')" />
@@ -179,6 +180,76 @@ $Id$
 					</xsl:for-each>
 				</target>
 
+				<target name="-classes-types-{$api}" depends="-prepare-classes">
+					<xsl:variable name="package">
+						<xsl:call-template name="package_for_type_classes">
+							<xsl:with-param name="project_file">
+								<xsl:value-of select="$project_file" />
+							</xsl:with-param>
+							<xsl:with-param name="api">
+								<xsl:value-of select="$api" />
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:variable name="packageAsDir">
+						<xsl:call-template name="package2dir">
+							<xsl:with-param name="package">
+								<xsl:value-of select="$package" />
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/',    $api)"    />
+					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes-types/', $api)" />
+
+					<xsl:for-each select="document($api_file)/api/type">
+						<xsl:variable name="type" select="@name" />
+						<xsl:variable name="classname">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text">
+									<xsl:value-of select="$type" />
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:variable>
+						
+						<!-- XXX: Change the base dir for the XSLT file ? -->
+						<style
+						in="{$specsdir}/{$api}/{$type}.typ"
+						out="{$javaDestDir}/{$packageAsDir}/{$classname}.java"
+						style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt">
+							<param name="project_home" expression="{$project_home}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="package"      expression="{$package}"      />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+						</style>
+					</xsl:for-each>
+
+					<mkdir dir="{$classesDestDir}" />
+					<javac
+					srcdir="{$javaDestDir}"
+					destdir="{$classesDestDir}"
+					debug="true"
+					deprecation="true">
+						<classpath>
+							<pathelement path="{$xins-common.jar}" />
+							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
+							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+							<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
+								<fileset dir="{$dependenciesDir}/{@dir}">
+									<xsl:attribute name="includes">
+										<xsl:choose>
+											<xsl:when test="@includes">
+												<xsl:value-of select="@includes" />
+											</xsl:when>
+											<xsl:otherwise>**/*.jar</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+								</fileset>
+							</xsl:for-each>
+						</classpath>
+					</javac>
+				</target>
+					
 				<xsl:if test="document($api_file)/api/impl-java">
 					<xsl:variable name="package">
 						<xsl:call-template name="package_for_server_api">
@@ -197,10 +268,10 @@ $Id$
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/', $api)" />
-					<xsl:variable name="javaDestDir"     select="concat($project_home, '/build/java-fundament/', $api)" />
-					<xsl:variable name="classesDestDir"  select="concat($project_home, '/build/classes-api/', $api)"        />
-					<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
+					<xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/',                      $api)" />
+					<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api)" />
+					<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api)" />
+					<xsl:variable name="javaCombinedDir" select="concat($project_home,    '/build/java-combined/',  $api)" />
 
 					<target name="-impl-{$api}-existencechecks">
 						<xsl:for-each select="document($api_file)/api/function">
@@ -253,7 +324,7 @@ $Id$
 						</xsl:attribute>
 					</target>
 
-					<target name="classes-api-{$api}" depends="-prepare-classes,-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
+					<target name="classes-api-{$api}" depends="-classes-types-{$api},-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
 							in="{$api_file}"
@@ -275,28 +346,7 @@ $Id$
 							<param name="api"          expression="{$api}"          />
 							<param name="api_file"     expression="{$api_file}"     />
 						</style>
-						<xsl:for-each select="document($api_file)/api/type">
-							<xsl:variable name="type" select="@name" />
-							<xsl:variable name="classname">
-								<xsl:call-template name="hungarianUpper">
-									<xsl:with-param name="text">
-										<xsl:value-of select="$type" />
-									</xsl:with-param>
-								</xsl:call-template>
-							</xsl:variable>
-							
-							<style
-								in="{$specsdir}/{$api}/{$type}.typ"
-								out="{$javaDestDir}/{$packageAsDir}/{$classname}.java"
-								style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt">
-								<param name="project_home" expression="{$project_home}" />
-								<param name="specsdir"     expression="{$specsdir}"     />
-								<param name="package"      expression="{$package}"      />
-								<param name="api"          expression="{$api}"          />
-								<param name="api_file"     expression="{$api_file}"     />
-							</style>
-						</xsl:for-each>
-						
+
 						<!-- Copy all .java files to a single directory -->
 						<mkdir dir="{$javaCombinedDir}" />
 						<copy todir="{$javaCombinedDir}">
@@ -314,8 +364,9 @@ $Id$
 							debug="true"
 							deprecation="true">
 							<classpath>
-								<pathelement path="{$xins-common.jar}" />
-								<pathelement path="{$xins-server.jar}" />
+								<pathelement path="build/classes-types/{$api}" />
+								<pathelement path="{$xins-common.jar}"         />
+								<pathelement path="{$xins-server.jar}"         />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 								<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 								<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
@@ -384,10 +435,10 @@ $Id$
 					</target>
 					
 					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
-						<mkdir dir="build/javadoc/{$api}" />
+						<mkdir dir="build/javadoc-api/{$api}" />
 						<javadoc
 						sourcepath="build/java-combined/{$api}"
-						destdir="build/javadoc/{$api}"
+						destdir="build/javadoc-api/{$api}"
 						version="yes"
 						use="yes"
 						author="yes"
@@ -395,6 +446,7 @@ $Id$
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
 							<packageset dir="build/java-combined/{$api}" />
+							<packageset dir="build/java-types/{$api}" />
 							<link
 							href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 							offline="true"
@@ -412,7 +464,7 @@ $Id$
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/jdom/" />
 							<link
-							href="http://xmlenc.sourceforge.net/javadoc/0.37/"
+							href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<link
@@ -431,7 +483,7 @@ $Id$
 						</javadoc>
 						<copy
 						file="{$xins_home}/src/css/javadoc/style.css"
-						tofile="build/javadoc/{$api}/stylesheet.css"
+						tofile="build/javadoc-api/{$api}/stylesheet.css"
 						overwrite="true" />
 					</target>
 				</xsl:if>
@@ -505,6 +557,7 @@ $Id$
 					windowtitle="Call interface for {$api} API"
 					doctitle="Call interface for {$api} API">
 						<packageset dir="build/java-capi/{$api}" />
+						<packageset dir="build/java-types/{$api}" />
 						<link
 						href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
 						offline="true"
@@ -522,7 +575,7 @@ $Id$
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/jdom/" />
 						<link
-						href="http://xmlenc.sourceforge.net/javadoc/0.37/"
+						href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 						<link
