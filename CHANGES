@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.47:
+
+* Added 'Caller' demo program.
+
+* XINS/Java Client Framework: Introduced CallRequest and CallRequestParser.
+  Changed FunctionCaller interface to accept a CallRequest.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.46:
 
 * Added first (limited) set of unit tests.
