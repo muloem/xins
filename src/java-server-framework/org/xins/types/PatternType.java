@@ -103,6 +103,10 @@ public abstract class PatternType extends Type {
       }
    }
 
+   protected final Object fromStringImpl(String value) {
+      return value;
+   }
+
    /**
     * Returns the pattern.
     *
