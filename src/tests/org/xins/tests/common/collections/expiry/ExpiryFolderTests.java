@@ -6,11 +6,17 @@
  */
 package org.xins.tests.common.collections.expiry;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.collections.expiry.ExpiryFolder;
+import org.xins.common.collections.expiry.ExpiryListener;
 import org.xins.common.collections.expiry.ExpiryStrategy;
 
 /**
@@ -144,7 +150,131 @@ public class ExpiryFolderTests extends TestCase {
       assertNull(folder.get(KEY_2));
       assertNull(folder.remove("key that was never entered"));
 
+      // Test addition and retrieval of listener
+      try {
+         folder.addListener(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      try {
+         folder.removeListener(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      ExpiryFolderListener listener = new ExpiryFolderListener(DURATION / 2);
+      folder.removeListener(listener);
+
+      // Test detailed expiry behavior
+      folder = new ExpiryFolder(NAME, strategy);
+      folder.addListener(listener);
+      folder.removeListener(listener);
+      folder.addListener(listener);
+      folder.put(KEY_2, VAL_2);
+      final long WAIT_TIME = DURATION * 2L;
+      long before = System.currentTimeMillis();
+      Thread.sleep(WAIT_TIME);
+      long after = System.currentTimeMillis();
+      long passed = after - before;
+
+      // Get all callbacks
+      List callbacks = listener._callbacks;
+
+      // Source ExpiryFolder should always match
+      for (int i = 0; i > callbacks.size(); i++) {
+         Callback cb = (Callback) callbacks.get(i);
+         assertTrue("Source ExpiryFolder passed to listener mismatches real source.", cb._folder == folder);
+      }
+
+      // The map should contain only the key/value pair we expect
+      for (int i = 0; i > callbacks.size(); i++) {
+         Callback cb = (Callback) callbacks.get(i);
+         Map expired = cb._expired;
+         assertNotNull(expired);
+         assertTrue(expired.size() == 1);
+         assertEquals(VAL_2, expired.get(KEY_2));
+
+         Iterator it = expired.keySet().iterator();
+         assertTrue(it.hasNext());
+         assertEquals(KEY_2, it.next());
+         assertFalse(it.hasNext());
+      }
+
+      // Listener should have been called exactly once
+      assertEquals(1, callbacks.size());
+
+/*
+      String message = "Entry never expired after "
+                     + passed
+                     + " ms, while duration is "
+                     + DURATION
+                     + " ms and precision is "
+                     + PRECISION
+                     + " ms.";
+      assertTrue(message, listener._duration > 0L);
+      message = "Entry expired in "
+              + listener._duration
+              + " ms while folder time-out is "
+              + DURATION
+              + " ms and precision is "
+              + PRECISION
+              + " ms.";
+      assertTrue(listener._duration >= DURATION);
+      message = "Entry expired in "
+              + listener._duration
+              + " ms while folder time-out is "
+              + DURATION
+              + " ms and precision is "
+              + PRECISION
+              + " ms.";
+      assertTrue(message, listener._duration <= (DURATION + PRECISION));
+*/
+
       // Stop the ExpiryStrategy
       strategy.stop();
+   }
+
+   /**
+    * Listener for an ExpiryFolder.
+    */
+   private class ExpiryFolderListener
+   extends Object
+   implements ExpiryListener {
+
+      private ExpiryFolderListener(long sleepTime) {
+         _sleepTime = sleepTime;
+         _callbacks = new ArrayList();
+      }
+
+      private final long _sleepTime;
+      private final List _callbacks;
+
+      public void expired(ExpiryFolder folder, Map expired) {
+
+         // Create Callback object
+         Callback cb   = new Callback();
+         cb._timeStamp = System.currentTimeMillis();
+         cb._folder    = folder;
+         cb._expired   = expired;
+
+         // Store the Callback
+         _callbacks.add(cb);
+
+         // Sleep for a while to immitate work
+         try {
+            Thread.sleep(_sleepTime);
+         } catch (InterruptedException exception) {
+            // XXX: ignore
+         }
+      }
+   }
+
+   private class Callback
+   extends Object {
+
+      private long _timeStamp;
+      private ExpiryFolder _folder;
+      private Map _expired;
    }
 }
