@@ -188,7 +188,11 @@ public final class API extends Object {
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:text>
-      CallResult result = _functionCaller.call("</xsl:text>
+      </xsl:text>
+				<xsl:if test="not ($returnType = 'void')">
+					<xsl:text>CallResult result = </xsl:text>
+				</xsl:if>
+				<xsl:text>_functionCaller.call("</xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text>", </xsl:text>
 				<xsl:choose>
@@ -199,10 +203,14 @@ public final class API extends Object {
 						<xsl:text>null</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:text>);
+				<xsl:text>);</xsl:text>
+				<xsl:if test="not ($returnType = 'void')">
+					<xsl:text>
       return new </xsl:text>
-				<xsl:value-of select="$functionName" />
-				<xsl:text>Result(result);
+					<xsl:value-of select="$returnType" />
+					<xsl:text>(result);</xsl:text>
+				</xsl:if>
+				<xsl:text>
    }</xsl:text>
 			</xsl:for-each>
 		</xsl:for-each>
