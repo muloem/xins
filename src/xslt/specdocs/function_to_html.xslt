@@ -527,7 +527,7 @@
 					<span class="host">API_PATH</span>
 					<xsl:text>?</xsl:text>
 					<span class="functionparam">
-						<span class="name">function</span>
+						<span class="name">_function</span>
 						<xsl:text>=</xsl:text>
 						<span class="value">
 							<xsl:value-of select="$function_name" />
