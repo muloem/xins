@@ -389,9 +389,8 @@ $Id$
 						use="yes"
 						author="yes"
 						private="no"
-						windowtitle="TODO"
-						doctitle="TODO"
-						bottom="TODO">
+						windowtitle="Implementation of {$api} API"
+						doctitle="Implementation of {$api} API">
 							<packageset dir="build/java-combined/{$api}" />
 							<link
 							href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
@@ -490,9 +489,8 @@ $Id$
 					use="yes"
 					author="yes"
 					private="no"
-					windowtitle="TODO"
-					doctitle="TODO"
-					bottom="TODO">
+					windowtitle="Call interface for {$api} API"
+					doctitle="Call interface for {$api} API">
 						<packageset dir="build/java-capi/{$api}" />
 						<link
 						href="http://xins.sourceforge.net/javadoc/{$xins_version}/"
