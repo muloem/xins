@@ -44,6 +44,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     with unit tests.
   - Added 2 additional constructors to class ProtectedList and improved the
     Javadoc API documentation.
+  - Added getter for additional detailed information (called 'getDetail()') in
+    class TypeValueException.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
