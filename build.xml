@@ -588,6 +588,9 @@
 			</commandline>
 		</cvs>
 		<antcall target="upload-homepage" />
+		<delete>
+			<fileset dir="src" includes="**/Library.java" />
+		</delete>
 	</target>
 
 	<target name="upload-homepage" depends="-init">
