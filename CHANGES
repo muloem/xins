@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 0.180:
   - Added XINS guide in the release.
   - Added the examples in the release.
   - Added the HTML logdoc pages in the release.
+  - Removed caller demo, moved to the new module xins-examples.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.179:
