@@ -98,6 +98,7 @@ public class DataElement {
     *
     * @param key
     *    the name of the attribute, cannot be <code>null</code>.
+    *
     * @param value
     *    the value of the attribute, can be <code>null</code>.
     */
@@ -106,12 +107,12 @@ public class DataElement {
    }
 
    /**
-    * Sets the content of this element.
+    * Sets the PCDATA content of this element.
     *
     * @param pcdata
-    *    the text content for this element, can be <code>null</code>.
+    *    the PCDATA content for this element, can be <code>null</code>.
     */
-   void setPCData(String pcdata) {
+   void setText(String pcdata) {
       _pcdata = pcdata;
    }
 
@@ -119,7 +120,8 @@ public class DataElement {
     * Gets the list of the attributes.
     *
     * @return
-    *    an iterator containing where each item is a name of an attribute as String.
+    *    an {@link Iterator} returning each attribute name as a
+    *    {@link String}; <code>null</code> indicates there are no attributes.
     */
    public Iterator getAttributes() {
       return _attributes.getNames();
@@ -132,7 +134,8 @@ public class DataElement {
     *    the name of the attribute, cannot be <code>null</code>.
     *
     * @return
-    *    the value of the attribute, or <code>null</code> if not set or set to <code>null</code>.
+    *    the value of the attribute, or <code>null</code> if the attribute is
+    *    either not set or set to <code>null</code>.
     */
     public String get(String name) {
        return _attributes.get(name);
@@ -142,7 +145,9 @@ public class DataElement {
      * Gets the children of this element.
      *
      * @return
-     *    an iterator containing the children of this element as DataElement.
+     *    an {@link Iterator} that returns each child of this element as
+     *    another <code>DataElement</code> instance; <code>null</code>
+     *    indicates there are no child elements.
      */
     public Iterator getChildren() {
        return _children.iterator();
