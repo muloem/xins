@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 0.144:
 * Generated CAPI classes:
   - Fixed small bug in generation of CAPI class that caused compiler errors.
 
+* General XINS-related changes:
+  - Session creation functions are now allowed to return output parameters.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.143:
 
