@@ -815,6 +815,14 @@ ${sf.file}</fail>
 				<exclude name="XINSGuide.html" />
 			</fileset>
 		</copy>
+		<ant dir="../${name}-docs" target="protocol" inheritall="false" />
+		<mkdir dir="docs/protocol" />
+		<copy todir="docs/protocol">
+			<fileset dir="../${name}-docs/build/protocol">
+				<exclude name="*.fo" />
+				<exclude name="XINSProtocol.html" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">

@@ -30,6 +30,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
     (without the quotes) are considered ignorable and will not be sent down to
     the function.
 
+* Documentation:
+  - Added the documentation about the XINS protocol to the release.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
 
