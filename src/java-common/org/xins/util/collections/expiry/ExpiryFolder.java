@@ -4,6 +4,7 @@
 package org.xins.util.collections.expiry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,8 +179,24 @@ extends Object {
          _size -= toBeExpired.size();
       }
 
-      // Invalidate the reference to the set of expired entries
-      toBeExpired = null;
+      // TODO: Should we do this in a separate thread, so all locks held by
+      //       the ExpiryStrategy are released?
+
+      // Get a copy of the list of listeners
+      List listeners;
+      synchronized (_listeners) {
+         listeners = new ArrayList(_listeners);
+      }
+
+      // Notify all listeners
+      int count = listeners.size();
+      if (count > 0) {
+         Map unmodifiableExpired = Collections.unmodifiableMap(toBeExpired);
+         for (int i = 0; i < count; i++) {
+            ExpiryListener listener = (ExpiryListener) listeners.get(i);
+            listener.expired(unmodifiableExpired);
+         }
+      }
    }
 
    /**
@@ -194,7 +211,10 @@ extends Object {
    public void addListener(ExpiryListener listener)
    throws IllegalArgumentException {
       MandatoryArgumentChecker.check("listener", listener);
-      _listeners.add(listener);
+
+      synchronized (_listeners) {
+         _listeners.add(listener);
+      }
    }
 
    /**
@@ -209,7 +229,10 @@ extends Object {
    public void removeListener(ExpiryListener listener)
    throws IllegalArgumentException {
       MandatoryArgumentChecker.check("listener", listener);
-      _listeners.remove(listener);
+
+      synchronized (_listeners) {
+         _listeners.remove(listener);
+      }
    }
 
    /**
