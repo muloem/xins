@@ -14,7 +14,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @since XINS 0.36
  */
 public final class UnsuccessfulCallException
-extends Exception {
+extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -38,10 +38,13 @@ extends Exception {
     *    should be <code>false</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>result == null || result.</code>{@link CallResult#isSuccess() isSuccess()}.
+    *    if <code>result == null
+    *          || result.</code>{@link CallResult#isSuccess() isSuccess()}.
     */
    public UnsuccessfulCallException(CallResult result)
    throws IllegalArgumentException {
+
+      super(null, null); // TODO: Construct message
 
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);

@@ -10,7 +10,8 @@ package org.xins.client;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public final class InvalidCallResultException extends Exception {
+public final class InvalidCallResultException
+extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -29,7 +30,7 @@ public final class InvalidCallResultException extends Exception {
     * message.
     */
    public InvalidCallResultException() {
-      _exception = null;
+      super(null, null);
    }
 
    /**
@@ -40,8 +41,7 @@ public final class InvalidCallResultException extends Exception {
     *    the detail message, can be <code>null</code>.
     */
    public InvalidCallResultException(String message) {
-      super(message);
-      _exception = null;
+      super(message, null);
    }
 
    /**
@@ -52,7 +52,7 @@ public final class InvalidCallResultException extends Exception {
     *    the cause exception, can be <code>null</code>.
     */
    public InvalidCallResultException(Throwable exception) {
-      _exception = exception;
+      super(null, exception);
    }
 
    /**
@@ -66,8 +66,7 @@ public final class InvalidCallResultException extends Exception {
     *    the cause exception, can be <code>null</code>.
     */
    public InvalidCallResultException(String message, Throwable exception) {
-      super(message);
-      _exception = exception;
+      super(message, exception);
    }
 
 
@@ -75,23 +74,7 @@ public final class InvalidCallResultException extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The wrapped exception.
-    */
-   private final Throwable _exception;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the wrapped exception, if any.
-    *
-    * @return
-    *    the wrapped exception, can be <code>null</code>.
-    */
-   public Throwable getException() {
-      return _exception;
-   }
 }
