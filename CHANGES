@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.36:
 
 * Renamed xins.sh to xins.
 
+* Added CAPI targets for projects. CAPI stands for Client-side Application
+  Programming Interface. Data sections are not supported yet though.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.35:
 
