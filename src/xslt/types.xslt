@@ -554,7 +554,7 @@
 	* @return
 	*    the Java type for the specified XINS type, for example
 	*    'java.lang.Boolean', 'org.xins.common.collections.PropertyReader',
-  *    'org.xins.common.types.standard.Date',
+	*    'org.xins.common.types.standard.Date',
 	*    'com.mycompany.allinone.types.Salutation'.
 	-->
 	<xsl:template name="javaimport_for_type">
