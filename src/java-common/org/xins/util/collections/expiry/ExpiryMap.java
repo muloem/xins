@@ -3,6 +3,7 @@
  */
 package org.xins.util.collections.expiry;
 
+import java.util.AbstractMap;
 import java.util.Map;
 
 /**
@@ -12,7 +13,27 @@ import java.util.Map;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public interface ExpiryMap extends Map {
+public abstract class ExpiryMap extends AbstractMap {
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Constructor
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 
    /**
     * Touches the entry that is identified by the specified key.
@@ -24,7 +45,7 @@ public interface ExpiryMap extends Map {
     *    if there was no entry with the specified key in this map; the entry
     *    may have expired.
     */
-   void touch(Object key) throws NoSuchEntryException;
+   public abstract void touch(Object key) throws NoSuchEntryException;
 
    /**
     * Notifies this map that the precision time frame has passed since the
@@ -32,5 +53,5 @@ public interface ExpiryMap extends Map {
     *
     * <p>If any entries are expirable, they will be removed from this map.
     */
-   void tick();
+   public abstract void tick();
 }
