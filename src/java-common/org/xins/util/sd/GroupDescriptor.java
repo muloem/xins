@@ -13,7 +13,7 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @since XINS 0.105
  */
-public abstract class GroupDescriptor extends Descriptor {
+public final class GroupDescriptor extends Descriptor {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -44,17 +44,20 @@ public abstract class GroupDescriptor extends Descriptor {
     * cannot contain any <code>null</code> elements. It may contain
     * duplicates, though.
     *
+    * @param type
+    *    the type of group, cannot be <code>null</code>.
+    *
     * @param members
     *    list of members of the group, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>members == null || members<em>n</em> == null</code> (where
+    *    if <code>type == null || members == null || members<em>n</em> == null</code> (where
     *    <code>0 &lt;= <em>n</em> &lt; members.length</code>).
     */
-   GroupDescriptor(Descriptor[] members) {
+   public GroupDescriptor(Type type, Descriptor[] members) {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("members", members);
+      MandatoryArgumentChecker.check("type", type, "members", members);
       int count = members.length;
       for (int i = 0; i < count; i++) {
          Descriptor d = members[i];
@@ -64,6 +67,7 @@ public abstract class GroupDescriptor extends Descriptor {
       }
 
       // Store members
+      _type    = type;
       _members = new Descriptor[count];
       System.arraycopy(members, 0, _members, 0, count);
    }
@@ -72,6 +76,11 @@ public abstract class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The type of this group. Cannot be <code>null</code>.
+    */
+   private final Type _type;
 
    /**
     * The members of this group. Cannot be <code>null</code>.
@@ -91,6 +100,16 @@ public abstract class GroupDescriptor extends Descriptor {
     */
    public boolean isGroup() {
       return true;
+   }
+
+   /**
+    * Returns the type of this group.
+    *
+    * @return
+    *    the type of this group, not <code>null</code>.
+    */
+   public Type getType() {
+      return _type;
    }
 
    /**
