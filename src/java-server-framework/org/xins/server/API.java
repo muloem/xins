@@ -242,6 +242,7 @@ implements DefaultResultCodes {
       _instances.add(instance);
 
       boolean succeeded = false;
+      LOG.debug("Initializing instance of class \"" + className + "\".");
       try {
          // TODO: Use one instance of PropertiesPropertyReader
          instance.init(new PropertiesPropertyReader(_initSettings));
@@ -249,9 +250,9 @@ implements DefaultResultCodes {
       } finally {
          String className = instance.getClass().getName();
          if (succeeded) {
-            LOG.info("Initialized instance of " + className + '.');
+            LOG.info("Initialized instance of class \"" + className + "\".");
          } else {
-            String message = "Failed to initialize instance of " + className + '.';
+            String message = "Failed to initialize instance of \"" + className + "\".";
             LOG.error(message);
          }
       }
