@@ -120,13 +120,6 @@ public class APIImpl extends API {
 			<xsl:if test="@class = 'java.lang.String'">"</xsl:if>
 			<xsl:text>;&#10;</xsl:text>
 		</xsl:for-each>
-		<xsl:for-each select="//api/function">
-			<xsl:text>      _function</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> = new </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>Impl(this);&#10;</xsl:text>
-		</xsl:for-each>
 		<xsl:text>   }
 		
 
