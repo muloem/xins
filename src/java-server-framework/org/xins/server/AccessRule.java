@@ -3,6 +3,7 @@
  */
 package org.xins.server;
 
+import java.util.StringTokenizer;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
@@ -59,6 +60,7 @@ extends Object {
     *
     * @param descriptor
     *    the access rule descriptor, the character string to parse, cannot be <code>null</code>.
+    *    It also cannot be empty <code>(" ")</code>.
     *
     * @return
     *    an {@link AccessRule} instance, never <code>null</code>.
@@ -69,13 +71,56 @@ extends Object {
     * @throws ParseException
     *    if there was a parsing error.
     */
-   public static final AccessRule parseAccessRule(String descriptor)
+   public static AccessRule parseAccessRule(String descriptor)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
-      return null; // TODO
+      StringTokenizer tokenizer = new StringTokenizer(descriptor," \t\n\r");
+
+      // determine if it is an 'allow' or a 'deny' rule
+      boolean allow;
+      String token = tokenizer.nextToken();
+      if ("allow".equals(token)) {
+         allow = true;
+      } else if ("deny".equals(token)) {
+         allow = false;
+      } else {
+         throw new ParseException("First token of descriptor is not 'allow' or 'deny'.");
+      }
+
+      // determine the IP address to be checked
+      token = nextToken(tokenizer);
+      IPFilter filter = IPFilter.parseIPFilter(token);
+
+      // determine the function the access is to be checked for
+      token = nextToken(tokenizer);
+      Perl5Pattern pattern = new SimplePatternParser().parseSimplePattern(token);
+     
+      return new AccessRule( allow, filter, pattern);
+   }
+
+   /**
+    * Returns the next token in the descriptor
+    *
+    * @param tokenizer
+    *   The StringTokenizer to retrieve the next token from
+    *
+    * @return 
+    *   The next token. Never <code>null</code>.
+    *
+    * @throws ParseException
+    *   If <code>tokenizer.hasMoreTokens() == false</code>.
+    */
+   private static String nextToken(StringTokenizer tokenizer)
+   throws ParseException {
+
+      if (!tokenizer.hasMoreTokens()) {
+         throw new ParseException("Too few tokens retrieved from the descriptor.");
+      } else {
+         return tokenizer.nextToken();
+      }
    }
 
 
@@ -102,13 +147,15 @@ extends Object {
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
-                      Perl5Pattern functionNamePattern) {
+                      Perl5Pattern functionNamePattern)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("ipFilter", ipFilter,
                                      "functionNamePattern", functionNamePattern);
 
       _ipFilter = ipFilter;
+      _allow = allow;
       // TODO
 
    }
@@ -119,9 +166,16 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The IPFilter used to create the Access rule
+    * The IPFilter used to create the Access rule.
+    *
+    * Cannot be <code>null</code>.
     */
    private final IPFilter _ipFilter;
+
+   /**
+    * If the Access method is 'allow' or not.
+    */
+   private final boolean _allow;
 
 
    //-------------------------------------------------------------------------
@@ -136,7 +190,7 @@ extends Object {
     *    <code>false</code> if this is a <em>deny</em> rule.
     */
    public boolean isAllowRule() {
-      return false; // TODO
+      return _allow;
    }
 
    /**
