@@ -12,6 +12,13 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Cleaned up and improved Logdoc.
   - Added unit test class for Int16 type.
 
+* XINS/Java Client Framework:
+  - Fixed the Javadoc for the UnsuccessfulXINSCallException.
+
+* Logdoc
+  - The boolean type was not declared in the log_to_entry_html.xslt as a
+    logdoc type.
+
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is
     not declared in the api.xml.

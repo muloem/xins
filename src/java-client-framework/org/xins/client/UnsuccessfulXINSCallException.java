@@ -9,8 +9,7 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Exception that indicates that data was not received on a socket within a
- * designated time-out period.
+ * Exception that indicates that a result code was returned by the API call.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)

@@ -197,6 +197,9 @@
 									<xsl:when test="@type = 'int8'">
 										<xsl:text>int8</xsl:text>
 									</xsl:when>
+									<xsl:when test="@type = 'boolean'">
+										<xsl:text>boolean</xsl:text>
+									</xsl:when>
 									<xsl:otherwise>
 										<xsl:message terminate="yes">
 											<xsl:text>The type '</xsl:text>
