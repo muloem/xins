@@ -18,15 +18,15 @@ Improve service framework in org.xins.common.service:
 [x] Add ConnectionCallException (abstract, extends GenericCallException)
 [x] Add ConnectionRefusedCallException (final, extends ConnectionCallException)
 [ ] Add ConnectionTimeOutCallException (final, extends ConnectionCallException)
-[ ] Add SocketTimeOutCallException (final, extends GenericCallException)
+[x] Add SocketTimeOutCallException (final, extends GenericCallException)
 [ ] Add TotalTimeOutCallException (final, extends GenericCallException)
-[ ] Add UnexpectedExceptionCallException (final, extends GenericCallException)
+[x] Add UnexpectedExceptionCallException (final, extends GenericCallException)
 [ ] Add IOCallException (final, extends GenericCallException)
 [ ] Change ServiceCaller to use CallRequest and CallException
 
 Adapt HTTP service caller to build upon improved service framework:
 [ ] Add HTTPCallException class (abstract, extends CallException)
-[ ] Add HTTPCallRequest class (final, extends CallRequest)
+[x] Add HTTPCallRequest class (final, extends CallRequest)
 [ ] Specify allowed HTTP status codes in HTTPCallRequest
 [ ] Add StatusCodeHTTPCallException (extends HTTPCallException)
 [ ] Throw SocketTimeOutCallException when appropriate
