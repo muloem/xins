@@ -327,15 +327,10 @@ extends HttpServlet {
     * Generates a diagnostic context identifier. The generated context
     * identifier will be like app@host:time:rnd where
     *   - app is the name of the deployed application
-    *   - host is the hostname the sender or its IP address.
+    *   - host is the hostname the computer running this servlet.
     *   - time is the current time formatted a yyyyMMdd_HHmmssNNN
     *     (e.g. 20040806_171522358)
     *   - rnd is a 5 digits long random hexadecimal generated number.
-    *
-    * @param remoteHost
-    *    the fully qualified name of the client that sent the request or the
-    *    IP address if the host can not be resolved,
-    *    cannot be <code>null</code>.
     *
     * @return
     *    the generated diagnostic context identifier, never <code>null</code>.
@@ -395,6 +390,7 @@ extends HttpServlet {
           (_state == CONSTRUCTING_API && newState != API_CONSTRUCTION_FAILED && newState != BOOTSTRAPPING_API) ||
           (_state == BOOTSTRAPPING_API && newState != API_BOOTSTRAP_FAILED && newState != INITIALIZING_API) ||
           (_state == INITIALIZING_API && newState != API_INITIALIZATION_FAILED & newState != READY) ||
+          (_state == READY && newState != INITIALIZING_API) ||
           (_state == READY && newState != DISPOSING) ||
           (_state == DISPOSING && newState != DISPOSED)) {
          Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
@@ -560,14 +556,7 @@ extends HttpServlet {
          _servletConfig = config;
 
          // Store the localhost hostname for the contextID
-         InetAddress localhost = null;
-         try {
-            localhost = InetAddress.getLocalHost();
-            _hostname = localhost.getHostName();
-         } catch (UnknownHostException unknownHostException) {
-            Log.log_1233(unknownHostException);
-            _hostname = "localhost";
-         }
+         _hostname = IPAddressUtils.getLocalHost();
 
          //----------------------------------------------------------------//
          //                     Bootstrap framework                        //
@@ -597,6 +586,7 @@ extends HttpServlet {
          // Initialize the logging subsystem
          readRuntimeProperties();
 
+         Log.log_1233(Library.getVersion());
 
          //----------------------------------------------------------------//
          //                        Construct API                           //

@@ -457,7 +457,7 @@ implements DefaultResultCodes {
        * The parameters to serialize. This field can be <code>null</code>.
        */
       private final PropertyReader _parameters;
-
+      
 
       //---------------------------------------------------------------------
       // Methods

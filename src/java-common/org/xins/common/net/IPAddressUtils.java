@@ -3,6 +3,11 @@
  */
 package org.xins.common.net;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import org.xins.common.text.ParseException;
 
@@ -141,6 +146,47 @@ public final class IPAddressUtils extends Object {
       throw newParseException(ip);
    }
 
+   /**
+    * Retrieves the localhost host name.
+    * This method uses several ways to retrieve the localhost name.
+    *
+    * @return
+    *    the fully qualified host name for the localhost, if it is not possible
+    *    the host name for the localhost, otherwise "localhost".
+    */
+   public static final String getLocalHost() {
+      try {
+         return InetAddress.getLocalHost().getCanonicalHostName();
+      } catch (UnknownHostException unknownHostException) {
+         try {
+            Enumeration enuNetworks = NetworkInterface.getNetworkInterfaces();
+            while (enuNetworks.hasMoreElements()) {
+               NetworkInterface network = (NetworkInterface) enuNetworks.nextElement();
+               Enumeration addresses = network.getInetAddresses();
+               while (addresses.hasMoreElements()) {
+                  InetAddress address = (InetAddress) addresses.nextElement();
+                  try {
+                     return address.getLocalHost().getCanonicalHostName();
+                  } catch (UnknownHostException unknownHostException2) {
+                     // Ignore maybe another network interface will find it
+                  }
+               }
+            }
+            String unknownMessage = unknownHostException.getMessage();
+            int twoDotPos = unknownMessage.indexOf(':');
+            if (twoDotPos != -1) {
+               return unknownMessage.substring(0, twoDotPos);
+            } else {
+               return "localhost";
+            }
+         } catch (SocketException socketException) {
+            return "localhost";
+         }
+      } catch (SecurityException securityException) {
+         return "localhost";
+      }
+   }
+   
    /**
     * Constructs a new <code>ParseException</code> for the specified malformed
     * IP address.

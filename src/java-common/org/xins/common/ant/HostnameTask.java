@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.xins.common.net.IPAddressUtils;
 
 /**
  * Apache Ant task that determines the host name.
@@ -88,50 +89,13 @@ public class HostnameTask extends Task {
 
       if (getProject().getUserProperty(_propertyName) != null) {
          log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
-      }
-
-      InetAddress localhost = null;
-      try {
-         localhost = InetAddress.getLocalHost();
-      } catch (UnknownHostException unknownHostException) {
-         try {
-            Enumeration enuNetworks = NetworkInterface.getNetworkInterfaces();
-            while (localhost == null && enuNetworks.hasMoreElements()) {
-               NetworkInterface network = (NetworkInterface) enuNetworks.nextElement();
-               Enumeration addresses = network.getInetAddresses();
-               while (localhost == null && addresses.hasMoreElements()) {
-                  InetAddress address = (InetAddress) addresses.nextElement();
-                  try {
-                     localhost = address.getLocalHost();
-                  } catch (UnknownHostException unknownHostException2) {
-                     // Ignore maybe another network interface will find it
-                  }
-               }
-            }
-         } catch (SocketException socketException) {
-            log("Unable to find any defined network. Not setting property \"" + _propertyName + "\".");
-            return;
-         }
-         if (localhost == null) {
-            log("Unable to determine internet address of localhost. Not setting property \"" + _propertyName + "\".");
-            return;
-         }
-      } catch (SecurityException securityException) {
-         log("Determining internet address of localhost is disallowed by security manager. Not setting property \"" + _propertyName + "\".");
          return;
       }
 
-      String hostname;
-      try {
-         hostname = localhost.getHostName();
-      } catch (SecurityException securityException) {
-         log("Determining hostname of localhost is disallowed by security manager. Not setting property \"" + _propertyName + "\".");
-         return;
-      }
+      String hostname = IPAddressUtils.getLocalHost();
 
       if (hostname == null || "".equals(hostname.trim()) || "localhost".equals(hostname.trim())) {
-         log("Determining hostname of localhost failed. Not setting property \"" + _propertyName + "\".");
-         return;
+         log("Determining hostname of localhost failed. Setting property to \"" + _propertyName + "\".", Project.MSG_WARN);
       }
 
       getProject().setUserProperty(_propertyName, hostname);

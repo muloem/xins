@@ -152,8 +152,9 @@
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="1233" level="WARNING" exception="true">
-			<description>Unable to retreive the localhost name using "localhost" as default.</description>
+		<entry id="1233" level="INFO">
+			<description>XINS/Java Server Framework is bootstrapped.</description>
+			<param name="version" />
 		</entry>
 	</group>
 
@@ -194,10 +195,6 @@
 			<description>Failed to change the locale for the log messages.</description>
 			<param name="currentLocale" />
 			<param name="failedLocale" />
-		</entry>
-		<entry id="1309" level="INFO">
-			<description>XINS/Java Server Framework is bootstrapping.</description>
-			<param name="version" />
 		</entry>
 		<entry id="1310" level="WARNING">
 			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
