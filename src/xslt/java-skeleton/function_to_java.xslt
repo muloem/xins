@@ -23,7 +23,7 @@ package ]]></xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text><![CDATA[;
 
-import java.io.IOException;
+import java.io.Throwable;
 import org.xins.server.Function;
 import org.xins.server.Responder;
 
@@ -84,7 +84,7 @@ public class ]]></xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text><![CDATA[)
-   throws IOException {
+   throws Throwable {
       // TODO
    }
 }
