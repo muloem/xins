@@ -191,7 +191,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>";
          _</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="translate(@name, '.', '_')" />
 		<xsl:text> = </xsl:text>
 		<xsl:call-template name="javatype_from_string_for_type">
 			<xsl:with-param name="api"      select="$api"      />
@@ -219,7 +219,7 @@ public final class ]]></xsl:text>
    private final </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> _</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="translate(@name, '.', '_')" />
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
@@ -238,7 +238,7 @@ public final class ]]></xsl:text>
 			</xsl:choose>
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="translate(@name, '.', '_')" />
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:variable>
@@ -303,7 +303,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>() {
       return _</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="translate(@name, '.', '_')" />
 		<xsl:text>;
    }</xsl:text>
 	</xsl:template>
