@@ -1,6 +1,15 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 1:
 
+* XINS/Java Server Framework:
+  - Added log message for an unexpected exception.
+
+* XINS/Java Client Framework:
+  - Added log message for an unexpected exception.
+
+* XINS/Java Common Library:
+  - Added log message for an unexpected exception.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 
