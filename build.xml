@@ -942,18 +942,18 @@ ${sf.file}</fail>
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
 		</patternset>
-		<mkdir dir="build-lf" />
-		<copy todir="build-lf" includeEmptyDirs="false">
+		<mkdir dir="build/lf" />
+		<copy todir="build/lf" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
 				<include name="bin/*"              />
 			</fileset>
 		</copy>
-		<fixcrlf srcdir="build-lf" eol="unix" eof="remove">
+		<fixcrlf srcdir="build/lf" eol="unix" eof="remove">
 			<patternset refid="release.text.files" />
 			<include name="bin/xins" />
 		</fixcrlf>
-		<fixcrlf srcdir="build-lf/bin" eol="dos" eof="asis">
+		<fixcrlf srcdir="build/lf/bin" eol="dos" eof="asis">
 			<include name="xins.bat" />
 		</fixcrlf>
 
@@ -974,14 +974,14 @@ ${sf.file}</fail>
 				<include name="lib/servlet.jar"                />
 			</tarfileset>
 			<tarfileset
-			dir="${basedir}/build-lf"
+			dir="${basedir}/build/lf"
 			prefix="${name}-${version}"
 			mode="644">
 				<patternset refid="release.text.files"/>
 				<include name="bin/xins.bat" />
 			</tarfileset>
 			<tarfileset
-			dir="${basedir}/build-lf"
+			dir="${basedir}/build/lf"
 			prefix="${name}-${version}"
 			mode="755">
 				<include name="bin/xins" />
@@ -989,7 +989,7 @@ ${sf.file}</fail>
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
 		<delete file="build/${package-basename}.tar" />
-		<delete dir="build-lf" />
+		<delete dir="build/lf" />
 	</target>
 
 	<target

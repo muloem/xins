@@ -241,7 +241,7 @@ public class XINSCallResultParserTests extends TestCase {
       XINSCallResultData result2 = parser.parse(xml2.getBytes(ENCODING));
       verifyCorrectResult(result2);
       
-      // Parse the same XML with spaces between elements
+      // Parse the same XML with spaces between parameters
       String xml3 = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
                     " <result>\n\t\n" +
                     "   <param name=\"test1\">hello</param>\n" +

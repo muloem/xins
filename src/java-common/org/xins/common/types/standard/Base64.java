@@ -6,6 +6,8 @@
  */
 package org.xins.common.types.standard;
 
+import java.io.UnsupportedEncodingException;
+
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
@@ -29,6 +31,10 @@ public class Base64 extends Type {
     */
    public final static Base64 SINGLETON = new Base64();
 
+   /**
+    * The encoding used to convert a String to a byte[] and vice versa.
+    */
+   private final static String STRING_ENCODING = "US-ASCII";
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -57,7 +63,11 @@ public class Base64 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            return org.xins.common.text.Base64.decode(string);
+            byte[] encoded = string.getBytes(STRING_ENCODING);
+            if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
+               throw new TypeValueException(SINGLETON, string);
+            }
+            return org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
          } catch (Exception ex) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -86,7 +96,11 @@ public class Base64 extends Type {
       }
 
       try {
-         return org.xins.common.text.Base64.decode(string);
+         byte[] encoded = string.getBytes(STRING_ENCODING);
+         if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+         return org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
       } catch (Exception ex) {
          throw new TypeValueException(SINGLETON, string);
       }
@@ -106,7 +120,11 @@ public class Base64 extends Type {
       if (value == null) {
          return null;
       } else {
-         return org.xins.common.text.Base64.encodeBytes(value);
+         try {
+            return new String(org.apache.commons.codec.binary.Base64.encodeBase64(value), STRING_ENCODING);
+         } catch (UnsupportedEncodingException uee) {
+            return null;
+         }
       }
    }
 
@@ -165,7 +183,11 @@ public class Base64 extends Type {
 
    protected boolean isValidValueImpl(String value) {
       try {
-         byte[] number = org.xins.common.text.Base64.decode(value);
+         byte[] encoded = value.getBytes(STRING_ENCODING);
+         if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
+            return false;
+         }
+         byte[] number = org.apache.commons.codec.binary.Base64.decodeBase64(encoded);;
          if (number.length < _minimum || number.length > _maximum) {
             return false;
          }
