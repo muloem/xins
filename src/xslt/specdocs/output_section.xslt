@@ -112,6 +112,14 @@
 	</xsl:template>
 
 	<xsl:template match="data/element">
+		<xsl:variable name="$elementName" select="@name" />
+		<xsl:if test="preceding-sibling::element[@name=$elementName]">
+			<xsl:message terminate="yes">
+				<xsl:text>Element '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>' is already defined in the data section.</xsl:text>
+			</xsl:message>
+		</xsl:if>
 		<h4>
 			<xsl:text>Element </xsl:text>
 			<em>

@@ -39,6 +39,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Fixed bug #1176265: NPE in generated <Function>.java when no elements
     were passed to the data section.
   - Fixed bug #1176214: Changing watch interval does not work.
+  - Fixed bug #1172457: The spedocs will fail if two elements have the same
+    name.
 
 * Generation of client-side Java code:
   - The xsl:variable and xsl:with-param element now uses the select 
