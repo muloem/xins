@@ -226,14 +226,28 @@ public final class Element implements Cloneable {
       return _pcdata;
    }
    
+   /**
+    * Clones this object. A new <code>Element</code> instance will be returned
+    * with the same type, equivalent child elements, equivalent attributes and
+    * the same PCDATA content.
+    *
+    * @return
+    *    a new clone of this object, never <code>null</code>.
+    */
    public Object clone() {
+
+      // Construct a new Element with the same type
       Element clone = new Element(getType());
+
+      // Copy all the children
       if (getChildren() != null) {
          Iterator itChildren = getChildren().iterator();
          while (itChildren.hasNext()) {
             clone.add((Element) ((Element)itChildren.next()).clone());
          }
       }
+
+      // Copy all the attributes
       if (getAttributes() != null) {
          Iterator itAttributes = getAttributes().getNames();
          while (itAttributes.hasNext()) {
@@ -241,9 +255,12 @@ public final class Element implements Cloneable {
             clone.addAttribute(nextKey, getAttributes().get(nextKey));
          }
       }
+
+      // Copy the PCDATA content
       if (getText() != null) {
          clone.setText(getText());
       }
+
       return clone;
    }
 }
