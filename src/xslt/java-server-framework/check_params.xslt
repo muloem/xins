@@ -17,7 +17,7 @@
 
 	<xsl:output method="text" />
 
-	<xsl:template match="input | output" mode="checkParams">
+	<xsl:template match="input | output | element" mode="checkParams">
 
 		<xsl:variable name="errorclass">
 			<xsl:choose>
@@ -25,6 +25,12 @@
 					<xsl:text>InvalidRequestResult</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'output'">
+					<xsl:text>InvalidResponseResult</xsl:text>
+				</xsl:when>
+				<xsl:when test="local-name() = 'element' and local-name(../..) = 'input'">
+					<xsl:text>InvalidRequestResult</xsl:text>
+				</xsl:when>
+				<xsl:when test="local-name() = 'element' and local-name(../..) = 'output'">
 					<xsl:text>InvalidResponseResult</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -36,55 +42,70 @@
 		</xsl:variable>
 
 		<xsl:variable name="context">
-			<xsl:if test="local-name() = 'input'">
-				<xsl:text>context.</xsl:text>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="local-name() = 'input'">
+					<xsl:text>context.</xsl:text>
+				</xsl:when>
+				<xsl:when test="local-name() = 'element'">
+					<xsl:value-of select="@name" />
+					<xsl:text>NextElement.</xsl:text>
+				</xsl:when>
+			</xsl:choose>
 		</xsl:variable>
 		
-		<xsl:if test="param">
+		<xsl:if test="param | attribute">
 			<xsl:text>
       // Get the parameters</xsl:text>
 
-			<xsl:for-each select="param">
+			<xsl:for-each select="param | attribute">
 				<xsl:text>
       java.lang.String </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text> = </xsl:text>
 				<xsl:value-of select="$context" />
-				<xsl:text>getParameter("</xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'attribute'">
+						<xsl:text>getAttribute("</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>getParameter("</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:value-of select="@name" />
 				<xsl:text>");</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 		
-		<xsl:text>
+		<xsl:if test="local-name() = 'input' or local-name() = 'output'">
+			<xsl:text>
 
       org.xins.server.</xsl:text>
-		<xsl:value-of select="$errorclass" />
-		<xsl:text> _errorResult = null;</xsl:text>
+			<xsl:value-of select="$errorclass" />
+			<xsl:text> _errorResult = null;</xsl:text>
+		</xsl:if>
 
 		<!-- ************************************************************* -->
-		<!-- Check required parameters                               -->
+		<!-- Check required parameters                                     -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param[@required='true']">
+		<xsl:if test="param[@required='true'] | attribute[@required='true']">
 			<xsl:text>
-				// Check the mandatory parameters</xsl:text>
+      // Check the mandatory parameters</xsl:text>
 
-			<xsl:for-each select="param[@required='true']">
+			<xsl:for-each select="param[@required='true'] | attribute[@required='true']">
 				<xsl:text>
-				if (</xsl:text>
+      if (</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text> == null) {
-					 if (_errorResult == null) {
-							_errorResult = new org.xins.server.</xsl:text>
+         if (_errorResult == null) {
+            _errorResult = new org.xins.server.</xsl:text>
 					<xsl:value-of select="$errorclass" />
 					<xsl:text>();
-					 }
-					 _errorResult.addMissingParameter("</xsl:text>
+         }
+         _errorResult.addMissingParameter("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");
-				}</xsl:text>
+      }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
@@ -92,11 +113,11 @@
 		<!-- Check values for types for the input parameters               -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param[not(@type='_text' or string-length(@type) = 0)]">
+		<xsl:if test="param[not(@type='_text' or string-length(@type) = 0)] | attribute[not(@type='_text' or string-length(@type) = 0)]">
 			<xsl:text>
 
       // Check values are valid for the associated types</xsl:text>
-			<xsl:for-each select="param[not(@type='_text' or string-length(@type) = 0)]">
+			<xsl:for-each select="param[not(@type='_text' or string-length(@type) = 0)] | attribute[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
       if (!</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
@@ -270,6 +291,28 @@
 			</xsl:for-each>
 		</xsl:if>
 
+		<!-- ************************************************************* -->
+		<!-- Check data section                                            -->
+		<!-- ************************************************************* -->
+		<xsl:choose>
+			<xsl:when test="local-name() = 'input'">
+				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
+					<xsl:with-param name="parentelement" select="'context.getDataElement()'" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="local-name() = 'output'">
+				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
+					<xsl:with-param name="parentelement" select="'getDataElement()'" />
+				</xsl:apply-templates>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:apply-templates select="contains/contained" mode="checkParams">
+			<xsl:with-param name="parentelement">
+				<xsl:value-of select="@name" />
+				<xsl:text>NextElement</xsl:text>
+			</xsl:with-param>
+		</xsl:apply-templates>
+
 		<xsl:choose>
 			<xsl:when test="local-name() = 'input'">
 				<xsl:text>
@@ -284,6 +327,32 @@
 			</xsl:when>
 		</xsl:choose>
 
+	</xsl:template>
+	
+	<xsl:template match="contains/contained" mode="checkParams">
+		<xsl:param name="parentelement" />
+		
+		<xsl:variable name="elementname" select="@element" />
+		<xsl:text>
+      java.util.Iterator </xsl:text>
+		<xsl:value-of select="$elementname" />
+		<xsl:text>Iterator = </xsl:text>
+		<xsl:value-of select="$parentelement" />
+		<xsl:text>.getChildElements("</xsl:text>
+		<xsl:value-of select="$elementname" />
+		<xsl:text>").iterator();
+      while (</xsl:text>
+		<xsl:value-of select="$elementname" />
+		<xsl:text>Iterator.hasNext()) {
+         org.xins.common.xml.Element </xsl:text>
+		<xsl:value-of select="$elementname" />
+		<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
+		<xsl:value-of select="$elementname" />
+		<xsl:text>Iterator.next();</xsl:text>
+		<xsl:apply-templates select="../../element[@name=$elementname]" mode="checkParams" />
+		<xsl:apply-templates select="../../../element[@name=$elementname]" mode="checkParams" />
+		<xsl:text>
+      }</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>

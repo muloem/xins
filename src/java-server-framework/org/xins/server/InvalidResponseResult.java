@@ -62,6 +62,22 @@ public class InvalidResponseResult extends FunctionResult {
    }
 
    /**
+    * Adds to the response a parameter that is missing in an element.
+    *
+    * @param parameter
+    *    the missing parameter.
+    *
+    * @param element
+    *    the element in which the parameter is missing.
+    */
+   public void addMissingParameter(String parameter, String element) {
+      ElementBuilder missingParam = new ElementBuilder("missing-param");
+      missingParam.setAttribute("param", parameter);
+      missingParam.setAttribute("element", element);
+      add(missingParam.createElement());
+   }
+
+   /**
     * Adds an invalid value for a specified type.
     *
     * @param parameter
@@ -74,6 +90,26 @@ public class InvalidResponseResult extends FunctionResult {
       ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
       invalidValue.setAttribute("param", parameter);
       invalidValue.setAttribute("type", type);
+      add(invalidValue.createElement());
+   }
+
+   /**
+    * Adds an invalid value for a specified type.
+    *
+    * @param parameter
+    *    the parameter passed by the user.
+    *
+    * @param type
+    *    the type which this parameter should be compliant with.
+    *
+    * @param element
+    *    the element in which the parameter is missing.
+    */
+   public void addInvalidValueForType(String parameter, String type, String element) {
+      ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
+      invalidValue.setAttribute("param", parameter);
+      invalidValue.setAttribute("type", type);
+      invalidValue.setAttribute("element", element);
       add(invalidValue.createElement());
    }
 

@@ -25,6 +25,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 * Generation of server-side Java code:
   - Code generated to check input and output parameters is now merged in a 
     single file.
+  - The generated code now checks also the attributes passed to the data 
+    sections for the required parameters and for the invalid parameters.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
