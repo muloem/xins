@@ -114,26 +114,78 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests CAPI regarding pre-defined types.
     */
-   public void testSimpleTypes() throws Throwable {
-      SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2),
-         "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
+   public void testSimpleTypes() throws Exception {
+      SimpleTypesResult result =
+         _capi.callSimpleTypes((byte) 8,              // _int8
+                               (Short) null,          // _int16
+                               65,                    // _int32
+                               88l,                   // _int64
+                               32.5f,                 // _float32
+                               new Double(37.2),      // _float64
+                               "text",                // _text
+                               null,
+                               null,
+                               Date.fromStringForRequired("20041213"),
+                               Timestamp.fromStringForOptional("20041225153255"),
+                               new byte[] {25,88,66}  // _base64
+         );
       assertNull(result.getOutputByte());
-      assertEquals((short)-1, result.getOutputShort());
-      assertEquals(16, result.getOutputInt());
-      assertEquals(14l, result.getOutputLong());
-      assertEquals("hello", result.getOutputText());
+      assertEquals((short) -1, result.getOutputShort());
+      assertEquals(16,         result.getOutputInt());
+      assertEquals(14l,        result.getOutputLong());
+      assertEquals("hello",    result.getOutputText());
       assertNull(result.getOutputText2());
       assertNull(result.getOutputProperties());
       assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
       assertNull(result.getOutputTimestamp());
       assertEquals(3, result.getOutputBinary().length);
-      assertEquals((byte)66, result.getOutputBinary()[2]);
+      assertEquals((byte) 25, result.getOutputBinary()[0]);
+      assertEquals((byte) 88, result.getOutputBinary()[1]);
+      assertEquals((byte) 66, result.getOutputBinary()[2]);
+   }
+
+   /**
+    * Tests CAPI regarding pre-defined types, using the new (XINS 1.2) CAPI
+    * call methods.
+    */
+   public void testSimpleTypes2() throws Exception {
+/*
+      SimpleTypesRequest request = new SimpleTypesRequest();
+      request.setInputByte((byte) 8);
+      request.setInputShort((Short) null);
+      request.setInputInt(65);
+      request.setInputLong(88L);
+      request.setInputFloat(32.5F);
+      request.setInputDouble(new Double(37.2));
+      request.setInputText("text");
+      request.setInputText2(null);
+      request.setInputProperties(null);
+      request.setInputDate(Date.fromStringForRequired("20041213")),
+      request.setInputTimestamp(Timestamp.fromStringForOptional("20041225153255")),
+      request.setInputBinary(new byte[] {25,88,66});
+
+      SimpleTypesResult result = _capi.callSimpleTypes(request);
+
+      assertNull(result.getOutputByte());
+      assertEquals((short) -1, result.getOutputShort());
+      assertEquals(16,         result.getOutputInt());
+      assertEquals(14l,        result.getOutputLong());
+      assertEquals("hello",    result.getOutputText());
+      assertNull(result.getOutputText2());
+      assertNull(result.getOutputProperties());
+      assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
+      assertNull(result.getOutputTimestamp());
+      assertEquals(3, result.getOutputBinary().length);
+      assertEquals((byte) 25, result.getOutputBinary()[0]);
+      assertEquals((byte) 88, result.getOutputBinary()[1]);
+      assertEquals((byte) 66, result.getOutputBinary()[2]);
+*/
    }
 
    /**
     * Tests a function called with some missing parameters.
     */
-   public void testMissingParam() throws Throwable {
+   public void testMissingParam() throws Exception {
       try {
          SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
@@ -155,7 +207,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests CAPI and defined types.
     */
-   public void testDefinedTypes() throws Throwable {
+   public void testDefinedTypes() throws Exception {
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
@@ -170,7 +222,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests a function called with some invalid parameters.
     */
-   public void testInvalidParams() throws Throwable {
+   public void testInvalidParams() throws Exception {
       TextList.Value textList = new TextList.Value();
       textList.add("Hello");
       textList.add("Test");
@@ -200,7 +252,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests a function that should returned a defined result code.
     */
-   public void testResultCode() throws Throwable {
+   public void testResultCode() throws Exception {
       String result1 = _capi.callResultCode("hello").getOutputText();
       assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
       try {
@@ -218,7 +270,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests a function that writes messages to the Logdoc.
     */
-   public void testLogdoc() throws Throwable {
+   public void testLogdoc() throws Exception {
       // This method write some text using the logdoc
       // This test doesn't check that the data written in the logs are as expected
       try {
@@ -237,7 +289,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that returns a data section containing elements with
     * PCDATA.
     */
-   public void testDataSection() throws Throwable {
+   public void testDataSection() throws Exception {
       DataElement element = _capi.callDataSection("Doe").dataElement();
       List users = element.getChildElements();
       assertTrue("No users found.", users.size() > 0);
@@ -259,7 +311,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that returns a data section with elements that contain
     * other elements.
     */
-   public void testDataSection2() throws Throwable {
+   public void testDataSection2() throws Exception {
       DataElement element = _capi.callDataSection2("hello").dataElement();
       List packets = element.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
@@ -285,7 +337,7 @@ public class AllInOneAPITests extends TestCase {
    * Tests a function that passes a data section as input and an output data
    * section with mutiple data element types.
    */
-   public void testDataSection3() throws Throwable {
+   public void testDataSection3() throws Exception {
       ElementBuilder builder1 = new ElementBuilder();
       builder1.startElement("address");
       builder1.setAttribute("company", "McDo");
@@ -326,7 +378,7 @@ public class AllInOneAPITests extends TestCase {
   /**
    * Tests the param-combos for inclusive-or and exclusive-or.
    */
-   public void testParamCombo1() throws Throwable {
+   public void testParamCombo1() throws Exception {
       try {
          _capi.callParamCombo(null, null, null, null, null, null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
@@ -357,7 +409,7 @@ public class AllInOneAPITests extends TestCase {
   /**
    * Tests the param-combos for all-or-none.
    */
-   public void testParamCombo2() throws Throwable {
+   public void testParamCombo2() throws Exception {
       try {
          _capi.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
          fail("The param-combo call should return an _InvalidRequest error code.");
@@ -381,7 +433,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests the getXINSVersion() CAPI method.
     */
-   public void testCAPIVersion() throws Throwable {
+   public void testCAPIVersion() throws Exception {
       assertNotNull("No XINS version specified.", _capi.getXINSVersion());
       assertTrue("The version does not starts with '1.'", _capi.getXINSVersion().startsWith("1."));
    }
@@ -389,7 +441,7 @@ public class AllInOneAPITests extends TestCase {
    /**
     * Tests a function that does not exists
     */
-   public void testUnknownFunction() throws Throwable {
+   public void testUnknownFunction() throws Exception {
       XINSCallRequest request = new XINSCallRequest("Unknown", null);
       XINSServiceCaller caller = new XINSServiceCaller(_target);
       try {
