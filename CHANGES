@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.108:
 
 * Now including type classes in CAPI JAR files.
 
+* Generated CAPI: Return output parameter value directly if there is only one
+  output parameter.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.107:
 
