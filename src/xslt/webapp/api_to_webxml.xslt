@@ -96,18 +96,54 @@
 						</param-value>
 					</init-param>
 				</xsl:if>
-				<xsl:for-each select="param">
-					<init-param>
-						<param-name>
-							<xsl:value-of select="@name" />
-						</param-name>
-						<param-value>
-							<xsl:value-of select="text()" />
-						</param-value>
-					</init-param>
-				</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="not ($deployment = '')">
+						<init-param>
+							<param-name>org.xins.api.deployment</param-name>
+							<param-value>
+								<xsl:value-of select="$deployment" />
+							</param-value>
+						</init-param>
+						<xsl:for-each select="deployment[@name = $deployment]/param">
+							<init-param>
+								<param-name>
+									<xsl:value-of select="@name" />
+								</param-name>
+								<param-value>
+									<xsl:value-of select="text()" />
+								</param-value>
+							</init-param>
+						</xsl:for-each>
+						<xsl:for-each select="param">
+							<xsl:variable name="param_name" select="@name" />
+							<xsl:if test="not (//api/impl-java/deployment[@name = $deployment]/param[@name = $param_name])">
+								<init-param>
+									<param-name>
+										<xsl:value-of select="@name" />
+									</param-name>
+									<param-value>
+										<xsl:value-of select="text()" />
+									</param-value>
+								</init-param>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:for-each select="param">
+							<init-param>
+								<param-name>
+									<xsl:value-of select="@name" />
+								</param-name>
+								<param-value>
+									<xsl:value-of select="text()" />
+								</param-value>
+							</init-param>
+						</xsl:for-each>
+					</xsl:otherwise>
+				</xsl:choose>
 				<load-on-startup>
-					<xsl:text>0</xsl:text> <!-- XXX: Should we be able to configure this? -->
+					<!-- XXX: Should we be able to configure the load-on-startup setting ? -->
+					<xsl:text>0</xsl:text>
 				</load-on-startup>
 			</servlet>
 			<servlet-mapping>
