@@ -66,13 +66,8 @@ public final class Text extends Type {
     *
     * @return
     *    the original {@link String}, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
     */
-   public static String fromStringForOptional(String string)
-   throws TypeValueException {
+   public static String fromStringForOptional(String string) {
       return string;
    }
 

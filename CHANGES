@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     re-introduced later.
   - Added _url standard type.
   - Added a toDate() method for the Date and Timestamp types.
+  - If the main() method is used to start the servlet container, the thread
+    listening to connection is not a deamon thread.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
@@ -32,6 +34,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Fixed a DTD caching problem.
   - Fixed incompatibility with Java 1.4.0 and Java 1.5. XINS is only
     runtime compatible with Java 1.3 and not compile time.
+  - Added the possibility to have a build.properties for compilation
+    properties. The properties supported are build.compiler, build.deprecation
+    and org.xins.server.config.
+  - Added support for the jikes compiler.
+  - Added run-<api> target that runs your API implementation.
 
 * Examples:
   - Added .version.properties in the demo directory of the release.

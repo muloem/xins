@@ -65,8 +65,8 @@ public class HTTPServletHandler {
       }
       
       try {
-         // Starts the server
-         new HTTPServletHandler(warFile, port);
+         // Starts the server and wait for connections
+         new HTTPServletHandler(warFile, port, false);
       } catch (Exception ioe) {
          ioe.printStackTrace();
       }
@@ -121,12 +121,37 @@ public class HTTPServletHandler {
     */
    public HTTPServletHandler(File warFile, int port)
    throws IOException, ServletException {
+      this(warFile, port, true);
+   }
+
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * and wait for calls from the XINSServiceCaller.
+    *
+    * @param warFile
+    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *
+    * @param port
+    *    the port of the web server, cannot be <code>null</code>.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
+    * @throws IOException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet cannot be started.
+    */
+   public HTTPServletHandler(File warFile, int port, boolean deamon)
+   throws IOException, ServletException {
 
       // Create the servlet
       _servletHandler = LocalServletHandler.getInstance(warFile);
 
       // Start the HTTP server.
-      startServer(port);
+      startServer(port, deamon);
    }
 
 
@@ -164,15 +189,19 @@ public class HTTPServletHandler {
     * @param port
     *    The port of the servle server.
     *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
     * @throws IOException
     *    If the web server cannot be started.
     */
-   public void startServer(int port) throws IOException {
+   public void startServer(int port, boolean deamon) throws IOException {
       // Create the server socket
       _serverSocket = new ServerSocket(port, 5);
       _running = true;
 
-      _acceptor = new SocketAcceptor();
+      _acceptor = new SocketAcceptor(deamon);
       _acceptor.start();
    }
 
@@ -284,8 +313,8 @@ public class HTTPServletHandler {
       /**
        * Create the thread.
        */
-      public SocketAcceptor() {
-         setDaemon(true);
+      public SocketAcceptor(boolean deamon) {
+         setDaemon(deamon);
       }
 
       /**

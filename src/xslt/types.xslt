@@ -394,7 +394,7 @@
 				</xsl:variable>
 
 				<xsl:value-of select="$class" />
-				<xsl:text>.SINGLETON.getItemByValue(</xsl:text>
+				<xsl:text>.getItemByValue(</xsl:text>
 				<xsl:value-of select="$variable" />
 				<xsl:text>)</xsl:text>
 			</xsl:when>

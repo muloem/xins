@@ -260,6 +260,8 @@ implements Result {
    public void add</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>(</xsl:text>
+		<xsl:value-of select="../../../@name" />
+		<xsl:text>.</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />

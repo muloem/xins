@@ -218,12 +218,7 @@ APIs in this project are:
 			</target>
 
 			<target name="-load-version">
-				<xsl:variable name="version_file" select="concat($project_home, '/.version.properties')" />
-				<property prefix="api.">
-					<xsl:attribute name="file">
-						<xsl:value-of select="$version_file" />
-					</xsl:attribute>
-				</property>
+				<property prefix="api." file="{$project_home}/.version.properties" />
 				<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
 					<isset property="api.version.major" />
 				</condition>
@@ -502,7 +497,7 @@ APIs in this project are:
 						srcdir="{$javaDestDir}"
 						destdir="{$typeClassesDir}"
 						debug="true"
-						deprecation="${{deprecated}}"
+						deprecation="${{build.deprecation}}"
 						source="1.3"
 						target="1.3">
 							<classpath>
@@ -784,12 +779,10 @@ APIs in this project are:
 
 						<!-- Compile all classes -->
 						<mkdir dir="{$classesDestDir}" />
-						<!-- If not set by the user set it to true. -->
-						<property name="deprecated" value="true" />
 						<javac
 						destdir="{$classesDestDir}"
 						debug="true"
-						deprecation="${{deprecated}}"
+						deprecation="${{build.deprecation}}"
 						source="1.3"
 						target="1.3">
 							<src path="{$javaDestDir}" />
@@ -867,6 +860,22 @@ APIs in this project are:
 						<echo message="Build time: ${{timestamp}}" />
 					</target>
 
+					<target name="run-{$api}" depends="war-{$api}" description="Runs the '{$api}' API">
+						<java classname="org.xins.common.servlet.container.HTTPServletHandler"
+						      fork="true">
+							<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
+							<arg path="build/webapps/{$api}/{$api}.war" />
+							<classpath>
+								<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-server.jar xins-client.jar" />
+								<fileset dir="{$xins_home}/lib" includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar" />
+								<path location="build/classes-api/{$api}" />
+								<xsl:if test="$apiHasTypes = 'true'">
+									<path location="build/classes-types/{$api}" />
+								</xsl:if>
+							</classpath>
+						</java>
+					</target>
+					
 					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
 						<property file="{$xins_home}/.version.properties" />
 						<mkdir dir="build/javadoc-api/{$api}" />
@@ -1021,6 +1030,7 @@ APIs in this project are:
 
 				<target name="jar-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
 					<xsl:attribute name="depends">
+						<xsl:text>-prepare-classes,</xsl:text>
 						<xsl:if test="$apiHasTypes = 'true'">
 							<xsl:text>-classes-types-</xsl:text>
 							<xsl:value-of select="$api" />
@@ -1031,13 +1041,11 @@ APIs in this project are:
 						<xsl:text>,-load-version</xsl:text>
 					</xsl:attribute>
 					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
-					<!-- If not set by the user set it to true. -->
-					<property name="deprecated" value="true" />
 					<javac
 					srcdir="{$project_home}/build/java-capi/{$api}/"
 					destdir="{$project_home}/build/classes-capi/{$api}"
 					debug="true"
-					deprecation="${{deprecated}}"
+					deprecation="${{build.deprecation}}"
 					source="1.3"
 					target="1.3">
 						<classpath>
@@ -1185,8 +1193,9 @@ APIs in this project are:
 			</target>
 
 			<target name="-prepare-classes" depends="-prepare,-load-dtds">
+				<property file="{$project_home}/build.properties" />
 				<!-- If not set by the user set it to true. -->
-				<property name="deprecated" value="true" />
+				<property name="build.deprecation" value="true" />
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">
