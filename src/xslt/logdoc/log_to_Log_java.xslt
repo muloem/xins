@@ -223,9 +223,12 @@ public class Log extends Object {
    /**
     * Logs the entry with ID </xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text>.
+		<xsl:text><![CDATA[. The description for this log entry is:
+    * <blockquote><em>]]></xsl:text>
+		<xsl:apply-templates select="description" />
+		<xsl:text><![CDATA[</em></blockquote>
     */
-   public static final log_</xsl:text>
+   public static final log_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<!-- TODO: Parameters -->
