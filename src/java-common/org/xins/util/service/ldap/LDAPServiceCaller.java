@@ -288,30 +288,4 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Perform the search and return the result
       return context.search(searchBase, filter, searchControls);
    }
-
-   /**
-    * LDAP search result.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.115
-    */
-   private static final class Result
-   extends Object {
-
-      // TODO: Use this class
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-   }
 }
