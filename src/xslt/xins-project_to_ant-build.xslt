@@ -345,6 +345,8 @@ $Id$
 						</tstamp>
 						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
+						<!-- If deployment is not set yet, then set it to an empty value -->
+						<property name="deployment" value="" />
 						<style
 							in="{$specsdir}/{$api}/api.xml"
 							out="build/webapps/{$api}/web.xml"
