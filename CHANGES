@@ -40,8 +40,8 @@ CHANGES INTRODUCED IN XINS 0.146:
     and incomplete, so it has been removed completely, to simplify the code.
     Support may be re-added in in the future.
   - Generating correct <function>Result classes for output parameters that
-    contain dots ('.'), by replacing each dot with a hyphen ('-') in the field
-    and method names.
+    contain dots ('.'), by replacing each dot with an underscore ('_') in the
+    field and method names.
 
 * Upgraded from Jakarta ORO 2.0.7 to 2.0.8.
 
