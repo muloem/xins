@@ -20,6 +20,10 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
 
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
+  - Fixed SF.net bug #1049850 ("FileWatcher thread dies if listener throws an
+    exception"). This bug has been in XINS since the introduction of the
+    FileWatcher class, in XINS 0.121 (initially in the package
+    org.xins.util.io).
   - Added the possibility to use the HTTPServiceCaller without parameters.
   - Moved the URLEncoding class from the net package to the text package.
   - Added unit test classes for the IntXX type classes.
@@ -28,12 +32,11 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
   - Added unit test class for Boolean type class.
   - Added fileFound() method to FileWatcher.Listener interface. This may
     break existing code.
-  - Fixed SF.net bug #1049850 ("FileWatcher thread dies if listener throws an
-    exception"). This bug has been in XINS since the introduction of the
-    FileWatcher class, in XINS 0.121 (initially in the package
-    org.xins.util.io).
 
 * XINS/Java Client Framework:
+  - Fixed SF.net bug #1050606. If no data received from an HTTP call, an
+    InvalidResultXINSCallException is thrown instead of an
+    IllegalArgumentException.
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
   - Added AbstractCAPICallResult as base class for generated function call
     result classes.
