@@ -232,7 +232,7 @@ public final class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Checks if this service descriptor denotes a group.
+    * Checks if this descriptor denotes a group of descriptors.
     *
     * @return
     *    <code>true</code>, since this descriptor denotes a group.
@@ -253,7 +253,7 @@ public final class GroupDescriptor extends Descriptor {
     * instances of class {@link TargetDescriptor}.
     *
     * @return
-    *    iterator over the service descriptors on any level in this
+    *    iterator over the leaves, the target descriptors, in this
     *    descriptor, in the correct order, never <code>null</code>.
     */
    public Iterator iterateTargets() {
@@ -269,8 +269,7 @@ public final class GroupDescriptor extends Descriptor {
    }
 
    /**
-    * Counts the number of target service descriptors in this descriptor,
-    * recursively.
+    * Counts the total number of target descriptors in/under this descriptor.
     *
     * @return
     *    the total number of target descriptors, always &gt;= 1.
@@ -388,7 +387,7 @@ public final class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Random iterator over the leaf service descriptors contained in this
+    * Random iterator over the leaf target descriptors contained in this
     * group descriptor. Needed for the implementation of
     * {@link #iterateTargets()}.
     *
@@ -527,7 +526,7 @@ public final class GroupDescriptor extends Descriptor {
    }
 
    /**
-    * Ordered iterator over the leaf service descriptors contained in this
+    * Ordered iterator over the leaf target descriptors contained in this
     * group descriptor. Needed for the implementation of
     * {@link #iterateTargets()}.
     *

@@ -59,7 +59,7 @@ public abstract class Descriptor extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Checks if this service descriptor denotes a group.
+    * Checks if this descriptor denotes a group of descriptor of descriptorss.
     *
     * @return
     *    <code>true</code> if this descriptor denotes a group,
@@ -79,14 +79,13 @@ public abstract class Descriptor extends Object {
     * instances of class {@link TargetDescriptor}.
     *
     * @return
-    *    iterator over the service descriptors on any level in this
+    *    iterator over the leaves, the target descriptors, in this
     *    descriptor, in the correct order, never <code>null</code>.
     */
    public abstract Iterator iterateTargets();
 
    /**
-    * Counts the number of target service descriptors in this descriptor,
-    * recursively.
+    * Counts the total number of target descriptors in/under this descriptor.
     *
     * @return
     *    the total number of target descriptors, always &gt;= 1.

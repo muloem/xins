@@ -19,9 +19,9 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Descriptor for a single target service. A target service descriptor defines
- * a URL that identifies the location of the service. Also, it may define 3
- * kinds of time-out:
+ * Descriptor for a single target service. A target descriptor defines a URL
+ * that identifies the location of the service. Also, it may define 3 kinds of
+ * time-out:
  *
  * <dl>
  *    <dt><em>total time-out</em> ({@link #getTotalTimeOut()})</dt>
@@ -364,10 +364,10 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Checks if this service descriptor denotes a group.
+    * Checks if this descriptor denotes a group of descriptors.
     *
     * @return
-    *    <code>false</code> since this descriptor does not denote a group.
+    *    <code>false</code>, since this descriptor does not denote a group.
     */
    public boolean isGroup() {
       return false;
@@ -433,14 +433,41 @@ public final class TargetDescriptor extends Descriptor {
       return _crc;
    }
 
+   /**
+    * Iterates over all leaves, the target descriptors.
+    *
+    * <p>The returned {@link Iterator} will only return this target
+    * descriptor.
+    *
+    * @return
+    *    iterator that returns this target descriptor, never
+    *    <code>null</code>.
+    */
    public java.util.Iterator iterateTargets() {
       return new Iterator();
    }
 
+   /**
+    * Counts the total number of target descriptors in/under this descriptor.
+    *
+    * @return
+    *    the total number of target descriptors, always 1.
+    */
    public int getTargetCount() {
       return 1;
    }
 
+   /**
+    * Returns the <code>TargetDescriptor</code> that matches the specified
+    * CRC-32 checksum.
+    *
+    * @param crc
+    *    the CRC-32 checksum.
+    *
+    * @return
+    *    the {@link TargetDescriptor} that matches the specified checksum, or
+    *    <code>null</code>, if none could be found in this descriptor.
+    */
    public TargetDescriptor getTargetByCRC(int crc) {
       return (_crc == crc) ? this : null;
    }
@@ -465,7 +492,7 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * Iterator over this (single) service descriptor. Needed for the
+    * Iterator over this (single) target descriptor. Needed for the
     * implementation of {@link #iterateTargets()}.
     *
     * @version $Revision$ $Date$
@@ -530,7 +557,7 @@ public final class TargetDescriptor extends Descriptor {
        * @throws NoSuchElementException
        *    if there is no new element.
        */
-      public Object next() {
+      public Object next() throws NoSuchElementException {
          if (_done) {
             throw new NoSuchElementException();
          } else {
