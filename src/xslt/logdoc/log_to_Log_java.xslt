@@ -221,11 +221,11 @@ public class Log extends Object {
       private CustomLevel(int value, String name, int syslogEquivalent)
       throws IllegalArgumentException {
 
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
-
          // Call superconstructor
          super(value, name, syslogEquivalent);
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("name", name);
       }
 
 
