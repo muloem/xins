@@ -46,6 +46,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
   - Added property "tests.deprecation" that controls whether deprecation
     warnings should be displayed when compiling the unit tests.
 
+* DTD:
+  - Restricted Logdoc translations file DTD to only allow exception-property
+    to refer to the class or the message.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 1:
 
