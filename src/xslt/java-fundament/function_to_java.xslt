@@ -36,6 +36,20 @@
 		<xsl:variable name="sessionBased">
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
+		<xsl:variable name="createsSession">
+			<xsl:choose>
+				<xsl:when test="@createsSession = 'true'">true</xsl:when>
+				<xsl:when test="@createsSession = 'false'">false</xsl:when>
+				<xsl:when test="string-length(@createsSession) = 0">false</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The value of the 'createsSession' attribute is '</xsl:text>
+						<xsl:value-of select="@createsSession" />
+						<xsl:text>', which is invalid.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
@@ -353,6 +367,12 @@ public abstract class ]]></xsl:text>
 		</xsl:if>
 
 		<xsl:choose>
+			<xsl:when test="$createsSession = 'true'">
+				<xsl:text>
+      // Create the session
+      Session session = context.createSession();
+      call(context, session</xsl:text>
+			</xsl:when>
 			<xsl:when test="$sessionBased = 'true'">
 				<xsl:text>
 
@@ -379,20 +399,7 @@ public abstract class ]]></xsl:text>
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:text>);</xsl:text>
-		<xsl:if test="@createsSession = 'true'">
-			<xsl:if test="input/param">
-				<xsl:message terminate="yes">No input parameters allowed for functions that create sessions.</xsl:message>
-			</xsl:if>
-			<xsl:if test="output/param">
-				<xsl:message terminate="yes">No output parameters allowed for functions that create sessions.</xsl:message>
-			</xsl:if>
-			<xsl:text>
-
-      if (context.isSuccess()) {
-         // Create the session
-         context.createSession();
-      }</xsl:text>
-		</xsl:if>
+		<!-- TODO: Dispose the session if appropriate -->
 		<xsl:if test="$sessionBased = 'true'">
 			<xsl:text>
       }</xsl:text>
@@ -405,12 +412,20 @@ public abstract class ]]></xsl:text>
     *
     * @param responder
     *    the responder to be used, never <code>null</code>.]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true'">
+		<xsl:choose>
+			<xsl:when test="$createsSession = 'true'">
 			<xsl:text><![CDATA[
     *
     * @param session
+    *    the new session, never <code>null</code>.]]></xsl:text>
+			</xsl:when>
+			<xsl:when test="$sessionBased = 'true'">
+				<xsl:text><![CDATA[
+    *
+    * @param session
     *    the current session, never <code>null</code>.]]></xsl:text>
-		</xsl:if>
+			</xsl:when>
+		</xsl:choose>
 		<xsl:for-each select="input/param">
 			<xsl:text>
     *
@@ -424,7 +439,7 @@ public abstract class ]]></xsl:text>
 		<xsl:text><![CDATA[
     */
    public abstract void call(Responder responder]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true'">
+		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
 			<xsl:text>, Session session</xsl:text>
 		</xsl:if>
 		<xsl:for-each select="input/param">
