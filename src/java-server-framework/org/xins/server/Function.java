@@ -245,8 +245,10 @@ implements DefaultReturnCodes {
     *    the function result code, or <code>null</code>.
     */
    final void performedCall(long start, long duration, boolean success, String code) {
+      boolean debugEnabled = _log.isDebugEnabled();
+      String message = null;
       if (success) {
-         if (_log.isDebugEnabled()) {
+         if (debugEnabled) {
             synchronized (_successfulCallStringBuffer) {
                _successfulCallStringBuffer.clear();
                _successfulCallStringBuffer.append("Function ");
@@ -259,7 +261,7 @@ implements DefaultReturnCodes {
                   _successfulCallStringBuffer.append(code);
                   _successfulCallStringBuffer.append("\".");
                }
-               _log.debug(_successfulCallStringBuffer.toString());
+               message = _unsuccessfulCallStringBuffer.toString();
             }
          }
 
@@ -272,7 +274,7 @@ implements DefaultReturnCodes {
             _successfulMax = _successfulMax < duration ? duration : _successfulMax;
          }
       } else {
-         if (_log.isDebugEnabled()) {
+         if (debugEnabled) {
             synchronized (_unsuccessfulCallStringBuffer) {
                _unsuccessfulCallStringBuffer.clear();
                _unsuccessfulCallStringBuffer.append("Function ");
@@ -285,7 +287,7 @@ implements DefaultReturnCodes {
                   _unsuccessfulCallStringBuffer.append(code);
                   _unsuccessfulCallStringBuffer.append("\".");
                }
-               _log.debug(_unsuccessfulCallStringBuffer.toString());
+               message = _unsuccessfulCallStringBuffer.toString();
             }
          }
 
@@ -296,6 +298,10 @@ implements DefaultReturnCodes {
             _unsuccessfulDuration += duration;
             _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
             _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
+         }
+
+         if (debugEnabled) {
+            _log.debug(message);
          }
       }
    }
