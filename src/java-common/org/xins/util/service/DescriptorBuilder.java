@@ -139,9 +139,9 @@ public final class DescriptorBuilder extends Object {
             throw new PropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
          String url = tokens[1];
-         long timeOut;
+         int timeOut;
          try {
-            timeOut = Long.parseLong(tokens[2]);
+            timeOut = Integer.parseInt(tokens[2]);
          } catch (NumberFormatException nfe) {
             throw new PropertyValueException(propertyName, value, "Unable to parse time-out.");
          }

@@ -79,7 +79,7 @@ public final class ServiceDescriptor extends Descriptor {
     * @throws MalformedURLException
     *    if the specified URL is malformed.
     */
-   public ServiceDescriptor(String url, long timeOut)
+   public ServiceDescriptor(String url, int timeOut)
    throws IllegalArgumentException, MalformedURLException {
 
       // Check preconditions
@@ -107,7 +107,7 @@ public final class ServiceDescriptor extends Descriptor {
     * The time-out for the service. Is set to a negative value if the service
     * should be waited for forever.
     */
-   private final long _timeOut;
+   private final int _timeOut;
 
 
    //-------------------------------------------------------------------------
@@ -142,7 +142,7 @@ public final class ServiceDescriptor extends Descriptor {
     *    the time-out for the service, or a negative value if the service
     *    should be waited for forever.
     */
-   public long getTimeOut() {
+   public int getTimeOut() {
       return _timeOut;
    }
 
