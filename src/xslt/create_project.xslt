@@ -59,8 +59,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			</condition>
 			<antcall target="create-environments" />
 			<replace file="xins-project.xml" token="$${{api.name}}" value="${{api.name}}" />
-			<!--echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." /-->
-			<echo message="Use create-function to create the functions for the API." />
+			<antcall target="create-function" />
 		</target>
 
 		<target name="create-impl" if="create.impl">

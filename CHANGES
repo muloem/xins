@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 
 * Generated build file:
   - Improved the create-api and create-function targets.
+  - The create-api target invokes the create-function target as APIs must have
+    at least one function.
 
 * Libraries:
   - Updated xmlenc from 0.45 to 0.46, which should result in a performance
