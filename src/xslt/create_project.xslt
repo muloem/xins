@@ -141,7 +141,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 </api>]]></replacevalue>
 			</replace>
-			<echo message="Don't forget to add &lt;function name=&quot;${{function.name}}&quot; /&gt; to the api.xml file." />
+			<!--echo message="Don't forget to add &lt;function name=&quot;${{function.name}}&quot; /&gt; to the api.xml file." /-->
 		</target>
 
 		<target name="create-rcd" description="Generates a new result code specification file.">

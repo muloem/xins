@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 0.185:
     String.
   - Added the _list type.
   - Added the _set type.
+  - Added a toString(Object) method to the types int8, int16, int32 and int64.
   - Improved log message generated when a queue time-out occurs in the Doorman
     class.
 
