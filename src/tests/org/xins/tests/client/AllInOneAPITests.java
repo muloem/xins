@@ -500,12 +500,26 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that does not exists
     */
    public void testUnknownFunction() throws Exception {
-      XINSCallRequest request = new XINSCallRequest("Unknown", null);
+      XINSCallRequest request = new XINSCallRequest("Unknown");
       XINSServiceCaller caller = new XINSServiceCaller(_target);
       try {
          XINSCallResult result = caller.call(request);
       } catch (StatusCodeHTTPCallException exception) {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
+      }
+   }
+
+   /**
+    * Tests invalid responses from the server.
+    */
+   public void testInvalidResponse() throws Exception {
+      XINSCallRequest request = new XINSCallRequest("InvalidResponse");
+      XINSServiceCaller caller = new XINSServiceCaller(_target);
+      try {
+         caller.call(request);
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         // TODO: Extend
       }
    }
 }
