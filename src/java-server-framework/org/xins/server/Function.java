@@ -36,17 +36,22 @@ extends Object {
     * @param name
     *    the name, not <code>null</code>.
     *
+    * @param version
+    *    the version of the specification this function implements, not
+    *    <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>api == null || name == null</code>.
+    *    if <code>api == null || name == null || version == null</code>.
     */
-   protected Function(API api, String name)
+   protected Function(API api, String name, String version)
    throws IllegalArgumentException {
 
       // Check argument
-      MandatoryArgumentChecker.check("api", api, "name", name);
+      MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
-      _api  = api;
-      _name = name;
+      _api     = api;
+      _name    = name;
+      _version = version;
 
       _api.functionAdded(this);
    }
@@ -65,6 +70,11 @@ extends Object {
     * The name of this function.
     */
    private final String _name;
+
+   /**
+    * The version of the specification this function implements.
+    */
+   private final String _version;
 
    /**
     * Lock object for a successful call.
@@ -109,6 +119,16 @@ extends Object {
     */
    final String getName() {
       return _name;
+   }
+
+   /**
+    * Returns the specification version for this function.
+    *
+    * @return
+    *    the version, not <code>null</code>.
+    */
+   final String getVersion() {
+      return _version;
    }
 
    /**
