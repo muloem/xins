@@ -306,7 +306,7 @@ implements DefaultResultCodes {
                   _successfulCallStringBuffer.append(code);
                   _successfulCallStringBuffer.append("\".");
                }
-               message = _unsuccessfulCallStringBuffer.toString();
+               message = _successfulCallStringBuffer.toString();
             }
          }
 
