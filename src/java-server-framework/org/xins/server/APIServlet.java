@@ -712,12 +712,12 @@ extends HttpServlet {
       if (newLocale != null) {
          String currentLocale = Log.getTranslationBundle().getName();
          if (currentLocale.equals(newLocale) == false) {
-            Log.log_201(currentLocale, newLocale);
+            Log.log_3006(currentLocale, newLocale);
             try {
                Log.setTranslationBundle(newLocale);
-               Log.log_202(currentLocale, newLocale);
+               Log.log_3007(currentLocale, newLocale);
             } catch (NoSuchTranslationBundleException exception) {
-               Log.log_203(currentLocale, newLocale);
+               Log.log_3008(currentLocale, newLocale);
             }
          }
       }
