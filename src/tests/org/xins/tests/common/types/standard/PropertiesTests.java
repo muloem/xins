@@ -81,7 +81,7 @@ public class PropertiesTests extends TestCase {
       final Properties TYPE = Properties.SINGLETON;
 
       // Test the SISO principle (Shit In Shit Out)
-      assertEquals(null, TYPE.fromString(null));
+      assertNull(TYPE.fromString(null));
 
       // Test passing an empty string in
       PropertyReader pr = (PropertyReader) TYPE.fromString("");

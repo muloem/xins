@@ -77,14 +77,14 @@ public class Int16Tests extends TestCase {
    public void testToString() {
       assertEquals("lowerLimit.toString((short)12) should return a value of \"12\"", "12", lowerLimit.toString((short)12));
       assertEquals("lowerLimit.toString(Short.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Short.valueOf("12")));
-      assertEquals("lowerLimit.toString(null) should return null", null, lowerLimit.toString(null));
+      assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
    public void testFromStringForRequired() throws Throwable {
       /* This should cause the specified error. However for some reason it
        * isn't. To prevent the rest of the tests failing this test is commented out.
-      
-      try {      
+
+      try {
          lowerLimit.fromStringForRequired("120");
          fail("Should fail with a TypeValueException due to out of bounds.");
       } catch (TypeValueException tve3) {
@@ -92,14 +92,14 @@ public class Int16Tests extends TestCase {
       }
       */
 
-      try { 
+      try {
          lowerLimit.fromStringForRequired(null);
          fail("fromStringForRequired(null) should have thrown a String is null error");
       } catch (IllegalArgumentException iae) {
          // this is good
       }
 
-      try { 
+      try {
          lowerLimit.fromStringForRequired("fred");
          fail("lowerLimit.fromStringForRequired(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve) {
@@ -115,7 +115,7 @@ public class Int16Tests extends TestCase {
 
    public void testFromStringForOptional() throws Throwable {
 
-      try { 
+      try {
          lowerLimit.fromStringForOptional("fred");
          fail("lowerLimit.fromStringForOptional(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve2) {
@@ -132,9 +132,9 @@ public class Int16Tests extends TestCase {
    }
 
    public void testValidValue() throws Throwable {
-    
+
       assertFalse("fred is not a valid value.",lowerLimit.isValidValue("fred"));
-     
+
       assertFalse("12 is outside the bounds of the instance.",lowerLimit.isValidValue("12"));
 
       assertTrue("9 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9"));
@@ -143,7 +143,7 @@ public class Int16Tests extends TestCase {
    }
 
    class ZeroToTen extends Int16 {
-      
+
       // constructor
       public ZeroToTen() {
          super("ZeroToTen", (short) 0, (short) 10);

@@ -77,19 +77,19 @@ public class Int64Tests extends TestCase {
    public void testToString() {
       assertEquals("lowerLimit.toString((long)12) should return a value of \"12\"", "12", lowerLimit.toString((long)12));
       assertEquals("lowerLimit.toString(Long.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Long.valueOf("12")));
-      assertEquals("lowerLimit.toString(null) should return null", null, lowerLimit.toString(null));
+      assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
    public void testFromStringForRequired() throws Throwable {
 
-      try { 
+      try {
          lowerLimit.fromStringForRequired(null);
          fail("fromStringForRequired(null) should have thrown a String is null error");
       } catch (IllegalArgumentException iae) {
          // this is good
       }
 
-      try { 
+      try {
          lowerLimit.fromStringForRequired("fred");
          fail("lowerLimit.fromStringForRequired(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve) {
@@ -105,7 +105,7 @@ public class Int64Tests extends TestCase {
 
    public void testFromStringForOptional() throws Throwable {
 
-      try { 
+      try {
          lowerLimit.fromStringForOptional("fred");
          fail("lowerLimit.fromStringForOptional(\"fred\") should have thrown a TypeValueException.");
       } catch (TypeValueException tve2) {
@@ -122,9 +122,9 @@ public class Int64Tests extends TestCase {
    }
 
    public void testValidValue() throws Throwable {
-    
+
       assertFalse("fred is not a valid value.",lowerLimit.isValidValue("fred"));
-     
+
       assertFalse("1253232 is outside the bounds of the instance.",lowerLimit.isValidValue("1253232"));
 
       assertTrue("9 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9"));
@@ -133,7 +133,7 @@ public class Int64Tests extends TestCase {
    }
 
    class ZeroToTenThousand extends Int64 {
-      
+
       // constructor
       public ZeroToTenThousand() {
          super("ZeroToTenThousand", (long) 0, (long) 10000);

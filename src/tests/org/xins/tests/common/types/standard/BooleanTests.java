@@ -79,23 +79,23 @@ public class BooleanTests extends TestCase {
    public void testFromStringForRequired() throws Throwable {
 
       // test the fromStringForRequired method with all possabilities
-      try { 
+      try {
          Boolean.fromStringForRequired(null);
          fail("Should have thrown a String is null error");
       } catch (IllegalArgumentException iae) {
          // this is good
       }
 
-      try { 
+      try {
          Boolean.fromStringForRequired("fred");
          fail("Should have thrown a TypeValueException.");
       } catch (TypeValueException tve) {
          // this is good
       }
 
-      assertEquals("fromStringForRequired(false) should return false.", false,  Boolean.fromStringForRequired("false"));
+      assertFalse("fromStringForRequired(false) should return false.", Boolean.fromStringForRequired("false"));
 
-      assertEquals("fromStringForRequired(true) should return true.", true, Boolean.fromStringForRequired("true"));
+      assertTrue("fromStringForRequired(true) should return true.", Boolean.fromStringForRequired("true"));
    }
 
    /**
@@ -103,18 +103,18 @@ public class BooleanTests extends TestCase {
     */
    public void testFromStringForOptional() throws Throwable {
       // test the fromStringForOptional method with all possabilities
-      try { 
+      try {
          Boolean.fromStringForOptional("fred");
          fail("Should have thrown a TypeValueException.");
       } catch (TypeValueException tve2) {
          // this is good
       }
 
-      assertEquals("Should return a null from a null parameter.", null, Boolean.fromStringForOptional(null));
+      assertNull("Should return a null from a null parameter.", Boolean.fromStringForOptional(null));
 
-      assertEquals("fromStringForOptional(true) should return true.", true, Boolean.fromStringForOptional("true").booleanValue());
+      assertTrue("fromStringForOptional(true) should return true.", Boolean.fromStringForOptional("true").booleanValue());
 
-      assertEquals("fromStringForOptional(false) should return a false.", false, Boolean.fromStringForOptional("false").booleanValue());
+      assertFalse("fromStringForOptional(false) should return a false.", Boolean.fromStringForOptional("false").booleanValue());
    }
 
    /**
@@ -147,7 +147,7 @@ public class BooleanTests extends TestCase {
          Boolean.SINGLETON.getValueClass().isInstance(Boolean.SINGLETON.fromString("fred"));
          fail("Should have thrown an error.");
       } catch (Exception e) {
-         // this is good      
+         // this is good
       }
    }
 
@@ -155,18 +155,16 @@ public class BooleanTests extends TestCase {
     * Tests the toString method of the Boolean type class which is inherited from the Type class.
     */
    public void testToString() throws Throwable {
-      boolean t = true;
-      boolean f = false;
 
-      assertEquals("toString(Boolean value) should return a null for a null.", null, Boolean.SINGLETON.toString(null));
+      assertNull("toString(Boolean value) should return a null for a null.", Boolean.SINGLETON.toString(null));
 
-      assertEquals("toString(f) should return a value of \"false\"", "false", Boolean.SINGLETON.toString(f));
+      assertEquals("toString(f) should return a value of \"false\"", "false", Boolean.SINGLETON.toString(false));
 
 //      if (! "false".equals(Boolean.SINGLETON.toString(f))) {
 //         fail("Should return string value of false from toString(f).");
 //      }
 
-      assertEquals("toString(t) should return a value of \"true\"", "true", Boolean.SINGLETON.toString(t));
+      assertEquals("toString(t) should return a value of \"true\"", "true", Boolean.SINGLETON.toString(true));
 
 //      if (! "true".equals(Boolean.SINGLETON.toString(t))) {
 //         fail("Should return string value of true from toString(t).");
