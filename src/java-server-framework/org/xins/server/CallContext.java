@@ -3,8 +3,8 @@
  */
 package org.xins.server;
 
-import javax.servlet.ServletRequest;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -19,12 +19,6 @@ public final class CallContext {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String FQCN = CallContext.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -35,10 +29,10 @@ public final class CallContext {
 
    /**
     * Constructs a new <code>CallContext</code> and configures it for the
-    * specified servlet request.
+    * specified request.
     *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
+    * @param parameters
+    *    the parameters of the request, never <code>null</code>.
     *
     * @param start
     *    the start time of the call, as milliseconds since midnight January 1,
@@ -51,20 +45,18 @@ public final class CallContext {
     *    the assigned call ID.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null || function == null</code>.
+    *    if <code>parameters == null || function == null</code>.
     */
-   CallContext(ServletRequest request, long start, Function function, int callID)
+   CallContext(PropertyReader parameters, long start, Function function, int callID)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request",  request, "function", function);
+      MandatoryArgumentChecker.check("parameters",  parameters, "function", function);
 
       // Initialize fields
-      _request      = request;
+      _parameters   = parameters;
       _start        = start;
-      _api          = function.getAPI();
       _function     = function;
-      _functionName = function.getName();
       _callID       = callID;
       _builder      = new FunctionResult();
    }
@@ -75,15 +67,9 @@ public final class CallContext {
    //-------------------------------------------------------------------------
 
    /**
-    * The API for which this CallContext is used. This field is initialized by
-    * the constructor and can never be <code>null</code>.
+    * The parameters of the request.
     */
-   private final API _api;
-
-   /**
-    * The original servlet request.
-    */
-   private final ServletRequest _request;
+   private final PropertyReader _parameters;
 
    /**
     * The call result builder. Cannot be <code>null</code>.
@@ -95,17 +81,6 @@ public final class CallContext {
     * January 1, 1970 UTC.
     */
    private final long _start;
-
-   /**
-    * The number of element tags currently open within the data section.
-    */
-   private int _elementDepth;
-
-   /**
-    * The name of the function currently being called. Cannot be
-    * <code>null</code>.
-    */
-   private final String _functionName;
 
    /**
     * The function currently being called. Cannot be <code>null</code>.
@@ -137,18 +112,6 @@ public final class CallContext {
     */
    public long getStart() {
       return _start;
-   }
-
-   /**
-    * Returns the stored success indication.
-    *
-    * @return
-    *    the success indication.
-    *
-    * @since XINS 0.128
-    */
-   public final boolean isSuccess() {
-      return _builder.getErrorCode() == null;
    }
 
    /**
@@ -187,8 +150,8 @@ public final class CallContext {
 
       // XXX: In a later version, support a parameter named 'function'
 
-      if (_request != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
-         String value = _request.getParameter(name);
+      if (_parameters != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
+         String value = _parameters.get(name);
          return "".equals(value) ? null : value;
       }
       return null;

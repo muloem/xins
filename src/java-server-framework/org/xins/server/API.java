@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.servlet.ServletRequest;
-
 import org.xins.logdoc.LogStatistics;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -631,14 +629,17 @@ implements DefaultResultCodes {
 
    /**
     * Forwards a call to a function. The call will actually be handled by
-    * {@link Function#handleCall(long,ServletRequest)}.
+    * {@link Function#handleCall(long,PropertyReader,String)}.
     *
     * @param start
     *    the start time of the request, in milliseconds since midnight January
     *    1, 1970.
     *
-    * @param request
-    *    the original servlet request, not <code>null</code>.
+    * @param parameters
+    *    the parameters of the request, never <code>null</code>.
+    *
+    * @param ip
+    *    the IP address of the requester, never <code>null</code>.
     *
     * @return
     *    the result of the call, never <code>null</code>.
@@ -647,7 +648,7 @@ implements DefaultResultCodes {
     *    if this object is currently not initialized.
     *
     * @throws NullPointerException
-    *    if <code>request == null</code>.
+    *    if <code>parameters == null</code>.
     *
     * @throws NoSuchFunctionException
     *    if there is no matching function for the specified request.
@@ -656,7 +657,7 @@ implements DefaultResultCodes {
     *    if access is denied for the specified combination of IP address and
     *    function name.
     */
-   final FunctionResult handleCall(long start, ServletRequest request)
+   final FunctionResult handleCall(long start, PropertyReader parameters, String ip)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
@@ -666,9 +667,9 @@ implements DefaultResultCodes {
       assertUsable();
 
       // Determine the function name
-      String functionName = request.getParameter("_function");
+      String functionName = parameters.get("_function");
       if (functionName == null || functionName.length() == 0) {
-         functionName = request.getParameter("function");
+         functionName = parameters.get("function");
       }
 
       // The function name is required
@@ -677,7 +678,6 @@ implements DefaultResultCodes {
       }
 
       // Check the access rule list
-      String ip = request.getRemoteAddr();
       boolean allow;
       try {
          allow = _accessRuleList.allow(ip, functionName);
@@ -702,7 +702,7 @@ implements DefaultResultCodes {
          } else if ("_GetFunctionList".equals(functionName)) {
             return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
-            String resetArgument = request.getParameter("reset");
+            String resetArgument = parameters.get("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
                synchronized(_statisticsLock) {
                   FunctionResult result = doGetStatistics();
@@ -717,9 +717,9 @@ implements DefaultResultCodes {
          } else if ("_GetSettings".equals(functionName)) {
             return doGetSettings();
          } else if ("_DisableFunction".equals(functionName)) {
-            return doDisableFunction(request);
+            return doDisableFunction(parameters);
          } else if ("_EnableFunction".equals(functionName)) {
-            return doEnableFunction(request);
+            return doEnableFunction(parameters);
          } else if ("_ResetStatistics".equals(functionName)) {
             return doResetStatistics();
          } else {
@@ -740,7 +740,7 @@ implements DefaultResultCodes {
       }
 
       // Forward the call to the function
-      return function.handleCall(start, request);
+      return function.handleCall(start, parameters, ip);
    }
 
    /**
@@ -1014,20 +1014,20 @@ implements DefaultResultCodes {
    /**
     * Enables a function.
     *
-    * @param request
-    *    the servlet request, cannot be <code>null</code>.
+    * @param parameters
+    *    the request parameters, cannot be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
     *
     * @throws NullPointerException
-    *    if <code>request == null</code>.
+    *    if <code>parameters == null</code>.
     */
-   private final FunctionResult doEnableFunction(ServletRequest request)
+   private final FunctionResult doEnableFunction(PropertyReader parameters)
    throws NullPointerException {
 
       // Get the name of the function to enable
-      String functionName = request.getParameter("functionName");
+      String functionName = parameters.get("functionName");
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
@@ -1049,20 +1049,20 @@ implements DefaultResultCodes {
    /**
     * Disables a function.
     *
-    * @param request
-    *    the servlet request, cannot be <code>null</code>.
+    * @param parameters
+    *    the request parameters, cannot be <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
     *
     * @throws NullPointerException
-    *    if <code>request == null</code>.
+    *    if <code>parameters == null</code>.
     */
-   private final FunctionResult doDisableFunction(ServletRequest request)
+   private final FunctionResult doDisableFunction(PropertyReader parameters)
    throws NullPointerException {
 
       // Get the name of the function to disable
-      String functionName = request.getParameter("functionName");
+      String functionName = parameters.get("functionName");
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");

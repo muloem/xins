@@ -3,6 +3,14 @@ CHANGES INTRODUCED IN XINS 0.206:
 
 * XINS/Java Server Framework:
   - Removed the _GetLogStatistics meta function.
+  - Removed some unused fields in CallContext.
+  - Removed references to the ServletRequest in Function, API and CallContext.
+  - Merged FormattedInputParameters and FormattedOutputParameters in one
+    class FormattedParameters.
+
+* XINS/Java Common Library:
+  - Reabilitated the ServletRequestPropertyReader removed in the previous
+    version as it's now used by the server framework.
 
 * Logdoc:
   - Removed the counter that counted the number of time that a log was

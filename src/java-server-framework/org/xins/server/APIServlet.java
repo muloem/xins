@@ -37,6 +37,7 @@ import org.xins.common.io.FileWatcher;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.servlet.ServletConfigPropertyReader;
+import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
 
@@ -953,9 +954,10 @@ extends HttpServlet {
       // Call the API if the state is READY
       FunctionResult result;
       State state = getState();
+      ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
       if (state == READY) {
          try {
-            result = _api.handleCall(start, request);
+            result = _api.handleCall(start, parameters, ip);
 
          // If access is denied, return '403 Forbidden'
          } catch (AccessDeniedException exception) {

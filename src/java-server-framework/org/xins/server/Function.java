@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
-import javax.servlet.ServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
@@ -213,8 +212,11 @@ implements DefaultResultCodes {
     *    the start time of the call, as milliseconds since midnight January 1,
     *    1970.
     *
-    * @param request
-    *    the original servlet request for this call, never <code>null</code>.
+    * @param parameters
+    *    the parameters of the request, never <code>null</code>.
+    *
+    * @param ip
+    *    the IP address of the requester, never <code>null</code>.
     *
     * @return
     *    the call result, never <code>null</code>.
@@ -222,11 +224,8 @@ implements DefaultResultCodes {
     * @throws IllegalStateException
     *    if this object is currently not initialized.
     */
-   FunctionResult handleCall(long start, ServletRequest request)
+   FunctionResult handleCall(long start, PropertyReader parameters, String ip)
    throws IllegalStateException {
-
-      // TODO: Know nothing about servlets, so do not accept the
-      //       ServletRequest argument
 
       // Check state first
       assertUsable();
@@ -237,12 +236,12 @@ implements DefaultResultCodes {
       // Check if this function is enabled
       if (!_enabled) {
 
-         performedCall(request, start, callID, DISABLED_FUNCTION_RESULT);
+         performedCall(parameters, ip, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(request, start, this, callID);
+      CallContext context = new CallContext(parameters, start, this, callID);
 
       FunctionResult result;
       try {
@@ -255,15 +254,15 @@ implements DefaultResultCodes {
          Log.log_1513(exception, _name, callID);
 
          // Create a set of parameters for the result
-         BasicPropertyReader parameters = new BasicPropertyReader();
+         BasicPropertyReader resultParameters = new BasicPropertyReader();
 
          // Add the exception class
-         parameters.set("_exception.class", exception.getClass().getName());
+         resultParameters.set("_exception.class", exception.getClass().getName());
 
          // Add the exception message, if any
          String exceptionMessage = exception.getMessage();
          if (exceptionMessage != null && exceptionMessage.length() > 0) {
-            parameters.set("_exception.message", exceptionMessage);
+            resultParameters.set("_exception.message", exceptionMessage);
          }
 
          // Add the stack trace, if any
@@ -272,16 +271,16 @@ implements DefaultResultCodes {
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
          if (stackTrace != null && stackTrace.length() > 0) {
-            parameters.set("_exception.stacktrace", stackTrace);
+            resultParameters.set("_exception.stacktrace", stackTrace);
          }
 
-         result = new FunctionResult("_InternalError", parameters);
+         result = new FunctionResult("_InternalError", resultParameters);
       }
 
       // TODO: Do this within a try-catch block, log a specific message
 
       // Update function statistics
-      performedCall(request, start, callID, result);
+      performedCall(parameters, ip, start, callID, result);
 
       return result;
    }
@@ -310,8 +309,11 @@ implements DefaultResultCodes {
     * {@link RuntimeException}. If it does, then that should be considered a
     * serious bug.
     *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
+    * @param parameters
+    *    the parameters of the request, should not be <code>null</code>.
+    *
+    * @param ip
+    *    the ip of the requester, should not be <code>null</code>.
     *
     * @param start
     *    the start time, as a number of milliseconds since January 1, 1970.
@@ -323,27 +325,27 @@ implements DefaultResultCodes {
     *    the call result, should not be <code>null</code>.
     *
     * @throws NullPointerException
-    *    if <code>request == null || result == null</code>.
+    *    if <code>parameters == null || result == null</code>.
     */
-   private final void performedCall(ServletRequest request,
+   private final void performedCall(PropertyReader parameters,
+                                    String         ip,
                                     long           start,
                                     int            callID,
                                     FunctionResult result) {
 
-      // Update statistics and determine the duration of the call
-      boolean isSuccess = result.getErrorCode() == null;
-      long duration = _statistics.recordCall(start, isSuccess);
+      // Get the error code
+      String code = result.getErrorCode();
 
-      // Determine the IP address of the remote host
-      String ip = request.getRemoteAddr();
+      // Update statistics and determine the duration of the call
+      boolean isSuccess = code == null;
+      long duration = _statistics.recordCall(start, isSuccess);
 
       // Serialize the date, input parameters and output parameters
       LogdocSerializable serStart  = new FormattedDate(start);
-      LogdocSerializable inParams  = new FormattedInputParameters(request);
-      LogdocSerializable outParams = new FormattedOutputParameters(result);
+      LogdocSerializable inParams  = new FormattedParameters(parameters);
+      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
 
-      // Get the error code, fallback is a zero character
-      String code = result.getErrorCode();
+      // Fallback is a zero character
       if (code == null) {
          code = "0";
       }
@@ -478,15 +480,14 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Logdoc-serializable for the input parameters in a
-    * <code>ServletRequest</code>.
+    * Logdoc-serializable for parameters.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
     * @since XINS 0.201
     */
-   private static final class FormattedInputParameters
+   private static final class FormattedParameters
    extends AbstractLogdocSerializable {
 
       //---------------------------------------------------------------------
@@ -494,21 +495,14 @@ implements DefaultResultCodes {
       //---------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>FormattedInputParameters</code> object.
+       * Constructs a new <code>FormattedParameters</code> object.
        *
-       * @param request
-       *    the servlet request, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>request == null</code>.
+       * @param parameters
+       *    the parameters, can be <code>null</code>.
        */
-      private FormattedInputParameters(ServletRequest request)
-      throws IllegalArgumentException {
+      private FormattedParameters(PropertyReader parameters) {
 
-         // Check preconditions
-         MandatoryArgumentChecker.check("request", request);
-
-         _request = request;
+         _parameters = parameters;
       }
 
 
@@ -517,9 +511,9 @@ implements DefaultResultCodes {
       //---------------------------------------------------------------------
 
       /**
-       * The servlet request. This field is never <code>null</code>.
+       * The parameters to serialize. This field can be <code>null</code>.
        */
-      private final ServletRequest _request;
+      private final PropertyReader _parameters;
 
 
       //---------------------------------------------------------------------
@@ -528,101 +522,10 @@ implements DefaultResultCodes {
 
       protected String initialize() {
 
-         Enumeration names = _request.getParameterNames();
+         Iterator names = (_parameters == null) ? null : _parameters.getNames();
 
          // If there are no parameters, then just return a hyphen
-         if (! names.hasMoreElements()) {
-            return "-";
-         }
-
-         FastStringBuffer buffer = new FastStringBuffer(93);
-
-         boolean first = true;
-         do {
-
-            // Get the name and value
-            String name  = (String) names.nextElement();
-            String value = _request.getParameter(name);
-
-            // If the value is null or an empty string, then output nothing
-            if (value == null || value.length() == 0) {
-               continue;
-            }
-
-            // Append an ampersand, except for the first entry
-            if (!first) {
-               buffer.append('&');
-            } else {
-               first = false;
-            }
-
-            // Append the key and the value, separated by an equals sign
-            buffer.append(WhislEncoding.encode(name));
-            buffer.append('=');
-            buffer.append(WhislEncoding.encode(value));
-         } while (names.hasMoreElements());
-
-         return buffer.toString();
-      }
-   }
-
-   /**
-    * Logdoc-serializable for the output parameters in a
-    * <code>CallResult</code>.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.201
-    */
-   private static final class FormattedOutputParameters
-   extends AbstractLogdocSerializable {
-
-      //---------------------------------------------------------------------
-      // Constructor
-      //---------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>FormattedOutputParameters</code> object.
-       *
-       * @param result
-       *    the call result, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>result == null</code>.
-       */
-      private FormattedOutputParameters(FunctionResult result)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("result", result);
-
-         _result = result;
-      }
-
-
-      //---------------------------------------------------------------------
-      // Fields
-      //---------------------------------------------------------------------
-
-      /**
-       * The call result. This field is never <code>null</code>.
-       */
-      private final FunctionResult _result;
-
-
-      //---------------------------------------------------------------------
-      // Methods
-      //---------------------------------------------------------------------
-
-      protected String initialize() {
-
-         // Get the names of all parameters
-         PropertyReader params = _result.getParameters();
-         Iterator names = (params == null) ? null : params.getNames();
-
-         // If there are no parameters, then just return a hyphen
-         if (names == null || !names.hasNext()) {
+         if (names == null || ! names.hasNext()) {
             return "-";
          }
 
@@ -633,7 +536,7 @@ implements DefaultResultCodes {
 
             // Get the name and value
             String name  = (String) names.next();
-            String value = params.get(name);
+            String value = _parameters.get(name);
 
             // If the value is null or an empty string, then output nothing
             if (value == null || value.length() == 0) {
