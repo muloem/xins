@@ -423,13 +423,13 @@
 	<group id="runtime.tx" name="Transaction logging">
 		<entry id="1540" level="INFO">
 			<description>Function called.</description>
-			<param name="ip"        type="text"  nullable="false" />
-			<param name="function"  type="text"  nullable="false" />
+			<param name="ip"           type="text"  nullable="false" />
+			<param name="functionName" type="text"  nullable="false" />
 			<!-- TODO: <param name="inParams" type="text" nullable="false" /> -->
-			<param name="callID"    type="int32" nullable="false" />
-			<param name="start"     type="int64" nullable="false" />
-			<param name="duration"  type="int64" nullable="false" />
-			<param name="errorCode" type="text"  nullable="true"  />
+			<param name="callID"       type="int32" nullable="false" />
+			<param name="start"        type="int64" nullable="false" />
+			<param name="duration"     type="int64" nullable="false" />
+			<param name="errorCode"    type="text"  nullable="true"  />
 		</entry>
 	</group>
 
