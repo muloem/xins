@@ -1,6 +1,16 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.198:
 
+* XINS/Java Server Framework:
+  - Added log entry 1540 for transaction logging.
+
+* XINS/Java Client Framework:
+  - Removed the deprecated getException() method from class CallException.
+  - Added log entry 2017 which indicates a call failed due an unspecific I/O
+    error.
+  - Added log entry 2018 which indicates a call failed due an unexpected error
+    condition.
+
 * XINS/Java Common Library:
   - Removed reasonFor(Throwable) method and it's brother
     reasonForImpl(Throwable) from class ServiceCaller and from
