@@ -1049,7 +1049,7 @@ implements DefaultResultCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         Statistics stats = function.getStatistics();
+         FunctionStatistics stats = function.getStatistics();
 
          long successfulCalls      = stats.getSuccessfulCalls();
          long unsuccessfulCalls    = stats.getUnsuccessfulCalls();

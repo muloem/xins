@@ -149,7 +149,7 @@ implements DefaultResultCodes {
    /**
     * Statistics object linked to this function.
     */
-   private final Statistics _statistics = new Statistics();
+   private final FunctionStatistics _statistics = new FunctionStatistics();
 
 
    //-------------------------------------------------------------------------
@@ -246,7 +246,7 @@ implements DefaultResultCodes {
     * @return
     *    the statistics, never <code>null</code>.
     */
-   final Statistics getStatistics() {
+   final FunctionStatistics getStatistics() {
       return _statistics;
    }
 
