@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.190:
     needed in order to properly support the 'boolean' type in Logdoc.
   - Removed unused private no-arg constructor from class
     org.xins.common.types.List.
+  - Slightly improved implementation of HungarianMapper.
 
 * Generated build file:
   - Added commons-httpclient.jar and jakarta-oro.jar to the classpath for the
