@@ -406,7 +406,7 @@ extends AbstractFunctionCaller {
       return _url;
    }
 
-   public CallResult call(String sessionID, String functionName, Map parameters)
+   public XINSServiceCaller.Result call(String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {
@@ -515,7 +515,7 @@ extends AbstractFunctionCaller {
           UnsuccessfulCallException {
 
       // Call the function
-      CallResult result = call(null, "_GetVersion", null);
+      XINSServiceCaller.Result result = call(null, "_GetVersion", null);
 
       // The call must be successful
       if (!result.isSuccess()) {

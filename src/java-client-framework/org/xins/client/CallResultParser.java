@@ -18,7 +18,8 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 
 /**
- * Call result parser. XML is parsed to produce a {@link CallResult} object.
+ * Call result parser. XML is parsed to produce a
+ * {@link XINSServiceCaller.Result} object.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -67,7 +68,8 @@ public class CallResultParser extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Parses the given XML string to create a <code>CallResult</code> object.
+    * Parses the given XML string to create a
+    * <code>XINSServiceCaller.Result</code> object.
     *
     * @param xml
     *    the XML to be parsed, not <code>null</code>.
@@ -82,13 +84,14 @@ public class CallResultParser extends Object {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public CallResult parse(String xml)
+   public XINSServiceCaller.Result parse(String xml)
    throws IllegalArgumentException, ParseException {
       return parse(null, xml);
    }
 
    /**
-    * Parses the given XML string to create a <code>CallResult</code> object,
+    * Parses the given XML string to create a
+    * <code>XINSServiceCaller.Result</code> object,
     * optionally specifying a <code>ActualFunctionCaller</code>.
     *
     * @param functionCaller
@@ -108,7 +111,8 @@ public class CallResultParser extends Object {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public CallResult parse(ActualFunctionCaller functionCaller, String xml)
+   public XINSServiceCaller.Result parse(ActualFunctionCaller functionCaller,
+                                         String               xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
@@ -126,8 +130,8 @@ public class CallResultParser extends Object {
    }
 
    /**
-    * Parses the given XML document to create a <code>CallResult</code>
-    * object.
+    * Parses the given XML document to create a
+    * <code>XINSServiceCaller.Result</code> object.
     *
     * @param functionCaller
     *    the function caller to associate with the call result, or
@@ -146,7 +150,8 @@ public class CallResultParser extends Object {
     *    if the specified XML document is not a valid XINS API function call
     *    result.
     */
-   private CallResult parse(ActualFunctionCaller functionCaller, Document document)
+   private XINSServiceCaller.Result parse(ActualFunctionCaller functionCaller,
+                                          Document             document)
    throws NullPointerException, ParseException {
 
       Element element = document.getRootElement();
@@ -163,7 +168,7 @@ public class CallResultParser extends Object {
       Map parameters      = parseParameters(element);
       Element dataElement = element.getChild("data");
 
-      return new CallResult(functionCaller, success, code, parameters, dataElement);
+      return new XINSServiceCaller.Result(functionCaller, success, code, parameters, dataElement);
    }
 
    /**

@@ -374,9 +374,9 @@ extends AbstractCompositeFunctionCaller {
       return (ActualFunctionCaller) _actualFunctionCallersByURLChecksumString.get(crc32);
    }
 
-   public final CallResult call(String sessionID,
-                                String functionName,
-                                Map    parameters)
+   public final XINSServiceCaller.Result call(String sessionID,
+                                              String functionName,
+                                              Map    parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {
@@ -416,15 +416,15 @@ extends AbstractCompositeFunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   abstract CallResult callImpl(String sessionID,
-                                String functionName,
-                                Map    parameters)
+   abstract XINSServiceCaller.Result callImpl(String sessionID,
+                                              String functionName,
+                                              Map    parameters)
    throws CallIOException, InvalidCallResultException;
 
    /**
     * Attempts to call the specified <code>FunctionCaller</code>. If the call
-    * succeeds, then the {@link CallResult} will be returned. If it fails,
-    * then the {@link Throwable} exception will be returned.
+    * succeeds, then the {@link XINSServiceCaller.Result} will be returned. If
+    * it fails, then the {@link Throwable} exception will be returned.
     *
     * @param caller
     *    the {@link FunctionCaller} to call, not <code>null</code>.
@@ -456,7 +456,7 @@ extends AbstractCompositeFunctionCaller {
    throws Error {
 
       // Perform the call
-      CallResult result;
+      XINSServiceCaller.Result result;
       try {
          result = caller.call(sessionID, functionName, parameters);
 
@@ -471,7 +471,7 @@ extends AbstractCompositeFunctionCaller {
          throw new Error(caller.getClass().getName() + ".call(java.lang.String, java.lang.String, java.util.Map) returned null.");
       }
 
-      // otherwise return the CallResult object
+      // otherwise return the XINSServiceCaller.Result object
       return result;
    }
 
@@ -481,9 +481,9 @@ extends AbstractCompositeFunctionCaller {
     * {@link #tryCall(FunctionCaller,String,String,Map)} has been called as
     * many times as necessary.
     *
-    * <p>If the specified object is a <code>CallResult</code> object, then it
-    * will be <em>returned</em>. If it is an exception, then that exception
-    * will be <em>thrown</em>.
+    * <p>If the specified object is a {@link XINSServiceCaller.Result} object,
+    * then it will be <em>returned</em>. If it is an exception, then that
+    * exception will be <em>thrown</em>.
     *
     * @param result
     *    the result from a call to
@@ -491,7 +491,8 @@ extends AbstractCompositeFunctionCaller {
     *    <code>null</code>.
     *
     * @return
-    *    the {@link CallResult}, if <code>result instanceof CallResult</code>.
+    *    the {@link XINSServiceCaller.Result}, if
+    *    <code>result instanceof </code>{@link XINSServiceCaller.Result}.
     *
     * @throws IllegalArgumentException
     *    if <code>result == null</code>.
@@ -502,17 +503,20 @@ extends AbstractCompositeFunctionCaller {
     * @throws InvalidCallResultException
     *    if <code>result instanceof InvalidCallResultException</code>.
     */
-   final CallResult callImplResult(Object result)
+   final XINSServiceCaller.Result callImplResult(Object result)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {
+
+      // TODO: Combine CallIOException and InvalidCallResultException in
+      //       CallException ?
 
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);
 
       // Determine behaviour based on result object
-      if (result instanceof CallResult) {
-         return (CallResult) result;
+      if (result instanceof XINSServiceCaller.Result) {
+         return (XINSServiceCaller.Result) result;
       } else if (result instanceof CallIOException) {
          throw (CallIOException) result;
       } else if (result instanceof InvalidCallResultException) {

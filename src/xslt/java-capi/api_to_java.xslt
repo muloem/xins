@@ -461,7 +461,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		</xsl:if>
 		<xsl:text>
-      org.xins.client.CallResult result = </xsl:text>
+      org.xins.client.XINSServiceCaller.Result result = </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$kind = 'nonSharedSessionBased'">
 				<xsl:text>afc</xsl:text>

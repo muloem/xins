@@ -32,7 +32,7 @@ extends CallException {
     *
     * @param result
     *    the call result that is unsuccessful, cannot be <code>null</code>,
-    *    and <code>result.</code>{@link CallResult#isSuccess() isSuccess()}
+    *    and <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
     *    should be <code>false</code>.
     *
     * @return
@@ -41,11 +41,11 @@ extends CallException {
     *
     * @throws IllegalArgumentException
     *    if <code>result == null
-    *          || result.</code>{@link CallResult#isSuccess() isSuccess()}.
+    *          || result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}.
     *
     * @since XINS 0.124
     */
-   private static final String createMessage(CallResult result)
+   private static final String createMessage(XINSServiceCaller.Result result)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -80,14 +80,14 @@ extends CallException {
     *
     * @param result
     *    the call result that is unsuccessful, cannot be <code>null</code>,
-    *    and <code>result.</code>{@link CallResult#isSuccess() isSuccess()}
+    *    and <code>result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}
     *    should be <code>false</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>result == null
-    *          || result.</code>{@link CallResult#isSuccess() isSuccess()}.
+    *          || result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}.
     */
-   public UnsuccessfulCallException(CallResult result)
+   public UnsuccessfulCallException(XINSServiceCaller.Result result)
    throws IllegalArgumentException {
 
       super(createMessage(result), null);
@@ -103,25 +103,12 @@ extends CallException {
    /**
     * The call result. The value of this field cannot be <code>null</code>.
     */
-   private final CallResult _result;
+   private final XINSServiceCaller.Result _result;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the call result.
-    *
-    * @return
-    *    the call result, cannot be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.136.
-    */
-   public CallResult getCallResult() {
-      return _result;
-   }
 
    /**
     * Returns the <code>ActualFunctionCaller</code> that executed the call.

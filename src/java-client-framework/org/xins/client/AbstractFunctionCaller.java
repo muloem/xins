@@ -55,19 +55,19 @@ implements FunctionCaller {
    // Methods
    //-------------------------------------------------------------------------
 
-   public CallResult call(String functionName)
+   public XINSServiceCaller.Result call(String functionName)
    throws CallIOException, InvalidCallResultException {
       return call(null, functionName, null);
    }
 
-   public CallResult call(String functionName, Map parameters)
+   public XINSServiceCaller.Result call(String functionName, Map parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {
       return call(null, functionName, parameters);
    }
 
-   public CallResult call(CallRequest request)
+   public XINSServiceCaller.Result call(CallRequest request)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {

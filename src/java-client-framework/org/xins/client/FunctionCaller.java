@@ -34,7 +34,7 @@ public interface FunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   CallResult call(String functionName)
+   XINSServiceCaller.Result call(String functionName)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException;
@@ -64,8 +64,8 @@ public interface FunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   CallResult call(String functionName,
-                   Map    parameters)
+   XINSServiceCaller.Result call(String functionName,
+                                 Map    parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException;
@@ -98,9 +98,9 @@ public interface FunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   CallResult call(String sessionID,
-                   String functionName,
-                   Map    parameters)
+   XINSServiceCaller.Result call(String sessionID,
+                                 String functionName,
+                                 Map    parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException;
@@ -124,7 +124,7 @@ public interface FunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   CallResult call(CallRequest request)
+   XINSServiceCaller.Result call(CallRequest request)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException;

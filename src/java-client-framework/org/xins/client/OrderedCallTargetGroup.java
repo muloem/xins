@@ -60,7 +60,9 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
    // Methods
    //-------------------------------------------------------------------------
 
-   CallResult callImpl(String sessionID, String functionName, Map parameters)
+   XINSServiceCaller.Result callImpl(String sessionID,
+                                     String functionName,
+                                     Map    parameters)
    throws IllegalArgumentException,
           CallIOException,
           InvalidCallResultException {
@@ -92,8 +94,8 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
          } else {
             divert = result instanceof Throwable;
             if (!divert) {
-               CallResult callResult = (CallResult) result;
-               code = callResult.getCode();
+               XINSServiceCaller.Result r = (XINSServiceCaller.Result) result;
+               code = r.getCode();
                if (code != null) {
                   divert = divertOnCode(code);
                }

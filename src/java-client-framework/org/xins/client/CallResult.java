@@ -23,8 +23,12 @@ import org.xins.util.collections.CollectionUtils;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @deprecated
+ *    Deprecated since XINS 0.146. Use {@link XINSServiceCaller.Result}
+ *    instead.
  */
-public final class CallResult extends Object {
+public final class CallResult extends XINSServiceCaller.Result {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -65,7 +69,7 @@ public final class CallResult extends Object {
                      Map     parameters,
                      Element dataElement)
    throws IllegalArgumentException {
-      this(null, success, code, parameters, dataElement);
+      super(success, code, parameters, dataElement);
    }
 
    /**
@@ -101,26 +105,7 @@ public final class CallResult extends Object {
                      Map                  parameters,
                      Element              dataElement)
    throws IllegalArgumentException {
-
-      // Clone the data element if there is one
-      if (dataElement != null) {
-         String    dataElementName = dataElement.getName();
-         Namespace ns              = dataElement.getNamespace();
-         if (!"data".equals(dataElement.getName())) {
-            throw new IllegalArgumentException("dataElement.getName() returned \"" + dataElementName + "\", instead of \"data\".");
-         } else if (!Namespace.NO_NAMESPACE.equals(ns)) {
-            throw new IllegalArgumentException("dataElement.getNamespace() returned a namespace with URI \"" + ns.getURI() + "\", instead of no namespace.");
-         }
-         dataElement = (Element) dataElement.clone();
-      }
-
-      _functionCaller = functionCaller;
-      _success     = success;
-      _code        = code;
-      _parameters  = parameters == null
-                   ? CollectionUtils.EMPTY_MAP
-                   : Collections.unmodifiableMap(parameters);
-      _dataElement = dataElement;
+      super(functionCaller, success, code, parameters, dataElement);
    }
 
 
@@ -128,126 +113,7 @@ public final class CallResult extends Object {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The <code>ActualFunctionCaller</code> that produced this object. Can be
-    * <code>null</code>.
-    */
-   private final ActualFunctionCaller _functionCaller;
-
-   /**
-    * Success indication.
-    */
-   private final boolean _success;
-
-   /**
-    * The result code. This field is <code>null</code> if no code was
-    * returned.
-    */
-   private final String _code;
-
-   /**
-    * The parameters and their values. This field is never <code>null</code>.
-    * If there are no parameters, then this field will be set to
-    * {@link CollectionUtils#EMPTY_MAP}.
-    */
-   private final Map _parameters;
-
-   /**
-    * The data element. This field is <code>null</code> if there is no data
-    * element.
-    */
-   private final Element _dataElement;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the <code>ActualFunctionCaller</code> associated with this call
-    * result.
-    *
-    * @return
-    *    the {@link ActualFunctionCaller} specified at construction time, or
-    *    <code>null</code> if none was specified.
-    */
-   public ActualFunctionCaller getFunctionCaller() {
-      return _functionCaller;
-   }
-
-   /**
-    * Returns the success indication.
-    *
-    * @return
-    *    success indication, <code>true</code> or <code>false</code>.
-    */
-   public boolean isSuccess() {
-      return _success;
-   }
-
-   /**
-    * Returns the result code.
-    *
-    * @return
-    *    the result code or <code>null</code> if no code was returned.
-    */
-   public String getCode() {
-      return _code;
-   }
-
-   /**
-    * Gets all parameters.
-    *
-    * @return
-    *    a <code>Map</code> containing all parameters, never
-    *    <code>null</code>; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values
-    *    will be the parameter values ({@link String} objects as well, cannot
-    *    be <code>null</code>).
-    */
-   public Map getParameters() {
-      return _parameters;
-   }
-
-   /**
-    * Gets the value of the specified parameter.
-    *
-    * @param name
-    *    the parameter element name, not <code>null</code>.
-    *
-    * @return
-    *    string containing the value of the parameter element,
-    *    not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    */
-   public String getParameter(String name)
-   throws IllegalArgumentException {
-
-      MandatoryArgumentChecker.check("name", name);
-
-      if (_parameters == null) {
-         return null;
-      }
-
-      return (String) _parameters.get(name);
-   }
-
-   /**
-    * Returns the optional extra data. The data is an XML {@link Element}, or
-    * <code>null</code>.
-    *
-    * @return
-    *    the extra data as an XML {@link Element}, can be <code>null</code>;
-    *    if it is not <code>null</code>, then
-    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
-    */
-   public Element getDataElement() {
-      if (_dataElement == null) {
-         return null;
-      } else {
-         return (Element) _dataElement.clone();
-      }
-   }
 }
