@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 0.109:
   - Now using <enumtype>.Item classes as the type for input parameters that
     denote enumeration types. This may break existing code that expects a
     java.lang.String object instead.
+  - Result classes generated for functions that return a data element now
+    define a method getDataElement() that returns an org.jdom.Element object
+    instead of a list of the contained elements. This may break existing code
+    that expects a List instead.
 
 * Generated fundament classes:
   - Now using <enumtype>.Item classes as the type for input parameters that
