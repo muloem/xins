@@ -209,7 +209,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @param parameters
     *    the parameters to be passed to that function, or
     *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class.
+    *    of any class; this {@link Map} may be unmodifiable, since it is
+    *    guaranteed that it will not be changed.
     *
     * @return
     *    the call result, never <code>null</code>.
