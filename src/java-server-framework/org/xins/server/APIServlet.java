@@ -734,28 +734,33 @@ extends HttpServlet {
          setState(BOOTSTRAPPING_API);
 
          // Bootstrap the API
-         boolean succeeded = false;
+         Throwable caught;
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
-            succeeded = true;
+            caught = null;
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3209(exception.getPropertyName());
+            caught = exception;
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_3210(exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            caught = exception;
 
          // Other bootstrap error
          } catch (Throwable exception) {
             Log.log_3211(exception);
+            caught = exception;
          }
 
          // Throw a ServletException if the bootstrap failed
-         if (!succeeded) {
+         if (caught != null) {
             setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException("API bootstrap failed.");
+            ServletException se = new ServletException("API bootstrap failed.");
+            se.initCause(caught);
+            throw se;
          }
 
          // Make the API have a link to this APIServlet
