@@ -5,7 +5,6 @@ package org.xins.client;
 
 import java.io.ByteArrayInputStream;
 import java.util.Hashtable;
-import java.util.Properties;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
@@ -14,8 +13,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertiesPropertyReader;
+import org.xins.common.collections.ProtectedPropertyReader;
+
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -36,6 +37,24 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class. This field is not <code>null</code>.
+    */
+   private static final String CLASSNAME = XINSCallResultParser.class.getName();
+
+   /**
+    * Constant for an <code>Integer</code> object representing the number
+    * zero. This field is not <code>null</code>.
+    */
+   private static final Integer ZERO = new Integer(0);
+
+   /**
+    * The key for the <code>ProtectedPropertyReader</code> instances created
+    * by this class.
+    */
+   private static final Object PROTECTION_KEY = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -81,33 +100,56 @@ extends Object {
    public XINSCallResultData parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
+      // TRACE: Enter method
+      Log.log_2003(CLASSNAME, "parse(byte[])", null);
+
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
+      // Initialize a SAX event handler
       Handler handler = new Handler();
+
       try {
+
+         // Construct a SAX parser
          SAXParserFactory factory = SAXParserFactory.newInstance();
-         SAXParser saxParser = factory.newSAXParser();
+         SAXParser saxParser      = factory.newSAXParser();
+
+         // Convert the byte array to an input stream
          ByteArrayInputStream bais = new ByteArrayInputStream(xml);
+
+         // Let SAX parse the XML, using our handler
          saxParser.parse(bais, handler);
+
+         // Dispose the constructed input stream
          bais.close();
+
       } catch (Throwable exception) {
+
+         // Construct a buffer for the error message
+         FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
+
+         // Include the exception message in our error message, if any
          String detail = exception.getMessage();
-         FastStringBuffer buffer = new FastStringBuffer(250);
-         buffer.append("Unable to convert the specified character string to XML");
          if (detail != null && detail.length() > 0) {
             buffer.append(": ");
             buffer.append(detail);
          } else {
             buffer.append('.');
          }
-         String message = buffer.toString();
-         Log.log_2105(exception, detail);
-         throw new ParseException(message);
+
+         Log.log_2206(exception, detail);
+
+         throw new ParseException(buffer.toString());
+         // TODO: throw new ParseException(buffer.toString(), exception);
       }
+
+      // TRACE: Leave method
+      Log.log_2005(CLASSNAME, "parse(byte[])", null);
 
       return handler;
    }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
@@ -158,8 +200,9 @@ extends Object {
 
       /**
        * The list of the parameters (name/value) returned by the function.
+       * This field is lazily initialized.
        */
-      private Properties _parameters;
+      private ProtectedPropertyReader _parameters;
 
       /**
        * The parameter name of the parameter that is actually parsed.
@@ -230,35 +273,54 @@ extends Object {
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
 
+         // Root element must be 'result'
          if (!_parsingStarted && !qName.equals("result")) {
-            Log.log_2106(qName);
+            Log.log_2200(qName);
          }
 
+         // Within the data section
          if (_level >= 0) {
+
+            // Increase the depth level
             _level++;
+
+            // Construct a DataElement
             DataElement element = new DataElement(qName);
 
+            // Add all attributes
             for (int i = 0; i < atts.getLength(); i++) {
                String key = atts.getQName(i);
                String value = atts.getValue(i);
                element.addAttribute(key, value);
             }
             _elements.put(new Integer(_level), element);
+
+            // Reserve buffer for PCDATA
             _pcdata = new FastStringBuffer(20);
+
+         // Root element
          } else if (qName.equals("result")) {
             _parsingStarted = true;
             _errorCode = atts.getValue("errorcode");
             if (_errorCode == null) {
                _errorCode = atts.getValue("code");
             }
+
+         // Output parameter
          } else if (qName.equals("param")) {
             _parameterKey = atts.getValue("name");
             _pcdata = new FastStringBuffer(20);
+
+         // Start of data section
          } else if (qName.equals("data")) {
             _elements = new Hashtable();
-            _elements.put(new Integer(0), new DataElement("data"));
+            _elements.put(ZERO, new DataElement("data"));
             _level = 0;
+
+         // Unknown element
          } else {
+            // TODO: Log?
+            // TODO: Just ignore this element?
             throw new SAXException("Unknown element \"" + qName + "\".");
          }
       }
@@ -292,6 +354,7 @@ extends Object {
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName);
 
+         // Within data section
          if (_level > 0) {
             DataElement child = (DataElement)_elements.get(new Integer(_level));
             if (_pcdata != null && _pcdata.getLength() > 0) {
@@ -301,36 +364,58 @@ extends Object {
             _level--;
             DataElement parent = (DataElement)_elements.get(new Integer(_level));
             parent.addChild(child);
-            return;
-         }
 
-         if (qName.equals("param")) {
-            final String ELEMENT_NAME  = "param";
-            final String KEY_ATTRIBUTE = "name";
+         // Output parameter
+         } else if (qName.equals("param")) {
+
+            // Retrieve name and value for output parameter
+            String name  = _parameterKey;
             String value = _pcdata.toString();
-            boolean noKey   = (_parameterKey == null || _parameterKey.length() < 1);
-            boolean noValue = (value == null || value.length() < 1);
-            if (noKey && noValue) {
-               Log.log_2101(ELEMENT_NAME);
-            } else if (noKey) {
-               Log.log_2102(ELEMENT_NAME, KEY_ATTRIBUTE);
-            } else if (noValue) {
-               Log.log_2103(ELEMENT_NAME, KEY_ATTRIBUTE, _parameterKey);
-            } else {
 
-               Log.log_2104(ELEMENT_NAME, "name", _parameterKey, value);
+            // Both name and value should be set
+            boolean noName  = (name  == null || name.length()  < 1);
+            boolean noValue = (value == null || value.length() < 1);
+            if (noName && noValue) {
+               Log.log_2201();
+            } else if (noName) {
+               Log.log_2202(value);
+            } else if (noValue) {
+               Log.log_2203(name);
+
+            // Name and value are both set, correctly
+            } else {
+               Log.log_2204(name, value);
+
+               // Previously no parameters, perform (lazy) initialization
                if (_parameters == null) {
-                  _parameters = new Properties();
-               } else if (_parameters.get(_parameterKey) != null) {
-                  throw new SAXException("The returned XML is invalid. Found <" + ELEMENT_NAME + "/> with duplicate " + KEY_ATTRIBUTE + " \"" + _parameterKey + "\" attribute.");
+                  _parameters = new ProtectedPropertyReader(PROTECTION_KEY);
+
+               // Check if parameter is already set
+               } else {
+                  String existingValue = _parameters.get(name);
+                  if (existingValue != null) {
+                     if (existingValue.equals(value)) {
+                        // Ignore
+                     } else {
+                        Log.log_2205(name, existingValue, value);
+                        throw new SAXException("Found conflicting duplicate value for output parameter \"" + name + "\". Initial value is \"" + existingValue + "\". New value is \"" + value + "\".");
+                     }
+                  }
                }
-               _parameters.put(_parameterKey, value);
+
+               // Store the name-value combination for the output parameter
+               _parameters.set(PROTECTION_KEY, name, value);
             }
+
+            // Reset the state
             _parameterKey = null;
             _pcdata = null;
 
+         // End of data section
          } else if (_level == 0 && qName.equals("data")) {
             _level--;
+
+         // Otherwise we expect to be in the root element (result)
          } else if (!qName.equals("result")) {
             throw new SAXException("Unknown element \"" + qName + "\".");
          }
@@ -355,6 +440,10 @@ extends Object {
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException {
 
+         // TODO: Check state
+
+         // TODO: Ignore, but log, PCDATA outside expected regions
+
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
          }
@@ -368,6 +457,9 @@ extends Object {
        *    if no error code has been returned from the function.
        */
       public String getErrorCode() {
+
+         // TODO: Check state
+
          return _errorCode;
       }
 
@@ -379,10 +471,10 @@ extends Object {
        *    does not have any parameters.
        */
       public PropertyReader getParameters() {
-         if (_parameters == null) {
-            return null;
-         }
-         return new PropertiesPropertyReader(_parameters);
+
+         // TODO: Check state
+
+         return _parameters;
       }
 
       /**
@@ -393,7 +485,7 @@ extends Object {
        *    return any data element.
        */
       public DataElement getDataElement() {
-         return (DataElement) _elements.get(new Integer(0));
+         return (DataElement) _elements.get(ZERO);
       }
    }
 }
