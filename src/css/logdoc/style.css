@@ -44,6 +44,34 @@ h3 {
 	font-size: 110%
 }
 
+table.headerlinks {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.headerlinks tr td {
+	padding: 2pt;
+	margin: 0pt;
+	font-variant: small-caps;
+	background-color: #ddddff;
+	border-width: 0pt 0pt 1pt 0pt;
+	border-style: solid;
+	border-color: #8888dd;
+}
+
+table.headerlinks tr td.prevnext {
+	text-align: right;
+}
+
+.disabled {
+	color: #888888;
+}
+
+.active {
+	color: #888888;
+	font-weight: bold;
+}
+
 table {
 	border: none;
 	background-color: #ddddff;
