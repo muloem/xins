@@ -20,6 +20,13 @@ CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
+  - Added AbstractCAPICallResult as base class for generated function call
+    result classes.
+  - Changed UnacceptableResultXINSCallException to accept an
+    AbstractCAPICallResult instance as an alternative to a XINSCallResult
+    instance. This is necessary so CAPI users can actually throw an
+    UnacceptableResultXINSCallException, since they have no handle to a
+    XINSCallResult instance directly.
 
 * Logdoc
   - The boolean type was not declared in the log_to_entry_html.xslt as a
