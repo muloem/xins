@@ -224,7 +224,7 @@ extends Object {
 
    /**
     * Slots to contain the maps with entries that are not the most recently
-    * accessed. The further back in the array, the faster the entries will
+    * accessed. The further back in the array, the sooner the entries will
     * expire.
     */
    private final HashMap[] _slots;
@@ -336,6 +336,7 @@ extends Object {
       // Notify all listeners
       int count = listeners.size();
       if (count > 0) {
+         // FIXME: Pass object references to listeners, not Entry objects
          Map unmodifiableExpired = Collections.unmodifiableMap(toBeExpired);
          for (int i = 0; i < count; i++) {
             ExpiryListener listener = (ExpiryListener) listeners.get(i);
@@ -435,7 +436,17 @@ extends Object {
          }
       }
 
-      return value;
+      if (value == null) {
+         return null;
+      }
+
+      Entry entry = (Entry) value;
+      if (entry.isExpired()) {
+         return null;
+      } else {
+         entry.touch();
+         return entry.getReference();
+      }
    }
 
    /**
@@ -477,7 +488,16 @@ extends Object {
          }
       }
 
-      return value;
+      if (value == null) {
+         return null;
+      }
+
+      Entry entry = (Entry) value;
+      if (entry.isExpired()) {
+         return null;
+      } else {
+         return entry.getReference();
+      }
    }
 
    /**
@@ -500,7 +520,8 @@ extends Object {
 
       // Store the association in the set of recently accessed entries
       synchronized (_recentlyAccessedLock) {
-         _recentlyAccessed.put(key, value);
+         Entry entry = new Entry(value);
+         _recentlyAccessed.put(key, entry);
       }
 
       // Bump the size
@@ -545,14 +566,21 @@ extends Object {
          }
       }
 
-      // Decrease the size, if appropriate
-      if (value != null) {
-         synchronized (_sizeLock) {
-            _size--;
-         }
+      if (value == null) {
+         return null;
       }
 
-      return value;
+      // Decrease the size
+      synchronized (_sizeLock) {
+         _size--;
+      }
+
+      Entry entry = (Entry) value;
+      if (entry.isExpired()) {
+         return null;
+      } else {
+         return entry.getReference();
+      }
    }
 
    /**
@@ -624,5 +652,84 @@ extends Object {
     */
    public String toString() {
       return _asString;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Entry in an expiry folder. Combination of the referenced object and a
+    * timestamp. The timestamp indicates when the object should be expired.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private class Entry extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Entry</code>.
+       *
+       * @param reference
+       *    reference to the object, should not be <code>null</code> (although
+       *    it is not checked).
+       */
+      private Entry(Object reference) {
+         _reference  = reference;
+         touch();
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * Reference to the object. Should not be <code>null</code>.
+       */
+      private final Object _reference;
+
+      /**
+       * The time at which this entry should expire.
+       */
+      private long _expiryTime;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Retrieves the reference to the object.
+       *
+       * @return
+       *    the reference to the object, should not be <code>null</code>.
+       */
+      public Object getReference() {
+         return _reference;
+      }
+
+      /**
+       * Checks if this entry is expired.
+       *
+       * @return
+       *    <code>true</code> if this entry is expired, <code>false</code>
+       *    otherwise.
+       */
+      public boolean isExpired() {
+         return System.currentTimeMillis() >= _expiryTime;
+      }
+
+      /**
+       * Touches this entry, resetting the expiry time.
+       */
+      public void touch() {
+         _expiryTime = System.currentTimeMillis() + _strategy.getTimeOut();
+      }
    }
 }

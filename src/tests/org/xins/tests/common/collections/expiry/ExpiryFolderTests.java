@@ -70,7 +70,9 @@ public class ExpiryFolderTests extends TestCase {
    // TODO: Stop all expiry strategies globally
 
    public void testExpiryFolder() throws Throwable {
-      ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
+      final int DURATION  = 60;
+      final int PRECISION =  15;
+      ExpiryStrategy strategy = new ExpiryStrategy(DURATION, PRECISION);
       ExpiryFolder folder = new ExpiryFolder("Test1", strategy);
       assertEquals("Incorrect name.", "Test1", folder.getName());
       assertEquals("Incorrect strategy.", strategy, folder.getStrategy());
@@ -102,18 +104,17 @@ public class ExpiryFolderTests extends TestCase {
       }
 
       folder.put("hello", "world");
-      assertEquals("Got incorrect value.", "world", folder.get("hello"));
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
+      assertEquals("Got incorrect value.",   "world", folder.get("hello"));
 
-      Thread.sleep(30);
+      Thread.sleep(10);
       assertEquals("Entry should not have expired yet.", "world", folder.get("hello"));
 
-      Thread.sleep(50);
-      assertEquals("Entry should not have expired yet.", "world", folder.find("hello"));
-
-      Thread.sleep(50);
-      assertNull("Entry should have expired.", folder.find("hello"));
-      assertNull("Got incorrect value.", folder.get("hello"));
+      folder.put("key", "value");
+      assertEquals("Incorrect value found.", "value", folder.find("key"));
+      Thread.sleep(DURATION + 1);
+      assertNull("Entry should have expired.", folder.find("key"));
+      assertNull("Entry should have expired.", folder.find("key"));
 
       strategy.stop();
    }
