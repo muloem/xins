@@ -58,7 +58,7 @@ extends Object {
     * The underlying XINS call request. Initialized to a non-<code>null</code>
     * value in the constructor.
     */
-   private final XINSCallRequest _request;
+   protected final XINSCallRequest _request;
 
 
    //-------------------------------------------------------------------------
