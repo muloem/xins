@@ -74,15 +74,39 @@ implements PropertyReader {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Retrieves the value of the property with the specified name.
+    *
+    * @param name
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the property, possibly <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
    public String get(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
       return _servletConfig.getInitParameter(name);
    }
 
+   /**
+    * Returns an <code>Iterator</code> that returns all property names.
+    *
+    * @return
+    *    an {@link Iterator} for all property names, never <code>null</code>.
+    */
    public Iterator getNames() {
       return new EnumerationIterator(_servletConfig.getInitParameterNames());
    }
 
+   /**
+    * Determines the number of properties.
+    *
+    * @return
+    *    the size, always &gt;= 0.
+    */
    public int size() {
       if (_size < 0) {
          int size = 0;
