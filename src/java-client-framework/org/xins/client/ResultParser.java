@@ -155,52 +155,11 @@ public class ResultParser extends Object {
          throw new ParseException(message);
       }
 
-      boolean success     = parseSuccessFlag(element);
       String code         = parseResultCode(element);
       Map parameters      = parseParameters(element);
       Element dataElement = element.getChild("data");
 
       return new XINSServiceCaller.Result(target, code, parameters, dataElement);
-   }
-
-   /**
-    * Parses the value of the success attribute within the function result
-    * element.
-    *
-    * @param element
-    *    the <code>&lt;result/&gt;</code> element, not <code>null</code>.
-    *
-    * @return
-    *    <code>true</code> if the call was successful, otherwise
-    *    <code>false</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>element == null</code>.
-    *
-    * @throws ParseException
-    *    if the <code>success</code> attribute could not be found in the
-    *    element or if it had an invalid value (it must be either
-    *    <code>"true"</code> or <code>"false"</code>).
-    */
-   private static boolean parseSuccessFlag(Element element)
-   throws NullPointerException, ParseException {
-
-      // Get the attribute value
-      String value = element.getAttributeValue("success");
-
-      // The attribute is mandatory
-      if (value == null) {
-         throw new ParseException("The returned XML is invalid. The attribute \"success\" has to be present in the \"result\" element.");
-      }
-
-      // Interpret the value
-      if (value.equals("true")) {
-         return true;
-      } else if (value.equals("false")) {
-         return false;
-      } else {
-         throw new ParseException("The returned XML is invalid. The \"success\" attribute in the \"result\" element can only have the value \"true\" or \"false\", the value \"" + value + "\" is invalid.");
-      }
    }
 
    /**
@@ -218,7 +177,7 @@ public class ResultParser extends Object {
    private static String parseResultCode(Element element)
    throws NullPointerException {
 
-      String code = element.getAttributeValue("code");
+      String code = element.getAttributeValue("errorcode");
       if (code == null || code.length() < 1) {
          return null;
       } else {

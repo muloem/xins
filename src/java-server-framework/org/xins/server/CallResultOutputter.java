@@ -59,9 +59,9 @@ final class CallResultOutputter extends Object {
       // Write the result start tag
       outputter.startTag("result");
 
-      String code = result.getCode();
+      String code = result.getErrorCode();
       if (code != null) {
-         outputter.attribute("code", code);
+         outputter.attribute("errorcode", code);
       }
 
       // Write the output parameters

@@ -266,7 +266,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(start, callID, result.isSuccess(), result.getCode());
+      performedCall(start, callID, result.isSuccess(), result.getErrorCode());
 
       return result;
    }

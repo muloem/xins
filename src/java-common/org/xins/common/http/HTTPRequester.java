@@ -319,7 +319,7 @@ public class HTTPRequester extends Object {
        * @return
        *    the HTTP return code.
        */
-      public int getCode() {
+      public int getErrorCode() {
          return _code;
       }
 

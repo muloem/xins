@@ -215,7 +215,7 @@ public class EnumType extends Type {
     * @return
     *    the list of {@link EnumItem} included in this <code>EnumType</code>.
     */
-    public final List getEnumItems() {
-       return _items;
-    }
+   public final List getEnumItems() {
+      return _items;
+   }
 }

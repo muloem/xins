@@ -161,8 +161,8 @@ public final class CallContext {
     * @return
     *    the return code, can be <code>null</code>.
     */
-   final String getCode() {
-      return _builder.getCode();
+   final String getErrorCode() {
+      return _builder.getErrorCode();
    }
 
    /**

@@ -473,7 +473,7 @@ public final class XINSServiceCaller extends ServiceCaller {
        * @return
        *    the result code or <code>null</code> if no code was returned.
        */
-      public String getCode() {
+      public String getErrorCode() {
          return _code;
       }
 

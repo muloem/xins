@@ -29,7 +29,7 @@ interface CallResult {
     * @return
     *    the result code or <code>null</code> if no code was returned.
     */
-   String getCode();
+   String getErrorCode();
 
    /**
     * Gets all parameters.

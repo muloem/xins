@@ -79,7 +79,7 @@ final class BasicCallResult extends Object implements CallResult {
       return _code == null;
    }
 
-   public String getCode() {
+   public String getErrorCode() {
       return _code;
    }
 

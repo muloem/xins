@@ -497,7 +497,7 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:attribute>
-								<span class="name">code</span>
+								<span class="name">errorcode</span>
 								<xsl:text>=</xsl:text>
 								<span class="value">
 									<xsl:text>"</xsl:text>

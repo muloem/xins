@@ -1,11 +1,17 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.181:
 
+* XINS/Java Common Library:
+  - Changed the EnumItem to the old constructor as the static Item are not
+    initialized yet when the constructor is invoked.
+    This bug has been in XINS since the version 0.180.
+
 * Build and release process:
   - Put the correct license files in the release.
 
 * Specification:
   - Removed the extends attribute for the types.
+  - Renamed the code attribute in the result to errorcode.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.180:

@@ -50,9 +50,9 @@ extends CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);
-      String code = result.getCode();
+      String code = result.getErrorCode();
       if (code == null) {
-         throw new IllegalArgumentException("result.getCode() == null");
+         throw new IllegalArgumentException("result.getErrorCode() == null");
       }
 
       // Create message in buffer
@@ -118,8 +118,8 @@ extends CallException {
     *
     * @since XINS 0.136
     */
-   public String getCode() {
-      return _result.getCode();
+   public String getErrorCode() {
+      return _result.getErrorCode();
    }
 
    /**

@@ -270,7 +270,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * @return
        *    the HTTP return code.
        */
-      public int getCode() {
+      public int getErrorCode() {
          return _code;
       }
 
