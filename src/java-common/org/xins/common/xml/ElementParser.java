@@ -556,7 +556,7 @@ extends Object {
        * @return
        *    the element resulting of the parsing of the XML.
        */
-      public Element getElement() {
+      Element getElement() {
 
          final String THIS_METHOD = "getElement()";
 
