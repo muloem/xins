@@ -291,6 +291,7 @@ extends Object {
             _level--;
             DataElement parent = (DataElement)_elements.get(new Integer(_level));
             parent.addChild(child);
+            return;
          }
 
          if (qName.equals("param")) {
@@ -316,6 +317,8 @@ extends Object {
             _parameterKey = null;
             _pcdata = null;
 
+         } else if (_level == 0 && qName.equals("data")) {
+            _level--;
          } else if (!qName.equals("result")) {
             throw new SAXException("Unknown element \"" + qName + "\".");
          }

@@ -96,7 +96,6 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals("Incorrect succeeded descriptor.", descriptor, result.getSucceededTarget());
       assertTrue("Incorrect duration.", result.getDuration() > 0 && result.getDuration() < 5000);
       String text = result.getString();
-      System.err.println("text: " + text);
       assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
    }
 

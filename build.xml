@@ -605,6 +605,8 @@
 				<include name="build.xml" />
 				<include name="xins.properties" />
 				<include name="jetty_myproject.xml" />
+				<include name="jetty_allinone.xml" />
+				<include name="jetty_filteredproject.xml" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
 				<include name="xins-project/**/*.xml" />
