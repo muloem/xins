@@ -100,5 +100,14 @@ public class CallTargetGroupTests extends TestCase {
          CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
          fail("CallTargetGroup.create() should throw an IllegalArgumentException if the member list contains duplicate URLs.");
       } catch (IllegalArgumentException exception) { /* as expected */ }
+
+      // Create CallTargetGroup with 2 ActualFunctionCallers
+      members = new ArrayList();
+      ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL("http://sf.net/1"));
+      ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL("http://sf.net/2"));
+      members.add(afc1);
+      members.add(afc2);
+      CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+      assertNotNull(ctg);
    }
 }
