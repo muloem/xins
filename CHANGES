@@ -38,6 +38,8 @@ CHANGES INTRODUCED IN XINS 0.202:
   - Added the argument source="1.4" to the javadoc task to avoid errors with
     the assert keyword.
 
+* Improved the documentation and the examples.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.201:
 
