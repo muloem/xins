@@ -37,7 +37,7 @@ implements Servlet {
    /**
     * The logger used by this servlet. This field is never <code>null</code>.
     */
-   private static final  Logger LOG = Logger.getLogger(APIServlet.class.getName());
+   private static final Logger LOG = Logger.getLogger(APIServlet.class.getName());
 
    /**
     * Constant indicating the <em>uninitialized</em> state. See
@@ -101,7 +101,7 @@ implements Servlet {
       }
 
       // First see if a config file has been specified
-      String configFile = settings.getProperty("log4j.configFile");
+      String configFile = settings.getProperty("org.apache.log4j.config");
       boolean doConfigure = true;
       if (configFile != null && configFile.length() > 0) {
          if (new File(configFile).exists()) {
