@@ -586,6 +586,15 @@
 		</exec>
 	</target>
 
+	<target name="upload-homepage" depends="-init">
+		<property name="docs.dir" value="../${name}-docs/" />
+		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
+		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
+		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
+			<property name="version" value="${version.major}.${version.minor}" />
+		</ant>
+	</target>
+
 	<target
 	name="release"
 	depends="-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle"
@@ -606,15 +615,6 @@
 		<delete>
 			<fileset dir="build/src" />
 		</delete>
-	</target>
-
-	<target name="upload-homepage" depends="-init">
-		<property name="docs.dir" value="../${name}-docs/" />
-		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
-		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
-		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
-			<property name="version" value="${version.major}.${version.minor}" />
-		</ant>
 	</target>
 
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
