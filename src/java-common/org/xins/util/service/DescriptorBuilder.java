@@ -349,6 +349,9 @@ public final class DescriptorBuilder extends Object {
          super(createPropertyValueExceptionMessage(propertyName,
                                                    propertyValue,
                                                    detail));
+         // Store property name and value
+         _propertyName  = propertyName;
+         _propertyValue = propertyValue;
       }
 
 
@@ -356,8 +359,43 @@ public final class DescriptorBuilder extends Object {
       // Fields
       //----------------------------------------------------------------------
 
+      /**
+       * The name of the property.
+       */
+      private final String _propertyName;
+
+      /**
+       * The value of the property.
+       */
+      private final String _propertyValue;
+
+
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Gets the name of the property.
+       *
+       * @return
+       *    the name of the property, not <code>null</code>.
+       *
+       * @since XINS 0.147
+       */
+      public String getPropertyName() {
+         return _propertyName;
+      }
+
+      /**
+       * Gets the value of the property.
+       *
+       * @return
+       *    the value of the property, not <code>null</code>.
+       *
+       * @since XINS 0.147
+       */
+      public String getPropertyValue() {
+         return _propertyValue;
+      }
    }
 }
