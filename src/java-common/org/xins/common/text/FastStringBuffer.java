@@ -397,6 +397,14 @@ public class FastStringBuffer extends Object {
       _length = 0;
    }
 
+   /**
+    * Converts the contents of this buffer to a <code>String</code> object. A
+    * new {@link String} object is created each time this method is called.
+    *
+    * @return
+    *    a newly constructed {@link String} that contains the same characters
+    *    as this string buffer object, never <code>null</code>.
+    */
    public String toString() {
       return new String(_buffer, 0, _length);
    }
