@@ -65,6 +65,4 @@ if [ ! "${returncode}a" = "0a" ]; then
 fi
 
 # Run Ant against the build file
-(cd ${builddir} && ant -Dxins_home=${xins_home} \
-                       -Dproject_home=${project_home} \
-                       $*)
+(cd ${builddir} && ant $*)
