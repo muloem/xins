@@ -4,7 +4,6 @@
 package org.xins.server;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;

@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**

@@ -3,14 +3,8 @@
  */
 package org.xins.types;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Iterator;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
-import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Enumeration type. An enumeration type only accepts a limited set of

@@ -3,8 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
-
 /**
  * State of a <code>Responder</code>.
  *
