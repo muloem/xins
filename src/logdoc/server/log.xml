@@ -324,7 +324,6 @@
 		<entry id="1412" level="INFO">
 			<description>Commencing runtime properties file watching.</description>
 			<param name="configFile" />
-			<param name="intervalPropertyName" />
 			<param name="interval" type="int32" nullable="false" />
 		</entry>
 		<entry id="1413" level="FATAL">
