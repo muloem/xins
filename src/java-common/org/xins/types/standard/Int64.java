@@ -74,6 +74,37 @@ public final class Int64 extends Type {
       }
    }
 
+   /**
+    * Converts the specified <code>Long</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public static String toString(Long value) {
+      if (value == null) {
+         return null;
+      } else {
+         return toString(value.longValue());
+      }
+   }
+
+   /**
+    * Converts the specified <code>long</code> to a string.
+    *
+    * @param value
+    *    the value to convert.
+    *
+    * @return
+    *    the textual representation of the value, never <code>null</code>.
+    */
+   public static String toString(long value) {
+      return String.valueOf(value);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors

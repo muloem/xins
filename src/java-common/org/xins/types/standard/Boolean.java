@@ -89,6 +89,37 @@ public final class Boolean extends Type {
       }
    }
 
+   /**
+    * Converts the specified <code>Boolean</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public static String toString(java.lang.Boolean value) {
+      if (value == null) {
+         return null;
+      } else {
+         return toString(value.booleanValue());
+      }
+   }
+
+   /**
+    * Converts the specified <code>boolean</code> to a string.
+    *
+    * @param value
+    *    the value to convert.
+    *
+    * @return
+    *    the textual representation of the value, never <code>null</code>.
+    */
+   public static String toString(boolean value) {
+      return value ? "true" : "false";
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors

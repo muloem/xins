@@ -74,6 +74,37 @@ public final class Int16 extends Type {
       }
    }
 
+   /**
+    * Converts the specified <code>Short</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public static String toString(Short value) {
+      if (value == null) {
+         return null;
+      } else {
+         return toString(value.shortValue());
+      }
+   }
+
+   /**
+    * Converts the specified <code>short</code> to a string.
+    *
+    * @param value
+    *    the value to convert.
+    *
+    * @return
+    *    the textual representation of the value, never <code>null</code>.
+    */
+   public static String toString(short value) {
+      return String.valueOf(value);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
