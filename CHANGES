@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.161:
 * Dependencies:
   - Updated to xmlenc 0.43.
 
+* XINS/Java Server Framework:
+  - Documented the Throwable exception thrown by call(...) method in the
+    generated fundament class for a function.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 

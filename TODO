@@ -50,8 +50,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Create an apart Statistics object that would contain the statistics and
   the methods to update them.
 * Stop runtime configuration file watch thread when the servlet is disposed.
-* In the generated Java fundament class for a function, document the Throwable
-  exception thrown by  the call(...) method.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
