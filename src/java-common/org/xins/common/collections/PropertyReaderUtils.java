@@ -282,8 +282,8 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>p == null</code>.
     */
-   public static final LogdocSerializable createLogdocSerializable(PropertyReader p,
-                                                                   String         valueIfEmpty)
+   public static final LogdocSerializable serialize(PropertyReader p,
+                                                    String         valueIfEmpty)
    throws IllegalArgumentException {
 
       // Check preconditions
