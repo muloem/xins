@@ -24,6 +24,15 @@ CHANGES INTRODUCED IN XINS 0.202:
   - Removed deprecated methods from XINSServiceCaller class.
   - Added failOverAllowed property in CallRequest and changed
     XINSServiceCaller to always allow fail-over if this property is set.
+  - Behaviour of XINSServiceCaller changed in case of an unsuccessful result.
+    Previously, the result was directly returned. Now an
+    UnsuccessfulCallException is immediately thrown, instead.
+  - Supporting linking of CallExceptions by means of the
+    setNext(CallException) and getNext() methods.
+  - XINSServiceCaller.execute() now throws a CallException instead of a
+    CallFailedException.
+  - UnacceptableCallResultException no longer extends from CallException, just
+    from Exception.
 
 * Generated specification documentation:
   - Implemented the pcdata-example attribute.
