@@ -15,6 +15,6 @@
 >
 <!ELEMENT exception-property EMPTY>
 <!ATTLIST exception-property
-          name        NMTOKEN #REQUIRED
+          name        (class|message) #REQUIRED
           format      NMTOKEN #IMPLIED
 >
