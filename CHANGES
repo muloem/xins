@@ -2,7 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
 * XINS/Java Common Library:
-  - Added package.html for org.xins.logdoc.
+  - Added missing package.html for org.xins.logdoc.
 
 * Build and release process:
   - Linking to xmlenc 0.43 API docs.
