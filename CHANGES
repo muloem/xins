@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - The build/testresults/log4j.log file is now created when executing the
     test-ui target.
 
+* Libraries:
+  - Updated Apache Jakarta Commons HttpClient from 2.0.2 to 3.0-beta1.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 1:
 
