@@ -19,7 +19,7 @@ Improve service framework in org.xins.common.service:
 [x] Add ConnectionRefusedCallException (final, extends ConnectionCallException)
 [ ] Add ConnectionTimeOutCallException (final, extends ConnectionCallException)
 [x] Add SocketTimeOutCallException (final, extends GenericCallException)
-[ ] Add TotalTimeOutCallException (final, extends GenericCallException)
+[x] Add TotalTimeOutCallException (final, extends GenericCallException)
 [x] Add UnexpectedExceptionCallException (final, extends GenericCallException)
 [ ] Add IOCallException (final, extends GenericCallException)
 [x] Change ServiceCaller to use CallRequest and CallException
