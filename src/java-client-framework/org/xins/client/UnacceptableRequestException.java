@@ -11,8 +11,12 @@ import java.util.List;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.ProtectedList;
 
 import org.xins.common.constraint.Constraint;
+import org.xins.common.constraint.ConstraintViolation;
+
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception that indicates that a request for an API call is considered
@@ -34,9 +38,96 @@ extends RuntimeException {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Secret key used to protect <code>ProtectedList</code> instances.
+    */
+   private static final Object SECRET_KEY = new Object();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a detail message for the constructor to pass up to the
+    * superclass constructor.
+    *
+    * @param request
+    *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
+    *    never <code>null</code>.
+    *
+    * @param violations
+    *    a list of constraint violations, cannot be <code>null</code> and
+    *    should contain at least one element; all elements should be instances
+    *    of class {@link ConstraintViolation}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request                ==   null
+    *          || violations             ==   null
+    *          || violations.size()      &lt; 1
+    *          || violations[<em>i</em>] ==   null
+    *          || !(violations[<em>i</em>] instanceof ConstraintViolation)
+    *          || violations[<em>i</em>] == violations[<em>j</em>])</code>,
+    *    <br>where <code>0 &lt;= <em>i</em> &lt; violations.size()</code>
+    *    <br>and <code>0 &lt;= <em>j</em> &lt; violations.size()</code>.
+    */
+   private static final String createMessage(
+      AbstractCAPICallRequest request,
+      List                    violations)
+   throws IllegalArgumentException {
+
+      // TODO: Include request in message
+
+      // Arguments cannot be null
+      MandatoryArgumentChecker.check("request",    request,
+                                     "violations", violations);
+
+      // We need at least one violation
+      int violationCount = violations.size();
+      if (violationCount < 1) {
+         throw new IllegalArgumentException("violationCount.size() == 0");
+      }
+
+      // Stick the message in a buffer
+      FastStringBuffer buffer = new FastStringBuffer(250);
+      buffer.append("Unacceptable XINS call request, due to ");
+      if (violationCount == 1) {
+         buffer.append(" 1 constraint violation: ");
+      } else {
+         buffer.append(violationCount);
+         buffer.append(" constraint violations: ");
+      }
+
+      // TODO: Make sure violations are on input constraints only
+
+      // Loop through the list of violations
+      for (int i = 0; i < violationCount; i++) {
+         Object elem = violations.get(i);
+
+         // Disallow null elements
+         if (elem == null) {
+            throw new IllegalArgumentException("violations[" + i + "] == null");
+
+         // Disallow other than ConstraintViolation instances
+         } else if (! (elem instanceof ConstraintViolation)) {
+            throw new IllegalArgumentException("violations[" + i + "] is an instance of class " + elem.getClass().getName());
+         }
+
+         // Disallow duplicates
+         int existing = violations.indexOf(elem);
+         if (existing != i) {
+            throw new IllegalArgumentException("violations[" + existing + "].equals(violations[" + i + "])");
+         }
+
+         ConstraintViolation violation = (ConstraintViolation) elem;
+         buffer.append(violation.getDescription());
+         buffer.append(' ');
+      }
+
+      buffer.crop(buffer.getLength() - 1);
+      return buffer.toString();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -54,29 +145,30 @@ extends RuntimeException {
     *    never <code>null</code>.
     *
     * @param violations
-    *    a list of violated constraints, cannot be <code>null</code> and
+    *    a list of constraint violations, cannot be <code>null</code> and
     *    should contain at least one element; all elements should be instances
-    *    of class {@link Constraint}.
+    *    of class {@link ConstraintViolation}.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null || violations == null</code>.
+    *    if <code>request                ==   null
+    *          || violations             ==   null
+    *          || violations.size()      &lt; 1
+    *          || violations[<em>i</em>] ==   null
+    *          || !(violations[<em>i</em>] instanceof ConstraintViolation)
+    *          || violations[<em>i</em>] == violations[<em>j</em>])</code>,
+    *    <br>where <code>0 &lt;= <em>i</em> &lt; violations.size()</code>
+    *    <br>and <code>0 &lt;= <em>j</em> &lt; violations.size()</code>.
     */
    UnacceptableRequestException(AbstractCAPICallRequest request,
                                 List                    violations)
    throws IllegalArgumentException {
 
-      // TODO: Check violations better
+      // Construct a detail message and pass that up
+      super(createMessage(request, violations));
 
-      super("Unacceptable XINS call request.");
-      // TODO: Improve exception message. Include request and detail.
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request",    request,
-                                     "violations", violations);
-
-      // Store the request and detail
+      // Store the information
       _request    = request;
-      _violations = violations;
+      _violations = new ProtectedList(SECRET_KEY, violations);
    }
 
 
@@ -90,9 +182,10 @@ extends RuntimeException {
    private final AbstractCAPICallRequest _request;
 
    /**
-    * The list of violated constraints. Cannot be <code>null</code>.
+    * The list of constraint violations. Cannot be <code>null</code>. Every
+    * element is an instance of class {@link ConstraintViolation}.
     */
-   private final List _violations;
+   private final ProtectedList _violations;
 
 
    //-------------------------------------------------------------------------

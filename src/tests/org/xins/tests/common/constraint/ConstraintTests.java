@@ -104,15 +104,17 @@ public class ConstraintTests extends TestCase {
 
       // Test with null value
       TestContext ctx = new TestContext(NAME, null);
-      assertFalse(rpc.check(ctx));
+      ConstraintViolation violation = rpc.check(ctx);
+      assertNotNull(violation);
+      assertEquals(rpc, violation.getConstraint());
 
       // Test with non-null value
       ctx = new TestContext(NAME, "SomeValue");
-      assertTrue(rpc.check(ctx));
+      assertNull(rpc.check(ctx));
 
       // Extra test: Empty string is not null
       ctx = new TestContext(NAME, "");
-      assertTrue(rpc.check(ctx));
+      assertNull(rpc.check(ctx));
    }
 
    /**
@@ -163,23 +165,25 @@ public class ConstraintTests extends TestCase {
 
       // Test with null parameter value (should succeed)
       TestContext ctx = new TestContext(NAME, null);
-      assertTrue(tpc.check(ctx));
+      assertNull(tpc.check(ctx));
 
       // Test with empty string value (should fail)
       ctx = new TestContext(NAME, "");
-      assertFalse(tpc.check(ctx));
+      ConstraintViolation violation = tpc.check(ctx);
+      assertEquals(tpc, violation.getConstraint());
 
       // Test with Boolean object with value "false" (should fail)
       ctx = new TestContext(NAME, java.lang.Boolean.FALSE);
-      assertFalse(tpc.check(ctx));
+      violation = tpc.check(ctx);
+      assertEquals(tpc, violation.getConstraint());
 
       // Test with Integer with value "0" (should succeed)
       ctx = new TestContext(NAME, new Integer(0));
-      assertTrue(tpc.check(ctx));
+      assertNull(tpc.check(ctx));
 
       // Test with Integer with value "-1" (should succeed)
       ctx = new TestContext(NAME, new Integer(-1));
-      assertTrue(tpc.check(ctx));
+      assertNull(tpc.check(ctx));
    }
 
 

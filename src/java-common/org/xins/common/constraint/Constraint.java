@@ -69,19 +69,27 @@ extends Object {
     *    the context for the validation, cannot be <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a {@link ConstraintViolation}
+    *    instance, otherwise <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>context == null</code>.
     */
-   public final boolean check(ConstraintContext context)
+   public final ConstraintViolation check(ConstraintContext context)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("context", context);
 
-      return checkImpl(context);
+      // Delegate to implementation method
+      String s = checkImpl(context);
+
+      // Convert to a ConstraintViolation object
+      if (s == null) {
+         return null;
+      } else {
+         return new ConstraintViolation(this, s);
+      }
    }
 
    /**
@@ -97,17 +105,9 @@ extends Object {
     *    <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a description of the violation
+    *    (can be an empty string), otherwise (if this constraint was not
+    *    violated) <code>null</code>.
     */
-   abstract boolean checkImpl(ConstraintContext context);
-
-   /**
-    * Describes a violation of this constraint.
-    *
-    * @return
-    *    a description of a violation of this constraint, never
-    *    <code>null</code> and never an empty string.
-    */
-   abstract String describeViolation();
+   abstract String checkImpl(ConstraintContext context);
 }

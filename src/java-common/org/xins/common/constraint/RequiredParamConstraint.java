@@ -84,23 +84,17 @@ extends ParamConstraint {
     *    the value for the parameter, possibly <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a description of the violation
+    *    (can be an empty string), otherwise (if this constraint was not
+    *    violated) <code>null</code>.
     */
-   boolean checkParameterValue(Object value) {
-      return (value != null);
-   }
-
-   /**
-    * Describes a violation of this constraint.
-    *
-    * @return
-    *    a description of a violation of this constraint, never
-    *    <code>null</code> and never an empty string.
-    */
-   public String describeViolation() {
-      return "Parameter \""
-           + getParameterName()
-           + "\" is required, but the value is null.";
+   String checkParameterValue(Object value) {
+      if (value == null) {
+         return "Parameter \""
+              + getParameterName()
+              + "\" is required, but the value is null.";
+      } else {
+         return null;
+      }
    }
 }

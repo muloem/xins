@@ -14,6 +14,7 @@ import org.xins.common.collections.CollectionUtils;
 
 import org.xins.common.constraint.Constraint;
 import org.xins.common.constraint.ConstraintContext;
+import org.xins.common.constraint.ConstraintViolation;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
@@ -176,11 +177,12 @@ extends Object {
       int constraintCount = constraints.size();
       for (int i = 0; i < constraintCount; i++) {
          Constraint constraint = (Constraint) constraints.get(i);
-         if (! constraint.check(_constraintContext)) {
+         ConstraintViolation violation = constraint.check(_constraintContext);
+         if (violation != null) {
             if (violations == null) {
-               violations = new ArrayList(constraintCount);
+               violations = new ArrayList(constraintCount - i);
             }
-            violations.add(constraint);
+            violations.add(violation);
          }
       }
 

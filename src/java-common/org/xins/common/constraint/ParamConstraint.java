@@ -99,18 +99,16 @@ extends Constraint {
     * <p>This method should only ever be called from
     * {@link #check(ConstraintContext)}.
     *
-    * <p>The implementation of this method in class {@link ParamConstraint}
-    * delegates to {@link #checkParameterValue(Object)}.
-    *
     * @param context
     *    the context for the validation, guaranteed not to be
     *    <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a description of the violation
+    *    (can be an empty string), otherwise (if this constraint was not
+    *    violated) <code>null</code>.
     */
-   final boolean checkImpl(ConstraintContext context) {
+   final String checkImpl(ConstraintContext context) {
       return checkParameterValue(context.getParameter(_parameterName));
    }
 
@@ -126,8 +124,9 @@ extends Constraint {
     *    the value for the parameter, possibly <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a description of the violation
+    *    (can be an empty string), otherwise (if this constraint was not
+    *    violated) <code>null</code>.
     */
-   abstract boolean checkParameterValue(Object value);
+   abstract String checkParameterValue(Object value);
 }

@@ -117,36 +117,36 @@ extends ParamConstraint {
     *    the value for the parameter, possibly <code>null</code>.
     *
     * @return
-    *    flag that indicates if this constraint was violated,
-    *    <code>true</code> if it was not, and <code>false</code> if it was.
+    *    if this constraint was violated, then a description of the violation
+    *    (can be an empty string), otherwise (if this constraint was not
+    *    violated) <code>null</code>.
     */
-   boolean checkParameterValue(Object value) {
+   String checkParameterValue(Object value) {
       if (value == null) {
-         return true;
+         return null;
       }
       
       try {
          String string = _type.toString(value);
-         return _type.isValidValue(string);
+         _type.checkValue(string);
+         return null;
       } catch (ClassCastException exception) {
-         return false;
+         return "Class of value for parameter \""
+              + getParameterName()
+              + "\" ("
+              + value.getClass().getName()
+              + " does not match value class for type "
+              + _type.getName()
+              + " ("
+              + _type.getValueClass()
+              + ").";
       } catch (TypeValueException exception) {
-         return false;
+         return "Value for parameter \""
+              + getParameterName()
+              + "\" does not match type \""
+              + _type.getName()
+              + "\".";
+         // TODO: Add description from TypeValueException?
       }
-   }
-
-   /**
-    * Describes a violation of this constraint.
-    *
-    * @return
-    *    a description of a violation of this constraint, never
-    *    <code>null</code> and never an empty string.
-    */
-   public String describeViolation() {
-      return "Value for parameter \""
-           + getParameterName()
-           + "\" does not match type "
-           + _type.getName()
-           + '.';
    }
 }
