@@ -656,11 +656,10 @@
 
 	<target name="upload-changes" depends="-init">
 		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
-		<copy file="CHANGES" tofile="changes-${version}.txt" />
-		<scp file="changes-${version}.txt"
+		<copy file="CHANGES" tofile="build/changes-${version}.txt" />
+		<scp file="build/changes-${version}.txt"
 		     todir="${www.target}"
 		     password="${sf.password}" trust="true" />
-		<delete file="changes-${version}.txt" />
 	</target>
 
 	<target name="upload-homepage" depends="-init">
