@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.106:
+
+* Added standard type _properties.
+
+* XINS/Java Common Library:
+  - Added class Properties to represent new type _properties.
+  - Added class PropertiesPropertyReader.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.105:
 
 * XINS/Java Client Framework:
