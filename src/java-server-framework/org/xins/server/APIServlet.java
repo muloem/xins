@@ -90,11 +90,10 @@ implements Servlet {
 
    public void init(ServletConfig config)
    throws ServletException {
-      _log.debug("XINS/Java Server Framework initializing.");
       synchronized (_stateLock) {
          initImpl(config);
       }
-      _log.info("XINS/Java Server Framework initialized.");
+      _log.info("XINS/Java Server Framework is initialized.");
    }
 
    private void initImpl(ServletConfig config)
@@ -119,6 +118,8 @@ implements Servlet {
       if (_log == null) {
          throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
       }
+
+      _log.debug("XINS/Java Server Framework is initializing.");
 
       // Get the API class
       _log.debug("Loading API class: " + apiClassName);
