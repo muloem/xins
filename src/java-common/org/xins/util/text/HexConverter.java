@@ -83,6 +83,29 @@ public class HexConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Checks if the specified character is a hexadecimal digit. The following
+    * ranges of characters are considered hexadecimal digits:
+    *
+    * <ul>
+    *    <li><code>'0'</code> to <code>'9'</code>
+    *    <li><code>'a'</code> to <code>'f'</code>
+    *    <li><code>'A'</code> to <code>'F'</code>
+    * </ul>
+    *
+    * @param c
+    *    the character to check.
+    *
+    * @return
+    *    <code>true</code> if the specified character is a hexadecimal digit,
+    *    <code>false</code> otherwise.
+    */
+   public static final boolean isHexDigit(char c) {
+      return (c >= '0' && c <= '9')
+          || (c >= 'a' && c <= 'f')
+          || (c >= 'A' && c <= 'F');
+   }
+
+   /**
     * Convert the specified <code>int</code> to an unsigned number hex
     * string. The returned string will always consist of 8 hex characters,
     * zeroes will be prepended as necessary.
