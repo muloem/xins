@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
-import nl.wanadoo.util.CollectionUtils; // TODO
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.xins.util.MandatoryArgumentChecker; // TODO
+import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.CollectionUtils;
 
 /**
  * Call result parser. XML is parsed to produce a {@link CallResult} object.
