@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Changed access level of field _api in class Function from protected to
     private. Subclasses should use getAPI() to get a reference to the API
     object. This may break existing code.
+  - Removed the "org.xins.server.output.compatibility" property.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
