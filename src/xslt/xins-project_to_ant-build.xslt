@@ -339,6 +339,11 @@ $Id$
 							<fail unless="deployment_required_and_set" message="Deployment setting is required. Please specify the deployment using 'ant -Ddeployment=&lt;identifier&gt;'" />
 						</xsl:if>
 						<mkdir dir="build/webapps/{$api}" />
+						<taskdef name="hostname" classname="org.xins.util.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
+						<tstamp>
+							<format property="timestamp" pattern="yyyyMMdd_HHmm" />
+						</tstamp>
+						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
 						<style
 							in="{$specsdir}/{$api}/api.xml"
@@ -346,6 +351,8 @@ $Id$
 							style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
 							<param name="project_home" expression="{$project_home}" />
 							<param name="deployment"   expression="${{deployment}}" />
+							<param name="hostname"     expression="${{hostname}}" />
+							<param name="timestamp"    expression="${{timestamp}}" />
 						</style>
 						<war
 							webxml="build/webapps/{$api}/web.xml"
