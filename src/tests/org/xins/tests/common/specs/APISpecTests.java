@@ -72,46 +72,62 @@ public class APISpecTests extends TestCase {
 
       APISpec spec;
 
+      // Test null arguments
       try {
          spec = new APISpec(null, null);
          fail("APISpec(null,null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException iae) { /* as expected */ }
-
       try {
          spec = new APISpec(null, "1.1");
          fail("APISpec(null,non-null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException iae) { /* as expected */ }
-
       try {
          spec = new APISpec("name", null);
          fail("APISpec(non-null,null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException iae) { /* as expected */ }
 
+      // Test invalid names
+      String[] invalidNames = new String[] {
+         "",         "API",  "apI"  ,   "Api",    "api_", "_api",
+         "api.",     ".api", "api.api", "api.ii", "1",    "ap_ii",
+         "api--api", "-api", "api-",    "ap_i"
+      };
+      for (int i = 0; i < invalidNames.length; i++) {
+         try {
+            String name = invalidNames[i];
+            String version = "1.1";
+            spec = new APISpec(name, version);
+            fail("APISpec(\"" + name + "\", \"" + version + "\") should throw an InvalidNameException.");
+         } catch (InvalidNameException ine) { /* as expected */ }
+      }
+
+      // Test invalid versions
+      String[] invalidVersions = new String[] {
+         "a", "1.", "1.a", "a.1", ".", "", "1.0.0.a", "1.0.0."
+      };
+      for (int i = 0; i < invalidVersions.length; i++) {
+         try {
+            String name    = "api";
+            String version = invalidVersions[i];
+
+            spec = new APISpec(name, version);
+            fail("APISpec(\"" + name + "\", \"" + version + "\") should throw an InvalidVersionException.");
+         } catch (InvalidVersionException ive) { /* as expected */ }
+      }
+
+      // Name must be checked before version
       try {
-         spec = new APISpec("", "1.1");
-         fail("APISpec(empty-string,non-null) should throw an InvalidNameException.");
+         spec = new APISpec("1", "a");
+      } catch (InvalidVersionException ive) {
+         fail("Name should be checked before version, but version is checked first.");
       } catch (InvalidNameException ine) { /* as expected */ }
 
-      try {
-         spec = new APISpec("1", "1.1");
-         fail("APISpec(digit,non-null) should throw an InvalidNameException.");
-      } catch (InvalidNameException ine) { /* as expected */ }
-
-      spec = new APISpec("sso", "1.1");
-
-      try {
-         spec = new APISpec("sso", "a");
-         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
-      } catch (InvalidVersionException ive) { /* as expected */ }
-
-      try {
-         spec = new APISpec("sso", "1.");
-         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
-      } catch (InvalidVersionException ive) { /* as expected */ }
-
-      try {
-         spec = new APISpec("sso", "1.5.a");
-         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
-      } catch (InvalidVersionException ive) { /* as expected */ }
+      // Test valid constructions
+      spec = new APISpec("api",       "1");
+      spec = new APISpec("api-api",   "1.1");
+      spec = new APISpec("api-api-a", "1.12");
+      spec = new APISpec("a-api",     "1.12.1");
+      spec = new APISpec("api-a",     "12.1.2");
+      spec = new APISpec("a-api-a",   "1.2.3.4.5.6.7.8.9.10");
    }
 }
