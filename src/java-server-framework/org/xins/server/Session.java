@@ -145,33 +145,34 @@ extends Object {
 
       // If necessary init the Map and then store the entry
       if (_attributes == null) {
+
          if (value != null) {
+            // Log this event
+            String valueClass  = (value == null) ? null : value.getClass().getName();
+            String valueString = (value == null) ? null : String.valueOf(value);
+            Log.log_5006(key, valueClass, valueString);
+
+            // Perform the actual action
             _attributes = new HashMap(89);
-            if (debugEnabled) {
-               String s = value instanceof String
-                        ? "\"" + value + '"'
-                        : value.getClass().getName() + " (\"" + value + "\")";
-               Library.RUNTIME_LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
-            }
             _attributes.put(key, value);
+         } else {
+            Log.log_5007(key);
          }
 
       // If the value is null, then remove the entry
       } else if (value == null) {
-         if (debugEnabled) {
-            Library.RUNTIME_LOG.debug("Resetting session attribute \"" + key + "\".");
-         }
+         Log.log_5007(key);
          _attributes.remove(key);
          // XXX: Check if the map is now empty and set it to null?
 
       // Otherwise store a new entry
       } else {
-         if (debugEnabled) {
-            String s = value instanceof String
-                     ? "\"" + value + '"'
-                     : value.getClass().getName() + " (\"" + value + "\")";
-            Library.RUNTIME_LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
-         }
+         // Log this event
+         String valueClass  = (value == null) ? null : value.getClass().getName();
+         String valueString = (value == null) ? null : String.valueOf(value);
+         Log.log_5006(key, valueClass, valueString);
+
+         // Perform the actual action
          _attributes.put(key, value);
       }
    }
@@ -210,8 +211,17 @@ extends Object {
       MandatoryArgumentChecker.check("key", key);
 
       if (_attributes != null) {
-         return _attributes.get(key);
+         // Get the value
+         Object value = _attributes.get(key);
+
+         // Log this event
+         String valueClass  = (value == null) ? null : value.getClass().getName();
+         String valueString = (value == null) ? null : String.valueOf(value);
+         Log.log_5008(key, valueClass, valueString);
+
+         return value;
       } else {
+         Log.log_5008(key, null, null);
          return null;
       }
    }
