@@ -123,7 +123,7 @@ public final class ]]></xsl:text>
 		<xsl:text><![CDATA[</code> from, not <code>null</code>.
     *
     * @throws java.lang.IllegalArgumentException
-    *    if <code>result == null || result.isSuccess() == false</code>.
+    *    if <code>result == null || result.getCode() != null</code>.
     *
     * @throws org.xins.client.InvalidCallResultException
     *    if the specified call result is not valid as a result from the
@@ -140,8 +140,8 @@ public final class ]]></xsl:text>
       // Check preconditions
       if (result == null) {
          throw new java.lang.IllegalArgumentException("result == null");
-      } else if (!result.isSuccess()) {
-         throw new java.lang.IllegalArgumentException("result.isSuccess() == false");
+      } else if (result.getCode() != null) {
+         throw new java.lang.IllegalArgumentException("result.getCode() != null");
       }
 
       java.lang.String currentParam = "";</xsl:text>

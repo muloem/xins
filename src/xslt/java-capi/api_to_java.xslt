@@ -346,7 +346,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:choose>
 			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 				<xsl:text>
-      if (result.isSuccess()) {
+      if (result.getCode() == null) {
          return new </xsl:text>
 				<xsl:value-of select="$returnType" />
 				<xsl:text>(result);
@@ -372,7 +372,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				</xsl:variable>
 
 				<xsl:text>
-      if (result.isSuccess()) {
+      if (result.getCode() == null) {
          try {
             return </xsl:text>
 				<xsl:call-template name="javatype_from_string_for_type">
@@ -395,7 +395,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
-      if (result.isSuccess()) {
+      if (result.getCode() == null) {
          org.jdom.Element element = result.getDataElement();
          if (element != null) {
             return (org.jdom.Element) element.clone();
@@ -408,7 +408,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
-      if (! result.isSuccess()) {
+      if (result.getCode() != null) {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 			</xsl:otherwise>
