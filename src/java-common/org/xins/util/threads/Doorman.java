@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Monitor that acts like a doorman. It implements a variation of the
@@ -34,12 +35,12 @@ public final class Doorman extends Object {
    /**
     * The type for readers in the queue.
     */
-   private static final Queue.EntryType READ_QUEUE_ENTRY_TYPE = new Queue.EntryType();
+   private static final Queue.EntryType READ_QUEUE_ENTRY_TYPE = new Queue.EntryType("reader");
 
    /**
     * The type for writers in the queue.
     */
-   private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType();
+   private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType("writer");
 
    /**
     * The number of instances of this class.
@@ -486,7 +487,8 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
-            throw new IllegalStateException(thread.toString() + " is already in this queue.");
+            EntryType existingType = (EntryType) _entryTypes.get(thread);
+            throw new IllegalStateException(thread.toString() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -524,9 +526,9 @@ public final class Doorman extends Object {
          _entryTypes.remove(oldFirst);
 
          // Get the new first, now that the other one is removed
-         Object newFirst = _entries.getFirst();
-         _first          = newFirst == null ? null : (Thread) _entries.getFirst();
-         _typeOfFirst    = newFirst == null ? null : (EntryType) _entryTypes.get(_first);
+         boolean empty = _entries.isEmpty();
+         _first        = empty ? null : (Thread)    _entries.getFirst();
+         _typeOfFirst  = empty ? null : (EntryType) _entryTypes.get(_first);
 
          return oldFirst;
       }
@@ -579,7 +581,43 @@ public final class Doorman extends Object {
        */
       public static final class EntryType
       extends Object {
-         // empty
+
+         //-------------------------------------------------------------------
+         // Constructors
+         //-------------------------------------------------------------------
+
+         /**
+          * Creates a new <code>EntryType</code> with the specified
+          * description.
+          *
+          * @param description
+          *    the description of this entry type, cannot be
+          *    <code>null</code>.
+          */
+         public EntryType(String description)
+         throws IllegalArgumentException {
+            MandatoryArgumentChecker.check("description", description);
+            _description = description;
+         }
+
+
+         //-------------------------------------------------------------------
+         // Fields
+         //-------------------------------------------------------------------
+
+         /**
+          * Description of this entry type. Never <code>null</code>.
+          */
+         private final String _description;
+
+
+         //-------------------------------------------------------------------
+         // Methods
+         //-------------------------------------------------------------------
+
+         public String toString() {
+            return _description;
+         }
       }
    }
 }
