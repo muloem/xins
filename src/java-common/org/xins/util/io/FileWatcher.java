@@ -63,7 +63,7 @@ public final class FileWatcher extends Thread {
 
       // Store the information
       _file     = new File(file);
-      _interval = 1000L * (long) interval;
+      _interval = interval;
       _listener = listener;
       _stopped  = false;
 
@@ -93,7 +93,7 @@ public final class FileWatcher extends Thread {
    /**
     * Delay in seconds, at least 1.
     */
-   private long _interval;
+   private int _interval;
 
    /**
     * The listener. Not <code>null</code>
@@ -138,7 +138,7 @@ public final class FileWatcher extends Thread {
          try {
             while(! _stopped) {
                // Wait for the designated amount of time
-               sleep(_interval);
+               sleep(((long)_interval) * 1000L);
 
                // Check if the file changed
                check();
@@ -150,10 +150,30 @@ public final class FileWatcher extends Thread {
    }
 
    /**
+    * Returns the current interval. This method can only be called from the listener
+    * callback methods. If it is not, an exception is thrown.
+    *
+    * @return interval
+    *    the current interval in seconds, always greater than or equal to 1.
+    *
+    * @throws IllegalStateException
+    *    if <code>{@link Thread#currentThread()} != this</code>.
+    */
+   public int getInterval() throws IllegalStateException {
+
+      // Check preconditions
+      if (Thread.currentThread() != this) {
+         throw new IllegalStateException("Thread.currentThread() != this");
+      }
+
+      return _interval;
+   }
+
+   /**
     * Changes the interval. This method can only be called from the listener
     * callback methods. If it is not, an exception is thrown.
     *
-    * @param interval
+    * @param newInterval
     *    the new interval in seconds, must be greater than or equal to 1.
     *
     * @throws IllegalStateException
@@ -162,7 +182,7 @@ public final class FileWatcher extends Thread {
     * @throws IllegalArgumentException
     *    if <code>interval &lt; 1</code>
     */
-   public void setInterval(int interval)
+   public void setInterval(int newInterval)
    throws IllegalStateException, IllegalArgumentException {
       
       // Check preconditions
@@ -171,9 +191,8 @@ public final class FileWatcher extends Thread {
       }
 
       // Change the interval
-      long newInterval = 1000L * (long) interval;
       if (newInterval != _interval) {
-         LOG.info("Changing the watch interval for file \"" + _file.getPath() + "\" from " + (_interval/1000) + " to " + interval + " seconds.");
+         LOG.info("Changing the watch interval for file \"" + _file.getPath() + "\" from " + _interval + " to " + newInterval + " seconds.");
          _interval = newInterval;
       }
    }
