@@ -215,6 +215,8 @@ public class XINSCallResultParserTests extends TestCase {
       try {
          parser.parse(xml.getBytes(ENCODING));
          fail("Conflicting values for parameter should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
       }
    }
 }
