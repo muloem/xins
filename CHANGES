@@ -3,7 +3,9 @@ CHANGES INTRODUCED IN XINS 0.35:
 
 * Fixed some Checkstyle warnings.
 
-* Added ExpiryValidator interface.
+* Added ExpiryValidator interface to xins-common.
+
+* Added RemoteAPI to xins-client-framework.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.34:
