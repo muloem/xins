@@ -59,8 +59,9 @@ implements PropertyReader {
    // Methods
    //-------------------------------------------------------------------------
 
-   public Object get(String name) throws IllegalArgumentException {
+   public String get(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      return _properties.get(name);
+      Object o = _properties.get(name);
+      return (o == null) ? null : (String) o;
    }
 }

@@ -27,5 +27,5 @@ public interface PropertyReader {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   public Object get(String name) throws IllegalArgumentException;
+   public String get(String name) throws IllegalArgumentException;
 }
