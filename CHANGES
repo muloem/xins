@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.16:
+
+* Fixed problem introduced in 0.15 that keeps the generated java-fundament
+  code from compiling.
+
+* Made _log field in the Function class available to subclasses.
+
+* Logging missing parameters.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.15:
 
 * Javadoc API documentation now links to Log4J API documentation.
