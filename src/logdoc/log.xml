@@ -97,6 +97,7 @@
 	</entry>
 	<entry id="154" level="WARNING" category="org.xins.server.log">
 		<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
+		<param name="configFile" />
 	</entry>
 	<entry id="160" level="DEBUG" category="org.xins.server.log">
 		<description>Logging subsystem has been properly initialized.</description>
@@ -110,12 +111,12 @@
 		<param name="oldLocale" />
 		<param name="newLocale" />
 	</entry>
-	<entry id="202" level="NOTICE" category="org.xins.server.lifespan.init">
+	<entry id="202" level="NOTICE" category="org.xins.server.log">
 		<description>Changed locale for the log messages.</description>
 		<param name="oldLocale" />
 		<param name="newLocale" />
 	</entry>
-	<entry id="203" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="203" level="ERROR" category="org.xins.server.log">
 		<description>Failed to change the locale for the log messages.</description>
 		<param name="currentLocale" />
 		<param name="failedLocale" />
