@@ -16,6 +16,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - Moved some unit tests for org.xins.common packages from
     org.xins.tests.common.util to org.xins.tests.common.
   - Extended test set for class TargetDescriptor.
+  - Changed pattern: removed obsolete escapes; changed 0-9 range into \d;
+    changed [a-zA-Z] range into [a-z], using the Perl5Compiler.CASE_INSENSITIVE_MASK
+    in the call to the Perl5Compiler.compile() method instead to enable case-
+    insensitive matches.
+  - Extended test set for class TargetDescriptor. 
+    Fixed incorrect variable reference.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
