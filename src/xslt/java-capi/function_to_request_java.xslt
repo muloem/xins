@@ -135,7 +135,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:with-param name="project_file" select="$project_file" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="$required"     />
+				<xsl:with-param name="required"     select="'true'"        />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -203,10 +203,21 @@ extends org.xins.client.AbstractCAPICallRequest {
    /**
     * Sets the <em>]]></xsl:text>
 			<xsl:value-of select="@name" />
-<!-- TODO: append "as a <code>byte</code>" or "as an <code>int</code>" etc. -->
-			<xsl:text><![CDATA[</em> parameter.
+			<xsl:text><![CDATA[</em> parameter as ]]></xsl:text>
+			<xsl:choose>
+				<xsl:when test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
+					<xsl:text>an </xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>a </xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<code>
+				<xsl:value-of select="$javatype" />
+			</code>
+			<xsl:text>.
     *
-    * @param ]]></xsl:text>
+    * @param </xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text><![CDATA[
     *    the new value for the parameter.
