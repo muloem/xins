@@ -7,7 +7,9 @@
 -->
 
 <messages>
-	<message entry="0">Status van APIServlet verandert van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</message>
+	<message entry="0">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</message>
+	<message entry="10">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan.</message>
+	<message entry="11">HTTP OPTIONS verzoek ontvangen van <value-of-param name="ip" />.</message>
 	<message entry="100">XINS/Java Server Framework wordt gestart.</message>
 	<message entry="101">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</message>
 	<message entry="102">XINS/Java Server Framework kan niet gestart worden, omdat applicatie server zich onverwacht gedraagt. Reden: <value-of-param name="detail" /></message>
@@ -26,12 +28,16 @@
 	<message entry="153">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een I/O fout. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="154">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert niet de juiste initialisatie-instellingen. Er wordt teruggevallen op de standaard-instellingen.</message>
 	<message entry="160">Logging subsystem is geinitialiseerd.</message>
-	<message entry="200">XINS/Java Server Framework is geinitialiseerd.</message>
-	<message entry="201">Taal voor de log-berichten wordt veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
-	<message entry="202">Taal voor de log-berichten is veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
-	<message entry="203">Taal voor de log-berichten kan niet veranderd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</message>
+	<message entry="199">XINS/Java Server Framework is geinitialiseerd.</message>
+	<message entry="200">XINS/Java Server Framework is opnieuw geinitialiseerd.</message>
+	<message entry="201">Taal voor de log-berichten wordt gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
+	<message entry="202">Taal voor de log-berichten is gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
+	<message entry="203">Taal voor de log-berichten kan niet gewijzigd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</message>
 	<message entry="230">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopened worden.</message>
+	<message entry="231">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime properties (<value-of-param name="configFile" format="quoted" />) kan niet uitgelezen worden vanwege een veiligheidsrestrictie. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
+	<message entry="232">Het bestand met runtime properties (<value-of-param name="configFile" format="quoted" />) is niet gewijzigd.</message>
+	<message entry="233">De interval voor het controleren van het bestand met runtime-properties is gewijzigd van <value-of-param name="oldInterval" /> naar <value-of-param name="newInterval" /> seconden.</message>
 	<message entry="300">XINS/Java Server Framework wordt gedeinitialiseerd.</message>
-	<message entry="305">Fout bij de-initialisatie van de API tijdens deinitialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
+	<message entry="305">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="310">XINS/Java Server Framework is gedeinitialiseerd.</message>
 </messages>
