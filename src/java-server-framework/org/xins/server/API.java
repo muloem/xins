@@ -23,6 +23,7 @@ import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.InvalidPropertyValueException;
 import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
+import org.xins.util.collections.PropertyReaderUtils;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
@@ -425,27 +426,22 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         log.debug("Bootstrapping function " + functionName + " for " + _name + " API.");
+         Log.log_138(functionName, _name);
          try {
             f.bootstrap(_buildSettings);
-            log.debug("Bootstrapped function " + functionName + " for " + _name +  " API.");
+            Log.log_139(_name, functionName);
          } catch (MissingRequiredPropertyException exception) {
+            Log.log_140(_name, functionName, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
+            Log.log_141(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
+            Log.log_142(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            buffer.clear();
-            buffer.append("Failed to bootstrap function ");
-            buffer.append(functionName);
-            buffer.append(" for ");
-            buffer.append(_name);
-            buffer.append(" API ");
-            buffer.append(APIServlet.dueToUnexpected(exception));
-            String message = buffer.toString();
-            log.error(message, exception);
-            throw new BootstrapException(message);
+            Log.log_143(_name, functionName, exception.getClass().getName(), exception.getMessage());
+            throw new BootstrapException(exception);
          }
       }
    }
@@ -628,11 +624,14 @@ implements DefaultResultCodes {
 
       // Check preconditions
       MandatoryArgumentChecker.check("m", m);
+      String className = m.getClass().getName();
+
+      Log.log_129(_name, className);
 
       // Store the manageable object in the list
       _manageableObjects.add(m);
 
-      Library.BOOTSTRAP_LOG.debug("Added manageable object " + m.getClass().getName() + " for " + _name + " API.");
+      Log.log_130(_name, className);
    }
 
    /**
