@@ -70,11 +70,6 @@ implements DefaultResultCodes {
     */
    private static final String ACL_PROPERTY = "org.xins.server.acl";
 
-   /**
-    * The default access rule list.
-    */
-   private static final String DEFAULT_ACCESS_RULE_LIST = "allow 0.0.0.0/0 *";
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -514,14 +509,8 @@ implements DefaultResultCodes {
       // Initialize ACL subsystem
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
-         try {
-            Log.log_4031(ACL_PROPERTY);
-            Log.log_4032(DEFAULT_ACCESS_RULE_LIST);
-            _accessRuleList = AccessRuleList.parseAccessRuleList(DEFAULT_ACCESS_RULE_LIST);
-         } catch (ParseException exception) {
-            Log.log_4033(DEFAULT_ACCESS_RULE_LIST, exception.getMessage());
-            throw new InitializationException(exception);
-         }
+         _accessRuleList = AccessRuleList.EMPTY;
+         Log.log_4031(ACL_PROPERTY);
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
