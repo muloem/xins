@@ -10,6 +10,7 @@ import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -25,6 +26,12 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The fully-qualified name of this class.
+    */
+   private static final String FQCN = CallContext.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -540,75 +547,75 @@ implements Responder, Log {
       _xmlOutputter.getWriter().flush();
    }
 
-   public void debug(Object message) {
-      // TODO
-   }
-
-   public void debug(Object message, Throwable t) {
-      // TODO
-   }
-
-   public void error(Object message) {
-      // TODO
-   }
-
-   public void error(Object message, Throwable t) {
-      // TODO
-   }
-
-   public void fatal(Object message) {
-      // TODO
-   }
-
-   public void fatal(Object message, Throwable t) {
-      // TODO
-   }
-
-   public void info(Object message) {
-      // TODO
-   }
-
-   public void info(Object message, Throwable t) {
-      // TODO
-   }
-
-   public boolean isDebugEnabled() {
-      return true; // TODO
-   }
-
-   public boolean isErrorEnabled() {
-      return true; // TODO
-   }
-
-   public boolean isFatalEnabled() {
-      return true; // TODO
-   }
-
-   public boolean isInfoEnabled() {
-      return true; // TODO
-   }
-
-   public boolean isTraceEnabled() {
-      return true; // TODO
-   }
-
-   public boolean isWarnEnabled() {
-      return true; // TODO
-   }
-
    public void trace(Object message) {
-      // TODO
+      _logger.log(FQCN, Priority.DEBUG, message, null);
    }
 
    public void trace(Object message, Throwable t) {
-      // TODO
+      _logger.log(FQCN, Priority.DEBUG, message, t );
+   }
+
+   public void debug(Object message) {
+      _logger.log(FQCN, Priority.DEBUG, message, null);
+   }
+
+   public void debug(Object message, Throwable t) {
+      _logger.log(FQCN, Priority.DEBUG, message, t );
+   }
+
+   public void info(Object message) {
+      _logger.log(FQCN, Priority.INFO, message, null );
+   }
+
+   public void info(Object message, Throwable t) {
+      _logger.log(FQCN, Priority.INFO, message, t );
    }
 
    public void warn(Object message) {
-      // TODO
+      _logger.log(FQCN, Priority.WARN, message, null );
    }
 
    public void warn(Object message, Throwable t) {
-      // TODO
+      _logger.log(FQCN, Priority.WARN, message, t );
+   }
+
+   public void error(Object message) {
+      _logger.log(FQCN, Priority.ERROR, message, null );
+   }
+
+   public void error(Object message, Throwable t) {
+      _logger.log(FQCN, Priority.ERROR, message, t );
+   }
+
+   public void fatal(Object message) {
+      _logger.log(FQCN, Priority.FATAL, message, null );
+   }
+
+   public void fatal(Object message, Throwable t) {
+      _logger.log(FQCN, Priority.FATAL, message, t );
+   }
+
+   public boolean isDebugEnabled() {
+      return _logger.isDebugEnabled();
+   }
+
+   public boolean isErrorEnabled() {
+      return _logger.isEnabledFor(Priority.ERROR);
+   }
+
+   public boolean isFatalEnabled() {
+      return _logger.isEnabledFor(Priority.FATAL);
+   }
+
+   public boolean isInfoEnabled() {
+      return _logger.isInfoEnabled();
+   }
+
+   public boolean isTraceEnabled() {
+      return _logger.isDebugEnabled();
+   }
+
+   public boolean isWarnEnabled() {
+      return _logger.isEnabledFor(Priority.WARN);
    }
 }
