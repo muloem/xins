@@ -60,12 +60,6 @@
 				</style>
 				<style
 				in="{$sourcedir}/log.xml"
-				out="{$java_destdir}/NoSuchTranslationBundleException.java"
-				style="{$logdoc_xslt_dir}/log_to_NoSuchTranslationBundleException_java.xslt">
-					<param name="package_name" expression="{$package_name}" />
-				</style>
-				<style
-				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/TranslationBundle.java"
 				style="{$logdoc_xslt_dir}/log_to_TranslationBundle_java.xslt">
 					<param name="package_name" expression="{$package_name}" />
