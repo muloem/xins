@@ -400,14 +400,15 @@ extends Object {
       _recentlyAccessedDoorman.enterAsWriter();
       try {
          _recentlyAccessed.put(key, value);
+
+         // Bump the size
+         synchronized (_sizeLock) {
+            _size++;
+         }
       } finally {
          _recentlyAccessedDoorman.leaveAsWriter();
       }
 
-      // Bump the size
-      synchronized (_sizeLock) {
-         _size++;
-      }
    }
 
    /**
@@ -435,6 +436,14 @@ extends Object {
       Object value;
       try {
          value = _recentlyAccessed.remove(key);
+
+         if (value != null) {
+
+            // Bump the size
+            synchronized (_sizeLock) {
+               _size--;
+            }
+         }
       } finally {
          _recentlyAccessedDoorman.leaveAsReader();
       }
@@ -446,14 +455,17 @@ extends Object {
             for (int i = 0; i < _slotCount && value == null; i++) {
                value = _slots[i].remove(key);
             }
+
+            if (value != null) {
+
+               // Bump the size
+               synchronized (_sizeLock) {
+                  _size--;
+               }
+            }
          } finally {
             _slotsDoorman.leaveAsReader();
          }
-      }
-
-      // Bump the size
-      synchronized (_sizeLock) {
-         _size--;
       }
 
       return value;

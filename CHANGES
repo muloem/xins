@@ -1,6 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.186:
 
+* XINS/Java Common Library:
+  - Set the adjustment of the ExpiryFolder size in the doorman lock.
+  - Decrease the size of the ExpiryFolder only if a value was removed.
+
 * Changed email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com.
 
 * Removed some TODOs done.
