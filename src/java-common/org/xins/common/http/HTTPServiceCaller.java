@@ -388,15 +388,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    <code>true</code> if the specified protocol is supported, or
     *    <code>false</code> if it is not.
     *
-    * @throws UnsupportedOperationException
-    *    if this method is not implemented (probably because this
-    *    <code>ServiceCaller</code> implementation was originally written with
-    *    XINS 1.0.x or XINS 1.1.x)
-    *
     * @since XINS 1.2.0
     */
-   protected boolean isProtocolSupportedImpl(String protocol)
-   throws UnsupportedOperationException {
+   protected boolean isProtocolSupportedImpl(String protocol) {
       return "http".equals(protocol);
    }
 
