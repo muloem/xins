@@ -127,10 +127,12 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 </function>]]></echo>
 			<replace file="apis/${{api.name}}/spec/api.xml">
 				<replacetoken><![CDATA[</description>
+
 ]]></replacetoken>
 				<replacevalue><![CDATA[</description>
 
-	<function name="]]>${function.name}<![CDATA[" />]]></replacevalue>
+	<function name="]]>${function.name}<![CDATA[" />
+]]></replacevalue>
 			</replace>
 			<replace file="apis/${{api.name}}/spec/api.xml" token="$${{function.name}}" value="${{function.name}}" />
 			<!-- Make sure that there is always a blank line before the </api> -->
