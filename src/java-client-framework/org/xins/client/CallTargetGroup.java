@@ -134,9 +134,9 @@ extends AbstractCompositeFunctionCaller {
             members.add(new ActualFunctionCaller(afcURL, hostName));
          }
       } catch (MalformedURLException mue) {
-         throw new Error("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
+         throw new Error("Caught " + mue.getClass().getName() + " while the protocol \"" + url.getProtocol() + "\" was previously accepted.");
       } catch (MultipleIPAddressesException miae) {
-         throw new Error("Caught MultipleIPAddressesException while only using resolved IP addresses.");
+         throw new Error("Caught " + miae.getClass().getName() + " while only using resolved IP addresses.");
       }
 
       return create(type, members);
@@ -197,6 +197,7 @@ extends AbstractCompositeFunctionCaller {
     */
    CallTargetGroup(Type type, List members) throws IllegalArgumentException {
 
+      // Call superclass constructor
       super(members);
 
       // Check preconditions
@@ -467,7 +468,7 @@ extends AbstractCompositeFunctionCaller {
 
       // otherwise if the result was null, then throw an error...
       if (result == null) {
-         throw new Error(caller.getClass().getName() + ".call(String,String,Map) returned null.");
+         throw new Error(caller.getClass().getName() + ".call(java.lang.String, java.lang.String, java.util.Map) returned null.");
       }
 
       // otherwise return the CallResult object
@@ -522,6 +523,35 @@ extends AbstractCompositeFunctionCaller {
          throw (RuntimeException) result;
       } else {
          throw new Error("CallTargetGroup.tryCall() returned an instance of class " + result.getClass().getName() + ", which is unsupported.");
+      }
+   }
+
+   /**
+    * Determines for the specified result code if it should be attempted to
+    * call a different backend.
+    *
+    * @param code
+    *    the result code, cannot be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if a different backend should be tried, or
+    *    <code>false</code> if there is an error that should be independent of
+    *    the backend.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>code == null</code>.
+    */
+   final boolean divertOnCode(String code)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("code", code);
+
+      // TODO: Use a constant, not a literal String
+      if ("DisabledFunction".equals(code)) {
+         return true;
+      } else {
+         return false;
       }
    }
 

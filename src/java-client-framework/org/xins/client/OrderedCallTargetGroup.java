@@ -5,6 +5,7 @@ package org.xins.client;
 
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -21,6 +22,13 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(RandomCallTargetGroup.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -61,11 +69,43 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
       int count = (members == null) ? 0 : members.size();
       Object result;
       int i = 0;
+      boolean divert;
       do {
          FunctionCaller caller = (FunctionCaller) members.get(i);
-         result = tryCall(caller, sessionID, functionName, parameters);
+
+         // Increase the counter, both since the log message is 1-based and
+         // for the loop condition
          i++;
-      } while (result instanceof Throwable && i < count);
+
+         // Log this attempt
+         if (LOG.isDebugEnabled()) {
+            LOG.debug("Trying to call " + caller + " (attempt " + i + '/' + count + ')');
+         }
+
+         // Attempt the call
+         result = tryCall(caller, sessionID, functionName, parameters);
+
+         if (LOG.isDebugEnabled()) {
+            if (result instanceof Throwable) {
+               LOG.debug("Call attempt " + i + '/' + count + " failed.");
+            } else {
+               LOG.debug("Call attempt " + i + '/' + count + " succeeded.");
+            }
+         }
+         // Determine if the call failed
+         if (i == count) {
+            divert = false;
+         } else {
+            divert = result instanceof Throwable;
+            if (!divert) {
+               CallResult callResult = (CallResult) result;
+               String code = callResult.getCode();
+               if (code != null) {
+                  divert = divertOnCode(code);
+               }
+            }
+         }
+      } while (divert);
 
       return callImplResult(result);
    }
