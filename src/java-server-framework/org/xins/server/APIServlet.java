@@ -528,7 +528,7 @@ implements Servlet {
       } catch (SecurityException exception) {
          log.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
       } catch (IOException exception) {
-         log.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
+         log.error("System administration issue detected. Unable to read configuration", exception);
       }
 
       return pr;
@@ -756,17 +756,13 @@ implements Servlet {
          Logger log = Library.INIT_LOG;
          log.info("Configuration file \"" + _configFile + "\" is modified. Re-initializing XINS/Java Server Framework.");
 
-         // Stop the file watch thread
-         _configFileWatcher.end();
-         _configFileWatcher = null;
-
          // Apply the new runtime settings to the logging subsystem
          PropertyReader runtimeProperties = applyConfigFile(log);
 
          // Re-initialize the API
          initAPI(runtimeProperties);
 
-         // Determine interval
+         // Determine the interval
          String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
          int interval;
 
@@ -791,10 +787,9 @@ implements Servlet {
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
          }
 
-         // Create a new file watch thread and start it
-         _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
+         // Update the file watch interval
+         _configFileWatcher.setInterval(interval);
          log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
-         _configFileWatcher.start();
 
          log.info("XINS/Java Server Framework re-initialized.");
       }
