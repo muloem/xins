@@ -109,15 +109,13 @@ public abstract class EnumType extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected final void checkValueImpl(String value) throws TypeValueException {
+   protected final void isValidValueImpl(String value) throws TypeValueException {
       for (int i = 0; i < _values.length; i++) {
          if (_values.equals(value)) {
-            return;
+            return true;
          }
       }
-
-      // XXX: Use a SINGLETON for the TypeValueException ?
-      throw new TypeValueException(this, value);
+      return false;
    }
 
    protected final Object fromStringImpl(String value) {

@@ -107,38 +107,42 @@ public abstract class Type extends Object {
     * Checks if the specified value is valid for this type.
     *
     * <p />This method first checks if <code>value == null</code> and if it is
-    * not, then it calls {@link #checkValueImpl(String)}. Note that
-    * <code>null</code> values are <em>always</em> considered to be valid.
+    * not, then it returns the result of a call to
+    * {@link #isValidValueImpl(String)}. Note that <code>null</code> values are
+    * <em>always</em> considered to be valid.
     *
     * @param value
     *    the value that should be checked for validity, can be
     *    <code>null</code>.
     *
-    * @throws TypeValueException
-    *    if the specified value is not valid.
+    * @return
+    *    <code>true</code> if and only if the specified value is valid,
+    *    <code>false</code> otherwise.
     */
-   public final void checkValue(String value) throws TypeValueException {
+   public final boolean isValidValue(String value) {
       if (value != null) {
-         checkValueImpl(value);
+         return isValidValueImpl(value);
       }
    }
 
    /**
     * Actually checks if the specified value is valid for this type. This
-    * method is called from {@link #checkValue(String)}. It is guaranteed that
+    * method is called from {@link #isValidValue(String)}. It is guaranteed that
     * the argument is not <code>null</code>.
     *
-    * <p />The implementation of this method in class {@link Type} is empty.
+    * <p />The implementation of this method in class {@link Type} returns
+    * <code>true</code>.
     *
     * @param value
     *    the value that should be checked for validity, never
     *    <code>null</code>.
     *
-    * @throws TypeValueException
-    *    if the specified value is not valid.
+    * @return
+    *    <code>true</code> if and only if the specified value is valid,
+    *    <code>false</code> otherwise.
     */
-   protected void checkValueImpl(String value) throws TypeValueException {
-      // empty
+   protected boolean isValidValueImpl(String value) {
+      return true;
    }
 
    /**
@@ -146,8 +150,8 @@ public abstract class Type extends Object {
     * for this type.
     *
     * <p />This method returns <code>null</code> if <code>string ==
-    * null</code>. Otherwise it first calls {@link #checkValueImpl(String)} to
-    * check if the value is in principle valid. If it is, then
+    * null</code>. Otherwise it first calls {@link #isValidValueImpl(String)}
+    * to check if the value is in principle valid. If it is, then
     * {@link #fromStringImpl(String)} is called. If the result of that call is
     * <em>not</em> an instance of the value class, then an
     * {@link InternalError} is thrown. Notice that this error is also thrown
@@ -176,7 +180,9 @@ public abstract class Type extends Object {
          return null;
       }
 
-      checkValueImpl(string);
+      if (!isValidValueImpl(string)) {
+         throw new TypeValueException(this, string);
+      }
 
       Object value = fromStringImpl(string);
 
@@ -194,7 +200,7 @@ public abstract class Type extends Object {
     * @param string
     *    the string to convert to an instance of the value class, guaranteed
     *    to be not <code>null</code> and guaranteed to have been passed to
-    *    {@link #checkValueImpl(String)} without getting an exception.
+    *    {@link #isValidValueImpl(String)} without getting an exception.
     *
     * @return
     *    an instance of the value class, cannot be <code>null</code>.
