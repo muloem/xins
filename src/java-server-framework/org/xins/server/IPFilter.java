@@ -10,11 +10,11 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
 
 /**
- * Authorization filter for IP addresses. An <code>IPFilter</code> object is
+ * Filter for IP addresses. An <code>IPFilter</code> object is
  * created and used as follows:
  *
  * <blockquote><code>IPFilter filter = IPFilter.parseFilter("10.0.0.0/24");
- * <br>if (filter.isAuthorized("10.0.0.1")) {
+ * <br>if (filter.match("10.0.0.1")) {
  * <br>&nbsp;&nbsp;&nbsp;// IP is granted access
  * <br>} else {
  * <br>&nbsp;&nbsp;&nbsp;// IP is denied access
@@ -243,9 +243,10 @@ extends Object {
     * @throws ParseException
     *    if <code>ip</code> does not match the specified format.
     */
-   public final boolean isAuthorized(String ip)
+   public final boolean match(String ip)
    throws IllegalArgumentException, ParseException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("ip", ip);
 
       String[] ipFields = getIPFields(ip);
@@ -254,7 +255,7 @@ extends Object {
          throw new ParseException("The provided IP " + ip + " is invalid.");
       }
 
-      return determineAuthorized(ipFields);
+      return match(ipFields);
    }
 
    /**
@@ -461,7 +462,7 @@ extends Object {
     *    a boolean with the value <code>true</code> if the IP address is 
     *    authorized, otherwise <code>false</code>.
     */
-   private boolean determineAuthorized(String[] ipFields) {
+   private boolean match(String[] ipFields) {
       // NOTE: This method depends on the reliability of the determineIP(),
       //       getIPFields() and getIPBinaryValue() methods.
       String filterIp = determineIP(_expression);
