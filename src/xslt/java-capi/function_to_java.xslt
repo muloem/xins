@@ -36,6 +36,7 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
+import org.xins.client.CallResult;
 import org.xins.client.DataUnavailableException;
 
 /**
@@ -63,10 +64,15 @@ public final class ]]></xsl:text>
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> instance.
+    *
+    * @param result
+    *    the call result to construct a new <code>]]></xsl:text>
+		<xsl:value-of select="$className" />
+		<xsl:text><![CDATA[</code> from, not <code>null</code>.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[() {
+		<xsl:text><![CDATA[(CallResult result) {
       // TODO
    }
 
