@@ -16,9 +16,10 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../escapepattern.xslt"  />
-	<xsl:include href="../java.xslt"           />
-	<xsl:include href="../types.xslt"          />
+	<xsl:include href="../casechange.xslt"    />
+	<xsl:include href="../escapepattern.xslt" />
+	<xsl:include href="../java.xslt"          />
+	<xsl:include href="../types.xslt"         />
 
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="type" select="//type/@name" />
@@ -84,7 +85,39 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text> SINGLETON = new </xsl:text>
 		<xsl:value-of select="$classname" />
-		<xsl:text><![CDATA[();
+		<xsl:text>();</xsl:text>
+		<xsl:if test="$kind = 'enum'">
+			<xsl:for-each select="enum/item">
+				<xsl:variable name="itemName">
+					<xsl:choose>
+						<xsl:when test="@name">
+							<xsl:value-of select="@name" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@value" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:text><![CDATA[
+
+   /**
+    * The <em>]]></xsl:text>
+				<xsl:value-of select="$itemName" />
+				<xsl:text><![CDATA[</em> item.
+    */
+   public static final Item ]]></xsl:text>
+				<xsl:call-template name="toupper">
+					<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
+				</xsl:call-template>
+				<xsl:text> = new Item("</xsl:text>
+				<xsl:value-of select="$itemName" />
+				<xsl:text>", "</xsl:text>
+				<xsl:value-of select="@value" />
+				<xsl:text>");
+</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
+		<xsl:text><![CDATA[
 
 
    //-------------------------------------------------------------------------
