@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 0.134:
   - Fixed bug in the toString() method in the Properties class, in the types
     package. Previously it did not include any ampersands.
 
+* Generated CAPI classes:
+  - Fixed bug. Not throwing NPE if an optional parameter for a function call
+    is not provided.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.133:
 
