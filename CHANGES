@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.114:
+
+* XINS/Java Server Framework:
+  - Added method getName() to API class.
+  - ResultCode constructor now logs a warning if it is marked as successful.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.113:
 
 * Generated Java type classes:
