@@ -319,7 +319,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
       Iterator iterator = descriptor.iterateTargets();
       while (iterator.hasNext()) {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
-         // FIXME: Throw UnsupportedProtocolException as required
+         String url = target.getURL().toLowerCase();
+         if (! url.startsWith("http://")) {
+            throw new UnsupportedProtocolException(target);
+         }
       }
 
       // TRACE: Leave constructor
