@@ -168,7 +168,6 @@ MISCELLANEOUS
   task would need to be developed for this.
 * Support the Freshmeat.net XML-RPC interface for notification of new
   releases.
-* Add a target all ANT target -> war + specdocs + javadoc-api + javadoc-capi.
 * Move as much as possible tasks from the xins shell scripts to ANT tasks.
 * Refactor documentation.
 * Merge the similar targets in build.xml (java-client, java-server, 
