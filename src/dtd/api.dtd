@@ -1,7 +1,7 @@
 <!--
- XINS api DTD. This DTD should be added to the api.xml file in your 
+ XINS api DTD. This DTD should be added to the api.xml file in your
  project by adding the following lines at the top of the file :
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" 
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN"
 "http://xins.sourceforge.net/dtd/api.dtd">
 -->
 <!ELEMENT api (description?, function*, type*, resultcode*, environment*, impl-java?)>
@@ -16,14 +16,17 @@
 <!ELEMENT function EMPTY>
 <!ATTLIST function
           name       CDATA #REQUIRED
+          freeze     CDATA #IMPLIED
 >
 <!ELEMENT type EMPTY>
 <!ATTLIST type
           name       CDATA #REQUIRED
+          freeze     CDATA #IMPLIED
 >
 <!ELEMENT resultcode EMPTY>
 <!ATTLIST resultcode
           name       CDATA #REQUIRED
+          freeze     CDATA #IMPLIED
 >
 <!ELEMENT environment EMPTY>
 <!ATTLIST environment
