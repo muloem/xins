@@ -471,8 +471,6 @@ public abstract class ServiceCaller extends Object {
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
-      // FIXME: Add unit test for Utils.getCallingClass() and Utils.getCallingMethod()
-
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
