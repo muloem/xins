@@ -7,6 +7,7 @@ import javax.servlet.ServletRequest;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
+import org.xins.util.text.FastStringBuffer;
 import org.znerd.xmlenc.XMLOutputter;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
@@ -43,6 +44,17 @@ implements Responder, Log {
    // Class functions
    //-------------------------------------------------------------------------
 
+   static final String getLogPrefix(String functionName, int callID) {
+      FastStringBuffer buffer = new FastStringBuffer(50);
+      buffer.append("Call ");
+      buffer.append(functionName);
+      buffer.append(':');
+      buffer.append(callID);
+      buffer.append(": ");
+      return buffer.toString();
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -62,13 +74,16 @@ implements Responder, Log {
     *    the start time of the call, as milliseconds since midnight January 1,
     *    1970.
     *
-    * @param functionName
-    *    the name of the pertaining function, cannot be <code>null</code>.
+    * @param function
+    *    the concerning function, cannot be <code>null</code>.
+    *
+    * @param callID
+    *    the assigned call ID.
     *
     * @throws IllegalArgumentException
     *    if <code>api == null || functionName == null || request == null</code>.
     */
-   CallContext(ServletRequest request, long start, Function function)
+   CallContext(ServletRequest request, long start, Function function, int callID)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -85,8 +100,8 @@ implements Responder, Log {
 
       // Determine the function object, logger, call ID and log prefix
       _logger    = _function.getLogger();
-      _callID    = _function.assignCallID();
-      _logPrefix = "Call " + _functionName + ':' + _callID + ": ";
+      _callID    = callID;
+      _logPrefix = getLogPrefix(_functionName, _callID);
    }
 
 
@@ -219,16 +234,12 @@ implements Responder, Log {
     *    the session for this call, not <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if there is no current function (i.e.
-    *    {@link #getFunction()}<code> == null</code> or if the current
-    *    function is not session-based.
+    *    if the current function is not session-based.
     */
    public Session getSession() throws IllegalStateException {
 
       // Check preconditions
-      if (_function == null) {
-         throw new IllegalStateException("There is no current function.");
-      } else if (_function.isSessionBased() == false) {
+      if (_function.isSessionBased() == false) {
          throw new IllegalStateException("The function " + _functionName + " is not session-based.");
       }
 
@@ -238,11 +249,6 @@ implements Responder, Log {
 
    public Session createSession() {
 
-      // Check preconditions
-      if (_function == null) {
-         throw new Error("There is no current function.");
-      }
-
       // Create the session
       Session session = _api.createSession();
 
@@ -251,29 +257,6 @@ implements Responder, Log {
       _returnSessionID = true;
 
       return session;
-   }
-
-   /**
-    * Returns the name of the function called.
-    *
-    * @return
-    *    the name of the function called, or <code>null</code> if there is no
-    *    function specificied.
-    */
-   public String getFunctionName() {
-      return _functionName;
-   }
-
-   /**
-    * Returns the function that is being called.
-    *
-    * @return
-    *    the function called, or <code>null</code> if there is no function
-    *    specificied or if there was no function in the API with the specified
-    *    name (see {@link #getFunctionName()}).
-    */
-   public Function getFunction() {
-      return _function;
    }
 
    /**

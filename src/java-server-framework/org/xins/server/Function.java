@@ -327,6 +327,9 @@ implements DefaultResultCodes {
     */
    CallResult handleCall(long start, ServletRequest request) {
 
+      // Assign a call ID
+      int callID = assignCallID();
+
       // Determine the session identifier
       Session session;
       if (!isSessionBased()) {
@@ -335,32 +338,42 @@ implements DefaultResultCodes {
          String sessionID = request.getParameter("_session");
          if (sessionID == null || sessionID.length() == 0) {
             // TODO: Cache CallResult and use ResultCode
-            performedCall(start, null, false, "MissingSessionID");
+            performedCall(start, callID, null, false, "MissingSessionID");
             return new BasicCallResult(false, "MissingSessionID", null, null);
          } else {
             try {
                session = _api.getSessionByString(sessionID);
             } catch (TypeValueException exception) {
                if (_log.isDebugEnabled()) {
-                  _log.debug("Invalid value for session ID type: \"" + sessionID + "\".");
+                  FastStringBuffer buffer = new FastStringBuffer(120);
+                  buffer.append(CallContext.getLogPrefix(_name, callID));
+                  buffer.append("Invalid value for session ID type: \"");
+                  buffer.append(sessionID);
+                  buffer.append("\".");
+                  _log.debug(buffer.toString());
                }
                // TODO: Cache CallResult and use ResultCode
-               performedCall(start, null, false, "InvalidSessionID");
+               performedCall(start, callID, null, false, "InvalidSessionID");
                return new BasicCallResult(false, "InvalidSessionID", null, null);
             }
             if (session == null) {
                if (_log.isDebugEnabled()) {
-                  _log.debug("Unknown session ID: \"" + sessionID + "\".");
+                  FastStringBuffer buffer = new FastStringBuffer(120);
+                  buffer.append(CallContext.getLogPrefix(_name, callID));
+                  buffer.append("Unknown session ID: \"");
+                  buffer.append(sessionID);
+                  buffer.append("\".");
+                  _log.debug(buffer.toString());
                }
                // TODO: Cache CallResult and use ResultCode
-               performedCall(start, null, false, "UnknownSessionID");
+               performedCall(start, callID, null, false, "UnknownSessionID");
                return new BasicCallResult(false, "UnknownSessionID", null, null);
             }
          }
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(request, start, this);
+      CallContext context = new CallContext(request, start, this, callID);
 
       CallResult result;
       try {
@@ -398,7 +411,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(start, session, result.isSuccess(), result.getCode());
+      performedCall(start, callID, session, result.isSuccess(), result.getCode());
 
       return result;
    }
@@ -426,6 +439,9 @@ implements DefaultResultCodes {
     *    the start time, in milliseconds since January 1, 1970, not
     *    <code>null</code>.
     *
+    * @param callID
+    *    the assigned call ID.
+    *
     * @param session
     *    the session, if and only if this function is session-based, otherwise
     *    <code>null</code>.
@@ -436,7 +452,7 @@ implements DefaultResultCodes {
     * @param code
     *    the function result code, or <code>null</code>.
     */
-   final void performedCall(long start, Session session, boolean success, String code) {
+   private final void performedCall(long start, int callID, Session session, boolean success, String code) {
 
       // TODO: Accept ResultCode
 
@@ -447,11 +463,19 @@ implements DefaultResultCodes {
          if (debugEnabled) {
             FastStringBuffer buffer = new FastStringBuffer(250);
             if (session != null) {
-               buffer.append("Call succeeded for session ");
+               buffer.append("Call ");
+               buffer.append(_name);
+               buffer.append(':');
+               buffer.append(callID);
+               buffer.append(" succeeded for session ");
                buffer.append(session.toString());
                buffer.append(". Duration: ");
             } else {
-               buffer.append("Call succeeded. Duration: ");
+               buffer.append("Call ");
+               buffer.append(_name);
+               buffer.append(':');
+               buffer.append(callID);
+               buffer.append(" succeeded. Duration: ");
             }
             buffer.append(String.valueOf(duration));
             buffer.append(" ms.");
@@ -477,7 +501,11 @@ implements DefaultResultCodes {
          if (debugEnabled) {
             FastStringBuffer buffer = new FastStringBuffer(250);
             buffer.clear();
-            buffer.append("Call failed. Duration: ");
+            buffer.append("Call ");
+            buffer.append(_name);
+            buffer.append(':');
+            buffer.append(callID);
+            buffer.append(" failed. Duration: ");
             buffer.append(String.valueOf(duration));
             buffer.append(" ms.");
             if (code != null) {
