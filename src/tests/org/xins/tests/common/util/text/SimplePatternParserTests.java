@@ -89,15 +89,15 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("aa*a*?a");
       doTestParseSimplePattern("aa?a??a");
 
-      doTestParseSimplePattern("",         "^$");
-      doTestParseSimplePattern("*",        "^.*$");
-      doTestParseSimplePattern("?",        "^.$");
-      doTestParseSimplePattern("_Get*",    "^_Get.*$");
-      doTestParseSimplePattern("_Get*i?n", "^_Get.*i.n$");
-      doTestParseSimplePattern("*on",      "^.*on$");
-      doTestParseSimplePattern("...",      "^\\.\\.\\.$");
+      doTestParseSimplePattern("",         "");
+      doTestParseSimplePattern("*",        ".*");
+      doTestParseSimplePattern("?",        ".");
+      doTestParseSimplePattern("_Get*",    "_Get.*");
+      doTestParseSimplePattern("_Get*i?n", "_Get.*i.n");
+      doTestParseSimplePattern("*on",      ".*on");
+      doTestParseSimplePattern("...",      "\\.\\.\\.");
 
-      doTestParseSimplePattern("abcdefghijklmnopqrstuvwxyz1234567890-_.", "^abcdefghijklmnopqrstuvwxyz1234567890-_\\.$");
+      doTestParseSimplePattern("abcdefghijklmnopqrstuvwxyz1234567890-_.", "abcdefghijklmnopqrstuvwxyz1234567890-_\\.");
 
       final String invalidChars = "~`!@#$%^&()=+[]{}|\\:;\"'<>,/";
       for (int i = 0; i < invalidChars.length(); i++) {

@@ -35,12 +35,12 @@ import org.xins.util.text.FastStringBuffer;
  *
  * <table>
  *    <tr><th>Simple pattern</th><th>Perl 5 regex equivalent</th></tr>
- *    <tr><td></td>              <td>^$</td>                     </tr>
- *    <tr><td>*</td>             <td>^.*$</td>                   </tr>
- *    <tr><td>?</td>             <td>^.$</td>                    </tr>
- *    <tr><td>_Get*</td>         <td>^_Get.*$</td>               </tr>
- *    <tr><td>_Get*i?n</td>      <td>^_Get.*i.n$</td>            </tr>
- *    <tr><td>*on</td>           <td>^.*on$</td>                 </tr>
+ *    <tr><td></td>              <td></td>                     </tr>
+ *    <tr><td>*</td>             <td>.*</td>                   </tr>
+ *    <tr><td>?</td>             <td>.</td>                    </tr>
+ *    <tr><td>_Get*</td>         <td>_Get.*</td>               </tr>
+ *    <tr><td>_Get*i?n</td>      <td>_Get.*i.n</td>            </tr>
+ *    <tr><td>*on</td>           <td>.*on</td>                 </tr>
  * </table>
  *
  * @version $Revision$ $Date$
@@ -150,8 +150,6 @@ public class SimplePatternParser extends Object {
       FastStringBuffer buffer = new FastStringBuffer(size * 2);
       char prevChar = (char) 0;
 
-      buffer.append('^');
-
       for (int i= 0; i < size; i++) {
          char currChar = contents[i];
 
@@ -179,8 +177,6 @@ public class SimplePatternParser extends Object {
 
          prevChar = currChar;
       }
-
-      buffer.append('$');
 
       return buffer.toString();
    }
