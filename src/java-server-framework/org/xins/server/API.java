@@ -46,8 +46,22 @@ implements DefaultResultCodes {
     */
    private static final Logger LOG = Logger.getLogger(API.class.getName());
 
+   /**
+    * Constant indicating the <em>uninitialized</em> state. See
+    * {@link #_state}.
+    */
    private static final int UNINITIALIZED = 0;
+
+   /**
+    * Constant indicating the <em>initializing</em> state. See
+    * {@link #_state}.
+    */
    private static final int INITIALIZING = 1;
+
+   /**
+    * Constant indicating the <em>initialized</em> state. See
+    * {@link #_state}.
+    */
    private static final int INITIALIZED = 2;
 
 
@@ -79,7 +93,8 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The current state.
+    * The current state. Either {@link #UNINITIALIZED}, {@link #INITIALIZING}
+    * or {@link #INITIALIZED}.
     */
    private int _state;
 
