@@ -4,7 +4,7 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
+CHANGES INTRODUCED IN XINS 1.1.0 RC 1:
 
 * XINS/Java Server Framework:
   - Implemented SF.net RFE #1102205: Let Server use Common log messages.
