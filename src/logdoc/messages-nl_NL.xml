@@ -7,5 +7,9 @@
 -->
 
 <messages>
-	<message entry="1">XINS/Java Server Framework geinitialiseerd.</message>
+	<message entry="100">XINS/Java Server Framework wordt opgestart.</message>
+	<message entry="101">XINS/Java Server Framework kan niet opgestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</message>
+	<message entry="102">XINS/Java Server Framework kan niet opgestart worden, omdat applicatie server zich onverwacht gedraagt. Reden: <value-of-param name="detail" /></message>
+	<message entry="103">De applicatie server implementeert een onverwachtte versie van de Java Servlet API specificatie. Verwachtte versie: <value-of-param name="expected_version" />. Werkelijke versie: <value-of-param name="actual_version" />.</message>
+	<message entry="200">XINS/Java Server Framework is geinitialiseerd.</message>
 </messages>
