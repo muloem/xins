@@ -11,6 +11,7 @@
 	<!-- Define parameters -->
 	<xsl:param name="package_name"    />
 
+	<xsl:include href="shared.xslt" />
 	<xsl:include href="../xml_to_java.xslt" />
 
 	<!-- Set output method -->
@@ -115,11 +116,7 @@ public abstract class TranslationBundle extends Object {
    public String translation_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<xsl:for-each select="param">
-			<xsl:if test="position() &gt; 1">, </xsl:if>
-			<xsl:text>String </xsl:text>
-			<xsl:value-of select="@name" />
-		</xsl:for-each>
+		<xsl:apply-templates select="param" mode="method-argument" />
 		<xsl:text>) {
       return "</xsl:text>
 		<xsl:call-template name="xml_to_java_string">

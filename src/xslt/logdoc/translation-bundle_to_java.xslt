@@ -13,6 +13,8 @@
 	<xsl:param name="locale"       />
 	<xsl:param name="log_file"     />
 
+	<!-- Perform includes -->
+	<xsl:include href="shared.xslt"         />
 	<xsl:include href="../xml_to_java.xslt" />
 
 	<!-- Set output method -->
@@ -95,11 +97,7 @@ public final class ]]></xsl:text>
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
 			<xsl:text>(</xsl:text>
-			<xsl:for-each select="document($log_file)/log/group/entry[@id = $entry]/param">
-				<xsl:if test="position() &gt; 1">, </xsl:if>
-				<xsl:text>String </xsl:text>
-				<xsl:value-of select="@name" />
-			</xsl:for-each>
+			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument" />
 			<xsl:text>) {</xsl:text>
 			<xsl:choose>
 				<xsl:when test="count(value-of-param) &lt; 1">
