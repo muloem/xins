@@ -745,19 +745,6 @@
 
 	<target name="-check-release-version" depends="-check-version-suffix" unless="force">
 		<fail unless="version.suffix.set" message="Version suffix is not set to -dev. If you do want to release, please set 'force'." />
-		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
-			<entry key="version.prev.minor" type="int" operation="+" value="1" />
-			<entry key="version.suffix" operation="=" value="" />
-		</propertyfile>
-		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
-		     failonerror="true">
-			<commandline>
-				<argument value="commit" />
-				<argument value="-m" />
-				<argument value="Unmarked -dev." />
-				<argument value="${version.file}" />
-			</commandline>
-		</cvs>
 	</target>
 
 	<target name="-check-directories" depends="-init">
@@ -791,6 +778,19 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	name="-pre-release-checks"
 	depends="-init-release,-check-release-version,-check-directories,-nodiffs-check,tests">
 		<fail if="tests.failed" message="All tests should run" />
+		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
+			<entry key="version.prev.minor" type="int" operation="+" value="1" />
+			<entry key="version.suffix" operation="=" value="" />
+		</propertyfile>
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
+		     failonerror="true">
+			<commandline>
+				<argument value="commit" />
+				<argument value="-m" />
+				<argument value="Unmarked -dev." />
+				<argument value="${version.file}" />
+			</commandline>
+		</cvs>
 	</target>
 
 	<target
