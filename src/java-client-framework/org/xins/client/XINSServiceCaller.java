@@ -17,13 +17,19 @@ import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
+import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
+import org.xins.common.service.ConnectionTimeOutCallException;
+import org.xins.common.service.ConnectionRefusedCallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
 import org.xins.common.service.ServiceCaller;
+import org.xins.common.service.SocketTimeOutCallException;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.service.TotalTimeOutCallException;
+import org.xins.common.service.UnknownHostCallException;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -204,8 +210,10 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
+      final String METHODNAME = "call(XINSCallException";
+
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, "call(XINSCallRequest)", null);
+      Log.log_2003(CLASSNAME, METHODNAME, null);
 
       XINSCallResult result;
       try {
@@ -214,20 +222,85 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Allow GenericCallException, HTTPCallException, XINSCallException and
       // Error to proceed, but block other kinds of exceptions and throw an
       // Error instead.
-      } catch (GenericCallException exception) {
-         throw exception;
-      } catch (HTTPCallException exception) {
-         throw exception;
-      } catch (XINSCallException exception) {
-         throw exception;
-      } catch (Exception exception) {
-         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
-         message.append(".doCall(CallRequest) threw ");
-         message.append(exception.getClass().getName());
-         message.append(". Message: ");
-         message.append(TextUtils.quote(exception.getMessage()));
-         message.append('.');
-         throw new Error(message.toString(), exception);
+      } catch (CallException exception) {
+
+         // Get URL, function and parameters (for logging)
+         TargetDescriptor   target    = exception.getTarget();
+         String             url       = target.getURL();
+         String             function  = request.getFunctionName();
+         PropertyReader     p         = request.getParameters();
+         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "-");
+
+         // Get the time-out values (for logging)
+         int totalTimeOut      = target.getTotalTimeOut();
+         int connectionTimeOut = target.getConnectionTimeOut();
+         int socketTimeOut     = target.getSocketTimeOut();
+
+         // Call performed
+         long duration = exception.getDuration();
+         Log.log_2101(url, function, params, duration);
+
+         // Generic call exception
+         if (exception instanceof GenericCallException) {
+            if (exception instanceof UnknownHostCallException) {
+               Log.log_2102(url, function, params, duration);
+            } else if (exception instanceof ConnectionRefusedCallException) {
+               Log.log_2103(url, function, params, duration);
+            } else if (exception instanceof ConnectionTimeOutCallException) {
+               Log.log_2104(url, function, params, duration, connectionTimeOut);
+            } else if (exception instanceof SocketTimeOutCallException) {
+               Log.log_2105(url, function, params, duration, socketTimeOut);
+            } else if (exception instanceof TotalTimeOutCallException) {
+               Log.log_2106(url, function, params, duration, totalTimeOut);
+            } else {
+               Log.log_2050(CLASSNAME, METHODNAME,
+                            "Unrecognized GenericCallException subclass " +
+                            exception.getClass().getName() + '.');
+            }
+
+            throw (GenericCallException) exception;
+
+         // HTTP-specific call exception
+         } else if (exception instanceof HTTPCallException) {
+            if (exception instanceof StatusCodeHTTPCallException) {
+               int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
+               Log.log_2108(url, function, params, duration, code);
+            } else {
+               Log.log_2050(CLASSNAME, METHODNAME,
+                            "Unrecognized HTTPCallException subclass " +
+                            exception.getClass().getName() + '.');
+            }
+            throw (HTTPCallException) exception;
+
+         // XINS-specific call exception
+         } else if (exception instanceof XINSCallException) {
+            if (exception instanceof InvalidResultXINSCallException) {
+               // Log.log_TODO
+            } else if (exception instanceof UnsuccessfulXINSCallException) {
+               // Log.log_TODO
+            } else if (exception instanceof UnacceptableResultXINSCallException) {
+               // Log.log_TODO
+               // XXX: Can this ever happen here?
+            } else {
+               Log.log_2050(CLASSNAME, METHODNAME,
+                            "Unrecognized HTTPCallException subclass " +
+                            exception.getClass().getName() + '.');
+            }
+            throw (XINSCallException) exception;
+
+         // Unknown kind of CallException
+         } else {
+            Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
+
+            FastStringBuffer message = new FastStringBuffer(190);
+            message.append("XINSServiceCaller.doCall(CallRequest) threw unexpected ");
+            message.append(exception.getClass().getName());
+            message.append(". Message: ");
+            message.append(TextUtils.quote(exception.getMessage()));
+            message.append('.');
+
+            throw new Error(message.toString(), exception);
+         }
       }
 
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
@@ -236,7 +309,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, "call(XINSCallRequest)", null);
+      Log.log_2005(CLASSNAME, METHODNAME, null);
 
       return result;
    }
@@ -302,42 +375,39 @@ public final class XINSServiceCaller extends ServiceCaller {
       int connectionTimeOut = target.getConnectionTimeOut();
       int socketTimeOut     = target.getSocketTimeOut();
 
-      // Log that we are about to call the API
       Log.log_2100(url, function, params, totalTimeOut, connectionTimeOut, socketTimeOut);
 
-      // Delegate the actual HTTP call to the HTTPServiceCaller. This may
-      // cause a CallException
+      // Delegate the actual HTTP call to the HTTPServiceCaller.
+      // The HTTPServiceCaller.call method may throw a CallException, which
+      // is not caught in this method, but in call(XINSCallRequest).
       HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
       HTTPCallResult  httpResult  = _httpCaller.call(httpRequest, target);
+
+      // Determine call duration
+      long duration = httpResult.getDuration();
+
+      Log.log_2101(url, function, params, duration);
 
       // Make sure data was received
       byte[] httpData = httpResult.getData();
       if (httpData == null || httpData.length == 0) {
-         throw new InvalidResultXINSCallException(xinsRequest,
-                                                  target,
-                                                  httpResult.getDuration(),
-                                                  "No data received.",
-                                                  null);
+         throw new InvalidResultXINSCallException(
+            xinsRequest, target, duration, "No data received.", null);
       }
 
       // Parse the result
       XINSCallResultData resultData;
       try {
          resultData = _parser.parse(httpData);
-      } catch (ParseException parseException) {
-         throw new InvalidResultXINSCallException(xinsRequest,
-                                                  target,
-                                                  httpResult.getDuration(),
-                                                  "Failed to parse result.",
-                                                  parseException);
+      } catch (ParseException e) {
+         throw new InvalidResultXINSCallException(
+            xinsRequest, target, duration, "Failed to parse result.", e);
       }
 
       // If the result is unsuccessful, throw an exception
       if (resultData.getErrorCode() != null) {
-         throw new UnsuccessfulXINSCallException(xinsRequest,
-                                                 target,
-                                                 httpResult.getDuration(),
-                                                 resultData);
+         throw new UnsuccessfulXINSCallException(
+            xinsRequest, target, duration, resultData);
       }
 
       // TRACE: Leave method
