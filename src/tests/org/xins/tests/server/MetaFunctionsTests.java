@@ -174,7 +174,7 @@ public class MetaFunctionsTests extends TestCase {
    }
    
    private void checkFunctionStatistics(DataElement functionElement, boolean successful) {
-      String success = successful ? "successful" : "unsuccesssul";
+      String success = successful ? "successful" : "unsuccessful";
       
       assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getName());
       assertNotNull("No average attribute defined", functionElement.get("average"));
