@@ -215,6 +215,8 @@ public final class XINSCallRequest extends CallRequest {
 
       // Store function name, parameters and data section
       _functionName = functionName;
+      _parameters   = new ProtectedPropertyReader(SECRET_KEY);
+      _httpParams   = new ProtectedPropertyReader(SECRET_KEY);
       setParameters(parameters);
       setDataSection(dataSection);
 
@@ -339,7 +341,7 @@ public final class XINSCallRequest extends CallRequest {
     * The parameters to pass in the request, and their respective values. This
     * field can be <code>null</code>.
     */
-   private PropertyReader _parameters;
+   private final ProtectedPropertyReader _parameters;
 
    /**
     * The data section to pass in the request. This field can be
@@ -351,7 +353,7 @@ public final class XINSCallRequest extends CallRequest {
     * The parameters to send with the HTTP request. Cannot be
     * <code>null</code>.
     */
-   private ProtectedPropertyReader _httpParams;
+   private final ProtectedPropertyReader _httpParams;
 
    /**
     * The <code>UnsuccessfulXINSCallExceptionFactory</code> used for creating
@@ -519,7 +521,45 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
-    * Sets the parameters for this function.
+    * Initializes the set of parameters. The implementation of this method
+    * first removes all parameters and then adds the standard parameters.
+    */
+   private void initParameters() {
+
+      // Remove all existing parameters
+      _parameters.clear(SECRET_KEY);
+      _httpParams.clear(SECRET_KEY);
+
+      // Since XINS 1.0.1: Use XINS 1.0 standard calling convention
+      _httpParams.set(SECRET_KEY, "_convention", "_xins-std");
+
+      // TODO: Get convention parameter name from a class in XINS/Java Common Library
+      // TODO: Get convention name from a class in XINS/Java Common Library
+
+      // Add the diagnostic context ID to the parameter list, if there is one
+      String contextID = NDC.peek();
+      if (contextID != null) {
+         _httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
+      }
+
+      // Add the function to the parameter list
+      _httpParams.set(SECRET_KEY, "_function", _functionName);
+
+      // XXX: For backwards compatibility, also add the parameter "function"
+      //      to the list of HTTP parameters. This is, however, very likely to
+      //      change in the future.
+      _httpParams.set(SECRET_KEY, "function", _functionName);
+
+      // Reset _asString so it will be re-initialized as necessary
+      _asString = null;
+   }
+
+   /**
+    * Sets the parameters for this function, replacing any existing
+    * parameters. First the existing parameters are cleaned and then all
+    * the specified parameters are copied to the internal set one-by-one. If
+    * any of the parameters has an invalid name, then the internal parameter
+    * set is cleaned and then an exception is thrown.
     *
     * @param parameters
     *    the input parameters, if any, can be <code>null</code> if there are
@@ -536,19 +576,10 @@ public final class XINSCallRequest extends CallRequest {
    public void setParameters(PropertyReader parameters)
    throws IllegalArgumentException {
 
-      // TODO: Optimize this method. Do not create ProtectedPropertyReader
-      //       objects unless necessary.
+      // Clear the parameters
+      initParameters();
 
-      // Create PropertyReader for the HTTP parameters
-      ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
-      ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
-
-      // Since XINS 1.0.1: Use XINS 1.0 standard calling convention
-      // TODO: Get convention parameter name from a class in XINS/Java Common Library
-      // TODO: Get convention name from a class in XINS/Java Common Library
-      httpParams.set(SECRET_KEY, "_convention", "_xins-std");
-
-      // Check and copy all parameters to XINS and HTTP parameters
+      // Check and copy all parameters
       if (parameters != null) {
          Iterator names = parameters.getNames();
          while (names.hasNext()) {
@@ -557,50 +588,69 @@ public final class XINSCallRequest extends CallRequest {
             String name  = (String) names.next();
             String value = parameters.get(name);
 
-            // Name cannot violate the pattern
-            if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
-               // XXX: Consider using a different kind of exception for this
-               //      specific case. For backwards compatibility, this
-               //      exception class must be converted to an
-               //      IllegalArgumentException by the constructor.
-
-               FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
-               buffer.append(name);
-               buffer.append("\" does not match the pattern \"");
-               buffer.append(PARAMETER_NAME_PATTERN_STRING);
-               buffer.append("\".");
-               throw new IllegalArgumentException(buffer.toString());
-
-            // Name cannot be "function"
-            } else if ("function".equals(name)) {
-               throw new IllegalArgumentException("Parameter name \"function\" is reserved.");
-
-            // Name is considered valid, store it
-            } else {
-               xinsParams.set(SECRET_KEY, name, value);
-               httpParams.set(SECRET_KEY, name, value);
-            }
+            // Set the combination (this may fail)
+            setParameter(name, value);
          }
       }
 
       // Add the function to the parameter list
-      httpParams.set(SECRET_KEY, "_function", _functionName);
+      _httpParams.set(SECRET_KEY, "_function", _functionName);
 
       // XXX: For backwards compatibility, also add the parameter "function"
       //      to the list of HTTP parameters. This is, however, very likely to
       //      change in the future.
-      httpParams.set(SECRET_KEY, "function", _functionName);
+      _httpParams.set(SECRET_KEY, "function", _functionName);
 
-      // Add the diagnostic context ID to the parameter list, if there is one
-      String contextID = NDC.peek();
-      if (contextID != null) {
-         httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
+      // Reset _asString so it will be re-initialized as necessary
+      _asString = null;
+   }
+
+   /**
+    * Sets the parameter with the specified name.
+    *
+    * @param name
+    *    the parameter name, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the new value for the parameter, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name</code> does not match the constraints for a parameter
+    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
+    *    <code>"function"</code>, which is currently still reserved.
+    *
+    * @since XINS 1.2.0
+    */
+   public void setParameter(String name, String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      // Name cannot violate the pattern
+      if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
+         // XXX: Consider using a different kind of exception for this
+         //      specific case. For backwards compatibility, this exception
+         //      class must be converted to an IllegalArgumentException in
+         //      some cases or otherwise it should subclass
+         //      IllegalArgumentException.
+
+         FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
+         buffer.append(name);
+         buffer.append("\" does not match the pattern \"");
+         buffer.append(PARAMETER_NAME_PATTERN_STRING);
+         buffer.append("\".");
+         throw new IllegalArgumentException(buffer.toString());
+
+      // Name cannot be "function"
+      } else if ("function".equals(name)) {
+         throw new IllegalArgumentException("Parameter name \"function\" is reserved.");
+
+      // Name is considered valid, store it
+      } else {
+         _parameters.set(SECRET_KEY, name, value);
+         _httpParams.set(SECRET_KEY, name, value);
       }
-
-      // Initialize fields
-      _parameters = xinsParams;
-      _httpParams = httpParams;
-      _asString   = null;
    }
 
    /**
