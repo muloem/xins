@@ -439,8 +439,6 @@ extends HttpServlet {
             interval = Integer.parseInt(s);
             if (interval < 1) {
                Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               // TODO: Throw an exception, since this is an unallowed
-               //       condition!
             } else {
                Log.log_1411(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
