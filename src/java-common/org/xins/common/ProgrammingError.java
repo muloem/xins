@@ -32,11 +32,27 @@ public final class ProgrammingError extends Error {
 
    /**
     * Constructs a new <code>ProgrammingError</code> with the specified detail
+    * message.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    */
+   public ProgrammingError(String detail) {
+      super(detail);
+   }
+
+   /**
+    * Constructs a new <code>ProgrammingError</code> with the specified detail
     * message and cause exception.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
     */
    public ProgrammingError(String detail, Throwable cause) {
-      super(detail);
-      initCause(cause);
+      super(detail, cause);
    }
 
 
