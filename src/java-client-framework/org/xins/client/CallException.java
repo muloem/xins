@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.TargetDescriptor;
 
@@ -36,8 +37,15 @@ public abstract class CallException extends Exception {
     * @param request
     *    the original request, cannot be <code>null</code>.
     *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
     * @param message
     *    a description of the reason, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
     *
     * @return
     *    the exception message, never <code>null</code>.
@@ -49,7 +57,8 @@ public abstract class CallException extends Exception {
     */
    private static final String createMessage(CallRequest      request,
                                              TargetDescriptor target,
-                                             String           message)
+                                             String           message,
+                                             Throwable        cause)
    throws IllegalArgumentException {
 
       // Check preconditions
