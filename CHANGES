@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Extended interface of UnacceptableCallResultException.
   - Removed the unused class MultipleIPAddressesException.
   - Overhaul of logdoc entries.
+  - Explicitly defined duration in CallException as the call duration.
 
 * Logdoc:
   - Changed the interface of class AbstractLogdocSerializable (introduced in
