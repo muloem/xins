@@ -297,9 +297,9 @@ public class AddReleaseTask extends Task {
 
       try {
          // Connect
-         log("Connecting to FTP server \"" + FTP_SERVER + "\".", Project.MSG_DEBUG);
+         log("Connecting to FTP server \"" + FTP_SERVER + "\".", Project.MSG_VERBOSE);
          ftp.connect(FTP_SERVER);
-         log("Connected to FTP server \"" + FTP_SERVER + "\".", Project.MSG_VERBOSE);
+         log("Connected to FTP server \"" + FTP_SERVER + "\".", Project.MSG_DEBUG);
          log("FTP server \"" + FTP_SERVER + "\" returned reply string \"" + ftp.getReplyString() + "\".", Project.MSG_DEBUG);
 
          // Check reply code to verify success
