@@ -258,4 +258,33 @@ public class CallingConventionTests extends TestCase {
          post.releaseConnection();
       }
    }
+   
+   /**
+    * Tests the XSLT calling convention.
+    */
+   public void testXSLTCallingConvention() throws Throwable {
+      String html = getHTMLVersion(false);
+      assertTrue("The returned data is not an HTML file.", html.startsWith("<html>"));
+      assertTrue("Incorrect HTML data returned.", html.indexOf("XINS version") != -1);
+      
+      String html2 = getHTMLVersion(true);
+      assertTrue("The returned data is not an HTML file.", html2.startsWith("<html>"));
+      assertTrue("Incorrect HTML data returned.", html2.indexOf("API version") != -1);
+   }
+   
+   private String getHTMLVersion(boolean useTemplateParam) throws Exception {
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("_function",  "_GetVersion");
+      params.set("_convention", "_xins-xslt");
+      if (useTemplateParam) {
+         String userDir = new File(System.getProperty("user.dir")).toURL().toString();
+         params.set("_template", userDir + "src/tests/getVersion2.xslt");
+      }
+      HTTPCallRequest request = new HTTPCallRequest(params);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+
+      HTTPCallResult result = caller.call(request);
+      return result.getString();
+   }
 }

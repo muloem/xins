@@ -257,6 +257,11 @@ extends HttpServlet {
    public static final String XML_CALLING_CONVENTION = "_xins-xml";
 
    /**
+    * The XSLT calling convention.
+    */
+   public static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *
@@ -655,11 +660,11 @@ extends HttpServlet {
          }
 
          // Check the expected vs implemented Java Servlet API version
-         // Both 2.2 and 2.3 are supported
+         // 2.2, 2.3 and 2.4 are supported
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
-         if (major != 2 || (minor != 2 && minor != 3)) {
-            String expected = "2.2/2.3";
+         if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
+            String expected = "2.2/2.3/2.4";
             String actual   = "" + major + '.' + minor;
             Log.log_3203(actual, expected);
          }
@@ -1288,6 +1293,10 @@ extends HttpServlet {
       // XML calling convention
       } else if (XML_CALLING_CONVENTION.equals(name)) {
          return new XMLCallingConvention();
+
+      // XSLT calling convention
+      } else if (XSLT_CALLING_CONVENTION.equals(name)) {
+         return new XSLTCallingConvention();
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {

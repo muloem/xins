@@ -225,7 +225,7 @@ abstract class CallingConvention extends Object {
     * @throws InitializationException
     *    if the initialization failed, for any other reason.
     */
-   public void initImpl(PropertyReader buildSettings, PropertyReader runtimeProperties)
+   protected void initImpl(PropertyReader buildSettings, PropertyReader runtimeProperties)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           InitializationException {

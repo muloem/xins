@@ -62,7 +62,7 @@ final class CallResultOutputter extends Object {
     * @throws IOException
     *    if there was an I/O error while writing to the output stream.
     */
-   public static void output(PrintWriter    out,
+   public static void output(Writer         out,
                              String         encoding,
                              FunctionResult result,
                              boolean        oldStyle)

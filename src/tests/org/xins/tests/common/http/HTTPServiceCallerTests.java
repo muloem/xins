@@ -142,6 +142,10 @@ public class HTTPServiceCallerTests extends TestCase {
       caller = new HTTPServiceCaller(descriptor);
       assertEquals(descriptor, caller.getDescriptor());
 
+      descriptor = new TargetDescriptor("https://sourceforge.net");
+      caller = new HTTPServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
+
       // TODO: Add tests for 2-argument constructor
    }
 
