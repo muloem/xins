@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.91:
+
+* XINS/Java Server Framework:
+  - More output from _GetStatistics:
+    . number of available processors
+    . free heap memory, see:
+    . total allocated heap memory
+    . maximum heap memory
+  - Improved logging output and exception messages in class Doorman.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.90:
 
 * XINS/Java Common Library:
