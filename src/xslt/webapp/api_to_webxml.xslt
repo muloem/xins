@@ -9,12 +9,12 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
+	<xsl:param name="api"          />
 	<xsl:param name="deployment"   />
 	<xsl:param name="hostname"     />
 	<xsl:param name="timestamp"    />
 
-	<xsl:variable name="api"          select="//api/@name"                                />
-	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="sessionBased">
 		<xsl:choose>
 			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
