@@ -94,17 +94,28 @@ public class AllInOneAPITests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The target descriptor to use in all tests.
+    */
+   private TargetDescriptor _target;
+
+   private CAPI _capi;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
+   public void setUp() throws Exception {
+      _target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 4000, 4000);
+      _capi    = new CAPI(_target);
+   }
+
    /**
-    * Tests CAPI and pre-defined.
+    * Tests CAPI regarding pre-defined types.
     */
    public void testSimpleTypes() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
-      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2),
+      SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2),
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
       assertNull(result.getOutputByte());
       assertEquals((short)-1, result.getOutputShort());
@@ -123,15 +134,13 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function called with some missing parameters.
     */
    public void testMissingParam() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
       try {
-         SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
+         SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          DataElement dataSection = exception.getDataElement();
          assertNotNull(dataSection);
@@ -147,12 +156,10 @@ public class AllInOneAPITests extends TestCase {
     * Tests CAPI and defined types.
     */
    public void testDefinedTypes() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
-      DefinedTypesResult result = allInOne.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList);
+      DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList);
       assertEquals("127.0.0.1", result.getOutputIP());
       assertEquals(Salutation.LADY, result.getOutputSalutation());
       assertEquals(Byte.decode("35"), result.getOutputAge());
@@ -164,17 +171,15 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function called with some invalid parameters.
     */
    public void testInvalidParams() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
       TextList.Value textList = new TextList.Value();
       textList.add("Hello");
       textList.add("Test");
       try {
-         DefinedTypesResult result = allInOne.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList);
+         DefinedTypesResult result = _capi.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          DataElement dataSection = exception.getDataElement();
          assertNotNull(dataSection);
@@ -196,16 +201,14 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that should returned a defined result code.
     */
    public void testResultCode() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
-      String result1 = allInOne.callResultCode("hello").getOutputText();
+      String result1 = _capi.callResultCode("hello").getOutputText();
       assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
       try {
-         allInOne.callResultCode("hello");
+         _capi.callResultCode("hello");
          fail("The second call with the same parameter should return an AlreadySet error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("AlreadySet", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNotNull(exception.getParameters());
          assertEquals("Incorrect value for the count parameter.", "1", exception.getParameter("count"));
          assertNull(exception.getDataElement());
@@ -216,20 +219,18 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that writes messages to the Logdoc.
     */
    public void testLogdoc() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
       // This method write some text using the logdoc
       // This test doesn't check that the data written in the logs are as expected
       try {
-         allInOne.callLogdoc("hello");
+         _capi.callLogdoc("hello");
          fail("The logdoc call should return an InvalidNumber error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("InvalidNumber", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          assertNull(exception.getDataElement());
       }
-      allInOne.callLogdoc("12000");
+      _capi.callLogdoc("12000");
    }
 
    /**
@@ -237,9 +238,7 @@ public class AllInOneAPITests extends TestCase {
     * PCDATA.
     */
    public void testDataSection() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection("Doe").dataElement();
+      DataElement element = _capi.callDataSection("Doe").dataElement();
       List users = element.getChildElements();
       assertTrue("No users found.", users.size() > 0);
       DataElement su = (DataElement) users.get(0);
@@ -261,9 +260,7 @@ public class AllInOneAPITests extends TestCase {
     * other elements.
     */
    public void testDataSection2() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
-      CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection2("hello").dataElement();
+      DataElement element = _capi.callDataSection2("hello").dataElement();
       List packets = element.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
       DataElement packet1 = (DataElement) packets.get(0);
@@ -305,9 +302,7 @@ public class AllInOneAPITests extends TestCase {
       builder3.addChild(address2);
       Element dataSection = builder3.createElement();
 
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
-      CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection3("hello", dataSection).dataElement();
+      DataElement element = _capi.callDataSection3("hello", dataSection).dataElement();
       List packets = element.getChildElements();
       assertTrue("No packets or envelopes found.", packets.size() == 4);
 
@@ -332,14 +327,12 @@ public class AllInOneAPITests extends TestCase {
    * Tests the param-combos for inclusive-or and exclusive-or.
    */
    public void testParamCombo1() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
-      CAPI allInOne = new CAPI(descriptor);
       try {
-         allInOne.callParamCombo(null, null, null, null, null, null, null);
+         _capi.callParamCombo(null, null, null, null, null, null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          assertNotNull(exception.getDataElement());
          DataElement dataSection = exception.getDataElement();
@@ -365,14 +358,12 @@ public class AllInOneAPITests extends TestCase {
    * Tests the param-combos for all-or-none.
    */
    public void testParamCombo2() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
-      CAPI allInOne = new CAPI(descriptor);
       try {
-         allInOne.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
+         _capi.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(descriptor, exception.getTarget());
+         assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          assertNotNull(exception.getDataElement());
          DataElement dataSection = exception.getDataElement();
@@ -391,10 +382,8 @@ public class AllInOneAPITests extends TestCase {
     * Tests the getXINSVersion() CAPI method.
     */
    public void testCAPIVersion() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      CAPI allInOne = new CAPI(descriptor);
-      assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
-      assertTrue("The version does not starts with '1.'", allInOne.getXINSVersion().startsWith("1."));
+      assertNotNull("No XINS version specified.", _capi.getXINSVersion());
+      assertTrue("The version does not starts with '1.'", _capi.getXINSVersion().startsWith("1."));
    }
 
    /**
@@ -402,8 +391,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testUnknownFunction() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("Unknown", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
-      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSServiceCaller caller = new XINSServiceCaller(_target);
       try {
          XINSCallResult result = caller.call(request);
       } catch (StatusCodeHTTPCallException exception) {
