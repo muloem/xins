@@ -61,7 +61,8 @@ public class DateConverter extends Object {
     * @throws IllegalArgumentException
     *    if <code>n == <code>{@link Long#MIN_VALUE}<code> || n == </code>{@link Long#MAX_VALUE}<code> || timeZone == null</code>.
     */
-   public static String toDateString(TimeZone timeZone, long n) {
+   public static String toDateString(TimeZone timeZone, long n)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("timeZone", timeZone);
