@@ -661,14 +661,14 @@
 		<copy todir="build" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
-				<include name="src/bin/*"              />
+				<include name="bin/*"              />
 			</fileset>
 		</copy>
 		<fixcrlf srcdir="build" eol="unix" eof="remove">
 			<patternset refid="release.text.files" />
-			<include name="src/bin/xins" />
+			<include name="bin/xins" />
 		</fixcrlf>
-		<fixcrlf srcdir="build/src/bin" eol="dos" eof="asis">
+		<fixcrlf srcdir="build/bin" eol="dos" eof="asis">
 			<include name="xins.bat" />
 		</fixcrlf>
 
@@ -692,13 +692,13 @@
 			prefix="${name}-${version}"
 			mode="644">
 				<patternset refid="release.text.files"/>
-				<include name="src/bin/xins.bat" />
+				<include name="bin/xins.bat" />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build"
 			prefix="${name}-${version}"
 			mode="755">
-				<include name="src/bin/xins" />
+				<include name="bin/xins" />
 			</tarfileset>
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
