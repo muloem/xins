@@ -96,8 +96,8 @@ public final class AddReleaseTask extends Task {
       httpState.setCookiePolicy(CookiePolicy.COMPATIBILITY);
 
       _httpClient = new HttpClient();
-      _httpClient.setConnectionTimeout(9000); // 7 seconds
-      _httpClient.setTimeout(7000);           // 5 seconds
+      _httpClient.setConnectionTimeout(9000); // 9 seconds
+      _httpClient.setTimeout(7000);           // 7 seconds
       _httpClient.setState(httpState);
    }
 
