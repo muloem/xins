@@ -36,6 +36,8 @@
 	<translation entry="3316">No more targets but fail-over would be allowed.</translation>
 	<translation entry="3317">More targets available but fail-over is not allowed.</translation>
 	<translation entry="3318">More targets available and fail-over is allowed.</translation>
+	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
+
 	<translation entry="3400"><value-of-param name="folder_name" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
 	<translation entry="3401"><value-of-param name="folder_name" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
 	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="new_size" />, adjusted to 0.</translation>
