@@ -161,7 +161,7 @@ implements ResponseValidator {
          succeeded = true;
       } finally {
          // If an exception is thrown, then reset, just in case the subclass
-         // is malprogrammed and did not use fail(String).
+         // threw something other than an InvalidResponseException
          if (succeeded == false) {
             reset();
          }
@@ -186,7 +186,7 @@ implements ResponseValidator {
          succeeded = true;
       } finally {
          // If an exception is thrown, then reset, just in case the subclass
-         // is malprogrammed and did not use fail(String).
+         // threw something other than an InvalidResponseException
          if (succeeded == false) {
             reset();
          }
