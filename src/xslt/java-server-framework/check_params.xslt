@@ -313,14 +313,22 @@
 		<!-- ************************************************************* -->
 		<xsl:choose>
 			<xsl:when test="local-name() = 'input'">
+				<xsl:text>
+      if (context.getDataElement() != null) {</xsl:text>
 				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
 					<xsl:with-param name="parentelement" select="'context.getDataElement()'" />
 				</xsl:apply-templates>
+				<xsl:text>
+      }</xsl:text>
 			</xsl:when>
 			<xsl:when test="local-name() = 'output'">
+				<xsl:text>
+      if (getDataElement() != null) {</xsl:text>
 				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
 					<xsl:with-param name="parentelement" select="'getDataElement()'" />
 				</xsl:apply-templates>
+				<xsl:text>
+      }</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:apply-templates select="contains/contained" mode="checkParams">

@@ -36,6 +36,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - The xsl:variable and xsl:with-param element now uses the select 
     attribute whenever possible.
   - Replaced some string variable with boolean variables.
+  - Fixed bug #1176265: NPE in generated <Function>.java when no elements
+    were passed to the data section.
 
 * Generation of client-side Java code:
   - The xsl:variable and xsl:with-param element now uses the select 
