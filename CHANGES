@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - All call methods now return a function result object, never void. This is
     backwards compatible with XINS 1.0.
 
+* Generated Javadoc now lists the groups of packages in the following order:
+  Logdoc, Common, Client and finally Server. This should now generally be
+  applied as the preferred order.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
