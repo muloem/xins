@@ -1158,6 +1158,7 @@ implements DefaultResultCodes {
       // Initialization settings
       Enumeration names = _initSettings.propertyNames();
       context.startTag("initialization");
+      context.attribute("startup", String.valueOf(_startupTimestamp));
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = _initSettings.getProperty(key);
