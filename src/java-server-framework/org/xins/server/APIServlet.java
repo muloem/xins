@@ -640,7 +640,7 @@ extends HttpServlet {
 
             // Warn if the build version of the API is more recent than the running version
             String buildVersion = config.getInitParameter(API_BUILD_VERSION_PROPERTY);
-            if (Library.isProductionRelease(buildVersion) && Library.isMoreRecent(buildVersion)) {
+            if (buildVersion == null || (Library.isProductionRelease(buildVersion) && Library.isMoreRecent(buildVersion))) {
                Log.log_3229(buildVersion, serverVersion);
             }
          }

@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
 
+* XINS/Java Server Framework:
+  - If no build version is provided, just set a warning in the log instead of
+    throwing a exception.
+
 * Generation of server-side Java code:
   - Import type classes for the generated implementation class.
 

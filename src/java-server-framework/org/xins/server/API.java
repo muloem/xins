@@ -287,7 +287,7 @@ implements DefaultResultCodes {
       Log.log_3212(_buildHost, _buildTime, _buildVersion);
 
       // Check if build version identifies a production release of XINS
-      if (! Library.isProductionRelease(_buildVersion)) {
+      if (_buildVersion == null || ! Library.isProductionRelease(_buildVersion)) {
          Log.log_3228(_buildVersion);
       }
 
