@@ -88,7 +88,16 @@
 					</table>
 				</xsl:if>
 
+				<xsl:if test="enum and pattern">
+					<xsl:message terminate="yes">
+						<xsl:text>Type </xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text> defines both an enum and a pattern.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+
 				<xsl:apply-templates select="enum" />
+				<xsl:apply-templates select="pattern" />
 
 				<xsl:call-template name="footer" />
 			</body>
@@ -109,6 +118,16 @@
 		<li>
 			<xsl:value-of select="@value" />
 		</li>
+	</xsl:template>
+
+	<xsl:template match="pattern">
+			<p />
+			<xsl:text>This is a pattern type. Allowed values must match the following pattern:</xsl:text>
+			<blockquote>
+				<code>
+					<xsl:value-of select="text()" />
+				</code>
+			</blockquote>
 	</xsl:template>
 
 	<xsl:template name="extends_tree">
