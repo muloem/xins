@@ -520,9 +520,12 @@ $Id$
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
 					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
-						<param name="project_home" expression="{$project_home}" />
-						<param name="specsdir"     expression="{$specsdir}"     />
-						<param name="package"      expression="{$clientPackage}"      />
+						<param name="project_home" expression="{$project_home}"  />
+						<param name="project_file" expression="{$project_file}"  />
+						<param name="specsdir"     expression="{$specsdir}"      />
+						<param name="package"      expression="{$clientPackage}" />
+						<param name="api"          expression="{$api}"           />
+						<param name="api_file"     expression="{$api_file}"      />
 					</style>
 					<style
 					basedir="{$specsdir}/{$api}"
@@ -531,6 +534,7 @@ $Id$
 					extension="Result.java"
 					includes="{$functionResultIncludes}">
 						<param name="project_home" expression="{$project_home}"  />
+						<param name="project_file" expression="{$project_file}"  />
 						<param name="specsdir"     expression="{$specsdir}"      />
 						<param name="package"      expression="{$clientPackage}" />
 						<param name="api"          expression="{$api}"           />
