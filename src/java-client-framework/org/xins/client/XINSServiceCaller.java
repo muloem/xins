@@ -190,32 +190,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Calls the specified session-less API function, with no parameters.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
-    * @throws CallIOException
-    *    if the API could not be contacted due to an I/O error.
-    *
-    * @throws InvalidCallResultException
-    *    if the calling of the function failed or if the result from the
-    *    function was invalid.
-    */
-   public XINSServiceCaller.Result call(String functionName)
-   throws IllegalArgumentException,
-          CallIOException,
-          InvalidCallResultException {
-      return call(null, functionName, null);
-   }
-
-   /**
     * Calls the specified session-less API function with the specified
     * parameters.
     *
@@ -233,19 +207,14 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws CallIOException
-    *    if the API could not be contacted due to an I/O error.
-    *
-    * @throws InvalidCallResultException
-    *    if the calling of the function failed or if the result from the
-    *    function was invalid.
+    * @throws CallFailedException
+    *    if the call failed.
     */
-   public XINSServiceCaller.Result call(String functionName,
-                                        Map    parameters)
+   public Result call(String functionName,
+                      Map    parameters)
    throws IllegalArgumentException,
-          CallIOException,
-          InvalidCallResultException {
-      return call(null, functionName, parameters);
+          CallFailedException {
+      return call(new CallRequest(null, functionName, parameters));
    }
 
    /**
@@ -269,20 +238,15 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws CallIOException
-    *    if the API could not be contacted due to an I/O error.
-    *
-    * @throws InvalidCallResultException
-    *    if the calling of the function failed or if the result from the
-    *    function was invalid.
+    * @throws CallFailedException
+    *    if the call failed.
     */
-   public XINSServiceCaller.Result call(String sessionID,
-                                        String functionName,
-                                        Map    parameters)
+   public Result call(String sessionID,
+                      String functionName,
+                      Map    parameters)
    throws IllegalArgumentException,
-          CallIOException,
-          InvalidCallResultException {
-      return null; // TODO
+          CallFailedException {
+      return call(new CallRequest(sessionID, functionName, parameters));
    }
 
    /**
@@ -297,25 +261,21 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws CallIOException
-    *    if the API could not be contacted due to an I/O error.
-    *
-    * @throws InvalidCallResultException
-    *    if the calling of the function failed or if the result from the
-    *    function was invalid.
+    * @throws CallFailedException
+    *    if the call failed.
     */
-   public XINSServiceCaller.Result call(CallRequest request)
+   public Result call(CallRequest request)
    throws IllegalArgumentException,
-          CallIOException,
-          InvalidCallResultException {
+          CallFailedException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
-      // Forward the request to the primary call() method
-      return call(request.getSessionID(),
-                  request.getFunctionName(),
-                  request.getParameters());
+      // Attempt to perform the call
+      CallResult callResult = doCall(request);
+
+      // On success, return the result
+      return (Result) callResult.getResult();
    }
 
 
