@@ -110,17 +110,7 @@
 								<xsl:value-of select="@category" />
 							</td>
 							<td>
-								<xsl:choose>
-									<xsl:when test="param">
-										<xsl:for-each select="param">
-											<xsl:value-of select="@name" />
-											<xsl:text> </xsl:text>
-										</xsl:for-each>
-									</xsl:when>
-									<xsl:otherwise>
-										<em>none</em>
-									</xsl:otherwise>
-								</xsl:choose>
+								<xsl:value-of select="count(param)" />
 							</td>
 						</tr>
 					</xsl:for-each>
