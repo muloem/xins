@@ -38,6 +38,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
   - The build.xml is to compile and run the examples, an appart script file
     nbbuild.xml has been created for using XINS with NetBeans 4.0.
 
+* XINS/Java Server Framework:
+  - Fixed SF.net bug #1099473: Pattern for incoming params breaks
+    compatibility.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
