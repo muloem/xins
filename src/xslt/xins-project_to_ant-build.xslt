@@ -1101,7 +1101,7 @@
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
-						<xsl:text>capi-</xsl:text>
+						<xsl:text>jar-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				</xsl:attribute>
