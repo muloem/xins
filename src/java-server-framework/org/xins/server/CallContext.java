@@ -99,7 +99,7 @@ implements Responder {
     *    the timestamp indicating when the call was started, as a number of
     *    milliseconds since midnight January 1, 1970 UTC.
     */
-   public long getStart() {
+   long getStart() {
       return _start;
    }
 
