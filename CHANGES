@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     type specify certain aspects of how a call is executed. For example, for
     an HTTP service caller, a <code>CallConfig</code> object could specify
     what HTTP method (GET, POST, etc.) to use.
+  - Changed ServiceCaller to work with CallConfig objects. Some members have
+    been deprecated in favour of newer ones that work with CallConfig objects.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1071731: UnacceptableResultXINSCallException constructor
