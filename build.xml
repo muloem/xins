@@ -372,6 +372,9 @@
 	<target name="do-tests" depends="classes-tests" description="Runs the unit tests">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
+		<available property="xins.examples" file="${basedir}/../xins-examples" />
+		<fail message="Please, check out the xins-examples in the ${basedir} directory." unless="xins.examples" />
+		
 		<junit printsummary="true" failureproperty="tests.failed" showoutput="true">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />

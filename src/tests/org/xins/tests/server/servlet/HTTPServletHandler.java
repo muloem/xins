@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import javax.servlet.ServletException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.xins.server.APIServlet;
@@ -54,6 +55,7 @@ public class HTTPServletHandler {
 
    private APIServlet _apiServlet;
    private ServerSocket _serverSocket;
+   private SocketAcceptor _acceptor;
    private boolean _running;
    
    //-------------------------------------------------------------------------
@@ -80,8 +82,8 @@ public class HTTPServletHandler {
       _serverSocket = new ServerSocket(8080, 5);
       _running = true;
       
-      Thread acceptor = new SocketAcceptor();
-      acceptor.start();
+      _acceptor = new SocketAcceptor();
+      _acceptor.start();
    }
 
    /**
@@ -174,6 +176,8 @@ public class HTTPServletHandler {
                //Service the connection
                serviceClient(clientSocket);
             }
+         } catch (SocketException ie) {
+            // fall through
          } catch (IOException ioe) {
             ioe.printStackTrace();
          }
