@@ -301,8 +301,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    a {@link XINSCallResult} instance, never <code>null</code>.
     *
     * @throws ClassCastException
-    *    if <code>! (request instanceof {@link XINSCallRequest})
-    *          || ! (result  instanceof {@link XINSCallResult.Data})</code>.
+    *    if either <code>request</code> or <code>result</code> is not of the
+    *    correct class.
     */
    protected CallResult createCallResult(CallRequest       request,
                                          TargetDescriptor  succeededTarget,
