@@ -112,6 +112,12 @@ implements Responder, Log {
    private String _functionName;
 
    /**
+    * The function currently being called. This field is initialized by
+    * {@link #reset(ServletRequest)} and can be set to <code>null</code>.
+    */
+   private Function _function;
+
+   /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -152,6 +158,7 @@ implements Responder, Log {
       _code    = null;
       _callID  = -1;
       _functionName = null;
+      _function     = null;
    }
 
    /**
@@ -189,6 +196,9 @@ implements Responder, Log {
          functionName = _request.getParameter("function");
       }
       _functionName = functionName;
+
+      // Determine the function object
+      _function = (functionName == null) ? null : _api.getFunction(functionName);
    }
 
    /**
@@ -254,11 +264,23 @@ implements Responder, Log {
     * Returns the name of the function called.
     *
     * @return
-    *    the function called, or <code>null</code> if there is no function
-    *    specificied.
+    *    the name of the function called, or <code>null</code> if there is no
+    *    function specificied.
     */
    public String getFunctionName() {
       return _functionName;
+   }
+
+   /**
+    * Returns the function that is being called.
+    *
+    * @return
+    *    the function called, or <code>null</code> if there is no function
+    *    specificied or if there was no function in the API with the specified
+    *    name (see {@link #getFunctionName()}).
+    */
+   public Function getFunction() {
+      return _function;
    }
 
    /**
