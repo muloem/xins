@@ -132,6 +132,10 @@
 			<description>Unexpected exception while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
+		<entry id="2019" level="NOTICE" exception="false">
+			<description>Unknown host error while calling HTTP service.</description>
+			<param name="url" type="text"  nullable="false" />
+		</entry>
 	</group>
 
 	<group id="io" name="General I/O">
