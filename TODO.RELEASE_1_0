@@ -76,8 +76,8 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename InvalidCallResultException to InvalidResultXINSCallException
 [x] Make InvalidResultXINSCallException extend XINSCallException
 [ ] Correctly determine duration in call(TargetDescriptor,XINSCallRequest)
-[ ] Describe XINSCallRequest properly in describe() (from _asString).
-[ ] Lazily initialize XINSCallRequest description, if appropriate
+[x] Describe XINSCallRequest properly in describe() (from _asString).
+[x] Lazily initialize XINSCallRequest description, if appropriate
 [x] Check the parameters in XINSCallRequest constructor.
 [ ] Add example in XINSServiceCaller class comments
 [ ] Log all events properly
