@@ -6,6 +6,10 @@ CHANGES INTRODUCED IN XINS 0.153:
   - Renamed class AccessRuleParser to AccessRuleList.
   - Extended AccessRuleList and AccessRule classes.
 
+* XINS/Java Common Library:
+  - Changed the level for the log messages in class FileWatcher from DEBUG to
+    INFO, since these messages may be of interest to non-developers.
+
 * Generated test forms:
   - Added links for disabling and enabling a specific function on a specific
     environment.
