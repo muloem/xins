@@ -186,10 +186,13 @@ public class HexConverter extends Object {
          throw new IllegalArgumentException("buffer == null");
       }
 
+      // Store the starting position where the buffer should write the value.
+      int initPos = buffer.getLength();
+
       // Append 8 zero characters to the buffer
       buffer.append(EIGHT_ZEROES);
 
-      int pos = INT_LENGTH - 1;
+      int pos = initPos + INT_LENGTH - 1;
 
       // Convert the int to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
@@ -220,10 +223,13 @@ public class HexConverter extends Object {
          throw new IllegalArgumentException("buffer == null");
       }
 
+      // Store the starting position where the buffer should write the value.
+      int initPos = buffer.getLength();
+
       // Append 16 zero characters to the buffer
       buffer.append(SIXTEEN_ZEROES);
 
-      int pos = LONG_LENGTH - 1;
+      int pos = initPos + LONG_LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {

@@ -51,7 +51,11 @@ public final class Int64 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            return Long.parseLong(string);
+            long number = Long.parseLong(string);
+            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
+               throw new TypeValueException(SINGLETON, string);
+            }
+            return number;
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -80,7 +84,12 @@ public final class Int64 extends Type {
       }
 
       try {
-         return Long.valueOf(string);
+         Long number = Long.valueOf(string);
+         long numberAsLong = number.longValue();
+         if (numberAsLong < SINGLETON._minimum || numberAsLong > SINGLETON._maximum) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+         return number;
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
@@ -128,7 +137,27 @@ public final class Int64 extends Type {
     * used.
     */
    private Int64() {
-      super("int64", java.lang.Long.class);
+      this("int64", Long.MIN_VALUE, Long.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int34</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   private Int64(String name, long minimum, long maximum) {
+      super(name, java.lang.Long.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
    }
 
 
@@ -136,13 +165,27 @@ public final class Int64 extends Type {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The minimum value that this Int34 can have.
+    */
+   private final long _minimum;
+
+   /**
+    * The maximum value that this Int34 can have.
+    */
+   private final long _maximum;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
       try {
-         Long.parseLong(value);
+         long number = Long.parseLong(value);
+         if (number < _minimum || number > _maximum) {
+            return false;
+         }
          return true;
       } catch (NumberFormatException nfe) {
          return false;

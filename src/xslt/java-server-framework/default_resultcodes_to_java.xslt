@@ -40,7 +40,14 @@ public interface DefaultResultCodes {]]></xsl:text>
 			<xsl:text><![CDATA[
    /**
     * Constant for the <em>]]></xsl:text>
-			<xsl:value-of select="@value" />
+			<xsl:choose>
+				<xsl:when test="@value">
+					<xsl:value-of select="@value" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@name" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text><![CDATA[</em> result code.
     * The description for this result code is:
     *
@@ -60,7 +67,14 @@ public interface DefaultResultCodes {]]></xsl:text>
 			<xsl:text> = new ResultCode("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>", "</xsl:text>
-			<xsl:value-of select="@value" />
+			<xsl:choose>
+				<xsl:when test="@value">
+					<xsl:value-of select="@value" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@name" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>");
 </xsl:text>
 		</xsl:for-each>

@@ -74,7 +74,16 @@ public class APIImpl extends API {
 		<xsl:for-each select="document($api_file)/api/resultcode">
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.rcd')" />
-			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
+			<xsl:variable name="value">
+				<xsl:choose>
+					<xsl:when test="document($file)/resultcode/@value">
+						<xsl:value-of select="document($file)/resultcode/@value" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="document($file)/resultcode/@name" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
 					<xsl:with-param name="text">

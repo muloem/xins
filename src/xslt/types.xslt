@@ -309,7 +309,27 @@
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:text>_text</xsl:text>
+						<!-- no extends attribute, use the defined element -->
+						<xsl:choose>
+							<xsl:when test="document($typefile)/type/properties">
+								<xsl:text>_properties</xsl:text>
+							</xsl:when>
+							<xsl:when test="document($typefile)/type/int8">
+								<xsl:text>_int8</xsl:text>
+							</xsl:when>
+							<xsl:when test="document($typefile)/type/int16">
+								<xsl:text>_int16</xsl:text>
+							</xsl:when>
+							<xsl:when test="document($typefile)/type/int32">
+								<xsl:text>_int32</xsl:text>
+							</xsl:when>
+							<xsl:when test="document($typefile)/type/int64">
+								<xsl:text>_int64</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>_text</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>

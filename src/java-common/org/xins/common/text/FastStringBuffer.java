@@ -179,11 +179,15 @@ public class FastStringBuffer extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("cbuf", cbuf);
 
+      int newLength = _length + cbuf.length;
+
       // Ensure there is enough capacity
-      ensureCapacity(_length + cbuf.length);
+      ensureCapacity(newLength);
 
       // Copy the data into the internal buffer
       System.arraycopy(cbuf, 0, _buffer, _length, cbuf.length);
+
+      _length = newLength;
    }
 
    /**
@@ -223,11 +227,15 @@ public class FastStringBuffer extends Object {
          throw new IllegalArgumentException("off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
       }
 
+      int newLength = _length + cbuf.length;
+
       // Ensure there is enough capacity
-      ensureCapacity(_length + len);
+      ensureCapacity(newLength);
 
       // Copy the data into the internal buffer
       System.arraycopy(cbuf, off, _buffer, _length, len);
+
+      _length = newLength;
    }
 
    /**

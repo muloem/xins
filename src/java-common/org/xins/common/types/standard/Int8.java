@@ -51,7 +51,11 @@ public final class Int8 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            return Byte.parseByte(string);
+            byte number = Byte.parseByte(string);
+            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
+               throw new TypeValueException(SINGLETON, string);
+            }
+            return number;
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -80,7 +84,12 @@ public final class Int8 extends Type {
       }
 
       try {
-         return Byte.valueOf(string);
+         Byte number = Byte.valueOf(string);
+         byte numberAsByte = number.byteValue();
+         if (numberAsByte < SINGLETON._minimum || numberAsByte > SINGLETON._maximum) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+         return number;
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
@@ -97,7 +106,27 @@ public final class Int8 extends Type {
     * used.
     */
    private Int8() {
-      super("int8", java.lang.Byte.class);
+      this("int8", Byte.MIN_VALUE, Byte.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int8</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   private Int8(String name, byte minimum, byte maximum) {
+      super(name, java.lang.Byte.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
    }
 
 
@@ -105,13 +134,27 @@ public final class Int8 extends Type {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The minimum value that this Int8 can have.
+    */
+   private final byte _minimum;
+
+   /**
+    * The maximum value that this Int8 can have.
+    */
+   private final byte _maximum;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
       try {
-         Byte.parseByte(value);
+         byte number = Byte.parseByte(value);
+         if (number < _minimum || number > _maximum) {
+            return false;
+         }
          return true;
       } catch (NumberFormatException nfe) {
          return false;

@@ -37,6 +37,10 @@
 			<xsl:when test="type/enum">enum</xsl:when>
 			<xsl:when test="type/pattern">pattern</xsl:when>
 			<xsl:when test="type/properties">properties</xsl:when>
+			<xsl:when test="type/int8">int8</xsl:when>
+			<xsl:when test="type/int16">int16</xsl:when>
+			<xsl:when test="type/int32">int32</xsl:when>
+			<xsl:when test="type/int64">int64</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unable to determine kind of type. Seems to be neither enum nor pattern type.</xsl:text>
@@ -49,6 +53,10 @@
 			<xsl:when test="$kind = 'enum'">org.xins.common.types.EnumType</xsl:when>
 			<xsl:when test="$kind = 'pattern'">org.xins.common.types.PatternType</xsl:when>
 			<xsl:when test="$kind = 'properties'">org.xins.common.types.standard.Properties</xsl:when>
+			<xsl:when test="$kind = 'int8'">org.xins.common.types.standard.Int8</xsl:when>
+			<xsl:when test="$kind = 'int16'">org.xins.common.types.standard.Int16</xsl:when>
+			<xsl:when test="$kind = 'int32'">org.xins.common.types.standard.Int32</xsl:when>
+			<xsl:when test="$kind = 'int64'">org.xins.common.types.standard.Int64</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 
@@ -165,6 +173,84 @@ public final class ]]></xsl:text>
 					<xsl:with-param name="type"         select="properties/@valueType" />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON</xsl:text>
+			</xsl:when>
+			<xsl:when test="$kind = 'int8'">
+				<xsl:choose>
+					<xsl:when test="int8/@min">
+						<xsl:value-of select="int8/@min" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Byte.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="int8/@max">
+						<xsl:value-of select="int8/@max" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Byte.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'int16'">
+				<xsl:choose>
+					<xsl:when test="int16/@min">
+						<xsl:value-of select="int16/@min" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Short.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="int16/@max">
+						<xsl:value-of select="int16/@max" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Short.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'int32'">
+				<xsl:choose>
+					<xsl:when test="int32/@min">
+						<xsl:value-of select="int32/@min" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Integer.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="int32/@max">
+						<xsl:value-of select="int32/@max" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Integer.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'int64'">
+				<xsl:choose>
+					<xsl:when test="int64/@min">
+						<xsl:value-of select="int64/@min" />
+						<xsl:text>l</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Long.MIN_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="int64/@max">
+						<xsl:value-of select="int64/@max" />
+						<xsl:text>l</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Long.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text>);

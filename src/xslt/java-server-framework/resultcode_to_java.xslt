@@ -100,7 +100,14 @@ final class </xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
       super("</xsl:text>
-		<xsl:value-of select="@value" />
+		<xsl:choose>
+			<xsl:when test="@value">
+				<xsl:value-of select="@value" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@name" />
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>");
    }</xsl:text>
 	</xsl:template>

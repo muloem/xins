@@ -8,6 +8,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Tests for class <code>HexConverter</code>.
@@ -71,9 +72,6 @@ public class HexConverterTests extends TestCase {
       // empty
    }
 
-   public void testToHexString() throws Throwable {
-   }
-
    public void testParseHexString_String() throws Throwable {
 
       // Pass arguments that should trigger failure
@@ -132,5 +130,18 @@ public class HexConverterTests extends TestCase {
       } else {
          assertEquals(expected, HexConverter.parseHexLong(arg));
       }
+   }
+
+   public void testToHexString() throws Throwable {
+      doTestToHexString("", 1L, "0000000000000001");
+      doTestToHexString("", 0x1234567890123456L, "1234567890123456");
+      doTestToHexString("Testing ", 1L, "Testing 0000000000000001");
+      doTestToHexString("Testing ", 0x1234567890123456L, "Testing 1234567890123456");
+   }
+
+   private void doTestToHexString(String arg, long value, String expectedResult) {
+      FastStringBuffer buffer = new FastStringBuffer(arg);
+      HexConverter.toHexString(buffer, value);
+      assertEquals(expectedResult, buffer.toString());
    }
 }

@@ -74,41 +74,13 @@
 					</table>
 				</xsl:if>
 
-				<xsl:if test="not(enum or pattern or properties)">
-					<xsl:message terminate="yes">
-						<xsl:text>Type </xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text> defines neither an enum nor a pattern nor properties.</xsl:text>
-					</xsl:message>
-				</xsl:if>
-
-				<xsl:if test="enum and pattern">
-					<xsl:message terminate="yes">
-						<xsl:text>Type </xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text> defines both an enum and a pattern.</xsl:text>
-					</xsl:message>
-				</xsl:if>
-
-				<xsl:if test="enum and properties">
-					<xsl:message terminate="yes">
-						<xsl:text>Type </xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text> defines both an enum and properties.</xsl:text>
-					</xsl:message>
-				</xsl:if>
-
-				<xsl:if test="pattern and properties">
-					<xsl:message terminate="yes">
-						<xsl:text>Type </xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text> defines both an pattern and properties.</xsl:text>
-					</xsl:message>
-				</xsl:if>
-
 				<xsl:apply-templates select="enum"       />
 				<xsl:apply-templates select="pattern"    />
 				<xsl:apply-templates select="properties" />
+				<xsl:apply-templates select="int8"       />
+				<xsl:apply-templates select="int16"      />
+				<xsl:apply-templates select="int32"      />
+				<xsl:apply-templates select="int64"      />
 
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
@@ -187,5 +159,22 @@
 			<xsl:with-param name="type"     select="@valueType" />
 		</xsl:call-template>
 		<xsl:text> type.</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="int8 | int16 | int32 | int64">
+		<p />
+		This is a <em>
+		<xsl:value-of select="name()" />
+		type</em>.<br/>
+		<xsl:if test="@min">
+			<xsl:text>The minimum value is</xsl:text>
+			<xsl:value-of select="@min" />
+			<xsl:text>.</xsl:text><br />
+		</xsl:if>
+		<xsl:if test="@max">
+			<xsl:text>The maximum value is</xsl:text>
+			<xsl:value-of select="@max" />
+			<xsl:text>.</xsl:text><br />
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

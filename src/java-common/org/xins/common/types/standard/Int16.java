@@ -51,7 +51,11 @@ public final class Int16 extends Type {
          throw new IllegalArgumentException("string == null");
       } else {
          try {
-            return Short.parseShort(string);
+            short number = Short.parseShort(string);
+            if (number < SINGLETON._minimum || number > SINGLETON._maximum) {
+               throw new TypeValueException(SINGLETON, string);
+            }
+            return number;
          } catch (NumberFormatException nfe) {
             throw new TypeValueException(SINGLETON, string);
          }
@@ -80,7 +84,12 @@ public final class Int16 extends Type {
       }
 
       try {
-         return Short.valueOf(string);
+         Short number = Short.valueOf(string);
+         short numberAsShort = number.shortValue();
+         if (numberAsShort < SINGLETON._minimum || numberAsShort > SINGLETON._maximum) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+         return number;
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(SINGLETON, string);
       }
@@ -128,7 +137,27 @@ public final class Int16 extends Type {
     * used.
     */
    private Int16() {
-      super("int16", java.lang.Short.class);
+      this("int16", Short.MIN_VALUE, Short.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int16</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   private Int16(String name, short minimum, short maximum) {
+      super(name, java.lang.Short.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
    }
 
 
@@ -136,13 +165,26 @@ public final class Int16 extends Type {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The minimum value that this Int16 can have.
+    */
+   private final short _minimum;
+
+   /**
+    * The maximum value that this Int16 can have.
+    */
+   private final short _maximum;
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
       try {
-         Short.parseShort(value);
+         short number = Short.parseShort(value);
+         if (number < _minimum || number > _maximum) {
+            return false;
+         }
          return true;
       } catch (NumberFormatException nfe) {
          return false;
