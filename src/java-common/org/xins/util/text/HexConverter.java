@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util;
+package org.xins.util.text;
 
 import org.xins.util.text.FastStringBuffer;
 
