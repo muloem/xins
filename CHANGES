@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 0.157:
     thrown.
   - Reviewed and changed log messages quite drastically.
   - Using logdoc-approach throughout the complete APIServlet class.
+  - Removed support for default functions (introduced in XINS 0.78).
 
 * Logdoc:
   - Added a number of log message entries.
