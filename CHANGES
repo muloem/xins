@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     appropriate.
   - Extended tests in ServiceCaller class to make sure the implementation is
     implementing the correct methods.
+  - Fixed SF.net bug #1079069. The first line of the class description was:
+    "Abstractgion of a manageanble object". Fixed those 2 typos.
+
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
