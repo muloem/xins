@@ -301,11 +301,12 @@ implements DefaultReturnCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
+         Function.Statistics stats = function.getStatistics();
 
-         long successfulCalls       = function._successfulCalls;
-         long unsuccessfulCalls     = function._unsuccessfulCalls;
-         long successfulDuration    = function._successfulDuration;
-         long unsuccessfulDuration  = function._unsuccessfulDuration;
+         long successfulCalls       = stats.getSuccessfulCalls();
+         long unsuccessfulCalls     = stats.getUnsuccessfulCalls();
+         long successfulDuration    = stats.getSuccessfulDuration();
+         long unsuccessfulDuration  = stats.getUnsuccessfulDuration();
 
          String successfulAverage;
          String successfulMin;
@@ -320,16 +321,16 @@ implements DefaultReturnCodes {
             lastSuccessfulDuration = "NA";
          } else if (successfulDuration == 0) {
             successfulAverage = "0";
-            successfulMin     = String.valueOf(function._successfulMin);
-            successfulMax     = String.valueOf(function._successfulMax);
-            lastSuccessfulStart    = String.valueOf(function._lastSuccessfulStart);
-            lastSuccessfulDuration = String.valueOf(function._lastSuccessfulDuration);
+            successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
+            lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          } else {
             successfulAverage = String.valueOf(successfulDuration / successfulCalls);
-            successfulMin     = String.valueOf(function._successfulMin);
-            successfulMax     = String.valueOf(function._successfulMax);
-            lastSuccessfulStart    = String.valueOf(function._lastSuccessfulStart);
-            lastSuccessfulDuration = String.valueOf(function._lastSuccessfulDuration);
+            successfulMin     = String.valueOf(stats.getSuccessfulMin());
+            successfulMax     = String.valueOf(stats.getSuccessfulMax());
+            lastSuccessfulStart    = String.valueOf(stats.getLastSuccessfulStart());
+            lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
          }
 
          String unsuccessfulAverage;
@@ -345,16 +346,16 @@ implements DefaultReturnCodes {
             lastUnsuccessfulDuration = "NA";
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage = "0";
-            unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
-            unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
-            lastUnsuccessfulStart    = String.valueOf(function._lastUnsuccessfulStart);
-            lastUnsuccessfulDuration = String.valueOf(function._lastUnsuccessfulDuration);
+            unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
+            lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          } else {
             unsuccessfulAverage = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
-            unsuccessfulMin     = String.valueOf(function._unsuccessfulMin);
-            unsuccessfulMax     = String.valueOf(function._unsuccessfulMax);
-            lastUnsuccessfulStart    = String.valueOf(function._lastUnsuccessfulStart);
-            lastUnsuccessfulDuration = String.valueOf(function._lastUnsuccessfulDuration);
+            unsuccessfulMin     = String.valueOf(stats.getUnsuccessfulMin());
+            unsuccessfulMax     = String.valueOf(stats.getUnsuccessfulMax());
+            lastUnsuccessfulStart    = String.valueOf(stats.getLastUnsuccessfulStart());
+            lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          }
 
          context.startTag("function");
