@@ -127,7 +127,7 @@ extends org.xins.client.AbstractCAPICallRequest {
     *    non-<code>null</code> description if this request is considered
     *    unacceptable.
     */
-   public java.lang.String validateImpl() {]]></xsl:text>
+   protected java.lang.String validateImpl() {]]></xsl:text>
 		<xsl:for-each select="input/param[@required='true']">
 			<xsl:text>
       if (_</xsl:text>
@@ -204,6 +204,16 @@ extends org.xins.client.AbstractCAPICallRequest {
 					<xsl:value-of select="$javatype" />
 				</xsl:otherwise>
 			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Determine the Java class that represents the type -->
+		<xsl:variable name="typeclass">
+			<xsl:call-template name="javatypeclass_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
 		</xsl:variable>
 
 		<!-- Determine the names of the methods -->
@@ -287,10 +297,12 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>);
       super.parameter("</xsl:text>
 				<xsl:value-of select="@name" />
-				<!-- FIXME: Do not use toString() !!!!  -->
-				<xsl:text>", _</xsl:text>
+				<xsl:text>",
+      </xsl:text>
+				<xsl:value-of select="$typeclass" />
+				<xsl:text>.SINGLETON, _</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>.toString());
+				<xsl:text>);
    }</xsl:text>
 			</xsl:when>
 
@@ -322,10 +334,12 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>;
       super.parameter("</xsl:text>
 				<xsl:value-of select="@name" />
-				<!-- FIXME: Do not use String.valueOf() !!!!  -->
-				<xsl:text>", String.valueOf(</xsl:text>
+				<xsl:text>",
+      </xsl:text>
+				<xsl:value-of select="$typeclass" />
+				<xsl:text>.SINGLETON, _</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>));
+				<xsl:text>);
    }</xsl:text>
 
 			</xsl:otherwise>
