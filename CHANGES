@@ -12,7 +12,7 @@ CHANGES INTRODUCED IN XINS 0.192:
     exactly 16 hex digits, which represent a random 64-bit number. It is
     currently not possible to change the algorithm and have a different
     identifier generated.
-  - Slightly changed the fallback default log pattern, from:
+  - Changed the fallback default log pattern, from:
        %-4c{1} %-6p %m%n
     to:
        %16x %6c{1} %-6p %m%n
@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 0.192:
     'result' element would always be set to 'false', even on successful
     execution of the function.
     This bug was introduced in XINS 0.191.
+  - No longer warning for servlet containers that implement version 2.2 of the
+    Java Servlet specification instead of 2.3. Both are supported.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
