@@ -50,6 +50,10 @@ implements Responder, Log {
     *
     * @return
     *    the prefix for log messages, never <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.158. Should no longer be useful if logdoc is
+    *    used for logging.
     */
    static final String getLogPrefix(String functionName, int callID) {
       FastStringBuffer buffer = new FastStringBuffer(50);
