@@ -210,7 +210,7 @@ implements DefaultResultCodes {
       // Determine the function name
       String functionName = context.getFunction();
       if (functionName == null || functionName.length() == 0) {
-         context.startResponse(false, MISSING_FUNCTION_NAME);
+         context.startResponse(MISSING_FUNCTION_NAME);
          context.endResponse();
          out.print(stringWriter.toString());
          return;
@@ -227,7 +227,7 @@ implements DefaultResultCodes {
          } else if ("_GetSettings".equals(functionName)) {
             doGetSettings(context);
          } else {
-            context.startResponse(false, NO_SUCH_FUNCTION);
+            context.startResponse(NO_SUCH_FUNCTION);
          }
          context.endResponse();
          out.print(stringWriter.toString());
@@ -239,7 +239,7 @@ implements DefaultResultCodes {
 
       // Detect case where function is not recognized
       if (f == null) {
-         context.startResponse(false, NO_SUCH_FUNCTION);
+         context.startResponse(NO_SUCH_FUNCTION);
          context.endResponse();
          out.print(stringWriter.toString());
          return;
