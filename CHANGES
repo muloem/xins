@@ -2,16 +2,16 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.129:
 
 * XINS/Java Server Framework:
-  - Reading the configuration file reload interval from the configuration file
-    self, at servlet initialization.
   - Starting the configuration file watch thread only after the API has been
-    initialized.
+    initialized, during servlet initialization.
+  - Reading the configuration file check interval from the configuration file
+    self, at servlet initialization and at reinitialization.
 
 * XINS/Java Common Library:
   - Changed FileWatcher class to add end() method that stops the thread.
 
 * Building XINS:
-  - Simplified target and directory names by removing '-framework' suffixes.
+  - Simplified target names by removing '-framework' suffixes.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.128:
