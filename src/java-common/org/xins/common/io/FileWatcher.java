@@ -41,7 +41,8 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>FileWatcher</code> for the specified file.
+    * Creates a new <code>FileWatcher</code> for the specified file, with the
+    * specified interval.
     *
     * @param file
     *    the name of the file to watch, cannot be <code>null</code>.
@@ -69,14 +70,57 @@ public final class FileWatcher extends Thread {
       _interval      = interval;
       _listener      = listener;
       _listenerClass = listener.getClass().getName();
-      _stopped       = false;
+      _shouldStop    = false;
 
       // Configure thread as daemon
       setDaemon(true);
 
-      // Immediately check if the file exists
+      // Immediately check if the file can be read from
       try {
-         if (_file.exists()) {
+         if (_file.canRead()) {
+            _lastModified = _file.lastModified();
+         }
+      } catch (SecurityException exception) {
+         // ignore
+      }
+   }
+
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified file.
+    *
+    * <p>The interval must be set before the thread can be started.
+    *
+    * @param file
+    *    the name of the file to watch, cannot be <code>null</code>.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file == null || listener == null</code>
+    *
+    * @since XINS 1.2.0
+    */
+   public FileWatcher(String file, Listener listener)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("file", file, "listener", listener);
+
+      // Store the information
+      _file          = new File(file);
+      _interval      = 0;
+      _listener      = listener;
+      _listenerClass = listener.getClass().getName();
+      _shouldStop    = false;
+
+      // Configure thread as daemon
+      setDaemon(true);
+
+      // Immediately check if the file can be read from
+      try {
+         if (_file.canRead()) {
             _lastModified = _file.lastModified();
          }
       } catch (SecurityException exception) {
@@ -95,7 +139,8 @@ public final class FileWatcher extends Thread {
    private final File _file;
 
    /**
-    * Delay in seconds, at least 1.
+    * Delay in seconds, at least 1. When the interval is uninitialized, this
+    * field is set to 0.
     */
    private int _interval;
 
@@ -119,9 +164,9 @@ public final class FileWatcher extends Thread {
    private long _lastModified;
 
    /**
-    * Flag that indicates if this thread has been stopped.
+    * Flag that indicates if this thread has been ordered to stop.
     */
-   private boolean _stopped;
+   private boolean _shouldStop;
 
 
    //-------------------------------------------------------------------------
@@ -133,20 +178,24 @@ public final class FileWatcher extends Thread {
     * {@link #start()} instead. That method will call this method.
     *
     * @throws IllegalStateException
-    *    if <code>{@link Thread#currentThread()} != this</code>.
+    *    if <code>{@link Thread#currentThread()} != this</code> or if the
+    *    interval was not set yet.
     */
    public void run() throws IllegalStateException {
 
       // Check preconditions
       if (Thread.currentThread() != this) {
          throw new IllegalStateException("Thread.currentThread() != this");
+      } else if (_interval < 1) {
+         throw new IllegalStateException("The interval has not been set yet.");
       }
 
       Log.log_1200(_file.getPath(), _interval);
 
-      while (! _stopped) {
+      while (! _shouldStop) {
          try {
-            while(! _stopped) {
+            while(! _shouldStop) {
+
                // Wait for the designated amount of time
                sleep(((long)_interval) * 1000L);
 
@@ -160,44 +209,32 @@ public final class FileWatcher extends Thread {
    }
 
    /**
-    * Returns the current interval. This method can only be called from the listener
-    * callback methods. If it is not, an exception is thrown.
+    * Returns the current interval.
     *
     * @return interval
-    *    the current interval in seconds, always greater than or equal to 1.
-    *
-    * @throws IllegalStateException
-    *    if <code>{@link Thread#currentThread()} != this</code>.
+    *    the current interval in seconds, always greater than or equal to 1,
+    *    except if the interval is not initialized yet, in which case 0 is
+    *    returned.
     */
-   public int getInterval() throws IllegalStateException {
-
-      // Check preconditions
-      if (Thread.currentThread() != this) {
-         throw new IllegalStateException("Thread.currentThread() != this");
-      }
-
+   public synchronized int getInterval() {
       return _interval;
    }
 
    /**
-    * Changes the interval. This method can only be called from the listener
-    * callback methods. If it is not, an exception is thrown.
+    * Changes the file check interval.
     *
     * @param newInterval
     *    the new interval in seconds, must be greater than or equal to 1.
     *
-    * @throws IllegalStateException
-    *    if <code>{@link Thread#currentThread()} != this</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>interval &lt; 1</code>
     */
-   public void setInterval(int newInterval)
-   throws IllegalStateException, IllegalArgumentException {
+   public synchronized void setInterval(int newInterval)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      if (Thread.currentThread() != this) {
-         throw new IllegalStateException("Thread.currentThread() != this");
+      if (newInterval < 1) {
+         throw new IllegalArgumentException("newInterval (" + newInterval + ") < 1");
       }
 
       // Change the interval
@@ -210,8 +247,8 @@ public final class FileWatcher extends Thread {
    /**
     * Stops this thread.
     */
-   public void end() {
-      _stopped = true;
+   public synchronized void end() {
+      _shouldStop = true;
 
       Log.log_1202(_file.getPath());
 
@@ -222,15 +259,15 @@ public final class FileWatcher extends Thread {
     * Checks if the file changed. The following algorithm is used:
     *
     * <ul>
-    *    <li>check if the file can be found;
+    *    <li>check if the file is readable;
     *    <li>if so, then determine when the file was last modified;
     *    <li>if either the file existence check or the file modification check
     *        causes a {@link SecurityException} to be thrown, then
     *        {@link Listener#securityException(SecurityException)} is called
     *        and the method returns;
-    *    <li>otherwise if the file does not exist, then
+    *    <li>otherwise if the file is not readable (it may not exist), then
     *        {@link Listener#fileNotFound()} is called and the method returns;
-    *    <li>otherwise if the file does exist, but previously did not exist,
+    *    <li>otherwise if the file is readable, but previously was not,
     *        then {@link Listener#fileFound()} is called and the method
     *        returns;
     *    <li>otherwise if the file was modified, then {@link Listener#fileModified()} is
@@ -239,8 +276,10 @@ public final class FileWatcher extends Thread {
     *        {@link Listener#fileNotModified()} is called and the method
     *        returns.
     * </ul>
+    *
+    * @since XINS 1.2.0
     */
-   private void check() {
+   public synchronized void check() {
 
       final String THIS_METHOD = "check()";
 
@@ -248,16 +287,17 @@ public final class FileWatcher extends Thread {
       // indicates the file does not exist.
       long lastModified;
 
-      // Check if the file can be found and if so, when it was last modified
+      // Check if the file can be read from and if so, when it was last
+      // modified
       try {
-         if (_file.exists()) {
+         if (_file.canRead()) {
             lastModified = _file.lastModified();
          } else {
             lastModified = -1;
          }
 
-      // Authorisation problem; our code is not allowed to call File.exists()
-      // and/or File.lastModified()
+      // Authorisation problem; our code is not allowed to call canRead()
+      // and/or lastModified() on the File object
       } catch (SecurityException securityException) {
          try {
             _listener.securityException(securityException);
@@ -361,8 +401,8 @@ public final class FileWatcher extends Thread {
       /**
        * Callback method, called if the file is found for the first time since
        * the <code>FileWatcher</code> was started. Each consecutive time the
-       * file still exists, either {@link #fileModified()} or
-       * {@link #fileNotModified()} is called.
+       * file still exists (and is readable), either
+       * {@link #fileModified()} or {@link #fileNotModified()} is called.
        */
       void fileFound();
 
