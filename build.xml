@@ -323,6 +323,10 @@
 			offline="true"
 			packagelistloc="src/package-lists/commons-logging/" />
 			<link
+			href="http://xmlenc.sourceforge.net/javadoc/0.36/"
+			offline="true"
+			packagelistloc="src/package-lists/xmlenc/" />
+			<link
 			href="http://www.jdom.org/docs/apidocs/"
 			offline="true"
 			packagelistloc="src/package-lists/jdom/" />
