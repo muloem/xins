@@ -101,7 +101,7 @@ public class XINSCallResultParserTests extends TestCase {
       final String encoding = "UTF-8";
       final String xml = "<?xml version=\"1.0\" encoding='" + encoding + "' ?>" +
                          " <result><data>" +
-                         "<product available='true' name=\"FOO\" />" + 
+                         "<product available='false' name=\"FOO\" />" + 
                          " <product available=\"true\"  name=\"BAR\" />" +
                          "</data></result>";
       final byte[] bytes = xml.getBytes(encoding);
@@ -135,17 +135,43 @@ public class XINSCallResultParserTests extends TestCase {
       Iterator children = dataElement.getChildren();
       assertEquals(2, iteratorSize(children));
 
-      // First element should have 2 attributes
+      // Get both child elements
       children = dataElement.getChildren();
-      DataElement child1 = (DataElement) children.next();
-      assertEquals(2, iteratorSize(child1.getAttributes()));
+      DataElement childOne = (DataElement) children.next();
+      DataElement childTwo = (DataElement) children.next();
 
-      // TODO
+      // First element should have 2 attributes
+      assertEquals(2, iteratorSize(childOne.getAttributes()));
+
+      // There should be an 'available' attribute and a 'name' attribute
+      Iterator childOneAttributes = childOne.getAttributes();
+      String attrOne1 = (String) childOneAttributes.next();
+      String attrOne2 = (String) childOneAttributes.next();
+      assertTrue(attrOne1.equals("available") || attrOne1.equals("name"));
+      assertTrue(attrOne2.equals("available") || attrOne2.equals("name"));
+      assertFalse(attrOne1.equals(attrOne2));
+
+      // The 'name' attribute must be 'FOO'
+      assertEquals("FOO", childOne.get("name"));
+
+      // The 'available' attribute must be 'false'
+      assertEquals("false", childOne.get("available"));
 
       // Second element should have 2 attributes
-      DataElement child2 = (DataElement) children.next();
-      assertEquals(2, iteratorSize(child2.getAttributes()));
+      assertEquals(2, iteratorSize(childTwo.getAttributes()));
 
-      // TODO
+      // There should be an 'available' attribute and a 'name' attribute
+      Iterator childTwoAttributes = childTwo.getAttributes();
+      String attrTwo1 = (String) childTwoAttributes.next();
+      String attrTwo2 = (String) childTwoAttributes.next();
+      assertTrue(attrTwo1.equals("available") || attrTwo1.equals("name"));
+      assertTrue(attrTwo2.equals("available") || attrTwo2.equals("name"));
+      assertFalse(attrTwo1.equals(attrTwo2));
+
+      // The 'name' attribute must be 'BAR'
+      assertEquals("BAR", childTwo.get("name"));
+
+      // The 'available' attribute must be 'false'
+      assertEquals("true", childTwo.get("available"));
    }
 }
