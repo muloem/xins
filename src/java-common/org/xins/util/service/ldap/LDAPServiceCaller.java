@@ -80,12 +80,12 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @param method
     *    the authentication method, for example
-    *    {@link #AuthenticationMethod#NONE} or
-    *    {@link #AuthenticationMethod#SIMPLE}, cannot be <code>null</code>.
+    *    {@link AuthenticationMethod#NONE} or
+    *    {@link AuthenticationMethod#SIMPLE}, cannot be <code>null</code>.
     *
     * @param principal
     *    the principal, cannot be <code>null</code> unless
-    *    <code>method == </code>{@link #AuthenticationMethod#NONE}.
+    *    <code>method == </code>{@link AuthenticationMethod#NONE}.
     *
     * @param credentials
     *    the credentials, can be <code>null</code>.
@@ -95,9 +95,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>method == null
-    *    || (method != {@link #AuthenticationMethod#NONE} &amp;&amp; principal == null)
-    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; principal != null)
-    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
+    *    || (method != {@link AuthenticationMethod#NONE} &amp;&amp; principal == null)
+    *    || (method == {@link AuthenticationMethod#NONE} &amp;&amp; principal != null)
+    *    || (method == {@link AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
     *
     * @throws CallFailedException
     *    if the call failed.
@@ -124,9 +124,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>method == null
-    *    || (method != {@link #AuthenticationMethod#NONE} &amp;&amp; principal == null)
-    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; principal != null)
-    *    || (method == {@link #AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
+    *    || (method != {@link AuthenticationMethod#NONE} &amp;&amp; principal == null)
+    *    || (method == {@link AuthenticationMethod#NONE} &amp;&amp; principal != null)
+    *    || (method == {@link AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
     *
     * @throws CallFailedException
     *    if the call failed.

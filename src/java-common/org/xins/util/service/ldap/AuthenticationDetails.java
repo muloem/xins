@@ -33,7 +33,7 @@ extends Object {
     * @param method
     *    the authentication method, for example
     *    {@link AuthenticationMethod#NONE}
-    *    or {@link #AuthenticationMethod#SIMPLE}, cannot be <code>null</code>.
+    *    or {@link AuthenticationMethod#SIMPLE}, cannot be <code>null</code>.
     *
     * @param principal
     *    the principal, cannot be <code>null</code> unless
