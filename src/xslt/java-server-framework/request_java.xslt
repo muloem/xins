@@ -74,20 +74,6 @@ public final static class Request {
       return __ip;
    }</xsl:text>
 
-		<xsl:if test="input/data/element">
-			<xsl:text>
-
-   /**
-    * Gets the data section of the request.
-    *
-    * @return
-    *    the data section, cannot be &lt;code&gt;null&lt;/code&gt;.
-    */
-   public final org.xins.common.xml.Element dataSection() {
-      return __dataSection;
-   }</xsl:text>
-		</xsl:if>
-
 		<xsl:apply-templates select="input/param" mode="method" />
 
 		<xsl:apply-templates select="input/data/element" mode="listMethod" />
