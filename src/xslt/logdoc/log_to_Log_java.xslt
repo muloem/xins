@@ -44,12 +44,13 @@
 import java.util.HashMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xins.logdoc.AbstractLog;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Central logging handler.
  */
-public class Log extends Object {
+public class Log extends AbstractLog {
 
    //-------------------------------------------------------------------------
    // Class fields
