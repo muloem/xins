@@ -9,6 +9,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:include href="standard_types.xslt" />
+	<xsl:include href="firstline.xslt"      />
 
 	<!--
 	* Returns the name of the file for the specified type in the specified
