@@ -62,6 +62,11 @@ implements DefaultResultCodes {
    private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(true, null, null, null);
 
    /**
+    * The runtime (init) property that contains the ACL descriptor.
+    */
+   private static final String ACL_PROPERTY = "org.xins.server.acl";
+
+   /**
     * The default access rule list.
     */
    private static final String DEFAULT_ACCESS_RULE_LIST = "allow 0.0.0.0/0 *";
@@ -625,11 +630,11 @@ implements DefaultResultCodes {
       log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Initialize ACL subsystem
-      String acl = runtimeSettings.get("acl");
+      String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          try {
-            log.info("Property \"acl\" not set. Falling back to default: \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
-            log.warn("Property \"acl\" not set. Allowing all requests. In the future, this behaviour will change so that if the property is not set, then all requests will be denied instead of allowed.");
+            log.info("Property \"" + ACL_PROPERTY + "\" not set. Falling back to default: \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
+            log.warn("Property \"" + ACL_PROPERTY + "\" not set. Allowing all requests. In the future, this behaviour will change so that if the property is not set, then all requests will be denied instead of allowed.");
             _accessRuleList = AccessRuleList.parseAccessRuleList(DEFAULT_ACCESS_RULE_LIST);
          } catch (ParseException exception) {
             throw new InitializationException("Unable to apply the default access rule list \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
@@ -637,8 +642,9 @@ implements DefaultResultCodes {
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
+            log.info("Access rule list loaded.");
          } catch (ParseException exception) {
-            throw new InvalidPropertyValueException("acl", acl, exception.getMessage());
+            throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
          }
       }
 
