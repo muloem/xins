@@ -130,7 +130,7 @@ public class AccessRuleTests extends TestCase {
    private void doTestParseAccessRule(boolean allow, String ip, int mask, String whitespace1, String whitespace2)
    throws Throwable {
 
-      final String pattern = "*";
+      final String pattern = "_*";
 
       FastStringBuffer buffer = new FastStringBuffer(250);
       if (allow) {
@@ -148,7 +148,8 @@ public class AccessRuleTests extends TestCase {
       AccessRule rule = AccessRule.parseAccessRule(buffer.toString());
       assertNotNull(rule);
       assertEquals(allow, rule.isAllowRule());
-      assertEquals(true, rule.match(ip, "_GetVersion"));
+      assertEquals(allow, rule.match(ip, "_GetVersion"));
+      assertEquals(allow, rule.match(ip, "GetVersion"));
 
       String asString = (allow ? "allow" : "deny") + ' ' + ip + '/' + mask + ' ' + pattern;
       assertEquals(asString, rule.toString());
