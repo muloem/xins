@@ -1,3 +1,9 @@
+<!--
+ XINS project DTD. This DTD should be added to all xins-project.xml file
+ by adding the following lines at the top of the file :
+<!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project//EN"
+"http://xins.sourceforge.net/dtd/xins-project.dtd">
+-->
 <!ELEMENT project (specdocs, cvsweb, patterntest, java-impls, java-clients, java-types, api*)>
 <!ATTLIST project
           name       CDATA #REQUIRED
@@ -9,7 +15,8 @@
           dependenciesdir CDATA #REQUIRED
           domain     CDATA #REQUIRED
 >
-<!ELEMENT description (#PCDATA)>
+<!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT specdocs EMPTY>
 <!ATTLIST specdocs
           href       CDATA #REQUIRED

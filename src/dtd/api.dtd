@@ -1,3 +1,9 @@
+<!--
+ XINS api DTD. This DTD should be added to the api.xml file in your 
+ project by adding the following lines at the top of the file :
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" 
+"http://xins.sourceforge.net/dtd/api.dtd">
+-->
 <!ELEMENT api (description?, function*, type*, resultcode*, environment*, impl-java?)>
 <!ATTLIST api
           name       CDATA #REQUIRED
@@ -5,7 +11,8 @@
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >
-<!ELEMENT description (#PCDATA)>
+<!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT function EMPTY>
 <!ATTLIST function
           name       CDATA #REQUIRED
