@@ -632,12 +632,8 @@ implements DefaultResultCodes {
       _sessionExpiryStrategy.stop();
 
       // Destroy all sessions
-      int openSessionCount = _sessionsByID.size();
-      if (openSessionCount == 1) {
-         Library.SHUTDOWN_LOG.info("Closing 1 open session.");
-      } else {
-         Library.SHUTDOWN_LOG.info("Closing " + openSessionCount + " open sessions.");
-      }
+      Log.log_6003(String.valueOf(_sessionsByID.size()));
+
       _sessionsByID = null;
 
       // Deinitialize instances
@@ -647,11 +643,14 @@ implements DefaultResultCodes {
 
          String className = m.getClass().getName();
 
+         Log.log_6004(_name, className);
          try {
             m.deinit();
-            Library.SHUTDOWN_LOG.info("Deinitialized manageable object of class " + className + " for " + _name + " API.");
+            Log.log_6005(_name, className);
          } catch (DeinitializationException exception) {
-            Library.SHUTDOWN_LOG.error("Failed to deinitialize manageable object of class " + className + " for " + _name + " API.", exception);
+            Log.log_6006(_name, className, exception.getMessage());
+         } catch (Throwable exception) {
+            Log.log_6007(_name, className, exception.getClass().getName(), exception.getMessage());
          }
       }
 
@@ -662,11 +661,14 @@ implements DefaultResultCodes {
 
          String functionName = f.getName();
 
+         Log.log_6008(_name, functionName);
          try {
             f.deinit();
-            Library.SHUTDOWN_LOG.info("Deinitialized function " + functionName + " for " + _name + " API.");
+            Log.log_6009(_name, functionName);
          } catch (DeinitializationException exception) {
-            Library.SHUTDOWN_LOG.error("Failed to deinitialize function " + functionName + " for " + _name + " API.", exception);
+            Log.log_6010(_name, functionName, exception.getMessage());
+         } catch (Throwable exception) {
+            Log.log_6011(_name, functionName, exception.getClass().getName(), exception.getMessage());
          }
       }
    }
