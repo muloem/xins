@@ -8,8 +8,12 @@ CHANGES INTRODUCED IN XINS 0.205:
   - Adding some logs when bootstrapping or stoping the API.
   - Improved exception message for the AccessDeniedException and the
     NoSuchFunctionException.
-  - Added some getter method to get more information for the
+  - Added some getter methods to get more information for the
     AccessDeniedException and the NoSuchFunctionException.
+  - Fixed some Javadoc.
+  - Replaced JDom element by org.xins.server.Element.
+  - Removed the interface CallResult and the implementations, the result
+    is now stored in FunctionResult.
 
 * XINS/Java Common Library:
   - Fixed some tabs in the code instead of spaces.
@@ -17,6 +21,17 @@ CHANGES INTRODUCED IN XINS 0.205:
   - Added the possibility for the HexConverter to convert hexadecimal number
     that contains uppercases A to F.
   - Added a getAttributes() method in ldap/Query.
+  - Modified LDAPServiceCaller to use the getAttributes method.
+  - Fixed some Javadoc.
+
+* XINS/Java Client Framework:
+  - Fixed some Javadoc.
+
+* Generated java code:
+  - Removed references to JDom replaced by org.xins.server.Element.
+
+* Libraries:
+  - Removed the JDom library as it's no longer used.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.204:

@@ -45,10 +45,9 @@ public class InvalidRequestResult extends FunctionResult {
     *    the missing parameter.
     */
    public void addMissingParameter(String parameter) {
-      CallResultBuilder builder = getResultBuilder();
-      builder.startTag("missing-param");
-      builder.attribute("param", parameter);
-      builder.endTag();
+      Element missingParam = new Element("missing-param");
+      missingParam.addAttribute("param", parameter);
+      add(missingParam);
    }
 
    /**
@@ -60,11 +59,10 @@ public class InvalidRequestResult extends FunctionResult {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      CallResultBuilder builder = getResultBuilder();
-      builder.startTag("invalid-value-for-type");
-      builder.attribute("param", parameter);
-      builder.attribute("type", type);
-      builder.endTag();
+      Element invalidValue = new Element("invalid-value-for-type");
+      invalidValue.addAttribute("param", parameter);
+      invalidValue.addAttribute("type", type);
+      add(invalidValue);
    }
 
    /**
@@ -79,19 +77,17 @@ public class InvalidRequestResult extends FunctionResult {
     */
    public void addParamCombo(String type, List elements) {
 
-      CallResultBuilder builder = getResultBuilder();
-
-      builder.startTag("param-combo");
-      builder.attribute("type", type);
+      Element paramCombo = new Element("param-combo");
+      paramCombo.addAttribute("type", type);
 
       // Iterate ober all elements
       Iterator itElements = elements.iterator();
       while(itElements.hasNext()) {
-         builder.startTag("param");
-         builder.attribute("name", (String) itElements.next());
-         builder.endTag();
+         Element param = new Element("param");
+         param.addAttribute("name", (String) itElements.next());
+         paramCombo.add(param);
       }
 
-      builder.endTag();
+      add(paramCombo);
    }
 }

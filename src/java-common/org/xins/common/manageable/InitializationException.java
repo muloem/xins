@@ -36,8 +36,7 @@ extends Exception {
     * @return
     *    the message, never <code>null</code>.
     */
-   private static final String createMessage(String message, Throwable cause)
-   throws IllegalArgumentException {
+   private static final String createMessage(String message, Throwable cause) {
 
       // TODO: Improve this method.
 

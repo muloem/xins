@@ -332,9 +332,9 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
-      addJDOMElement(</xsl:text>
+      add(</xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>.getDOMElement());
+		<xsl:text>.getElement());
    }
 </xsl:text>
 </xsl:template>
@@ -389,7 +389,7 @@ implements Result {
       /**
        * Element containing the values of this object.
        */
-      private final org.jdom.Element _jdomElement = new org.jdom.Element("</xsl:text>
+      private final org.xins.server.Element _element = new org.xins.server.Element("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[");
 
@@ -402,11 +402,11 @@ implements Result {
        * Returns the element containing the values of the data element.
        *
        * @return
-       *    the JDOM element created by invoking the different set methods
+       *    the element created by invoking the different set methods
        *    of this object, never <code>null</code>.
        */
-      final org.jdom.Element getDOMElement() {
-         return _jdomElement;
+      final org.xins.server.Element getElement() {
+         return _element;
       }
 
 ]]></xsl:text>
@@ -421,14 +421,14 @@ implements Result {
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
       final void pcdata(String data) {
-         _jdomElement.setText(data);
+         _element.pcdata(data);
       }
 
 ]]></xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute">
-				<xsl:with-param name="methodImpl" select="'_jdomElement.setAttribute'" />
+				<xsl:with-param name="methodImpl" select="'_element.addAttribute'" />
 			</xsl:apply-templates>
 			<xsl:apply-templates select="contains/contained" />
 			<xsl:text>
@@ -458,9 +458,9 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>) {
-      _jdomElement.addContent(</xsl:text>
+      _element.add(</xsl:text>
 		<xsl:value-of select="@element" />
-		<xsl:text>.getDOMElement().getContent());
+		<xsl:text>.getElement());
    }
 </xsl:text>
 	</xsl:template>

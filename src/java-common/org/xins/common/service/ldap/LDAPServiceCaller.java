@@ -322,7 +322,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
          SearchControls.SUBTREE_SCOPE, // scope
          0L,                           // return all entries that match, no maximum
          target.getTotalTimeOut(),     // time-out (in ms) or 0 if unlimited
-         query._attributes,            // IDs of attributres to return
+         query.getAttributes(),        // IDs of attributres to return
          false,                        // do not return named objects
          false                         // do not dereference links
       );

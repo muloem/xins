@@ -76,7 +76,7 @@ public class ItemList {
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
     */
-   protected final void addItem(Object value) {
+   protected final void addItem(Object value) throws IllegalArgumentException {
 
       MandatoryArgumentChecker.check("value", value);
 

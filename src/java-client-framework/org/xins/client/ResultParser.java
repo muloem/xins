@@ -68,8 +68,8 @@ public class ResultParser {
     * @param duration
     *    the call duration, should be &gt;= 0.
     *
-    * @param xmlStream
-    *    the input stream of the XML to be parsed, not <code>null</code>.
+    * @param xml
+    *    the XML to be parsed, not <code>null</code>.
     *
     * @return
     *    the parsed result of the call, not <code>null</code>.

@@ -41,7 +41,7 @@ implements DefaultResultCodes {
     * Call result to be returned when a function is currently disabled. See
     * {@link #isEnabled()}.
     */
-   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult("_DisabledFunction", null, null);
+   private static final FunctionResult DISABLED_FUNCTION_RESULT = new FunctionResult("_DisabledFunction");
 
 
    //-------------------------------------------------------------------------
@@ -223,7 +223,7 @@ implements DefaultResultCodes {
     * @throws IllegalStateException
     *    if this object is currently not initialized.
     */
-   CallResult handleCall(long start, ServletRequest request)
+   FunctionResult handleCall(long start, ServletRequest request)
    throws IllegalStateException {
 
       // TODO: Know nothing about servlets, so do not accept the
@@ -245,11 +245,10 @@ implements DefaultResultCodes {
       // Construct a CallContext object
       CallContext context = new CallContext(request, start, this, callID);
 
-      CallResult result;
+      FunctionResult result;
       try {
 
-         FunctionResult functionResult = handleCall(context);
-         result = functionResult.getCallResult();
+         result = handleCall(context);
 
       } catch (Throwable exception) {
 
@@ -277,7 +276,7 @@ implements DefaultResultCodes {
             parameters.set("_exception.stacktrace", stackTrace);
          }
 
-         result = new BasicCallResult("_InternalError", parameters, null);
+         result = new FunctionResult("_InternalError", parameters);
       }
 
       // TODO: Do this within a try-catch block, log a specific message
@@ -330,10 +329,11 @@ implements DefaultResultCodes {
    private final void performedCall(ServletRequest request,
                                     long           start,
                                     int            callID,
-                                    CallResult     result) {
+                                    FunctionResult result) {
 
       // Update statistics and determine the duration of the call
-      long duration = _statistics.recordCall(start, result.isSuccess());
+      boolean isSuccess = result.getErrorCode() == null;
+      long duration = _statistics.recordCall(start, isSuccess);
 
       // Determine the IP address of the remote host
       String ip = request.getRemoteAddr();
@@ -592,7 +592,7 @@ implements DefaultResultCodes {
        * @throws IllegalArgumentException
        *    if <code>result == null</code>.
        */
-      private FormattedOutputParameters(CallResult result)
+      private FormattedOutputParameters(FunctionResult result)
       throws IllegalArgumentException {
 
          // Check preconditions
@@ -609,7 +609,7 @@ implements DefaultResultCodes {
       /**
        * The call result. This field is never <code>null</code>.
        */
-      private final CallResult _result;
+      private final FunctionResult _result;
 
 
       //---------------------------------------------------------------------

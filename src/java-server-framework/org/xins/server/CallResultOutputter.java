@@ -14,7 +14,7 @@ import org.xins.common.collections.PropertyReader;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
- * Transformer that is able to externalize a <code>CallResult</code> object to
+ * Transformer that is able to externalize a <code>FunctionResult</code> object to
  * XML.
  *
  * @version $Revision$ $Date$
@@ -62,7 +62,7 @@ final class CallResultOutputter extends Object {
     */
    public static void output(PrintWriter out,
                              String encoding,
-                             CallResult result,
+                             FunctionResult result,
                              String xslt,
                              String compatibility)
    throws IllegalArgumentException, IOException {

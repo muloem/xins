@@ -3,13 +3,16 @@
  */
 package org.xins.server;
 
+import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
+
 /**
  * Result from a function call.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class FunctionResult extends Object {
+public class FunctionResult {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -24,14 +27,33 @@ public class FunctionResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Creates a new successful <code>FunctionResult</code> instance.
+    */
+   public FunctionResult() {
+      this(null, null);
+   }
+
+   /**
     * Creates a new <code>FunctionResult</code> instance.
     *
     * @param code
-    *    the error code, can be <code>null</code>.
+    *    the error code, can be <code>null</code> if the result is successful.
     */
    public FunctionResult(String code) {
-      _builder = new CallResultBuilder();
-      _builder.startResponse(code);
+      this(code, null);
+   }
+
+   /**
+    * Creates a new <code>FunctionResult</code> instance.
+    *
+    * @param code
+    *    the error code, can be <code>null</code> if the result is successful.
+    * @param parameters
+    *    the parameters for the result.
+    */
+   public FunctionResult(String code, BasicPropertyReader parameters) {
+      _code = code;
+      _parameters = parameters;
    }
 
 
@@ -40,10 +62,22 @@ public class FunctionResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The object used to create and store the XML structure of the result.
-    * This field cannot be <code>null</code>.
+    * The result code. This field is <code>null</code> if no code was
+    * returned.
     */
-   private final CallResultBuilder _builder;
+   private String _code;
+
+   /**
+    * The parameters and their values. This field is never <code>null</code>.
+    * If there are no parameters, then this field is <code>null</code>.
+    */
+   private BasicPropertyReader _parameters;
+
+   /**
+    * The data element. This field is <code>null</code> if there is no data
+    * element.
+    */
+   private Element _dataElement;
 
 
    //-------------------------------------------------------------------------
@@ -51,33 +85,13 @@ public class FunctionResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the object that is responsible for constructing the call result
-    * object. This method should only be called by subclasses.
+    * Returns the result code.
     *
     * @return
-    *    the {@link CallResultBuilder}, never <code>null</code>.
+    *    the result code or <code>null</code> if no code was returned.
     */
-   CallResultBuilder getResultBuilder() {
-      return _builder;
-   }
-
-   /**
-    * Returns the <code>CallResult</code>
-    *
-    * @return
-    *    the {@link CallResult}, never <code>null</code>.
-    */
-   CallResult getCallResult() {
-
-      // If the output parameters are invalid, return an error result
-      InvalidResponseResult result = checkOutputParameters();
-      if (result != null) {
-         return result.getResultBuilder();
-
-      // Otherwise return the built result
-      } else {
-         return _builder;
-      }
+   public String getErrorCode() {
+      return _code;
    }
 
    /**
@@ -110,7 +124,26 @@ public class FunctionResult extends Object {
     *    empty string.
     */
    protected void param(String name, String value) {
-      _builder.param(name, value);
+      if (_parameters == null) {
+         _parameters = new BasicPropertyReader();
+      }
+
+      // This will erase any value set before with the same name.
+      _parameters.set(name, value);
+   }
+
+   /**
+    * Gets all parameters.
+    *
+    * @return
+    *    a {@link PropertyReader} containing all parameters, or
+    *    <code>null</code> if no parameters are set; the keys will be the
+    *    names of the parameters ({@link String} objects, cannot be
+    *    <code>null</code>), the values will be the parameter values
+    *    ({@link String} objects as well, cannot be <code>null</code>).
+    */
+   PropertyReader getParameters() {
+      return _parameters;
    }
 
    /**
@@ -124,31 +157,29 @@ public class FunctionResult extends Object {
     *    not <code>null</code>.
     */
    protected String getParameter(String name) {
-      return _builder.getParameter(name);
+      return _parameters.get(name);
    }
 
    /**
-    * Add a new JDOM element.
+    * Add a new Element to the data element.
     *
     * @param element
     *    the new element to add to the result, cannot be <code>null</code>.
     */
-   protected void addJDOMElement(org.jdom.Element element) {
-      _builder.startTag(element.getName());
-      java.util.Iterator itAttributes = element.getAttributes().iterator();
-      while (itAttributes.hasNext()) {
-         org.jdom.Attribute nextAttribute = (org.jdom.Attribute) itAttributes.next();
-         _builder.attribute(nextAttribute.getName(), nextAttribute.getValue());
+   protected void add(Element element) {
+      if (_dataElement == null) {
+         _dataElement = new Element("data");
       }
-      String pcdata = element.getText();
-      if (pcdata != null && !pcdata.equals("")) {
-         _builder.pcdata(pcdata);
-      }
-      java.util.Iterator itSubElements = element.getChildren().iterator();
-      while (itSubElements.hasNext()) {
-         org.jdom.Element nextChild = (org.jdom.Element) itSubElements.next();
-         addJDOMElement(nextChild);
-      }
-      _builder.endTag();
+      _dataElement.add(element);
+   }
+
+   /**
+    * Gets the Data element from this result.
+    *
+    * @return
+    *    the data element of the result, can be <code>null</code>.
+    */
+   Element getDataElement() {
+      return _dataElement;
    }
 }

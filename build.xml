@@ -463,7 +463,6 @@
 			<link offline="true" packagelistloc="src/package-lists/commons-httpclient/" href="http://jakarta.apache.org/commons/httpclient/apidocs/"     />
 			<link offline="true" packagelistloc="src/package-lists/oro/"                href="http://jakarta.apache.org/oro/api/"                        />
 			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.43/"               />
-			<link offline="true" packagelistloc="src/package-lists/jdom/"               href="http://www.jdom.org/docs/apidocs/"                         />
 			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs/" />
 		</javadoc>
 		<copy
@@ -641,7 +640,6 @@
 			<include name="lib/commons-httpclient.LICENSE" />
 			<include name="lib/commons-logging.LICENSE"    />
 			<include name="lib/jakarta-oro.LICENSE"        />
-			<include name="lib/jdom.LICENSE"               />
 			<include name="lib/log4j.LICENSE"              />
 			<include name="lib/xmlenc.LICENSE"             />
 			<include name="docs/*.html"                    />
@@ -685,7 +683,6 @@
 				<include name="lib/commons-httpclient.jar"     />
 				<include name="lib/commons-logging.jar"        />
 				<include name="lib/jakarta-oro.jar"            />
-				<include name="lib/jdom.jar"                   />
 				<include name="lib/log4j.jar"                  />
 				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />

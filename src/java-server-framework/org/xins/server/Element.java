@@ -17,7 +17,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
  *
  * @since XINS 0.119
  */
-final class Element extends Object {
+public final class Element {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -155,7 +155,7 @@ final class Element extends Object {
     * @throws IllegalArgumentException
     *    if <code>pcdata == null</code>.
     */
-   public void add(String pcdata) throws IllegalArgumentException {
+   public void pcdata(String pcdata) throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("pcdata", pcdata);

@@ -96,7 +96,7 @@ public final class Query extends Object {
     * <code>null</code> then all attributes are returned; if this is an
     * empty array then no attributes are returned.
     */
-   final String[] _attributes;
+   private final String[] _attributes;
 
 
    //----------------------------------------------------------------------

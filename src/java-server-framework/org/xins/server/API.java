@@ -48,7 +48,7 @@ implements DefaultResultCodes {
    /**
     * Successful empty call result.
     */
-   private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(null, null, null);
+   private static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
 
    /**
     * The runtime (init) property that contains the ACL descriptor.
@@ -656,7 +656,7 @@ implements DefaultResultCodes {
     *    if access is denied for the specified combination of IP address and
     *    function name.
     */
-   final CallResult handleCall(long start, ServletRequest request)
+   final FunctionResult handleCall(long start, ServletRequest request)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
@@ -705,7 +705,7 @@ implements DefaultResultCodes {
             String resetArgument = request.getParameter("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
                synchronized(_statisticsLock) {
-                  CallResult result = doGetStatistics();
+                  FunctionResult result = doGetStatistics();
                   doResetStatistics();
                   return result;
                }
@@ -732,7 +732,7 @@ implements DefaultResultCodes {
       // Short-circuit if we are shutting down
       if (getState().equals(DEINITIALIZING)) {
          Log.log_1612(_name, functionName);
-         return new BasicCallResult("_InternalError", null, null);
+         return new FunctionResult("_InternalError");
       }
 
       // Get the function object
@@ -751,7 +751,7 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doPerformGC() {
+   private final FunctionResult doPerformGC() {
       System.gc();
       return SUCCESSFUL_RESULT;
    }
@@ -763,19 +763,19 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetFunctionList() {
+   private final FunctionResult doGetFunctionList() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder();
+      FunctionResult builder = new FunctionResult();
 
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         builder.startTag("function");
-         builder.attribute("name",    function.getName());
-         builder.attribute("version", function.getVersion());
-         builder.attribute("enabled", function.isEnabled() ? "true" : "false");
-         builder.endTag();
+         Element functionElem = new Element("function");
+         functionElem.addAttribute("name",    function.getName());
+         functionElem.addAttribute("version", function.getVersion());
+         functionElem.addAttribute("enabled", function.isEnabled() ? "true" : "false");
+         builder.add(functionElem);
       }
 
       return builder;
@@ -787,10 +787,10 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetStatistics() {
+   private final FunctionResult doGetStatistics() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder();
+      FunctionResult builder = new FunctionResult();
 
       builder.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
       builder.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
@@ -804,18 +804,18 @@ implements DefaultResultCodes {
       }
 
       // Heap memory statistics
-      builder.startTag("heap");
+      Element heap = new Element("heap");
       long free  = rt.freeMemory();
       long total = rt.totalMemory();
-      builder.attribute("used",  String.valueOf(total - free));
-      builder.attribute("free",  String.valueOf(free));
-      builder.attribute("total", String.valueOf(total));
+      heap.addAttribute("used",  String.valueOf(total - free));
+      heap.addAttribute("free",  String.valueOf(free));
+      heap.addAttribute("total", String.valueOf(total));
       try {
-         builder.attribute("max", String.valueOf(rt.maxMemory()));
+         heap.addAttribute("max", String.valueOf(rt.maxMemory()));
       } catch (NoSuchMethodError error) {
          // ignore: Runtime.maxMemory() is not available in Java 1.3
       }
-      builder.endTag(); // heap
+      builder.add(heap);
 
       // Function-specific statistics
       int count = _functionList.size();
@@ -894,46 +894,46 @@ implements DefaultResultCodes {
             lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
          }
 
-         builder.startTag("function");
-         builder.attribute("name", function.getName());
+         Element functionElem = new Element("function");
+         functionElem.addAttribute("name", function.getName());
 
          // Successful
-         builder.startTag("successful");
-         builder.attribute("count",    String.valueOf(successfulCalls));
-         builder.attribute("average",  successfulAverage);
-         builder.startTag("min");
-         builder.attribute("start",    successfulMinStart);
-         builder.attribute("duration", successfulMin);
-         builder.endTag(); // min
-         builder.startTag("max");
-         builder.attribute("start",    successfulMaxStart);
-         builder.attribute("duration", successfulMax);
-         builder.endTag(); // max
-         builder.startTag("last");
-         builder.attribute("start",    lastSuccessfulStart);
-         builder.attribute("duration", lastSuccessfulDuration);
-         builder.endTag(); // last
-         builder.endTag(); // successful
+         Element successful = new Element("successful");
+         successful.addAttribute("count",    String.valueOf(successfulCalls));
+         successful.addAttribute("average",  successfulAverage);
+         Element successfulMinElem = new Element("min");
+         successfulMinElem.addAttribute("start",    successfulMinStart);
+         successfulMinElem.addAttribute("duration", successfulMin);
+         successful.add(successfulMinElem);
+         Element successfulMaxElem = new Element("max");
+         successfulMaxElem.addAttribute("start",    successfulMaxStart);
+         successfulMaxElem.addAttribute("duration", successfulMax);
+         successful.add(successfulMaxElem);
+         Element successfulLastElem = new Element("last");
+         successfulLastElem.addAttribute("start",    lastSuccessfulStart);
+         successfulLastElem.addAttribute("duration", lastSuccessfulDuration);
+         successful.add(successfulLastElem);
+         functionElem.add(successful);
 
          // Unsuccessful
-         builder.startTag("unsuccessful");
-         builder.attribute("count",    String.valueOf(unsuccessfulCalls));
-         builder.attribute("average",  unsuccessfulAverage);
-         builder.startTag("min");
-         builder.attribute("start",    unsuccessfulMinStart);
-         builder.attribute("duration", unsuccessfulMin);
-         builder.endTag(); // min
-         builder.startTag("max");
-         builder.attribute("start",    unsuccessfulMaxStart);
-         builder.attribute("duration", unsuccessfulMax);
-         builder.endTag(); // max
-         builder.startTag("last");
-         builder.attribute("start",    lastUnsuccessfulStart);
-         builder.attribute("duration", lastUnsuccessfulDuration);
-         builder.endTag(); // last
-         builder.endTag(); // unsuccessful
+         Element unsuccessful = new Element("unsuccessful");
+         unsuccessful.addAttribute("count",    String.valueOf(unsuccessfulCalls));
+         unsuccessful.addAttribute("average",  unsuccessfulAverage);
+         Element unsuccessfulMinElem = new Element("min");
+         unsuccessfulMinElem.addAttribute("start",    unsuccessfulMinStart);
+         unsuccessfulMinElem.addAttribute("duration", unsuccessfulMin);
+         unsuccessful.add(unsuccessfulMinElem);
+         Element unsuccessfulMaxElem = new Element("max");
+         unsuccessfulMaxElem.addAttribute("start",    unsuccessfulMaxStart);
+         unsuccessfulMaxElem.addAttribute("duration", unsuccessfulMax);
+         unsuccessful.add(unsuccessfulMaxElem);
+         Element unsuccessfulLastElem = new Element("last");
+         unsuccessfulLastElem.addAttribute("start",    lastUnsuccessfulStart);
+         unsuccessfulLastElem.addAttribute("duration", lastUnsuccessfulDuration);
+         unsuccessful.add(unsuccessfulLastElem);
+         functionElem.add(unsuccessful);
 
-         builder.endTag(); // function
+         builder.add(functionElem);
       }
 
       return builder;
@@ -945,23 +945,23 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetLogStatistics() {
+   private final FunctionResult doGetLogStatistics() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder();
-      builder.startTag("statistics");
+      FunctionResult builder = new FunctionResult();
+      Element statistics = new Element("statistics");
 
       LogStatistics.Entry[] entries = Log.getStatistics().getEntries();
       int entryCount = entries.length;
       for (int i = 0; i < entryCount; i++) {
          LogStatistics.Entry entry = entries[i];
-         builder.startTag("entry");
-         builder.attribute("id", entry.getID());
-         builder.attribute("count", String.valueOf(entry.getCount()));
-         builder.endTag(); // entry
+         Element entryElem = new Element("entry");
+         entryElem.addAttribute("id", entry.getID());
+         entryElem.addAttribute("count", String.valueOf(entry.getCount()));
+         statistics.add(entryElem);
       }
 
-      builder.endTag(); // statistics
+      builder.add(statistics);
 
       return builder;
    }
@@ -972,9 +972,9 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetVersion() {
+   private final FunctionResult doGetVersion() {
 
-      CallResultBuilder builder = new CallResultBuilder();
+      FunctionResult builder = new FunctionResult();
 
       builder.param("java.version",   System.getProperty("java.version"));
       builder.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
@@ -989,53 +989,53 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetSettings() {
+   private final FunctionResult doGetSettings() {
 
-      CallResultBuilder builder = new CallResultBuilder();
+      FunctionResult builder = new FunctionResult();
 
       // Build settings
       Iterator names = _buildSettings.getNames();
-      builder.startTag("build");
+      Element build = new Element("build");
       while (names.hasNext()) {
          String key   = (String) names.next();
          String value = _buildSettings.get(key);
 
-         builder.startTag("property");
-         builder.attribute("name", key);
-         builder.pcdata(value);
-         builder.endTag();
+         Element property = new Element("property");
+         property.addAttribute("name", key);
+         property.pcdata(value);
+         build.add(property);
       }
-      builder.endTag();
+      builder.add(build);
 
       // Runtime settings
       names = _runtimeSettings.getNames();
-      builder.startTag("runtime");
+      Element runtime = new Element("runtime");
       while (names.hasNext()) {
          String key   = (String) names.next();
          String value = _runtimeSettings.get(key);
 
-         builder.startTag("property");
-         builder.attribute("name", key);
-         builder.pcdata(value);
-         builder.endTag();
+         Element property = new Element("property");
+         property.addAttribute("name", key);
+         property.pcdata(value);
+         runtime.add(property);
       }
-      builder.endTag();
+      builder.add(runtime);
 
       // System properties
       Enumeration e = System.getProperties().propertyNames();
-      builder.startTag("system");
+      Element system = new Element("system");
       while (e.hasMoreElements()) {
          String key   = (String) e.nextElement();
          String value = System.getProperty(key);
 
          if (key != null && value != null && key.length() > 0 && value.length() > 0) {
-            builder.startTag("property");
-            builder.attribute("name", key);
-            builder.pcdata(value);
-            builder.endTag();
+            Element property = new Element("property");
+            property.addAttribute("name", key);
+            property.pcdata(value);
+            system.add(property);
          }
       }
-      builder.endTag();
+      builder.add(system);
 
       return builder;
    }
@@ -1052,7 +1052,7 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doEnableFunction(ServletRequest request)
+   private final FunctionResult doEnableFunction(ServletRequest request)
    throws NullPointerException {
 
       // Get the name of the function to enable
@@ -1060,13 +1060,13 @@ implements DefaultResultCodes {
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
-         return invalidRequest.getCallResult();
+         return invalidRequest;
       }
 
       // Get the Function object
       Function function = getFunction(functionName);
       if (function == null) {
-         return new InvalidRequestResult().getCallResult();
+         return new InvalidRequestResult();
       }
 
       // Enable or disable the function
@@ -1087,7 +1087,7 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doDisableFunction(ServletRequest request)
+   private final FunctionResult doDisableFunction(ServletRequest request)
    throws NullPointerException {
 
       // Get the name of the function to disable
@@ -1095,13 +1095,13 @@ implements DefaultResultCodes {
       if (functionName == null || functionName.length() < 1) {
          InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
-         return invalidRequest.getCallResult();
+         return invalidRequest;
       }
 
       // Get the Function object
       Function function = getFunction(functionName);
       if (function == null) {
-         return new InvalidRequestResult().getCallResult();
+         return new InvalidRequestResult();
       }
 
       // Enable or disable the function
@@ -1116,7 +1116,7 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doResetStatistics() {
+   private final FunctionResult doResetStatistics() {
       // Function-specific statistics
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {

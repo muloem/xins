@@ -375,6 +375,9 @@ extends HttpServlet {
     *
     * @param newState
     *    the new state, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>newState == null</code>.
     */
    private void setState(State newState)
    throws IllegalArgumentException {
@@ -950,7 +953,7 @@ extends HttpServlet {
       // XXX: performance
 
       // Call the API if the state is READY
-      CallResult result;
+      FunctionResult result;
       State state = getState();
       if (state == READY) {
          try {

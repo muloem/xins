@@ -66,7 +66,7 @@ public final class CallContext {
       _function     = function;
       _functionName = function.getName();
       _callID       = callID;
-      _builder      = new CallResultBuilder();
+      _builder      = new FunctionResult();
    }
 
 
@@ -88,7 +88,7 @@ public final class CallContext {
    /**
     * The call result builder. Cannot be <code>null</code>.
     */
-   private final CallResultBuilder _builder;
+   private final FunctionResult _builder;
 
    /**
     * The start time of the call, as a number of milliseconds since midnight
@@ -124,7 +124,7 @@ public final class CallContext {
 
    // TODO: Document
    // TODO: Probably take a different approach
-   CallResult getCallResult() {
+   FunctionResult getCallResult() {
       return _builder;
    }
 
@@ -148,7 +148,7 @@ public final class CallContext {
     * @since XINS 0.128
     */
    public final boolean isSuccess() {
-      return _builder.isSuccess();
+      return _builder.getErrorCode() == null;
    }
 
    /**
