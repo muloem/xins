@@ -60,6 +60,15 @@
 			<description>Unexpected exception caught while calling doCall(org.xins.util.service.CallRequest).</description>
 			<param name="class_name" nullable="false" />
 		</entry>
+		<entry id="2011" level="INFO">
+			<description>Calling API function.</description>
+			<param name="url"               type="text"  nullable="false" />
+			<param name="function"          type="text"  nullable="false" />
+			<param name="queryString"       type="text"  nullable="false" />
+			<param name="totalTimeOut"      type="int32" nullable="false" />
+			<param name="connectionTimeOut" type="int32" nullable="false" />
+			<param name="socketTimeOut"     type="int32" nullable="false" />
+		</entry>
 	</group>
 
 </log>

@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -243,18 +244,26 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Construct new HttpClient object
       HttpClient client = new HttpClient();
 
+      // Determine URL and time-outs
+      String url               = target.getURL();
+      int    totalTimeOut      = target.getTimeOut();
+      int    connectionTimeOut = target.getConnectionTimeOut();
+      int    socketTimeOut     = target.getSocketTimeOut();
+
       // Configure connection time-out and socket time-out
-      client.setConnectionTimeout(target.getConnectionTimeOut());
-      client.setTimeout(target.getSocketTimeOut());
+      client.setConnectionTimeout(connectionTimeOut);
+      client.setTimeout          (socketTimeOut);
 
       // Construct the method object
-      PostMethod method = createPostMethod(target.getURL(), functionName, parameters);
+      PostMethod method = createPostMethod(url, functionName, parameters);
 
       // Prepare a thread for execution of the call
       CallExecutor executor = new CallExecutor(NDC.peek(), client, method);
 
       boolean succeeded = false;
       try {
+         Log.log_2011(url, functionName, method.getQueryString(), totalTimeOut, connectionTimeOut, socketTimeOut);
+
          controlTimeOut(executor, target);
          succeeded = true;
 
