@@ -1044,11 +1044,11 @@ implements DefaultResultCodes {
          String lastSuccessfulStart;
          String lastSuccessfulDuration;
          if (successfulCalls == 0) {
-            successfulAverage = "NA";
-            successfulMin     = "NA";
-            successfulMinStart = "NA";
-            successfulMax     = "NA";
-            successfulMaxStart = "NA";
+            successfulAverage      = "NA";
+            successfulMin          = "NA";
+            successfulMinStart     = "NA";
+            successfulMax          = "NA";
+            successfulMaxStart     = "NA";
             lastSuccessfulStart    = "NA";
             lastSuccessfulDuration = "NA";
          } else if (successfulDuration == 0) {
