@@ -15,6 +15,19 @@ import org.xins.common.Log;
  *
  * <p>This class is not thread-safe.
  *
+ * <h2>Implementations</h2>
+ *
+ * <p>Implementations of this class should stick to the following rules:
+ *
+ * <ul>
+ *    <li>the {@link #describe()} method must be implemented;
+ *    <li>only a single non-argument constructor should be provided, all
+ *        settings should be done using setter methods;
+ *    <li>a service caller-specific getter should be added for the associated
+ *        call config object, this method should return the caller-specific
+ *        call config object (a subclass of class {@link CallConfig}).
+ * </ul>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -107,7 +120,7 @@ public abstract class CallRequest extends Object {
     *
     * @since XINS 1.1.0
     */
-   public CallConfig getCallConfig() {
+   protected final CallConfig getCallConfig() {
       return _callConfig;
    }
 
@@ -120,7 +133,7 @@ public abstract class CallRequest extends Object {
     *
     * @since XINS 1.1.0
     */
-   public void setCallConfig(CallConfig config) {
+   protected final void setCallConfig(CallConfig config) {
       _callConfig = config;
    }
 }
