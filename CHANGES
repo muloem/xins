@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Renamed ServiceDescriptor class to TargetDescriptor.
   - Removed methods getByName(String) and getByValue(String) in EnumType.
     These had been deprecated since XINS 0.109.
+  - Changed CallFailedException to add a rule: At least one target must have
+    failed.
 
 * XINS/Java Client Framework:
   - Added XINSServiceCaller class.
