@@ -394,10 +394,15 @@ public final class Doorman extends Object {
        * @throws IllegalArgumentException
        *    if <code>capacity &lt; 0</code>.
        */
-      public Queue(int capacity) {
+      public Queue(int capacity)
+      throws IllegalArgumentException {
+
+         // Check preconditions
          if (capacity < 0) {
             throw new IllegalArgumentException("capacity (" + capacity + ") < 0");
          }
+
+         // Initialize fields
          _entries    = new LinkedList();
          _entryTypes = new HashMap(capacity);
       }
