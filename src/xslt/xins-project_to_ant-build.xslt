@@ -17,11 +17,9 @@ $Id$
 	<xsl:param name="xins_home"    />
 	<xsl:param name="project_home" />
 	<xsl:param name="builddir"     />
+	<xsl:param name="xins_version" />
 	
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
-	<xsl:variable name="xins_majorversion" select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version.major']/@value" />
-	<xsl:variable name="xins_minorversion" select="document($xins_buildfile)/project/target[@name='-init']/property[@name='version.minor']/@value" />
-	<xsl:variable name="xins_version"      select="concat($xins_majorversion, '.', $xins_minorversion)" />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home, '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar"   select="concat($xins_home, '/build/xins-server.jar')" />
@@ -405,7 +403,7 @@ $Id$
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 							<link
-							href="http://xmlenc.sourceforge.net/javadoc/0.34/"
+							href="http://xmlenc.sourceforge.net/javadoc/0.36/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<classpath>
@@ -505,7 +503,7 @@ $Id$
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 						<link
-						href="http://xmlenc.sourceforge.net/javadoc/0.34/"
+						href="http://xmlenc.sourceforge.net/javadoc/0.36/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 						<classpath>
