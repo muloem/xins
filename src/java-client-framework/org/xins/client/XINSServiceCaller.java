@@ -87,7 +87,11 @@ import org.xins.logdoc.LogdocSerializable;
  * <p>In other situations, like socket time-outs, total time-outs, other XINS
  * error codes, fail-over is normally not considered acceptable. There is one
  * exception, and that is when the call request explicitly allows fail-over in
- * all situations. See {@link XINSCallRequest#isFailOverAllowed()}.
+ * all situations. Then a {@link XINSCallRequest} should be created with the
+ * <code>failOverAllowed</code> property set to <code>true</code>. For this,
+ * the constructor
+ * {@link XINSCallRequest#XINSCallRequest(String,PropertyReader,boolean,HTTPMethod)}
+ * can be used.
  *
  * <h2>Example code</h2>
  *
