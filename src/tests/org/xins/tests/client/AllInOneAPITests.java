@@ -168,21 +168,40 @@ public class AllInOneAPITests extends TestCase {
       }
 
       request.setInputByte((byte) 8);
-      request.setInputShort((Short) null);
+      // request.setInputShort(null);
       request.setInputInt(65);
       request.setInputLong(88L);
       request.setInputFloat(32.5F);
-      request.setInputDouble(new Double(37.2));
+      request.setInputDouble(37.2);
       request.setInputText("text");
       request.setInputText2(null);
-      request.setInputProperties(null);
+      // request.setInputProperties(null);
       request.setInputDate(Date.fromStringForRequired("20041213"));
       request.setInputTimestamp(Timestamp.fromStringForOptional("20041225153255"));
       request.setInputBinary(new byte[] {25,88,66});
 
+      // Check the request
+      assertEquals(new Byte((byte) 8), request.getInputByte());
+      assertEquals(null,               request.getInputShort());
+      assertEquals(new Integer(65),    request.getInputInt());
+      assertEquals(new Long(88L),      request.getInputLong());
+      assertEquals(new Float(32.5F),   request.getInputFloat());
+      assertEquals(new Double(37.2),   request.getInputDouble());
+      assertEquals("text",             request.getInputText());
+      assertEquals(null,               request.getInputText2());
+      assertEquals(null,               request.getInputProperties());
+      assertEquals(Date.fromStringForRequired("20041213"),            request.getInputDate());
+      assertEquals(Timestamp.fromStringForOptional("20041225153255"), request.getInputTimestamp());
+      assertEquals(3,                  request.getInputBinary().length);
+      assertEquals((byte) 25,          request.getInputBinary()[0]);
+      assertEquals((byte) 88,          request.getInputBinary()[1]);
+      assertEquals((byte) 66,          request.getInputBinary()[2]);
+
+      // Make the call
       SimpleTypesResult result = _capi.callSimpleTypes(request);
       assertNotNull("Result returned from CAPI.callSimpleTypes(SimpleTypesRequest) is null.", result);
 
+      // Check the result
       assertNull(result.getOutputByte());
       assertEquals((short) -1, result.getOutputShort());
       assertEquals(16,         result.getOutputInt());
