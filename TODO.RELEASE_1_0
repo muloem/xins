@@ -126,7 +126,7 @@ Other:
 [ ] Make sure the automated release process works for the 1.x.y releases.
 
 Improved Logdoc for XINS/Java Common Library:
-[ ] Let Logdoc groups match Java package names
+[x] Let Logdoc groups match Java package names
 [ ] Review Logdoc entry descriptions
 [ ] Review Logdoc translations
 [ ] Add groups for missing Java packages
