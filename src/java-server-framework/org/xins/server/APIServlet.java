@@ -126,8 +126,6 @@ extends HttpServlet {
                               HttpServletResponse response)
    throws ServletException, IOException {
 
-      // TODO: Be less memory-intensive
-
       // Set the content output type to XML
       response.setContentType("text/xml");
 
