@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.208:
 * XINS/Java Common Library:
   - Added the remove() method in ProtectedPropertyReader. The set() method
     does not remove the property anymore if the value is null.
+  - Changed HTTPServiceCaller handling of input parameters. If a parameter
+    value is null, then the parameter is now passed down, with the empty
+    string as the value. Previously the parameter would not be sent down at
+    all.
 
 * XINS/Java Client Framework:
   - Applied some refactorings and improved documentation.
