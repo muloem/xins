@@ -118,15 +118,14 @@ public abstract class ServiceCaller extends Object {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
+         Log.log_3312(target.getURL());
+         Object result = null;
+         boolean succeeded = false;
          try {
 
             // Attempt the call
-            Object result = doCallImpl(target, subject);
-
-            // The call succeeded
-            // TODO: Don't do this within the try-block
-            Log.log_3312(target.toString());
-            return new CallResult(failedTargets, exceptions, target, result);
+            result = doCallImpl(target, subject);
+            succeeded = true;
 
          // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
@@ -164,6 +163,11 @@ public abstract class ServiceCaller extends Object {
                Log.log_3318();
                shouldContinue = true;
             }
+         }
+
+         // The call succeeded
+         if (succeeded) {
+            return new CallResult(failedTargets, exceptions, target, result);
          }
       }
 
