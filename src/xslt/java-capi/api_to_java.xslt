@@ -143,8 +143,34 @@ public final class API extends Object {
 					</xsl:if>
 					<xsl:text>.</xsl:text>
 				</xsl:if>
-				<!-- TODO: add 'cannot be <code>null</code>.' ? -->
 				<xsl:for-each select="input/param">
+					<xsl:variable name="required">
+						<xsl:choose>
+							<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+							<xsl:when test="@required = 'false'">false</xsl:when>
+							<xsl:when test="@required = 'true'">true</xsl:when>
+							<xsl:otherwise>
+								<xsl:message terminate="yes">
+									<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
+									<xsl:value-of select="@required" />
+									<xsl:text>'.</xsl:text>
+								</xsl:message>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:variable name="javatype">
+						<xsl:call-template name="javatype_for_type">
+							<xsl:with-param name="api"      select="$api"      />
+							<xsl:with-param name="specsdir" select="$specsdir" />
+							<xsl:with-param name="required" select="$required" />
+							<xsl:with-param name="type"     select="@type" />
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:variable name="typeIsPrimary">
+						<xsl:call-template name="is_java_datatype">
+							<xsl:with-param name="text" select="$javatype" />
+						</xsl:call-template>
+					</xsl:variable>
 					<xsl:text>
     * @param </xsl:text>
 					<xsl:value-of select="@name" />
@@ -152,9 +178,22 @@ public final class API extends Object {
     *    </xsl:text>
 					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text">
+							<!-- TODO: Improve this -->
 							<xsl:value-of select="description/text()" />
 						</xsl:with-param>
 					</xsl:call-template>
+					<xsl:if test="$typeIsPrimary = 'false'">
+						<xsl:choose>
+							<xsl:when test="$required = 'true'">
+								<xsl:text><![CDATA[
+    *     Cannot be <code>null</code>.]]></xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text><![CDATA[
+    *     Can be <code>null</code>.]]></xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:if>
 					<xsl:text>
     *</xsl:text>
 				</xsl:for-each>
