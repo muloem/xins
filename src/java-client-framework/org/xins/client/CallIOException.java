@@ -52,7 +52,7 @@ extends CallException {
     *    {@link #CallIOException(CallRequest,TargetDescriptor,IOException)}
     *    instead.
     */
-   public CallIOException(IOException ioException)
+   CallIOException(IOException ioException)
    throws IllegalArgumentException {
 
       // Call superconstructor first
@@ -78,11 +78,13 @@ extends CallException {
     *    the cause {@link IOException}, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>ioException == null</code>.
+    *    if <code>request     == null
+    *          || target      == null
+    *          || ioException == null</code>.
     */
-   public CallIOException(CallRequest      request,
-                          TargetDescriptor target,
-                          IOException      ioException)
+   CallIOException(CallRequest      request,
+                   TargetDescriptor target,
+                   IOException      ioException)
    throws IllegalArgumentException {
 
       // Call superconstructor first
