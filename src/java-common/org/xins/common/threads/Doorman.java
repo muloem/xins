@@ -29,9 +29,9 @@ import org.xins.common.text.TextUtils;
  * @since XINS 1.0.0
  *
  * @deprecated
- *    Deprecated since XINS 1.1.0.
+ *    Deprecated since XINS 1.0.1.
  *    Use <code>synchronized</code> sections instead.
- *    This implementation of this class is flawed.
+ *    The implementation of this class is flawed.
  */
 public final class Doorman extends Object {
 

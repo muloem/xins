@@ -86,7 +86,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>name == null || strategy == null</code>.
     *
-    * @since XINS 1.1.0
+    * @since XINS 1.0.1
     */
    public ExpiryFolder(String         name,
                        ExpiryStrategy strategy)
@@ -157,7 +157,7 @@ extends Object {
     *          || maxQueueWaitTime &lt;= 0L</code>.
     *
     * @deprecated
-    *    Deprecated since XINS 1.1.0.
+    *    Deprecated since XINS 1.0.1.
     *    Use the constructor {@link #ExpiryFolder(String,ExpiryStrategy)}
     *    instead.
     */
