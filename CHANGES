@@ -17,6 +17,12 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Removed boundary checks on all methods except the isValidValue method in
     all the IntXX type classes.
   - Added unit test class for Boolean type class.
+  - Added fileFound() method to FileWatcher.Listener interface. This may
+    break existing code.
+  - Fixed SF.net bug #1049850 ("FileWatcher thread dies if listener throws an
+    exception"). This bug has been in XINS since the introduction of the
+    FileWatcher class, in XINS 0.121 (initially in the package
+    org.xins.util.io).
 
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
