@@ -5,8 +5,8 @@ package org.xins.util.service.ldap;
 
 /**
  * LDAP search request. Combines
- * {@link LDAPServiceCaller.AuthenticationDetails authentication details}
- * and a {@link LDAPServiceCaller.Query query}.
+ * {@link AuthenticationDetails authentication details} and a
+ * {@link Query query}.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
