@@ -106,13 +106,13 @@ public class ExpiryFolderTests extends TestCase {
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
 
       Thread.sleep(30);
-      assertEquals("Got Incorrect value.", "world", folder.get("hello"));
+      assertEquals("Entry should not have expired yet.", "world", folder.get("hello"));
 
       Thread.sleep(50);
-      assertEquals("Incorrect value found.", "world", folder.find("hello"));
+      assertEquals("Entry should not have expired yet.", "world", folder.find("hello"));
 
       Thread.sleep(50);
-      assertNull("Incorrect value found.", folder.find("hello"));
+      assertNull("Entry should have expired.", folder.find("hello"));
       assertNull("Got incorrect value.", folder.get("hello"));
 
       strategy.stop();
