@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
 
@@ -50,6 +51,9 @@ final class CallResultOutputter extends Object {
     * @param result
     *    the call result to convert to XML, cannot be <code>null</code>.
     *
+    * @param oldStyle
+    *    flag that indicates if old-style output should be generated or not.
+    *
     * @throws IllegalArgumentException
     *    if <code>out      == null
     *          || encoding == null
@@ -63,6 +67,8 @@ final class CallResultOutputter extends Object {
                              FunctionResult result,
                              boolean        oldStyle)
    throws IllegalArgumentException, IOException {
+
+      // TODO: Support OutputStream instead of Writer
 
       // Check preconditions
       MandatoryArgumentChecker.check("out",      out,
@@ -87,6 +93,8 @@ final class CallResultOutputter extends Object {
             xmlout.attribute("code", code);
          }
       }
+
+      // TODO: Only print the 'errorcode' attribute if not oldStyle?
       if (code != null) {
          xmlout.attribute("errorcode", code);
       }
@@ -97,12 +105,16 @@ final class CallResultOutputter extends Object {
          Iterator names = params.getNames();
          while (names.hasNext()) {
             String name  = (String) names.next();
-            String value = params.get(name);
+            if (! TextUtils.isEmpty(name)) {
+               String value = params.get(name);
 
-            xmlout.startTag("param");
-            xmlout.attribute("name", name);
-            xmlout.pcdata(value);
-            xmlout.endTag(); // param
+               if (! TextUtils.isEmpty(value)) {
+                  xmlout.startTag("param");
+                  xmlout.attribute("name", name);
+                  xmlout.pcdata(value);
+                  xmlout.endTag(); // param
+               }
+            }
          }
       }
 
@@ -115,6 +127,7 @@ final class CallResultOutputter extends Object {
 
       xmlout.endTag(); // result
    }
+
 
    //-------------------------------------------------------------------------
    // Constructors
