@@ -4,9 +4,11 @@
 package org.xins.server;
 
 import java.io.PrintWriter;
+import java.util.Iterator;
 import javax.servlet.ServletRequest;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.io.FastStringWriter;
 
@@ -28,7 +30,7 @@ implements DefaultResultCodes {
     * Call result to be returned when a function is currently disabled. See
     * {@link #isEnabled()}.
     */
-   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult("DisabledFunction", null, null);
+   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult("_DisabledFunction", null, null);
 
 
    //-------------------------------------------------------------------------
@@ -214,7 +216,7 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (!_enabled) {
-         performedCall(start, callID, false, "DisabledFunction");
+         performedCall(start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
@@ -257,7 +259,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(start, callID, result.isSuccess(), result.getErrorCode());
+      performedCall(start, callID, result);
 
       return result;
    }
@@ -291,13 +293,10 @@ implements DefaultResultCodes {
     * @param callID
     *    the assigned call ID.
     *
-    * @param success
-    *    indication if the call was successful.
-    *
-    * @param code
-    *    the function result code, or <code>null</code>.
+    * @param result
+    *    the function result code, cannot be <code>null</code>.
     */
-   private final void performedCall(long start, int callID, boolean success, String code) {
+   private final void performedCall(long start, int callID, CallResult result) {
 
       // TODO: Accept ResultCode
 
@@ -305,15 +304,23 @@ implements DefaultResultCodes {
       //       the method invoking this method (performedCall) can directly
       //       invoke recordCall and this method can be removed.
 
-      long duration = _statistics.recordCall(start, success);
+      long duration = _statistics.recordCall(start, result.isSuccess());
 
       // Call succeeded
-      if (success) {
+      if (result.isSuccess()) {
          Log.log_1514(_name, callID, duration);
 
       // Call failed
       } else {
-         Log.log_1516(_name, callID, duration, code);
+         Log.log_1516(_name, callID, duration, result.getErrorCode());
+
+         // log the parameters
+         PropertyReader parameters = result.getParameters();
+         Iterator itParams = parameters.getNames();
+         while (itParams.hasNext()) {
+            String nextParam = (String) itParams.next();
+            Log.log_1517(_name, callID, nextParam, parameters.get(nextParam));
+         }
       }
    }
 }

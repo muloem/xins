@@ -83,7 +83,7 @@ public final class CallRequestParser extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
-      StringReader reader = new StringReader(xml)
+      StringReader reader = new StringReader(xml);
       try {
          return parse(reader);
       } finally {

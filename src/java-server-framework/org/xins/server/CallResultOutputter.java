@@ -36,6 +36,9 @@ final class CallResultOutputter extends Object {
     * @param out
     *    the output stream to send the XML to, cannot be <code>null</code>.
     *
+    * @param encoding
+    *    the encoding format for the XML, cannot be <code>null</code>.
+    *
     * @param result
     *    the call result to convert to XML, cannot be <code>null</code>.
     *
@@ -45,10 +48,10 @@ final class CallResultOutputter extends Object {
     * @throws IOException
     *    if there was an I/O error while writing to the output stream.
     */
-   public static void output(PrintWriter out, CallResult result, String xslt)
+   public static void output(PrintWriter out, String encoding, CallResult result, String xslt)
    throws IOException {
 
-      XMLOutputter outputter = new XMLOutputter(out, "US-ASCII");
+      XMLOutputter outputter = new XMLOutputter(out, encoding);
 
       outputter.declaration();
 

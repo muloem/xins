@@ -409,6 +409,13 @@
 			<param name="duration" type="int64" nullable="false" />
 			<param name="code" nullable="true" />
 		</entry>
+		<entry id="1517" level="INFO">
+			<description>Call to function failed with the given parameter.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="parameterName" nullable="false" />
+			<param name="parameterValue" nullable="true" />
+		</entry>
 	</group>
 
 	<group id="runtime.acl" name="Access rule matching">

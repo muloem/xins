@@ -91,7 +91,7 @@ extends Object {
       // Make sure the locale is supported by all controllers
       int size = CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
-         if (CONTROLLERS[i].isLocaleSupported(newLocale) == false) {
+         if (!CONTROLLERS[i].isLocaleSupported(newLocale)) {
             throw new UnsupportedLocaleException(newLocale);
          }
       }

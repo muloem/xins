@@ -180,6 +180,22 @@ extends HttpServlet {
     */
    public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
+   /**
+    * The default locale used for starting up when the locale is not defined in
+    * command line arguments.
+    */
+   public static final String DEFAULT_LOCALE = "us_US";
+
+   /**
+    * The response encoding format.
+    */
+   public static final String RESPONSE_ENCODING = "UTF-8";
+
+   /**
+    * The content type of the HTTP response.
+    */
+   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -564,7 +580,7 @@ extends HttpServlet {
          } catch (Throwable exception) {
             Log.log_1212(exception);
          } finally {
-            if (succeeded == false) {
+            if (!succeeded) {
                setState(API_BOOTSTRAP_FAILED);
                throw new ServletException();
             }
@@ -680,7 +696,7 @@ extends HttpServlet {
       // If the log locale is set, apply it
       if (newLocale != null) {
          String currentLocale = Log.getTranslationBundle().getName();
-         if (currentLocale.equals(newLocale) == false) {
+         if (!currentLocale.equals(newLocale)) {
             Log.log_1306(currentLocale, newLocale);
             try {
                LogCentral.setLocale(newLocale);
@@ -840,9 +856,9 @@ extends HttpServlet {
 
          // Send the XML output to the stream and flush
          PrintWriter out = response.getWriter();
-         response.setContentType("text/xml");
+         response.setContentType(RESPONSE_CONTENT_TYPE);
          response.setStatus(HttpServletResponse.SC_OK);
-         CallResultOutputter.output(out, result, xslt);
+         CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt);
          out.flush();
       }
    }

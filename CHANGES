@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.186:
   - Removed some unused imports.
   - Removed the references to Log4j as they were replaced with logdoc.
   - Close the stream that read the file xins.properties.
+  - Renamed result code DisableFunction to _DisableFunction.
+  - Added the logging of the CallResult arguments when a call fails.
+  - The XML result is now sent in UTF-8 encoding format.
 
 * XINS/Java Common Library:
   - Set the adjustment of the ExpiryFolder size in the doorman lock.
@@ -27,6 +30,7 @@ CHANGES INTRODUCED IN XINS 0.186:
   - Fixed incorrect targets classes and wars generated when at least one API
     uses the new directory structure.
     This bug has been in XINS since version 0.169.
+  - Recreate the build.xml when an impl.xml file has changed.
 
 * Changed email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com.
 
