@@ -168,16 +168,27 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Use the POST method
       HttpMethod method = createMethod(target.getURL());
 
-      // Execute the request
-      client.executeMethod(method);
+      boolean succeeded = false;
+      try {
+         // Execute the request
+         client.executeMethod(method);
 
-      // Read response body (mandatory operation) and determine status
-      byte[] data = method.getResponseBody();
-      int    code = method.getStatusCode();
-
-      // Release the connection
-      // TODO: Do this in a finally section?
-      method.releaseConnection();
+         // Read response body (mandatory operation) and determine status
+         byte[] data = method.getResponseBody();
+         int    code = method.getStatusCode();
+         succeeded = true;
+      } finally {
+         // Release the connection
+         if (succeeded) {
+            method.releaseConnection();
+         } else {
+            try {
+               method.releaseConnection();
+            } catch (Throwable exception) {
+               // TODO: Log and ignore
+            }
+         }
+      }
 
       return new Result(code, data);
    }
