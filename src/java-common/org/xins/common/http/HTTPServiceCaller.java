@@ -332,6 +332,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns a default <code>CallConfig</code> object. This method is called
+    * by the <code>ServiceCaller</code> constructor if no
+    * <code>CallConfig</code> object was given.
+    *
+    * <p>The implementation of this method in class {@link HTTPServiceCaller}
+    * returns a standard {@link HTTPCallConfig} object which has unconditional
+    * fail-over disabled and the HTTP method set to
+    * {@link HTTPMethod#POST POST}.
+    *
+    * @return
+    *    a new {@link HTTPCallConfig} instance, never <code>null</code>.
+    */
+   protected CallConfig getDefaultCallConfig() {
+      return new HTTPCallConfig();
+   }
+
+   /**
     * Executes a request towards the specified target. If the call succeeds,
     * then a {@link HTTPCallResult} object is returned, otherwise a
     * {@link CallException} is thrown.
