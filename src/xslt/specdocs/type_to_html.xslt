@@ -186,12 +186,12 @@
 		<xsl:value-of select="name()" />
 		type</em>.<br/>
 		<xsl:if test="@min">
-			<xsl:text>The minimum value is</xsl:text>
+			<xsl:text>The minimum value is </xsl:text>
 			<xsl:value-of select="@min" />
 			<xsl:text>.</xsl:text><br />
 		</xsl:if>
 		<xsl:if test="@max">
-			<xsl:text>The maximum value is</xsl:text>
+			<xsl:text>The maximum value is </xsl:text>
 			<xsl:value-of select="@max" />
 			<xsl:text>.</xsl:text><br />
 		</xsl:if>

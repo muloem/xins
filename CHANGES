@@ -52,6 +52,9 @@ CHANGES INTRODUCED IN XINS 0.201:
   - Added the possibility to have a multi-line text in the translation element
     of the translation-bundle.xml file.
 
+* Generated specification documentation:
+  - Fixed layout for min and max for number types.
+
 * Generated build file
   - The CAPI generated javadoc now links to the J2SE 1.4.2 and accepts the
     assertion keyword.
