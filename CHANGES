@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.129:
+
+* Building XINS:
+  - Simplified target and directory names by removing '-framework' suffixes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.128:
 
 * XINS/Java Server Framework:
