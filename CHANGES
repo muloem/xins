@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
 
+* XINS/Java Common Library:
+  - Changed TargetDescriptor class: Added connection and socket time-out
+    properties.
+  - Added controlTimeOut() method to the ServiceCaller class.
+
 * XINS/Java Server Framework:
   - Made the method getResultBuilder() in class FunctionResult
     package-private, since it only needs to be accessed from the package. In
@@ -9,9 +14,9 @@ CHANGES INTRODUCED IN XINS 0.195:
     InvalidRequestResult and InvalidResponseResult, which represent
     respectively the result code _InvalidRequest and _InvalidResponse.
 
-* XINS/Java Common Library:
-  - Changed TargetDescriptor class: Added connection and socket time-out
-    properties.
+* XINS/Java Client Framework:
+  - Changed XINSServiceCaller to use connection and socket time-out as
+    defined in the TargetDescriptor class.
 
 * Build and release process:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
