@@ -593,7 +593,14 @@ extends HttpServlet {
          // Initialize the logging subsystem
          readRuntimeProperties();
 
-         Log.log_1233(Library.getVersion());
+         // Log XINS version
+         String serverVersion = Library.getVersion();
+         String commonVersion = org.xins.common.Library.getVersion();
+         Log.log_1233(serverVersion);
+         if (! serverVersion.equals(commonVersion)) {
+            Log.log_1234(serverVersion, commonVersion);
+         }
+
 
          //----------------------------------------------------------------//
          //                        Construct API                           //
@@ -837,14 +844,6 @@ extends HttpServlet {
          if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
             Log.log_1312(_hostname, hostname);
             _hostname = hostname;
-         }
-
-         // Log XINS version
-         String serverVersion = Library.getVersion();
-         String commonVersion = org.xins.common.Library.getVersion();
-         Log.log_1309(serverVersion);
-         if (! serverVersion.equals(commonVersion)) {
-            Log.log_1310(serverVersion, commonVersion);
          }
 
          _runtimeProperties = new PropertiesPropertyReader(properties);

@@ -34,6 +34,7 @@
 	<translation entry="1230">Bootstrap of function <value-of-param name="function" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
 	<translation entry="1232">Bootstrap of function <value-of-param name="function" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1233">XINS/Java Server Framework version <value-of-param name="version" /> is bootstrapped.</translation>
+	<translation entry="1234">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="1300">Initializing logging subsystem.</translation>
 	<translation entry="1301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="1302">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
@@ -43,7 +44,6 @@
 	<translation entry="1306">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1307">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
-	<translation entry="1310">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="1311">The locale <value-of-param name="locale" format="quoted" /> is not supported by the <value-of-param name="api" format="quoted" /> API.</translation>
 	<translation entry="1312">Changed  hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
 	<translation entry="1400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>

@@ -156,6 +156,11 @@
 			<description>XINS/Java Server Framework is bootstrapped.</description>
 			<param name="version" />
 		</entry>
+		<entry id="1234" level="WARNING">
+			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
+			<param name="serverVersion" />
+			<param name="commonVersion" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
@@ -195,11 +200,6 @@
 			<description>Failed to change the locale for the log messages.</description>
 			<param name="currentLocale" />
 			<param name="failedLocale" />
-		</entry>
-		<entry id="1310" level="WARNING">
-			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
-			<param name="serverVersion" />
-			<param name="commonVersion" />
 		</entry>
 		<entry id="1311" level="FATAL">
 			<description>Logdoc Locale not supported by the API.</description>
