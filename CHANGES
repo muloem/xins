@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 0.137:
     . Parameter keys are now properly URL-encoded.
     . If a parameter value, converted to a string is null or empty string,
       then it is ignored.
+    . Storing CRC32 in an int.
     . Added method ping()
     . Added method getRemoteXINSVersion()
 
