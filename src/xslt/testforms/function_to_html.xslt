@@ -26,7 +26,6 @@
 
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../footer.xslt" />
-	<xsl:include href="../firstline.xslt" />
 	<xsl:include href="../types.xslt" />
 
 	<xsl:variable name="env_url" select="document($api_file)/api/environment[@id=$environment]/@url" />
