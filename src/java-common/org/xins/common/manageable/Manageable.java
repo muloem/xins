@@ -9,10 +9,10 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * Lifespan manager. Abstract base class for classes that support bootstrap,
- * initialization and destruction functions.
+ * Abstractgion of a manageanble object. Abstract base class for classes that
+ * support bootstrap, initialization and destruction functions.
  *
- * <p>In environments where lifespan manager instances are constructed
+ * <p>In environments where <code>Manageable</code> instances are constructed
  * dynamically, they are typically expected to have a public no-argument
  * constructor.
  *
