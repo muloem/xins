@@ -38,17 +38,21 @@
 					<xsl:value-of select="$api" />
 					<xsl:text>' API.</xsl:text>
 				</description>
-				<servlet-class>
-					<xsl:call-template name="package_for_api">
-						<xsl:with-param name="project_file">
-							<xsl:value-of select="$project_file" />
-						</xsl:with-param>
-						<xsl:with-param name="api">
-							<xsl:value-of select="$api" />
-						</xsl:with-param>
-					</xsl:call-template>
-					<xsl:text>.APIImpl</xsl:text>
-				</servlet-class>
+				<servlet-class>org.xins.server.APIServlet</servlet-class>
+				<init-param>
+					<param-name>api.class</param-name>
+					<param-value>
+						<xsl:call-template name="package_for_api">
+							<xsl:with-param name="project_file">
+								<xsl:value-of select="$project_file" />
+							</xsl:with-param>
+							<xsl:with-param name="api">
+								<xsl:value-of select="$api" />
+							</xsl:with-param>
+						</xsl:call-template>
+						<xsl:text>.APIImpl</xsl:text>
+					</param-value>
+				</init-param>
 				<xsl:for-each select="param">
 					<init-param>
 						<param-name>
@@ -60,6 +64,15 @@
 					</init-param>
 				</xsl:for-each>
 			</servlet>
+			<servlet-mapping>
+				<servlet-name>
+					<xsl:value-of select="$api" />
+				</servlet-name>
+				<url-pattern>
+					<xsl:text>/</xsl:text>
+					<xsl:value-of select="$api" />
+				</url-pattern>
+			</servlet-mapping>
 		</web-app>
 	</xsl:template>
 
