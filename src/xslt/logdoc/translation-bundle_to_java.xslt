@@ -174,6 +174,13 @@ import org.xins.logdoc.LogdocStringBuffer;
       }</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="translation/value-of-param[@format='hex']">
+		<xsl:text>
+      org.xins.logdoc.LogdocHexConverter.toHexString(buffer, </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>);</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="translation/text()">
 		<xsl:choose>
 			<xsl:when test="string-length(.) &lt; 1"></xsl:when>

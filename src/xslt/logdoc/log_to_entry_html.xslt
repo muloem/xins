@@ -244,4 +244,12 @@
 			<xsl:text>"</xsl:text>
 		</span>
 	</xsl:template>
+
+	<xsl:template match="translation/value-of-param[@format='hex']">
+		<span class="value-of-param">
+			<xsl:text>hex(</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>)</xsl:text>
+		</span>
+	</xsl:template>
 </xsl:stylesheet>
