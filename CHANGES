@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.72:
+
+* XINS/Java Client Framework:
+  - Added getActualFunctionCaller(long) to class CallTargetGroup that
+    retrieves an ActualFunctionCaller by CRC-32 checksum of its URL.
+
+* Small Javadoc improvements.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.71:
 
 * Added missing Javadoc comments for some private members.
