@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 0.158:
 * Dependencies:
   - Some JAR files were commited in CVS as ASCII files, this is fixed.
   - Updated to Jakarta Commons HttpClient 2.0.
+  - Updated to Jakarta Commons Net 1.1.0.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.157:
