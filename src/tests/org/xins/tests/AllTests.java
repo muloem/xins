@@ -45,6 +45,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.service.TargetDescriptorTests.class);
+      suite.addTestSuite(org.xins.tests.common.service.GroupDescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.service.UnsupportedProtocolExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.text.PatternParserTests.class);
