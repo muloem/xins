@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.165:
 
 * Generated specification documentation:
   - Added the freeze parameter in the api.dtd.
+  - Added new possible parameters in the function.dtd.
 
 * Logdoc:
   - Added a note to the generated Logdoc index page, about deciding whether a

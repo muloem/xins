@@ -7,6 +7,7 @@
 <!ELEMENT function (description?, input?, output?, example*)>
 <!ATTLIST function
           name       CDATA #REQUIRED
+          api        CDATA #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >
@@ -17,20 +18,53 @@
 <!ATTLIST param
           name       CDATA #REQUIRED
           required   CDATA #REQUIRED
-          type       CDATA #REQUIRED
+          type       CDATA #IMPLIED
 >
-<!ELEMENT output (param*, resultcode-ref*)>
+<!ELEMENT output (param*, resultcode-ref*, resultcode*, data?)>
+<!ELEMENT data (element*)>
+<!ATTLIST data
+          contains   CDATA #REQUIRED
+>
+<!ELEMENT element (description, contains?, attribute*)>
+<!ATTLIST element
+          name       CDATA #REQUIRED
+>
+<!ELEMENT contains (contained*)>
+<!ELEMENT contained EMPTY>
+<!ATTLIST contained
+          element    CDATA #REQUIRED
+          multiplicity CDATA #IMPLIED
+>
+<!ELEMENT attribute (description)>
+<!ATTLIST attribute
+          name       CDATA #REQUIRED
+          required   CDATA #IMPLIED
+>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
           name       CDATA #REQUIRED
+>
+<!ELEMENT resultcode (description)>
+<!ATTLIST resultcode
+          success    CDATA #REQUIRED
+          value      CDATA #REQUIRED
 >
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
           example     CDATA #REQUIRED
 >
-<!ELEMENT example (description)>
+<!ELEMENT example (description, data-example?)>
 <!ATTLIST example
           num         CDATA #REQUIRED
           resultcode  CDATA #IMPLIED
           success     CDATA #IMPLIED
+>
+<!ELEMENT data-example (element-example*)>
+<!ELEMENT element-example (element-example*, attribute-example*)>
+<!ATTLIST element-example
+          name        CDATA #REQUIRED
+>
+<!ELEMENT attribute-example (#PCDATA)>
+<!ATTLIST attribute-example
+          name        CDATA #REQUIRED
 >
