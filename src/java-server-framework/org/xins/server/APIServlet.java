@@ -144,16 +144,6 @@ extends HttpServlet {
    private static final State DISPOSED = new State("DISPOSED");
 
    /**
-    * The expected version of the Java Servlet Specification, major part.
-    */
-   private static final int EXPECTED_SERVLET_VERSION_MAJOR = 2;
-
-   /**
-    * The expected version of the Java Servlet Specification, minor part.
-    */
-   private static final int EXPECTED_SERVLET_VERSION_MINOR = 3;
-
-   /**
     * The name of the system property that specifies the location of the
     * configuration file.
     */
@@ -220,7 +210,7 @@ extends HttpServlet {
       settings.setProperty("log4j.rootLogger",                                "ALL, console");
       settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%-6c{1} %-6p %m%n");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
       PropertyConfigurator.configure(settings);
    }
 
@@ -482,10 +472,11 @@ extends HttpServlet {
          }
 
          // Check the expected vs implemented Java Servlet API version
+	 // Both 2.2 and 2.3 are supported
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
-         if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
-            String expected = "" + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR;
+         if (major != 2 || (minor != 2 && minor != 3)) {
+            String expected = "2.2/2.3";
             String actual   = "" + major + '.' + minor;
             Log.log_1203(actual, expected);
          }
