@@ -95,8 +95,11 @@ public final class FileWatcher extends Thread {
    private final Listener _listener;
 
    /**
-    * Timestamp of the last modification of the file. Initially this field is
-    * <code>0L</code>.
+    * Timestamp of the last modification of the file. The value
+    * <code>-1</code> indicates that the file could not be found the last time
+    * this was checked.
+    *
+    * <p>Initially this field is <code>-1L</code>.
     */
    private long _lastModified;
 
@@ -204,42 +207,100 @@ public final class FileWatcher extends Thread {
     * Checks if the file changed. The following algorithm is used:
     *
     * <ul>
-    *    <li>if the file does not exist, then {@link Listener#fileNotFound()} is called;
-    *    <li>if the file was modified, then {@link Listener#fileModified()} is called;
-    *    <li>if {@link File#exists()} or {@link File#lastModified()} throws a {@link SecurityException}, then {@link Listener#securityException(SecurityException)} is called;
-    *    <li>if the file was not modified and no {@link SecurityException}, then {@link Listener#fileNotModified()} is called.
+    *    <li>check if the file can be found;
+    *    <li>if so, then determine when the file was last modified;
+    *    <li>if either the file existence check or the file modification check
+    *        causes a {@link SecurityException} to be thrown, then
+    *        {@link Listener#securityException(SecurityException)} is called
+    *        and the method returns;
+    *    <li>otherwise if the file does not exist, then
+    *        {@link Listener#fileNotFound()} is called and the method returns;
+    *    <li>otherwise if the file does exist, but previously did not exist,
+    *        then {@link Listener#fileFound()} is called and the method
+    *        returns;
+    *    <li>otherwise if the file was modified, then {@link Listener#fileModified()} is
+    *        called and the method returns;
+    *    <li>otherwise the file was not modified, then
+    *        {@link Listener#fileNotModified()} is called and the method
+    *        returns.
     * </ul>
     */
    private void check() {
 
+      // Variable to store the file modification timestamp in. The value -1
+      // indicates the file does not exist.
       long lastModified;
+
+      // Check if the file can be found and if so, when it was last modified
       try {
-         // If the file exists, then check when it was last modified...
          if (_file.exists()) {
             lastModified = _file.lastModified();
-
-         // ...otherwise notify the listener and return.
          } else {
-            _lastModified = 0;
-            _listener.fileNotFound();
-            return;
+            lastModified = -1;
          }
 
-      // If there was an authorisation error, notify the listener.
-      } catch (SecurityException exception) {
-         _lastModified = 0;
-         _listener.securityException(exception);
+      // Authorisation problem; our code is not allowed to call File.exists()
+      // and/or File.lastModified()
+      } catch (SecurityException securityException) {
+         try {
+            _listener.securityException(securityException);
+         } catch (Throwable t) {
+            // TODO: Log
+         }
+
          return;
       }
 
-      // No authorisation error, check if the file was modified.
-      if (lastModified != _lastModified) {
-         _listener.fileModified();
-      } else {
-         _listener.fileNotModified();
-      }
+      // File can not be found
+      if (lastModified == -1) {
 
-      _lastModified = lastModified;
+         // Set _lastModified to -1, which indicates the file did not exist
+         // last time it was checked.
+         _lastModified = -1;
+
+         // Notify the listener
+         try {
+            _listener.fileNotFound();
+         } catch (Throwable t) {
+            // TODO: Log
+         }
+
+      // Previously the file could not be found, but now it can
+      } else if (_lastModified == -1) {
+
+         // Update the field that stores the last known modification date
+         _lastModified = lastModified;
+
+         // Notify the listener
+         try {
+            _listener.fileFound();
+         } catch (Throwable t) {
+            // TODO: Log
+         }
+
+      // File has been modified
+      } else if (lastModified != _lastModified) {
+
+         // Update the field that stores the last known modification date
+         _lastModified = lastModified;
+
+         // Notify listener
+         try {
+            _listener.fileModified();
+         } catch (Throwable t) {
+            // TODO: Log
+         }
+
+      // File has not been modified
+      } else {
+
+         // Notify listener
+         try {
+            _listener.fileNotModified();
+         } catch (Throwable t) {
+            // TODO: Log
+         }
+      }
    }
 
 
@@ -259,8 +320,21 @@ public final class FileWatcher extends Thread {
 
       /**
        * Callback method, called if the file is checked but cannot be found.
+       * This method is called the first time the file is determined not to
+       * exist, but also each consecutive time the file is still determined
+       * not to be found.
        */
       void fileNotFound();
+
+      /**
+       * Callback method, called if the file is found for the first time since
+       * the <code>FileWatcher</code> was started. Each consecutive time the
+       * file still exists, either {@link #fileModified()} or
+       * {@link fileNotModified()} is called.
+       *
+       * @since XINS 0.209
+       */
+      void fileFound();
 
       /**
        * Callback method, called if an authorisation error prevents that the
