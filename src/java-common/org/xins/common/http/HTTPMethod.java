@@ -9,6 +9,11 @@ package org.xins.common.http;
 /**
  * HTTP method. Possible values for variable of this class:
  *
+ * <ul>
+ *    <li>{@link #GET}
+ *    <li>{@link #POST}
+ * </ul>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
