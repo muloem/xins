@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.102:
 
 * XINS/Java Server Framework:
   - Added getAttributes() to class Session.
+  - Added standard function _PerformGC that calls System.gc(). See:
+    http://java.sun.com/j2se/1.3/docs/api/java/lang/System.html#gc()
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.101:
