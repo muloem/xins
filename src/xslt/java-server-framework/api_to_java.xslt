@@ -15,6 +15,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="api_file"     />
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
@@ -70,7 +71,7 @@ public class APIImpl extends API {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
-		<xsl:for-each select="//api/resultcode">
+		<xsl:for-each select="document($api_file)/api/resultcode">
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.rcd')" />
 			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
@@ -101,7 +102,7 @@ public class APIImpl extends API {
 			<xsl:text>");</xsl:text>
 		</xsl:for-each>
 
-		<xsl:for-each select="//api/function">
+		<xsl:for-each select="document($api_file)/api/function">
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.fnc')" />
 			<xsl:variable name="fieldname">

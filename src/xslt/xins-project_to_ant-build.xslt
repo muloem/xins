@@ -101,11 +101,7 @@
 				</echo>
 			</target>
 
-			<xsl:call-template name="createproject">
-				<xsl:with-param name="specsdir">
-					<xsl:value-of select="$specsdir" />
-				</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="createproject" />
 
 			<target name="-prepare" />
 
@@ -404,6 +400,10 @@
 								<pathelement path="{$xins-common.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								</xsl:if>
 							</classpath>
 						</javac>
 					</target>
@@ -459,24 +459,6 @@
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
-
-					<target name="-classes-logdoc-{$api}" depends="-prepare-classes" if="logdoc.available.{$api}">
-						<echo message="Generating the logdoc for {$api}" />
-						<mkdir dir="build/logdoc/{$api}" />
-						<style
-						in="{$logdoc_dir}/log.xml"
-						out="build/logdoc/{$api}/build.xml"
-						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
-							<xmlcatalog refid="all-dtds" />
-							<param name="xins_home"       expression="{$xins_home}" />
-							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-							<param name="sourcedir"       expression="{$logdoc_dir}" />
-							<param name="html_destdir"    expression="html" />
-							<param name="java_destdir"    expression="{$javaDestFileDir}" />
-							<param name="package_name"    expression="{$package}" />
-						</style>
-						<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
-					</target>
 
 					<target name="-impl-{$api}-existencechecks">
 						<xsl:for-each select="document($api_file)/api/function">
@@ -613,8 +595,44 @@
 						</xsl:if>
 
 						<!-- Generate the logdoc java file is needed -->
-						<available property="logdoc.available.{$api}" file="{$logdoc_dir}/log.xml" />
-						<antcall target="-classes-logdoc-{$api}" />
+						<xsl:if test="document($api_file)/api/impl-java/logdoc">
+							<echo message="Generating the logdoc for {$api}" />
+							<mkdir dir="build/logdoc/{$api}" />
+							<style
+							in="{$project_home}/src/logdoc/{$api}/log.xml"
+							out="build/logdoc/{$api}/build.xml"
+							style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
+								<xmlcatalog refid="all-dtds" />
+								<param name="xins_home"       expression="{$xins_home}" />
+								<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
+								<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
+								<param name="html_destdir"    expression="html" />
+								<param name="java_destdir"    expression="{$javaDestFileDir}" />
+								<param name="package_name"    expression="{$package}" />
+							</style>
+							<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
+						</xsl:if>
+						<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+							<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl')" />
+							<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+							<xsl:if test="document($impl_file)/logdoc">
+								<echo message="Generating the logdoc for {$api}" />
+								<mkdir dir="build/logdoc/{$api}" />
+								<style
+								in="{$impl_dir}/log.xml"
+								out="build/logdoc/{$api}/build.xml"
+								style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
+									<xmlcatalog refid="all-dtds" />
+									<param name="xins_home"       expression="{$xins_home}" />
+									<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
+									<param name="sourcedir"       expression="{$impl_dir}" />
+									<param name="html_destdir"    expression="html" />
+									<param name="java_destdir"    expression="{$javaDestFileDir}" />
+									<param name="package_name"    expression="{$package}" />
+								</style>
+								<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
+							</xsl:if>
+						</xsl:if>
 
 						<!-- Copy all .java files to a single directory -->
 						<mkdir dir="{$javaCombinedDir}" />
@@ -643,6 +661,10 @@
 								<pathelement path="{$xins-server.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								</xsl:if>
 							</classpath>
 						</javac>
 					</target>
@@ -674,11 +696,15 @@
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">
-							<lib dir="{$xins_home}/build"                       includes="logdoc.jar" />
-							<lib dir="{$xins_home}/build"                       includes="xins-common.jar" />
-							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
-							<lib dir="{$xins_home}/lib" includes="**/*.jar" />
+							<lib dir="{$xins_home}/build" includes="logdoc.jar" />
+							<lib dir="{$xins_home}/build" includes="xins-common.jar" />
+							<lib dir="{$xins_home}/build" includes="xins-server.jar" />
+							<lib dir="{$xins_home}/lib"   includes="commons-httpclient.jar commons-logging.jar jakarta-oro.jar jdom.jar log4j.jar xmlenc.jar" />
 							<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
+							<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+								<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+								<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
+							</xsl:if>
 							<classes dir="{$classesDestDir}" includes="**/*.class" />
 							<xsl:if test="$apiHasTypes = 'true'">
 								<classes dir="{$typeClassesDir}" includes="**/*.class" />
@@ -740,6 +766,10 @@
 								<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+									<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+									<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+								</xsl:if>
 							</classpath>
 						</javadoc>
 						<copy
@@ -943,7 +973,7 @@
 					<xsl:attribute name="depends">
 						<xsl:text>client-</xsl:text>
 						<xsl:value-of select="$api" />
-						<xsl:if test="document($api_file)/api/impl-java">
+						<xsl:if test="document($api_file)/api/impl-java or document($project_file)/project/api[@name = $api]/impl">
 							<xsl:text>, server-</xsl:text>
 							<xsl:value-of select="$api" />
 						</xsl:if>

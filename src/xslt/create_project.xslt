@@ -14,12 +14,9 @@
 	<!-- Print the footer -->
 	<xsl:template name="createproject">
 
-		<!-- Define parameters -->
-		<xsl:param name="specsdir"    />
-
 		<target name="create-api" description="Generates a new api specification file.">
 			<input addproperty="api.name"
-						 message="Please, enter the name of the api (in lowercase) :" />
+						 message="Please, enter the name of the api (in lowercase):" />
 			<property name="api.specdir" value="apis/${{api.name}}/spec" />
 			<mkdir dir="${{api.specdir}}" />
 			<property name="xml.file" value="${{api.specdir}}/api.xml" />
@@ -36,7 +33,51 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${api.description}<![CDATA[</description>
 
 </api>]]></echo>
+			<input message="Do you want to create an implementation for the API (y/n)?"
+			       validargs="y,n"
+			       addproperty="do.implementation" />
+			<condition property="create.impl">
+				<equals arg1="y" arg2="${{do.implementation}}"/>
+			</condition>
+			<antcall target="create-impl" />
+			<input message="Do you want to define some environments for the API (y/n)?"
+			       validargs="y,n"
+			       addproperty="do.environments" />
+			<condition property="create.environments">
+				<equals arg1="y" arg2="${{do.environments}}"/>
+			</condition>
+			<echo message="do.environments ${{do.environments}} ; create.environments ${{create.environments}}" />
+			<antcall target="create-environments" />
 			<echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." />
+		</target>
+
+		<target name="create-impl" if="create.impl">
+			<property name="api.impldir" value="apis/${{api.name}}/impl" />
+			<mkdir dir="${{api.impldir}}" />
+			<property name="impl.file" value="${{api.impldir}}/impl.xml" />
+			<available property="impl.exists" file="${{impl.file}}" />
+			<fail message="The file ${{impl.file}} already exists!" if="impl.exists" />
+			<echo file="${{impl.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" "http://xins.sourceforge.net/dtd/impl_1_0.dtd">
+
+<impl>
+</impl>
+]]></echo>
+		</target>
+
+		<target name="create-environments" if="create.environments">
+			<property name="environments.file" value="apis/${{api.name}}/environments.xml" />
+			<available property="environments.exists" file="${{environments.file}}" />
+			<fail message="The file ${{environments.file}} already exists!" if="environments.exists" />
+			<echo file="${{environments.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" "http://xins.sourceforge.net/dtd/environments_1_0.dtd">
+
+<environments>
+
+	<environment id="localhost" url="http://127.0.0.1:8080/" />
+
+</environments>
+]]></echo>
 		</target>
 
 		<target name="create-function" description="Generates a new function specification file.">

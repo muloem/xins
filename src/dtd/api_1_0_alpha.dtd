@@ -40,10 +40,11 @@
           id         CDATA #REQUIRED
           url        CDATA #REQUIRED
 >
-<!ELEMENT impl-java (dependency*, instance*, param*)>
+<!ELEMENT impl-java (logdoc?, dependency*, instance*, param*)>
 <!ATTLIST impl-java
           mapping    CDATA #IMPLIED
 >
+<!ELEMENT logdoc EMPTY>
 <!ELEMENT dependency EMPTY>
 <!ATTLIST dependency
           dir        CDATA #REQUIRED

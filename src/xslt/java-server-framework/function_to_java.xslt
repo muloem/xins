@@ -91,6 +91,17 @@ public abstract class ]]></xsl:text>
 			<xsl:value-of select="@getter" />
 			<xsl:text>();</xsl:text>
 		</xsl:for-each>
+		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+			<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+			<xsl:for-each select="document($impl_file)/impl/instance">
+				<xsl:text>
+				</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> = api.</xsl:text>
+				<xsl:value-of select="@getter" />
+				<xsl:text>();</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
 		<xsl:text><![CDATA[
    }
 
@@ -109,6 +120,20 @@ public abstract class ]]></xsl:text>
 
 </xsl:text>
 		</xsl:for-each>
+		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+			<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+			<xsl:for-each select="document($impl_file)/impl/instance">
+				<xsl:text>
+   protected final </xsl:text>
+				<xsl:value-of select="@class" />
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>;
+
+</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
+
 		<xsl:text>
    //-------------------------------------------------------------------------
    // Methods

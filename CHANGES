@@ -7,8 +7,19 @@ CHANGES INTRODUCED IN XINS 0.183:
 * XINS/Java Common Library:
   - Set the constructor of Date.Value and Timestamp.Value public.
 
-* The generated implementation return by default a new SuccessfulResult
-  instead of null.
+* Specification:
+  - Added <impl> and <environments> elements for apis.
+  - Added <logdoc> element for the <impl-java> and <impl> elements.
+
+* Generated Java code:
+  - The generated implementation return by default a new SuccessfulResult
+    instead of null.
+  - Fixed a bug that prevented the new directory structure to find the defined
+    functions.
+    This bug has been in XINS since version 0.169.
+  - Fixed a bug that didn't take the shared instance with the new directory
+    structure.
+    This bug has been in XINS since version 0.169.
 
 * Build and release process:
   - Put the logdoc package in a apart jar file (logdoc.jar).
@@ -20,6 +31,8 @@ CHANGES INTRODUCED IN XINS 0.183:
     to an uppercase if needed.
   - Set the construction of the war file as last argument for the targets
     server-<api> and all-<api>.
+  - The create-api target now asks you if you want to create the
+    implementation and define some environments.
 
 * Generated specification documentation:
   - Added a link to download the client zip file.
