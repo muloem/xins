@@ -34,7 +34,7 @@ public class TranslationBundle extends Object {
     * The translation bundle with <em>raw</em> messages. The name of this
     * bundle is <code>"_raw"</code>.
     */
-   public static final TranslationBundle SINGLETON = new TranslationBundle();
+   public static final TranslationBundle RAW = new TranslationBundle();
 
 
    //-------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class TranslationBundle extends Object {
    /**
     * Constructs a new <code>TranslationBundle</code> instance, not a subclass.
     */
-   protected TranslationBundle() {
+   private TranslationBundle() {
       _name = "_raw";
    }
 
