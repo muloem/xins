@@ -257,7 +257,7 @@ public abstract class ]]></xsl:text>
 				<xsl:text>
       } else if (!isMissing(</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>) && !</xsl:text>
+				<xsl:text>) &amp;&amp; !</xsl:text>
 				<xsl:call-template name="hungarianUpper">
 					<xsl:with-param name="text">
 						<xsl:value-of select="@type" />
