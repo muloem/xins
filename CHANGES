@@ -5,6 +5,15 @@ CHANGES INTRODUCED IN XINS 0.190:
   - Added an append(boolean) method to the LogdocStringBuffer class. This is
     needed in order to properly support the 'boolean' type in Logdoc.
 
+* Generated build file:
+  - Added commons-httpclient.jar and jakarta-oro.jar to the classpath for the
+    creation of the javadoc.
+  - The create targets now creates XML files with the encoding set to UTF-8.
+
+* Logdoc:
+  - Changed the logdoc domain for common from org.xins.util to
+    org.xins.common.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 

@@ -783,6 +783,8 @@
 								<pathelement location="{$xins_home}/build/xins-server.jar"   />
 								<pathelement location="{$xins_home}/lib/jdom.jar"            />
 								<pathelement location="{$xins_home}/lib/log4j.jar"           />
+								<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
+								<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />
 								<pathelement location="{$xins_home}/lib/commons-logging.jar" />
 								<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
@@ -967,6 +969,8 @@
 							<pathelement location="{$xins_home}/build/xins-client.jar"   />
 							<pathelement location="{$xins_home}/lib/jdom.jar"            />
 							<pathelement location="{$xins_home}/lib/log4j.jar"           />
+							<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
+							<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />
 							<pathelement location="{$xins_home}/lib/commons-logging.jar" />
 							<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
 							<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
