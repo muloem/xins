@@ -3,6 +3,10 @@ CHANGES INTRODUCED IN XINS 0.204:
 
 * XINS/Java Common Library:
   - Improved the CallFailedException message to return more information.
+  - Changed the execute method in class TimeOutController to accept a Runnable
+    instead of a Thread. The old method is marked deprecated.
+  - Changed the controlTimeOut method in class ServiceCaller to accept a
+    Runnable instead of a Thread. The old method is marked deprecated.
 
 * XINS/Java Client Framework:
   - The SaxParser parse the response from the byte[] instead of the
@@ -51,6 +55,7 @@ CHANGES INTRODUCED IN XINS 0.203:
     org.xins.client.DataElement.
     Note: this change may break your code compatibility if you use a CAPI API.
   - Replaced the Dom parser with a SAX parser to parse the XML.
+  - Marking the XINSServiceCaller.CallExecutor thread as a daemon thread.
 
 * Logdoc:
   - Changed the interface of class AbstractLogdocSerializable (introduced in
