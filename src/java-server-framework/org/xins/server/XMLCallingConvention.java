@@ -112,7 +112,7 @@ extends CallingConvention {
       // Check content type
       // TODO: Support other character sets as well
       String contentType = httpRequest.getContentType();
-      if (!contentType.startsWith("text/xml;") && !contentType.endsWith("charset=" + REQUEST_ENCODING)) {
+      if (!contentType.startsWith("text/xml;")) {
          final String DETAIL = "Incorrect content type \""
                              + contentType
                              + "\".";
