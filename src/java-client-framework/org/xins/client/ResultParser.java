@@ -179,6 +179,9 @@ public class ResultParser extends Object {
 
       String code = element.getAttributeValue("errorcode");
       if (code == null || code.length() < 1) {
+         code = element.getAttributeValue("code");
+      }
+      if (code == null || code.length() < 1) {
          return null;
       } else {
          return code;

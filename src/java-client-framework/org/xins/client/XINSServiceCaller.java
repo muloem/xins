@@ -474,11 +474,31 @@ public final class XINSServiceCaller extends ServiceCaller {
        *
        * @return
        *    the result code or <code>null</code> if no code was returned.
+       * @deprecated Use getErrorCode().
+       */
+      public String getCode() {
+         return _code;
+      }
+
+      /**
+       * Returns the result code.
+       *
+       * @return
+       *    the result code or <code>null</code> if no code was returned.
        */
       public String getErrorCode() {
          return _code;
       }
 
+      /**
+       * Returns the success indication.
+       *
+       * @return true if the result is successful, false otherwise.
+       * @deprecated Use getErrorCode() == null.
+       */
+      public boolean isSuccess() {
+         return getErrorCode() == null;
+      }
       /**
        * Gets all parameters.
        *

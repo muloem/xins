@@ -117,6 +117,19 @@ extends CallException {
     *    the result code or <code>null</code> if no code was returned.
     *
     * @since XINS 0.136
+    * @deprecated Use getErrorCode();
+    */
+   public String getCode() {
+      return getErrorCode();
+   }
+
+   /**
+    * Returns the result code.
+    *
+    * @return
+    *    the result code or <code>null</code> if no code was returned.
+    *
+    * @since XINS 0.181
     */
    public String getErrorCode() {
       return _result.getErrorCode();

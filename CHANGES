@@ -1,12 +1,21 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.182:
 
+* XINS/Java Client Framework:
+  - Added backward compatibility for the result. The method isSuccess() is now
+    based on the fact that no errorcode or code is returned.
+  - Improved description of 'parameters' argument in class XINSServiceCaller,
+    in the call(...) methods.
+
 * XINS/Java Common Library:
   - Added a regression test for the PatternType.
 
-* XINS/Java Client Framework:
-  - Improved description of 'parameters' argument in class XINSServiceCaller,
-    in the call(...) methods.
+* Generated specification:
+  - Added a text specifying that a result code is returned when an error
+    occured.
+
+* Documentation
+  - Changed the chapters so that for each subject a HTML page is generated.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.181:

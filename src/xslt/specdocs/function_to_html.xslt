@@ -723,6 +723,7 @@
 
 	<xsl:template name="resultcodes">
 		<h3>Result codes</h3>
+		<em>A result code is returned when an error occurs during the execution of the implementation.</em>
 		<table class="resultcodes">
 			<tr>
 				<th>Name</th>
