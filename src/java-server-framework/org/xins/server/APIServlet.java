@@ -42,9 +42,7 @@ import org.xins.common.io.FileWatcher;
 
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
-
 import org.xins.common.net.IPAddressUtils;
-
 import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
@@ -396,9 +394,8 @@ extends HttpServlet {
           (_state == BOOTSTRAPPING_FRAMEWORK && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API) ||
           (_state == CONSTRUCTING_API && newState != API_CONSTRUCTION_FAILED && newState != BOOTSTRAPPING_API) ||
           (_state == BOOTSTRAPPING_API && newState != API_BOOTSTRAP_FAILED && newState != INITIALIZING_API) ||
-          (_state == INITIALIZING_API && newState != API_INITIALIZATION_FAILED & newState != READY) ||
-          (_state == READY && newState != INITIALIZING_API) ||
-          (_state == READY && newState != DISPOSING) ||
+          (_state == INITIALIZING_API && newState != API_INITIALIZATION_FAILED && newState != READY) ||
+          (_state == READY && newState != INITIALIZING_API && newState != DISPOSING) ||
           (_state == DISPOSING && newState != DISPOSED)) {
          Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
          throw new IllegalArgumentException("The state " + newState + " cannot follow the state  " + _state + '.');
@@ -844,6 +841,13 @@ extends HttpServlet {
          if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
             Log.log_1312(_hostname, hostname);
             _hostname = hostname;
+         }
+
+         // Log XINS version
+         String serverVersion = Library.getVersion();
+         String commonVersion = org.xins.common.Library.getVersion();
+         if (! serverVersion.equals(commonVersion)) {
+            Log.log_1310(serverVersion, commonVersion);
          }
 
          _runtimeProperties = new PropertiesPropertyReader(properties);
