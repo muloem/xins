@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.xins.util.collections.FastStack;
 
 /**
  * Response validator that just performs some common checks. The following
@@ -55,10 +56,13 @@ implements ResponseValidator {
    //-------------------------------------------------------------------------
 
    /**
-    * Thread-local variables. Per thread this {@link ThreadLocal} contains a
-    * {@link Map}<code>[2]</code>, if it is already initialized. If so, then
-    * the first element is the parameter {@link Map} and the second is the
-    * attribute {@link Map}. Both may initially be <code>null</code>.
+    * Thread-local variables.
+    *
+    * <p>Per thread this {@link ThreadLocal} contains a
+    * {@link Object}<code>[3]</code>, if it is already initialized. If so,
+    * then the first element is the parameter {@link Map}, the second is the
+    * attribute {@link Map} and the third is the element {@link FastStack}.
+    * All are initially <code>null</code>.
     */
    private final ThreadLocal _threadLocals;
 
@@ -68,21 +72,21 @@ implements ResponseValidator {
    //-------------------------------------------------------------------------
 
    /**
-    * Gets the 2-size <code>Map[]</code> array for this thread. If there is no
-    * array yet, then it is created and stored in {@link #_threadLocals}.
+    * Gets the 3-size <code>Object[]</code> array for this thread. If there is
+    * no array yet, then it is created and stored in {@link #_threadLocals}.
     *
     * @return
-    *    the {@link Map}<code>[]</code> array for this thread, never
+    *    the {@link Object}<code>[]</code> array for this thread, never
     *    <code>null</code>.
     */
-   private final Map[] getThreadLocals() {
+   private final Object[] getThreadLocals() {
       Object o = _threadLocals.get();
-      Map[] arr;
+      Object[] arr;
       if (o == null) {
-         arr = new Map[2];
+         arr = new Object[3];
          _threadLocals.set(arr);
       } else {
-         arr = (Map[]) o;
+         arr = (Object[]) o;
       }
       return arr;
    }
@@ -93,20 +97,24 @@ implements ResponseValidator {
    private final void reset() {
       Object o = _threadLocals.get();
       if (o != null) {
-         Map[] arr = (Map[]) o;
+         Object[] arr = (Object[]) o;
 
          // Clean the parameter map, if any
          o = arr[0];
          if (o != null) {
-            Map map = (Map) o;
-            map.clear();
+            ((Map) o).clear();
          }
 
          // Clean the attribute map, if any
          o = arr[1];
          if (o != null) {
-            Map map = (Map) o;
-            map.clear();
+            ((Map) o).clear();
+         }
+
+         // Clean the stack, if any
+         o = arr[2];
+         if (o != null) {
+            ((FastStack) o).clear();
          }
       }
    }
@@ -120,8 +128,8 @@ implements ResponseValidator {
     */
    protected final Map getParameters() {
 
-      // Get the 2-size Map array
-      Map[] arr = getThreadLocals();
+      // Get the 3-size Map array
+      Object[] arr = getThreadLocals();
 
       // Get the parameter Map
       Object o = arr[0];
@@ -134,6 +142,32 @@ implements ResponseValidator {
       }
 
       return parameters;
+   }
+
+   /**
+    * Gets the element stack for the current response. If there is none, then
+    * one will be created and stored.
+    *
+    * @return
+    *    the {@link FastStack} with the element names, never
+    *    <code>null</code>.
+    */
+   protected final FastStack getElements() {
+
+      // Get the 3-size Map array
+      Object[] arr = getThreadLocals();
+
+      // Get the stack of elements
+      Object o = arr[2];
+      FastStack elements;
+      if (o == null) {
+         elements = new FastStack(3);
+         arr[2] = elements;
+      } else {
+         elements = (FastStack) arr[2];
+      }
+
+      return elements;
    }
 
    /**
