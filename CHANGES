@@ -4,6 +4,10 @@ CHANGES INTRODUCED IN XINS 0.64:
 * Added Library class to both XINS/Java Client Framework and to the XINS/Java
   Common Library
 
+* XINS/Java Servlet Framework:
+  - Initializing at startup.
+  - Extra state checks in API class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.63:
 
