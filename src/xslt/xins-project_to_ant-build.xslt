@@ -19,9 +19,9 @@ $Id$
 	<xsl:param name="builddir"     />
 	<xsl:param name="xins_version" />
 	
-	<xsl:variable name="xmlenc_version"    select="'0.37'" />
-	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')" />
-	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')" />
+	<xsl:variable name="xmlenc_version"    select="'0.37'"                                       />
+	<xsl:variable name="xins_buildfile"    select="concat($xins_home, '/build.xml')"             />
+	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"   />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home, '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar"   select="concat($xins_home, '/build/xins-server.jar')" />
 	<xsl:variable name="xins-client.jar"   select="concat($xins_home, '/build/xins-client.jar')" />
