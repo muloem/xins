@@ -49,7 +49,15 @@
 		<mkdir dir="build" />
 	</target>
 
-	<target name="-prepare-java" depends="-prepare">
+	<target name="-prepare-classes" depends="-prepare">
+		<mkdir dir="build/classes" />
+	</target>
+
+	<target name="clean" description="Removes all generated files">
+		<delete dir="build" />
+	</target>
+
+	<target name="java-server-framework" depends="-prepare,-prepare-classes" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/src/java-server-framework" />
 		<style
 		in="src/xml/default_resultcodes.xml"
@@ -61,17 +69,6 @@
 			<fileset dir="src/java-server-framework"   includes="**/*.java" />
 		</copy>
 		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
-	</target>
-
-	<target name="-prepare-classes" depends="-prepare">
-		<mkdir dir="build/classes" />
-	</target>
-
-	<target name="clean" description="Removes all generated files">
-		<delete dir="build" />
-	</target>
-
-	<target name="java-server-framework" depends="-prepare-java,-prepare-classes" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/classes/java-server-framework" />
 		<javac
 		srcdir="build/src/java-server-framework"
