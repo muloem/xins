@@ -5,8 +5,10 @@ CHANGES INTRODUCED IN XINS 0.26:
 
 * Code cleanup.
 
-* In function specification documentation: Only displaying result code in
-  example if there is one.
+* In function specification documentation:
+  - Only displaying result code in example if there is one.
+  - Showing and linking to API result codes.
+  - Renamed 'code' attribute to 'name' in resultcode-ref element type.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.25:
