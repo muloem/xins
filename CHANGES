@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
   - Added more test using the AllInOne CAPI.
   - Fixed the PCDATA set in the data section was not parsed correctly.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
+  - Removed the abstract getXINSVersion() method from AbstractCAPI.
 
 * Generated client-side Java code (CAPI):
   - Set the getXINSVersion() method as static method.

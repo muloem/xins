@@ -18,6 +18,7 @@ import junit.framework.TestSuite;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPMethod;
+import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
@@ -290,10 +291,26 @@ public class AllInOneAPITests extends TestCase {
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
    }
    
-   public void testCAPIVersion() {
+   /**
+    * Tests the getXINSVersion() CAPI method.
+    */
+   public void testCAPIVersion() throws Throwable {
+      assertNotNull("No XINS version specified.", CAPI.getXINSVersion());
+      assertTrue("The version does not starts with '1.'", CAPI.getXINSVersion().startsWith("1."));
+   }
+   
+   /**
+    * Tests a function that does not exists
+    */
+   public void testUnknownFunction() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("Unknown", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
-      CAPI allInOne = new CAPI(descriptor);
-      assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      try {
+         XINSCallResult result = caller.call(request);
+      } catch (StatusCodeHTTPCallException exception) {
+         assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
+      }
    }
    
    /**

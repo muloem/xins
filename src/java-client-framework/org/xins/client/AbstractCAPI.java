@@ -14,8 +14,7 @@ import org.xins.common.service.Descriptor;
  *
  * @since XINS 0.131
  */
-public abstract class AbstractCAPI
-extends Object {
+public abstract class AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -73,12 +72,4 @@ extends Object {
    protected XINSServiceCaller getCaller() {
       return _caller;
    }
-
-   /**
-    * Returns the version of XINS used to build this CAPI class.
-    *
-    * @return
-    *    the version as a {@link String}, cannot be <code>null</code>.
-    */
-   public abstract String getXINSVersion();
 }

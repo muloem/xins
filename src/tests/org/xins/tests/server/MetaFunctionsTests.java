@@ -105,6 +105,9 @@ public class MetaFunctionsTests extends TestCase {
       _httpServer = new HTTPServletHandler(warFile);
    }
 
+   /**
+    * Tests the _GetVersion meta function.
+    */
    public void testGetVersion() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
@@ -120,6 +123,9 @@ public class MetaFunctionsTests extends TestCase {
       assertEquals("Incorrect number of parameters.", 3, parameters.size());
    }
    
+   /**
+    * Tests the _GetStatistics meta function.
+    */
    public void testGetStatistics() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetStatistics", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
@@ -215,6 +221,9 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No count attribute defined", last.get("duration"));
    }
    
+   /**
+    * Tests the _NoOp meta function.
+    */
    public void testNoOp() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_NoOp", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
@@ -225,6 +234,9 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned some parameters.", result.getParameters());
    }
    
+   /**
+    * Tests the _GetFunctionList meta function.
+    */
    public void testGetFunctionList() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetFunctionList", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
@@ -253,6 +265,9 @@ public class MetaFunctionsTests extends TestCase {
       }
    }
    
+   /**
+    * Tests the _GetSettings meta function.
+    */
    public void testGetSettings() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetSettings", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
@@ -303,6 +318,9 @@ public class MetaFunctionsTests extends TestCase {
       }
    }
    
+   /**
+    * Tests the _DisableFunction and _EnableFunction meta functions.
+    */
    public void testDisableEnableFunction() throws Throwable {
       // Test that the function is working
       BasicPropertyReader parameters = new BasicPropertyReader();
@@ -348,6 +366,9 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a data element.", result4.getDataElement());
    }
    
+   /**
+    * Tests a meta function that does not exists.
+    */
    public void testUnknownMetaFunction() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_Unknown", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");

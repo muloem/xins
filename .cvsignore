@@ -9,3 +9,4 @@ depends
 .clover
 .directory
 .nbintdb
+jcoverage.ser

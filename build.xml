@@ -410,7 +410,7 @@
 	</target>
 
 	<target name="-prepare-coverage">
-		<taskdef classpath="c:\java\jcoverage-1.0.5\jcoverage.jar" resource="tasks.properties"/>
+		<taskdef classpath="lib/jcoverage.jar" resource="tasks.properties"/>
 		<instrument todir="build/instrumented-classes/java-client">
 			<fileset dir="build/classes/java-client" includes="**/*.class" />
 		</instrument>
@@ -422,9 +422,10 @@
 		</instrument>
 	</target>
 
-	<target name="tests-coverage" depends="classes-tests, -prepare-coverage">
+	<target name="coverage" depends="classes-tests, -prepare-coverage">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
+		<mkdir dir="build/testresults/coverage" />
 		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="true">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
@@ -440,11 +441,11 @@
 				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
 				<pathelement location="../xins-examples/xins-project/build/classes-api/allinone" />
 				<pathelement location="../xins-examples/xins-project/build/classes-types/allinone" />
-				<pathelement location="c:\java\jcoverage-1.0.5\jcoverage.jar" />
+				<pathelement location="lib/jcoverage.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
-		<report srcdir="src/java-common" destdir="build"/>
+		<report srcdir="src/java-common" destdir="build/testresults/coverage"/>
 	</target>
 
 	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
