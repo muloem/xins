@@ -1,7 +1,8 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta3)
+CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
 
-
+* Build and release process:
+  - Fixed incorrect URL in the README.html.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
