@@ -54,13 +54,19 @@
 /**
  * Stub for the <em>]]></xsl:text>
 		<xsl:value-of select="$api" />
-		<xsl:text><![CDATA[</em> API.
+		<xsl:text><![CDATA[</em> API.]]></xsl:text>
+
+		<!-- Display the specdocs URL if it is specified -->
+		<xsl:if test="string-length($specdocsURL) &gt; 0">
+			<xsl:text><![CDATA[
  *
  * <p>See the <a href="]]></xsl:text>
-		<xsl:value-of select="$specdocsURL" />
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
-		<xsl:text><![CDATA[/">API specification</a>.
+			<xsl:value-of select="$specdocsURL" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$api" />
+			<xsl:text><![CDATA[/">API specification</a>.]]></xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
  */
 public final class CAPI extends org.xins.client.AbstractCAPI {
 
