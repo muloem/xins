@@ -34,10 +34,18 @@ public class ParameterNotInitializedException extends RuntimeException {
     * specified parameter.
     *
     * @param paramName
-    *    the parameter that the user tries to get, cannot be <code>null</code>.
+    *    the name of the parameter that is attempted to be retrieved, cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>paramName == null</code>.
     */
-   public ParameterNotInitializedException(String paramName) {
+   public ParameterNotInitializedException(String paramName)
+   throws IllegalArgumentException {
       super(paramName);
+
+      // Check argument
+      MandatoryArgumentChecker.check("paramName", paramName);
    }
 
 
