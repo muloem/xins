@@ -64,6 +64,10 @@ extends Object {
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
     *
+    * @param strictChecking
+    *    flag that indicates if checking of thread synchronization operations
+    *    should be strict or loose.
+    *
     * @param maxQueueWaitTime
     *    the maximum time a thread can wait in the queue for obtaining read or
     *    write access to a resource, must be &gt; 0L.
@@ -73,6 +77,7 @@ extends Object {
     */
    public ExpiryFolder(String         name,
                        ExpiryStrategy strategy,
+                       boolean        strictChecking,
                        long           maxQueueWaitTime)
    throws IllegalArgumentException {
 
@@ -91,8 +96,8 @@ extends Object {
       _listeners        = new ArrayList(5);
 
       // Create the doormen
-      _recentlyAccessedDoorman = new Doorman("recentlyAccessed", INITIAL_QUEUE_SIZE, maxQueueWaitTime);
-      _slotsDoorman            = new Doorman("slots",            INITIAL_QUEUE_SIZE, maxQueueWaitTime);
+      _recentlyAccessedDoorman = new Doorman("recentlyAccessed", strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
+      _slotsDoorman            = new Doorman("slots",            strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
 
       // Notify the strategy
       strategy.folderAdded(this);
