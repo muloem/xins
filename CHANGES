@@ -10,8 +10,8 @@ CHANGES INTRODUCED IN XINS 0.195:
     respectively the result code _InvalidRequest and _InvalidResponse.
 
 * XINS/Java Common Library:
-  - Changed TargetDescriptor class: Added getters for connection and socket
-    time-outs.
+  - Changed TargetDescriptor class: Added connection and socket time-out
+    properties.
 
 * Build and release process:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
