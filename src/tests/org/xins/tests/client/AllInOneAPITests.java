@@ -6,12 +6,8 @@
  */
 package org.xins.tests.client;
 
-import com.mycompany.allinone.capi.CAPI;
-import com.mycompany.allinone.capi.DefinedTypesResult;
-import com.mycompany.allinone.capi.SimpleTypesRequest;
-import com.mycompany.allinone.capi.SimpleTypesResult;
-import com.mycompany.allinone.types.Salutation;
-import com.mycompany.allinone.types.TextList;
+import com.mycompany.allinone.capi.*;
+import com.mycompany.allinone.types.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -421,9 +417,11 @@ public class AllInOneAPITests extends TestCase {
    }
 
   /**
-   * Tests the param-combos for inclusive-or and exclusive-or.
+   * Tests the param-combos using the old-style (XINS 1.0/1.1) call methods.
    */
    public void testParamCombo1() throws Exception {
+
+      // Test 'inclusive-or' and 'exclusive-or'
       try {
          _capi.callParamCombo(null, null, null, null, null, null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
@@ -449,12 +447,8 @@ public class AllInOneAPITests extends TestCase {
             fail("Just one param combo element was found.");
          }
       }
-   }
 
-  /**
-   * Tests the param-combos for all-or-none.
-   */
-   public void testParamCombo2() throws Exception {
+      // Test 'all-or-none'
       try {
          _capi.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
          fail("The param-combo call should return an _InvalidRequest error code.");
@@ -473,6 +467,25 @@ public class AllInOneAPITests extends TestCase {
             fail("No param combo element found.");
          }
       }
+   }
+
+  /**
+   * Tests the param-combo constraints using the new-style (XINS 1.2) call
+   * methods, which should throw an UnacceptableRequestException.
+   */
+   public void testParamCombo2() throws Exception {
+
+      ParamComboRequest request = new ParamComboRequest();
+      UnacceptableRequestException exception;
+      try {
+         _capi.callParamCombo(request);
+         fail("Expected UnacceptableRequestException.");
+         return;
+      } catch (UnacceptableRequestException e) {
+         exception = e;
+      }
+
+      // TODO
    }
 
    /**
