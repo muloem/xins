@@ -170,6 +170,9 @@ public abstract class ServiceCaller extends Object {
     * Determines the reason for a specific exception. The reason should not
     * end with a punctuation mark like a period (<code>'.'</code>).
     *
+    * @param exception
+    *    the exception to convert to a reason, cannot be <code>null</code>.
+    *
     * @return
     *    a description of the reason for the exception, never
     *    <code>null</code>, and never an empty character string.
@@ -205,6 +208,10 @@ public abstract class ServiceCaller extends Object {
     *
     * <p>Note that the reason should not end with a punctuation mark like a
     * period (<code>'.'</code>).
+    *
+    * @param exception
+    *    the exception to convert to a reason, guaranteed not to be
+    *    <code>null</code>.
     *
     * @return
     *    a description of the reason for the exception, or <code>null</code>

@@ -166,7 +166,12 @@ public class EnumType extends Type {
     *
     * @since XINS 0.109
     */
-   public final String getValueByName(String name) {
+   public final String getValueByName(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
       return (String) _namesToValues.get(name);
    }
 
@@ -185,7 +190,12 @@ public class EnumType extends Type {
     *
     * @since XINS 0.109
     */
-   public final String getNameByValue(String value) {
+   public final String getNameByValue(String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("value", value);
+
       return (String) _valuesToNames.get(value);
    }
 
@@ -206,8 +216,9 @@ public class EnumType extends Type {
     *    Deprecated since XINS 0.109, use {@link #getValueByName(String)}
     *    instead.
     */
-   public final String getByName(String name) {
-      return (String) _namesToValues.get(name);
+   public final String getByName(String name)
+   throws IllegalArgumentException {
+      return getValueByName(name);
    }
 
    /**
@@ -227,7 +238,8 @@ public class EnumType extends Type {
     *    Deprecated since XINS 0.109, use {@link #getNameByValue(String)}
     *    instead.
     */
-   public final String getByValue(String value) {
-      return (String) _valuesToNames.get(value);
+   public final String getByValue(String value)
+   throws IllegalArgumentException {
+      return getNameByValue(value);
    }
 }

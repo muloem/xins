@@ -62,7 +62,7 @@ public final class QueryResult extends Object {
     */
    QueryResult(boolean           authenticated,
                NamingEnumeration namingEnumeration)
-   throws NamingException, IllegalArgumentException {
+   throws IllegalArgumentException, ClassCastException, NamingException {
 
       // Check preconditions
       if (!authenticated && namingEnumeration != null) {
@@ -142,6 +142,9 @@ public final class QueryResult extends Object {
     * Returns a specific search result by index. This method should only
     * be called if the authentication succeeded, i.e. if
     * {@link #isAuthenticated()} returned <code>true</code>.
+    *
+    * @param index
+    *    the index, must be &gt;= 0 and &lt; {@link #getSearchResultCount()}.
     *
     * @return
     *    the search result at the specified index, never <code>null</code>.
