@@ -42,7 +42,13 @@ implements DefaultResultCodes {
     * The logging category used by this class. This class field is never
     * <code>null</code>.
     */
-   private final static Logger LOG = Logger.getLogger(API.class.getName());
+   private static final Logger LOG = Logger.getLogger(API.class.getName());
+
+   private static final int UNINITIALIZED = 0;
+   private static final int INITIALIZING = 1;
+   private static final int READY = 2;
+   private static final int DISPOSING = 3;
+   private static final int DISPOSED = 4;
 
 
    //-------------------------------------------------------------------------
@@ -58,7 +64,6 @@ implements DefaultResultCodes {
     */
    protected API() {
       _startupTimestamp  = System.currentTimeMillis();
-      _log               = Logger.getLogger(getClass().getName());
       _instances         = new ArrayList();
       _sessionsByID      = new HashMap();
       _functionsByName   = new HashMap();
@@ -74,10 +79,9 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The logger used by this API instance. This field is initialized by the
-    * constructor and set to a non-<code>null</code> value.
+    * The current state.
     */
-   private final Logger _log;
+   private int _state;
 
    /**
     * List of registered instances. See {@link #addInstance(Object)}.
@@ -193,10 +197,18 @@ implements DefaultResultCodes {
     *    if this API is already initialized.
     *
     * @throws Throwable
-    *    if the initialization fails (in {@link #initImpl(Properties)}.
+    *    if the initialization fails (in {@link #initImpl(Properties)}).
     */
    public final void init(Properties properties)
    throws IllegalStateException, Throwable {
+
+      // Check and set state
+      synchronized (_stateLock) {
+         if (_state != UNINITIALIZED) {
+            throw new IllegalStateException("This API is not uninitialized anymore.");
+         }
+         _state = INITIALIZING;
+      }
 
       // Store the settings
       if (properties == null) {
@@ -206,13 +218,26 @@ implements DefaultResultCodes {
       }
       _initSettingsReader = new PropertiesPropertyReader(_initSettings);
 
-      // TODO: Allow configuration of session ID type
+      // XXX: Allow configuration of session ID type ?
       _sessionIDType      = new BasicSessionID(this);
       _sessionIDGenerator = _sessionIDType.getGenerator();
 
-      // TODO: Set state to INITIALIZING
-      initImpl(properties);
-      // TODO: Set state to INITIALIZED
+      // Let the subclass perform initialization
+      try {
+         initImpl(properties);
+
+      // Set the state
+      } finally {
+         synchronized (_stateLock) {
+            if (!succeeded) {
+               _state = UNINITIALIZED;
+            } else {
+               _state = INITIALIZED;
+            }
+         }
+      }
+
+      // XXX: Initialize all instances here somewhere ?
    }
 
    /**
@@ -259,7 +284,10 @@ implements DefaultResultCodes {
           IllegalArgumentException,
           InitializationException {
 
-      // TODO: Check that state equals INITIALIZING
+      // Check state
+      if (_state != INITIALIZING) {
+         throw new IllegalStateException("Currently not initializing.");
+      }
 
       // Check preconditions
       MandatoryArgumentChecker.check("instance", instance);
@@ -321,11 +349,16 @@ implements DefaultResultCodes {
           IllegalArgumentException,
           InitializationException {
 
+      // Forward call to non-deprecated method, if possible
       if (instance instanceof Singleton) {
          addInstance((Singleton) instance);
       }
 
-      // TODO: Check that state equals INITIALIZING
+
+      // Check state
+      if (_state != INITIALIZING) {
+         throw new IllegalStateException("Currently not initializing.");
+      }
 
       // Check preconditions
       MandatoryArgumentChecker.check("instance", instance);
@@ -451,12 +484,36 @@ implements DefaultResultCodes {
       return session;
    }
 
-   // TODO: Document
+   /**
+    * Gets the session with the specified identifier.
+    *
+    * @param id
+    *    the identifier for the session, can be <code>null</code>.
+    *
+    * @return
+    *    the session with the specified identifier, or <code>null</code> if
+    *    there is no match; if <code>id == null</code>, then <code>null</code>
+    *    is returned.
+    */
    final Session getSession(Object id) {
       return (Session) _sessionsByID.get(id);
    }
 
-   // TODO: Document
+   /**
+    * Gets the session with the specified identifier as a string.
+    *
+    * @param id
+    *    the string representation of the identifier for the session, can be <code>null</code>.
+    *
+    * @return
+    *    the session with the specified identifier, or <code>null</code> if
+    *    there is no match; if <code>idString == null</code>, then
+    *    <code>null</code> is returned.
+    *
+    * @throws TypeValueException
+    *    if the specified string is not a valid representation for a value for
+    *    the specified type.
+    */
    final Session getSessionByString(String idString)
    throws TypeValueException {
       return getSession(_sessionIDType.fromString(idString));
@@ -605,7 +662,7 @@ implements DefaultResultCodes {
       // Forward the call
       boolean exceptionThrown = true;
       boolean success;
-      // TODO: Use ResultCode here, instead of String
+      // XXX: Use ResultCode here, instead of String ?
       String code;
       try {
          f.handleCall(context);
@@ -614,7 +671,7 @@ implements DefaultResultCodes {
          code    = context.getCode();
          exceptionThrown = false;
       } catch (Throwable exception) {
-         _log.error("Caught exception while calling API.", exception);
+         LOG.error("Caught exception while calling API.", exception);
 
          success = false;
          code    = INTERNAL_ERROR.getValue();
