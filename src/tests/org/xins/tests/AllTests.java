@@ -28,9 +28,10 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
       suite.addTestSuite(org.xins.tests.client.FunctionCallerParserTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.sd.DescriptorBuilderTests.class);
+      suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.ReplacerTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.server.BasicResponseValidatorTests.class);
       return suite;
    }
