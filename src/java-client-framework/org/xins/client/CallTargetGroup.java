@@ -19,7 +19,8 @@ import org.xins.util.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public abstract class CallTargetGroup extends AbstractFunctionCaller {
+public abstract class CallTargetGroup
+extends AbstractCompositeFunctionCaller {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -55,16 +56,20 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     * @param type
     *    the type, cannot be <code>null</code>.
     *
+    * @param members
+    *    the members for this group, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>type == null || members == null</code>.
     */
    CallTargetGroup(Type type, List members) throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("type", type, "members", members);
+      super(members);
 
-      _type    = type;
-      _members = members;
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type);
+
+      _type = type;
    }
 
 
@@ -76,11 +81,6 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     * The type of this group. This field cannot be <code>null</code>.
     */
    private final Type _type;
-
-   /**
-    * The members of this group. This field cannot be <code>null</code>.
-    */
-   private final List _members;
 
 
    //-------------------------------------------------------------------------
@@ -96,16 +96,6 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     */
    public final Type getType() {
       return _type;
-   }
-
-   /**
-    * Returns the list of members.
-    *
-    * @return
-    *    an unmodifiable view of the list of members, never <code>null</code>.
-    */
-   public final List getMembers() {
-      return Collections.unmodifiableList(_members);
    }
 
    public final CallResult call(String sessionID,
