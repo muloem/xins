@@ -25,8 +25,7 @@ import org.xins.util.http.HTTPRequester;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class ActualFunctionCaller
-extends Object
-implements FunctionCaller {
+extends AbstractFunctionCaller {
 
    //-------------------------------------------------------------------------
    // Class fields
