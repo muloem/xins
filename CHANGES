@@ -7,6 +7,7 @@ CHANGES INTRODUCED IN XINS 0.158:
     nothing is output.
   - Slightly changed the ID's of the groups in the log. The only impact is
     that the names of the generated files change.
+  - Changed level of log message 6001 from ERROR to WARNING.
 
 * Dependencies:
   - Some JAR files were commited in CVS as ASCII files, this is fixed.
