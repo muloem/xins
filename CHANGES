@@ -7,6 +7,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
 * XINS/Java Common Library:
+  - Fixed SF.net bug #1113843: Utils.getJavaVersion() does not work with
+    Blackdown JVM.
   - Added 'copyFrom' method to class ProtectedPropertyReader.
   - Introduced IncorrectSecretKeyException class to be used by the
     ProtectedPropertyReader and the ProtectedList classes so clients can
