@@ -81,12 +81,21 @@ public final class DescriptorBuilder extends Object {
    private static final String DELIMITER_AS_STRING = String.valueOf(DELIMITER);
 
    /**
-    * Name identifying an actual service descriptor.
+    * Name identifying an actual target descriptor.
     */
-   public static final String SERVICE_DESCRIPTOR_TYPE = "service";
+   public static final String TARGET_DESCRIPTOR_TYPE = "service";
 
    /**
-    * Name identifying a group of service descriptors.
+    * Name identifying an actual target descriptor.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0-beta6. Use
+    *    {@link #TARGET_DESCRIPTOR_TYPE} instead.
+    */
+   public static final String SERVICE_DESCRIPTOR_TYPE = TARGET_DESCRIPTOR_TYPE;
+
+   /**
+    * Name identifying a group of descriptors.
     */
    public static final String GROUP_DESCRIPTOR_TYPE = "group";
 
@@ -224,8 +233,8 @@ public final class DescriptorBuilder extends Object {
       // Determine the type
       String descriptorType = tokens[0];
 
-      // Parse service descriptor
-      if (SERVICE_DESCRIPTOR_TYPE.equals(descriptorType)) {
+      // Parse target descriptor
+      if (TARGET_DESCRIPTOR_TYPE.equals(descriptorType)) {
          if (tokenCount < 3 || tokenCount > 5) {
             throw new InvalidPropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
@@ -298,7 +307,7 @@ public final class DescriptorBuilder extends Object {
 
       // Unrecognized descriptor type
       } else {
-         throw new InvalidPropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + SERVICE_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
+         throw new InvalidPropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + TARGET_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
       }
    }
 
