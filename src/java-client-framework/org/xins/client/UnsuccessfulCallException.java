@@ -90,31 +90,17 @@ public final class UnsuccessfulCallException extends CallException {
    /**
     * Constructs a new <code>UnsuccessfulCallException</code>.
     *
-    * @param request
-    *    the original request, cannot be <code>null</code>.
-    *
-    * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    * @param result
+    *    the result, cannot be <code>null</code> and must be unsuccessful.
     *
     * @throws IllegalArgumentException
-    *    if <code>request     == null
-    *          || target      == null
-    *          || duration  &lt; 0</code>.
+    *    if <code>result == null || result.getErrorCode() == null</code>.
     *
-    * @since XINS 0.202
+    * @since XINS 0.203
     */
-   UnsuccessfulCallException(CallRequest              request,
-                             TargetDescriptor         target,
-                             long                     duration,
-                             XINSServiceCaller.Result result)
+   UnsuccessfulCallException(XINSServiceCaller.Result result)
    throws IllegalArgumentException {
-      super("Unsuccessful result", request, target, duration,
-            createDetailMessage(request, target, duration, result),
-            null);
+      super("Unsuccessful result", result, null, null);
 
       _result = result;
    }
