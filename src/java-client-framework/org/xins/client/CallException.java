@@ -59,7 +59,19 @@ public abstract class CallException extends Exception {
       return null; // TODO
    }
 
-   // TODO: Document
+   /**
+    * Determines the root cause for the specified exception. If the argument
+    * is <code>null</code>, then <code>null</code> is returned.
+    *
+    * @param t
+    *    the exception to determine the root cause for, or <code>null</code>.
+    *
+    * @return
+    *    the root cause of the specified exception, or <code>null</code> if
+    *    and only <code>t == null</code>.
+    *
+    * @since XINS 0.201
+    */
    private static final Throwable rootCauseFor(Throwable t) {
       if (t == null) {
          return null;
@@ -109,10 +121,12 @@ public abstract class CallException extends Exception {
    protected CallException(CallRequest      request,
                            TargetDescriptor target,
                            String           message,
-                           Throwable        cause) {
+                           Throwable        cause)
+   throws IllegalArgumentException {
 
       // Call superconstructor with fabricated message
-      super(createMessage(request, target, message), cause);
+      super(createMessage(request, target, message, cause), // message
+            rootCauseFor(cause));                           // cause
 
       // Store request
       _request = request;
