@@ -89,6 +89,41 @@ extends AbstractFunctionCaller {
           SecurityException,
           UnknownHostException,
           MultipleIPAddressesException {
+      this(url, null);
+   }
+
+   /**
+    * Creates a <code>ActualFunctionCaller</code> object for a XINS API at the
+    * specified URL, optionally specifying the host name to send with HTTP 1.1
+    * requests. If the host part of the URL (see {@link URL#getHost()})
+    * is a host name, it will be looked up immediately. This function caller
+    * will only store IP addresses, not host names.
+    *
+    * @param url
+    *    the URL for the API, not <code>null</code>.
+    *
+    * @param hostName
+    *    the host name to send down to the API, or <code>null</code> if
+    *    <code>url.getHost()</code> should be used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>url == null</code>.
+    *
+    * @throws SecurityException
+    *    if a security manager does not allow the DNS lookup operation for the
+    *    host specified in the URL.
+    *
+    * @throws UnknownHostException
+    *    if no IP address could be found for the host specified in the URL.
+    *
+    * @throws MultipleIPAddressesException
+    *    if the host specified in the URL resolves to multiple IP addresses.
+    */
+   public ActualFunctionCaller(URL url, String hostName)
+   throws IllegalArgumentException,
+          SecurityException,
+          UnknownHostException,
+          MultipleIPAddressesException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
@@ -99,14 +134,16 @@ extends AbstractFunctionCaller {
       _instanceNum = INSTANCE_COUNT++;
 
       if (debugEnabled) {
-         LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url);
+         if (hostName == null) {
+            LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url);
+         } else {
+            LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url + ", hostname: " + hostName);
+         }
       }
 
-      // Store the original host name
-      _hostName = url.getHost();
-
       // Perform DNS lookup
-      InetAddress[] addresses = InetAddress.getAllByName(_hostName);
+      String urlHostName = url.getHost();
+      InetAddress[] addresses = InetAddress.getAllByName(urlHostName);
       if (addresses.length > 1) {
          throw new MultipleIPAddressesException(); // TODO: Pass host name and addresses
       }
@@ -122,6 +159,8 @@ extends AbstractFunctionCaller {
          throw new InternalError("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
       }
 
+      // Initialize fields
+      _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
    }
 
