@@ -99,27 +99,28 @@ public class XINSCallResultParserTests extends TestCase {
 
    public void testParseXINSCallResultData1() throws Throwable {
 
-      // Prepare the string to parse
-      final String encoding = "UTF-8";
-      final String xml = "<?xml version=\"1.0\" encoding='" + encoding + "' ?>" +
-                         " <result><data>" +
-                         "<product available='false' name=\"FOO\" />" + 
-                         " <product available=\"true\"  name=\"BAR\" />" +
-                         "</data></result>";
-      final byte[] bytes = xml.getBytes(encoding);
-
-      // Parse
       XINSCallResultParser parser = new XINSCallResultParser();
-      XINSCallResultData result = parser.parse(bytes);
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
 
       // The parser should not return null
+      xml = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
+            " <result><data>" +
+            "<product available='false' name=\"FOO\" />" + 
+            " <product available=\"true\"  name=\"BAR\" />" +
+            "</data></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
 
       // There should be no error code
       assertNull(result.getErrorCode());
 
       // There should be no parameters
-      PropertyReader params = result.getParameters();
+      params = result.getParameters();
       assertTrue(params == null || params.size() == 0);
 
       // There should be a data section
@@ -175,15 +176,6 @@ public class XINSCallResultParserTests extends TestCase {
 
       // The 'available' attribute must be 'false'
       assertEquals("true", childTwo.get("available"));
-   }
-
-   public void testParseXINSCallResultData2() throws Throwable {
-
-      XINSCallResultParser parser = new XINSCallResultParser();
-      String xml;
-
-      // Prepare the string to parse
-      final String ENCODING = "UTF-8";
 
       // Passing null: Should fail
       try {
@@ -208,7 +200,15 @@ public class XINSCallResultParserTests extends TestCase {
 
       // Empty keys, empty values, non-conflicting duplicates
       xml = "<result><param/><param name='a'/><param>b</param><param name='c'>z</param><param name='c'>z</param></result>";
-      parser.parse(xml.getBytes(ENCODING));
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals(null, result.getErrorCode());
+      params = result.getParameters();
+      assertNotNull(params);
+      assertEquals(1, params.size());
+      assertEquals(null, params.get("a"));
+      assertEquals(null, params.get("b"));
+      assertEquals("z", params.get("c"));
 
       // Conflicting duplicate should fail
       xml = "<result><param name='c'>1st value</param><param name='c'>2nd value</param></result>";
@@ -218,5 +218,15 @@ public class XINSCallResultParserTests extends TestCase {
       } catch (ParseException ex) {
          // as expected
       }
+
+      // Unknown element as child of result should be ignored
+      xml = "<result><extra /><param name='a'>1</param>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals(null, result.getErrorCode());
+      params = result.getParameters();
+      assertNotNull(params);
+      assertEquals(1, params.size());
+      assertEquals("1", params.get("a"));
    }
 }
