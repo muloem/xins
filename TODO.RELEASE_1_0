@@ -25,7 +25,7 @@ Improve service framework in org.xins.common.service:
 [x] Change ServiceCaller to use CallRequest and CallException
 
 Adapt HTTP service caller to build upon improved service framework:
-[ ] Add HTTPCallException class (abstract, extends CallException)
+[x] Add HTTPCallException class (abstract, extends CallException)
 [x] Add HTTPCallRequest class (final, extends CallRequest)
 [ ] Specify allowed HTTP status codes in HTTPCallRequest
 [ ] Add StatusCodeHTTPCallException (extends HTTPCallException)
