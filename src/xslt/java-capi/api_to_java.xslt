@@ -414,16 +414,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:text><![CDATA[
     *
-    * @throws java.io.IOException
-    *    if there was an I/O error.
-    *
-    * @throws org.xins.client.InvalidCallResultException
-    *    if the call to the API resulted in an invalid response, either
-    *    invalid XML or invalid as a XINS result document.
-    *
-    * @throws org.xins.client.UnsuccessfulCallException
-    *    if the call was unsuccessful; in some cases this may be determined
-    *    locally already.
+    * @throws org.xins.client.CallException
+    *    if the call failed, see the subclasses of class {@link CallException}
+    *    for more details.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
@@ -442,9 +435,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
 			<xsl:text>org.xins.types.TypeValueException, </xsl:text>
 		</xsl:if>
-		<xsl:text>java.io.IOException,
-          org.xins.client.InvalidCallResultException,
-          org.xins.client.UnsuccessfulCallException {</xsl:text>
+		<xsl:text>org.xins.client.CallException {</xsl:text>
 		<xsl:if test="$kind = 'nonSharedSessionBased'">
 			<xsl:text>
 
