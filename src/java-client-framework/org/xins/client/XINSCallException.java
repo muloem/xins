@@ -35,35 +35,42 @@ public abstract class XINSCallException extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines the root cause for the specified exception. If the argument
-    * is <code>null</code>, then <code>null</code> is returned.
+    * Checks the mandatory arguments for the constructor and then returns the
+    * short reason.
     *
-    * @param t
-    *    the exception to determine the root cause for, or <code>null</code>.
+    * @param shortReason
+    *    the short reason, cannot be <code>null</code>.
     *
-    * @return
-    *    the root cause of the specified exception, or <code>null</code> if
-    *    and only <code>t == null</code>.
+    * @param result
+    *    the call result, cannot be <code>null</code>.
     *
-    * @since XINS 0.201
+    * @throws IllegalArgumentException
+    *    if <code>shortReason == null
+    *          || result      == null</code>
     */
-   private static final Throwable rootCauseFor(Throwable t) {
-      if (t == null) {
-         return null;
-      } else {
-         return ExceptionUtils.getRootCause(t);
-      }
+   private static final String checkArguments(String         shortReason,
+                                              XINSCallResult result)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("shortReason", shortReason,
+                                     "result",      result);
+
+      return shortReason;
    }
 
 
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallException</code> based on a short reason, the
-    * original request, target called, call duration, detail message and cause
-    * exception.
+    * Constructs a new <code>XINSCallException</code> based on a short reason,
+    * the original request, target called, call duration, detail message and
+    * cause exception.
     *
     * @param shortReason
     *    the short reason, cannot be <code>null</code>.
@@ -92,33 +99,26 @@ public abstract class XINSCallException extends CallException {
     *          || duration &lt; 0</code>.
     */
    XINSCallException(String           shortReason,
-                     CallRequest      request,
+                     XINSCallRequest  request,
                      TargetDescriptor target,
                      long             duration,
                      String           detail,
                      Throwable        cause)
    throws IllegalArgumentException {
 
-      // Call superconstructor with fabricated message
-      super(createMessage(shortReason, request, target, duration, detail),
-            rootCauseFor(cause));
-
-      // Store request and target
-      _request  = request;
-      _target   = target;
-      _duration = duration;
+      // Call superconstructor
+      super(shortReason, request, target, duration, detail, cause);
    }
 
    /**
-    * Constructs a new <code>CallException</code> based on a short reason, a
-    * call result, detail message and cause exception.
+    * Constructs a new <code>XINSCallException</code> based on a short reason,
+    * a XINS call result, detail message and cause exception.
     *
     * @param shortReason
     *    the short reason, cannot be <code>null</code>.
     *
     * @param result
-    *    the call result, cannot be <code>null</code>; stores the original
-    *    call request, the target descriptor and the call duration.
+    *    the call result, cannot be <code>null</code>.
     *
     * @param detail
     *    a detailed description of the problem, can be <code>null</code> if
@@ -128,20 +128,21 @@ public abstract class XINSCallException extends CallException {
     *    the cause exception, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>shortReason == null
-    *          || result == null</code>.
+    *    if <code>shortReason == null || result == null</code>.
     */
-   CallException(String shortReason, Result result, String detail, Throwable cause)
+   XINSCallException(String           shortReason,
+                     XINSCallResult   result,
+                     String           detail,
+                     Throwable        cause)
    throws IllegalArgumentException {
 
-      // Call superconstructor with fabricated message
-      super(createMessage(shortReason, result, detail),
-            rootCauseFor(cause));
-
-      // Store request and target
-      _request  = result.getRequest();
-      _target   = result.getTarget();
-      _duration = result.getDuration();
+      // Call superconstructor
+      super(checkArguments(shortReason, result),
+            (result == null) ? null : result.getRequest(),
+            (result == null) ? null : result.getTarget(),
+            (result == null) ?   0L : result.getDuration(),
+            detail,
+            cause);
    }
 
 
@@ -149,30 +150,12 @@ public abstract class XINSCallException extends CallException {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The original request. Cannot be <code>null</code>.
-    */
-   private final CallRequest _request;
+   //-------------------------------------------------------------------------
+   // Methods
 
-   /**
-    * Descriptor for the target that was attempted to be called. Cannot be
-    * <code>null</code>.
-    */
-   private final TargetDescriptor _target;
-
-   /**
-    * The time elapsed between the time the call attempt was started and the
-    * time the call returned. The duration is in milliseconds and is always
-    * &gt;= 0.
-    */
-   private final long _duration;
-
-   /**
-    * The next linked <code>CallException</code>. Can be <code>null</code> if
-    * there is none or if it has not been set yet.
-    */
-   private CallException _next;
-
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods

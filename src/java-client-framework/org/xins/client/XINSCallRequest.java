@@ -13,9 +13,9 @@ import org.xins.common.collections.PropertyReader;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.46
+ * @since XINS 0.207
  */
-public final class CallRequest extends Object {
+public final class XINSCallRequest extends CallRequest {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -30,8 +30,9 @@ public final class CallRequest extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallRequest</code> for the specified function and
-    * parameters, disallowing fail-over.
+    * Constructs a new <code>XINSCallRequest</code> for the specified function
+    * and parameters, disallowing fail-over unless the request was definitely
+    * not (yet) accepted by the service.
     *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
@@ -43,7 +44,7 @@ public final class CallRequest extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   public CallRequest(String functionName, PropertyReader parameters)
+   public XINSCallRequest(String functionName, PropertyReader parameters)
    throws IllegalArgumentException {
       this(functionName, parameters, false);
    }
@@ -66,9 +67,9 @@ public final class CallRequest extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   public CallRequest(String         functionName,
-                      PropertyReader parameters,
-                      boolean        failOverAllowed)
+   public XINSCallRequest(String         functionName,
+                          PropertyReader parameters,
+                          boolean        failOverAllowed)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -146,7 +147,7 @@ public final class CallRequest extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      return _parameters == null ? null : _parameters.get(name);
+      return (_parameters == null) ? null : _parameters.get(name);
    }
 
    /**
@@ -157,8 +158,6 @@ public final class CallRequest extends Object {
     *    <code>true</code> if fail-over is in principle allowed, even if the
     *    request was already sent to the other end, <code>false</code>
     *    otherwise.
-    *
-    * @since XINS 0.202
     */
    public boolean isFailOverAllowed() {
       return _failOverAllowed;
