@@ -1,12 +1,18 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.127:
 
-* Introducing SourceForge AddRelease task that automates the procedure of
-  uploading a distribution file, adding a release to the SourceForge package
-  and then adding the distribution file to this release.
+* XINS/Java Server Framework:
+  - Re-initialization fixed and tested. It now positively works.
 
-* Added Jakarta Commons Net 1.0.0 to compile-time dependencies, for the
-  SourceForge AddRelease task.
+* XINS/Java Common Library:
+  - Introducing SourceForge AddRelease task that automates the procedure of
+    uploading a distribution file, adding a release to the SourceForge package
+    and then adding the distribution file to this release.
+    This is work in progress.
+
+* Dependencies:
+  - Added Jakarta Commons Net 1.0.0 to compile-time dependencies, for the
+    SourceForge AddRelease task.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.126:
