@@ -526,7 +526,7 @@ $Id$
 					</style>
 				</target>
 
-				<target name="jar-capi-{$api}" depends="-prepare-classes,-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
+				<target name="jar-capi-{$api}" depends="-classes-types-{$api},-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
 					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
 					<javac
 					srcdir="{$project_home}/build/java-capi/{$api}/"
@@ -540,6 +540,9 @@ $Id$
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						</classpath>
 					</javac>
+					<copy todir="{$project_home}/build/classes-capi/{$api}">
+						<fileset dir="{$typeClassesDir}" includes="**/*.class" />
+					</copy>
 					<mkdir dir="{$project_home}/build/capis/" />
 					<jar
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"
