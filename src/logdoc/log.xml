@@ -111,30 +111,84 @@
 		<param name="buildVersion" />
 	</entry>
 	<entry id="118" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapping Manageable object registered with the API.</description>
+		<description>Bootstrapping manageable object registered with the API.</description>
 		<param name="api" />
 		<param name="className" />
 	</entry>
 	<entry id="119" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapped Manageable object registered with the API.</description>
+		<description>Bootstrapped manageable object registered with the API.</description>
 		<param name="api" />
 		<param name="className" />
 	</entry>
 	<entry id="120" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Manageable object could not be initialized due to a missing required property.</description>
+		<param name="api" />
+		<param name="className" />
 		<param name="propertyName" />
 	</entry>
 	<entry id="121" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Manageable object could not be initialized due to an invalid property value.</description>
+		<param name="api" />
+		<param name="className" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
 	<entry id="122" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Manageable object could not be initialized.</description>
+		<param name="api" />
+		<param name="className" />
 		<param name="message" />
 	</entry>
 	<entry id="123" level="ERROR" category="org.xins.server.lifespan.bootstrap">
 		<description>Manageable object could not be initialized due to an unexpected exception.</description>
+		<param name="api" />
+		<param name="className" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="129" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Adding manageable object to API.</description>
+		<param name="api" />
+		<param name="className" />
+	</entry>
+	<entry id="130" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Manageable object added to API.</description>
+		<param name="api" />
+		<param name="className" />
+	</entry>
+	<entry id="138" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrapping function.</description>
+		<param name="api" />
+		<param name="function" />
+	</entry>
+	<entry id="139" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>Bootstrapped function.</description>
+		<param name="api" />
+		<param name="function" />
+	</entry>
+	<entry id="140" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Function could not be initialized due to a missing required property.</description>
+		<param name="api" />
+		<param name="function" />
+		<param name="propertyName" />
+	</entry>
+	<entry id="141" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Function could not be initialized due to an invalid property value.</description>
+		<param name="api" />
+		<param name="function" />
+		<param name="propertyName" />
+		<param name="propertyValue" />
+	</entry>
+	<entry id="142" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Function could not be initialized.</description>
+		<param name="api" />
+		<param name="function" />
+		<param name="message" />
+	</entry>
+	<entry id="143" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Function could not be initialized due to an unexpected exception.</description>
+		<param name="api" />
+		<param name="function" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
