@@ -126,9 +126,35 @@ public final class ]]></xsl:text>
 	</xsl:template>
 
 	<xsl:template match="translation/value-of-param">
+		<xsl:variable name="entry" select="../@entry" />
+		<xsl:variable name="param-name" select="@name" />
+		<xsl:variable name="param-type" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@type" />
+		<xsl:variable name="param-nullable" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@nullable" />
+
 		<xsl:text>
       buffer.append(</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:choose>
+			<xsl:when test="($param-type = 'object') and ($param-nullable = 'false')">
+				<xsl:value-of select="@name" />
+				<xsl:text>.toString()</xsl:text>
+			</xsl:when>
+			<xsl:when test="$param-type = 'object'">
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>== null) ? "(null)" : </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>.toString()</xsl:text>
+			</xsl:when>
+			<xsl:when test="$param-nullable = 'false'">
+				<xsl:value-of select="@name" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>== null) ? "(null)" : </xsl:text>
+				<xsl:value-of select="@name" />
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>);</xsl:text>
 	</xsl:template>
 
