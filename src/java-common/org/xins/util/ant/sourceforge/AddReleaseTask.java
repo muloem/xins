@@ -30,7 +30,7 @@ import org.apache.tools.ant.Task;
  *
  * @since XINS 0.127
  */
-public class AddReleaseTask extends Task {
+public final class AddReleaseTask extends Task {
 
    //-------------------------------------------------------------------------
    // Class fields
