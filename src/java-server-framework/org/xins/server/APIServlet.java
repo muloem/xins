@@ -124,7 +124,7 @@ implements Servlet {
       String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
       if (apiClassName == null || apiClassName.trim().length() < 1) {
          String message = "Invalid application package. API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
-         Library.LIFESPAN_LOG.fatal(message);
+         Library.STARTUP_LOG.fatal(message);
          throw new ServletException(message);
       }
 
@@ -134,14 +134,14 @@ implements Servlet {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
          String message = "Invalid application package. Failed to load API class set in initialization parameter \"" + API_CLASS_PROPERTY + "\": \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.fatal(message, e);
+         Library.STARTUP_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
       // Check that the loaded API class is derived from the API base class
       if (! API.class.isAssignableFrom(apiClass)) {
          String message = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
-         Library.LIFESPAN_LOG.fatal(message);
+         Library.STARTUP_LOG.fatal(message);
          throw new ServletException(message);
       }
 
@@ -151,7 +151,7 @@ implements Servlet {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
          String message = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.fatal(message, e);
+         Library.STARTUP_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
@@ -160,24 +160,24 @@ implements Servlet {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
          String message = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\".";
-         Library.LIFESPAN_LOG.fatal(message, e);
+         Library.STARTUP_LOG.fatal(message, e);
          throw new ServletException(message);
       }
 
       // Make sure that the field is an instance of that same class
       if (api == null) {
          String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
-         Library.LIFESPAN_LOG.fatal(message);
+         Library.STARTUP_LOG.fatal(message);
          throw new ServletException(message);
       } else if (api.getClass() != apiClass) {
          String message = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
-         Library.LIFESPAN_LOG.fatal(message);
+         Library.STARTUP_LOG.fatal(message);
          throw new ServletException(message);
       }
 
       // Get the name of the API
       String apiName = api.getName();
-      Library.LIFESPAN_LOG.debug("Loaded \"" + apiName + "\" API.");
+      Library.STARTUP_LOG.debug("Loaded \"" + apiName + "\" API.");
 
       return api;
    }
@@ -294,11 +294,11 @@ implements Servlet {
          // Check preconditions
          if (_state != UNINITIALIZED) {
             String message = "Application server malfunction detected. State is " + _state + " instead of " + UNINITIALIZED + '.';
-            Library.LIFESPAN_LOG.fatal(message);
+            Library.STARTUP_LOG.fatal(message);
             throw new ServletException(message);
          } else if (config == null) {
             String message = "Application server malfunction detected. No servlet configuration object passed.";
-            Library.LIFESPAN_LOG.fatal(message);
+            Library.STARTUP_LOG.fatal(message);
             throw new ServletException(message);
          }
 
@@ -306,7 +306,7 @@ implements Servlet {
          ServletContext context = config.getServletContext();
          if (context == null) {
             String message = "Application server malfunction detected. No servlet context available.";
-            Library.LIFESPAN_LOG.fatal(message);
+            Library.STARTUP_LOG.fatal(message);
             throw new ServletException(message);
          }
 
@@ -314,7 +314,7 @@ implements Servlet {
          int major = context.getMajorVersion();
          int minor = context.getMinorVersion();
          if (major != EXPECTED_SERVLET_VERSION_MAJOR || minor != EXPECTED_SERVLET_VERSION_MINOR) {
-            Library.LIFESPAN_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
+            Library.STARTUP_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + EXPECTED_SERVLET_VERSION_MAJOR + '.' + EXPECTED_SERVLET_VERSION_MINOR + ". The application may or may not work correctly.");
          }
 
          // Set the state
@@ -327,29 +327,29 @@ implements Servlet {
             // Read properties from the config file
             Properties runtimeProperties = null;
             if (_configFile == null || _configFile.length() < 1) {
-               Library.LIFESPAN_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
+               Library.STARTUP_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
             } else {
                runtimeProperties = applyConfigFile();
             }
 
             // Initialization starting
-            Library.LIFESPAN_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
+            Library.STARTUP_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
 
             // Load the API instance
             _api = loadAPI(config);
             String apiName = _api.getName();
 
             // Initialize the API
-            Library.LIFESPAN_LOG.debug("Initializing \"" + apiName + "\" API.");
+            Library.STARTUP_LOG.debug("Initializing \"" + apiName + "\" API.");
             try {
                // TODO: Use ServletConfigPropertyReader
                _api.init(new PropertiesPropertyReader(ServletUtils.settingsAsProperties(config)),
                          new PropertiesPropertyReader(runtimeProperties));
 
-               Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
+               Library.STARTUP_LOG.debug("Initialized \"" + apiName + "\" API.");
             } catch (Throwable e) {
                String message = "Failed to initialize \"" + apiName + "\" API.";
-               Library.LIFESPAN_LOG.error(message, e);
+               Library.STARTUP_LOG.error(message, e);
             }
 
             // Watch the configuration file
@@ -358,11 +358,11 @@ implements Servlet {
                int interval = 10; // TODO: Read from config file
                FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
                watcher.start();
-               Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+               Library.STARTUP_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
             }
 
             // Initialization done
-            Library.LIFESPAN_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
+            Library.STARTUP_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
 
             // Finally enter the ready state
             _state = READY;
@@ -382,28 +382,37 @@ implements Servlet {
 
    /**
     * Reads the configuration file and applies the settings in it. If this
-    * fails, then an error is logged on the {@link Library#LIFESPAN_LOG}
-    * logger.
+    * fails, then an error is logged on the specified logger. Still, a
+    * {@link Properties} object is always returned.
+    *
+    * @param log
+    *    the logger to log messages to, should not be <code>null</code>.
     *
     * @return
-    *    the properties read from the config file, or <code>null</code> if the
-    *    reading of properties failed.
+    *    the properties read from the config file, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>log = null</code>.
     */
-   private Properties applyConfigFile() {
-      Properties properties = null;
+   private Properties applyConfigFile(Logger log)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("log", log);
+
+      Properties properties = new Properties();
 
       try {
          FileInputStream in = new FileInputStream(_configFile);
-         properties = new Properties();
          properties.load(in);
 
-         Library.configure(properties);
+         Library.configure(log, properties);
       } catch (FileNotFoundException exception) {
-         Library.LIFESPAN_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         logger.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
       } catch (SecurityException exception) {
-         Library.LIFESPAN_LOG.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
+         logger.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
       } catch (IOException exception) {
-         Library.LIFESPAN_LOG.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
+         logger.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
       }
 
       return properties;
@@ -503,7 +512,7 @@ implements Servlet {
     */
    public void destroy() {
 
-      Library.LIFESPAN_LOG.debug("Shutting down XINS/Java Server Framework.");
+      Library.SHUTDOWN_LOG.debug("Shutting down XINS/Java Server Framework.");
 
       synchronized (_stateLock) {
          // Set the state temporarily to DISPOSING
@@ -518,7 +527,7 @@ implements Servlet {
          _state = DISPOSED;
       }
 
-      Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
+      Library.SHUTDOWN_LOG.info("XINS/Java Server Framework shutdown completed.");
    }
 
 
@@ -626,22 +635,22 @@ implements Servlet {
       //----------------------------------------------------------------------
 
       public void fileModified() {
-         Library.LIFESPAN_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
+         Library.REINIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
          applyConfigFile();
          // TODO: reinit API
-         Library.LIFESPAN_LOG.info("XINS/Java Server Framework re-initialized.");
+         Library.REINIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
 
       public void fileNotFound() {
-         Library.LIFESPAN_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         Library.REINIT_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
       }
 
       public void fileNotModified() {
-         Library.LIFESPAN_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
+         Library.REINIT_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
       }
 
       public void securityException(SecurityException exception) {
-         Library.LIFESPAN_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
+         Library.REINIT_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
       }
    }
 }

@@ -27,10 +27,21 @@ public final class Library extends Object {
 
    /**
     * The logging category used by the XINS/Java Server Framework during
-    * startup/initialization, re-initialization and shutdown. This field is
-    * not <code>null</code>.
+    * startup/initialization. This field is not <code>null</code>.
     */
-   static final Logger LIFESPAN_LOG = Logger.getLogger("org.xins.server.LIFESPAN");
+   static final Logger STARTUP_LOG = Logger.getLogger("org.xins.server.LIFESPAN.STARTUP");
+
+   /**
+    * The logging category used by the XINS/Java Server Framework during
+    * re-initialization. This field is not <code>null</code>.
+    */
+   static final Logger REINIT_LOG = Logger.getLogger("org.xins.server.LIFESPAN.REINIT");
+
+   /**
+    * The logging category used by the XINS/Java Server Framework during
+    * shutdown/deinitialization. This field is not <code>null</code>.
+    */
+   static final Logger SHUTDOWN_LOG = Logger.getLogger("org.xins.server.LIFESPAN.SHUTDOWN");
 
    /**
     * The logging category used by the XINS/Java Server Framework core during
@@ -55,21 +66,24 @@ public final class Library extends Object {
     * Configures or reconfigures the logging subsystem using the specified
     * properties.
     *
+    * @param log
+    *    the logger to log to, cannot be <code>null</code>.
+    *
     * @param properties
     *    the properties that should initialize the logging subsystem, cannot
     *    be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>properties == null</code>.
+    *    if <code>log == null || properties == null</code>.
     */
-   static final void configure(Properties properties)
+   static final void configure(Logger log, Properties properties)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties);
+      MandatoryArgumentChecker.check("log", log, "properties", properties);
 
       // Get the logger repository
-      Logger rootLogger = LIFESPAN_LOG.getRootLogger();
+      Logger rootLogger = log.getRootLogger();
 
       // Attempt to configure Log4J
       PropertyConfigurator.configure(properties);
@@ -78,9 +92,9 @@ public final class Library extends Object {
       Enumeration appenders = rootLogger.getAllAppenders();
       if (appenders instanceof NullEnumeration) {
          configureLoggerFallback();
-         LIFESPAN_LOG.error("System administration issue detected. Logging subsystem is not properly initialized. Falling back to default output method.");
+         log.error("System administration issue detected. Logging subsystem is not properly initialized. Falling back to default output method.");
       } else {
-         LIFESPAN_LOG.debug("Logging subsystem is properly initialized.");
+         log.debug("Logging subsystem is properly initialized.");
       }
    }
 

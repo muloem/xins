@@ -439,7 +439,7 @@ implements DefaultResultCodes {
          if (_state != UNINITIALIZED) {
             // TODO: Log ?
             // TODO: String message = "The state is " + _state + " instead of " + UNINITIALIZED + '.');
-            // TODO: Library.LIFESPAN_LOG.error(message);
+            // TODO: Library.STARTUP_LOG.error(message);
             // TODO: throw new IllegalStateException(message);
             throw new IllegalStateException("This API is not uninitialized anymore.");
          }
@@ -453,9 +453,9 @@ implements DefaultResultCodes {
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       if (tzLongName.equals(tzShortName)) {
-         Library.LIFESPAN_LOG.info("Local time zone is " + tzLongName + '.');
+         Library.STARTUP_LOG.info("Local time zone is " + tzLongName + '.');
       } else {
-         Library.LIFESPAN_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
+         Library.STARTUP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
       }
 
       // Store the settings
@@ -469,13 +469,13 @@ implements DefaultResultCodes {
       // Check if a default function is set
       _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
       if (_defaultFunction != null) {
-         Library.LIFESPAN_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
+         Library.STARTUP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
       // TODO: Check that default function exists
 
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
-      Library.LIFESPAN_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+      Library.STARTUP_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased");
@@ -484,7 +484,7 @@ implements DefaultResultCodes {
 
       // Initialize session-based API
       if (_sessionBased) {
-         Library.LIFESPAN_LOG.debug("Performing session-related initialization.");
+         Library.STARTUP_LOG.debug("Performing session-related initialization.");
 
          // Initialize session ID type
          _sessionIDType      = new BasicSessionID(this);
@@ -518,7 +518,7 @@ implements DefaultResultCodes {
          buffer.append("host ");
          buffer.append(_buildHost);
       } else {
-         Library.LIFESPAN_LOG.warn("Build host name is not set.");
+         Library.STARTUP_LOG.warn("Build host name is not set.");
          buffer.append("unknown host");
          _buildHost = null;
       }
@@ -529,7 +529,7 @@ implements DefaultResultCodes {
          buffer.append(_buildTime);
          buffer.append(")");
       } else {
-         Library.LIFESPAN_LOG.warn("Build time stamp is not set.");
+         Library.STARTUP_LOG.warn("Build time stamp is not set.");
          _buildTime = null;
       }
 
@@ -547,12 +547,12 @@ implements DefaultResultCodes {
          buffer.append(", using XINS ");
          buffer.append(_buildVersion);
       } else {
-         Library.LIFESPAN_LOG.warn("Build version is not set.");
+         Library.STARTUP_LOG.warn("Build version is not set.");
          _buildVersion = null;
       }
 
       buffer.append('.');
-      Library.LIFESPAN_LOG.info(buffer.toString());
+      Library.STARTUP_LOG.info(buffer.toString());
 
       // Let the subclass perform initialization
       boolean succeeded = false;
@@ -640,15 +640,15 @@ implements DefaultResultCodes {
 
       boolean succeeded = false;
       String className = lsm.getClass().getName();
-      Library.LIFESPAN_LOG.debug("Initializing lifespan manager " + className + " for API \"" + _name + "\".");
+      Library.STARTUP_LOG.debug("Initializing lifespan manager " + className + " for API \"" + _name + "\".");
       try {
          lsm.init(_buildSettings, _runtimeSettings);
          succeeded = true;
       } finally {
          if (succeeded) {
-            Library.LIFESPAN_LOG.info("Initialized lifespan manager " + className + " for API \"" + _name + "\".");
+            Library.STARTUP_LOG.info("Initialized lifespan manager " + className + " for API \"" + _name + "\".");
          } else {
-            Library.LIFESPAN_LOG.error("Failed to initialize lifespan manager " + className + " for API \"" + _name + "\".");
+            Library.STARTUP_LOG.error("Failed to initialize lifespan manager " + className + " for API \"" + _name + "\".");
          }
       }
    }
@@ -665,9 +665,9 @@ implements DefaultResultCodes {
       // Destroy all sessions
       int openSessionCount = _sessionsByID.size();
       if (openSessionCount == 1) {
-         Library.LIFESPAN_LOG.info("Closing 1 open session.");
+         Library.SHUTDOWN_LOG.info("Closing 1 open session.");
       } else {
-         Library.LIFESPAN_LOG.info("Closing " + openSessionCount + " open sessions.");
+         Library.SHUTDOWN_LOG.info("Closing " + openSessionCount + " open sessions.");
       }
       _sessionsByID = null;
 
@@ -680,9 +680,9 @@ implements DefaultResultCodes {
 
          try {
             lsm.destroy();
-            Library.LIFESPAN_LOG.info("Deinitialized lifespan manager " + className + " for API \"" + _name + "\".");
+            Library.SHUTDOWN_LOG.info("Deinitialized lifespan manager " + className + " for API \"" + _name + "\".");
          } catch (Throwable exception) {
-            Library.LIFESPAN_LOG.error("Failed to deinitialize lifespan manager " + className + " for API \"" + _name + "\".", exception);
+            Library.SHUTDOWN_LOG.error("Failed to deinitialize lifespan manager " + className + " for API \"" + _name + "\".", exception);
          }
       }
    }
