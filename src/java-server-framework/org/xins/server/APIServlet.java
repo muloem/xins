@@ -402,6 +402,22 @@ implements Servlet {
       return _servletConfig;
    }
 
+   /**
+    * Handles a request to this servlet.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the state of this servlet is not <em>ready</em>, or
+    *    if <code>request == null || response == null</code>.
+    *
+    * @throws IOException
+    *    if there is an error error writing to the response output stream.
+    */
    public void service(ServletRequest request, ServletResponse response)
    throws ServletException, IOException {
 
@@ -410,15 +426,23 @@ implements Servlet {
 
       // Check state
       if (_state != READY) {
-         if (_state == UNINITIALIZED) {
-            throw new ServletException("This servlet is not yet initialized.");
-         } else if (_state == DISPOSING) {
-            throw new ServletException("This servlet is currently being disposed.");
-         } else if (_state == DISPOSED) {
-            throw new ServletException("This servlet is disposed.");
+         String message = "Application server malfunction detected. State is " + _state + " instead of " + READY + '.';
+         Library.RUNTIME_LOG.error(message);
+         throw new ServletException(message);
+      }
+
+      // Check arguments
+      if (request == null || response == null) {
+         String message = "Application server malfunction detected. ";
+         if (request == null && response == null) {
+            message += "Both request and response are null.";
+         } else if (request == null) {
+            message += "Request is null.";
          } else {
-            throw new Error("This servlet is not ready, the state is unknown.");
+            message += "Response is null.";
          }
+         Library.RUNTIME_LOG.error(message);
+         throw new ServletException(message);
       }
 
       // TODO: Support and use OutputStream instead of Writer, for improved
@@ -448,19 +472,31 @@ implements Servlet {
       return "XINS " + Library.getVersion() + " API Servlet";
    }
 
+   /**
+    * Destroys this servlet. A best attempt will be made to release all
+    * resources.
+    *
+    * <p>After this method has finished, it will set the state to
+    * <em>disposed</em>. In that state no more requests will be handled.
+    */
    public void destroy() {
-      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
-         Library.LIFESPAN_LOG.debug("XINS/Java Server Framework shutdown initiated.");
-      }
+
+      Library.LIFESPAN_LOG.debug("XINS/Java Server Framework shutdown initiated.");
 
       synchronized (_stateLock) {
+         // Set the state temporarily to DISPOSING
          _state = DISPOSING;
+
+         // Destroy the API
          if (_api != null) {
             _api.destroy();
          }
-         Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
+
+         // Set the state to DISPOSED
          _state = DISPOSED;
       }
+
+      Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
    }
 
 
