@@ -217,15 +217,11 @@ implements Responder, Log {
       }
       _functionName = functionName;
 
-      // Determine the function object and the logger
-      _function = (functionName == null) ? null : _api.getFunction(functionName);
-      _logger   = (_function    == null) ? null : _function.getLogger();
-
-      // Assign a call ID
-      _callID = (_function     == null) ? -1   : _function.assignCallID();
-
-      // Determine the prefix text for log messages
-      _logPrefix = (_function   == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
+      // Determine the function object, logger, call ID, log prefix
+      _function  = (functionName == null) ? null : _api.getFunction(functionName);
+      _logger    = (_function    == null) ? null : _function.getLogger();
+      _callID    = (_function    == null) ? -1   : _function.assignCallID();
+      _logPrefix = (_function    == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
    }
 
    /**
@@ -374,7 +370,7 @@ implements Responder, Log {
       }
 
       // Temporarily enter the ERROR state
-      _state   = ERROR;
+      _state = ERROR;
 
       _xmlOutputter.startTag("result");
 
