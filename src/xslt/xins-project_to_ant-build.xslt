@@ -156,10 +156,21 @@ $Id$
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:variable>
+					<xsl:variable name="javaImplDir"    select="concat($project_home, '/src/impl/', $api)" />
 					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
 					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)"        />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
-					
+
+					<target name="-impl-{$api}-existencechecks">
+						<xsl:for-each select="document($api_file)/api/function">
+							<xsl:variable name="function" select="@name" />
+							<available
+								property="impl-{$api}-{$function}-exists"
+								file="{$javaImplDir}/{$packageAsDir}/{$function}.java"
+								type="file" />
+						</xsl:for-each>
+					</target>
+
 					<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
