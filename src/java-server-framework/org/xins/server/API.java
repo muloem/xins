@@ -72,7 +72,7 @@ implements DefaultReturnCodes {
     * The logger used by this API instance. This field is initialized by the
     * constructor and set to a non-<code>null</code> value.
     */
-   private Logger _log;
+   private final Logger _log;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
