@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Changed CallFailedException to add a rule: At least one target must have
     failed.
   - Improved performance of SafeRandom in case a warning is logged.
+  - Added getTargetCount() method to class Descriptor (and subclasses).
 
 * XINS/Java Client Framework:
   - Added XINSServiceCaller class.
