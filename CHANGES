@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.98:
+
+* XINS/Java Server Framework:
+  - Statistics collection for functions: Creating a new FastStringBuffer every
+    time, not synchronizing on shared buffers anymore. Used to have one
+    FastStringBuffer for successful, and one for unsuccessful calls.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.97:
 
 * XINS/Java Common Library:
