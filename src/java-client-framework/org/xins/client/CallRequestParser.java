@@ -138,7 +138,7 @@ public final class CallRequestParser extends Object {
          LOG.error(messageString);
 
          // TODO: Include type of error in here somewhere
-         throw new ParseException(messageString, ioException);
+         throw new ParseException(messageString, exception);
       }
    }
 
