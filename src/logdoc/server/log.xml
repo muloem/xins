@@ -216,6 +216,10 @@
 			<description>XINS/Java Server Framework version does not indicate a production release.</description>
 			<param name="version" />
 		</entry>
+		<entry id="1236" level="WARNING">
+			<description>API package was not built with a production release of XINS.</description>
+			<param name="version" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
