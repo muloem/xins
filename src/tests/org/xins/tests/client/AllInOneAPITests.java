@@ -107,6 +107,9 @@ public class AllInOneAPITests extends TestCase {
       _httpServer = new HTTPServletHandler(warFile);
    }
 
+   /**
+    * Tests CAPI and pre-defined.
+    */
    public void testSimpleTypes() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -123,6 +126,9 @@ public class AllInOneAPITests extends TestCase {
       assertNull(result.getOutputTimestamp());
    }
    
+   /**
+    * Tests a function called with some missing parameters.
+    */
    public void testMissingParam() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -144,6 +150,9 @@ public class AllInOneAPITests extends TestCase {
       }
    }
    
+   /**
+    * Tests CAPI and defined types.
+    */
    public void testDefinedTypes() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -158,6 +167,9 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(2, result.getOutputProperties().size());
    }
    
+   /**
+    * Tests a function called with some invalid parameters.
+    */
    public void testInvalidParams() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -187,6 +199,9 @@ public class AllInOneAPITests extends TestCase {
       }
    }
    
+   /**
+    * Tests a function that should returned a defined result code.
+    */
    public void testResultCode() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -204,6 +219,9 @@ public class AllInOneAPITests extends TestCase {
       }
    }
    
+   /**
+    * Tests a function that writes messages to the Logdoc.
+    */
    public void testLogdoc() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -221,6 +239,10 @@ public class AllInOneAPITests extends TestCase {
       allInOne.callLogdoc("12000");
    }
    
+   /**
+    * Tests a function that returns a data section containing elements with
+    * PCDATA.
+    */
    public void testDataSection() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -241,6 +263,10 @@ public class AllInOneAPITests extends TestCase {
       assertNull(doe.getChildren());
    }
    
+   /**
+    * Tests a function that returns a data section with elements that contain
+    * other elements.
+    */
    public void testDataSection2() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
@@ -262,6 +288,12 @@ public class AllInOneAPITests extends TestCase {
       assertNotNull("No product specified.", products2);
       DataElement product21 = (DataElement) products2.next();
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
+   }
+   
+   public void testCAPIVersion() {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      CAPI allInOne = new CAPI(descriptor);
+      assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
    }
    
    /**
