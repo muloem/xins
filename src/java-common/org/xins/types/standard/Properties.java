@@ -105,7 +105,15 @@ public class Properties extends Type {
 
       // Iterate over all properties
       Iterator names = value.getNames();
+      boolean first = true;
       while (names.hasNext()) {
+
+         // Prepend an ampersand before all but the first
+         if (!first) {
+            buffer.append('&');
+         } else {
+            first = false;
+         }
 
          // Get name and value
          String n = (String) names.next();
