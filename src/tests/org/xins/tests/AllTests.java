@@ -41,6 +41,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.TargetDescriptorTests.class);
+      suite.addTestSuite(org.xins.tests.common.util.service.UnsupportedProtocolExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.PatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.SimplePatternParserTests.class);
@@ -64,6 +65,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.UnacceptableResultXINSCallExceptionTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
+      suite.addTestSuite(org.xins.tests.client.XINSServiceCallerTests.class);
 
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);

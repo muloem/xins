@@ -14,16 +14,17 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPMethod;
-
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.service.CallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.service.UnsupportedProtocolException;
 
 /**
  * Tests for class <code>HTTPServiceCallerTests</code>.
@@ -102,6 +103,39 @@ public class HTTPServiceCallerTests extends TestCase {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   public void testConstructor() throws Exception {
+      try {
+         HTTPServiceCaller upe = new HTTPServiceCaller(null);
+         fail("HTTPServiceCaller did not throw an exception with a <null> argument for the constructor.");
+      } catch (IllegalArgumentException ex) {
+         // As excepted
+      }
+
+      HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
+      TargetDescriptor descriptor = new TargetDescriptor("http://www.w3.org/TR/2004/REC-xml-20040204/");
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+      HTTPCallResult result = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result.getStatusCode());
+
+      TargetDescriptor descriptor2 = new TargetDescriptor("hTTp://www.w3.org/TR/2004/REC-xml-20040204/");
+      HTTPServiceCaller caller2 = new HTTPServiceCaller(descriptor2);
+      HTTPCallResult result2 = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result2.getStatusCode());
+      
+      TargetDescriptor descriptor3 = new TargetDescriptor("hTTp://www.w3.org/TR/2004/REC-xml-20040204/");
+      HTTPServiceCaller caller3 = new HTTPServiceCaller(descriptor3, new HTTPCallConfig());
+      HTTPCallResult result3 = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result3.getStatusCode());
+
+      try {
+         TargetDescriptor descriptor4 = new TargetDescriptor("blah://www.google.com");
+         HTTPServiceCaller caller4 = new HTTPServiceCaller(descriptor4, new HTTPCallConfig());
+         fail("The \"blah\" protocol should not be supported.");
+      } catch (UnsupportedProtocolException upe) {
+         // As expected
+      }
+   }
 
    public void testW3URL() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
