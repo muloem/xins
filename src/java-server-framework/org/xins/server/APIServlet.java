@@ -11,12 +11,12 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
-import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
@@ -35,8 +35,7 @@ import org.xins.util.servlet.ServletConfigPropertyReader;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class APIServlet
-extends Object
-implements Servlet {
+extends HttpServlet {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -185,8 +184,8 @@ implements Servlet {
 
    /**
     * Description of the current error, if any. Will be returned by
-    * {@link #service(ServletRequest,ServletResponse)} if and only if the
-    * state is not {@link #READY}.
+    * {@link #service(HttpServletRequest,HttpServletResponse)} if and only if
+    * the state is not {@link #READY}.
     */
    private String _error;
 
@@ -564,7 +563,7 @@ implements Servlet {
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
-   public void service(ServletRequest request, ServletResponse response)
+   public void service(HttpServletRequest request, HttpServletResponse response)
    throws ServletException, IOException {
 
       // Determine current time
@@ -584,6 +583,16 @@ implements Servlet {
          throw new ServletException(message);
       }
 
+      // Check the HTTP request method
+      String method = request.getMethod();
+      boolean sendOutput = "GET".equals(method) || "POST".equals(method);
+      if (!sendOutput) {
+         if ("HEAD".equals(method) == false) {
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+         }
+      }
+
       // TODO: Support and use OutputStream instead of Writer, for improved
       //       performance
 
@@ -599,14 +608,19 @@ implements Servlet {
          result = new BasicCallResult(false, "InternalError", parameters, null);
       }
 
-      // Determine the XSLT to link to
-      String xslt = request.getParameter("_xslt");
+      // Send the output only if GET or POST
+      if (sendOutput) {
 
-      // Send the XML output to the stream and flush
-      PrintWriter out = response.getWriter(); 
-      response.setContentType("text/xml");
-      CallResultOutputter.output(out, result, xslt);
-      out.flush();
+         // Determine the XSLT to link to
+         String xslt = request.getParameter("_xslt");
+
+         // Send the XML output to the stream and flush
+         PrintWriter out = response.getWriter(); 
+         response.setContentType("text/xml");
+         response.setStatus(HttpServletResponse.SC_OK);
+         CallResultOutputter.output(out, result, xslt);
+         out.flush();
+      }
    }
 
    /**
