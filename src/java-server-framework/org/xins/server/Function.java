@@ -278,9 +278,6 @@ implements DefaultResultCodes {
     * @param context
     *    the used call context, not <code>null</code>.
     *
-    * @param duration
-    *    the duration of the function call, as a number of milliseconds.
-    *
     * @param success
     *    indication if the call was successful.
     *
