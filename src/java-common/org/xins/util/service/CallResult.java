@@ -127,12 +127,10 @@ public final class CallResult extends Object {
     *         || (failedTargets != null &amp;&amp; (
     *               exceptions == null
     *            || failedTargets.size() != exceptions.size()
-    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)
     *            || failedTargets.get(<em>i</em>) == null
     *            || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
-    *            || failedTargets.get(<em>x</em>).equals(failedTargets.get(<em>y</em>))))</code>,
-    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>
-    *    and   <code>0 &lt;= <em>x</em> &lt; <em>y</em> &lt; failedTargets.size()</code>.
+    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
+    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
     */
    public CallResult(List              failedTargets,
                      List              exceptions,

@@ -39,28 +39,24 @@ public final class CallFailedException extends Exception {
     *    <code>null</code>.
     *
     * @param failedTargets
-    *    the list of targets for which the call failed, can be
+    *    the list of targets for which the call failed, cannot be
     *    <code>null</code>; all elements in this {@link List} must be
     *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
     *    allowed, but duplicates are.
     *
     * @param exceptions
     *    the list of caught exceptions, matching the list of failed targets,
-    *    can be <code>null</code>; all elements in this {@link List} must be
+    *    cannot be <code>null</code>; all elements in this {@link List} must be
     *    {@link Throwable} objects, no <code>null</code> elements are allowed,
     *    but duplicates are.
     *
     * @throws IllegalArgumentException
-    *    if <code>(failedTargets == null &amp;&amp; exceptions != null)
-    *         || (failedTargets != null &amp;&amp; (
-    *               exceptions == null
-    *            || failedTargets.size() != exceptions.size()
-    *            || !(exceptions.get(<em>i</em>) instanceof Throwable)
-    *            || failedTargets.get(<em>i</em>) == null
-    *            || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
-    *            || failedTargets.get(<em>x</em>).equals(failedTargets.get(<em>y</em>))))</code>,
-    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>
-    *    and   <code>0 &lt;= <em>x</em> &lt; <em>y</em> &lt; failedTargets.size()</code>.
+    *    if <code>failedTargets == null || exceptions == null)
+    *         || failedTargets.size() != exceptions.size()
+    *         || failedTargets.get(<em>i</em>) == null
+    *         || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
+    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
     */
    public CallFailedException(Object subject,
                               List   failedTargets,
@@ -68,6 +64,8 @@ public final class CallFailedException extends Exception {
    throws IllegalArgumentException {
 
       // Check preconditions
+      MandatoryArgumentChecker.check("failedTargets", failedTargets,
+                                     "exceptions",    exceptions);
       CallResult.checkFailureLists(failedTargets, exceptions);
 
       _subject       = subject;
