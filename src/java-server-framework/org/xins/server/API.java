@@ -207,7 +207,38 @@ implements DefaultResultCodes {
    /**
     * Adds the specified instance as an object to initialize at startup and
     * deinitialize at shutdown. The object will immediately be initialized. If
-    * the initialization fails, then a warning will be logged.
+    * the initialization fails, then an {@link InitializationException} will
+    * be thrown.
+    *
+    * <p>The initialization will be performed by calling
+    * {@link Singleton#init(Properties)}.
+    *
+    * <p>At shutdown time {@link Singleton#destroy()} will be called.
+    *
+    * @param instance
+    *    the instance to initialize now and deinitialize at shutdown time, not
+    *    <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not in the initializing state.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>instance == null</code>.
+    *
+    * @since XINS 0.55
+    */
+   protected final void addInstance(Singleton instance)
+   throws IllegalStateException,
+          IllegalArgumentException,
+          InitializationException {
+      addInstance((Object) instance);
+   }
+
+   /**
+    * Adds the specified instance as an object to initialize at startup and
+    * deinitialize at shutdown. The object will immediately be initialized. If
+    * the initialization fails, then an {@link InitializationException} will
+    * be thrown.
     *
     * <p>The initialization will be performed by calling a method
     * <code>init(</code>{@link Properties}<code>)</code> in the specified
@@ -232,14 +263,24 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.55. Use {@link #addInstance(Singleton)}
+    *    instead.
     */
    protected final void addInstance(Object instance)
-   throws IllegalArgumentException {
+   throws IllegalStateException,
+          IllegalArgumentException,
+          InitializationException {
 
       // TODO: Check that state equals INITIALIZING
 
       // Check preconditions
       MandatoryArgumentChecker.check("instance", instance);
+
+      if ((instance instanceof Singleton) == false) {
+         LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
+      }
 
       _instances.add(instance);
 
@@ -249,7 +290,9 @@ implements DefaultResultCodes {
       if (succeeded) {
          LOG.info("Initialized instance of " + className + '.');
       } else {
-         LOG.error("Failed to initialize instance of " + className + '.');
+         String message = "Failed to initialize instance of " + className + '.';
+         LOG.error(message);
+         throw new InitializationException(message);
       }
    }
 
