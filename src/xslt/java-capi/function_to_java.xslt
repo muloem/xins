@@ -163,9 +163,10 @@ public final class ]]></xsl:text>
 			<xsl:text> 
       } catch (TypeValueException exception) {
          throw new InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
-      }
-   }</xsl:text>
+      }</xsl:text>
 		</xsl:if>
+		<xsl:text>
+   }</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="setfield">
