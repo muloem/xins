@@ -93,7 +93,7 @@
 		<property name="javac.targetvm"      value="1.4" />
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.deprecation"   value="true"  />
-		<property name="javac.optimize"      value="true" />
+		<property name="javac.optimize"      value="false" />
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
@@ -369,7 +369,7 @@
 		<javac destdir="build/classes/tests"
 		       includes="org/xins/tests/**/*.java"
 		       debug="true"
-		       deprecation="false"
+		       deprecation="true"
 		       source="${javac.targetvm}"
 		       target="${javac.targetvm}">
 			<src path="src/tests" />
@@ -899,9 +899,9 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
 
 	<target name="help" description="Print the help of the main targets" depends="-init">
-		<echo message="XINS ${version}" />
-		<echo message="" />
-		<echo message="Main targets:" />
+		<echo message="XINS ${version}"                                                     />
+		<echo message=""                                                                    />
+		<echo message="Main targets:"                                                       />
 		<echo message="  clean        : Remove all generated files"                         />
 		<echo message="  java         : Compile all Java source files"                      />
 		<echo message="  javadoc      : Generate the Javadoc API docs"                      />
@@ -926,5 +926,36 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="   must contain valid sf.user and sf.password properties."           />
 		<echo message="4) The DOCBOOK_XSLT_HOME environment variable must be set and"       />
 		<echo message="   refer to the directory containing the Docbook XSLT files."        />
+	</target>
+        
+	<target name="netbeans-debug" depends="classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
+		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket" />
+                
+                <mkdir dir="build/testresults" />
+		<mkdir dir="build/testresults/xml" />
+		
+		<junit printsummary="true" failureproperty="tests.failed">
+                        <jvmarg value="-Xdebug" />
+                        <jvmarg value="-Xnoagent" />
+                        <jvmarg value="-Djava.compiler=none" />
+                        <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+
+			<sysproperty key="user.dir" value="${basedir}"/>
+			<formatter type="xml" />
+			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<classpath>
+				<pathelement location="build/classes/tests" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</junit>
+		
+		<antcall target="testreports" />
 	</target>
 </project>
