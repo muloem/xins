@@ -334,11 +334,11 @@ extends Object {
        * @param length
        *    the number of characters to take from <code>ch</code>.
        *
-       * @throws ArrayIndexOutOfBoundsException
+       * @throws IndexOutOfBoundsException
        *    if characters outside the allowed range are specified.
        */
       public void characters(char[] ch, int start, int length)
-      throws ArrayIndexOutOfBoundsException {
+      throws IndexOutOfBoundsException {
 
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
