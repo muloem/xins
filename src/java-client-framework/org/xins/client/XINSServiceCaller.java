@@ -91,9 +91,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Construct PostMethod object
       PostMethod method = new PostMethod(baseURL);
 
-      // TODO: Allow this to be configured to either "function" or "_function"
-      //       for now. Completely change to _function at some point.
-      method.addParameter("function", functionName);
+      method.addParameter("_function", functionName);
 
       // If a diagnostic context is available, pass it on
       String contextID = NDC.peek();

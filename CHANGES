@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Each DataElement now must have a qualified name.
   - Fixed the bug 1010776 that did not close the sockets with CAPI.
     This bug has been in XINS since version 0.195.
+  - _function is now used instead of function for the function name parameter.
 
 * Logdoc:
   - Removed the counter that counted the number of time that a log was
