@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.141:
+
+* XINS/Java Common Library:
+  - Added org.xins.specs package for specification of API components, like
+    functions, types and result codes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.140:
 
 * XINS/Java Client Framework:
