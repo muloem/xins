@@ -50,9 +50,23 @@ extends ActualFunctionCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
+    *
+    * @throws SecurityException
+    *    if a security manager does not allow the DNS lookup operation for the
+    *    host specified in the URL.
+    *
+    * @throws UnknownHostException
+    *    if no IP address could be found for the host specified in the URL.
+    *
+    * @throws MultipleIPAddressesException
+    *    if the host specified in the URL resolves to multiple IP addresses.
     */
    public RemoteAPI(URL url)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException,
+          SecurityException,
+          UnknownHostException,
+          MultipleIPAddressesException {
+
       super(url);
    }
 
