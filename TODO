@@ -131,8 +131,5 @@ MISCELLANEOUS
 * Have DTD or XML Schema files and use these to check that the specification
   files are valid.
 * Fix 'xins -projecthelp'.
-* Consider removing dependency on JDOM.
 * Add date to CHANGES file when a release is created. A (small) custom Ant
   task would need to be developed for this.
-* Manage all logging messages and allow them to be documented. Also, support
-  localisation of log messages.
