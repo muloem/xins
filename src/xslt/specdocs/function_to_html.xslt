@@ -16,10 +16,22 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<!-- Perform includes -->
+	<xsl:include href="../header.xslt"    />
+	<xsl:include href="../footer.xslt"    />
+	<xsl:include href="../function.xslt"  />
+	<xsl:include href="../types.xslt"     />
+	<xsl:include href="../urlencode.xslt" />
+
 	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
 	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
 	<xsl:variable name="function_name"    select="//function/@name"                                          />
 	<xsl:variable name="function_file"    select="concat($specsdir, '/', $api, '/', $function_name, '.fnc')" />
+	<xsl:variable name="sessionBased">
+		<xsl:for-each select="//function">
+			<xsl:call-template name="is_function_session_based" />
+		</xsl:for-each>
+	</xsl:variable>
 
 	<xsl:output
 	method="xml"
@@ -31,20 +43,10 @@
 
 	<xsl:preserve-space elements="function/examples" />
 
-	<xsl:include href="../header.xslt"    />
-	<xsl:include href="../footer.xslt"    />
-	<xsl:include href="../function.xslt"  />
-	<xsl:include href="../types.xslt"     />
-	<xsl:include href="../urlencode.xslt" />
-
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
 	<xsl:template match="function">
-
-		<xsl:variable name="sessionBased">
-			<xsl:call-template name="is_function_session_based" />
-		</xsl:variable>
 
 		<xsl:if test="not(@name)">
 			<xsl:message terminate="yes">
@@ -813,16 +815,25 @@
 
 	<xsl:template name="default_resultcodes">
 		<xsl:variable name="haveParams">
-			<xsl:if test="//function/input/param">true</xsl:if>
+			<xsl:choose>
+				<xsl:when test="//function/input/param">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 
 		<xsl:for-each select="document($resultcodes_file)/resultcodes/code">
-			<xsl:if test="$haveParams = 'true' or not(@onlyIfInputParameters='true')">
-				<xsl:call-template name="default_resultcode">
-					<xsl:with-param name="value"       select="@value" />
-					<xsl:with-param name="description" select="description/text()" />
-				</xsl:call-template>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="@value = 'MissingFunctionName'" />
+				<xsl:when test="@value = 'NoSuchFunction'"      />
+				<xsl:when test="$sessionBased = 'false' and @onlyIfSessionBased    = 'true'" />
+				<xsl:when test="$haveParams   = 'false' and @onlyIfInputParameters = 'true'" />
+				<xsl:otherwise>
+					<xsl:call-template name="default_resultcode">
+						<xsl:with-param name="value"       select="@value" />
+						<xsl:with-param name="description" select="description/text()" />
+					</xsl:call-template>
+			   </xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 	</xsl:template>
 
