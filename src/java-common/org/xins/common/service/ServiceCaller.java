@@ -114,16 +114,24 @@ public abstract class ServiceCaller extends Object {
 
       // If no CallConfig is specified, then use a default one
       if (callConfig == null) {
+
+         String actualClass = getClass().getName();
+
+         // Get the default config
          try {
             callConfig = getDefaultCallConfig();
+
+         // No exception should be thrown by getDefaultCallConfig()
          } catch (Throwable t) {
-            // TODO: Log and create message
-            throw new Error(t);
+            Log.log_1052(t, actualClass, "getDefaultCallConfig()");
+            throw new Error(actualClass + ".getDefaultCallConfig() has thrown an unexpected " + t.getClass().getName() + '.', t);
          }
 
+         // And getDefaultCallConfig() should never return null
          if (callConfig == null) {
-            // TODO: Log and create message
-            throw new Error();
+            String detail = "getDefaultCallConfig()", "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
+            Log.log_1050(actualClass, "getDefaultCallConfig()", detail);
+            throw new Error(detail);
          }
       }
 
