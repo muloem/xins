@@ -80,6 +80,20 @@
 				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</javac>
+		<manifest file="build/MANIFEST.MF">
+			<section name="xins-common">
+				<attribute name="Specification-Title"    value="XINS/Java Common Library" />
+				<attribute name="Specification-Version"  value="${version}" />
+				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Implementation-Title"   value="XINS/Java Common Library" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+			</section>
+		</manifest>
+		<jar
+		jarfile="build/xins-common.jar"
+		basedir="build/classes/java-common"
+		manifest="build/MANIFEST.MF" />
 	</target>
 
 	<target name="-prepare-java-server-framework" depends="-prepare">
@@ -111,11 +125,12 @@
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
+			<attribute name="Class-Path" value="xins-common.jar" />
 			<section name="xins-server">
-				<attribute name="Specification-Title"    value="${title}"   />
+				<attribute name="Specification-Title"    value="XINS/Java Server Framework" />
 				<attribute name="Specification-Version"  value="${version}" />
 				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="${title}"   />
+				<attribute name="Implementation-Title"   value="XINS/Java Server Framework" />
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Implementation-Vendor"  value="${vendor}"  />
 			</section>
@@ -151,11 +166,12 @@
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
+			<attribute name="Class-Path" value="xins-common.jar" />
 			<section name="xins-client">
-				<attribute name="Specification-Title"    value="${title}"   />
+				<attribute name="Specification-Title"    value="XINS/Java Client Framework" />
 				<attribute name="Specification-Version"  value="${version}" />
 				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="${title}"   />
+				<attribute name="Implementation-Title"   value="XINS/Java Client Framework" />
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Implementation-Vendor"  value="${vendor}"  />
 			</section>
@@ -165,6 +181,8 @@
 		basedir="build/classes/java-client-framework"
 		manifest="build/MANIFEST.MF" />
 	</target>
+
+	<target name="java" depends="java-server-framework,java-client-framework" />
 
 	<target name="-jdksrc-avail">
 		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
