@@ -61,17 +61,6 @@ public class Float64Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() {
       assertEquals("lowerLimit.toString(12.0) should return a value of \"12.0\"", "12.0", lowerLimit.toString(12.0));
       assertEquals("lowerLimit.toString(Double.valueOf(\"12.0\")) should return a value of \"12.0\"","12.0", lowerLimit.toString(Double.valueOf("12.0")));

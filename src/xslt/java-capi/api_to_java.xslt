@@ -33,12 +33,7 @@
 
 	<!-- Determine the location of the online specification docs -->
 	<xsl:variable name="specdocsURL" select="document($project_file)/project/specdocs/@href" />
-	<xsl:variable name="hasSpecdocsURL">
-		<xsl:choose>
-			<xsl:when test="string-length($specdocsURL) &gt; 0">true</xsl:when>
-			<xsl:otherwise>false</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
+	<xsl:variable name="hasSpecdocsURL" select="string-length($specdocsURL) &gt; 0" />
 
 	<!-- ***************************************************************** -->
 	<!-- Match the root element: api                                       -->
@@ -58,7 +53,7 @@
 		<xsl:text><![CDATA[</em> API.]]></xsl:text>
 
 		<!-- Display the specdocs URL if it is specified -->
-		<xsl:if test="$hasSpecdocsURL = 'true'">
+		<xsl:if test="$hasSpecdocsURL">
 			<xsl:text><![CDATA[
  *
  * <p>See the <a href="]]></xsl:text>
@@ -361,7 +356,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:with-param name="revision" select="@rcsversion" />
 		</xsl:call-template>
 		<xsl:text>.</xsl:text>
-		<xsl:if test="$hasSpecdocsURL = 'true'">
+		<xsl:if test="$hasSpecdocsURL">
 			<xsl:text><![CDATA[
     * See the
     * <a href="]]></xsl:text>
@@ -443,7 +438,7 @@ TODO for Ernst: Catch all expected error codes and throw a specific error code e
 			<xsl:with-param name="revision" select="@rcsversion" />
 		</xsl:call-template>
 		<xsl:text>.</xsl:text>
-		<xsl:if test="$hasSpecdocsURL = 'true'">
+		<xsl:if test="$hasSpecdocsURL">
 			<xsl:text><![CDATA[
     * See the
     * <a href="]]></xsl:text>

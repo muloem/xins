@@ -582,7 +582,7 @@ public final class ]]></xsl:text>
        *
        * @param value
 			 *    the new value to add</xsl:text>
-			<xsl:if test="not($typeIsPrimary = 'true')">
+			<xsl:if test="$typeIsPrimary = 'fasle'">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>.
        *
        * @throws java.lang.IllegalArgumentException
@@ -595,7 +595,7 @@ public final class ]]></xsl:text>
 			<xsl:text> value) {
 
 			</xsl:text>
-			<xsl:if test="not($typeIsPrimary = 'true')">
+			<xsl:if test="$typeIsPrimary = 'false'">
          org.xins.common.MandatoryArgumentChecker.check("value", value);
 			</xsl:if>
 			<xsl:variable name="valueasobject">
@@ -626,7 +626,7 @@ public final class ]]></xsl:text>
        *
        * @return
        *    The element at the specified position</xsl:text>
-			<xsl:if test="not($typeIsPrimary = 'true')">
+			<xsl:if test="$typeIsPrimary = 'false'">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
 			</xsl:if>
       <xsl:text>.
@@ -651,7 +651,7 @@ public final class ]]></xsl:text>
 					<xsl:text>getItem(index)</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="not($typeIsPrimary = 'true')">
+			<xsl:if test="$typeIsPrimary = 'false'">
 			</xsl:if>
 			<xsl:text>;
 

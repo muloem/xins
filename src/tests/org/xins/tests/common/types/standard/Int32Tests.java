@@ -61,17 +61,6 @@ public class Int32Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() {
       assertEquals("lowerLimit.toString((int)12) should return a value of \"12\"", "12", lowerLimit.toString((int)12));
       assertEquals("lowerLimit.toString(Integer.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Integer.valueOf("12")));

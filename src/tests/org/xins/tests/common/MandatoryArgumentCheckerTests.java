@@ -64,17 +64,6 @@ public class MandatoryArgumentCheckerTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
-   /**
     * Tests the simple check.
     */
    public void testOneArgument() throws Throwable {

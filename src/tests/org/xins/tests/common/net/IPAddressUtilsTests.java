@@ -65,17 +65,6 @@ public class IPAddressUtilsTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testIpToInt() throws Throwable {
       doTestIpToInt_INVALID("1");
       doTestIpToInt_INVALID("1.2.3.");

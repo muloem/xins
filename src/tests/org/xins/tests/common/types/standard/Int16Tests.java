@@ -60,17 +60,6 @@ public class Int16Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((short)12) should return a value of \"12\"", "12", lowerLimit.toString((short)12));
       assertEquals("lowerLimit.toString(Short.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Short.valueOf("12")));

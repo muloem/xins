@@ -66,17 +66,6 @@ public class URLEncodingTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testEncode() throws Throwable {
 
       // Test that a null argument fails

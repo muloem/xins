@@ -61,17 +61,6 @@ public class Base64Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() throws Throwable {
       byte[] hello = { 'h', 'e', 'l', 'l', 'o' };
       assertEquals("aGVsbG8=", lowerLimit.toString(hello));

@@ -102,14 +102,14 @@ import org.xins.logdoc.LogdocStringBuffer;
 
 		<xsl:for-each select="translation">
 			<xsl:variable name="entry" select="@entry" />
-			<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception" />
+			<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception = 'true'" />
 
 			<xsl:text>
 
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
 			<xsl:text>(</xsl:text>
-			<xsl:if test="$exception = 'true'">
+			<xsl:if test="$exception">
 				<xsl:text>java.lang.Throwable __exception__</xsl:text>
 			</xsl:if>
 			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
@@ -132,9 +132,9 @@ import org.xins.logdoc.LogdocStringBuffer;
 	<!-- Match <exception-property/> elements -->
 	<xsl:template match="translation/exception-property">
 		<xsl:variable name="entry" select="../@entry" />
-		<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception" />
+		<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception = 'true'" />
 
-		<xsl:if test="not ($exception = 'true')">
+		<xsl:if test="not($exception)">
 			<xsl:message terminate="yes">
 				<xsl:text>Translation for entry </xsl:text>
 				<xsl:value-of select="$entry" />

@@ -64,17 +64,6 @@ public class HexConverterTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testParseHexString_String() throws Throwable {
 
       // Pass arguments that should trigger failure

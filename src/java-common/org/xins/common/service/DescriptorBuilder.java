@@ -6,17 +6,17 @@
  */
 package org.xins.common.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
-
 import java.util.StringTokenizer;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
-
+import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
@@ -82,6 +82,12 @@ public final class DescriptorBuilder extends Object {
     * character <code>','</code>.
     */
    public static final char DELIMITER = ',';
+
+   /**
+    * Delimiter between property lines. This is the carraige return
+    * character <code>'\n'</code>.
+    */
+   public static final char LINE_DELIMITER = '\n';
 
    /**
     * Delimiters between tokens within a property value.
@@ -218,6 +224,55 @@ public final class DescriptorBuilder extends Object {
       MandatoryArgumentChecker.check("properties", properties,
                                      "propertyName", propertyName);
       return build((ServiceCaller) null, properties, propertyName);
+   }
+
+   /**
+    * Builds a <code>Descriptor</code> based on the specified value.
+    *
+    * @param descriptorValue
+    *    the value of the descriptor, cannot be <code>null</code>.
+    *    the value must have the same value as specified at the top, the lines
+    *    should be separated with '\n' and the first line must start with
+    *    the name of the property followed by the sign '='.
+    *
+    * @return
+    *    the {@link Descriptor} that was built, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptorValue == null</code> or the property name cannot
+    *    be found in the value.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if the property named <code>propertyName</code> cannot be found in
+    *    <code>properties</code>, or if a referenced property cannot be found.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the property named <code>propertyName</code> is found in
+    *    <code>properties</code>, but the format of this property or the
+    *    format of a referenced property is invalid.
+    */
+   public static Descriptor build(String descriptorValue)
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("descriptorValue", descriptorValue);
+
+      int equalsPos = descriptorValue.indexOf('=');
+      int crPos = descriptorValue.indexOf(LINE_DELIMITER);
+      if (equalsPos <= 0 || (crPos > 0 && equalsPos > crPos)) {
+         throw new IllegalArgumentException("No property name found in the text: " + descriptorValue);
+      }
+      String propertyName = descriptorValue.substring(0, equalsPos);
+      try {
+         ByteArrayInputStream bais = new ByteArrayInputStream(descriptorValue.getBytes("ISO-8859-1"));
+         PropertyReader properties = PropertyReaderUtils.createPropertyReader(bais);
+         bais.close();
+         return build((ServiceCaller) null, properties, propertyName);
+      } catch (IOException ioe) {
+         throw new InvalidPropertyValueException(propertyName, descriptorValue);
+      }
    }
 
    /**

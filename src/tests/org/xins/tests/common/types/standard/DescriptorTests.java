@@ -3,17 +3,18 @@ package org.xins.tests.common.types.standard;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.types.TypeValueException;
-import org.xins.common.types.standard.URL;
+import org.xins.common.types.standard.Descriptor;
 
 /**
- * Tests for class <code>URL</code>.
+ * Tests for class <code>Descritor</code>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class URLTests extends TestCase {
+public class DescriptorTests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -26,7 +27,7 @@ public class URLTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(URLTests.class);
+      return new TestSuite(DescriptorTests.class);
    }
 
 
@@ -39,13 +40,13 @@ public class URLTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>URLTests</code> test suite with
+    * Constructs a new <code>DescriptorTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public URLTests(String name) {
+   public DescriptorTests(String name) {
       super(name);
    }
 
@@ -66,22 +67,22 @@ public class URLTests extends TestCase {
 
       // test the fromStringForRequired method with all possabilities
       try {
-         URL.fromStringForRequired(null);
+         Descriptor.fromStringForRequired(null);
          fail("Should have thrown a String is null error");
       } catch (IllegalArgumentException iae) {
          // this is good
       }
 
       try {
-         URL.fromStringForRequired("fred");
+         Descriptor.fromStringForRequired("fred");
          fail("Should have thrown a TypeValueException.");
       } catch (TypeValueException tve) {
          // this is good
       }
 
-      assertEquals("http://www.test.com/", URL.fromStringForRequired("http://www.test.com/"));
+      assertFalse(Descriptor.fromStringForRequired("descriptor=service, http://www.test.com, 5000").isGroup());
 
-      assertEquals("ldap://www.test.com/", URL.fromStringForRequired("ldap://www.test.com/"));
+      assertEquals(1, Descriptor.fromStringForRequired("descriptor=service, http://www.test.com, 5000, 5000").getTargetCount());
    }
 
    /**
@@ -90,17 +91,17 @@ public class URLTests extends TestCase {
    public void testFromStringForOptional() throws Throwable {
       // test the fromStringForOptional method with all possabilities
       try {
-         URL.fromStringForOptional("fred");
+         Descriptor.fromStringForOptional("fred");
          fail("Should have thrown a TypeValueException.");
       } catch (TypeValueException tve2) {
          // this is good
       }
 
-      assertNull("Should return a null from a null parameter.", URL.fromStringForOptional(null));
+      assertNull("Should return a null from a null parameter.", Descriptor.fromStringForOptional(null));
 
-      assertEquals("http://www.test.com/", URL.fromStringForRequired("http://www.test.com/"));
+      assertFalse(Descriptor.fromStringForRequired("descriptor=service, http://www.test.com, 5000").isGroup());
 
-      assertEquals("ldap://www.test.com/", URL.fromStringForRequired("ldap://www.test.com/"));
+      assertEquals(1, Descriptor.fromStringForRequired("descriptor=service, http://www.test.com, 5000, 5000").getTargetCount());
    }
 
    /**
@@ -108,13 +109,11 @@ public class URLTests extends TestCase {
     */
    public void testIsValidValue() {
 
-      assertTrue("http://www.test.com/ is considered invalid.", URL.SINGLETON.isValidValue("http://www.test.com/"));
+      assertTrue("\"descriptor=service, http://www.test.com, 5000\" is considered invalid.", Descriptor.SINGLETON.isValidValue("descriptor=service, http://www.test.com, 5000"));
 
-      assertTrue("ldap://www.test.com/ is considered invalid.", URL.SINGLETON.isValidValue("ldap://www.test.com/"));
-
-      assertTrue("URL.SINGLETON.isValidValue(null) is considered invalid.", URL.SINGLETON.isValidValue(null));
+      assertTrue("Descriptor.SINGLETON.isValidValue(null) is considered invalid.", Descriptor.SINGLETON.isValidValue(null));
       
-      assertFalse("fred is considered invalid.", URL.SINGLETON.isValidValue("fred"));
+      assertFalse("fred is considered valid.", Descriptor.SINGLETON.isValidValue("fred"));
    }
 
    /**
@@ -122,10 +121,10 @@ public class URLTests extends TestCase {
     */
    public void testFromString() throws Throwable  {
 
-      assertEquals("URL.SINGLETON.fromString(null) should return a null.", null, URL.SINGLETON.fromString(null));
+      assertNull("Descriptor.SINGLETON.fromString(null) should return a null.", Descriptor.SINGLETON.fromString(null));
 
       try {
-         URL.SINGLETON.fromString("fred");
+         Descriptor.SINGLETON.fromString("fred");
          fail("Should throw a type value exception.");
       } catch (TypeValueException tve) {
          // this is good
@@ -137,14 +136,10 @@ public class URLTests extends TestCase {
     */
    public void testToString() throws Throwable {
 
-      try {
-         URL.SINGLETON.toString(null);
-         fail("null is not a possible value for toString()");
-      } catch (IllegalArgumentException eaex) {
-         // As expected
-      }
+      assertNull(Descriptor.toString(null));
 
-      assertEquals("URL.SINGLETON.toString(String) should return \"http://www.test.com/test.html\"", "http://www.test.com/test.html", URL.SINGLETON.toString("http://www.test.com/test.html"));
+      TargetDescriptor target = new TargetDescriptor("http://www.test.com");
+      assertEquals("Descriptor.SINGLETON.toString(String) returned an incorrect value.", "descriptor=service, http://www.test.com, 5000, 5000, 5000", Descriptor.SINGLETON.toString(target));
    }
 
 }

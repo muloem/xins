@@ -61,17 +61,6 @@ public class BooleanTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
-   /**
     * Tests the fromStringForRequired method of the Boolean type class.
     */
    public void testFromStringForRequired() throws Throwable {

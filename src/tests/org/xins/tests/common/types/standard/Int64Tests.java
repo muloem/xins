@@ -61,17 +61,6 @@ public class Int64Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() {
       assertEquals("lowerLimit.toString((long)12) should return a value of \"12\"", "12", lowerLimit.toString((long)12));
       assertEquals("lowerLimit.toString(Long.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Long.valueOf("12")));

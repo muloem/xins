@@ -60,17 +60,6 @@ public class Int8Tests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((byte)12) should return a value of \"12\"", "12", lowerLimit.toString((byte)12));
       assertEquals("lowerLimit.toString(Byte.valueOf(\"12\")) should return a value of \"12\"", "12", lowerLimit.toString(Byte.valueOf("12")));

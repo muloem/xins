@@ -64,17 +64,6 @@ public class ExceptionUtilsTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
-   /**
     * Tests the constructor.
     */
    public void testGetRootCause() throws Throwable {

@@ -317,7 +317,7 @@ APIs in this project are:
 			</target>
 
 			<target name="all" depends="specdocs,wars" description="Generates everything" />
-			
+
 			<xsl:apply-templates select="api" />
 		</project>
 	</xsl:template>
@@ -365,12 +365,7 @@ APIs in this project are:
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="clientPackageAsDir" select="translate($clientPackage, '.','/')" />
-		<xsl:variable name="apiHasTypes">
-			<xsl:choose>
-				<xsl:when test="document($api_file)/api/type">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="apiHasTypes" select="boolean(document($api_file)/api/type)" />
 
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 			<dependset>
@@ -524,7 +519,7 @@ APIs in this project are:
 			</xsl:if>
 		</target>
 
-		<xsl:if test="$apiHasTypes = 'true'">
+		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_type_classes">
@@ -699,7 +694,7 @@ APIs in this project are:
 			<target name="classes-api-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
 				<xsl:attribute name="depends">
 					<xsl:text>-prepare-classes,</xsl:text>
-					<xsl:if test="$apiHasTypes = 'true'">
+					<xsl:if test="$apiHasTypes">
 						<xsl:text>-classes-types-</xsl:text>
 						<xsl:value-of select="$api" />
 						<xsl:text>,</xsl:text>
@@ -867,7 +862,7 @@ APIs in this project are:
 					<src path="{$javaDestDir}" />
 					<src path="{$javaImplDir}" />
 					<classpath>
-						<xsl:if test="$apiHasTypes = 'true'">
+						<xsl:if test="$apiHasTypes">
 							<pathelement path="{$typeClassesDir}" />
 						</xsl:if>
 						<pathelement path="{$logdoc.jar}" />
@@ -929,7 +924,7 @@ APIs in this project are:
 						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 					</xsl:if>
 					<classes dir="{$classesDestDir}" includes="**/*.class" />
-					<xsl:if test="$apiHasTypes = 'true'">
+					<xsl:if test="$apiHasTypes">
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java" />
@@ -948,7 +943,7 @@ APIs in this project are:
 						<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-server.jar xins-client.jar" />
 						<fileset dir="{$xins_home}/lib" includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar" />
 						<path location="build/classes-api/{$api}" />
-						<xsl:if test="$apiHasTypes = 'true'">
+						<xsl:if test="$apiHasTypes">
 							<path location="build/classes-types/{$api}" />
 						</xsl:if>
 					</classpath>
@@ -969,7 +964,7 @@ APIs in this project are:
 				doctitle="Implementation of {$api} API">
 					<packageset dir="{$javaDestDir}" />
 					<packageset dir="{$javaImplDir}" />
-					<xsl:if test="$apiHasTypes = 'true'">
+					<xsl:if test="$apiHasTypes">
 						<packageset dir="build/java-types/{$api}" />
 					</xsl:if>
 					<link
@@ -1110,7 +1105,7 @@ APIs in this project are:
 		<target name="jar-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
 				<xsl:text>-prepare-classes,</xsl:text>
-				<xsl:if test="$apiHasTypes = 'true'">
+				<xsl:if test="$apiHasTypes">
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
 					<xsl:text>,</xsl:text>
@@ -1131,13 +1126,13 @@ APIs in this project are:
 					<pathelement path="{$logdoc.jar}"      />
 					<pathelement path="{$xins-common.jar}" />
 					<pathelement path="{$xins-client.jar}" />
-					<xsl:if test="$apiHasTypes = 'true'">
+					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$typeClassesDir}"  />
 					</xsl:if>
 					<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 				</classpath>
 			</javac>
-			<xsl:if test="$apiHasTypes = 'true'">
+			<xsl:if test="$apiHasTypes">
 				<copy todir="{$project_home}/build/classes-capi/{$api}">
 					<fileset dir="{$typeClassesDir}" includes="**/*.class" />
 				</copy>
@@ -1155,7 +1150,7 @@ APIs in this project are:
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
-				<xsl:if test="$apiHasTypes = 'true'">
+				<xsl:if test="$apiHasTypes">
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
 					<xsl:text>,</xsl:text>
@@ -1175,7 +1170,7 @@ APIs in this project are:
 			windowtitle="Call interface for {$api} API"
 			doctitle="Call interface for {$api} API">
 				<packageset dir="build/java-capi/{$api}" />
-				<xsl:if test="$apiHasTypes = 'true'">
+				<xsl:if test="$apiHasTypes">
 					<packageset dir="build/java-types/{$api}" />
 				</xsl:if>
 				<link

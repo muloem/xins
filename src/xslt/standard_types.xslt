@@ -32,6 +32,7 @@
 			<xsl:when test="$type = '_float64'">Signed floating number, 64 bit.</xsl:when>
 			<xsl:when test="$type = '_base64'">Byte Array, Base 64 encoded.</xsl:when>
 			<xsl:when test="$type = '_url'">Unified Resource Location (URL).</xsl:when>
+			<xsl:when test="$type = '_descriptor'">Descriptor.</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
@@ -46,26 +47,8 @@
 		<xsl:param name="type"     />
 		<xsl:param name="required" />
 
-		<xsl:variable name="requiredBool">
-			<xsl:choose>
-				<xsl:when test="string-length($required) = 0">
-					<xsl:text>false</xsl:text>
-				</xsl:when>
-				<xsl:when test="$required = 'false' or $required = 'true'">
-					<xsl:value-of select="$required" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The parameter 'required' should be either 'true' or 'false', not '</xsl:text>
-						<xsl:value-of select="$required" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
 		<xsl:choose>
-			<xsl:when test="$requiredBool = 'false'">
+			<xsl:when test="not($required = 'true')">
 				<xsl:choose>
 					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
@@ -79,6 +62,7 @@
 					<xsl:when test="$type = '_float32'">java.lang.Float</xsl:when>
 					<xsl:when test="$type = '_float64'">java.lang.Double</xsl:when>
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
+					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
@@ -88,7 +72,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:otherwise> <!-- $requiredBool = 'true' -->
+			<xsl:otherwise> <!-- $required = 'false' or $required = '' -->
 				<xsl:choose>
 					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
@@ -102,6 +86,7 @@
 					<xsl:when test="$type = '_float32'">float</xsl:when>
 					<xsl:when test="$type = '_float64'">double</xsl:when>
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
+					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>

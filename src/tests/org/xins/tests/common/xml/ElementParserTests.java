@@ -67,17 +67,6 @@ public class ElementParserTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
-   /**
     * Tests the <code>ElementParser</code> class.
     */
    public void testElementParser() throws Exception {

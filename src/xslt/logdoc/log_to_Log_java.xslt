@@ -205,20 +205,7 @@
 	<xsl:template match="group/entry">
 		<xsl:variable name="category" select="concat($package_name, '.', ../@id)" />
 
-		<xsl:variable name="exception">
-			<xsl:choose>
-				<xsl:when test="@exception = 'true'">true</xsl:when>
-				<xsl:when test="@exception = 'false'">false</xsl:when>
-				<xsl:when test="string-length(@exception) = 0">false</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute "exception" is set to "</xsl:text>
-						<xsl:value-of select="@exception" />
-						<xsl:text>" instead of either "true" or "false".</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="exception" select="@exception = 'true'" />
 
 		<xsl:text>
 
@@ -236,7 +223,7 @@
    public static final void log_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<xsl:if test="$exception = 'true'">
+		<xsl:if test="$exception">
 			<xsl:text>java.lang.Throwable __exception__</xsl:text>
 			<xsl:if test="count(param) &gt; 0">
 				<xsl:text>, </xsl:text>
@@ -263,11 +250,11 @@
          String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
-		<xsl:if test="$exception = 'true'">
+		<xsl:if test="$exception">
 			<xsl:text>__exception__</xsl:text>
 		</xsl:if>
 		<xsl:for-each select="param">
-			<xsl:if test="($exception = 'true') or (position() &gt; 1)">
+			<xsl:if test="$exception or (position() &gt; 1)">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
 			<xsl:value-of select="@name" />
@@ -279,10 +266,10 @@
 		<xsl:value-of select="@level" />
 		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
-			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
+			<xsl:when test="$exception and @level = 'DEBUG'">
 				<xsl:text>org.xins.logdoc.ExceptionUtils.getRootCause(__exception__));</xsl:text>
 			</xsl:when>
-			<xsl:when test="$exception = 'true'">
+			<xsl:when test="$exception">
 				<xsl:text>null);
          if (LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />

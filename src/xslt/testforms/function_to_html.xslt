@@ -191,13 +191,7 @@
 
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
-		<xsl:variable name="isenum">
-			<xsl:choose>
-				<xsl:when test="starts-with($type, '_')">false</xsl:when> <!-- TODO -->
-				<xsl:when test="document($type_file)/type/enum">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="isenum" select="not(starts-with($type, '_')) and boolean(document($type_file)/type/enum)" />
 
 		<!-- TODO: Deprecated parameters -->
 
@@ -223,7 +217,7 @@
 			</td>
 			<td class="value">
 				<xsl:choose>
-					<xsl:when test="$isenum = 'true'">
+					<xsl:when test="$isenum">
 						<select name="{@name}">
 							<xsl:attribute name="class">
 								<xsl:choose>

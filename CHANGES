@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added new logProprammingError methods.
   - The Java version returned has been changed from an object to a double 
     number.
+  - Added _descriptor type.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
@@ -34,10 +35,12 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     sections for the required parameters and for the invalid parameters.
   - The xsl:variable and xsl:with-param element now uses the select 
     attribute whenever possible.
+  - Replaced some string variable with boolean variables.
 
 * Generation of client-side Java code:
   - The xsl:variable and xsl:with-param element now uses the select 
     attribute whenever possible.
+  - Replaced some string variable with boolean variables.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
@@ -50,6 +53,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     defined in api.xml.
   - The xsl:variable and xsl:with-param element now uses the select 
     attribute whenever possible.
+  - Replaced some string variable with boolean variables.
 
 * Generated build file:
   - Fixed a bug that prevented APIs using the old directory structure to

@@ -508,7 +508,7 @@
 	*    empty.
 	*
 	* @return
-	*    the string 'true' if and only if the specified text is either
+	*    the text 'true' if and only if the specified text is either
 	*    'boolean', 'char', 'byte', 'short', 'int', 'long', 'float' or
 	*    'double'; otherwise the string 'false'.
 	-->
@@ -517,10 +517,10 @@
 
 		<xsl:choose>
 			<xsl:when test="$text='boolean' or $text='char' or $text='byte' or $text='short' or $text='int' or $text='long' or $text='float' or $text='double'">
-				<xsl:text>true</xsl:text>
+					<xsl:text>true</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>false</xsl:text>
+					<xsl:text>false</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

@@ -85,6 +85,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.Base64Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.DescriptorTests.class);
 
       suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 

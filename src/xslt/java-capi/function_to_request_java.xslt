@@ -73,7 +73,7 @@ extends org.xins.client.AbstractCAPICallRequest {
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
-		
+
    /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
@@ -243,16 +243,11 @@ extends org.xins.client.AbstractCAPICallRequest {
    /**
     * Sets the <em>]]></xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text><![CDATA[</em> parameter as ]]></xsl:text>
-				<xsl:choose>
-					<xsl:when test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
-						<xsl:text>an </xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>a </xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:text><![CDATA[<code>]]></xsl:text>
+				<xsl:text><![CDATA[</em> parameter as a]]></xsl:text>
+				<xsl:if test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
+					<xsl:text>n</xsl:text>
+				</xsl:if>
+				<xsl:text><![CDATA[ <code>]]></xsl:text>
 				<xsl:value-of select="$javatype" />
 				<xsl:text><![CDATA[</code>.
     *

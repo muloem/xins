@@ -85,7 +85,7 @@ public class DescriptorBuilderTests extends TestCase {
       _propertyReader = new PropertiesPropertyReader(_properties);
    }
 
-   private void reset() {
+   protected void tearDown() {
       _properties.clear();
    }
 

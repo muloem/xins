@@ -373,37 +373,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="isgenericresultcode">
-			<xsl:choose>
-				<xsl:when test="document($resultcodes_file)/resultcodes/code[@value=$resultcode]">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="isapiresultcode">
-			<xsl:choose>
-				<xsl:when test="document($api_file)/api/resultcode[@name=$resultcode]">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="isfunctionresultcode">
-			<xsl:choose>
-				<xsl:when test="boolean(parent::function/output/resultcode[@value=$resultcode])">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="success">
-			<xsl:choose>
-
-				<!-- No result code -->
-				<xsl:when test="string-length($resultcode) &lt; 1">true</xsl:when>
-
-				<!-- Have result code -->
-				<xsl:otherwise>false</xsl:otherwise>
-
-				<!-- TODO: Check that the result code is not defined in 2 places? -->
-				<!-- TODO: Check that the result code exists? -->
-			</xsl:choose>
-		</xsl:variable>
+		<!-- TODO: Check that the result code is not defined in 2 places? -->
+		<!-- TODO: Check that the result code exists? -->
 
 		<xsl:if test="string-length($resultcode) &lt; 1">
 			<xsl:variable name="examplenode" select="current()" />
@@ -438,9 +409,9 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
-			
+
 			<!--
-			Checks that the names set in the example element match the name 
+			Checks that the names set in the example element match the name
 			of the input section.
 			-->
 			<xsl:for-each select="input-example">
@@ -511,9 +482,9 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
-			
+
 			<!--
-			Checks that the names set in the example element match the name 
+			Checks that the names set in the example element match the name
 			of the input section.
 			-->
 			<xsl:for-each select="input-data-example/element-example/attribute-example">
@@ -570,7 +541,7 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
-			
+
 			<!-- Tests also that the result code is defined correctly -->
 			<xsl:if test="not(document($api_file)/api/resultcode[@name=$resultcode])">
 				<xsl:message terminate="yes">
@@ -595,7 +566,7 @@
 		<!--
 		Tests that the attributes have the correct name.
 		-->
-		
+
 		<tr>
 			<td colspan="2" class="header">
 				<h3>
@@ -1161,18 +1132,13 @@
 	</xsl:template>
 
 	<xsl:template name="default_resultcodes">
-		<xsl:variable name="haveParams">
-			<xsl:choose>
-				<xsl:when test="//function/input/param">true</xsl:when>
-				<xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="haveParams" select="boolean(//function/input/param)" />
 
 		<xsl:for-each select="document($resultcodes_file)/resultcodes/code">
 			<xsl:choose>
 				<xsl:when test="@value = 'MissingFunctionName'" />
 				<xsl:when test="@value = 'NoSuchFunction'"      />
-				<xsl:when test="$haveParams   = 'false' and @onlyIfInputParameters = 'true'" />
+				<xsl:when test="not($haveParams) and @onlyIfInputParameters = 'true'" />
 				<xsl:otherwise>
 					<xsl:call-template name="default_resultcode">
 						<xsl:with-param name="value"       select="@value" />

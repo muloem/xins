@@ -68,17 +68,6 @@ public class PropertiesTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Performs setup for the tests.
-    */
-   protected void setUp() {
-      // empty
-   }
-
-   private void reset() {
-      // empty
-   }
-
    public void testFromString() throws Throwable {
 
       final Properties TYPE = Properties.SINGLETON;

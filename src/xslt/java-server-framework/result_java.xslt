@@ -208,7 +208,7 @@ implements Result {
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
       </xsl:text>
-		<xsl:if test="not($typeIsPrimary = 'true')" >
+		<xsl:if test="$typeIsPrimary = 'false'" >
 		<xsl:text>if (</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text> != null &amp;&amp; !</xsl:text>
@@ -222,7 +222,7 @@ implements Result {
 		<xsl:text>",  </xsl:text>
 		<xsl:value-of select="$typeToString" />
 		<xsl:text>);</xsl:text>
-		<xsl:if test="not($typeIsPrimary = 'true')" >
+		<xsl:if test="$typeIsPrimary = 'false'" >
 			<xsl:text>
       }</xsl:text>
 		</xsl:if>
