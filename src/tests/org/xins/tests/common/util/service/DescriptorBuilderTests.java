@@ -7,6 +7,7 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.service.Descriptor;
@@ -101,7 +102,7 @@ public class DescriptorBuilderTests extends TestCase {
       try {
          DescriptorBuilder.build(_propertyReader, "ldap");
          fail("Expected build(non-null, nonexistent-property) to throw an IllegalArgumentException.");
-      } catch (DescriptorBuilder.Exception exception) { /* as expected */ }
+      } catch (MissingRequiredPropertyException exception) { /* as expected */ }
 
       // Simple example
       String url = "http://somehost.somecompany.com:3003/something/else";
