@@ -277,9 +277,11 @@ public class DataElement implements Cloneable {
       DataElement clone = new DataElement(getName());
 
       // Copy the children
-      Iterator itChildren = getChildren();
-      while (itChildren.hasNext()) {
-         clone.addChild((DataElement) ((DataElement)itChildren.next()).clone());
+      List children = getChildElements();
+      int size = children.size();
+      for (int i = 0; i < size; i++) {
+         DataElement child = (DataElement) children.get(i);
+         clone.addChild((DataElement) child.clone());
       }
 
       // Copy the attributes
