@@ -942,14 +942,7 @@
 					</xsl:if>
 					<mkdir dir="{$project_home}/build/capis/" />
 					<manifest file="{$project_home}/build/capis/{$api}-MANIFEST.MF">
-						<section name="XINS/Java CAPI Generator">
-							<attribute name="Specification-Title"    value="XINS/Java CAPI Generator" />
-							<attribute name="Specification-Version"  value="{$xins_version}"          />
-							<attribute name="Specification-Vendor"   value="Wanadoo Nederland B.V."   />
-							<attribute name="Implementation-Title"   value="XINS/Java CAPI Generator" />
-							<attribute name="Implementation-Version" value="{$xins_version}"          />
-							<attribute name="Implementation-Vendor"  value="Wanadoo Nederland B.V."   />
-						</section>
+						<attribute name="XINS-Version" value="{$xins_version}" />
 					</manifest>
 					<jar
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"
