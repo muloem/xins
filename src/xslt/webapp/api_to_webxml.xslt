@@ -40,7 +40,7 @@
 				</description>
 				<servlet-class>org.xins.server.APIServlet</servlet-class>
 				<init-param>
-					<param-name>api.class</param-name>
+					<param-name>org.xins.api.class</param-name>
 					<param-value>
 						<xsl:call-template name="package_for_api">
 							<xsl:with-param name="project_file">

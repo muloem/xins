@@ -71,7 +71,7 @@ extends HttpServlet {
       // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/GenericServlet.html#init(javax.servlet.ServletConfig)
       super.init(config);
 
-      String apiClass = config.getInitParameter("api.class");
+      String apiClass = config.getInitParameter("org.xins.api.class");
       if (apiClass == null || apiClass.equals("")) {
          throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
       }
