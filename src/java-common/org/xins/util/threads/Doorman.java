@@ -242,10 +242,13 @@ public final class Doorman extends Object {
          }
       }
 
-      // Wait for read access
+      // Wait for read access, which should be triggered by an interrupt
       try {
          Thread.sleep(_maxQueueWaitTime);
+
+         // If we get here, then the time-out was exceeded
          synchronized (_currentActorLock) {
+
             // Reset interrupted state, if this thread was interrupted between
             // the Thread.sleep(long) call and the acquiry of the
             // _currentActorLock lock.
@@ -326,10 +329,13 @@ public final class Doorman extends Object {
          }
       }
 
-      // Wait for write access
+      // Wait for write access, which should be triggered by an interrupt
       try {
          Thread.sleep(_maxQueueWaitTime);
+
+         // If we get here, then the time-out was exceeded
          synchronized (_currentActorLock) {
+
             // Reset interrupted state, if this thread was interrupted between
             // the Thread.sleep(long) call and the acquiry of the
             // _currentActorLock lock.
