@@ -7,6 +7,9 @@ CHANGES INTRODUCED IN XINS 0.131:
 * XINS/Java Client Framework:
   - Added AbstractCAPI class.
 
+* Generated CAPI classes:
+  - CAPI classes now extend org.xins.client.AbstractCAPI
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.130:
 
