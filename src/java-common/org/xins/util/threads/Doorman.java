@@ -147,16 +147,16 @@ public final class Doorman extends Object {
       Thread reader = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", enterAsReader() called for thread " + reader + '.');
+         LOG.debug("Doorman #" + _instanceID + ", enterAsReader() called for " + reader.toString() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          // Check preconditions
          if (_currentWriter == reader) {
-            throw new IllegalStateException("Thread cannot enter as a reader if it is already the active writer.");
+            throw new IllegalStateException(reader.toString() + " cannot enter as a reader if it is already the active writer.");
          } else if (_currentReaders.contains(reader)) {
-            throw new IllegalStateException("Thread cannot enter as a reader if it is already an active reader.");
+            throw new IllegalStateException(reader.toString() + " cannot enter as a reader if it is already an active reader.");
          }
 
          // If there is a current writer, then we need to wait in the queue
@@ -191,7 +191,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
          if (! _currentReaders.contains(reader)) {
-            throw new IllegalStateException("Thread was interrupted in enterAsReader(), but not in the set of current readers.");
+            throw new IllegalStateException(reader.toString() + " was interrupted in enterAsReader(), but not in the set of current readers.");
          }
       }
    }
@@ -209,7 +209,7 @@ public final class Doorman extends Object {
       Thread writer = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for thread " + writer + '.');
+         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for " + writer + '.');
       }
 
       synchronized (_currentActorLock) {
@@ -262,14 +262,14 @@ public final class Doorman extends Object {
       Thread reader = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", leaveAsReader() called for thread " + reader + '.');
+         LOG.debug("Doorman #" + _instanceID + ", leaveAsReader() called for " + reader.toString() + '.');
       }
 
       synchronized (_currentActorLock) {
          boolean readerRemoved = _currentReaders.remove(reader);
 
          if (!readerRemoved) {
-            throw new IllegalStateException("Cannot leave protected area as reader, because it has not entered as a reader.");
+            throw new IllegalStateException(reader.toString() + " cannot leave protected area as reader, because it has not entered as a reader.");
          }
 
          if (_currentReaders.isEmpty()) {
@@ -304,13 +304,13 @@ public final class Doorman extends Object {
       Thread writer = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", leaveAsWriter() called for thread " + writer + '.');
+         LOG.debug("Doorman #" + _instanceID + ", leaveAsWriter() called for " + writer.toString() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          if (_currentWriter != writer) {
-            throw new IllegalStateException("Cannot leave protected area as writer, because it has not entered as a writer.");
+            throw new IllegalStateException(writer.toString() + " cannot leave protected area as writer, because it has not entered as a writer.");
          }
 
          synchronized (_queue) {
@@ -458,7 +458,7 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
-            throw new IllegalStateException("The specified thread is already in this queue.");
+            throw new IllegalStateException(thread.toString() + " is already in this queue.");
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -529,7 +529,7 @@ public final class Doorman extends Object {
 
             // Remove the thread from the list
             if (! _entries.remove(thread)) {
-               throw new IllegalStateException("The specified thread is not in this queue.");
+               throw new IllegalStateException(thread.toString() + " is not in this queue.");
             }
          }
 
