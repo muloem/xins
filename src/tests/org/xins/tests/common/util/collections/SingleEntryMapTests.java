@@ -83,8 +83,9 @@ public class SingleEntryMapTests extends TestCase {
       // Test that a null argument fails for the key
       try {
          SingleEntryMap entry1 = new SingleEntryMap(null, value);
-         fail("A null key for the SingleEntryMap should have thrown a NullPointerException.");
-      } catch (NullPointerException exception) { /* as expected */ }
+      } catch (NullPointerException exception) { 
+         fail("A null key for the SingleEntryMap should be possible.");
+      }
 
       // Test that a null argument for a value is OK
       try {
