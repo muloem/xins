@@ -69,6 +69,25 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
 
    /**
+    * Verifies that the specified object matches the secret key. If not, an
+    * exception is thrown.
+    *
+    * @param secretKey
+    *    the secret key, must be identity-equal to the secret key passed to
+    *    the constructor, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>secretKey</code> does not match the secret key passed to the
+    *    constructor.
+    */
+   private void checkSecretKey(Object secretKey)
+   throws IllegalArgumentException {
+      if (secretKey != _secretKey) {
+         throw new IllegalArgumentException("Incorrect secret key.");
+      }
+   }
+
+   /**
     * Sets the specified property to the specified value.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
@@ -97,9 +116,7 @@ extends AbstractPropertyReader {
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
-      if (secretKey != _secretKey) {
-         throw new IllegalArgumentException("Incorrect secret key.");
-      }
+      checkSecretKey(secretKey);
 
       // Store the value
       getPropertiesMap().put(name, value);
@@ -114,7 +131,6 @@ extends AbstractPropertyReader {
     * {@link Object#equals(Object)} is not used, but the <code>==</code>
     * operator is.
     *
-    *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
     *    the constructor, cannot be <code>null</code>.
@@ -126,16 +142,39 @@ extends AbstractPropertyReader {
     *    if <code>name == null</code> or if <code>secretKey</code> does not
     *    match the secret key passed to the constructor.
     */
-   public void remove(Object key, String name)
+   public void remove(Object secretKey, String name)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
-      if (key != _key) {
-         throw new IllegalArgumentException("Incorrect secret key.");
-      }
+      checkSecretKey(secretKey);
 
       // Remove the property
       getPropertiesMap().remove(name);
+   }
+
+   /**
+    * Removes all properties.
+    *
+    * <p>The correct secret key must be passed. If it is incorrect, then an
+    * {@link IllegalArgumentException} is thrown. Note that an identity check
+    * is done, <em>not</em> an equality check. So
+    * {@link Object#equals(Object)} is not used, but the <code>==</code>
+    * operator is.
+    *
+    * @param secretKey
+    *    the secret key, must be identity-equal to the secret key passed to
+    *    the constructor, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>secretKey</code> does not match the secret key passed to the
+    *    constructor.
+    *
+    * @since XINS 1.2.0
+    */
+   public void clear(Object secretKey)
+   throws IllegalArgumentException {
+      checkSecretKey(secretKey);
+      getPropertiesMap().clear();
    }
 }
