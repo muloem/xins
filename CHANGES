@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.117:
   - Refactored MandatoryArgumentChecker. Simplified. No longer using
     MissingArgumentException.
   - Removed MissingArgumentException class.
+  - Catching unexpected Perl5Matcher exceptions. If such an unexpected
+    exception is caught, the concerning string is considered to be invalid for
+    the type. An error will be logged.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.116:
