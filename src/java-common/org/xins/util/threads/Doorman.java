@@ -432,7 +432,7 @@ public final class Doorman extends Object {
       /**
        * Cached type of the first entry. This field is either
        * <code>null</code> (if {@link #_entries} is empty), or
-       * <code>(EntryType) </code>{@link #_entries}<code>.</code>{@link List#get() get}<code>(0)</code>
+       * <code>(EntryType) </code>{@link #_entries}<code>.</code>{@link LinkedList#get() get}<code>(0)</code>
        * (if {@link #_entries} is not empty).
        */
       private EntryType _typeOfFirst;
