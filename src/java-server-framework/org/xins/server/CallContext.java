@@ -70,6 +70,23 @@ implements Responder {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the name of the function called.
+    *
+    * @return
+    *    the function called, or <code>null</code> if there is no function
+    *    specificied.
+    */
+   public String getFunction() {
+
+      // Check arguments
+      if (_parameters != null) {
+         return (String) _parameters.get("function");
+      } else {
+         return null;
+      }
+   }
+
+   /**
     * Returns the value of a parameter with the specificied name.
     *
     * @param name
@@ -90,7 +107,7 @@ implements Responder {
          throw new IllegalArgumentException("name == null");
       }
 
-      if (_parameters != null) {
+      if (_parameters != null && !"function".equals(name)) {
          return (String) _parameters.get(name);
       } else {
          return null;
