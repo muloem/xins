@@ -1,6 +1,27 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.196:
 
+* XINS/Java Common Library:
+  - Moved TimeOutException (introduced in XINS 0.195) from package
+    org.xins.common.service to package org.xins.common.
+  - Added generic TimeOutController class in package org.xins.common.
+  - Now only performing fail-over if the new method shouldFailOver() returns
+    true. By default the method returns false, but it may be overridden by
+    subclasses.
+  - Added log message 3315-3318, which describe the decision making process
+    for fail-over, depending on available targets and whether or not fail-over
+    is in principle allowed, considering the problem at hand.
+
+* XINS/Java Client Framework:
+  - Added classes in org.xins.common.service: ConnectionException,
+    ConnectionRefusedException, ConnectionTimeOutException and
+    SocketTimeOutException.
+  - Added log messages 2012-2015 which describe different causes for a failure
+    to call a target XINS API: connection refusal, connection time-out, socket
+    time-out and total time-out.
+  - Not logging query string with log message 2011 anymore, since POST is used
+    and consequently the query string is always null.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
 
@@ -22,6 +43,7 @@ CHANGES INTRODUCED IN XINS 0.195:
     capacity would be set to the required capacity plus 16. Now it is set to
     the required capacity times 2. This should reduce the number of times a
     FastStringBuffer instance needs to increase the capacity.
+  - Introduced TimeOutException class in org.xins.common.service.
 
 * XINS/Java Server Framework:
   - Made the method getResultBuilder() in class FunctionResult
