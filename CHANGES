@@ -38,6 +38,7 @@ CHANGES INTRODUCED IN XINS 0.157:
   - Changed some element and attribute names.
   - Changed the descriptions for a few log message entries.
   - Supporting a 'nullable' attribute for 'param' elements in log.xml.
+  - Supporting a 'type' attribute for 'param' elements in log.xml.
   - Changed a number of translations for the en_US locale.
   - Changed a number of translations for the nl_NL locale.
 
