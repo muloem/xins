@@ -335,6 +335,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws ClassCastException
     *    if either <code>request</code> or <code>result</code> is not of the
     *    correct class.
+    *
+    * @since XINS 0.207
     */
    protected CallResult createCallResult(CallRequest       request,
                                          TargetDescriptor  succeededTarget,
