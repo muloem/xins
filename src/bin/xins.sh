@@ -30,7 +30,7 @@ fi
 in="xins-project.xml"
 out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
-
+returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: Unable to transform ${in}."
 	exit 1
