@@ -28,6 +28,7 @@ Improve service framework in org.xins.common.service:
 [x] Add createCallResult method in class ServiceCaller
 [x] Combine a number of CallExceptions in a CallExceptionList object
 [x] Make the CallResult constructor accept a CallExceptionList
+[ ] Document when fail-over will be applied and when not
 
 Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
@@ -57,6 +58,9 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Store information from CallResult in HTTPCallResult
 [x] Make HTTPCallResult extend CallResult (research if this is wise)
 [x] Implement createCallResult method in class HTTPServiceCaller
+[ ] Document what kind of exception to expect in what case
+[ ] Document when fail-over will be applied and when not
+[ ] Do not access (private) HTTPCallResult.Data fields directly
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
@@ -87,11 +91,14 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Describe XINSCallRequest properly in describe() (from _asString).
 [x] Lazily initialize XINSCallRequest description, if appropriate
 [x] Check the parameters in XINSCallRequest constructor.
-[ ] Add example in XINSServiceCaller class comments
+[x] Add example in XINSServiceCaller class comments
 [ ] Log all events properly
 [x] Store information from CallResult in XINSCallResult
 [x] Make XINSCallResult extend CallResult
 [x] Implement createCallResult method in class XINSServiceCaller
+[ ] Document what kind of exception to expect in what case
+[ ] Document when fail-over will be applied and when not
+[ ] Do not access (private) XINSCallResult.Data fields directly
 
 Adapt CAPI generation:
 [x] Build upon new XINS/Java Client Framework
