@@ -127,12 +127,6 @@ implements DefaultResultCodes {
    private boolean _sessionBased;
 
    /**
-    * Flag that indicates if response validations should be enabled for the
-    * functions in this API.
-    */
-   private boolean _responseValidationEnabled;
-
-   /**
     * List of registered manageable objects. See {@link #add(Manageable)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
@@ -222,11 +216,6 @@ implements DefaultResultCodes {
     * Timestamp indicating when this API instance was created.
     */
    private final long _startupTimestamp;
-
-   /**
-    * Deployment identifier.
-    */
-   private String _deployment;
 
    /**
     * Host name for the machine that was used for this build.
@@ -399,9 +388,13 @@ implements DefaultResultCodes {
     *    <code>false</code> otherwise.
     *
     * @since XINS 0.98
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.157, with no replacement. This method always
+    *    returns <code>false</code>.
     */
    public final boolean isResponseValidationEnabled() {
-      return _responseValidationEnabled;
+      return false;
    }
 
    /**
@@ -437,36 +430,44 @@ implements DefaultResultCodes {
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
-      Library.BOOTSTRAP_LOG.debug("API is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
+      if (_sessionBased) {
+         Log.log_112();
+      } else {
+         Log.log_113();
+      }
 
       // XXX: Allow configuration of session ID type ?
 
       // Initialize session-based API
       if (_sessionBased) {
-         Library.BOOTSTRAP_LOG.debug("Performing session-related initialization.");
+         Log.log_114();
 
          // Initialize session ID type
          _sessionIDType      = new BasicSessionIDType(this);
          _sessionIDGenerator = _sessionIDType.getGenerator();
 
-         // Determine session time-out duration and precision
-         final long MINUTE_IN_MS = 60000L;
-         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
-         long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
+         // Determine session time-out duration and precision (in seconds)
+         int timeOut   = getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
+         int precision = getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
+
+         Log.log_116(String.valueOf(timeOut), String.valueOf(precision));
 
          // Create expiry strategy and folder
-         _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
+         final long MINUTE_IN_MS = 60000L;
+         _sessionExpiryStrategy = new ExpiryStrategy(timeOut * MINUTE_IN_MS, precision * MINUTE_IN_MS);
          _sessionsByID          = new ExpiryFolder("sessionsByID",         // name of folder (for logging)
                                                    _sessionExpiryStrategy, // expiry strategy
                                                    false,                  // strict thread sync checking? (TODO)
                                                    5000L);                 // max queue wait time in ms    (TODO)
+         Log.log_115();
       }
 
       // Get build-time properties
-      _deployment   = _buildSettings.get("org.xins.api.deployment");
       _buildHost    = _buildSettings.get("org.xins.api.build.host");
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
+
+      Log.log_117(_buildHost, _buildTime, _buildVersion);
 
       // Log build-time properties
       Logger log = Library.BOOTSTRAP_LOG;
@@ -491,15 +492,6 @@ implements DefaultResultCodes {
       } else {
          log.warn("Build time stamp is not set.");
          _buildTime = null;
-      }
-
-      // - deployment
-      if (_deployment != null && !("".equals(_deployment))) {
-         buffer.append(", for deployment \"");
-         buffer.append(_deployment);
-         buffer.append('"');
-      } else {
-         _deployment = null;
       }
 
       // - XINS version
