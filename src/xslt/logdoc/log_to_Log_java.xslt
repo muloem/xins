@@ -295,7 +295,10 @@ public class Log extends Object {
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>");
-      LOG.log(FQCN, </xsl:text>
+      if (LOG.isEnabledFor(</xsl:text>
+		<xsl:value-of select="@level" />
+		<xsl:text>)) {
+         LOG.log(FQCN, </xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
@@ -306,6 +309,7 @@ public class Log extends Object {
 		</xsl:for-each>
 		<!-- TODO: Support exception? -->
 		<xsl:text>), null);
+      }
    }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
