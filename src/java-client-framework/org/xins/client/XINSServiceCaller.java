@@ -364,7 +364,8 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Executes the specified request.
+    * Executes the specified request. If possible, multiple targets will be
+    * called if a target fails and fail-over is considered allowable.
     *
     * @param request
     *    the request to execute, cannot be <code>null</code>.
