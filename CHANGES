@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.22:
+
+* Improved message when logging succeeded calls.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.21:
 
 * Fixed bug in successful call logging.
