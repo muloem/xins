@@ -163,6 +163,8 @@ extends Object {
          SAXParserFactory factory   = SAXParserFactory.newInstance();
          SAXParser        saxParser = factory.newSAXParser();
 
+         // TODO: Disable namespace processing
+
          // Convert the byte array to an input stream
          ByteArrayInputStream bais = new ByteArrayInputStream(xml);
 
@@ -174,19 +176,20 @@ extends Object {
 
       } catch (Throwable exception) {
 
+         // Log: Parsing failed
+         String detail = exception.getMessage();
+         Log.log_2206(exception, detail);
+
          // Construct a buffer for the error message
          FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
 
          // Include the exception message in our error message, if any
-         String detail = exception.getMessage();
          if (detail != null && detail.length() > 0) {
             buffer.append(": ");
             buffer.append(detail);
          } else {
             buffer.append('.');
          }
-
-         Log.log_2206(exception, detail);
 
          // Throw exception with message, and register cause exception
          throw new ParseException(buffer.toString(), exception);
@@ -288,7 +291,7 @@ extends Object {
        *
        * @param localName
        *    the local name (without prefix); the empty string indicates that
-       *    Namespace processing is not being performed; can be
+       *    namespace processing is not being performed; can be
        *    <code>null</code>.
        *
        * @param qName
@@ -314,6 +317,8 @@ extends Object {
 
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
+
+         // TODO: Handle namespaces properly
 
          // Root element must be 'result'
          if (_state == INITIAL) {
@@ -376,21 +381,19 @@ extends Object {
 
             // No 'result' element allowed within 'result' element
             } else if (qName.equals("result")) {
-               String detail = "Found \"result\" element within \"result\" element.";
-               // TODO: Log parse error
-               throw new SAXException(detail);
+               // NOTE: This will be logged already (message 2206)
+               throw new SAXException("Found \"result\" element within \"result\" element.");
 
             // Unknown elements at the root level are okay
             } else {
-               // TODO: Log ignore unrecognized element
-               // Ignore
+               // Ignore unrecognized element
+               Log.log_2208(qName);
             }
 
          // Within output parameter element
          } else if (_state == IN_PARAM_ELEMENT) {
-            String detail = "Found \"" + qName + "\" element within \"param\" element.";
-            // TODO: Log parse error
-            throw new SAXException(detail);
+            // NOTE: This will be logged already (message 2206)
+            throw new SAXException("Found \"" + qName + "\" element within \"param\" element.");
 
          // Within the data section
          } else if (_state == IN_DATA_SECTION) {
@@ -428,7 +431,7 @@ extends Object {
        *
        * @param localName
        *    the local name (without prefix); the empty string indicates that
-       *    Namespace processing is not being performed; can be
+       *    namespace processing is not being performed; can be
        *    <code>null</code>.
        *
        * @param qName
@@ -573,9 +576,8 @@ extends Object {
 
          // Check state
          if (_state != IN_PARAM_ELEMENT && _state != IN_DATA_SECTION) {
-            String detail = "Found PCDATA content in state " + _state + '.';
-            // TODO: Log parse error
-            throw new IllegalStateException(detail);
+            // NOTE: This will be logged already (message 2206)
+            throw new IllegalStateException("Found PCDATA content in state " + _state + '.');
          }
 
          if (_pcdata != null) {
