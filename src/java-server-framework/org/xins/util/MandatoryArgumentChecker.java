@@ -79,7 +79,7 @@ public class MandatoryArgumentChecker extends Object {
          int count = argumentValue.length;
          List missingNames = new ArrayList(count);
          int missingCount = 0;
-         for (int i=0; i<count; i++) {
+         for (int i = 0; i < count; i++) {
             if (argumentValue[i] == null) {
                missingNames.add(argumentName + '[' + i + ']');
                missingCount++;
