@@ -53,13 +53,7 @@ extends Object {
     *    if <code>name == null</code>.
     */
    SpecType(String typeName) throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("typeName", typeName);
-
-      _typeName    = typeName;
-      _nameRE      = null;
-      _namePattern = null;
+      this(typeName, null);
    }
 
    /**
