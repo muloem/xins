@@ -47,16 +47,17 @@ extends ParamConstraint {
     * <p>If the value of the parameter is found to be <code>null</code> then
     * that violates this constraint.
     *
-    * @param name
+    * @param parameterName
     *    the parameter name, cannot be <code>null</code> and cannot be an
     *    empty string.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || name.length() &lt; 1</code>.
+    *    if <code>parameterName == null
+    *          || parameterName.length() &lt; 1</code>.
     */
-   public RequiredParamConstraint(String name)
+   public RequiredParamConstraint(String parameterName)
    throws IllegalArgumentException {
-      super(name);
+      super(parameterName);
    }
 
 

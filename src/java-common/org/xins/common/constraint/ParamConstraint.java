@@ -44,24 +44,25 @@ extends Constraint {
     * Creates a new <code>ParamConstraint</code> for a parameter with the
     * specified name.
     *
-    * @param name
+    * @param parameterName
     *    the parameter name, cannot be <code>null</code> and cannot be an
     *    empty string.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || name.length() &lt; 1</code>.
+    *    if <code>parameterName == null
+    *          || parameterName.length() &lt; 1</code>.
     */
-   ParamConstraint(String name)
+   ParamConstraint(String parameterName)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
-      if (name.length() < 1) {
-         throw new IllegalArgumentException("name.length() == 0");
+      MandatoryArgumentChecker.check("parameterName", parameterName);
+      if (parameterName.length() < 1) {
+         throw new IllegalArgumentException("parameterName.length() == 0");
       }
 
       // Store information
-      _name = name;
+      _parameterName = parameterName;
    }
 
 
@@ -73,7 +74,7 @@ extends Constraint {
     * The name of the parameter. This value of this field can neither be
     * <code>null</code> nor an empty string.
     */
-   private final String _name;
+   private final String _parameterName;
 
 
    //-------------------------------------------------------------------------
@@ -86,8 +87,8 @@ extends Constraint {
     * @return
     *    the name of the parameter, never <code>null</code>.
     */
-   public String getParameterName() {
-      return _name;
+   public final String getParameterName() {
+      return _parameterName;
    }
 
    /**
@@ -110,7 +111,7 @@ extends Constraint {
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
    final boolean checkImpl(ConstraintContext context) {
-      return checkParameterValue(context.getParameter(_name));
+      return checkParameterValue(context.getParameter(_parameterName));
    }
 
    /**

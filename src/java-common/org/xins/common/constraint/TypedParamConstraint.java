@@ -51,7 +51,7 @@ extends ParamConstraint {
     * <p>If the value of the parameter is found to be not match the type, then
     * that violates this constraint.
     *
-    * @param name
+    * @param parameterName
     *    the parameter name, cannot be <code>null</code> and cannot be an
     *    empty string.
     *
@@ -59,13 +59,13 @@ extends ParamConstraint {
     *    the parameter type, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null
-    *          || name.length() &lt; 1
+    *    if <code>parameterName == null
+    *          || parameterName.length() &lt; 1
     *          || type == null</code>.
     */
-   public TypedParamConstraint(String name, Type type)
+   public TypedParamConstraint(String parameterName, Type type)
    throws IllegalArgumentException {
-      super(name);
+      super(parameterName);
 
       // Check additional preconditions
       MandatoryArgumentChecker.check("type", type);
@@ -91,12 +91,12 @@ extends ParamConstraint {
    //-------------------------------------------------------------------------
 
    /**
-    * Retrieves the type.
+    * Retrieves the type for the parameter value.
     *
     * @return
     *    the associated type, never <code>null</code>.
     */
-   Type getType() {
+   public Type getType() {
       return _type;
    }
 
@@ -121,6 +121,10 @@ extends ParamConstraint {
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
    boolean checkParameterValue(Object value) {
+      if (value == null) {
+         return true;
+      }
+      
       try {
          String string = _type.toString(value);
          return _type.isValidValue(string);
