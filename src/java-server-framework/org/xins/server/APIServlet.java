@@ -540,7 +540,9 @@ extends HttpServlet {
    public void init(ServletConfig config)
    throws ServletException {
 
-      Log.log_1200();
+      String serverVersion = Library.getVersion();
+      Log.log_1200(serverVersion);
+
 
       //-------------------------------------------------------------------//
       //                     Checks and preparations                       //
@@ -611,7 +613,6 @@ extends HttpServlet {
          readRuntimeProperties();
 
          // Log XINS version
-         String serverVersion = Library.getVersion();
          Log.log_1225(serverVersion);
 
          // Warn if Server version differs from Common version
