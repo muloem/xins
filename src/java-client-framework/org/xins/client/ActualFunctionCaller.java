@@ -394,6 +394,9 @@ extends AbstractFunctionCaller {
     *    the CRC-32 checksum.
     */
    public long getCRC32() {
+
+      // TODO: Store the CRC-32 value in an int
+
       return _crc32;
    }
 }

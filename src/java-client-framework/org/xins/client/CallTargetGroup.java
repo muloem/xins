@@ -119,6 +119,8 @@ extends AbstractCompositeFunctionCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "url", url);
 
+      // TODO: Make sure there are no ActualFunctionCaller instances with duplicate CRC-32 values
+
       List members = new ArrayList();
 
       String hostName = url.getHost();
