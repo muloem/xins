@@ -34,7 +34,7 @@ extends Object {
     * Constructs a new <code>Result</code> object.
     *
     * @param request
-    *    the original {@link CallRequest} that was used to perform the
+    *    the original {@link XINSCallRequest} that was used to perform the
     *    call, cannot be <code>null</code>.
     *
     * @param target
