@@ -1,0 +1,4 @@
+List of things to be done for XINS release 1.0:
+
+- Start with empty CHANGES file.
+- Set @since tags on all classes to 1.0.
