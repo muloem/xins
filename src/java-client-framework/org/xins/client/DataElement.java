@@ -43,6 +43,17 @@ public class DataElement implements Cloneable {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = DataElement.class.getName();
+
+   /**
+    * Fully-qualified name of the inner class <code>QualifiedName</code>.
+    */
+   private static final String QN_CLASSNAME = QualifiedName.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -182,6 +193,8 @@ public class DataElement implements Cloneable {
    void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
+      final String METHODNAME = "setAttribute(String,String,String)";
+
       // Construct a QualifiedName object. This will check the preconditions.
       QualifiedName qn = new QualifiedName(namespaceURI, localName);
 
@@ -210,7 +223,7 @@ public class DataElement implements Cloneable {
            + "; value="             + TextUtils.quote(value)
            + "; getAttribute(...)=" + TextUtils.quote(getValue)
            + '.';
-         // TODO: Log.log_2050(CLASSNAME, METHODNAME, message);
+         Log.log_2050(CLASSNAME, METHODNAME, message);
          throw new Error(message);
       }
    }
@@ -375,11 +388,14 @@ public class DataElement implements Cloneable {
     */
    void addChild(DataElement child) throws IllegalArgumentException {
 
+      final String METHODNAME = "addChild(DataElement)";
+
       // Check preconditions
       MandatoryArgumentChecker.check("child", child);
       if (child == this) {
-         // TODO: Log
-         throw new IllegalArgumentException("child == this");
+         String message = "child == this";
+         Log.log_2050(CLASSNAME, METHODNAME, message);
+         throw new IllegalArgumentException(message);
       }
 
       // Lazily initialize
