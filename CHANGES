@@ -1,6 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.41:
 
+* Fixed the 'xins' shell script to work on non-FreeBSD operating systems. Only
+  using 'mktemp' on FreeBSD, using an unsafer method of creating temporary
+  files on other unices.
+
 * Fixed XSLT error in src/xslt/specdocs/type_to_html.xslt.
 
 * Slightly improved 'javadoc' target in XINS build file
