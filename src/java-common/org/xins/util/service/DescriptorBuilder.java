@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Builder that can build a <code>Descriptor</code> object based on a set of
@@ -86,11 +87,11 @@ public final class DescriptorBuilder extends Object {
       buffer.append(propertyName);
       buffer.append("\" is set to invalid value \"");
       buffer.append(propertyValue);
-      if (message == null) {
+      if (detail == null) {
          buffer.append("\".");
       } else {
          buffer.append("\": ");
-         buffer.append(message);
+         buffer.append(detail);
       }
 
       return buffer.toString();
