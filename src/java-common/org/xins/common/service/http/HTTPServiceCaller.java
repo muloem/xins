@@ -229,7 +229,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if <code>request == null</code>.
     *
     * @throws GenericCallException
-    *    if the (first) call attempt failed due to a generic reason.
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
     */
    public Result call(HTTPCallRequest request)
    throws GenericCallException, HTTPCallException {
