@@ -4,6 +4,7 @@
 package org.xins.util.collections.expiry;
 
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,6 +39,9 @@ public abstract class ExpiryMap extends AbstractMap {
     */
    public ExpiryMap(ExpiryStrategy strategy) throws IllegalArgumentException {
       _strategy = strategy;
+
+      // XXX: Allow customization of Map construction?
+      _recentlyAccessed = new HashMap(89);
    }
 
 
@@ -49,6 +53,14 @@ public abstract class ExpiryMap extends AbstractMap {
     * The strategy used. This field cannot be <code>null</code>.
     */
    private final ExpiryStrategy _strategy;
+
+   /**
+    * The most recently accessed entries. This field cannot be
+    * <code>null</code>. The entries in this map will expire after
+    * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
+    * {@link ExpiryStrategy#getPrecision()} milliseconds.
+    */
+   private final Map _recentlyAccessed;
 
 
    //-------------------------------------------------------------------------
