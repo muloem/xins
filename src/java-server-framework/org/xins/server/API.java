@@ -104,12 +104,13 @@ implements DefaultReturnCodes {
 
       // Forward the call
       boolean succeeded = false;
-      long start = System.currentTimeMillis();
       try {
          handleCall(context);
          succeeded = true;
       } catch (Throwable exception) {
-         long duration = System.currentTimeMillis() - start;
+         long end = System.currentTimeMillis();
+         long start = context.getStart();
+         long duration = end - start;
          xmlOutputter.reset(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");

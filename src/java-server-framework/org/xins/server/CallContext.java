@@ -34,6 +34,7 @@ implements Responder {
     * Constructs a new <code>CallContext</code> object.
     */
    CallContext(XMLOutputter xmlOutputter, Map parameters) {
+      _start        = System.currentTimeMillis();
       _xmlOutputter = xmlOutputter;
       _parameters   = parameters;
       _state        = BEFORE_START;
@@ -43,6 +44,12 @@ implements Responder {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The start time of the call, as a number of milliseconds since midnight
+    * January 1, 1970 UTC.
+    */
+   private final long _start;
 
    /**
     * The XML outputter.
@@ -68,6 +75,17 @@ implements Responder {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the start time of the call.
+    *
+    * @return
+    *    the timestamp indicating when the call was started, as a number of
+    *    milliseconds since midnight January 1, 1970 UTC.
+    */
+   public long getStart() {
+      return _start;
+   }
 
    /**
     * Returns the name of the function called.
