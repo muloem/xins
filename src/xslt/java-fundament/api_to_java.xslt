@@ -82,7 +82,11 @@ public class APIImpl extends API {
 			<xsl:choose>
 				<xsl:when test="string-length($successAttr) = 0" />
 				<xsl:when test="$successAttr = 'false'">
-					<xsl:message>A result code does not need to be marked as unsuccessful, since it always is.</xsl:message>
+					<xsl:message>
+						<xsl:text>The result code </xsl:text>
+						<xsl:value-of select="$name" />
+						<xsl:text> does not need to be marked as unsuccessful, since it always is.</xsl:text>
+					</xsl:message>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -102,9 +106,7 @@ public class APIImpl extends API {
     */
    public final static org.xins.server.ResultCode ]]></xsl:text>
 			<xsl:value-of select="$fieldname" />
-			<xsl:text> = new org.xins.server.ResultCode(SINGLETON, </xsl:text>
-			<xsl:value-of select="$success" />
-			<xsl:text>, "</xsl:text>
+			<xsl:text> = new org.xins.server.ResultCode(SINGLETON, "</xsl:text>
 			<xsl:value-of select="$name" />
 			<xsl:text>", "</xsl:text>
 			<xsl:value-of select="$value" />
