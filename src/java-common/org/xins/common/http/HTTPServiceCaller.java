@@ -50,6 +50,7 @@ import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 /**
  * HTTP service caller. This class can be used to perform a call to an HTTP
@@ -161,31 +162,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       Log.log_3000(CLASSNAME, null);
 
       return descriptor;
-   }
-
-   /**
-    * Quotes the specified string, or returns <code>"(null)"</code> if it is
-    * <code>null</code>.
-    *
-    * <p>TODO: Move to class <code>org.xins.common.text.TextUtils</code>.
-    *
-    * @param s
-    *    the input string, or <code>null</code>.
-    *
-    * @return
-    *    if <code>s != null</code> the quoted string, otherwise the string
-    *    <code>"(null)"</code>.
-    */
-   private static final String quote(String s) {
-      if (s != null) {
-         FastStringBuffer buffer = new FastStringBuffer(s.length() + 2);
-         buffer.append('"');
-         buffer.append(s);
-         buffer.append('"');
-         return buffer.toString();
-      } else {
-         return "(null)";
-      }
    }
 
    /**
@@ -428,7 +404,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          message.append(".doCall(CallRequest) threw ");
          message.append(exception.getClass().getName());
          message.append(". Message: ");
-         message.append(quote(exception.getMessage()));
+         message.append(TextUtils.quote(exception.getMessage()));
          message.append('.');
          throw new Error(message.toString(), exception);
       }
