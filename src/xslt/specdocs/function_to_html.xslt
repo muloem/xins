@@ -82,21 +82,12 @@
 				<xsl:call-template name="broken_freeze" />
 
 				<!-- Description -->
-				<xsl:apply-templates select="description" />
+				<xsl:call-template name="description" />
 
 				<!-- Session-based -->
 				<xsl:if test="$sessionBased = 'true'">
 					<p />
 					<em>This function is session-based.</em>
-				</xsl:if>
-
-				<!-- Deprecation -->
-				<xsl:if test="deprecated">
-					<p />
-					<em>
-						<strong>Deprecated: </strong>
-						<xsl:apply-templates select="deprecated" />
-					</em>
 				</xsl:if>
 
 				<!-- References to other functions -->
@@ -919,18 +910,7 @@
 				</xsl:call-template>
 			</td>
 			<td class="description">
-				<xsl:if test="description">
-					<xsl:apply-templates select="description" />
-					<xsl:if test="deprecated">
-						<br />
-					</xsl:if>
-				</xsl:if>
-				<xsl:if test="deprecated">
-					<em>
-						<strong>Deprecated: </strong>
-						<xsl:apply-templates select="deprecated" />
-					</em>
-				</xsl:if>
+				<xsl:call-template name="description" />
 			</td>
 			<td class="required">
 				<xsl:if test="@required = 'true'">
@@ -1069,7 +1049,7 @@
 				</xsl:call-template>
 			</td>
 			<td>
-				<xsl:apply-templates select="description" />
+				<xsl:call-template name="description" />
 			</td>
 			<td>
 				<xsl:choose>
@@ -1082,6 +1062,21 @@
 				</xsl:choose>
 			</td>
 		</tr>
+	</xsl:template>
+
+	<xsl:template name="description">
+		<xsl:if test="description">
+			<xsl:apply-templates select="description" />
+			<xsl:if test="deprecated">
+				<br />
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="deprecated">
+			<em>
+				<strong>Deprecated: </strong>
+				<xsl:apply-templates select="deprecated" />
+			</em>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="broken_freeze">
