@@ -168,6 +168,10 @@ extends Object {
        */
       private int _level = -1;
 
+      /**
+       * Indicates if the parsing of the result has started
+       */
+      private boolean _parsingStarted  = false;
 
       //-------------------------------------------------------------------------
       // Methods
@@ -208,6 +212,10 @@ extends Object {
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
 
+         if (!_parsingStarted && !qName.equals("result")) {
+            Log.log_2006(qName);
+         }
+
          if (_level >= 0) {
             _level++;
             DataElement element = new DataElement(qName);
@@ -219,6 +227,7 @@ extends Object {
             }
             _elements.put(new Integer(_level), element);
          } else if (qName.equals("result")) {
+            _parsingStarted = true;
             _errorCode = atts.getValue("errorcode");
             if (_errorCode == null) {
                _errorCode = atts.getValue("code");

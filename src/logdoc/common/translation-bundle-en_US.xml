@@ -13,22 +13,8 @@
 	<translation entry="3200">Starting watch thread for file <value-of-param name="file" format="quoted" />.</translation>
 	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="old_interval" /> to <value-of-param name="new_interval" /> seconds.</translation>
 	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="3203"><value-of-param name="className" />: Failed to generate secure random int, falling back to pseudo-random.</translation>
-	<translation entry="3204"><value-of-param name="className" />: Failed to generate secure random long, falling back to pseudo-random.</translation>
 	<translation entry="3205">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
 
-	<translation entry="3300">I/O error while attempting to close input stream. Ignoring.</translation>
-	<translation entry="3301">I/O error while attempting to close output stream. Ignoring.</translation>
-	<translation entry="3302">I/O error while attempting to disconnect. Ignoring.</translation>
-	<translation entry="3303">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
-	<translation entry="3304">Caught <value-of-param name="exceptionName" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
-	<translation entry="3305">Authenticated with <value-of-param name="url" />.</translation>
-	<translation entry="3306">Authenticated with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
-	<translation entry="3307">Failed to authenticate with <value-of-param name="url" />.</translation>
-	<translation entry="3308">Failed to authenticate with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
-	<translation entry="3309">Failed to perform search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
-	<translation entry="3310">Performed search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
-	<translation entry="3311">Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</translation>
 	<translation entry="3312">Call to service at URL <value-of-param name="url" /> succeeded.</translation>
 	<translation entry="3313">Call to service at URL <value-of-param name="url" /> failed.</translation>
 	<translation entry="3314">Call completely failed.</translation>

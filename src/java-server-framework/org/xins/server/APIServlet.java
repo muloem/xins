@@ -801,11 +801,6 @@ extends HttpServlet {
             Log.log_1303(exception, _configFile);
          }
 
-         // TODO: Should we reset the logging subsystem if the Log4J
-         //       properties have been removed from the xins.properties file?
-         //       Determine the current behaviour and make a decision.
-
-
          // Attempt to configure Log4J
          PropertyConfigurator.configure(properties);
 

@@ -247,11 +247,21 @@ implements DefaultResultCodes {
     *
     * @throws BootstrapException
     *    if the bootstrap fails.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not bootstraping.
     */
    protected final void bootstrapImpl(PropertyReader buildSettings)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
+
+      // Check state
+      Manageable.State state = getState();
+      if (state != BOOTSTRAPPING) {
+         Log.log_1437(state.getName());
+         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
+      }
 
       // Log the time zone
       _timeZone = TimeZone.getDefault();
@@ -390,15 +400,22 @@ implements DefaultResultCodes {
     *
     * @throws InitializationException
     *    if the initialization failed for some other reason.
+    *
+    * @throws IllegalStateException
+    *    if this API is currently not initializing.
     */
    protected final void initImpl(PropertyReader runtimeSettings)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
-          InitializationException {
+          InitializationException,
+          IllegalStateException {
 
-      // TODO: Check state
-
-      // TODO: Perform rollback if initialization fails at some point
+      // Check state
+      Manageable.State state = getState();
+      if (state != INITIALIZING) {
+         Log.log_1437(state.getName());
+         throw new IllegalStateException("State is " + state + " instead of " + INITIALIZING + '.');
+      }
 
       Log.log_1405(_name);
 
@@ -588,7 +605,7 @@ implements DefaultResultCodes {
     *    if <code>function == null</code>.
     *
     * @throws IllegalStateException
-    *    if this API is currently not bootstrapping.
+    *    if this API state is incorrect.
     *
     */
    final void functionAdded(Function function)

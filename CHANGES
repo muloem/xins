@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.208:
+
+* XINS/Java Common Library:
+  - Added the remove() method in PropectedPropertyReader. The set() method
+    does not remove the property anymore if the value is null.
+
+* Logdoc
+  - Removed unused log entries.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.207:
 
 * XINS/Java Server Framework:

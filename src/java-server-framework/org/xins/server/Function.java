@@ -281,9 +281,8 @@ implements DefaultResultCodes {
          result = new FunctionResult("_InternalError", resultParameters);
       }
 
-      // TODO: Do this within a try-catch block, log a specific message
-
       // Update function statistics
+      // We assume that this method will never throw any exception
       performedCall(parameters, ip, start, callID, result);
 
       return result;

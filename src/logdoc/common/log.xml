@@ -35,14 +35,6 @@
 			<description>Stopping watch thread for a file.</description>
 			<param name="file" nullable="false" />
 		</entry>
-		<entry id="3203" level="WARNING">
-			<description>Failed to generate secure random int, falling back to pseudo-random.</description>
-			<param name="className" nullable="false" />
-		</entry>
-		<entry id="3204" level="WARNING">
-			<description>Failed to generate secure random long, falling back to pseudo-random.</description>
-			<param name="className" />
-		</entry>
 		<entry id="3205" level="DEBUG">
 			<description>Increasing capacity of the FastStringBuffer.</description>
 			<param name="current_capacity" type="int32" nullable="false" />
@@ -51,54 +43,6 @@
 	</group>
 
 	<group id="io_connection" name="I/O operations">
-		<entry id="3300" level="ERROR" exception="true">
-			<description>I/O error while attempting to close input stream. Ignoring.</description>
-		</entry>
-		<entry id="3301" level="ERROR" exception="true">
-			<description>I/O error while attempting to close output stream. Ignoring.</description>
-		</entry>
-		<entry id="3302" level="ERROR" exception="true">
-			<description>I/O error while attempting to disconnect. Ignoring.</description>
-		</entry>
-		<entry id="3303" level="ERROR" exception="true">
-			<description>URL is malformed.</description>
-			<param name="url" />
-		</entry>
-		<entry id="3304" level="ERROR" exception="true">
-			<description>Caught exception while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</description>
-			<param name="exceptionName" />
-		</entry>
-		<entry id="3305" level="INFO">
-			<description>Authenticated with a URL.</description>
-			<param name="url" />
-		</entry>
-		<entry id="3306" level="INFO">
-			<description>Authenticated with a URL as principal.</description>
-			<param name="url" />
-			<param name="principal" />
-		</entry>
-		<entry id="3307" level="INFO">
-			<description>Failed to authenticate with a URL.</description>
-			<param name="url" />
-		</entry>
-		<entry id="3308" level="INFO">
-			<description>Failed to authenticate with a URL as principal.</description>
-			<param name="url" />
-			<param name="principal" />
-		</entry>
-		<entry id="3309" level="ERROR">
-			<description>Failed to perform search with a specified base and filter.</description>
-			<param name="search_base" />
-			<param name="filter" />
-		</entry>
-		<entry id="3310" level="DEBUG">
-			<description>Performed search with a specified base and filter.</description>
-			<param name="search_base" />
-			<param name="filter" />
-		</entry>
-		<entry id="3311" level="ERROR" exception="true">
-			<description>Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</description>
-		</entry>
 		<entry id="3312" level="DEBUG">
 			<description>Call to a specific target succeeded.</description>
 			<param name="url" />

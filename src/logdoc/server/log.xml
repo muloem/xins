@@ -250,12 +250,6 @@
 			<param name="configFile" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1409" level="DEBUG">
-			<description>Parsing the runtime properties file watch interval.</description>
-			<param name="configFile" />
-			<param name="propertyName" />
-			<param name="propertyValue" />
-		</entry>
 		<entry id="1410" level="ERROR">
 			<description>Runtime properties file watch interval property value is invalid.</description>
 			<param name="configFile" />
@@ -345,12 +339,6 @@
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
-		</entry>
-		<entry id="1429" level="ERROR">
-			<description>Function could not be initialized, no exception available.</description>
-			<param name="api" />
-			<param name="function" />
-			<param name="message" />
 		</entry>
 		<entry id="1430" level="ERROR" exception="true">
 			<description>Function could not be initialized, exception available.</description>
