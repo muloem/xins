@@ -1,21 +1,25 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
 
-* XINS/Java Client Framework:
+* XINS/Java Common Library:
   - Fixed SF.net bug #1051551: Changed HTTPServiceCaller so it now correctly
     recognizes an UnknownHostException and throw an UnknownHostCallException
     instead. This allows fail-over in all situations that involve an 'Unknown
     host' error. Added UnknownHostCallException as subclass of
     ConnectionCallException.
-  - Added tests for class XINSCallResultParser.
   - Improved tests for HTTP service caller.
+  - Improved Javadoc documentation.
+
+* XINS/Java Client Framework:
+  - Added tests for class XINSCallResultParser.
   - Improved Javadoc documentation.
 
 * XINS/Java Server Framework:
   - Added 2 states to the APIServlet, DETERMINE_RELOAD_INTERVAL_STATE and
     DETERMINE_RELOAD_INTERVAL_FAILED_STATE.
-  - No longer including property name in log message 1412. It may be that the
-    property is not set in the file, but a default is assumed.
+  - Removed log message 1412. The relevant information is in log message 3200
+    already, logged directly by the FileWatcher when the file watch thread
+    starts running.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
