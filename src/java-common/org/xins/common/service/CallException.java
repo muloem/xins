@@ -32,6 +32,12 @@ public abstract class CallException extends Exception {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final CLASSNAME = CallException.class.getName();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -73,6 +79,9 @@ public abstract class CallException extends Exception {
                                              long             duration,
                                              String           detail)
    throws IllegalArgumentException {
+
+      // TRACE: Enter constructor
+      Log.log_3000(CLASSNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("shortReason", shortReason,
@@ -197,6 +206,9 @@ public abstract class CallException extends Exception {
       _request  = request;
       _target   = target;
       _duration = duration;
+
+      // TRACE: Leave constructor
+      Log.log_3002(CLASSNAME, null);
    }
 
 
