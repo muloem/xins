@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.specs.APISpec;
 import org.xins.specs.InvalidNameException;
+import org.xins.specs.InvalidVersionException;
 
 /**
  * Tests for class <code>APISpec</code>.
@@ -97,5 +98,20 @@ public class APISpecTests extends TestCase {
       } catch (InvalidNameException ine) { /* as expected */ }
 
       spec = new APISpec("sso", "1.1");
+
+      try {
+         spec = new APISpec("sso", "a");
+         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
+      } catch (InvalidVersionException ive) { /* as expected */ }
+
+      try {
+         spec = new APISpec("sso", "1.");
+         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
+      } catch (InvalidVersionException ive) { /* as expected */ }
+
+      try {
+         spec = new APISpec("sso", "1.5.a");
+         fail("APISpec(valid,malformed-version) should throw an InvalidVersionException.");
+      } catch (InvalidVersionException ive) { /* as expected */ }
    }
 }
