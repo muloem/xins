@@ -73,8 +73,7 @@ public final class BasicSessionID extends SessionID {
       }
 
       try {
-         // TODO: Use parseHexString(value, 17) instead
-         LongUtils.parseHexString(value.substring(17));
+         LongUtils.parseHexString(value, 17);
          return true;
       } catch (NumberFormatException nfe) {
          return false;
@@ -94,8 +93,7 @@ public final class BasicSessionID extends SessionID {
       }
 
       try {
-         // TODO: Use parseHexString(string, 17) instead
-         return new Long(LongUtils.parseHexString(string.substring(17)));
+         return new Long(LongUtils.parseHexString(string, 17));
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(this, string);
       }
