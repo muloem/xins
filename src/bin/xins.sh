@@ -35,7 +35,7 @@ if [ ! -f ${style} ]; then
 fi
 
 # Make sure the input file exists
-in=xins-project.xml
+in=`pwd`/xins-project.xml
 if [ ! -f ${in} ]; then
 	echo "${prog}: ERROR: Cannot find input file:"
 	echo ${style}
@@ -43,14 +43,14 @@ if [ ! -f ${in} ]; then
 fi
 
 # Create the build directory
-builddir=build
+builddir=`pwd`/build
 if [ ! -d ${builddir} ]; then
 	mkdir ${builddir}
 fi
 
 # Create the Ant build file
 out=${builddir}/build.xml
-xsltproc -o ${out} ${style} ${in}
+ant -f ${xins_home}/src/ant/transform.xml -Din=${in} -Dout=${out} -Dstyle=${style}
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: ERROR: Unable to transform ${in}."
