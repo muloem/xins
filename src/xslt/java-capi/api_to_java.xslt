@@ -96,11 +96,8 @@ public final class API extends Object {
 			<xsl:variable name="functionName" select="@name" />
 			<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', $functionName, '.fnc')" />
 			<xsl:variable name="methodName">
-				<xsl:call-template name="hungarianLower">
-					<xsl:with-param name="text">
-						<xsl:value-of select="$functionName" />
-					</xsl:with-param>
-				</xsl:call-template>
+				<xsl:text>call</xsl:text>
+				<xsl:value-of select="$functionName" />
 			</xsl:variable>
 			<xsl:for-each select="document($functionFile)/function">
 				<xsl:variable name="returnType">
