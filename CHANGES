@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 0.12:
 
 * Fixed bug, now resetting success indication and return code.
 
+* Logging function calls.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.11:
 
