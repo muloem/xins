@@ -115,7 +115,7 @@ implements Servlet {
       // Determine the API class
       String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
       if (apiClassName == null || apiClassName.trim().length() < 1) {
-         final String message = "API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
+         final String message = "Invalid application package. API class name not set in initialization parameter \"" + API_CLASS_PROPERTY + "\".";
          Library.LIFESPAN_LOG.fatal(message);
          throw new ServletException(message);
       }
@@ -125,7 +125,7 @@ implements Servlet {
       try {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
-         String message = "Failed to load API class set in initialization parameter \"" + API_CLASS_PROPERTY + "\": \"" + apiClassName + "\".";
+         String message = "Invalid application package. Failed to load API class set in initialization parameter \"" + API_CLASS_PROPERTY + "\": \"" + apiClassName + "\".";
          Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
@@ -137,7 +137,7 @@ implements Servlet {
       try {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
-         String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
+         String message = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
          Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
@@ -146,7 +146,7 @@ implements Servlet {
       try {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
-         String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
+         String message = "Invalid application package. Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
          Library.LIFESPAN_LOG.fatal(message, e);
          throw new ServletException(message);
       }
