@@ -63,10 +63,11 @@ extends IllegalArgumentException {
    public MissingArgumentException(String[] argumentNames)
    throws IllegalArgumentException {
 
-      if (argumentNames == null)
+      if (argumentNames == null) {
          throw new MissingArgumentException("argumentNames");
-      if (argumentNames.length == 0)
+      } else if (argumentNames.length == 0) {
          throw new IllegalArgumentException("argumentNames.length == 0");
+      }
 
       // Count the number of arguments and save it in a cache field
       _argumentCount = argumentNames.length;
@@ -80,19 +81,21 @@ extends IllegalArgumentException {
 
       // Check and save every argument name
       StringBuffer message = new StringBuffer();
-      for (int i=0; i<_argumentCount; i++) {
+      for (int i = 0; i < _argumentCount; i++) {
 
          // Get the argument name from the array
          String name = argumentNames[i];
 
          // Check that the array element is not null
-         if (name == null)
+         if (name == null) {
             throw new MissingArgumentException("argumentNames[" + i + ']');
+         }
 
          // Check that the argument name is new in this context
          Integer nameIndex = (Integer) table.get(name);
-         if (nameIndex != null)
+         if (nameIndex != null) {
             throw new IllegalArgumentException("argumentNames[] contains a duplicate argument name: `" + name + "' is both at index " + nameIndex.intValue() + " and " + i);
+         }
 
          // Save the name of this argument with its index
          table.put(name, new Integer(i));
