@@ -17,7 +17,7 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 1.0.0
  */
-public class FunctionResult {
+public class FunctionResult extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
