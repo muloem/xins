@@ -5,6 +5,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import javax.servlet.ServletRequest;
+import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
@@ -31,6 +32,12 @@ implements Responder, Log {
     * The fully-qualified name of this class.
     */
    private static final String FQCN = CallContext.class.getName();
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(CallContext.class.getName());
 
 
    //-------------------------------------------------------------------------
@@ -257,7 +264,12 @@ implements Responder, Log {
          if (sessionID == null || sessionID.length() == 0) {
             throw MissingSessionIDException.SINGLETON;
          } else {
-            _session = _api.getSession(sessionID);
+            try {
+               _session = _api.getSessionByString(sessionID);
+            } catch (TypeValueException exception) {
+               LOG.error("Invalid value for session ID type: \"" + sessionID + "\".", exception);
+               throw UnknownSessionIDException.SINGLETON; // TODO: Use InvalidSessionIDException ?
+            }
             if (_session == null) {
                throw UnknownSessionIDException.SINGLETON;
             }
@@ -481,7 +493,7 @@ implements Responder, Log {
       if (_returnSessionID) {
          _xmlOutputter.startTag("param");
          _xmlOutputter.attribute("name", "_session");
-         _xmlOutputter.pcdata(_session.getID());
+         _xmlOutputter.pcdata(_session.getIDString());
          _xmlOutputter.endTag();
          _returnSessionID = false;
       }
