@@ -29,7 +29,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
  *       <th><acronym title="AFTER_END">S4</acronym></th>
  *    </tr>
  *    <tr>
- *       <th>{@link #startResponse(boolean,String)}</th>
+ *       <th>{@link #startResponse(String)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
