@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.client.InvalidResultXINSCallException;
+import org.xins.client.XINSCallRequest;
 
 import org.xins.client.XINSServiceCaller;
 
@@ -74,7 +76,7 @@ public class XINSServiceCallerTests extends TestCase {
    /**
     * Tests the constructor arguments.
     */
-   public void testXINSServiceCaller_constructor() throws Throwable {
+   public void testXINSServiceCallerConstructor() throws Throwable {
       XINSServiceCaller caller = new XINSServiceCaller(null);
       assertEquals(null, caller.getDescriptor());
 
@@ -96,6 +98,21 @@ public class XINSServiceCallerTests extends TestCase {
          fail("The \"blah\" protocol should not be supported.");
       } catch (UnsupportedProtocolException upe) {
          // As expected.
+      }
+   }
+   
+   /**
+    * Test using the XINSServiceCaller with https
+    */
+   public void testXINSServiceCallerWithHTTPS() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
+      TargetDescriptor descriptor = new TargetDescriptor("https://sourceforge.net/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      try {
+         caller.call(request);
+         fail("Received result where an exception was expected");
+      } catch (InvalidResultXINSCallException exception) {
+         // as expected
       }
    }
 }

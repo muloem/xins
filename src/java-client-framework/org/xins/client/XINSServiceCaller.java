@@ -279,7 +279,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @since XINS 1.2.0
     */
    protected boolean isProtocolSupportedImpl(String protocol) {
-      return "http".equals(protocol);
+      return "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol);
    }
 
    /**

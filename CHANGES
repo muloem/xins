@@ -69,6 +69,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added the possibility to load the servlet from the WAR file even if
     the classes and libraries are not in the classpath.
   - Added the possibility to start the Servlet container from the command line.
+  - Added support of HTTPS for the HTTPServiceCaller.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
@@ -101,6 +102,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     properties or the runtime properties.
   - If the calling convention passed as parameter is the same as the default
     one, do not create a new CallingConvention object.
+  - Added support of HTTPS for the XINSServiceCaller.
 
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
