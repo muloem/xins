@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.68:
+
+* Added package.html for package org.xins.util.threads.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.67:
 
 * XINS/Java Server Framework:
