@@ -496,6 +496,11 @@ public final class XINSCallRequest extends CallRequest {
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
       ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
 
+      // Since XINS 1.0.1: Use XINS 1.0 standard calling convention
+      // TODO: Get convention parameter name from a class in XINS/Java Common Library
+      // TODO: Get convention name from a class in XINS/Java Common Library
+      httpParams.set(SECRET_KEY, "_convention", "_xins-std");
+
       // Check and copy all parameters to XINS and HTTP parameters
       if (parameters != null) {
          Iterator names = parameters.getNames();
