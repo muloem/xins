@@ -27,7 +27,6 @@
 	<translation entry="3316">No more targets but fail-over would be allowed.</translation>
 	<translation entry="3317">More targets available but fail-over is not allowed.</translation>
 	<translation entry="3318">More targets available and fail-over is allowed.</translation>
-	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
 
 	<translation entry="3420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
 
