@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 0.157:
     it is not.
   - Consistently not passing any information to a ServletException when it is
     thrown.
+  - Reviewed and changed log messages quite drastically.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.156:
