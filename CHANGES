@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.10:
+
+* Generating private Javadoc API documentation.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.9:
 
 * Improved Javadoc documentation.
