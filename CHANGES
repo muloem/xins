@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.34:
 
 * Generating separate xins-common.jar.
 
+* Introduced ExpiryFolder (untested).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.33:
 
