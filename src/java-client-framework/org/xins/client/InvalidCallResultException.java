@@ -3,6 +3,8 @@
  */
 package org.xins.client;
 
+import org.xins.common.ExceptionUtils;
+
 /**
  * Exception thrown to indicate that the result from a XINS API call was
  * invalid according to the XINS standard.
@@ -30,7 +32,7 @@ extends CallException {
     * message.
     */
    public InvalidCallResultException() {
-      super(null, null);
+      this(null, null);
    }
 
    /**
@@ -41,7 +43,7 @@ extends CallException {
     *    the detail message, can be <code>null</code>.
     */
    public InvalidCallResultException(String message) {
-      super(message, null);
+      this(message, null);
    }
 
    /**
@@ -52,7 +54,7 @@ extends CallException {
     *    the cause exception, can be <code>null</code>.
     */
    public InvalidCallResultException(Throwable exception) {
-      super(null, exception);
+      this(null, exception);
    }
 
    /**
@@ -66,7 +68,11 @@ extends CallException {
     *    the cause exception, can be <code>null</code>.
     */
    public InvalidCallResultException(String message, Throwable exception) {
-      super(message, exception);
+
+      super((message != null || exception == null) ? message
+                                                   : ExceptionUtils.getRootCause(exception).getMessage(),
+            (exception == null) ? null
+                                : ExceptionUtils.getRootCause(exception));
    }
 
 
