@@ -234,7 +234,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
     instances instead of strong references.
   - Marked class Doorman as deprecated. The ExpiryFolder implementation no
     longer uses a Doorman but uses synchronized sections instead. Effictively,
-    this fixes the follwing SF.net bugs:
+    this fixes the following SF.net bugs:
     . #1089007: Memory leak in Doorman
     . #1089086: Programming error in ExpiryStrategy / Doorman
     . #1089597: Time-outs while calling Doorman.enterAsWriter()
@@ -704,7 +704,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 RC 3:
     instances instead of strong references.
   - Marked class Doorman as deprecated. The ExpiryFolder implementation no
     longer uses a Doorman but uses synchronized sections instead. Effectively,
-    this fixes the follwing SF.net bugs:
+    this fixes the following SF.net bugs:
     . #1089007: Memory leak in Doorman
     . #1089086: Programming error in ExpiryStrategy / Doorman
     . #1089597: Time-outs while calling Doorman.enterAsWriter()
