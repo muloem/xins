@@ -4,6 +4,7 @@
 package org.xins.util.io;
 
 import java.io.File;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -21,6 +22,12 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Logger for this thread.
+    */
+   private static final Logger LOG = Logger.getLogger(FileWatcher.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -56,7 +63,7 @@ public final class FileWatcher extends Thread {
 
       // Store the information
       _file     = new File(file);
-      _interval = 1000 * (long) interval;
+      _interval = 1000L * (long) interval;
       _listener = listener;
       _stopped  = false;
 
@@ -86,7 +93,7 @@ public final class FileWatcher extends Thread {
    /**
     * Delay in seconds, at least 1.
     */
-   private final long _interval;
+   private long _interval;
 
    /**
     * The listener. Not <code>null</code>
@@ -123,6 +130,10 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread.currentThread() != this");
       }
 
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Starting watch thread for file \"" + _file.getPath() + "\".");
+      }
+
       while (! _stopped) {
          try {
             while(! _stopped) {
@@ -139,10 +150,44 @@ public final class FileWatcher extends Thread {
    }
 
    /**
+    * Changes the interval. This method can only be called from the listener
+    * callback methods. If it is not, an exception is thrown.
+    *
+    * @param interval
+    *    the new interval in seconds, must be greater than or equal to 1.
+    *
+    * @throws IllegalStateException
+    *    if <code>{@link Thread#currentThread()} != this</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>interval &lt; 1</code>
+    */
+   public void setInterval(int interval)
+   throws IllegalStateException, IllegalArgumentException {
+      
+      // Check preconditions
+      if (Thread.currentThread() != this) {
+         throw new IllegalStateException("Thread.currentThread() != this");
+      }
+
+      // Change the interval
+      long newInterval = 1000L * (long) interval;
+      if (newInterval != _interval) {
+         LOG.debug("Changing the watch interval for file \"" + _file.getPath() + "\" from " + (_interval/1000) + " to " + interval + " seconds.");
+         _interval = newInterval;
+      }
+   }
+
+   /**
     * Stops this thread.
     */
    public void end() {
       _stopped = true;
+      
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Stopping watch thread for file \"" + _file.getPath() + "\".");
+      }
+
       this.interrupt();
    }
 
@@ -187,6 +232,7 @@ public final class FileWatcher extends Thread {
 
       _lastModified = lastModified;
    }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
