@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.server.servlet;
+package org.xins.common.servlet.container;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -30,7 +30,7 @@ import org.xins.common.text.URLEncoding;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class LocalHTTPServletRequest implements HttpServletRequest {
+public class XINSServletRequest implements HttpServletRequest {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -51,7 +51,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
     *    the request url or the list of the parameters (name=value) separated
     *    with comma's.
     */
-   public LocalHTTPServletRequest(String url) {
+   public XINSServletRequest(String url) {
       _date = System.currentTimeMillis();
       _attributes = new Hashtable();
 

@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.server.servlet;
+package org.xins.common.servlet.container;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -22,7 +22,7 @@ import javax.servlet.ServletContext;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class LocalServletContext implements ServletContext {
+public class XINSServletContext implements ServletContext {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -37,7 +37,7 @@ public class LocalServletContext implements ServletContext {
    //-------------------------------------------------------------------------
 
    /** Creates a new instance of LocalServletContext */
-   public LocalServletContext() {
+   public XINSServletContext() {
    }
 
    //-------------------------------------------------------------------------

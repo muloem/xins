@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.server.servlet;
+package org.xins.common.servlet.container;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -17,13 +17,15 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.httpclient.HttpStatus;
 
-import org.xins.server.APIServlet;
+import org.xins.common.Log;
+import org.xins.common.Utils;
 
 /**
- * HTTP Server used to invoke the XINS servlet.
+ * HTTP Server used to invoke the XINS Servlet.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -57,12 +59,33 @@ public class HTTPServletHandler {
     */
    public HTTPServletHandler(File warFile)
    throws IOException, ServletException {
+      this(warFile, 8080);
+   }
 
-      // Initialize the servlet
-      initServlet(warFile);
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * and wait for calls from the XINSServiceCaller.
+    *
+    * @param warFile
+    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *
+    * @param port
+    *    the port of the web server, cannot be <code>null</code>.
+    *
+    * @throws IOException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet cannot be started.
+    */
+   public HTTPServletHandler(File warFile, int port)
+   throws IOException, ServletException {
+
+      // Create the servlet
+      _servletHandler = LocalServletHandler.getInstance(warFile);
 
       // Start the HTTP server.
-      startServer();
+      startServer(port);
    }
 
 
@@ -73,7 +96,7 @@ public class HTTPServletHandler {
    /**
     * The servlet.
     */
-   private APIServlet _apiServlet;
+   private LocalServletHandler _servletHandler;
 
    /**
     * The web server.
@@ -95,26 +118,17 @@ public class HTTPServletHandler {
    //-------------------------------------------------------------------------
 
    /**
-    * Initializes the Servlet.
-    *
-    * @param warFile
-    *    the war file containing the Servlet, cannot be <code>null</code>.
-    */
-   public void initServlet(File warFile) throws ServletException {
-      _apiServlet = new APIServlet();
-      LocalServletConfig servletConfig = new LocalServletConfig(warFile);
-      _apiServlet.init(servletConfig);
-   }
-
-   /**
     * Starts the web server.
+    *
+    * @param port
+    *    The port of the servle server.
     *
     * @throw IOException
     *    If the web server cannot be created.
     */
-   public void startServer() throws IOException {
+   public void startServer(int port) throws IOException {
       // Create the server socket
-      _serverSocket = new ServerSocket(8080, 5);
+      _serverSocket = new ServerSocket(port, 5);
       _running = true;
 
       _acceptor = new SocketAcceptor();
@@ -126,11 +140,11 @@ public class HTTPServletHandler {
     */
    public void close() {
       _running = false;
-      _apiServlet.destroy();
+      _servletHandler.close();
       try {
          _serverSocket.close();
       } catch (IOException ioe) {
-         ioe.printStackTrace();
+         Log.log_1502(ioe);
       }
    }
 
@@ -149,13 +163,11 @@ public class HTTPServletHandler {
 
          // Get the output
          String httpResult = httpQuery(inbound);
-         // System.out.println("+++ Result " + httpResult);
 
          outbound.write(httpResult.getBytes("ASCII"), 0, httpResult.length());
 
       } finally{
          // Clean up
-         // System.out.println("Cleaning up connection: " + client);
          outbound.close();
 
          // The following close statements doesn't work on Unix.
@@ -180,7 +192,6 @@ public class HTTPServletHandler {
       String query = null;
 
       while (query == null && (inputLine = input.readLine()) != null) {
-         //System.out.println("*** input: " + inputLine);
          if (inputLine.startsWith("GET ")) {
             int questionPos = inputLine.indexOf('?');
             if (questionPos !=-1) {
@@ -205,10 +216,8 @@ public class HTTPServletHandler {
          }
       }
       if (query != null) {
-         //System.err.println("*** query " + query);
-         LocalHTTPServletResponse response = query(query);
+         XINSServletResponse response = _servletHandler.query(query);
          String result = response.getResult();
-         //System.err.println("*** result " + result);
          if (result == null) {
             result = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
             return result;
@@ -227,20 +236,6 @@ public class HTTPServletHandler {
    }
 
    /**
-    * Executes the servlet
-    *
-    * @param url
-    *    the requested URL or a common separated list of the parameters
-    *    passed to the URL (e.g. _function=GetVestion,param1=value1)
-    */
-   public LocalHTTPServletResponse query(String url) throws IOException {
-      LocalHTTPServletRequest request = new LocalHTTPServletRequest(url);
-      LocalHTTPServletResponse response = new LocalHTTPServletResponse();
-      _apiServlet.service(request, response);
-      return response;
-   }
-
-   /**
     * Thread waiting for connection from the client.
     */
    private class SocketAcceptor extends Thread {
@@ -256,20 +251,24 @@ public class HTTPServletHandler {
        * Executes the thread.
        */
       public void run() {
-         // System.out.println("Server started.");
+         Log.log_1500(_serverSocket.getLocalPort());
          try {
             while (_running) {
                // Wait for a connection
                Socket clientSocket = _serverSocket.accept();
-               // System.out.println("Server contacted.");
 
-               // Service the connection
-               serviceClient(clientSocket);
+               try {
+                  // Service the connection
+                  serviceClient(clientSocket);
+               } catch (Exception ex) {
+                  // If anything goes wrong still continue to listen to the port.
+                  Utils.logProgrammingError(getClass().getName(), "run", "", "", "", ex);
+               }
             }
          } catch (SocketException ie) {
             // fall through
          } catch (IOException ioe) {
-            ioe.printStackTrace();
+            Log.log_1501(ioe);
          }
       }
    }

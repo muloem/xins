@@ -62,6 +62,12 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added no-arg HTTPServiceCaller constructor.
   - Do not throw an exception if the buffer and the offset are nil in the
     FastStringBuffer.
+  - Moved the Servlet container classes used for test directory to the 
+    org.xins.common.servlet.container package.
+  - Added Logdoc to the servlet container.
+  - Improved handling of exception in the servlet container.
+  - Added the possibility to load the servlet from the WAR file even if
+    the classes and libraries are not in the classpath.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in

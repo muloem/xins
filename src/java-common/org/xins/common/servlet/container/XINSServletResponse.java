@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.server.servlet;
+package org.xins.common.servlet.container;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class LocalHTTPServletResponse implements HttpServletResponse {
+public class XINSServletResponse implements HttpServletResponse {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -37,7 +37,7 @@ public class LocalHTTPServletResponse implements HttpServletResponse {
    /**
     * Creates a new instance of LocalHTTPServletResponse
     */
-   public LocalHTTPServletResponse() {
+   public XINSServletResponse() {
    }
 
    //-------------------------------------------------------------------------

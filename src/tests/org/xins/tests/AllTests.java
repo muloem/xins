@@ -11,7 +11,7 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
+import org.xins.common.servlet.container.HTTPServletHandler;
 
 /**
  * Combination of all XINS/Java tests.

@@ -12,7 +12,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.tests.server.servlet.HTTPServletHandler;
+import org.xins.common.servlet.container.HTTPServletHandler;
 
 /**
  * Starts the web server.

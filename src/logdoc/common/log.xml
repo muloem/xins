@@ -240,6 +240,45 @@
 		</entry>
 	</group>
 
+	<group id="container" name="Servlet container">
+		<entry id="1500" level="INFO">
+			<description>HTTP Servlet container started on a specific port.</description>
+			<param name="port" type="int32" nullable="false" />
+		</entry>
+		<entry id="1501" level="ERROR" exception="true">
+			<description>The HTTP Servlet container has thrown an I/O exception.</description>
+		</entry>
+		<entry id="1502" level="ERROR" exception="true">
+			<description>Error when closing the HTTP Servlet container.</description>
+		</entry>
+		<entry id="1503" level="DEBUG">
+			<description>Loading and initializing the Servlet.</description>
+			<param name="warFile" type="text" nullable="false" />
+			<param name="mode" type="int32" nullable="false" />
+		</entry>
+		<entry id="1504" level="DEBUG">
+			<description>Performing a query to the API.</description>
+			<param name="query" type="text" nullable="false" />
+		</entry>
+		<entry id="1505" level="ERROR" exception="true">
+			<description>The query to the API failed.</description>
+		</entry>
+		<entry id="1506" level="DEBUG">
+			<description>The query to the API succeeded.</description>
+			<param name="response" type="text" nullable="true" />
+			<param name="status" type="int32" nullable="false" />
+		</entry>
+		<entry id="1507" level="DEBUG">
+			<description>Closing the Servlet container.</description>
+		</entry>
+		<entry id="1508" level="ERROR" exception="true">
+			<description>Failed to load the Servlet due to a Servlet exception.</description>
+		</entry>
+		<entry id="1509" level="ERROR" exception="true">
+			<description>Failed to load the Servlet due to a generic exception.</description>
+		</entry>
+	</group>
+	
 	<group id="threads" name="Threading" />
 
 	<group id="types" name="Types" />

@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.server.servlet;
+package org.xins.common.servlet.container;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class LocalServletConfig implements ServletConfig {
     */
    public LocalServletConfig(File warFileLocation) {
       _initParameters = new Properties();
-      _context = new LocalServletContext();
+      _context = new XINSServletContext();
 
       try {
          JarFile warFile = new JarFile(warFileLocation);
@@ -112,7 +112,7 @@ public class LocalServletConfig implements ServletConfig {
     *    the class name of the servlet, cannot be <code>null</code>.
     */
    public String getServletClass() {
-      return _servletName;
+      return _servletClass;
    }
 
    public ServletContext getServletContext() {
