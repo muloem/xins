@@ -185,7 +185,6 @@ implements Responder, Log {
       _state   = BEFORE_START;
       _success = true;
       _code    = null;
-      _callID  = -1;
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
@@ -199,6 +198,9 @@ implements Responder, Log {
 
       // Determine the function object
       _function = (functionName == null) ? null : _api.getFunction(functionName);
+
+      // Assign a call ID
+      _callID  = _function.assignCallID();
    }
 
    /**
@@ -309,22 +311,6 @@ implements Responder, Log {
       } else {
          return null;
       }
-   }
-
-   /**
-    * Sets the assigned call ID.
-    *
-    * @param callID
-    *    the new call ID, must be &gt;= 0.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>callID &lt; 0</code>.
-    */
-   void setCallID(int callID) throws IllegalArgumentException {
-      if (callID < 0) {
-         throw new IllegalArgumentException("callID (" + callID + ") < 0");
-      }
-      _callID = callID;
    }
 
    /**
