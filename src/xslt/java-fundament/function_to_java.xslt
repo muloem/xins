@@ -291,6 +291,7 @@ public abstract class ]]></xsl:text>
 		</xsl:if>
 		<xsl:if test="not(input/param[@required='true'])">
 			<xsl:text>
+
       // Nothing to check, just let the subclass do the thing
       call(context</xsl:text>
 		</xsl:if>
