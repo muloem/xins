@@ -92,6 +92,10 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
 
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Created " + toString() + ", time-out duration is " + _timeOut + " ms, precision is " + _precision + " ms.");
+      }
+
       // Create and start the timer thread
       new TimerThread().start();
    }
