@@ -5,6 +5,9 @@ package org.xins.common.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.apache.commons.httpclient.util.TimeoutController;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -223,5 +226,64 @@ public abstract class ServiceCaller extends Object {
     */
    protected String reasonForImpl(Throwable exception) {
       return null;
+   }
+
+   /**
+    * Runs the specified thread. If the thread does not finish within the
+    * total time-out period, then the thread is interrupted using the
+    * {@link Thread#interrupt()} method and a {@link TimeOutException} is
+    * thrown.
+    *
+    * @param thread
+    *    the thread to run, cannot be <code>null</code>.
+    *
+    * @param descriptor
+    *    the descriptor for the target on which the thread is executed, cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>thread == null</code>.
+    *
+    * @throws IllegalThreadStateException
+    *    if the thread was already started.
+    *
+    * @throws SecurityException
+    *    if the thread did not finish within the total time-out period, but
+    *    the interruption of the thread was disallowed (see
+    *    {@link Thread#interrupt()}.
+    *
+    * @throws TimeOutException
+    *    if the thread did not finish within the total time-out period and was
+    *    interrupted.
+    */
+   protected final void controlTimeOut(Thread           thread,
+                                       TargetDescriptor descriptor)
+   throws IllegalArgumentException,
+          IllegalThreadStateException,
+          SecurityException,
+          TimeOutException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("thread", thread);
+
+      // Start the thread. This may throw an IllegalThreadStateException.
+      thread.start();
+
+      // Wait for the thread to finish, within limits
+      try {
+         thread.join(descriptor.getTimeOut());
+      } catch (InterruptedException exception) {
+         // ignore
+         // XXX: Log?
+      }
+
+      // If the thread is still running at this point, it should stop
+      if (thread.isAlive()) {
+
+         // Interrupt the thread. This may throw a SecurityException
+         thread.interrupt();
+
+         throw new TimeOutException();
+      }
    }
 }
