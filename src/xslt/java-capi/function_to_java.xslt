@@ -96,7 +96,11 @@ public final class ]]></xsl:text>
     *    the data element, or <code>null</code> if there is none.
     */
    public org.jdom.Element getDataElement() {
-      return (org.jdom.Element) _dataElement.clone();
+      if (_dataElement != null) {
+         return (org.jdom.Element) _dataElement.clone();
+      } else {
+         return null;
+      }
    }]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
