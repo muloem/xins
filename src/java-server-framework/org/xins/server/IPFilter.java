@@ -151,13 +151,13 @@ extends Object {
     * count. The bit count indicates how many bits in an IP address must match
     * the bits in the base IP address. 
     *
-    * @param expression
-    *    the filter expression, cannot be <code>null</code> and must match the
-    *    form:
-    *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
-    *    where <em>a</em> is a number between 0 and 255, with no leading
-    *    zeroes, and <em>n</em> is a number between <em>0</em> and
-    *    <em>32</em>, no leading zeroes.
+    * @param baseIP
+    *    the base IP address, should not be <code>null</code> and must match the
+    *    form: <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em></code>, where
+    *    <em>a</em> is a number between 0 and 255, with no leading zeroes.
+    *
+    * @param mask
+    *    the mask, between 0 and 32 (inclusive).
     */
    private IPFilter(String baseIP, int mask) {
       _expression = baseIP + '/' + mask;
