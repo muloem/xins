@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.88:
+
+* XINS/Java Server Framework:
+  - Fixed the class description for MissingSessionIDException and
+    UnknownSessionIDException.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.87:
 
 * XINS/Java Server Framework:
