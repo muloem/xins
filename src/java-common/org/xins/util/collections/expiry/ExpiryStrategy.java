@@ -73,18 +73,18 @@ public final class ExpiryStrategy extends Object {
    /**
     * The time-out, in milliseconds.
     */
-   public final long _timeOut;
+   private final long _timeOut;
 
    /**
     * The time-out precision, in milliseconds.
     */
-   public final long _precision;
+   private final long _precision;
 
    /**
     * The number of slots that should be used by expiry collections that use
     * this strategy.
     */
-   public final int _slotCount;
+   private final int _slotCount;
 
 
    //-------------------------------------------------------------------------
