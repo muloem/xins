@@ -179,13 +179,17 @@ extends AbstractFunctionCaller {
 
       boolean debugEnabled = LOG.isDebugEnabled();
 
+      // Determine string representation
       String urlString = url.toString();
+      if (hostName == null) {
+         _asString = "actual function caller for URL \"" + urlString + '"';
+      } else {
+         _asString = "actual function caller for URL \"" + urlString + "\", with host name " + hostName + '"';
+      }
+
+      // Log construction start
       if (debugEnabled) {
-         if (hostName == null) {
-            LOG.debug("Creating ActualFunctionCaller for URL: " + urlString);
-         } else {
-            LOG.debug("Creating ActualFunctionCaller for URL: " + urlString + ", hostname: " + hostName);
-         }
+         LOG.debug("Creating " + _asString + '.');
       }
 
       // Perform DNS lookup
@@ -224,6 +228,76 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The string representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
+
+   /**
+    * The URL for the API this object represents. This field is never
+    * <code>null</code>.
+    */
+   private final URL _url;
+
+   /**
+    * The URL for the API, as a string. This field is never <code>null</code>.
+    */
+   private final String _urlString;
+
+   /**
+    * The host name as passed to the constructor in the URL. This field is
+    * never <code>null</code>.
+    */
+   private final String _hostName;
+
+   /**
+    * Call result parser. This field cannot be <code>null</code>.
+    */
+   private final CallResultParser _callResultParser;
+
+   /**
+    * The CRC-32 checksum for the URL.
+    */
+   private final int _crc32;
+
+   /**
+    * The CRC-32 checksum for the URL, as a String.
+    */
+   private final String _crc32String;
+
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   /**
+    * Creates a parameter string for a HTTP GET call.
+    *
+    * @param sessionID
+    *    the session identifier, if any, or <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed, or <code>null</code>; keys must be
+    *    {@link String Strings}, values can be of any class.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    *
+    * @return
+    *    the string that can be used in an HTTP GET call, never
+    *    <code>null</code> nor empty.
+    */
+   private final String createParameterString(String sessionID,
+                                              String functionName,
+                                              Map    parameters)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
 
    /**
     * The URL for the API this object represents. This field is never
@@ -520,5 +594,9 @@ extends AbstractFunctionCaller {
       } else {
          return version;
       }
+   }
+
+   public String toString() {
+      return _asString;
    }
 }
