@@ -38,4 +38,4 @@ fi
 
 # Run Ant against the build file
 project_home=`pwd`
-(cd ${builddir} && ant -Dxins_home=${XINS_HOME} -Dproject_home=${project_home})
+(cd ${builddir} && ant -Dxins_home=${XINS_HOME} -Dproject_home=${project_home} $*)
