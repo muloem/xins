@@ -119,12 +119,12 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 						 message="Please, enter the name of the api:" />
 			<input addproperty="function.name"
 						 message="Please, enter the name of the new function:" />
-			<property name="xml.file" value="apis/${{api.name}}/spec/${{function.name}}.fnc" />
-			<available property="xml.exists" file="${{xml.file}}" />
-			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
+			<property name="fnc.file" value="apis/${{api.name}}/spec/${{function.name}}.fnc" />
+			<available property="xml.exists" file="${{fnc.file}}" />
+			<fail message="The file ${{fnc.file}} already exists!" if="xml.exists" />
 			<input addproperty="function.description"
 						 message="Please, enter the description of the new function:" />
-			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<echo file="${{fnc.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://www.xins.org/dtd/function_1_1.dtd">
 
 <function name="]]>${function.name}<![CDATA["
@@ -133,7 +133,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${function.description}<![CDATA[</description>
 
 	<input>
-		<param name"inputexample" required="false" type="_text">
+		<param name="inputexample" required="false" type="_text">
 			<description>Input example</description>
 		</param>
 	</input>
@@ -167,12 +167,12 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 						 message="Please, enter the name of the api:" />
 			<input addproperty="rcd.name"
 						 message="Please, enter the name of the new result code:" />
-			<property name="xml.file" value="apis/${{api.name}}/spec/${{rcd.name}}.rcd" />
-			<available property="xml.exists" file="${{xml.file}}" />
-			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
+			<property name="rcd.file" value="apis/${{api.name}}/spec/${{rcd.name}}.rcd" />
+			<available property="xml.exists" file="${{rcd.file}}" />
+			<fail message="The file ${{rcd.file}} already exists!" if="xml.exists" />
 			<input addproperty="rcd.description"
 						 message="Please, enter the description of the new result code:" />
-			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<echo file="${{rcd.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.1//EN" "http://www.xins.org/dtd/resultcode_1_1.dtd">
 
 <resultcode name="]]>${rcd.name}<![CDATA["
@@ -198,12 +198,12 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 						 message="Please, enter the name of the api:" />
 			<input addproperty="type.name"
 						 message="Please, enter the name of the new type:" />
-			<property name="xml.file" value="apis/${{api.name}}/spec/${{type.name}}.typ" />
-			<available property="xml.exists" file="${{xml.file}}" />
-			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
+			<property name="typ.file" value="apis/${{api.name}}/spec/${{type.name}}.typ" />
+			<available property="xml.exists" file="${{typ.file}}" />
+			<fail message="The file ${{typ.file}} already exists!" if="xml.exists" />
 			<input addproperty="type.description"
 						 message="Please, enter the description of the new type:" />
-			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<echo file="${{typ.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.1//EN" "http://www.xins.org/dtd/type_1_1.dtd">
 
 <type name="]]>${type.name}<![CDATA[" rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -218,13 +218,13 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 		<target name="create-logdoc" description="Generates a new logdoc file for the API.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
-			<property name="xml.file" value="apis/${{api.name}}/impl/log.xml" />
-			<property name="xml.file2" value="apis/${{api.name}}/impl/translation-bundle-en_US.xml" />
-			<available property="xml.exists" file="${{xml.file}}" />
-			<available property="xml.exists2" file="${{xml.file2}}" />
-			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
-			<fail message="The file ${{xml.file2}} already exists!" if="xml.exists2" />
-			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<property name="log.file" value="apis/${{api.name}}/impl/log.xml" />
+			<property name="log.file2" value="apis/${{api.name}}/impl/translation-bundle-en_US.xml" />
+			<available property="xml.exists" file="${{log.file}}" />
+			<available property="xml.exists2" file="${{log.file2}}" />
+			<fail message="The file ${{log.file}} already exists!" if="xml.exists" />
+			<fail message="The file ${{log.file2}} already exists!" if="xml.exists2" />
+			<echo file="${{log.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.1//EN" "http://www.xins.org/dtd/log_1_1.dtd">
 
 <log>
@@ -243,7 +243,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	</group>
 </log>
 ]]></echo>
-			<echo file="${{xml.file2}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<echo file="${{log.file2}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.1//EN" "http://www.xins.org/dtd/translation-bundle_1_1.dtd">
 
 <translation-bundle>

@@ -26,6 +26,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
 * Generated build file:
   - Fixed SF.net bug #1102205: Directories with spaces are now supported
     for Windows.
+  - Renamed property name for creating a new file to avoid conflict.
+  - Added an input example when creating a new function.
+  - Fixed missing DTD declaration for the 1.1 DTDs.
 
 * DTD:
   - Added missing DTD files for the 1.1 version.
