@@ -164,8 +164,8 @@ public class HTTPServletHandler {
     * @param port
     *    The port of the servle server.
     *
-    * @throw IOException
-    *    If the web server cannot be created.
+    * @throws IOException
+    *    If the web server cannot be started.
     */
    public void startServer(int port) throws IOException {
       // Create the server socket

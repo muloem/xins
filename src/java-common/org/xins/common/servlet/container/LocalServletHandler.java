@@ -91,13 +91,14 @@ public class LocalServletHandler {
    
    /**
     * Load the Servlet code from the WAR file and use the current
-    * classpath for the libraries .
+    * classpath for the libraries.
     */
    public final static int USE_CLASSPATH_LIB = 2;
 
    /**
     * Load the servlet code from the WAR file and try to find the libraries
-    * in the same directory as this xins-common.jar or ../lib directory.
+    * in the same directory as this xins-common.jar or &lt:parent&gt;/lib
+    * directory.
     */
    public final static int USE_XINS_LIB = 3;
 
