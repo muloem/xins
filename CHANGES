@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.110:
+
+* Generated CAPI classes:
+  - If a function returns only a data section and no output parameters, then
+    the generated calling method for that function will return an
+    org.jdom.Element object directly.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.109:
 
 * Generated CAPI classes:
