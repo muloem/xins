@@ -30,6 +30,31 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a new generic <code>ResultCode</code>. This constructor can
+    * only be called by classes in the same package.
+    *
+    * @param name
+    *    the symbolic name, can be <code>null</code>.
+    *
+    * @param value
+    *    the actual value of this code, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    */
+   ResultCode(String name, String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("value", value);
+
+      _log     = Logger.getLogger(getClass().getName());
+      _api     = null;
+      _name    = name;
+      _value   = value;
+   }
+
+   /**
     * Constructs a new <code>ResultCode</code> for the specified API.
     *
     * @param api
@@ -44,10 +69,10 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>api == null || value == null</code>.
     */
-   protected ResultCode(API api, String name, String value)
+   public ResultCode(API api, String name, String value)
    throws IllegalArgumentException {
 
-      // Check argument
+      // Check preconditions
       MandatoryArgumentChecker.check("api", api, "value", value);
 
       _log     = Logger.getLogger(getClass().getName());
@@ -55,6 +80,7 @@ extends Object {
       _name    = name;
       _value   = value;
 
+      // TODO: Remove _log ?
       // TODO: _api.resultCodeAdded(this);
    }
 
