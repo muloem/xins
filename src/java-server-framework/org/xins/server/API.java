@@ -208,6 +208,9 @@ implements DefaultResultCodes {
     * @param propertyName
     *    the name of the property to read, cannot be <code>null</code>.
     *
+    * @return
+    *    the value of the property.
+    *
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     */
@@ -232,6 +235,9 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
+    *
+    * @throws NumberFormatException
+    *    if the conversion to an <code>int</code> failed.
     */
    private final int getIntProperty(Properties properties, String propertyName)
    throws IllegalArgumentException, NumberFormatException {

@@ -329,9 +329,7 @@ extends AbstractCompositeFunctionCaller {
     *    specified URL checksum in this group or any of the contained groups
     *    (if any).
     */
-   public final ActualFunctionCaller getActualFunctionCaller(long checksum)
-   throws IllegalArgumentException {
-
+   public final ActualFunctionCaller getActualFunctionCaller(long checksum) {
       return (ActualFunctionCaller) _actualFunctionCallersByURLChecksum.get(new Long(checksum));
    }
 
