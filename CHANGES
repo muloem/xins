@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.157:
+
+* Generated specification documentation:
+  - Indenting text 'This function supports no input parameters', to have a
+    more consistent layout.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.156:
 
 * Generated specification documentation:
