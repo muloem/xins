@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 0.73:
   - Small performance improvements by switching to using FastStringBuffer in
     some occasions (instead of the String append operator +).
 
+* XINS/Java Client Framework:
+  - CallResult now has a link to an optional ActualFunctionCaller instead of a
+    FunctionCaller. This could theoretically break existing code.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.72:
 
