@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://www.xins.org/dtd/translation-bundle_1_0.dtd">
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
@@ -29,8 +29,8 @@
 	<translation entry="3204">XINS/Java Server Framework cannot be bootstrapped. System administration issue detected. The system property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, cannot be read due to a security restriction.</translation>
 	<translation entry="3205">XINS/Java Server Framework cannot be bootstrapped. System administration issue detected. The system property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, is not set.</translation>
 	<translation entry="3206">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is not set.</translation>
-	<translation entry="3207">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to "<value-of-param name="apiClass" />", but that class cannot be loaded.</translation>
-	<translation entry="3208">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to "<value-of-param name="apiClass" />", but that class does not derive from class <value-of-param name="superClass" />.</translation>
+	<translation entry="3207">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to <value-of-param name="apiClass" format="quoted" />, but that class cannot be loaded.</translation>
+	<translation entry="3208">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to <value-of-param name="apiClass" format="quoted" />, but that class does not derive from class <value-of-param name="superClass" />.</translation>
 	<translation entry="3209">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
 	<translation entry="3210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value.</translation>
 	<translation entry="3211">XINS/Java Server Framework cannot be bootstrapped for an unknown reason.</translation>
@@ -48,7 +48,7 @@
 	<translation entry="3223">Bootstrap of function <value-of-param name="function" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
 	<translation entry="3224">Bootstrap of function <value-of-param name="function" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3225">XINS/Java Server Framework <value-of-param name="version" /> is bootstrapped.</translation>
-	<translation entry="3226">XINS/Java Server Framework (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
+	<translation entry="3226">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="3227">XINS/Java Server Framework <value-of-param name="version" /> is not a production release.</translation>
 	<translation entry="3228">Package was built with XINS <value-of-param name="version" />, which is not a production release.</translation>
 	<translation entry="3229">Package was built with XINS <value-of-param name="buildVersion" /> which is more recent version than the running version XINS <value-of-param name="currentVersion" />.</translation>
@@ -63,7 +63,7 @@
 	<translation entry="3307">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="3308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
 	<translation entry="3309">The locale <value-of-param name="locale" format="quoted" /> is not supported by the <value-of-param name="api" format="quoted" /> API.</translation>
-	<translation entry="3310">Changed  hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
+	<translation entry="3310">Changed hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
 
 	<translation entry="3400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="3401">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
@@ -121,5 +121,5 @@
 	<translation entry="3608">Deinitialized <value-of-param name="function" /> function.</translation>
 	<translation entry="3609">Deinitialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3610">Deinitialization of <value-of-param name="function" /> function failed.</translation>
-	<translation entry="3611">The function <value-of-param name="function" format="quoted" /> is returning "_InternalError" bacause the API <value-of-param name="api" format="quoted" /> is shutting down.</translation>
+	<translation entry="3611">The function <value-of-param name="function" format="quoted" /> is returning "_InternalError" because the API <value-of-param name="api" format="quoted" /> is shutting down.</translation>
 </translation-bundle>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://www.xins.org/dtd/translation-bundle_1_0.dtd">
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+-->
+
+<translation-bundle>
+	<translation entry="1000">TRACE: Entre dans le constructeur <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1001">TRACE: Quitte le constructeur <value-of-param name="className" /> avec une exception. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1002">TRACE: Quitte le constructeur <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1003">TRACE: Entre dans la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1004">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" /> avec une exception. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1005">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+
+	<translation entry="1050">Erreur de programmation dans la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1051">Ignore l'exception <value-of-param name="exceptionClass" /> avec le message <value-of-param name="exceptionMessage" format="quoted" />. Détail: <value-of-param name="description" format="quoted" />.</translation>
+	<translation entry="1052">Attrapé une exception non prévu rejeté par <value-of-param name="throwingClass" />.<value-of-param name="throwingMethod" />.</translation>
+
+	<translation entry="1100">Appelle <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />, le time-out total est de <value-of-param name="totalTimeOut" /> ms, the time-out de la connection est de <value-of-param name="connectionTimeOut" /> ms, le time-out de la socket est de <value-of-param name="socketTimeOut" /> ms.</translation>
+	<translation entry="1101">Fini la tentative d'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms.</translation>
+	<translation entry="1102">Erreur lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Host inconnu.</translation>
+	<translation entry="1103">Erreur lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Connection refusé.</translation>
+	<translation entry="1104">Erreur lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Time-out de la Connection.</translation>
+	<translation entry="1105">Erreur lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Time-out de la socket.</translation>
+	<translation entry="1106">Erreur lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Time-out total atteint.</translation>
+	<translation entry="1107">Reçu résultat avec un code HTTP <value-of-param name="code" /> acceptable lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />.</translation>
+	<translation entry="1108">Reçu résultat avec un code HTTP <value-of-param name="code" /> inacceptable lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />.</translation>
+	<translation entry="1109">Erreur d'E/S lors de l'appel à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />.</translation>
+
+	<translation entry="1200">Démarrage du thread surveillant le fichier <value-of-param name="file" format="quoted" />. Vérification pour modification toutes les <value-of-param name="interval" /> secondes.</translation>
+	<translation entry="1201">Changement de l'intervalle de surveillance pour le fichier <value-of-param name="file" format="quoted" /> de <value-of-param name="oldInterval" /> à <value-of-param name="newInterval" /> secondes.</translation>
+	<translation entry="1202">Arret du thread surveillant le fichier <value-of-param name="file" format="quoted" />.</translation>
+
+	<translation entry="1250">Accru la capacité du FastStringBuffer de <value-of-param name="currentCapacity" /> à <value-of-param name="newCapacity" />.</translation>
+
+	<translation entry="1300">L'URL <value-of-param name="url" format="quoted" /> est malformé.</translation>
+	<translation entry="1301">Appel au service à l'URL <value-of-param name="url" /> réussi.</translation>
+	<translation entry="1302">Appel au service à l'URL <value-of-param name="url" /> échoué.</translation>
+	<translation entry="1303">L'appel a completement échoué.</translation>
+	<translation entry="1304">Plus aucune cible et pas de fail-over.</translation>
+	<translation entry="1305">Plus aucune cible mais le fail-over aurait été authorisé.</translation>
+	<translation entry="1306">Des cibles sont encore disponibles mais le fail-over n'est pas authorisé.</translation>
+	<translation entry="1307">Des cibles sont encore disponibles et le fail-over est authorisé.</translation>
+
+	<translation entry="1400">Dossier d'expiration <value-of-param name="folderName" format="quoted" />: Tick processed. Entrées expirées: <value-of-param name="expired" />. Entrées restantes: <value-of-param name="remaining" />.</translation>
+	<translation entry="1401"><value-of-param name="folder" /> associé avec <value-of-param name="strategy" />.</translation>
+	<translation entry="1402">Thread de la statégie d'expiration <value-of-param name="name" format="quoted" /> démarré.</translation>
+	<translation entry="1403">Thread de la statégie d'expiration <value-of-param name="name" format="quoted" /> arrêté.</translation>
+</translation-bundle>

@@ -3,6 +3,13 @@ versions of XINS.
 
 $Id$
 
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
+
+* Logdoc:
+  - Added French locale.
+  - XML files are now in UTF-8 encoding format.
+  - Fixed small error on the English translation of the server side logdoc.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:

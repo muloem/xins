@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://www.xins.org/dtd/log_1_0.dtd">
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
@@ -9,6 +9,7 @@
 
 <log>
 	<translation-bundle locale="en_US" />
+	<translation-bundle locale="fr_FR" />
 
 	<group id="trace" name="Tracing of constructors, class functions and instance methods">
 		<entry id="1000" level="DEBUG">
