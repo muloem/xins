@@ -66,6 +66,23 @@ implements DefaultResultCodes {
     */
    private static final String NOT_AVAILABLE = "N/A";
 
+   /**
+    * Successful empty call result.
+    */
+   private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(true, null, null, null);
+
+   /**
+    * Call result to be returned when the function name is missing in the
+    * request.
+    */
+   private static final CallResult MISSING_FUNCTION_NAME_RESULT = new BasicCallResult(false, "MissingFunctionName", null, null);
+
+   /**
+    * Call result to be returned when the function name does not denote an
+    * existing function.
+    */
+   private static final CallResult NO_SUCH_FUNCTION_RESULT = new BasicCallResult(false, "NoSuchFunction", null, null);
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -1045,19 +1062,15 @@ implements DefaultResultCodes {
 
       // The function name is required
       if (functionName == null || functionName.length() == 0) {
-         // TODO: return new BasicCallResult(MISSING_FUNCTION_NAME);
-         return new BasicCallResult(false, "MissingFunctionName", null, null);
+         return MISSING_FUNCTION_NAME_RESULT;
       }
 
       // Detect special functions
       if (functionName.charAt(0) == '_') {
          if ("_NoOp".equals(functionName)) {
-            // empty
+            return SUCCESSFUL_RESULT;
          } else if ("_PerformGC".equals(functionName)) {
-            // TODO: return doPerformGC();
-            System.gc();
-            // TODO: Cache this CallResult
-            return new BasicCallResult(true, null, null, null);
+            return doPerformGC();
          } else if ("_GetFunctionList".equals(functionName)) {
             return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
@@ -1067,9 +1080,7 @@ implements DefaultResultCodes {
          } else if ("_GetSettings".equals(functionName)) {
             return doGetSettings();
          } else {
-            // TODO: Cache this CallResult
-            // TODO: new BasicCallResult(NO_SUCH_FUNCTION);
-            return new BasicCallResult(false, "NoSuchFunction", null, null);
+            return NO_SUCH_FUNCTION_RESULT;
          }
       }
 
@@ -1081,13 +1092,22 @@ implements DefaultResultCodes {
       // Get the function object
       Function function  = getFunction(functionName);
       if (function == null)  {
-         // TODO: Cache this CallResult
-         // TODO: new BasicCallResult(NO_SUCH_FUNCTION);
-         return new BasicCallResult(false, "NoSuchFunction", null, null);
+         return NO_SUCH_FUNCTION_RESULT;
       }
 
       // Forward the call to the function
       return function.handleCall(start, request);
+   }
+
+   /**
+    * Performs garbage collection.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    */
+   private final CallResult doPerformGC() {
+      System.gc();
+      return SUCCESSFUL_RESULT;
    }
 
    /**
