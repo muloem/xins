@@ -240,6 +240,20 @@ public class XINSCallResultParserTests extends TestCase {
                     "\t</data>\n</result>";
       XINSCallResultData result2 = parser.parse(xml2.getBytes(ENCODING));
       verifyCorrectResult(result2);
+      
+      // Parse the same XML with spaces between elements
+      String xml3 = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
+                    " <result>\n\t\n" +
+                    "   <param name=\"test1\">hello</param>\n" +
+                    "\t\t<param name='test2'>world</param>\n" +
+                    "\t\t<param name=\"test3\"> 1 2 \n\t3 </param>\n" +
+                    "\t</result>";
+      XINSCallResultData result3 = parser.parse(xml3.getBytes(ENCODING));
+      PropertyReader params = result3.getParameters();
+      assertTrue(params == null || params.size() == 3);
+      assertEquals("hello", params.get("test1"));
+      assertEquals("world", params.get("test2"));
+      assertEquals(" 1 2 \n\t3 ", params.get("test3"));
    }
 
    /**

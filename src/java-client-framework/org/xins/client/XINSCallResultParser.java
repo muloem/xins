@@ -462,6 +462,9 @@ extends Object {
 
                // TODO: Check parameter name here (null and pattern)
 
+               // Reserve buffer for PCDATA
+               _characters.clear();
+
                // Update the state
                _state = IN_PARAM_ELEMENT;
 

@@ -41,6 +41,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Changed access level of setUnsuccessfulXINSCallExceptionFactory and
     getUnsuccessfulXINSCallExceptionFactory in class XINSCallRequest from
     public to package-private.
+  - Fixed bug 1109810: Incorrect parsing of the returned XML.
 
 * XINS/Java Server Framework:
   - Added custom calling convention.
