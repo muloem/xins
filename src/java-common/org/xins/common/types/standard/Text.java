@@ -47,13 +47,9 @@ public final class Text extends Type {
     *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
     */
    public static String fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
+   throws IllegalArgumentException {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {
@@ -111,7 +107,7 @@ public final class Text extends Type {
    // isn't require to throw a TypeValueException as the String is always
    // returned.
    public String toString(Object value)
-   throws IllegalArgumentException, TypeValueException, ClassCastException {
+   throws IllegalArgumentException, ClassCastException {
       return fromStringForRequired((String) value);
    }
 }
