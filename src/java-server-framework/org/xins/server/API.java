@@ -45,6 +45,8 @@ implements DefaultResultCodes {
       _log              = Logger.getLogger(getClass().getName());
       _functionsByName  = new HashMap();
       _functionList     = new ArrayList();
+      _resultCodesByName = new HashMap();
+      _resultCodeList    = new ArrayList();
       _contextsByThread = new HashMap();
    }
 
@@ -72,6 +74,20 @@ implements DefaultResultCodes {
     * List of all functions. This field cannot be <code>null</code>.
     */
    private final List _functionList;
+
+   /**
+    * Map that maps result code names to <code>ResultCode</code> instances.
+    * Contains all result codes associated with this API.
+    *
+    * <p />This field is initialized to a non-<code>null</code> value by the
+    * constructor.
+    */
+   private final Map _resultCodesByName;
+
+   /**
+    * List of all result codes. This field cannot be <code>null</code>.
+    */
+   private final List _resultCodeList;
 
    /**
     * Map that maps threads to <code>CallContext</code> instances.
@@ -146,6 +162,20 @@ implements DefaultResultCodes {
    final void functionAdded(Function function) {
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);
+   }
+
+   /**
+    * Callback method invoked when a result code is constructed.
+    *
+    * @param resultCode
+    *    the result code that is added, not <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>resultCode == null</code>.
+    */
+   final void resultCodeAdded(ResultCode resultCode) {
+      _resultCodesByName.put(resultCode.getName(), resultCode);
+      _resultCodeList.add(resultCode);
    }
 
    /**
