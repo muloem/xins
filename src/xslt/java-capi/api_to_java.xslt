@@ -161,12 +161,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:for-each>
 
 		<xsl:text><![CDATA[
-   /**
-    * Returns the version of XINS used to build this API.
-    *
-    * @return 
-    *    the version as a {@link String}, cannot be <code>null</code>.
-    */
+
    public String getXINSVersion() {
       return "]]></xsl:text>
 			<xsl:value-of select="$xins_version" />
