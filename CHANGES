@@ -15,8 +15,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
                                             call succeeded. 
 
 * XINS/Java Server Framework:
-  - Added _GetStatistics meta function with error code by using the optional
-    parameter "detailed=true".
+  - The _GetStatistics meta-function now supports statistics per error code.
+    To retrieve these details, pass "detailed=true" to this function.
 
 * Generated CAPI classes:
   - All call methods now return a function result object, never void. This
