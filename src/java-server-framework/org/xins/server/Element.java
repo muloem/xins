@@ -6,7 +6,7 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.xins.client.DataElement;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;

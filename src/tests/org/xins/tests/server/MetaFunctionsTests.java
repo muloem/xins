@@ -157,12 +157,44 @@ public class MetaFunctionsTests extends TestCase {
          fail("Incorrect value while parsing a memory size.");
       }
       
+      // browse all function
       while (children.hasNext()) {
          DataElement nextFunction = (DataElement) children.next();
          assertEquals("Object other than a fnuction has been found.", "function", nextFunction.getName());
-         assertNotNull("The functino does not have a name", nextFunction.get("name"));
+         assertNotNull("The function does not have a name", nextFunction.get("name"));
          // XXX also test the children.
+         Iterator itSubElements = nextFunction.getChildren();
+         assertTrue("The function does not have any successful sub-section.", itSubElements.hasNext());
+         DataElement successful = (DataElement) itSubElements.next();
+         checkFunctionStatistics(successful, true);
+         assertTrue("The function does not have any unsuccessful sub-section.", itSubElements.hasNext());
+         DataElement unsuccessful = (DataElement) itSubElements.next();
+         checkFunctionStatistics(unsuccessful, false);
       }
+   }
+   
+   private void checkFunctionStatistics(DataElement functionElement, boolean successful) {
+      String success = successful ? "successful" : "unsuccesssul";
+      
+      assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getName());
+      assertNotNull("No average attribute defined", functionElement.get("average"));
+      assertNotNull("No count attribute defined", functionElement.get("count"));
+      Iterator itMinMaxLast = functionElement.getChildren();
+      assertTrue("The function does not have any min-max-last sub-section.", itMinMaxLast.hasNext());
+      DataElement min = (DataElement) itMinMaxLast.next();
+      assertEquals("The function does not have any successful sub-section.", "min", min.getName());
+      assertNotNull("No average attribute defined", min.get("start"));
+      assertNotNull("No count attribute defined", min.get("duration"));
+      assertTrue("The function has an incomplete min-max-last sub-section.", itMinMaxLast.hasNext());
+      DataElement max = (DataElement) itMinMaxLast.next();
+      assertEquals("The function does not have any successful sub-section.", "max", max.getName());
+      assertNotNull("No average attribute defined", max.get("start"));
+      assertNotNull("No count attribute defined", max.get("duration"));
+      assertTrue("The function has an incomplete min-max-last sub-section.", itMinMaxLast.hasNext());
+      DataElement last = (DataElement) itMinMaxLast.next();
+      assertEquals("The function does not have any successful sub-section.", "last", last.getName());
+      assertNotNull("No average attribute defined", last.get("start"));
+      assertNotNull("No count attribute defined", last.get("duration"));
    }
    
    /**
