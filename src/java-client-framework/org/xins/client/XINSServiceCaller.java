@@ -6,6 +6,8 @@ package org.xins.client;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Collections;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -185,8 +187,48 @@ public final class XINSServiceCaller extends ServiceCaller {
                                Object           subject)
    throws Throwable {
 
-      // TODO
-      return null;
+      // Convert subject to a CallRequest
+      CallRequest request = (CallRequest) subject;
+
+      // Construct new HttpClient and PostMethod objects
+      HttpClient client = new HttpClient();
+      PostMethod method = new PostMethod(target.getURL());
+
+      // Set the correct time-out
+      client.setTimeout(target.getTimeOut());
+
+      boolean succeeded = false;
+      byte[] data;
+      int    code;
+
+      try {
+         // Execute the request
+         client.executeMethod(method);
+
+         // Read response body (mandatory operation) and determine status
+         data = method.getResponseBody();
+         code = method.getStatusCode();
+
+         succeeded = true;
+      } finally {
+
+         // Release the connection
+         if (succeeded) {
+            method.releaseConnection();
+         } else {
+            try {
+               method.releaseConnection();
+            } catch (Throwable exception) {
+               LOG.error("Caught " + exception.getClass().getName() + " while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.", exception);
+            }
+         }
+      }
+
+      return new Result(target,
+                        true,  // TODO:          success,
+                        null,  // TODO:          code,
+                        null,  // TODO:          parameters,
+                        null); // TODO:          dataElement)
    }
 
    /**
@@ -300,40 +342,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       /**
        * Constructs a new <code>Result</code> object.
        *
-       * @param success
-       *    success indication returned by the function.
-       *
-       * @param code
-       *    the return code, if any, can be <code>null</code>.
-       *
-       * @param parameters
-       *    output parameters returned by the function, or <code>null</code>.
-       *
-       * @param dataElement
-       *    the data element returned by the function, or <code>null</code>; if
-       *    specified then the name must be <code>"data"</code>, with no
-       *    namespace.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>dataElement != null &amp;&amp;
-       *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
-       *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>));</code>
-       */
-      public Result(boolean success,
-                    String  code,
-                    Map     parameters,
-                    Element dataElement)
-      throws IllegalArgumentException {
-         this(null, success, code, parameters, dataElement);
-      }
-
-      /**
-       * Constructs a new <code>Result</code> object, optionally specifying
-       * the <code>ActualFunctionCaller</code> that produced it.
-       *
-       * @param functionCaller
-       *    the {@link ActualFunctionCaller} that produced this
-       *    <code>Result</code>, if any.
+       * @param target
+       *    the {@link TargetDescriptor} that was used to successfully get the
+       *    result, cannot be <code>null</code>.
        *
        * @param success
        *    success indication returned by the function.
@@ -350,18 +361,19 @@ public final class XINSServiceCaller extends ServiceCaller {
        *    namespace.
        *
        * @throws IllegalArgumentException
-       *    if <code>dataElement != null &amp;&amp;
+       *    if <code>target == null || (dataElement != null &amp;&amp;
        *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
-       *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>));</code>
+       *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>)))</code>
        */
-      public Result(ActualFunctionCaller functionCaller,
-                    boolean              success,
-                    String               code,
-                    Map                  parameters,
-                    Element              dataElement)
+      public Result(TargetDescriptor target,
+                    boolean          success,
+                    String           code,
+                    Map              parameters,
+                    Element          dataElement)
       throws IllegalArgumentException {
 
          // Clone the data element if there is one
+         MandatoryArgumentChecker.check("target", target);
          if (dataElement != null) {
             String    dataElementName = dataElement.getName();
             Namespace ns              = dataElement.getNamespace();
@@ -373,7 +385,8 @@ public final class XINSServiceCaller extends ServiceCaller {
             dataElement = (Element) dataElement.clone();
          }
 
-         _functionCaller = functionCaller;
+         // Store all the information
+         _target      = target;
          _success     = success;
          _code        = code;
          _parameters  = parameters == null
@@ -388,10 +401,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * The <code>ActualFunctionCaller</code> that produced this object. Can be
-       * <code>null</code>.
+       * The <code>TargetDescriptor</code> that was used to produced this
+       * result. Cannot be <code>null</code>.
        */
-      private final ActualFunctionCaller _functionCaller;
+      private final TargetDescriptor _target;
 
       /**
        * Success indication.
@@ -423,15 +436,14 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * Returns the <code>ActualFunctionCaller</code> associated with this call
-       * result.
+       * Returns the <code>TargetDescriptor</code> that was used to generate
+       * this result.
        *
        * @return
-       *    the {@link ActualFunctionCaller} specified at construction time, or
-       *    <code>null</code> if none was specified.
+       *    the {@link TargetDescriptor}, cannot be <code>null</code>.
        */
-      public ActualFunctionCaller getFunctionCaller() {
-         return _functionCaller;
+      public TargetDescriptor getTarget() {
+         return _target;
       }
 
       /**
