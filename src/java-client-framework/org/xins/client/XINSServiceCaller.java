@@ -14,6 +14,7 @@ import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
@@ -154,7 +155,35 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    /**
     * Constructs a new <code>XINSServiceCaller</code> with the specified
-    * descriptor.
+    * descriptor and HTTP method.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @param httpMethod
+    *    the HTTP method to use if a {@link XINSCallRequest} does not specify
+    *    one, or <code>null</code> if the default method should then be used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    */
+   public XINSServiceCaller(Descriptor descriptor, HTTPMethod httpMethod)
+   throws IllegalArgumentException {
+
+      // Trace and then call constructor of superclass
+      super(trace(descriptor));
+
+      _parser     = new XINSCallResultParser();
+      _httpCaller = new HTTPServiceCaller(descriptor);
+      _httpMethod = (httpMethod != null) ? httpMethod : HTTPMethod.POST;
+
+      // TRACE: Leave constructor
+      Log.log_2002(CLASSNAME, null);
+   }
+
+   /**
+    * Constructs a new <code>XINSServiceCaller</code> with the specified
+    * descriptor and the default HTTP method.
     *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
@@ -164,15 +193,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
-
-      // Trace and then call constructor of superclass
-      super(trace(descriptor));
-
-      _parser     = new XINSCallResultParser();
-      _httpCaller = new HTTPServiceCaller(descriptor);
-
-      // TRACE: Leave constructor
-      Log.log_2002(CLASSNAME, null);
+      this(descriptor, null);
    }
 
 
@@ -192,10 +213,29 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private final HTTPServiceCaller _httpCaller;
 
+   /**
+    * The HTTP method to use, if none is specified in the XINS call request.
+    * The default is {@link HTTPMethod#POST}. This field cannot be
+    * <code>null</code>.
+    */
+   private final HTTPMethod _httpMethod;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Get the HTTP method to use if none is specified in a XINS call request.
+    * The default is {@link HTTPMethod#POST}.
+    *
+    * @return
+    *    the HTTP method to use if none is specified in a XINS call request,
+    *    never <code>null</code>.
+    */
+   HTTPMethod getHTTPMethod() {
+      return _httpMethod;
+   }
 
    /**
     * Executes the specified XINS call request towards one of the associated
@@ -355,7 +395,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       Log.log_2100(url, function, params, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Get the contained HTTP request from the XINS request
-      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
+      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest(_httpMethod);
 
       // Determine the start time. Only required when an unexpected kind of
       // exception is caught.

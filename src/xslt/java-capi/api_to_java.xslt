@@ -113,7 +113,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * Returns the version of XINS used to build this CAPI class.
     *
     * @return
-    *    the version as a {@link String}, cannot be <code>null</code>.
+    *    the version as a {@link String}, e.g. <code>"]]></xsl:text>
+			<xsl:value-of select="$xins_version" />
+			<xsl:text><![CDATA["</code>;
+    *    never <code>null</code>.
     */
    public String getXINSVersion() {
       return "]]></xsl:text>
@@ -135,39 +138,35 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified descriptor,
-    * with the specified HTTP method.
+    * Constructs a new <code>CAPI</code> object, using the specified
+    * <code>XINSServiceCaller</code>.
     *
-    * @param descriptor
-    *    the descriptor, cannot be <code>null</code>.
-    *
-    * @param httpMethod
-    *    the HTTP method to use, or <code>null</code> if the default should be
-    *    used.
+    * @param caller
+    *    the XINS service caller to use, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
+    *    if <code>caller == null</code>.
     */
-   public CAPI(org.xins.common.service.Descriptor descriptor,
-               org.xins.common.http.HTTPMethod    httpMethod)
+   public CAPI(org.xins.client.XINSServiceCaller caller)
    throws IllegalArgumentException {
 
       // Call the superclass constructor
-      super(descriptor, httpMethod);
+      super(caller);
    }
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified descriptor.
+    * Constructs a new <code>CAPI</code> object, using the specified
+    * <code>Descriptor</code>.
     *
     * @param descriptor
-    *    the descriptor, cannot be <code>null</code>.
+    *    the descriptor for the service(s), cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     */
    public CAPI(org.xins.common.service.Descriptor descriptor)
    throws IllegalArgumentException {
-      this(descriptor, null);
+      super(new org.xins.client.XINSServiceCaller(descriptor));
    }]]></xsl:text>
 	</xsl:template>
 
@@ -274,7 +273,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>
 
       // Construct a call request
-      org.xins.client.XINSCallRequest request = createXINSCallRequest(</xsl:text>
+      org.xins.client.XINSCallRequest request = new org.xins.client.XINSCallRequest(</xsl:text>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>

@@ -23,6 +23,7 @@ import org.xins.common.service.CallRequest;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 /**
  * Abstraction of a XINS request.
@@ -159,8 +160,9 @@ public final class XINSCallRequest extends CallRequest {
     *    if the request was already sent to the other end.
     *
     * @param method
-    *    the HTTP method to use, or <code>null</code> if the default HTTP
-    *    method (POST) should be used.
+    *    the HTTP method to use, or <code>null</code> if the used
+    *    <code>XINSServiceCaller</code> should determine what HTTP method to
+    *    use.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code> or if <code>parameters</code>
@@ -176,11 +178,6 @@ public final class XINSCallRequest extends CallRequest {
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
-
-      // HTTP method defaults to POST
-      if (method == null) {
-         method = HTTPMethod.POST;
-      }
 
       // Create PropertyReader for the HTTP parameters
       final Object SECRET_KEY = new Object();
@@ -234,16 +231,17 @@ public final class XINSCallRequest extends CallRequest {
          httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
       }
 
+      // FIXME for XINS 1.1.0: Make parameters unmodifiable and change @param
+
       // Initialize fields
       _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
-      _parameters      = parameters; // XXX: Make unmodifiable and change @param?
-      _httpRequest     = new HTTPCallRequest(method,
-                                             httpParams,
-                                             failOverAllowed,
-                                             HTTP_STATUS_CODE_VERIFIER);
+      _parameters      = parameters;
+      _failOverAllowed = failOverAllowed;
+      _httpMethod      = method;
+      _httpParams      = httpParams;
 
-      // XXX: Note that _asString is lazily initialized.
+      // Note that _asString is lazily initialized.
    }
 
 
@@ -277,10 +275,21 @@ public final class XINSCallRequest extends CallRequest {
    private final PropertyReader _parameters;
 
    /**
-    * The HTTP service caller used to execute the request to a XINS service
-    * over HTTP. This field is never <code>null</code>.
+    * The HTTP method to use. Can be <code>null</code>, in which case the
+    * {@link XINSServiceCaller} will determine which HTTP method to use.
     */
-   private final HTTPCallRequest _httpRequest;
+   private final HTTPMethod _httpMethod;
+
+   /**
+    * Flag that indicates whether fail-over is unconditionally allowed.
+    */
+   private final boolean _failOverAllowed;
+
+   /**
+    * The parameters to send with the HTTP request. Cannot be
+    * <code>null</code>.
+    */
+   private final PropertyReader _httpParams;
 
 
    //-------------------------------------------------------------------------
@@ -297,12 +306,14 @@ public final class XINSCallRequest extends CallRequest {
 
       // Lazily initialize the description of this call request object
       if (_asString == null) {
-         FastStringBuffer buffer = new FastStringBuffer(208, "XINS HTTP ");
-         buffer.append(_httpRequest.getMethod().toString());
+         FastStringBuffer buffer = new FastStringBuffer(208, "XINS HTTP request #");
 
          // Request number
-         buffer.append(" request #");
          buffer.append(_instanceNumber);
+
+         // HTTP method
+         buffer.append(" [httpMethod=");
+         buffer.append(TextUtils.quote(_httpMethod));
 
          // Function name
          buffer.append(" [function=\"");
@@ -321,7 +332,7 @@ public final class XINSCallRequest extends CallRequest {
          buffer.append(isFailOverAllowed());
 
          // Diagnostic context identifier
-         String contextID = _httpRequest.getParameters().get(CONTEXT_ID_HTTP_PARAMETER_NAME);
+         String contextID = _httpParams.get(CONTEXT_ID_HTTP_PARAMETER_NAME);
          if (contextID == null || contextID.length() < 1) {
             buffer.append("; contextID=(null)]");
          } else {
@@ -378,26 +389,41 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
-    * Determines whether fail-over is in principle allowed, even if the
-    * request was already sent to the other end.
+    * Determines whether fail-over is unconditionally allowed.
     *
     * @return
-    *    <code>true</code> if fail-over is in principle allowed, even if the
-    *    request was already sent to the other end, <code>false</code>
-    *    otherwise.
+    *    <code>true</code> if fail-over is unconditionally allowed, even if the
+    *    request was already received or even processed by the other end,
+    *    <code>false</code> otherwise.
     */
    public boolean isFailOverAllowed() {
-      return _httpRequest.isFailOverAllowed();
+      return _failOverAllowed;
    }
 
    /**
-    * Returns the underlying <code>HTTPCallRequest</code>.
+    * Returns an <code>HTTPCallRequest</code> that can be used to execute this
+    * XINS request.
+    *
+    * @param method
+    *    the method to use if none is specified in this XINS call request,
+    *    cannot be <code>null</code>.
     *
     * @return
-    *    the underlying {@link HTTPCallRequest}, never <code>null</code>.
+    *    this request converted to an {@link HTTPCallRequest}, never
+    *    <code>null</code>.
     */
-   HTTPCallRequest getHTTPCallRequest() {
-      return _httpRequest;
+   HTTPCallRequest getHTTPCallRequest(HTTPMethod method)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("method", method);
+
+      // This request may override the HTTP method to use
+      if (_httpMethod != null) {
+         method = _httpMethod;
+      }
+
+      return new HTTPCallRequest(method, _httpParams, _failOverAllowed, HTTP_STATUS_CODE_VERIFIER);
    }
 
 
