@@ -139,7 +139,7 @@ public final class HTTPCallResult extends CallResult {
          return getString(ENCODING);
       } catch (UnsupportedEncodingException exception) {
          String message = "Default encoding \"" + ENCODING + "\" is unsupported.";
-         Log.log_3006(CLASSNAME, "getString()", message);
+         Log.log_3050(CLASSNAME, "getString()", message);
          throw new Error(message);
       }
    }

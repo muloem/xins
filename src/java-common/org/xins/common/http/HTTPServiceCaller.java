@@ -290,7 +290,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
          String message = "Unrecognized method \"" + method + "\".";
-         Log.log_3006(CLASSNAME, "createMethod(String,HTTPCallResult)",
+         Log.log_3050(CLASSNAME, "createMethod(String,HTTPCallResult)",
                       message);
          throw new Error(message);
       }

@@ -248,7 +248,7 @@ public final class GroupDescriptor extends Descriptor {
          return new OrderedIterator();
       } else {
          String message = "Unexpected condition: Unknown type: " + _type + '.';
-         Log.log_3006(CLASSNAME, "iterateTargets()", message);
+         Log.log_3050(CLASSNAME, "iterateTargets()", message);
          throw new Error(message);
       }
    }

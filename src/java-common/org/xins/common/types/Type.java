@@ -211,7 +211,7 @@ public abstract class Type extends Object {
 
       if (_valueClass.isInstance(value) == false) {
          String message = "The specified value returned by " + getClass().getName() + " is not an instance of " + _valueClass.getName() + '.';
-         Log.log_3006(CLASSNAME, "fromString(String)", message);
+         Log.log_3050(CLASSNAME, "fromString(String)", message);
          throw new Error(message);
       }
 

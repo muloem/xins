@@ -149,7 +149,7 @@ public abstract class ServiceCaller extends Object {
       // There should be at least one target
       if (! iterator.hasNext()) {
          String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
-         Log.log_3006(_descriptor.getClass().getName(), "iterateTargets()", message);
+         Log.log_3050(_descriptor.getClass().getName(), "iterateTargets()", message);
          throw new Error(message);
       }
 

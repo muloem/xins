@@ -102,7 +102,7 @@ public abstract class PatternType extends Type {
          return PATTERN_MATCHER.matches(value, _pattern);
       } catch (Throwable exception) {
          String message = PATTERN_MATCHER.getClass().getName() + ".matches(java.lang.String," + _pattern.getClass().getName() + ") has thrown an unexpected exception (" + exception.getMessage() + "). Assuming the value \"" + value + "\" is invalid.";
-         Log.log_3006(PATTERNTYPE_CLASSNAME, "isValidValueImpl", message);
+         Log.log_3050(PATTERNTYPE_CLASSNAME, "isValidValueImpl", message);
          return false;
       }
    }
