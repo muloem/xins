@@ -10,7 +10,6 @@
 <log>
 
 	<translation-bundle locale="en_US" />
-	<translation-bundle locale="nl_NL" />
 
 	<group id="lifespan" name="Internal lifespan-related">
 		<entry id="1100" level="DEBUG">
