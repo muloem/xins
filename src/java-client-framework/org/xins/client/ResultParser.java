@@ -17,6 +17,8 @@ import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 import org.xins.util.service.TargetDescriptor;
+import org.xins.util.text.FastStringBuffer;
+import org.xins.util.text.ParseException;
 
 /**
  * Call result parser. XML is parsed to produce a
@@ -102,7 +104,18 @@ public class ResultParser extends Object {
       try {
          document = _xmlBuilder.build(reader);
       } catch (Throwable exception) {
-         throw new ParseException("Unable to convert the specified character string to XML.", exception);
+         String detail = exception.getMessage();
+         FastStringBuffer buffer = new FastStringBuffer(250);
+         buffer.append("Unable to convert the specified character string to XML");
+         if (detail != null && detail.length() > 0) {
+            buffer.append(": ");
+            buffer.append(detail);
+         } else {
+            buffer.append('.');
+         }
+         String message = buffer.toString();
+         LOG.error(message, exception);
+         throw new ParseException(message);
       }
 
       return parse(target, document);

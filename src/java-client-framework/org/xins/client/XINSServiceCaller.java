@@ -23,6 +23,7 @@ import org.xins.util.service.Descriptor;
 import org.xins.util.service.ServiceCaller;
 import org.xins.util.service.TargetDescriptor;
 import org.xins.util.text.FastStringBuffer;
+import org.xins.util.text.ParseException;
 
 /**
  * XINS service caller.

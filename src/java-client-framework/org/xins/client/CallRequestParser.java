@@ -17,6 +17,7 @@ import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 import org.xins.util.text.FastStringBuffer;
+import org.xins.util.text.ParseException;
 
 /**
  * Parser that takes XML to build a <code>CallRequest</code>.
@@ -121,27 +122,27 @@ public final class CallRequestParser extends Object {
       MandatoryArgumentChecker.check("in", in);
 
       // Parse the input stream
+      Document document;
       try {
-         return parse(_xmlBuilder.build(in));
+         document = _xmlBuilder.build(in);
 
       // Catch problems
-      } catch (Exception exception) {
-         FastStringBuffer message = new FastStringBuffer(128);
-         message.append("Unable to parse call request due to unexpected ");
-         message.append(exception.getClass().getName());
-         String exceptionMessage = exception.getMessage();
-         if (exceptionMessage != null && exceptionMessage.length() > 0) {
-            message.append(": ");
-            message.append(exceptionMessage);
+      } catch (Throwable exception) {
+         String detail = exception.getMessage();
+         FastStringBuffer buffer = new FastStringBuffer(250);
+         buffer.append("Unable to convert the input from the specified reader to XML");
+         if (detail != null && detail.length() > 0) {
+            buffer.append(": ");
+            buffer.append(detail);
          } else {
-            message.append('.');
+            buffer.append('.');
          }
-         String messageString = message.toString();
-         LOG.error(messageString);
-
-         // TODO: Include type of error in here somewhere
-         throw new ParseException(messageString, exception);
+         String message = buffer.toString();
+         LOG.error(message, exception);
+         throw new ParseException(message);
       }
+
+      return parse(document);
    }
 
    /**
