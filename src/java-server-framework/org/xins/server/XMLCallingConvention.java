@@ -158,8 +158,8 @@ extends CallingConvention {
          
          return new FunctionRequest(functionName, functionParams, dataElement);
       } catch (UnsupportedEncodingException ex) {
-         final String message = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";
-         Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", message);
+         final String DETAIL = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";
+         Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", DETAIL);
          throw new ProgrammingError(message);
       } catch (IOException ex) {
          throw new InvalidRequestException("Cannot read the XML request.", ex);

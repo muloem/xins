@@ -146,18 +146,39 @@ public class AccessRuleFile implements AccessRuleContainer {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns whether the ip address is allowed to access the functionName.
+    * Determines if the specified IP address is allowed to access the
+    * specified function, returning a <code>Boolean</code> object or
+    * <code>null</code>.
+    *
+    * <p>This method finds the first matching rule and then returns the
+    * <em>allow</em> property of that rule (see
+    * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
+    * <code>null</code> is returned.
+    *
+    * @param ip
+    *    the IP address, cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
     *
     * @return
-    *    <code>Boolean.TRUE</code> if the functionName is allowed, 
-    *    <code>Boolean.FALSE</code> if the functionName is denied or
-    *    <code>null</code> if the ip address does not match any of the rules
-    *    or if the functionName does not match the pattern.
+    *    {@link Boolean#TRUE} if the specified IP address is allowed to access
+    *    the specified function, {@link Boolean#FALSE} if it is disallowed
+    *    access or <code>null</code> if no match is found.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ip == null || functionName == null</code>.
+    *
+    * @throws ParseException
+    *    if the specified IP address is malformed.
     */
    public Boolean isAllowed(String ip, String functionName) throws IllegalArgumentException, ParseException {
 
+      // TODO: If disposed, then throw a ProgrammingError
+
       // Check preconditions
-      MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
+      MandatoryArgumentChecker.check("ip",           ip,
+                                     "functionName", functionName);
 
       for (int i = 0; i < _rules.length; i++) {
          Boolean allowed = _rules[i].isAllowed(ip, functionName);
@@ -171,9 +192,13 @@ public class AccessRuleFile implements AccessRuleContainer {
    }
 
    /**
-    * Closes the file watcher.
+    * Disposes this access rule. All claimed resources are freed as much as
+    * possible.
+    *
+    * <p>Once disposed, the {@link #isAllowed} method should no longer be
+    * called.
     */
-   public void close() {
+   public void dispose() {
       
       // Close all the children
       if (_rules != null) {
@@ -186,18 +211,33 @@ public class AccessRuleFile implements AccessRuleContainer {
    }
 
    /**
-    * Parses the ACL file.
+    * Parses an ACL file.
     *
     * @param file
-    *    the ACL file.
+    *    the file to parse, cannot be <code>null</code>.
     *
     * @param interval
-    *    the interval used to check the ACL file for modification.
+    *    the interval for checking the ACL file for modifications, in
+    *    milliseconds.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file == null || interval &lt; 0</code>.
+    *
+    * @throws ParseException
+    *    if the file could not be parsed successfully.
+    *
+    * @throws IOException
+    *    if there was an I/O error while reading from the file.
     */
-   private void parseAccessRuleFile(String file, int interval) throws IllegalArgumentException, ParseException, IOException {
+   private void parseAccessRuleFile(String file, int interval)
+   throws IllegalArgumentException, ParseException, IOException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("file", file);
+      if (interval < 0) {
+         throw new IllegalArgumentException("interval < 0");
+      }
+
       BufferedReader reader = new BufferedReader(new FileReader(file));
 
       List rules = new ArrayList(25);
@@ -216,7 +256,7 @@ public class AccessRuleFile implements AccessRuleContainer {
          } else {
 
             // Incorrect line
-            // TODO logdoc
+            // TODO: Logdoc
             throw new ParseException("Incorrect line \"" + nextLine + "\" in the file " + file + " at line " + lineNumber + ".");
          }
       }

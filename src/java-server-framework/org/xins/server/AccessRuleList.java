@@ -192,8 +192,10 @@ extends Object implements AccessRuleContainer {
 
    /**
     * Determines if the specified IP address is allowed to access the
-    * specified function. This method finds the first matching rule and then
-    * returns the <em>allow</em> property of that rule (see
+    * specified function, returning a <code>boolean</code> value.
+    *
+    * <p>This method finds the first matching rule and then returns the
+    * <em>allow</em> property of that rule (see
     * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
     * <code>false</code> is returned.
     *
@@ -223,13 +225,45 @@ extends Object implements AccessRuleContainer {
       } else {
          
          // Log: No access rule match
+         // TODO: Should this logging really be done in this class?
          Log.log_3553(ip, functionName);
 
          return false;
       }
    }
 
-   public Boolean isAllowed(String ip, String functionName) throws IllegalArgumentException, ParseException {
+   /**
+    * Determines if the specified IP address is allowed to access the
+    * specified function, returning a <code>Boolean</code> object or
+    * <code>null</code>.
+    *
+    * <p>This method finds the first matching rule and then returns the
+    * <em>allow</em> property of that rule (see
+    * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
+    * <code>null</code> is returned.
+    *
+    * @param ip
+    *    the IP address, cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @return
+    *    {@link Boolean#TRUE} if the specified IP address is allowed to access
+    *    the specified function, {@link Boolean#FALSE} if it is disallowed
+    *    access or <code>null</code> if no match is found.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ip == null || functionName == null</code>.
+    *
+    * @throws ParseException
+    *    if the specified IP address is malformed.
+    */
+   public Boolean isAllowed(String ip, String functionName)
+   throws IllegalArgumentException, ParseException {
+
+      // TODO: If disposed, then throw a ProgrammingError
+      
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
@@ -246,6 +280,7 @@ extends Object implements AccessRuleContainer {
             boolean allow = allowed.booleanValue();
 
             // Log this match
+            // TODO: Should this logging really be done in this class?
             if (allow) {
                Log.log_3550(ip, functionName, i, ruleString);
             } else {
@@ -261,9 +296,13 @@ extends Object implements AccessRuleContainer {
    }
 
    /**
-    * Closes the current rules.
+    * Disposes this access rule. All claimed resources are freed as much as
+    * possible.
+    *
+    * <p>Once disposed, the {@link #isAllowed} method should no longer be
+    * called.
     */
-   public void close() {
+   public void dispose() {
       if (_rules != null) {
          for (int i = 0; i < _rules.length; i++) {
             _rules[i].close();

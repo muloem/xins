@@ -123,9 +123,10 @@ extends CallingConvention {
             ElementParser parser = new ElementParser();
             dataElement = parser.parse(dataSectionValue.getBytes(DATA_ENCODING));
          } catch (UnsupportedEncodingException ex) {
-            final String message = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
-            Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", message);
-            throw new ProgrammingError(message);
+            final String DETAIL = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
+            Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", DETAIL);
+            throw new ProgrammingError(DETAIL);
+            // TODO: Log everything, as in 1050
          } catch (ParseException ex) {
             throw new InvalidRequestException("Cannot parse the data section.", ex);
          }

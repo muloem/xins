@@ -86,8 +86,10 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
-      final String actualClass = getClass().getName();                     // XXX: Cache?
-      final String methodName  = "convertRequestImpl(HttpServletRequest)"; // XXX: Cache?
+      final String SUBJECT_CLASS  = getClass().getName(); // XXX: Cache?
+      final String SUBJECT_METHOD = "convertRequestImpl("
+                                  + HttpServletRequest.class.getName()
+                                  + ')'; // XXX: Cache?
 
       // Delegate to the implementation method
       FunctionRequest xinsRequest;
@@ -101,15 +103,16 @@ extends Object {
          } else if (t instanceof FunctionNotSpecifiedException) {
             throw (FunctionNotSpecifiedException) t;
          } else {
-            Log.log_3052(t, actualClass, methodName);
-            throw new ProgrammingError(actualClass + '.' + methodName + " has thrown an unexpected " + t.getClass().getName() + '.', t);
+            Log.log_3052(t, SUBJECT_CLASS, SUBJECT_METHOD);
+            // FIXME: Log everything like in 1052
+            throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " has thrown an unexpected " + t.getClass().getName() + '.', t);
          }
       }
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
-         Log.log_3050(actualClass, methodName, "Method returned null.");
-         throw new ProgrammingError(actualClass + '.' + methodName + " returned null.");
+         Log.log_3050(SUBJECT_CLASS, METHOD_NAME, "Method returned null.");
+         throw new ProgrammingError(SUBJECT_CLASS + '.' + METHOD_NAME + " returned null.");
       }
 
       return xinsRequest;
@@ -164,8 +167,10 @@ extends Object {
       MandatoryArgumentChecker.check("xinsResult",   xinsResult,
                                      "httpResponse", httpResponse);
 
-      final String actualClass = getClass().getName();                    // XXX: Cache?
-      final String methodName  = "convertResultImpl(HttpServletRequest)"; // XXX: Cache?
+      final String SUBJECT_CLASS  = getClass().getName(); // XXX: Cache?
+      final String SUBJECT_METHOD = "convertResultImpl("
+                                  + HttpServletRequest.class.getName()
+                                  + ')'; // XXX: Cache?
 
       // Delegate to the implementation method
       try {
@@ -176,8 +181,9 @@ extends Object {
          if (t instanceof IOException) {
             throw (IOException) t;
          } else {
-            Log.log_3052(t, actualClass, methodName);
-            throw new ProgrammingError(actualClass + '.' + methodName + " has thrown an unexpected " + t.getClass().getName() + '.', t);
+            Log.log_3052(t, SUBJECT_CLASS, SUBJECT_METHOD);
+            throw new ProgrammingError(SUBJECT_CLASS + '.' + METHOD_NAME + " has thrown an unexpected " + t.getClass().getName() + '.', t);
+            // TODO: Log everything as in 1052
          }
       }
    }
