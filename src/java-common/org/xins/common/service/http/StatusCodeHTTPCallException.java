@@ -82,7 +82,7 @@ extends HTTPCallException {
     * @return
     *    the HTTP status code that is considered unacceptable.
     */
-   public int getCode() {
+   public int getStatusCode() {
       return _code;
    }
 }
