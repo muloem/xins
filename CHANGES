@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 0.66:
   - Added Doorman class.
   - Rewrote ExpiryFolder, based on Doorman class.
   - Removed ExpiryValidator, it was never used.
+  - Added ExpiryListener interface.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.65:
