@@ -6,6 +6,8 @@
  */
 package org.xins.client;
 
+import java.util.Iterator;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
@@ -33,6 +35,7 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
+import org.xins.common.service.UnsupportedProtocolException;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -44,6 +47,13 @@ import org.xins.logdoc.LogdocSerializable;
  * XINS service caller. This class can be used to perform a call to a XINS
  * service, over HTTP, and fail-over to other XINS services if the first one
  * fails.
+ *
+ * <h2>Supported protocols</h2>
+ *
+ * <p>This service caller currently only supports the HTTP protocol. If a
+ * {@link TargetDescriptor} is passed to the constructor with a different
+ * protocol, then an {@link UnsupportedProtocolException} is thrown. In the
+ * future, HTTPS and other protocols are expected to be supported as well.
  *
  * <h2>Load-balancing and fail-over</h2>
  *
@@ -167,14 +177,26 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol.
+    *
     * @since XINS 1.1.0
     */
    public XINSServiceCaller(Descriptor descriptor, HTTPMethod httpMethod)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedProtocolException {
 
       // Trace and then call constructor of superclass
       super(trace(descriptor));
 
+
+      // Check that all targets have a supported protocol
+      Iterator iterator = descriptor.iterateTargets();
+      while (iterator.hasNext()) {
+         // FIXME: Throw UnsupportedProtocolException as required
+      }
+
+      // Initialize the fields
       _parser     = new XINSCallResultParser();
       _httpCaller = new HTTPServiceCaller(descriptor);
       _httpMethod = (httpMethod != null) ? httpMethod : HTTPMethod.POST;
@@ -192,9 +214,13 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol (<em>since XINS 1.1.0</em).
     */
    public XINSServiceCaller(Descriptor descriptor)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedProtocolException {
       this(descriptor, null);
    }
 

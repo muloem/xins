@@ -47,6 +47,7 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
+import org.xins.common.service.UnsupportedProtocolException;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
@@ -55,6 +56,13 @@ import org.xins.logdoc.LogdocSerializable;
 /**
  * HTTP service caller. This class can be used to perform a call to an HTTP
  * server and fail-over to other HTTP servers if the first one fails.
+ *
+ * <h2>Supported protocols</h2>
+ *
+ * <p>This service caller currently only supports the HTTP protocol. If a
+ * {@link TargetDescriptor} is passed to the constructor with a different
+ * protocol, then an {@link UnsupportedProtocolException} is thrown. In the
+ * future, HTTPS is expected to be supported as well.
  *
  * <h2>Load-balancing and fail-over</h2>
  *
@@ -294,14 +302,24 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
     *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol.
+    *
     * @since XINS 1.1.0
     */
    public HTTPServiceCaller(Descriptor     descriptor,
                             HTTPCallConfig callConfig)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedProtocolException {
 
       // Trace first and then call superclass constructor
       super(trace(descriptor), callConfig);
+
+      // Check that all targets have a supported protocol
+      Iterator iterator = descriptor.iterateTargets();
+      while (iterator.hasNext()) {
+         // FIXME: Throw UnsupportedProtocolException as required
+      }
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -316,9 +334,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol (<em>since XINS 1.1.0</em).
     */
    public HTTPServiceCaller(Descriptor descriptor)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedProtocolException {
       this(descriptor, null);
    }
 
