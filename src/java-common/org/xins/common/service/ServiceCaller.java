@@ -136,15 +136,16 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ServiceCaller</code> object.
+    * Constructs a new <code>ServiceCaller</code> object for a specified
+    * service descriptor.
     *
     * <p>A default {@link CallConfig} object will be used.
     *
-    * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
+    * <p>The descriptor is not mandatory. However, no calls can be made with
+    * this service caller until the descriptor is set.
     *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
+    * @param descriptor
+    *    the descriptor of the service, can be <code>null</code>.
     *
     * @deprecated
     *    Deprecated since XINS 1.1.0.
@@ -152,9 +153,13 @@ public abstract class ServiceCaller extends Object {
     *    marked as deprecated, this constructor still works the same as in
     *    XINS 1.0.x.
     *    This constructor is guaranteed not to be removed before XINS 2.0.0.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol (<em>since XINS 1.2.0</em>).
     */
    protected ServiceCaller(Descriptor descriptor)
-   throws IllegalArgumentException {
+   throws UnsupportedProtocolException {
 
       final String THIS_METHOD = "<init>("
                                + Descriptor.class.getName()
@@ -163,14 +168,11 @@ public abstract class ServiceCaller extends Object {
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("descriptor", descriptor);
-
-      // Set fields
+      // Store information
       _newStyle   = false;
-      _descriptor = descriptor;
       _callConfig = null;
       _className  = getClass().getName();
+      setDescriptor(descriptor);
 
       // Make sure the old-style (XINS 1.0) doCallImpl method is implemented
       try {
@@ -254,15 +256,15 @@ public abstract class ServiceCaller extends Object {
     * Constructs a new <code>ServiceCaller</code> with the specified
     * <code>CallConfig</code>.
     *
+    * <p>The descriptor is not mandatory. However, no calls can be made with
+    * this service caller until the descriptor is set.
+    *
     * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
+    *    the descriptor of the service, or <code>null</code>.
     *
     * @param callConfig
     *    the {@link CallConfig} object, or <code>null</code> if the default
     *    should be used.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
     *
     * @throws UnsupportedProtocolException
     *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
@@ -271,7 +273,7 @@ public abstract class ServiceCaller extends Object {
     * @since XINS 1.1.0
     */
    protected ServiceCaller(Descriptor descriptor, CallConfig callConfig)
-   throws IllegalArgumentException, UnsupportedProtocolException {
+   throws UnsupportedProtocolException {
 
       final String THIS_METHOD = "<init>("
                                + Descriptor.class.getName()
@@ -282,13 +284,11 @@ public abstract class ServiceCaller extends Object {
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("descriptor", descriptor);
-
-      // Initialize all fields except callConfig
+      // Store information
       _className  = getClass().getName();
       _newStyle   = true;
       _descriptor = descriptor;
+      setDescriptor(descriptor);
 
       // If no CallConfig is specified, then use a default one
       if (callConfig == null) {
@@ -406,21 +406,6 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Test the protocol for all TargetDescriptors
-      Iterator targets = descriptor.iterateTargets();
-      while (targets.hasNext()) {
-         TargetDescriptor td = (TargetDescriptor) targets.next();
-         String protocol = td.getProtocol();
-         boolean supported;
-         try {
-            if (! isProtocolSupported(td.getProtocol())) {
-               throw new UnsupportedProtocolException(td);
-            }
-         } catch (UnsupportedOperationException exception) {
-            // ignore
-         }
-      }
-
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
    }
@@ -442,9 +427,9 @@ public abstract class ServiceCaller extends Object {
    private final boolean _newStyle;
 
    /**
-    * The descriptor for this service. Cannot be <code>null</code>.
+    * The descriptor for this service. Can be <code>null</code>.
     */
-   private final Descriptor _descriptor;
+   private Descriptor _descriptor;
 
    /**
     * The fall-back call config object for this service caller. Can only be
@@ -536,10 +521,50 @@ public abstract class ServiceCaller extends Object {
    }
 
    /**
-    * Returns the descriptor.
+    * Sets the descriptor.
+    *
+    * @param descriptor
+    *    the descriptor for this service, or <code>null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol.
+    *
+    * @since XINS 1.2.0
+    */
+   public final void setDescriptor(Descriptor descriptor)
+   throws UnsupportedProtocolException {
+
+      // Test the protocol for all TargetDescriptors
+      if (descriptor != null) {
+         Iterator targets = descriptor.iterateTargets();
+         while (targets.hasNext()) {
+            TargetDescriptor td = (TargetDescriptor) targets.next();
+            String protocol = td.getProtocol();
+            boolean supported;
+            try {
+               if (! isProtocolSupported(td.getProtocol())) {
+                  throw new UnsupportedProtocolException(td);
+               }
+            } catch (UnsupportedOperationException exception) {
+               // ignore
+            }
+         }
+      }
+
+      // Store it
+      _descriptor = descriptor;
+   }
+
+   /**
+    * Returns the descriptor. If the descriptor is currently unset, then
+    * <code>null</code> is returned.
+    *
+    * <p><em>Since XINS 1.2.0, this method may return <code>null</code>.</em>
     *
     * @return
-    *    the descriptor for this service, never <code>null</code>.
+    *    the descriptor for this service, or <code>null</code> if it is
+    *    currently unset.
     */
    public final Descriptor getDescriptor() {
       return _descriptor;
@@ -659,6 +684,9 @@ public abstract class ServiceCaller extends Object {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
+    * @throws IllegalStateException
+    *    if the descriptor is currently unset (<em>since XINS 1.2.0</em>).
+    *
     * @throws CallException
     *    if all call attempts failed.
     *
@@ -666,7 +694,9 @@ public abstract class ServiceCaller extends Object {
     */
    protected final CallResult doCall(CallRequest request,
                                      CallConfig  callConfig)
-   throws IllegalArgumentException, CallException {
+   throws IllegalArgumentException,
+          IllegalStateException,
+          CallException {
 
       final String THIS_METHOD = "doCall("
                                + CallRequest.class.getName()
@@ -694,6 +724,12 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
+      // Determine descriptor
+      Descriptor descriptor = _descriptor;
+      if (descriptor == null) {
+         throw new IllegalStateException("Descriptor is currently unset.");
+      }
+
       // Determine what config to use. The argument has priority, then the one
       // associated with the request and the fall-back is the one associated
       // with this service caller.
@@ -719,13 +755,13 @@ public abstract class ServiceCaller extends Object {
       CallExceptionList exceptions = null;
 
       // Iterate over all targets
-      Iterator iterator = _descriptor.iterateTargets();
+      Iterator iterator = descriptor.iterateTargets();
 
       // TODO: Improve performance, do not use an iterator?
 
       // There should be at least one target
       if (! iterator.hasNext()) {
-         final String SUBJECT_CLASS  = _descriptor.getClass().getName();
+         final String SUBJECT_CLASS  = descriptor.getClass().getName();
          final String SUBJECT_METHOD = "iterateTargets()";
          final String DETAIL         = "Descriptor returns no target descriptors.";
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
@@ -871,6 +907,9 @@ public abstract class ServiceCaller extends Object {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
+    * @throws IllegalStateException
+    *    if the descriptor is currently unset (<em>since XINS 1.2.0</em>).
+    *
     * @throws CallException
     *    if all call attempts failed.
     *
@@ -905,6 +944,12 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
+      // Determine descriptor
+      Descriptor descriptor = _descriptor;
+      if (descriptor == null) {
+         throw new IllegalStateException("Descriptor is currently unset.");
+      }
+
       // Keep a reference to the most recent CallException since
       // setNext(CallException) needs to be called on it to make it link to
       // the next one (if there is one)
@@ -920,11 +965,11 @@ public abstract class ServiceCaller extends Object {
       CallExceptionList exceptions = null;
 
       // Iterate over all targets
-      Iterator iterator = _descriptor.iterateTargets();
+      Iterator iterator = descriptor.iterateTargets();
 
       // There should be at least one target
       if (! iterator.hasNext()) {
-         final String SUBJECT_CLASS  = _descriptor.getClass().getName();
+         final String SUBJECT_CLASS  = descriptor.getClass().getName();
          final String SUBJECT_METHOD = "iterateTargets()";
          final String DETAIL         = "Descriptor returns no target descriptors.";
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
