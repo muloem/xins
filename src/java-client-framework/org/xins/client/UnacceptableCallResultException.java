@@ -3,7 +3,7 @@
  */
 package org.xins.client;
 
-import org.xins.common.service.TargetDescriptor;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Exception that indicates that an API call returned a result that was
@@ -14,7 +14,7 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 0.136
  */
-public final class UnacceptableCallResultException extends CallException {
+public final class UnacceptableCallResultException extends Exception {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -31,34 +31,30 @@ public final class UnacceptableCallResultException extends CallException {
    /**
     * Constructs a new <code>UnacceptableCallResultException</code>.
     *
-    * @param request
-    *    the original request, cannot be <code>null</code>.
-    *
-    * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the duration in milliseconds, must be &gt;= 0.
+    * @param result
+    *    the (successful) {@link XINSServiceCaller.Result} that is considered
+    *    unacceptable, never <code>null</code>.
     *
     * @param detail
-    *    a more detailed description of the problem, or <code>null</code> if
-    *    that is not available.
+    *    a detailed description of why the result is considered unacceptable,
+    *    or <code>null</code> if such a description is not available.
     *
     * @throws IllegalArgumentException
-    *    if <code>request     == null
-    *          || target      == null
-    *          || duration  &lt; 0</code>.
+    *    if <code>result == null</code>.
     *
     * @since XINS 0.202
     */
-   UnacceptableCallResultException(CallRequest      request,
-                                   TargetDescriptor target,
-                                   long             duration,
-                                   String           detail)
+   public UnacceptableCallResultException(XINSServiceCaller.Result result,
+                                          String                   detail,
+                                          Throwable                cause)
    throws IllegalArgumentException {
-      super("Unacceptable result received", request, target, duration,
-            detail, null);
+
+      super(detail, cause);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("result", result);
+
+      // TODO: Do something with result
    }
 
 
