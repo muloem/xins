@@ -47,8 +47,19 @@
  * Request for a call to the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
+ * <p>An instance of this class is accepted by the corresponding call method
+ * in the CAPI class: {@link CAPI#call]]></xsl:text>
+		<xsl:value-of select="$functionName" />
+		<xsl:text>(</xsl:text>
+		<xsl:value-of select="$className" />
+		<xsl:text>)}.
+ *
+ * @see CAPI
+ * @see </xsl:text>
+		<xsl:value-of select="$functionName" />
+		<xsl:text>Result
  */
-public final class ]]></xsl:text>
+public final class </xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[
 extends org.xins.client.AbstractCAPICallRequest {
@@ -114,36 +125,90 @@ extends org.xins.client.AbstractCAPICallRequest {
       return null; // TODO
    }]]></xsl:text>
 
-		<xsl:for-each select="input/param">
-			<xsl:text><![CDATA[
-
-   /**
-    * Sets the <em>]]></xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em> parameter.
-    *
-    * @param ]]></xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[
-    *    the new value for the parameter, can be <code>null</code>.
-    */
-   public void set]]></xsl:text>
-			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-			<xsl:value-of select="substring(@name,2)" />
-			<xsl:text>(java.lang.String </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>) {
-      _request.setParameter("</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>", </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>);
-   }</xsl:text>
-		</xsl:for-each>
+		<xsl:apply-templates select="input/param"/>
 
 		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
+
+	<xsl:template match="input/param">
+
+		<!-- Determine if this parameter is required -->
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
+				<xsl:when test="@required = 'false'">false</xsl:when>
+				<xsl:when test="@required = 'true'">true</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Determine the Java class or primary data type -->
+		<xsl:variable name="javatype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="$required"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- Determine if $javatype is a Java primary data type -->
+		<xsl:variable name="isJavaDatatype">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$javatype" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- If $javatype is a primary data type, determine class -->
+		<xsl:variable name="javaclass">
+			<xsl:choose>
+				<xsl:when test="$isJavaDatatype = 'true'">
+					<xsl:call-template name="javaclass_for_javatype">
+						<xsl:with-param name="javatype" select="$javatype" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$javatype" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- Determine the name of the setter method -->
+		<xsl:variable name="methodName">
+			<xsl:text>set</xsl:text>
+			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+			<xsl:value-of select="substring(@name,2)" />
+		</xsl:variable>
+
+		<!-- Print setter method that accepts a Java object -->
+		<xsl:text><![CDATA[
+
+   /**
+    * Sets or resets the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> parameter.
+    *
+    * @param ]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[
+    *    the new value for the parameter, can be <code>null</code>.
+    */
+   public void ]]></xsl:text>
+		<xsl:value-of select="$methodName" />
+		<xsl:text>(</xsl:text>
+		<xsl:value-of select="$javaclass" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>) {
+      // TODO: _request.setParameter("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>", </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>);
+   }</xsl:text>
+	</xsl:template>
+
 </xsl:stylesheet>
 
