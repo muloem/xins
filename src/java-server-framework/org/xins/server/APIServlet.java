@@ -469,7 +469,7 @@ extends HttpServlet {
       if (s != null && s.length() >= 1) {
          try {
             interval = Integer.parseInt(s);
-            if (interval < 1) {
+            if (interval < 0) {
                Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                setState(DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
@@ -791,8 +791,10 @@ extends HttpServlet {
          //----------------------------------------------------------------//
 
          // Create and start a file watch thread
-         _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         _configFileWatcher.start();
+         if (interval > 0) {
+            _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
+            _configFileWatcher.start();
+         }
       }
    }
 
@@ -1077,7 +1079,9 @@ extends HttpServlet {
    public void destroy() {
 
       // Stop the FileWatcher
-      _configFileWatcher.end();
+      if (_configFileWatcher != null) {
+         _configFileWatcher.end();
+      }
 
       Log.log_3600();
 
@@ -1235,10 +1239,18 @@ extends HttpServlet {
             initAPI();
 
             // Update the file watch interval
-            int oldInterval = _configFileWatcher.getInterval();
+            int oldInterval = _configFileWatcher == null ? 0 : _configFileWatcher.getInterval();
             if (oldInterval != newInterval) {
-               _configFileWatcher.setInterval(newInterval);
-               Log.log_3403(_configFile, oldInterval, newInterval);
+               if (newInterval == 0 && _configFileWatcher != null) {
+                  _configFileWatcher.end();
+                  _configFileWatcher = null;
+               } else if (newInterval > 0 && _configFileWatcher != null) {
+                  _configFileWatcher = new FileWatcher(_configFile, newInterval, _configFileListener);
+                  _configFileWatcher.start();
+               } else {
+                  _configFileWatcher.setInterval(newInterval);
+                  Log.log_3403(_configFile, oldInterval, newInterval);
+               }
             }
          }
       }

@@ -197,12 +197,16 @@
 	</xsl:template>
 
 	<xsl:template name="examples_section">
+		<xsl:param name="function_name" />
+		
 		<h2>Examples section</h2>
 		<blockquote>
 			<xsl:choose>
 				<xsl:when test="example">
 					<table class="example">
-						<xsl:apply-templates select="example" />
+						<xsl:apply-templates select="example">
+							<xsl:with-param name="function_name" select="$function_name" />
+						</xsl:apply-templates>
 					</table>
 				</xsl:when>
 				<xsl:otherwise>
