@@ -12,6 +12,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
+	<xsl:param name="enable_statistics">true</param>
 
 	<xsl:variable name="api" select="//api/@name" />
 
@@ -140,7 +141,7 @@ public class APIImpl extends API {
 	<xsl:text>
    protected void handleCall(CallContext context)
    throws Throwable {
-      String function = context.getParameter("function");
+      String function = context.getFunction();
 </xsl:text>
 		<!-- TODO: Default functions -->
 		<xsl:text>
