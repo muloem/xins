@@ -269,7 +269,7 @@ public class AllInOneAPITests extends TestCase {
     * other elements.
     */
    public void testDataSection2() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection2("hello");
       Iterator packets = element.getChildren();

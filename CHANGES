@@ -11,7 +11,7 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
   - Fixed the HTTPServiceCaller did not pass the arguments correctly when using
     the GET method.
   - Added TextUtils class.
-  - Added tests for the ExpiryFolder.
+  - Added tests for the ExpiryFolder and MandatoryArgumentChecker.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Client Framework:

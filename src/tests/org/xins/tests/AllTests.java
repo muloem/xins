@@ -29,6 +29,7 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
       
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
+      suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
 
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryFolderTests.class);
