@@ -48,6 +48,7 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Change class HTTPServiceCaller.Method to HTTPMethod
 [x] Change example in HTTPServiceCaller to match new interface
 [ ] Log all events properly
+[ ] Move classes in org.xins.common.service.http to org.xins.common.http.
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
