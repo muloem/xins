@@ -83,8 +83,25 @@ implements DefaultResultCodes {
 
    /**
     * Constructs a new <code>API</code> object.
+    *
+    * @param name
+    *    the name of the API, cannot be <code>null</code> nor can it be an
+    *    empty string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || name.length() &lt; 1</code>.
     */
-   protected API() {
+   protected API(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+      if (name.length() < 1) {
+         throw new IllegalArgumentException("name.length() (" + name.length() + " < 1");
+      }
+
+      // Initialize fields
+      _name              = name;
       _stateLock         = new Object();
       _startupTimestamp  = System.currentTimeMillis();
       _instances         = new ArrayList();
@@ -98,6 +115,12 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The name of this API. Cannot be <code>null</code> and cannot be an empty
+    * string.
+    */
+   private final String _name;
 
    /**
     * The current state. Either {@link #UNINITIALIZED}, {@link #INITIALIZING}
@@ -286,6 +309,17 @@ implements DefaultResultCodes {
 
       String value = properties.getProperty(propertyName);
       return Integer.parseInt(value);
+   }
+
+   /**
+    * Gets the name of this API.
+    *
+    * @return
+    *    the name of this API, never <code>null</code> and never an empty
+    *    string.
+    */
+   public final String getName() {
+      return _name;
    }
 
    /**

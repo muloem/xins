@@ -8,20 +8,23 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
 	<xsl:param name="xins_home"    />
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
+	<!-- Determine name of API -->
 	<xsl:variable name="api" select="//api/@name" />
 
-	<xsl:output method="text" />
-
+	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />
 	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
+
+	<xsl:output method="text" />
 
 	<xsl:template match="api">
 		<xsl:apply-templates select="impl-java" />
@@ -149,7 +152,10 @@ public class APIImpl extends API {
    /**
     * Constructs a new <code>APIImpl</code> instance.
     */
-   private APIImpl() {]]></xsl:text>
+   private APIImpl() {
+      super("]]></xsl:text>
+		<xsl:value-of select="$api" />
+		<xsl:text>");</xsl:text>
 		<xsl:choose>
 			<xsl:when test="instance or property">
 				<xsl:for-each select="instance">
