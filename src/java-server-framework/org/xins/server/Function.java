@@ -283,6 +283,10 @@ implements DefaultResultCodes {
     *
     * @param code
     *    the function result code, or <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.32. Use
+    *    {@link #performedCall(CallContext,ResultCode)} instead.
     */
    final void performedCall(CallContext context, boolean success, String code) {
       long start    = context.getStart();
@@ -341,6 +345,29 @@ implements DefaultResultCodes {
 
       if (debugEnabled) {
          context.debug(message);
+      }
+   }
+
+   /**
+    * Callback method that may be called after a call to this function. This
+    * method will store statistics-related information.
+    *
+    * <p />This method does not <em>have</em> to be called. If statistics
+    * gathering is disabled, then this method should not be called.
+    *
+    * @param context
+    *    the used call context, not <code>null</code>.
+    *
+    * @param code
+    *    the function result code, or <code>null</code>.
+    *
+    * @since XINS 0.32
+    */
+   final void performedCall(CallContext context, ResultCode code) {
+      if (code == null) {
+         performedCall(context, true, null);
+      } else {
+         performedCall(context, code.getSuccess(), code.getValue());
       }
    }
 
