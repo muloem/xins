@@ -15,14 +15,14 @@
 
 			<target name="-prepare" />
 
-			<target name="-specdocs-prepare" depends="-prepare">
+			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="build/specdocs" />
 				<copy
 				todir="build/specdocs"
 				file="${{xins_home}}/src/css/specdocs/style.css" />
 			</target>
 
-			<target name="specdocs-index" depends="-specdocs-prepare">
+			<target name="specdocs-index" depends="-prepare-specdocs">
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
@@ -31,7 +31,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs-apis" depends="-specdocs-prepare">
+			<target name="specdocs-apis" depends="-prepare-specdocs">
 				<style
 				basedir="${{project_home}}/src/specs"
 				destdir="${{project_home}}/build/specdocs"
@@ -41,7 +41,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs-functions" depends="-specdocs-prepare">
+			<target name="specdocs-functions" depends="-prepare-specdocs">
 				<style
 				basedir="${{project_home}}/src/specs"
 				destdir="${{project_home}}/build/specdocs"
@@ -51,7 +51,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs-types" depends="-specdocs-prepare">
+			<target name="specdocs-types" depends="-prepare-specdocs">
 				<style
 				basedir="${{project_home}}/src/specs"
 				destdir="${{project_home}}/build/specdocs"
@@ -61,7 +61,33 @@
 				</style>
 			</target>
 
-			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types" />
+			<target name="testforms">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>testforms-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<xsl:for-each select="api">
+				<target name="testforms-{@name}" depends="-prepare-specdocs">
+					<xsl:for-each select="//project/environment">
+						<style
+						basedir="${{project_home}}/src/specs"
+						destdir="${{project_home}}/build/specdocs"
+						style="${{xins_home}}/src/xslt/testforms/function_to_html.xslt"
+						includes="**/*.fnc"
+						extension="-testform-{@id}.html">
+							<param name="project_home" expression="${{project_home}}" />
+							<param name="environment"  expression="{@id}" />
+						</style>
+					</xsl:for-each>
+				</target>
+			</xsl:for-each>
+
+			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types,testforms" />
 
 			<target name="all" depends="specdocs" />
 		</project>
