@@ -5,7 +5,6 @@ package org.xins.client;
 
 import java.io.IOException;
 import java.util.Map;
-import nl.wanadoo.session.Session;
 
 /**
  * Interface for API function calling functionality.
