@@ -426,7 +426,7 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         Log.log_2027(functionName, _name);
+         Log.log_2027(_name, functionName);
          try {
             f.bootstrap(_buildSettings);
             Log.log_2028(_name, functionName);
