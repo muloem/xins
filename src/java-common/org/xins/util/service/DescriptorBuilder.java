@@ -55,13 +55,39 @@ public final class DescriptorBuilder extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   private static String[] tokenize(String s) {
+   /**
+    * Tokenizes the specified string. The {@link #DELIMITER_AS_STRING} will be
+    * used as the token delimiter. Every token will be one element in the
+    * returned {@link String} array.
+    *
+    * @param s
+    *    the {@link String} to tokenize, cannot be <code>null</code>.
+    *
+    * @return
+    *    the list of tokens as a {@link String} array, never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null</code>.
+    */
+   private static String[] tokenize(String s)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // Create a StringTokenizer
       StringTokenizer tokenizer = new StringTokenizer(s, DELIMITER_AS_STRING);
+
+      // Create a new array to store the tokens in
       int count = tokenizer.countTokens();
       String[] tokens = new String[count];
+
+      // Copy all tokens into the array
       for (int i = 0; i < count; i++) {
          tokens[i] = tokenizer.nextToken().trim();
       }
+
       return tokens;
    }
 
