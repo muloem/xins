@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.6:
+
+* Keeping track of last successful and last unsuccessful call start and
+  duration times. Returning these from _GetStatistics.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.5:
 
 * Copying resources from source directory to classes/ directory in WAR file.
