@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.InvalidPropertyValueException;
+import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.text.FastStringBuffer;
 
@@ -55,47 +57,6 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Constructs the message for the
-    * <code>DescriptorBuilder.PropertyValueException</code> constructor.
-    *
-    * @param propertyName
-    *    the name of the property, cannot be <code>null</code>.
-    *
-    * @param propertyValue
-    *    the value of the property, cannot be <code>null</code>.
-    *
-    * @param detail
-    *    the detail message, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>propertyName == null || propertyValue == null</code>.
-    */
-   private static final String createPropertyValueExceptionMessage(String propertyName,
-                                                                   String propertyValue,
-                                                                   String detail)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("propertyName",  propertyName,
-                                     "propertyValue", propertyValue);
-
-      // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(150);
-      buffer.append("Property \"");
-      buffer.append(propertyName);
-      buffer.append("\" is set to invalid value \"");
-      buffer.append(propertyValue);
-      if (detail == null) {
-         buffer.append("\".");
-      } else {
-         buffer.append("\": ");
-         buffer.append(detail);
-      }
-
-      return buffer.toString();
-   }
 
    /**
     * Tokenizes the specified string. The {@link #DELIMITER_AS_STRING} will be
@@ -149,15 +110,24 @@ public final class DescriptorBuilder extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     *
-    * @throws DescriptorBuilder.Exception
-    *    if <code>properties == null || propertyName == null</code>.
+    * @throws MissingRequiredPropertyException
+    *    if the property named <code>propertyName</code> cannot be found in
+    *    <code>properties</code>, or if a referenced property cannot be found.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the property named <code>propertyName</code> is found in
+    *    <code>properties</code>, but the format of this property or the
+    *    format of a referenced property is invalid.
     */
    public static Descriptor build(PropertyReader properties,
                                   String         propertyName)
-   throws IllegalArgumentException, DescriptorBuilder.Exception {
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+      MandatoryArgumentChecker.check("properties", properties,
+                                     "propertyName", propertyName);
       return build(properties, propertyName, null);
    }
 
@@ -178,13 +148,23 @@ public final class DescriptorBuilder extends Object {
     * @return
     *    the {@link Descriptor} that was built, never <code>null</code>.
     *
-    * @throws DescriptorBuilder.Exception
-    *    if <code>properties == null || propertyName == null</code>.
+    * @throws NullPointerException
+    *    if <code>properties == null</code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property cannot be found.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the property named <code>propertyName</code> is found in
+    *    <code>properties</code>, but the format of this property or the
+    *    format of a referenced property is invalid.
     */
    private static Descriptor build(PropertyReader properties,
                                    String         baseProperty,
                                    String         reference)
-   throws DescriptorBuilder.Exception {
+   throws NullPointerException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
 
       // Determine the property name
       String propertyName = reference == null
@@ -194,14 +174,14 @@ public final class DescriptorBuilder extends Object {
       // Get the value of the property
       String value = properties.get(propertyName);
       if (value == null) {
-         throw new DescriptorBuilder.Exception("Property \"" + propertyName + "\" not found.");
+         throw new MissingRequiredPropertyException(propertyName);
       }
 
       // Tokenize the value
       String[] tokens = tokenize(value);
       int tokenCount = tokens.length;
       if (tokenCount < 3) {
-         throw new PropertyValueException(propertyName, value, "Expected at least 3 tokens.");
+         throw new InvalidPropertyValueException(propertyName, value, "Expected at least 3 tokens.");
       }
 
       // Determine the type
@@ -210,21 +190,21 @@ public final class DescriptorBuilder extends Object {
       // Parse service descriptor
       if (SERVICE_DESCRIPTOR_TYPE.equals(descriptorType)) {
          if (tokenCount != 3) {
-            throw new PropertyValueException(propertyName, value, "Expected URL and time-out.");
+            throw new InvalidPropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
          String url = tokens[1];
          int timeOut;
          try {
             timeOut = Integer.parseInt(tokens[2]);
          } catch (NumberFormatException nfe) {
-            throw new PropertyValueException(propertyName, value, "Unable to parse time-out.");
+            throw new InvalidPropertyValueException(propertyName, value, "Unable to parse time-out.");
          }
 
          try {
             return new TargetDescriptor(url, timeOut);
          } catch (MalformedURLException exception) {
             LOG.error("URL \"" + url + "\" is malformed.", exception);
-            throw new PropertyValueException(propertyName, value, "Malformed URL.");
+            throw new InvalidPropertyValueException(propertyName, value, "Malformed URL.");
          }
 
       // Parse group descriptor
@@ -232,7 +212,7 @@ public final class DescriptorBuilder extends Object {
 
          GroupDescriptor.Type groupType = GroupDescriptor.getType(tokens[1]);
          if (groupType == null) {
-            throw new PropertyValueException(propertyName, value, "Unrecognized group descriptor type.");
+            throw new InvalidPropertyValueException(propertyName, value, "Unrecognized group descriptor type.");
          }
 
          int memberCount = tokenCount - 2;
@@ -244,7 +224,7 @@ public final class DescriptorBuilder extends Object {
 
       // Unrecognized descriptor type
       } else {
-         throw new PropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + SERVICE_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
+         throw new InvalidPropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + SERVICE_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
       }
    }
 
@@ -268,134 +248,4 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Exception thrown if a service descriptor object could not be built.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.105
-    */
-   public static class Exception extends java.lang.Exception {
-
-      //----------------------------------------------------------------------
-      // Constructor
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>DescriptorBuilder.Exception</code> with the
-       * spedified detail message.
-       *
-       * @param message
-       *    the detail message, can be <code>null</code>.
-       */
-      Exception(String message) {
-         super(message);
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-   }
-
-   /**
-    * Exception thrown if a service descriptor object could not be built due
-    * to an invalid property value.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
-    *
-    * @since XINS 0.105
-    */
-   public static final class PropertyValueException extends DescriptorBuilder.Exception {
-
-      //----------------------------------------------------------------------
-      // Constructor
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new
-       * <code>DescriptorBuilder.PropertyValueException</code>.
-       *
-       * @param propertyName
-       *    the name of the property, cannot be <code>null</code>.
-       *
-       * @param propertyValue
-       *    the value of the property, cannot be <code>null</code>.
-       *
-       * @param detail
-       *    the detail message, can be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>propertyName == null || propertyValue == null</code>.
-       */
-      PropertyValueException(String propertyName,
-                             String propertyValue,
-                             String detail)
-      throws IllegalArgumentException {
-
-         // Check preconditions, create the exception message and pass it to
-         // the superconstructor
-         super(createPropertyValueExceptionMessage(propertyName,
-                                                   propertyValue,
-                                                   detail));
-         // Store property name and value
-         _propertyName  = propertyName;
-         _propertyValue = propertyValue;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of the property.
-       */
-      private final String _propertyName;
-
-      /**
-       * The value of the property.
-       */
-      private final String _propertyValue;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Gets the name of the property.
-       *
-       * @return
-       *    the name of the property, not <code>null</code>.
-       *
-       * @since XINS 0.147
-       */
-      public String getPropertyName() {
-         return _propertyName;
-      }
-
-      /**
-       * Gets the value of the property.
-       *
-       * @return
-       *    the value of the property, not <code>null</code>.
-       *
-       * @since XINS 0.147
-       */
-      public String getPropertyValue() {
-         return _propertyValue;
-      }
-   }
 }
