@@ -141,6 +141,7 @@ public class XINSCallRequestTests extends TestCase {
       p.set("houseNumber", "1");
       XINSCallRequest req = new XINSCallRequest("GetUpgradePlanList", p, false, HTTPMethod.POST);
       NDC.pop();
+      NDC.remove();
 
       if (req.describe().indexOf(contextID) < 0) {
          fail("XINSCallRequest.describe() should return a string that contains the diagnostic context ID. Context ID is: \"" + contextID + "\". Description is: \"" + req.describe() + "\".");

@@ -1054,6 +1054,7 @@ extends HttpServlet {
       // And disassociate the context ID from this thread
       } finally {
          NDC.pop();
+         NDC.remove();
       }
    }
 

@@ -106,7 +106,7 @@
 				</init-param>
 				<xsl:if test="calling-convention">
 					<init-param>
-						<param-name>org.xins.api.calling-convention</param-name>
+						<param-name>org.xins.api.calling.convention</param-name>
 						<param-value>
 							<xsl:value-of select="calling-convention/@name" />
 						</param-value>

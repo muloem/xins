@@ -6,6 +6,16 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 
+* Logdoc:
+  - Fixed en_US translation of log 3210, 3216, 3223, 3412, 3419 and 3424 to
+    include the reason.
+
+* XINS/Java Common:
+  - The diagnotic context identifier should be removed after being poped
+    otherwise the thread stays in memory.
+  - Reset some variables after the HTTP call, so that the variables can be
+    garbage collected.
+
 * XINS/Java Client Framework:
   - Sending down _convention=_xins-std with each call.
 
@@ -15,6 +25,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 
 * Libraries:
   - Updated xmlenc from 0.45 to 0.46.
+
+* Generation of server-side Java code:
+  - Fixed the parameter name set in the web.xml file used for the calling
+    convention to the correct value.
 
 * Generated test forms:
   - Sending down _convention=_xins-std with each call.
@@ -86,9 +100,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     Compilation and Javadoc generation will be faster.
 
 * Generated build file:
-  - Fixed bug #1078317: Compilation and Javadoc of the API is now done using 
-    the files of the impl directory without copying them to the build 
-    directory. This will increase compilation and javadoc generation 
+  - Fixed bug #1078317: Compilation and Javadoc of the API is now done using
+    the files of the impl directory without copying them to the build
+    directory. This will increase compilation and javadoc generation
     performances.
 
 * Generation of server-side Java code:
@@ -182,7 +196,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     configure the XINS service caller.
 
 * Generation of server-side Java code:
-  - The MANIFEST.MF file in generated WAR file now contains the version of 
+  - The MANIFEST.MF file in generated WAR file now contains the version of
     XINS used to generate the WAR file.
   - Added the possibility to have a data element as input.
 
@@ -193,7 +207,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 * Generation of specification documentation:
   - The num attribute for the examples is now optional.
   - Added the possibility to have a data element as input.
-  - Added the input-data-example element to specify a data section example 
+  - Added the input-data-example element to specify a data section example
     in the input.
   - Renamed data-example element to output-data-example element. The old
     data-example is still supported for compatibility issues.
@@ -286,7 +300,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     used in the code.
   - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
     logged). Each individual failure is now logged, per target.
-  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
+  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML
     elements.
   - Fixed SF.net bug #1063785: Double spaces in description of a
     XINSCallRequest.
@@ -326,7 +340,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 
 * XINS/Java Server Framework:
   - Fixed bug #1036854: Reset logging subsystem when reloading.
-  - If the "org.xins.server.config.reload" is zero the FileWatcher won't be 
+  - If the "org.xins.server.config.reload" is zero the FileWatcher won't be
     started.
   - Added _ReloadProperties meta function.
   - Changed the way the _GetSettings meta-function retrieves the system
@@ -450,7 +464,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
     . public Iterator getChildren(String name)
   - Removed class field SERVICE_DESCRIPTOR_TYPE that was deprecated since XINS
     1.0.0-beta6.
-  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
+  - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML
     elements.
 
 * Generated CAPI classes:

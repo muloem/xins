@@ -872,7 +872,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       private static int CALL_EXECUTOR_COUNT;
 
-
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
@@ -934,29 +933,29 @@ public final class HTTPServiceCaller extends ServiceCaller {
       /**
        * Textual representation of this object. Never <code>null</code>.
        */
-      private final String _asString;
+      private String _asString;
 
       /**
        * The call request to execute. Never <code>null</code>.
        */
-      private final HTTPCallRequest _request;
+      private HTTPCallRequest _request;
 
       /**
        * The call configuration. Never <code>null</code>.
        */
-      private final HTTPCallConfig _callConfig;
+      private HTTPCallConfig _callConfig;
 
       /**
        * The service target on which to execute the request. Never
        * <code>null</code>.
        */
-      private final TargetDescriptor _target;
+      private TargetDescriptor _target;
 
       /**
        * The <em>Nested Diagnostic Context identifier</em> (NDC). Is set to
        * <code>null</code> if it should be left unchanged.
        */
-      private final String _context;
+      private String _context;
 
       /**
        * The exception caught while executing the call. If there was no
@@ -996,36 +995,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       public void run() {
 
-         // TODO: Check if this request was already executed, since this is a
-         //       stateful object. If not, mark it as executing within a
-         //       synchronized section, so it may no 2 threads may execute
-         //       this request at the same time.
-
          // XXX: Note that performance could be improved by using local
          //      variables for _target and _request
 
          // Activate the diagnostic context ID
          if (_context != null) {
             NDC.push(_context);
-            try {
-               runImpl();
-            } finally {
-               NDC.pop();
-            }
-         } else {
-            runImpl();
          }
-
-         // TODO: Mark this CallExecutor object as executed, so it may not be
-         //       run again
-      }
-
-      /**
-       * Runs this thread (implementation method). This method is called from
-       * {@link #run()}.
-       */
-      private void runImpl() {
-
+         
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
 
@@ -1074,6 +1051,19 @@ public final class HTTPServiceCaller extends ServiceCaller {
             } catch (Throwable exception) {
                Log.log_1052(exception, method.getClass().getName(), "releaseConnection()");
             }
+         }
+         
+         // Set objects to null for garbage collection
+         _asString = null;
+         _callConfig = null;
+         _context = null;
+         _request = null;
+         _target = null;
+         
+         // Remove the diagnostic context ID
+         if (_context != null) {
+            NDC.pop();
+            NDC.remove();
          }
       }
 
