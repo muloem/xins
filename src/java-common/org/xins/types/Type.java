@@ -200,6 +200,10 @@ public abstract class Type extends Object {
     *
     * @return
     *    an instance of the value class, cannot be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if <code>string</code> is considered to be an invalid value for this
+    *    type.
     */
    protected abstract Object fromStringImpl(String string)
    throws TypeValueException;
