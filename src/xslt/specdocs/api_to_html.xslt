@@ -263,21 +263,24 @@
 				<xsl:value-of select="$version" />
 			</td>
 			<td class="status">
-				<xsl:if test="@freeze">
-					<xsl:choose>
-						<xsl:when test="@freeze = $version">Frozen</xsl:when>
-						<xsl:otherwise>
-							<span class="broken_freeze">
-								<xsl:attribute name="title">
-									<xsl:text>Freeze broken after version </xsl:text>
-									<xsl:value-of select="@freeze" />
-									<xsl:text>.</xsl:text>
-								</xsl:attribute>
-								<xsl:text>Broken Freeze</xsl:text>
-							</span>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="@freeze = $version">Frozen</xsl:when>
+					<xsl:when test="@freeze">
+						<span class="broken_freeze">
+							<xsl:attribute name="title">
+								<xsl:text>Freeze broken after version </xsl:text>
+								<xsl:value-of select="@freeze" />
+								<xsl:text>.</xsl:text>
+							</xsl:attribute>
+							<xsl:text>Broken Freeze</xsl:text>
+						</span>
+					</xsl:when>
+					<xsl:when test="document($function_file)/function/deprecated">
+						<span class="broken_freeze" title="{document($function_file)/function/deprecated/text()}">
+							<xsl:text>Deprecated</xsl:text>
+						</span>
+					</xsl:when>
+				</xsl:choose>
 			</td>
 			<td>
 				<xsl:apply-templates select="document($function_file)/function/description" />
@@ -316,21 +319,24 @@
 				<xsl:value-of select="$version" />
 			</td>
 			<td class="status">
-				<xsl:if test="@freeze">
-					<xsl:choose>
-						<xsl:when test="@freeze = $version">Frozen</xsl:when>
-						<xsl:otherwise>
-							<span class="broken_freeze">
-								<xsl:attribute name="title">
-									<xsl:text>Freeze broken after version </xsl:text>
-									<xsl:value-of select="@freeze" />
-									<xsl:text>.</xsl:text>
-								</xsl:attribute>
-								<xsl:text>Broken Freeze</xsl:text>
-							</span>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="@freeze = $version">Frozen</xsl:when>
+					<xsl:when test="@freeze">
+						<span class="broken_freeze">
+							<xsl:attribute name="title">
+								<xsl:text>Freeze broken after version </xsl:text>
+								<xsl:value-of select="@freeze" />
+								<xsl:text>.</xsl:text>
+							</xsl:attribute>
+							<xsl:text>Broken Freeze</xsl:text>
+						</span>
+					</xsl:when>
+					<xsl:when test="document($type_file)/type/deprecated">
+						<span class="broken_freeze" title="{document($type_file)/type/deprecated/text()}">
+							<xsl:text>Deprecated</xsl:text>
+						</span>
+					</xsl:when>
+				</xsl:choose>
 			</td>
 			<td>
 				<xsl:apply-templates select="document($type_file)/type/description" />
