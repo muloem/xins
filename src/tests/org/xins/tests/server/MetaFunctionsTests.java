@@ -4,22 +4,29 @@
 package org.xins.tests.server;
 
 import java.io.File;
+import java.io.IOException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Iterator;
+
+import javax.servlet.ServletException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.client.DataElement;
 
-import org.xins.client.XINSCallRequest;
-import org.xins.client.XINSCallResult;
-import org.xins.client.XINSServiceCaller;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.service.TargetDescriptor;
+
+import org.xins.client.DataElement;
+import org.xins.client.XINSCallRequest;
+import org.xins.client.XINSCallResult;
+import org.xins.client.XINSServiceCaller;
+
 import org.xins.tests.server.servlet.HTTPServletHandler;
 
 /**
@@ -82,7 +89,7 @@ public class MetaFunctionsTests extends TestCase {
    /**
     * Starts the HTTP server with the correct parameters.
     */
-   protected void setUp() {
+   protected void setUp() throws ServletException, IOException {
       File xinsProps = new File(System.getProperty("user.dir"), "../xins-examples/xins.properties");
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       String warLocation = "../xins-examples/xins-project/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
