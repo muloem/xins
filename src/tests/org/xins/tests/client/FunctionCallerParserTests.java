@@ -79,11 +79,11 @@ public class FunctionCallerParserTests extends TestCase {
       _parser = new FunctionCallerParser();
    }
 
-   public void testParse() throws Throwable {
+   public void testParse_String() throws Throwable {
 
       // Pass null as argument (should fail)
       try {
-         _parser.parse(null);
+         _parser.parse((String) null);
          fail("FunctionCallerParser.parse(null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
@@ -117,7 +117,7 @@ public class FunctionCallerParserTests extends TestCase {
       final String xml =
          "<group type='ordered'>" +                         // group #0
             "<group type='random'>" +                       // group #1
-               "<group type='round robin'>" +               // group #2
+               "<group type='random'>" +                    // group #2
                   "<api url='http://10.0.0.1/google'/>" +   // api #0
                   "<api url='http://10.0.0.2/google'/>" +   // api #1
                   "<api url='http://10.0.0.3/google'/>" +   // api #2
@@ -143,7 +143,7 @@ public class FunctionCallerParserTests extends TestCase {
 
       // group #2
       CallTargetGroup group2 = (CallTargetGroup) group1members.get(0);
-      assertEquals(CallTargetGroup.ROUND_ROBIN_TYPE, group2.getType());
+      assertEquals(CallTargetGroup.RANDOM_TYPE, group2.getType());
       List group2members = group2.getMembers();
       assertEquals(3, group2members.size());
 
