@@ -168,7 +168,18 @@ public class SimplePatternParser extends Object {
          } else if (currChar == '.') {
             buffer.append("\\.");
          } else if ((currChar == '*' || currChar == '?') && (prevChar == '*' || prevChar == '?')) {
-            throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wildcard characters next to each other.");
+            final String DETAIL = "The pattern \""
+                                + pattern
+                                + "\" is invalid since it contains two subsequent wildcard characters ('"
+                                + prevChar
+                                + "' and '"
+                                + currChar
+                                + "') at positions "
+                                + (i - 1)
+                                + " and "
+                                + i
+                                + '.';
+            throw new ParseException(DETAIL);
          } else if (currChar == '*') {
             buffer.append(".*");
          } else if (currChar == '?') {
