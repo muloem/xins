@@ -68,26 +68,45 @@ public final class Utils extends Object {
     * Initializes this class.
     */
    static {
+
+      // Get the system property that contains the Java VM version
       final String PROPERTY_KEY = "java.vm.version";
       String s = System.getProperty(PROPERTY_KEY);
       if (s == null) {
-         throw new RuntimeException("Unable to determine Java version. Value of property \"" + PROPERTY_KEY + "\" is null.");
+         final String DETAIL = "Unable to determine Java version. Value of property \""
+                             + PROPERTY_KEY
+                             + "\" is null.";
+         throw new RuntimeException(DETAIL);
       }
 
-      if (s.startsWith("1.1")) {
+      // Forward to the version number in the string
+      String s2 = s;
+      while (s2.length() >= 3 && !s2.startsWith("1.")) {
+         s2 = s2.substring(1);
+      }
+
+      // Determine the major Java version
+      if (s2.startsWith("1.1")) {
          JAVA_VERSION = JAVA_1_1;
-      } else if (s.startsWith("1.2")) {
+      } else if (s2.startsWith("1.2")) {
          JAVA_VERSION = JAVA_1_2;
-      } else if (s.startsWith("1.3")) {
+      } else if (s2.startsWith("1.3")) {
          JAVA_VERSION = JAVA_1_3;
-      } else if (s.startsWith("1.4")) {
+      } else if (s2.startsWith("1.4")) {
          JAVA_VERSION = JAVA_1_4;
-      } else if (s.startsWith("1.5")) {
+      } else if (s2.startsWith("1.5")) {
          JAVA_VERSION = JAVA_1_5;
-      } else if (s.startsWith("1.6")) {
+      } else if (s2.startsWith("1.6")) {
          JAVA_VERSION = JAVA_1_6;
+
+      // Unable to determine major Java version
       } else {
-         throw new RuntimeException("Unable to determine Java version. Value of property \"" + PROPERTY_KEY + "\" is \"" + s + "\".");
+         final String DETAIL = "Unable to determine Java version. Value of property \""
+                             + PROPERTY_KEY
+                             + "\" is \""
+                             + s
+                             + "\".";
+         throw new RuntimeException(DETAIL);
       }
    }
 
