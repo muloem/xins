@@ -349,7 +349,7 @@
 			<xsl:choose>
 
 				<!-- No result code -->
-				<xsl:when test="not(boolean($resultcode))">
+				<xsl:when test="string-length($resultcode) &lt; 1">
 					<xsl:if test="not(boolean(@success))">
 						<xsl:message terminate="yes">
 							<xsl:text>Example </xsl:text>
