@@ -375,6 +375,19 @@ public final class Doorman extends Object {
          return _typeOfFirst;
       }
 
+      /**
+       * Adds the specified thread to the queue of waiting threads.
+       *
+       * @param thread
+       *    the thread to be added, should not be <code>null</code>.
+       *
+       * @param type
+       *    the type of thread, should be either
+       *    {@link #READ_QUEUE_ENTRY_TYPE} or {@link #WRITE_QUEUE_ENTRY_TYPE}.
+       *
+       * @throws IllegalStateException
+       *    if the specified thread is already in this queue.
+       */
       public void add(Thread thread, EntryType type)
       throws IllegalStateException {
 
@@ -394,7 +407,19 @@ public final class Doorman extends Object {
          _entries.addLast(thread);
       }
 
+      /**
+       * Pops the first waiting thread from this queue, removes it and then
+       * returns it.
+       *
+       * @return
+       *    the top waiting thread, never <code>null</code>.
+       *
+       * @throws IllegalStateException
+       *    if this queue is empty.
+       */
       public Thread pop() throws IllegalStateException {
+
+         // Check preconditions
          if (_first == null) {
             throw new IllegalStateException("This queue is empty.");
          }
@@ -413,7 +438,18 @@ public final class Doorman extends Object {
          return oldFirst;
       }
 
-      public void remove(Thread thread) {
+      /**
+       * Removes the specified thread from this queue.
+       *
+       * @param thread
+       *    the thread to be removed from this queue, should not be
+       *    <code>null</code>.
+       *
+       * @throws IllegalStateException
+       *    if this queue does not contain the specified thread.
+       */
+      public void remove(Thread thread)
+      throws IllegalStateException {
 
          if (thread == _first) {
 
@@ -427,7 +463,9 @@ public final class Doorman extends Object {
          } else {
 
             // Remove the thread from the list
-            _entries.remove(thread);
+            if (! _entries.remove(thread)) {
+               throw new IllegalStateException("The specified thread is not in this queue.");
+            }
          }
 
          _entryTypes.remove(thread);
@@ -448,19 +486,7 @@ public final class Doorman extends Object {
        */
       public static final class EntryType
       extends Object {
-
-         //-------------------------------------------------------------------
-         // Constructors
-         //-------------------------------------------------------------------
-
-         //-------------------------------------------------------------------
-         // Fields
-         //-------------------------------------------------------------------
-
-         //-------------------------------------------------------------------
-         // Methods
-         //-------------------------------------------------------------------
-
+         // empty
       }
    }
 }
