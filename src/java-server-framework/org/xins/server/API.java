@@ -701,7 +701,7 @@ implements DefaultResultCodes {
 
    /**
     * Forwards a call to a function. The call will actually be handled by
-    * {@link Function#handleCall(long,PropertyReader,String)}.
+    * {@link Function#handleCall(long,FunctionRequest,String)}.
     *
     * @param start
     *    the start time of the request, in milliseconds since midnight January
