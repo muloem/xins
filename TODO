@@ -74,6 +74,13 @@ XINS/JAVA CLIENT FRAMEWORK
   backends support this (in class XINSServiceCaller).
 * Abandon JDOM completely, favour SAX for parsing and a custom Document Object
   Model implementation, where appropriate.
+* Make sure that the XINSServiceCaller properly supports HTTP result codes
+  other than 200. Document the behaviour. Redirects should probably not be
+  followed, but this has to be determined.
+* Use an IndexedMap in class XINSServiceCaller, for improved iteration
+  performance.
+* Throw an InvalidKeyException in class XINSServiceCaller, when and where
+  appropriate.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
@@ -93,6 +100,7 @@ XINS/JAVA COMMON LIBRARY
   of the different PropertyReader classes.
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
+* Create an implementation of interface IndexedMap.
 
 ______________________________________________________________________________
 LOGDOC
