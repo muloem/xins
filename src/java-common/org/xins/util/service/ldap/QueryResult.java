@@ -60,8 +60,8 @@ public final class QueryResult extends Object {
     *    <code>namingEnumeration.</code>{@link NamingEnumeration#next() next()}
     *    returned a <code>null</code> value.
     */
-   public QueryResult(boolean           authenticated,
-                      NamingEnumeration namingEnumeration)
+   QueryResult(boolean           authenticated,
+               NamingEnumeration namingEnumeration)
    throws NamingException, IllegalArgumentException {
 
       // Check preconditions
