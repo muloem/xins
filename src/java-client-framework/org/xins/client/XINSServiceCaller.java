@@ -10,10 +10,15 @@ import java.util.Map;
 import java.util.Collections;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.methods.PostMethod;
+
+import org.apache.log4j.NDC;
+
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.apache.log4j.NDC;
+
+import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.CollectionUtils;
 import org.xins.common.service.CallFailedException;
@@ -21,6 +26,7 @@ import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.service.TimeOutException;
 import org.xins.common.text.ParseException;
 
 /**
@@ -38,6 +44,12 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The number of constructed call executors.
+    */
+   private static int CALL_EXECUTOR_COUNT;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -238,45 +250,76 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Construct the method object
       PostMethod method = createPostMethod(target.getURL(), functionName, parameters);
 
+      // Prepare a thread for execution of the call
+      CallExecutor executor = new CallExecutor(NDC.peek(), client, method);
+
       boolean succeeded = false;
-      String body;
-      int    code;
-
       try {
-         // Execute the request
-         client.executeMethod(method);
-
-         // Read response body (mandatory operation) and determine status
-         body = method.getResponseBodyAsString();
-         code = method.getStatusCode();
-
+         controlTimeOut(executor, target);
          succeeded = true;
 
-      } catch (IOException ioException) {
-         throw new CallIOException(ioException);
+      } catch (TimeOutException exception) {
+         // TODO: Log total time-out
+         System.exit(1);
 
-      // Always release the connection
       } finally {
+         if (succeeded == false) {
 
-         // Release the connection
-         if (succeeded) {
-            method.releaseConnection();
-
-         // If there was an exception already, don't allow another one to
-         // override it, so wrap the releasing of the connection in a
-         // try-catch block.
-         } else {
+            // If there was an exception already, don't allow another one to
+            // override it, so wrap the releasing of the connection in a
+            // try-catch block.
             try {
                method.releaseConnection();
+
+            // If there was an exception, then log the root cause for it
             } catch (Throwable exception) {
+               exception = ExceptionUtils.getRootCause(exception);
                Log.log_2007(exception, exception.getClass().getName());
             }
          }
       }
 
+      // Read response body (mandatory operation)
+      String body = method.getResponseBodyAsString();
+
+      // Release the connection
+      method.releaseConnection();
+
+      // Check for exceptions
+      Throwable exception =  executor._exception;
+      if (exception != null) {
+
+         // TODO: Detect connection refusal, socket time-out and connection
+         //       time-out
+
+         // Connection refusal
+         if (exception instanceof ConnectException) {
+            // TODO: Log connection refusal
+            // TODO: Throw some kind of CallException
+
+         // Connection time-out
+         } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
+            // TODO: Log connection time-out
+            // TODO: Throw some kind of CallException
+
+         // TODO: Socket time-out
+         /* } else if .... {
+            // TODO: Log connection time-out
+            // TODO: Throw some kind of CallException
+         } */
+
+         } else if (exception instanceof IOException) {
+            throw new CallIOException((IOException) exception);
+         }
+
+         // TODO: Probably not throw an InvalidCallResultException
+         throw new InvalidCallResultException(exception);
+      }
+
       // Check the code
       // TODO: Throw specific exception that stores the HTTP code so it can be
       //       used to determine whether or not fail-over should be attempted.
+      int code = executor._statusCode;
       if (code != 200 && code != 201) {
          Log.log_2008(code);
          throw new InvalidCallResultException("HTTP code " + code + '.');
@@ -569,6 +612,123 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Otherwise return a clone of the data element
          } else {
             return (Element) _dataElement.clone();
+         }
+      }
+   }
+
+   /**
+    * Executor of calls to an API.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.195
+    */
+   private static final class CallExecutor extends Thread {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>CallExecutor</code> for the specified call to
+       * a XINS API.
+       *
+       * @param httpClient
+       *    the diagnostic context identifier, can be <code>null</code>.
+       *
+       * @param httpClient
+       *    the HTTP client to use when executing the call, cannot be
+       *    <code>null</code>.
+       *
+       * @param call
+       *    the definition of the call to a XINS API, cannot be
+       *    <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>httpClient == null || call == null</code>.
+       */
+      private CallExecutor(String     contextID,
+                           HttpClient httpClient,
+                           PostMethod call)
+      throws IllegalArgumentException {
+
+         super("XINS call executor #" + CALL_EXECUTOR_COUNT++);
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("httpClient", httpClient,
+                                        "call",       call);
+
+         // Store links to the objects
+         _contextID  = contextID;
+         _httpClient = httpClient;
+         _call       = call;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The diagnostic context identifier. This field can be
+       * <code>null</code>.
+       */
+      private final String _contextID;
+
+      /**
+       * The HTTP client to use when executing the call. This field cannot be
+       * <code>null</code>.
+       */
+      private final HttpClient _httpClient;
+
+      /**
+       * The definition of the call to a XINS API to execute. This field
+       * cannot be <code>null</code>.
+       */
+      private final PostMethod _call;
+
+      /**
+       * The HTTP status code returned by the call to the XINS API. This is
+       * set to a negative number if there is no status code.
+       */
+      private int _statusCode;
+
+      /**
+       * The exception caught while executing the call. If there was no
+       * exception, then this field is <code>null</code>.
+       */
+      private Throwable _exception;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Runs this thread. It will call the XINS API. If that call was
+       * successful, then the status code is stored in this object. Otherwise
+       * there is an exception. In that case the exception is stored in this
+       * object.
+       */
+      public void run() {
+
+         // Reset for this run
+         _exception  = null;
+         _statusCode = -1;
+
+         // Activate the diagnostic context ID
+         if (_contextID != null) {
+            NDC.push(_contextID);
+         }
+
+         // Execute the call to the XINS API
+         try {
+            _statusCode = _httpClient.executeMethod(_call);
+
+         // If an exception is thrown, store it for processing at later stage
+         } catch (Throwable exception) {
+            _exception = exception;
          }
       }
    }
