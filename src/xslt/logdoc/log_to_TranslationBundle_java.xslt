@@ -38,8 +38,6 @@ public abstract class TranslationBundle extends Object {
    // Class functions
    //-------------------------------------------------------------------------]]></xsl:text>
 
-		<xsl:apply-templates select="messageset" />
-
 		<xsl:text><![CDATA[
 
 

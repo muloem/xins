@@ -38,9 +38,9 @@
 
 				<h2>Message sets</h2>
 				<xsl:choose>
-					<xsl:when test="messageset">
+					<xsl:when test="translation-bundle">
 						<table>
-							<xsl:apply-templates select="messageset">
+							<xsl:apply-templates select="translation-bundle">
 								<!--
 								<xsl:with-param name=""></xsl:with-param>
 								-->
@@ -124,8 +124,8 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="messageset">
-		<xsl:variable name="messageset_doc">
+	<xsl:template match="translation-bundle">
+		<xsl:variable name="translation-bundle-doc">
 			<xsl:value-of select="$sourcedir" />
 			<xsl:text>/messages-</xsl:text>
 			<xsl:value-of select="@id" />
@@ -137,7 +137,7 @@
 				<xsl:value-of select="@id" />
 			</th>
 			<td>
-				<xsl:apply-templates select="document($messageset_doc)/messages/message[@entry=$entry]" />
+				<xsl:apply-templates select="document($translation-bundle-doc)/messages/message[@entry=$entry]" />
 			</td>
 		</tr>
 	</xsl:template>

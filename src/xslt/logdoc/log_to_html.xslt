@@ -60,10 +60,10 @@
 					</tr>
 				</table>
 
-				<h2>Message sets</h2>
-				<p>The following message sets are available:</p>
+				<h2>Translation bundles</h2>
+				<p>The following translation bundles are available:</p>
 				<ul>
-					<xsl:for-each select="messageset">
+					<xsl:for-each select="translation-bundle">
 						<li>
 							<xsl:value-of select="@id" />
 							<xsl:if test="$default_locale = @id"> (default)</xsl:if>

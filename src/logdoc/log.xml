@@ -8,8 +8,8 @@
 
 <log default-locale="en_US">
 
-	<messageset id="en_US" />
-	<messageset id="nl_NL" />
+	<translation-bundle id="en_US" />
+	<translation-bundle id="nl_NL" />
 
 	<entry id="0" level="DEBUG" category="org.xins.server.lifespan">
 		<description>State change in APIServlet instance.</description>
