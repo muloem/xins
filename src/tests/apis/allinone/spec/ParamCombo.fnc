@@ -19,10 +19,10 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<description>The birth date's day.</description>
 		</param>
 		<param name="birthCountry" required="false" type="_text">
-			<description>The country where the person is borned.</description>
+			<description>The country where the person is born.</description>
 		</param>
 		<param name="birthCity" required="false" type="_text">
-			<description>The city where the person is borned.</description>
+			<description>The city where the person is born.</description>
 		</param>
 		<param name="age" required="false" type="Age">
 			<description>An example of input for a int8 type with a minimum and maximum.</description>
