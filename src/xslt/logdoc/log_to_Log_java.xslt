@@ -226,13 +226,20 @@ public class Log extends Object {
     */
    public static final log_</xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text>() {
+		<xsl:text>(</xsl:text>
+		<!-- TODO: Parameters -->
+		<xsl:text>) {
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="@category" />
 		<xsl:text>");
       LOG.log(FQCN, Level.</xsl:text>
 		<xsl:value-of select="@level" />
-		<xsl:text>, "TODO: Actual message", null);
+		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>(</xsl:text>
+		<!-- TODO: Parameters -->
+		<!-- TODO: Support exception? -->
+		<xsl:text>), null);
    }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
