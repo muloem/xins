@@ -20,19 +20,59 @@ public final class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
+    * The identifier of the <em>random</em> group type.
+    */
+   public static final String RANDOM_TYPE_ID = "random";
+
+   /**
+    * The identifier of the <em>ordered</em> group type.
+    */
+   public static final String ORDERED_TYPE_ID = "ordered";
+
+   /**
     * The <em>random</em> group type.
     */
-   public static final Type RANDOM_TYPE  = new Type("random");
+   public static final Type RANDOM_TYPE = new Type(RANDOM_TYPE_ID);
 
    /**
     * The <em>ordered</em> group type.
     */
-   public static final Type ORDERED_TYPE = new Type("ordered");
+   public static final Type ORDERED_TYPE = new Type(ORDERED_TYPE_ID);
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets a group type by identifier.
+    *
+    * @param identifier
+    *    the identifier for the group, cannot be <code>null</code>.
+    *
+    * @return
+    *    the type with the specified identifier, or <code>null</code> if there
+    *    is no matching type.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>identifier == null</code>.
+    */
+   public static Type getType(String identifier)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("identifier", identifier);
+
+      // Match
+      if (RANDOM_TYPE_ID.equals(identifier)) {
+         return RANDOM_TYPE;
+      } else if (ORDERED_TYPE_ID.equals(identifier)) {
+         return ORDERED_TYPE;
+      } else {
+         return null;
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
