@@ -70,7 +70,7 @@ public abstract class Service extends Object {
     * @return
     *    the descriptor for this service, never <code>null</code>.
     */
-   public Descriptor getDescriptor() {
+   public final Descriptor getDescriptor() {
       return _descriptor;
    }
 
