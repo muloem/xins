@@ -8,6 +8,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:include href="hungarian.xslt" />
+
 	<xsl:template name="description_for_standardtype">
 		<xsl:param name="type" />
 
@@ -51,7 +53,7 @@
 		</xsl:variable>
 
 		<xsl:choose>
-			<xsl:when test="$required = 'true'">
+			<xsl:when test="$requiredBool = 'false'">
 				<xsl:choose>
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_boolean'">java.lang.Boolean</xsl:when>
@@ -62,13 +64,13 @@
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
-							<xsl:value-of select="$required" />
+							<xsl:value-of select="$type" />
 							<xsl:text>' is not recognized as a standard type.</xsl:text>
 						</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:otherwise>
+			<xsl:otherwise> <!-- $requiredBool = 'true' -->
 				<xsl:choose>
 					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_boolean'">boolean</xsl:when>
@@ -79,11 +81,52 @@
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
-							<xsl:value-of select="$required" />
+							<xsl:value-of select="$type" />
 							<xsl:text>' is not recognized as a standard type.</xsl:text>
 						</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="javatypeclass_for_standardtype">
+		<xsl:param name="type" />
+
+		<xsl:text>org.xins.types.standard.</xsl:text>
+		<xsl:call-template name="hungarianUpper">
+			<xsl:with-param name="text">
+				<xsl:value-of select="substring($type, 2)" />
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="javatype_from_string_for_standardtype">
+		<xsl:param name="required" />
+		<xsl:param name="type"     />
+		<xsl:param name="variable" />
+
+		<xsl:variable name="javatypeclass">
+			<xsl:call-template name="javatypeclass_for_standardtype">
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:choose>
+			<xsl:when test="$type = '_text'">
+				<xsl:value-of select="$variable" />
+			</xsl:when>
+			<xsl:when test="$required = 'true'">
+				<xsl:value-of select="$javatypeclass" />
+				<xsl:text>.fromStringForRequired(</xsl:text>
+				<xsl:value-of select="$variable" />
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+			<xsl:otherwise> <!-- $required = 'false' -->
+				<xsl:value-of select="$javatypeclass" />
+				<xsl:text>.fromStringForOptional(</xsl:text>
+				<xsl:value-of select="$variable" />
+				<xsl:text>)</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

@@ -79,11 +79,8 @@
 
 		<xsl:choose>
 			<xsl:when test="starts-with($type, '_')">
-				<xsl:text>org.xins.types.standard.</xsl:text>
-				<xsl:call-template name="hungarianUpper">
-					<xsl:with-param name="text">
-						<xsl:value-of select="substring($type, 2)" />
-					</xsl:with-param>
+				<xsl:call-template name="javatypeclass_for_standardtype">
+					<xsl:with-param name="type" select="$type" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -92,6 +89,48 @@
 						<xsl:value-of select="$type" />
 					</xsl:with-param>
 				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="javatype_for_type">
+		<xsl:param name="api"      />
+		<xsl:param name="specsdir" />
+		<xsl:param name="required" />
+		<xsl:param name="type"     />
+
+		<xsl:choose>
+			<xsl:when test="starts-with($type, '_')">
+				<xsl:call-template name="javatype_for_standardtype">
+					<xsl:with-param name="type"     select="$type"     />
+					<xsl:with-param name="required" select="$required" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- TODO: Look at 'extends' -->
+				<xsl:text>java.lang.String</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="javatype_from_string_for_type">
+		<xsl:param name="api"      />
+		<xsl:param name="specsdir" />
+		<xsl:param name="required" />
+		<xsl:param name="type"     />
+		<xsl:param name="variable" />
+
+		<xsl:choose>
+			<xsl:when test="starts-with($type, '_')">
+				<xsl:call-template name="javatype_from_string_for_standardtype">
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="$type"     />
+					<xsl:with-param name="variable" select="$variable" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- TODO: Look at 'extends' -->
+				<xsl:value-of select="$variable" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
