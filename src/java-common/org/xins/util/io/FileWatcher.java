@@ -59,7 +59,13 @@ public final class FileWatcher extends Thread {
       setDaemon(true);
 
       // Immediately check if the file exists
-      check();
+      try {
+         if (_file.exists()) {
+            _lastModified = _file.lastModified();
+         }
+      } catch (SecurityException exception) {
+         // ignore
+      }
    }
 
 
@@ -156,6 +162,8 @@ public final class FileWatcher extends Thread {
       } else {
          _listener.fileNotModified();
       }
+
+      _lastModified = lastModified;
    }
 
    //-------------------------------------------------------------------------
