@@ -27,6 +27,7 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
+      suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.util.collections.SingleEntryMapTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
