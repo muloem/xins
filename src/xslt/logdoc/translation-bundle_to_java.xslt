@@ -134,6 +134,8 @@ import org.xins.logdoc.LogdocStringBuffer;
 
 		<xsl:choose>
 			<xsl:when test="($param-type = 'serializable') and ($param-nullable = 'false')">
+				<xsl:text>
+      </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>.serialize(buffer);</xsl:text>
 			</xsl:when>
