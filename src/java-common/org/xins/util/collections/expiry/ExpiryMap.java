@@ -209,7 +209,12 @@ extends AbstractMap {
    }
 
    public Object put(Object key, Object value) {
-      _recentlyAccessed.put(key, value);
+      synchronized (_recentlyAccessed) {
+         _recentlyAccessed.put(key, value);
+      }
+
+      // XXX: Returning null violates the contract of the interface
+      //      java.util.Map, but it has a large impact on performance
       return null;
    }
 
