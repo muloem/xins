@@ -1,6 +1,26 @@
 <html>
 <body>XINS server framework.
 
+<h2>Logging</h2>
+Logging is performed using
+<a href="http://jakarta.apache.org/log4j/">Log4J</a>. The following categories
+are logged to:
+
+<table border="1">
+	<tr>
+		<th>Category name</th>
+		<th>Type of message</th>
+	</tr>
+	<tr>
+		<td>org.xins.server.LIFESPAN</td>
+		<td>Startup/initialization, re-initialization and shutdown.</td>
+	</tr>
+	<tr>
+		<td>org.xins.server.RUNTIME</td>
+		<td>Runtime execution.</td>
+	</tr>
+</table>
+
 @since XINS 0.1
 </body>
 </html>

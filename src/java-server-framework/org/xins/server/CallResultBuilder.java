@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
@@ -112,12 +111,6 @@ final class CallResultBuilder extends Object implements CallResult {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(CallResultBuilder.class.getName());
 
    /**
     * Constant identifying the initial state.
@@ -305,10 +298,10 @@ final class CallResultBuilder extends Object implements CallResult {
 
       // Initialize the _parameters field
       if (_parameters == null) {
-         _parameters = new ProtectedPropertyReader(LOG);
+         _parameters = new ProtectedPropertyReader(Library.RUNTIME_LOG);
       }
 
-      _parameters.set(LOG, name, value);
+      _parameters.set(Library.RUNTIME_LOG, name, value);
 
       _state = WITHIN_PARAMS;
    }

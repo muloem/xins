@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
@@ -26,13 +25,6 @@ final class BasicCallResult extends Object implements CallResult {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(BasicCallResult.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions

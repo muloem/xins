@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.xins.util.collections.PropertyReader;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -25,13 +24,6 @@ final class CallResultOutputter extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(CallResultBuilder.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions

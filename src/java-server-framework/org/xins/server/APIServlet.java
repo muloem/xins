@@ -35,11 +35,6 @@ implements Servlet {
    //-------------------------------------------------------------------------
 
    /**
-    * The logger used by this servlet. This field is never <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(APIServlet.class.getName());
-
-   /**
     * Constant indicating the <em>uninitialized</em> state. See
     * {@link #_state}.
     */
@@ -96,7 +91,7 @@ implements Servlet {
       } catch (Replacer.Exception exception) {
          configureLoggerFallback();
          String message = "Failed to apply replacements to servlet initialization settings.";
-         LOG.error(message, exception);
+         Library.LIFESPAN_LOG.error(message, exception);
          throw new ServletException(message, exception);
       }
 
@@ -108,11 +103,11 @@ implements Servlet {
             // TODO: configure delay for configureAndWatch
             PropertyConfigurator.configureAndWatch(configFile);
             doConfigure = false;
-            LOG.debug("Using Log4J configuration file \"" + configFile + "\".");
+            Library.LIFESPAN_LOG.debug("Using Log4J configuration file \"" + configFile + "\".");
          } else {
             configureLoggerFallback();
             doConfigure = false;
-            LOG.error("Log4J configuration file \"" + configFile + "\" does not exist. Using fallback defaults.");
+            Library.LIFESPAN_LOG.error("Log4J configuration file \"" + configFile + "\" does not exist. Using fallback defaults.");
          }
 
       // If not, perform initialization with init settings
@@ -121,9 +116,9 @@ implements Servlet {
       }
 
       // If Log4J is not initialized at this point, use fallback defaults
-      if (doConfigure && LOG.getAllAppenders() instanceof NullEnumeration) {
+      if (doConfigure && Library.LIFESPAN_LOG.getAllAppenders() instanceof NullEnumeration) {
          configureLoggerFallback();
-         LOG.warn("No initialization settings found for Log4J. Using fallback defaults.");
+         Library.LIFESPAN_LOG.warn("No initialization settings found for Log4J. Using fallback defaults.");
       }
    }
 
@@ -167,7 +162,7 @@ implements Servlet {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
          String message = "Failed to load API class: \"" + apiClassName + "\".";
-         LOG.error(message, e);
+         Library.LIFESPAN_LOG.error(message, e);
          throw new ServletException(message);
       }
 
@@ -177,7 +172,7 @@ implements Servlet {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
          String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         LOG.error(message, e);
+         Library.LIFESPAN_LOG.error(message, e);
          throw new ServletException(message);
       }
 
@@ -186,16 +181,16 @@ implements Servlet {
          api = (API) singletonField.get(null);
       } catch (Exception e) {
          String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
-         LOG.error(message, e);
+         Library.LIFESPAN_LOG.error(message, e);
          throw new ServletException(message);
       }
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
+      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
+         Library.LIFESPAN_LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
       }
 
       // Initialize the API
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("Initializing API.");
+      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
+         Library.LIFESPAN_LOG.debug("Initializing API.");
       }
       Properties settings = ServletUtils.settingsAsProperties(config);
       try {
@@ -204,16 +199,16 @@ implements Servlet {
          try {
             api.destroy();
          } catch (Throwable e2) {
-            LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + api.getClass().getName() + ". Ignoring.", e2);
+            Library.LIFESPAN_LOG.error("Caught " + e2.getClass().getName() + " while destroying API instance of class " + api.getClass().getName() + ". Ignoring.", e2);
          }
 
          String message = "Failed to initialize API.";
-         LOG.error(message, e);
+         Library.LIFESPAN_LOG.error(message, e);
          throw new ServletException(message);
       }
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("Initialized API.");
+      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
+         Library.LIFESPAN_LOG.debug("Initialized API.");
       }
 
       return api;
@@ -307,16 +302,16 @@ implements Servlet {
 
       // Initialization starting
       String version = org.xins.server.Library.getVersion();
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
+      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
+         Library.LIFESPAN_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
       }
 
       // Initialize API instance
       _api = configureAPI(config);
 
       // Initialization done
-      if (LOG.isInfoEnabled()) {
-         LOG.info("XINS/Java Server Framework " + version + " is initialized.");
+      if (Library.LIFESPAN_LOG.isInfoEnabled()) {
+         Library.LIFESPAN_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
       }
 
       // Finally enter the ready state
@@ -367,15 +362,15 @@ implements Servlet {
    }
 
    public void destroy() {
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("XINS/Java Server Framework shutdown initiated.");
+      if (Library.LIFESPAN_LOG.isDebugEnabled()) {
+         Library.LIFESPAN_LOG.debug("XINS/Java Server Framework shutdown initiated.");
       }
 
       synchronized (_stateLock) {
          _state = DISPOSING;
          _api.destroy();
-         if (LOG != null) {
-            LOG.info("XINS/Java Server Framework shutdown completed.");
+         if (Library.LIFESPAN_LOG != null) {
+            Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
          }
          _state = DISPOSED;
       }

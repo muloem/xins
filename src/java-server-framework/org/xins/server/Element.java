@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
@@ -25,13 +24,6 @@ final class Element extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(Element.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -58,7 +50,7 @@ final class Element extends Object {
       MandatoryArgumentChecker.check("type", type);
 
       _type       = type;
-      _attributes = new ProtectedPropertyReader(LOG);
+      _attributes = new ProtectedPropertyReader(Library.RUNTIME_LOG);
    }
 
 
@@ -136,7 +128,7 @@ final class Element extends Object {
 
       // TODO: Check attribute is not yet set
 
-      _attributes.set(LOG, name, value);
+      _attributes.set(Library.RUNTIME_LOG, name, value);
    }
 
    /**

@@ -25,13 +25,6 @@ extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(Session.class.getName());
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -122,7 +115,7 @@ extends Object {
          return getSessionIDType().toString(_id);
       } catch (TypeValueException exception) {
          String message = "Caught unexpected " + exception.getClass().getName() + '.';
-         LOG.error(message, exception);
+         Library.RUNTIME_LOG.error(message, exception);
          throw new Error(message);
       }
    }
@@ -148,7 +141,7 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      boolean debugEnabled = LOG.isDebugEnabled();
+      boolean debugEnabled = Library.RUNTIME_LOG.isDebugEnabled();
 
       // If necessary init the Map and then store the entry
       if (_attributes == null) {
@@ -158,7 +151,7 @@ extends Object {
                String s = value instanceof String
                         ? "\"" + value + '"'
                         : value.getClass().getName() + " (\"" + value + "\")";
-               LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
+               Library.RUNTIME_LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
             }
             _attributes.put(key, value);
          }
@@ -166,7 +159,7 @@ extends Object {
       // If the value is null, then remove the entry
       } else if (value == null) {
          if (debugEnabled) {
-            LOG.debug("Resetting session attribute \"" + key + "\".");
+            Library.RUNTIME_LOG.debug("Resetting session attribute \"" + key + "\".");
          }
          _attributes.remove(key);
          // XXX: Check if the map is now empty and set it to null?
@@ -177,7 +170,7 @@ extends Object {
             String s = value instanceof String
                      ? "\"" + value + '"'
                      : value.getClass().getName() + " (\"" + value + "\")";
-            LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
+            Library.RUNTIME_LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
          }
          _attributes.put(key, value);
       }

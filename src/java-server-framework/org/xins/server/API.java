@@ -42,12 +42,6 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(API.class.getName());
-
-   /**
     * Constant indicating the <em>uninitialized</em> state. See
     * {@link #_state}.
     */
@@ -409,9 +403,9 @@ implements DefaultResultCodes {
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       if (tzLongName.equals(tzShortName)) {
-         LOG.info("Local time zone is " + tzLongName + '.');
+         Library.LIFESPAN_LOG.info("Local time zone is " + tzLongName + '.');
       } else {
-         LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
+         Library.LIFESPAN_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
       }
 
       // Store the settings
@@ -425,12 +419,12 @@ implements DefaultResultCodes {
       // Check if a default function is set
       _defaultFunction = properties.getProperty("org.xins.api.defaultFunction");
       if (_defaultFunction != null) {
-         LOG.debug("Default function set to \"" + _defaultFunction + "\".");
+         Library.LIFESPAN_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
 
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
-      LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+      Library.LIFESPAN_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
@@ -439,7 +433,7 @@ implements DefaultResultCodes {
 
       // Initialize session-based API
       if (_sessionBased) {
-         LOG.debug("Performing session-related initialization.");
+         Library.LIFESPAN_LOG.debug("Performing session-related initialization.");
 
          // Initialize session ID type
          _sessionIDType      = new BasicSessionID(this);
@@ -463,18 +457,18 @@ implements DefaultResultCodes {
       _buildHost  = properties.getProperty("org.xins.api.build.host");
       _buildTime  = properties.getProperty("org.xins.api.build.time");
       if (_buildHost == null) {
-         LOG.warn("Build host name is not set.");
+         Library.LIFESPAN_LOG.warn("Build host name is not set.");
          _buildHost = "<unknown>";
       } else if (_buildTime == null) {
-         LOG.warn("Build time stamp is not set.");
+         Library.LIFESPAN_LOG.warn("Build time stamp is not set.");
          _buildTime = "<unknown>";
       }
 
       // Log build-time properties
       if (_deployment == null) {
-         LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
+         Library.LIFESPAN_LOG.info("Built on " + _buildHost + " (" + _buildTime + ").");
       } else {
-         LOG.info("Built on " + _buildHost + " (" + _buildTime + "), for deployment \"" + _deployment + "\".");
+         Library.LIFESPAN_LOG.info("Built on " + _buildHost + " (" + _buildTime + "), for deployment \"" + _deployment + "\".");
       }
 
       // Let the subclass perform initialization
@@ -556,16 +550,16 @@ implements DefaultResultCodes {
 
       boolean succeeded = false;
       String className = instance.getClass().getName();
-      LOG.debug("Initializing instance of class \"" + className + "\".");
+      Library.LIFESPAN_LOG.debug("Initializing instance of class \"" + className + "\".");
       try {
          instance.init(_initSettingsReader);
          succeeded = true;
       } finally {
          if (succeeded) {
-            LOG.info("Initialized instance of class \"" + className + "\".");
+            Library.LIFESPAN_LOG.info("Initialized instance of class \"" + className + "\".");
          } else {
             String message = "Failed to initialize instance of \"" + className + "\".";
-            LOG.error(message);
+            Library.LIFESPAN_LOG.error(message);
          }
       }
    }
@@ -627,19 +621,19 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("instance", instance);
 
       if ((instance instanceof Singleton) == false) {
-         LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
+         Library.LIFESPAN_LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
       }
 
       _instances.add(instance);
 
-      boolean succeeded = callMethod(instance, "init", new Class[] { Properties.class }, new Object[] { _initSettings.clone() });
+      boolean succeeded = callMethod(Library.LIFESPAN_LOG, instance, "init", new Class[] { Properties.class }, new Object[] { _initSettings.clone() });
      
       String className = instance.getClass().getName();
       if (succeeded) {
-         LOG.info("Initialized instance of " + className + '.');
+         Library.LIFESPAN_LOG.info("Initialized instance of " + className + '.');
       } else {
          String message = "Failed to initialize instance of " + className + '.';
-         LOG.error(message);
+         Library.LIFESPAN_LOG.error(message);
          throw new InitializationException(message);
       }
    }
@@ -663,7 +657,8 @@ implements DefaultResultCodes {
     * @return
     *    the value returned by the call, can be <code>null</code>.
     */
-   private final boolean callMethod(Object   instance,
+   private final boolean callMethod(Logger   log,
+                                    Object   instance,
                                     String   methodName,
                                     Class[]  parameterTypes,
                                     Object[] arguments) {
@@ -691,23 +686,23 @@ implements DefaultResultCodes {
       try {
          method = clazz.getDeclaredMethod(methodName, parameterTypes);
       } catch (NoSuchMethodException exception) {
-         LOG.warn("Unable to find method " + signature + '.');
+         log.warn("Unable to find method " + signature + '.');
          return false;
       } catch (SecurityException exception) {
-         LOG.warn("Access denied while attempting to lookup method " + signature + '.');
+         log.warn("Access denied while attempting to lookup method " + signature + '.');
          return false;
       }
 
       // The method must be public, non-abstract and non-static
       int modifiers = method.getModifiers();
       if (Modifier.isAbstract(modifiers)) {
-         LOG.warn("Unable to call abstract method " + signature + '.');
+         log.warn("Unable to call abstract method " + signature + '.');
          return false;
       } else if (Modifier.isStatic(modifiers)) {
-         LOG.warn("Unable to call abstract method " + signature + '.');
+         log.warn("Unable to call abstract method " + signature + '.');
          return false;
       } else if (Modifier.isPublic(modifiers) == false) {
-         LOG.warn("Unable to call non-public method " + signature + '.');
+         log.warn("Unable to call non-public method " + signature + '.');
          return false;
       }
 
@@ -715,7 +710,7 @@ implements DefaultResultCodes {
       try {
          method.invoke(instance, arguments);
       } catch (Throwable exception) {
-         LOG.error("Unable to call " + signature + " due to unexpected exception.", exception);
+         log.error("Unable to call " + signature + " due to unexpected exception.", exception);
          return false;
       }
 
@@ -732,20 +727,20 @@ implements DefaultResultCodes {
       _sessionExpiryStrategy.stop();
 
       // Destroy all sessions
-      LOG.info("Closing " + _sessionsByID.size() + " open sessions.");
+      Library.LIFESPAN_LOG.info("Closing " + _sessionsByID.size() + " open sessions.");
       _sessionsByID = null;
 
       // Deinitialize instances
       for (int i = 0; i < _instances.size(); i++) {
          Object instance = _instances.get(i);
 
-         boolean succeeded = callMethod(instance, "destroy", new Class[] {}, null);
+         boolean succeeded = callMethod(Library.LIFESPAN_LOG, instance, "destroy", new Class[] {}, null);
      
          String className = instance.getClass().getName();
          if (succeeded) {
-            LOG.info("Deinitialized instance of " + className + '.');
+            Library.LIFESPAN_LOG.info("Deinitialized instance of " + className + '.');
          } else {
-            LOG.error("Failed to deinitialize instance of " + className + '.');
+            Library.LIFESPAN_LOG.error("Failed to deinitialize instance of " + className + '.');
          }
       }
    }
@@ -946,7 +941,7 @@ implements DefaultResultCodes {
 
    /**
     * Forwards a call to a function. The call will actually be handled by
-    * {@link Function#handleCall(ServletRequest)}.
+    * {@link Function#handleCall(long,ServletRequest)}.
     *
     * @param start
     *    the start time of the request, in milliseconds since midnight January

@@ -33,12 +33,6 @@ implements Responder, Log {
     */
    private static final String FQCN = CallContext.class.getName();
 
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(CallContext.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -261,7 +255,7 @@ implements Responder, Log {
       _session         = session;
       _returnSessionID = true;
 
-      if (LOG.isDebugEnabled()) {
+      if (Library.RUNTIME_LOG.isDebugEnabled()) {
          FastStringBuffer buffer = new FastStringBuffer(80);
          buffer.append(_logPrefix);
          buffer.append("Created session ");
