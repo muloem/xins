@@ -3,11 +3,11 @@ $Id$
 
 
 Version control:
-[ ] Create a branch called BRANCH_1_0_x. Make sure empty directories are not included in the new branch.
+[ ] File TODO should be removed before the branch is created.
+[ ] File TODO.RELEASE_1_0 should be removed before the branch is created.
+[ ] Create branch BRANCH_1_0_x. Make sure empty directories are not included.
 [ ] Set @since tags on all classes to: XINS 1.0.0.
-[ ] File CHANGES file should be moved to xins-docs.
-[ ] File TODO should be removed.
-[ ] File TODO.RELEASE_1_0 should be removed.
+[ ] CHANGES file should be moved to xins-docs.
 [ ] First tag on the BRANCH_1_0_x branch should be RELEASE_1_0_0_RC1
 
 Improve service framework in org.xins.common.service:
@@ -116,11 +116,10 @@ Improve server framework XINS version logging:
 [ ] Log the current XINS version (INFO level)
 [ ] Log if the current XINS version is not a production version, i.e. does not match the regex [1-9][0-9]*\.[0-9]+\.[0-9]+ (WARNING level)
 [ ] Log the XINS version the API package was built with (INFO level)
-[ ] Log if the API package was built with a different XINS major version as the current XINS version (WARN level)
-[ ] Log if the API package was built with a higher XINS version as the current one (WARN level)
+[ ] Log if the API package was built with a different XINS major version as the current XINS version (WARNING level)
+[ ] Log if the API package was built with a higher XINS version as the current one (WARNING level)
 
 Other:
-[ ] Finalize log entry ID's.
 [ ] Prepare the announcement (text + web sites where it will be posted)
 [ ] Extend unit tests.
 [ ] Make sure the automated release process works for the 1.x.y releases.
