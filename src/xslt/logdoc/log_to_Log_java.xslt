@@ -252,7 +252,7 @@ public class Log extends Object {
 		<xsl:apply-templates select="description" />
 		<xsl:text><![CDATA[</em></blockquote>
     */
-   public static final log_]]></xsl:text>
+   public static final void log_]]></xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<!-- TODO: Parameters -->
