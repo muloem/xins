@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.ProgrammingError;
 import org.xins.common.Utils;
@@ -47,10 +52,59 @@ extends Object {
     */
    private static final String CLASSNAME = CallingConvention.class.getName();
 
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
-   //------------------------------------------------------------------------
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
+   /**
+    * The pattern which normal parameter names should match, as a character
+    * string.
+    */
+   private static final String PATTERN_STRING = "[a-z][a-z0-9_]*";
+
+   /**
+    * The compiled pattern which normal parameter names should match.
+    */
+   private static final Pattern PATTERN;
+
+
+   //-------------------------------------------------------------------------
    // Class functions
-   //------------------------------------------------------------------------
+   //-------------------------------------------------------------------------
+
+   /**
+    * Initializes this class. This function compiles {@link #PATTERN_STRING}
+    * to a {@link Pattern} and then stores that in {@link #PATTERN}.
+    */
+   static {
+      final String THIS_METHOD = "<clinit>()";
+      try {
+         PATTERN = PATTERN_COMPILER.compile(
+            PATTERN_STRING, 
+            Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
+
+      } catch (MalformedPatternException exception) {
+         final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
+         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
+         final String DETAIL = "The pattern \""
+                             + PATTERN_STRING
+                             + "\" is considered malformed.";
+
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL,
+                                         exception);
+      }
+   }
+
 
    /**
     * Determines the name of the function to be called based on the parameters
@@ -150,7 +204,6 @@ extends Object {
    void cleanUpParameters(ProtectedPropertyReader parameters,
                           Object                  secretKey) {
       
-      // TODO: Ignore (and log?) invalid parameter names
       // TODO: Should we not let the diagnostic context ID through?
 
       // If the set of parameters passed is null, then nothing is done.
@@ -168,10 +221,17 @@ extends Object {
          String name  = (String) names.get(i);
          String value = parameters.get(name);
 
-         // Remove the parameter if appropriate
-         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value)
-         || name.charAt(0) == '_'    || "function".equals(name)) {
+         // If the name or value is empty, then remove the parameter
+         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value)) {
+            parameters.set(secretKey, name, null);
 
+         // XXX: If the parameter name is "function", then remove it
+         } else if ("function".equals(name)) {
+            parameters.set(secretKey, name, null);
+
+         // If the pattern is not matched, then log and remove it
+         } else if (! PATTERN_MATCHER.matches(name, PATTERN)) {
+            // FIXME: Log this
             parameters.set(secretKey, name, null);
          }
       }
