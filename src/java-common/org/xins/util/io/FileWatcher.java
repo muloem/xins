@@ -131,7 +131,7 @@ public final class FileWatcher extends Thread {
       }
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Starting watch thread for file \"" + _file.getPath() + "\".");
+         LOG.info("Starting watch thread for file \"" + _file.getPath() + "\".");
       }
 
       while (! _stopped) {
@@ -173,7 +173,7 @@ public final class FileWatcher extends Thread {
       // Change the interval
       long newInterval = 1000L * (long) interval;
       if (newInterval != _interval) {
-         LOG.debug("Changing the watch interval for file \"" + _file.getPath() + "\" from " + (_interval/1000) + " to " + interval + " seconds.");
+         LOG.info("Changing the watch interval for file \"" + _file.getPath() + "\" from " + (_interval/1000) + " to " + interval + " seconds.");
          _interval = newInterval;
       }
    }
@@ -185,7 +185,7 @@ public final class FileWatcher extends Thread {
       _stopped = true;
       
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Stopping watch thread for file \"" + _file.getPath() + "\".");
+         LOG.info("Stopping watch thread for file \"" + _file.getPath() + "\".");
       }
 
       this.interrupt();
