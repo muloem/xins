@@ -115,10 +115,12 @@
 			</target>
 
 			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+				<xsl:variable name="api"      select="@name"                                                         />
+				<xsl:variable name="api_file" select="concat($project_home, '/', $specsdir, '/', @name, '/api.xml')" />
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
 						<xsl:with-param name="api">
-							<xsl:value-of select="@name" />
+							<xsl:value-of select="$api" />
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
@@ -130,15 +132,28 @@
 					</xsl:call-template>
 				</xsl:variable>
 
-				<target name="classes-api-{@name}" depends="-prepare-classes" description="Compiles the Java classes for the '{@name}' API">
+				<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
 					<mkdir dir="{$project_home}/build/java-fundament/{$packageAsDir}" />
 					<style
-					in="{$project_home}/{$specsdir}/{@name}/api.xml"
+					in="{$api_file}"
 					out="{$project_home}/build/java-fundament/{$packageAsDir}/APIImpl.java"
 					style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="package"      expression="{$package}"      />
+					</style>
+					<!-- TODO: Include only functions mentioned in api.xml -->
+					<style
+					basedir="{$project_home}/{$specsdir}/{$api}"
+					destdir="{$project_home}/build/java-fundament/{$packageAsDir}"
+					style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
+					includes="*.fnc"
+					extension=".java">
+						<param name="project_home" expression="{$project_home}" />
+						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="package"      expression="{$package}"      />
+						<param name="api"          expression="{@api}"          />
+						<param name="api_file"     expression="{@api_file}"     />
 					</style>
 				</target>
 			</xsl:for-each>
