@@ -64,4 +64,6 @@
 	<translation entry="1507">Fermeture du conteneur de la Servlet.</translation>
 	<translation entry="1508">Echec du chargement de la Servlet à cause d'une exception Servlet.</translation>
 	<translation entry="1509">Echec du chargement de la Servlet à cause d'une exception générique.</translation>
+	<translation entry="1510"><value-of-param name="message" /></translation>
+	<translation entry="1511"><value-of-param name="message" /></translation>
 </translation-bundle>

@@ -14,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
+import org.xins.common.Log;
 
 /**
  * This class is an implementation of the ServletContext that can be
@@ -50,10 +51,6 @@ public class XINSServletContext implements ServletContext {
 
    public void removeAttribute(String str) {
       throw new UnsupportedOperationException();
-   }
-
-   public void log(String msg) {
-      System.out.println(msg);
    }
 
    public Servlet getServlet(String str) {
@@ -104,9 +101,12 @@ public class XINSServletContext implements ServletContext {
       log(msg, exception);
    }
 
+   public void log(String msg) {
+      Log.log_1510(msg);
+   }
+
    public void log(String msg, Throwable throwable) {
-      System.err.println(msg);
-      throwable.printStackTrace();
+      Log.log_1511(throwable, msg);
    }
 
    public void setAttribute(String str, Object obj) {

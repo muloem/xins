@@ -97,6 +97,7 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("?",        ".");
       doTestParseSimplePattern("_Get*",    "_Get.*");
       doTestParseSimplePattern("_Get*i?n", "_Get.*i.n");
+      doTestParseSimplePattern("_Get*,_Dis*", "_Get.*|_Dis.*");
       doTestParseSimplePattern("*on",      ".*on");
       doTestParseSimplePattern("...",      "\\.\\.\\.");
 

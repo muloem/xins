@@ -11,6 +11,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.collections.InvalidPropertyValueException;
+import org.xins.common.collections.MissingRequiredPropertyException;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.manageable.InitializationException;
+
 /**
  * Abstraction of a custom calling convention. A custom calling convention
  * can be extended to create your own calling convention.

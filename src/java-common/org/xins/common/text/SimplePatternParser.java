@@ -43,6 +43,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *    <tr><td>_Get*</td>         <td>_Get.*</td>               </tr>
  *    <tr><td>_Get*i?n</td>      <td>_Get.*i.n</td>            </tr>
  *    <tr><td>*on</td>           <td>.*on</td>                 </tr>
+ *    <tr><td>_Get*,_Dis*</td>   <td>_Get.*|_Dis.*</td>        </tr>
  * </table>
  *
  * @version $Revision$ $Date$

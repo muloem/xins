@@ -277,6 +277,14 @@
 		<entry id="1509" level="ERROR" exception="true">
 			<description>Failed to load the Servlet due to a generic exception.</description>
 		</entry>
+		<entry id="1510" level="INFO">
+			<description>Message logged using the Servlet context.</description>
+			<param name="message" type="text" nullable="true" />
+		</entry>
+		<entry id="1511" level="WARNING" exception="true">
+			<description>Exception logged using the Servlet context.</description>
+			<param name="message" type="text" nullable="true" />
+		</entry>
 	</group>
 	
 	<group id="threads" name="Threading" />

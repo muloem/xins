@@ -64,4 +64,6 @@
 	<translation entry="1507">Closing the Servlet container.</translation>
 	<translation entry="1508">Failed to load the Servlet due to a Servlet exception.</translation>
 	<translation entry="1509">Failed to load the Servlet due to a generic exception.</translation>
+	<translation entry="1510"><value-of-param name="message" /></translation>
+	<translation entry="1511"><value-of-param name="message" /></translation>
 </translation-bundle>

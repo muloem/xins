@@ -346,6 +346,11 @@ extends HttpServlet {
    private ServletConfig _servletConfig;
 
    /**
+    * The default calling convention stored in the Servlet.
+    */
+   private String _defaultCallingConvention;
+
+   /**
     * The name of the runtime configuration file.
     */
    private String _configFile;
@@ -832,17 +837,18 @@ extends HttpServlet {
          // XXX: Trim the API name?
 
          // Determine the default calling convention
-         String ccParam = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
-         if (! TextUtils.isEmpty(ccParam)) {
-            _callingConvention = getCallingConvention(ccParam);
+         _defaultCallingConvention = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
+         if (! TextUtils.isEmpty(_defaultCallingConvention)) {
+            _callingConvention = createCallingConvention(_defaultCallingConvention);
             if (_callingConvention == null) {
-               Log.log_3210(API_CALLING_CONVENTION_PROPERTY, ccParam, "No such calling convention.");
+               Log.log_3210(API_CALLING_CONVENTION_PROPERTY, _defaultCallingConvention, "No such calling convention.");
                setState(API_BOOTSTRAP_FAILED);
                throw new ServletException();
             }
             // TODO: Log that we use the specified calling convention
          } else {
             // TODO: Use shared StandardCallingConvention instance
+            _defaultCallingConvention = "_xins-std";
             _callingConvention = new StandardCallingConvention();
             // TODO: Log that we use the default calling convention
          }
@@ -951,6 +957,12 @@ extends HttpServlet {
          }
 
          try {
+            
+            // Initialize the default calling convention for this API
+            if (_callingConvention != null) {
+               _callingConvention.init(new ServletConfigPropertyReader(_servletConfig), _runtimeProperties);
+            }
+
             _api.init(_runtimeProperties);
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
@@ -1155,18 +1167,24 @@ extends HttpServlet {
       // is specified in the request, then use that, otherwise use the calling
       // convention stored in the field.
       String ccParam = (String) request.getParameter(CALLING_CONVENTION_PARAMETER);
-      CallingConvention callingConvention;
-      if (ccParam != null) {
-         callingConvention = getCallingConvention(ccParam);
-         // TODO: Log if specified calling convention was found & will be used
-         // TODO: Log if specified calling convention was not found
-      } else {
-         callingConvention = null;
-         // TODO: Log that no calling convention was specified
+      CallingConvention callingConvention = null;
+      if (ccParam != null && !ccParam.equals(_defaultCallingConvention)) {
+         try {
+            callingConvention = createCallingConvention(ccParam);
+            if (callingConvention != null) {
+               callingConvention.init(new ServletConfigPropertyReader(_servletConfig), _runtimeProperties);
+            }
+         } catch (Exception ex) {
+            
+            // the calling convention could not be created or initialized
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+         }
       }
-
+      
       if (callingConvention == null) {
          callingConvention = _callingConvention;
+         // TODO: Log that no calling convention was specified
       }
 
       // Call the API if the state is READY
@@ -1257,7 +1275,7 @@ extends HttpServlet {
     *    a {@link CallingConvention} object that matches the specified calling
     *    convention name, or <code>null</code> if no match is found.
     */
-   CallingConvention getCallingConvention(String name) {
+   CallingConvention createCallingConvention(String name) {
 
       // Old-style calling convention
       if (OLD_STYLE_CALLING_CONVENTION.equals(name)) {
@@ -1280,11 +1298,7 @@ extends HttpServlet {
          }
          String conventionClass = _servletConfig.getInitParameter(API_CALLING_CONVENTION_CLASS_PROPERTY);
          try {
-            Class[] constructorClasses = {PropertyReader.class};
-            Object[] constructorValues = {_runtimeProperties};
-            Constructor conventionConst = Class.forName(conventionClass).getConstructor(constructorClasses);
-            CustomCallingConvention convention = (CustomCallingConvention) conventionConst.newInstance(constructorValues);
-            return convention;
+            return (CustomCallingConvention) Class.forName(conventionClass).newInstance();
          } catch (Exception ex) {
 
             // TODO Log
