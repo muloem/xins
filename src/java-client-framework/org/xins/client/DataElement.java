@@ -25,12 +25,6 @@ import org.xins.common.text.TextUtils;
  * <p>Note that this class is not thread-safe. It should not be used from
  * different threads at the same time. This applies even to read operations.
  *
- * <p><em>Note that the behavior of this class has been slightly redefined in XINS
- * 1.1. In XINS 1.0, the name for a <code>DataElement</code> was a combination
- * of the namespace prefix and the local name. In XINS 1.1, the name is just
- * the local name. Since XINS 1.0 did not support XML Namespaces yet, this is
- * not considered an incompatibility.</em>
- *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -38,6 +32,12 @@ import org.xins.common.text.TextUtils;
  * @since XINS 1.0.0
  */
 public class DataElement implements Cloneable {
+
+   // NOTE: The behavior of this class has been slightly redefined in XINS
+   //       1.1. In XINS 1.0, the name for a DataElement was a combination of
+   //       the namespace prefix and the local name. In XINS 1.1, the name is
+   //       just the local name. Since XINS 1.0 did not support XML Namespaces
+   //       yet, this is not considered an incompatibility.
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -364,14 +364,33 @@ public class DataElement implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
     *
+    * @since XINS 1.1.0
+    */
+   public String getAttribute(String localName)
+   throws IllegalArgumentException {
+      return getAttribute(null, localName);
+   }
+
+   /**
+    * Gets the value of an attribute that has no namespace.
+    *
+    * @param localName
+    *    the local name of the attribute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the attribute that matches the specified local name and
+    *    has no namespace defined, or <code>null</code> if the attribute is
+    *    either not set or set to <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    *
     * @deprecated
-    *    Deprecated since XINS 1.1.0. Use either
-    *    {@link #getAttribute(String,String)} or
-    *    {@link #getAttribute(DataElement.QualifiedName)} instead. This method
-    *    has been deprecated since it used to expect/accept a combination of
-    *    the namespace prefix and the local name in XINS 1.0, although that
-    *    XML Namespaces were not supported yet. This method is guaranteed not
-    *    to be removed before XINS 2.0.0.
+    *    Deprecated since XINS 1.1.0. Use {@link #getAttribute(String)}
+    *    instead. This method has been deprecated since it used to
+    *    expect/accept a combination of the namespace prefix and the local
+    *    name in XINS 1.0, although that XML Namespaces were not supported
+    *    yet. This method is guaranteed not to be removed before XINS 2.0.0.
     */
    public String get(String localName) throws IllegalArgumentException {
       return getAttribute(null, localName);
