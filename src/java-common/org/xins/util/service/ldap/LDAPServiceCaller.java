@@ -10,6 +10,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
@@ -30,6 +31,11 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logger for this class.
+    */
+   private static final Logger LOG = Logger.getLogger(LDAPServiceCaller.class.getName());
 
    /**
     * Authentication details to be used when none are specified.
@@ -253,7 +259,27 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
       // Connect
       // TODO: Connection time-out
-      return new InitialDirContext(env);
+      InitialDirContext context = null;
+      try {
+         context = new InitialDirContext(env);
+         return context;
+      } finally {
+         if (context != null) {
+            if (LOG.isDebugEnabled()) {
+               if (principal == null) {
+                  LOG.debug("Authenticated with " + url + '.');
+               } else {
+                  LOG.debug("Authenticated with " + url + " as \"" + principal + "\".");
+               }
+            } else {
+               if (principal == null) {
+                  LOG.error("Failed to authenticate with " + url + '.');
+               } else {
+                  LOG.error("Failed to authenticate with " + url + " as \"" + principal + "\".");
+               }
+            }
+         }
+      }
    }
 
    /**
@@ -292,6 +318,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       String filter     = query.getFilter();
 
       // Create SearchControls object
+      // TODO: Allow configuration of maximum
       SearchControls searchControls = new SearchControls(
          SearchControls.SUBTREE_SCOPE, // scope
          0L,                           // return all entries that match, no maximum
@@ -302,13 +329,24 @@ public final class LDAPServiceCaller extends ServiceCaller {
       );
 
       // Perform the search
-      NamingEnumeration ne = context.search(searchBase, filter, searchControls);
+      NamingEnumeration ne = null;
+      boolean succeeded = false;
+      try {
+         ne = context.search(searchBase, filter, searchControls);
+         succeeded = true;
+      } finally {
+         if (!succeeded) {
+            LOG.error("Failed to perform search with base \"" + searchBase + "\", filter \"" + filter + "\".");
+         }
+      }
+
       if (ne == null) {
+         LOG.debug("Performed search with base \"" + searchBase + "\", filter \"" + filter + "\".");
          return null;
       }
 
       // Convert the results
-      boolean succeeded = false;
+      succeeded = false;
       try {
          QueryResult result = new QueryResult(true, ne);
          succeeded = true;
@@ -318,15 +356,17 @@ public final class LDAPServiceCaller extends ServiceCaller {
          // If no exception has been thrown yet, then still
          // NamingEnumeration.close() could throw one
          if (succeeded) {
+            LOG.debug("Performed search with base \"" + searchBase + "\", filter \"" + filter + "\".");
             ne.close();
 
          // If an exception has been thrown, don't allow it to be hidden by an
          // exception thrown by NamingEnumeration.close()
          } else {
+            LOG.error("Failed to perform search with base \"" + searchBase + "\", filter \"" + filter + "\".");
             try {
                ne.close();
             } catch (Throwable exception) {
-               // TODO: Log and ignore
+               LOG.error("Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.", exception);
             }
          }
       }
