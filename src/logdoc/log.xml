@@ -420,6 +420,11 @@
 			<param name="propertyValue" nullable="false" />
 			<param name="message" />
 		</entry>
+		<entry id="4036" level="ERROR">
+			<description>Access rule parsed.</description>
+			<param name="index" nullable="false" />
+			<param name="rule"  nullable="false" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime" category="org.xins.server.runtime">
