@@ -279,7 +279,7 @@ extends Object {
        * tag; 1 means that the parser entered in an direct sub-element of the
        * &lt;data&gt; tag, etc.
        */
-      private int _level = -1;
+      private int _dataSectionLevel = -1;
 
 
       //-------------------------------------------------------------------------
@@ -377,7 +377,7 @@ extends Object {
                // Maintain a list of the elements, with data as the root
                _elements = new HashMap();
                _elements.put(ZERO, new DataElement("data"));
-               _level = 0;
+               _dataSectionLevel = 0;
 
                // Update the state
                _state = IN_DATA_SECTION;
@@ -402,7 +402,7 @@ extends Object {
          } else if (_state == IN_DATA_SECTION) {
 
             // Increase the depth level
-            _level++;
+            _dataSectionLevel++;
 
             // Construct a DataElement
             DataElement element = new DataElement(qName);
@@ -413,7 +413,7 @@ extends Object {
                String value = atts.getValue(i);
                element.addAttribute(key, value);
             }
-            _elements.put(new Integer(_level), element);
+            _elements.put(new Integer(_dataSectionLevel), element);
 
             // Reserve buffer for PCDATA
             _pcdata = new FastStringBuffer(20);
@@ -468,10 +468,10 @@ extends Object {
          } else if (_state == IN_DATA_SECTION) {
 
             // Get the DataElement for which we process the end tag
-            DataElement child = (DataElement) _elements.get(new Integer(_level));
+            DataElement child = (DataElement) _elements.get(new Integer(_dataSectionLevel));
 
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
-            if (_level == 0) {
+            if (_dataSectionLevel == 0) {
                if (! qName.equals("data")) {
                   String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
                   Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
@@ -479,7 +479,7 @@ extends Object {
                }
 
                // Reset the state
-               _level = -1;
+               _dataSectionLevel = -1;
                _state = AT_ROOT_LEVEL;
 
             // Otherwise it's a custom element
@@ -492,10 +492,10 @@ extends Object {
 
                // Reset the PCDATA content and the level
                _pcdata = null;
-               _level--;
+               _dataSectionLevel--;
 
                // Add the child to the parent
-               DataElement parent = (DataElement) _elements.get(new Integer(_level));
+               DataElement parent = (DataElement) _elements.get(new Integer(_dataSectionLevel));
                parent.addChild(child);
             }
 
