@@ -9,6 +9,8 @@ package org.xins.common.collections;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Exception thrown to indicate the property of a value is invalid.
  *
@@ -94,7 +96,7 @@ extends Exception {
                                         String propertyValue)
    throws IllegalArgumentException {
 
-      this(propertyName, propertyValue, null);
+      this(propertyName, propertyValue, null, null);
    }
 
    /**
@@ -118,6 +120,36 @@ extends Exception {
                                         String propertyValue,
                                         String reason)
    throws IllegalArgumentException {
+      this(propertyName, propertyValue, reason, null);
+   }
+
+   /**
+    * Constructs a new <code>InvalidPropertyValueException</code> with the
+    * specified reason and cause.
+    *
+    * @param propertyName
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @param propertyValue
+    *    the (invalid) value set for the property, cannot be
+    *    <code>null</code>.
+    *
+    * @param reason
+    *    additional description of the problem, or <code>null</code>.
+    *
+    * @param cause
+    *    the cause for this exception, or <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>propertyName == null || propertyValue == null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public InvalidPropertyValueException(String    propertyName,
+                                        String    propertyValue,
+                                        String    reason,
+                                        Throwable cause)
+   throws IllegalArgumentException {
 
       // Construct message and call superclass constructor
       super(createMessage(propertyName, propertyValue, reason));
@@ -126,6 +158,11 @@ extends Exception {
       _propertyName  = propertyName;
       _propertyValue = propertyValue;
       _reason        = reason;
+
+      // Set the cause for this exception
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
    }
 
 
