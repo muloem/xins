@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     option to Ant to pass the XINS lib directory. This is required when using
     Java 1.3. Otherwise it may not be able to find the proper XML/XSLT
     libraries.
+  - Linking to Java 1.3 API docs instead of the Java 1.4 API docs.
 
 * Logdoc:
   - Deprecated the LogdocExceptionUtils class in favor of a new ExceptionUtils
