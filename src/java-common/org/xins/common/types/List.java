@@ -32,15 +32,6 @@ public class List extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>List</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private List() {
-      this("list", null);
-   }
-
-   /**
     * Constructs a new <code>List</code> object (constructor for
     * subclasses).
     *
