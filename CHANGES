@@ -1,4 +1,19 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.43:
+
+* AbstractCompositeFunctionCaller now actually implements
+  CompositeFunctionCaller. This fixes a bug in CallTargetGroup, method
+  getActualCallTarget(String).
+
+* Added RandomCallTargetGroup and RoundRobinCallTargetGroup classes (no-op).
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.42:
+
+* Fixed problem in specdocs/type_to_html.xslt. It used the template
+  'urlencode' without including urlencode.xslt.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.41:
 
 * Fixed the 'xins' shell script to work on non-FreeBSD operating systems. Only
