@@ -544,7 +544,7 @@ implements DefaultResultCodes {
          log.debug("Bootstrapping manageable object of class " + className + " for " + _name + " API.");
          try {
             m.bootstrap(_buildSettings);
-            log.info("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
+            log.debug("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
          } catch (MissingRequiredPropertyException exception) {
             throw exception;
          } catch (InvalidPropertyValueException exception) {
@@ -696,7 +696,7 @@ implements DefaultResultCodes {
          log.debug("Initializing manageable object of class " + className + " for " + _name + " API.");
          try {
             m.init(runtimeSettings);
-            log.info("Initialized manageable object of class " + className + " for " + _name + " API.");
+            log.debug("Initialized manageable object of class " + className + " for " + _name + " API.");
          } catch (MissingRequiredPropertyException exception) {
             throw exception;
          } catch (InvalidPropertyValueException exception) {
@@ -724,7 +724,7 @@ implements DefaultResultCodes {
          log.debug("Initializing function " + functionName + " for " + _name + " API.");
          try {
             f.init(runtimeSettings);
-            log.info("Initialized function " + functionName + " for " + _name + " API.");
+            log.debug("Initialized function " + functionName + " for " + _name + " API.");
          } catch (MissingRequiredPropertyException exception) {
             throw exception;
          } catch (InvalidPropertyValueException exception) {
