@@ -24,8 +24,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 
-import org.xins.logdoc.LocaleNotSupportedException;
 import org.xins.logdoc.LogCentral;
+import org.xins.logdoc.UnsupportedLocaleException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.InvalidPropertyValueException;
@@ -721,7 +721,7 @@ extends HttpServlet {
             try {
                LogCentral.setLocale(newLocale);
                Log.log_3007(currentLocale, newLocale);
-            } catch (LocaleNotSupportedException exception) {
+            } catch (UnsupportedLocaleException exception) {
                Log.log_3008(currentLocale, newLocale);
             }
          }

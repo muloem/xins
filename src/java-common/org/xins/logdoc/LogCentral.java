@@ -67,12 +67,12 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>newLocale == null</code>.
     *
-    * @throws LocaleNotSupportedException
+    * @throws UnsupportedLocaleException
     *    if the specified locale is not supported by all registered
     *    <em>logdoc</em> <code>Log</code> classes.
     */
    public static final void setLocale(String newLocale)
-   throws IllegalArgumentException, LocaleNotSupportedException {
+   throws IllegalArgumentException, UnsupportedLocaleException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newLocale", newLocale);
@@ -81,7 +81,7 @@ extends Object {
       int size = CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
          if (CONTROLLERS[i].isLocaleSupported(newLocale) == false) {
-            throw new LocaleNotSupportedException(newLocale);
+            throw new UnsupportedLocaleException(newLocale);
          }
       }
 

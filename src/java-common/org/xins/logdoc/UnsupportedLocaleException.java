@@ -12,7 +12,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public final class LocaleNotSupportedException extends Exception {
+public final class UnsupportedLocaleException extends Exception {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -27,7 +27,7 @@ public final class LocaleNotSupportedException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>LocaleNotSupportedException</code>.
+    * Constructs a new <code>UnsupportedLocaleException</code>.
     *
     * @param locale
     *    the locale, cannot be <code>null</code>.
@@ -35,7 +35,7 @@ public final class LocaleNotSupportedException extends Exception {
     * @throws IllegalArgumentException
     *    if <code>locale == null</code>.
     */
-   public LocaleNotSupportedException(String locale)
+   public UnsupportedLocaleException(String locale)
    throws IllegalArgumentException {
 
       // Call superconstructor first
