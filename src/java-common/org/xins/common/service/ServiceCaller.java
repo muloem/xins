@@ -92,11 +92,6 @@ import org.xins.common.TimeOutException;
  *        and a service-specific call config object (derived from
  *        {@link CallConfig}).  It should call
  *        {@link #doCall(CallRequest,CallConfig) doCall}<code>(request, callConfig)</code>.
- *    <li>There should be a <code>call</code> method that accepts both a
- *        service-specific request object (derived from {@link CallRequest}).
- *        and a service-specific call config object (derived from
- *        {@link CallConfig}).  It should call
- *        {@link #doCall(CallRequest,CallConfig) doCall}<code>(request, callConfig)</code>.
  *    <li>The method
  *        {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)} must
  *        be implemented as specified.
