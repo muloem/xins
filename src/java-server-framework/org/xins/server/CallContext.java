@@ -269,17 +269,6 @@ implements Responder, Log {
    }
 
    /**
-    * Returns the <code>XMLOutputter</code> that is used to generate XML.
-    *
-    * @return
-    *    the underlying {@link XMLOutputter} that sends its output to the
-    *    {@link FastStringWriter}.
-    */
-   XMLOutputter getXMLOutputter() {
-      return _xmlOutputter;
-   }
-
-   /**
     * Returns the stored success indication. The default is <code>true</code>
     * and it will <em>only</em> be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first

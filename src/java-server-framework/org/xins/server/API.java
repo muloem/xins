@@ -1026,8 +1026,7 @@ implements DefaultResultCodes {
 
       // Short-circuit if we are shutting down
       if (_shutDown) {
-         XMLOutputter xmlOutputter = context.getXMLOutputter();
-         xmlOutputter.reset(out, "UTF-8");
+         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
          xmlOutputter.attribute("code",    INTERNAL_ERROR.getValue());
@@ -1063,8 +1062,7 @@ implements DefaultResultCodes {
          success = false;
          code    = INTERNAL_ERROR.getValue();
 
-         XMLOutputter xmlOutputter = context.getXMLOutputter();
-         xmlOutputter.reset(out, "UTF-8");
+         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
          xmlOutputter.attribute("code", code);
