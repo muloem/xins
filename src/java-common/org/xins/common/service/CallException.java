@@ -206,10 +206,11 @@ public abstract class CallException extends Exception {
       super(createMessage(shortReason, request, target, duration, detail),
             rootCauseFor(cause));
 
-      // Store request and target
+      // Store information in fields
       _request  = request;
       _target   = target;
       _duration = duration;
+      _detail   = detail;
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -243,6 +244,11 @@ public abstract class CallException extends Exception {
     * there is none or if it has not been set yet.
     */
    private CallException _next;
+
+   /**
+    * A detailed description of the problem. Can be <code>null</code>.
+    */
+   private String _detail;
 
 
    //-------------------------------------------------------------------------
@@ -316,5 +322,15 @@ public abstract class CallException extends Exception {
     */
    public final CallException getNext() {
       return _next;
+   }
+
+   /**
+    * Returns a detailed description of problem, if any.
+    *
+    * @return
+    *    a detailed description, if available, otherwise <code>null</code>.
+    */
+   public String getDetail() {
+      return _detail;
    }
 }
