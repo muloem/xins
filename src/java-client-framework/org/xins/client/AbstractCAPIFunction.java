@@ -13,6 +13,7 @@ import java.util.List;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.CollectionUtils;
+import org.xins.common.collections.ProtectedList;
 
 import org.xins.common.constraint.Constraint;
 
@@ -41,6 +42,11 @@ extends Object {
     * Fully-qualified name of this class.
     */
    private static final String CLASSNAME = AbstractCAPIFunction.class.getName();
+
+   /**
+    * Secret key used to seal protected collection objects.
+    */
+   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -90,18 +96,20 @@ extends Object {
       if (inputConstraints == null || inputConstraints.length == 0) {
          _inputConstraints = Collections.EMPTY_LIST;
       } else {
-         _inputConstraints = CollectionUtils.list("inputConstraints",
-                                                  inputConstraints,
-                                                  1);
+         List list = CollectionUtils.list("inputConstraints",
+                                          inputConstraints,
+                                          1);
+         _inputConstraints = new ProtectedList(SECRET_KEY, list);
       }
 
       // Check and store output constraints
       if (outputConstraints == null || outputConstraints.length == 0) {
          _outputConstraints = Collections.EMPTY_LIST;
       } else {
-         _outputConstraints = CollectionUtils.list("outputConstraints",
-                                                   outputConstraints,
-                                                   1);
+         List list = CollectionUtils.list("outputConstraints",
+                                          outputConstraints,
+                                          1);
+         _outputConstraints = new ProtectedList(SECRET_KEY, list);
       }
    }
 
@@ -143,28 +151,26 @@ extends Object {
    }
 
    /**
-    * Returns the list of input constraints for this function.
+    * Returns the list of input constraints for this function. The returned
+    * {@link List} is unmodifiable.
     *
     * @return
-    *    the list of associated input constraints, never <code>null</code>.
+    *    an unmodifiable view on the list of associated input constraints,
+    *    never <code>null</code>.
     */
    List getInputConstraints() {
-
-      // XXX: The returned list may be modifiable
-
       return _inputConstraints;
    }
 
    /**
-    * Returns the list of output constraints for this function.
+    * Returns the list of output constraints for this function. The returned
+    * {@link List} is unmodifiable.
     *
     * @return
-    *    the list of associated output constraints, never <code>null</code>.
+    *    an unmodifiable view on the list of associated output constraints,
+    *    never <code>null</code>.
     */
    List getOutputConstraints() {
-
-      // XXX: The returned list may be modifiable
-
       return _outputConstraints;
    }
 }
