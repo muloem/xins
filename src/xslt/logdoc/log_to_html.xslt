@@ -122,7 +122,7 @@
 					</tr>
 					<tr>
 						<td>FATAL</td>
-						<td>Fatal error messages. Indicates an error that keeps the whole application from functioning. Intervention from an operational manager is required to solve the problem. The application may even have to be restarted.</td>
+						<td>Fatal error messages. Indicates an error that keeps the whole application from functioning.</td>
 					</tr>
 				</table>
 			</body>
