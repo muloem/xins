@@ -208,6 +208,47 @@ public abstract class Type extends Object {
    protected abstract Object fromStringImpl(String string)
    throws TypeValueException;
 
+   /**
+    * Generates a string representation of the specified value for this type.
+    * The specified value must be an instance of the value class for this type
+    * (see {@link #getValueClass()}). Also, it may have to fall within a
+    * certain range of valid values, depending on the type.
+    *
+    * <p>The default implementation of this method in class {@link Type} does
+    * the following:
+    *
+    * <ul>
+    *    <li>if <code>value == null</code> then it throws an
+    *        {@link IllegalArgumentException};
+    *    <li>if <code>getValueClass().isInstance(value) == false</code> then
+    *        it throws a {@link ClassCastException};
+    *    <li>otherwise it returns
+    *        <code>value.</code>{@link Object#toString()}.
+    * </ul>
+    *
+    * @param value
+    *    the value, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>getValueClass().isInstance(value) == false</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value is not in the allowed range.
+    *
+    * @since XINS 0.57
+    */
+   public String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      if (getValueClass().isInstance(value) == false) {
+         throw new ClassCastException();
+      }
+      return value.toString();
+   }
+
    public final String toString() {
       return _name;
    }

@@ -5,6 +5,7 @@ package org.xins.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Enumeration type. An enumeration type only accepts a limited set of
@@ -112,6 +113,16 @@ public class EnumType extends Type {
 
    protected final Object fromStringImpl(String value) {
       return value;
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      String s = (String) value;
+      if (!isValidValueImpl(s)) {
+         throw new TypeValueException(this, s);
+      }
+      return s;
    }
 
    public final String getByName(String name) {

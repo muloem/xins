@@ -5,6 +5,7 @@ package org.xins.types.standard;
 
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Standard type <em>_boolean</em>.
@@ -148,10 +149,13 @@ public final class Boolean extends Type {
    }
 
    protected Object fromStringImpl(String string) {
-      if ("true".equals(string)) {
-         return TRUE;
-      } else {
-         return FALSE;
-      }
+      return "true".equals(string) ? TRUE : FALSE;
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      java.lang.Boolean b = (java.lang.Boolean) value;
+      return b.booleanValue() ? "true" : "false";
    }
 }

@@ -7,6 +7,7 @@ import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Patterns type. An enumeration type only accepts values that match a certain
@@ -96,6 +97,16 @@ public abstract class PatternType extends Type {
 
    protected final Object fromStringImpl(String value) {
       return value;
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      String s = (String) value;
+      if (!isValidValueImpl(s)) {
+         throw new TypeValueException(this, s);
+      }
+      return s;
    }
 
    /**
