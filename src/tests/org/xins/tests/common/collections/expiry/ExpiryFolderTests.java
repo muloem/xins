@@ -25,6 +25,10 @@ public class ExpiryFolderTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
+   // Use max queue wait time of 2 seconds
+   private static final long MAX_QUEUE_WAIT_TIME = 2000L;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -65,7 +69,7 @@ public class ExpiryFolderTests extends TestCase {
 
    public void testExpiryFolder() throws Throwable {
       ExpiryStrategy stategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, 10l);
+      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, MAX_QUEUE_WAIT_TIME);
       assertEquals("Incorrect name.", "Test1", folder.getName());
       assertEquals("Incorrect strategy.", stategy, folder.getStrategy());
       assertNull(folder.get("hello"));
@@ -119,7 +123,7 @@ public class ExpiryFolderTests extends TestCase {
 
    public void testRemove() throws Throwable {
       ExpiryStrategy stategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, 10l);
+      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, MAX_QUEUE_WAIT_TIME);
       folder.put("hello", "world");
       try {
          Thread.sleep(20);
