@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
@@ -57,12 +58,20 @@ public final class CallResult extends Object {
     *    output parameters returned by the function, or <code>null</code>.
     *
     * @param dataElement
-    *    the data element returned by the function, or <code>null</code>.
+    *    the data element returned by the function, or <code>null</code>; if
+    *    specified then the name must be <code>"data"</code>, with no
+    *    namespace.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>dataElement != null &amp;&amp;
+    *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
+    *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>));</code>
     */
    public CallResult(boolean success,
                      String  code,
                      Map     parameters,
-                     Element dataElement) {
+                     Element dataElement)
+   throws IllegalArgumentException {
       this(null, success, code, parameters, dataElement);
    }
 
@@ -84,16 +93,31 @@ public final class CallResult extends Object {
     *    output parameters returned by the function, or <code>null</code>.
     *
     * @param dataElement
-    *    the data element returned by the function, or <code>null</code>.
+    *    the data element returned by the function, or <code>null</code>; if
+    *    specified then the name must be <code>"data"</code>, with no
+    *    namespace.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>dataElement != null &amp;&amp;
+    *             !("data".equals(dataElement.</code>{@link Element#getName() getName()}<code>) &amp;&amp;</code>
+    *               {@link Namespace#NO_NAMESPACE}<code>.equals(dataElement.</code>{@link Element#getNamespace() getNamespace()}<code>));</code>
     */
    public CallResult(ActualFunctionCaller functionCaller,
                      boolean              success,
                      String               code,
                      Map                  parameters,
-                     Element              dataElement) {
+                     Element              dataElement)
+   throws IllegalArgumentException {
 
       // Clone the data element if there is one
       if (dataElement != null) {
+         String    dataElementName = dataElement.getName();
+         Namespace ns              = dataElement.getNamespace();
+         if (!"data".equals(dataElement.getName())) {
+            throw new IllegalArgumentException("dataElement.getName() returned \"" + dataElementName + "\", instead of \"data\".");
+         } else if (!Namespace.NO_NAMESPACE.equals(ns)) {
+            throw new IllegalArgumentException("dataElement.getNamespace() returned a namespace with URI \"" + ns.getURI() + "\", instead of no namespace.");
+         }
          dataElement = (Element) dataElement.clone();
       }
 
@@ -149,7 +173,7 @@ public final class CallResult extends Object {
     * result.
     *
     * @return
-    *    the <code>FunctionCaller</code> specified at construction time, or
+    *    the {@link ActualFunctionCaller} specified at construction time, or
     *    <code>null</code> if none was specified.
     */
    public ActualFunctionCaller getFunctionCaller() {
@@ -219,7 +243,8 @@ public final class CallResult extends Object {
     * <code>null</code>.
     *
     * @return
-    *    the extra data as an XML {@link Element}, can be <code>null</code>.
+    *    the extra data as an XML {@link Element}, can be <code>null</code>;
+    *    if it is not <code>null</code>, then <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
     */
    public Element getDataElement() {
       if (_dataElement == null) {
