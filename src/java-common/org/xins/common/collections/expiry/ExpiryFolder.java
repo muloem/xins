@@ -123,7 +123,7 @@ extends Object {
       _sizeLock             = new Object();
       _listeners            = new ArrayList(5);
 
-      // Initialize all the fields in _slots
+      // Initialize all slots to a new HashMap
       for (int i = 0; i < _slotCount; i++) {
          _slots[i] = new HashMap(89);
       }
@@ -435,6 +435,9 @@ extends Object {
          // If not found, then look in the slots
          if (value == null) {
             synchronized (_slots) {
+
+               // If found, then remove from the slot and add it to the
+               // recently accessed
                for (int i = 0; i < _slotCount && value == null; i++) {
                   value = _slots[i].remove(key);
                }
@@ -446,9 +449,12 @@ extends Object {
          }
       }
 
+      // If no entry was found then return null
       if (value == null) {
          return null;
       }
+
+      // FIXME: Actually remove the entry
 
       Entry entry = (Entry) value;
       if (entry.isExpired()) {
