@@ -21,29 +21,34 @@
 			<xsl:otherwise>false</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="sessionIDJavaType">
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="'true'"    />
-				<xsl:with-param name="type"     select="_text"     />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:variable>
-	<xsl:variable name="sessionIDJavaTypeIsPrimary">
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:call-template name="is_java_datatype">
-				<xsl:with-param name="text" select="$sessionIDJavaType" />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:variable>
 	<xsl:variable name="sessionsShared">
 		<xsl:if test="$sessionBased = 'true'">
 			<xsl:choose>
 				<xsl:when test="//api/session-based/@shared-sessions = 'true'">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
+		</xsl:if>
+	</xsl:variable>
+	<xsl:variable name="sessionIDJavaType">
+		<xsl:choose>
+			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+				<xsl:text>java.lang.String</xsl:text>
+			</xsl:when>
+			<xsl:when test="$sessionBased = 'true'">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="required" select="'true'"    />
+					<xsl:with-param name="type"     select="_text"     />
+				</xsl:call-template>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="sessionIDJavaTypeIsPrimary">
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$sessionIDJavaType" />
+			</xsl:call-template>
 		</xsl:if>
 	</xsl:variable>
 
@@ -62,14 +67,13 @@
 		<xsl:text>;</xsl:text>
 		<xsl:text><![CDATA[
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.xins.client.ActualFunctionCaller;
 import org.xins.client.CallResult;
 import org.xins.client.CallResultParser;
 import org.xins.client.FunctionCaller;
-import org.xins.client.InvalidCallResultException;
-import org.xins.client.UnsuccessfulCallException;
+import org.xins.client.SessionIDSplitter;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -95,18 +99,43 @@ public final class API extends Object {
     * Constructs a new <code>API</code> object for the specified remote API.
     *
     * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.
+    *    the function caller, cannot be <code>null</code>.]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text>
+    *
+    * @param sessionIDSplitter
+    *    splitter that converts a client-side session identifier to a target
+    *    API checksum and a target API-specific session ID.</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
     *
     * @throws IllegalArgumentException
-    *    if <code>functionCaller == null</code>.
+    *    if <code>functionCaller == null]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text> || sessionIDSplitter == null</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[</code>.
     */
-   public API(FunctionCaller functionCaller) throws IllegalArgumentException {
+   public API(FunctionCaller functionCaller]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text>, SessionIDSplitter sessionIDSplitter</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[) throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller", functionCaller);
+      MandatoryArgumentChecker.check("functionCaller", functionCaller]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text>, "sessionIDSplitter", sessionIDSplitter</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[);
 
       // Store data
-      _functionCaller = functionCaller;
+      _functionCaller = functionCaller;]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text>
+      _sessionIDSplitter = sessionIDSplitter;</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
    }
 
 
@@ -117,7 +146,17 @@ public final class API extends Object {
    /**
     * The remote API. This field cannot be <code>null</code>.
     */
-   private final FunctionCaller _functionCaller;
+   private final FunctionCaller _functionCaller;]]></xsl:text>
+		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:text><![CDATA[
+
+   /**
+    * The client-side session identifier splitter. Cannot be
+    * <code>null</code>.
+    */
+   private final SessionIDSplitter _sessionIDSplitter;]]></xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[
 
 
    //-------------------------------------------------------------------------
@@ -156,16 +195,24 @@ public final class API extends Object {
     * Calls the <em>]]></xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text><![CDATA[</em> function.]]></xsl:text>
-				<xsl:if test="$sessionBased = 'true'">
-					<xsl:text>
+				<xsl:choose>
+					<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+						<xsl:text><![CDATA[
+    *
+    * @param session
+    *    the client-side session, cannot be <code>null</code>.]]></xsl:text>
+					</xsl:when>
+					<xsl:when test="$sessionBased = 'true'">
+						<xsl:text>
     *
     * @param session
     *    the session identifier</xsl:text>
-					<xsl:if test="$sessionIDJavaTypeIsPrimary = 'false'">
-						<xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
-					</xsl:if>
-					<xsl:text>.</xsl:text>
-				</xsl:if>
+						<xsl:if test="$sessionIDJavaTypeIsPrimary = 'false'">
+							<xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
+						</xsl:if>
+						<xsl:text>.</xsl:text>
+					</xsl:when>
+				</xsl:choose>
 				<xsl:for-each select="input/param">
 					<xsl:variable name="required">
 						<xsl:choose>
@@ -243,14 +290,14 @@ public final class API extends Object {
 				</xsl:choose>
 				<xsl:text><![CDATA[
     *
-    * @throws IOException
+    * @throws java.io.IOException
     *    if there was an I/O error.
     *
-    * @throws InvalidCallResultException
+    * @throws org.xins.client.InvalidCallResultException
     *    if the call to the API resulted in an invalid response, either
     *    invalid XML or invalid as a XINS result document.
     *
-    * @throws UnsuccessfulCallException
+    * @throws org.xins.client.UnsuccessfulCallException
     *    if the call was unsuccessful; in some cases this may be determined
     *    locally already.
     */
@@ -296,9 +343,27 @@ public final class API extends Object {
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				<xsl:text>)
-   throws IOException, InvalidCallResultException, UnsuccessfulCallException {</xsl:text>
+   throws </xsl:text>
+				<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+					<xsl:text>org.xins.types.TypeValueException, </xsl:text>
+				</xsl:if>
+				<xsl:text>java.io.IOException,
+          org.xins.client.InvalidCallResultException,
+          org.xins.client.UnsuccessfulCallException {</xsl:text>
+				<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+ 					<!-- TODO: Improve performance by caching the result array -->
+					<xsl:text>
+
+      // Split the client-side session ID
+      String[] arr = new String[2];
+      _sessionIDSplitter.splitSessionID(session, arr);
+      ActualFunctionCaller afc = _functionCaller.getActualFunctionCallerByCRC32(arr[0]);
+      session = arr[1];</xsl:text>
+				</xsl:if>
 				<xsl:if test="input/param">
 					<xsl:text>
+
+      // Store the input parameters in a map
       Map params = new HashMap();</xsl:text>
 					<xsl:for-each select="input/param">
 						<xsl:variable name="required">
@@ -334,11 +399,25 @@ public final class API extends Object {
 				<xsl:if test="output/param or @createsSession = 'true'">
 					<xsl:text>CallResult result = </xsl:text>
 				</xsl:if>
-				<xsl:text>_functionCaller.call(</xsl:text>
-				<xsl:if test="$sessionBased = 'true'">
-					<!-- TODO: Convert the session ID correctly to a String -->
-					<xsl:text>session, </xsl:text>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+						<xsl:text>afc</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>_functionCaller</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>.call(</xsl:text>
+				<xsl:choose>
+					<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+						<!-- TODO: Split the session ID -->
+						<xsl:text>session, </xsl:text>
+					</xsl:when>
+					<xsl:when test="$sessionBased = 'true'">
+						<!-- TODO: Convert the session ID correctly to a String -->
+						<xsl:text>session, </xsl:text>
+					</xsl:when>
+				</xsl:choose>
 				<xsl:text>"</xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text>", </xsl:text>
@@ -356,7 +435,7 @@ public final class API extends Object {
 						<xsl:text>
       String session = result.getParameter("_session");
       if (session == null) {
-         throw new InvalidCallResultException("The call to function \"</xsl:text>
+         throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>\" returned no session ID.");
       }</xsl:text>
@@ -379,7 +458,7 @@ public final class API extends Object {
 						<xsl:value-of select="$returnType" />
 						<xsl:text>(result);
       } else {
-         throw new UnsuccessfulCallException(result);
+         throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 					</xsl:when>
 				</xsl:choose>
