@@ -100,16 +100,28 @@
 			<description>Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</description>
 		</entry>
 		<entry id="3312" level="DEBUG">
-			<description>Call to a specified target succeeded.</description>
-			<param name="target" />
+			<description>Call to a specific target succeeded.</description>
+			<param name="url" />
 		</entry>
 		<entry id="3313" level="WARNING">
-			<description>Call to a specified target failed for a specified reason.</description>
-			<param name="target" />
+			<description>Call to a specific target failed.</description>
+			<param name="url" />
 			<param name="reason" />
 		</entry>
 		<entry id="3314" level="ERROR">
-			<description>Failed to call any of the targets.</description>
+			<description>Call completely failed.</description>
+		</entry>
+		<entry id="3315" level="INFO">
+			<description>No more targets and no fail-over</description>
+		</entry>
+		<entry id="3316" level="INFO">
+			<description>No more targets but fail-over would be allowed</description>
+		</entry>
+		<entry id="3317" level="INFO">
+			<description>More targets available but fail-over is not allowed</description>
+		</entry>
+		<entry id="3318" level="INFO">
+			<description>More targets available and fail-over is allowed</description>
 		</entry>
 	</group>
 
