@@ -82,13 +82,12 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
-      /* This test fails
       try {
          MandatoryArgumentChecker.check(null, "world");
          fail("The MandatoryArgumentChecker did not throw an exception when a null name was passed.");
       } catch (IllegalArgumentException exception) {
          // as expected
-      }*/
+      }
       try {
          MandatoryArgumentChecker.check(null, null);
          fail("The MandatoryArgumentChecker did not throw an exception when a null name and value were passed.");
@@ -104,13 +103,12 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       
       // Two parameters
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!");
-      /* This test fails
        try {
          MandatoryArgumentChecker.check("hello", "world", null, "you!");
          fail("The MandatoryArgumentChecker did not throw an exception when a null name was passed.");
       } catch (IllegalArgumentException exception) {
          // as expected
-      }*/
+      }
       try {
          MandatoryArgumentChecker.check("hello", "world", "hello", null);
          fail("The MandatoryArgumentChecker did not throw an exception when a null value was passed.");

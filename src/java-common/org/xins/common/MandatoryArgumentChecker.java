@@ -31,11 +31,15 @@ public final class MandatoryArgumentChecker extends Object {
     *    the value of the argument that cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentValue == null</code>.
+    *    if <code>argumentName == null</code> or <code>argumentValue == null</code>.
     */
    public static void check(String argumentName, Object argumentValue)
    throws IllegalArgumentException {
 
+      if (argumentName == null) {
+         check("argumentName", argumentName);
+      }
+      
       if (argumentValue == null) {
          FastStringBuffer buffer = new FastStringBuffer(40);
          buffer.append(argumentName);
@@ -60,11 +64,16 @@ public final class MandatoryArgumentChecker extends Object {
     *    the value of the second argument that cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentValue1 == null || argumentValue2 == null</code>.
+    *    if <code>argumentName1 == null || argumentName2 == null</code>
+    *    or if <code>argumentValue1 == null || argumentValue2 == null</code>.
     */
    public static void check(String argumentName1, Object argumentValue1,
                             String argumentName2, Object argumentValue2)
    throws IllegalArgumentException {
+
+      if (argumentName1 == null || argumentName2 == null) {
+         check("argumentName1", argumentName1, "argumentName2", argumentName2);
+      }
 
       if (argumentValue1 == null || argumentValue2 == null) {
          if (argumentValue1 == null && argumentValue2 == null) {
@@ -110,7 +119,10 @@ public final class MandatoryArgumentChecker extends Object {
     *    the value of the third argument that cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentValue1 == null
+    *    if <code>argumentName1 == null
+    *           || argumentName2 == null
+    *           || argumentName3 == null</code>
+    *    or if <code>argumentValue1 == null
     *           || argumentValue2 == null
     *           || argumentValue3 == null</code>.
     */
@@ -118,6 +130,11 @@ public final class MandatoryArgumentChecker extends Object {
                             String argumentName2, Object argumentValue2,
                             String argumentName3, Object argumentValue3)
    throws IllegalArgumentException {
+
+      if (argumentName1 == null || argumentName2 == null || argumentName3 == null) {
+         check("argumentName1", argumentName1, "argumentName2", argumentName2, "argumentName3", argumentName3);
+      }
+
       if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null) {
          if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
             FastStringBuffer buffer = new FastStringBuffer(120);
@@ -196,7 +213,11 @@ public final class MandatoryArgumentChecker extends Object {
     *    the value of the fourth argument that cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentValue1 == null
+    *    if <code>argumentName1 == null
+    *           || argumentName2 == null
+    *           || argumentName3 == null
+    *           || argumentName4 == null</code>
+    *    or if <code>argumentValue1 == null
     *           || argumentValue2 == null
     *           || argumentValue3 == null
     *           || argumentValue4 == null</code>.
@@ -206,6 +227,11 @@ public final class MandatoryArgumentChecker extends Object {
                             String argumentName3, Object argumentValue3,
                             String argumentName4, Object argumentValue4)
    throws IllegalArgumentException {
+
+      if (argumentName1 == null || argumentName2 == null || argumentName3 == null || argumentName4 == null) {
+         check("argumentName1", argumentName1, "argumentName2", argumentName2, "argumentName3", argumentName3, "argumentName4", argumentName4);
+      }
+
       if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null || argumentValue4 == null) {
          if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
             FastStringBuffer buffer = new FastStringBuffer(160);
