@@ -670,31 +670,31 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Determines whether a call should fail-over to the next selected target.
+    * Determines whether a call should fail-over to the next selected target
+    * based on a request, call configuration and exception list.
     *
     * @param request
     *    the request for the call, as passed to {@link #doCall(CallRequest)},
     *    should not be <code>null</code>.
     *
-    * @param exception
-    *    the exception caught while calling the most recently called target,
-    *    should not be <code>null</code>.
+    * @param callConfig
+    *    the call config that is currently in use, never <code>null</code>.
+    *
+    * @param exceptions
+    *    the current list of {@link CallException}s; never <code>null</code>.
     *
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
-    *
-    * @throws ClassCastException
-    *    if <code>request</code> is not an instance of class
-    *    {@link XINSCallRequest}.
     */
-   protected boolean shouldFailOver(CallRequest request,
-                                    Throwable   exception)
+   protected boolean shouldFailOver(CallRequest       request,
+                                    CallConfig        callConfig,
+                                    CallExceptionList exceptions)
    throws ClassCastException {
 
       // FIXME: Implement other shouldFailOver method
 
-      final String METHODNAME = "shouldFailOver(CallRequest,Throwable)";
+      final String METHODNAME = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
 
       // TRACE: Enter method
       Log.log_2003(CLASSNAME, METHODNAME, null);
@@ -702,22 +702,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       // The request must be a XINS call request
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
 
+      // Get the most recent exception
+      CallException exception = exceptions.last();
+
       boolean should;
 
-      // If fail-over is allowed even if request is already sent, then
-      // short-circuit and allow fail-over.
-      //
-      // XXX: Note that fail-over will even be allowed if there was an
-      //      internal error that may not have anything to do with the
-      //      service being called, e.g. an OutOfMemoryError or an
-      //      InterruptedException.
-      if (xinsRequest.isFailOverAllowed()) {
-         should = true;
-
-      // Otherwise let the superclass look at the exception and determine
-      // whether it allows fail-over in all instances, for example when a
-      // connection is refused.
-      } else if (super.shouldFailOver(request, exception)) {
+      // Let the superclass look at this first.
+      if (super.shouldFailOver(request, callConfig, exceptions)) {
          should = true;
 
       // Otherwise check if the request may fail-over from HTTP point-of-view
