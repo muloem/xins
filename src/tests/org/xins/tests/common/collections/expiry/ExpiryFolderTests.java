@@ -71,7 +71,7 @@ public class ExpiryFolderTests extends TestCase {
 
    public void testExpiryFolder() throws Throwable {
       ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", strategy, false, MAX_QUEUE_WAIT_TIME);
+      ExpiryFolder folder = new ExpiryFolder("Test1", strategy);
       assertEquals("Incorrect name.", "Test1", folder.getName());
       assertEquals("Incorrect strategy.", strategy, folder.getStrategy());
       assertNull(folder.get("hello"));
@@ -129,7 +129,7 @@ public class ExpiryFolderTests extends TestCase {
 
    public void testRemove() throws Throwable {
       ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", strategy, false, MAX_QUEUE_WAIT_TIME);
+      ExpiryFolder folder = new ExpiryFolder("Test1", strategy);
       folder.put("hello", "world");
       try {
          Thread.sleep(20);
