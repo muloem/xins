@@ -40,3 +40,7 @@ td {
 .error {
 	color: #cc0000;
 }
+
+.testresult_error {
+	color:#cc0000;
+}

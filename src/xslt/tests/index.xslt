@@ -25,17 +25,7 @@
 			</head>
 			<body>
 				<h1>Test results</h1>
-				<h2>Summary</h2>
-				<table class="summary">
-					<tr>
-						<th>#</th>
-						<th>Name</th>
-						<th>Time</th>
-						<th>Result</th>
-					</tr>
-					<xsl:apply-templates select="testcase" mode="summary" />
-				</table>
-				<p>
+				<p class="summaryLine">
 					<xsl:variable name="testcaseCount" select="count(testcase)" />
 					<xsl:variable name="failedTestcaseCount" select="count(testcase/failure)" />
 					<xsl:variable name="erroneousTestcaseCount" select="count(testcase/error)" />
@@ -63,9 +53,20 @@
 				</p>
 
 				<xsl:if test="count(testcase[failure or error]) &gt; 0">
-					<h2>Test result details</h2>
+					<h2>Errors and failures</h2>
 					<xsl:apply-templates select="testcase[failure or error]" />
 				</xsl:if>
+
+				<h2>Details</h2>
+				<table class="summary">
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Time</th>
+						<th>Result</th>
+					</tr>
+					<xsl:apply-templates select="testcase" mode="summary" />
+				</table>
 			</body>
 		</html>
 	</xsl:template>
@@ -113,9 +114,7 @@
 					</td>
 				</xsl:when>
 				<xsl:when test="error">
-					<td class="testresult_error">
-						<xsl:apply-templates select="error" />
-					</td>
+					<td class="testresult_error">Error</td>
 				</xsl:when>
 				<xsl:otherwise>
 					<td class="okay">OK</td>
