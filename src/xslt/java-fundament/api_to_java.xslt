@@ -55,6 +55,12 @@ public class APIImpl extends API {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The only instance of this class. This field is never <code>null</code>.
+    */
+   public static final APIImpl SINGLETON = new APIImpl();
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -62,7 +68,7 @@ public class APIImpl extends API {
    /**
     * Constructs a new <code>APIImpl</code> instance.
     */
-   public APIImpl() {
+   private APIImpl() {
 ]]></xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>      </xsl:text>
