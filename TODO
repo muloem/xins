@@ -73,6 +73,9 @@ XINS/JAVA COMMON LIBRARY
 * Add DateType class to represent standard type '_date'. Add Date class to
   represent an actual date and make this the value class for the DateType.
 * Change ExpiryFolder to allow retrieval of slot info.
+* Create SingleEntryMap that contains only a single entry. It should have a
+  constructor SingleEntryMap(Object key, Object value) and perhaps also a
+  method set(Object key, Object value).
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
