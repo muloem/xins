@@ -99,5 +99,9 @@
 			<param name="code1" type="text" nullable="false" />
 			<param name="code2" type="text" nullable="false" />
 		</entry>
+		<entry id="2208" level="ERROR">
+			<description>Ignoring unrecognized element at root level.</description>
+			<param name="type" type="text" nullable="false" />
+		</entry>
 	</group>
 </log>
