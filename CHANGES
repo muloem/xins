@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.107:
+
+* Generated specification documentation:
+  - Improved URL encoding of the links to the test forms.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.106:
 
 * Added standard type _properties.
