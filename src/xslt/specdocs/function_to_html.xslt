@@ -744,9 +744,8 @@
 	<xsl:template match="element-example">
 		<xsl:param name="indent" />
 
-		<!-- TODO: Support pcdata-example -->
 		<xsl:variable name="text">
-			<xsl:value-of select="normalize-space(text())" />
+			<xsl:value-of select="pcdata-example/text()" />
 		</xsl:variable>
 
 		<xsl:text>
