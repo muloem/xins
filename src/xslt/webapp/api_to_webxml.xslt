@@ -8,6 +8,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:param name="xins_version" />
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="api"          />
@@ -149,6 +150,12 @@
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
+				<init-param>
+					<param-name>org.xins.api.build.version</param-name>
+					<param-value>
+						<xsl:value-of select="$xins_version" />
+					</param-value>
+				</init-param>
 				<init-param>
 					<param-name>org.xins.api.build.host</param-name>
 					<param-value>
