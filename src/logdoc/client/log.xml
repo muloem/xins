@@ -50,8 +50,10 @@
 			<param name="class_name" nullable="false" />
 		</entry>
 		<entry id="2008" level="ERROR">
-			<description>Not OK HTTP code.</description>
-			<param name="code" type="int32" nullable="false" />
+			<description>HTTP status code is not in 2xx range.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="code"     type="int32" nullable="false" />
 		</entry>
 		<entry id="2009" level="ERROR">
 			<description>Failed to read the response body.</description>
@@ -90,6 +92,12 @@
 			<param name="url"      type="text"  nullable="false" />
 			<param name="function" type="text"  nullable="false" />
 			<param name="timeOut"  type="int32" nullable="false" />
+		</entry>
+		<entry id="2016" level="INFO">
+			<description>HTTP result received</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="code"     type="int32" nullable="false" />
 		</entry>
 	</group>
 
