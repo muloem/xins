@@ -35,10 +35,10 @@ XINS/JAVA SERVER FRAMEWORK
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
 * Generated Javadoc should include package-private and private members.
-* Log an INFO message for each unused runtime properties.
+* Log an INFO message for each unused runtime property.
   --> After XINS 1.0, perhaps in 1.1.
-* Implement a _DumpStatistics function that writes the statistics in a comma
-  separated line in a text file.
+* Implement a function called _DumpStatistics that writes the statistics in a
+  comma separated line in a text file.
   --> After XINS 1.0, perhaps in 1.1.
 * Stop runtime configuration file watch thread when the servlet is disposed.
   --> After XINS 1.0, perhaps in 1.1.
