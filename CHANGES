@@ -35,6 +35,10 @@ CHANGES INTRODUCED IN XINS 0.125:
     NullPointerExceptions at runtime.
   - Fixed some Checkstyle-reported issues.
 
+* Generated test forms:
+  - Parameter specifying function name has been renamed from 'function' to
+    '_function'. One step closer to completely switching to '_function'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.124:
 
