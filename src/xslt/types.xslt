@@ -348,25 +348,75 @@
 	</xsl:template>
 
 	<xsl:template name="javatype_to_string_for_type">
-		<xsl:param name="api"      />
-		<xsl:param name="specsdir" />
-		<xsl:param name="required" />
-		<xsl:param name="type"     />
-		<xsl:param name="variable" />
 
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="$type"     />
-			</xsl:call-template>
+		<!-- Define parameters -->
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		<xsl:param name="type"         />
+		<xsl:param name="required"     />
+		<xsl:param name="variable"     />
+
+		<!-- Determine file that defines type -->
+		<xsl:variable name="type_file">
+			<xsl:value-of select="$specsdir" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$api" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$type" />
+			<xsl:text>.typ</xsl:text>
 		</xsl:variable>
 
-		<xsl:call-template name="javatype_to_string_for_standardtype">
-			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="type"     select="$basetype" />
-			<xsl:with-param name="variable" select="$variable" />
-		</xsl:call-template>
+		<!-- Check preconditions -->
+		<xsl:if test="string-length($specsdir) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
+		</xsl:if>
+		<xsl:if test="string-length($api) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
+		</xsl:if>
+
+		<xsl:choose>
+			<!-- Determine Java type for default standard type (_text) -->
+			<xsl:when test="string-length($type) = 0">
+				<xsl:call-template name="javatype_to_string_for_standardtype">
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="'_text'"   />
+					<xsl:with-param name="variable" select="$variable" />
+				</xsl:call-template>
+			</xsl:when>
+
+			<!-- Determine Java type for standard type -->
+			<xsl:when test="starts-with($type, '_')">
+				<xsl:call-template name="javatype_to_string_for_standardtype">
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="$type"     />
+					<xsl:with-param name="variable" select="$variable" />
+				</xsl:call-template>
+			</xsl:when>
+
+			<!-- Determine Java type for enum type -->
+			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
+				<xsl:value-of select="$variable" />
+				<xsl:text>.getValue()</xsl:text>
+			</xsl:when>
+
+			<!-- Determine Java type for base type -->
+			<xsl:otherwise>
+				<!-- Determine base type -->
+				<xsl:variable name="basetype">
+					<xsl:call-template name="basetype_for_type">
+						<xsl:with-param name="specsdir" select="$specsdir" />
+						<xsl:with-param name="api"      select="$api"      />
+						<xsl:with-param name="type"     select="$type"     />
+					</xsl:call-template>
+				</xsl:variable>
+
+				<xsl:call-template name="javatype_to_string_for_standardtype">
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="$basetype" />
+					<xsl:with-param name="variable" select="$variable" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!--
