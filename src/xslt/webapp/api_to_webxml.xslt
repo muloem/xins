@@ -63,6 +63,9 @@
 						</param-value>
 					</init-param>
 				</xsl:for-each>
+				<load-on-startup>
+					<xsl:text>0</xsl:text> <!-- XXX: Should we be able to configure this? -->
+				</load-on-startup>
 			</servlet>
 			<servlet-mapping>
 				<servlet-name>
