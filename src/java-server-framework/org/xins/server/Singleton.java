@@ -9,7 +9,7 @@ import org.xins.util.collections.PropertyReader;
  * Interface for singleton classes registered with an API implementation.
  * Implementations must have a public no-argument constructor. The
  * {@link #init(Properties)} method will be called during the initialization
- * of the XINS/Java Server Framework, while {@link #destory()} will be called
+ * of the XINS/Java Server Framework, while {@link #destroy()} will be called
  * during shutdown.
  *
  * @version $Revision$ $Date$
