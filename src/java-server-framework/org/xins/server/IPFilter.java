@@ -42,6 +42,12 @@ extends Object {
     */
    private static final char IP_MASK_DELIMETER = '/';
 
+   /**
+    * The character that is used to determine whether the provided expression
+    * IP contains leading zero's.
+    */
+   private static final char LEADING_ZERO_CHAR = '0';
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -246,6 +252,16 @@ extends Object {
     *    otherwise false.
     */
    private static boolean isValidMask(String mask) {
+      int maskLength = mask.length();
+
+      if (maskLength < 1 || maskLength > 2) {
+         return false;
+      }
+
+      if (maskLength == 2 && mask.charAt(0) == LEADING_ZERO_CHAR) {
+         return false;
+      }
+
       return isAllowedValue(mask, 32);
    }
 
@@ -261,6 +277,20 @@ extends Object {
     *    valid, otherwise false.
     */
    private static boolean isValidIPSection(String ipSection) {
+      int sectionLength = ipSection.length();
+
+      if (sectionLength < 1 || sectionLength > 3) {
+         return false;
+      }
+
+      if (sectionLength == 2 && ipSection.charAt(0) == LEADING_ZERO_CHAR) {
+         return false;
+      }
+
+      if (sectionLength == 3 && (ipSection.charAt(0) == LEADING_ZERO_CHAR || ipSection.charAt(1) == LEADING_ZERO_CHAR)) {
+         return false;
+      }
+
       return isAllowedValue(ipSection, 255);
    }
 
@@ -364,6 +394,26 @@ extends Object {
       }
 
       return mask;
+   }
+
+
+   private String determineIP(String expression) {
+      String ip = null;
+      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
+
+      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
+         throw new InternalError("The IP address within the provided filter " + expression + " could not be determined.");
+      } else {
+         ip = expression.substring(0, slashPosition);
+      }
+
+      return ip;
+   }
+
+
+   private boolean determineAuthorized(String[] ipFields) {
+//      String[] ipFilterFields =
+      return false;
    }
 
 }
