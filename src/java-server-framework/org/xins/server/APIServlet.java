@@ -148,8 +148,9 @@ implements Servlet {
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
-      _stateLock = new Object();
-      _state     = INITIAL;
+      _stateLock                 = new Object();
+      _state                     = INITIAL;
+      _configFileListener = new ConfigurationFileListener();
    }
 
 
@@ -165,7 +166,7 @@ implements Servlet {
    /**
     * Lock for <code>_state</code>
     */
-   private Object _stateLock;
+   private final Object _stateLock;
 
    /**
     * The stored servlet configuration object.
@@ -188,6 +189,17 @@ implements Servlet {
     * state is not {@link #READY}.
     */
    private String _error;
+
+   /**
+    * The listener that is notified when the configuration file changes. Only
+    * one instance is created ever.
+    */
+   private final ConfigurationFileListener _configFileListener;
+
+   /**
+    * Configuration file watcher.
+    */
+   private FileWatcher _configFileWatcher;
 
 
    //-------------------------------------------------------------------------
@@ -434,7 +446,12 @@ implements Servlet {
          if (s != null && s.length() >= 1) {
             try {
                interval = Integer.parseInt(s);
-               log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+               if (interval < 1) {
+                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+                  interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+               } else {
+                  log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+               }
             } catch (NumberFormatException nfe) {
                log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
                interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
@@ -447,10 +464,9 @@ implements Servlet {
          }
 
          // Create a file watch thread and start it
-         FileWatcher.Listener listener = new ConfigurationFileListener();
-         FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
+         _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
          log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
-         watcher.start();
+         _configFileWatcher.start();
       }
    }
 
@@ -736,12 +752,51 @@ implements Servlet {
       //----------------------------------------------------------------------
 
       public void fileModified() {
-         // TODO: Stop the file watch thread
-         Library.INIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
-         PropertyReader config = applyConfigFile(Library.INIT_LOG);
-         initAPI(config);
-         // TODO: Start a new file watch thread with the new interval
-         Library.INIT_LOG.info("XINS/Java Server Framework re-initialized.");
+
+         Logger log = Library.INIT_LOG;
+         log.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
+
+         // Stop the file watch thread
+         _configFileWatcher.end();
+         _configFileWatcher = null;
+
+         // Apply the new runtime settings to the logging subsystem
+         PropertyReader runtimeProperties = applyConfigFile(log);
+
+         // Re-initialize the API
+         initAPI(runtimeProperties);
+
+         // Determine interval
+         String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
+         int interval;
+
+         // If the property is set, parse it
+         if (s != null && s.length() >= 1) {
+            try {
+               interval = Integer.parseInt(s);
+               if (interval < 1) {
+                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+                  interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+               } else {
+                  log.debug("Using configuration file check interval of " + interval + " seconds as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+               }
+            } catch (NumberFormatException nfe) {
+               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+               interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+            }
+
+         // Otherwise, if the property is not set, use the default
+         } else {
+            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " seconds.");
+            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+         }
+
+         // Create a new file watch thread and start it
+         _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
+         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+         _configFileWatcher.start();
+
+         log.info("XINS/Java Server Framework re-initialized.");
       }
 
       public void fileNotFound() {
