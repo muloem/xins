@@ -323,10 +323,10 @@ extends Object {
    }
 
    /**
-    * Gets the value associated with a key. If the key is found, then the
-    * expiry time-out for the matching entry will be reset.
+    * Gets the value associated with a key and extends the lifetime of the
+    * matching entry, if there was a match.
     *
-    * <p>The more recently the specified entry accessed, the faster the
+    * <p>The more recently the specified entry was accessed, the faster the
     * lookup.
     *
     * @param key
@@ -345,7 +345,7 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      // Search in the recently accessed map before
+      // Search in the recently accessed map first
       _recentlyAccessedDoorman.enterAsReader();
       Object value;
       try {
@@ -372,6 +372,53 @@ extends Object {
             } finally {
                _recentlyAccessedDoorman.leaveAsWriter();
             }
+         }
+      }
+
+      return value;
+   }
+
+   /**
+    * Finds the value associated with a key. The lifetime of the matching
+    * entry is not extended.
+    *
+    * <p>The more recently the specified entry was accessed, the faster the
+    * lookup.
+    *
+    * @param key
+    *    the key to lookup, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value associated with the specified key, or <code>null</code> if
+    *    and only if this folder does not contain an entry with the specified
+    *    key.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>key == null</code>.
+    */
+   public Object find(Object key) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("key", key);
+
+      // Search in the recently accessed map first
+      _recentlyAccessedDoorman.enterAsReader();
+      Object value;
+      try {
+         value = _recentlyAccessed.get(key);
+      } finally {
+         _recentlyAccessedDoorman.leaveAsReader();
+      }
+
+      // If not found, then look in the slots
+      if (value == null) {
+         _slotsDoorman.enterAsReader();
+         try {
+            for (int i = 0; i < _slotCount && value == null; i++) {
+               value = _slots[i].get(key);
+            }
+         } finally {
+            _slotsDoorman.leaveAsReader();
          }
       }
 
