@@ -412,10 +412,13 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:apply-templates>
 
 		<xsl:text>)
-   throws org.xins.client.CallException {</xsl:text>
+   throws org.xins.client.CallException {
+
+   // Get the XINS service caller
+   org.xins.client.XINSServiceCaller caller = getCaller();
+</xsl:text>
 		<xsl:if test="$kind = 'sessionBased'">
 			<xsl:text>
-
       // Split the client-side session ID
       java.lang.String[] arr = new java.lang.String[2];
       try {
@@ -423,9 +426,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       } catch (org.xins.types.TypeValueException exception) {
          throw new org.xins.client.NoSuchSessionException();
       }
-      org.xins.client.ActualFunctionCaller afc = getFunctionCaller().getActualFunctionCallerByCRC32(arr[0]);
-      if (afc == null) {
-         throw new org.xins.client.NoSuchSessionException();
+      org.xins.util.service.TargetDescriptor target = caller.getDescriptor().getTargetByCRC(arr[0]);
+      if (target == null) {
+         throw new org.xins.client.NoSuchSessionException(); // TODO: Message
       }
       session = arr[1];</xsl:text>
 		</xsl:if>
@@ -438,21 +441,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		</xsl:if>
 		<xsl:text>
-      org.xins.client.XINSServiceCaller.Result result = </xsl:text>
-		<xsl:choose>
-			<xsl:when test="$kind = 'sessionBased'">
-				<xsl:text>afc</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>getFunctionCaller()</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>.call(</xsl:text>
-		<xsl:choose>
-			<xsl:when test="$kind = 'sessionBased'">
-				<xsl:text>session, </xsl:text>
-			</xsl:when>
-		</xsl:choose>
+      org.xins.client.XINSServiceCaller.Result result = caller.call(</xsl:text>
+		<xsl:if test="$kind = 'sessionBased'">
+			<xsl:text>target, session, </xsl:text>
+		</xsl:if>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>
