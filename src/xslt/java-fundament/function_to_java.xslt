@@ -57,11 +57,6 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
-import org.xins.server.CallContext;
-import org.xins.server.Function;
-import org.xins.server.Responder;
-import org.xins.server.Session;
-
 /**
  * Abstract base class for <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
@@ -69,7 +64,7 @@ import org.xins.server.Session;
  */
 public abstract class ]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[ extends Function {
+		<xsl:text><![CDATA[ extends org.xins.server.Function {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -133,7 +128,7 @@ public abstract class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------
 
-   protected final void handleCall(CallContext context)
+   protected final void handleCall(org.xins.server.CallContext context)
    throws Throwable {
       boolean debugEnabled = context.isDebugEnabled();</xsl:text>
 
@@ -146,7 +141,7 @@ public abstract class ]]></xsl:text>
 			<xsl:text>
 
       // Get the session
-      Session session = context.getSession();</xsl:text>
+      org.xins.server.Session session = context.getSession();</xsl:text>
 		</xsl:if>
 
 
@@ -161,7 +156,7 @@ public abstract class ]]></xsl:text>
 
 			<xsl:for-each select="input/param">
 				<xsl:text>
-      String </xsl:text>
+      java.lang.String </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text> = context.getParameter("</xsl:text>
 				<xsl:value-of select="@name" />
@@ -370,7 +365,7 @@ public abstract class ]]></xsl:text>
 			<xsl:when test="$createsSession = 'true'">
 				<xsl:text>
       // Create the session
-      Session session = context.createSession();
+      org.xins.server.Session session = context.createSession();
       call(context, session</xsl:text>
 			</xsl:when>
 			<xsl:when test="$sessionBased = 'true'">
@@ -438,9 +433,9 @@ public abstract class ]]></xsl:text>
 		</xsl:for-each>
 		<xsl:text><![CDATA[
     */
-   public abstract void call(Responder responder]]></xsl:text>
+   public abstract void call(org.xins.server.Responder responder]]></xsl:text>
 		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
-			<xsl:text>, Session session</xsl:text>
+			<xsl:text>, org.xins.server.Session session</xsl:text>
 		</xsl:if>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
