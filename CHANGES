@@ -20,6 +20,11 @@ CHANGES INTRODUCED IN XINS 0.186:
 * Generated specification documentation:
   - The name for the enumeration type are also printed in the generated HTML.
 
+* Generated build file:
+  - Fixed incorrect targets classes and wars generated when at least one API
+    uses the new directory structure.
+    This bug has been in XINS since version 0.169.
+
 * Changed email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com.
 
 * Removed some TODOs done.

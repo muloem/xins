@@ -109,7 +109,14 @@
 	<xsl:template match="enum/item">
 		<tr>
 			<td>
-				<xsl:value-of select="@name" />
+				<xsl:choose>
+					<xsl:when test="@name">
+						<xsl:value-of select="@name" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@value" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</td>
 			<td>
 				<xsl:value-of select="@value" />
