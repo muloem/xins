@@ -214,7 +214,7 @@
 			<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="3005" level="DEBUG">
+		<entry id="3005" level="INFO">
 			<description>Logging subsystem has been properly initialized.</description>
 		</entry>
 		<entry id="3006" level="INFO">

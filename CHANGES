@@ -7,6 +7,9 @@ CHANGES INTRODUCED IN XINS 0.161:
 * XINS/Java Server Framework:
   - Documented the Throwable exception thrown by call(...) method in the
     generated fundament class for a function.
+  - Changed levels for log message entries:
+    . 3005 from DEBUG to INFO (Logging subsystem has been properly
+      initialized)
 
 * XINS/Java Common Library:
   - Added the SingleEntryMap class. This class is the implementation of a 
