@@ -22,7 +22,7 @@
 
 		<xsl:variable name="timestamp">
 			<xsl:choose>
-				<xsl:when test="@rcsdate = '$Date$'">
+				<xsl:when test="@rcsdate = concat('$', 'Date$')">
 					<xsl:text>?/?/? ?:?:?</xsl:text>
 				</xsl:when>
 				<xsl:when test="string-length(@rcsdate) &lt; 20">
