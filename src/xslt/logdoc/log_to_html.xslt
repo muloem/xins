@@ -77,6 +77,7 @@
 						<th>ID</th>
 						<th>Level</th>
 						<th>Category</th>
+						<th>Description</th>
 					</tr>
 					<xsl:for-each select="entry">
 						<tr>
@@ -88,6 +89,9 @@
 							</td>
 							<td>
 								<xsl:value-of select="@category" />
+							</td>
+							<td>
+								<xsl:apply-templates select="description" />
 							</td>
 						</tr>
 					</xsl:for-each>
