@@ -7,6 +7,7 @@ CHANGES INTRODUCED IN XINS 0.166:
   - Removed the following unused packages:
     . org.xins.specs
     . org.xins.tools.security
+    . org.xins.util.ant.sourceforge
 
 * XINS/Java Server Framework:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
