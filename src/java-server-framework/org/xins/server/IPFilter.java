@@ -133,7 +133,7 @@ extends Object {
       }
 
       // Disallow a leading zero
-      if (mask >= 10 && maskString.charAt(0) == '0') {
+      if (maskString.length() >= 2 && maskString.charAt(0) == '0') {
          throw new ParseException("The mask string \"" + maskString + "\" starts with a leading zero.");
       }
 
