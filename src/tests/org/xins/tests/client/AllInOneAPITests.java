@@ -209,10 +209,10 @@ public class AllInOneAPITests extends TestCase {
    public void testResultCode() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      String result1 = allInOne.callResultCode("hello");
+      String result1 = allInOne.callResultCode("hello").getOutputText();
       assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
       try {
-         String result2 = allInOne.callResultCode("hello");
+         allInOne.callResultCode("hello");
          fail("The second call with the same parameter should return an AlreadySet error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("AlreadySet", exception.getErrorCode());
@@ -250,7 +250,7 @@ public class AllInOneAPITests extends TestCase {
    public void testDataSection() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection("Doe");
+      DataElement element = allInOne.callDataSection("Doe").getDataElement();
       Iterator users = element.getChildren();
       assertTrue("No users found.", users.hasNext());
       DataElement su = (DataElement) users.next();
@@ -274,7 +274,7 @@ public class AllInOneAPITests extends TestCase {
    public void testDataSection2() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection2("hello");
+      DataElement element = allInOne.callDataSection2("hello").getDataElement();
       Iterator packets = element.getChildren();
       assertTrue("No destination found.", packets.hasNext());
       DataElement packet1 = (DataElement) packets.next();
