@@ -165,7 +165,7 @@
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="-prepare-java-server" depends="-prepare">
+	<target name="-prepare-java-server" depends="logdoc-java">
 		<mkdir dir="build/src/java-server-framework" />
 		<style
 		in="src/xml/default_resultcodes.xml"
@@ -175,6 +175,9 @@
 			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
+		<copy todir="build/src/java-server-framework/org/xins/server">
+			<fileset dir="build/logdoc/java" includes="**/*.java" />
+		</copy>
 	</target>
 
 	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
