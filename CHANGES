@@ -1,9 +1,20 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.170:
 
+* XINS/Java Server Framework:
+  - Renamed some variable in the generated classes to avoid conflict with
+    parameter names.
+  - The method retrieveSession is also available if the function creates the
+    session.
+
 * Generated specification documentation:
   - Added more possible elements for api_1_0.dtd.
   - Added the session related parameters for function_1_0.dtd.
+
+* Generated build file:
+  - The specdocs is regenerated if api.xml.
+  - The result code generated files are regenerated if any function
+    specification has changed.
 
 * Build and release process:
   - Keep the changes-<version>.txt when making a release.

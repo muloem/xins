@@ -154,6 +154,10 @@
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="*.typ"         />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
+					<dependset>
+						<srcfilelist   dir="{$specsdir}/{$api}"    files="api.xml" />
+						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
+					</dependset>
 					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 					<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">
 						<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
@@ -471,6 +475,11 @@
 							<param name="api_file"     expression="{$api_file}"     />
 						</style>
 						<!-- Generation of the result code files. -->
+						<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
+						<dependset>
+							<srcfilelist   dir="{$specsdir}/{$api}"    files="{$functionIncludes}" />
+							<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java"/>
+						</dependset>
 						<xmlvalidate warn="false">
 							<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
 							<dtd publicId="-//XINS//DTD Result Code 1.0//EN"

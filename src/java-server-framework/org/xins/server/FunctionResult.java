@@ -56,7 +56,7 @@ public class FunctionResult {
     }
 
    /**
-    * Returns the object that construct the XML structure.
+    * Returns the object that constructs the XML structure.
     *
     * @return
     *    the CallResultBuilder with the XML structure.

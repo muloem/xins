@@ -28,4 +28,25 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:template name="does_function_creates_session">
+		<xsl:choose>
+			<xsl:when test="string-length(@createsSession) &lt; 1">
+				<xsl:text>false</xsl:text>
+			</xsl:when>
+			<xsl:when test="@createsSession = 'false'">
+				<xsl:text>false</xsl:text>
+			</xsl:when>
+			<xsl:when test="@createsSession = 'true'">
+				<xsl:text>true</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>The attribute 'createsSession' has an invalid value: '</xsl:text>
+					<xsl:value-of select="@createsSession" />
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

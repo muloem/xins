@@ -41,18 +41,7 @@
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
 		<xsl:variable name="createsSession">
-			<xsl:choose>
-				<xsl:when test="@createsSession = 'true'">true</xsl:when>
-				<xsl:when test="@createsSession = 'false'">false</xsl:when>
-				<xsl:when test="string-length(@createsSession) = 0">false</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The value of the 'createsSession' attribute is '</xsl:text>
-						<xsl:value-of select="@createsSession" />
-						<xsl:text>', which is invalid.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:call-template name="does_function_creates_session" />
 		</xsl:variable>
 
 		<!-- Create the function abstract class. -->
@@ -135,7 +124,7 @@ public abstract class ]]></xsl:text>
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
    throws Throwable {
-      boolean debugEnabled = context.isDebugEnabled();</xsl:text>
+      boolean _debugEnabled = context.isDebugEnabled();</xsl:text>
 
 
 		<!-- ************************************************************* -->
@@ -185,7 +174,7 @@ public abstract class ]]></xsl:text>
 				<xsl:text> == null</xsl:text>
 			</xsl:for-each>
 			<xsl:text>) {
-          org.xins.server.MissingParametersResult result = new org.xins.server.MissingParametersResult();</xsl:text>
+          org.xins.server.MissingParametersResult _errorResult = new org.xins.server.MissingParametersResult();</xsl:text>
 			<xsl:choose>
 				<xsl:when test="count(input/param[@required='true']) &gt; 1">
 					<xsl:for-each select="input/param[@required='true']">
@@ -193,7 +182,7 @@ public abstract class ]]></xsl:text>
          if (</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text> == null) {
-            result.addMissingParameter("</xsl:text>
+            _errorResult.addMissingParameter("</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>");
          }</xsl:text>
@@ -201,13 +190,13 @@ public abstract class ]]></xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>
-         result.addMissingParameter("</xsl:text>
+         _errorResult.addMissingParameter("</xsl:text>
 					<xsl:value-of select="input/param[@required='true']/@name" />
 						<xsl:text>");</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>
-         return result;
+         return _errorResult;
       }</xsl:text>
 		</xsl:if>
 
@@ -231,13 +220,13 @@ public abstract class ]]></xsl:text>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
-         result.setInvalidTypeForValue("</xsl:text>
+         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+         _errorResult.setInvalidTypeForValue("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
 				<xsl:value-of select="@type" />
 				<xsl:text>");
-         return result;
+         return _errorResult;
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -259,17 +248,17 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
-         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
+         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 				<xsl:text>
-         invalidComboElements.add("</xsl:text>
+         _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
-         result.setParamCombo("inclusive-or", invalidComboElements);
-         return result;
+         _errorResult.setParamCombo("inclusive-or", _invalidComboElements);
+         return _errorResult;
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -297,17 +286,17 @@ public abstract class ]]></xsl:text>
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
-         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
+         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 					<xsl:for-each select="param-ref">
 						<xsl:text>
-         invalidComboElements.add("</xsl:text>
+         _invalidComboElements.add("</xsl:text>
 						<xsl:value-of select="$active" />
 						<xsl:text>");</xsl:text>
 					</xsl:for-each>
 					<xsl:text>
-         result.setParamCombo("exclusive-or", invalidComboElements);
-         return result;
+         _errorResult.setParamCombo("exclusive-or", _invalidComboElements);
+         return _errorResult;
       }</xsl:text>
 				</xsl:for-each>
 			</xsl:for-each>
@@ -336,17 +325,17 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
-         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
-         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
+         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:text>
-         invalidComboElements.add("</xsl:text>
+         _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
-         result.setParamCombo("all-or-none", invalidComboElements);
-         return result;
+         _errorResult.setParamCombo("all-or-none", _invalidComboElements);
+         return _errorResult;
          }</xsl:text>
 
 			</xsl:for-each>
@@ -372,7 +361,7 @@ public abstract class ]]></xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text>
-      Request callRequest = new Request(</xsl:text>
+      Request _callRequest = new Request(</xsl:text>
 
 		<xsl:for-each select="input/param">
 			<xsl:if test="not(position() = 1)">, </xsl:if>
@@ -384,15 +373,15 @@ public abstract class ]]></xsl:text>
 				<xsl:with-param name="variable" select="@name"     />
 			</xsl:call-template>
 		</xsl:for-each>
-		<xsl:if test="$sessionBased = 'true'">
+		<xsl:if test="$sessionBased = 'true' or $createsSession = 'true'">
 			<xsl:if test="input/param">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
 			<xsl:text>_session</xsl:text>
 		</xsl:if>
 		<xsl:text>);
-      Result result = call(callRequest);</xsl:text>
-      return (org.xins.server.FunctionResult) result;
+      Result _result = call(_callRequest);
+      return (org.xins.server.FunctionResult) _result;</xsl:text>
 		<!-- TODO: Dispose the session if appropriate -->
 		<xsl:if test="$sessionBased = 'true'">
 			<xsl:text>
@@ -408,7 +397,7 @@ public abstract class ]]></xsl:text>
     * @param request
     *    the container that contains the input value and the session if needed, never <code>null</code>.
     *
-    * @return result
+    * @return Result
     *    the result of your function, cannot be <code>null</code>.
     *
     * @throws Throwable
@@ -423,12 +412,13 @@ public abstract class ]]></xsl:text>
 
 		<!-- Generates the Request object used to get the input data. -->
 		<xsl:call-template name="request">
-			<xsl:with-param name="project_home" select="$project_home" />
-			<xsl:with-param name="project_file" select="$project_file" />
-			<xsl:with-param name="api"          select="$api"          />
-			<xsl:with-param name="api_file"     select="$api_file"     />
-			<xsl:with-param name="specsdir"     select="$specsdir"     />
-			<xsl:with-param name="sessionBased" select="$sessionBased" />
+			<xsl:with-param name="project_home"   select="$project_home"   />
+			<xsl:with-param name="project_file"   select="$project_file"   />
+			<xsl:with-param name="api"            select="$api"            />
+			<xsl:with-param name="api_file"       select="$api_file"       />
+			<xsl:with-param name="specsdir"       select="$specsdir"       />
+			<xsl:with-param name="sessionBased"   select="$sessionBased"   />
+			<xsl:with-param name="createsSession" select="$createsSession" />
 		</xsl:call-template>
 <xsl:text>
 </xsl:text>
