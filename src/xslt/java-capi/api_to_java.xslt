@@ -152,17 +152,40 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * Constructs a new <code>CAPI</code> object for the specified XINS service
     * caller.
     *
+    * <p>The preferred way of constructing a <code>CAPI</code> object is using
+    * {@link #CAPI(Descriptor) the other constructor}.
+    *
     * @param caller
     *    the XINS service caller, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>caller == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.192. Use
+    *    {@link #CAPI(org.xins.common.service.Descriptor)} instead.
     */
    public CAPI(org.xins.client.XINSServiceCaller caller)
    throws IllegalArgumentException {
 
       // Call the superclass constructor
       super(caller);
+   }
+
+   /**
+    * Constructs a new <code>CAPI</code> object for the specified descriptor.
+    *
+    * @param descriptor
+    *    the descriptor, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    */
+   public CAPI(org.xins.common.service.Descriptor descriptor)
+   throws IllegalArgumentException {
+
+      // Call the superclass constructor
+      super(descriptor);
    }]]></xsl:text>
 	</xsl:template>
 
