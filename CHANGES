@@ -14,6 +14,13 @@ CHANGES INTRODUCED IN XINS 0.201:
 * Logdoc:
   - Added class AbstractLogdocSerializable. It supports lazy initialization.
 
+* XINS/Java Common Library:
+  - PropertyReader interface no longer directly extends LogdocSerializable.
+    The class function serialize(PropertyReader,LogdocStringBuffer) has moved
+    from class AbstractPropertyReader to class PropertyReaderUtils. Use that
+    class function for a default way of serializing a PropertyReader, using
+    the Whisl encoding.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.200:
 
