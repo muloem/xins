@@ -23,6 +23,8 @@ import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Translation bundle for log messages.
+ *
+ * @see Log
  */
 public class TranslationBundle extends Object {
 
