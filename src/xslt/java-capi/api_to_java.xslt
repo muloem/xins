@@ -230,9 +230,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       return "]]></xsl:text>
 			<xsl:value-of select="$xins_version" />
 			<xsl:text><![CDATA[";
-   }]]></xsl:text>
-
-		<xsl:text><![CDATA[
+   }
 }
 ]]></xsl:text>
 	</xsl:template>
