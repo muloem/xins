@@ -181,7 +181,7 @@ implements Responder, Log {
    // TODO: Document
    // TODO: Probably take a different approach
    CallResult getCallResult() {
-      if (_returnSessionID) {
+      if (_builder.isSuccess() && _returnSessionID) {
          _builder.param("_session", _session.getIDString());
          _returnSessionID = false;
       }
@@ -350,7 +350,7 @@ implements Responder, Log {
       _builder.startResponse(success, returnCode);
 
       // Add the session ID, if any
-      if (_returnSessionID) {
+      if (success && _returnSessionID) {
          _builder.param("_session", _session.getIDString());
          _returnSessionID = false;
       }
