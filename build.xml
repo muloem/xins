@@ -434,6 +434,7 @@
 			prefix="${name}-${version}"
 			mode="644">
 				<include name="build.xml"                      />
+				<include name=".version.properties"            />
 				<include name="CHANGES"                        />
 				<include name="COPYRIGHT"                      />
 				<include name="README"                         />
@@ -468,6 +469,7 @@
 			prefix="${name}-${version}"
 			mode="644">
 				<include name="build.xml"                      />
+				<include name=".version.properties"            />
 				<include name="CHANGES"                        />
 				<include name="COPYRIGHT"                      />
 				<include name="README"                         />
@@ -511,10 +513,13 @@
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
 	<target name="-check-release-version" depends="-init-release,-init">
-		<condition property="version.suffix.unset">
-			<equals arg1="${version.suffix}" arg2="" />
+		<condition property="version.suffix.set">
+			<equals arg1="${version.suffix}" arg2="-dev" />
 		</condition>
-		<fail unless="version.suffix.unset" message="A version suffix is set." />
+		<fail unless="version.suffix.set" message="Version suffix is not set to -dev." />
+		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
+			<entry key="version.suffix" operation="=" value="" />
+		</propertyfile>
 	</target>
 
 	<target name="-nodiffs-check" depends="clean">
@@ -555,7 +560,20 @@
 	<target
 	name="release"
 	depends="-prepare-release,upload-changes,upload-jars,upload-packages,upload-javadoc,upload-checkstyle"
-	description="Performs a release" />
+	description="Performs a release">
+		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
+			<entry key="version.minor" type="int" operation="+" value="1"    />
+			<entry key="version.suffix"           operation="=" value="-dev" />
+		</propertyfile>
+		<cvs command="commit">
+			<commandline>
+				<argument value="-m" />
+				<argument value="Bumped version, marked -dev." />
+				<argument value="${version.file}" />
+			</commandline>
+		</cvs>
+	</target>
+
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
