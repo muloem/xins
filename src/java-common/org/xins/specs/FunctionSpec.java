@@ -36,14 +36,17 @@ extends VersionedSpec {
     * Constructs a new <code>FunctionSpec</code> for a function with the
     * specified name and version.
     *
+    * @param parent
+    *    the API the function is part of, not <code>null</code>.
+    *
     * @param name
-    *    the name for the component, not <code>null</code>.
+    *    the name for the function, not <code>null</code>.
     *
     * @param version
-    *    the version for the component, not <code>null</code>.
+    *    the version for the function, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || version == null</code>.
+    *    if <code>parent == null || name == null || version == null</code>.
     *
     * @throws InvalidNameException
     *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
@@ -51,11 +54,15 @@ extends VersionedSpec {
     * @throws InvalidVersionException
     *    if <code>version</code> is not a well-formed version number string.
     */
-   public FunctionSpec(String name, String version)
+   public FunctionSpec(APISpec parent, String name, String version)
    throws IllegalArgumentException,
           InvalidNameException,
           InvalidVersionException {
       super(TYPE, name, version);
+      // TODO: super(TYPE, parent, name, version);
+
+      // TODO: Remove
+      MandatoryArgumentChecker.check("parent", parent);
    }
 
 
