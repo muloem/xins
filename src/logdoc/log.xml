@@ -158,6 +158,11 @@
 		<param name="oldInterval" nullable="false" />
 		<param name="newInterval" nullable="false" />
 	</entry>
+	<entry id="234" level="INFO" category="org.xins.server.lifespan.init">
+		<description>Local timezone.</description>
+		<param name="shortName" />
+		<param name="longName"  />
+	</entry>
 	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
 		<param name="configFile" nullable="false" />

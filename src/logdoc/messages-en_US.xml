@@ -37,6 +37,7 @@
 	<message entry="231">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</message>
 	<message entry="232">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is not modified.</message>
 	<message entry="233">Runtime properties file watch interval changed from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</message>
+	<message entry="234">Local time zone is <value-of-param name="shortName" format="quoted" />. Long name is <value-of-param name="longName" format="quoted" />.</message>
 	<message entry="240">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is modified. Re-initializing XINS/Java Server Framework.</message>
 	<message entry="250">Runtime properties file (<value-of-param name="configFile" format="quoted" />) does not specify the watch interval, the property <value-of-param name="propertyName" format="quoted" /> is not set. Assuming fallback default.</message>
 	<message entry="251">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is being parsed.</message>
