@@ -1,12 +1,6 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.204:
 
-* XINS/Java Server Framework:
-  - Added a ip() method in the request to retreive the IP address of the
-    remote host that requested the function.
-    This method is not supported, it may be removed or renamed in a further
-    release.
-
 * XINS/Java Common Library:
   - Improved the CallFailedException message to return more information.
 

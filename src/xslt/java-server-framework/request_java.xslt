@@ -52,20 +52,14 @@ public final static class Request {
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------
-
-   private final String __ip;</xsl:text>
+   //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="input/param" mode="field" />
 
 		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------
-
-   public final String ip() {
-      return __ip;
-   }</xsl:text>
+   //-------------------------------------------------------------------------</xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="method" />
 
@@ -83,7 +77,7 @@ public final static class Request {
    /**
     * Constructs a new <code>Request</code> instance.
     */
-   public Request(String _ip,]]></xsl:text>
+   public Request(]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
@@ -99,9 +93,7 @@ public final static class Request {
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
-		<xsl:text>) {
-      __ip = _ip;
-</xsl:text>
+		<xsl:text>) {</xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>      _</xsl:text>
 			<xsl:value-of select="@name" />
