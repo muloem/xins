@@ -64,7 +64,6 @@ extends Object {
    protected AbstractCAPICallRequest(AbstractCAPIFunction function)
    throws IllegalArgumentException {
       _function          = function;
-      _request           = new XINSCallRequest(function.getName());
       _constraintContext = new RequestConstraintContext();
    }
 
@@ -79,21 +78,20 @@ extends Object {
    private final AbstractCAPIFunction _function;
 
    /**
+    * Constraint context. Never <code>null</code>.
+    */
+   private final RequestConstraintContext _constraintContext;
+
+   /**
+    * The call configuration. Initially <code>null</code>.
+    */
+   private XINSCallConfig _callConfig;
+
+   /**
     * Mapping from parameter names to their associated values. This field is
     * lazily initialized and initially <code>null</code>.
     */
    private HashMap _parameters;
-
-   /**
-    * The underlying XINS call request. Initialized to a non-<code>null</code>
-    * value in the constructor.
-    */
-   private final XINSCallRequest _request;
-
-   /**
-    * Constraint context. Never <code>null</code>.
-    */
-   private final RequestConstraintContext _constraintContext;
 
 
    //-------------------------------------------------------------------------
@@ -124,13 +122,19 @@ extends Object {
    }
 
    /**
-    * Returns the wrapped <code>XINSCallRequest</code> object.
+    * Returns an appropriate <code>XINSCallRequest</code> object.
     *
     * @return
-    *    the wrapped {@link XINSCallRequest} object, never <code>null</code>.
+    *    a {@link XINSCallRequest}, never <code>null</code>.
     */
    XINSCallRequest xinsCallRequest() {
-      return _request;
+
+      // Construct a XINSCallRequest object
+      XINSCallRequest request = new XINSCallRequest(_function.getName());
+
+      // FIXME: Set all parameters
+
+      return request;
    }
 
    /**
@@ -142,7 +146,7 @@ extends Object {
     *    associated with this request.
     */
    public void configure(XINSCallConfig config) {
-      _request.setXINSCallConfig(config);
+      _callConfig = config;
    }
 
    /**
@@ -154,7 +158,7 @@ extends Object {
     *    no specific call configuration is associated with this request.
     */
    public XINSCallConfig configuration() {
-      return _request.getXINSCallConfig();
+      return _callConfig;
    }
 
    /**
