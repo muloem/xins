@@ -64,7 +64,6 @@ XINS/JAVA CLIENT FRAMEWORK
                         xins.version parameter.
 * Add CallIOException that extends CallException and wraps around an
   IOException.
-* Deprecate UnsuccessfulCallException.getCallResult() ?
 * In a list of APIs, there should not be two APIs with the same URL. Check
   that. Otherwise also the MD5 would be the same.
 * Allow configuration of calling _NoOp at construction of
