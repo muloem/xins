@@ -1,0 +1,49 @@
+<!--
+ XINS project DTD. This DTD should be added to all xins-project.xml file
+ by adding the following lines at the top of the file :
+<!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 1.0 alpha//EN" "http://xins.sourceforge.net/dtd/xins-project_1_0_alpha.dtd">
+-->
+<!ELEMENT project (specdocs?, cvsweb?, patterntest?, java-impls?, java-clients?, java-types?, api*)>
+<!ATTLIST project
+          name       NMTOKEN #REQUIRED
+          rcsid      CDATA #IMPLIED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+          specsdir   CDATA #IMPLIED
+          javadir    CDATA #IMPLIED
+          dependenciesdir CDATA #IMPLIED
+          domain     NMTOKEN #REQUIRED
+>
+<!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
+<!ELEMENT specdocs EMPTY>
+<!ATTLIST specdocs
+          href       CDATA #REQUIRED
+>
+<!ELEMENT cvsweb EMPTY>
+<!ATTLIST cvsweb
+          href       CDATA #REQUIRED
+>
+<!ELEMENT patterntest EMPTY>
+<!ATTLIST patterntest
+          href       CDATA #REQUIRED
+>
+<!ELEMENT java-impls EMPTY>
+<!ATTLIST java-impls
+          packageprefix       CDATA #REQUIRED
+          packagesuffix       CDATA #REQUIRED
+>
+<!ELEMENT java-clients EMPTY>
+<!ATTLIST java-clients
+          packageprefix       CDATA #REQUIRED
+          packagesuffix       CDATA #REQUIRED
+>
+<!ELEMENT java-types EMPTY>
+<!ATTLIST java-types
+          packageprefix       CDATA #REQUIRED
+          packagesuffix       CDATA #REQUIRED
+>
+<!ELEMENT api EMPTY>
+<!ATTLIST api
+          name       NMTOKEN #REQUIRED
+>

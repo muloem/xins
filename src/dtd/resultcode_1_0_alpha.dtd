@@ -1,0 +1,14 @@
+<!--
+ Result Code DTD. This DTD should be added to all .rcd files in your
+ project by adding the following lines at the top of your .rcd file :
+<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.0 alpha//EN" "http://xins.sourceforge.net/dtd/resultcode_1_0_alpha.dtd">
+-->
+<!ELEMENT resultcode (description)>
+<!ATTLIST resultcode
+          name       NMTOKEN #REQUIRED
+          value      CDATA #REQUIRED
+          rcsversion CDATA #IMPLIED
+          rcsdate    CDATA #IMPLIED
+>
+<!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
