@@ -63,6 +63,11 @@ implements FunctionCaller {
 
    public CallResult call(String functionName)
    throws IOException, InvalidCallResultException {
-      return call(functionName, null);
+      return call(null, functionName, null);
+   }
+
+   public CallResult call(String functionName, Map parameters)
+   throws IllegalArgumentException, IOException, InvalidCallResultException {
+      return call(null, functionName, parameters);
    }
 }

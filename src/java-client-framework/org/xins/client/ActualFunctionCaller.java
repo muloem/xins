@@ -231,7 +231,7 @@ extends AbstractFunctionCaller {
       throw new IOException(message);
    }
 
-   public CallResult call(String functionName, Map parameters)
+   public CallResult call(String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
 
       // Check preconditions
@@ -240,7 +240,7 @@ extends AbstractFunctionCaller {
       boolean debugEnabled = LOG.isDebugEnabled();
 
       // Prepare an HTTP request
-      String parameterString = createParameterString(functionName, parameters);
+      String parameterString = createParameterString(sessionID, functionName, parameters);
 
       // Execute the request
       if (debugEnabled) {
@@ -254,12 +254,15 @@ extends AbstractFunctionCaller {
          throw new InvalidCallResultException("HTTP return code is " + httpCode + '.');
       }
 
-      // Parse the result of the HTTP result
+      // Parse the result of the HTTP call
       return _callResultParser.parse(result.getString());
    }
 
    /**
     * Creates a parameter string for a HTTP GET call.
+    *
+    * @param sessionID
+    *    the session identifier, if any, or <code>null</code>.
     *
     * @param functionName
     *    the name of the function to be called, not <code>null</code>.
@@ -275,7 +278,7 @@ extends AbstractFunctionCaller {
     *    the string that can be used in an HTTP GET call, never
     *    <code>null</code> nor empty.
     */
-   private final String createParameterString(String functionName, Map parameters)
+   private final String createParameterString(String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -285,6 +288,12 @@ extends AbstractFunctionCaller {
       StringBuffer buffer = new StringBuffer(PARAMETER_STRING_BUFFER_SIZE);
       buffer.append("function=");
       buffer.append(functionName);
+
+      // If there is a session identifier, process it
+      if (sessionID != null) {
+         buffer.append("_session=");
+         buffer.append(sessionID);
+      }
 
       // If there are parameters, then process them
       if (parameters != null) {
@@ -301,8 +310,9 @@ extends AbstractFunctionCaller {
                throw new IllegalArgumentException("The function parameter \"function\" cannot be used for a normal parameter.");
             }
 
+            // TODO: Make sure the key does not start with an underscore
             // TODO: Make sure the key is properly formatted
-            // TODO: URL encode the value?
+            // TODO: URL encode the value
 
             // Add this parameter key/value combination
             Object value = parameters.get(key);
