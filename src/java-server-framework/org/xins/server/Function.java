@@ -322,9 +322,7 @@ implements DefaultResultCodes {
          if (debugEnabled) {
             synchronized (_unsuccessfulCallStringBuffer) {
                _unsuccessfulCallStringBuffer.clear();
-               _unsuccessfulCallStringBuffer.append("Function ");
-               _unsuccessfulCallStringBuffer.append(_name);
-               _unsuccessfulCallStringBuffer.append(" call failed. Duration: ");
+               _unsuccessfulCallStringBuffer.append("Call failed. Duration: ");
                _unsuccessfulCallStringBuffer.append(String.valueOf(duration));
                _unsuccessfulCallStringBuffer.append(" ms.");
                if (code != null) {
