@@ -267,7 +267,7 @@ implements Responder, Log {
             try {
                _session = _api.getSessionByString(sessionID);
             } catch (TypeValueException exception) {
-               LOG.error("Invalid value for session ID type: \"" + sessionID + "\".", exception);
+               LOG.error("Invalid value for session ID type: \"" + sessionID + "\".");
                throw UnknownSessionIDException.SINGLETON; // TODO: Use InvalidSessionIDException ?
             }
             if (_session == null) {
