@@ -684,9 +684,6 @@ extends HttpServlet {
     * with the read properties and then returns those properties. If the
     * properties cannot be read from the file for any reason, then an empty
     * set of properties is returned.
-    *
-    * @return
-    *    the properties read from the config file, never <code>null</code>.
     */
    private void readRuntimeProperties() {
 
