@@ -125,10 +125,10 @@ public abstract class EnumType extends Type {
    }
 
    public final String getByName(String name) {
-      return _namesToValues(name);
+      return (String) _namesToValues.get(name);
    }
 
    public final String getByValue(String value) {
-      return _valuesToNames(value);
+      return (String) _valuesToNames.get(value);
    }
 }
