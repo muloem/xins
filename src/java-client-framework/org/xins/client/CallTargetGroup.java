@@ -77,9 +77,9 @@ extends AbstractCompositeFunctionCaller {
       if (type == ORDERED_TYPE) {
          return new OrderedCallTargetGroup(members);
       } else if (type == RANDOM_TYPE) {
-         return null; // TODO: new RandomCallTargetGroup(members);
+         return new RandomCallTargetGroup(members);
       } else if (type == ROUND_ROBIN_TYPE) {
-         return null; // TODO: new RoundRobinCallTargetGroup(members);
+         return new RoundRobinCallTargetGroup(members);
       } else {
          throw new InternalError("Type not recognized.");
       }
