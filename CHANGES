@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
   - Added the hashCode() and equals() method to the types Date and Timestamp.
   - Fixed the HTTPServiceCaller did not pass the arguments correctly when using
     the GET method.
+  - Added TextUtils class.
   - Added tests for the ExpiryFolder.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
