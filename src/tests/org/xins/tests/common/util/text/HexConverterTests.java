@@ -1,21 +1,21 @@
 /*
  * $Id$
  */
-package org.xins.tests.common.util;
+package org.xins.tests.common.util.text;
 
 import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.util.LongUtils;
+import org.xins.util.text.HexConverter;
 
 /**
- * Tests for class <code>LongUtils</code>.
+ * Tests for class <code>HexConverter</code>.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public class LongUtilsTests extends TestCase {
+public class HexConverterTests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -28,7 +28,7 @@ public class LongUtilsTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(LongUtilsTests.class);
+      return new TestSuite(HexConverterTests.class);
    }
 
 
@@ -41,13 +41,13 @@ public class LongUtilsTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>LongUtilsTests</code> test suite with
+    * Constructs a new <code>HexConverterTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public LongUtilsTests(String name) {
+   public HexConverterTests(String name) {
       super(name);
    }
 
@@ -117,20 +117,20 @@ public class LongUtilsTests extends TestCase {
 
       if (illegalArg) {
          try {
-            LongUtils.parseHexString(arg);
-            fail("LongUtils.parseHexString(" + s + ") should throw an IllegalArgumentException.");
+            HexConverter.parseHexString(arg);
+            fail("HexConverter.parseHexString(" + s + ") should throw an IllegalArgumentException.");
          } catch (IllegalArgumentException exception) {
             // as expected
          }
       } else if (invalidNumberFormat) {
          try {
-            LongUtils.parseHexString(arg);
-            fail("LongUtils.parseHexString(" + s + ") should throw a NumberFormatException.");
+            HexConverter.parseHexString(arg);
+            fail("HexConverter.parseHexString(" + s + ") should throw a NumberFormatException.");
          } catch (NumberFormatException exception) {
             // as expected
          }
       } else {
-         assertEquals(expected, LongUtils.parseHexString(arg));
+         assertEquals(expected, HexConverter.parseHexString(arg));
       }
    }
 }
