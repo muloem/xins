@@ -67,6 +67,11 @@ final class Element extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The parent of this element. Can be <code>null</code>.
+    */
+   private Element _parent;
+
+   /**
     * The type of this element. Cannot be <code>null</code>.
     */
    private String _type;
@@ -76,10 +81,30 @@ final class Element extends Object {
     */
    private ProtectedPropertyReader _attributes;
 
+   /**
+    * Content of this element. May contain PCDATA (as {@link String} objects)
+    * and other elements (as {@link Element} objects).
+    *
+    * <p>This field is lazily initialized, so it is initially
+    * <code>null</code>.
+    */
+   private List _content;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the parent element.
+    *
+    * @return
+    *    the parent element, or <code>null</code> if this element currently
+    *    has no parent.
+    */
+   public Element getParent() {
+      return _parent;
+   }
 
    /**
     * Returns the type of this element.
@@ -122,5 +147,44 @@ final class Element extends Object {
     */
    public PropertyReader getAttributes() {
       return _attributes;
+   }
+
+   /**
+    * Adds the specified PCDATA as content for this element.
+    *
+    * @param pcdata
+    *    the text to add, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>pcdata == null</code>.
+    */
+   public void add(String pcdata) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("pcdata", pcdata);
+
+      _content.add(pcdata);
+   }
+
+   /**
+    * Adds the specified element as content for this element.
+    *
+    * @param child
+    *    the element to add, cannot be <code>null</code>, and
+    *    <code>child.</code>{@link #getParent()} must be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>child == null || child.</code>{@link #getParent()}<code> != null</code>.
+    */
+   public void add(Element child) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("child", child);
+      if (child._parent != null) {
+         throw new IllegalArgumentException("child.getParent() != null");
+      }
+
+      _content.add(child);
+      child._parent = this;
    }
 }
