@@ -112,8 +112,8 @@ MISCELLANEOUS
 
 * The standard result codes should be documented online.
 * A pattern test script should be provided on http://xins.sourceforge.net/.
-* Add a SourceForgeUpload task to smoothen the release process by performing
-* the following actions:
+* Finish SourceForgeUpload task to smoothen the release process by performing
+  the following actions:
   - upload the distribution file(s) to ftp://upload.sourceforge.net/incoming/
   - create a release on the SourceForge site
   - add the corresponding file
@@ -125,3 +125,5 @@ MISCELLANEOUS
 * Consider removing dependency on JDOM.
 * Add date to CHANGES file when a release is created. A (small) custom Ant
   task would need to be developed for this.
+* Manage all logging messages and allow them to be documented. Also, support
+  localisation of log messages.
