@@ -75,9 +75,9 @@
 			<target name="java" description="Generates Java code">
 				<mkdir dir="{$java_destdir}" />
 				<xmlcatalog id="log-dtds">
-					<dtd location="{$logdoc_dtd_dir}/log_1_0.dtd"
+					<dtd location="{$xins_home}/src/dtd/log_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-					<dtd location="{$logdoc_dtd_dir}/translation-bundle_1_0.dtd"
+					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
 				</xmlcatalog>
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
