@@ -4,11 +4,14 @@ This file lists the planned changes for XINS.
 
 
 ______________________________________________________________________________
-XINS PROTOCOL
+XINS PROTOCOL AND SPECIFICATION FORMAT
 
 * Result codes should be allowed to have their own specification for output
   parameters and data section.
 * Add standard type '_date'.
+* Consider allowing a default value to be specified for an input parameter.
+  Perhaps this should be specified for a specific implementation instead of
+  in the specification.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
