@@ -105,12 +105,12 @@
 			<param name="buildVersion" />
 		</entry>
 		<entry id="2019" level="DEBUG">
-			<description>Bootstrapping manageable object registered with the API.</description>
+			<description>Bootstrapping manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
 		<entry id="2020" level="DEBUG">
-			<description>Bootstrapped manageable object registered with the API.</description>
+			<description>Bootstrapped manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
@@ -324,6 +324,78 @@
 		</entry>
 		<entry id="4018" level="NOTICE">
 			<description>XINS/Java Server Framework has been re-initialized.</description>
+		</entry>
+		<entry id="4019" level="DEBUG">
+			<description>Initializing manageable object.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="4020" level="DEBUG">
+			<description>Initialized manageable object.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="4021" level="ERROR">
+			<description>Manageable object could not be initialized due to a missing required property.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+		</entry>
+		<entry id="4022" level="ERROR">
+			<description>Manageable object could not be initialized due to an invalid property value.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4023" level="ERROR">
+			<description>Manageable object could not be initialized.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="message" />
+		</entry>
+		<entry id="4024" level="ERROR">
+			<description>Manageable object could not be initialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="4025" level="DEBUG">
+			<description>Initializing function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="4026" level="DEBUG">
+			<description>Initialized function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="4027" level="ERROR">
+			<description>Function could not be initialized due to a missing required property.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+		</entry>
+		<entry id="4028" level="ERROR">
+			<description>Function could not be initialized due to an invalid property value.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4029" level="ERROR">
+			<description>Function could not be initialized.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="message" />
+		</entry>
+		<entry id="4030" level="ERROR">
+			<description>Function could not be initialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
 		</entry>
 	</group>
 
