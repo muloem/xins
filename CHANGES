@@ -16,9 +16,18 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
     constructor.
     This object is now used in the org.xins.common.xml.Element.
     Typical impact on performance: Small.
+  - Slightly improved performance of ElementSerializer.
+    Typical impact on performance: Small.
+
 
 * XINS/Java Server Framework:
   - Small style improvements.
+  - Slightly improved performance of CallResultOutputter.
+    Typical impact on performance: Small.
+
+* Generation of server-side Java code:
+  - Fixed SF.net bug #1100792: Conflicting duplicate names for input param
+    'ip'.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 1:
