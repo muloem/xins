@@ -61,7 +61,6 @@
 				<isset property="sf.password" />
 			</and>
 		</condition>
-		<fail unless="sf.isset" message="SourceForge user and password must be set in file ${sf.file}." />
 	</target>
 
 	<target name="-init-release" depends="-determine-version">
