@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.32:
+
+* If a value for an input parameter is empty, then don't check the type for
+  that parameter.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.31:
 
 * Fixed bug in CallContext.endResponse(). If it was called more than once,
