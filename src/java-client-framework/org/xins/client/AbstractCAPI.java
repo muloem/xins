@@ -116,6 +116,9 @@ public abstract class AbstractCAPI {
    /**
     * Creates a new <code>XINSCallRequest</code>.
     *
+    * <p>This method is considered internal to XINS. Do not use it
+    * directly.
+    *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
     *
