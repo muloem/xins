@@ -131,11 +131,17 @@ public final class LDAPServiceCaller extends ServiceCaller {
       InitialDirContext context = authenticate(target,  authenticationDetails);
 
       // Perform a query if applicable
-      Query query = request._query;
-      if (query != null) {
-         return query(target, context, query);
-      } else {
-         return null;
+      try {
+         Query query = request._query;
+         if (query != null) {
+            return query(target, context, query);
+         } else {
+            return null;
+         }
+
+      // Always close the context
+      } finally {
+         context.close();
       }
    }
 
@@ -220,7 +226,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
          SearchControls.SUBTREE_SCOPE, // scope
          0L,                           // return all entries that match, no maximum
          target.getTimeOut(),          // time-out (in ms) or 0 if unlimited
-         null,                         // return all attributes
+         query._attributes,            // TODO: Use getter method?
          false,                        // do not return named objects
          false                         // do not dereference links
       );
@@ -442,13 +448,43 @@ public final class LDAPServiceCaller extends ServiceCaller {
        */
       public Query(String searchBase, String filter)
       throws IllegalArgumentException {
+         this(searchBase, filter, null);
+      }
+
+      /**
+       * Constructs a new <code>Query</code>, specifying the attributes to be
+       * returned with an entry.
+       *
+       * @param searchBase
+       *    the search base, cannot be <code>null</code>.
+       *
+       * @param filter
+       *    the filter expression, cannot be <code>null</code>.
+       *
+       * @param attributes
+       *    identifiers of the attributes to return; if this is
+       *    <code>null</code> then all attributes are returned; if this is an
+       *    empty array then no attributes are returned.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>searchBase == null || filter == null</code>.
+       */
+      public Query(String searchBase, String filter, String[] attributes)
+      throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("searchBase", searchBase,
                                         "filter",     filter);
 
+         // Store data in fields
          _searchBase = searchBase;
          _filter     = filter;
+         if (attributes == null) {
+            _attributes = null;
+         } else {
+            _attributes = new String[attributes.length];
+            System.arraycopy(attributes, 0, _attributes, 0, attributes.length);
+         }
       }
 
 
@@ -465,6 +501,13 @@ public final class LDAPServiceCaller extends ServiceCaller {
        * The filter expression. Cannot be <code>null</code>.
        */
       private final String _filter;
+
+      /**
+       * The attributes to be returned with an entry. If this field is
+       * <code>null</code> then all attributes are returned; if this is an
+       * empty array then no attributes are returned.
+       */
+      private final String[] _attributes;
 
 
       //----------------------------------------------------------------------
@@ -490,6 +533,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
       public String getFilter() {
          return _filter;
       }
+
+      // TODO: Add getter for attributes
    }
 
    /**
