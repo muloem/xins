@@ -140,7 +140,7 @@
 			<a>
 				<xsl:attribute name="href">
 					<xsl:call-template name="urlencode">
-						<xsl:with-param name="text" select="concat(document($project_file)/project/patterntest/@href, '?pattern=', text())" />
+						<xsl:with-param name="text" select="concat(document($project_file)/project/patterntest/@href, '?pattern=^(', text(), ')$')" />
 					</xsl:call-template>
 				</xsl:attribute>
 				<xsl:text>Test this pattern</xsl:text>
