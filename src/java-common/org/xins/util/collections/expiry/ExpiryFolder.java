@@ -46,10 +46,23 @@ extends Object {
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
     *
+    * @param initialQueueSize
+    *    the initial size for the queue of threads waiting to obtain read or
+    *    write access, must be &gt;= 0.
+    *
+    * @param maxQueueWaitTime
+    *    the maximum time a thread can wait in the queue for obtaining read or
+    *    write access, must be &gt; 0L.
+    *
+    * @param strategy
+    *    the strategy that should be applied, not <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>strategy == null</code>.
     */
-   public ExpiryFolder(ExpiryStrategy strategy)
+   public ExpiryFolder(ExpiryStrategy strategy,
+                       int            initialQueueSize,
+                       long           maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -65,8 +78,8 @@ extends Object {
       _listeners        = new ArrayList(5);
 
       // Create the doormen
-      _recentlyAccessedDoorman = new Doorman(89);
-      _slotsDoorman            = new Doorman(89);
+      _recentlyAccessedDoorman = new Doorman(initialQueueSize, maxQueueWaitTime);
+      _slotsDoorman            = new Doorman(initialQueueSize, maxQueueWaitTime);
 
       // Notify the strategy
       strategy.folderAdded(this);
