@@ -35,7 +35,7 @@ extends CallException {
     * Constructs a new <code>NoSuchSessionException</code>.
     */
    public NoSuchSessionException() {
-      // empty
+      super(null, null);
    }
 
 
