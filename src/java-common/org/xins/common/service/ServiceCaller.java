@@ -473,8 +473,10 @@ public abstract class ServiceCaller extends Object {
     *
     * <p>This method first checks the argument. If it is <code>null</code>,
     * then an exception is thrown. Otherwise, the result of a call to
-    * {@link #isProtocolSupportedImpl(String)} is returned. This method may
-    * throw an {@link UnsupportedOperationException}.
+    * {@link #isProtocolSupportedImpl(String)} is returned, passing the
+    * supplied protocol, but in lowercase. This method may then throw an
+    * {@link UnsupportedOperationException} if it is not implemented (default
+    * behavior).
     *
     * @param protocol
     *    the protocol, should not be <code>null</code>.
@@ -500,7 +502,7 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("protocol", protocol);
 
-      return isProtocolSupportedImpl(protocol);
+      return isProtocolSupportedImpl(protocol.toLowerCase());
    }
 
    /**
@@ -514,7 +516,8 @@ public abstract class ServiceCaller extends Object {
     * throws an {@link UnsupportedOperationException}.
     *
     * @param protocol
-    *    the protocol, guaranteed not to be <code>null</code>.
+    *    the protocol, guaranteed not to be <code>null</code> and guaranteed
+    *    to be in lower case.
     *
     * @return
     *    <code>true</code> if the specified protocol is supported, or
