@@ -9,12 +9,6 @@
 -->
 
 <resultcodes rcsversion="$Revision$" rcsdate="$Date$">
-	<code name="MissingFunctionName" value="MissingFunctionName" success="false">
-		<description>No function name specified.</description>
-	</code>
-	<code name="NoSuchFunction" value="NoSuchFunction" success="false">
-		<description>There is no function with the specified name in this API implementation.</description>
-	</code>
 	<code name="DisabledFunction" value="DisabledFunction" success="false">
 		<description>The function is currently disabled.</description>
 	</code>
