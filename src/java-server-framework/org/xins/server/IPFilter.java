@@ -16,7 +16,7 @@ import org.xins.util.text.ParseException;
  * <br>&nbsp;&nbsp;&nbsp;// IP is granted access
  * <br>} else {
  * <br>&nbsp;&nbsp;&nbsp;// IP is denied access
- * <br>}</code><blockquote>
+ * <br>}</code></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
