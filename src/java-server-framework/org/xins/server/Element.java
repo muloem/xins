@@ -202,11 +202,7 @@ final class Element extends Object {
       child._parent = this;
    }
 
-   public Object clone() {
-      try {
-         return super.clone();
-      } catch (CloneNotSupportedException exception) {
-         throw new Error("Caught unexpected " + exception.getClass() + '.');
-      }
+   public List getContent() {
+      return _content;
    }
 }
