@@ -54,7 +54,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
 * Tests:
   - Added performance tests. Execute the "perftests" ant target to execute the
     test.
-  - Changed localhost to 127.0.0.1.
+  - Changed references to "localhost" to the IP address "127.0.0.1".
 
 * Examples
   - Fixed incorrect DTD declaration.
