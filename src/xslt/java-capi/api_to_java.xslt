@@ -15,13 +15,28 @@
 	<xsl:param name="enable_statistics">true</xsl:param>
 
 	<xsl:variable name="api" select="//api/@name" />
+	<xsl:variable name="sessionIDType" select="//api/@sessionIDType" />
+	<xsl:variable name="sessionIDJavaType">
+		<xsl:call-template name="javatype_for_type">
+			<xsl:with-param name="api"      select="$api"           />
+			<xsl:with-param name="specsdir" select="$specsdir"      />
+			<xsl:with-param name="required" select="'true'"         />
+			<xsl:with-param name="type"     select="$sessionIDType" />
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:variable name="sessionIDJavaTypeIsPrimary">
+		<xsl:call-template name="is_java_datatype">
+			<xsl:with-param name="text" select="$sessionIDJavaType" />
+		</xsl:call-template>
+	</xsl:variable>
 
 	<xsl:output method="text" />
 
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../java.xslt" />
-	<xsl:include href="../rcs.xslt"  />
-	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../function.xslt"   />
+	<xsl:include href="../java.xslt"       />
+	<xsl:include href="../rcs.xslt"        />
+	<xsl:include href="../types.xslt"      />
 
 	<xsl:template match="api">
 		<xsl:call-template name="java-header" />
@@ -100,6 +115,9 @@ public final class API extends Object {
 				<xsl:value-of select="$functionName" />
 			</xsl:variable>
 			<xsl:for-each select="document($functionFile)/function">
+				<xsl:variable name="sessionBased">
+					<xsl:call-template name="is_function_session_based" />
+				</xsl:variable>
 				<xsl:variable name="returnType">
 					<xsl:choose>
 						<xsl:when test="output/param">
@@ -116,6 +134,16 @@ public final class API extends Object {
 				<xsl:value-of select="$functionName" />
 				<xsl:text><![CDATA[</em> function.
     *]]></xsl:text>
+				<xsl:if test="$sessionBased = 'true'">
+					<xsl:text>
+    * @param session
+    *    the session identifier</xsl:text>
+					<xsl:if test="$sessionIDJavaTypeIsPrimary = 'false'">
+						<xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
+					</xsl:if>
+					<xsl:text>.</xsl:text>
+				</xsl:if>
+				<!-- TODO: add 'cannot be <code>null</code>.' ? -->
 				<xsl:for-each select="input/param">
 					<xsl:text>
     * @param </xsl:text>
@@ -150,6 +178,11 @@ public final class API extends Object {
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="$methodName" />
 				<xsl:text>(</xsl:text>
+					<xsl:if test="$sessionBased = 'true'">
+						<xsl:value-of select="$sessionIDJavaType" />
+						<xsl:text> session</xsl:text>
+					</xsl:if>
+
 					<xsl:for-each select="input/param">
 						<xsl:variable name="required">
 							<xsl:choose>
@@ -170,12 +203,11 @@ public final class API extends Object {
 								<xsl:with-param name="api"      select="$api"      />
 								<xsl:with-param name="specsdir" select="$specsdir" />
 								<xsl:with-param name="required" select="$required" />
-								<xsl:with-param name="type" select="@type" /> <!-- TODO: Use $baseType -->
+								<xsl:with-param name="type"     select="@type" />
 							</xsl:call-template>
 						</xsl:variable>
-						<xsl:if test="position() &gt; 1">
-							<xsl:text>, </xsl:text>
-						</xsl:if>
+
+						<xsl:text>, </xsl:text>
 						<xsl:value-of select="$javatype" />
 						<xsl:text> </xsl:text>
 						<xsl:value-of select="@name" />
