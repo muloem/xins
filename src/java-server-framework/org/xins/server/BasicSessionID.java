@@ -5,8 +5,8 @@ package org.xins.server;
 
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
-import org.xins.util.LongUtils;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.HexConverter;
 
 /**
  * Type for basic session IDs.
@@ -41,7 +41,8 @@ public final class BasicSessionID extends SessionID {
     */
    BasicSessionID(API api) throws IllegalArgumentException {
       super("basicSessionID", java.lang.Long.class, api);
-      _prefix = LongUtils.toHexString(api.getStartupTimestamp()) + ':';
+      // TODO: Use FastStringBuffer ?
+      _prefix = HexConverter.toHexString(api.getStartupTimestamp()) + ':';
       _generator = new Generator();
    }
 
@@ -73,7 +74,7 @@ public final class BasicSessionID extends SessionID {
       }
 
       try {
-         LongUtils.parseHexString(value, 17);
+         HexConverter.parseHexString(value, 17);
          return true;
       } catch (NumberFormatException nfe) {
          return false;
@@ -93,7 +94,7 @@ public final class BasicSessionID extends SessionID {
       }
 
       try {
-         return new Long(LongUtils.parseHexString(string, 17));
+         return new Long(HexConverter.parseHexString(string, 17));
       } catch (NumberFormatException nfe) {
          throw new TypeValueException(this, string);
       }
@@ -102,7 +103,8 @@ public final class BasicSessionID extends SessionID {
    public String toString(Object value) {
       MandatoryArgumentChecker.check("value", value);
       Long l = (Long) value;
-      return _prefix + LongUtils.toHexString(l.longValue());
+      // TODO: Use FastStringBuffer
+      return _prefix + HexConverter.toHexString(l.longValue());
    }
 
    public final SessionID.Generator getGenerator() {
