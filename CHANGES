@@ -2,8 +2,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
 
 * XINS/Java Server Framework:
-  - Added tests for _GetSettings, _DiasableFunction, _EnableFunction and
-    _GetFunctionList meta functions.
+  - Added tests for _GetSettings, _DisableFunction, _EnableFunction and
+   _GetFunctionList meta functions.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 * XINS/Java Common Library:
@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
 
 * XINS/Java Client Framework:
   - Added more test using the AllInOne CAPI.
+  - Fixed the PCDATA set in the data section was not parsed correctly.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
 
 ______________________________________________________________________________

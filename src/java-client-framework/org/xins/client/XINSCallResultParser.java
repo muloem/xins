@@ -244,6 +244,7 @@ extends Object {
                element.addAttribute(key, value);
             }
             _elements.put(new Integer(_level), element);
+            _pcdata = new FastStringBuffer(20);
          } else if (qName.equals("result")) {
             _parsingStarted = true;
             _errorCode = atts.getValue("errorcode");
@@ -293,9 +294,10 @@ extends Object {
 
          if (_level > 0) {
             DataElement child = (DataElement)_elements.get(new Integer(_level));
-            if (_pcdata != null) {
+            if (_pcdata != null && _pcdata.getLength() > 0) {
                child.setText(_pcdata.toString());
             }
+            _pcdata = null;
             _level--;
             DataElement parent = (DataElement)_elements.get(new Integer(_level));
             parent.addChild(child);
