@@ -5,8 +5,8 @@
 #
 # $Id$
 #
-# Converts xins-project.xml in the current directory to an Ant build file and
-# then executes that Ant build file.
+# Bootstraps the XINS execution program, by means of an Ant build file,
+# bootstrap.xml.
 #
 
 # Make sure XINS_HOME is set
@@ -27,5 +27,5 @@ if [ "$1" = "clean" ] && [ -f build/build.xml ]; then
 	rm build/build.xml
 fi
 
-# Generate the Ant build file and execute it
+# Pass control to Ant
 ant -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home="${XINS_HOME}" -Dpwd="`pwd`" -Dargs="$*"
