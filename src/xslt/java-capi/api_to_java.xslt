@@ -139,7 +139,9 @@ public final class API extends Object {
     *    if the call was unsuccessful; in some cases this may be determined
     *    locally already.
     */
-   public CallResult ]]></xsl:text>
+   public ]]></xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text>Result </xsl:text>
 				<xsl:value-of select="$methodName" />
 				<xsl:text>(</xsl:text>
 					<xsl:for-each select="input/param">
@@ -189,7 +191,7 @@ public final class API extends Object {
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>);
-      return result;
+      return null; // TODO
    }</xsl:text>
 			</xsl:for-each>
 		</xsl:for-each>
