@@ -13,6 +13,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
   - Improved transformation of XML to a Java String object for foreign
     languages.
 
+* Generated build file:
+  - Directories with spaces are now supported for Windows.
+
 * DTD:
   - Added missing DTD files for the 1.1 version.
 
