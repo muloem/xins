@@ -53,7 +53,7 @@ extends Object {
     *    if <code>name == null</code>.
     */
    SpecType(String typeName) throws IllegalArgumentException {
-      this(typeName, null, null);
+      this(null, typeName, null);
    }
 
    /**
@@ -72,12 +72,16 @@ extends Object {
     */
    SpecType(String typeName, String nameRE)
    throws IllegalArgumentException {
-      this(typeName, nameRE, null);
+      this(null, typeName, nameRE);
    }
 
    /**
     * Constructs a new <code>SpecType</code> with the specified name, regular
     * expression for actual component names and parent type.
+    *
+    * @param parentType
+    *    the parent type, or <code>null</code> if components of this type have
+    *    no parent.
     *
     * @param typeName
     *    the name for the type, not <code>null</code>.
@@ -86,22 +90,18 @@ extends Object {
     *    the regular expression that names for components must match, or
     *    <code>null</code> if there are no restrictions on the name.
     *
-    * @param parentType
-    *    the parent type, or <code>null</code> if components of this type have
-    *    no parent.
-    *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   SpecType(String typeName, String nameRE, SpecType parentType)
+   SpecType(SpecType parentType, String typeName, String nameRE)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("typeName", typeName);
 
+      _parentType = parentType;
       _typeName   = typeName;
       _nameRE     = nameRE;
-      _parentType = parentType;
 
       // Compile the regular expression
       if (nameRE != null) {
@@ -121,6 +121,12 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The parent type. Is <code>null</code> if components of this type have
+    * no parent.
+    */
+   private final SpecType _parentType;
+
+   /**
     * The name of the type. Cannot be <code>null</code>.
     */
    private final String _typeName;
@@ -136,12 +142,6 @@ extends Object {
     * to a <code>Pattern</code> object. Is never <code>null</code>.
     */
    private final Pattern _namePattern;
-
-   /**
-    * The parent type. Is <code>null</code> if components of this type have
-    * no parent.
-    */
-   private final SpecType _parentType;
 
 
    //-------------------------------------------------------------------------
