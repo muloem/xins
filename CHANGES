@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.207:
+
+* Logdoc
+  - An error is thrown when you register a log that doesn't support the
+    current locale.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.206:
 
 * XINS/Java Server Framework:

@@ -611,9 +611,9 @@ extends HttpServlet {
             // This should execute the static initializer
             Class.forName(packageName + "Log");
          } catch (ClassNotFoundException cnfe) {
+
             // The API does not have any logdoc.
-         }
-         if (!LogCentral.isConsistent()) {
+         } catch (Throwable t) {
 
             // The locale is not supported by the API
             Log.log_1311(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));

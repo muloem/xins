@@ -36,6 +36,7 @@
 import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.xins.logdoc.AbstractLog;
+import org.xins.logdoc.UnsupportedLocaleException;
 
 /**
  * Central logging handler.
@@ -95,7 +96,11 @@ import org.xins.logdoc.AbstractLog;
 			<xsl:text><![CDATA[
 
       // Create LogController instance
-      CONTROLLER = new Controller();
+      try {
+         CONTROLLER = new Controller();
+      } catch (UnsupportedLocaleException ex) {
+         throw new Error(ex.getMessage(), ex);
+      }
    }
 
    /**
@@ -148,6 +153,11 @@ import org.xins.logdoc.AbstractLog;
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
+
+      public Controller() throws UnsupportedLocaleException {
+         super();
+      }
+
 
       //----------------------------------------------------------------------
       // Fields

@@ -11,8 +11,7 @@ import org.apache.log4j.NDC;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class LogCentral
-extends Object {
+public final class LogCentral {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -41,12 +40,6 @@ extends Object {
     */
    private static String LOCALE = null;
 
-   /**
-    * Boolean that indicates that an AbstractLog that did not supported the
-    * locale tried to register.
-    */
-   private static boolean CONSISTENT = true;
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -61,9 +54,12 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>controller == null</code>.
+    *
+    * @throws UnsupportedLocaleException
+    *    if {@link AbstractLog.LogController} does not support the current Locale.
     */
    static final void registerLog(AbstractLog.LogController controller)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, UnsupportedLocaleException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("controller", controller);
@@ -79,8 +75,7 @@ extends Object {
       }
 
       if (!controller.isLocaleSupported(LOCALE)) {
-         CONSISTENT = false;
-         //throw new UnsupportedLocaleException(LOCALE);
+         throw new UnsupportedLocaleException(LOCALE);
       } else {
          controller.setLocale(LOCALE);
       }
@@ -152,17 +147,6 @@ extends Object {
     */
    public static final String getLocale() {
       return LOCALE;
-   }
-
-   /**
-    * Indicates if the registered Logs support the same locale.
-    *
-    * @return
-    *    <code>true</code> if all Logs support the locale set in the LogCentral,
-    *    <code>false</code> otherwise.
-    */
-   public static final boolean isConsistent() {
-      return CONSISTENT;
    }
 
    //-------------------------------------------------------------------------

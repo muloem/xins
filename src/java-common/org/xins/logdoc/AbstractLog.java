@@ -11,8 +11,7 @@ import org.apache.log4j.Level;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public abstract class AbstractLog
-extends Object {
+public abstract class AbstractLog {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -107,7 +106,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
-   protected static abstract class LogController extends Object {
+   protected static abstract class LogController {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -115,8 +114,11 @@ extends Object {
 
       /**
        * Constructs a new <code>LogController</code> object.
+       *
+       * @throws UnsupportedLocaleException
+       *    if this <code>LogController</code> does not support the current Locale.
        */
-      protected LogController() {
+      protected LogController() throws UnsupportedLocaleException {
 
          // Register this Log with the LogCentral, so that
          // LogCentral.setLocale(String) may call setLocale(String) on this
