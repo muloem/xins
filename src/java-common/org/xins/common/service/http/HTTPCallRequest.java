@@ -4,6 +4,7 @@
 package org.xins.common.service.http;
 
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.service.CallRequest;
 import org.xins.common.MandatoryArgumentChecker;
@@ -21,6 +22,12 @@ public final class HTTPCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The number of instances of this class. Initially zero.
+    */
+   private static int INSTANCE_COUNT;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -76,18 +83,12 @@ public final class HTTPCallRequest extends CallRequest {
                                      "parameters", parameters);
 
       // Store information
+      _instanceNumber     = ++INSTANCE_COUNT;
       _method             = method;
       _parameters         = parameters;
       _statusCodeVerifier = statusCodeVerifier;
 
-      // Construct a textual representation of this object
-      FastStringBuffer buffer = new FastStringBuffer(137, "HTTP ");
-      buffer.append(method.toString());
-      buffer.append(" request with parameters");
-
-      // TODO: Fill buffer
-
-      _asString = buffer.toString();
+      // XXX: Note that _asString is lazily initialized.
    }
 
 
@@ -96,10 +97,17 @@ public final class HTTPCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
+
+   /**
     * Description of this HTTP call request. This field cannot be
     * <code>null</code>, it is initialized during construction.
     */
-   private final String _asString;
+   private String _asString;
 
    /**
     * The HTTP method to use when executing this call request. This field
@@ -130,6 +138,18 @@ public final class HTTPCallRequest extends CallRequest {
     *    the description of this request, never <code>null</code>.
     */
    public String describe() {
+
+      // Lazily initialize the description of this call request object
+      if (_asString == null) {
+         FastStringBuffer buffer = new FastStringBuffer(137, "HTTP ");
+         buffer.append(_method.toString());
+         buffer.append(" request #");
+         buffer.append(_instanceNumber);
+         buffer.append(", parameters: ");
+         PropertyReaderUtils.serialize(_parameters, buffer, "-");
+         _asString = buffer.toString();
+      }
+
       return _asString;
    }
 
