@@ -9,16 +9,16 @@
 -->
 
 <returncodes rcsversion="$Revision$" rcsdate="$Date$">
-	<code value="NoSuchFunction" success="false">
+	<code name="no_such_function" value="NoSuchFunction" success="false">
 		<description>There is no function with the specified name in this API implementation.</description>
 	</code>
-	<code value="InternalError" success="false">
+	<code name="internal_error" value="InternalError" success="false">
 		<description>There was an internal error.</description>
 	</code>
-	<code value="InvalidParameters" success="false" onlyIfInputParameters="true">
+	<code name="invalid_parameters" value="InvalidParameters" success="false" onlyIfInputParameters="true">
 		<description>At least one parameter has an invalid value, or the combination of parameter values is invalid.</description>
 	</code>
-	<code value="MissingParameters" success="false" onlyIfInputParameters="true">
+	<code name="missing_parameters" value="MissingParameters" success="false" onlyIfInputParameters="true">
 		<description>There is at least one mandatory input parameter missing.</description>
 	</code>
 </returncodes>
