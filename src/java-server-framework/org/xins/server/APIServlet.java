@@ -5,7 +5,6 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.xins.util.servlet.ServletUtils;
-import org.znerd.xmlenc.XMLOutputter;
 
 /**
  * Servlet that forwards request to an <code>API</code>.
@@ -145,56 +143,6 @@ extends HttpServlet {
          map.put(name, value);
       }
 
-      handleCall(out, map); 
-   }
-
-   private void handleCall(PrintWriter out, Map map) throws IOException {
-
-      // Reset the XMLOutputter
-      StringWriter stringWriter = new StringWriter();
-      XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
-
-      // Create a new call context
-      CallContext context = new CallContext(xmlOutputter, map);
-
-      // Forward the call
-      boolean succeeded = false;
-      try {
-         _api.handleCall(context);
-         succeeded = true;
-      } catch (Throwable exception) {
-         xmlOutputter.reset(out, "UTF-8");
-         xmlOutputter.startTag("result");
-         xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "InternalError");
-         xmlOutputter.startTag("param");
-         xmlOutputter.attribute("name", "_exception.class");
-         xmlOutputter.pcdata(exception.getClass().getName());
-
-         String message = exception.getMessage();
-         if (message != null && message.length() > 0) {
-            xmlOutputter.endTag();
-            xmlOutputter.startTag("param");
-            xmlOutputter.attribute("name", "_exception.message");
-            xmlOutputter.pcdata(message);
-         }
-
-         StringWriter stWriter = new StringWriter();
-         PrintWriter printWriter = new PrintWriter(stWriter);
-         exception.printStackTrace(printWriter);
-         String stackTrace = stWriter.toString();
-         if (stackTrace != null && stackTrace.length() > 0) {
-            xmlOutputter.endTag();
-            xmlOutputter.startTag("param");
-            xmlOutputter.attribute("name", "_exception.stacktrace");
-            xmlOutputter.pcdata(stackTrace);
-         }
-         xmlOutputter.close();
-      }
-
-      if (succeeded) {
-         out.print(stringWriter.toString());
-      }
-      out.flush();
+      _api.handleCall(out, map); 
    }
 }

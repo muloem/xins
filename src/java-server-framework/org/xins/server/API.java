@@ -4,7 +4,11 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
 import java.util.Properties;
+import org.znerd.xmlenc.XMLOutputter;
 
 /**
  * Base class for API implementation classes.
@@ -74,6 +78,69 @@ implements DefaultReturnCodes {
    public void init(Properties properties)
    throws Throwable {
       // empty
+   }
+
+
+   /**
+    * Forwards a call to the <code>handleCall(CallContext)</code> method.
+    *
+    * @param out
+    *    the output stream to write to, not <code>null</code>.
+    *
+    * @param map
+    *    the parameters, not <code>null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   final void handleCall(PrintWriter out, Map map) throws IOException {
+
+      // Reset the XMLOutputter
+      StringWriter stringWriter = new StringWriter();
+      XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
+
+      // Create a new call context
+      CallContext context = new CallContext(xmlOutputter, map);
+
+      // Forward the call
+      boolean succeeded = false;
+      try {
+         handleCall(context);
+         succeeded = true;
+      } catch (Throwable exception) {
+         xmlOutputter.reset(out, "UTF-8");
+         xmlOutputter.startTag("result");
+         xmlOutputter.attribute("success", "false");
+         xmlOutputter.attribute("code", "InternalError");
+         xmlOutputter.startTag("param");
+         xmlOutputter.attribute("name", "_exception.class");
+         xmlOutputter.pcdata(exception.getClass().getName());
+
+         String message = exception.getMessage();
+         if (message != null && message.length() > 0) {
+            xmlOutputter.endTag();
+            xmlOutputter.startTag("param");
+            xmlOutputter.attribute("name", "_exception.message");
+            xmlOutputter.pcdata(message);
+         }
+
+         StringWriter stWriter = new StringWriter();
+         PrintWriter printWriter = new PrintWriter(stWriter);
+         exception.printStackTrace(printWriter);
+         String stackTrace = stWriter.toString();
+         if (stackTrace != null && stackTrace.length() > 0) {
+            xmlOutputter.endTag();
+            xmlOutputter.startTag("param");
+            xmlOutputter.attribute("name", "_exception.stacktrace");
+            xmlOutputter.pcdata(stackTrace);
+         }
+         xmlOutputter.close();
+      }
+
+      if (succeeded) {
+         out.print(stringWriter.toString());
+      }
+      out.flush();
    }
 
    /**
