@@ -239,7 +239,25 @@
 	<xsl:template name="additional-constraints">
 		<xsl:if test="param-combo">
 			<h4>Additional constraints</h4>
-			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will result an unsuccessful result with code </xsl:text>
+			<xsl:text>The following </xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(param-combo) &lt; 2">
+					<xsl:text>constraint applies</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>constraints apply</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text> to the input parameters, additional to the input parameters marked as required. A violation of </xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(param-combo) &lt; 2">
+					<xsl:text>this constraint</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>any of these constraints</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text> will result in an unsuccessful result with code </xsl:text>
 			<em>InvalidParameters</em>
 			<xsl:text>.</xsl:text>
 			<ul>
