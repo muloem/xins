@@ -296,9 +296,7 @@ implements DefaultResultCodes {
          if (debugEnabled) {
             synchronized (_successfulCallStringBuffer) {
                _successfulCallStringBuffer.clear();
-               _successfulCallStringBuffer.append("Function ");
-               _successfulCallStringBuffer.append(_name);
-               _successfulCallStringBuffer.append(" call succeeded. Duration: ");
+               _successfulCallStringBuffer.append("Call succeeded. Duration: ");
                _successfulCallStringBuffer.append(String.valueOf(duration));
                _successfulCallStringBuffer.append(" ms.");
                if (code != null) {
