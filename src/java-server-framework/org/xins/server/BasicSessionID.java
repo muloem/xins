@@ -39,7 +39,7 @@ public final class BasicSessionID extends SessionID {
    BasicSessionID(API api) throws IllegalArgumentException {
       super("basicSessionID", java.lang.Long.class, api);
       _prefix = LongUtils.toHexString(api.getStartupTimestamp()) + ':';
-      _generator = new BasicSessionIDGenerator();
+      _generator = new Generator();
    }
 
 
@@ -50,7 +50,7 @@ public final class BasicSessionID extends SessionID {
    /**
     * The session ID generator for this session ID type.
     */
-   private final SessionIDGenerator _generator;
+   private final Generator _generator;
 
    /**
     * The prefix that all generated session IDs have.
@@ -98,7 +98,7 @@ public final class BasicSessionID extends SessionID {
       }
    }
 
-   public final SessionIDGenerator getGenerator() {
+   public final SessionID.Generator getGenerator() {
       return _generator;
    }
 
@@ -122,18 +122,17 @@ public final class BasicSessionID extends SessionID {
     *
     * @since XINS 0.57
     */
-   private final class BasicSessionIDGenerator
-   extends SessionIDGenerator {
+   private final class Generator
+   extends SessionID.Generator {
 
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>BasicSessionIDGenerator</code> for the
-       * specified API.
+       * Constructs a new <code>Generator</code> for the specified API.
        */
-      private BasicSessionIDGenerator() {
+      private Generator() {
          _lock = new Object();
       }
 

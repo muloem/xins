@@ -146,7 +146,7 @@ implements DefaultResultCodes {
    /**
     * The session ID generator. Will be set in {@link #init(Properties)}.
     */
-   private SessionIDGenerator _sessionIDGenerator;
+   private SessionID.Generator _sessionIDGenerator;
 
    /**
     * Flag that indicates if the shutdown sequence has been initiated.
@@ -199,9 +199,9 @@ implements DefaultResultCodes {
       }
 
       // TODO: Allow configuration of session ID type
-      _sessionIDType = Text.SINGLETON;
+      _sessionIDType = new BasicSessionID(this);
       // TODO: Allow configuration of session ID generator
-      _sessionIDGenerator = new BasicSessionIDGenerator(this);
+      _sessionIDGenerator = _sessionIDType.getGenerator();
 
       // TODO: Set state to INITIALIZING
       initImpl(properties);
