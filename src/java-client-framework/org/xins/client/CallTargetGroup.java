@@ -304,7 +304,7 @@ extends AbstractCompositeFunctionCaller {
             _actualFunctionCallersByURLChecksum.put(l, afc);
 
             // Store the ActualFunctionCaller by URL checksum string
-            _actualFunctionCallersByURLChecksumString.put(HexConverter.toHexString(checksum), afc);
+            _actualFunctionCallersByURLChecksumString.put(afc.getCRC32String(), afc);
 
          // If the member is composite, get all its members
          } else if (member instanceof CompositeFunctionCaller) {
