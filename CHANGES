@@ -14,6 +14,11 @@ CHANGES INTRODUCED IN XINS 0.195:
     Throwable.getCause().
   - Changed reasonFor() in class ServiceCaller to use the root cause for the
     exception as the exception to report the reason for.
+  - Changed the algorithm that FastStringBuffer uses to determine the new
+    capacity when the current capacity is insufficient. Previously the new
+    capacity would be set to the required capacity plus 16. Now it is set to
+    the required capacity times 2. This should reduce the number of times a
+    FastStringBuffer instance needs to increase the capacity.
 
 * XINS/Java Server Framework:
   - Made the method getResultBuilder() in class FunctionResult
