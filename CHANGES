@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.112:
     enum types to behave like the Type.fromString(String) method. A null
     argument will cause null to be returned. An unrecognized value will cause
     a TypeValueException.
+  - Applied some type-related fixes and improvements in the XSLT. Output
+    parameters now also support enumeration types.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.111:
