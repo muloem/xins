@@ -3,8 +3,6 @@
  */
 package org.xins.client;
 
-import org.xins.util.MandatoryArgumentChecker;
-
 /**
  * Exception that indicates that requested data is not available.
  *
