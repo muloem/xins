@@ -10,7 +10,7 @@ import org.xins.common.Log;
 import org.xins.common.threads.Doorman;
 
 /**
- * Abstraction of a call configuration. Objects of this type specify certain
+ * Configuration for a service call. Objects of this type specify certain
  * aspects of <em>how</em> a call is executed. For example, for an HTTP
  * service caller, a <code>CallConfig</code> object could specify what HTTP
  * method (GET, POST, etc.) to use.
@@ -54,7 +54,7 @@ import org.xins.common.threads.Doorman;
  *
  * @since XINS 1.1.0
  */
-public abstract class CallConfig extends Object {
+public class CallConfig extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -75,10 +75,9 @@ public abstract class CallConfig extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallConfig</code> object. This constructor is
-    * only available to subclasses, since this class is <code>abstract</code>.
+    * Constructs a new <code>CallConfig</code> object.
     */
-   protected CallConfig() {
+   public CallConfig() {
 
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
