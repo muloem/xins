@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.202:
   - Added a new static method getItemByName() in EnumItem.
   - Changed the getItemByValue() to a static method.
 
+* Build and release process:
+  - Added the argument source="1.4" to avoid error with the assert keyword.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.201:
 

@@ -437,6 +437,7 @@
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
 		destdir="${javadoc.destdir}"
+		source="1.4"
 		version="yes"
 		use="yes"
 		author="yes"
