@@ -15,20 +15,7 @@ import java.util.List;
 public class MandatoryArgumentChecker extends Object {
 
    //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
-    * is private since this no instances of this class should be created.
-    */
-   private MandatoryArgumentChecker() {
-      // empty
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Class constants
+   // Class fields
    //-------------------------------------------------------------------------
 
    /**
@@ -208,8 +195,7 @@ public class MandatoryArgumentChecker extends Object {
                             String argumentName3, Object argumentValue3,
                             String argumentName4, Object argumentValue4)
    throws IllegalArgumentException {
-      if (argumentValue1 == null && argumentValue2 == null && argumentValue3
-== null && argumentValue4 == null) {
+      if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName3, argumentName4});
       } else if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
          throw new MissingArgumentException(new String[]{argumentName1, argumentName2, argumentName3});
@@ -239,4 +225,26 @@ public class MandatoryArgumentChecker extends Object {
          throw new MissingArgumentException(argumentName4);
       }
    }
+
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
+    * is private since this no instances of this class should be created.
+    */
+   private MandatoryArgumentChecker() {
+      // empty
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 }
