@@ -10,6 +10,9 @@ package org.xins.common.text;
  * @author Robert Harder (<a href="mailto:rob@iharder.net">rob@iharder.net</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
+ * @deprecated
+ *    This class may be removed from coming releases, do not use it.
+ *
  * @since XINS 1.1.0
  */
 public class Base64 extends Object {
