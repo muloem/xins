@@ -231,13 +231,16 @@ implements DefaultResultCodes {
 
       // TODO: Configure time-out and precision using init settings
       // XXX: Configure time-out and precision at runtime ?
-      //final long timeOut   = 15L * 60L * 1000L; // 15 minutes
       final long timeOut   = 30L * 1000L; // 30 seconds
       final long precision =  2L * 1000L; //  2 seconds
 
       ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
 
-      _sessionsByID = new ExpiryFolder(expiryStrategy);
+      // TODO: Configure initial queue size and max queue wait time using init
+      //       settings
+      final int  initialQueueSize = 89;
+      final long maxQueueWaitTime = 15000L; // 15 seconds
+      _sessionsByID = new ExpiryFolder(expiryStrategy, initialQueueSize, maxQueueWaitTime);
 
       // Let the subclass perform initialization
       boolean succeeded = false;
