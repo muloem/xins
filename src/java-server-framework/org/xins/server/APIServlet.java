@@ -977,7 +977,7 @@ extends HttpServlet {
          response.setStatus(HttpServletResponse.SC_OK);
 
          CallResultOutputter.output(out, RESPONSE_ENCODING, result);
-         out.flush();
+         out.close();
       }
    }
 

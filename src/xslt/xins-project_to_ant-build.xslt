@@ -101,10 +101,10 @@
 				</echo>
 			</target>
 
-			<target name="run" description="Asks for the command and API to execute.">
+			<target name="ask" description="Asks for the command and API to execute.">
 				<input addproperty="command"
 				       message="Command "
-							 validargs="war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server" />
+				       validargs="war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server" />
 				<input addproperty="api"
 				       message="API ">
 					<xsl:attribute name="validargs">

@@ -15,6 +15,8 @@ CHANGES INTRODUCED IN XINS 0.207:
     private. Subclasses should use getAPI() to get a reference to the API
     object. This may break existing code.
   - Removed the "org.xins.server.output.compatibility" property.
+  - The returned output stream from the Servlet is now closed instead of
+    being only flushed.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
@@ -69,6 +71,8 @@ CHANGES INTRODUCED IN XINS 0.207:
   - The XSLT first test if an API is using the new framework.
     Note that if an API is using the old framework it may fail with the
     JDK 1.5.
+  - Renamed the "run" target to "ask" to avoid conflict with Netbeans "run"
+    target.
 
 * Build and release process:
   - Removed the TODO file from the release.
