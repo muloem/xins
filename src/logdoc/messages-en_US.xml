@@ -9,9 +9,12 @@
 <messages>
 	<message entry="0">Changing APIServlet state from <value-of-param name="oldState" /> to <value-of-param name="newState" />.</message>
 	<message entry="100">Bootstrapping XINS/Java Server Framework.</message>
-	<message entry="101">Unable to bootstrap XINS/Java Server Framework due to unexpected state. Actual state is: <value-of-param name="state" />.</message>
-	<message entry="102">Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly. Reason: <value-of-param name="detail" /></message>
+	<message entry="101">XINS/Java Server Framework cannot be bootstrapped. State <value-of-param name="state" /> is unexpected.</message>
+	<message entry="102">XINS/Java Server Framework cannot be bootstrapped. Application server is behaving unexpectedly. Reason: <value-of-param name="detail" /></message>
 	<message entry="103">Application server implements unexpected version of Java Servlet API Specification. Expected version: <value-of-param name="expected_version" />. Actual version: <value-of-param name="actual_version" />.</message>
+	<message entry="104">XINS/Java Server Framework cannot be bootstrapped. The system property "<value-of-param name="propertyName" />" (defines the location of the runtime configuration file) cannot be read due to a security restriction.</message>
+	<message entry="105">XINS/Java Server Framework cannot be bootstrapped. The system property "<value-of-param name="propertyName" />" (defines the location of the runtime configuration file) is not set.</message>
+	<message entry="106">XINS/Java Server Framework cannot be bootstrapped. The build property "<value-of-param name="propertyName" />" (defines the name of the API class) is not set.</message>
 	<message entry="200">XINS/Java Server Framework has been initialized.</message>
 	<message entry="201">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</message>
 	<message entry="202">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</message>

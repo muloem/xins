@@ -8,10 +8,13 @@
 
 <messages>
 	<message entry="0">Status van APIServlet verandert van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</message>
-	<message entry="100">XINS/Java Server Framework wordt opgestart.</message>
-	<message entry="101">XINS/Java Server Framework kan niet opgestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</message>
-	<message entry="102">XINS/Java Server Framework kan niet opgestart worden, omdat applicatie server zich onverwacht gedraagt. Reden: <value-of-param name="detail" /></message>
+	<message entry="100">XINS/Java Server Framework wordt gestart.</message>
+	<message entry="101">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</message>
+	<message entry="102">XINS/Java Server Framework kan niet gestart worden, omdat applicatie server zich onverwacht gedraagt. Reden: <value-of-param name="detail" /></message>
 	<message entry="103">De applicatie server implementeert een onverwachtte versie van de Java Servlet API specificatie. Verwachtte versie: <value-of-param name="expected_version" />. Werkelijke versie: <value-of-param name="actual_version" />.</message>
+	<message entry="104">XINS/Java Server Framework kan niet gestart worden. De systeemeigenschap "<value-of-param name="propertyName" />" (definieert de locatie van het runtime configuratie-bestand) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</message>
+	<message entry="105">XINS/Java Server Framework kan niet gestart worden. De systeemeigenschap "<value-of-param name="propertyName" />" (definieert de locatie van het runtime configuratie-bestand) is niet ingesteld.</message>
+	<message entry="106">XINS/Java Server Framework kan niet gestart worden. De build-eigenschap "<value-of-param name="propertyName" />" (definieert de naam van de API class) is niet ingesteld.</message>
 	<message entry="200">XINS/Java Server Framework is geinitialiseerd.</message>
 	<message entry="201">Taal voor de log-berichten wordt veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>
 	<message entry="202">Taal voor de log-berichten is veranderd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</message>

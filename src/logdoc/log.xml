@@ -32,6 +32,20 @@
 		<param name="actual_version" />
 		<param name="expected_version" />
 	</entry>
+	<entry id="104" level="ERROR" category="org.xins.server.lifespan.bootstrap">
+		<description>Unable to get system property that defines runtime configuration file to use, due to a security restriction.</description>
+		<param name="propertyName" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="105" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>System property that defines runtime configuration file to use is not set.</description>
+		<param name="propertyName" />
+	</entry>
+	<entry id="106" level="FATAL" category="org.xins.server.lifespan.bootstrap">
+		<description>API class name not set in build property.</description>
+		<param name="propertyName" />
+	</entry>
 	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework initialized or re-initialized.</description>
 	</entry>
