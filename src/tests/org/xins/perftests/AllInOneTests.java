@@ -168,7 +168,7 @@ public class AllInOneTests extends TestCase {
    public void callAllFunctionsAllInOne() throws Exception {
       
       // Test the function the one after each other
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       SimpleTypesResult result1 = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2), 
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});

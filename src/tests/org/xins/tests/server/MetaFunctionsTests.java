@@ -113,7 +113,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testGetVersion() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -131,7 +131,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testGetStatistics() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetStatistics", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -227,7 +227,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testNoOp() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_NoOp", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -240,7 +240,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testGetFunctionList() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetFunctionList", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -272,7 +272,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testGetSettings() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetSettings", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -331,7 +331,7 @@ public class MetaFunctionsTests extends TestCase {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("inputText", "12000");
       XINSCallRequest request = new XINSCallRequest("Logdoc", parameters);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -377,7 +377,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testReloadProperties() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_ReloadProperties", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
@@ -390,7 +390,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testUnknownMetaFunction() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_Unknown", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       try {
          XINSCallResult result = caller.call(request);

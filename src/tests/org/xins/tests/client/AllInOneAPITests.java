@@ -118,7 +118,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests CAPI and pre-defined.
     */
    public void testSimpleTypes() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2), 
          "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
@@ -139,7 +139,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function called with some missing parameters.
     */
    public void testMissingParam() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       try {
          SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
@@ -163,7 +163,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests CAPI and defined types.
     */
    public void testDefinedTypes() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
@@ -180,7 +180,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function called with some invalid parameters.
     */
    public void testInvalidParams() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       TextList.Value textList = new TextList.Value();
       textList.add("Hello");
@@ -212,7 +212,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that should returned a defined result code.
     */
    public void testResultCode() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       String result1 = allInOne.callResultCode("hello").getOutputText();
       assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
@@ -232,7 +232,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that writes messages to the Logdoc.
     */
    public void testLogdoc() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       // This method write some text using the logdoc
       // This test doesn't check that the data written in the logs are as expected
@@ -253,7 +253,7 @@ public class AllInOneAPITests extends TestCase {
     * PCDATA.
     */
    public void testDataSection() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection("Doe").dataElement();
       List users = element.getChildElements();
@@ -277,7 +277,7 @@ public class AllInOneAPITests extends TestCase {
     * other elements.
     */
    public void testDataSection2() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection2("hello").dataElement();
       List packets = element.getChildElements();
@@ -321,7 +321,7 @@ public class AllInOneAPITests extends TestCase {
       builder3.addChild(address2);
       Element dataSection = builder3.createElement();
       
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       DataElement element = allInOne.callDataSection3("hello", dataSection).dataElement();
       List packets = element.getChildElements();
@@ -348,7 +348,7 @@ public class AllInOneAPITests extends TestCase {
    * Tests the param-combos for inclusive-or and exclusive-or.
    */
    public void testParamCombo1() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       try {
          allInOne.callParamCombo(null, null, null, null, null, null, null);
@@ -381,7 +381,7 @@ public class AllInOneAPITests extends TestCase {
    * Tests the param-combos for all-or-none.
    */
    public void testParamCombo2() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
       try {
          allInOne.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
@@ -407,7 +407,7 @@ public class AllInOneAPITests extends TestCase {
     * Tests the getXINSVersion() CAPI method.
     */
    public void testCAPIVersion() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       CAPI allInOne = new CAPI(descriptor);
       assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
       assertTrue("The version does not starts with '1.'", allInOne.getXINSVersion().startsWith("1."));
@@ -418,7 +418,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testUnknownFunction() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("Unknown", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       try {
          XINSCallResult result = caller.call(request);

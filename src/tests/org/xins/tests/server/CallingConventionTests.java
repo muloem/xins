@@ -193,7 +193,7 @@ public class CallingConventionTests extends TestCase {
     *    if anything goes wrong.
     */
    private Element callResultCode(String convention, String inputText) throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "ResultCode");
       params.set("inputText",  inputText);
@@ -239,7 +239,7 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postXMLRequest(String randomFive, boolean success) throws Exception {
-      PostMethod post = new PostMethod("http://localhost:8080/");
+      PostMethod post = new PostMethod("http://127.0.0.1:8080/");
       post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
       post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request>" +

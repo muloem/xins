@@ -104,12 +104,12 @@ public class XINSServiceCallerTests extends TestCase {
          // As excepted
       }
 
-      TargetDescriptor descriptor = new TargetDescriptor("hTtP://localhost:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor("hTtP://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
 
 
       try {
-         TargetDescriptor descriptor2 = new TargetDescriptor("blah://localhost:8080/");
+         TargetDescriptor descriptor2 = new TargetDescriptor("blah://127.0.0.1:8080/");
          XINSServiceCaller caller2 = new XINSServiceCaller(descriptor2);
          fail("The \"blah\" protocol should not be supported.");
       } catch (UnsupportedProtocolException upe) {
