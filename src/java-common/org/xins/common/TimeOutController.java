@@ -92,8 +92,8 @@ public final class TimeOutController extends Object {
       try {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
+         Log.log_1052(exception, thread.getClass().getName(), "join(int)");
          // ignore
-         // TODO: Log
       }
 
       // If the thread is still running at this point, it should stop

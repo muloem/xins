@@ -854,7 +854,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          try {
             method.releaseConnection();
          } catch (Throwable exception) {
-            // TODO: Log
+            Log.log_1052(exception, method.getClass().getName(), "releaseConnection()");
          }
 
          // Unset the diagnostic context ID
