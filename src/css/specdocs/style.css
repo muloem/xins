@@ -2,11 +2,13 @@
  -*- mode: Fundamental; tab-width: 4; -*-
   ex:ts=4
  
- CSS Stylesheet for an HTML document describing an HTTP-based XML API.
+ CSS Stylesheet for an HTML document describing a XINS API.
 
  Version: $Revision$ $Date$
  Authors: Ernst de Haan <ernst.dehaan@nl.wanadoo.com>
           Chris Gilbride <chris.gilbride@nl.wanadoo.com>
+
+ $Id$
 */
 
 @media screen {
