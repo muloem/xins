@@ -229,6 +229,9 @@ public final class Doorman extends Object {
       // Wait for read access
       try {
          Thread.sleep(_maxQueueWaitTime);
+         synchronized (_queue) {
+            _queue.remove(reader);
+         }
          throw new QueueTimeOutException();
       } catch (InterruptedException exception) {
          // fall through
@@ -287,6 +290,9 @@ public final class Doorman extends Object {
       // Wait for write access
       try {
          Thread.sleep(_maxQueueWaitTime);
+         synchronized (_queue) {
+            _queue.remove(writer);
+         }
          throw new QueueTimeOutException(); // TODO: Message ?
       } catch (InterruptedException exception) {
          // fall through
@@ -573,9 +579,9 @@ public final class Doorman extends Object {
             _entries.removeFirst();
 
             // Get the new first, now that the other one is removed
-            Object newFirst = _entries.getFirst();
-            _first       = newFirst == null ? null : (Thread)         _entries.getFirst();
-            _typeOfFirst = newFirst == null ? null : (QueueEntryType) _entryTypes.get(_first);
+            boolean empty = _entries.isEmpty();
+            _first        = empty ? null : (Thread)         _entries.getFirst();
+            _typeOfFirst  = empty ? null : (QueueEntryType) _entryTypes.get(_first);
          } else {
 
             // Remove the thread from the list
