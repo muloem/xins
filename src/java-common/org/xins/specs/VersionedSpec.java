@@ -61,7 +61,6 @@ extends Spec {
       }
    }
 
-
    /**
     * Checks the arguments to the constructor and returns the first one.
     *
