@@ -21,15 +21,16 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
 /**
- * Call result parser. XML is parsed to produce a
- * {@link Result} object.
+ * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
+ * object.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 0.203
+ * @since XINS 0.207
  */
-public class ResultParser {
+public class XINSCallResultParser
+extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -57,8 +58,8 @@ public class ResultParser {
     * <code>TargetDescriptor</code>.
     *
     * @param request
-    *    the original {@link CallRequest} that was used to perform the call,
-    *    cannot be <code>null</code>.
+    *    the original {@link XINSCallRequest} that was used to perform the
+    *    call, cannot be <code>null</code>.
     *
     * @param target
     *    the {@link TargetDescriptor} that was used to get the XML, cannot be
@@ -83,10 +84,10 @@ public class ResultParser {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public Result parse(CallRequest      request,
-                                         TargetDescriptor target,
-                                         long             duration,
-                                         byte[]           xml)
+   public XINSCallResult parse(XINSCallRequest  request,
+                               TargetDescriptor target,
+                               long             duration,
+                               byte[]           xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
@@ -97,7 +98,7 @@ public class ResultParser {
          throw new IllegalArgumentException("duration (" + duration + ") < 0");
       }
 
-      ResultHandler handler = new ResultHandler();
+      Handler handler = new Handler();
       try {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
@@ -119,14 +120,23 @@ public class ResultParser {
          throw new ParseException(message);
       }
 
-      return new Result(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
+      return new XINSCallResult(request, target, duration, handler.getErrorCode(), handler.getParameters(), handler.getDataElement());
    }
 
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
 
-   class ResultHandler extends DefaultHandler {
+   /**
+    * SAX event handler that will parse the result from a call to a XINS
+    * service.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    *
+    * @since XINS 0.207
+    */
+   private class Handler extends DefaultHandler {
 
       //-------------------------------------------------------------------------
       // Class fields
@@ -172,12 +182,13 @@ public class ResultParser {
 
       /**
        * The level of the element that is actually parsed in the data element.
-       * -1 means that no element is parsed,
-       * 0 means that the parser just read the &lt;data&gt; tag,
-       * 1 means that the parser entered in an direct sub-element of the &lt;data&gt; tag
-       * ...
+       * Initially this field is set to -1, which means that no element is parsed;
+       * 0 means that the parser just read the &lt;data&gt; tag;
+       * 1 means that the parser entered in an direct sub-element of the
+       * &lt;data&gt; tag, etc.
        */
       private int _level = -1;
+
 
       //-------------------------------------------------------------------------
       // Methods
@@ -269,6 +280,7 @@ public class ResultParser {
        *
        * @return
        *    the parameters (name/value), cannot be <code>null</code>.
+       */
       public PropertyReader getParameters() {
          return new PropertiesPropertyReader(_parameters);
       }
@@ -277,7 +289,8 @@ public class ResultParser {
        * Get the data element returned by the function if any.
        *
        * @return
-       *    the data element or <code>null</code> if the function did not return any data element.
+       *    the data element, or <code>null</code> if the function did not
+       *    return any data element.
        */
       public DataElement getDataElement() {
          return (DataElement) _elements.get(new Integer(0));
