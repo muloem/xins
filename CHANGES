@@ -2,7 +2,26 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.125:
 
 * XINS/Java Server Framework:
+  - Rewrote the initialization procedure. Introduced more states and split up
+    between build-time configuration (called 'bootstrapping') and
+    runtime-configuration ('initialization'). There is now no principal
+    difference between initialization and re-initialization anymore.
   - Response validation is now a runtime configuration settings.
+  - Changed the output format of _GetSettings.
+  - Changed the interface of LifespanManager in an incompatible code. This may
+    break existing code that is based on the LifespanManager interface
+    introduced in XINS 0.120.
+  - Changed Log4J categories. There is now one category for the bootstrap
+    phase, one for the initialization and re-initialization and one for the
+    shutdown.
+  - Consistenly using the following terms for different kinds of configuration
+    settings:
+    . System properties:  Set by passing arguments to the JVM when starting it.
+                          Retrieved using System.getProperty().
+    . Build properties:   Stored in the web.xml file and retrieved from the
+                          ServletConfig object using
+                          ServletConfig.getInitParameter(String).
+    . Runtime properties: Stored in the XINS configuration file.
   - Fixed some Checkstyle-reported issues.
 
 * XINS/Java Client Framework:
