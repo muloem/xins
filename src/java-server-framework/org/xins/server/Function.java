@@ -99,12 +99,12 @@ extends Object {
    /**
     * The total duration of all successful calls up until now.
     */
-   private int _successfulDuration;
+   private long _successfulDuration;
 
    /**
     * The total duration of all unsuccessful calls up until now.
     */
-   private int _unsuccessfulDuration;
+   private long _unsuccessfulDuration;
 
 
    //-------------------------------------------------------------------------
