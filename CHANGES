@@ -6,6 +6,9 @@ CHANGES INTRODUCED IN XINS 0.65:
 * XINS/Java Common Library:
   - Made ExpiryFolder class final instead of abstract.
   - Made ExpiryStrategy constructor public.
+  - Fixed bug in LongUtils that cause all session-based functions to fail.
+    This bug was introduced in release 0.63 (performance of session ID
+    parsing).
 
 * XINS/Java Server Framework
   - Now using ExpiryFolder for storage of sessions. They still don't expiry
