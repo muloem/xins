@@ -5,6 +5,9 @@ package org.xins.demos.caller;
 
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.Properties;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.xins.client.CallRequest;
 import org.xins.client.CallRequestParser;
 import org.xins.client.FunctionCaller;
@@ -56,6 +59,14 @@ public final class Main extends Object {
          System.err.println("   <count>   -- Number of times to execute the request (optional).");
          System.exit(1);
       }
+
+      // Initialize Log4J
+      Properties settings = new Properties();
+      settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
+      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
+      PropertyConfigurator.configure(settings);
 
       // Get all parameters
       String configFileName = args[0];
