@@ -68,9 +68,16 @@ public class ResultParser extends Object {
     * <code>XINSServiceCaller.Result</code> object with the specified
     * <code>TargetDescriptor</code>.
     *
+    * @param request
+    *    the original {@link CallRequest} that was used to perform the call,
+    *    cannot be <code>null</code>.
+    *
     * @param target
     *    the {@link TargetDescriptor} that was used to get the XML, cannot be
     *    <code>null</code>.
+    *
+    * @param duration
+    *    the call duration, should be &gt;= 0.
     *
     * @param xml
     *    the XML to be parsed, not <code>null</code>.
@@ -79,19 +86,30 @@ public class ResultParser extends Object {
     *    the parsed result of the call, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>target == null || xml == null</code>
+    *    if <code>request == null
+    *          || target  == null
+    *          || xml     == null
+    *          || duration &lt; 0</code>
     *
     * @throws ParseException
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public XINSServiceCaller.Result parse(TargetDescriptor target,
+   public XINSServiceCaller.Result parse(CallRequest      request,
+                                         TargetDescriptor target,
+                                         long             duration,
                                          String           xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("target", target, "xml", xml);
+      MandatoryArgumentChecker.check("request", request,
+                                     "target",  target,
+                                     "xml",     xml);
+      if (duration < 0) {
+         throw new IllegalArgumentException("duration (" + duration + ") < 0");
+      }
 
+      // Convert the String to a JDOM Document object
       StringReader reader = new StringReader(xml);
       Document document;
       try {
@@ -113,7 +131,7 @@ public class ResultParser extends Object {
          reader.close();
       }
 
-      return parse(target, document);
+      return parse(request, target, duration, document);
    }
 
    /**
@@ -124,6 +142,13 @@ public class ResultParser extends Object {
     * @param target
     *    the {@link TargetDescriptor} that was used to get the XML, cannot be
     *    <code>null</code>.
+    *
+    * @param request
+    *    the original {@link CallRequest} that was used to perform the call,
+    *    cannot be <code>null</code>.
+    *
+    * @param duration
+    *    the call duration, should be &gt;= 0.
     *
     * @param document
     *    the document to be parsed, not <code>null</code>.
@@ -136,11 +161,16 @@ public class ResultParser extends Object {
     *          || document == null
     *          || document.</code>{@link Document#getRootElement() getRootElement()}<code> == null</code>
     *
+    * @throws IllegalArgumentException
+    *    if <code>request == null || duration &lt; 0</code>.
+    *
     * @throws ParseException
     *    if the specified XML document is not a valid XINS API function call
     *    result.
     */
-   private XINSServiceCaller.Result parse(TargetDescriptor target,
+   private XINSServiceCaller.Result parse(CallRequest      request,
+                                          TargetDescriptor target,
+                                          long             duration,
                                           Document         document)
    throws NullPointerException, ParseException {
 
@@ -157,7 +187,7 @@ public class ResultParser extends Object {
       PropertyReader parameters  = parseParameters(element);
       Element        dataElement = element.getChild("data");
 
-      return new XINSServiceCaller.Result(target, code, parameters, dataElement);
+      return new XINSServiceCaller.Result(request, target, duration, code, parameters, dataElement);
    }
 
    /**
