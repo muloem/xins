@@ -138,7 +138,7 @@ extends Object {
          } else if ((resultData.getParameters() == null) && e.getParameters() != null) {
             // TODO: Log.log_2050(TODO);
             e = null;
-         } else if (! resultData.getParameters().equals(e.getParameters())) {
+         } else if (resultData.getParameters() != null && (! resultData.getParameters().equals(e.getParameters()))) {
             // TODO: Make ResultData.getParameters() never return null
             // TODO: Log.log_2050(TODO);
             e = null;
