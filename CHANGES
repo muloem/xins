@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.52:
+
+* XINS/Java Server Framework: Session support.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.51:
 
 * XINS/Java Common Library: Added class FastStack.
