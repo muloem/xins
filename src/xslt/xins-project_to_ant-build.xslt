@@ -535,14 +535,11 @@
 					<xsl:variable name="functionResultIncludes">
 						<xsl:for-each select="document($api_file)/api/function">
 							<xsl:variable name="functionName" select="@name" />
-							<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
+							<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', $functionName, '.fnc')" />
 							<xsl:for-each select="document($functionFile)/function">
 								<xsl:choose>
-									<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
-										<!-- Ignore -->
-									</xsl:when>
-									<xsl:when test="output/param or output/data/element">
-										<xsl:value-of select="@name" />
+                					<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
+										<xsl:value-of select="$functionName" />
 										<xsl:text>.fnc,</xsl:text>
 									</xsl:when>
 								</xsl:choose>
@@ -563,20 +560,22 @@
 						<param name="api_file"     expression="{$api_file}"      />
 						<param name="package"      expression="{$clientPackage}" />
 					</style>
-					<style
-					basedir="{$specsdir}/{$api}"
-					destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
-					style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
-					extension="Result.java"
-					includes="{$functionResultIncludes}">
-						<param name="xins_version" expression="{$xins_version}"  />
-						<param name="project_home" expression="{$project_home}"  />
-						<param name="project_file" expression="{$project_file}"  />
-						<param name="specsdir"     expression="{$specsdir}"      />
-						<param name="api"          expression="{$api}"           />
-						<param name="api_file"     expression="{$api_file}"      />
-						<param name="package"      expression="{$clientPackage}" />
-					</style>
+					<xsl:if test="string-length($functionResultIncludes) &gt; 0">
+						<style
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
+						style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
+						extension="Result.java"
+						includes="{$functionResultIncludes}">
+							<param name="xins_version" expression="{$xins_version}"  />
+							<param name="project_home" expression="{$project_home}"  />
+							<param name="project_file" expression="{$project_file}"  />
+							<param name="specsdir"     expression="{$specsdir}"      />
+							<param name="api"          expression="{$api}"           />
+							<param name="api_file"     expression="{$api_file}"      />
+							<param name="package"      expression="{$clientPackage}" />
+						</style>
+					</xsl:if>
 				</target>
 
 				<target name="jar-capi-{$api}" depends="-classes-types-{$api},-stubs-capi-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">

@@ -8,6 +8,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Define parameters -->
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
@@ -292,7 +293,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				<xsl:when test="$kind = 'createsNonSharedSessions'">
 					<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 				</xsl:when>
-				<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+				<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
+					<xsl:value-of select="$name" />
+					<xsl:text>Result</xsl:text>
+				</xsl:when>
+				<xsl:when test="output/param">
 					<xsl:call-template name="javatype_for_type">
 						<xsl:with-param name="project_file" select="$project_file"          />
 						<xsl:with-param name="api"          select="$api"                   />
@@ -301,9 +306,8 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 						<xsl:with-param name="type"         select="output/param/@type"     />
 					</xsl:call-template>
 				</xsl:when>
-				<xsl:when test="output/param or output/data/element">
-					<xsl:value-of select="$name" />
-					<xsl:text>Result</xsl:text>
+				<xsl:when test="output/data/element">
+					<xsl:text>org.jdom.Element</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>void</xsl:otherwise>
 			</xsl:choose>
@@ -366,7 +370,13 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
     *    identifier of the created session and a link to the function caller
     *    that actually created the session.]]></xsl:text>
 			</xsl:when>
-			<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+			<xsl:when test="output/param and output/data/element">
+				<xsl:text><![CDATA[
+    *
+    * @return
+    *    the result, not <code>null</code>.]]></xsl:text>
+			</xsl:when>
+			<xsl:when test="output/param">
 				<xsl:text><![CDATA[
     *
     * @return
@@ -375,11 +385,12 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				<!-- TODO: Can it not be null? And what if it is a Java basic data type such as boolean, char, short or int? -->
 				<xsl:text><![CDATA[</em> parameter, not <code>null</code>.]]></xsl:text>
 			</xsl:when>
-			<xsl:when test="output/param or output/data/element">
+			<xsl:when test="output/data/element">
 				<xsl:text><![CDATA[
     *
     * @return
-    *    the result, not <code>null</code>.]]></xsl:text>
+    *    a {@link org.jdom.Element#clone() clone} of the returned data
+    *    element, or <code>null</code> if no data element is returned.]]></xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text><![CDATA[
@@ -494,7 +505,17 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
+				<xsl:text>
+      if (result.isSuccess()) {
+         return new </xsl:text>
+				<xsl:value-of select="$returnType" />
+				<xsl:text>(result);
+      } else {
+         throw new org.xins.client.UnsuccessfulCallException(result);
+      }</xsl:text>
+			</xsl:when>
+			<xsl:when test="output/param">
 				<!-- TODO: Return type-specific result, not always String! -->
 				<xsl:text>
       if (result.isSuccess()) {
@@ -505,12 +526,10 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="output/param or output/data/element">
+			<xsl:when test="output/data/element">
 				<xsl:text>
       if (result.isSuccess()) {
-         return new </xsl:text>
-				<xsl:value-of select="$returnType" />
-				<xsl:text>(result);
+         return result.getDataElement();
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
