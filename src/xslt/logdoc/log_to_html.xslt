@@ -75,23 +75,38 @@
 				<table type="entries">
 					<tr>
 						<th>ID</th>
+						<th>Description</th>
 						<th>Level</th>
 						<th>Category</th>
-						<th>Description</th>
 					</tr>
 					<xsl:for-each select="entry">
+						<xsl:variable name="entry_link">
+							<xsl:text>entry-</xsl:text>
+							<xsl:value-of select="@id" />
+							<xsl:text>.html</xsl:text>
+						</xsl:variable>
 						<tr>
 							<td>
-								<xsl:value-of select="@id" />
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="$entry_link" />
+									</xsl:attribute>
+									<xsl:value-of select="@id" />
+								</a>
+							</td>
+							<td>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="$entry_link" />
+									</xsl:attribute>
+									<xsl:apply-templates select="description" />
+								</a>
 							</td>
 							<td>
 								<xsl:value-of select="@level" />
 							</td>
 							<td>
 								<xsl:value-of select="@category" />
-							</td>
-							<td>
-								<xsl:apply-templates select="description" />
 							</td>
 						</tr>
 					</xsl:for-each>
