@@ -17,7 +17,7 @@
 	<xsl:param name="api_file"     />
 
 	<!-- Determine if this API is session-based -->
-	<xsl:variable name="sessionBased">
+	<xsl:variable name="apiSessionBased">
 		<xsl:choose>
 			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
 			<xsl:otherwise>false</xsl:otherwise>
@@ -28,7 +28,7 @@
 	     different instances of the API -->
 	<xsl:variable name="sessionsShared">
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and //api/session-based/@shared-sessions = 'true'">true</xsl:when>
+			<xsl:when test="$apiSessionBased = 'true' and //api/session-based/@shared-sessions = 'true'">true</xsl:when>
 			<xsl:otherwise>false</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -38,10 +38,10 @@
 	     etc.) or a Java class (java.lang.String, etc.) -->
 	<xsl:variable name="sessionIDJavaType">
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:when test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
 				<xsl:text>java.lang.String</xsl:text>
 			</xsl:when>
-			<xsl:when test="$sessionBased = 'true'">
+			<xsl:when test="$apiSessionBased = 'true'">
 				<xsl:call-template name="javatype_for_type">
 					<xsl:with-param name="project_file" select="$project_file" />
 					<xsl:with-param name="api"          select="$api"          />
@@ -56,7 +56,7 @@
 	<!-- For the sessionIDJavaType, determine if this is a Java primary data
 	     type or a Java class. -->
 	<xsl:variable name="sessionIDJavaTypeIsPrimary">
-		<xsl:if test="$sessionBased = 'true'">
+		<xsl:if test="$apiSessionBased = 'true'">
 			<xsl:call-template name="is_java_datatype">
 				<xsl:with-param name="text" select="$sessionIDJavaType" />
 			</xsl:call-template>
@@ -122,7 +122,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+		<xsl:if test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
 			<xsl:text><![CDATA[
 
    /**
@@ -167,7 +167,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 	<xsl:template name="constructor">
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:when test="$apiSessionBased = 'true' and $sessionsShared = 'false'">
 				<xsl:text><![CDATA[
 
    /**
@@ -430,7 +430,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text> session</xsl:text>
 			</xsl:if>
 
-			<xsl:apply-templates select="input/param" mode="methodSignature" />
+			<xsl:apply-templates select="input/param" mode="methodSignature">
+				<xsl:with-param name="sessionBased" select="$sessionBased" />
+			</xsl:apply-templates>
 
 		<xsl:text>)
    throws </xsl:text>
@@ -683,6 +685,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 	<!-- ***************************************************************** -->
 
 	<xsl:template match="input/param" mode="methodSignature">
+
+		<xsl:param name="sessionBased" />
 
 		<!-- Determine if this parameter is required -->
 		<xsl:variable name="required">
