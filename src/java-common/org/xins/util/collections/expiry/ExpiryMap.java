@@ -227,9 +227,15 @@ extends AbstractMap {
    }
 
    public void clear() {
-      _recentlyAccessed.clear();
+      synchronized (_recentlyAccessed) {
+         _recentlyAccessed.clear();
+      }
+
       for (int i = 0; i < _slots.length; i++) {
-         _slots[i].clear();
+         Map slot = _slots[i];
+         synchronized (slot) {
+            slot.clear();
+         }
       }
    }
 
