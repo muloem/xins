@@ -20,6 +20,8 @@ import org.xins.util.text.FastStringBuffer;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @since XINS 0.106
  */
 public final class Properties extends Type {
 
@@ -57,8 +59,6 @@ public final class Properties extends Type {
    public static PropertyReader fromStringForRequired(String string)
    throws IllegalArgumentException, TypeValueException {
 
-      // TODO: Throw StringValueException ?
-
       // Check preconditions
       MandatoryArgumentChecker.check("string", string);
 
@@ -81,6 +81,8 @@ public final class Properties extends Type {
     */
    public static PropertyReader fromStringForOptional(String string)
    throws TypeValueException {
+
+      // Short-circuit if the argument is null
       if (string == null) {
          return null;
       }
@@ -125,6 +127,8 @@ public final class Properties extends Type {
     *    only if <code>value == null</code>.
     */
    public static String toString(PropertyReader value) {
+
+      // Short-circuit if the argument is null
       if (value == null) {
          return null;
       }
