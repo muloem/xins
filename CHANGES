@@ -1,6 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.207:
 
+* XINS/Java Common Library:
+  - Small refactoring in ServiceCaller.doCall(Object) that should have no
+    impact on behaviour.
+  - Fixed argument for log message 3312. Now actually sending the URL instead
+    of the textual representation of the TargetDescriptor.
+  - Minor change to translation of log messages 3312 and 3313.
+
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
     current locale.
