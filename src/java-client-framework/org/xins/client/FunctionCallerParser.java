@@ -111,7 +111,7 @@ extends Object {
     *    a {@link FunctionCaller}, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>xml == null</code>
+    *    if <code>in == null</code>
     *
     * @throws ParseException
     *    if there was an I/O error, if the data on the stream is not valid XML
