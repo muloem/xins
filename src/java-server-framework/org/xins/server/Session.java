@@ -5,7 +5,6 @@ package org.xins.server;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
