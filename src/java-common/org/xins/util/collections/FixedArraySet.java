@@ -1,0 +1,71 @@
+/*
+ * $Id$
+ */
+package org.xins.util.collections;
+
+import java.util.AbstractSet;
+import java.util.Iterator;
+import java.util.Set;
+
+/**
+ * Unmodifiable <code>Set</code> implementation, based on an array.
+ *
+ * @version $Revision$ $Date$
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ */
+public final class FixedArraySet
+extends AbstractSet {
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Constructor
+   //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>FixedArraySet</code> for the specified array.
+    *
+    * @param array
+    *    the array, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>array == null</code>.
+    */
+   private FixedArraySet(Object[] array)
+   throws IllegalArgumentException {
+      if (array == null) {
+         throw new IllegalArgumentException("array == null");
+      }
+
+      _array = array;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * The underlying array.
+    */
+   private final Object[] _array;
+
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   public int size() {
+      return _array.length;
+   }
+
+   public Iterator iterator() {
+      return new ArrayIterator(_array);
+   }
+}
