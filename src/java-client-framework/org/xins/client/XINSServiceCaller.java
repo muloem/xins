@@ -161,8 +161,19 @@ public final class XINSServiceCaller extends ServiceCaller {
       return descriptor;
    }
 
-   public static void testProtocol(Descriptor descriptor) {
-      // FIXME: Document this testProtocol(Descriptor) method
+   /**
+    * Tests whether the given descriptor is or contains a
+    * <code>TargetDescriptor</code> which specifies an unsupported protocol.
+    *
+    * @param descriptor
+    *    the descriptor to test, cannot be <code>null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if the given descriptor is or contains a {@link TargetDescriptor}
+    *    which specifies an unsupported protocol.
+    */
+   public static void testProtocol(Descriptor descriptor)
+   throws UnsupportedProtocolException {
       // FIXME: Unit test this testProtocol(Descriptor) method
       // FIXME: Implement this testProtocol(Descriptor) method
    }
