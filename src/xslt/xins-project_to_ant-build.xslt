@@ -228,7 +228,7 @@
 							<pathelement path="{$xins_jar}" />
 							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
-							<xsl:for-each select="document($api_file)/api/impl-java/dependency">
+							<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']">
 								<fileset dir="{$dependenciesDir}/{@dir}">
 									<xsl:attribute name="includes">
 										<xsl:choose>
@@ -274,7 +274,7 @@
 						<lib dir="{$xins_home}/build"                       includes="xins.jar" />
 						<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
-						<xsl:for-each select="document($api_file)/api/impl-java/dependency">
+						<xsl:for-each select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']">
 							<lib dir="{$dependenciesDir}/{@dir}">
 								<xsl:attribute name="includes">
 									<xsl:choose>
