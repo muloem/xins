@@ -12,7 +12,11 @@
 
 	<xsl:template match="project">
 		<project default="all">
-			<target name="specdocs">
+			<target name="-prepare">
+				<mkdir dir="specdocs" />
+			</target>
+
+			<target name="specdocs" depends="-prepare">
 			</target>
 
 			<target name="all" depends="specdocs" />
