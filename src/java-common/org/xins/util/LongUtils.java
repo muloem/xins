@@ -45,16 +45,16 @@ public class LongUtils extends Object {
     */
    public static String toHexString(long n) {
 
-      final int  bufSize = 16;
-      final int  radix   = 16;
-      final long mask    = radix - 1L;
+      final int  BUFFER_SIZE = 16;
+      final long RADIX       = 16L;
+      final long MASK        = RADIX - 1L;
 
-      char[] chars = new char[bufSize];
-      int pos      = bufSize - 1;
+      char[] chars = new char[BUFFER_SIZE];
+      int pos      = BUFFER_SIZE - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
-         chars[pos--] = DIGITS[(int) (n & mask)];
+         chars[pos--] = DIGITS[(int) (n & MASK)];
       }
 
       // Fill the rest with '0' characters
@@ -62,17 +62,20 @@ public class LongUtils extends Object {
          chars[pos] = '0';
       }
 
-      return new String(chars, 0, bufSize);
+      return new String(chars, 0, BUFFER_SIZE);
    }
 
    /**
-    * Parses the a 16-digit hex number in the specified string.
+    * Parses the a 16-digit unsigned hex number in the specified string.
     *
     * @param s
     *    the hexadecimal string, cannot be <code>null</code>.
     *
     * @param index
     *    the starting index in the string, must be &gt;= 0.
+    *
+    * @return
+    *    the value of the parsed unsigned hexadecimal string.
     *
     * @throws IllegalArgumentException
     *    if <code>s == null || index &lt; 0 || <code>s.</code>{@link String#length() length()}<code> &lt; index + 16</code>).
@@ -119,12 +122,15 @@ public class LongUtils extends Object {
    }
 
    /**
-    * Parses the specified 16-digit hex string.
+    * Parses the specified 16-digit unsigned hex string.
     *
     * @param s
     *    the hexadecimal string, cannot be <code>null</code> and must have
     *    size 16
     *    (i.e. <code>s.</code>{@link String#length() length()}<code> == 16</code>).
+    *
+    * @return
+    *    the value of the parsed unsigned hexadecimal string.
     *
     * @throws IllegalArgumentException
     *    if <code>s == null || s.</code>{@link String#length() length()}<code> != 16</code>.
