@@ -280,6 +280,11 @@ implements DefaultResultCodes {
 
       Log.log_1218(_buildHost, _buildTime, _buildVersion);
 
+      // Check if build version identifies a production release of XINS
+      if (! Library.isProductionRelease(_buildVersion)) {
+         Log.log_1236(_buildVersion);
+      }
+
       // Let the subclass perform initialization
       bootstrapImpl2(buildSettings);
 
@@ -298,6 +303,8 @@ implements DefaultResultCodes {
          } catch (InvalidPropertyValueException exception) {
             Log.log_1222(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
+
+         // TODO: Review exception catching/handling
          } catch (BootstrapException exception) {
             Log.log_1224(exception, _name, className, exception.getMessage());
             throw exception;
