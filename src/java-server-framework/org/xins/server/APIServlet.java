@@ -138,7 +138,7 @@ extends HttpServlet {
          PrintWriter printWriter = new PrintWriter(stWriter);
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
-         if (stackTrace != null && message.length() > 0) {
+         if (stackTrace != null && stackTrace.length() > 0) {
             xmlOutputter.endTag();
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.stacktrace");
