@@ -4,6 +4,8 @@ CHANGES INTRODUCED IN XINS 0.154:
 * XINS/Java Server Framework:
   - An IP filter expression can be in the form "a.b.c.d" instead of
     "a.b.c.d./32".
+  - Improved logging for conditions in which an unexpected exception is
+    caught.
 
 * Dependencies:
   - Updated xmlenc to 0.41.
