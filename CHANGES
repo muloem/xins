@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.147:
+
+* Added j2h.jar to depends/compile. See: http://www.java2html.com/.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.146:
 
 * XINS Javadoc API documentation now linked to online Jakarta Commons
