@@ -56,6 +56,47 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs the message for the
+    * <code>DescriptorBuilder.PropertyValueException</code> constructor.
+    *
+    * @param propertyName
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @param propertyValue
+    *    the value of the property, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>propertyName == null || propertyValue == null</code>.
+    */
+   private static final String createPropertyValueExceptionMessage(String propertyName,
+                                                                   String propertyValue,
+                                                                   String detail)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("propertyName",  propertyName,
+                                     "propertyValue", propertyValue);
+
+      // Construct the message
+      FastStringBuffer buffer = new FastStringBuffer(70);
+      buffer.append("Property \"");
+      buffer.append(propertyName);
+      buffer.append("\" is set to invalid value \"");
+      buffer.append(propertyValue);
+      if (message == null) {
+         buffer.append("\".");
+      } else {
+         buffer.append("\": ");
+         buffer.append(message);
+      }
+
+      return buffer.toString();
+   }
+
+   /**
     * Tokenizes the specified string. The {@link #DELIMITER_AS_STRING} will be
     * used as the token delimiter. Every token will be one element in the
     * returned {@link String} array.
@@ -291,17 +332,22 @@ public final class DescriptorBuilder extends Object {
        * @param propertyValue
        *    the value of the property, cannot be <code>null</code>.
        *
-       * @param message
+       * @param detail
        *    the detail message, can be <code>null</code>.
        *
        * @throws IllegalArgumentException
        *    if <code>propertyName == null || propertyValue == null</code>.
        */
-      PropertyValueException(String propertyName, String propertyValue, String message)
+      PropertyValueException(String propertyName,
+                             String propertyValue,
+                             String detail)
       throws IllegalArgumentException {
-         // TODO: Use createMessage()
-         super("Property \"" + propertyName.toString() + "\" is set to invalid value \"" + propertyValue.toString() + '"' + (message == null ? "." : (": " + message)));
-         MandatoryArgumentChecker.check("propertyName", propertyName, "propertyValue", propertyValue);
+
+         // Check preconditions, create the exception message and pass it to
+         // the superconstructor
+         super(createPropertyValueExceptionMessage(propertyName,
+                                                   propertyValue,
+                                                   detail));
       }
 
 
