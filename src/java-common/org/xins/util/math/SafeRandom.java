@@ -57,6 +57,7 @@ public final class SafeRandom extends Object {
 
       // Initialize instance fields
       _name         = name;
+      _asString     = "SafeRandom \"" + name + '"';
       _secureRandom = new SecureRandom();
       _random       = new Random();
    }
@@ -70,6 +71,11 @@ public final class SafeRandom extends Object {
     * The name. Cannot be <code>null</code>.
     */
    private final String _name;
+
+   /**
+    * Textual representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
 
    /**
     * The <code>SecureRandom</code> object, the preferred random generator to
@@ -100,7 +106,7 @@ public final class SafeRandom extends Object {
          return _secureRandom.nextInt();
       } catch (Throwable exception) {
          if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn("SafeRandom \"" + _name + "\": Failed to generate secure random int, falling back to pseudo-random.");
+            LOG.warn(_asString + ": Failed to generate secure random int, falling back to pseudo-random.");
          }
          return _random.nextInt();
       }
@@ -117,9 +123,19 @@ public final class SafeRandom extends Object {
          return _secureRandom.nextLong();
       } catch (Throwable exception) {
          if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn("SafeRandom \"" + _name + "\": Failed to generate secure random long, falling back to pseudo-random.");
+            LOG.warn(_asString + ": Failed to generate secure random long, falling back to pseudo-random.");
          }
          return _random.nextLong();
       }
+   }
+
+   /**
+    * Returns a textual representation of this object.
+    *
+    * @return
+    *    textual representation of this object, never <code>null</code>.
+    */
+   public String toString() {
+      return _asString;
    }
 }
