@@ -5,8 +5,10 @@ package org.xins.util.service.ldap;
 
 import java.util.Hashtable;
 import javax.naming.Context;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
@@ -116,7 +118,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Convert subject to a Request object
       Request request = (Request) subject;
 
-      InitialDirContext context = authenticate(target, request._authenticationDetails);
+      InitialDirContext context    = authenticate(target,  request._authenticationDetails);
+      NamingEnumeration namingEnum = query       (context, request._query);
 
       return null; // TODO
    }
@@ -162,6 +165,15 @@ public final class LDAPServiceCaller extends ServiceCaller {
       return new InitialDirContext(env);
    }
 
+   private NamingEnumeration query(InitialDirContext context, Query _query)
+   throws IllegalArgumentException, NamingException {
+
+      String searchBase             = null; // TODO
+      String filter                 = null; // TODO
+      SearchControls searchControls = null; // TODO
+
+      return context.search(searchBase, filter, searchControls);
+   }
 
    //-------------------------------------------------------------------------
    // Inner classes
