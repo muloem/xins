@@ -37,7 +37,7 @@ public class Date extends Type {
     * which is guaranteed to be non-<code>null</code>.
     *
     * @param string
-    *    the string to convert, cannot be <code>null</code>.
+    *    the string to convert in the ISO format YYYYMMDD, cannot be <code>null</code>.
     *
     * @return
     *    the {@link Value} object, never <code>null</code>.
@@ -62,7 +62,7 @@ public class Date extends Type {
     * Constructs a <code>Date.Value</code> from the specified string.
     *
     * @param string
-    *    the string to convert, can be <code>null</code>.
+    *    the string to convert in the ISO format YYYYMMDD, can be <code>null</code>.
     *
     * @return
     *    the {@link Value}, or <code>null</code> if
@@ -84,8 +84,8 @@ public class Date extends Type {
     *    the value to convert, can be <code>null</code>.
     *
     * @return
-    *    the textual representation of the value, or <code>null</code> if and
-    *    only if <code>value == null</code>.
+    *    the textual representation of the value in the ISO format YYYYMMDD,
+    *    or <code>null</code> if and only if <code>value == null</code>.
     */
    public static String toString(Value value) {
 
@@ -112,7 +112,8 @@ public class Date extends Type {
     *    the day of the month, must be &gt;= 1 and &lt;= 31.
     *
     * @return
-    *    the textual representation of the value, never <code>null</code>.
+    *    the textual representation of the value in the ISO format YYYYMMDD,
+    *    never <code>null</code>.
     */
    private static String toString(int year, int month, int day) {
 

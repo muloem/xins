@@ -514,7 +514,6 @@
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
-			<include name="src/config/**/*"                />
 			<include name="src/css/**/*"                   />
 			<include name="src/demos/**/*"                 />
 			<include name="src/dtd/**/*"                   />
@@ -533,8 +532,12 @@
 			<include name="COPYRIGHT"                      />
 			<include name="README"                         />
 			<include name="TODO"                           />
+			<exclude name="src/css/checkstyle"             />
+			<exclude name="src/css/j2h"                    />
+			<exclude name="src/css/tests"                  />
+			<exclude name="src/xslt/tests"                 />
 		</patternset>
-		<copy todir="build">
+		<copy todir="build" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
 				<include name="src/bin/*" />
@@ -556,7 +559,8 @@
 			mode="644">
 				<include name="build/javadoc/**/*"             />
 				<include name="build/*.jar"                    />
-				<include name="depends/**/*"                   />
+				<include name="depends/compile_and_runtime/*"  />
+				<include name="depends/compile/servlet.jar"    />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build"

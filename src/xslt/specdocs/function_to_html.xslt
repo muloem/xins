@@ -928,6 +928,13 @@
 
 		<tr>
 			<td class="name">
+				<a>
+					<xsl:attribute name="name">
+						<xsl:value-of select="name(..)" />
+						<xsl:text>_</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:attribute>
+				</a>
 				<xsl:value-of select="@name" />
 			</td>
 			<td class="type">
@@ -972,6 +979,12 @@
 			<tr>
 				<th>Name:</th>
 				<td>
+					<a>
+						<xsl:attribute name="name">
+							<xsl:text>element_</xsl:text>
+							<xsl:value-of select="@name" />
+						</xsl:attribute>
+					</a>
 					<xsl:value-of select="@name" />
 				</td>
 			</tr>
@@ -1067,6 +1080,13 @@
 
 		<tr>
 			<td class="value">
+				<a>
+					<xsl:attribute name="name">
+						<xsl:value-of select="../@name" />
+						<xsl:text>_</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:attribute>
+				</a>
 				<xsl:value-of select="@name" />
 			</td>
 			<td>

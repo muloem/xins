@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT template that extracts the revision date from the revision argument.
+
  $Id$
 -->
 

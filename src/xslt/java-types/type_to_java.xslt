@@ -20,7 +20,7 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt"    />
-	<xsl:include href="../escapepattern.xslt" />
+	<xsl:include href="../xml_to_java.xslt" />
 	<xsl:include href="../java.xslt"          />
 	<xsl:include href="../types.xslt"         />
 
@@ -143,7 +143,7 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="$kind = 'pattern'">
 				<xsl:text>"</xsl:text>
-				<xsl:call-template name="escapepattern">
+				<xsl:call-template name="xml_to_java_string">
 					<xsl:with-param name="text">
 						<xsl:value-of select="pattern/text()" />
 					</xsl:with-param>

@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the build.xml used to compile the different APIs.
+
  $Id$
 -->
 
@@ -171,11 +173,7 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="clientPackageAsDir">
-					<xsl:call-template name="package2dir">
-						<xsl:with-param name="package">
-							<xsl:value-of select="$clientPackage" />
-						</xsl:with-param>
-					</xsl:call-template>
+					<xsl:value-of select="translate($clientPackage, '.','/')" />
 				</xsl:variable>
 				<xsl:variable name="apiHasTypes">
 					<xsl:choose>
@@ -296,11 +294,7 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:variable name="packageAsDir">
-							<xsl:call-template name="package2dir">
-								<xsl:with-param name="package">
-									<xsl:value-of select="$package" />
-								</xsl:with-param>
-							</xsl:call-template>
+							<xsl:value-of select="translate($package, '.','/')" />
 						</xsl:variable>
 						<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 						<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
@@ -394,11 +388,7 @@
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:variable name="packageAsDir">
-						<xsl:call-template name="package2dir">
-							<xsl:with-param name="package">
-								<xsl:value-of select="$package" />
-							</xsl:with-param>
-						</xsl:call-template>
+						<xsl:value-of select="translate($package, '.','/')" />
 					</xsl:variable>
 					<xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/',                      $api)" />
 					<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api)" />

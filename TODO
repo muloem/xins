@@ -48,10 +48,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Move the logs in the Function#performedCall() method somewhere else
   and remove this method from Function.
 * Log that the runtime properties file is opened at startup (DEBUG level).
-* Refactor the invocation of the call method in the implementation.
-  The implementation should now have only a Request object as argument
-  and returns a Result object which can be a Successful or Unsuccessful
-  result.
 * When the runtime properties file is marked as -r (not readable) at startup,
   an error will be logged (3001). After that, the file watch thread is
   started. However, when the permissions of the file are changed so that the
@@ -110,8 +106,6 @@ XINS/JAVA COMMON LIBRARY
 * Change ExpiryFolder to allow retrieval of slot info.
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
-* Fix @return for method fromStringForOptional(String) in class
-  org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
 * Implemented and test method isValidValueImpl in class
   org.xins.types.standard.Properties.
@@ -178,7 +172,6 @@ MISCELLANEOUS
 * A pattern test script should be provided on http://xins.sourceforge.net/.
 * Finish SourceForgeUpload task to smoothen the release process by performing
   the following actions:
-  - upload the distribution file(s) to ftp://upload.sourceforge.net/incoming/
   - create a release on the SourceForge site
   - add the corresponding file
   - set the type of the file to '.gz'
@@ -188,8 +181,6 @@ MISCELLANEOUS
 * Support the Freshmeat.net XML-RPC interface for notification of new
   releases.
 * Refactor documentation.
-* Link the javadoc to the correct XINS version on sourceforge.
-* xslt & xml files should contain a description in their header.
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.

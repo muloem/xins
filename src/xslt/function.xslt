@@ -3,6 +3,9 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ Utiltity XSLT that provides templates to know whether a function is
+ session based or it creates the session.
+
  $Id$
 -->
 

@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ Utility XSLT that provides templates to convert a type to something else.
+
  $Id$
 -->
 
