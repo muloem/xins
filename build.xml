@@ -17,6 +17,11 @@
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
 	</target>
 
+	<target name="-j2h-avail">
+		<available classname="j2h" property="j2h.available" />
+		<fail unless="j2h.available" message="Java2HTML not available" />
+	</target>
+
 	<target name="-init-release">
 		<property name="javac.debug"         value="false" />
 		<property name="javac.deprecation"   value="false" />
@@ -183,6 +188,22 @@
 	</target>
 
 	<target name="java" depends="java-server-framework,java-client-framework" />
+
+	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
+		<echo message="Uploading JAR files to ${www.host}" />
+		<exec dir="build/" executable="scp" failonerror="true">
+			<arg value="xins-common.jar" />
+			<arg value="${www.target}/xins-common-${version}.jar" />
+		</exec>
+		<exec dir="build/" executable="scp" failonerror="true">
+			<arg value="xins-server.jar" />
+			<arg value="${www.target}/xins-server-${version}.jar" />
+		</exec>
+		<exec dir="build/" executable="scp" failonerror="true">
+			<arg value="xins-client.jar" />
+			<arg value="${www.target}/xins-client-${version}.jar" />
+		</exec>
+	</target>
 
 	<target name="-jdksrc-avail">
 		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
@@ -372,8 +393,25 @@
 
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
+	<target
+	name="-prepare-release"
+	depends="-init-release,clean"
+	description="Creates a release">
+		<fail if="tests.failed" message="All tests should run" />
+	</target>
 
-	<target name="upload-release" depends="-init-release,clean,upload-packages,upload-javadoc,upload-checkstyle" description="Uploads everything" />
+	<target name="upload-changes" depends="-init">
+		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
+		<exec executable="scp" failonerror="true">
+			<arg value="CHANGES" />
+			<arg value="${www.target}/changes-${version}.txt" />
+		</exec>
+	</target>
+
+	<target
+	name="release"
+	depends="-prepare-release,upload-changes,upload-jars,upload-packages,upload-javadoc,upload-checkstyle"
+	description="Performs a release" />
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
