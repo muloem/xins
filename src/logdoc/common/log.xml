@@ -70,7 +70,7 @@
 			<param name="socketTimeOut"     type="int32" nullable="false" />
 		</entry>
 		<entry id="1101" level="INFO">
-			<description>Calling HTTP service.</description>
+			<description>HTTP service called.</description>
 			<param name="url"	              type="text"  nullable="false" />
 			<param name="parameters"        type="serializable"  nullable="true" />
 			<param name="duration"          type="int64" nullable="false" />
