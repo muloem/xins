@@ -51,11 +51,11 @@ public final class UnexpectedExceptionCallException extends GenericCallException
     *          || target      == null
     *          || duration  &lt; 0</code>.
     */
-   UnexpectedExceptionCallException(CallRequest      request,
-                                    TargetDescriptor target,
-                                    long             duration,
-                                    String           detail,
-                                    Throwable        cause)
+   public UnexpectedExceptionCallException(CallRequest      request,
+                                           TargetDescriptor target,
+                                           long             duration,
+                                           String           detail,
+                                           Throwable        cause)
    throws IllegalArgumentException {
       super("Unexpected exception caught", request, target, duration, detail, cause);
    }
