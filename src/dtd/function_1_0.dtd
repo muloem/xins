@@ -28,7 +28,16 @@
 <!ATTLIST param-ref
           name       CDATA #REQUIRED
 >
-<!ELEMENT output (param*, resultcode-ref*, resultcode*, data?)>
+<!ELEMENT output (resultcode-ref*, resultcode*, data?, param*)>
+<!ELEMENT resultcode-ref EMPTY>
+<!ATTLIST resultcode-ref
+          name       CDATA #REQUIRED
+>
+<!ELEMENT resultcode (description)>
+<!ATTLIST resultcode
+          success    CDATA #REQUIRED
+          value      CDATA #REQUIRED
+>
 <!ELEMENT data (element*)>
 <!ATTLIST data
           contains   CDATA #REQUIRED
@@ -49,15 +58,6 @@
           name       CDATA #REQUIRED
           required   CDATA #IMPLIED
           type       CDATA #IMPLIED
->
-<!ELEMENT resultcode-ref EMPTY>
-<!ATTLIST resultcode-ref
-          name       CDATA #REQUIRED
->
-<!ELEMENT resultcode (description)>
-<!ATTLIST resultcode
-          success    CDATA #REQUIRED
-          value      CDATA #REQUIRED
 >
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
