@@ -16,16 +16,6 @@
 		<param name="oldState" />
 		<param name="newState" />
 	</entry>
-	<entry id="10" level="ERROR" category="org.xins.server.runtime">
-		<description>Received HTTP request with invalid method.</description>
-		<param name="ip" />
-		<param name="method" />
-	</entry>
-	<entry id="11" level="INFO" category="org.xins.server.runtime">
-		<description>Received HTTP request with valid method.</description>
-		<param name="ip" />
-		<param name="method" />
-	</entry>
 
 
 	<!-- Bootstrapping -->
@@ -338,6 +328,16 @@
 
 	<!-- Runtime -->
 
+	<entry id="5000" level="ERROR" category="org.xins.server.runtime">
+		<description>Received HTTP request with invalid method.</description>
+		<param name="ip" />
+		<param name="method" />
+	</entry>
+	<entry id="5001" level="INFO" category="org.xins.server.runtime">
+		<description>Received HTTP request with valid method.</description>
+		<param name="ip" />
+		<param name="method" />
+	</entry>
 
 
 	<!-- Shutdown -->

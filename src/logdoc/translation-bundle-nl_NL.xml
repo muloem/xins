@@ -8,8 +8,6 @@
 
 <translation-bundle>
 	<translation entry="0">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
-	<translation entry="10">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan.</translation>
-	<translation entry="11">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />.</translation>
 	<translation entry="100">XINS/Java Server Framework wordt gestart.</translation>
 	<translation entry="101">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</translation>
 	<translation entry="102">XINS/Java Server Framework kan niet gestart worden. Applicatie server gedraagt zich onverwacht. Reden: <value-of-param name="detail" /></translation>
@@ -64,6 +62,8 @@
 	<translation entry="256">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
 	<translation entry="257">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="258">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="5000">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan.</translation>
+	<translation entry="5001">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />.</translation>
 	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
 	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>

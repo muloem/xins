@@ -766,7 +766,7 @@ extends HttpServlet {
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
          if ("OPTIONS".equals(method)) {
-            Log.log_11(ip, method);
+            Log.log_5001(ip, method);
             response.setContentLength(0);
             response.setHeader("Accept", "GET, HEAD, POST");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -776,12 +776,12 @@ extends HttpServlet {
 
          // If the method is not recognized, return '405 Method Not Allowed'
          } else {
-            Log.log_10(ip, method);
+            Log.log_5000(ip, method);
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
-      Log.log_11(ip, method);
+      Log.log_5001(ip, method);
 
       // XXX: Consider using OutputStream instead of Writer, for improved performance
 
