@@ -112,7 +112,7 @@
 	</xsl:template>
 
 	<xsl:template match="data/element">
-		<xsl:variable name="$elementName" select="@name" />
+		<xsl:variable name="elementName" select="@name" />
 		<xsl:if test="preceding-sibling::element[@name=$elementName]">
 			<xsl:message terminate="yes">
 				<xsl:text>Element '</xsl:text>
