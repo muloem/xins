@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 8:
 
 * XINS/Java Common Library:
   - Added log message for an unexpected exception.
+  - Added 'detail' property to ParseException class.
+  - Added getter for 'detail' property in CallException class.
 
 * Generated CAPI classes:
   - All generated callXxxx methods now return either void or a
