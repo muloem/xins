@@ -52,7 +52,7 @@ public final class FileWatcher extends Thread {
 
       // Store the information
       _file     = new File(file);
-      _delay    = delay;
+      _delay    = 1000 * (long) delay;
       _listener = listener;
 
       // Configure thread as daemon
@@ -75,7 +75,7 @@ public final class FileWatcher extends Thread {
    /**
     * Delay in seconds, at least 1.
     */
-   private final int _delay;
+   private final long _delay;
 
    /**
     * The listener. Not <code>null</code>
