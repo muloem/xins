@@ -33,7 +33,7 @@ $Id$
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<xsl:call-template name="quote_characters">
+				<xsl:call-template name="xml_to_java_string">
 					<xsl:with-param name="text" select="$rest" />
 				</xsl:call-template>
 			</xsl:otherwise>
