@@ -28,7 +28,8 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InvalidRequestException</code>.
+    * Constructs a new <code>InvalidRequestException</code> with the specified
+    * detail message and cause exception.
     *
     * @param message
     *    the message, can be <code>null</code>.
@@ -38,6 +39,17 @@ extends Exception {
     */
    InvalidRequestException(String message, Throwable cause) {
       super(message, cause);
+   }
+
+   /**
+    * Constructs a new <code>InvalidRequestException</code> with the specified
+    * detail message.
+    *
+    * @param message
+    *    the message, can be <code>null</code>.
+    */
+   InvalidRequestException(String message) {
+      this(message, null);
    }
 
 
