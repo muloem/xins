@@ -115,26 +115,26 @@
 			<param name="className" />
 		</entry>
 		<entry id="2021" level="ERROR">
-			<description>Manageable object could not be initialized due to a missing required property.</description>
+			<description>Manageable object could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
 		<entry id="2022" level="ERROR">
-			<description>Manageable object could not be initialized due to an invalid property value.</description>
+			<description>Manageable object could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
 		<entry id="2023" level="ERROR">
-			<description>Manageable object could not be initialized.</description>
+			<description>Manageable object could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
 		<entry id="2024" level="ERROR">
-			<description>Manageable object could not be initialized due to an unexpected exception.</description>
+			<description>Manageable object could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="exceptionClass" />
