@@ -1,19 +1,11 @@
 List of things to be done for XINS release 1.0:
 
-znerd    - Create a branch called STABLE
-znerd    - First tag on the STABLE branch should be RELEASE_1_0_BETA_1
-znerd    - Start with empty CHANGES file
-?        - Set @since tags on all classes to 1.0
-X znerd    - Support logdoc for API implementations
-X znerd    - Convert XINS/Java Client Framework to use logdoc
-X znerd    - Convert XINS/Java Common Library to use logdoc
-X agoubard - Have DTD-based validation in place
-znerd    - Make sure empty directories are not included in the new branch
-X znerd    - Remove all deprecated methods, fields and classes
-znerd    - Remove unused methods, fields and classes
-znerd    - Finalize log entry ID's.
-X znerd    - Change all packages in java-common to start with org.xins.common
-X znerd    - Change email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com
-X agoubard - Include a minimum of documentation for the users in the release
-X agoubard - Include some examples in the release
-agoubard - Prepare the annoucement (text + web sites where it will be posted)
+- Create a branch called BRANCH_1_0_x
+- First tag on the BRANCH_1_0_x branch should be RELEASE_1_0_0
+- Start with empty CHANGES file
+- Make sure empty directories are not included in the new branch
+- Remove unused methods, fields and classes
+- Finalize log entry ID's.
+- Prepare the annoucement (text + web sites where it will be posted)
+- Set @since tags on all classes to 1.0 (should we really do this?)
+- Extend unit tests
