@@ -24,7 +24,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Change _GetStatistics to support reset=true.
 * Change implementation of meta-functions from one method per meta-function to
   one class per meta-function.
-* Include the timezone in every message that contains a time.
+* Include the timezone in every message that contains a time?
 * A new maximum call duration (for a specific function) could be logged.
 * CallContext should not rely on CallResultBuilder but implement the
   CallResult interface self.
@@ -44,7 +44,6 @@ XINS/JAVA SERVER FRAMEWORK
 * Log an INFO message if some runtime properties are unused.
 * Implement a _DumpStatistics function that writes the statistics in a comma
   separated line in a text file.
-* Make generated logdoc classes package-private.
 * Stop runtime configuration file watch thread when the servlet is disposed.
 * Access control rules: Make default behaviour to deny requests. We should
   then be able to remove log message 4033.
