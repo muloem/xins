@@ -30,10 +30,12 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
   - Removed boundary checks on all methods except the isValidValue method in
     all the IntXX type classes.
   - Added unit test class for Boolean type class.
-  - Added fileFound() method to FileWatcher.Listener interface. This may
-    break existing code.
+  - Added fileFound() method to FileWatcher.Listener interface.
+    WARNING: This may break existing code.
 
 * XINS/Java Client Framework:
+  - Fixed SF.net bug #1043048. Previously a ClassCastException was thrown if
+    XINSServiceCaller.call(XINSCallRequest) was called and the call succeeded.
   - Fixed SF.net bug #1050606. If no data received from an HTTP call, an
     InvalidResultXINSCallException is thrown instead of an
     IllegalArgumentException.
@@ -48,6 +50,12 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
   - If doCall(CallRequest) throws an unexpected type of exception, then an
     Error is thrown. Improved the message for that Error, and registering the
     cause of the Error properly.
+  - Class XINSCallResult now implements XINSCallResultData interface.
+  - Added UnsuccessfulXINSCallException constructor that accepts a
+    XINSCallResultData instance.
+  - Removed the call(XINSCallRequest,TargetDescriptor) method from class
+    XINSServiceCaller.
+    WARNING: This may break existing code.
 
 * Logdoc
   - The boolean type was not declared in the log_to_entry_html.xslt as a
@@ -146,7 +154,8 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Removed support for XSLT transformations.
   - Changed access level of field _api in class Function from protected to
     private. Subclasses should use getAPI() to get a reference to the API
-    object. This may break existing code.
+    object.
+    WARNING: This may break existing code.
   - Removed the "org.xins.server.output.compatibility" property.
   - The returned output stream from the Servlet is now closed instead of
     being only flushed.
@@ -359,7 +368,7 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Changed UnacceptableCallResultException to extend CallException again.
   - Removed public reference to JDom, the org.jdom.Element is replaced with
     org.xins.client.DataElement.
-    Note: this change may break your code compatibility if you use a CAPI API.
+    WARNING: This may break existing code.
   - Replaced the Dom parser with a SAX parser to parse the XML.
   - Marking the XINSServiceCaller.CallExecutor thread as a daemon thread.
 
@@ -1138,8 +1147,8 @@ CHANGES INTRODUCED IN XINS 0.179:
     xins-project_1_0.dtd.
   - Removed the attribute success from the result, the existence of a result
     code or not is used to know if the result is successful.
-    This may break compatibility as the xml result now longer returns a
-    success attribute.
+    WARNING: This may break compatibility as the XML result now longer returns
+             a success attribute.
 
 * Generation of specification documentation:
   - Changed the style.css for the specdocs. It does not explicitly specify
@@ -2349,9 +2358,9 @@ CHANGES INTRODUCED IN XINS 0.125:
     difference between initialization and re-initialization anymore.
   - Response validation is now a runtime configuration setting.
   - Changed the output format of _GetSettings.
-  - Changed LifespanManager from interface to abstract class. This will
-    break existing code that is based on the LifespanManager interface
-    introduced in XINS 0.120.
+  - Changed LifespanManager from interface to abstract class.
+    WARNING: This will break existing code that is based on the
+             LifespanManager interface introduced in XINS 0.120.
   - Changed Log4J categories. There is now one category for the bootstrap
     phase, one for the initialization and re-initialization and one for the
     shutdown.
@@ -2420,13 +2429,14 @@ CHANGES INTRODUCED IN XINS 0.122:
 * XINS/Java Server Framework:
   - Improved Javadoc documentation of a few classes, like APIServlet and API.
   - Improved error-checking and logging.
-  - Removed Singleton interface. Warning: This may break existing code.
+  - Removed Singleton interface.
+    WARNING: This may break existing code.
   - Changed the interface of LifespanManager in an incompatible way. Warning:
-    This may break existing code.
+    WARNING: This may break existing code.
   - Supporting re-initialization of a LifespanManager.
   - Successful result codes are no longer supported. Removed the corresponding
-    constructors and methods from the ResultCode class. This may break
-    existing code.
+    constructors and methods from the ResultCode class.
+    WARNING: This may break existing code.
 
 * XINS/Java Client Framework:
   - Improved Javadoc for MultipleIPAddressesException class.
@@ -2622,18 +2632,20 @@ CHANGES INTRODUCED IN XINS 0.109: (based on XINS 0.108)
     other classes named 'RemoteAPI', 'API' or 'APIImpl'.
   - Applied some refactorings to make the XSLT easier to read and maintain.
   - Now using <enumtype>.Item classes as the type for input parameters that
-    denote enumeration types. This may break existing code that expects a
-    java.lang.String object instead.
+    denote enumeration types.
+    WARNING: This may break existing code that expects a java.lang.String
+             object instead.
   - Result classes generated for functions that return a data element now
     define a method getDataElement() that returns an org.jdom.Element object
-    instead of a list of the contained elements. This may break existing code
-    that expects a List instead.
+    instead of a list of the contained elements.
+    WARNING: This may break existing code that expects a java.util.List
+             instead.
 
 * Generated fundament classes:
   - Now using <enumtype>.Item classes as the type for input parameters that
-    denote enumeration types. This may break existing implementation code that
-    expects that the signature of the call method accepts a java.lang.String
-    instead.
+    denote enumeration types.
+    WARNING: This may break existing implementation code that expects that the
+             signature of the call method accepts a java.lang.String instead.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.108.1:
@@ -2807,8 +2819,8 @@ CHANGES INTRODUCED IN XINS 0.97:
     Also: Throwing Error instead of IllegalStateException.
 
 * XINS/Java Server Framework:
-  - Added method reinit(PropertyReader) to interface Singleton. Could
-    potentially breaks existing code.
+  - Added method reinit(PropertyReader) to interface Singleton.
+    WARNING: This may break existing code.
 
   *** WARNING ***
   There may be a 'memory leak' in this release. It is expected that this issue
@@ -3081,7 +3093,8 @@ CHANGES INTRODUCED IN XINS 0.73:
 
 * XINS/Java Client Framework:
   - CallResult now has a link to an optional ActualFunctionCaller instead of a
-    FunctionCaller. This could theoretically break existing code.
+    FunctionCaller.
+    WARNING: This may break existing code.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.72:
@@ -3548,7 +3561,8 @@ CHANGES INTRODUCED IN XINS 0.38:
 * Moved org.xins.types package to XINS/Java Common.
 
 * The generated java-fundament classes now support Java data types other than
-  String. This may break existing function ...Impl classes.
+  String.
+  WARNING: This may break existing function ...Impl classes.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.37:
