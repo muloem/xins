@@ -9,9 +9,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.util.Enumeration;
 import java.util.Properties;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -274,6 +276,11 @@ implements Servlet {
     *    <li>if <code>config</code> argument is <code>null</code> then a
     *        {@link ServletException} is thrown; this indicates a problem
     *        with the application server;
+    *    <li>the {@link ServletContext} is retrieved from the
+    *        {@link ServletConfig}, using the
+    *        {@link ServletConfig#getServletContext()} method; if the returned
+    *        value is <code>null</code>, then a {@link ServletException} is
+    *        thrown; this indicates a problem with the application server;
     *    <li>the state is set to <em>initializing</em>;
     *    <li>the value of the required system property named
     *        {@link #CONFIG_FILE_SYSTEM_PROPERTY} is determined, this is the
@@ -343,18 +350,38 @@ implements Servlet {
    public void init(ServletConfig config)
    throws ServletException {
 
+      // Make sure the Library class is initialized
+      String version = Library.getVersion();
+
       // Hold the state lock
       synchronized (_stateLock) {
 
          // Check preconditions
          if (_state != UNINITIALIZED) {
-            String message = "Application server malfunction suspected. State is " + _state + " instead of " + UNINITIALIZED + '.';
-            System.err.println(message);
+            String message = "Application server malfunction detected. State is " + _state + " instead of " + UNINITIALIZED + '.';
+            Library.LIFESPAN_LOG.fatal(message);
             throw new ServletException(message);
          } else if (config == null) {
-            String message = "Application server malfunction suspected. No servlet configuration object passed.";
-            System.err.println(message);
+            String message = "Application server malfunction detected. No servlet configuration object passed.";
+            Library.LIFESPAN_LOG.fatal(message);
             throw new ServletException(message);
+         }
+
+         // Get the ServletContext
+         ServletContext context = config.getServletContext();
+         if (context == null) {
+            String message = "Application server malfunction detected. No servlet context available.";
+            Library.LIFESPAN_LOG.fatal(message);
+            throw new ServletException(message);
+         }
+
+         // Check the implemented vs expected Java Servlet API version
+         final int expectedMajor = 2;
+         final int expectedMinor = 3;
+         int major = context.getMajorVersion();
+         int minor = context.getMinorVersion();
+         if (major != expectedMajor || minor != expectedMinor) {
+            Library.LIFESPAN_LOG.warn("Application server implements Java Servlet API version " + major + '.' + minor + " instead of the expected version " + expectedMajor + '.' + expectedMajor + ". The application may or may not work correctly.");
          }
 
          // Set the state
@@ -362,60 +389,32 @@ implements Servlet {
 
          try {
             // Determine configuration file location
-            String configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
+            _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
 
             // Read properties from the config file
-            Properties properties;
             if (_configFile == null || _configFile.length() < 1) {
-               String message = "System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.";
-               System.err.println(message);
-               throw new ServletException(message);
+               Library.LIFESPAN_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
             } else {
-               try {
-                  FileInputStream in = new FileInputStream(_configFile);
-                  properties = new Properties();
-                  properties.load(in);
-               } catch (FileNotFoundException exception) {
-                  String message = "System administration issue detected. Configuration file \"" + _configFile + "\" not found.";
-                  System.err.println(message);
-                  throw new ServletException(message);
-               } catch (SecurityException exception) {
-                  String message = "System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".";
-                  System.err.println(message);
-                  throw new ServletException(message);
-               } catch (IOException exception) {
-                  String message = "System administration issue detected. Unable to read configuration file \"" + _configFile + "\".";
-                  System.err.println(message);
-                  throw new ServletException(message);
-               }
+               applyConfigFile();
             }
-
-            // Initialize Log4J
-            PropertyConfigurator.configure(properties);
-
-            // TODO: If Log4J is not properly initialized, fallback to simple
-            //       appender, console output
-
-            // Watch the file
-            FileWatcher.Listener listener = new ConfigurationFileListener();
-            final int delay = 10; // TODO: Read from config file
-            FileWatcher watcher = new FileWatcher(_configFile, 10, listener);
-            watcher.start();
-            Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + delay + " seconds.");
 
             // Initialization starting
-            String version = org.xins.server.Library.getVersion();
-            if (Library.LIFESPAN_LOG.isDebugEnabled()) {
-               Library.LIFESPAN_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
-            }
+            Library.LIFESPAN_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
 
             // Initialize API instance
             _api = configureAPI(config);
 
-            // Initialization done
-            if (Library.LIFESPAN_LOG.isInfoEnabled()) {
-               Library.LIFESPAN_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
+            // Watch the configuration file
+            if (_configFile != null) {
+               FileWatcher.Listener listener = new ConfigurationFileListener();
+               final int delay = 10; // TODO: Read from config file
+               FileWatcher watcher = new FileWatcher(_configFile, 10, listener);
+               watcher.start();
+               Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + delay + " seconds.");
             }
+
+            // Initialization done
+            Library.LIFESPAN_LOG.info("XINS/Java Server Framework " + version + " is initialized.");
 
             // Finally enter the ready state
             _state = READY;
@@ -430,6 +429,22 @@ implements Servlet {
                _state = UNINITIALIZED;
             }
          }
+      }
+   }
+
+   private void applyConfigFile() {
+      try {
+         FileInputStream in = new FileInputStream(_configFile);
+         Properties properties = new Properties();
+         properties.load(in);
+
+         Library.configure(properties);
+      } catch (FileNotFoundException exception) {
+         Library.LIFESPAN_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+      } catch (SecurityException exception) {
+         Library.LIFESPAN_LOG.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
+      } catch (IOException exception) {
+         Library.LIFESPAN_LOG.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
       }
    }
 
@@ -507,12 +522,6 @@ implements Servlet {
          Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
          _state = DISPOSED;
       }
-   }
-
-   private void reinit() {
-      Library.RUNTIME_LOG.info("Re-initializing XINS/Java Server Framework.");
-      // TODO: PropertyConfigurator.configure(properties);
-      // TODO: reinit API
    }
 
 
@@ -614,19 +623,22 @@ implements Servlet {
       //----------------------------------------------------------------------
 
       public void fileModified() {
-         reinit();
+         Library.LIFESPAN_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
+         applyConfigFile();
+         // TODO: reinit API
+         Library.LIFESPAN_LOG.info("Re-initialized XINS/Java Server Framework.");
       }
 
       public void fileNotFound() {
-         Library.RUNTIME_LOG.warn("Configuration file \"" + _configFile + "\" not found.");
+         Library.LIFESPAN_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
       }
 
       public void fileNotModified() {
-         Library.RUNTIME_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
+         Library.LIFESPAN_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
       }
 
       public void securityException(SecurityException exception) {
-         Library.RUNTIME_LOG.warn("Access denied while reading file \"" + _configFile + "\".");
+         Library.LIFESPAN_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
       }
    }
 }
