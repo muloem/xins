@@ -96,18 +96,18 @@ public class ExpiryFolderTests extends TestCase {
       }
 
       folder.put("hello", "world");
-      assertEquals("Incorrect value found.", "world", folder.get("hello"));
+      assertEquals("Got incorrect value.", "world", folder.get("hello"));
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
 
       Thread.sleep(30);
-      assertEquals("Incorrect value found.", "world", folder.get("hello"));
+      assertEquals("Got Incorrect value.", "world", folder.get("hello"));
 
-      Thread.sleep(40);
+      Thread.sleep(50);
       assertEquals("Incorrect value found.", "world", folder.find("hello"));
 
-      Thread.sleep(40);
+      Thread.sleep(50);
       assertNull("Incorrect value found.", folder.find("hello"));
-      assertNull("Incorrect value found.", folder.get("hello"));
+      assertNull("Got incorrect value.", folder.get("hello"));
    }
 
    public void testStategy() throws Throwable {
