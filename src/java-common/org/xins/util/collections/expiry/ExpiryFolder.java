@@ -234,7 +234,7 @@ extends Object {
          }
 
          if (LOG.isDebugEnabled()) {
-            LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " entries remaining).");
+            LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " remaining).");
          }
       }
 
