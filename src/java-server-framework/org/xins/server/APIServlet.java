@@ -807,11 +807,20 @@ extends HttpServlet {
 
          // Store the name of the API
          _apiName = config.getInitParameter(API_NAME_PROPERTY);
+         if (_apiName == null) {
+
+            // Should never happen
+            _apiName= "-";
+         }
+         
+         // TODO: Enable this for XINS 2.0.0:
+/*
          if (TextUtils.isEmpty(_apiName)) {
             Log.log_3209(API_NAME_PROPERTY);
             setState(API_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
+ */
          // XXX: Trim the API name?
 
          // Determine the default calling convention
