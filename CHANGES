@@ -10,20 +10,20 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     Changed the tests accordingly.
 
 * Generated CAPI classes:
-  - Fixed bug #1061692: A NullPointerException was thrown when using 
+  - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
 
 * Generation of specification documentation:
-  - Fixed bug #1061692: A NullPointerException was thrown when using 
+  - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
 
 * Generation of server-side Java code:
-  - Fixed bug #1061692: A NullPointerException was thrown when using 
+  - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
   - Fixed bug #1063006: log.xml with alpha DTD fails if no server reachable.
 
 * Generation of types Java code:
-  - Fixed bug #1061692: A NullPointerException was thrown when using 
+  - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
 
 * Libraries:
@@ -36,6 +36,23 @@ CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
   - Removed deprecated methods from class DataElement:
     . public Iterator getChildren()
     . public Iterator getChildren(String name)
+
+* Generated CAPI classes:
+  - Fixed bug #1061692: A NullPointerException was thrown when using
+    Java 1.4.0 or Java 1.4.1.
+
+* Generation of specification documentation:
+  - Fixed bug #1061692: A NullPointerException was thrown when using
+    Java 1.4.0 or Java 1.4.1.
+
+* Generation of server-side Java code:
+  - Fixed bug #1061692: A NullPointerException was thrown when using
+    Java 1.4.0 or Java 1.4.1.
+  - Fixed bug #1063006: log.xml with alpha DTD fails if no server reachable.
+
+* Generation of types Java code:
+  - Fixed bug #1061692: A NullPointerException was thrown when using
+    Java 1.4.0 or Java 1.4.1.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 1:
