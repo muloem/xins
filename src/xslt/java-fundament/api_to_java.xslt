@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.Properties;
 import org.xins.server.API;
 import org.xins.server.CallContext;
-import org.xins.server.ResultCode;
 
 /**
  * Implementation of <code>]]></xsl:text>
@@ -68,20 +67,6 @@ public class APIImpl extends API {
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $api, '/', $name, '.rcd')" />
 			<xsl:variable name="successAttr" select="document($file)/resultcode/@success" />
-			<xsl:variable name="success">
-				<xsl:choose>
-					<xsl:when test="string-length($successAttr) = 0">false</xsl:when>
-					<xsl:when test="$successAttr = 'false'">false</xsl:when>
-					<xsl:when test="$successAttr = 'true'">true</xsl:when>
-					<xsl:otherwise>
-						<xsl:message terminate="yes">
-							<xsl:text>Invalid value for success attribute: "</xsl:text>
-							<xsl:value-of select="$successAttr" />
-							<xsl:text>".</xsl:text>
-						</xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
 			<xsl:variable name="value"   select="document($file)/resultcode/@value" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
@@ -94,6 +79,20 @@ public class APIImpl extends API {
 				</xsl:call-template>
 			</xsl:variable>
 
+			<xsl:choose>
+				<xsl:when test="string-length($successAttr) = 0" />
+				<xsl:when test="$successAttr = 'false'">
+					<xsl:message>A result code does not need to be marked as unsuccessful, since it always is.</xsl:message>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Success attribute is set to "</xsl:text>
+						<xsl:value-of select="$successAttr" />
+						<xsl:text>". It should not be set, since a result code is always unsuccessful.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+
 			<xsl:text><![CDATA[
 
    /**
@@ -101,9 +100,9 @@ public class APIImpl extends API {
 			<xsl:value-of select="$name" />
 			<xsl:text><![CDATA[</em> result code.
     */
-   public final static ResultCode ]]></xsl:text>
+   public final static org.xins.server.ResultCode ]]></xsl:text>
 			<xsl:value-of select="$fieldname" />
-			<xsl:text> = new ResultCode(SINGLETON, </xsl:text>
+			<xsl:text> = new org.xins.server.ResultCode(SINGLETON, </xsl:text>
 			<xsl:value-of select="$success" />
 			<xsl:text>, "</xsl:text>
 			<xsl:value-of select="$name" />
