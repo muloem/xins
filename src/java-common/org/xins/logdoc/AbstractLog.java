@@ -108,7 +108,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
     */
-   protected static class LogController extends Object {
+   protected static abstract class LogController extends Object {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -129,6 +129,25 @@ extends Object {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Activates the specified locale (wrapper method). This method has
+       * package-private access and calls {@link #setLocale(String)}.
+       *
+       * @param newLocale
+       *    the new locale, not <code>null</code>.
+       */
+      final void doSetLocale(String newLocale) {
+         setLocale(newLocale);
+      }
+
+      /**
+       * Activates the specified locale.
+       *
+       * @param newLocale
+       *    the new locale, not <code>null</code>.
+       */
+      protected abstract void setLocale(String newLocale);
    }
 
    /**
