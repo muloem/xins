@@ -413,7 +413,7 @@ extends HttpServlet {
        || (_state == READY                           && newState != DETERMINE_INTERVAL         && newState != DISPOSING                      )
        || (_state == DISPOSING                       && newState != DISPOSED))
       {
-         Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
+         Log.log_3101(_state == null ? null : _state.getName(), newState.getName());
          throw new IllegalArgumentException("The state " + newState + " cannot follow the state " + _state + '.');
       }
 
@@ -433,7 +433,7 @@ extends HttpServlet {
          _state = newState;
       }
 
-      Log.log_1100(oldState.getName(), newState.getName());
+      Log.log_3100(oldState.getName(), newState.getName());
    }
 
    /**
@@ -461,21 +461,21 @@ extends HttpServlet {
          try {
             interval = Integer.parseInt(s);
             if (interval < 1) {
-               Log.log_1409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                setState(DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
-               Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_3410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
-            Log.log_1409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             setState(DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Not a 32-bit integer number.");
          }
 
       // Otherwise, if the property is not set, use the default
       } else {
-         Log.log_1408(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
+         Log.log_3408(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
@@ -544,7 +544,7 @@ extends HttpServlet {
    throws ServletException {
 
       String serverVersion = Library.getVersion();
-      Log.log_1200(serverVersion);
+      Log.log_3200(serverVersion);
 
 
       //-------------------------------------------------------------------//
@@ -556,17 +556,17 @@ extends HttpServlet {
          if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
           && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
           && _state != API_INITIALIZATION_FAILED) {
-            Log.log_1201(_state == null ? null : _state.getName());
+            Log.log_3201(_state == null ? null : _state.getName());
             throw new ServletException();
          } else if (config == null) {
-            Log.log_1202("config == null");
+            Log.log_3202("config == null");
             throw new ServletException();
          }
 
          // Get the ServletContext
          ServletContext context = config.getServletContext();
          if (context == null) {
-            Log.log_1202("config.getServletContext() == null");
+            Log.log_3202("config.getServletContext() == null");
             throw new ServletException();
          }
 
@@ -577,7 +577,7 @@ extends HttpServlet {
          if (major != 2 || (minor != 2 && minor != 3)) {
             String expected = "2.2/2.3";
             String actual   = "" + major + '.' + minor;
-            Log.log_1203(actual, expected);
+            Log.log_3203(actual, expected);
          }
 
          // Store the ServletConfig object, per the Servlet API Spec, see:
@@ -598,7 +598,7 @@ extends HttpServlet {
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
-            Log.log_1204(exception, CONFIG_FILE_SYSTEM_PROPERTY);
+            Log.log_3204(exception, CONFIG_FILE_SYSTEM_PROPERTY);
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
@@ -607,7 +607,7 @@ extends HttpServlet {
          // NOTE: Don't trim the configuration file name, since it may start
          //       with a space or other whitespace character.
          if (_configFile == null || _configFile.length() < 1) {
-            Log.log_1205(CONFIG_FILE_SYSTEM_PROPERTY);
+            Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
@@ -616,17 +616,17 @@ extends HttpServlet {
          readRuntimeProperties();
 
          // Log XINS version
-         Log.log_1225(serverVersion);
+         Log.log_3225(serverVersion);
 
          // Warn if Server version differs from Common version
          String commonVersion = org.xins.common.Library.getVersion();
          if (! serverVersion.equals(commonVersion)) {
-            Log.log_1226(serverVersion, commonVersion);
+            Log.log_3226(serverVersion, commonVersion);
          }
 
          // Warn if the current XINS version is not a production version
          if (! Library.isProductionRelease(serverVersion)) {
-            Log.log_1227(serverVersion);
+            Log.log_3227(serverVersion);
          }
 
 
@@ -641,7 +641,7 @@ extends HttpServlet {
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
          apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
          if (apiClassName == null || apiClassName.length() < 1) {
-            Log.log_1206(API_CLASS_PROPERTY);
+            Log.log_3206(API_CLASS_PROPERTY);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -651,7 +651,7 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
-            Log.log_1207(exception, API_CLASS_PROPERTY, apiClassName);
+            Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -668,14 +668,14 @@ extends HttpServlet {
          } catch (Throwable t) {
 
             // The locale is not supported by the API
-            Log.log_1309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
+            Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
 
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
-            Log.log_1208(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -686,18 +686,18 @@ extends HttpServlet {
             singletonField = apiClass.getDeclaredField("SINGLETON");
             _api = (API) singletonField.get(null);
          } catch (Throwable exception) {
-            Log.log_1208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
 
          // Make sure that the field is an instance of that same class
          if (_api == null) {
-            Log.log_1208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          } else if (_api.getClass() != apiClass) {
-            Log.log_1208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -726,15 +726,15 @@ extends HttpServlet {
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1209(exception.getPropertyName());
+            Log.log_3209(exception.getPropertyName());
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1210(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3210(exception.getPropertyName(), exception.getPropertyValue());
 
          // Other bootstrap error
          } catch (Throwable exception) {
-            Log.log_1211(exception);
+            Log.log_3211(exception);
          }
 
          // Throw a ServletException if the bootstrap failed
@@ -802,12 +802,12 @@ extends HttpServlet {
          if (newLocale != null) {
             String currentLocale = LogCentral.getLocale();
             if (!currentLocale.equals(newLocale)) {
-               Log.log_1306(currentLocale, newLocale);
+               Log.log_3306(currentLocale, newLocale);
                try {
                   LogCentral.setLocale(newLocale);
-                  Log.log_1307(currentLocale, newLocale);
+                  Log.log_3307(currentLocale, newLocale);
                } catch (UnsupportedLocaleException exception) {
-                  Log.log_1308(currentLocale, newLocale);
+                  Log.log_3308(currentLocale, newLocale);
                   setState(API_INITIALIZATION_FAILED);
                   return;
                }
@@ -818,18 +818,18 @@ extends HttpServlet {
             _api.init(_runtimeProperties);
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1411(exception.getPropertyName());
+            Log.log_3411(exception.getPropertyName());
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1412(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3412(exception.getPropertyName(), exception.getPropertyValue());
          } catch (InitializationException exception) {
-            Log.log_1413(exception.getMessage());
+            Log.log_3413(exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1414(exception);
+            Log.log_3414(exception);
          } finally {
 
             if (succeeded) {
                setState(READY);
-               Log.log_1415();
+               Log.log_3415();
             } else {
                setState(API_INITIALIZATION_FAILED);
             }
@@ -845,7 +845,7 @@ extends HttpServlet {
     */
    private void readRuntimeProperties() {
 
-      Log.log_1300();
+      Log.log_3300();
 
       synchronized (_runtimePropertiesLock) {
 
@@ -861,11 +861,11 @@ extends HttpServlet {
             // Close the file
             in.close();
          } catch (FileNotFoundException exception) {
-            Log.log_1301(exception, _configFile);
+            Log.log_3301(exception, _configFile);
          } catch (SecurityException exception) {
-            Log.log_1302(exception, _configFile);
+            Log.log_3302(exception, _configFile);
          } catch (IOException exception) {
-            Log.log_1303(exception, _configFile);
+            Log.log_3303(exception, _configFile);
          }
 
          // Attempt to configure Log4J
@@ -874,16 +874,16 @@ extends HttpServlet {
          // Determine if Log4J is properly initialized
          Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
          if (appenders instanceof NullEnumeration) {
-            Log.log_1304(_configFile);
+            Log.log_3304(_configFile);
             configureLoggerFallback();
          } else {
-            Log.log_1305();
+            Log.log_3305();
          }
 
          // Change the hostname if needed
          String hostname = properties.getProperty(HOSTNAME_PROPERTY);
          if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
-            Log.log_1310(_hostname, hostname);
+            Log.log_3310(_hostname, hostname);
             _hostname = hostname;
          }
 
@@ -977,7 +977,7 @@ extends HttpServlet {
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
          if ("OPTIONS".equals(method)) {
-            Log.log_1521(ip, method, queryString);
+            Log.log_3521(ip, method, queryString);
             response.setContentLength(0);
             response.setHeader("Accept", "GET, HEAD, POST");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -987,12 +987,12 @@ extends HttpServlet {
 
          // If the method is not recognized, return '405 Method Not Allowed'
          } else {
-            Log.log_1520(ip, method, queryString);
+            Log.log_3520(ip, method, queryString);
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
-      Log.log_1521(ip, method, queryString);
+      Log.log_3521(ip, method, queryString);
 
       // XXX: Consider using OutputStream instead of Writer, for improved
       // XXX: performance
@@ -1054,7 +1054,7 @@ extends HttpServlet {
       // Stop the FileWatcher
       _configFileWatcher.end();
 
-      Log.log_1600();
+      Log.log_3600();
 
       // Set the state temporarily to DISPOSING
       setState(DISPOSING);
@@ -1064,14 +1064,14 @@ extends HttpServlet {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Log.log_1601(exception);
+            Log.log_3601(exception);
          }
       }
 
       // Set the state to DISPOSED
       setState(DISPOSED);
 
-      Log.log_1602();
+      Log.log_3602();
    }
 
 
@@ -1186,7 +1186,7 @@ extends HttpServlet {
        */
       private void reinit() {
 
-         Log.log_1407(_configFile);
+         Log.log_3407(_configFile);
 
          synchronized (_runtimePropertiesLock) {
 
@@ -1209,7 +1209,7 @@ extends HttpServlet {
             int oldInterval = _configFileWatcher.getInterval();
             if (oldInterval != newInterval) {
                _configFileWatcher.setInterval(newInterval);
-               Log.log_1403(_configFile, oldInterval, newInterval);
+               Log.log_3403(_configFile, oldInterval, newInterval);
             }
          }
       }
@@ -1231,7 +1231,7 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotFound() {
-         Log.log_1400(_configFile);
+         Log.log_3400(_configFile);
       }
 
       /**
@@ -1241,7 +1241,7 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotModified() {
-         Log.log_1402(_configFile);
+         Log.log_3402(_configFile);
       }
 
       /**
@@ -1256,7 +1256,7 @@ extends HttpServlet {
        *    (although this is not checked).
        */
       public void securityException(SecurityException exception) {
-         Log.log_1401(exception, _configFile);
+         Log.log_3401(exception, _configFile);
       }
 
       /**

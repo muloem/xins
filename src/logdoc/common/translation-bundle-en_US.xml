@@ -8,48 +8,48 @@
 -->
 
 <translation-bundle>
-	<translation entry="3000">TRACE: Enter <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3001">TRACE: Leave <value-of-param name="className" /> constructor with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3002">TRACE: Leave <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3003">TRACE: Enter <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3004">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" /> with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3005">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1000">TRACE: Enter <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1001">TRACE: Leave <value-of-param name="className" /> constructor with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1002">TRACE: Leave <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1003">TRACE: Enter <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1004">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" /> with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1005">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
 
-	<translation entry="3050">Programming error in the <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3051">Ignoring <value-of-param name="exceptionClass" /> exception with message <value-of-param name="exceptionMessage" format="quoted" />. Detail: <value-of-param name="description" format="quoted" />.</translation>
+	<translation entry="1050">Programming error in the <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1051">Ignoring <value-of-param name="exceptionClass" /> exception with message <value-of-param name="exceptionMessage" format="quoted" />. Detail: <value-of-param name="description" format="quoted" />.</translation>
 
-	<translation entry="3100">Calling <value-of-param name="url" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
-	<translation entry="3101">Called <value-of-param name="url" />, with the parameters <value-of-param name="parameters"/>. The call took <value-of-param name="duration" /> ms.</translation>
-	<translation entry="3102">Connection refused while calling <value-of-param name="url" />.</translation>
-	<translation entry="3103">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="3104">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="3105">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
-	<translation entry="3106">Received acceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
-	<translation entry="3107">Received unacceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
-	<translation entry="3108">I/O error while calling <value-of-param name="url" />.</translation>
-	<translation entry="3109">Unexpected exception while calling <value-of-param name="url" />.</translation>
-	<translation entry="3110">Unknown host error while calling <value-of-param name="url" />.</translation>
+	<translation entry="1100">Calling <value-of-param name="url" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
+	<translation entry="1101">Called <value-of-param name="url" />, with the parameters <value-of-param name="parameters"/>. The call took <value-of-param name="duration" /> ms.</translation>
+	<translation entry="1102">Connection refused while calling <value-of-param name="url" />.</translation>
+	<translation entry="1103">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1104">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1105">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>
+	<translation entry="1106">Received acceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
+	<translation entry="1107">Received unacceptable HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" />.</translation>
+	<translation entry="1108">I/O error while calling <value-of-param name="url" />.</translation>
+	<translation entry="1109">Unexpected exception while calling <value-of-param name="url" />.</translation>
+	<translation entry="1110">Unknown host error while calling <value-of-param name="url" />.</translation>
 
-	<translation entry="3200">Starting watch thread for file <value-of-param name="file" format="quoted" />. Checking for modifications every <value-of-param name="interval" /> seconds.</translation>
-	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</translation>
-	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
+	<translation entry="1200">Starting watch thread for file <value-of-param name="file" format="quoted" />. Checking for modifications every <value-of-param name="interval" /> seconds.</translation>
+	<translation entry="1201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</translation>
+	<translation entry="1202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
 
-	<translation entry="3250">Increasing FastStringBuffer capacity from <value-of-param name="currentCapacity" /> to <value-of-param name="newCapacity" />.</translation>
+	<translation entry="1250">Increasing FastStringBuffer capacity from <value-of-param name="currentCapacity" /> to <value-of-param name="newCapacity" />.</translation>
 
-	<translation entry="3300">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
-	<translation entry="3301">Call to service at URL <value-of-param name="url" /> succeeded.</translation>
-	<translation entry="3302">Call to service at URL <value-of-param name="url" /> failed.</translation>
-	<translation entry="3303">Call completely failed.</translation>
-	<translation entry="3304">No more targets and no fail-over.</translation>
-	<translation entry="3305">No more targets but fail-over would be allowed.</translation>
-	<translation entry="3306">More targets available but fail-over is not allowed.</translation>
-	<translation entry="3307">More targets available and fail-over is allowed.</translation>
+	<translation entry="1300">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
+	<translation entry="1301">Call to service at URL <value-of-param name="url" /> succeeded.</translation>
+	<translation entry="1302">Call to service at URL <value-of-param name="url" /> failed.</translation>
+	<translation entry="1303">Call completely failed.</translation>
+	<translation entry="1304">No more targets and no fail-over.</translation>
+	<translation entry="1305">No more targets but fail-over would be allowed.</translation>
+	<translation entry="1306">More targets available but fail-over is not allowed.</translation>
+	<translation entry="1307">More targets available and fail-over is allowed.</translation>
 
-	<translation entry="3400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
-	<translation entry="3401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
-	<translation entry="3402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
-	<translation entry="3403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
+	<translation entry="1400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
+	<translation entry="1401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
+	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
+	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
 
-	<translation entry="3420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
+	<translation entry="1420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
 
 </translation-bundle>

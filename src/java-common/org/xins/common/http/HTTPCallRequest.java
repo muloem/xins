@@ -120,7 +120,7 @@ public final class HTTPCallRequest extends CallRequest {
       String asString = buffer.toString();
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, "#" + _instanceNumber);
+      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
 
       // Check preconditions
       MandatoryArgumentChecker.check("method", method);
@@ -143,7 +143,7 @@ public final class HTTPCallRequest extends CallRequest {
       _asString = asString;
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, asString);
+      Log.log_1002(CLASSNAME, asString);
    }
 
 

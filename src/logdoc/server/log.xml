@@ -11,34 +11,34 @@
 	<translation-bundle locale="en_US" />
 
 	<group id="trace" name="Tracing of constructors, class functions and instance methods">
-		<entry id="1000" level="DEBUG">
+		<entry id="3000" level="DEBUG">
 			<description>Entering constructor.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="1001" level="DEBUG" exception="true">
+		<entry id="3001" level="DEBUG" exception="true">
 			<description>Returning from constructor with exception.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="1002" level="DEBUG">
+		<entry id="3002" level="DEBUG">
 			<description>Returning from constructor successfully.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="1003" level="DEBUG">
+		<entry id="3003" level="DEBUG">
 			<description>Entering method.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="1004" level="DEBUG" exception="true">
+		<entry id="3004" level="DEBUG" exception="true">
 			<description>Returning from method with exception.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="1005" level="DEBUG">
+		<entry id="3005" level="DEBUG">
 			<description>Returning from method successfully.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
@@ -47,13 +47,13 @@
 	</group>
 
 	<group id="lowlevel" name="Low-level generic issues">
-		<entry id="1050" level="ERROR">
+		<entry id="3050" level="ERROR">
 			<description>Programming error detected.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="1051" level="ERROR" exception="true">
+		<entry id="3051" level="ERROR" exception="true">
 			<description>Ignoring exception.</description>
 			<param name="exceptionClass"   type="text" nullable="false" />
 			<param name="exceptionMessage" type="text" nullable="true"  />
@@ -62,12 +62,12 @@
 	</group>
 
 	<group id="lifespan" name="Internal lifespan-related">
-		<entry id="1100" level="DEBUG">
+		<entry id="3100" level="DEBUG">
 			<description>State change in APIServlet instance.</description>
 			<param name="oldState" />
 			<param name="newState" />
 		</entry>
-		<entry id="1101" level="ERROR">
+		<entry id="3101" level="ERROR">
 			<description>State change invalid.</description>
 			<param name="oldState" />
 			<param name="newState" />
@@ -75,195 +75,195 @@
 	</group>
 
 	<group id="lifespan.bootstrap" name="Bootstrapping">
-		<entry id="1200" level="NOTICE">
+		<entry id="3200" level="NOTICE">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
 			<param name="version" />
 		</entry>
-		<entry id="1201" level="FATAL">
+		<entry id="3201" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
 			<param name="state" />
 		</entry>
-		<entry id="1202" level="FATAL">
+		<entry id="3202" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
 			<param name="detail" />
 		</entry>
-		<entry id="1203" level="WARNING">
+		<entry id="3203" level="WARNING">
 			<description>Application server implements unexpected version of Java Servlet API Specification.</description>
 			<param name="actual_version" />
 			<param name="expected_version" />
 		</entry>
-		<entry id="1204" level="FATAL" exception="true">
+		<entry id="3204" level="FATAL" exception="true">
 			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1205" level="FATAL">
+		<entry id="3205" level="FATAL">
 			<description>System property that defines the runtime properties file to use is not set.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1206" level="FATAL">
+		<entry id="3206" level="FATAL">
 			<description>API class name not set in build property.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1207" level="FATAL" exception="true">
+		<entry id="3207" level="FATAL" exception="true">
 			<description>API class cannot be loaded.</description>
 			<param name="propertyName" />
 			<param name="apiClass" />
 		</entry>
-		<entry id="1208" level="FATAL">
+		<entry id="3208" level="FATAL">
 			<description>API class is invalid, since it does not derive from the correct class.</description>
 			<param name="propertyName" />
 			<param name="apiClass" />
 			<param name="superClass" />
 		</entry>
-		<entry id="1209" level="FATAL">
+		<entry id="3209" level="FATAL">
 			<description>Bootstrap of API class failed due to a missing but required property.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1210" level="FATAL">
+		<entry id="3210" level="FATAL">
 			<description>Bootstrap of API class failed due to an invalid property value.</description>
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1211" level="FATAL" exception="true">
+		<entry id="3211" level="FATAL" exception="true">
 			<description>Bootstrap of API class failed.</description>
 		</entry>
-		<entry id="1212" level="INFO">
+		<entry id="3212" level="INFO">
 			<description>Determining build-time settings.</description>
 			<param name="buildHost" />
 			<param name="buildTime" />
 			<param name="buildVersion" />
 		</entry>
-		<entry id="1213" level="DEBUG">
+		<entry id="3213" level="DEBUG">
 			<description>Bootstrapping manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1214" level="DEBUG">
+		<entry id="3214" level="DEBUG">
 			<description>Bootstrapped manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1215" level="FATAL">
+		<entry id="3215" level="FATAL">
 			<description>Manageable object could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1216" level="FATAL">
+		<entry id="3216" level="FATAL">
 			<description>Manageable object could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1217" level="FATAL" exception="true">
+		<entry id="3217" level="FATAL" exception="true">
 			<description>Manageable object could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="1218" level="DEBUG">
+		<entry id="3218" level="DEBUG">
 			<description>Adding manageable object to API.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1219" level="DEBUG">
+		<entry id="3219" level="DEBUG">
 			<description>Manageable object added to API.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1220" level="DEBUG">
+		<entry id="3220" level="DEBUG">
 			<description>Bootstrapping function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1221" level="DEBUG">
+		<entry id="3221" level="DEBUG">
 			<description>Bootstrapped function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1222" level="FATAL">
+		<entry id="3222" level="FATAL">
 			<description>Function could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1223" level="FATAL">
+		<entry id="3223" level="FATAL">
 			<description>Function could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1224" level="FATAL" exception="true">
+		<entry id="3224" level="FATAL" exception="true">
 			<description>Function could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="1225" level="INFO">
+		<entry id="3225" level="INFO">
 			<description>XINS/Java Server Framework is bootstrapped.</description>
 			<param name="version" />
 		</entry>
-		<entry id="1226" level="WARNING">
+		<entry id="3226" level="WARNING">
 			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
 			<param name="serverVersion" />
 			<param name="commonVersion" />
 		</entry>
-		<entry id="1227" level="WARNING">
+		<entry id="3227" level="WARNING">
 			<description>XINS/Java Server Framework version does not indicate a production release.</description>
 			<param name="version" />
 		</entry>
-		<entry id="1228" level="WARNING">
+		<entry id="3228" level="WARNING">
 			<description>API package was not built with a production release of XINS.</description>
 			<param name="version" />
 		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
-		<entry id="1300" level="DEBUG">
+		<entry id="3300" level="DEBUG">
 			<description>Initializing logging subsystem.</description>
 		</entry>
-		<entry id="1301" level="ERROR" exception="true">
+		<entry id="3301" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1302" level="ERROR" exception="true">
+		<entry id="3302" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1303" level="ERROR" exception="true">
+		<entry id="3303" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1304" level="WARNING">
+		<entry id="3304" level="WARNING">
 			<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1305" level="INFO">
+		<entry id="3305" level="INFO">
 			<description>Logging subsystem has been properly initialized.</description>
 		</entry>
-		<entry id="1306" level="INFO">
+		<entry id="3306" level="INFO">
 			<description>About to change locale for the log messages.</description>
 			<param name="oldLocale" />
 			<param name="newLocale" />
 		</entry>
-		<entry id="1307" level="NOTICE">
+		<entry id="3307" level="NOTICE">
 			<description>Changed locale for the log messages.</description>
 			<param name="oldLocale" />
 			<param name="newLocale" />
 		</entry>
-		<entry id="1308" level="FATAL">
+		<entry id="3308" level="FATAL">
 			<description>Failed to change the locale for the log messages.</description>
 			<param name="currentLocale" />
 			<param name="failedLocale" />
 		</entry>
-		<entry id="1309" level="FATAL">
+		<entry id="3309" level="FATAL">
 			<description>Logdoc Locale not supported by the API.</description>
 			<param name="locale" />
 			<param name="api" />
 		</entry>
-		<entry id="1310" level="INFO">
+		<entry id="3310" level="INFO">
 			<description>Changed hostname used for the context identifier.</description>
 			<param name="oldHostname" />
 			<param name="newHostname" />
@@ -271,161 +271,161 @@
 	</group>
 
 	<group id="lifespan.init" name="Initialization">
-		<entry id="1400" level="WARNING">
+		<entry id="3400" level="WARNING">
 			<description>Runtime properties file cannot be opened while checking whether the file has been modified.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1401" level="WARNING" exception="true">
+		<entry id="3401" level="WARNING" exception="true">
 			<description>Runtime properties file cannot be opened while checking whether the file has been modified, due to a security restriction.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="1402" level="DEBUG">
+		<entry id="3402" level="DEBUG">
 			<description>Runtime properties file is not modified.</description>
 			<param name="configFile" nullable="false" />
 		</entry>
-		<entry id="1403" level="NOTICE">
+		<entry id="3403" level="NOTICE">
 			<description>Runtime properties file watch interval changed.</description>
 			<param name="configFile" nullable="false" />
 			<param name="oldInterval" type="int32" nullable="false" />
 			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
-		<entry id="1404" level="DEBUG">
+		<entry id="3404" level="DEBUG">
 			<description>Determined local timezone.</description>
 			<param name="shortName" />
 			<param name="longName"  />
 		</entry>
-		<entry id="1405" level="INFO">
+		<entry id="3405" level="INFO">
 			<description>Initializing API.</description>
 			<param name="api" />
 		</entry>
-		<entry id="1406" level="INFO">
+		<entry id="3406" level="INFO">
 			<description>Initialized API.</description>
 			<param name="api" />
 		</entry>
-		<entry id="1407" level="NOTICE">
+		<entry id="3407" level="NOTICE">
 			<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
 			<param name="configFile" nullable="false" />
 		</entry>
-		<entry id="1408" level="INFO">
+		<entry id="3408" level="INFO">
 			<description>Runtime properties file watch interval not specified, using fallback default.</description>
 			<param name="configFile" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1409" level="ERROR">
+		<entry id="3409" level="ERROR">
 			<description>Runtime properties file watch interval property value is invalid.</description>
 			<param name="configFile" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1410" level="DEBUG">
+		<entry id="3410" level="DEBUG">
 			<description>Runtime properties file watch interval successfully parsed.</description>
 			<param name="configFile" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1411" level="FATAL">
+		<entry id="3411" level="FATAL">
 			<description>API could not be initialized due to a missing required property.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1412" level="FATAL">
+		<entry id="3412" level="FATAL">
 			<description>API could not be initialized due to an invalid property value.</description>
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1413" level="FATAL">
+		<entry id="3413" level="FATAL">
 			<description>API could not be initialized.</description>
 			<param name="message" />
 		</entry>
-		<entry id="1414" level="FATAL" exception="true">
+		<entry id="3414" level="FATAL" exception="true">
 			<description>API could not be initialized due to an unexpected exception.</description>
 		</entry>
-		<entry id="1415" level="NOTICE">
+		<entry id="3415" level="NOTICE">
 			<description>XINS/Java Server Framework has been (re-)initialized.</description>
 		</entry>
-		<entry id="1416" level="DEBUG">
+		<entry id="3416" level="DEBUG">
 			<description>Initializing manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1417" level="DEBUG">
+		<entry id="3417" level="DEBUG">
 			<description>Initialized manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1418" level="FATAL">
+		<entry id="3418" level="FATAL">
 			<description>Manageable object could not be initialized due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1419" level="FATAL">
+		<entry id="3419" level="FATAL">
 			<description>Manageable object could not be initialized due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1420" level="FATAL" exception="true">
+		<entry id="3420" level="FATAL" exception="true">
 			<description>Manageable object could not be initialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="1421" level="DEBUG">
+		<entry id="3421" level="DEBUG">
 			<description>Initializing function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1422" level="DEBUG">
+		<entry id="3422" level="DEBUG">
 			<description>Initialized function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1423" level="ERROR">
+		<entry id="3423" level="ERROR">
 			<description>Function could not be initialized due to a missing required property.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="1424" level="ERROR">
+		<entry id="3424" level="ERROR">
 			<description>Function could not be initialized due to an invalid property value.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="1425" level="ERROR" exception="true">
+		<entry id="3425" level="ERROR" exception="true">
 			<description>Function could not be initialized, exception available.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1426" level="WARNING">
+		<entry id="3426" level="WARNING">
 			<description>No access rule list defined.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="1427" level="INFO">
+		<entry id="3427" level="INFO">
 			<description>Access rule list defined and successfully loaded.</description>
 			<param name="ruleCount" type="int32" nullable="false" />
 		</entry>
-		<entry id="1428" level="ERROR">
+		<entry id="3428" level="ERROR">
 			<description>Error loading access rule list.</description>
 			<param name="propertyName" nullable="false" />
 			<param name="propertyValue" nullable="false" />
 			<param name="message" />
 		</entry>
-		<entry id="1429" level="INFO">
+		<entry id="3429" level="INFO">
 			<description>Access rule parsed.</description>
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule" nullable="false" />
 		</entry>
-		<entry id="1430" level="ERROR">
+		<entry id="3430" level="ERROR">
 			<description>Invalid state when adding manageable.</description>
 			<param name="state" />
 		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">
-		<entry id="1500" level="NOTICE" exception="true">
+		<entry id="3500" level="NOTICE" exception="true">
 			<description>Exception thrown during function call.</description>
 			<param name="function" nullable="false" />
 			<param name="callID" type="int32" nullable="false" />
@@ -433,14 +433,14 @@
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">
-		<entry id="1520" level="INFO">
+		<entry id="3520" level="INFO">
 			<description>Received HTTP request with invalid method.</description>
 			<param name="ip"          nullable="false" />
 			<param name="method"      nullable="true"  />
 			<param name="queryString" nullable="true"  />
 			<!-- TODO: Log parameters ? -->
 		</entry>
-		<entry id="1521" level="INFO">
+		<entry id="3521" level="INFO">
 			<description>Received HTTP request with valid method.</description>
 			<param name="ip"          nullable="false" />
 			<param name="method"      nullable="true"  />
@@ -450,7 +450,7 @@
 	</group>
 
 	<group id="runtime.tx" name="Transaction logging">
-		<entry id="1540" level="INFO">
+		<entry id="3540" level="INFO">
 			<description>Function called. This entry differs from 1541 in that it logs all input and output parameters, while 1541 does not.</description>
 			<param name="start"        type="serializable" nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
@@ -461,7 +461,7 @@
 			<param name="inParams"     type="serializable" nullable="false" />
 			<param name="outParams"    type="serializable" nullable="false" />
 		</entry>
-		<entry id="1541" level="INFO">
+		<entry id="3541" level="INFO">
 			<description>Function called. This entry differs from 1540 in that it does not log all input and output parameters, while 1540 does.</description>
 			<param name="start"        type="serializable" nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
@@ -473,28 +473,28 @@
 	</group>
 
 	<group id="runtime.acl" name="Access rule matching">
-		<entry id="1550" level="INFO">
+		<entry id="3550" level="INFO">
 			<description>Access rule matches. Allowing function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule" nullable="false" />
 		</entry>
-		<entry id="1551" level="INFO">
+		<entry id="3551" level="INFO">
 			<description>Access rule matches. Denying function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule"  nullable="false" />
 		</entry>
-		<entry id="1552" level="DEBUG">
+		<entry id="3552" level="DEBUG">
 			<description>Access rule does not match.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule"  nullable="false" />
 		</entry>
-		<entry id="1553" level="INFO">
+		<entry id="3553" level="INFO">
 			<description>No access rule matched. Denying function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />
@@ -502,58 +502,58 @@
 	</group>
 
 	<group id="lifespan.shutdown" name="Shutdown">
-		<entry id="1600" level="NOTICE">
+		<entry id="3600" level="NOTICE">
 			<description>Shutting down XINS/Java Server Framework.</description>
 		</entry>
-		<entry id="1601" level="WARNING" exception="true">
+		<entry id="3601" level="WARNING" exception="true">
 			<description>Deinitialization of API triggered an exception.</description>
 		</entry>
-		<entry id="1602" level="NOTICE">
+		<entry id="3602" level="NOTICE">
 			<description>XINS/Java Server Framework shutdown completed.</description>
 		</entry>
-		<entry id="1603" level="DEBUG">
+		<entry id="3603" level="DEBUG">
 			<description>Deinitializing manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1604" level="DEBUG">
+		<entry id="3604" level="DEBUG">
 			<description>Deinitialized manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1605" level="WARNING">
+		<entry id="3605" level="WARNING">
 			<description>Manageable object could not be deinitialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="1606" level="WARNING" exception="true">
+		<entry id="3606" level="WARNING" exception="true">
 			<description>Manageable object could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1607" level="DEBUG">
+		<entry id="3607" level="DEBUG">
 			<description>Deinitializing function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1608" level="DEBUG">
+		<entry id="3608" level="DEBUG">
 			<description>Deinitialized function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1609" level="WARNING">
+		<entry id="3609" level="WARNING">
 			<description>Function could not be deinitialized.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="1610" level="WARNING" exception="true">
+		<entry id="3610" level="WARNING" exception="true">
 			<description>Function could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1611" level="DEBUG">
+		<entry id="3611" level="DEBUG">
 			<description>Function returned _InternalError because the API is shutting down.</description>
 			<param name="api" />
 			<param name="function" />

@@ -55,7 +55,7 @@ public abstract class ServiceCaller extends Object {
    throws IllegalArgumentException {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
@@ -64,7 +64,7 @@ public abstract class ServiceCaller extends Object {
       _descriptor = descriptor;
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -126,7 +126,7 @@ public abstract class ServiceCaller extends Object {
    throws IllegalArgumentException, CallException {
 
       // TRACE: Enter method
-      Log.log_3003(CLASSNAME, "doCall", null);
+      Log.log_1003(CLASSNAME, "doCall", null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -151,7 +151,7 @@ public abstract class ServiceCaller extends Object {
       // There should be at least one target
       if (! iterator.hasNext()) {
          String message = "Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.";
-         Log.log_3050(_descriptor.getClass().getName(), "iterateTargets()", message);
+         Log.log_1050(_descriptor.getClass().getName(), "iterateTargets()", message);
          throw new Error(message);
       }
 
@@ -163,7 +163,7 @@ public abstract class ServiceCaller extends Object {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
-         Log.log_3301(target.getURL());
+         Log.log_1301(target.getURL());
          Object result = null;
          boolean succeeded = false;
          long start = System.currentTimeMillis();
@@ -176,7 +176,7 @@ public abstract class ServiceCaller extends Object {
          // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
 
-            Log.log_3302(target.getURL());
+            Log.log_1302(target.getURL());
 
             long duration = System.currentTimeMillis() - start;
 
@@ -214,22 +214,22 @@ public abstract class ServiceCaller extends Object {
 
             // No more targets and no fail-over
             if (!haveNext && !failOver) {
-               Log.log_3304();
+               Log.log_1304();
                shouldContinue = false;
 
             // No more targets but fail-over would be allowed
             } else if (!haveNext) {
-               Log.log_3305();
+               Log.log_1305();
                shouldContinue = false;
 
             // More targets available but fail-over is not allowed
             } else if (!failOver) {
-               Log.log_3306();
+               Log.log_1306();
                shouldContinue = false;
 
             // More targets available and fail-over is allowed
             } else {
-               Log.log_3307();
+               Log.log_1307();
                shouldContinue = true;
             }
          }
@@ -239,20 +239,20 @@ public abstract class ServiceCaller extends Object {
             long duration = System.currentTimeMillis() - start;
 
             // TRACE: Leave method
-            Log.log_3005(CLASSNAME, "doCall", null);
+            Log.log_1005(CLASSNAME, "doCall", null);
 
             return createCallResult(request, target, duration, exceptions, result);
          }
       }
 
       // Loop ended, call failed completely
-      Log.log_3303();
+      Log.log_1303();
 
       // Get the first exception from the list, this one should be thrown
       CallException first = exceptions.get(0);
 
       // TRACE: Leave method with exception
-      Log.log_3004(first, CLASSNAME, "doCall", null);
+      Log.log_1004(first, CLASSNAME, "doCall", null);
 
       throw first;
    }

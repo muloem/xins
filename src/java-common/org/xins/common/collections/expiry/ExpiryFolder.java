@@ -254,11 +254,11 @@ extends Object {
          // If the new size was negative, it has been fixed already, but
          // report it now, after the synchronized section
          if (newSize < 0) {
-            Log.log_3050(EXPIRY_FOLDER_CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
+            Log.log_1050(EXPIRY_FOLDER_CLASSNAME, "tick()", "Size of expiry folder \"" + _name + "\" dropped to " + newSize + ", adjusted it to 0.");
          }
-         Log.log_3400(_asString, toBeExpiredSize, newSize);
+         Log.log_1400(_asString, toBeExpiredSize, newSize);
       } else {
-         Log.log_3400(_asString, 0, _size);
+         Log.log_1400(_asString, 0, _size);
       }
 
       // XXX: Should we do this in a separate thread, so all locks held by the

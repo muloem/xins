@@ -98,7 +98,7 @@ public final class TargetDescriptor extends Descriptor {
          PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
       } catch (MalformedPatternException mpe) {
          String message = "The pattern \"" + PATTERN_STRING + "\" is malformed.";
-         Log.log_3050(CLASSNAME, "<clinit>()", message);
+         Log.log_1050(CLASSNAME, "<clinit>()", message);
          throw new Error(message);
       }
    }
@@ -129,7 +129,7 @@ public final class TargetDescriptor extends Descriptor {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
          String message = "Encoding \"" + ENCODING + "\" is not supported.";
-         Log.log_3050(CLASSNAME, "computeCRC32(String)", message);
+         Log.log_1050(CLASSNAME, "computeCRC32(String)", message);
          throw new Error(message);
       }
       checksum.update(bytes, 0, bytes.length);
@@ -265,7 +265,7 @@ public final class TargetDescriptor extends Descriptor {
    throws IllegalArgumentException, MalformedURLException {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
@@ -319,7 +319,7 @@ public final class TargetDescriptor extends Descriptor {
       _asString = buffer.toString();
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, _asString);
+      Log.log_1002(CLASSNAME, _asString);
    }
 
 
@@ -516,12 +516,12 @@ public final class TargetDescriptor extends Descriptor {
        */
       private Iterator() {
          // TRACE: Enter constructor
-         Log.log_3000(ITERATOR_CLASSNAME, null);
+         Log.log_1000(ITERATOR_CLASSNAME, null);
 
          // empty
 
          // TRACE: Leave constructor
-         Log.log_3002(ITERATOR_CLASSNAME, null);
+         Log.log_1002(ITERATOR_CLASSNAME, null);
       }
 
 

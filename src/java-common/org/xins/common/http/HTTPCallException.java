@@ -49,7 +49,7 @@ public abstract class HTTPCallException extends CallException {
    private static final String trace(String shortReason) {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       return shortReason;
    }
@@ -100,7 +100,7 @@ public abstract class HTTPCallException extends CallException {
       super(trace(shortReason), request, target, duration, detail, cause);
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, null);
    }
 
 

@@ -263,7 +263,7 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
-         Log.log_1430(state.getName());
+         Log.log_3430(state.getName());
          throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
       }
 
@@ -271,7 +271,7 @@ implements DefaultResultCodes {
       _timeZone = TimeZone.getDefault();
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
-      Log.log_1404(tzShortName, tzLongName);
+      Log.log_3404(tzShortName, tzLongName);
 
       // Store the build-time settings
       _buildSettings = buildSettings;
@@ -281,11 +281,11 @@ implements DefaultResultCodes {
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
-      Log.log_1212(_buildHost, _buildTime, _buildVersion);
+      Log.log_3212(_buildHost, _buildTime, _buildVersion);
 
       // Check if build version identifies a production release of XINS
       if (! Library.isProductionRelease(_buildVersion)) {
-         Log.log_1228(_buildVersion);
+         Log.log_3228(_buildVersion);
       }
 
       // Let the subclass perform initialization
@@ -296,23 +296,23 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_1213(className, _name);
+         Log.log_3213(className, _name);
          try {
             m.bootstrap(_buildSettings);
-            Log.log_1214(_name, className);
+            Log.log_3214(_name, className);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1215(_name, className, exception.getPropertyName());
+            Log.log_3215(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1216(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3216(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
          // TODO: Review exception catching/handling
          } catch (BootstrapException exception) {
-            Log.log_1217(exception, _name, className, exception.getMessage());
+            Log.log_3217(exception, _name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_1217(exception, _name, className, exception.getMessage());
+            Log.log_3217(exception, _name, className, exception.getMessage());
             throw new BootstrapException(exception);
          }
       }
@@ -322,21 +322,21 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         Log.log_1220(_name, functionName);
+         Log.log_3220(_name, functionName);
          try {
             f.bootstrap(_buildSettings);
-            Log.log_1221(_name, functionName);
+            Log.log_3221(_name, functionName);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1222(_name, functionName, exception.getPropertyName());
+            Log.log_3222(_name, functionName, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_1224(exception, _name, functionName, exception.getMessage());
+            Log.log_3224(exception, _name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_1224(exception, _name, functionName, exception.getMessage());
+            Log.log_3224(exception, _name, functionName, exception.getMessage());
             throw new BootstrapException(exception);
          }
       }
@@ -424,11 +424,11 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != INITIALIZING) {
-         Log.log_1430(state.getName());
+         Log.log_3430(state.getName());
          throw new IllegalStateException("State is " + state + " instead of " + INITIALIZING + '.');
       }
 
-      Log.log_1405(_name);
+      Log.log_3405(_name);
 
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
@@ -437,14 +437,14 @@ implements DefaultResultCodes {
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          _accessRuleList = AccessRuleList.EMPTY;
-         Log.log_1426(ACL_PROPERTY);
+         Log.log_3426(ACL_PROPERTY);
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
             int ruleCount = _accessRuleList.getRuleCount();
-            Log.log_1427(ruleCount);
+            Log.log_3427(ruleCount);
          } catch (ParseException exception) {
-            Log.log_1428(ACL_PROPERTY, acl, exception.getMessage());
+            Log.log_3428(ACL_PROPERTY, acl, exception.getMessage());
             throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
          }
       }
@@ -454,19 +454,19 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_1416(_name, className);
+         Log.log_3416(_name, className);
          try {
             m.init(runtimeSettings);
-            Log.log_1417(_name, className);
+            Log.log_3417(_name, className);
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1418(_name, className, exception.getPropertyName());
+            Log.log_3418(_name, className, exception.getPropertyName());
             throw exception;
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1419(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3419(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
@@ -474,7 +474,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log this event
-            Log.log_1420(exception, _name, className, exception.getMessage());
+            Log.log_3420(exception, _name, className, exception.getMessage());
             if (exception instanceof InitializationException) {
                throw (InitializationException) exception;
             } else {
@@ -488,19 +488,19 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         Log.log_1421(_name, functionName);
+         Log.log_3421(_name, functionName);
          try {
             f.init(runtimeSettings);
-            Log.log_1422(_name, functionName);
+            Log.log_3422(_name, functionName);
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1423(_name, functionName, exception.getPropertyName());
+            Log.log_3423(_name, functionName, exception.getPropertyName());
             throw exception;
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1424(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3424(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
@@ -508,7 +508,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log this event
-            Log.log_1425(exception, _name, functionName);
+            Log.log_3425(exception, _name, functionName);
 
             // Throw an InitializationException. If necessary, wrap around the
             // caught exception
@@ -522,7 +522,7 @@ implements DefaultResultCodes {
 
       // TODO: Call initImpl2(PropertyReader) ?
 
-      Log.log_1406(_name);
+      Log.log_3406(_name);
    }
 
    /**
@@ -547,7 +547,7 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
-         Log.log_1430(state.getName());
+         Log.log_3430(state.getName());
          throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
       }
 
@@ -555,12 +555,12 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("m", m);
       String className = m.getClass().getName();
 
-      Log.log_1218(_name, className);
+      Log.log_3218(_name, className);
 
       // Store the manageable object in the list
       _manageableObjects.add(m);
 
-      Log.log_1219(_name, className);
+      Log.log_3219(_name, className);
    }
 
    /**
@@ -576,14 +576,14 @@ implements DefaultResultCodes {
 
          String className = m.getClass().getName();
 
-         Log.log_1603(_name, className);
+         Log.log_3603(_name, className);
          try {
             m.deinit();
-            Log.log_1604(_name, className);
+            Log.log_3604(_name, className);
          } catch (DeinitializationException exception) {
-            Log.log_1605(_name, className, exception.getMessage());
+            Log.log_3605(_name, className, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1606(exception, _name, className);
+            Log.log_3606(exception, _name, className);
          }
       }
       _manageableObjects.clear();
@@ -595,14 +595,14 @@ implements DefaultResultCodes {
 
          String functionName = f.getName();
 
-         Log.log_1607(_name, functionName);
+         Log.log_3607(_name, functionName);
          try {
             f.deinit();
-            Log.log_1608(_name, functionName);
+            Log.log_3608(_name, functionName);
          } catch (DeinitializationException exception) {
-            Log.log_1609(_name, functionName, exception.getMessage());
+            Log.log_3609(_name, functionName, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1610(exception, _name, functionName);
+            Log.log_3610(exception, _name, functionName);
          }
       }
    }
@@ -626,7 +626,7 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != UNUSABLE) {
-         Log.log_1430(state.getName());
+         Log.log_3430(state.getName());
          throw new IllegalStateException("State is " + state + " instead of " + UNUSABLE + '.');
       }
 
@@ -773,7 +773,7 @@ implements DefaultResultCodes {
 
       // Short-circuit if we are shutting down
       if (getState().equals(DEINITIALIZING)) {
-         Log.log_1611(_name, functionName);
+         Log.log_3611(_name, functionName);
          return new FunctionResult("_InternalError");
       }
 

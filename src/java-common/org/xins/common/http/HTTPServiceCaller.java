@@ -74,10 +74,10 @@ import org.xins.logdoc.LogdocSerializable;
  * {@link Descriptor} passed to the
  * {@link #HTTPServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
- * and no load-balancing is performed. If it is a 
- * {@link org.xins.common.service.GroupDescriptor}, then the configuration of 
- * the <code>GroupDescriptor</code> determines how the load-balancing is done. 
- * A <code>GroupDescriptor</code> is a recursive data structure, which allows 
+ * and no load-balancing is performed. If it is a
+ * {@link org.xins.common.service.GroupDescriptor}, then the configuration of
+ * the <code>GroupDescriptor</code> determines how the load-balancing is done.
+ * A <code>GroupDescriptor</code> is a recursive data structure, which allows
  * for fairly advanced load-balancing algorithms.
  *
  * <p>If a call attempt fails and there are more available target services,
@@ -159,7 +159,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
    private static final Descriptor trace(Descriptor descriptor) {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       return descriptor;
    }
@@ -186,7 +186,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws IllegalArgumentException {
 
       // TRACE: Enter method
-      Log.log_3003(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+      Log.log_1003(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url, "request", request);
@@ -221,7 +221,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
 
          // TRACE: Leave method
-         Log.log_3005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+         Log.log_1005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
 
          return postMethod;
 
@@ -261,14 +261,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
 
          // TRACE: Leave method
-         Log.log_3005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
+         Log.log_1005(CLASSNAME, "createMethod(String,HTTPCallRequest)", null);
 
          return getMethod;
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
          String message = "Unrecognized method \"" + method + "\".";
-         Log.log_3050(CLASSNAME, "createMethod(String,HTTPCallResult)",
+         Log.log_1050(CLASSNAME, "createMethod(String,HTTPCallResult)",
                       message);
          throw new Error(message);
       }
@@ -295,7 +295,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       super(trace(descriptor));
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -342,13 +342,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws ClassCastException, IllegalArgumentException, CallException {
 
       // TRACE: Enter method
-      Log.log_3003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_1003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
 
       // Delegate to method with more specialized interface
       Object ret = call((HTTPCallRequest) request, target);
 
       // TRACE: Leave method
-      Log.log_3005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_1005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
 
       return ret;
    }
@@ -383,7 +383,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
           HTTPCallException {
 
       // TRACE: Enter method
-      Log.log_3003(CLASSNAME, "call(HTTPCallRequest)", null);
+      Log.log_1003(CLASSNAME, "call(HTTPCallRequest)", null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -410,7 +410,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
 
       // TRACE: Leave method
-      Log.log_3005(CLASSNAME, "call(HTTPCallRequest)", null);
+      Log.log_1005(CLASSNAME, "call(HTTPCallRequest)", null);
 
       return (HTTPCallResult) callResult;
    }
@@ -447,7 +447,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
           HTTPCallException {
 
       // TRACE: Enter method
-      Log.log_3003(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
+      Log.log_1003(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
 
       // TODO: Log parameters everywhere
 
@@ -458,7 +458,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       String url = target.getURL();
 
       // About to make an HTTP call
-      Log.log_3100(url,
+      Log.log_1100(url,
                    target.getTotalTimeOut(),
                    target.getConnectionTimeOut(),
                    target.getSocketTimeOut());
@@ -472,7 +472,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Total time-out exceeded
       } catch (TimeOutException exception) {
          duration = System.currentTimeMillis() - start;
-         Log.log_3105(url, target.getTotalTimeOut());
+         Log.log_1105(url, target.getTotalTimeOut());
          throw new TotalTimeOutCallException(request, target, duration);
 
       } finally {
@@ -484,7 +484,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Log the HTTP call done.
       PropertyReader params = request.getParameters();
       LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
-      Log.log_3101(url, serParams, duration);
+      Log.log_1101(url, serParams, duration);
 
       // Check for exceptions
       Throwable exception = executor.getException();
@@ -492,17 +492,17 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Connection refusal
          if (exception instanceof UnknownHostException) {
-            Log.log_3110(url);
+            Log.log_1110(url);
             throw new UnknownHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
-            Log.log_3102(url);
+            Log.log_1102(url);
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_3103(url, target.getConnectionTimeOut());
+            Log.log_1103(url, target.getConnectionTimeOut());
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -515,23 +515,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_3104(url, target.getSocketTimeOut());
+               Log.log_1104(url, target.getSocketTimeOut());
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
             } else {
-               Log.log_3108(exception, url);
+               Log.log_1108(exception, url);
                throw new IOCallException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            Log.log_3108(exception, url);
+            Log.log_1108(exception, url);
             throw new IOCallException(request, target, duration, (IOException) exception);
 
          // Unrecognized kind of exception caught
          } else {
-            Log.log_3109(exception, url);
+            Log.log_1109(exception, url);
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -546,7 +546,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Status code is considered acceptable
       if (verifier == null || verifier.isAcceptable(code)) {
-         Log.log_3106(url, code);
+         Log.log_1106(url, code);
 
       // Status code is considered unacceptable
       } else {
@@ -554,13 +554,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
 
-         Log.log_3107(url, code);
+         Log.log_1107(url, code);
 
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
 
       // TRACE: Leave method
-      Log.log_3005(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
+      Log.log_1005(CLASSNAME, "call(HTTPCallRequest,TargetDescriptor)", null);
 
       return new HTTPCallResult(request, target, duration, null, data);
    }

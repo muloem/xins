@@ -130,7 +130,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread.currentThread() != this");
       }
 
-      Log.log_3200(_file.getPath(), _interval);
+      Log.log_1200(_file.getPath(), _interval);
 
       while (! _stopped) {
          try {
@@ -190,7 +190,7 @@ public final class FileWatcher extends Thread {
 
       // Change the interval
       if (newInterval != _interval) {
-         Log.log_3201(_file.getPath(), _interval, newInterval);
+         Log.log_1201(_file.getPath(), _interval, newInterval);
          _interval = newInterval;
       }
    }
@@ -201,7 +201,7 @@ public final class FileWatcher extends Thread {
    public void end() {
       _stopped = true;
 
-      Log.log_3202(_file.getPath());
+      Log.log_1202(_file.getPath());
 
       this.interrupt();
    }

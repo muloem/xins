@@ -60,7 +60,7 @@ public final class ExpiryStrategy extends Object {
    throws IllegalArgumentException {
 
       // TRACE: Enter constructor
-      Log.log_3000(ExpiryStrategy.class.getName(), "timeOut=" + timeOut + "; precision=" + precision);
+      Log.log_1000(ExpiryStrategy.class.getName(), "timeOut=" + timeOut + "; precision=" + precision);
 
       // Check preconditions
       if (timeOut < 1 || precision < 1) {
@@ -100,7 +100,7 @@ public final class ExpiryStrategy extends Object {
       _timerThread.start();
 
       // TRACE: Leave constructor
-      Log.log_3002(ExpiryStrategy.class.getName(), null);
+      Log.log_1002(ExpiryStrategy.class.getName(), null);
 
       // TODO: Add field _asString
       // TODO: Fill _asString in constructor
@@ -204,7 +204,7 @@ public final class ExpiryStrategy extends Object {
       MandatoryArgumentChecker.check("folder", folder);
 
       // TODO: Review this log message. Generally, toString() is not wise.
-      Log.log_3401(folder.toString(), toString());
+      Log.log_1401(folder.toString(), toString());
 
       synchronized (_folders) {
          _folders.add(folder);
@@ -295,7 +295,7 @@ public final class ExpiryStrategy extends Object {
        */
       public void run() {
 
-         Log.log_3402(getName());
+         Log.log_1402(getName());
 
          while (! _stop) {
             try {
@@ -308,7 +308,7 @@ public final class ExpiryStrategy extends Object {
             }
          }
 
-         Log.log_3403(getName());
+         Log.log_1403(getName());
       }
 
       /**

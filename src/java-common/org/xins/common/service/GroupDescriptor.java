@@ -139,7 +139,7 @@ public final class GroupDescriptor extends Descriptor {
    throws IllegalArgumentException {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
@@ -161,7 +161,7 @@ public final class GroupDescriptor extends Descriptor {
       addTargetsByCRC(members);
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -266,7 +266,7 @@ public final class GroupDescriptor extends Descriptor {
          return new OrderedIterator();
       } else {
          String message = "Unexpected condition: Unknown type: " + _type + '.';
-         Log.log_3050(CLASSNAME, "iterateTargets()", message);
+         Log.log_1050(CLASSNAME, "iterateTargets()", message);
          throw new Error(message);
       }
    }
@@ -347,12 +347,12 @@ public final class GroupDescriptor extends Descriptor {
       private Type(String description) {
 
          // TRACE: Enter constructor
-         Log.log_3000(TYPE_CLASSNAME, null);
+         Log.log_1000(TYPE_CLASSNAME, null);
 
          _description = description;
 
          // TRACE: Leave constructor
-         Log.log_3002(TYPE_CLASSNAME, null);
+         Log.log_1002(TYPE_CLASSNAME, null);
       }
 
 
@@ -413,7 +413,7 @@ public final class GroupDescriptor extends Descriptor {
       private RandomIterator() {
 
          // TRACE: Enter constructor
-         Log.log_3000(RANDOM_ITERATOR_CLASSNAME, null);
+         Log.log_1000(RANDOM_ITERATOR_CLASSNAME, null);
 
          // Copy all members to _remaining
          int size = _members.length;
@@ -430,7 +430,7 @@ public final class GroupDescriptor extends Descriptor {
          _currentIterator = member.iterateTargets();
 
          // TRACE: Leave constructor
-         Log.log_3002(RANDOM_ITERATOR_CLASSNAME, null);
+         Log.log_1002(RANDOM_ITERATOR_CLASSNAME, null);
       }
 
 
@@ -552,7 +552,7 @@ public final class GroupDescriptor extends Descriptor {
       private OrderedIterator() {
 
          // TRACE: Enter constructor
-         Log.log_3000(ORDERED_ITERATOR_CLASSNAME, null);
+         Log.log_1000(ORDERED_ITERATOR_CLASSNAME, null);
 
          // Copy all members to _remaining
          _currentIndex = 0;
@@ -561,7 +561,7 @@ public final class GroupDescriptor extends Descriptor {
          _currentIterator = _members[0].iterateTargets();
 
          // TRACE: Leave constructor
-         Log.log_3002(ORDERED_ITERATOR_CLASSNAME, null);
+         Log.log_1002(ORDERED_ITERATOR_CLASSNAME, null);
       }
 
 

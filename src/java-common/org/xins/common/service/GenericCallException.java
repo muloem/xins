@@ -47,7 +47,7 @@ extends CallException {
    private static final String trace(String shortReason) {
 
       // TRACE: Enter constructor
-      Log.log_3000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, null);
 
       return shortReason;
    }
@@ -101,7 +101,7 @@ extends CallException {
             request, target, duration, detail, cause);
 
       // TRACE: Leave constructor
-      Log.log_3002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, null);
    }
 
 

@@ -11,34 +11,34 @@
 	<translation-bundle locale="en_US" />
 
 	<group id="trace" name="Tracing of constructors, class functions and instance methods">
-		<entry id="3000" level="DEBUG">
+		<entry id="1000" level="DEBUG">
 			<description>Entering constructor.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="3001" level="DEBUG" exception="true">
+		<entry id="1001" level="DEBUG" exception="true">
 			<description>Returning from constructor with exception.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="3002" level="DEBUG">
+		<entry id="1002" level="DEBUG">
 			<description>Returning from constructor successfully.</description>
 			<param name="className" type="text" nullable="false" />
 			<param name="detail"    type="text" nullable="true" />
 		</entry>
-		<entry id="3003" level="DEBUG">
+		<entry id="1003" level="DEBUG">
 			<description>Entering method.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="3004" level="DEBUG" exception="true">
+		<entry id="1004" level="DEBUG" exception="true">
 			<description>Returning from method with exception.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="3005" level="DEBUG">
+		<entry id="1005" level="DEBUG">
 			<description>Returning from method successfully.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
@@ -47,13 +47,13 @@
 	</group>
 
 	<group id="lowlevel" name="Low-level generic issues">
-		<entry id="3050" level="ERROR">
+		<entry id="1050" level="ERROR">
 			<description>Programming error detected.</description>
 			<param name="className"  type="text" nullable="false" />
 			<param name="methodName" type="text" nullable="false" />
 			<param name="detail"     type="text" nullable="true" />
 		</entry>
-		<entry id="3051" level="ERROR" exception="true">
+		<entry id="1051" level="ERROR" exception="true">
 			<description>Ignoring exception.</description>
 			<param name="exceptionClass"   type="text" nullable="false" />
 			<param name="exceptionMessage" type="text" nullable="true"  />
@@ -62,82 +62,82 @@
 	</group>
 
 	<group id="http" name="HTTP-related">
-		<entry id="3100" level="INFO">
+		<entry id="1100" level="INFO">
 			<description>Calling HTTP service.</description>
 			<param name="url"	              type="text"  nullable="false" />
 			<param name="totalTimeOut"      type="int32" nullable="false" />
 			<param name="connectionTimeOut" type="int32" nullable="false" />
 			<param name="socketTimeOut"     type="int32" nullable="false" />
 		</entry>
-		<entry id="3101" level="INFO">
+		<entry id="1101" level="INFO">
 			<description>Calling HTTP service.</description>
 			<param name="url"	              type="text"  nullable="false" />
 			<param name="parameters"        type="serializable"  nullable="true" />
 			<param name="duration"          type="int64" nullable="false" />
 		</entry>
-		<entry id="3102" level="NOTICE">
+		<entry id="1102" level="NOTICE">
 			<description>Connection refused while calling HTTP service.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="3103" level="NOTICE">
+		<entry id="1103" level="NOTICE">
 			<description>Connection time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3104" level="NOTICE">
+		<entry id="1104" level="NOTICE">
 			<description>Socket time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3105" level="NOTICE">
+		<entry id="1105" level="NOTICE">
 			<description>Total call time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3106" level="INFO">
+		<entry id="1106" level="INFO">
 			<description>HTTP result received, status code is considered acceptable.</description>
 			<param name="url"  type="text"  nullable="false" />
 			<param name="code" type="int32" nullable="false" />
 		</entry>
-		<entry id="3107" level="INFO">
+		<entry id="1107" level="INFO">
 			<description>HTTP result received, status code is considered unacceptable.</description>
 			<param name="url"  type="text"  nullable="false" />
 			<param name="code" type="int32" nullable="false" />
 		</entry>
-		<entry id="3108" level="NOTICE" exception="true">
+		<entry id="1108" level="NOTICE" exception="true">
 			<description>Unrecognized I/O error while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
-		<entry id="3109" level="NOTICE" exception="true">
+		<entry id="1109" level="NOTICE" exception="true">
 			<description>Unexpected exception while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
-		<entry id="3110" level="NOTICE" exception="false">
+		<entry id="1110" level="NOTICE" exception="false">
 			<description>Unknown host error while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
 	</group>
 
 	<group id="io" name="General I/O">
-		<entry id="3200" level="INFO">
+		<entry id="1200" level="INFO">
 			<description>Starting file watch thread.</description>
 			<param name="file"     type="text"  nullable="false" />
 			<param name="interval" type="int32" nullable="false" />
 		</entry>
-		<entry id="3201" level="INFO">
+		<entry id="1201" level="INFO">
 			<description>Changing file watch interval.</description>
 			<param name="file"	type="text"  nullable="false" />
 			<param name="oldInterval" type="int32" nullable="false" />
 			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
-		<entry id="3202" level="INFO">
+		<entry id="1202" level="INFO">
 			<description>Stopping file watch thread.</description>
 			<param name="file" nullable="false" />
 		</entry>
 	</group>
 
 	<group id="text" name="Text">
-		<entry id="3250" level="DEBUG">
+		<entry id="1250" level="DEBUG">
 			<description>Increasing capacity of FastStringBuffer instance.</description>
 			<param name="currentCapacity" type="int32" nullable="false" />
 			<param name="newCapacity"     type="int32" nullable="false" />
@@ -145,32 +145,32 @@
 	</group>
 
 	<group id="service" name="Service calling framework">
-		<entry id="3300" level="ERROR" exception="true">
+		<entry id="1300" level="ERROR" exception="true">
 			<description>URL is malformed.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="3301" level="DEBUG">
+		<entry id="1301" level="DEBUG">
 			<description>Call to a specific target succeeded.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="3302" level="WARNING">
+		<entry id="1302" level="WARNING">
 			<description>Call to a specific target failed.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="3303" level="ERROR">
+		<entry id="1303" level="ERROR">
 			<description>Call completely failed.</description>
 			<!-- TODO: Include call (request) ID ? -->
 		</entry>
-		<entry id="3304" level="INFO">
+		<entry id="1304" level="INFO">
 			<description>No more targets and no fail-over</description>
 		</entry>
-		<entry id="3305" level="INFO">
+		<entry id="1305" level="INFO">
 			<description>No more targets, but fail-over would be allowed</description>
 		</entry>
-		<entry id="3306" level="INFO">
+		<entry id="1306" level="INFO">
 			<description>More targets available, but fail-over is not allowed</description>
 		</entry>
-		<entry id="3307" level="INFO">
+		<entry id="1307" level="INFO">
 			<description>More targets available and fail-over is allowed</description>
 		</entry>
 	</group>
@@ -178,29 +178,29 @@
 	<group id="collections" name="Generic collection classes" />
 
 	<group id="collections.expiry" name="Expiry-related collection classes">
-		<entry id="3400" level="DEBUG">
+		<entry id="1400" level="DEBUG">
 			<description>Tick processed.</description>
 			<param name="folderName" type="text"  nullable="false" />
 			<param name="expired"    type="int32" nullable="false" />
 			<param name="remaining"  type="int32" nullable="false" />
 		</entry>
-		<entry id="3401" level="DEBUG">
+		<entry id="1401" level="DEBUG">
 			<description>Associating expiry folder with expiry stategy thread.</description>
 			<param name="folder"   type="text" nullable="false" />
 			<param name="strategy" type="text" nullable="false" />
 		</entry>
-		<entry id="3402" level="DEBUG">
+		<entry id="1402" level="DEBUG">
 			<description>Expiry strategy thread started.</description>
 			<param name="name" type="text" nullable="false" />
 		</entry>
-		<entry id="3403" level="DEBUG">
+		<entry id="1403" level="DEBUG">
 			<description>Expiry strategy thread stopped.</description>
 			<param name="name" type="text" nullable="false" />
 		</entry>
 	</group>
 
 	<group id="threads" name="Threading">
-		<entry id="3420" level="ERROR">
+		<entry id="1420" level="ERROR">
 			<description>Unable to add Thread to Doorman queue due to a time-out.</description>
 			<param name="className"	type="text"  nullable="false" />
 			<param name="thread"	   type="text"  nullable="false" />

@@ -257,7 +257,7 @@ implements DefaultResultCodes {
 
       } catch (Throwable exception) {
 
-         Log.log_1500(exception, _name, callID);
+         Log.log_3500(exception, _name, callID);
 
          // Create a set of parameters for the result
          BasicPropertyReader resultParameters = new BasicPropertyReader();
@@ -357,8 +357,8 @@ implements DefaultResultCodes {
       }
 
       // Perform transaction logging, with and without parameters
-      Log.log_1540(serStart, ip, _name, callID, duration, code, inParams, outParams);
-      Log.log_1541(serStart, ip, _name, callID, duration, code);
+      Log.log_3540(serStart, ip, _name, callID, duration, code, inParams, outParams);
+      Log.log_3541(serStart, ip, _name, callID, duration, code);
    }
 
    /**
