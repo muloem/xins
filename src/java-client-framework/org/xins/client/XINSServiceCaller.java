@@ -20,15 +20,17 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.service.CallRequest;
+import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
-import org.xins.common.service.HTTPCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.service.http.HTTPCallException;
 import org.xins.common.service.http.HTTPCallRequest;
 import org.xins.common.service.http.HTTPCallResult;
+import org.xins.common.service.http.HTTPServiceCaller;
+import org.xins.common.service.http.StatusCodeHTTPCallException;
 
 import org.xins.common.text.ParseException;
 
@@ -122,7 +124,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       super(descriptor);
 
       _parser     = new XINSCallResultParser();
-      _httpCaller = new HTTPServiceCaller();
+      _httpCaller = new HTTPServiceCaller(descriptor);
    }
 
 
@@ -202,7 +204,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new Error(getClass().getName() + ".doCall(" + request.getClass().getName() + ") threw " + exception.getClass().getName() + '.');
       }
 
-      return (Result) callResult.getResult();
+      return (XINSCallResult) callResult.getResult();
    }
 
    /**
@@ -337,14 +339,20 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Get the HTTP request underlying the XINS request
-      HTTPCallRequest httpRequest = request.getHTTPCallRequest();
+      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
 
       // Check if the request may fail-over from HTTP point-of-view
       //
-      // XXX: Note that this will again call ServiceCaller.shouldFailOver,
-      //      like done above.
-      if (_httpCaller.shouldFailOver(httpRequest)) {
-         return true;
+      // XXX: Note that this duplicates code that is already in the
+      //      HTTPServiceCaller. This may need to be refactored at some point.
+      //      It has been decided to take this approach, since the
+      //      shouldFailOver method in class HTTPServiceCaller has protected
+      //      access.
+      //
+      // A non-2xx HTTP status code indicates the request was not handled
+      if (exception instanceof StatusCodeHTTPCallException) {
+         int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
+         return (code < 200 || code > 299);
 
       // Some XINS error codes indicate the request was not accepted
       } else if (exception instanceof UnsuccessfulXINSCallException) {
