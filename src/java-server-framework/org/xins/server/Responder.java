@@ -146,7 +146,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void startResponse(ResultCode resultCode)
    throws IllegalStateException, InvalidResponseException;
@@ -169,7 +169,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.32.
-    *    Use {@link #startResponse(ResultCode)} instead.
+    *    Use the generated result class instead.
     */
    void startResponse(boolean success)
    throws IllegalStateException, InvalidResponseException;
@@ -192,7 +192,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.15.
-    *    Use {@link #startResponse(ResultCode)} instead.
+    *    Use the generated result class instead.
     */
    void startResponse(boolean success, String returnCode)
    throws IllegalStateException, InvalidResponseException;
@@ -220,7 +220,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void param(String name, String value)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -242,7 +242,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void startTag(String type)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -270,7 +270,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void attribute(String name, String value)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -292,7 +292,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void pcdata(String text)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -308,7 +308,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void endTag()
    throws IllegalStateException, InvalidResponseException;
@@ -329,7 +329,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void fail(ResultCode resultCode)
    throws IllegalStateException, InvalidResponseException;
@@ -353,7 +353,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void fail(ResultCode resultCode, String message)
    throws IllegalStateException, InvalidResponseException;
@@ -368,7 +368,7 @@ extends ResponderStates, Log {
     *
     * @deprecated
     *    Deprecated since XINS 0.168.
-    *    Use {@link FunctionResult#getCallResult()} instead.
+    *    Use the generated result class instead.
     */
    void endResponse() throws InvalidResponseException;
 }

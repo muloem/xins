@@ -698,7 +698,7 @@ implements DefaultResultCodes {
     *
     * @return
     *    the type for session IDs in this API, unless otherwise defined this
-    *    is {@link Text}.
+    *    is {@link BasicSessionIDType}.
     *
     * @throws IllegalStateException
     *    if this API is currently not 'usable' or if it is not session-based.

@@ -126,8 +126,8 @@ public final class URLEncoding extends Object {
     *        <li><code>s.{@link String#charAt(int) charAt}(s.{@link String#length() length}() - 2)</code>
     *            (before-last character is a percentage sign)
     *        <li><code>s.{@link String#charAt(int) charAt}(<em>n</em>) == '%'
-    *                  &amp;&amp; !(           {@link HexConverter}.{@link HexConverter#isHexDigit(char) isDigit}(s.{@link String#charAt(int) charAt}(<em>n</em> + 1))
-    *                               &amp;&amp; {@link HexConverter}.{@link HexConverter#isHexDigit(char) isDigit}(s.{@link String#charAt(int) charAt}(<em>n</em> + 2)))</code>
+    *                  &amp;&amp; !(           {@link org.xins.util.text.HexConverter}.{@link org.xins.util.text.HexConverter#isHexDigit(char) isDigit}(s.{@link String#charAt(int) charAt}(<em>n</em> + 1))
+    *                               &amp;&amp; {@link org.xins.util.text.HexConverter}.{@link org.xins.util.text.HexConverter#isHexDigit(char) isDigit}(s.{@link String#charAt(int) charAt}(<em>n</em> + 2)))</code>
     *            (percentage sign is followed by 2 characters of which at least one is not a hexadecimal digit)
     *    </ul>
     *

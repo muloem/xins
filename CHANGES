@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.171:
+
+* Build and release process:
+  - Updated some javadoc to remove the warning due to links not found.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.170:
 
 * XINS/Java Server Framework:

@@ -25,7 +25,7 @@ public interface SessionIDSplitter {
     * <ul>
     *    <li>the first element in the array should be set to the CRC-32 of the
     *        target API URL, as a {@link String} (see
-    *        {@link TargetDescriptor#getCRC()}).
+    *        {@link org.xins.util.service.TargetDescriptor#getCRC()}).
     *    <li>the second element in the array should be set to the server-side
     *        session identifier, specific to the target API (which is
     *        identified by the the CRC-32 checksum in the first element.)
