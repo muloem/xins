@@ -18,3 +18,5 @@ agoubard - Have the DTD in an online location that includes a version number,
            format, it just refers to a different location for the DTDs
 znerd    - Finalize log entry ID's.
 znerd    - Support '_date' type.
+znerd    - Change all packages in java-common to start with org.xins.common
+znerd    - Change email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com
