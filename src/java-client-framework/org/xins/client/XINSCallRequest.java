@@ -35,12 +35,19 @@ import org.xins.common.text.TextUtils;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see XINSServiceCaller
  */
 public final class XINSCallRequest extends CallRequest {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = XINSCallRequest.class.getName();
 
    /**
     * HTTP status code verifier that will only approve 2xx codes.
@@ -222,15 +229,27 @@ public final class XINSCallRequest extends CallRequest {
                           HTTPMethod     method)
    throws IllegalArgumentException {
 
+      // Determine instance number first
+      _instanceNumber = ++INSTANCE_COUNT;
+
+      // TRACE: Enter constructor
+      Log.log_2000(CLASSNAME, "#" + _instanceNumber);
+
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 
+      // Construct a call configuration
+      XINSCallConfig callConfig = new XINSCallConfig();
+      callConfig.setFailOverAllowed(failOverAllowed);
+      callConfig.setHTTPMethod(method);
+
       // Initialize fields
-      _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
       setParameters(parameters);
-      setFailOverAllowed(failOverAllowed);
-      setHTTPMethod(method);
+      setCallConfig(callConfig);
+
+      // TRACE: Enter constructor
+      Log.log_2002(CLASSNAME, "#" + _instanceNumber);
 
       // Note that _asString is lazily initialized.
    }
@@ -271,21 +290,10 @@ public final class XINSCallRequest extends CallRequest {
    private PropertyReader _parameters;
 
    /**
-    * The HTTP method to use. Can be <code>null</code>, in which case the
-    * {@link XINSServiceCaller} will determine which HTTP method to use.
-    */
-   private HTTPMethod _httpMethod;
-
-   /**
     * The data section to pass in the request. This field can be 
     * <code>null</code>.
     */
    private Element _dataSection;
-
-   /**
-    * Flag that indicates whether fail-over is unconditionally allowed.
-    */
-   private boolean _failOverAllowed;
 
    /**
     * The parameters to send with the HTTP request. Cannot be
@@ -314,8 +322,8 @@ public final class XINSCallRequest extends CallRequest {
          buffer.append(_instanceNumber);
 
          // HTTP method
-         buffer.append(" [httpMethod=");
-         buffer.append(TextUtils.quote(_httpMethod));
+         buffer.append(" [config=");
+         buffer.append(TextUtils.quote(getCallConfig()));
 
          // Function name
          buffer.append("; function=\"");
@@ -323,22 +331,19 @@ public final class XINSCallRequest extends CallRequest {
 
          // Parameters
          if (_parameters == null || _parameters.size() < 1) {
-            buffer.append("\"; parameters=(null); failOver=");
+            buffer.append("\"; parameters=(null); contextID=");
          } else {
             buffer.append("\"; parameters=\"");
             PropertyReaderUtils.serialize(_parameters, buffer, "-");
-            buffer.append("\"; failOver=");
+            buffer.append("\"; contextID=");
          }
-
-         // Fail-over unconditionally allowed?
-         buffer.append(isFailOverAllowed());
 
          // Diagnostic context identifier
          String contextID = _httpParams.get(CONTEXT_ID_HTTP_PARAMETER_NAME);
          if (contextID == null || contextID.length() < 1) {
-            buffer.append("; contextID=(null)]");
+            buffer.append("(null)]");
          } else {
-            buffer.append("; contextID=\"");
+            buffer.append('"');
             buffer.append(contextID);
             buffer.append("\"]");
          }
@@ -347,6 +352,31 @@ public final class XINSCallRequest extends CallRequest {
       }
 
       return _asString;
+   }
+
+   /**
+    * Returns the XINS call configuration.
+    *
+    * @return
+    *    the XINS call configuration object, or <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public XINSCallConfig getXINSCallConfig() {
+      return (XINSCallConfig) getCallConfig();
+   }
+
+   /**
+    * Sets the associated XINS call configuration.
+    *
+    * @param callConfig
+    *    the XINS call configuration object to associate with this request, or
+    *    <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public void setXINSCallConfig(XINSCallConfig callConfig) {
+      setCallConfig(callConfig);
    }
 
    /**
@@ -506,20 +536,6 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
-    * Sets whether fail-over is unconditionally allowed
-    *
-    * @param allowed
-    *    flag that indicates whether fail-over is in principle allowed, even
-    *    if the request was already sent to the other end.
-    *
-    * @since XINS 1.1.0
-    */
-   public void setFailOverAllowed(boolean allowed) {
-      _failOverAllowed = allowed;
-      _asString   = null;
-   }
-   
-   /**
     * Determines whether fail-over is unconditionally allowed.
     *
     * @return
@@ -528,48 +544,23 @@ public final class XINSCallRequest extends CallRequest {
     *    <code>false</code> otherwise.
     */
    public boolean isFailOverAllowed() {
-      return _failOverAllowed;
-   }
-
-   /**
-    * Sets the <code>HTTPMethod</code> to use for the {@link HTTPCallRequest}.
-    *
-    * @param method
-    *    the HTTP method to use, or <code>null</code> if the used
-    *    <code>XINSServiceCaller</code> should determine what HTTP method to
-    *    use.
-    *
-    * @since XINS 1.1.0
-    */
-   public void setHTTPMethod(HTTPMethod method) {
-      _httpMethod = method;
-      _asString   = null;
+      return getXINSCallConfig().isFailOverAllowed();
    }
 
    /**
     * Returns an <code>HTTPCallRequest</code> that can be used to execute this
     * XINS request.
     *
-    * @param method
-    *    the method to use if none is specified in this XINS call request,
-    *    cannot be <code>null</code>.
-    *
     * @return
     *    this request converted to an {@link HTTPCallRequest}, never
     *    <code>null</code>.
     */
-   HTTPCallRequest getHTTPCallRequest(HTTPMethod method)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("method", method);
-
-      // This request may override the HTTP method to use
-      if (_httpMethod != null) {
-         method = _httpMethod;
-      }
-
-      return new HTTPCallRequest(method, _httpParams, _failOverAllowed, HTTP_STATUS_CODE_VERIFIER);
+   HTTPCallRequest getHTTPCallRequest() {
+      XINSCallConfig callConfig = getXINSCallConfig();
+      return new HTTPCallRequest(callConfig.getHTTPMethod(),
+                                 _httpParams,
+                                 callConfig.isFailOverAllowed(),
+                                 HTTP_STATUS_CODE_VERIFIER);
    }
 
 
