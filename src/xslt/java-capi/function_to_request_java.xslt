@@ -92,6 +92,14 @@ extends org.xins.client.AbstractCAPICallRequest {
 
    //-------------------------------------------------------------------------
    // Fields
+   //-------------------------------------------------------------------------]]></xsl:text>
+
+		<xsl:apply-templates select="input/param" mode="field" />
+
+		<xsl:text><![CDATA[
+
+   //-------------------------------------------------------------------------
+   // Methods
    //-------------------------------------------------------------------------
 
    /**
@@ -111,23 +119,43 @@ extends org.xins.client.AbstractCAPICallRequest {
       return null; // TODO
    }]]></xsl:text>
 
-		<xsl:apply-templates select="input/param"/>
+		<xsl:apply-templates select="input/param" mode="methods" />
 
 		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="input/param">
+	<xsl:template match="input/param" mode="field">
 
-		<!-- Determine if this parameter is required -->
-		<xsl:variable name="required">
-			<xsl:choose>
-				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-				<xsl:when test="@required = 'false'">false</xsl:when>
-				<xsl:when test="@required = 'true'">true</xsl:when>
-			</xsl:choose>
+		<!-- Determine the Java class -->
+		<xsl:variable name="javaclass">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="'false'"        />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
 		</xsl:variable>
+
+		<!-- Print field -->
+		<xsl:text><![CDATA[
+
+   /**
+    * Value of the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> input parameter.
+    * Can be <code>null</code>.
+    */
+   private ]]></xsl:text>
+		<xsl:value-of select="$javaclass" />
+		<xsl:text> _</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="input/param" mode="methods">
 
 		<!-- Determine the Java class or primary data type -->
 		<xsl:variable name="javatype">
@@ -161,12 +189,42 @@ extends org.xins.client.AbstractCAPICallRequest {
 			</xsl:choose>
 		</xsl:variable>
 
-		<!-- Determine the name of the setter method -->
-		<xsl:variable name="methodName">
+		<!-- Determine the names of the methods -->
+		<xsl:variable name="getMethod">
+			<xsl:text>get</xsl:text>
+			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+			<xsl:value-of select="substring(@name,2)" />
+		</xsl:variable>
+		<xsl:variable name="setMethod">
 			<xsl:text>set</xsl:text>
 			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 			<xsl:value-of select="substring(@name,2)" />
 		</xsl:variable>
+
+		<!-- Print getter method -->
+		<xsl:text><![CDATA[
+
+   /**
+    * Retrieves the value of the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> input parameter.
+    * If the value was not set yet, then <code>null</code> is returned.
+    *
+    * @return
+    *    the current value for the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em>
+    *    input parameter, can be <code>null</code>.
+    */
+   public ]]></xsl:text>
+		<xsl:value-of select="$javaclass" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$getMethod" />
+		<xsl:text>() {
+      return _</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>;
+   }</xsl:text>
 
 		<!-- Print setter method that accepts a Java object -->
 		<xsl:text><![CDATA[
@@ -182,17 +240,17 @@ extends org.xins.client.AbstractCAPICallRequest {
     *    the new value for the parameter, can be <code>null</code>.
     */
    public void ]]></xsl:text>
-		<xsl:value-of select="$methodName" />
+		<xsl:value-of select="$setMethod" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$javaclass" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
-      // TODO: _request.setParameter("</xsl:text>
+      _</xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>", </xsl:text>
+		<xsl:text> = </xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>);
+		<xsl:text>;
    }</xsl:text>
 
 		<xsl:if test="$isJavaDatatype = 'true'">
@@ -223,14 +281,14 @@ extends org.xins.client.AbstractCAPICallRequest {
     *    the new value for the parameter.
     */
    public void ]]></xsl:text>
-			<xsl:value-of select="$methodName" />
+			<xsl:value-of select="$setMethod" />
 			<xsl:text>(</xsl:text>
 			<xsl:value-of select="$javatype" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>) {
       </xsl:text>
-			<xsl:value-of select="$methodName" />
+			<xsl:value-of select="$setMethod" />
 			<xsl:text>(new </xsl:text>
 			<xsl:value-of select="$javaclass" />
 			<xsl:text>(</xsl:text>
