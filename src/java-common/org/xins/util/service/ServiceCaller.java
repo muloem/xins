@@ -6,6 +6,7 @@ package org.xins.util.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.xins.util.MandatoryArgumentChecker;
+import org.apache.log4j.Logger;
 
 /**
  * Service caller. This abstract class must be subclasses by specific kinds
@@ -21,6 +22,12 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logger for this class.
+    */
+   private static final Logger LOG = Logger.getLogger(ServiceCaller.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -125,6 +132,8 @@ public abstract class ServiceCaller extends Object {
             }
             failedTargets.add(target);
             exceptions.add(exception);
+
+            LOG.error("Failed to call target: " + target, exception);
          }
       }
 
