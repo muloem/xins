@@ -12,7 +12,7 @@ package org.xins.common.service;
  *
  * @since XINS 0.207
  */
-public class TotalTimeOutCallException extends GenericCallException {
+public final class TotalTimeOutCallException extends GenericCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
