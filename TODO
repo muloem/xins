@@ -17,6 +17,7 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
   must also be set."
 * Allow freezing of api.xml files. Support 'freeze' attribute in DTD and
   copy behaviour from behaviour for frozen .fnc files.
+* Add standard type '_list'.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
@@ -140,6 +141,7 @@ GENERATED SPECIFICATION DOCUMENTATION
 * If the api.xml has changed, the specification documentation should be
   regenerated.
 * Have an item for a result code page in the header.
+* Add standard type '_list': Support <list type="TYPE" /> in .typ files.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
