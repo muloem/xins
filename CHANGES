@@ -40,9 +40,10 @@ CHANGES INTRODUCED IN XINS 0.209:
   - The TypeValueException is no longer catched is the parameter is a String.
 
 * Generated specification documentation:
-  - Broken freeze messages are now also provided for the types and
-    result codes.
+  - Added the broken freeze warning message for types and result codes.
   - Added support for the new directory structure for the broken freeze links.
+  - Added output section for result codes that defines an output section.
+  - Added support for the <pcdata> element for the data section.
 
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is

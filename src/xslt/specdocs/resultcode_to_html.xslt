@@ -28,8 +28,11 @@
 	omit-xml-declaration="yes" />
 
 	<xsl:include href="broken_freeze.xslt" />
+	<xsl:include href="output_section.xslt" />
 	<xsl:include href="../header.xslt"     />
 	<xsl:include href="../footer.xslt"     />
+	<xsl:include href="../types.xslt"       />
+	<xsl:include href="../urlencode.xslt"   />
 
 	<xsl:variable name="resultcode_name" select="//resultcode/@name" />
 
@@ -74,10 +77,59 @@
 				<!-- Description -->
 				<xsl:apply-templates select="description" />
 
+				<xsl:call-template name="output_section" />
+
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>
+
+	<xsl:template name="output_section">
+		<xsl:if test="output">
+			<h2>Output section</h2>
+			<blockquote>
+				<xsl:choose>
+					<xsl:when test="count(output) &gt; 1">
+						<xsl:message terminate="yes">
+							<xsl:text>Found </xsl:text>
+							<xsl:value-of select="count(output)" />
+							<xsl:text> output sections. Only one is allowed.</xsl:text>
+						</xsl:message>
+					</xsl:when>
+					<xsl:when test="output">
+						<xsl:apply-templates select="output" />
+					</xsl:when>
+				</xsl:choose>
+			</blockquote>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="resultcode/output">
+		<xsl:call-template name="parametertable">
+			<xsl:with-param name="title">Output parameters</xsl:with-param>
+			<xsl:with-param name="content">output parameters</xsl:with-param>
+			<xsl:with-param name="class">outputparameters</xsl:with-param>
+		</xsl:call-template>
+
+		<xsl:call-template name="datasection" />
+	</xsl:template>
+
+	<xsl:template name="datasection">
+		<xsl:if test="data">
+			<h3>Data section</h3>
+				<p>
+					<xsl:text>Root element: </xsl:text>
+					<code>
+						<xsl:text>&lt;</xsl:text>
+						<xsl:value-of select="data/@contains" />
+						<xsl:text>/&gt;</xsl:text>
+					</code>
+					<xsl:text>.</xsl:text>
+				</p>
+				<xsl:apply-templates select="data/element" />
+		</xsl:if>
+	</xsl:template>
+
 </xsl:stylesheet>
