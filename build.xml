@@ -25,6 +25,7 @@
 		<property name="url"                 value="http://${www.host}/" />
 		<property name="javadoc.title"       value="${title} ${version}" />
 		<property name="javadoc.footer"      value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;." />
+		<property name="vendor"              value="Wanadoo Nederland B.V." />
 	</target>
 
 	<target name="-xmlenc-avail">
@@ -58,6 +59,20 @@
 		deprecation="on"
 		optimize="off"
 		target="1.2" />
+		<manifest file="build/MANIFEST.MF">
+			<section name="xins">
+				<attribute name="Specification-Title"    value="${title}"   />
+				<attribute name="Specification-Version"  value="${version}" />
+				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Implementation-Title"   value="${title}"   />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+			</section>
+		</manifest>
+		<jar
+		jarfile="build/xins.jar"
+		basedir="build/classes/java-server-framework"
+		manifest="build/MANIFEST.MF" />
 	</target>
 
 	<target name="-jdksrc-avail">
@@ -118,7 +133,6 @@
 			<arg value="${www.target}/javadoc/${version}/" />
 		</exec>
 	</target>
-
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
