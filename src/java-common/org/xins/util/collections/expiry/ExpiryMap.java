@@ -14,7 +14,9 @@ import java.util.Map;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public abstract class ExpiryMap extends AbstractMap {
+public abstract class ExpiryMap
+extends Object
+implements Map {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -37,7 +39,9 @@ public abstract class ExpiryMap extends AbstractMap {
     * @throws IllegalArgumentException
     *    if <code>strategy == null</code>.
     */
-   public ExpiryMap(ExpiryStrategy strategy) throws IllegalArgumentException {
+   public ExpiryMap(ExpiryStrategy strategy)
+   throws IllegalArgumentException {
+
       _strategy = strategy;
 
       // XXX: Allow customization of Map construction?
