@@ -9,7 +9,7 @@ package org.xins.common.types;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Item in an enumeration type.
+ * Item in a list or a set type.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
