@@ -34,10 +34,23 @@
 			<and>
 				<isset property="version.major" />
 				<isset property="version.minor" />
+				<isset property="version.prev.major" />
+				<isset property="version.prev.minor" />
 			</and>
 		</condition>
 		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
+		<property name="version.prev" value="${version.prev.major}.${version.prev.minor}" />
 	</target>
+
+	<target name="-determine-version-dev" depends="-load-version" if="version.suffix">
+		<property name="version.real" value="${version.prev}" />
+	</target>
+
+	<target name="-determine-version-nondev" depends="-load-version" unless="version.suffix">
+		<property name="version.real" value="${version}" />
+	</target>
+
+	<target name="-determine-version" depends="-determine-version-dev,-determine-version-nondev" />
 
 	<target name="-load-sfproperties">
 		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
@@ -51,13 +64,13 @@
 		<fail unless="sf.isset" message="SourceForge user and password must be set in file ${sf.file}." />
 	</target>
 
-	<target name="-init-release" depends="-load-version">
+	<target name="-init-release" depends="-determine-version">
 		<property name="javac.debug"         value="false" />
 		<property name="javac.deprecation"   value="false" />
 		<property name="version"             value="${version.major}.${version.minor}" />
 	</target>
 
-	<target name="-init" depends="-load-version,-load-sfproperties">
+	<target name="-init" depends="-determine-version,-load-sfproperties">
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
@@ -91,7 +104,7 @@
 	<target name="version" depends="-init">
 		<echo message="Java ${java.version}" />
 		<echo message="${ant.version}" />
-		<echo message="${title} ${version}" />
+		<echo message="${title} ${version} (real: ${version.real})" />
 	</target>
 
 	<target name="-prepare" depends="-init">
