@@ -17,6 +17,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Parser that takes XML to build a <code>CallRequest</code>.
@@ -122,16 +123,22 @@ public final class CallRequestParser extends Object {
 
       try {
          return parse(_xmlBuilder.build(in));
-      } catch (IOException ioException) {
-         final String MESSAGE = "Unable to parse XML returned by API.";
-         LOG.error(MESSAGE, ioException);
+      } catch (Exception exception) {
+         FastStringBuffer message = new FastStringBuffer(128);
+         message.append("Unable to parse call request due to unexpected ");
+         message.append(exception.getClass().getName());
+         String exceptionMessage = exception.getMessage();
+         if (exceptionMessage != null && exceptionMessage.length() > 0) {
+            message.append(": ");
+            message.append(exceptionMessage);
+         } else {
+            message.append('.');
+         }
+         String messageString = message.toString();
+         LOG.error(messageString);
+
          // TODO: Include type of error in here somewhere
-         throw new ParseException(MESSAGE, ioException);
-      } catch (JDOMException jdomException) {
-         final String MESSAGE = "Unable to parse XML returned by API.";
-         LOG.error(MESSAGE, jdomException);
-         // TODO: Include type of error in here somewhere
-         throw new ParseException(MESSAGE, jdomException);
+         throw new ParseException(messageString, ioException);
       }
    }
 
