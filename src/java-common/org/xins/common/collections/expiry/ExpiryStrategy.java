@@ -107,7 +107,8 @@ public final class ExpiryStrategy extends Object {
 
       // Determine number of slots
       long slotCount = timeOut / precision;
-      if ((timeOut % precision) != 0L) {
+      long remainder = timeOut % precision;
+      if (remainder != 0L) {
          slotCount++;
       }
 
@@ -116,6 +117,7 @@ public final class ExpiryStrategy extends Object {
       _precision = precision;
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
+      _asString  = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
 
       // Create and start the timer thread. If no other threads are active,
       // then neither should this timer thread, so do not mark as a daemon
@@ -126,11 +128,6 @@ public final class ExpiryStrategy extends Object {
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
-
-      // TODO: Add field _asString
-      // TODO: Fill _asString in constructor
-      // TODO: Send _asString to log message 1002?
-      // TODO: Return _asString from toString()
    }
 
 
@@ -158,6 +155,12 @@ public final class ExpiryStrategy extends Object {
     * this strategy.
     */
    private final int _slotCount;
+
+   /**
+    * A textual presentation of this object. This is returned by
+    * {@link #toString()}.
+    */
+   private final String _asString;
 
    /**
     * The list of folders associated with this strategy.
@@ -275,7 +278,7 @@ public final class ExpiryStrategy extends Object {
             }
          }
 
-         // Remove all empty WeakReferences
+         // Remove last empty WeakReference
          if (emptyRefIndex >= 0) {
             _folders.remove(emptyRefIndex);
          }
@@ -289,7 +292,7 @@ public final class ExpiryStrategy extends Object {
     *    a textual representation of this object, never <code>null</code>.
     */
    public String toString() {
-      return "XINS ExpiryStrategy #" + _instanceNum;
+      return _asString;
    }
 
 
