@@ -9,6 +9,7 @@ package org.xins.tests.server;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.server.AccessRule;
 import org.xins.server.IPFilter;
 import org.xins.common.text.FastStringBuffer;
@@ -73,7 +74,6 @@ public class AccessRuleTests extends TestCase {
    }
 
    public void testParseAccessRule() throws Throwable {
-
       try {
          AccessRule.parseAccessRule(null);
          fail("AccessRule.parseAccessRule(null) should throw an IllegalArgumentException.");
