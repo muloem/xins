@@ -4,22 +4,23 @@
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.common.util.service;
+package org.xins.tests.common.service;
+
+import java.net.MalformedURLException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.service.UnsupportedProtocolException;
 
 /**
- * Tests for class <code>UnsupportedProtocolException</code>.
+ * Tests for class <code>TargetDescriptor</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public class UnsupportedProtocolExceptionTests extends TestCase {
+public class TargetDescriptorTests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -32,7 +33,7 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(UnsupportedProtocolExceptionTests.class);
+      return new TestSuite(TargetDescriptorTests.class);
    }
 
 
@@ -45,14 +46,13 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnsupportedProtocolExceptionTests</code> test 
-    * suite with the specified name. The name will be passed to the 
-    * superconstructor.
+    * Constructs a new <code>TargetDescriptorTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public UnsupportedProtocolExceptionTests(String name) {
+   public TargetDescriptorTests(String name) {
       super(name);
    }
 
@@ -65,15 +65,20 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testContructor() throws Throwable {
+   public void testTargetDescriptor() throws Exception {
       try {
-         UnsupportedProtocolException upe = new UnsupportedProtocolException(null);
-         fail("UnsupportedProtocolException did not throw an exception with a <null> argument for the constructor.");
+         new TargetDescriptor(null);
+         fail("TargetDescriptor(String) should throw an IllegalArgumentException if the argument is null.");
       } catch (IllegalArgumentException ex) {
-         // As excepted
+         // as expected
       }
-      TargetDescriptor descriptor = new TargetDescriptor("http://www.test.org");
-      UnsupportedProtocolException upe = new UnsupportedProtocolException(descriptor);
-      assertEquals("The descriptor target returned is not the same as the one passed to the constructor.", descriptor, upe.getTargetDescriptor());
+
+      String url = "blablabla";
+      try {
+         new TargetDescriptor(url);
+         fail("TargetDescriptor(String) should throw a MalformedURLException if the argument is \"" + url + "\".");
+      } catch (MalformedURLException ex) {
+         // as expected
+      }
    }
 }
