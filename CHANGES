@@ -27,6 +27,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - All function result objects now contain the call duration, the exceptions
     (if any) and a link to the succeeded target. See the changes for the
     AbstractCAPICallResult class for details.
+  - Implemented SF.net RFE #1071756: The MANIFEST.MF file in generated CAPI
+    JAR file now contains the version of XINS used to generate the JAR file.
 
 * Generated Javadoc now lists the groups of packages in the following order:
   Logdoc, Common, Client and finally Server. This should now generally be

@@ -29,7 +29,7 @@
 	<xsl:variable name="xmlenc_version"    select="'0.44'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
-	<xsl:variable name="logdoc.jar"        select="concat($xins_home,    '/build/logdoc.jar')" />
+	<xsl:variable name="logdoc.jar"        select="concat($xins_home,    '/build/logdoc.jar')"      />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home,    '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar"   select="concat($xins_home,    '/build/xins-server.jar')" />
 	<xsl:variable name="xins-client.jar"   select="concat($xins_home,    '/build/xins-client.jar')" />
@@ -941,9 +941,20 @@
 						</copy>
 					</xsl:if>
 					<mkdir dir="{$project_home}/build/capis/" />
+					<manifest file="{$project_home}/build/capis/{$api}-MANIFEST.MF">
+						<section name="XINS/Java CAPI Generator">
+							<attribute name="Specification-Title"    value="XINS/Java CAPI Generator" />
+							<attribute name="Specification-Version"  value="{$xins_version}"          />
+							<attribute name="Specification-Vendor"   value="Wanadoo Nederland B.V."   />
+							<attribute name="Implementation-Title"   value="XINS/Java CAPI Generator" />
+							<attribute name="Implementation-Version" value="{$xins_version}"          />
+							<attribute name="Implementation-Vendor"  value="Wanadoo Nederland B.V."   />
+						</section>
+					</manifest>
 					<jar
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"
-					basedir="{$project_home}/build/classes-capi/{$api}" />
+					basedir="{$project_home}/build/classes-capi/{$api}"
+					manifest="{$project_home}/build/capis/{$api}-MANIFEST.MF" />
 				</target>
 
 				<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
