@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.138:
 
 * Fixed 'xins -version' on systems without .sourceforge.properties file.
 
+* XINS/Java Common Library:
+  - Added class function isHexDigit(char) to class HexConverter.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 
