@@ -3,6 +3,8 @@
  */
 package org.xins.server;
 
+import org.apache.commons.logging.Log;
+
 /**
  * XINS responder. Classes that implement this interface can generate a XINS
  * response.
@@ -125,7 +127,7 @@ package org.xins.server;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public interface Responder
-extends ResponderStates {
+extends ResponderStates, Log {
 
    /**
     * Starts the response output. This is done by writing a
