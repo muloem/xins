@@ -4,14 +4,19 @@
 package org.xins.server;
 
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Iterator;
 import javax.servlet.ServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.manageable.Manageable;
 import org.xins.common.io.FastStringWriter;
+import org.xins.common.manageable.Manageable;
+import org.xins.common.servlet.ServletRequestPropertyReader;
+
+import org.xins.logdoc.LogdocSerializable;
+import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Base class for function implementation classes.
@@ -215,14 +220,12 @@ implements DefaultResultCodes {
       // TODO: Know nothing about servlets, so do not accept the
       //       ServletRequest argument
 
-      String ip = request.getRemoteAddr();
-
       // Assign a call ID
       int callID = assignCallID();
 
       // Check if this function is enabled
       if (!_enabled) {
-         performedCall(ip, start, callID, DISABLED_FUNCTION_RESULT);
+         performedCall(request, start, callID, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
@@ -265,7 +268,7 @@ implements DefaultResultCodes {
       }
 
       // Update function statistics
-      performedCall(ip, start, callID, result);
+      performedCall(request, start, callID, result);
 
       return result;
    }
@@ -292,8 +295,8 @@ implements DefaultResultCodes {
     * <p />This method does not <em>have</em> to be called. If statistics
     * gathering is disabled, then this method should not be called.
     *
-    * @param ip
-    *    the IP address of the other end.
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
     *
     * @param start
     *    the start time, in milliseconds since January 1, 1970, not
@@ -305,9 +308,14 @@ implements DefaultResultCodes {
     * @param result
     *    the function result code, cannot be <code>null</code>.
     */
-   private final void performedCall(String ip, long start, int callID, CallResult result) {
+   private final void performedCall(ServletRequest request,
+                                    long           start,
+                                    int            callID,
+                                    CallResult     result) {
 
-      // TODO: Accept ResultCode
+      String ip = request.getRemoteAddr();
+
+      // TODO: Accept input parameters
 
       // TODO: If the Logging is moved somewhere else then
       //       the method invoking this method (performedCall) can directly
@@ -337,6 +345,92 @@ implements DefaultResultCodes {
          }
       }
 
-      Log.log_1540(ip, _name, callID, start, duration, code);
+      PropertyReader inputParams = new ServletRequestPropertyReader(request);
+      Log.log_1540(ip, _name, callID, new FormattedDate(start), duration,
+                   inputParams, result.getParameters(), code);
+   }
+
+   // TODO: Document
+   private static final class FormattedDate
+   extends Object
+   implements LogdocSerializable {
+
+      //---------------------------------------------------------------------
+      // Constructor
+      //---------------------------------------------------------------------
+
+      private FormattedDate(long date) {
+         _epochDate = date;
+      }
+
+
+      //---------------------------------------------------------------------
+      // Fields
+      //---------------------------------------------------------------------
+
+      private final long _epochDate;
+
+
+      //---------------------------------------------------------------------
+      // Methods
+      //---------------------------------------------------------------------
+
+      public void serialize(LogdocStringBuffer buffer)
+      throws NullPointerException {
+         Date date = new Date(_epochDate);
+
+         int year    = date.getYear()  + 1900;
+         int month   = date.getMonth() + 1;
+         int day     = date.getDate();
+         int hours   = date.getHours();
+         int minutes = date.getMinutes();
+         int seconds = date.getSeconds();
+
+         // Append year
+         buffer.append(year);
+
+         // Append month
+         if (month < 10) {
+            buffer.append('0');
+         }
+         buffer.append(month);
+
+         // Append day
+         if (day < 10) {
+            buffer.append('0');
+         }
+         buffer.append(day);
+
+         // Append hyphen separator
+         buffer.append('-');
+
+         // Append hours
+         if (hours < 10) {
+            buffer.append('0');
+         }
+         buffer.append(hours);
+
+         // Append minutes
+         if (minutes < 10) {
+            buffer.append('0');
+         }
+         buffer.append(minutes);
+
+         // Append seconds
+         if (seconds < 10) {
+            buffer.append('0');
+         }
+         buffer.append(seconds);
+
+/* XXX:
+         // Append milliseconds
+         if (millis < 10) {
+            buffer.append("00");
+         } else if (millis < 100) {
+            buffer.append('0');
+         }
+         buffer.append(millis);
+*/
+      }
    }
 }
