@@ -16,6 +16,9 @@ CHANGES INTRODUCED IN XINS 0.161:
     implementation of a few methods for the different existing 
     PropertyReader implementations.
 
+* Logdoc:
+  - Simplified definition of FATAL log level.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 
