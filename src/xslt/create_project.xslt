@@ -219,7 +219,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<group id="exampleid" name="Example">
 		<entry id="10000" level="DEBUG">
 			<description>Example of logdoc with some parameters.</description>
-			<param name="functionName" />
+			<param name="parameter" />
 			<param name="number" nullable="false" type="int32" />
 		</entry>
 		<entry id="10001" level="ERROR" exception="true">
@@ -232,7 +232,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 <!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://xins.sourceforge.net/dtd/translation-bundle_1_0.dtd">
 
 <translation-bundle>
-	<translation entry="10000">Example of logdoc with the parameters <value-of-param name="functionName" format="quoted" /> and <value-of-param name="number" />.</translation>
+	<translation entry="10000">Example of logdoc with the parameter <value-of-param name="parameter" format="quoted" /> and <value-of-param name="number" />.</translation>
 	<translation entry="10001">Example of an exception.</translation>
 </translation-bundle>
 ]]></echo>
