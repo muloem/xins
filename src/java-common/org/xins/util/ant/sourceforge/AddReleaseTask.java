@@ -19,7 +19,7 @@ import org.apache.tools.ant.Task;
  *
  * @since XINS 0.127
  */
-public class SourceForgeUploadTask extends Task {
+public class AddReleaseTask extends Task {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -34,9 +34,9 @@ public class SourceForgeUploadTask extends Task {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>SourceForgeUploadTask</code>.
+    * Constructs a new <code>AddReleaseTask</code>.
     */
-   public SourceForgeUploadTask() {
+   public AddReleaseTask() {
       // empty
    }
 
