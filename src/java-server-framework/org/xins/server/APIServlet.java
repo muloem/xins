@@ -142,7 +142,9 @@ implements Servlet {
          throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
       }
 
-      _log.debug("XINS/Java Server Framework is initializing.");
+      if (_log.isDebugEnabled()) {
+         _log.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
+      }
 
       // Get the API class
       Class apiClass;
