@@ -12,8 +12,8 @@ import java.util.List;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Implementation of a list that can only be modified using the key
- * passed in the constructor.
+ * Implementation of a list that can only be modified using the secret key
+ * passed to the constructor.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -38,8 +38,9 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     * Constructs a new <code>ProtectedList</code>.
     *
     * @param key
-    *    the secret key that must be passed to {@link #set(Object,String,String)}
-    *    in order to be authorized to modify this set of properties.
+    *    the secret key that must be passed to
+    *    {@link #set(Object,String,String)} in order to be authorized to
+    *    modify this set of properties, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
@@ -68,6 +69,7 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     * The list containing the objects.
     */
    private ArrayList _list;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -144,7 +146,7 @@ public final class ProtectedList extends AbstractList implements Cloneable {
 
    /**
     * Clones this list. The cloned list will only be ediatable by using the 
-    * same key.
+    * same secret key.
     *
     * @return
     *    a new clone of this object, never <code>null</code>.
