@@ -256,6 +256,59 @@ public class FastStringBuffer extends Object {
    }
 
    /**
+    * Gets the length of this string buffer. This is always &lt;= the
+    * capacity.
+    *
+    * @return
+    *    the number of characters in this buffer, always
+    *    &lt;= {@link #getCapacity()}.
+    */
+   public int getLength() {
+      return _length;
+   }
+
+   /**
+    * Gets the capacity of this string buffer. This is always &gt;= the
+    * length.
+    *
+    * @return
+    *    the number of characters that fits in this buffer without having to
+    *    extend the internal data structure, always &gt;=
+    *    {@link #getLength()}.
+    */
+   public int getCapacity() {
+      return _buffer.length;
+   }
+
+   /**
+    * Sets the character at the specified index.
+    *
+    * @param index
+    *    the index at which to set the character, must be &lt;
+    *    {@link #getLength()}.
+    *
+    * @param newChar
+    *    the new character value.
+    *
+    * @return
+    *    the old character value.
+    *
+    * @throws IndexOutOfBoundsException
+    *    if <code>index &lt; 0 || index &gt;= </code>{@link getLength()}.
+    */
+   public char setChar(int index, char newChar)
+   throws IndexOutOfBoundsException {
+
+      if (index >= _length) {
+         throw new IndexOutOfBoundsException("index (" + index + ") >= getLength() (" + _length + ')');
+      }
+
+      char oldChar = _buffer[index];
+      _buffer[index] = newChar;
+      return oldChar;
+   }
+
+   /**
     * Clears this string buffer. The capacity will remain untouched, though.
     */
    public void clear() {
