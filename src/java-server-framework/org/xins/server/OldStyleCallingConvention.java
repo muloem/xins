@@ -149,13 +149,17 @@ extends CallingConvention {
    /**
     * Determines the name of the function to be called based on the specified
     * values for the parameters <code>"_function"</code> and
-    * <code>"function"</code>.
+    * <code>"function"</code>. If the function is not specified at all, then a
+    * {@link FunctionNotSpecifiedException} is thrown.
     *
     * @param withUnderScore
     *    the value of the parameter <code>"_function"</code>.
     *
     * @param withoutUnderScore
     *    the value of the parameter <code>"function"</code>.
+    *
+    * @return
+    *    the name of the function, never <code>null</code>.
     *
     * @throws FunctionNotSpecifiedException
     *    if the function name is not specified in either of the parameters.
