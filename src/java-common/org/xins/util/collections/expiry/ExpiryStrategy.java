@@ -37,7 +37,20 @@ public final class ExpiryStrategy extends Object {
     *          || precision &lt; 1
     *          || timeOut &lt; precision</code>
     */
-   private ExpiryStrategy(long timeOut, long precision) {
+   private ExpiryStrategy(long timeOut, long precision)
+   throws IllegalArgumentException {
+      if (timeOut < 1 || precision < 1) {
+         if (timeOut < 1 && precision < 1) {
+            throw new IllegalArgumentException("timeOut (" + timeOut + ") < 1 && precision (" + precision + ") < 1");
+         } else if (timeOut < 1) {
+            throw new IllegalArgumentException("timeOut (" + timeOut + ") < 1");
+         } else {
+            throw new IllegalArgumentException("precision (" + precision + ") < 1");
+         }
+      } else if (timeOut < precision) {
+         throw new IllegalArgumentException("timeOut < precision");
+      }
+
       _timeOut   = timeOut;
       _precision = precision;
    }
