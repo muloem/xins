@@ -48,7 +48,7 @@ XINS/JAVA CLIENT FRAMEWORK
   with Service-based solution, implemented in XINS/Java Common Library,
   package org.xins.util.service.
 * Add meta-data methods for retrieving remote XINS version, remote function
-  versions, remote settings, etc.
+  versions, remote settings, etc. to the AbstractCAPI class.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
