@@ -359,10 +359,10 @@ public abstract class ServiceCaller extends Object {
    private final Descriptor _descriptor;
 
    /**
-    * The fall-back call config object for this service caller. Cannot be
-    * <code>null</code>.
+    * The fall-back call config object for this service caller. Can only be
+    * <code>null</code> if this is an old-style service caller.
     */
-   private final CallConfig _callConfig;
+   private CallConfig _callConfig;
 
 
    //-------------------------------------------------------------------------
@@ -378,6 +378,53 @@ public abstract class ServiceCaller extends Object {
    public final Descriptor getDescriptor() {
       return _descriptor;
    }
+
+   /**
+    * Sets the <code>CallConfig</code> associated with this service caller.
+    *
+    * <p>This method should only be called on new-style (XINS 1.1) service
+    * callers that used the {@link #ServiceCaller(Descriptor,CallConfig)}
+    * constructor.
+    *
+    * @param config
+    *    the fall-back {@link CallConfig} object for this service caller,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>config == null</code>.
+    *
+    * @throws ProgrammingException
+    *    if this service caller used the old-style (XINS 1.0) constructor.
+    *
+    * @since XINS 1.2.0
+    */
+   protected final void setCallConfig(CallConfig config)
+   throws IllegalArgumentException {
+
+      final String THIS_METHOD = "setCallConfig("
+                               + CallConfig.class.getName()
+                               + ')';
+
+      // Check argument
+      MandatoryArgumentChecker.check("config", config);
+
+      // This method should only be called if the subclass uses the new style
+      if (! _newStyle) {
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
+         final String DETAIL         = "Method "
+                                     + THIS_METHOD
+                                     + " called while class "
+                                     + _className
+                                     + " uses old-style (XINS 1.0) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL);
+      }
+
+      _callConfig = config;
+   }
+
 
    /**
     * Returns the <code>CallConfig</code> associated with this service caller.
@@ -465,8 +512,14 @@ public abstract class ServiceCaller extends Object {
       if (! _newStyle) {
          final String SUBJECT_CLASS  = Utils.getCallingClass();
          final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style (XINS 1.0) constructor.";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         final String DETAIL         = "Method "
+                                     + THIS_METHOD
+                                     + " called while class "
+                                     + _className
+                                     + " uses old-style (XINS 1.0) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL);
       }
 
       // Check preconditions
@@ -1079,8 +1132,14 @@ public abstract class ServiceCaller extends Object {
       if (! _newStyle) {
          final String SUBJECT_CLASS  = Utils.getCallingClass();
          final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style (XINS 1.0) constructor.";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         final String DETAIL         = "Method "
+                                     + THIS_METHOD
+                                     + " called while class "
+                                     + _className
+                                     + " uses old-style (XINS 1.0) constructor.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL);
       }
 
       // Determine if fail-over is applicable
