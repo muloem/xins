@@ -43,11 +43,12 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Remove getErrorCode() in class HTTPServiceCaller.Result
 [x] Make inner class HTTPServiceCaller.Result static
 [ ] Log all events properly                                         [LOW PRIO]
+[ ] Rename HTTPServiceCaller.Result to HTTPCallResult
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
 [x] Rename CallRequest to XINSCallRequest
-[ ] Let XINSCallException extend CallException
+[x] Let XINSCallException extend CallException
 [ ] Let XINSCallRequest extend CallRequest
 [ ] Use ConnectionCallException instead of ConnectionException
 [x] Remove ConnectionException class
@@ -58,9 +59,13 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Use SocketTimeOutCallException instead of SocketTimeOutException
 [x] Remove SocketTimeOutException class
 [ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
-[ ] Remove UnexpectedHTTPStatusCodeException class
+[x] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
 [ ] Use HTTPServiceCaller for the actual call
+[ ] Rename Result to XINSCallResult
+[ ] Rename ResultParser to XINSCallResultParser
+[ ] Make UnacceptableCallResultException extend XINSCallException
+[ ] Make UnsuccessfulCallException extend XINSCallException
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
