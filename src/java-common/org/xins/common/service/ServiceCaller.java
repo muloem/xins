@@ -81,16 +81,16 @@ public abstract class ServiceCaller extends Object {
    /**
     * Performs a call using the specified subject. Target
     * {@link TargetDescriptor descriptors} will be picked and passed
-    * to {@link #doCallImpl(TargetDescriptor,Object)} until there is one that
-    * succeeds, as long as fail-over can be done (according to
-    * {@link #shouldFailOver(Object,Throwable)}.
+    * to {@link #doCallImpl(TargetDescriptor,CallRequest)} until there is one
+    * that succeeds, as long as fail-over can be done (according to
+    * {@link #shouldFailOver(CallRequest,Throwable)}).
     *
     * <p>If one of the calls succeeds, then the result is returned. If
-    * none succeeds or if fail-over should not be done, then a {@link
-    * CallFailedException} is thrown.
+    * none succeeds or if fail-over should not be done, then a
+    * {@link CallException} is thrown.
     *
-    * <p>Each attempt consists of a call to
-    * {@link #doCallImpl(TargetDescriptor,Object)}.
+    * <p>Each call attempt consists of a call to
+    * {@link #doCallImpl(TargetDescriptor,CallRequest)}.
     *
     * @param request
     *    the call request, not <code>null</code>.
@@ -104,7 +104,7 @@ public abstract class ServiceCaller extends Object {
     *    if <code>request == null</code>.
     *
     * @throws CallFailedException
-    *    if all calls failed.
+    *    if all call attempts failed.
     *
     * @since XINS 0.207
     */
@@ -314,16 +314,24 @@ public abstract class ServiceCaller extends Object {
 
    /**
     * Determines whether a call should fail-over to the next selected target.
-    * This method should be overridden by subclasses. The implementation in
-    * class {@link ServiceCaller} always returns <code>false</code>.
+    * This method should only be called from {@link #doCall(CallRequest)}.
+    *
+    * <p>This method is typically overridden by subclasses. Usually, a
+    * subclass first calls this method in the superclass, and if that returns
+    * <code>false</code> it does some additional checks, otherwise
+    * <code>true</code> is immediately returned.
+    *
+    * <p>The implementation of this method in class {@link ServiceCaller}
+    * returns <code>true</code> if and only if <code>exception instanceof
+    * {@link ConnectionCallException}</code>.
     *
     * @param request
     *    the request for the call, as passed to {@link #doCall(CallRequest)},
-    *    can be <code>null</code>.
+    *    should not be <code>null</code>.
     *
     * @param exception
     *    the exception caught while calling the most recently called target,
-    *    never <code>null</code>.
+    *    should not be <code>null</code>.
     *
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
@@ -331,7 +339,8 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 0.207
     */
-   protected boolean shouldFailOver(CallRequest request, Throwable exception) {
-      return false;
+   protected boolean shouldFailOver(CallRequest request,
+                                    Throwable   exception) {
+      return (exception instanceof ConnectionCallException);
    }
 }
