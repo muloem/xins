@@ -23,8 +23,17 @@ import java.util.List;
 
 /**
  * Constants for the default result codes.
+ *
+ * @version </xsl:text>
+		<xsl:value-of select="@rcsversion" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="@rcsdate" />
+		<xsl:text><![CDATA[
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @since XINS 0.15
  */
-public interface DefaultResultCodes {</xsl:text>
+public interface DefaultResultCodes {]]></xsl:text>
 		<xsl:for-each select="code">
 			<xsl:text><![CDATA[
    /**
