@@ -44,6 +44,9 @@
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.deprecation"   value="true"  />
 		<property name="javac.optimize"      value="true" />
+
+		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
+		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server-framework:build/src/java-client-framework" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -206,16 +209,16 @@
 	</target>
 
 	<target name="-jdksrc-avail">
-		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
+		<available file="${javadoc.srcdir.j2se}" type="dir" property="jdksrc.available" />
 	</target>
 
 	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
-		<property name="javadoc.sourcepath" value="build/src/java-server-framework:build/src/java-client-framework" />
+		<property name="javadoc.sourcepath" value="${javadoc.srcdir.xins}" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
 
 	<target name="-javadoc-sourcepath-jdksrc" depends="-jdksrc-avail" if="jdksrc.available">
-		<property name="javadoc.sourcepath" value="build/src/java-server-framework:build/java-client/framework:${java.home}/src" />
+		<property name="javadoc.sourcepath" value="${javadoc.srcdir.xins}:${javadoc.srcdir.j2se}" />
 		<echo level="verbose" message="JDK source code available." />
 	</target>
 
@@ -233,9 +236,9 @@
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
-			<packageset dir="src/java-common" />
-			<packageset dir="src/java-server-framework" />
-			<packageset dir="src/java-client-framework" />
+			<packageset dir="build/src/java-common" />
+			<packageset dir="build/src/java-server-framework" />
+			<packageset dir="build/src/java-client-framework" />
 			<group title="XINS/Java Common"           packages="org.xins.util*,org.xins.types*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
