@@ -92,3 +92,19 @@ table.states tr td {
 table.states tr td.err {
 	background-color: #FFCCCC;
 }
+
+table.APIServlet_HTTP_response_codes {
+	border-collapse: collapse;
+	margin-left: 4em;
+}
+
+table.APIServlet_HTTP_response_codes tr th {
+	background-color: #CCCCFF;
+	font-weight: bold;
+	text-align: left;
+	padding: 2px;
+}
+
+table.APIServlet_HTTP_response_codes tr td {
+	padding: 2px;
+}
