@@ -10,13 +10,13 @@
 #
 
 # Make sure XINS_HOME is set
-if [ "${XINS_HOME}a" = "a" ]; then
+if [ "${XINS_HOME}" = "" ]; then
 	echo "`basename $0`: ERROR: XINS_HOME not set."
 	exit 1
 fi
 
 # Recognize -version option
-if [ "$1" = "-version" ]; then
+if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
 	ant -q -f ${XINS_HOME}/build.xml version
 	exit 0
 fi
@@ -25,6 +25,6 @@ fi
 ant -q -f ${XINS_HOME}/src/ant/make-build.xml -Dxins_home=${XINS_HOME}
 
 # Run Ant against the build file
-if [ "$?a" = "0a" ]; then
+if [ "$?" = "0" ]; then
 	ant -f build/build.xml $*
 fi
