@@ -141,6 +141,7 @@ public class ExpiryFolderTests extends TestCase {
       assertNull("Entry should have expired.", folder.find(KEY_2));
 
       // Test entry removal
+      assertNull(folder.remove(KEY_1));
       folder.put(KEY_2, VAL_2);
       assertEquals(VAL_2, folder.find(KEY_2));
       assertEquals(VAL_2, folder.get(KEY_2));
@@ -148,7 +149,8 @@ public class ExpiryFolderTests extends TestCase {
       assertNull(folder.remove(KEY_2));
       assertNull(folder.find(KEY_2));
       assertNull(folder.get(KEY_2));
-      assertNull(folder.remove("key that was never entered"));
+      assertNull(folder.remove("This is a key that was never entered"));
+      assertEquals(0, folder.size());
 
       // Test addition and retrieval of listener
       try {
@@ -167,14 +169,17 @@ public class ExpiryFolderTests extends TestCase {
       folder.removeListener(listener);
 
       // Test detailed expiry behavior
-      folder = new ExpiryFolder(NAME, strategy);
       folder.addListener(listener);
       folder.removeListener(listener);
       folder.addListener(listener);
+      assertEquals(0, folder.size());
       folder.put(KEY_2, VAL_2);
+      assertEquals(1, folder.size());
       final long WAIT_TIME = DURATION * 2L;
       long before = System.currentTimeMillis();
       Thread.sleep(WAIT_TIME);
+      assertNull(folder.get(KEY_2));
+      assertEquals(0, folder.size());
       long after = System.currentTimeMillis();
       long passed = after - before;
 
@@ -184,7 +189,8 @@ public class ExpiryFolderTests extends TestCase {
       // Source ExpiryFolder should always match
       for (int i = 0; i > callbacks.size(); i++) {
          Callback cb = (Callback) callbacks.get(i);
-         assertTrue("Source ExpiryFolder passed to listener mismatches real source.", cb._folder == folder);
+         assertTrue("Source ExpiryFolder passed to listener mismatches"
+                    + " real source.", cb._folder == folder);
       }
 
       // The map should contain only the key/value pair we expect
