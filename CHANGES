@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.172:
+
+* Build and release process:
+  - Added the empty runtime directory as it is used when building a war file.
+    This bug was introduced in XINS 0.171
+
+* Linked the generated Javadoc to the correct version on sourceforge.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.171:
 
 * XINS/Java Common Library:
@@ -21,8 +30,6 @@ CHANGES INTRODUCED IN XINS 0.171:
   - Removed some unused libraries files from the release as well as the
     associated files.
   - Removed the empty directories in the release.
-
-* Linked the generated Javadoc to the correct version on sourceforge.
 
 * Added the description of the stylesheets in the header.
 

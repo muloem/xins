@@ -561,6 +561,7 @@
 				<include name="build/*.jar"                    />
 				<include name="depends/compile_and_runtime/*"  />
 				<include name="depends/compile/servlet.jar"    />
+				<include name="depends/runtime"                />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build"
