@@ -28,11 +28,12 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.client.DataElement;
+import org.xins.client.InvalidRequestException;
+import org.xins.client.UnacceptableRequestException;
+import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
-import org.xins.client.UnacceptableRequestException;
-import org.xins.client.UnsuccessfulXINSCallException;
 
 import org.xins.common.collections.PropertyReader;
 
@@ -165,6 +166,8 @@ public class AllInOneAPITests extends TestCase {
          fail("Expected UnacceptableRequestException.");
       } catch (UnacceptableRequestException exception) {
          // as expected
+      } catch (InvalidRequestException exception) {
+         fail("Expected the client to detect unacceptable request, instead of the server.");
       }
 
       request.setInputByte((byte) 8);
