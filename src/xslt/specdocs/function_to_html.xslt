@@ -109,23 +109,24 @@
 
 	<xsl:template name="output_section">
 		<h2>Output section</h2>
-		<xsl:choose>
-			<xsl:when test="count(output) &gt; 1">
-				<xsl:message terminate="yes">
-					<xsl:text>Found </xsl:text>
-					<xsl:value-of select="count(output)" />
-					<xsl:text> output sections. Only one is allowed.</xsl:text>
-				</xsl:message>
-			</xsl:when>
-			<xsl:when test="output">
-				<blockquote>
-					<xsl:apply-templates select="output" />
-				</blockquote>
-			</xsl:when>
-			<xsl:otherwise>
-				<em>This function supports no output parameters nor data section.</em>
-			</xsl:otherwise>
-		</xsl:choose>
+		<blockquote>
+			<xsl:call-template name="returncodes" />
+			<xsl:choose>
+				<xsl:when test="count(output) &gt; 1">
+					<xsl:message terminate="yes">
+						<xsl:text>Found </xsl:text>
+						<xsl:value-of select="count(output)" />
+						<xsl:text> output sections. Only one is allowed.</xsl:text>
+					</xsl:message>
+				</xsl:when>
+				<xsl:when test="output">
+						<xsl:apply-templates select="output" />
+				</xsl:when>
+				<xsl:otherwise>
+					<em>This function supports no output parameters nor data section.</em>
+				</xsl:otherwise>
+			</xsl:choose>
+		</blockquote>
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
@@ -206,8 +207,6 @@
 	</xsl:template>
 
 	<xsl:template match="function/output">
-		<xsl:call-template name="returncodes" />
-
 		<xsl:call-template name="parametertable">
 			<xsl:with-param name="title">Output parameters</xsl:with-param>
 			<xsl:with-param name="content">output parameters</xsl:with-param>
@@ -245,7 +244,7 @@
 							<xsl:text>The returncode '</xsl:text>
 							<xsl:value-of select="$returncode" />
 							<xsl:text>' is a generic returncode with success set to </xsl:text>
-							<xsl:value-of select="document('../apis/returncodes.xml')/returncodes/code[@value=$returncode]/@success" />
+							<xsl:value-of select="document($returncodes_file)/returncodes/code[@value=$returncode]/@success" />
 							<xsl:text>, but it is claimed to be </xsl:text>
 							<xsl:value-of select="@success" />
 							<xsl:text> in example </xsl:text>
@@ -635,16 +634,22 @@
 				<th>Description</th>
 			</tr>
 			<xsl:call-template name="default_returncodes" />
-			<xsl:apply-templates select="returncode" />
+			<xsl:apply-templates select="//function/output/returncode" />
 		</table>
 	</xsl:template>
 
 	<xsl:template name="default_returncodes">
+		<xsl:variable name="haveParams">
+			<xsl:if test="//function/input/param">true</xsl:if>
+		</xsl:variable>
+
 		<xsl:for-each select="document($returncodes_file)/returncodes/code">
-			<xsl:call-template name="default_returncode">
-				<xsl:with-param name="value"       select="@value" />
-				<xsl:with-param name="description" select="description/text()" />
-			</xsl:call-template>
+			<xsl:if test="$haveParams = 'true' or not(@onlyIfInputParameters='true')">
+				<xsl:call-template name="default_returncode">
+					<xsl:with-param name="value"       select="@value" />
+					<xsl:with-param name="description" select="description/text()" />
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 
