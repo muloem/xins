@@ -3,8 +3,6 @@
  */
 package org.xins.client;
 
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Exception that indicates that an API call returned a result that was
  * considered unacceptable by the application layer.
@@ -19,7 +17,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 0.136
  */
-public final class UnacceptableCallResultException extends Exception {
+public final class UnacceptableCallResultException extends CallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -54,10 +52,7 @@ public final class UnacceptableCallResultException extends Exception {
                                           Throwable                cause)
    throws IllegalArgumentException {
 
-      super(detail, cause);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("result", result);
+      super("Unacceptable call result", result, detail, cause);
 
       // Store the result
       _result = result;
@@ -77,4 +72,6 @@ public final class UnacceptableCallResultException extends Exception {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   // TODO: Add methods to retrieve result
 }
