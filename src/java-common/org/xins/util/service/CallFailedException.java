@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception that indicates that a call failed after all possible target
@@ -26,6 +27,57 @@ public final class CallFailedException extends Exception {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates a message for the constructor.
+    *
+    * @param subject
+    *    the subject to be passed to the service, could possibly be
+    *    <code>null</code>.
+    *
+    * @param failedTargets
+    *    the list of targets for which the call failed, cannot be
+    *    <code>null</code>; all elements in this {@link List} must be
+    *    {@link ServiceDescriptor} objects, no <code>null</code> elements are
+    *    allowed, but duplicates are.
+    *
+    * @param exceptions
+    *    the list of caught exceptions, matching the list of failed targets,
+    *    cannot be <code>null</code>; all elements in this {@link List} must be
+    *    {@link Throwable} objects, no <code>null</code> elements are allowed,
+    *    but duplicates are.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>failedTargets == null || exceptions == null)
+    *         || failedTargets.size() != exceptions.size()
+    *         || failedTargets.get(<em>i</em>) == null
+    *         || !(failedTargets.get(<em>i</em>) instanceof ServiceDescriptor)
+    *         || !(exceptions.get(<em>i</em>) instanceof Throwable)</code>
+    *    where <code>0 &lt;= <em>i</em> &lt; failedTargets.size()</code>.
+    */
+   private static final String createMessage(Object subject,
+                                             List   failedTargets,
+                                             List   exceptions)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("failedTargets", failedTargets,
+                                     "exceptions",    exceptions);
+      CallResult.checkFailureLists(failedTargets, exceptions);
+
+      // Construct the message
+      FastStringBuffer buffer = new FastStringBuffer(100);
+      buffer.append("Failed to call service. Tried ");
+      buffer.append(exceptions.size());
+      buffer.append(" targets.");
+
+      // XXX: We could possibly improve the message by including more
+      //      information.
+
+      // Returns the message to the constructor
+      return buffer.toString();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -63,17 +115,14 @@ public final class CallFailedException extends Exception {
                               List   exceptions)
    throws IllegalArgumentException {
 
-      // TODO:
-      // super(createMessage(subject, failedTargets, exceptions);
+      // Check preconditions, create message and pass it to the
+      // superconstructor
+      super(createMessage(subject, failedTargets, exceptions));
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("failedTargets", failedTargets,
-                                     "exceptions",    exceptions);
-      CallResult.checkFailureLists(failedTargets, exceptions);
-
+      // Store the information
       _subject       = subject;
-      _failedTargets = failedTargets == null ? null : Collections.unmodifiableList(new ArrayList(failedTargets));
-      _exceptions    = exceptions    == null ? null : Collections.unmodifiableList(new ArrayList(exceptions));
+      _failedTargets = Collections.unmodifiableList(new ArrayList(failedTargets));
+      _exceptions    = Collections.unmodifiableList(new ArrayList(exceptions));
    }
 
 
