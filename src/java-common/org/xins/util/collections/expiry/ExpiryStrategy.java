@@ -97,7 +97,9 @@ public final class ExpiryStrategy extends Object {
       }
 
       // Create and start the timer thread
-      new TimerThread().start();
+      TimerThread timer = new TimerThread();
+      timer.setDaemon(true);
+      timer.start();
    }
 
 
