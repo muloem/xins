@@ -179,6 +179,10 @@ extends Object {
     */
    void tick() {
 
+      // Allocate memory _before_ entering any doorman, so if this fails, then
+      // we don't hold any locks
+      Map newRecentlyAccessed = new HashMap();
+
       // First enter the protected area for '_recentlyAccessed', because that
       // is the most difficult to enter
       _recentlyAccessedDoorman.enterAsWriter();
@@ -190,7 +194,7 @@ extends Object {
       // reset _recentlyAccessed so we can leave the protected area for
       // '_recentlyAccessed' right away
       Map oldRecentlyAccessed = _recentlyAccessed;
-      _recentlyAccessed = new HashMap();
+      _recentlyAccessed       = newRecentlyAccessed;
 
       // Leave the protected area for '_recentlyAccessed' first, because that
       // is the heaviest used
