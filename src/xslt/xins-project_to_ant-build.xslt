@@ -1087,11 +1087,21 @@
 				</xsl:attribute>
 			</target>
 
-			<target name="clients" description="Creates the WARs for all APIs">
+			<target name="clients" description="Generates all CAPI JAR files, corresponding Javadoc and the specdocs">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>client-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<target name="capis" description="Generates all CAPI JAR files">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>capi-</xsl:text>
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				</xsl:attribute>
