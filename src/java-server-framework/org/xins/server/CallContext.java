@@ -49,27 +49,6 @@ implements Responder, Log {
       _callID       = -1;
    }
 
-   /**
-    * Constructs a new <code>CallContext</code> and initializes it for the
-    * specified servlet request. The state will be set to
-    * {@link #BEFORE_START}.
-    *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
-    *
-    * @throws IOException
-    *    if an I/O error occurs.
-    */
-   CallContext(ServletRequest request)
-   throws IllegalArgumentException, IOException {
-
-      this();
-      reset(request);
-   }
-
 
    //-------------------------------------------------------------------------
    // Fields
