@@ -34,6 +34,21 @@ public interface ResponseValidator {
    throws InvalidResponseException;
 
    /**
+    * Callback that indicates a parameter is added.
+    *
+    * @param name
+    *    the name of the parameter, never <code>null</code>.
+    *
+    * @param value
+    *    the value of the parameter, never <code>null</code>.
+    *
+    * @throws InvalidResponseException
+    *    if the specified parameter name and/or value is considered invalid.
+    */
+   void param(String name, String value)
+   throws InvalidResponseException;
+
+   /**
     * Callback that indicates the response is ended.
     *
     * <p>Either this method or {@link #cancelResponse()} is used to indicate a

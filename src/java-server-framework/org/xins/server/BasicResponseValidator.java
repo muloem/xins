@@ -46,12 +46,19 @@ implements ResponseValidator {
       // empty
    }
 
+   public void param(String name, String value)
+   throws InvalidResponseException {
+      // TODO: Check duplicates
+   }
+
    public void endResponse()
    throws InvalidResponseException {
-      // empty
+      // TODO: Cleanup parameter map, if any
+      // TODO: Cleanup attribute map, if any
    }
 
    public void cancelResponse() {
-      // empty
+      // TODO: Cleanup parameter map, if any
+      // TODO: Cleanup attribute map, if any
    }
 }
