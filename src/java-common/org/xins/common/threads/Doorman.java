@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Monitor that acts like a doorman. It implements a variation of the

@@ -8,9 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.apache.log4j.NDC;
@@ -36,12 +36,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Logger for this class.
-    */
-   public static final Logger LOG = Logger.getLogger(XINSServiceCaller.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions

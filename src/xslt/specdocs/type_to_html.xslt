@@ -94,17 +94,27 @@
 	<xsl:template match="enum">
 		<xsl:if test="item">
 			<p />
-			<xsl:text>This is an enumeration type. The only possible values are:</xsl:text>
-			<ul>
+			This is an enumeration type.<br />
+			The only possible items are:
+			<table class="typelist">
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
 				<xsl:apply-templates select="item" />
-			</ul>
+			</table>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="enum/item">
-		<li>
-			<xsl:value-of select="@value" />
-		</li>
+		<tr>
+			<td>
+				<xsl:value-of select="@name" />
+			</td>
+			<td>
+				<xsl:value-of select="@value" />
+			</td>
+		</tr>
 	</xsl:template>
 
 	<xsl:template match="pattern">

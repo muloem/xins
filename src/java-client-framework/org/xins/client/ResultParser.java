@@ -7,7 +7,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -28,13 +28,6 @@ public class ResultParser extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(ResultParser.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -113,6 +106,8 @@ public class ResultParser extends Object {
          //LOG.error(message, exception);
          Log.log_2005(exception, detail);
          throw new ParseException(message);
+      } finally {
+         reader.close();
       }
 
       return parse(target, document);

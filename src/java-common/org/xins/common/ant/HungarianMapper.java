@@ -31,14 +31,6 @@ public class HungarianMapper implements FileNameMapper {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /**
-    * Constructs a new <code>HungarianMapper</code>.
-    */
-   public HungarianMapper() {
-      // empty
-   }
-
-
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------

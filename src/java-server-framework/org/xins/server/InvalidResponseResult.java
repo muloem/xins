@@ -3,9 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Result code that indicates that an output parameter is either missing or invalid.
  *

@@ -5,8 +5,6 @@ package org.xins.server;
 
 import java.io.PrintWriter;
 import javax.servlet.ServletRequest;
-import org.apache.log4j.Logger;
-import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.manageable.Manageable;
@@ -63,7 +61,6 @@ implements DefaultResultCodes {
       // Check arguments
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
-      _log          = Logger.getLogger("org.xins.server.apis." + api.getName() + '.' + name);
       _api          = api;
       _name         = name;
       _version      = version;
@@ -76,12 +73,6 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logger used by this function. This field is initialized by the
-    * constructor and set to a non-<code>null</code> value.
-    */
-   private final Logger _log;
 
    /**
     * The API implementation this function is part of.

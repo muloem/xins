@@ -1,9 +1,24 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.186:
 
+* XINS/Java Server Framework:
+  - Removed some unused imports.
+  - Removed the references to Log4j as they were replaced with logdoc.
+  - Close the stream that read the file xins.properties.
+
 * XINS/Java Common Library:
   - Set the adjustment of the ExpiryFolder size in the doorman lock.
   - Decrease the size of the ExpiryFolder only if a value was removed.
+  - Removed unneeded empty constructors.
+  - Removed public modifiers for interfaces as it's the default.
+
+* XINS/Java Client Framework:
+  - Removed the references to Log4j as they were replaced with logdoc.
+  - CallRequestParser closes the StringReader its content is parsed.
+  - ResultParser closes the StringReader its content is parsed.
+
+* Generated specification documentation:
+  - The name for the enumeration type are also printed in the generated HTML.
 
 * Changed email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com.
 

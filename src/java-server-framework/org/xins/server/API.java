@@ -14,14 +14,10 @@ import java.util.TimeZone;
 import javax.servlet.ServletRequest;
 
 import org.xins.logdoc.LogStatistics;
-import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
-import org.xins.common.collections.expiry.ExpiryFolder;
-import org.xins.common.collections.expiry.ExpiryStrategy;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;

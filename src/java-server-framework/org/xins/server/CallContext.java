@@ -5,10 +5,6 @@ package org.xins.server;
 
 import javax.servlet.ServletRequest;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.FastStringBuffer;
-import org.apache.commons.logging.Log;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 /**
  * Context for a function call. Objects of this kind are passed with a

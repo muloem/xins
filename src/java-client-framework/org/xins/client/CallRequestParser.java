@@ -8,7 +8,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -29,13 +29,6 @@ public final class CallRequestParser extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(CallRequestParser.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -90,8 +83,12 @@ public final class CallRequestParser extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
-      StringReader reader = new StringReader(xml);
-      return parse(new StringReader(xml));
+      StringReader reader = new StringReader(xml)
+      try {
+         return parse(reader);
+      } finally {
+         reader.close();
+      }
    }
 
    /**

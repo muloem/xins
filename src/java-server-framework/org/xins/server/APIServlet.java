@@ -647,6 +647,8 @@ extends HttpServlet {
          // Load the properties
          properties.load(in);
 
+         // Close the file
+         in.close();
       } catch (FileNotFoundException exception) {
          Log.log_1301(exception, _configFile);
       } catch (SecurityException exception) {

@@ -86,13 +86,6 @@ public class HTTPRequester extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>HTTPRequester</code>.
-    */
-   public HTTPRequester() {
-      // empty
-   }
-
-   /**
     * Posts the specified <code>String</code> content to a given URL, assuming
     * the specified encoding.
     *

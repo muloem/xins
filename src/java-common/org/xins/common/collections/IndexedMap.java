@@ -22,7 +22,7 @@ public interface IndexedMap extends Map {
     * @return
     *    the index of the key, or a negative value if the key cannot be found.
     */
-   public int getIndexForKey(Object key);
+   int getIndexForKey(Object key);
 
    /**
     * Gets the key at the specified index.
@@ -36,7 +36,7 @@ public interface IndexedMap extends Map {
     * @throws IndexOutOfBoundsException
     *    if <code>index &lt; 0 || index &gt;= </code>{@link #size()}.
     */
-   public Object getKey(int index)
+   Object getKey(int index)
    throws IndexOutOfBoundsException;
 
    /**
@@ -51,6 +51,6 @@ public interface IndexedMap extends Map {
     * @throws IndexOutOfBoundsException
     *    if <code>index &lt; 0 || index &gt;= </code>{@link #size()}.
     */
-   public Object getValue(int index)
+   Object getValue(int index)
    throws IndexOutOfBoundsException;
 }
