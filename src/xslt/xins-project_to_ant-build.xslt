@@ -29,6 +29,30 @@
 			<xsl:otherwise>src/specs</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	<xsl:variable name="javaImplDir">
+		<xsl:value-of select="$project_home" />
+		<xsl:text>/</xsl:text>
+		<xsl:choose>
+			<xsl:when test="document($project_file)/project/@javadir">
+				<xsl:value-of select="document($project_file)/project/@javadir" />
+			</xsl:when>
+			<xsl:otherwise>src/impl-java</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$api" />
+	</xsl:variable>
+	<xsl:variable name="dependenciesDir">
+		<xsl:value-of select="$project_home" />
+		<xsl:text>/</xsl:text>
+		<xsl:choose>
+			<xsl:when test="document($project_file)/project/@dependenciesdir">
+				<xsl:value-of select="document($project_file)/project/@dependenciesdir" />
+			</xsl:when>
+			<xsl:otherwise>depends</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="$api" />
+	</xsl:variable>
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
@@ -140,18 +164,6 @@
 				</xsl:variable>
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
 				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)"        />
-				<xsl:variable name="javaImplDir">
-					<xsl:value-of select="$project_home" />
-					<xsl:text>/</xsl:text>
-					<xsl:choose>
-						<xsl:when test="document($project_file)/project/@javadir">
-							<xsl:value-of select="document($project_file)/project/@javadir" />
-						</xsl:when>
-						<xsl:otherwise>src/impl-java</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>/</xsl:text>
-					<xsl:value-of select="$api" />
-				</xsl:variable>
 				<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
 
 				<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
@@ -224,6 +236,8 @@
 					<war
 					webxml="build/webapps/{$api}/web.xml"
 					destfile="build/webapps/{$api}/{$api}.war">
+						<lib dir="{$xins_home}/build" includes="xins.jar" />
+						<lib dir="{$xins_home}/depends" includes="**/*.jar" />
 						<classes dir="{$classesDestDir}" includes="**/*.class" />
 					</war>
 				</target>
