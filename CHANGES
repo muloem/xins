@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 0.166:
   - Renamed parameter 'id' to 'sessionID' in log message 5010.
 
 * Logdoc:
+  - Logging the sequential counter identifier with a log message.
   - Parameters cannot be called 'id'.
 
 ______________________________________________________________________________
