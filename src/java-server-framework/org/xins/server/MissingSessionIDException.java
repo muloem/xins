@@ -4,7 +4,8 @@
 package org.xins.server;
 
 /**
- * Exception that indicates that a response is considered invalid.
+ * Exception that indicates that a session ID is required for the specified
+ * function, but missing in the request.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)

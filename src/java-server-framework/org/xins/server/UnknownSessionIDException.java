@@ -4,7 +4,7 @@
 package org.xins.server;
 
 /**
- * Exception that indicates that a response is considered invalid.
+ * Exception that indicates that a specified session ID is unknown.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
