@@ -22,10 +22,13 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
+import org.xins.util.collections.InvalidPropertyValueException;
+import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
+import org.xins.util.manageable.InitializationException;
 import org.xins.util.servlet.ServletConfigPropertyReader;
 
 /**
@@ -525,8 +528,13 @@ extends HttpServlet {
          _api.init(runtimeProperties);
       } catch (Throwable e) {
          _state = API_INITIALIZATION_FAILED;
-         _error = "Failed to initialize " + _api.getName() + " API.";
-         Library.INIT_LOG.error(_error, e);
+         if (e instanceof InvalidPropertyValueException || e instanceof MissingRequiredPropertyException || e instanceof InitializationException) {
+            _error = "Failed to initialize " + _api.getName() + " API: " + e.getMessage();
+            Library.INIT_LOG.error(_error);
+         } else {
+            _error = "Failed to initialize " + _api.getName() + " API due to unexpected " + e.getClass().getName() + '.';
+            Library.INIT_LOG.error(_error, e);
+         }
          return;
       }
 
@@ -652,6 +660,10 @@ extends HttpServlet {
       if (state == READY) {
          try {
             result = _api.handleCall(start, request);
+
+         } catch (AccessDeniedException exception) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
 
          // If no matching function is found, return '404 Not Found'
          } catch (NoSuchFunctionException exception) {
