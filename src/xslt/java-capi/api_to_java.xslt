@@ -168,17 +168,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * Constructs a new <code>CAPI</code> object for the specified function
     * caller and session ID splitter.
     *
-    * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.
+    * @param caller
+    *    the XINS service caller, cannot be <code>null</code>.
     *
     * @param sessionIDSplitter
     *    splitter that converts a client-side session identifier to a target
     *    API checksum and a target API-specific session ID.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionCaller == null || sessionIDSplitter == null</code>.
+    *    if <code>caller == null || sessionIDSplitter == null</code>.
     */
-   public CAPI(org.xins.client.FunctionCaller    functionCaller,
+   public CAPI(org.xins.client.XINSServiceCaller caller,
                org.xins.client.SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
@@ -199,17 +199,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * Constructs a new <code>CAPI</code> object for the specified function
     * caller.
     *
-    * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.
+    * @param caller
+    *    the XINS service caller, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionCaller == null</code>.
+    *    if <code>caller == null</code>.
     */
-   public CAPI(org.xins.client.FunctionCaller functionCaller)
+   public CAPI(org.xins.client.XINSServiceCaller caller)
    throws IllegalArgumentException {
 
       // Call the superclass constructor
-      super(functionCaller);
+      super(caller);
    }]]></xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -317,8 +317,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @return
     *    the non-shared session (not <code>null</code>), a combination of the
-    *    identifier of the created session and a link to the function caller
-    *    that actually created the session.]]></xsl:text>
+    *    identifier of the created session and a link to the
+    *    {@link org.xins.util.service.TargetDescriptor} that identifies the
+    *    service target that actually created the session.]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="output/param and output/data/element">
 				<xsl:text><![CDATA[
