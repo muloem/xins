@@ -154,6 +154,18 @@ public class APIImpl extends API {
 				</xsl:for-each>
 				<xsl:text>) {
             context.startResponse(false, "MissingParameters");</xsl:text>
+				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='inclusive-or']">
+					<xsl:text>
+         } else if (</xsl:text>
+					<xsl:for-each select="param-ref">
+						<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
+						<xsl:text>isMissing(</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>)</xsl:text>
+					</xsl:for-each>
+					<xsl:text>) {
+            context.startResponse(false, "InvalidParameters");</xsl:text>
+				</xsl:for-each>
 				<xsl:for-each select="document($function_file)/function/input/param-combo[@type='all-or-none']">
 					<xsl:text>
          } else if (!(</xsl:text>
