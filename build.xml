@@ -72,7 +72,7 @@
 		<javac
 		srcdir="build/src/java-server-framework"
 		destdir="build/classes/java-server-framework"
-		debug="${java.debug}"
+		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		target="1.2">
