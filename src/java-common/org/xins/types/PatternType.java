@@ -3,6 +3,7 @@
  */
 package org.xins.types;
 
+import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
@@ -21,6 +22,11 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Logger for this class.
+    */
+   private static final Logger LOG = Logger.getLogger(PatternType.class.getName());
 
    /**
     * Perl 5 pattern compiler.
@@ -92,7 +98,12 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String value) {
-      return PATTERN_MATCHER.matches(value, _pattern);
+      try {
+         return PATTERN_MATCHER.matches(value, _pattern);
+      } catch (Throwable exception) {
+         LOG.error(PATTERN_MATCHER.getClass().getName() + ".matches(java.lang.String," + _pattern.getClass().getName() + ") has thrown an unexpected exception. Assuming the value \"" + value + "\" is invalid.", exception);
+         return false;
+      }
    }
 
    protected final Object fromStringImpl(String value) {
