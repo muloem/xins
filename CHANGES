@@ -1,5 +1,8 @@
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
 
 * XINS/Java Server Framework:
   - Added tests for _GetSettings, _DisableFunction, _EnableFunction and
@@ -28,7 +31,7 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
   - Integrated the allinone example to the src/tests directory.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 5:
 
 * XINS/Java Server Framework:
   - When an object is added to the data section, a clone of this object is
@@ -53,7 +56,7 @@ CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
   - Linked the Javadoc to www.xins.org instead of xins.sourceforge.net.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 4:
 
 * XINS/Java Common Library:
   - Fixed SF.net bug #1051551: Changed HTTPServiceCaller so it now correctly
@@ -78,7 +81,7 @@ CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
     starts running.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 3:
 
 * XINS/Java Server Framework:
   - Logging warning if the current XINS version is not a production release.
@@ -96,7 +99,7 @@ CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
   - Added the Jetty XML files to start the other demos.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
+CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
 
 * XINS/Java Server Framework:
   - Cleaned up and improved Logdoc.
@@ -229,7 +232,7 @@ CHANGES INTRODUCED IN XINS 0.209:                                (1.0.0-beta2)
     full path.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.208:                                (1.0.0-beta1)
+CHANGES INTRODUCED IN XINS 0.208 (1.0.0 BETA 1):
 
 * XINS/Java Common Library:
   - Added the remove() method in ProtectedPropertyReader. The set() method
