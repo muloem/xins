@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.161:
+
+* Dependencies:
+  - Updated to xmlenc 0.43.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 
 * XINS/Java Server Framework:
