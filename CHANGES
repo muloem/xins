@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.57:
+
+* Introduced quite some changes in the type classes in XINS/Java Common
+  Library.
+
+* Improved session ID generation in XINS/Java Server Framework. Session ID now
+  has the following format: xxxx:yyyy, where xxxx is a 16-digit hex string
+  representing the startup time of the API, and yyyy is a 16-digit hex string
+  representing a counter. Example value: "000000f622238ca6:0000000000000000".
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.56:
 
 * Slightly improved logging in XINS/Java Server Framework:
