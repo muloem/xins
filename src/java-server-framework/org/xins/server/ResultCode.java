@@ -3,6 +3,7 @@
  */
 package org.xins.server;
 
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -19,6 +20,13 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private static final Logger LOG = Logger.getLogger(ResultCode.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -50,6 +58,10 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("value", value);
 
+      if (success) {
+         LOG.warn("Result code \"" + name + "\" is marked as successful. Result codes should always indicate an error condition.");
+      }
+
       _api     = null;
       _success = success;
       _name    = name;
@@ -79,6 +91,10 @@ extends Object {
 
       // Check preconditions
       MandatoryArgumentChecker.check("api", api, "value", value);
+
+      if (success) {
+         LOG.warn("Result code \"" + name + "\" in the " + api.getName() + " API is marked as successful. Result codes should always indicate an error condition.");
+      }
 
       _api     = api;
       _success = success;
