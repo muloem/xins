@@ -11,8 +11,9 @@ import java.util.List;
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public class InvalidRequestResult extends FunctionResult {
+public final class InvalidRequestResult extends FunctionResult {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -26,9 +27,21 @@ public class InvalidRequestResult extends FunctionResult {
    // Constructors
    //-------------------------------------------------------------------------
 
-   public InvalidRequestResult() {
-      super(DefaultResultCodes._INVALID_REQUEST.getValue());
+   /**
+    * Constructs a new <code>InvalidRequestResult</code> for the specified
+    * function.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    */
+   public InvalidRequestResult(String functionName)
+   throws IllegalArgumentException  {
+      super(functionName, DefaultResultCodes._INVALID_REQUEST.getValue());
    }
+
 
    //-------------------------------------------------------------------------
    // Fields

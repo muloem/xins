@@ -66,7 +66,7 @@ public final class CallContext {
       _function     = function;
       _functionName = function.getName();
       _callID       = callID;
-      _builder      = new CallResultBuilder();
+      _builder      = new CallResultBuilder(_functionName);
    }
 
 

@@ -3,6 +3,7 @@
  */
 package org.xins.server;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 
 /**
@@ -13,7 +14,58 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 0.119
  */
-interface CallResult {
+abstract class CallResult {
+
+   //------------------------------------------------------------------------
+   // Class fields
+   //------------------------------------------------------------------------
+
+   //------------------------------------------------------------------------
+   // Class functions
+   //------------------------------------------------------------------------
+
+   //------------------------------------------------------------------------
+   // Constructors
+   //------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>CallResult</code> object.
+    *
+    * @param functionName
+    *    the name of the called function, cannot be <code>null</code>.
+    */
+   CallResult(String functionName) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
+
+      // Store function name
+      _functionName = functionName;
+   }
+
+   //------------------------------------------------------------------------
+   // Fields
+   //------------------------------------------------------------------------
+
+   /**
+    * The function name.
+    */
+   private String _functionName;
+
+   /**
+    * The function call ID.
+    */
+   private int _callID;
+
+   /**
+    * The function call duration, in milliseconds.
+    */
+   private long _duration;
+
+
+   //------------------------------------------------------------------------
+   // Methods
+   //------------------------------------------------------------------------
 
    /**
     * Returns the success indication.
@@ -21,7 +73,7 @@ interface CallResult {
     * @return
     *    success indication, <code>true</code> or <code>false</code>.
     */
-   boolean isSuccess();
+   public abstract boolean isSuccess();
 
    /**
     * Returns the result code.
@@ -29,7 +81,7 @@ interface CallResult {
     * @return
     *    the result code or <code>null</code> if no code was returned.
     */
-   String getErrorCode();
+   public abstract String getErrorCode();
 
    /**
     * Gets all parameters.
@@ -41,7 +93,7 @@ interface CallResult {
     *    <code>null</code>), the values will be the parameter values
     *    ({@link String} objects as well, cannot be <code>null</code>).
     */
-   PropertyReader getParameters();
+   public abstract PropertyReader getParameters();
 
    /**
     * Gets the value of the specified parameter.
@@ -56,7 +108,7 @@ interface CallResult {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   String getParameter(String name) throws IllegalArgumentException;
+   public abstract String getParameter(String name) throws IllegalArgumentException;
 
    /**
     * Returns the optional extra data. The data is an XML {@link Element}, or
@@ -67,5 +119,55 @@ interface CallResult {
     *    if it is not <code>null</code>, then
     *    <code><em>return</em>.{@link Element#getType() getType()}.equals("data")</code>.
     */
-   Element getDataElement();
+   public abstract Element getDataElement();
+
+   /**
+    * Returns the name of the called function.
+    *
+    * @return
+    *    the function name, cannot be <code>null</code>.
+    */
+   final String getFunctionName() {
+      return _functionName;
+   }
+
+   /**
+    * Stores the call ID.
+    *
+    * @param callID
+    *    the function call ID.
+    */
+   final void setCallID(int callID) {
+      _callID = callID;
+   } 
+
+   /**
+    * Returns the call ID.
+    *
+    * @return
+    *    the call ID.
+    */
+   final int getCallID() {
+      return _callID;
+   }
+
+   /**
+    * Stores the call duration.
+    *
+    * @param duration
+    *    the duration of the function call, in milliseconds.
+    */
+   final void setDuration(long duration) {
+      _duration = duration;
+   } 
+
+   /**
+    * Returns the call duration.
+    *
+    * @return
+    *    the duration of the function call, in milliseconds.
+    */
+   final long getDuration() {
+      return _duration;
+   }
 }
