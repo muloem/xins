@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added the possibility to release with a specific version
     (e.g. 1.0.0Beta2).
 
+* XINS/Java Common Library:
+  - Cleaned up and improved Logdoc.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.208:
 
