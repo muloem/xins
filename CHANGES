@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
 
+* XINS/Java Server Framework:
+  - Slightly improved internal error checking in AccessRule class.
+
 * XINS/Java Client Framework:
   - Fixed typo in both UnacceptableCallResultException and
     UnsuccessfulCallException classes.
