@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.118:
+
+* XINS/Java Common Library:
+  - Changed the ServiceDescriptor class. Improved the URL pattern to accept
+    hyphens.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.117:
 
 * XINS/Java Common Library:
