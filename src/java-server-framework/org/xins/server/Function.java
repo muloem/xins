@@ -322,8 +322,15 @@ implements DefaultResultCodes {
       CallResult result;
       try {
 
+         // Old call method
+         // Think to change also the signature of the abstract method in this class
          handleCall(context);
          result = context.getCallResult();
+
+         // New call method
+         // Think to change also the signature of the abstract method in this class
+         //FunctionResult functionResult = handleCall(context);
+         //result = functionResult.getCallResult();
 
       } catch (Throwable exception) {
 
@@ -366,6 +373,9 @@ implements DefaultResultCodes {
     * @param context
     *    the context for this call, never <code>null</code>.
     *
+    * @return
+    *    the result of the call, never <code>null</code>.
+    *
     * @throws Throwable
     *    if anything goes wrong.
     */
@@ -402,11 +412,11 @@ implements DefaultResultCodes {
 
       String message = null;
 
-      // TODO: If the Logging is moved somewhere else the  
+      // TODO: If the Logging is moved somewhere else the
       // The method invoking this method (performedCall) can directly
       // invoke recordCall and this method can be removed.
       long duration = _statistics.recordCall(start, success);
-      
+
       // Call succeeded
       if (success) {
          if (session == null) {
