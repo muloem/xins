@@ -14,6 +14,8 @@ import java.util.Iterator;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.177
+ *
+ * @see PropertyReaderUtils
  */
 public interface PropertyReader {
 
