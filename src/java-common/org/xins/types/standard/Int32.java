@@ -35,6 +35,9 @@ public final class Int32 extends Type {
     * @param string
     *    the string to convert, cannot be <code>null</code>.
     *
+    * @return
+    *    the <code>int</code> value.
+    *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
@@ -61,12 +64,21 @@ public final class Int32 extends Type {
     * @param string
     *    the string to convert, can be <code>null</code>.
     *
+    * @return
+    *    the {@link Integer}, or <code>null</code> if
+    *    <code>string == null</code>.
+    *
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.
     */
    public static Integer fromStringForOptional(String string)
    throws TypeValueException {
+
+      if (string == null) {
+         return null;
+      }
+
       try {
          return Integer.valueOf(string);
       } catch (NumberFormatException nfe) {
