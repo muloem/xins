@@ -104,7 +104,7 @@ public class HTTPServiceCallerTests extends TestCase {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("hello", "world");
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/fakeURL.html");
+      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/nOnExIsTeNt.html");
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
 
       HTTPCallResult result = caller.call(request);
@@ -115,7 +115,7 @@ public class HTTPServiceCallerTests extends TestCase {
    public void testFailOverGet() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org");
-      TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net");
+      TargetDescriptor succeededTarget = new TargetDescriptor("http://www.w3.org/StyleSheets/TR/W3C-REC.css");
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
@@ -125,7 +125,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorrect duration.", result.getDuration() > 0);
       assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
       String text = result.getString();
-      assertTrue("Incorrect content.", text.indexOf("XML Interface for Network Services") != -1);
+      assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
    }
    
    public void testFailOverPost() throws Exception {
