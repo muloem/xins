@@ -8,6 +8,11 @@ CHANGES INTRODUCED IN XINS 0.108:
 * Generated CAPI: Return output parameter value directly if there is only one
   output parameter.
 
+* Refactored quite some XSLT.
+
+* Generated specification documentation:
+  - Footer now contains XINS version.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.107:
 
