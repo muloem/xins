@@ -9,6 +9,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="project_home" />
+	<xsl:param name="specsdir"     />
 
 	<xsl:variable name="returncodes_file" select="'../../xml/default_returncodes.xml'" />
 
@@ -807,7 +808,7 @@
 		<xsl:param name="type" />
 
 		<xsl:variable name="api"       select="//function/@api" />
-		<xsl:variable name="type_file" select="concat($project_home, '/src/specs/', $api, '/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', $type, '.typ')" />
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">
@@ -1039,7 +1040,7 @@
 	<xsl:template name="broken_freeze">
 		<xsl:variable name="project_file"   select="concat($project_home, '/xins-project.xml')" />
 		<xsl:variable name="cvswebURL"      select="document($project_file)/project/cvsweb/@href" />
-		<xsl:variable name="api_file"       select="concat($project_home, '/src/specs/', @api, '/api.xml')" />
+		<xsl:variable name="api_file"       select="concat($project_home, '/', $specsdir, '/', @api, '/api.xml')" />
 		<xsl:variable name="function_name"  select="@name" />
 		<xsl:variable name="frozen_version" select="document($api_file)/api/function[@name=$function_name]/@freeze" />
 		<xsl:variable name="version">

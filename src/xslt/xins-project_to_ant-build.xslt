@@ -10,6 +10,15 @@
 
 	<xsl:output indent="yes" />
 
+	<xsl:variable name="specsdir">
+		<xsl:choose>
+			<xsl:when test="//project/@specsdir">
+				<xsl:value-of select="//project/@specsdir" />
+			</xsl:when>
+			<xsl:otherwise>src/specs</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
 	<xsl:template match="project">
 		<project default="all" basedir="..">
 
@@ -28,36 +37,40 @@
 				out="build/specdocs/index.html"
 				style="${{xins_home}}/src/xslt/specdocs/xins-project_to_index.xslt">
 					<param name="project_home" expression="${{project_home}}" />
+					<param name="specsdir"     expression="{$specsdir}"       />
 				</style>
 			</target>
 
 			<target name="specdocs-apis" depends="-prepare-specdocs">
 				<style
-				basedir="${{project_home}}/src/specs"
+				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
 				style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt"
 				includes="**/api.xml">
 					<param name="project_home" expression="${{project_home}}" />
+					<param name="specsdir"     expression="{$specsdir}"       />
 				</style>
 			</target>
 
 			<target name="specdocs-functions" depends="-prepare-specdocs">
 				<style
-				basedir="${{project_home}}/src/specs"
+				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
 				style="${{xins_home}}/src/xslt/specdocs/function_to_html.xslt"
 				includes="**/*.fnc">
 					<param name="project_home" expression="${{project_home}}" />
+					<param name="specsdir"     expression="{$specsdir}"       />
 				</style>
 			</target>
 
 			<target name="specdocs-types" depends="-prepare-specdocs">
 				<style
-				basedir="${{project_home}}/src/specs"
+				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
 				style="${{xins_home}}/src/xslt/specdocs/type_to_html.xslt"
 				includes="**/*.typ">
 					<param name="project_home" expression="${{project_home}}" />
+					<param name="specsdir"     expression="{$specsdir}"       />
 				</style>
 			</target>
 
@@ -75,12 +88,13 @@
 				<target name="testforms-{@name}" depends="-prepare-specdocs">
 					<xsl:for-each select="//project/environment">
 						<style
-						basedir="${{project_home}}/src/specs"
+						basedir="${{project_home}}/{$specsdir}"
 						destdir="${{project_home}}/build/specdocs"
 						style="${{xins_home}}/src/xslt/testforms/function_to_html.xslt"
 						includes="**/*.fnc"
 						extension="-testform-{@id}.html">
 							<param name="project_home" expression="${{project_home}}" />
+							<param name="specsdir"     expression="{$specsdir}"       />
 							<param name="environment"  expression="{@id}" />
 						</style>
 					</xsl:for-each>

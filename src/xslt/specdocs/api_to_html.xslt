@@ -9,6 +9,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="project_home" />
+	<xsl:param name="specsdir"     />
 
 	<xsl:variable name="api"          select="//api/@name" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
@@ -57,7 +58,7 @@
 			<xsl:if test="boolean($prev) and not($prev = '')">
 				<xsl:call-template name="firstline">
 					<xsl:with-param name="text">
-						<xsl:value-of select="document(concat($project_home, '/src/specs/', $prev, '/api.xml'))/api/description/text()" />
+						<xsl:value-of select="document(concat($project_home, '/', $specsdir, '/', $prev, '/api.xml'))/api/description/text()" />
 						<xsl:text> (</xsl:text>
 						<xsl:value-of select="$prev" />
 						<xsl:text>)</xsl:text>
@@ -70,7 +71,7 @@
 			<xsl:if test="boolean($next) and not($next = '')">
 				<xsl:call-template name="firstline">
 					<xsl:with-param name="text">
-						<xsl:value-of select="document(concat($project_home, '/src/specs/', $next, '/api.xml'))/api/description/text()" />
+						<xsl:value-of select="document(concat($project_home, '/', $specsdir, '/', $next, '/api.xml'))/api/description/text()" />
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text> (</xsl:text>
@@ -236,7 +237,7 @@
 
 	<xsl:template match="function">
 
-		<xsl:variable name="function_file" select="concat($project_home, '/src/specs/', $api, '/', @name, '.fnc')" />
+		<xsl:variable name="function_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', @name, '.fnc')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
@@ -292,7 +293,7 @@
 
 	<xsl:template match="type">
 
-		<xsl:variable name="type_file" select="concat($project_home, '/src/specs/', $api, '/', @name, '.typ')" />
+		<xsl:variable name="type_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', @name, '.typ')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
