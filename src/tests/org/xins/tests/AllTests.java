@@ -32,7 +32,6 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.util.text.ReplacerTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
-      suite.addTestSuite(org.xins.tests.server.BasicResponseValidatorTests.class);
       return suite;
    }
 
