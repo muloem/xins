@@ -105,14 +105,12 @@ implements Responder, Log {
       _api          = function.getAPI();
       _function     = function;
       _functionName = function.getName();
+      _callID       = callID;
+      _logger       = function.getLogger();
+      _logPrefix    = getLogPrefix(functionName, callID);
       _session      = session;
       _state        = BEFORE_START;
       _builder      = new CallResultBuilder();
-
-      // Determine the function object, logger, call ID and log prefix
-      _logger    = _function.getLogger();
-      _callID    = callID;
-      _logPrefix = getLogPrefix(_functionName, _callID);
    }
 
 
@@ -153,19 +151,18 @@ implements Responder, Log {
    private int _elementDepth;
 
    /**
-    * The name of the function currently being called. Can be set to
+    * The name of the function currently being called. Cannot be
     * <code>null</code>.
     */
    private final String _functionName;
 
    /**
-    * The function currently being called. Can be set to <code>null</code>.
+    * The function currently being called. Cannot be <code>null</code>.
     */
    private final Function _function;
 
    /**
-    * The logger associated with the function. This field is set if and only
-    * if {@link #_function} is set.
+    * The logger associated with the function. Cannot be <code>null</code>.
     */
    private final Logger _logger;
 
