@@ -312,6 +312,12 @@ public abstract class ]]></xsl:text>
 			<xsl:text>
       }</xsl:text>
 		</xsl:if>
+		<xsl:if test="@createsSession = 'true'">
+			<xsl:text>
+
+      // Create the session
+      context.createSession();</xsl:text>
+		</xsl:if>
 		<xsl:text><![CDATA[
    }
 
