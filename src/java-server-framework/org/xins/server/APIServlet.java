@@ -238,6 +238,28 @@ implements Servlet {
     * (required) {@link ServletConfig} argument is stored internally and is
     * returned from {@link #getServletConfig()}.
     *
+    * <p>The initialization procedure will take required information from 3
+    * sources, initially:
+    *
+    * <dl>
+    *    <dt><strong>1. System properties</strong></dt>
+    *    <dd>The location of the configuration directory must be passed to the
+    *        Java VM at startup, as a system property.
+    *        <br />System properties are the responsibility of the
+    *        <em>system administrator</em>.
+    *        <br />Example:
+    *        <br /><pre>java -Dconfdir=`pwd`/conf orion.jar</pre></dd>
+    *
+    *    <dt><strong>2. Servlet configuration</strong></dt>
+    *    <dd>The application package contains a <code>web.xml</code> file with
+    *        initialization properties. These initialization properties should
+    *        contain build-time configuration settings. Some of these settings
+    *        are required in order for the XINS/Java Server Framework to start
+    *        up, while others are optional.
+    *        <br />The servlet configuration is the responsible of the
+    *        <em>assembler</em>.</dd>
+    * </dl>
+    *
     * <p>The initialization is performed as follows:
     *
     * <ol>
@@ -289,6 +311,7 @@ implements Servlet {
     *        {@link ServletException} is thrown;
     *    <li>the {@link ServletConfig config} object is stored internally, to
     *        be returned by {@link #getServletConfig()}.
+    *    <li>the state is set to <em>ready</em>.
     * </ol>
     *
     * <p>Note that if a {@link ServletException} is thrown, the state is reset
