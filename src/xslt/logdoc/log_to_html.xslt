@@ -114,6 +114,9 @@
 							<td>
 								<xsl:value-of select="count(param)" />
 							</td>
+							<td>
+								<!-- TODO: Count translations -->
+							</td>
 						</tr>
 					</xsl:for-each>
 				</table>
