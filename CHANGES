@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
 
+* XINS/Java Server Framework:
+  - Logging warning if the current XINS version is not a production release.
+
 * Build and release process:
   - Fixed incorrect URL in the README.html.
 
