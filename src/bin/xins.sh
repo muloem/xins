@@ -11,6 +11,7 @@
 
 prog=`basename $0`
 
+
 # Make sure XINS_HOME is set
 xins_home=${XINS_HOME}
 if [ "${xins_home}a" = "a" ]; then
@@ -51,6 +52,15 @@ fi
 # Create the Ant build file
 out=${builddir}/build.xml
 project_home=`pwd`
+mktemp_template="/tmp/${prog}.XXXXXXXX"
+tmpout=`mktemp -q ${mktemp_template}`
+returncode=$?
+if [ ! "${returncode}a" = "0a" ]; then
+	echo "${prog}: ERROR: Unable to create temporary file using template ${mktemp_template}"
+	exit 1
+fi
+#	(echo "${prog}: ERROR: Cannot create temporary file." ; exit 1)
+echo ">> Created temporary file: ${tmpout}"
 echo -n ">> Generating ${out}..."
 ant -f ${xins_home}/src/ant/transform.xml \
     -Din=${in} \
@@ -58,13 +68,16 @@ ant -f ${xins_home}/src/ant/transform.xml \
 	-Dstyle=${style} \
     -Dxins_home=${xins_home} \
     -Dproject_home=${project_home} \
-	-Dbuilddir=${builddir} >/dev/null 2>/dev/null
+	-Dbuilddir=${builddir} > ${tmpout}
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
 	echo " [ FAILED ]"
-	echo "${prog}: ERROR: Unable to transform ${in}."
+	echo "${prog}: ERROR: Unable to transform ${in}:"
+	cat ${tmpout}
+	rm ${tmpout}
 	exit 1
 fi
+rm ${tmpout}
 echo " [ DONE ]"
 
 # Run Ant against the build file
