@@ -1,0 +1,15 @@
+XINS Is Not Soap
+$Id$
+
+Standard for system-to-system communication. Requests are HTTP GET or POST,
+results are XML documents that conform to a small set of rules.
+
+Homepage: http://xins.sourceforge.net/
+
+This library is distributed under the terms of the BSD license contained in
+the COPYRIGHT file. This license has been approved by the Open Source
+Initiative. See: http://www.opensource.org/licenses/bsd-license.php
+
+
+This library is built using Ant.
+See: http://ant.apache.org/
