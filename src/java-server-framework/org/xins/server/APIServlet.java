@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
@@ -569,15 +570,6 @@ implements Servlet {
       // Determine current time
       long start = System.currentTimeMillis();
 
-      // Check state
-      if (_state != READY) {
-         // TODO: This is not an application server malfunction.
-         // TODO: Return current state and _error
-         String message = "Application server malfunction detected. State is " + _state + " instead of " + READY + '.';
-         Library.RUNTIME_LOG.error(message);
-         throw new ServletException(message);
-      }
-
       // Check arguments
       if (request == null || response == null) {
          String message = "Application server malfunction detected. ";
@@ -595,8 +587,17 @@ implements Servlet {
       // TODO: Support and use OutputStream instead of Writer, for improved
       //       performance
 
-      // Call the API
-      CallResult result = _api.handleCall(start, request);
+      // Call the API if the state is READY
+      CallResult result;
+      if (_state == READY) {
+         result = _api.handleCall(start, request);
+
+      // Otherwise return InternalError
+      } else {
+         BasicPropertyReader parameters = new BasicPropertyReader();
+         parameters.set("_message", _error);
+         result = new BasicCallResult(false, "InternalError", parameters, null);
+      }
 
       // Determine the XSLT to link to
       String xslt = request.getParameter("_xslt");

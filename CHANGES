@@ -11,6 +11,10 @@ CHANGES INTRODUCED IN XINS 0.138:
   - Checking that no 2 ActualFunctionCallers in a CallTargetGroup can have the
     same URL checksum.
 
+* XINS/Java Server Framework:
+  - If the APIServlet is not in the READY state, then the InternalError code
+    is returned with a _message output parameter that describes the problem.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 

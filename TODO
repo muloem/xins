@@ -44,8 +44,6 @@ XINS/JAVA SERVER FRAMEWORK
 * CallResultBuilder should perhaps not implement CallResult.
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
-* If the state is not READY in the service method, then InternalError should
-  be returned, with the error message in a parameter.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
