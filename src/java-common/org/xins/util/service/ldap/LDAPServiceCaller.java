@@ -332,7 +332,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
          if (method == null) {
             throw new IllegalArgumentException("method == null");
          } else if (method != NO_AUTHENTICATION && principal == null) {
-            throw new IllegalArgumentException("method != NO_AUTHENTICATION && principal == null");
+            throw new IllegalArgumentException("method (" + method + ") != NO_AUTHENTICATION && principal == null");
          } else if (method == NO_AUTHENTICATION && principal != null) {
             throw new IllegalArgumentException("method == NO_AUTHENTICATION && principal != null");
          } else if (method == NO_AUTHENTICATION && credentials != null) {
