@@ -26,8 +26,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
   - Translation bundle are now possible on multiple lines.
 
 * Libraries
-  - Upgraded Log4J library to 1.2.9.
-  - Upgraded Common logging to 1.0.4.
+  - Upgraded Log4J from 1.2.6 to 1.2.9.
+  - Upgraded Jakarta Commons Logging from 1.0.3 to 1.0.4.
+  - Upgraded xmlenc from 0.43 to 0.44.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
