@@ -4,6 +4,7 @@
 package org.xins.server;
 
 import java.util.List;
+import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
 
@@ -20,6 +21,7 @@ import org.xins.util.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Peter Troon (<a href="mailto:peter.troon@nl.wanadoo.com">peter.troon@nl.wanadoo.com</a>)
  */
 public final class IPFilter
 extends Object {
@@ -27,6 +29,11 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The character that delimits the 4 sections of an IP address.
+    */
+   private static final String IP_ADDRESS_DELIMETER = ".";
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -61,6 +68,33 @@ extends Object {
    throws IllegalArgumentException, ParseException {
 
       MandatoryArgumentChecker.check("expression", expression);
+
+      String ip = null;
+      String mask = null;
+      boolean validFilter = true;
+      int slashPosition = expression.indexOf('/');
+
+      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
+         validFilter = false;
+      } else {
+         ip = expression.substring(0, slashPosition);
+      }
+
+      if (validFilter == true && isValidIp(ip) == false) {
+         validFilter = false;
+      }
+
+      if (validFilter == true) {
+         mask = expression.substring(slashPosition + 1);
+      }
+
+      if (validFilter == true && isValidMask(mask) == false) {
+         validFilter = false;
+      }
+
+      if (validFilter == false) {
+         throw new ParseException("The provided filter " + expression + " is invalid.");
+      }
 
       return new IPFilter(expression);
    }
@@ -137,6 +171,13 @@ extends Object {
     */
    public final boolean isAuthorized(String ip)
    throws IllegalArgumentException, ParseException {
+
+      MandatoryArgumentChecker.check("ip", ip);
+
+      if (isValidIp(ip) == false) {
+         throw new ParseException("The provided IP " + ip + " is invalid.");
+      }
+
       return false; // TODO
    }
 
@@ -150,4 +191,52 @@ extends Object {
    public final String toString() {
       return getExpression();
    }
+
+   private static boolean isValidIp(String ip) {
+      StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
+      String currIPSection = null;
+      boolean validToken = true;
+      boolean validIP = false;
+      int counter = 0;
+
+      while (tokenizer.hasMoreTokens() && validToken == true) {
+          currIPSection = tokenizer.nextToken();
+          validToken = isValidIPSection(currIPSection);
+          counter++;
+      }
+
+      if (validToken == true && counter == 4) {
+         validIP = true;
+      }
+
+      return validIP;
+   }
+
+   private static boolean isValidMask(String mask) {
+      return isAllowedValue(mask, 32);
+   }
+
+   private static boolean isValidIPSection(String ipSection) {
+      return isAllowedValue(ipSection, 255);
+   }
+
+   private static boolean isAllowedValue(String value, int maxAllowedValue) {
+      boolean validValue = true;
+      int intValue = -1;
+
+      try {
+         intValue = Integer.parseInt(value);
+      }
+      catch (NumberFormatException nfe) {
+         validValue = false;
+      }
+
+      if (intValue < 0 || intValue > maxAllowedValue) {
+         validValue = false;
+      }
+
+      return validValue;
+
+   }
+
 }
