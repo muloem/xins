@@ -66,11 +66,6 @@ XINS/JAVA SERVER FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
 
-* Improve fail-over. In a lot of situations, fail-over should not be
-  attempted.
-  --> Exact behaviour should be defined by Ernst de Haan. Then this should be
-      a fairly simple exercise.
-* Support non-200 HTTP return codes.
 * Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
   _GetSettings and converts the result to a RemoteSettings object with build
   properties, runtime properties and system properties.
@@ -101,23 +96,16 @@ XINS/JAVA CLIENT FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
-* Change the service caller framework to distinguish between connection and
-  socket time-outs.
-  --> This should preferrably be done before XINS 1.0.
-* Improve description of class Manageable. It still refers to the term
-  'lifespan manager'.
-  --> This should be fixed ASAP.
 * Change Type class to add a 'version' property.
   --> This should be given some more thought.
 * Change ExpiryFolder to allow retrieval of slot info.
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
-* Create an implementation of interface IndexedMap.
 
 ______________________________________________________________________________
 LOGDOC
 
-* Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
+* Add French Logdoc translations.
 * Support element in log.xml to reserve an ID that was previously used. For
   example <reserve id="1502" />
 
@@ -130,8 +118,6 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Link to CVSweb or ViewCVS.
 * On specification documentation page for a result code: Have a list of links
   to the functions that specify they may return the result code.
-* Use an image to indicate the inheritance relationship between one type and
-  another.
 * Generate Docbook from the specifications.
 * Have an item for a result code page in the header.
 * Per type have a list of input parameters, output parameters and data element
@@ -162,7 +148,7 @@ ______________________________________________________________________________
 MISCELLANEOUS
 
 * The standard result codes should be documented online.
-* Finish SourceForgeUpload task to smoothen the release process by performing
+* Use SourceForgeUpload task to smoothen the release process by performing
   the following actions:
   - create a release on the SourceForge site
   - add the corresponding file

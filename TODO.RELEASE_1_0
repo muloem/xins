@@ -133,3 +133,4 @@ Improved Logdoc for XINS/Java Common Library:
 [ ] Add groups for missing Java packages
 [ ] Review Logdoc entry IDs
 [ ] Add missing Logdoc entries
+[ ] Remove Dutch translations
