@@ -665,19 +665,11 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Adds the specified manageable object. It will immediately be
-    * initialized. If the initialization fails, then an exception will be
-    * thrown.
-    *
-    * <p>The initialization will be performed by calling
-    * {@link Manageable#bootstrap(PropertyReader)} and
-    * {@link Manageable#init(PropertyReader)}.
-    *
-    * <p>At shutdown time {@link Manageable#deinit()} will be called.
+    * Adds the specified manageable object. It will not immediately be
+    * bootstrapped and initialized.
     *
     * @param m
-    *    the manageable object to initialize now, reinitialize when
-    *    appropriate and deinitialize at shutdown time, not <code>null</code>.
+    *    the manageable object to add, not <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this API is currently not bootstrapping.
@@ -692,8 +684,7 @@ implements DefaultResultCodes {
     */
    protected final void add(Manageable m)
    throws IllegalStateException,
-          IllegalArgumentException,
-          Exception {
+          IllegalArgumentException {
 
       // Check state
       Manageable.State state = getState();
