@@ -212,7 +212,7 @@ extends AbstractFunctionCaller {
       // Initialize fields
       _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
-      _crc32            = computeCRC32(_url);
+      _crc32            = (int) computeCRC32(_url);
       _crc32String      = HexConverter.toHexString(_crc32);
       _urlString        = urlString;
 
@@ -266,7 +266,7 @@ extends AbstractFunctionCaller {
    /**
     * The CRC-32 checksum for the URL.
     */
-   private final long _crc32;
+   private final int _crc32;
 
    /**
     * The CRC-32 checksum for the URL, as a String.
@@ -279,13 +279,91 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the URL for the API this object represents.
+    * Creates a parameter string for a HTTP GET call.
+    *
+    * @param sessionID
+    *    the session identifier, if any, or <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed, or <code>null</code>; keys must be
+    *    {@link String Strings}, values can be of any class.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
     *
     * @return
-    *    the URL, never <code>null</code>.
+    *    the string that can be used in an HTTP GET call, never
+    *    <code>null</code> nor empty.
     */
-   public URL getURL() {
-      return _url;
+   private final String createParameterString(String sessionID,
+                                              String functionName,
+                                              Map    parameters)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
+
+      // Initialize a buffer
+      // TODO: Use _function
+      FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
+      buffer.append("function=");
+      buffer.append(functionName);
+
+      // If there is a session identifier, process it
+      if (sessionID != null) {
+         buffer.append("&_session=");
+         buffer.append(sessionID);
+      }
+
+      // If there are parameters, then process them
+      if (parameters != null) {
+
+         // Loop through them all
+         Iterator keys = parameters.keySet().iterator();
+         while (keys.hasNext()) {
+
+            // Get the parameter key
+            String key = (String) keys.next();
+
+            // Process key only if it is not null and not an empty string
+            if (key != null && key.length() > 0) {
+
+               // The key cannot start with an underscore
+               if (key.charAt(0) == '_') {
+                  throw new IllegalArgumentException("The parameter key \"" + key + "\" is invalid, since it cannot start with an underscore.");
+
+               // The key cannot equal 'function'
+               } else if ("function".equals(key)) {
+                  throw new IllegalArgumentException("The parameter key \"function\" is invalid, since that is a reserved word.");
+               }
+
+               // TODO: Make sure the key is properly formatted
+
+               // Get the value
+               Object value = parameters.get(key);
+
+               // Add this parameter key/value combination
+               if (value != null) {
+
+                  // Convert the value object to a string
+                  String valueString = value.toString();
+
+                  // Only add the key/value combo if there is a value string
+                  if (valueString != null && valueString.length() > 0) {
+                     buffer.append('&');
+                     buffer.append(URLEncoding.encode(key));
+                     buffer.append('=');
+                     buffer.append(URLEncoding.encode(valueString));
+                  }
+               }
+            }
+         }
+      }
+
+      return buffer.toString();
    }
 
    /**
@@ -323,6 +401,16 @@ extends AbstractFunctionCaller {
          LOG.error(message);
          throw new IOException(message);
       }
+   }
+
+   /**
+    * Returns the URL for the API this object represents.
+    *
+    * @return
+    *    the URL, never <code>null</code>.
+    */
+   public URL getURL() {
+      return _url;
    }
 
    public CallResult call(String sessionID, String functionName, Map parameters)
@@ -366,85 +454,13 @@ extends AbstractFunctionCaller {
    }
 
    /**
-    * Creates a parameter string for a HTTP GET call.
-    *
-    * @param sessionID
-    *    the session identifier, if any, or <code>null</code>.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed, or <code>null</code>; keys must be
-    *    {@link String Strings}, values can be of any class.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
-    * @return
-    *    the string that can be used in an HTTP GET call, never
-    *    <code>null</code> nor empty.
-    */
-   private final String createParameterString(String sessionID, String functionName, Map parameters)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("functionName", functionName);
-
-      // Initialize a buffer
-      // TODO: Use _function
-      FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
-      buffer.append("function=");
-      buffer.append(functionName);
-
-      // If there is a session identifier, process it
-      if (sessionID != null) {
-         buffer.append("&_session=");
-         buffer.append(sessionID);
-      }
-
-      // If there are parameters, then process them
-      if (parameters != null) {
-
-         // Loop through them all
-         Iterator keys = parameters.keySet().iterator();
-         while (keys.hasNext()) {
-
-            // Get the parameter key
-            String key = (String) keys.next();
-
-            // The key cannot equal 'function'
-            if ("function".equals(key)) {
-               throw new IllegalArgumentException("The function parameter \"function\" cannot be used for a normal parameter.");
-            }
-
-            // TODO: Make sure the key does not start with an underscore
-            // TODO: Make sure the key is properly formatted
-            // TODO: URL encode the value
-
-            // Add this parameter key/value combination
-            Object value = parameters.get(key);
-            if (value != null) {
-               buffer.append('&');
-               buffer.append(key);
-               buffer.append('=');
-               buffer.append(URLEncoding.encode(value.toString()));
-            }
-         }
-      }
-
-      return buffer.toString();
-   }
-
-   /**
     * Returns the CRC-32 checksum for the URL of this function caller.
     *
     * @return
     *    the CRC-32 checksum.
     */
    public long getCRC32() {
-      // TODO: Store the CRC-32 value in an int ?
-      return _crc32;
+      return (long)  _crc32;
    }
 
    /**
