@@ -2,9 +2,14 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.137:
 
 * XINS/Java Client Framework:
-  - Added methods to ActualFunctionCaller class:
-    . ping()
-    . getRemoteXINSVersion()
+  - Improved ActualFunctionCaller class:
+    . If a parameter key is null or empty string, it is ignored.
+    . Parameter keys cannot start with an underscore.
+    . Parameter keys are now properly URL-encoded.
+    . If a parameter value, converted to a string is null or empty string,
+      then it is ignored.
+    . Added method ping()
+    . Added method getRemoteXINSVersion()
 
 * Generated CAPI classes:
   - Generating package.html.
