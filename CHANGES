@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.48:
+
+* Hid some of the protected interface of CallTargetGroup, because only classes
+  in the same package can derive from this class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.47:
 
 * Added 'Caller' demo program. Use target 'demo-caller' to execute it, specify
