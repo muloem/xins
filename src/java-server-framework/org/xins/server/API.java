@@ -142,6 +142,9 @@ implements DefaultReturnCodes {
 
       // Determine the function name
       String functionName = context.getFunction();
+      if ("_GetFunctionList".equals(functionName)) {
+         doGetFunctionList(out, map);
+      }
 
       // Forward the call
       boolean exceptionThrown = true;
@@ -207,4 +210,26 @@ implements DefaultReturnCodes {
     */
    protected abstract void handleCall(CallContext context)
    throws Throwable;
+
+   /**
+    * Returns a list of all functions in this API. Per function the name and
+    * the version are returned.
+    *
+    * @param out
+    *    the output stream to write to, not <code>null</code>.
+    *
+    * @param map
+    *    the parameters, not <code>null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   private final void doGetFunctionList(PrintWriter out, Map map)
+   throws IOException {
+      // TODO: For each function:
+      // context.startTag("function");
+      // context.attribute("name", name);
+      // context.attribute("version", version);
+      // context.endTag();</xsl:text>
+   }
 }
