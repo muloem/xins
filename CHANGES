@@ -13,6 +13,10 @@ CHANGES INTRODUCED IN XINS 0.198:
   - Removed previous version from .version.properties file. It is hardly
     useful and makes things unnecessarily complexity.
 
+* Logdoc:
+  - The root cause of any exception is now determined and that is logged
+    instead of the passed exception object.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.197:
 
