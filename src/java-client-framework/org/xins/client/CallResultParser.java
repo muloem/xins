@@ -78,12 +78,12 @@ public class CallResultParser extends Object {
     * @throws IllegalArgumentException
     *    if <code>xml == null</code>
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
    public CallResult parse(String xml)
-   throws IllegalArgumentException, InvalidCallResultException {
+   throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
@@ -95,7 +95,7 @@ public class CallResultParser extends Object {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);
          // TODO: Include type of error in here somewhere
-         throw new InvalidCallResultException(message, jdomException);
+         throw new ParseException(message, jdomException);
       }
    }
 
@@ -112,12 +112,12 @@ public class CallResultParser extends Object {
     * @throws NullPointerException
     *    if <code>document == null || document.getRootElement() == null</code>
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the specified XML document is not a valid XINS API function call
     *    result.
     */
    private CallResult parse(Document document)
-   throws NullPointerException, InvalidCallResultException {
+   throws NullPointerException, ParseException {
 
       Element element = document.getRootElement();
 
@@ -125,7 +125,7 @@ public class CallResultParser extends Object {
       if ("result".equals(element.getName()) == false) {
          String message = "The returned XML is invalid. The type of the root element is \"" + element.getName() + "\" instead of \"result\".";
          LOG.error(message);
-         throw new InvalidCallResultException(message);
+         throw new ParseException(message);
       }
 
       boolean success     = parseSuccessFlag(element);
@@ -150,20 +150,20 @@ public class CallResultParser extends Object {
     * @throws NullPointerException
     *    if <code>element == null</code>.
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the <code>success</code> attribute could not be found in the
     *    element or if it had an invalid value (it must be either
     *    <code>"true"</code> or <code>"false"</code>).
     */
    private static boolean parseSuccessFlag(Element element)
-   throws NullPointerException, InvalidCallResultException {
+   throws NullPointerException, ParseException {
 
       // Get the attribute value
       String value = element.getAttributeValue("success");
 
       // The attribute is mandatory
       if (value == null) {
-         throw new InvalidCallResultException("The returned XML is invalid. The attribute \"success\" has to be present in the \"result\" element.");
+         throw new ParseException("The returned XML is invalid. The attribute \"success\" has to be present in the \"result\" element.");
       }
 
       // Interpret the value
@@ -172,7 +172,7 @@ public class CallResultParser extends Object {
       } else if (value.equals("false")) {
          return false;
       } else {
-         throw new InvalidCallResultException("The returned XML is invalid. The \"success\" attribute in the \"result\" element can only have the value \"true\" or \"false\", the value \"" + value + "\" is invalid.");
+         throw new ParseException("The returned XML is invalid. The \"success\" attribute in the \"result\" element can only have the value \"true\" or \"false\", the value \"" + value + "\" is invalid.");
       }
    }
 
@@ -215,12 +215,12 @@ public class CallResultParser extends Object {
     * @throws NullPointerException
     *    if <code>element == null</code>.
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the specified XML is not a valid part of a XINS API function call
     *    result.
     */
    private static Map parseParameters(Element element)
-   throws NullPointerException, InvalidCallResultException {
+   throws NullPointerException, ParseException {
 
       final String elementName  = "param";
       final String keyAttribute = "name";
@@ -266,7 +266,7 @@ public class CallResultParser extends Object {
 
             // Only one value per key allowed
             } else if (map.get(key) != null) {
-               throw new InvalidCallResultException("The returned XML is invalid. Found <" + elementName + "/> with duplicate " + keyAttribute + " \"" + key + "\".");
+               throw new ParseException("The returned XML is invalid. Found <" + elementName + "/> with duplicate " + keyAttribute + " \"" + key + "\".");
             }
 
             // Store the mapping
