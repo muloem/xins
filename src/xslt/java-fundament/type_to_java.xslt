@@ -16,7 +16,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../casechange.xslt" />
+	<xsl:include href="../escapepattern.xslt" />
 
 	<xsl:variable name="type" select="//type/@name" />
 	<xsl:variable name="classname">
@@ -114,7 +114,11 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="pattern">
 				<xsl:text>"</xsl:text>
-				<xsl:value-of select="pattern/text()" />
+				<xsl:call-template name="escapepattern">
+					<xsl:with-param name="text">
+						<xsl:value-of select="pattern/text()" />
+					</xsl:with-param>
+				</xsl:call-template>
 				<xsl:text>"</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>String.class</xsl:otherwise>
