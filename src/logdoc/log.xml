@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="US-ASCII" ?>
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+-->
+
+<log>
+	<messageset id="en_US" />
+	<entry id="1" level="INFO" category="org.xins.server.lifespan.init" />
+</log>
