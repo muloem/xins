@@ -42,6 +42,9 @@ CHANGES INTRODUCED IN XINS 0.125:
 * Generated specification documentation:
   - Function specifications: No longer showing success column in result code
     table.
+  - Function specifications: Simplified algorithm to determine if an example
+    is successful. If a result code is specified, then the example is not
+    successful.
 
 * Changed README file to explicitly state that Apache Ant 1.5.3 is required.
 
