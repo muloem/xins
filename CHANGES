@@ -4,9 +4,17 @@ CHANGES INTRODUCED IN XINS 0.89:
 * XINS/Java Server Framework:
   - Added 'startup' attribute to 'initialization' tag in output of function
     _GetSettings.
+  - Function _GetStatistics returns "N/A" instead of "NA" if certain
+    information is not available.
+  - Function _GetSettings no longer returnes the startup time. That is now
+    returned from _GetStatistics.
 
 * XINS/Java Common Library:
   - Added DateConverter that produces a human-readable date.
+
+* Printing time stamps in format 'yyyy.MM.dd HH:mm:ss.SS' everywhere. Not
+  displaying milliseconds since Epoch anymore. This applies to _GetStatistics
+  and to the build time returned by _GetSettings.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.88:
