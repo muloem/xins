@@ -383,7 +383,7 @@ $Id$
 						</war>
 					</target>
 					
-					<target name="javadoc-api-{$api}" depends="-skeletons-impl-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
+					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
 						<mkdir dir="build/javadoc/{$api}" />
 						<javadoc
 						sourcepath="build/java-combined/{$api}"
