@@ -10,8 +10,9 @@ CHANGES INTRODUCED IN XINS 0.157:
 
 * XINS/Java Common Library:
   - Added PropertyReaderUtils class.
-  - Changed BootstrapException: Made constructor that takes a Throwable
-    public.
+  - Changed BootstrapException and InitializationException classes: Changed
+    access level of the constructor that takes a 'Throwable' argument from
+    package-private to public.
 
 * XINS/Java Server Framework:
   - Removed support for default functions (introduced in XINS 0.78).
