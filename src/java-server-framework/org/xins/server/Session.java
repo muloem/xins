@@ -143,4 +143,11 @@ extends Object {
          return null;
       }
    }
+
+   /**
+    * Touches this session so the expiry timer will be reset.
+    */
+   public void touch() {
+      // TODO
+   }
 }
