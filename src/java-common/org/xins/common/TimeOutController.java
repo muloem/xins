@@ -22,50 +22,16 @@ public final class TimeOutController extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Runs the specified thread with a specific time-out. If the thread does
-    * not finish within the specified time-out period, then the thread is
-    * interrupted using the {@link Thread#interrupt()} method and a
-    * {@link TimeOutException} is thrown.
-    *
-    * @param task
-    *    the thread to run, cannot be <code>null</code>.
-    *
-    * @param timeOut
-    *    the timeOut in milliseconds, must be &gt; 0.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>task == null || timeOut &lt;= 0</code>.
-    *
-    * @throws IllegalThreadStateException
-    *    if the thread was already started.
-    *
-    * @throws SecurityException
-    *    if the thread did not finish within the total time-out period, but
-    *    the interruption of the thread was disallowed (see
-    *    {@link Thread#interrupt()}).
-    *
-    * @throws TimeOutException
-    *    if the thread did not finish within the total time-out period and was
-    *    interrupted.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.204.
-    *    Use {@link #execute(Runnable,int)} instead.
-    */
-   public static final void execute(Thread task, int timeOut)
-   throws IllegalArgumentException,
-          IllegalThreadStateException,
-          SecurityException,
-          TimeOutException {
-
-      execute((Runnable) task, timeOut);
-   }
-
-   /**
     * Runs the specified task with a specific time-out. If the task does
     * not finish within the specified time-out period, then the thread
     * executing that task is interrupted using the {@link Thread#interrupt()}
     * method and a {@link TimeOutException} is thrown.
+    *
+    * <p>Note that the specified task could be run either in the current
+    * thread or in a new thread. In the latter case, no initialization is
+    * performed. For example, the <em>Nested Diagnostic Context
+    * identifier</em> (NDC) is not copied from the current thread to the new
+    * one.
     *
     * @param task
     *    the task to run, cannot be <code>null</code>.
@@ -82,7 +48,8 @@ public final class TimeOutController extends Object {
     * @throws SecurityException
     *    if the thread did not finish within the total time-out period, but
     *    the interruption of the thread was disallowed (see
-    *    {@link Thread#interrupt()}).
+    *    {@link Thread#interrupt()}); consequently, the thread may still be
+    *    running.
     *
     * @throws TimeOutException
     *    if the thread did not finish within the total time-out period and was
@@ -108,7 +75,12 @@ public final class TimeOutController extends Object {
       if (task instanceof Thread) {
          thread = (Thread) task;
       } else {
-         // TODO: Use a thread pool
+         // XXX: To improve performance and manageability, we could use a
+         //      thread pool like the one that is available in J2SE 5.0.
+         //      See:
+         //      http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html
+         //      and
+         //      http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/package-summary.html
          thread = new Thread(task);
       }
 
@@ -120,7 +92,7 @@ public final class TimeOutController extends Object {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
          // ignore
-         // TODO: Log?
+         // TODO: Log
       }
 
       // If the thread is still running at this point, it should stop
