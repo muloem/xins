@@ -224,5 +224,71 @@
 			<param name="className" nullable="false" />
 			<param name="writer" nullable="false" />
 		</entry>
+		<entry id="3418" level="ERROR">
+			<description>A reader attempts to enter as a reader while it is already the active writer.</description>
+			<param name="className" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="3419" level="ERROR">
+			<description>A reader attempts to enter as a reader while it is already an active reader.</description>
+			<param name="className" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="3420" level="ERROR">
+			<description>Unable to add a thread due to a time-out.</description>
+			<param name="className" nullable="false" />
+			<param name="thread" nullable="false" />
+			<param name="maxQueueWaitTime" type="int64" nullable="false" />
+		</entry>
+		<entry id="3421" level="ERROR">
+			<description>A reader was interrupted in enterAsReader(), but not in the set of current readers.</description>
+			<param name="className" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="3422" level="ERROR">
+			<description>A writer attempts to enter as a writer but it is already the active writer.</description>
+			<param name="className" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="3423" level="ERROR">
+			<description>A writer attempts to enter as a writer but it is already an active reader.</description>
+			<param name="className" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="3424" level="ERROR">
+			<description>A writer was interrupted in enterAsWriter().</description>
+			<param name="className" nullable="false" />
+			<param name="writer" nullable="false" />
+			<param name="currentWriter" nullable="false" />
+		</entry>
+		<entry id="3425" level="ERROR">
+			<description>A reader attempts to leave protected area as reader, but it is not an active reader.</description>
+			<param name="className" nullable="false" />
+			<param name="reader" nullable="false" />
+		</entry>
+		<entry id="3426" level="ERROR">
+			<description>Found reader at top of queue while a reader is leaving the protected area.</description>
+			<param name="className" nullable="false" />
+		</entry>
+		<entry id="3427" level="ERROR">
+			<description>A writer attempts to leave protected area as writer, but it is not the current writer.</description>
+			<param name="className" nullable="false" />
+			<param name="writer" nullable="false" />
+		</entry>
+		<entry id="3428" level="ERROR">
+			<description>The thread cannot be added because it is already in the queue.</description>
+			<param name="className" nullable="false" />
+			<param name="thread" nullable="false" />
+			<param name="existingType" nullable="false" />
+			<param name="type" nullable="false" />
+		</entry>
+		<entry id="3429" level="ERROR">
+			<description>Cannot pop an empty queue.</description>
+		</entry>
+		<entry id="3430" level="ERROR">
+			<description>The thread is not in the queue.</description>
+			<param name="className" nullable="false" />
+			<param name="thread" nullable="false" />
+		</entry>
 	</group>
 </log>

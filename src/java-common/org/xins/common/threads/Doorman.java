@@ -188,7 +188,7 @@ public final class Doorman extends Object {
          if (_currentWriter == reader) {
             String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3418(_asString, reader.getName());
                throw new Error(message);
             } else {
                Log.log_3409(_asString, reader.getName());
@@ -197,7 +197,7 @@ public final class Doorman extends Object {
          } else if (_currentReaders.contains(reader)) {
             String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3419(_asString, reader.getName());
                throw new Error(message);
             } else {
                Log.log_3410(_asString, reader.getName());
@@ -247,7 +247,7 @@ public final class Doorman extends Object {
                _queue.remove(reader);
             }
          }
-         // TODO: Pass parameters and have the error logged using logdoc
+         Log.log_3420(_asString, reader.getName(), _maxQueueWaitTime);
          throw new QueueTimeOutException(_asString + ": Unable to add a thread named " + reader.getName() + " to queue. Time-out after " + _maxQueueWaitTime + " ms.");
       } catch (InterruptedException exception) {
          // fall through
@@ -255,7 +255,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
          if (! _currentReaders.contains(reader)) {
-            // TODO: Log
+            Log.log_3421(_asString, reader.getName());
             throw new Error(_asString + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.");
          }
       }
@@ -281,7 +281,7 @@ public final class Doorman extends Object {
          if (_currentWriter == writer) {
             String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3422(_asString, writer.getName());
                throw new Error(message);
             } else {
                Log.log_3412(_asString, writer.getName());
@@ -290,7 +290,7 @@ public final class Doorman extends Object {
          } else if (_currentReaders.contains(writer)) {
             String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already an active reader.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3423(_asString, writer.getName());
                throw new Error(message);
             } else {
                Log.log_3413(_asString, writer.getName());
@@ -337,7 +337,7 @@ public final class Doorman extends Object {
             }
          }
 
-         // TODO: Pass parameters and have the error logged using logdoc
+         Log.log_3420(_asString, writer.getName(), _maxQueueWaitTime);
          throw new QueueTimeOutException(_asString + ": Unable to add a thread named " + writer.getName() + " to queue. Time-out after " + _maxQueueWaitTime + " ms.");
       } catch (InterruptedException exception) {
          // fall through
@@ -345,7 +345,7 @@ public final class Doorman extends Object {
 
       synchronized (_currentActorLock) {
          if (_currentWriter != writer) {
-            // TODO: Log
+            Log.log_3424(_asString, writer.getName(), _currentWriter.getName());
             throw new Error(_asString + " : " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.');
          }
       }
@@ -367,7 +367,7 @@ public final class Doorman extends Object {
             // TODO: Remove from queue if it is in there?
             String message = _asString + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3425(_asString, reader.getName());
                throw new Error(message);
             } else {
                Log.log_3415(_asString, reader.getName());
@@ -392,7 +392,7 @@ public final class Doorman extends Object {
 
                   // If a reader leaves, the queue cannot contain a reader at the
                   // top, it must be either empty or have a writer at the top
-                  // TODO: Log
+                  Log.log_3426(_asString);
                   throw new Error(_asString + ": Found reader at top of queue while a reader is leaving the protected area.");
                }
             }
@@ -414,7 +414,7 @@ public final class Doorman extends Object {
          if (_currentWriter != writer) {
             String message = _asString + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer.";
             if (_strict) {
-               // TODO: Log
+               Log.log_3427(_asString, writer.getName());
                throw new Error(message);
             } else {
                Log.log_3417(_asString, writer.getName());
@@ -577,7 +577,7 @@ public final class Doorman extends Object {
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
             QueueEntryType existingType = (QueueEntryType) _entryTypes.get(thread);
-            // TODO: Log
+            Log.log_3428(_asString, thread.getName(), existingType.toString(), type.toString());
             throw new Error(_asString + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
          }
 
@@ -606,7 +606,7 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_first == null) {
-            // TODO: Log
+            Log.log_3429();
             throw new Error("This queue is empty.");
          }
 
@@ -650,7 +650,7 @@ public final class Doorman extends Object {
 
             // Remove the thread from the list
             if (! _entries.remove(thread)) {
-               // TODO: Log
+               Log.log_3430(_asString, thread.getName());
                throw new Error(_asString + ": " + thread.getName() + " is not in this queue.");
             }
          }

@@ -21,8 +21,7 @@
 	<translation entry="1208">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class afgeleed niet van de class <value-of-param name="superClass" />.</translation>
 	<translation entry="1209">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
 	<translation entry="1210">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
-	<translation entry="1211">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1212">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties.</translation>
+	<translation entry="1211">XINS/Java Server Framework kan niet gestart worden door een onbekend reden.</translation>
 	<translation entry="1218">Applicatie-package is gebouwd op <value-of-param name="buildHost" /> op tijdstip <value-of-param name="buildTime" />, met XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="1219">Manageable object <value-of-param name="className" /> wordt gestart.</translation>
 	<translation entry="1220">Manageable object <value-of-param name="className" /> is gestart.</translation>

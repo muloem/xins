@@ -388,16 +388,16 @@ extends HttpServlet {
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
 
-      // TODO: Check state
-      if (newState != (INITIAL) ||
-          (_state == INITIAL) && newState != BOOTSTRAPPING_FRAMEWORK)) ||
-          (_state == BOOTSTRAPPING_FRAMEWORK) && (newState != FRAMEWORK_BOOTSTRAP_FAILED) || newState != CONSTRUCTING_API))) ||
-          (_state == CONSTRUCTING_API) && (newState != API_CONSTRUCTION_FAILED) || newState != BOOTSTRAPPING_API))) ||
-          (_state == BOOTSTRAPPING_API) && (newState != API_BOOTSTRAP_FAILED) || newState != INITIALIZING_API))) ||
-          (_state == INITIALIZING_API) && (newState != API_INITIALIZATION_FAILED) || newState != READY))) ||
-          (_state == READY) && newState != DISPOSING)) ||
-          (_state == DISPOSING) && newState != DISPOSED)) {
-         Log.log_1101(_state == null ? null : _state.getName());
+      // Check state
+      if (newState == INITIAL ||
+          (_state == INITIAL && newState != BOOTSTRAPPING_FRAMEWORK) ||
+          (_state == BOOTSTRAPPING_FRAMEWORK && (newState != FRAMEWORK_BOOTSTRAP_FAILED || newState != CONSTRUCTING_API)) ||
+          (_state == CONSTRUCTING_API && (newState != API_CONSTRUCTION_FAILED || newState != BOOTSTRAPPING_API)) ||
+          (_state == BOOTSTRAPPING_API && (newState != API_BOOTSTRAP_FAILED || newState != INITIALIZING_API)) ||
+          (_state == INITIALIZING_API && (newState != API_INITIALIZATION_FAILED || newState != READY)) ||
+          (_state == READY && newState != DISPOSING) ||
+          (_state == DISPOSING && newState != DISPOSED)) {
+         Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
          throw new IllegalStateException("The state " + newState + " cannot follow the state  " + _state + '.');
       }
 

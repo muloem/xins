@@ -56,4 +56,17 @@
 	<translation entry="3415"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
 	<translation entry="3416"><value-of-param name="className" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
 	<translation entry="3417"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
+	<translation entry="3418"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
+	<translation entry="3419"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
+	<translation entry="3420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
+	<translation entry="3421"><value-of-param name="className" />: <value-of-param name="reader" /> was interrupted in enterAsReader(), but not in the set of current readers.</translation>
+	<translation entry="3422"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
+	<translation entry="3423"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
+	<translation entry="3424"><value-of-param name="className" />: <value-of-param name="writer" /> was interrupted in enterAsWriter(), but the current writer is <value-of-param name="currentWriter" />.</translation>
+	<translation entry="3425"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
+	<translation entry="3426"><value-of-param name="className" />: Found reader at top of queue while a reader is leaving the protected area.</translation>
+	<translation entry="3427"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
+	<translation entry="3428"><value-of-param name="className" />: <value-of-param name="thread" /> is already in this queue as a <value-of-param name="existingType" />, cannot add it as a <value-of-param name="type" />.</translation>
+	<translation entry="3429">This queue is empty.</translation>
+	<translation entry="3430"><value-of-param name="className" />: <value-of-param name="thread" /> is not in this queue.</translation>
 </translation-bundle>
