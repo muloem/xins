@@ -297,40 +297,31 @@
 		<ant dir="build/logdoc/${side}" target="html" inheritall="false" />
 	</target>
 
-	<target name="upload-logdoc" depends="logdoc-html">
-		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
-		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/logdoc/${version}/server" />
-		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/server on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/logdoc/${version}/server"
-		     password="${sf.password}" trust="true">
-			<fileset dir="build/logdoc/server/html" />
-		</scp>
-		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/client on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/logdoc/${version}/client" />
-		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/client on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/logdoc/${version}/client"
-		     password="${sf.password}" trust="true">
-			<fileset dir="build/logdoc/client/html" />
-		</scp>
-		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version}/common on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/logdoc/${version}/common" />
-		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version}/common on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/logdoc/${version}/common"
-		     password="${sf.password}" trust="true">
-			<fileset dir="build/logdoc/common/html" />
-		</scp>
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="rm ${www.dir}/logdoc/latest" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="ln -s ${www.dir}/logdoc/${version} ${www.dir}/logdoc/latest" />
+	<target name="do-upload-logdoc" depends="-load-sfproperties,-init">
+		<echo message="Uploading ${title} ${version} Logdoc HTML to ${www.host}" />
+
+		<!-- Create TAR GZ file for Logdoc HTML -->
+		<echo level="verbose" message="Creating TAR GZ file for Logdoc HTML" />
+		<tar tarfile="build/logdoc.tar">
+			<tarfileset dir="build/logdoc/common/html" mode="664" prefix="${version}/common" />
+			<tarfileset dir="build/logdoc/client/html" mode="664" prefix="${version}/client" />
+			<tarfileset dir="build/logdoc/server/html" mode="664" prefix="${version}/server" />
+		</tar>
+		<gzip src="build/logdoc.tar" zipfile="build/logdoc.tgz" />
+		<delete file="build/logdoc.tar" />
+
+		<!-- Copy to remote host -->
+		<echo level="verbose" message="Copying TAR GZ file for Logdoc HTML" />
+		<scp todir="${www.target}/logdoc" password="${sf.password}" trust="true" file="build/logdoc.tgz" />
+
+		<!-- Remotely: Unpack and create symbolic link -->
+		<echo level="verbose" message="Unpacking TAR GZ file for Logdoc HTML remotely" />
+		<sshexec host="${www.host}" username="${sf.user}"
+			password="${sf.password}" trust="true"
+			command="cd ${www.dir}/logdoc &amp;&amp; tar zxf logdoc.tgz &amp;&amp; rm logdoc.tgz &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
+
+	<target name="upload-logdoc" depends="logdoc-html,do-upload-logdoc" />
 
 	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
 		<antcall target="-logdoc-java">
@@ -561,37 +552,30 @@
 		</antcall>
 	</target>
 
-	<target name="upload-javadoc" depends="-init,javadoc,javadoc-private" description="Uploads the Javadoc documentation to the webserver">
-		<echo message="Uploading ${title} ${version} API docs to ${www.host}" />
+	<target name="do-upload-javadoc" depends="-load-sfproperties,-init" description="Uploads the Javadoc documentation to the webserver">
+		<echo message="Uploading ${title} ${version} Javadoc to ${www.host}" />
 
-		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/javadoc/${version}" />
-		<echo level="verbose" message="Copying files to ${www.dir}/javadoc/${version} on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/javadoc/${version}"
-		     password="${sf.password}" trust="true">
-			<fileset dir="docs/javadoc" />
-		</scp>
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="rm ${www.dir}/javadoc/latest" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="ln -s ${www.dir}/javadoc/${version} ${www.dir}/javadoc/latest" />
+		<!-- Create TAR GZ file for Javadoc -->
+		<echo level="verbose" message="Creating TAR GZ file for Logdoc HTML" />
+		<tar tarfile="build/javadoc.tar">
+			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
+			<tarfileset dir="docs/javadoc-private" mode="664" dirmode="775" prefix="javadoc-private/${version}" />
+		</tar>
+		<gzip src="build/javadoc.tar" zipfile="build/javadoc.tgz" />
+		<delete file="build/javadoc.tar" />
 
-		<echo level="verbose" message="Creating directory ${www.dir}/javadoc-private/${version} on ${www.host}" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="mkdir -p ${www.dir}/javadoc-private/${version}" />
-		<echo level="verbose" message="Copying files to ${www.dir}/javadoc-private/${version} on ${www.host}" />
-		<!-- TODO: Send compressed archive and unpack remotely -->
-		<scp todir="${www.target}/javadoc-private/${version}"
-		     password="${sf.password}" trust="true">
-			<fileset dir="docs/javadoc-private" />
-		</scp>
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="rm ${www.dir}/javadoc-private/latest" />
-		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
-		         command="ln -s ${www.dir}/javadoc-private/${version} ${www.dir}/javadoc-private/latest" />
+		<!-- Copy to remote host -->
+		<echo level="verbose" message="Copying TAR GZ file for Javadoc" />
+		<scp todir="${www.target}/" password="${sf.password}" trust="true" file="build/javadoc.tgz" />
+
+		<!-- Remotely: unpack and create symbolic links -->
+		<echo level="verbose" message="Unpacking TAR GZ file for Javadoc remotely" />
+		<sshexec host="${www.host}" username="${sf.user}"
+			password="${sf.password}" trust="true"
+			command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp; cd ../javadoc-private &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
+
+	<target name="upload-javadoc" depends="javadoc,javadoc-private,do-upload-javadoc" description="Generates and then uploads the Javadoc documentation to the webserver" />
 
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
 
