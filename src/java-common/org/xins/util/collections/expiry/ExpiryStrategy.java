@@ -39,6 +39,8 @@ public final class ExpiryStrategy extends Object {
     */
    private ExpiryStrategy(long timeOut, long precision)
    throws IllegalArgumentException {
+
+      // Check preconditions
       if (timeOut < 1 || precision < 1) {
          if (timeOut < 1 && precision < 1) {
             throw new IllegalArgumentException("timeOut (" + timeOut + ") < 1 && precision (" + precision + ") < 1");
@@ -51,8 +53,16 @@ public final class ExpiryStrategy extends Object {
          throw new IllegalArgumentException("timeOut < precision");
       }
 
+      // Determine number of slots
+      long slotCount = timeOut / precision;
+      if ((precision % precision) > 0) {
+         slotCount++;
+      }
+
+      // Store data
       _timeOut   = timeOut;
       _precision = precision;
+      _slotCount = (int) slotCount;
    }
 
 
@@ -69,6 +79,12 @@ public final class ExpiryStrategy extends Object {
     * The time-out precision, in milliseconds.
     */
    public final long _precision;
+
+   /**
+    * The number of slots that should be used by expiry collections that use
+    * this strategy.
+    */
+   public final int _slotCount;
 
 
    //-------------------------------------------------------------------------
@@ -93,5 +109,16 @@ public final class ExpiryStrategy extends Object {
     */
    public final long getPrecision() {
       return _precision;
+   }
+
+   /**
+    * Returns the number of slots that should be used by expiry collections
+    * that use this strategy.
+    *
+    * @return
+    *    the slot count, always &gt;= 1.
+    */
+   public final int getSlotCount() {
+      return _slotCount;
    }
 }
