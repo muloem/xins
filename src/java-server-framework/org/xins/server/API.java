@@ -545,10 +545,45 @@ implements DefaultResultCodes {
          try {
             m.bootstrap(_buildSettings);
             log.info("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
+         } catch (MissingRequiredPropertyException exception) {
+            throw exception;
+         } catch (InvalidPropertyValueException exception) {
+            throw exception;
+         } catch (BootstrapException exception) {
+            throw exception;
          } catch (Throwable exception) {
             buffer.clear();
             buffer.append("Failed to bootstrap manageable object of class ");
             buffer.append(className);
+            buffer.append(" for ");
+            buffer.append(_name);
+            buffer.append(" API ");
+            buffer.append(APIServlet.dueToUnexpected(exception));
+            String message = buffer.toString();
+            log.error(message, exception);
+            throw new BootstrapException(message);
+         }
+      }
+
+      // Bootstrap all functions
+      count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function f = (Function) _functionList.get(i);
+         String functionName = f.getName();
+         log.debug("Bootstrapping function " + functionName + " for " + _name + " API.");
+         try {
+            f.bootstrap(_buildSettings);
+            log.debug("Bootstrapped function " + functionName + " for " + _name +  " API.");
+         } catch (MissingRequiredPropertyException exception) {
+            throw exception;
+         } catch (InvalidPropertyValueException exception) {
+            throw exception;
+         } catch (BootstrapException exception) {
+            throw exception;
+         } catch (Throwable exception) {
+            buffer.clear();
+            buffer.append("Failed to bootstrap function ");
+            buffer.append(functionName);
             buffer.append(" for ");
             buffer.append(_name);
             buffer.append(" API ");
@@ -599,14 +634,19 @@ implements DefaultResultCodes {
     * @param runtimeSettings
     *    the runtime configuration settings, cannot be <code>null</code>.
     *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is missing.
+    *
     * @throws InvalidPropertyValueException
-    *    if the initialization failed.
+    *    if a property has an invalid value.
     *
     * @throws InitializationException
-    *    if the initialization failed.
+    *    if the initialization failed for some other reason.
     */
    protected final void initImpl(PropertyReader runtimeSettings)
-   throws InvalidPropertyValueException, InitializationException {
+   throws MissingRequiredPropertyException,
+          InvalidPropertyValueException,
+          InitializationException {
 
       // TODO: Check state
 
@@ -657,9 +697,43 @@ implements DefaultResultCodes {
          try {
             m.init(runtimeSettings);
             log.info("Initialized manageable object of class " + className + " for " + _name + " API.");
+         } catch (MissingRequiredPropertyException exception) {
+            throw exception;
+         } catch (InvalidPropertyValueException exception) {
+            throw exception;
+         } catch (InitializationException exception) {
+            throw exception;
          } catch (Throwable exception) {
             FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize manageable object of class ");
             buffer.append(className);
+            buffer.append(" for ");
+            buffer.append(_name);
+            buffer.append(" API ");
+            buffer.append(APIServlet.dueToUnexpected(exception));
+            String message = buffer.toString();
+            log.error(message, exception);
+            throw new InitializationException(message);
+         }
+      }
+
+      // Initialize all functions
+      count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function f = (Function) _functionList.get(i);
+         String functionName = f.getName();
+         log.debug("Initializing function " + functionName + " for " + _name + " API.");
+         try {
+            f.init(runtimeSettings);
+            log.info("Initialized function " + functionName + " for " + _name + " API.");
+         } catch (MissingRequiredPropertyException exception) {
+            throw exception;
+         } catch (InvalidPropertyValueException exception) {
+            throw exception;
+         } catch (InitializationException exception) {
+            throw exception;
+         } catch (Throwable exception) {
+            FastStringBuffer buffer = new FastStringBuffer(100, "Failed to initialize function ");
+            buffer.append(functionName);
             buffer.append(" for ");
             buffer.append(_name);
             buffer.append(" API ");
@@ -742,6 +816,21 @@ implements DefaultResultCodes {
             Library.SHUTDOWN_LOG.info("Deinitialized manageable object of class " + className + " for " + _name + " API.");
          } catch (DeinitializationException exception) {
             Library.SHUTDOWN_LOG.error("Failed to deinitialize manageable object of class " + className + " for " + _name + " API.", exception);
+         }
+      }
+
+      // Deinitialize functions
+      count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function f = (Function) _functionList.get(i);
+
+         String functionName = f.getName();
+
+         try {
+            f.deinit();
+            Library.SHUTDOWN_LOG.info("Deinitialized function " + functionName + " for " + _name + " API.");
+         } catch (DeinitializationException exception) {
+            Library.SHUTDOWN_LOG.error("Failed to deinitialize function " + functionName + " for " + _name + " API.", exception);
          }
       }
    }
