@@ -380,7 +380,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
    /**
     * Constructs a new <code>CAPI</code> object, using the specified
-    * <code>Descriptor</code>, with the specified call configuration.
+    * <code>Descriptor</code>, with a specific call configuration.
     *
     * @param descriptor
     *    the descriptor for the service(s), cannot be <code>null</code>.
