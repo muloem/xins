@@ -11,11 +11,15 @@
 	<messageset id="en_US" />
 	<messageset id="nl_NL" />
 
-	<entry id="0" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+	<entry id="0" level="DEBUG" category="org.xins.server.lifespan">
 		<description>State change in APIServlet instance.</description>
 		<param name="oldState" />
 		<param name="newState" />
 	</entry>
+
+
+	<!-- Bootstrapping -->
+
 	<entry id="100" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrapping XINS/Java Server Framework.</description>
 	</entry>
@@ -74,6 +78,9 @@
 		<param name="exceptionMessage" />
 	</entry>
 
+
+	<!-- Logging subsystem -->
+
 	<entry id="150" level="DEBUG" category="org.xins.server.log">
 		<description>Initializing logging subsystem.</description>
 	</entry>
@@ -102,10 +109,6 @@
 	<entry id="160" level="DEBUG" category="org.xins.server.log">
 		<description>Logging subsystem has been properly initialized.</description>
 	</entry>
-
-	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
-		<description>XINS/Java Server Framework initialized or re-initialized.</description>
-	</entry>
 	<entry id="201" level="INFO" category="org.xins.server.log">
 		<description>About to change locale for the log messages.</description>
 		<param name="oldLocale" />
@@ -122,6 +125,13 @@
 		<param name="failedLocale" />
 	</entry>
 
+
+	<!-- Initialization -->
+
+	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
+		<description>Configuration file modified. Re-initializing XINS/Java Server Framework.</description>
+		<param name="configFile" />
+	</entry>
 	<entry id="250" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Configuration file watch interval not specified, using fallback default.</description>
 		<param name="configFile" />
@@ -150,5 +160,19 @@
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
+	</entry>
+	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
+		<description>XINS/Java Server Framework initialized or re-initialized.</description>
+	</entry>
+	<entry id="300" level="NOTICE" category="org.xins.server.lifespan.shutdown">
+		<description>Shutting down XINS/Java Server Framework.</description>
+	</entry>
+	<entry id="305" level="ERROR" category="org.xins.server.lifespan.shutdown">
+		<description>Deinitialization of API triggered an exception.</description>
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="310" level="NOTICE" category="org.xins.server.lifespan.shutdown">
+		<description>XINS/Java Server Framework shutdown completed.</description>
 	</entry>
 </log>
