@@ -49,8 +49,7 @@
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
 		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
-		<property name="src-package-tarfile" value="${name}-${version}.tar" />
-		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
+		<property name="package-tarfile" value="${name}-${version}.tar" />
 		<property name="www.user"            value="znerd" />
 		<property name="cvs.module"          value="${name}" />
 		<property name="www.host"            value="${name}.sourceforge.net" />
@@ -441,44 +440,8 @@
 		</exec>
 	</target>
 
-	<target name="src-package" depends="-prepare" description="Builds an archive with source files and dependencies">
-		<tar tarfile="build/${src-package-tarfile}">
-			<tarfileset
-			dir="${basedir}"
-			prefix="${name}-${version}"
-			mode="644">
-				<include name="build.xml"                      />
-				<include name=".version.properties"            />
-				<include name="CHANGES"                        />
-				<include name="COPYRIGHT"                      />
-				<include name="README"                         />
-				<include name="TODO"                           />
-				<include name="src/ant/**/*"                   />
-				<include name="src/bin/xins.bat"               />
-				<include name="src/config/**/*"                />
-				<include name="src/css/**/*"                   />
-				<include name="src/demos/**/*"                 />
-				<include name="src/java-client-framework/**/*" />
-				<include name="src/java-common/**/*"           />
-				<include name="src/java-server-framework/**/*" />
-				<include name="src/package-lists/**/*"         />
-				<include name="src/xml/**/*"                   />
-				<include name="src/xslt/**/*"                  />
-				<include name="depends/**/*"                   />
-			</tarfileset>
-			<tarfileset
-			dir="${basedir}"
-			prefix="${name}-${version}"
-			mode="755">
-				<include name="src/bin/xins" />
-			</tarfileset>
-		</tar>
-		<gzip zipfile="build/${src-package-tarfile}.gz" src="build/${src-package-tarfile}" />
-		<delete file="build/${src-package-tarfile}" />
-	</target>
-
-	<target name="bin-package" depends="javadoc,java-server-framework,java-client-framework" description="Builds a complete distribution archive">
-		<tar tarfile="build/${bin-package-tarfile}">
+	<target name="package" depends="javadoc,java-server-framework,java-client-framework" description="Builds a complete distribution archive">
+		<tar tarfile="build/${package-tarfile}">
 			<tarfileset
 			dir="${basedir}"
 			prefix="${name}-${version}"
@@ -511,22 +474,19 @@
 				<include name="src/bin/xins" />
 			</tarfileset>
 		</tar>
-		<gzip zipfile="build/${bin-package-tarfile}.gz" src="build/${bin-package-tarfile}" />
-		<delete file="build/${bin-package-tarfile}" />
+		<gzip zipfile="build/${package-tarfile}.gz" src="build/${package-tarfile}" />
+		<delete file="build/${package-tarfile}" />
 	</target>
 
-	<target name="packages" depends="src-package,bin-package" description="Build all distribution archives"/>
-
-	<target name="do-upload-packages" depends="-init" description="Uploads the packages to the web server">
-		<echo message="Uploading ${title} ${version} packages to ${www.host}" />
+	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
+		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="${src-package-tarfile}.gz" />
-			<arg value="${bin-package-tarfile}.gz" />
+			<arg value="${package-tarfile}.gz" />
 			<arg value="${www.target}" />
 		</exec>
 	</target>
 
-	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
+	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
 
 	<target name="-check-version-suffix" depends="-init">
 		<condition property="version.suffix.set">
@@ -586,7 +546,7 @@
 
 	<target
 	name="release"
-	depends="-prepare-release,upload-changes,upload-jars,upload-packages,upload-javadoc,upload-checkstyle"
+	depends="-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor" type="int" operation="+" value="1"    />
