@@ -145,6 +145,10 @@
 			href="http://jakarta.apache.org/log4j/docs/api/"
 			offline="true"
 			packagelistloc="src/package-lists/log4j/" />
+			<link
+			href="http://jakarta.apache.org/commons/logging/api/"
+			offline="true"
+			packagelistloc="src/package-lists/commons-logging/" />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
