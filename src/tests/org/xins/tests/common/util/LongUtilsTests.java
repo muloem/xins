@@ -74,31 +74,31 @@ public class LongUtilsTests extends TestCase {
    public void testToHexString() throws Throwable {
    }
 
-   public void testParseHexString() throws Throwable {
+   public void testParseHexString_String() throws Throwable {
 
       // Pass arguments that should trigger failure
-      doTestParseHexString(null,                           0L);
-      doTestParseHexString("",                             0L);
-      doTestParseHexString("1",                            0L);
-      doTestParseHexString("0",                            0L);
-      doTestParseHexString("123456789012345",              0L);
-      doTestParseHexString("12345678901234567",            0L);
-      doTestParseHexString("123456789012345g",             0L);
-      doTestParseHexString("0000000000000000",             0L);
-      doTestParseHexString("0000000000000001",             1L);
-      doTestParseHexString("0000000000000002",             2L);
-      doTestParseHexString("0000000000000003",             3L);
-      doTestParseHexString("000000000000000f",             0xfL);
-      doTestParseHexString("00000000000000ff",             0xffL);
-      doTestParseHexString("1234567890123456",             0x1234567890123456L);
-      doTestParseHexString("123456789012345a",             0x123456789012345aL);
-      doTestParseHexString(String.valueOf(Long.MAX_VALUE), Long.MAX_VALUE);
-      doTestParseHexString("ffffffffffffffff",             -1L);
-      doTestParseHexString("fffffffffffffffe",             -2L);
-      doTestParseHexString(String.valueOf(Long.MIN_VALUE), Long.MIN_VALUE);
+      doTestParseHexString_String(null,                           0L);
+      doTestParseHexString_String("",                             0L);
+      doTestParseHexString_String("1",                            0L);
+      doTestParseHexString_String("0",                            0L);
+      doTestParseHexString_String("123456789012345",              0L);
+      doTestParseHexString_String("12345678901234567",            0L);
+      doTestParseHexString_String("123456789012345g",             0L);
+      doTestParseHexString_String("0000000000000000",             0L);
+      doTestParseHexString_String("0000000000000001",             1L);
+      doTestParseHexString_String("0000000000000002",             2L);
+      doTestParseHexString_String("0000000000000003",             3L);
+      doTestParseHexString_String("000000000000000f",             0xfL);
+      doTestParseHexString_String("00000000000000ff",             0xffL);
+      doTestParseHexString_String("1234567890123456",             0x1234567890123456L);
+      doTestParseHexString_String("123456789012345a",             0x123456789012345aL);
+      doTestParseHexString_String(String.valueOf(Long.MAX_VALUE), Long.MAX_VALUE);
+      doTestParseHexString_String("ffffffffffffffff",             -1L);
+      doTestParseHexString_String("fffffffffffffffe",             -2L);
+      doTestParseHexString_String(String.valueOf(Long.MIN_VALUE), Long.MIN_VALUE);
    }
 
-   private void doTestParseHexString(String arg, long expected) {
+   private void doTestParseHexString_String(String arg, long expected) {
 
       boolean illegalArg = (arg == null || arg.length() != 16);
       boolean invalidNumberFormat = false;
