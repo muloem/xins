@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.123:
+
+* Generation of Java fundament classes:
+  - Fixed problem in api_to_java.xslt, introduced in XINS 0.122.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.122:
 
 * Generation of Java classes for types:
