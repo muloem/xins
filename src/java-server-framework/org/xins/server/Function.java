@@ -27,6 +27,13 @@ implements DefaultResultCodes {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Call result to be returned when a function is currently disabled. See
+    * {@link #isEnabled()}.
+    */
+   private static final CallResult DISABLED_FUNCTION_RESULT = new BasicCallResult("_DisabledFunction", null, null);
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -208,59 +215,52 @@ implements DefaultResultCodes {
       // Assign a call ID
       int callID = assignCallID();
 
-      CallResult result;
-
       // Check if this function is enabled
       if (!_enabled) {
-         result = new BasicCallResult(_name, "_DisabledFunction", null, null);
-
-      // The function is enabled, so call it
-      } else {
-
-         // Construct a CallContext object
-         CallContext context = new CallContext(request, start, this, callID);
-
-         try {
-
-            FunctionResult functionResult = handleCall(context);
-            result = functionResult.getCallResult();
-
-         } catch (Throwable exception) {
-
-            // TODO: Allow customization of what exceptions are logged?
-            Log.log_1513(exception, _name, callID);
-
-            // Create a set of parameters for the result
-            BasicPropertyReader parameters = new BasicPropertyReader();
-
-            // Add the exception class
-            parameters.set("_exception.class", exception.getClass().getName());
-
-            // Add the exception message, if any
-            String exceptionMessage = exception.getMessage();
-            if (exceptionMessage != null && exceptionMessage.length() > 0) {
-               parameters.set("_exception.message", exceptionMessage);
-            }
-
-            // Add the stack trace, if any
-            FastStringWriter stWriter = new FastStringWriter();
-            PrintWriter printWriter = new PrintWriter(stWriter);
-            exception.printStackTrace(printWriter);
-            String stackTrace = stWriter.toString();
-            if (stackTrace != null && stackTrace.length() > 0) {
-               parameters.set("_exception.stacktrace", stackTrace);
-            }
-
-            result = new BasicCallResult(_name, "_InternalError", parameters, null);
-         }
+         performedCall(start, callID, DISABLED_FUNCTION_RESULT);
+         return DISABLED_FUNCTION_RESULT;
       }
 
-      // Store the call ID and the duration in the result
-      result.setCallID(callID);
-      result.setDuration(_statistics.recordCall(start, result.isSuccess()));
+      // Construct a CallContext object
+      CallContext context = new CallContext(request, start, this, callID);
+
+      CallResult result;
+      try {
+
+         FunctionResult functionResult = handleCall(context);
+         result = functionResult.getCallResult();
+
+      } catch (Throwable exception) {
+
+         // TODO: Allow customization of what exceptions are logged?
+         Log.log_1513(exception, _name, callID);
+
+         // Create a set of parameters for the result
+         BasicPropertyReader parameters = new BasicPropertyReader();
+
+         // Add the exception class
+         parameters.set("_exception.class", exception.getClass().getName());
+
+         // Add the exception message, if any
+         String exceptionMessage = exception.getMessage();
+         if (exceptionMessage != null && exceptionMessage.length() > 0) {
+            parameters.set("_exception.message", exceptionMessage);
+         }
+
+         // Add the stack trace, if any
+         FastStringWriter stWriter = new FastStringWriter();
+         PrintWriter printWriter = new PrintWriter(stWriter);
+         exception.printStackTrace(printWriter);
+         String stackTrace = stWriter.toString();
+         if (stackTrace != null && stackTrace.length() > 0) {
+            parameters.set("_exception.stacktrace", stackTrace);
+         }
+
+         result = new BasicCallResult("_InternalError", parameters, null);
+      }
 
       // Update function statistics
-      performedCall(result);
+      performedCall(start, callID, result);
 
       return result;
    }
@@ -284,25 +284,28 @@ implements DefaultResultCodes {
     * Callback method that may be called after a call to this function. This
     * method will store statistics-related information.
     *
-    * @param result
-    *    the function result, not <code>null</code>.
+    * <p />This method does not <em>have</em> to be called. If statistics
+    * gathering is disabled, then this method should not be called.
     *
-    * @throws NullPointerException
-    *    if <code>result == null</code>.
+    * @param start
+    *    the start time, in milliseconds since January 1, 1970, not
+    *    <code>null</code>.
+    *
+    * @param callID
+    *    the assigned call ID.
+    *
+    * @param result
+    *    the function result code, cannot be <code>null</code>.
     */
-   private final void performedCall(CallResult result) {
+   private final void performedCall(long start, int callID, CallResult result) {
 
-      // XXX: Accept ResultCode?
+      // TODO: Accept ResultCode
 
       // TODO: If the Logging is moved somewhere else then
       //       the method invoking this method (performedCall) can directly
       //       invoke recordCall and this method can be removed.
 
-      // Retrieve call ID and duration
-      int  callID   = result.getCallID();
-      long duration = result.getDuration();
-
-      // TODO: Move all logging somewhere else
+      long duration = _statistics.recordCall(start, result.isSuccess());
 
       // Call succeeded
       if (result.isSuccess()) {
@@ -312,7 +315,7 @@ implements DefaultResultCodes {
       } else {
          Log.log_1516(_name, callID, duration, result.getErrorCode());
 
-         // Log the parameters
+         // log the parameters
          PropertyReader parameters = result.getParameters();
          if (parameters != null) {
             Iterator itParams = parameters.getNames();

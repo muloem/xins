@@ -14,7 +14,7 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 0.119
  */
-final class BasicCallResult extends CallResult {
+final class BasicCallResult extends Object implements CallResult {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -31,9 +31,6 @@ final class BasicCallResult extends CallResult {
    /**
     * Constructs a new <code>BasicCallResult</code> object.
     *
-    * @param functionName
-    *    the name of the called function, cannot be <code>null</code>.
-    *
     * @param code
     *    the result code, can be <code>null</code>.
     *
@@ -42,22 +39,8 @@ final class BasicCallResult extends CallResult {
     *
     * @param dataElement
     *    the data element, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
     */
-   BasicCallResult(String         functionName,
-                   String         code,
-                   PropertyReader parameters,
-                   Element        dataElement)
-   throws IllegalArgumentException {
-
-      super(functionName);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("functionName", functionName);
-
-      // Store everything
+   BasicCallResult(String code, PropertyReader parameters, Element dataElement) {
       _code        = code;
       _parameters  = parameters;
       _dataElement = dataElement;

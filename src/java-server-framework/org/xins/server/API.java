@@ -46,6 +46,11 @@ implements DefaultResultCodes {
    private static final String NOT_AVAILABLE = "N/A";
 
    /**
+    * Successful empty call result.
+    */
+   private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(null, null, null);
+
+   /**
     * The runtime (init) property that contains the ACL descriptor.
     */
    private static final String ACL_PROPERTY = "org.xins.server.acl";
@@ -655,44 +660,34 @@ implements DefaultResultCodes {
       // Detect special functions
       if (functionName.charAt(0) == '_') {
          if ("_NoOp".equals(functionName)) {
-            return new BasicCallResult(functionName, null, null, null);
+            return SUCCESSFUL_RESULT;
          } else if ("_PerformGC".equals(functionName)) {
-            return doPerformGC(functionName);
+            return doPerformGC();
          } else if ("_GetFunctionList".equals(functionName)) {
-            return doGetFunctionList(functionName);
+            return doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
             String resetArgument = request.getParameter("reset");
-            boolean reset;
-            if (resetArgument == null) {
-                reset = false;
-            } else if (resetArgument.equals("true")) {
-                reset = true;
-            } else if (resetArgument.equals("false")) {
-                reset = true;
-            } else {
-               // TODO: Return _InvalidRequest
-                reset = false;
-            }
-
-            synchronized(_statisticsLock) {
-               CallResult result = doGetStatistics(functionName);
-               if (reset) {
-                  resetStatistics();
+            if (resetArgument != null && resetArgument.equals("true")) {
+               synchronized(_statisticsLock) {
+                  CallResult result = doGetStatistics();
+                  doResetStatistics();
+                  return result;
                }
-               return result;
+            } else {
+               return doGetStatistics();
             }
          } else if ("_GetLogStatistics".equals(functionName)) {
-            return doGetLogStatistics(functionName);
+            return doGetLogStatistics();
          } else if ("_GetVersion".equals(functionName)) {
-            return doGetVersion(functionName);
+            return doGetVersion();
          } else if ("_GetSettings".equals(functionName)) {
-            return doGetSettings(functionName);
+            return doGetSettings();
          } else if ("_DisableFunction".equals(functionName)) {
-            return doDisableFunction(functionName, request);
+            return doDisableFunction(request);
          } else if ("_EnableFunction".equals(functionName)) {
-            return doEnableFunction(functionName, request);
+            return doEnableFunction(request);
          } else if ("_ResetStatistics".equals(functionName)) {
-            return doResetStatistics(functionName);
+            return doResetStatistics();
          } else {
             throw new NoSuchFunctionException(functionName);
          }
@@ -700,8 +695,8 @@ implements DefaultResultCodes {
 
       // Short-circuit if we are shutting down
       if (_shutDown) {
-         // TODO: Add message or use a more specific result code
-         return new BasicCallResult(functionName, "_InternalError", null, null);
+         // TODO: Add message
+         return new BasicCallResult("_InternalError", null, null);
       }
 
       // Get the function object
@@ -717,31 +712,25 @@ implements DefaultResultCodes {
    /**
     * Performs garbage collection.
     *
-    * @param functionName
-    *    the function name, cannot be <code>null</code>.
-    *
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doPerformGC(String functionName) {
+   private final CallResult doPerformGC() {
       System.gc();
-      return new BasicCallResult(functionName, null, null, null);
+      return SUCCESSFUL_RESULT;
    }
 
    /**
     * Returns a list of all functions in this API. Per function the name and
     * the version are returned.
     *
-    * @param functionName
-    *    the name of the function, never <code>null</code>.
-    *
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetFunctionList(String functionName) {
+   private final CallResult doGetFunctionList() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder(functionName);
+      CallResultBuilder builder = new CallResultBuilder();
 
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
@@ -762,10 +751,10 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetStatistics(String functionName) {
+   private final CallResult doGetStatistics() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder(functionName);
+      CallResultBuilder builder = new CallResultBuilder();
 
       builder.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
       builder.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
@@ -920,10 +909,10 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetLogStatistics(String functionName) {
+   private final CallResult doGetLogStatistics() {
 
       // Initialize a builder
-      CallResultBuilder builder = new CallResultBuilder(functionName);
+      CallResultBuilder builder = new CallResultBuilder();
       builder.startTag("statistics");
 
       LogStatistics.Entry[] entries = Log.getStatistics().getEntries();
@@ -947,9 +936,9 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetVersion(String functionName) {
+   private final CallResult doGetVersion() {
 
-      CallResultBuilder builder = new CallResultBuilder(functionName);
+      CallResultBuilder builder = new CallResultBuilder();
 
       builder.param("java.version",   System.getProperty("java.version"));
       builder.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
@@ -964,9 +953,9 @@ implements DefaultResultCodes {
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doGetSettings(String functionName) {
+   private final CallResult doGetSettings() {
 
-      CallResultBuilder builder = new CallResultBuilder(functionName);
+      CallResultBuilder builder = new CallResultBuilder();
 
       // Build settings
       Iterator names = _buildSettings.getNames();
@@ -1018,9 +1007,6 @@ implements DefaultResultCodes {
    /**
     * Enables a function.
     *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
     * @param request
     *    the servlet request, cannot be <code>null</code>.
     *
@@ -1030,34 +1016,31 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doEnableFunction(String functionName, ServletRequest request)
+   private final CallResult doEnableFunction(ServletRequest request)
    throws NullPointerException {
 
       // Get the name of the function to enable
-      String toEnable = request.getParameter("functionName");
-      if (toEnable == null || toEnable.length() < 1) {
-         InvalidRequestResult invalidRequest = new InvalidRequestResult(functionName);
+      String functionName = request.getParameter("functionName");
+      if (functionName == null || functionName.length() < 1) {
+         InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
          return invalidRequest.getCallResult();
       }
 
       // Get the Function object
-      Function function = getFunction(toEnable);
+      Function function = getFunction(functionName);
       if (function == null) {
-         return new InvalidRequestResult(functionName).getCallResult();
+         return new InvalidRequestResult().getCallResult();
       }
 
       // Enable or disable the function
       function.setEnabled(true);
 
-      return new BasicCallResult(functionName, null, null, null);
+      return SUCCESSFUL_RESULT;
    }
 
    /**
     * Disables a function.
-    *
-    * @param functionName
-    *    the name of this function, cannot be <code>null</code>.
     *
     * @param request
     *    the servlet request, cannot be <code>null</code>.
@@ -1068,50 +1051,43 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   private final CallResult doDisableFunction(String functionName, ServletRequest request)
+   private final CallResult doDisableFunction(ServletRequest request)
    throws NullPointerException {
 
       // Get the name of the function to disable
-      String toDisable = request.getParameter("functionName");
-      if (toDisable == null || toDisable.length() < 1) {
-         InvalidRequestResult invalidRequest = new InvalidRequestResult(functionName);
+      String functionName = request.getParameter("functionName");
+      if (functionName == null || functionName.length() < 1) {
+         InvalidRequestResult invalidRequest = new InvalidRequestResult();
          invalidRequest.addMissingParameter("functionName");
          return invalidRequest.getCallResult();
       }
 
       // Get the Function object
-      Function function = getFunction(toDisable);
+      Function function = getFunction(functionName);
       if (function == null) {
-         return new InvalidRequestResult(functionName).getCallResult();
+         return new InvalidRequestResult().getCallResult();
       }
 
       // Enable or disable the function
       function.setEnabled(false);
 
-      return new BasicCallResult(functionName, null, null, null);
+      return SUCCESSFUL_RESULT;
    }
 
    /**
     * Resets the statistics.
     *
-    * @param functionName
-    *    the function name, cannot be <code>null</code>.
-    *
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final CallResult doResetStatistics(String functionName) {
-      resetStatistics();
-      return new BasicCallResult(functionName, null, null, null);
-   }
-
-   // TODO: Document
-   private final void resetStatistics() {
-
+   private final CallResult doResetStatistics() {
+      // Function-specific statistics
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
          function.getStatistics().resetStatistics();
       }
+      return SUCCESSFUL_RESULT;
    }
+
 }

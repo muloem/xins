@@ -101,7 +101,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
  *
  * @since XINS 0.119
  */
-final class CallResultBuilder extends CallResult {
+final class CallResultBuilder extends Object implements CallResult {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -146,16 +146,8 @@ final class CallResultBuilder extends CallResult {
 
    /**
     * Constructs a new <code>CallResultBuilder</code> object.
-    *
-    * @param functionName
-    *    the name of the called function, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
     */
-   CallResultBuilder(String functionName) throws IllegalArgumentException {
-      super(functionName);
-
+   CallResultBuilder() {
       _state = BEFORE_START;
    }
 
@@ -168,11 +160,6 @@ final class CallResultBuilder extends CallResult {
     * Current state.
     */
    private State _state;
-
-   /**
-    * The function call ID.
-    */
-   private int _callID;
 
    /**
     * The result code. This field is <code>null</code> if no code was

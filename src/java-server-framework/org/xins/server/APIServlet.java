@@ -760,7 +760,6 @@ extends HttpServlet {
       // If there is no diagnostic context ID, then generate one.
       if ((contextID == null) || (contextID.length() < 1)) {
          contextID = generateContextID();
-         // TODO: Log the generation of the diagnostic context ID
       }
 
       // Associate the context ID with this thread
@@ -876,9 +875,6 @@ extends HttpServlet {
          CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt);
          out.flush();
       }
-
-      // Transaction log
-      Log.log_1540(ip, result.getFunctionName(), result.getCallID(), start, result.getDuration(), result.getErrorCode());
    }
 
    /**

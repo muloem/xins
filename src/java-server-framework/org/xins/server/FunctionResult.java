@@ -29,8 +29,8 @@ public class FunctionResult extends Object {
     * @param code
     *    the error code, can be <code>null</code>.
     */
-   public FunctionResult(String functionName, String code) {
-      _builder = new CallResultBuilder(functionName);
+   public FunctionResult(String code) {
+      _builder = new CallResultBuilder();
       _builder.startResponse(code);
    }
 

@@ -8,9 +8,8 @@ package org.xins.server;
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public final class InvalidResponseResult extends FunctionResult {
+public class InvalidResponseResult extends FunctionResult {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -24,20 +23,9 @@ public final class InvalidResponseResult extends FunctionResult {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /**
-    * Constructs a new <code>InvalidResponseResult</code> for the specified
-    * function.
-    *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    */
-   public InvalidResponseResult(String functionName) {
-      super(functionName, DefaultResultCodes._INVALID_RESPONSE.getValue());
+   public InvalidResponseResult() {
+      super(DefaultResultCodes._INVALID_RESPONSE.getValue());
    }
-
 
    //-------------------------------------------------------------------------
    // Fields
