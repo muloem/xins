@@ -10,6 +10,7 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="api"          />
 
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
@@ -21,8 +22,9 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:include href="../header.xslt" />
-	<xsl:include href="../footer.xslt" />
+	<xsl:include href="../header.xslt"    />
+	<xsl:include href="../footer.xslt"    />
+	<xsl:include href="../types.xslt"     />
 	<xsl:include href="../urlencode.xslt" />
 
 	<xsl:template match="type">
@@ -94,11 +96,11 @@
 					</table>
 				</xsl:if>
 
-				<xsl:if test="not(enum or pattern)">
+				<xsl:if test="not(enum or pattern or properties)">
 					<xsl:message terminate="yes">
 						<xsl:text>Type </xsl:text>
 						<xsl:value-of select="@name" />
-						<xsl:text> defines neither an enum nor a pattern.</xsl:text>
+						<xsl:text> defines neither an enum nor a pattern nor properties.</xsl:text>
 					</xsl:message>
 				</xsl:if>
 
@@ -110,8 +112,25 @@
 					</xsl:message>
 				</xsl:if>
 
-				<xsl:apply-templates select="enum" />
-				<xsl:apply-templates select="pattern" />
+				<xsl:if test="enum and properties">
+					<xsl:message terminate="yes">
+						<xsl:text>Type </xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text> defines both an enum and properties.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+
+				<xsl:if test="pattern and properties">
+					<xsl:message terminate="yes">
+						<xsl:text>Type </xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text> defines both an pattern and properties.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+
+				<xsl:apply-templates select="enum"       />
+				<xsl:apply-templates select="pattern"    />
+				<xsl:apply-templates select="properties" />
 
 				<xsl:call-template name="footer" />
 			</body>
@@ -136,7 +155,9 @@
 
 	<xsl:template match="pattern">
 		<p />
-		<xsl:text>This is a pattern type. Allowed values must match the following pattern:</xsl:text>
+		<xsl:text>This is a </xsl:text>
+		<em>pattern type</em>
+		<xsl:text>. Allowed values must match the following pattern:</xsl:text>
 		<blockquote>
 			<code>
 				<xsl:value-of select="text()" />
@@ -155,6 +176,25 @@
 			</a>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="properties">
+		<p />
+		<xsl:text>This is a </xsl:text>
+		<em>properties type</em>
+		<xsl:text>. Property names must conform to the </xsl:text>
+		<xsl:call-template name="typelink">
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="type"     select="@nameType" />
+		</xsl:call-template>
+		<xsl:text> type. Property values must conform to the </xsl:text>
+		<xsl:call-template name="typelink">
+			<xsl:with-param name="api"      select="$api"       />
+			<xsl:with-param name="specsdir" select="$specsdir"  />
+			<xsl:with-param name="type"     select="@valueType" />
+		</xsl:call-template>
+		<xsl:text> type.</xsl:text>
 	</xsl:template>
 
 	<xsl:template name="extends_tree">
