@@ -27,6 +27,7 @@
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../footer.xslt" />
 	<xsl:include href="../firstline.xslt" />
+	<xsl:include href="../types.xslt" />
 
 	<xsl:variable name="env_url" select="document($api_file)/api/environment[@id=$environment]/@url" />
 
@@ -149,13 +150,13 @@
 
 		<xsl:variable name="isenum">
 			<xsl:choose>
+				<xsl:when test="starts-with($type, '_')">false</xsl:when> <!-- TODO -->
 				<xsl:when test="document($type_file)/type/enum">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
 		<!-- TODO: Deprecated parameters -->
-		<!-- TODO: Move 'typelink' template to typelink.xslt? -->
 
 		<tr>
 			<td class="name">
@@ -173,7 +174,9 @@
 				</span>
 				<xsl:text> (</xsl:text>
 				<xsl:call-template name="typelink">
-					<xsl:with-param name="type" select="$type" />
+					<xsl:with-param name="api"      select="$api" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="$type" />
 				</xsl:call-template>
 				<xsl:text>)</xsl:text>
 			</td>
@@ -226,45 +229,4 @@
 			</td>
 		</tr>
 	</xsl:template>
-
-	<xsl:template name="typelink">
-		<xsl:param name="type" />
-
-		<xsl:variable name="type_file">
-			<xsl:value-of select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
-		</xsl:variable>
-
-		<xsl:variable name="type_url">
-			<xsl:text>../types/</xsl:text>
-			<xsl:value-of select="$type" />
-			<xsl:text>.html</xsl:text>
-		</xsl:variable>
-
-		<xsl:variable name="type_title">
-			<xsl:call-template name="firstline">
-				<xsl:with-param name="text">
-					<xsl:value-of select="document($type_file)/type/description/text()" />
-				</xsl:with-param>
-			</xsl:call-template>
-		</xsl:variable>
-
-		<xsl:if test="not(boolean(document($type_file)))">
-			<xsl:message terminate="yes">
-				<xsl:text>The type '</xsl:text>
-				<xsl:value-of select="$type" />
-				<xsl:text>' does not exist.</xsl:text>
-			</xsl:message>
-		</xsl:if>
-
-		<a>
-			<xsl:attribute name="href">
-				<xsl:value-of select="$type_url" />
-			</xsl:attribute>
-			<xsl:attribute name="title">
-				<xsl:value-of select="$type_title" />
-			</xsl:attribute>
-			<xsl:value-of select="$type" />
-		</a>
-	</xsl:template>
-
 </xsl:stylesheet>
