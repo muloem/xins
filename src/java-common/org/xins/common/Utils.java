@@ -100,6 +100,8 @@ public final class Utils extends Object {
     *
     * @return
     *    the actual Java version, never <code>null</code>.
+    *
+    * @since XINS 1.2.0
     */
    public static final JavaVersion getJavaVersion() {
       return JAVA_VERSION;
