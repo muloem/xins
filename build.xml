@@ -460,7 +460,7 @@
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc/${version} on ${www.host}" />
 		<scp todir="${www.target}/javadoc/${version}"
 		     password="${sf.password}" trust="true">
-			<fileset dir="build/javadoc" />
+			<fileset dir="docs/javadoc" />
 		</scp>
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="rm ${www.dir}/javadoc/latest" />
@@ -473,7 +473,7 @@
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc-private/${version} on ${www.host}" />
 		<scp todir="${www.target}/javadoc-private/${version}"
 		     password="${sf.password}" trust="true">
-			<fileset dir="build/javadoc-private" />
+			<fileset dir="docs/javadoc-private" />
 		</scp>
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
 		         command="rm ${www.dir}/javadoc-private/latest" />
@@ -595,7 +595,13 @@
 			<include name="src/package-lists/**/*"         />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
-			<include name="lib/*.LICENSE"                  />
+			<include name="lib/apache.LICENSE"    />
+			<include name="lib/commons-httpclient.LICENSE" />
+			<include name="lib/commons-logging.LICENSE"    />
+			<include name="lib/jakarta-oro.LICENSE"        />
+			<include name="lib/jdom.LICENSE"               />
+			<include name="lib/log4j.LICENSE"              />
+			<include name="lib/xmlenc.LICENSE"             />
 			<include name="docs/*.html"                    />
 			<include name="docs/*.css"                     />
 			<include name="docs/javadoc/**/*.html"         />
@@ -634,13 +640,12 @@
 			mode="644">
 				<include name="build/*.jar"                    />
 				<include name="docs/XINSGuide.pdf"             />
-				<include name="lib/apache.LICENSE"             />
-				<include name="lib/commons-httpclient.*"       />
-				<include name="lib/commons-logging.*"          />
-				<include name="lib/jakarta-oro.*"              />
-				<include name="lib/jdom.*"                     />
-				<include name="lib/log4j.*"                    />
-				<include name="lib/xmlenc.*"                   />
+				<include name="lib/commons-httpclient.jar"     />
+				<include name="lib/commons-logging.jar"        />
+				<include name="lib/jakarta-oro.jar"            />
+				<include name="lib/jdom.jar"                   />
+				<include name="lib/log4j.jar"                  />
+				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />
 			</tarfileset>
 			<tarfileset
