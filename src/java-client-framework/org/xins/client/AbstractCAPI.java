@@ -111,6 +111,8 @@ public abstract class AbstractCAPI extends Object {
     *    if one of the properties in the specified properties set is used to
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
+    *
+    * @since XINS 1.2.0
     */
    protected AbstractCAPI(PropertyReader properties, String apiName)
    throws IllegalArgumentException,
@@ -124,32 +126,21 @@ public abstract class AbstractCAPI extends Object {
       // TODO: Check validity of API name
 
       // Determine property name
-      String propertyName = "capis." + apiName;
+      final String propName = "capis." + apiName;
+
+      // Construct a XINS caller object
+      _caller = new XINSServiceCaller();
 
       // Build a descriptor from the properties
-      Descriptor descriptor = DescriptorBuilder.build(properties, propertyName);
+      Descriptor descriptor = DescriptorBuilder.build(_caller,
+                                                      properties,
+                                                      propName);
 
-      // Construct a new XINSServiceCaller
-      try {
-         _caller = new XINSServiceCaller(descriptor);
-         _caller.setCAPI(this);
+      // Associate caller with descriptor
+      _caller.setDescriptor(descriptor);
 
-      // Invalid property value due to unsupported protocol
-      } catch (UnsupportedProtocolException cause) {
-         // TODO: Use correct property name for specific target descriptor
-         // TODO: Use correct property value for specific target descriptor
-         org.xins.common.service.TargetDescriptor target = cause.getTargetDescriptor();
-         final String PROPERTY_VALUE = properties.get(propertyName);
-         final String DETAIL         = "Protocol in URL \""
-                                     + target.getURL()
-                                     + "\" is not supported.";
-         InvalidPropertyValueException e =
-            new InvalidPropertyValueException(propertyName,
-                                              PROPERTY_VALUE,
-                                              DETAIL);
-         ExceptionUtils.setCause(e, cause);
-         throw e;
-      }
+      // Associate caller with this CAPI object
+      _caller.setCAPI(this); // TODO: Remove this
    }
 
 
