@@ -43,6 +43,7 @@
 				out="{$html_destdir}/index.html"
 				style="{$logdoc_xslt_dir}/log_to_html.xslt">
 					<xmlcatalog refid="log-dtds" />
+					<param name="package_name" expression="{$package_name}" />
 				</style>
 				<style
 				in="{$sourcedir}/log.xml"
@@ -56,6 +57,7 @@
 					out="{$html_destdir}/group-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_group_html.xslt">
 						<xmlcatalog refid="log-dtds" />
+						<param name="package_name" expression="{$package_name}" />
 						<param name="sourcedir" expression="../../{$sourcedir}" />
 						<param name="group"     expression="{@id}"              />
 					</style>
@@ -66,6 +68,7 @@
 					out="{$html_destdir}/entry-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
 						<xmlcatalog refid="log-dtds" />
+						<param name="package_name" expression="{$package_name}" />
 						<param name="sourcedir" expression="{$sourcedir}" />
 						<param name="entry"     expression="{@id}"              />
 					</style>

@@ -13,7 +13,6 @@
 	<xsl:param name="accesslevel"  />
 
 	<!-- Define variables -->
-	<xsl:variable name="domain" select="/log/@domain" />
 
 	<!-- Perform includes -->
 	<xsl:include href="shared.xslt" />
@@ -201,7 +200,7 @@ import org.xins.logdoc.LogStatistics;
 
 	<xsl:template match="group/entry">
 		<xsl:variable name="category">
-			<xsl:value-of select="$domain" />
+			<xsl:value-of select="$package_name" />
 			<xsl:text>.</xsl:text>
 			<xsl:value-of select="../@id" />
 		</xsl:variable>

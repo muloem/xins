@@ -9,8 +9,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
+	<!-- Define parameters -->
+	<xsl:param name="package_name" />
+
 	<!-- Define variables -->
-	<xsl:variable name="domain" select="/log/@domain" />
 
 	<!-- Configure output method -->
 	<xsl:output
@@ -55,7 +57,7 @@
 					</tr>
 					<xsl:for-each select="group">
 						<xsl:variable name="category">
-							<xsl:value-of select="$domain" />
+							<xsl:value-of select="$package_name" />
 							<xsl:text>.</xsl:text>
 							<xsl:value-of select="@id" />
 						</xsl:variable>

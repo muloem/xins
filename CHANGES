@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 0.204:
     pages.
   - Changed the property org.xins.server.log.locale to org.xins.logdoc.locale.
     The property org.xins.server.log.locale is now deprecated.
+  - The domain attribute for the log.xml is no longer used. The package name
+    is used instead.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.203:
