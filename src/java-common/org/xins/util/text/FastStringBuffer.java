@@ -3,6 +3,7 @@
  */
 package org.xins.util.text;
 
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -16,6 +17,13 @@ public class FastStringBuffer extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logging category used by this class. This class field is never
+    * <code>null</code>.
+    */
+   private final static Logger LOG = Logger.getLogger(FastStringBuffer.class.getName());
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -37,10 +45,13 @@ public class FastStringBuffer extends Object {
     */
    public FastStringBuffer(int capacity)
    throws IllegalArgumentException {
+
+      // Check preconditions
       if (capacity < 0) {
          throw new IllegalArgumentException("capacity (" + capacity + ") < 0");
       }
 
+      // Initialize fields
       _buffer = new char[capacity];
       _length = 0;
    }
@@ -58,10 +69,11 @@ public class FastStringBuffer extends Object {
     */
    public FastStringBuffer(String s)
    throws IllegalArgumentException {
-      if (s == null) {
-         throw new IllegalArgumentException("s == null");
-      }
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // Initialize fields
       _buffer = s.toCharArray();
       _length = _buffer.length;
    }
@@ -78,16 +90,18 @@ public class FastStringBuffer extends Object {
     *    the initial content, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>capacity &lt; <code>s.</code>{@link String#length()} || s == null</code>.
+    *    if <code>s == null || capacity &lt; <code>s.</code>{@link String#length()}.
     */
    public FastStringBuffer(int capacity, String s)
    throws IllegalArgumentException {
-      if (s == null) {
-         throw new IllegalArgumentException("s == null");
-      } else if (capacity < s.length()) {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+      if (capacity < s.length()) {
          throw new IllegalArgumentException("capacity (" + capacity + ") < s.length() (" + s.length() + ')');
       }
 
+      // Initialize fields
       _buffer = new char[capacity];
       _length = s.length();
       s.getChars(0, _length, _buffer, 0);
@@ -124,9 +138,18 @@ public class FastStringBuffer extends Object {
     *    the needed capacity.
     */
    private void ensureCapacity(int needed) {
+
+      // Determine current capacity
       int current = _buffer.length;
+
+      // Increase capacity if needed
       if (current < needed) {
          int newCapacity = needed + 16; // XXX: Is this okay?
+
+         if (LOG.isDebugEnabled()) {
+            LOG.debug("Increasing capacity from " + current + " to " + newCapacity + '.');
+         }
+
          char[] newBuffer = new char[newCapacity];
          System.arraycopy(_buffer, 0, newBuffer, 0, current);
          _buffer = newBuffer;
@@ -141,7 +164,11 @@ public class FastStringBuffer extends Object {
     *    the character to append.
     */
    public void append(char c) {
+
+      // Ensure there is enough capacity
       ensureCapacity(_length + 1);
+
+      // Append the character
       _buffer[_length++] = c;
    }
 
@@ -161,7 +188,10 @@ public class FastStringBuffer extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("cbuf", cbuf);
 
+      // Ensure there is enough capacity
       ensureCapacity(_length + cbuf.length);
+
+      // Copy the data into the internal buffer
       System.arraycopy(cbuf, 0, _buffer, _length, cbuf.length);
    }
 
@@ -202,7 +232,10 @@ public class FastStringBuffer extends Object {
          throw new IllegalArgumentException("off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
       }
 
+      // Ensure there is enough capacity
       ensureCapacity(_length + len);
+
+      // Copy the data into the internal buffer
       System.arraycopy(cbuf, off, _buffer, _length, len);
    }
 
@@ -224,6 +257,8 @@ public class FastStringBuffer extends Object {
 
       int strLength = str.length();
       int newLength = _length + strLength;
+
+      // Ensure there is enough capacity
       ensureCapacity(newLength);
 
       // Copy the string chars into the buffer
