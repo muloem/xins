@@ -212,6 +212,11 @@ extends AbstractFunctionCaller {
       _crc32            = computeCRC32(_url);
       _crc32String      = HexConverter.toHexString((long) _crc32); // TODO: Not convert to long
       _urlString        = urlString;
+
+      // Log message
+      if (debugEnabled) {
+         LOG.debug("Created ActualFunctionCaller. URL is \"" + _urlString + "\". CRC-32 is " + _crc32String + '.');
+      }
    }
 
 
