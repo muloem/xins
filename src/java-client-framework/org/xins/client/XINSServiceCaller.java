@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Collections;
 import org.apache.log4j.Logger;
@@ -11,11 +12,13 @@ import org.jdom.Namespace;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
 import org.xins.util.collections.PropertyReader;
+import org.xins.util.net.URLEncoding;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
 import org.xins.util.service.Descriptor;
 import org.xins.util.service.ServiceCaller;
 import org.xins.util.service.TargetDescriptor;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * XINS service caller.
@@ -36,10 +39,120 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    public static final Logger LOG = Logger.getLogger(XINSServiceCaller.class.getName());
 
+   /**
+    * Initial buffer size for a parameter string. See
+    * {@link #createParameterString(String,String,Map)}.
+    */
+   private static int PARAMETER_STRING_BUFFER_SIZE = 256;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates a parameter string from a session ID, a function name and a set
+    * of parameters.
+    *
+    * @param sessionID
+    *    the session identifier, if any, or <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed, or <code>null</code>; keys must be
+    *    either <code>null</code> or otherwise {@link String} instances;
+    *    values can be of any class; if
+    *    <code>(key == null
+    *        || key.</code>{@link String#length() length()} &lt; 1
+    *        || value == null
+    *        || value.</code>{@link Object#toString() toString()} == null
+    *        || value.</code>{@link Object#toString() toString()}<code>.</code>{@link String#length() length()}<code> &lt; 1)</code>,
+    *    then this parameter will not be sent down.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    *
+    * @return
+    *    the string that can be used in an HTTP GET call, never
+    *    <code>null</code> nor empty.
+    */
+   private final String createParameterString(String sessionID,
+                                              String functionName,
+                                              Map    parameters)
+   throws IllegalArgumentException {
+
+      // TODO: Consider using an IndexedMap, for improved iteration
+      //       performance
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
+
+      // TODO: More checks on the function name? It cannot be an empty string,
+      //       for example.
+
+      // Initialize a buffer
+      FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
+      buffer.append("function=");
+      buffer.append(functionName);
+
+      // If there is a session identifier, process it
+      if (sessionID != null) {
+         buffer.append("&_session=");
+         buffer.append(sessionID);
+      }
+
+      // If there are parameters, then process them
+      if (parameters != null) {
+
+         // Loop through them all
+         Iterator keys = parameters.keySet().iterator();
+         // TODO: Use for() loop
+         while (keys.hasNext()) {
+
+            // Get the parameter key
+            String key = (String) keys.next();
+
+            // Process key only if it is not null and not an empty string
+            if (key != null && key.length() > 0) {
+
+               // TODO: Improve checks to make sure the key is properly
+               //       formatted, otherwise throw an InvalidKeyException
+
+               // The key cannot start with an underscore
+               if (key.charAt(0) == '_') {
+                  throw new IllegalArgumentException("The parameter key \"" + key + "\" is invalid, since it cannot start with an underscore.");
+
+               // The key cannot equal 'function'
+               } else if ("function".equals(key)) {
+                  throw new IllegalArgumentException("The parameter key \"function\" is invalid, since \"function\" is a reserved word.");
+               }
+
+               // Get the value
+               Object value = parameters.get(key);
+
+               // Add this parameter key/value combination
+               if (value != null) {
+
+                  // Convert the value object to a string
+                  String valueString = value.toString();
+
+                  // Only add the key/value combo if there is a value string
+                  if (valueString != null && valueString.length() > 0) {
+                     buffer.append('&');
+                     buffer.append(URLEncoding.encode(key));
+                     buffer.append('=');
+                     buffer.append(URLEncoding.encode(valueString));
+                  }
+               }
+            }
+         }
+      }
+
+      return buffer.toString();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -91,9 +204,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.146
     */
-   public static class Result extends Object {
-
-      // TODO: Make final as soon as CallResult class has been removed
+   public static final class Result extends Object {
 
       //----------------------------------------------------------------------
       // Constructors
