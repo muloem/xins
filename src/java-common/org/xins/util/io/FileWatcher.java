@@ -58,6 +58,7 @@ public final class FileWatcher extends Thread {
       _file     = new File(file);
       _delay    = 1000 * (long) delay;
       _listener = listener;
+      _stopped  = false;
 
       // Configure thread as daemon
       setDaemon(true);
@@ -98,6 +99,11 @@ public final class FileWatcher extends Thread {
     */
    private long _lastModified;
 
+   /**
+    * Flag that indicates if this thread has been stopped.
+    */
+   private boolean _stopped;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -117,17 +123,27 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread.currentThread() != this");
       }
 
-      try {
-         while(true) {
-            // Wait for the designated amount of time
-            sleep(_delay);
+      while (! _stopped) {
+         try {
+            while(! _stopped) {
+               // Wait for the designated amount of time
+               sleep(_delay);
 
-            // Check if the file changed
-            check();
+               // Check if the file changed
+               check();
+            }
+         } catch (InterruptedException exception) {
+            // Fall through
          }
-      } catch (InterruptedException exception) {
-         // Fall through
       }
+   }
+
+   /**
+    * Stops this thread.
+    */
+   public void end() {
+      _stopped = true;
+      this.interrupt();
    }
 
    /**
