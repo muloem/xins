@@ -137,6 +137,10 @@
 			href="http://java.sun.com/j2se/1.3/docs/api"
 			offline="true"
 			packagelistloc="src/package-lists/j2se/" />
+			<link
+			href="http://jakarta.apache.org/log4j/docs/api/"
+			offline="true"
+			packagelistloc="src/package-lists/log4j/" />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
