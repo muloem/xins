@@ -17,19 +17,17 @@ if [ "${XINS_HOME}a" = "a" ]; then
 	exit 1
 fi
 
-style=${XINS_HOME}/src/xslt/xins-project_to_ant-build.xslt
-
 # Make sure the XSLT style sheet exists
+style=${XINS_HOME}/src/xslt/xins-project_to_ant-build.xslt
 if [ ! -f ${style} ]; then
 	echo "${prog}: Cannot find stylesheet at:"
 	echo ${style}
 	exit 1
 fi
 
-builddir="build"
-
 # Create the build directory
-if [ ! -d build ]; then
+builddir=build
+if [ ! -d ${builddir} ]; then
 	mkdir ${builddir}
 fi
 
@@ -45,4 +43,6 @@ fi
 
 # Run Ant against the build file
 project_home=`pwd`
-(cd ${builddir} && ant -Dxins_home=${XINS_HOME} -Dproject_home=${project_home} $*)
+(cd ${builddir} && ant -Dxins_home=${XINS_HOME} \
+                       -Dproject_home=${project_home} \
+                       $*)
