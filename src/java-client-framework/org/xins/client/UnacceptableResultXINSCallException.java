@@ -35,7 +35,8 @@ extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnacceptableCallResultException</code>.
+    * Constructs a new <code>UnacceptableCallResultException</code> using the
+    * specified <code>XINSCallResult</code>.
     *
     * @param result
     *    the {@link XINSCallResult} that is considered unacceptable, never
@@ -60,6 +61,35 @@ extends XINSCallException {
 
       // Store the result
       _result = result;
+   }
+
+   /**
+    * Constructs a new <code>UnacceptableCallResultException</code> using the
+    * specified <code>AbstractCAPICallResult</code>.
+    *
+    * @param result
+    *    the {@link AbstractCAPICallResult} that is considered unacceptable,
+    *    never <code>null</code>.
+    *
+    * @param detail
+    *    a detailed description of why the result is considered unacceptable,
+    *    or <code>null</code> if such a description is not available.
+    *
+    * @param cause
+    *    the optional cause exception, or <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null</code>.
+    */
+   public UnacceptableResultXINSCallException(AbstractCAPICallResult result,
+                                              String                 detail,
+                                              Throwable              cause)
+   throws IllegalArgumentException {
+
+      this(result.getXINSCallResult(), detail, cause);
+
+      // TODO: FIXME: If result == null, then a NullPointerException is thrown
+      //              instead of an IllegalArgumentException
    }
 
 
