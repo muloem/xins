@@ -25,9 +25,9 @@
 				<xsl:choose>
 					<xsl:when test="$firstchar='%'">%25</xsl:when>
 					<xsl:when test="$firstchar='&amp;'">%26</xsl:when>
-					<xsl:when test="$firstchar='+'">%2b</xsl:when>
+					<xsl:when test="$firstchar='+'">%2B</xsl:when>
 					<xsl:when test="$firstchar=' '">+</xsl:when>
-					<xsl:when test="$firstchar='='">%3d</xsl:when>
+					<xsl:when test="$firstchar='='">%3D</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
 					</xsl:otherwise>
