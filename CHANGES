@@ -40,7 +40,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 1:
   - Added the target "tests-ui" to run the unit tests in a graphical
     environment.
   - Fixed: The XINS protocol documentation was not included in the release.
-  - Added the Ant script for NetBean4 to the demo directory.
+  - Added the Ant script for NetBeans 4 to the demo directory.
 
 * Libraries:
   - Updated xmlenc from 0.45 to 0.47, which should result in a performance
