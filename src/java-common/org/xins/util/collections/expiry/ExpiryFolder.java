@@ -87,11 +87,13 @@ extends Object {
     * Touches the entry that is identified by the specified key.
     *
     * @param key
-    *    the key that identifies the entry, can be <code>null</code>.
+    *    the key that identifies the entry, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>key == null</code>.
     *
     * @throws NoSuchEntryException
-    *    if there was no entry with the specified key in this map; the entry
-    *    may have expired.
+    *    if <code>get(key) == null</code>.
     */
    public abstract void touch(Object key) throws NoSuchEntryException;
 
