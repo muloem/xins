@@ -11,8 +11,8 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Replaced CallFailedException with CallException. While the first combines
     all failed targets and exceptions, the latter uses a link-based approach.
     Each exception links to the next.
-  - Added CallRequest and CallException classes in org.xins.common.service
-    package.
+  - Added CallRequest, CallException and GenericCallException classes in
+    org.xins.common.service package.
 
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
