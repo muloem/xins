@@ -36,7 +36,7 @@ import java.util.List;
 		<xsl:text><![CDATA[); XSLT file ($Revision$ $Date$)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.15
+ * @since XINS 1.0.0
  */
 public interface DefaultResultCodes {]]></xsl:text>
 		<xsl:for-each select="code">
