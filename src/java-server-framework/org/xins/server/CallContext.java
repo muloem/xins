@@ -206,4 +206,15 @@ public final class CallContext {
    public int getCallID() {
       return _callID;
    }
+
+   /**
+    * Returns the IP address of the host that requested this function.
+    *
+    * @return
+    *    the IP address as a <code>String</code>.
+    */
+   public String getRemoteAddr() {
+      return _request.getRemoteAddr();
+   }
+
 }

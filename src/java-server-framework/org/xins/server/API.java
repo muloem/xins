@@ -440,27 +440,27 @@ implements DefaultResultCodes {
             m.init(runtimeSettings);
             Log.log_1420(_name, className);
 
-	 // Missing required property
+         // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_1421(_name, className, exception.getPropertyName());
             throw exception;
 
-	 // Invalid property value
+         // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_1422(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
-	 // Catch InitializationException and any other exceptions not caught
-	 // by previous catch statements
+         // Catch InitializationException and any other exceptions not caught
+         // by previous catch statements
          } catch (Throwable exception) {
 
             // Log this event
             Log.log_1424(exception, _name, className, exception.getMessage());
-	    if (exception instanceof InitializationException) {
-	       throw (InitializationException) exception;
-	    } else {
+            if (exception instanceof InitializationException) {
+               throw (InitializationException) exception;
+            } else {
                throw new InitializationException(exception);
-	    }
+            }
          }
       }
 
@@ -474,30 +474,30 @@ implements DefaultResultCodes {
             f.init(runtimeSettings);
             Log.log_1426(_name, functionName);
 
-	 // Missing required property
+         // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_1427(_name, functionName, exception.getPropertyName());
             throw exception;
 
-	 // Invalid property value
+         // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_1428(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
 
-	 // Catch InitializationException and any other exceptions not caught
-	 // by previous catch statements
+         // Catch InitializationException and any other exceptions not caught
+         // by previous catch statements
          } catch (Throwable exception) {
 
-	    // Log this event
+            // Log this event
             Log.log_1430(exception, _name, functionName);
 
             // Throw an InitializationException. If necessary, wrap around the
-	    // caught exception
-	    if (exception instanceof InitializationException) {
-	       throw (InitializationException) exception;
-	    } else {
+            // caught exception
+            if (exception instanceof InitializationException) {
+               throw (InitializationException) exception;
+            } else {
                throw new InitializationException(exception);
-	    }
+            }
          }
       }
 
