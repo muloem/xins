@@ -72,6 +72,7 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Rename InvalidCallResultException to InvalidResultXINSCallException
 [ ] Make InvalidResultXINSCallException extend XINSCallException
 [ ] Describe XINSCallRequest properly in describe() (from _asString).
+[ ] Check the parameters in XINSCallRequest constructor.
 
 Adapt CAPI generation:
 [ ] Build upon new XINS/Java Client Framework
