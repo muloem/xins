@@ -446,12 +446,12 @@ implements DefaultResultCodes {
     *    the build-time configuration properties, not <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if the state is not {@link #INITIAL}.
+    *    if this API is already bootstrapped.
     *
     * @throws IllegalArgumentException
     *    if <code>buildSettings == null</code>.
     *
-    * @throws InitializationException
+    * @throws Throwable
     *    if the bootstrapping fails.
     */
    public final void bootstrap(PropertyReader buildSettings)
@@ -608,7 +608,7 @@ implements DefaultResultCodes {
                }
                String message = buffer.toString();
                log.error(message, exception);
-               throw new InitializationException(message);
+               throw new Exception(message);
             }
          }
       }
@@ -645,11 +645,11 @@ implements DefaultResultCodes {
     * @param runtimeSettings
     *    the runtime configuration settings, cannot be <code>null</code>.
     *
-    * @throws InitializationException
+    * @throws Throwable
     *    if the initialization failed.
     */
    public void init(PropertyReader runtimeSettings)
-   throws InitializationException {
+   throws Throwable {
 
       // TODO: Check state
 
@@ -689,7 +689,7 @@ implements DefaultResultCodes {
             }
             String message = buffer.toString();
             log.error(message, exception);
-            throw new InitializationException(message);
+            throw new Exception(message);
          }
       }
 
@@ -701,8 +701,7 @@ implements DefaultResultCodes {
 
    /**
     * Adds the specified lifespan manager. It will immediately be initialized.
-    * If the initialization fails, then an {@link InitializationException}
-    * will be thrown.
+    * If the initialization fails, then an exception will be thrown.
     *
     * <p>The initialization will be performed by calling
     * {@link LifespanManager#bootstrap(PropertyReader)} and
@@ -720,7 +719,7 @@ implements DefaultResultCodes {
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
     *
-    * @throws InitializationException
+    * @throws Exception
     *    if the initialization of the instance failed.
     *
     * @since XINS 0.124
@@ -728,7 +727,7 @@ implements DefaultResultCodes {
    protected final void add(LifespanManager lsm)
    throws IllegalStateException,
           IllegalArgumentException,
-          InitializationException {
+          Exception {
 
       // Check state
       synchronized (_stateLock) {
