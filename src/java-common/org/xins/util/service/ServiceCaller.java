@@ -108,6 +108,8 @@ public abstract class ServiceCaller extends Object {
       ArrayList failedTargets = null;
       ArrayList exceptions    = null;
 
+      boolean debugEnabled = LOG.isDebugEnabled();
+
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateServices();
       while (iterator.hasNext()) {
@@ -117,11 +119,20 @@ public abstract class ServiceCaller extends Object {
 
          // Call using this target
          try {
+
+            // Attempt the call
             Object result = doCallImpl(target, subject);
+            if (debugEnabled) {
+               LOG.debug("Call to " + target + " succeeded.");
+            }
+
+            // Trim the collections to save on memory
+            // XXX: Should we really trim the collections?
             if (failedTargets != null) {
                failedTargets.trimToSize();
                exceptions.trimToSize();
             }
+
             return new CallResult(failedTargets, exceptions, target, result);
 
          // If it fails, store the exception and try the next
@@ -133,7 +144,7 @@ public abstract class ServiceCaller extends Object {
             failedTargets.add(target);
             exceptions.add(exception);
 
-            LOG.warn("Call to target " + target + " failed. Reason: " + reasonFor(exception) + '.');
+            LOG.warn("Call to " + target + " failed. Reason: " + reasonFor(exception) + '.');
          }
       }
 
