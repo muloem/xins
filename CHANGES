@@ -2,8 +2,10 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.95:
 
 * XINS/Java Server Framework:
-  - Call CallContext: Changed log level from ERROR to DEBUG for invalid
+  - Class CallContext: Changed log level from ERROR to DEBUG for invalid
     session ID.
+  - Class API: Added getTimeZone() and getCurrentSessions().
+  - Class Function: Made field _api protected.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.94:
