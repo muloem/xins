@@ -221,7 +221,7 @@ public class APIImpl extends API {
    throws Throwable {</xsl:text>
 		<xsl:for-each select="instance">
 			<xsl:text>
-      addInstance(</xsl:text>
+      add(</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>);</xsl:text>
 		</xsl:for-each>

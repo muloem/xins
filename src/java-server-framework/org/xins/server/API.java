@@ -160,7 +160,7 @@ implements DefaultResultCodes {
 
    /**
     * List of registered lifespan managers. See
-    * {@link #addInstance(LifespanManager)}.
+    * {@link #add(LifespanManager)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
     * constructor.
@@ -619,9 +619,9 @@ implements DefaultResultCodes {
     * @throws InitializationException
     *    if the initialization of the instance failed.
     *
-    * @since XINS 0.120
+    * @since XINS 0.124
     */
-   protected final void addInstance(LifespanManager lsm)
+   protected final void add(LifespanManager lsm)
    throws IllegalStateException,
           IllegalArgumentException,
           InitializationException {
