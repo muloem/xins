@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package org.xins.util.ant.sourceforge;
+package org.xins.util.security;
 
 import java.security.cert.X509Certificate;
 import javax.net.ssl.X509TrustManager;
