@@ -223,7 +223,7 @@ public final class AddReleaseTask extends Task {
     * Sets the SourceForge package ID. Neither <code>null</code> nor
     * <code>""</code> are valid.
     *
-    * @param packageID.
+    * @param packageID
     *    the SourceForge package ID.
     */
    public void setPackage(String packageID) {
