@@ -4,8 +4,10 @@
 package org.xins.util.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import org.xins.util.MandatoryArgumentChecker;
@@ -120,10 +122,47 @@ public final class GroupDescriptor extends Descriptor {
          }
       }
 
-      // Store members
+      // Store information
       _type    = type;
       _members = new Descriptor[size];
       System.arraycopy(members, 0, _members, 0, size);
+
+      // Recursively add all TargetDescriptor instances to the Map
+      _targetsByCRC32 = new HashMap();
+      addTargetsByCRC32(members);
+   }
+
+   /**
+    * Recursively adds all <code>TargetDescriptor</code> instances found in
+    * the specified list of <code>Descriptor</code>'s to the internal map from
+    * CRC-32 checksum to <code>TargetDescriptor</code>.
+    *
+    * @param members
+    *    the set of {@link Descriptor} instances, cannot be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>members == null || <em>group</em>.</code>{@link #_member}<code> == null</code>,
+    *    where <em>group</em> is any {@link GroupDescriptor} instance found in
+    *    <code>members</code> (at any level).
+    */
+   private final void addTargetsByCRC32(Descriptor[] members)
+   throws NullPointerException {
+
+      int size = members.length;
+      for (int i = 0; i < size; i++) {
+         Descriptor d = members[i];
+
+         // If this is a TargetDescriptor, put it in the map
+         if (d instanceof TargetDescriptor) {
+            TargetDescriptor target = (TargetDescriptor) d;
+            _targetsByCRC32.put(new Integer(target.getCRC32()), target);
+
+         // Otherwise it is assumed to be a GroupDescriptor, recurse
+         } else {
+            GroupDescriptor group = (GroupDescriptor) d;
+            addTargetsByCRC32(group._members);
+         }
+      }
    }
 
 
@@ -140,6 +179,16 @@ public final class GroupDescriptor extends Descriptor {
     * The members of this group. Cannot be <code>null</code>.
     */
    private final Descriptor[] _members;
+
+   /**
+    * All contained <code>TargetDescriptor</code> instances, by CRC-32. This
+    * {@link Map} is used by {@link #getTargetByCRC32()} to lookup a
+    * {@link TargetDescriptor} by CRC-32 checksum.
+    *
+    * <p>This field is initialized by the constructor and can never be
+    * <code>null</code>.
+    */
+   private final Map _targetsByCRC32;
 
 
    //-------------------------------------------------------------------------
@@ -187,6 +236,21 @@ public final class GroupDescriptor extends Descriptor {
       Descriptor[] array = new Descriptor[size];
       System.arraycopy(_members, 0, array, 0, size);
       return array;
+   }
+
+   /**
+    * Returns the <code>TargetDescriptor</code> that matches the specified
+    * CRC-32 checksum.
+    *
+    * @param crc32
+    *    the CRC-32 checksum.
+    *
+    * @return
+    *    the {@link TargetDescriptor} that matches the specified checksum, or
+    *    <code>null</code>, if none could be found in this group.
+    */
+   public TargetDescriptor getTargetByCRC32(int crc32) {
+      return null; // TODO
    }
 
 
