@@ -133,7 +133,7 @@ public abstract class ServiceCaller extends Object {
             failedTargets.add(target);
             exceptions.add(exception);
 
-            LOG.warn("Failed to call target: " + target + '.');
+            LOG.warn("Call to target " + target + " failed. Reason: " + reasonFor(exception) + '.');
          }
       }
 
@@ -174,4 +174,41 @@ public abstract class ServiceCaller extends Object {
    protected abstract Object doCallImpl(ServiceDescriptor target,
                                         Object            subject)
    throws Throwable;
+
+   /**
+    * Determines the reason for a specific exception. The reason should not
+    * and with a punctuation mark like a period (<code>'.'</code>).
+    *
+    * @return
+    *    a description of the reason for the exception, never
+    *    <code>null</code>, and never an empty character string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>exception == null</code>.
+    */
+   protected final String reasonFor(Throwable exception)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("exception", exception);
+
+      // Allow subclass to determine reason
+      String reason = reasonForImpl(exception);
+      if (reason != null && reason.length() > 0) {
+         return reason;
+      }
+
+      String clazz   = exception.getClass().getName();
+      String message = exception.getMessage();
+      if (message != null && message.length() > 0) {
+         return clazz + ": " + message;
+      } else {
+         return clazz;
+      }
+   }
+
+   // TODO: Document
+   protected String reasonForImpl(Throwable exception) {
+      return null;
+   }
 }
