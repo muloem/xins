@@ -587,14 +587,20 @@ extends HttpServlet {
       String method = request.getMethod();
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
-         if ("HEAD".equals(method) == false) {
+         if ("OPTIONS".equals(method)) {
+            response.setContentLength(0);
+            response.setHeader("Accept", "GET, HEAD, POST");
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+         } else if ("HEAD".equals(method)) {
+            response.setContentLength(0);
+         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
 
-      // TODO: Support and use OutputStream instead of Writer, for improved
-      //       performance
+      // TODO: Use OutputStream instead of Writer, for improved performance
 
       // Call the API if the state is READY
       CallResult result;
