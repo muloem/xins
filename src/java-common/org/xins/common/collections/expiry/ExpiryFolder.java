@@ -243,17 +243,13 @@ extends Object {
             }
          }
 
-         // Log debug message
-         if (toBeExpiredSize != 1) {
-            Log.log_3400(_asString, toBeExpiredSize, newSize);
-         } else {
-            Log.log_3401(_asString, newSize);
-         }
-
          // Check that new size is at minimum zero
          if (newSize < 0) {
             Log.log_3402(newSize);
          }
+         Log.log_3400(_asString, toBeExpiredSize, newSize);
+      } else {
+         Log.log_3400(_asString, 0, _size);
       }
 
       // TODO: Should we do this in a separate thread, so all locks held by
