@@ -11,12 +11,12 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 
-	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'" />
-	<xsl:variable name="project_file"     select="concat($project_home, '/xins-project.xml')" />
-	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href" />
-	<xsl:variable name="api"              select="//function/@api" />
-	<xsl:variable name="api_file"         select="concat($specsdir, '/', $api, '/api.xml')" />
-	<xsl:variable name="function_name"    select="//function/@name" />
+	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
+	<xsl:variable name="project_file"     select="concat($project_home, '/xins-project.xml')"                />
+	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href"              />
+	<xsl:variable name="api"              select="//function/@api"                                           />
+	<xsl:variable name="api_file"         select="concat($specsdir, '/', $api, '/api.xml')"                  />
+	<xsl:variable name="function_name"    select="//function/@name"                                          />
 	<xsl:variable name="function_file"    select="concat($specsdir, '/', $api, '/', $function_name, '.fnc')" />
 
 	<xsl:output
