@@ -15,9 +15,10 @@ import org.xins.common.text.FastStringBuffer;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.36
+ * @since XINS 0.207
  */
-public final class UnsuccessfulCallException extends CallException {
+public final class UnsuccessfulXINSCallException
+extends XINSCallException {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -27,79 +28,34 @@ public final class UnsuccessfulCallException extends CallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Checks the arguments for the constructor and then returns the short
-    * reason.
-    *
-    * @param request
-    *    the original request, cannot be <code>null</code>.
-    *
-    * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the call duration in milliseconds, must be &gt;= 0.
-    *
-    * @param result
-    *    the call result that is unsuccessful, cannot be <code>null</code>,
-    *    and
-    *    <code>result.</code>{@link Result#isSuccess() isSuccess()}
-    *    should be <code>false</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request     == null
-    *          || target      == null
-    *          || result      == null
-    *          || result.{@link Result#getErrorCode() getErrorCode()} == null
-    *          || duration  &lt; 0</code>
-    *
-    * @since XINS 0.202
-    */
-   private static final String createDetailMessage(CallRequest      request,
-                                                   TargetDescriptor target,
-                                                   long             duration,
-                                                   Result           result)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request,
-                                     "target",  target,
-                                     "result",  result);
-      String code = result.getErrorCode();
-      if (code == null) {
-         throw new IllegalArgumentException("result.getErrorCode() == null");
-      } else if (duration < 0) {
-         throw new IllegalArgumentException("duration (" + duration + ") < 0");
-      }
-
-      // Construct and return the detail message
-      FastStringBuffer buffer = new FastStringBuffer(35, "Error code is \"");
-      buffer.append(code);
-      buffer.append("\".");
-      return buffer.toString();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnsuccessfulCallException</code>.
+    * Constructs a new <code>UnsuccessfulXINSCallException</code> based the
+    * specified XINS call result object.
     *
     * @param result
-    *    the result, cannot be <code>null</code> and must be unsuccessful.
+    *    the call result, cannot be <code>null</code>; stores the original
+    *    call request, the target descriptor and the call duration; must be
+    *    unsuccessful.
     *
     * @throws IllegalArgumentException
-    *    if <code>result == null || result.getErrorCode() == null</code>.
-    *
-    * @since XINS 0.203
+    *    if <code>result == null
+    *          || result.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
     */
-   UnsuccessfulCallException(Result result)
+   UnsuccessfulXINSCallException(XINSCallResult result)
    throws IllegalArgumentException {
-      super("Unsuccessful result", result, null, null);
 
+      super("Unsuccessful XINS call result", result, null, null);
+
+      // Result object must be unsuccessful
+      if (result.getErrorCode() == null) {
+         throw new IllegalArgumentException("result.getErrorCode() == null");
+      }
+
+      // Store reference to the call result object
       _result = result;
    }
 
@@ -111,7 +67,7 @@ public final class UnsuccessfulCallException extends CallException {
    /**
     * The call result. The value of this field cannot be <code>null</code>.
     */
-   private final Result _result;
+   private final XINSCallResult _result;
 
 
    //-------------------------------------------------------------------------
@@ -122,10 +78,7 @@ public final class UnsuccessfulCallException extends CallException {
     * Returns the error code.
     *
     * @return
-    *    the error code or <code>null</code> if the call was successful and no
-    *    error code was returned.
-    *
-    * @since XINS 0.181
+    *    the error code, never <code>null</code>.
     */
    public String getErrorCode() {
       return _result.getErrorCode();
@@ -137,8 +90,6 @@ public final class UnsuccessfulCallException extends CallException {
     * @return
     *    a {@link PropertyReader} containing all parameters, or
     *    <code>null</code> if there are none.
-    *
-    * @since XINS 0.202
     */
    public PropertyReader getParameters() {
       return _result.getParameters();
@@ -155,8 +106,6 @@ public final class UnsuccessfulCallException extends CallException {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
-    *
-    * @since XINS 0.136
     */
    public String getParameter(String name)
    throws IllegalArgumentException {
@@ -168,8 +117,6 @@ public final class UnsuccessfulCallException extends CallException {
     *
     * @return
     *    the extra data as a {@link DataElement}, can be <code>null</code>;
-    *
-    * @since XINS 0.136
     */
    public DataElement getDataElement() {
       return _result.getDataElement();
