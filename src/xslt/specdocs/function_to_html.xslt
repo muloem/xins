@@ -830,9 +830,9 @@
 
 		<tr class="default">
 			<td class="value">
-				<acronym title="This result code is generic, not specific to this API">
+				<span title="This result code is generic, not specific to this API">
 					<xsl:value-of select="$value" />
-				</acronym>
+				</span>
 			</td>
 			<td>false</td>
 			<td class="description">
