@@ -843,13 +843,6 @@ extends HttpServlet {
             _hostname = hostname;
          }
 
-         // Log XINS version
-         String serverVersion = Library.getVersion();
-         String commonVersion = org.xins.common.Library.getVersion();
-         if (! serverVersion.equals(commonVersion)) {
-            Log.log_1310(serverVersion, commonVersion);
-         }
-
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }
    }
