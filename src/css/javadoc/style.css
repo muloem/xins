@@ -21,6 +21,18 @@ body {
 }
 }
 
+blockquote, dd {
+	margin-left: 3em;
+}
+
+ul, ol {
+	padding-left: 3em;
+}
+
+li {
+	margin-left: 1em;
+}
+
 .TableHeadingColor {
 	background: #CCCCFF;
 }
@@ -95,7 +107,7 @@ table.states tr td.err {
 
 table.APIServlet_HTTP_response_codes {
 	border-collapse: collapse;
-	margin-left: 4em;
+	margin-left: 3em;
 }
 
 table.APIServlet_HTTP_response_codes tr th {
