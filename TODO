@@ -66,6 +66,8 @@ XINS/JAVA SERVER FRAMEWORK
   file is now marked +r (readable), the change is not noticed, since the
   modification date does not change. The framework should notice this and
   reinitialize.
+* If input/param/description is empty, then for the generated classes the
+  @param section should be appropriate, non-empty.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
