@@ -164,10 +164,10 @@ public class AllInOneAPITests extends TestCase {
       try {
          _capi.callSimpleTypes(request);
          fail("Expected UnacceptableRequestException.");
-      } catch (UnacceptableRequestException exception) {
-         // as expected
       } catch (InvalidRequestException exception) {
          fail("Expected the client to detect unacceptable request, instead of the server.");
+      } catch (UnacceptableRequestException exception) {
+         // as expected
       }
 
       request.setInputByte((byte) 8);
