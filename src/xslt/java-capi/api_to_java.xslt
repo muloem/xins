@@ -743,17 +743,40 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:text>
+
+		<xsl:choose>
+			<xsl:when test="@required = 'false'" >
+				<xsl:text>
+      if (</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> != null) {
+         params.put("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>", </xsl:text>
+				<xsl:call-template name="javatype_to_string_for_type">
+					<xsl:with-param name="api"      select="$api" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="@type" />
+					<xsl:with-param name="variable" select="@name" />
+				</xsl:call-template> 
+				<xsl:text>);
+      }</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>
       params.put("</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>", </xsl:text>
-		<xsl:call-template name="javatype_to_string_for_type">
-			<xsl:with-param name="api"      select="$api" />
-			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="type"     select="@type" />
-			<xsl:with-param name="variable" select="@name" />
-		</xsl:call-template> 
-		<xsl:text>);</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>", </xsl:text>
+				<xsl:call-template name="javatype_to_string_for_type">
+					<xsl:with-param name="api"      select="$api" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="required" select="$required" />
+					<xsl:with-param name="type"     select="@type" />
+					<xsl:with-param name="variable" select="@name" />
+				</xsl:call-template> 
+				<xsl:text>);</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
