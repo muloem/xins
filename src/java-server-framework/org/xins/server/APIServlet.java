@@ -114,41 +114,55 @@ implements Servlet {
 
    public void init(ServletConfig config)
    throws ServletException {
+
+      // Check preconditions
+      if (config == null) {
+         throw new ServletException("No servlet configuration.");
+      }
+
       synchronized (_stateLock) {
          initImpl(config);
       }
    }
 
+   /**
+    * Actually initializes this servlet.  This method is called from
+    * {@link #initi(ServletConfig)}.
+    *
+    * @param config
+    *    the servlet configuration object, guaranteed not to be
+    *    <code>null</code>.
+    */
    private void initImpl(ServletConfig config)
    throws ServletException {
 
+      // Check preconditions
+      if (_state != UNINITIALIZED) {
+         throw new ServletException("Unable to initialize, state is not UNINITIALIZED.");
+      }
+
+      // Set the state
       _state = INITIALIZING;
 
       // Store the ServletConfig object, per the Servlet API Spec, see:
       // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
       _config = config;
 
-      String apiClassName = config.getInitParameter("org.xins.api.class");
-      if (apiClassName == null || apiClassName.equals("")) {
-         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
-      }
-
-      Properties settings = ServletUtils.settingsAsProperties(config);
-
       // Initialize Log4J
-      boolean setProperties = configureLogger(settings);
-
-      // Log startup
-      if (LOG.isDebugEnabled()) {
+      Properties settings = ServletUtils.settingsAsProperties(config);
+      configureLogger(settings);
+      boolean debugEnabled = LOG.isDebugEnabled();
+      if (debugEnabled) {
          LOG.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
       }
 
-      // Warn if there were no Log4J initialization settings
-      if (setProperties) {
-         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
+      // Determine the API class
+      String apiClassName = config.getInitParameter("org.xins.api.class");
+      if (apiClassName == null || apiClassName.trim().length() < 1) {
+         throw new ServletException("Unable to initialize servlet \"" + config.getServletName() + "\", API class should be set in init parameter \"api.class\".");
       }
 
-      // Get the API class
+      // Load the API class
       Class apiClass;
       try {
          apiClass = Class.forName(apiClassName);
@@ -176,13 +190,13 @@ implements Servlet {
          LOG.error(message, e);
          throw new ServletException(message);
       }
-      if (LOG.isDebugEnabled()) {
+      if (debugEnabled) {
          LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
       }
 
       // Initialize the API
       try {
-         if (LOG.isDebugEnabled()) {
+         if (debugEnabled) {
             LOG.debug("Initializing API.");
          }
          _api.init(settings);
@@ -192,8 +206,12 @@ implements Servlet {
          throw new ServletException(message);
       }
 
-      LOG.info("XINS/Java Server Framework is initialized.");
+      // Log startup is complete
+      if (LOG.isInfoEnabled()) {
+         LOG.info("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initialized.");
+      }
 
+      // Finally enter the ready state
       _state = READY;
    }
 
@@ -204,16 +222,10 @@ implements Servlet {
     * @param settings
     *    the initialization settings, not <code>null</code>.
     *
-    * @return
-    *    flag that indicates if the properties for the initialization of the
-    *    logger were set by this method, because it was unspecified;
-    *    <code>true</code> if the initialization settings were unspecified,
-    *    <code>false</code> if they were specified and used.
-    *
     * @throws IllegalArgumentException
     *    if <code>settings == null</code>.
     */
-   private boolean configureLogger(Properties settings)
+   private void configureLogger(Properties settings)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -223,17 +235,16 @@ implements Servlet {
       PropertyConfigurator.configure(settings);
 
       // Check if Log4J is already initialized
-      boolean setProperties = ! LOG.getAllAppenders().hasMoreElements();
-      if (setProperties) {
+      if (! LOG.getAllAppenders().hasMoreElements()) {
          settings.setProperty("log4j.rootCategory",            "DEBUG, console");
          settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
          settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
 
          // Perform the actual initialization of the logger
          PropertyConfigurator.configure(settings);
-      }
 
-      return setProperties;
+         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
+      }
    }
 
    public ServletConfig getServletConfig() {
