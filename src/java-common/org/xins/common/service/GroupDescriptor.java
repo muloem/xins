@@ -148,6 +148,9 @@ public final class GroupDescriptor extends Descriptor {
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
       int size = members.length;
+      if (size < 2) {
+         throw new IllegalArgumentException("members.length (" + size + ") < 2");
+      }
       for (int i = 0; i < size; i++) {
          Descriptor d = members[i];
          if (d == null) {
