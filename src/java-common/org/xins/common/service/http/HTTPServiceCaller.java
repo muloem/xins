@@ -3,12 +3,16 @@
  */
 package org.xins.common.service.http;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
@@ -376,6 +380,20 @@ public final class HTTPServiceCaller extends ServiceCaller {
       throws UnsupportedEncodingException {
          byte[] bytes = getData();
          return new String(bytes, encoding);
+      }
+
+      /**
+       * Returns the returned data as an <code>InputStream</code>. The input
+       * stream is based directly on the underlying byte array.
+       *
+       * @return
+       *    an {@link InputStream} that returns the returned data, never
+       *    <code>null</code>.
+       *
+       * @since XINS 0.194
+       */
+      public InputStream getStream() {
+         return new ByteArrayInputStream(_data);
       }
    }
 
