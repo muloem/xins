@@ -6,6 +6,7 @@ CHANGES INTRODUCED IN XINS 0.41:
   - Renamed class RemoteAPI to ActualFunctionCaller. Deprecated RemoteAPI.
   - Added class AbstractFunctionCaller and made ActualFunctionCaller derive
     from it.
+  - Added class CallTargetGroup.
 
 * Improved performance of HTTPRequester (used by RemoteAPI /
   ActualFunctionCaller) by switching to using an unsynchronized
