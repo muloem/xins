@@ -381,56 +381,10 @@
 					<xsl:value-of select="@success" />
 				</xsl:when>
 
-				<!-- Generic result code -->
-				<xsl:when test="$isgenericresultcode = 'true'">
-					<xsl:if test="boolean(@success) and not(@success=document($resultcodes_file)/resultcodes/code[@value=$resultcode]/@success)">
-						<xsl:message terminate="yes">
-							<xsl:text>The result code '</xsl:text>
-							<xsl:value-of select="$resultcode" />
-							<xsl:text>' is a generic result code with success set to </xsl:text>
-							<xsl:value-of select="document($resultcodes_file)/resultcodes/code[@value=$resultcode]/@success" />
-							<xsl:text>, but it is claimed to be </xsl:text>
-							<xsl:value-of select="@success" />
-							<xsl:text> in example </xsl:text>
-							<xsl:value-of select="$examplenum" />
-							<xsl:text>.</xsl:text>
-						</xsl:message>
-					</xsl:if>
-					<xsl:text>false</xsl:text>
-				</xsl:when>
+				<!-- Have result code -->
+				<xsl:otherwise>false</xsl:otherwise>
 
-				<!-- API-specific result code -->
-				<xsl:when test="$isapiresultcode = 'true'">
-					<xsl:value-of select="document(concat($specsdir, '/', $api, '/', $resultcode, '.rcd'))/resultcode/@success" />
-				</xsl:when>
-
-				<!-- Function-specific result code -->
-				<xsl:when test="$isfunctionresultcode = 'true'">
-					<xsl:choose>
-						<xsl:when test="boolean(@success)">
-							<xsl:if test="not(@success=parent::function/output/resultcode[@value=$resultcode]/@success)">
-								<xsl:message terminate="yes">
-									<xsl:text>The function-specific result code '</xsl:text>
-									<xsl:value-of select="$resultcode" />
-									<xsl:text>' is defined as </xsl:text>
-									<xsl:choose>
-										<xsl:when test="@success='true'">a successful result code, but it is claimed to be unsuccessful</xsl:when>
-										<xsl:otherwise>an unsuccessful result code, but it is claimed to be successful</xsl:otherwise>
-									</xsl:choose>
-									<xsl:text> in example </xsl:text>
-									<xsl:value-of select="$examplenum" />
-									<xsl:text>.</xsl:text>
-								</xsl:message>
-							</xsl:if>
-							<xsl:value-of select="@success" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="parent::function/output/resultcode[@value=$resultcode]/@success" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-
-				<!-- TODO: Check that the result code is not defined in 2 places -->
+				<!-- TODO: Check that the result code is not defined in 2 places? -->
 
 				<!-- Unrecognised result code -->
 				<xsl:otherwise>
