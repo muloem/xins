@@ -277,7 +277,7 @@ implements Responder, Log {
       _session         = session;
       _returnSessionID = true;
 
-      if (Library.RUNTIME_LOG.isDebugEnabled()) {
+      if (_logger.isDebugEnabled()) {
          FastStringBuffer buffer = new FastStringBuffer(80);
          buffer.append(_logPrefix);
          buffer.append("Created session ");
