@@ -8,6 +8,13 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Replaced the way to find the hostname for the hostname task.
   - Added serialize() function to PropertyReaderUtils that constructs a
     LogdocSerializable for a PropertyReader.
+  - Changed behaviour of TargetDescriptor:
+    . if the connection time-out is not set (0 or negative int value) then it
+      defaults to the total time-out;
+    . if the socket time-out is not set (0 or negative int value) then it
+      defaults to the total time-out.
+    This should fix SF.net bug 1008613. This bug has been in XINS since
+    release 0.195.
 
 * XINS/Java Client Framework:
   - Removed the deprecated getCode() method from UnsuccessfulCallException.
