@@ -61,15 +61,35 @@ public abstract class ]]></xsl:text>
     */
    protected ]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[(APIImpl api) {
-      super(api);
+		<xsl:text>(APIImpl api) {
+      super(api);</xsl:text>
+		<xsl:for-each select="document($api_file)/api/impl-java/instance">
+			<xsl:text>
+      </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> = api.</xsl:text>
+			<xsl:value-of select="@getter" />
+			<xsl:text>();</xsl:text>
+		</xsl:for-each>
+		<xsl:text><![CDATA[
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+]]></xsl:text>
+		<xsl:for-each select="document($api_file)/api/impl-java/instance">
+			<xsl:text>
+   protected final </xsl:text>
+			<xsl:value-of select="@class" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>;
 
+</xsl:text>
+		</xsl:for-each>
+		<xsl:text><![CDATA[
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
