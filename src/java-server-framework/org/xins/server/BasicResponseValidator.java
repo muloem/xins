@@ -143,6 +143,9 @@ implements ResponseValidator {
     *
     * @param message
     *    the message, can be <code>null</code>.
+    *
+    * @throws InvalidResponseException
+    *    always, right after cleanup is performed.
     */
    protected final void fail(String message)
    throws InvalidResponseException {
