@@ -621,6 +621,14 @@ implements DefaultResultCodes {
          xmlOutputter.attribute("code", "MissingSessionID"); // TODO: Use special ResultCode
          xmlOutputter.endDocument();
          return;
+      } catch (InvalidSessionIDException exception) {
+         XMLOutputter xmlOutputter = context.getXMLOutputter();
+         xmlOutputter.reset(out, "UTF-8");
+         xmlOutputter.startTag("result");
+         xmlOutputter.attribute("success", "false");
+         xmlOutputter.attribute("code", "InvalidSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.endDocument();
+         return;
       } catch (UnknownSessionIDException exception) {
          XMLOutputter xmlOutputter = context.getXMLOutputter();
          xmlOutputter.reset(out, "UTF-8");
