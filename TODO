@@ -43,7 +43,9 @@ XINS/JAVA SERVER FRAMEWORK
 * Allow replacement of strings in system properties? This is probably
   impossible.
 * If an invalid value is passed for an input parameter of type _properties,
-* the InternalError result code is returned instead of an InvalidParameters.
+  the InternalError result code is returned instead of an InvalidParameters.
+* If the state is not READY in the service method, then InternalError should
+  be returned, with the error message in a parameter.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -53,7 +55,13 @@ XINS/JAVA CLIENT FRAMEWORK
   with Service-based solution, implemented in XINS/Java Common Library,
   package org.xins.util.service.
 * Add meta-data methods for retrieving remote XINS version, remote function
-  versions, remote settings, etc. to the AbstractCAPI class.
+  versions, remote settings, etc. to the AbstractCAPI class. E.g.:
+  - ping()           -- Calls _NoOp.
+  - getSettings()    -- Calls _GetSettings and converts the result to a
+                        RemoteSettings object with build properties, runtime
+                        properties and system properties.
+  - getXINSVersion() -- Calls _GetVersion and returns the value of the
+                        xins.version parameter.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
