@@ -74,7 +74,7 @@ extends Spec {
     *    if <code>type == null || name == null || version == null</code>.
     *
     * @throws InvalidNameException
-    *    if <code>type.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
+    *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
    VersionedSpec(SpecType type, String name, String version)
    throws IllegalArgumentException, InvalidNameException {

@@ -42,7 +42,7 @@ extends Object {
     *    if <code>type == null || name == null</code>.
     *
     * @throws InvalidNameException
-    *    if <code>type.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
+    *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
    Spec(SpecType type, String name)
    throws IllegalArgumentException, InvalidNameException {

@@ -46,7 +46,7 @@ extends VersionedSpec {
     *    if <code>name == null || version == null</code>.
     *
     * @throws InvalidNameException
-    *    if {@link #TYPE}<code>.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
+    *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
    public FunctionSpec(String name, String version)
    throws IllegalArgumentException, InvalidNameException {

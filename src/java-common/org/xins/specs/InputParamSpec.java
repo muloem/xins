@@ -43,7 +43,7 @@ extends Spec {
     *    if <code>name == null</code>.
     *
     * @throws InvalidNameException
-    *    if {@link #TYPE}<code>.</code>{@link #isValidName(String) isValidName}<code>(name) == false</code>.
+    *    if {@link #TYPE}<code>.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
     */
    public InputParamSpec(String name)
    throws IllegalArgumentException, InvalidNameException {
