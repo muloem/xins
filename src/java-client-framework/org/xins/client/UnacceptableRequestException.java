@@ -52,8 +52,8 @@ extends RuntimeException {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     */
-   public UnacceptableRequestException(AbstractCAPICallRequest request,
-                                       String                  detail)
+   UnacceptableRequestException(AbstractCAPICallRequest request,
+                                String                  detail)
    throws IllegalArgumentException {
 
       super("Unacceptable XINS call request.");
