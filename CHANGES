@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.11:
 
 * Supporting _function as the parameter specifying the function name.
 
+* Version of xmlenc now in _GetVersion function output.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.10:
 

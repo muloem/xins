@@ -394,6 +394,7 @@ implements DefaultReturnCodes {
     */
    private final void doGetVersion(CallContext context)
    throws IOException {
-      context.param("xins.version", Library.getVersion());
+      context.param("xins.version",   Library.getVersion());
+      context.param("xmlenc.version", XMLOutputter.getVersion());
    }
 }
