@@ -26,6 +26,7 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
+      suite.addTestSuite(org.xins.tests.client.CallTargetGroupTests.class);
       suite.addTestSuite(org.xins.tests.client.FunctionCallerParserTests.class);
       suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);

@@ -123,7 +123,7 @@ public class FunctionCallerParserTests extends TestCase {
                   "<api url='http://10.0.0.2/google'/>" +   // api #1
                   "<api url='http://10.0.0.3/google'/>" +   // api #2
                "</group>" +
-               "<api url='http://www.google.nl/xins'/>" +   // api #3
+               "<api url='http://sourceforge.net/xins'/>" + // api #3
             "</group>" +
             "<api url='http://www.google.com/xins'/>" +     // api #4
          "</group>";
@@ -161,7 +161,7 @@ public class FunctionCallerParserTests extends TestCase {
       assertEquals("http://10.0.0.3/google", api2.getURL().toString());
 
       // api #3
-      String api3ip = InetAddress.getByName("www.google.nl").getHostAddress();
+      String api3ip = InetAddress.getByName("sourceforge.net").getHostAddress();
       ActualFunctionCaller api3 = (ActualFunctionCaller) group1members.get(1);
       assertEquals("http://" + api3ip + "/xins", api3.getURL().toString());
 
