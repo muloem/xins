@@ -752,7 +752,7 @@ implements DefaultResultCodes {
       try {
          allow = _accessRuleList.allow(ip, functionName);
       } catch (ParseException exception) {
-         // TODO: Review this code.
+         // FIXME: Review this code.
          throw new Error("Malformed IP address: " + ip + '.');
       }
       if (!allow) {
