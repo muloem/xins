@@ -16,7 +16,6 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
@@ -289,7 +288,13 @@ public abstract class ]]></xsl:text>
 		</xsl:if>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
-			<xsl:value-of select="@name" />
+			<xsl:call-template name="javatype_from_string_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type"     select="@type"     />
+				<xsl:with-param name="variable" select="@name"     />
+			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:text>);</xsl:text>
 		<xsl:if test="input/param[@required='true']">
@@ -319,8 +324,13 @@ public abstract class ]]></xsl:text>
    public abstract void call(Responder responder]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
-			<!-- TODO: Decide what the class of the parameter is -->
-			<xsl:text>String </xsl:text>
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="type"     select="@type"     />
+			</xsl:call-template>
+			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text><![CDATA[)
