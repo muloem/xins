@@ -82,6 +82,8 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Display specified output parameters and data section per result code.
 * Check all names using regular expressions.
 * Make sure a result code does not clash with the default result codes.
+* Allow all meta-functions to be called from either the specification
+  documentation or from the test forms.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
