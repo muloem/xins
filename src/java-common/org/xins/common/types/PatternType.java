@@ -17,8 +17,8 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
- * Patterns type. An enumeration type only accepts values that match a certain
- * pattern.
+ * Abstract base class for pattern types. A pattern type only accepts values
+ * that match a certain regular expression.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
