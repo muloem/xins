@@ -52,6 +52,7 @@ public class AllTests extends TestSuite {
       //suite.addTestSuite(org.xins.tests.common.types.standard.TextTests.class);
       
       //suite.addTestSuite(org.xins.tests.common.types.standard.PatternTypeTests.class);
+      suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
       return suite;
    }
 

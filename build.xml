@@ -372,7 +372,8 @@
 	<target name="do-tests" depends="classes-tests" description="Runs the unit tests">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
-		<junit printsummary="true" failureproperty="tests.failed">
+		<junit printsummary="true" failureproperty="tests.failed" showoutput="true">
+			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
@@ -381,6 +382,9 @@
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
 				<pathelement location="build/logdoc.jar" />
+				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
+				<pathelement location="../xins-examples/xins-project/build/classes-api/allinone" />
+				<pathelement location="../xins-examples/xins-project/build/classes-types/allinone" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
