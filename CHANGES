@@ -3,11 +3,6 @@ CHANGES INTRODUCED IN XINS 0.198:
 
 * XINS/Java Server Framework:
   - Added log entry 1540 for transaction logging.
-  - Refactored some classes:
-    . Changed CallResult from interface to abstract class.
-    . Storing function name in CallResult class.
-    . Storing call ID and duration in CallResult.
-    . Storing function name in FunctionResult class.
 
 * XINS/Java Client Framework:
   - Removed the deprecated getException() method from class CallException.
