@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
 
 /**
@@ -114,6 +115,18 @@ extends Object {
       MandatoryArgumentChecker.check("rules", rules);
 
       _rules = rules;
+
+      // Build string representation
+      int ruleCount = rules.size();
+      FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
+      if (ruleCount > 0) {
+         buffer.append(rules.get(0).toString());
+      }
+      for (int i = 1; i < ruleCount; i++) {
+         buffer.append(';');
+         buffer.append(rules.get(i).toString());
+      }
+      _asString = buffer.toString();
    }
 
 
@@ -125,6 +138,11 @@ extends Object {
     * The list of rules. Cannot be <code>null</code>.
     */
    private List _rules;
+
+   /**
+    * The string representation of this instance. Cannot be <code>null</code>.
+    */
+   private String _asString;
 
 
    //-------------------------------------------------------------------------
@@ -160,9 +178,45 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
+    *
+    * @throws ParseException
+    *    if the specified IP address is malformed.
     */
    public boolean allow(String ip, String functionName)
-   throws IllegalArgumentException {
-      return false; // TODO
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
+
+      // TODO: Logging
+      // TODO: Store rules in AccessRule[] array
+
+      int ruleCount = _rules.size();
+      for (int i = 0; i < ruleCount; i++) {
+         AccessRule rule = (AccessRule) _rules.get(i);
+         if (rule.match(ip, functionName)) {
+            return rule.isAllowRule();
+         }
+      }
+
+      return false;
+   }
+
+   /**
+    * Returns a character string representation of this object. The returned
+    * string is in the form:
+    *
+    * <blockquote><em>type a.b.c.d/m pattern;type a.b.c.d/m pattern</em></blockquote>
+    *
+    * where <em>type</em> is either <code>"allow"</code> or
+    * <code>"deny"</code>, <em>a.b.c.d</em> is the base IP address, <em>m</em>
+    * is the mask, and <em>pattern</em> is the function name simple pattern.
+    *
+    * @return
+    *    a character string representation of this access rule, never
+    *    <code>null</code>.
+    */
+   public String toString() {
+      return _asString;
    }
 }
