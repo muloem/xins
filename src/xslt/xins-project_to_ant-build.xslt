@@ -13,11 +13,10 @@
 	<xsl:template match="project">
 		<project default="all" basedir="..">
 
-			<target name="-prepare">
-				<mkdir dir="build/specdocs" />
-			</target>
+			<target name="-prepare" />
 
 			<target name="-specdocs-prepare" depends="-prepare">
+				<mkdir dir="build/specdocs" />
 				<copy
 				todir="build/specdocs"
 				file="${{xins_home}}/src/css/specdocs/style.css" />
@@ -32,6 +31,16 @@
 				</style>
 			</target>
 
+			<target name="specdocs-apis" depends="-specdocs-prepare">
+				<style
+				basedir="${{project_home}}/src/specs"
+				destdir="${{project_home}}/build/specdocs"
+				style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt"
+				includes="**/api.xml">
+					<param name="project_home" expression="${{project_home}}" />
+				</style>
+			</target>
+
 			<target name="specdocs-functions" depends="-specdocs-prepare">
 				<style
 				basedir="${{project_home}}/src/specs"
@@ -42,7 +51,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs" depends="specdocs-index,specdocs-functions" />
+			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions" />
 
 			<target name="all" depends="specdocs" />
 		</project>
