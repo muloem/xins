@@ -29,7 +29,76 @@ import org.xins.util.io.FileWatcher;
 import org.xins.util.servlet.ServletConfigPropertyReader;
 
 /**
- * Servlet that forwards requests to an <code>API</code>.
+ * HTTP servlet that forwards requests to an <code>API</code>.
+ *
+ * <p>This servlet supports the following HTTP request methods:
+ *
+ * <ul>
+ *   <li>GET
+ *   <li>POST
+ *   <li>HEAD
+ *   <li>OPTIONS
+ * </ul>
+ *
+ * <p>A method with any other request method will make this servlet return:
+ * <blockquote><code>405 Method Not Allowed</code></blockquote>
+ *
+ * <p>If no matching function is found, then this servlet will return:
+ * <blockquote><code>404 Not Found</code></blockquote>
+ *
+ * <p>If the state is not <em>ready</em>, then depending on the state, an HTTP
+ * response code will be returned:
+ *
+ * <table class="APIServlet_HTTP_response_codes">
+ *    <tr>
+ *       <th>State</th>
+ *       <th>HTTP response code</th>
+ *    </tr>
+ *    <tr>
+ *       <td>Initial</td>
+ *       <td>503 Service Unavailable</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Bootstrapping framework</td>
+ *       <td>503 Service Unavailable</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Framework bootstrap failed</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Constructing API</td>
+ *       <td>503 Service Unavailable</td>
+ *    </tr>
+ *    <tr>
+ *       <td>API construction failed</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Bootstrapping API</td>
+ *       <td>503 Service Unavailable</td>
+ *    </tr>
+ *    <tr>
+ *       <td>API bootstrap failed</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Initializing API</td>
+ *       <td>503 Service Unavailable</td>
+ *    </tr>
+ *    <tr>
+ *       <td>API initialization failed</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Disposing</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ *    <tr>
+ *       <td>Disposed</td>
+ *       <td>500 Internal Server Error</td>
+ *    </tr>
+ * <table>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -594,6 +663,8 @@ extends HttpServlet {
             return;
          } else if ("HEAD".equals(method)) {
             response.setContentLength(0);
+
+         // If the method is not recognized, return '405 Method Not Allowed'
          } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
@@ -605,13 +676,26 @@ extends HttpServlet {
       // Call the API if the state is READY
       CallResult result;
       if (_state == READY) {
-         result = _api.handleCall(start, request);
+         try {
+            result = _api.handleCall(start, request);
 
-      // Otherwise return InternalError
+         // If no matching function is found, return '404 Not Found'
+         } catch (NoSuchFunctionException exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+         }
+
+      // Otherwise return an appropriate 50x HTTP response code
+      } else if (_state == INITIAL
+              || _state == BOOTSTRAPPING_FRAMEWORK
+              || _state == CONSTRUCTING_API
+              || _state == BOOTSTRAPPING_API
+              || _state == INITIALIZING_API) {
+         response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+         return;
       } else {
-         BasicPropertyReader parameters = new BasicPropertyReader();
-         parameters.set("_message", _error);
-         result = new BasicCallResult(false, "InternalError", parameters, null);
+         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
       }
 
       // Send the output only if GET or POST
