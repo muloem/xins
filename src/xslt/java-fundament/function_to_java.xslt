@@ -267,9 +267,9 @@ public abstract class ]]></xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>) &amp;&amp; !</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="type">
-						<xsl:value-of select="@type" />
-					</xsl:with-param>
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
@@ -345,10 +345,10 @@ public abstract class ]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="@required" />
+				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="type"     select="@type"     />
+				<xsl:with-param name="required" select="@required" />
 			</xsl:call-template>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
