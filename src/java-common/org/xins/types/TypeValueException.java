@@ -4,6 +4,7 @@
 package org.xins.types;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception thrown to indicate a value is invalid for a certain type.
@@ -20,6 +21,47 @@ public class TypeValueException extends Exception {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates a message for the constructor after checking the arguments.
+    *
+    * @param type
+    *    the type, not <code>null</code>.
+    *
+    * @param value
+    *    the value, not <code>null</code>.
+    *
+    * @param additionalInfo
+    *    additional information, can be <code>null</code>.
+    *
+    * @return
+    *    the message to be passed up to the superconstructor, never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || value == null</code>.
+    */
+   private static final String createMessage(Type type, String value, String additionalInfo)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type, "value", value);
+
+      FastStringBuffer buffer = new FastStringBuffer(128);
+      buffer.append("The string \"");
+      buffer.append(value);
+      buffer.append("\" does not represent a valid value for the type ");
+      buffer.append(type.getName());
+      if (additionalInfo != null) {
+         buffer.append(": ");
+         buffer.append(additionalInfo);
+      } else {
+         buffer.append('.');
+      }
+
+      return buffer.toString();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -39,9 +81,28 @@ public class TypeValueException extends Exception {
     */
    public TypeValueException(Type type, String value)
    throws IllegalArgumentException {
+      this(type, value, null);
+   }
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("type", type, "value", value);
+   /**
+    * Creates a new <code>TypeValueException</code>.
+    *
+    * @param type
+    *    the type, not <code>null</code>.
+    *
+    * @param value
+    *    the value, not <code>null</code>.
+    *
+    * @param additionalInfo
+    *    additional information, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || value == null</code>.
+    */
+   public TypeValueException(Type type, String value, String additionalInfo)
+   throws IllegalArgumentException {
+
+      super(createMessage(type, value, additionalInfo));
 
       // Store the arguments
       _type  = type;
