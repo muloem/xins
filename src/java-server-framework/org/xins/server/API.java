@@ -298,6 +298,8 @@ implements DefaultReturnCodes {
     */
    private final void doGetStatistics(CallContext context)
    throws IOException {
+      context.param("xins.version", Library.getVersion());
+
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
