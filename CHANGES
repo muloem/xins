@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.77:
+
+* Generated web.xml file now has indentation enabled.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.76:
 
 * Supporting the attribute 'mapping' in the impl-java tag in the api.xml file.
