@@ -44,10 +44,13 @@ public final class CallContext {
     * @param callID
     *    the assigned call ID.
     *
+    * @param remoteIP
+    *    the IP address of the caller.
+    *
     * @throws IllegalArgumentException
     *    if <code>parameters == null || function == null</code>.
     */
-   CallContext(PropertyReader parameters, long start, Function function, int callID)
+   CallContext(PropertyReader parameters, long start, Function function, int callID, String remoteIP)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -58,6 +61,7 @@ public final class CallContext {
       _start        = start;
       _function     = function;
       _callID       = callID;
+      _remoteIP     = remoteIP;
       _builder      = new FunctionResult();
    }
 
@@ -91,6 +95,11 @@ public final class CallContext {
     * The call ID, unique in the context of the pertaining function.
     */
    private final int _callID;
+
+   /**
+    * The IP address of the caller.
+    */
+   private final String _remoteIP;
 
 
    //-------------------------------------------------------------------------
@@ -162,5 +171,15 @@ public final class CallContext {
     */
    public int getCallID() {
       return _callID;
+   }
+
+   /**
+    * Returns the IP address of the host that requested this function.
+    *
+    * @return
+    *    the IP address as a <code>String</code>.
+    */
+   public String getRemoteAddr() {
+      return _remoteIP;
    }
 }

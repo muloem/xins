@@ -338,7 +338,7 @@ public abstract class ]]></xsl:text>
 		<!-- ************************************************************* -->
 
 		<xsl:text>
-      Request _callRequest = new Request(</xsl:text>
+      Request _callRequest = new Request(context.getRemoteAddr(), </xsl:text>
 
 		<xsl:for-each select="input/param">
 			<xsl:if test="not(position() = 1)">, </xsl:if>

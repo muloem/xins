@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -165,6 +167,12 @@ extends HttpServlet {
    public static final String CONFIG_RELOAD_INTERVAL_PROPERTY = "org.xins.server.config.reload";
 
    /**
+    * The name of the runtime property that hostname for the server
+    * running the API.
+    */
+   public static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
+
+   /**
     * The default configuration file modification check interval, in seconds.
     */
    public static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
@@ -269,6 +277,11 @@ extends HttpServlet {
     * diagnostic context identifiers.
     */
    private final Random _random;
+
+   /**
+    * The hostname for localhost.
+    */
+   private String _hostname;
 
    /**
     * The stored servlet configuration object.
@@ -546,6 +559,15 @@ extends HttpServlet {
          // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
          _servletConfig = config;
 
+         // Store the localhost hostname for the contextID
+         InetAddress localhost = null;
+         try {
+            localhost = InetAddress.getLocalHost();
+            _hostname = localhost.getHostName();
+         } catch (UnknownHostException unknownHostException) {
+            Log.log_1233(unknownHostException);
+            _hostname = "localhost";
+         }
 
          //----------------------------------------------------------------//
          //                     Bootstrap framework                        //
@@ -811,6 +833,13 @@ extends HttpServlet {
             configureLoggerFallback();
          } else {
             Log.log_1305();
+         }
+
+         // Change the hostname if needed
+         String hostname = properties.getProperty(HOSTNAME_PROPERTY);
+         if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
+            Log.log_1312(_hostname, hostname);
+            _hostname = hostname;
          }
 
          // Log XINS version

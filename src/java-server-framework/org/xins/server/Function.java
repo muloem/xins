@@ -246,7 +246,7 @@ implements DefaultResultCodes {
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(parameters, start, this, callID);
+      CallContext context = new CallContext(parameters, start, this, callID, ip);
 
       FunctionResult result;
       try {

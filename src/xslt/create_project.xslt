@@ -25,10 +25,11 @@
 			<input addproperty="api.description"
 						 message="Please, enter the description of the new api:" />
 			<available property="owner.author" value=" owner=&quot;${{user.name}}&quot;" file="authors.xml" />
+			<property name="owner.author" value="" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0//EN" "http://xins.sourceforge.net/dtd/api_1_0.dtd">
 
-<api name="]]>${api.name}" ${owner.author}<![CDATA["
+<api name="]]>${api.name}"${owner.author}<![CDATA[
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description>]]>${api.description}<![CDATA[</description>

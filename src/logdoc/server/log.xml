@@ -153,6 +153,9 @@
 			<param name="function" />
 			<param name="message" />
 		</entry>
+		<entry id="1233" level="WARNING" exception="true">
+			<description>Unable to retreive the localhost name using "localhost" as default.</description>
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
@@ -206,6 +209,11 @@
 			<description>Logdoc Locale not supported by the API.</description>
 			<param name="locale" />
 			<param name="api" />
+		</entry>
+		<entry id="1312" level="INFO">
+			<description>Changed hostname used for the context identifier.</description>
+			<param name="oldHostname" />
+			<param name="newHostname" />
 		</entry>
 	</group>
 

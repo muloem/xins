@@ -1,9 +1,21 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.209:
 
+* XINS/Java Server Framework:
+  - Added a remoteIP() method in the request to retreive the IP address of the
+    remote host that requested the function.
+  - Fixed bug . The context identifier uses now the localhost hostname
+    instead of the hostname of the remote host.
+    This bug has been in XINS since version 0.203.
+
 * XINS/Java Common Library:
   - Cleaned up and improved Logdoc.
   - Added unit test class for Int16 type.
+
+* Generated build file
+  - Fixed bug 1040507. If the authors.xml file does not exists the owner is
+    not declared in the api.xml.
+    This bug has been in XINS since version 0.207.
 
 * Build and release process:
   - Added the possibility to release with a specific version
