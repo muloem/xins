@@ -2,9 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.209:
 
 * XINS/Java Server Framework:
-  - Added a remoteIP() method in the request to retreive the IP address of the
-    remote host that requested the function.
-  - Fixed bug. The context identifier uses now the localhost hostname
+  - Fixed bug . The context identifier uses now the localhost hostname
     instead of the hostname of the remote host.
     This bug has been in XINS since version 0.203.
   - Fixed SF.net bug #1042113. Function without parms generates
@@ -30,6 +28,8 @@ CHANGES INTRODUCED IN XINS 0.209:
     implementation failed when in some possible situations.
 
 * Generated server-side Java code:
+  - Added a remoteIP() method in the request to retreive the IP address of the
+    remote host that requested the function.
   - Fixed a problem when generating the author in the @author tag.
     This bug has been in XINS since version 0.208.
   - Fixed some Javadoc tags.
