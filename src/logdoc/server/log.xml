@@ -8,7 +8,6 @@
 -->
 
 <log>
-
 	<translation-bundle locale="en_US" />
 
 	<group id="trace" name="Tracing of constructors, class functions and instance methods">
