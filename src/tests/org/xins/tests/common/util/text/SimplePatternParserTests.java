@@ -88,10 +88,6 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("aa?a?*a",  null);
       doTestParseSimplePattern("aa*a*?a",  null);
       doTestParseSimplePattern("aa?a??a",  null);
-      doTestParseSimplePattern("aa%aa",    null);
-      doTestParseSimplePattern("aaaa%",    null);
-      doTestParseSimplePattern("%aaaa",    null);
-      doTestParseSimplePattern("%",        null);
 
       doTestParseSimplePattern("",         "^$");
       doTestParseSimplePattern("*",        "^.*$");
@@ -102,6 +98,15 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("...",      "^\\.\\.\\.$");
 
       doTestParseSimplePattern("abcdefghijklmnopqrstuvwxyz1234567890-_.", "^abcdefghijklmnopqrstuvwxyz1234567890-_\\.$");
+
+      final String invalidChars = "~`!@#$%^&()=+[]{}|\\:;\"'<>,/";
+      for (int i = 0; i < invalidChars.length(); i++) {
+         char invalidChar = invalidChars.charAt(i);
+         doTestParseSimplePattern(""   + invalidChar + "",   null);
+         doTestParseSimplePattern("aa" + invalidChar + "",   null);
+         doTestParseSimplePattern(""   + invalidChar + "aa", null);
+         doTestParseSimplePattern("aa" + invalidChar + "aa", null);
+      }
    }
 
    private void doTestParseSimplePattern(String simple, String re)
