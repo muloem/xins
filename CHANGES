@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 0.56:
 * In generated specified documentation: No longer displaying standard result
   code as acronym.
 
+* Removed (unused) support for 'dependson' tags in the function
+  specifications.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.55:
 
