@@ -844,12 +844,8 @@
 							<xsl:variable name="functionName" select="@name" />
 							<xsl:variable name="functionFile" select="concat($api_specsdir, '/', $functionName, '.fnc')" />
 							<xsl:for-each select="document($functionFile)/function">
-								<xsl:choose>
-									<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
-										<xsl:value-of select="$functionName" />
-										<xsl:text>.fnc,</xsl:text>
-									</xsl:when>
-								</xsl:choose>
+								<xsl:value-of select="$functionName" />
+								<xsl:text>.fnc,</xsl:text>
 							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:variable>
