@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.203:
 
 * XINS/Java Common Library:
   - Replaced the way to find the hostname for the hostname task.
+  - Added serialize() function to PropertyReaderUtils that constructs a
+    LogdocSerializable for a PropertyReader.
 
 * XINS/Java Client Framework:
   - Removed the deprecated getCode() method from UnsuccessfulCallException.
