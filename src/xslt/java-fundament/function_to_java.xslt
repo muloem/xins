@@ -29,6 +29,27 @@
 	</xsl:variable>
 
 	<xsl:template match="function">
+		<xsl:variable name="sessionBased">
+			<xsl:choose>
+				<xsl:when test="string-length(@sessionBased) &lt; 1">
+					<xsl:text>false</xsl:text>
+				</xsl:when>
+				<xsl:when test="@sessionBased = 'false'">
+					<xsl:text>false</xsl:text>
+				</xsl:when>
+				<xsl:when test="@sessionBased = 'true'">
+					<xsl:text>true</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>The attribute 'sessionBased' has an invalid value: '</xsl:text>
+						<xsl:value-of select="@sessionBased" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
@@ -76,7 +97,9 @@ public abstract class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>", "</xsl:text>
 		<xsl:value-of select="$version" />
-		<xsl:text>");</xsl:text>
+		<xsl:text>", </xsl:text>
+		<xsl:value-of select="$sessionBased" />
+		<xsl:text>);</xsl:text>
 		<xsl:for-each select="document($api_file)/api/impl-java/instance">
 			<xsl:text>
       </xsl:text>
