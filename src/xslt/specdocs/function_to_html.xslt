@@ -127,17 +127,13 @@
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
-		<xsl:variable name="function_name">
-			<xsl:value-of select="@name" />
-		</xsl:variable>
-		<xsl:variable name="envlist_file">
-			<xsl:value-of select="concat($project_home, '/apis/', @api, '/envlist.xml')" />
-		</xsl:variable>
+		<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+		<xsl:variable name="function_name" select="@name" />
 
-		<xsl:if test="boolean(document($envlist_file)/envlist/env)">
+		<xsl:if test="boolean(document($project_file)/project/environment)">
 			<h2>Test forms</h2>
 			<ul>
-				<xsl:for-each select="document($envlist_file)/envlist/env">
+				<xsl:for-each select="document($project_file)/project/environment">
 					<li>
 						<a>
 							<xsl:attribute name="href">
