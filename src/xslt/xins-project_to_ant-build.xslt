@@ -218,8 +218,8 @@
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/',    $api)"    />
-					<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/', $api)" />
+					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
+					<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
 					<delete dir="{$copiedTypesDir}" />
 					<xsl:for-each select="document($api_file)/api/type">
@@ -587,8 +587,9 @@
 					debug="true"
 					deprecation="true">
 						<classpath>
-							<pathelement path="{$xins-common.jar}" />
-							<pathelement path="{$xins-client.jar}" />
+							<pathelement path="{$xins-common.jar}"                                     />
+							<pathelement path="{$xins-client.jar}"                                     />
+							<pathelement path="{concat($project_home, '/build/classes-types/', $api)}" />
 							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
 							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
 						</classpath>
