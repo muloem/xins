@@ -85,8 +85,9 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Display specified output parameters and data section per result code.
 * Check all names using regular expressions.
 * Make sure a result code does not clash with the default result codes.
-* Allow all meta-functions to be called from either the specification
-  documentation or from the test forms.
+* Have a page per environment with links to _GetVersion, _GetStatistics,
+  _GetSettings, etc. Let the link on the page for an API link to that page.
+* Link to CVSweb or ViewCVS.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
