@@ -35,6 +35,7 @@
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import org.xins.server.API;
 import org.xins.server.CallContext;
 
@@ -120,7 +121,9 @@ public class APIImpl extends API {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
+</xsl:text>
+	<xsl:if test="document($impllist_file)/impllist/impl[@api=$api]/instance">
+		<xsl:text>
    public void init(Properties properties)
    throws Throwable {</xsl:text>
 		<xsl:for-each select="document($impllist_file)/impllist/impl[@api=$api]/instance">
@@ -131,7 +134,10 @@ public class APIImpl extends API {
 		</xsl:for-each>
 		<xsl:text>
    }
+</xsl:text>
+	</xsl:if>
 
+	<xsl:text>
    protected void handleCall(CallContext context)
    throws Throwable {
       String function = context.getParameter("function");
