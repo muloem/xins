@@ -455,7 +455,7 @@ implements DefaultResultCodes {
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
-      Library.BOOTSTRAP_LOG.info("API is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
+      Library.BOOTSTRAP_LOG.debug("API is " + (_responseValidationEnabled ? "" : "not ") + "session-oriented.");
 
       // XXX: Allow configuration of session ID type ?
 
@@ -525,7 +525,8 @@ implements DefaultResultCodes {
          buffer.append(", using XINS ");
          buffer.append(_buildVersion);
       } else {
-         log.warn("Build version is not set.");
+         buffer.append(".");
+         log.warn("Build-time XINS version is not set.");
          _buildVersion = null;
       }
 
