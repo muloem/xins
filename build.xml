@@ -33,11 +33,18 @@
 	</target>
 
 	<target name="-init">
+		<property name="version.file" value=".version.properties" />
+		<property file="${version.file}" />
+		<condition property="version.isset">
+			<and>
+				<isset property="version.major" />
+				<isset property="version.minor" />
+			</and>
+		</condition>
+		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
+
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version.major"       value="0" />
-		<property name="version.minor"       value="84" />
-		<property name="version.suffix"      value="" />
 		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
