@@ -469,44 +469,6 @@ implements DefaultResultCodes {
 
       Log.log_117(_buildHost, _buildTime, _buildVersion);
 
-      // Log build-time properties
-      Logger log = Library.BOOTSTRAP_LOG;
-      FastStringBuffer buffer = new FastStringBuffer(160);
-
-      // - build host name
-      buffer.append("Built on ");
-      if (_buildHost != null && !("".equals(_buildHost))) {
-         buffer.append("host ");
-         buffer.append(_buildHost);
-      } else {
-         log.warn("Build host name is not set.");
-         buffer.append("unknown host");
-         _buildHost = null;
-      }
-
-      // - build time
-      if (_buildTime != null && !("".equals(_buildTime))) {
-         buffer.append(" (at ");
-         buffer.append(_buildTime);
-         buffer.append(")");
-      } else {
-         log.warn("Build time stamp is not set.");
-         _buildTime = null;
-      }
-
-      // - XINS version
-      if (_buildVersion != null && !("".equals(_buildVersion))) {
-         buffer.append(", using XINS ");
-         buffer.append(_buildVersion);
-      } else {
-         buffer.append(".");
-         log.warn("Build-time XINS version is not set.");
-         _buildVersion = null;
-      }
-
-      buffer.append('.');
-      log.info(buffer.toString());
-
       // Let the subclass perform initialization
       bootstrapImpl2(buildSettings);
 
@@ -515,27 +477,22 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         log.debug("Bootstrapping manageable object of class " + className + " for " + _name + " API.");
+         Log.log_118(className, _name);
          try {
             m.bootstrap(_buildSettings);
-            log.debug("Bootstrapped manageable object of class " + className + " for " + _name +  " API.");
+            Log.log_119(_name, className);
          } catch (MissingRequiredPropertyException exception) {
+            Log.log_120(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
+            Log.log_121(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
+            Log.log_122(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            buffer.clear();
-            buffer.append("Failed to bootstrap manageable object of class ");
-            buffer.append(className);
-            buffer.append(" for ");
-            buffer.append(_name);
-            buffer.append(" API ");
-            buffer.append(APIServlet.dueToUnexpected(exception));
-            String message = buffer.toString();
-            log.error(message, exception);
-            throw new BootstrapException(message);
+            Log.log_123(_name, className, exception.getClass().getName(), exception.getMessage());
+            throw new BootstrapException(exception);
          }
       }
 
@@ -631,10 +588,6 @@ implements DefaultResultCodes {
 
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
-
-      // Check if response validation is enabled
-      _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation", false);
-      log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Initialize ACL subsystem
       log = Library.INIT_ACL_LOG;
