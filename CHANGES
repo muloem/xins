@@ -10,6 +10,11 @@ CHANGES INTRODUCED IN XINS 0.161:
   - Changed levels for log message entries:
     . 3005 from DEBUG to INFO (Logging subsystem has been properly
       initialized)
+  - Changed fallback default log message output pattern to:
+    "%-4c{1} %-6p %m%n" (without the quotes). 
+  - Improved translations for log message 5018.
+  - Added log entry group runtime.http. Moved log messages 5000 and 5001 in
+    this group.
 
 * XINS/Java Common Library:
   - Added the SingleEntryMap class. This class is the implementation of a 
