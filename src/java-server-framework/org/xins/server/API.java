@@ -436,23 +436,38 @@ implements DefaultResultCodes {
          try {
             f.init(runtimeSettings);
             Log.log_1426(_name, functionName);
+
+	 // Missing required property
          } catch (MissingRequiredPropertyException exception) {
             Log.log_1427(_name, functionName, exception.getPropertyName());
             throw exception;
+
+	 // Invalid property value
          } catch (InvalidPropertyValueException exception) {
             Log.log_1428(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
-         } catch (InitializationException exception) {
-	    Throwable cause = exception.getCause();
-	    if (cause != null) {
-               Log.log_1430(cause, _name, functionName);
-	    } else {
-               Log.log_1429(_name, functionName, exception.getMessage());
-	    }
-            throw exception;
+
+	 // Catch InitializationException and any other exceptions not caught
+	 // by previous catch statements
          } catch (Throwable exception) {
+
+            // Get the root cause of the exception
+	    Throwable cause = exception.getCause();
+	    while (cause != null) {
+	       exception = cause;
+	       cause = exception.getCause();
+	    }
+
+	    // Log this event
             Log.log_1430(exception, _name, functionName);
-            throw new InitializationException(exception);
+
+            // Throw an InitializationException. If necessary, wrap around the
+	    // caught exception
+	    if (exception instanceof InitializationException) {
+	       throw (InitializationException) exception;
+	    } else {
+               throw new InitializationException(exception);
+	    }
          }
       }
 
