@@ -464,6 +464,8 @@ extends AbstractCompositeFunctionCaller {
        *
        * @return
        *    the name of this type, not <code>null</code>.
+       *
+       * @since XINS 0.45
        */
       public final String getName() {
          return _name;
