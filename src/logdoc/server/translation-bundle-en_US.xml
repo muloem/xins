@@ -22,11 +22,6 @@
 	<translation entry="1210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value.</translation>
 	<translation entry="1211">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The API failed to bootstrap with the given build properties. Reason: <value-of-param name="message" />.</translation>
 	<translation entry="1212">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The API failed to bootstrap with the given build properties.</translation>
-	<translation entry="1213">API is session-oriented.</translation>
-	<translation entry="1214">API is session-less.</translation>
-	<translation entry="1215">Starting session-related bootstrapping of API.</translation>
-	<translation entry="1216">Finished session-related bootstrapping of API.</translation>
-	<translation entry="1217">Session time-out is <value-of-param name="timeOut" /> seconds with a precision of <value-of-param name="timeOutPrecision" /> seconds.</translation>
 	<translation entry="1218">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="1219">Bootstrapping manageable <value-of-param name="className" />.</translation>
 	<translation entry="1220">Bootstrapped manageable <value-of-param name="className" />.</translation>

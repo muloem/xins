@@ -119,7 +119,7 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-common" depends="-init" description="Compiles the XINS/Java common code">
+	<target name="java-common" depends="-init, logdoc-java-common" description="Compiles the XINS/Java common code">
 		<antcall target="-build-framework">
 			<param name="src.side" value="common" />
 			<param name="side"     value="common" />
@@ -127,7 +127,7 @@
 		</antcall>
 	</target>
 
-	<target name="java-client" depends="java-common" description="Compiles the XINS/Java client framework">
+	<target name="java-client" depends="java-common, logdoc-java-client" description="Compiles the XINS/Java client framework">
 		<path id="path.common">
 			<pathelement path="build/classes/java-common" />
 		</path>
@@ -138,7 +138,7 @@
 		</antcall>
 	</target>
 
-	<target name="java-server" depends="java-common" description="Compiles the XINS/Java server framework">
+	<target name="java-server" depends="java-common, logdoc-java-server" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/src/java-server-framework" />
 		<style in="src/xml/default_resultcodes.xml"
 		       out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
