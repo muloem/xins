@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.19:
+
+* Fixed NPE in CallContext.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.18:
 
 * Logging different types of InvalidParameters errors.
