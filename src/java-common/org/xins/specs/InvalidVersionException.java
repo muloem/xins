@@ -4,6 +4,7 @@
 package org.xins.specs;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception that indicates that a specified string is not a well-formed
@@ -24,6 +25,31 @@ public final class InvalidVersionException extends Exception {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates the message the constructor can pass up to the superconstructor.
+    *
+    * @param version
+    *    the string that is considered malformed as a version, cannot be
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>version == null</code>.
+    */
+   private static final String createMessage(String version)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("version", version);
+
+      FastStringBuffer buffer = new FastStringBuffer(80);
+      buffer.append("The string \"");
+      buffer.append(version);
+      buffer.append("\" is invalid as a version string.");
+
+      return buffer.toString();
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -41,8 +67,7 @@ public final class InvalidVersionException extends Exception {
    InvalidVersionException(String version)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("version", version);
+      super(createMessage(version));
 
       _version = version;
    }

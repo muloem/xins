@@ -4,6 +4,7 @@
 package org.xins.specs;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception that indicates that a specified name was invalid for that type of
@@ -23,6 +24,63 @@ public final class InvalidNameException extends Exception {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates the message the constructor can pass up to the superconstructor.
+    *
+    * @param type
+    *    the type of component for which the name is considered invalid,
+    *    cannot be <code>null</code>.
+    *
+    * @param name
+    *    the name that is considered invalid, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || name == null</code>.
+    */
+   private static final String createMessage(SpecType type, String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type, "name", name);
+
+      String typeName = type.getTypeName();
+
+      boolean vowel = isVowel(typeName.charAt(0));
+
+      FastStringBuffer buffer = new FastStringBuffer(80);
+      buffer.append("The specified name \"");
+      buffer.append(name);
+      buffer.append("\" is invalid for a");
+      if (vowel) {
+         buffer.append('n');
+      }
+      buffer.append(' ');
+      buffer.append(typeName);
+      buffer.append('.');
+
+      return buffer.toString();
+   }
+
+   /**
+    * Checks if the specified character is a vowel.
+    *
+    * @param c
+    *    the character to check.
+    *
+    * @return
+    *    <code>true</code> if the specified character is a vowel,
+    *    <code>false</code> otherwise.
+    */
+   private static final boolean isVowel(char c) {
+      // TODO: Move this function to a utility class
+      return c == 'a' || c == 'A'
+          || c == 'e' || c == 'E'
+          || c == 'i' || c == 'I'
+          || c == 'o' || c == 'O'
+          || c == 'u' || c == 'U';
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -44,10 +102,7 @@ public final class InvalidNameException extends Exception {
    InvalidNameException(SpecType type, String name)
    throws IllegalArgumentException {
 
-      // TODO: super(createMessage(type, name);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("type", type, "name", name);
+      super(createMessage(type, name));
 
       _type = type;
       _name = name;
