@@ -11,6 +11,8 @@ package org.xins.types;
  */
 public class PatternCompileException extends RuntimeException {
 
+   // TODO: Extend Exception ?
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
