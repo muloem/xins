@@ -124,6 +124,9 @@ CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 3:
   - Added log message 2113: XINS call request completely failed.
 
 * XINS/Java Common Library:
+  - Changed the level of all Logdoc messages in the 'service' group to DEBUG.
+    Proper logging is the responsibility of the ServiceCaller subclass and
+    corresponding classes.
   - Changed UnexpectedExceptionCallException constructor: The 'cause' argument
     is now mandatory.
 
