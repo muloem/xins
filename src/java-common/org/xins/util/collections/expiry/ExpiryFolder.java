@@ -17,7 +17,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public abstract class ExpiryFolder
+public final class ExpiryFolder
 extends Object {
 
    //-------------------------------------------------------------------------
