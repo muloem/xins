@@ -168,14 +168,15 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    /**
     * Constructs a new <code>XINSServiceCaller</code> with the specified
-    * descriptor and HTTP method.
+    * descriptor and call configuration.
     *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
     *
-    * @param httpMethod
-    *    the HTTP method to use if a {@link XINSCallRequest} does not specify
-    *    one, or <code>null</code> if the default method should then be used.
+    * @param callConfig
+    *    the call configuration object for this service caller, or
+    *    <code>null</code> if a default one should be associated with this
+    *    service caller.
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
