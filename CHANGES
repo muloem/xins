@@ -33,6 +33,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     retain backwards compatibility.
   - Added tests for class ProtectedPropertyReader.
 
+* XINS/Java Client Framework:
+  - Implemented SF.net RFE #1114846: Error code in UnsuccessfulCallException
+    message.
+
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
     class FunctionRequest.
