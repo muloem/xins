@@ -17,6 +17,13 @@ public final class Library extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Regular expression that production release versions of XINS match, and
+    * non-production release version do not.
+    */
+   private static final String PRODUCTION_RELEASE_PATTERN = "[1-9][0-9]*\\.[0-9]+\\.[0-9]+";
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -30,6 +37,17 @@ public final class Library extends Object {
     */
    public static final String getVersion() {
       return "%%VERSION%%";
+   }
+
+   /**
+    * Checks if the specified version indicates a production release of XINS.
+    *
+    * @return
+    *    <code>true</code> is the specified XINS version identifies a
+    *    production release of XINS, <code>false</code> if it does not.
+    */
+   static final boolean isProductionRelease(String version) {
+      return version.matches(PRODUCTION_RELEASE_PATTERN);
    }
 
 
