@@ -25,7 +25,7 @@
 		<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
 		<param name="detail" />
 	</entry>
-	<entry id="103" level="WARN" category="org.xins.server.lifespan.bootstrap">
+	<entry id="103" level="WARNING" category="org.xins.server.lifespan.bootstrap">
 		<description>Application server implements unexpected version of Java Servlet API Specification.</description>
 		<param name="actual_version" />
 		<param name="expected_version" />
