@@ -115,6 +115,8 @@ XINS/JAVA COMMON LIBRARY
 * Create an implementation of interface IndexedMap.
 * EnumItem should override the equals() and hashCode() methods so that two
   EnumItem with the same name and the same value should be equals.
+* Implemented and test method isValidValueImpl in class
+  org.xins.types.standard.Properties.
 
 ______________________________________________________________________________
 LOGDOC
