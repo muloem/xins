@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.94:
+
+* XINS/Java Common Library
+  - Explicitly marked ExpiryStrategy.TimerThread as daemon thread. This may
+    fix a shutdown issue on Solaris.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.93:
 
 * XINS/Java Commons Library:
