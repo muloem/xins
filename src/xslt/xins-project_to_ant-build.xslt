@@ -190,39 +190,43 @@ $Id$
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:variable name="javaImplDir"    select="concat($javaImplBaseDir, '/', $api)" />
-					<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
-					<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes-api/', $api)"        />
+					<xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/', $api)" />
+					<xsl:variable name="javaDestDir"     select="concat($project_home, '/build/java-fundament/', $api)" />
+					<xsl:variable name="classesDestDir"  select="concat($project_home, '/build/classes-api/', $api)"        />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
 
 					<target name="-impl-{$api}-existencechecks">
 						<xsl:for-each select="document($api_file)/api/function">
-							<xsl:variable name="function" select="@name" />
-							<xsl:variable name="classname" select="concat(@name, 'Impl')" />
+							<xsl:variable name="function"        select="@name" />
+							<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
+							<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
 							<available
-								property="exists-{$api}-{$function}Impl"
-								file="{$javaImplDir}/{$packageAsDir}/{$classname}.java"
+								property="exists-{$api}-{$classname}"
+								file="{$javaImplFile}"
 								type="file" />
 						</xsl:for-each>
 					</target>
 
 					<xsl:for-each select="document($api_file)/api/function">
-						<xsl:variable name="function"  select="@name" />
-						<xsl:variable name="classname" select="concat(@name, 'Impl')" />
+						<xsl:variable name="function"        select="@name" />
+						<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
+						<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
 						<target
 							name="-impl-{$api}-{$function}-unavail"
 							depends="-impl-{$api}-existencechecks"
-							if="exists-{$api}-{$function}Impl">
-							<echo message="Not overwriting existing file: {$javaImplDir}/{$packageAsDir}/{$function}.java" />
+							if="exists-{$api}-{$classname}">
+							<echo message="Not overwriting existing file: {$javaImplFile}" />
 						</target>
 						<target
 							name="-skeleton-impl-{$api}-{$function}"
 							depends="-impl-{$api}-{$function}-unavail"
-							unless="exists-{$api}-{$function}Impl">
+							unless="exists-{$api}-{$classname}">
 							<style
 								in="{$specsdir}/{$api}/{$function}.fnc"
-								out="{$javaImplDir}/{$packageAsDir}/{$classname}.java"
+								out="{$javaImplFile}"
 								style="{$xins_home}/src/xslt/java-skeleton/function_to_java.xslt">
+								<param name="specsdir"  expression="{$specsdir}"  />
+								<param name="api"       expression="{$api}"       />
 								<param name="package"   expression="{$package}"   />
 								<param name="classname" expression="{$classname}" />
 							</style>
