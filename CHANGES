@@ -2,8 +2,11 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.122:
 
 * XINS/Java Server Framework:
-  - Improved documentation of APIServlet class.
+  - Improved Javadoc documentation of a few classes, like APIServlet and API.
   - Improved error-checking and logging in APIServlet class.
+
+* XINS/Java Client Framework:
+  - Improved Javadoc for MultipleIPAddressesException class.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.121:
