@@ -6,6 +6,7 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
@@ -106,23 +107,31 @@ extends Object {
     *
     * @param rules
     *    the list of rules, should not be <code>null</code> and should not
-    *    contain any <code>null</code> elements; if these rules are violated,
-    *    the behaviour is undefined.
+    *    contain any <code>null</code> elements; if these constraints are
+    *    violated, the behaviour is undefined.
     */
-   public AccessRuleList(AccessRule[] rules) {
+   private AccessRuleList(AccessRule[] rules) {
 
       // Store the rules
       _rules = rules;
+
+      Logger log = Library.INIT_ACL_LOG;
 
       // Build string representation
       int ruleCount = rules.length;
       FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
-         buffer.append(rules[0].toString());
+         String s = rules[0].toString();
+         buffer.append(s);
+         log.info("Access rule 0 is: " + s + '.');
       }
       for (int i = 1; i < ruleCount; i++) {
+         String s = rules[i].toString();
+
          buffer.append(';');
-         buffer.append(rules[i].toString());
+         buffer.append(s);
+
+         log.info("Access rule " + i + " is: " + s + '.');
       }
       _asString = buffer.toString();
    }
@@ -186,14 +195,55 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      // TODO: Logging
+      Logger log = Library.RUNTIME_ACL_LOG;
+
+      FastStringBuffer request = new FastStringBuffer(160);
+      request.append("Request (ip=");
+      request.append(ip);
+      request.append("; function=\"");
+      request.append(functionName);
+      request.append("\")");
 
       int ruleCount = _rules.length;
       for (int i = 0; i < ruleCount; i++) {
          AccessRule rule = _rules[i];
          if (rule.match(ip, functionName)) {
-            return rule.isAllowRule();
+
+            // Choose between 'allow' and 'deny'
+            boolean allow = rule.isAllowRule();
+
+            // Log this match
+            FastStringBuffer buffer = new FastStringBuffer(160);
+            buffer.append(request.toString());
+            buffer.append(" matches rule ");
+            buffer.append(i);
+            buffer.append(" (");
+            buffer.append(rule.toString());
+            buffer.append("). ");
+            if (allow) {
+               buffer.append("Allowing.");
+            } else {
+               buffer.append("Denying.");
+            }
+            log.info(buffer.toString());
+
+            return allow;
+         } else {
+
+            // Log this mismatch
+            FastStringBuffer buffer = new FastStringBuffer(160);
+            buffer.append(request.toString());
+            buffer.append(" does not match rule ");
+            buffer.append(i);
+            buffer.append(" (");
+            buffer.append(rule.toString());
+            buffer.append(").");
+            log.info(buffer.toString());
          }
+      }
+
+      if (log.isInfoEnabled()) {
+         log.info("Request (ip=" + ip + "; function=\"" + functionName + "\") matches none of the access rules. Denying.");
       }
 
       return false;
