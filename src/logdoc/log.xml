@@ -492,14 +492,49 @@
 		<entry id="5011" level="INFO">
 			<description>Received session ID is invalid.</description>
 			<param name="function" nullable="false" />
-			<param name="callID" type="int" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
 			<param name="sessionID" nullable="false" />
 		</entry>
 		<entry id="5012" level="INFO">
 			<description>Received session ID is valid but unknown.</description>
 			<param name="function" nullable="false" />
-			<param name="callID" type="int" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
 			<param name="sessionID" nullable="false" />
+		</entry>
+		<entry id="5013" level="NOTICE">
+			<description>Exception thrown during function call.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="exceptionClass" nullable="false" />
+			<param name="exceptionMessage" nullable="true" />
+		</entry>
+		<entry id="5014" level="INFO">
+			<description>Call to session-less function succeeded.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="duration" type="int64" nullable="false" />
+		</entry>
+		<entry id="5015" level="INFO">
+			<description>Call to session-oriented function succeeded.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="duration" type="int64" nullable="false" />
+			<param name="session" type="object" nullable="false" />
+		</entry>
+		<entry id="5016" level="INFO">
+			<description>Call to session-less function failed.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="duration" type="int64" nullable="false" />
+			<param name="code" nullable="true" />
+		</entry>
+		<entry id="5017" level="INFO">
+			<description>Call to session-oriented function failed.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int32" nullable="false" />
+			<param name="duration" type="int64" nullable="false" />
+			<param name="code" nullable="true" />
+			<param name="session" type="object" nullable="false" />
 		</entry>
 	</group>
 
