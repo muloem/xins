@@ -281,16 +281,16 @@ public final class LDAPServiceCaller extends ServiceCaller {
          if (context != null) {
             if (LOG.isDebugEnabled()) {
                if (principal == null) {
-                  LOG.debug("Authenticated with " + url + '.');
+                  LOG.info("Authenticated with " + url + '.');
                } else {
-                  LOG.debug("Authenticated with " + url + " as \"" + principal + "\".");
+                  LOG.info("Authenticated with " + url + " as \"" + principal + "\".");
                }
+            }
+         } else {
+            if (principal == null) {
+               LOG.info("Failed to authenticate with " + url + '.');
             } else {
-               if (principal == null) {
-                  LOG.error("Failed to authenticate with " + url + '.');
-               } else {
-                  LOG.error("Failed to authenticate with " + url + " as \"" + principal + "\".");
-               }
+               LOG.info("Failed to authenticate with " + url + " as \"" + principal + "\".");
             }
          }
       }
