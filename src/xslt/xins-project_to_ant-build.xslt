@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII" ?>
+<?xml version="1.0" encoding="US-ASCII"?>
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
@@ -9,6 +9,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:include href="package_to_dir.xslt" />
+	<xsl:include href="package_for_api.xslt" />
 
 	<xsl:output indent="yes" />
 
@@ -122,6 +123,9 @@
 				<xsl:variable name="api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_api">
+						<xsl:with-param name="project_file">
+							<xsl:value-of select="$project_file" />
+						</xsl:with-param>
 						<xsl:with-param name="api">
 							<xsl:value-of select="$api" />
 						</xsl:with-param>
@@ -135,7 +139,7 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-fundament/', $api)" />
-				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
+				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)"        />
 				<xsl:variable name="javaImplDir">
 					<xsl:value-of select="$project_home" />
 					<xsl:text>/</xsl:text>
@@ -206,7 +210,23 @@
 			</target>
 
 			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-				<target name="war-api-{@name}" depends="classes-api-{@name}" description="Creates the WAR for the '{@name}' API" />
+				<xsl:variable name="api"            select="@name" />
+				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
+
+				<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
+					<mkdir dir="build/webapps/{$api}" />
+					<style
+					in="{$specsdir}/{$api}/api.xml"
+					out="build/webapps/{$api}/web.xml"
+					style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
+						<param name="project_home" expression="{$project_home}" />
+					</style>
+					<war
+					webxml="build/webapps/{$api}/web.xml"
+					destfile="build/webapps/{$api}/{$api}.war">
+						<classes dir="{$classesDestDir}" includes="**/*.class" />
+					</war>
+				</target>
 			</xsl:for-each>
 
 			<target name="wars" description="Creates the WARs for all APIs">
@@ -221,24 +241,5 @@
 
 			<target name="all" depends="specdocs,wars" description="Generates everything" />
 		</project>
-	</xsl:template>
-
-	<xsl:template name="package_for_api">
-		<xsl:param name="api" />
-
-		<xsl:variable name="prefix" select="document($project_file)/project/java-impls/@packageprefix" />
-		<xsl:variable name="suffix" select="document($project_file)/project/java-impls/@packagesuffix" />
-
-		<xsl:if test="string-length($prefix) &gt; 0">
-			<xsl:value-of select="$prefix" />
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-
-		<xsl:value-of select="$api" />
-
-		<xsl:if test="string-length($suffix) &gt; 0">
-			<xsl:text>.</xsl:text>
-			<xsl:value-of select="$suffix" />
-		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>
