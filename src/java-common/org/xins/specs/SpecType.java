@@ -61,12 +61,12 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the name of the component.
+    * Returns the name of the component type.
     *
     * @return
     *    the name, cannot be <code>null</code>.
     */
-   public final String getName() {
+   public final String getTypeName() {
       return _name;
    }
 }
