@@ -147,7 +147,7 @@ extends Object {
 
          if (value != null) {
             // Log this event
-            Log.log_5006(key, value.getClass().getName(), valueString);
+            Log.log_5006(key, value.getClass().getName(), value.toString());
 
             // Perform the actual action
             _attributes = new HashMap(89);
@@ -165,7 +165,7 @@ extends Object {
       // Otherwise store a new entry
       } else {
          // Log this event
-         Log.log_5006(key, value.getClass().getName(), valueString);
+         Log.log_5006(key, value.getClass().getName(), value.toString());
 
          // Perform the actual action
          _attributes.put(key, value);
@@ -211,20 +211,27 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
+      Object value;
+
       if (_attributes != null) {
-         // Get the value
-         Object value = _attributes.get(key);
+
+         // Get the value by key from the Map
+         value = _attributes.get(key);
 
          // Log this event
-         String valueClass  = (value == null) ? null : value.getClass().getName();
-         String valueString = (value == null) ? null : String.valueOf(value);
-         Log.log_5008(key, valueClass, valueString);
+         if (value != null) {
+            Log.log_5008(key, value.getClass().getName(), value.toString());
+         } else {
+            Log.log_5009(key);
+         }
 
-         return value;
+      // The Map does not exist, consequently the value is null
       } else {
-         Log.log_5008(key, null, null);
-         return null;
+         Log.log_5009(key);
+         value = null;
       }
+
+      return value;
    }
 
    public String toString() {
