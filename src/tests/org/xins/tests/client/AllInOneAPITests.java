@@ -250,7 +250,7 @@ public class AllInOneAPITests extends TestCase {
    public void testDataSection() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection("Doe").getDataElement();
+      DataElement element = allInOne.callDataSection("Doe").dataElement();
       Iterator users = element.getChildren();
       assertTrue("No users found.", users.hasNext());
       DataElement su = (DataElement) users.next();
@@ -274,7 +274,7 @@ public class AllInOneAPITests extends TestCase {
    public void testDataSection2() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
       CAPI allInOne = new CAPI(descriptor);
-      DataElement element = allInOne.callDataSection2("hello").getDataElement();
+      DataElement element = allInOne.callDataSection2("hello").dataElement();
       Iterator packets = element.getChildren();
       assertTrue("No destination found.", packets.hasNext());
       DataElement packet1 = (DataElement) packets.next();
