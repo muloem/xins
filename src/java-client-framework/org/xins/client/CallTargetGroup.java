@@ -47,6 +47,34 @@ extends AbstractCompositeFunctionCaller {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates a new <code>CallTargetGroup</code> of the specified type, with
+    * the specified members.
+    *
+    * @param type
+    *    the type, either {@link #ORDERED_TYPE}, {@link #RANDOM_TYPE} or
+    *    {@link #ROUND_ROBIN_TYPE}, cannot be <code>null</code>.
+    *
+    * @param members
+    *    the {@link List} of {@link FunctionCaller} members, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the <code>CallTargetGroup</code>, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || members == null</code>.
+    */
+   public final static CallTargetGroup create(Type type, List members)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type, "members", members);
+
+      return null; // TODO
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
