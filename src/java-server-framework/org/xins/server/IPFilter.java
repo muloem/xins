@@ -161,6 +161,7 @@ extends Object {
       _baseIPString = ipString;
       _baseIP       = ip;
       _mask         = mask;
+      _shift        = 32 - _mask;
    }
 
 
@@ -187,6 +188,12 @@ extends Object {
     * The mask of this filter. Can only have a value between 0 and 32.
     */
    private final int _mask;
+
+   /**
+    * The shift value, which equals <code>32 - </code>{@link #_mask}. Always
+    * between 0 and 32.
+    */
+   private final int _shift;
 
 
    //-------------------------------------------------------------------------
@@ -255,16 +262,13 @@ extends Object {
       // Convert the IP string to an 'int'
       int ip = IPAddressUtils.ipToInt(ipString);
 
-      // If the mask is 0 bits, then all IP addresses match
+      // Short-circuit if mask is 0 bits
       if (_mask == 0) {
          return true;
-
-      // If the mask is 32 bits, then the complete IP address must match
-      } else if (_mask == 32) {
-         return _baseIPString.equals(ipString);
       }
 
-      return false; // TODO
+      // Zero out the unapplicable bits
+      return (ip >> _shift) == (_baseIP >> _shift);
    }
 
    /**
