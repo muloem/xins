@@ -42,11 +42,15 @@ import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.io.FileWatcher;
 
 import org.xins.common.manageable.InitializationException;
+
 import org.xins.common.net.IPAddressUtils;
+
 import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.TextUtils;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -86,6 +90,7 @@ import org.xins.common.text.HexConverter;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -215,7 +220,7 @@ extends HttpServlet {
    /**
     * The name of the build property that specifies the default calling convention.
     */
-   public static final String API_CALLING_CONVENTION_PROPERTY = "org.xins.api.calling-convention";
+   public static final String API_CALLING_CONVENTION_PROPERTY = "org.xins.api.calling.convention";
 
    /**
     * The parameter of the query to specify the calling convention.
@@ -225,12 +230,12 @@ extends HttpServlet {
    /**
     * The standard calling convention.
     */
-   public static final String STANDARD_CALLING_CONVENTION = "xins-std";
+   public static final String STANDARD_CALLING_CONVENTION = "_xins-std";
 
    /**
     * The old style calling convention.
     */
-   public static final String OLD_STYLE_CALLING_CONVENTION = "xins-old";
+   public static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
 
    /**
     * The name of the runtime property that specifies the locale for the log
@@ -352,7 +357,11 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * The default calling convention for the API.
+    * The default calling convention for the API. Can be overridden by the
+    * input parameter {@link #CALLING_CONVENTION_PARAMETER}.
+    *
+    * <p>This field can never be <code>null</code> so there will always be a
+    * calling convention to fall back to.
     */
    private CallingConvention _callingConvention;
 
@@ -363,17 +372,33 @@ extends HttpServlet {
 
    /**
     * Generates a diagnostic context identifier. The generated context
-    * identifier will be like app@host:time:rnd where
-    *   - app is the name of the deployed application
-    *   - host is the hostname the computer running this servlet.
-    *   - time is the current time formatted a yyMMdd-HHmmssNNN
-    *     (e.g. 040806-171522358)
-    *   - rnd is a 5 digits long random hexadecimal generated number.
+    * identifier will be in the format:
+    *
+    * <blockqoute>app@host:time:rnd</blockqoute>
+    *
+    * where:
+    *
+    * <ul>
+    *    <li><em>app</em> is the name of the deployed application, e.g.
+    *       <code>"sso"</code>;
+    *
+    *    <li><em>host</em> is the hostname the computer running this servlet,
+    *       e.g. <code>"freddy.bravo.com"</code>;
+    *
+    *    <li><em>time</em> is the current date and time in the format
+    *    <code>yyMMdd-HHmmssNNN</code>, e.g. <code>"050806-171522358"</code>;
+    *
+    *    <li><em>rnd</em> is a 5 hex-digits randomly generated number, e.g.
+    *        <code>"2f4e6"</code>.
+    * </ul>
     *
     * @return
     *    the generated diagnostic context identifier, never <code>null</code>.
     */
    private String generateContextID() {
+
+      // TODO: Improve performance of this method
+      // XXX: Consider moving this method to a separate utility class
 
       String currentDate = DATE_FORMATTER.format(new Date());
 
@@ -468,7 +493,7 @@ extends HttpServlet {
     *
     * @throws InvalidPropertyValueException
     *    if the interval cannot be determined because it does not qualify as a
-    *    positive 32-bit integer number.
+    *    positive 32-bit unsigned integer number.
     */
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
@@ -546,7 +571,7 @@ extends HttpServlet {
     *    <dt><strong>3. Configuration file</strong></dt>
     *    <dd>The configuration file should contain runtime configuration
     *        settings, like the settings for the logging subsystem.
-    *        <br />System properties are the responsibility of the
+    *        <br />Runtime properties are the responsibility of the
     *        <em>system administrator</em>.
     *        <br />Example contents for a configuration file:
     *        <blockquote><code>log4j.rootLogger=DEBUG, console
@@ -605,6 +630,8 @@ extends HttpServlet {
 
          // Store the ServletConfig object, per the Servlet API Spec, see:
          // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
+         // TODO: Store this only if the initialization completely succeeded
+         //       and no exception was thrown.
          _servletConfig = config;
 
          // Store the localhost hostname for the contextID
@@ -656,12 +683,13 @@ extends HttpServlet {
             Log.log_3227(serverVersion);
          } else {
 
-            // Warn if the build version of the API is more recent than the running version
+            // Warn if API build version is more recent than running version
             String buildVersion = config.getInitParameter(API_BUILD_VERSION_PROPERTY);
             if (buildVersion == null || (Library.isProductionRelease(buildVersion) && Library.isMoreRecent(buildVersion))) {
                Log.log_3229(buildVersion, serverVersion);
             }
          }
+
 
          //----------------------------------------------------------------//
          //                        Construct API                           //
@@ -671,6 +699,7 @@ extends HttpServlet {
          setState(CONSTRUCTING_API);
 
          // Determine the API class
+         // TODO: Should we trim all init parameters?
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
          apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
          if (apiClassName == null || apiClassName.length() < 1) {
@@ -693,17 +722,23 @@ extends HttpServlet {
 
          // Load the Logdoc if available
          try {
+            // XXX: What if the API class name does not contain a dot?
             String packageName = apiClassName.substring(0, apiClassName.lastIndexOf('.') + 1);
 
             // This should execute the static initializer
             Class.forName(packageName + "Log");
-         } catch (ClassNotFoundException cnfe) {
+            // TODO: Log if the API indeed has logdoc
 
-            // The API does not have any logdoc.
+         // API does not have any logdoc.
+         } catch (ClassNotFoundException cnfe) {
+            // TODO: Log if the API does not have any logdoc
+            // ignore
+
          } catch (Throwable t) {
 
             // The locale is not supported by the API
             // FIXME: How do we know the locale is not supported?
+            // TODO: Is this not an _init_ and not a _bootstrap_ issue?
             Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
@@ -724,6 +759,7 @@ extends HttpServlet {
             singletonField = apiClass.getDeclaredField("SINGLETON");
             _api = (API) singletonField.get(null);
          } catch (Throwable exception) {
+            // XXX: Log unexpected exception (#3052) here?
             Log.log_3208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
@@ -731,7 +767,9 @@ extends HttpServlet {
             throw servletException;
          }
 
-         // Make sure that the field is an instance of that same class
+         // Make sure that the field is an instance of that same class and not
+         // of a subclass
+         // TODO: Why check this at all?
          if (_api == null) {
             Log.log_3208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
             setState(API_CONSTRUCTION_FAILED);
@@ -752,24 +790,27 @@ extends HttpServlet {
 
          // Store the name of the API
          _apiName = config.getInitParameter(API_NAME_PROPERTY);
-         if (_apiName == null || _apiName.length() < 1) {
+         if (TextUtils.isEmpty(_apiName)) {
             Log.log_3209(API_NAME_PROPERTY);
             setState(API_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
+         // XXX: Trim the API name?
 
          // Determine the default calling convention
          String ccParam = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
-         if (ccParam != null) {
+         if (! TextUtils.isEmpty(ccParam)) {
             _callingConvention = getCallingConvention(ccParam);
             if (_callingConvention == null) {
                Log.log_3210(API_CALLING_CONVENTION_PROPERTY, ccParam, "No such calling convention.");
                setState(API_BOOTSTRAP_FAILED);
                throw new ServletException();
             }
+            // TODO: Log that we use the specified calling convention
          } else {
             // TODO: Use shared StandardCallingConvention instance
             _callingConvention = new StandardCallingConvention();
+            // TODO: Log that we use the default calling convention
          }
 
          // Bootstrap the API
@@ -1065,8 +1106,6 @@ extends HttpServlet {
       }
       Log.log_3521(ip, method, queryString);
 
-      // XXX: Consider using an OutputStream instead of Writer, for improved performance
-
 
       // Determine the calling convention. If an existing calling convention
       // is specified in the request, then use that, otherwise use the calling
@@ -1075,8 +1114,11 @@ extends HttpServlet {
       CallingConvention callingConvention;
       if (ccParam != null) {
          callingConvention = getCallingConvention(ccParam);
+         // TODO: Log if specified calling convention was found & will be used
+         // TODO: Log if specified calling convention was not found
       } else {
          callingConvention = null;
+         // TODO: Log that no calling convention was specified
       }
 
       if (callingConvention == null) {
@@ -1094,6 +1136,8 @@ extends HttpServlet {
             xinsRequest = callingConvention.convertRequest(request);
 
          // If the function is not specified, then return '404 Not Found'
+         // TODO: Do this with one exception handler instead of 2 to improve
+         //       performance
          } catch (FunctionNotSpecifiedException exception) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -1109,6 +1153,8 @@ extends HttpServlet {
             result = _api.handleCall(start, xinsRequest, ip);
 
          // If access is denied, return '403 Forbidden'
+         // TODO: Do this with one exception handler instead of 2 to improve
+         //       performance
          } catch (AccessDeniedException exception) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -1399,7 +1445,6 @@ extends HttpServlet {
       /**
        * Callback method called when the configuration file could not be
        * examined due to a <code>SecurityException</code>.
-       * modified.
        *
        * <p>The implementation of this method does not perform any actions.
        *
