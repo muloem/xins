@@ -128,7 +128,7 @@ extends Object {
       if (ruleCount > 0) {
          String s = rules[0].toString();
          buffer.append(s);
-         Log.log_1436(0, s);
+         Log.log_1429(0, s);
       }
       for (int i = 1; i < ruleCount; i++) {
          String s = rules[i].toString();
@@ -136,7 +136,7 @@ extends Object {
          buffer.append(';');
          buffer.append(s);
 
-         Log.log_1436(i, s);
+         Log.log_1429(i, s);
       }
       _asString = buffer.toString();
 

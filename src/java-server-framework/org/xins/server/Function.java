@@ -254,7 +254,7 @@ implements DefaultResultCodes {
 
       } catch (Throwable exception) {
 
-         Log.log_1513(exception, _name, callID);
+         Log.log_1500(exception, _name, callID);
 
          // Create a set of parameters for the result
          BasicPropertyReader resultParameters = new BasicPropertyReader();

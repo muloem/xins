@@ -3,6 +3,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 
 * XINS/Java Server Framework:
   - Removed unused imports.
+  - Set the log numbers in a sequential order.
 
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.

@@ -34,22 +34,24 @@
 	<translation entry="1209">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
 	<translation entry="1210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value.</translation>
 	<translation entry="1211">XINS/Java Server Framework cannot be bootstrapped for an unknown reason.</translation>
-	<translation entry="1218">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
-	<translation entry="1219">Bootstrapping manageable <value-of-param name="className" />.</translation>
-	<translation entry="1220">Bootstrapped manageable <value-of-param name="className" />.</translation>
-	<translation entry="1221">Bootstrap of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="1222">Bootstrap of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1224">Bootstrap of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1225">Adding manageable <value-of-param name="className" /> to API.</translation>
-	<translation entry="1226">Added manageable <value-of-param name="className" /> to API.</translation>
-	<translation entry="1227">Bootstrapping <value-of-param name="function" /> function.</translation>
-	<translation entry="1228">Bootstrapped <value-of-param name="function" /> function.</translation>
-	<translation entry="1230">Bootstrap of function <value-of-param name="function" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1232">Bootstrap of function <value-of-param name="function" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1233">XINS/Java Server Framework version <value-of-param name="version" /> is bootstrapped.</translation>
-	<translation entry="1234">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
-	<translation entry="1235">XINS/Java Server Framework version <value-of-param name="version" /> is not a production release.</translation>
-	<translation entry="1236">Package was built with XINS version <value-of-param name="version" />, which is not a production release.</translation>
+	<translation entry="1212">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="1213">Bootstrapping manageable <value-of-param name="className" />.</translation>
+	<translation entry="1214">Bootstrapped manageable <value-of-param name="className" />.</translation>
+	<translation entry="1215">Bootstrap of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="1216">Bootstrap of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1217">Bootstrap of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1218">Adding manageable <value-of-param name="className" /> to API.</translation>
+	<translation entry="1219">Added manageable <value-of-param name="className" /> to API.</translation>
+	<translation entry="1220">Bootstrapping <value-of-param name="function" /> function.</translation>
+	<translation entry="1221">Bootstrapped <value-of-param name="function" /> function.</translation>
+	<translation entry="1222">Bootstrap of function <value-of-param name="function" /> failed. The property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
+	<translation entry="1223">Bootstrap of function <value-of-param name="function" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1224">Bootstrap of function <value-of-param name="function" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1225">XINS/Java Server Framework version <value-of-param name="version" /> is bootstrapped.</translation>
+	<translation entry="1226">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
+	<translation entry="1227">XINS/Java Server Framework version <value-of-param name="version" /> is not a production release.</translation>
+	<translation entry="1228">Package was built with XINS version <value-of-param name="version" />, which is not a production release.</translation>
+
 	<translation entry="1300">Initializing logging subsystem.</translation>
 	<translation entry="1301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="1302">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
@@ -59,8 +61,9 @@
 	<translation entry="1306">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1307">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="1308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
-	<translation entry="1311">The locale <value-of-param name="locale" format="quoted" /> is not supported by the <value-of-param name="api" format="quoted" /> API.</translation>
-	<translation entry="1312">Changed  hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
+	<translation entry="1309">The locale <value-of-param name="locale" format="quoted" /> is not supported by the <value-of-param name="api" format="quoted" /> API.</translation>
+	<translation entry="1310">Changed  hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
+
 	<translation entry="1400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="1401">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
 	<translation entry="1402">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is not modified.</translation>
@@ -70,37 +73,42 @@
 	<translation entry="1406">Initialized API.</translation>
 	<translation entry="1407">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is modified. Re-initializing XINS/Java Server Framework.</translation>
 	<translation entry="1408">Runtime properties file (<value-of-param name="configFile" format="quoted" />) does not specify the watch interval, the property <value-of-param name="propertyName" format="quoted" /> is not set. Assuming fallback default.</translation>
-	<translation entry="1410">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is invalid.</translation>
-	<translation entry="1411">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> has been parsed successfully.</translation>
-	<translation entry="1413">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="1414">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1415">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1416">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed.</translation>
-	<translation entry="1418">XINS/Java Server Framework has been (re-)initialized.</translation>
-	<translation entry="1419">Initializing manageable <value-of-param name="className" />.</translation>
-	<translation entry="1420">Initialized manageable <value-of-param name="className" />.</translation>
-	<translation entry="1421">Initialization of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="1422">Initialization of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1424">Initialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1425">Initializing <value-of-param name="function" /> function.</translation>
-	<translation entry="1426">Initialized <value-of-param name="function" /> function.</translation>
-	<translation entry="1427">Initialization of <value-of-param name="function" /> function failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="1428">Initialization of <value-of-param name="function" /> function failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="1430">Initialization of <value-of-param name="function" /> function failed.</translation>
-	<translation entry="1431">No access rule list defined in runtime property <value-of-param name="propertyName" />.</translation>
-	<translation entry="1434">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
-	<translation entry="1435">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1436">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
-	<translation entry="1437">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
-	<translation entry="1500">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="1501">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="1513">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
+	<translation entry="1409">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is invalid.</translation>
+	<translation entry="1410">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> has been parsed successfully.</translation>
+	<translation entry="1411">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="1412">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1413">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1414">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed.</translation>
+	<translation entry="1415">XINS/Java Server Framework has been (re-)initialized.</translation>
+	<translation entry="1416">Initializing manageable <value-of-param name="className" />.</translation>
+	<translation entry="1417">Initialized manageable <value-of-param name="className" />.</translation>
+	<translation entry="1418">Initialization of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="1419">Initialization of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1420">Initialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1421">Initializing <value-of-param name="function" /> function.</translation>
+	<translation entry="1422">Initialized <value-of-param name="function" /> function.</translation>
+	<translation entry="1423">Initialization of <value-of-param name="function" /> function failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="1424">Initialization of <value-of-param name="function" /> function failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1425">Initialization of <value-of-param name="function" /> function failed.</translation>
+	<translation entry="1426">No access rule list defined in runtime property <value-of-param name="propertyName" />.</translation>
+	<translation entry="1427">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
+	<translation entry="1428">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1429">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
+	<translation entry="1430">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
+
+	<translation entry="1500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
+
+	<translation entry="1520">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="1521">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
+
 	<translation entry="1540"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /> <value-of-param name="inParams" /> <value-of-param name="outParams" /></translation>
 	<translation entry="1541"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /></translation>
+
 	<translation entry="1550">Allowing call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="1551">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="1552">Request from <value-of-param name="ip" /> to function <value-of-param name="function" /> does not match access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="1553">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches no access rules.</translation>
+
 	<translation entry="1600">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="1601">Deinitialization of API failed during XINS/Java Server Framework shutdown.</translation>
 	<translation entry="1602">XINS/Java Server Framework shutdown completed.</translation>

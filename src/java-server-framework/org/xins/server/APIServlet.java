@@ -458,14 +458,14 @@ extends HttpServlet {
          try {
             interval = Integer.parseInt(s);
             if (interval < 1) {
-               Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_1409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                setState(DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
-               Log.log_1411(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
-            Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            Log.log_1409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             setState(DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Not a 32-bit integer number.");
          }
@@ -612,17 +612,17 @@ extends HttpServlet {
 
          // Log XINS version
          String serverVersion = Library.getVersion();
-         Log.log_1233(serverVersion);
+         Log.log_1225(serverVersion);
 
          // Warn if Server version differs from Common version
          String commonVersion = org.xins.common.Library.getVersion();
          if (! serverVersion.equals(commonVersion)) {
-            Log.log_1234(serverVersion, commonVersion);
+            Log.log_1226(serverVersion, commonVersion);
          }
 
          // Warn if the current XINS version is not a production version
          if (! Library.isProductionRelease(serverVersion)) {
-            Log.log_1235(serverVersion);
+            Log.log_1227(serverVersion);
          }
 
 
@@ -664,7 +664,7 @@ extends HttpServlet {
          } catch (Throwable t) {
 
             // The locale is not supported by the API
-            Log.log_1311(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
+            Log.log_1309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -814,18 +814,18 @@ extends HttpServlet {
             _api.init(_runtimeProperties);
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_1413(exception.getPropertyName());
+            Log.log_1411(exception.getPropertyName());
          } catch (InvalidPropertyValueException exception) {
-            Log.log_1414(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_1412(exception.getPropertyName(), exception.getPropertyValue());
          } catch (InitializationException exception) {
-            Log.log_1415(exception.getMessage());
+            Log.log_1413(exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1416(exception);
+            Log.log_1414(exception);
          } finally {
 
             if (succeeded) {
                setState(READY);
-               Log.log_1418();
+               Log.log_1415();
             } else {
                setState(API_INITIALIZATION_FAILED);
             }
@@ -879,7 +879,7 @@ extends HttpServlet {
          // Change the hostname if needed
          String hostname = properties.getProperty(HOSTNAME_PROPERTY);
          if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
-            Log.log_1312(_hostname, hostname);
+            Log.log_1310(_hostname, hostname);
             _hostname = hostname;
          }
 
@@ -973,7 +973,7 @@ extends HttpServlet {
       boolean sendOutput = "GET".equals(method) || "POST".equals(method);
       if (!sendOutput) {
          if ("OPTIONS".equals(method)) {
-            Log.log_1501(ip, method, queryString);
+            Log.log_1521(ip, method, queryString);
             response.setContentLength(0);
             response.setHeader("Accept", "GET, HEAD, POST");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -983,12 +983,12 @@ extends HttpServlet {
 
          // If the method is not recognized, return '405 Method Not Allowed'
          } else {
-            Log.log_1500(ip, method, queryString);
+            Log.log_1520(ip, method, queryString);
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
          }
       }
-      Log.log_1501(ip, method, queryString);
+      Log.log_1521(ip, method, queryString);
 
       // XXX: Consider using OutputStream instead of Writer, for improved
       // XXX: performance
