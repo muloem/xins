@@ -48,8 +48,8 @@
 		in="src/xml/default_returncodes.xml"
 		out="build/src/java-server-framework/org/xins/server/DefaultReturnCodes.java"
 		style="src/xslt/java-server-framework/default_returncodes_to_java.xslt" />
-		<mkdir dir="build/classes/java-server-framework" />
-		<copy todir="build/classes/java-server-framework">
+		<mkdir dir="build/src/java-server-framework" />
+		<copy todir="build/src/java-server-framework">
 			<fileset dir="build/src/java-server-framework" includes="**/*.java" />
 			<fileset dir="src/java-server-framework"   includes="**/*.java" />
 		</copy>
@@ -64,6 +64,7 @@
 	</target>
 
 	<target name="java-server-framework" depends="-xmlenc-avail,-servlet-avail,-prepare-java,-prepare-classes" description="Compiles the XINS/Java server framework">
+		<mkdir dir="build/classes/java-server-framework" />
 		<javac
 		srcdir="build/src/java-server-framework"
 		destdir="build/classes/java-server-framework"
