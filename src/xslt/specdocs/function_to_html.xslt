@@ -253,10 +253,16 @@
 	</xsl:template>
 
 	<xsl:template match="input/param-combo" mode="textlist">
+		<xsl:variable name="count" select="count(param-ref)" />
 		<xsl:for-each select="param-ref">
-			<xsl:if test="position() &gt; 1">
-				<xsl:text>, </xsl:text>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="position() = $count">
+					<xsl:text> and </xsl:text>
+				</xsl:when>
+				<xsl:when test="position() &gt; 1">
+					<xsl:text>, </xsl:text>
+				</xsl:when>
+			</xsl:choose>
 			<em>
 				<xsl:value-of select="@name" />
 			</em>
