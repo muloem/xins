@@ -292,10 +292,6 @@ extends HttpServlet {
     *    the {@link ServletConfig} object which contains build properties for
     *    this servlet, as specified by the <em>assembler</em>, cannot be
     *    <code>null</code>.
-    *
-    * @throws ServletException
-    *    if <code>config == null</code>, if this servlet is not uninitialized
-    *    or if the initialization failed for some other reason.
     */
    public void init(ServletConfig config) {
 
