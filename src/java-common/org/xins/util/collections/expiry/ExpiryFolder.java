@@ -44,14 +44,13 @@ extends Object {
    public ExpiryFolder(ExpiryStrategy strategy)
    throws IllegalArgumentException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("strategy", strategy);
 
-      _strategy = strategy;
-
-      // XXX: Allow customization of Map construction?
+      // Initialize fields
+      _strategy         = strategy;
       _recentlyAccessed = new HashMap(89);
-
-      _slots = new Map[strategy.getSlotCount()];
+      _slots            = new Map[strategy.getSlotCount()];
    }
 
 
