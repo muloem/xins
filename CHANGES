@@ -172,6 +172,12 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
     with 'xins clean'.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.1.0 FINAL:
+
+* Generation of CAPI classes:
+  - Added proper @since tag on the generated create methods.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
 
 * XINS/Java Common Library:
