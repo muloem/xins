@@ -46,6 +46,7 @@
 			<fileset dir="build/src/java-server-framework" includes="**/*.java" />
 			<fileset dir="src/java-server-framework"   includes="**/*.java" />
 		</copy>
+		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
 	</target>
 
 	<target name="-prepare-classes" depends="-prepare">
