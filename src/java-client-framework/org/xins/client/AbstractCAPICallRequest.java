@@ -9,6 +9,7 @@ package org.xins.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.xins.common.collections.CollectionUtils;
 
@@ -78,16 +79,16 @@ extends Object {
    private final AbstractCAPIFunction _function;
 
    /**
-    * The underlying XINS call request. Initialized to a non-<code>null</code>
-    * value in the constructor.
-    */
-   private final XINSCallRequest _request;
-
-   /**
     * Mapping from parameter names to their associated values. This field is
     * lazily initialized and initially <code>null</code>.
     */
    private HashMap _parameters;
+
+   /**
+    * The underlying XINS call request. Initialized to a non-<code>null</code>
+    * value in the constructor.
+    */
+   private final XINSCallRequest _request;
 
    /**
     * Constraint context. Never <code>null</code>.
@@ -100,12 +101,35 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the <code>AbstractCAPIFunction</code> instance representing the
+    * function to call.
+    *
+    * @return
+    *    the function to call, never <code>null</code>.
+    */
+   AbstractCAPIFunction function() {
+      return _function;
+   }
+
+   /**
+    * Returns the parameter map. This is a mapping from parameter names to
+    * their associated values. This field is lazily initialized and initially
+    * <code>null</code>.
+    *
+    * @return
+    *    the parameter map, can be <code>null</code>.
+    */
+   Map parameterMap() {
+      return _parameters;
+   }
+
+   /**
     * Returns the wrapped <code>XINSCallRequest</code> object.
     *
     * @return
     *    the wrapped {@link XINSCallRequest} object, never <code>null</code>.
     */
-   XINSCallRequest getXINSCallRequest() {
+   XINSCallRequest xinsCallRequest() {
       return _request;
    }
 

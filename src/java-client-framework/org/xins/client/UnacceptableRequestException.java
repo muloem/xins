@@ -6,7 +6,9 @@
  */
 package org.xins.client;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -17,6 +19,7 @@ import org.xins.common.constraint.Constraint;
 import org.xins.common.constraint.ConstraintViolation;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.WhislEncoding;
 
 /**
  * Exception that indicates that a request for an API call is considered
@@ -33,6 +36,7 @@ extends RuntimeException {
 
    // TODO: Support XINSCallRequest objects?
    // TODO: Is the name UnacceptableRequestException okay?
+   // TODO: Log UnacceptableRequestException! (not in this class though)
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -75,8 +79,6 @@ extends RuntimeException {
       AbstractCAPICallRequest request,
       List                    violations)
    throws IllegalArgumentException {
-
-      // TODO: Include request in message
 
       // Arguments cannot be null
       MandatoryArgumentChecker.check("request",    request,
@@ -124,7 +126,42 @@ extends RuntimeException {
          buffer.append(' ');
       }
 
-      buffer.crop(buffer.getLength() - 1);
+      // Append function name
+      buffer.append("Request is to function \"");
+      buffer.append(request.function().getName());
+
+      // Append parameters
+      Map params = request.parameterMap();
+      int paramCount = (params == null) ? 0 : params.size();
+      if (paramCount == 0) {
+         buffer.append("\" with no parameters.");
+      } else {
+         buffer.append("\" with parameters ");
+         Iterator keys = params.keySet().iterator();
+         boolean hadOne = false;
+         while (keys.hasNext()) {
+            String key = (String) keys.next();
+            if (key != null) {
+               Object val = params.get(key);
+               if (val != null) {
+                  buffer.append(WhislEncoding.encode(key));
+                  buffer.append('=');
+
+                  // TODO: Do not call val.toString, but use type to convert
+                  //       from value instance to String instead
+                  buffer.append(WhislEncoding.encode(val.toString()));
+                  buffer.append('&');
+                  hadOne = true;
+               }
+            }
+         }
+
+         if (hadOne) {
+            // Remove last ampersand
+            buffer.crop(buffer.getLength() - 1);
+         }
+      }
+
       return buffer.toString();
    }
 

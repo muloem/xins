@@ -200,7 +200,7 @@ public abstract class AbstractCAPI extends Object {
       request.validate();
 
       // Execute the call request
-      return _caller.call(request.getXINSCallRequest());
+      return _caller.call(request.xinsCallRequest());
    }
 
    /**
