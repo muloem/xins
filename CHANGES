@@ -7,6 +7,10 @@ CHANGES INTRODUCED IN XINS 0.33:
 
 * Having groups in the Javadoc API documentation set.
 
+* Added JDOM 1.0b8 to dependencies.
+
+* Added HTTPRequester CollectionUtils classes in java-common.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.32:
 
