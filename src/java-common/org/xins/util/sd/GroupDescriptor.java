@@ -279,7 +279,7 @@ public final class GroupDescriptor extends Descriptor {
 
       /**
        * The set of remaining descriptors. One is removed from a random index
-       * each time {@link next()} is called.
+       * each time {@link #next()} is called.
        */
       private List _remaining;
 
