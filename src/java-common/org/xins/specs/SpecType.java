@@ -75,12 +75,9 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
-    *
-    * @throws MalformedPatternException
-    *    if the specified pattern is malformed.
     */
    SpecType(String typeName, String nameRE)
-   throws IllegalArgumentException, MalformedPatternException {
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("typeName", typeName);
@@ -90,7 +87,11 @@ extends Object {
 
       // Compile the regular expression
       if (nameRE != null) {
-         _namePattern = PATTERN_COMPILER.compile(nameRE, Perl5Compiler.READ_ONLY_MASK);
+         try {
+            _namePattern = PATTERN_COMPILER.compile(nameRE, Perl5Compiler.READ_ONLY_MASK);
+         } catch (MalformedPatternException mpe) {
+            throw new Error("The pattern \"" + nameRE + "\" is malformed.");
+         }
       } else {
          _namePattern = null;
       }
@@ -151,6 +152,10 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      return true; // TODO
+      if (_namePattern == null) {
+         return true;
+      } else {
+         return PATTERN_MATCHER.matches(name, _namePattern);
+      }
    }
 }
