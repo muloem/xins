@@ -934,7 +934,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
                 <mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		
-		<junit printsummary="true" failureproperty="tests.failed">
+		<junit printsummary="true" failureproperty="tests.failed" fork="true">
                         <jvmarg value="-Xdebug" />
                         <jvmarg value="-Xnoagent" />
                         <jvmarg value="-Djava.compiler=none" />
