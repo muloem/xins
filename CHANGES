@@ -1,8 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
 
+* XINS/Java Common Library:
+  - Added class org.xins.logdoc.AbstractLog.
+
 * Logdoc:
   - Generating counter per log entry.
+  - Logdoc Log classes now extend org.xins.logdoc.AbstractLog.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.161:
