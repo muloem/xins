@@ -50,6 +50,7 @@ XINS/JAVA SERVER FRAMEWORK
 * Make generated logdoc classes package-private.
 * Create an apart Statistics object that would contain the statistics and
   the methods to update them.
+* Stop runtime configuration file watch thread when the servlet is disposed.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
