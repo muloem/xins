@@ -17,6 +17,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingError;
 
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
