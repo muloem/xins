@@ -47,7 +47,7 @@
  */
 public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text> extends java.lang.Object {
+		<xsl:text> extends org.xins.client.AbstractCAPICallResult {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -129,10 +129,11 @@ public final class ]]></xsl:text>
    throws java.lang.IllegalArgumentException,
           org.xins.client.UnacceptableResultXINSCallException {
 
+      // Call superconstructor, which will fail if result == null
+      super(result);
+
       // Check preconditions
-      if (result == null) {
-         throw new java.lang.IllegalArgumentException("result == null");
-      } else if (result.getErrorCode() != null) {
+      if (result.getErrorCode() != null) {
          throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");
       }
 
