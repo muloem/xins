@@ -15,6 +15,19 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     1.0.0-beta6.
   - Fixed bug #1063818: XINSResultParser fails if spaces exist between XML 
     elements.
+  - Removed log message which previously had the ID 2101, since it did not add
+    any information. Previously it was logged right after a call was
+    performed, whether it was successful or not. Replaced it by a log message
+    that indicates that a successful XINS result was received. This message
+    previously had ID 2111, but it was never actually logged. Now it is, but
+    on 2101. The ID 2111 is now used for a new log message for unexpected
+    exceptions caught while calling the XINS service.
+  - Removed log message with ID 2107 (XINS result received, status code is
+    considered acceptable) since it not considered useful.
+  - Now actually logging message 2109 (Unrecognized I/O error while calling
+    XINS service).
+  - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
+    logged). Each individual failure is now logged, per target.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.
@@ -23,6 +36,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Changed the level of all Logdoc messages in the 'service' group to DEBUG.
     Proper logging is the responsibility of the ServiceCaller subclass and
     corresponding classes.
+  - Changed UnexpectedExceptionCallException constructor: The 'cause' argument
+    is now mandatory.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
