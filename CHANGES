@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.17:
+
+* Refactorings applied: Moved handleCall(CallContext) from API class to
+  Function class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.16:
 
 * Fixed problem introduced in 0.15 that keeps the generated java-fundament
