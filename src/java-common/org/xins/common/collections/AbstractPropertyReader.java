@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.WhislEncoding;
-
-import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Implementation of some methods for the PropertyReader.
@@ -77,10 +74,5 @@ implements PropertyReader {
     */
    protected Map getPropertiesMap() {
       return _properties;
-   }
-
-   public final void serialize(LogdocStringBuffer buffer)
-   throws NullPointerException {
-      serialize(this, buffer);
    }
 }
