@@ -95,6 +95,11 @@ extends Object {
       _sizeLock         = new Object();
       _listeners        = new ArrayList(5);
 
+      // Initialize all the fields in _slots
+      for (int i = 0; i < slotCount; i++) {
+         _slots[i] = new HashMap(89);
+      }
+
       // Create the doormen
       _recentlyAccessedDoorman = new Doorman("recentlyAccessed", strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
       _slotsDoorman            = new Doorman("slots",            strictChecking, INITIAL_QUEUE_SIZE, maxQueueWaitTime);
