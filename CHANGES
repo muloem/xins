@@ -11,6 +11,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.
+  - Added new type Base64.
+  - Added a new Base64 class that perform base 64 encoding and decoding.
 
 * Generated CAPI classes:
   - Fixed bug #1061692: A NullPointerException was thrown when using
@@ -29,6 +31,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
   - Fixed bug #1061692: A NullPointerException was thrown when using
     Java 1.4.0 or Java 1.4.1.
   - Added new types float32 and float64.
+  - Added new type base64.
 
 * Logdoc:
   - Added new types float32 and float64.

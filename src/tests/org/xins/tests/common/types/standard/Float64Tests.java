@@ -12,7 +12,7 @@ import org.xins.common.types.standard.Float64;
  * Tests for class <code>Float64</code>.
  *
  * @version $Revision$ $Date$
- * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class Float64Tests extends TestCase {
 

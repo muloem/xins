@@ -5,16 +5,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.types.TypeValueException;
-import org.xins.common.types.standard.Float32;
+import org.xins.common.types.standard.Base64;
 
 
 /**
- * Tests for class <code>Float32</code>.
+ * Tests for class <code>Base64</code>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class Float32Tests extends TestCase {
+public class Base64Tests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -27,7 +27,7 @@ public class Float32Tests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(Float32Tests.class);
+      return new TestSuite(Base64Tests.class);
    }
 
 
@@ -40,13 +40,13 @@ public class Float32Tests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Float32Tests</code> test suite with
+    * Constructs a new <code>Base64Tests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public Float32Tests(String name) {
+   public Base64Tests(String name) {
       super(name);
    }
 
@@ -55,7 +55,7 @@ public class Float32Tests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
-   ZeroToTenThousand lowerLimit = new ZeroToTenThousand();
+   ShortBinary lowerLimit = new ShortBinary();
 
    //-------------------------------------------------------------------------
    // Methods
@@ -73,8 +73,8 @@ public class Float32Tests extends TestCase {
    }
 
    public void testToString() {
-      assertEquals("lowerLimit.toString(12.0F) should return a value of \"12.0\"", "12.0", lowerLimit.toString(12.0F));
-      assertEquals("lowerLimit.toString(Float.valueOf(\"12.0\")) should return a value of \"12.0\"", "12.0", lowerLimit.toString(Float.valueOf("12.0")));
+      byte[] hello = { 'h', 'e', 'l', 'l', 'o' };
+      assertEquals("aGVsbG8=", lowerLimit.toString(hello));
       assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
@@ -88,32 +88,29 @@ public class Float32Tests extends TestCase {
       }
 
       try {
-         lowerLimit.fromStringForRequired("fred");
-         fail("lowerLimit.fromStringForRequired(\"fred\") should have thrown a TypeValueException.");
-      } catch (TypeValueException tve) {
-         // this is good
-      }
-
-      try {
-         assertEquals(7072.0F, lowerLimit.fromStringForRequired("7072"), 0.01F);
+         byte[] hello = lowerLimit.fromStringForRequired("aGVsbG8=");
+         assertEquals(5, hello.length);
+         assertEquals('o', hello[4]);
       } catch (Exception e) {
-         fail("lowerLimit.fromStringForRequired(\"7072\") caught an unexpected error.");
+         fail("lowerLimit.fromStringForRequired(\"aGVsbG8=\") caught an unexpected error.");
       }
    }
 
    public void testFromStringForOptional() throws Throwable {
 
       try {
-         lowerLimit.fromStringForOptional("fred");
-         fail("lowerLimit.fromStringForOptional(\"fred\") should have thrown a TypeValueException.");
+         String fred = new String(lowerLimit.fromStringForOptional("f\t.,red"));
+         fail("lowerLimit.fromStringForOptional(\"f\\t.,red\") should have thrown a TypeValueException but returned \"" + fred + "\".");
       } catch (TypeValueException tve2) {
          // this is good
       }
 
       try {
-         assertEquals(new Float(4.3), lowerLimit.fromStringForOptional("4.3"));
+         byte[] hello = lowerLimit.fromStringForOptional("aGVsbG8=");
+         assertEquals(5, hello.length);
+         assertEquals('o', hello[4]);
       } catch (Exception e1) {
-         fail("lowerLimit.fromStringForOptional(\"4.3\") caught unexpected error.");
+         fail("lowerLimit.fromStringForOptional(\"aGVsbG8=\") caught an unexpected error.");
       }
 
       assertNull("lowerLimit.fromStringForOptional(null) should return a null.", lowerLimit.fromStringForOptional(null));
@@ -121,20 +118,20 @@ public class Float32Tests extends TestCase {
 
    public void testValidValue() throws Throwable {
 
-      assertFalse("fred is not a valid value.",lowerLimit.isValidValue("fred"));
+      assertFalse("f\\t.,red is not a valid value.",lowerLimit.isValidValue("f\t.,red"));
 
-      assertFalse("1253232.65 is outside the bounds of the instance.",lowerLimit.isValidValue("1253232.65"));
+      assertFalse("aGVsbG8gc2ly is outside the bounds of the instance.",lowerLimit.isValidValue("aGVsbG8gc2ly"));
 
-      assertTrue("9.81 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9.81"));
+      assertTrue("aGVsbG8= is a valid value as it is within the bounds.",lowerLimit.isValidValue("aGVsbG8="));
 
       assertTrue("null is considered to be a valid object",lowerLimit.isValidValue(null));
    }
 
-   class ZeroToTenThousand extends Float32 {
+   class ShortBinary extends Base64 {
 
       // constructor
-      public ZeroToTenThousand() {
-         super("ZeroToTenThousand", 0.0F, 10000.0F);
+      public ShortBinary() {
+         super("ShortBinary", 0, 6);
       }
 
   }

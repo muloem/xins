@@ -100,6 +100,7 @@
 				<xsl:apply-templates select="int64"      />
 				<xsl:apply-templates select="float32"    />
 				<xsl:apply-templates select="float64"    />
+				<xsl:apply-templates select="base64"    />
 				<xsl:apply-templates select="list"       />
 				<xsl:apply-templates select="set"        />
 
@@ -216,6 +217,23 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="base64">
+		<p />
+		This is a <em>
+		<xsl:value-of select="name()" />
+		type</em>.<br/>
+		<xsl:if test="@min">
+			<xsl:text>The minimum size is </xsl:text>
+			<xsl:value-of select="@min" />
+			<xsl:text> bytes.</xsl:text><br />
+		</xsl:if>
+		<xsl:if test="@max">
+			<xsl:text>The maximum size is </xsl:text>
+			<xsl:value-of select="@max" />
+			<xsl:text> bytes.</xsl:text><br />
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="list | set">
 		<p />
 		<xsl:text>This is a </xsl:text>
