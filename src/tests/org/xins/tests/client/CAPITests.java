@@ -203,8 +203,8 @@ public class CAPITests extends TestCase {
 
       // Pass URL with unsupported protocol at leaf
       properties = new BasicPropertyReader();
-      url = "bla://www.xins.org/";
-      properties.set("capis.allinone", "group, ordered, one, two");
+      url = "bla://xins.org/";
+      properties.set("capis.allinone",     "group, ordered, one, two");
       properties.set("capis.allinone.one", "service, http://xins.org/, 5000");
       properties.set("capis.allinone.two", "service, " + url + ", 5000");
       try {
