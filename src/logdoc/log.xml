@@ -22,8 +22,9 @@
 		<param name="method" />
 	</entry>
 	<entry id="11" level="INFO" category="org.xins.server">
-		<description>Received HTTP OPTIONS request.</description>
+		<description>Received HTTP request with valid method.</description>
 		<param name="ip" />
+		<param name="method" />
 	</entry>
 
 

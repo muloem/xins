@@ -9,7 +9,7 @@
 <messages>
 	<message entry="0">Changing APIServlet state from <value-of-param name="oldState" /> to <value-of-param name="newState" />.</message>
 	<message entry="10">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed.</message>
-	<message entry="11">Received an HTTP OPTIONS request from <value-of-param name="ip" />.</message>
+	<message entry="11">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />.</message>
 	<message entry="100">Bootstrapping XINS/Java Server Framework.</message>
 	<message entry="101">XINS/Java Server Framework cannot be bootstrapped. State <value-of-param name="state" /> is unexpected.</message>
 	<message entry="102">XINS/Java Server Framework cannot be bootstrapped. Application server is behaving unexpectedly. Reason: <value-of-param name="detail" format="quoted" />.</message>
