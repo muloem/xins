@@ -42,12 +42,12 @@ implements DefaultResultCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
-      _log              = Logger.getLogger(getClass().getName());
-      _functionsByName  = new HashMap();
-      _functionList     = new ArrayList();
+      _log               = Logger.getLogger(getClass().getName());
+      _functionsByName   = new HashMap();
+      _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
       _resultCodeList    = new ArrayList();
-      _contextsByThread = new HashMap();
+      _contextsByThread  = new HashMap();
    }
 
 
@@ -531,7 +531,7 @@ implements DefaultResultCodes {
       //----------------------------------------------------------------------
 
       public void run() {
-         _log.info("Shut down sequence initiated.");
+         _log.info("XINS API shut down sequence initiated.");
          _shutDown = true;
       }
    }
