@@ -6,12 +6,14 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<description>API that uses all the features included in XINS.</description>
 
-	<function name="Logdoc"       />
+	<function name="SimpleTypes"  />
+	<function name="DefinedTypes" />
+	<function name="ResultCode"   />
 	<function name="DataSection"  />
 	<function name="DataSection2" freeze="1.1" />
-	<function name="ResultCode"   />
-	<function name="DefinedTypes" />
-	<function name="SimpleTypes"  />
+	<function name="DataSection3" />
+	<function name="Logdoc"       />
+	<function name="ParamCombo"   />
 
 	<type name="Age"               />
 	<type name="AgeNameProperties" />

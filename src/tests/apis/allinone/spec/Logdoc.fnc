@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
 
 <function name="Logdoc"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -15,11 +15,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<resultcode-ref name="InvalidNumber" />
 	</output>
 
-	<example num="1" resultcode="InvalidNumber">
+	<example resultcode="InvalidNumber">
 		<description>The entered input is not a number.</description>
 		<input-example name="inputText">foo</input-example>
 	</example>
-	<example num="2">
+	<example>
 		<description>The entered text is a number</description>
 		<input-example name="inputText">12000</input-example>
 	</example>

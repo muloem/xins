@@ -3,15 +3,15 @@
  */
 package com.mycompany.allinone.api;
 
-import org.xins.common.types.standard.Date;
+import java.util.GregorianCalendar;
 
 /**
- * Implementation of the <code>SimpleTypes</code> function.
+ * Implementation of the <code>ParamCombo</code> function.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author John Doe (<a href="mailto:john.doe@mycompany.com">john.doe@mycompany.com</a>)
  */
-public class SimpleTypesImpl extends SimpleTypes  {
+public class ParamComboImpl extends ParamCombo  {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -26,13 +26,13 @@ public class SimpleTypesImpl extends SimpleTypes  {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>SimpleTypesImpl</code> instance.
+    * Constructs a new <code>ParamComboImpl</code> instance.
     *
     * @param api
     *    the API to which this function belongs, guaranteed to be not
     *    <code>null</code>.
     */
-   public SimpleTypesImpl(APIImpl api) {
+   public ParamComboImpl(APIImpl api) {
       super(api);
    }
 
@@ -46,28 +46,30 @@ public class SimpleTypesImpl extends SimpleTypes  {
    //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
-
-      short shortValue = -1;
-      if (request.isSetInputShort()) {
-         shortValue = request.getInputShort();
-         shortValue += 10;
+      int age;
+      if (request.isSetAge()) {
+         age = request.getAge();
+      } else {
+         int year;
+         int month;
+         int day;
+         if (request.isSetBirthDate()) {
+            year = request.getBirthDate().getYear();
+            month = request.getBirthDate().getMonthOfYear();
+            day = request.getBirthDate().getDayOfMonth();
+         } else {
+            year = request.getBirthYear();
+            month = request.getBirthMonth();
+            day = request.getBirthDay();
+         }
+         GregorianCalendar calender = new GregorianCalendar(year, month, day);
+         long birth = calender.getTimeInMillis();
+         long now = System.currentTimeMillis();
+         age = (int) ((now - birth) / 3600000 / 24 / 365);
       }
 
       SuccessfulResult result = new SuccessfulResult();
-      result.setOutputShort(shortValue);
-      result.setOutputInt(request.getInputByte() * 2);
-      result.setOutputLong(14L);
-      result.setOutputFloat(3.5F);
-      result.setOutputDouble(3.1415);
-      result.setOutputText("hello");
-      Date.Value outputDate = new Date.Value(2004,6,21);
-      result.setOutputDate(outputDate);
-
-      if (request.isSetInputBinary()) {
-         byte[] inputBinary = request.getInputBinary();
-         result.setOutputBinary(inputBinary);
-      }
-
+      result.setOutputMessage("You are " + age +" years old.");
       return result;
    }
 }

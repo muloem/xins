@@ -4,6 +4,7 @@
 <log>
 
 	<translation-bundle locale="en_US" />
+	<translation-bundle locale="fr_FR" />
 
 	<group id="exampleLogdoc" name="Example">
 		<entry id="10000" level="DEBUG">

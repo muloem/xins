@@ -3,15 +3,17 @@
  */
 package com.mycompany.allinone.api;
 
-import org.xins.common.types.standard.Date;
+import java.util.Iterator;
+
+import org.xins.common.xml.Element;
 
 /**
- * Implementation of the <code>SimpleTypes</code> function.
+ * Implementation of the <code>DataSection3</code> function.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author John Doe (<a href="mailto:john.doe@mycompany.com">john.doe@mycompany.com</a>)
  */
-public class SimpleTypesImpl extends SimpleTypes  {
+public class DataSection3Impl extends DataSection3  {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -26,13 +28,13 @@ public class SimpleTypesImpl extends SimpleTypes  {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>SimpleTypesImpl</code> instance.
+    * Constructs a new <code>DataSection3Impl</code> instance.
     *
     * @param api
     *    the API to which this function belongs, guaranteed to be not
     *    <code>null</code>.
     */
-   public SimpleTypesImpl(APIImpl api) {
+   public DataSection3Impl(APIImpl api) {
       super(api);
    }
 
@@ -46,27 +48,26 @@ public class SimpleTypesImpl extends SimpleTypes  {
    //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
-
-      short shortValue = -1;
-      if (request.isSetInputShort()) {
-         shortValue = request.getInputShort();
-         shortValue += 10;
-      }
-
       SuccessfulResult result = new SuccessfulResult();
-      result.setOutputShort(shortValue);
-      result.setOutputInt(request.getInputByte() * 2);
-      result.setOutputLong(14L);
-      result.setOutputFloat(3.5F);
-      result.setOutputDouble(3.1415);
-      result.setOutputText("hello");
-      Date.Value outputDate = new Date.Value(2004,6,21);
-      result.setOutputDate(outputDate);
 
-      if (request.isSetInputBinary()) {
-         byte[] inputBinary = request.getInputBinary();
-         result.setOutputBinary(inputBinary);
+      Iterator itAddresses = request.listAddress().iterator();
+      while (itAddresses.hasNext()) {
+         Request.Address nextAddress = (Request.Address) itAddresses.next();
+         Envelope envelope = new Envelope();
+         envelope.setDestination(nextAddress.getPostcode());
+         result.addEnvelope(envelope);
       }
+
+      // Create the packet
+      Packet packet = new Packet();
+      packet.setDestination("20 West Street, New York");
+
+      Envelope envelope = new Envelope();
+      envelope.setDestination("55 Kennedy lane, Washinton DC");
+
+      // Add the packets
+      result.addPacket(packet);
+      result.addEnvelope(envelope);
 
       return result;
    }

@@ -36,6 +36,10 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 * Documentation:
   - Added the documentation about the XINS protocol to the release.
 
+* Tests
+  - Added new tests for the base64 type, the param combos and the input data
+    sections.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
 

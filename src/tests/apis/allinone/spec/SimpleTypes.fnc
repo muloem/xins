@@ -40,6 +40,13 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputTimestamp" required="false" type="_timestamp">
 			<description>An example of input for a timestamp.</description>
 		</param>
+		<param name="inputBinary" required="false" type="_base64">
+			<description>An example of input for a byte array.</description>
+		</param>
+		<param-combo type="all-or-none">
+			<param-ref name="inputDate"      />
+			<param-ref name="inputTimestamp" />
+		</param-combo>
 	</input>
 
 	<output>
@@ -55,10 +62,10 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="outputLong" required="true" type="_int64">
 			<description>An example of output for a long.</description>
 		</param>
-		<param name="outputFloat" required="true" type="_float32">
+		<param name="outputFloat" required="false" type="_float32">
 			<description>An example of output for a float.</description>
 		</param>
-		<param name="outputDouble" required="false" type="_float64">
+		<param name="outputDouble" required="true" type="_float64">
 			<description>An example of output for a double.</description>
 		</param>
 		<param name="outputText" required="true" type="_text">
@@ -76,9 +83,12 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="outputTimestamp" required="false" type="_timestamp">
 			<description>An example of output for a timestamp.</description>
 		</param>
+		<param name="outputBinary" required="false" type="_base64">
+			<description>An example of output for a byte array.</description>
+		</param>
 	</output>
 
-	<example num="1" resultcode="_InvalidRequest">
+	<example resultcode="_InvalidRequest">
 		<description>Missing parameter.</description>
 		<input-example name="inputByte">8</input-example>
 		<input-example name="inputShort">100</input-example>
@@ -88,14 +98,19 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<element-example name="missing-param">
 				<attribute-example name="param">inputInt</attribute-example>
 			</element-example>
+			<element-example name="missing-param">
+				<attribute-example name="param">inputFloat</attribute-example>
+			</element-example>
 		</data-example>
 	</example>
-	<example num="2" resultcode="_InvalidRequest">
+	<example resultcode="_InvalidRequest">
 		<description>Missing and invalid parameter.</description>
 		<input-example name="inputByte">8</input-example>
 		<input-example name="inputShort">two</input-example>
 		<input-example name="inputLong">10000</input-example>
+		<input-example name="inputFloat">35.2</input-example>
 		<input-example name="inputText">Hello</input-example>
+		<input-example name="inputBinary">aGVsbG8=</input-example>
 		<data-example>
 			<element-example name="missing-param">
 				<attribute-example name="param">inputInt</attribute-example>
@@ -106,7 +121,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			</element-example>
 		</data-example>
 	</example>
-	<example num="3">
+	<example>
 		<description>Successful example.</description>
 		<input-example name="inputByte">8</input-example>
 		<input-example name="inputInt">20</input-example>
@@ -115,6 +130,8 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<output-example name="outputInt">16</output-example>
 		<output-example name="outputShort">-1</output-example>
 		<output-example name="outputLong">14</output-example>
+		<output-example name="outputFloat">3.5</output-example>
+		<output-example name="outputDouble">3.1415</output-example>
 		<output-example name="outputDate">20040621</output-example>
 		<output-example name="outputText">hello</output-example>
 	</example>

@@ -32,6 +32,8 @@ import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
 import org.xins.client.UnsuccessfulXINSCallException;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 import org.xins.tests.server.servlet.HTTPServletHandler;
 
@@ -118,8 +120,8 @@ public class AllInOneAPITests extends TestCase {
    public void testSimpleTypes() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
       CAPI allInOne = new CAPI(descriptor);
-      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2), 
-         "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"));
+      SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 32.5f, new Double(37.2), 
+         "text", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
       assertNull(result.getOutputByte());
       assertEquals((short)-1, result.getOutputShort());
       assertEquals(16, result.getOutputInt());
@@ -129,6 +131,8 @@ public class AllInOneAPITests extends TestCase {
       assertNull(result.getOutputProperties());
       assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
       assertNull(result.getOutputTimestamp());
+      assertEquals(3, result.getOutputBinary().length);
+      assertEquals((byte)66, result.getOutputBinary()[2]);
    }
 
    /**
@@ -139,7 +143,7 @@ public class AllInOneAPITests extends TestCase {
       CAPI allInOne = new CAPI(descriptor);
       try {
          SimpleTypesResult result = allInOne.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
-            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"));
+            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
@@ -294,6 +298,109 @@ public class AllInOneAPITests extends TestCase {
       DataElement product21 = (DataElement) products2.get(0);
       assertEquals("Incorrect price for product1", "12", product21.get("price"));
       assertTrue(product21.getChildElements().size() == 0);
+   }
+
+  /**
+   * Tests a function that passes a data section as input and an output data 
+   * section with mutiple data element types.
+   */
+   public void testDataSection3() throws Throwable {
+      ElementBuilder builder1 = new ElementBuilder();
+      builder1.startElement("address");
+      builder1.setAttribute("company", "McDo");
+      builder1.setAttribute("postcode", "1234");
+      Element address1 = builder1.createElement();
+      ElementBuilder builder2 = new ElementBuilder();
+      builder2.startElement("address");
+      builder2.setAttribute("company", "Hello");
+      builder2.setAttribute("postcode", "5678");
+      Element address2 = builder2.createElement();
+      ElementBuilder builder3 = new ElementBuilder();
+      builder3.startElement("data");
+      builder3.addChild(address1);
+      builder3.addChild(address2);
+      Element dataSection = builder3.createElement();
+      
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      CAPI allInOne = new CAPI(descriptor);
+      DataElement element = allInOne.callDataSection3("hello", dataSection).dataElement();
+      List packets = element.getChildElements();
+      assertTrue("No packets or envelopes found.", packets.size() == 4);
+      
+      DataElement envelope1 = (DataElement) packets.get(0);
+      assertEquals("Incorrect elements.", "envelope", envelope1.getLocalName());
+      assertEquals("1234", envelope1.getAttribute("destination"));
+
+      DataElement envelope2 = (DataElement) packets.get(1);
+      assertEquals("Incorrect elements.", "envelope", envelope2.getLocalName());
+      assertEquals("5678", envelope2.getAttribute("destination"));
+
+      DataElement packet1 = (DataElement) packets.get(2);
+      assertEquals("Incorrect elements.", "packet", packet1.getLocalName());
+      assertNotNull("No destination specified.", packet1.getAttribute("destination"));
+
+      DataElement envelope3 = (DataElement) packets.get(3);
+      assertEquals("Incorrect elements.", "envelope", envelope3.getLocalName());
+      assertNotNull("No destination specified.", envelope3.getAttribute("destination"));
+   }
+
+  /**
+   * Tests the param-combos for inclusive-or and exclusive-or.
+   */
+   public void testParamCombo1() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      CAPI allInOne = new CAPI(descriptor);
+      try {
+         allInOne.callParamCombo(null, null, null, null, null, null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(descriptor, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("inclusive-or", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo2 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo2.getLocalName());
+            assertEquals("exclusive-or", paramCombo2.getAttribute("type"));
+         } else {
+            fail("Just one param combo element was found.");
+         }
+      }
+   }
+
+  /**
+   * Tests the param-combos for all-or-none.
+   */
+   public void testParamCombo2() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/", 2000);
+      CAPI allInOne = new CAPI(descriptor);
+      try {
+         allInOne.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(descriptor, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("all-or-none", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+      }
    }
 
    /**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
 
 <function name="DataSection"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -12,11 +12,14 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 	</input>
 	<output>
-		<data contains="user">
+		<data>
+			<contains>
+				<contained element="user" />
+			</contains>
 			<!-- provider has 2 attributes name and address.
 			     It also can contain a PCDATA text. -->
 			<element name="user">
-				<description>A list of users.</description>
+				<description>A user.</description>
 				<contains>
 					<pcdata />
 				</contains>
@@ -30,20 +33,20 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</data>
 	</output>
 
-	<example num="1">
+	<example>
 		<description>Example with no input.</description>
-		<data-example>
+		<output-data-example>
 			<element-example name="user">
 				<attribute-example name="name">superuser</attribute-example>
 				<attribute-example name="address">12 Madison Avenue</attribute-example>
 				<pcdata-example>This user has the root authorisation.</pcdata-example>
 			</element-example>
-		</data-example>
+		</output-data-example>
 	</example>
-	<example num="2">
+	<example>
 		<description>Example with input.</description>
 		<input-example name="inputText">Doe</input-example>
-		<data-example>
+		<output-data-example>
 			<element-example name="user">
 				<attribute-example name="name">superuser</attribute-example>
 				<attribute-example name="address">12 Madison Avenue</attribute-example>
@@ -53,7 +56,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				<attribute-example name="name">Doe</attribute-example>
 				<attribute-example name="address">Unknown</attribute-example>
 			</element-example>
-		</data-example>
+		</output-data-example>
 	</example>
 
 </function>

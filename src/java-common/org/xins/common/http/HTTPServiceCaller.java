@@ -1027,8 +1027,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //      variables for _target and _request
 
          // Activate the diagnostic context ID
-         if (_context != null) {
-            NDC.push(_context);
+         synchronized(_context) {
+            if (_context != null) {
+               NDC.push(_context);
+            }
          }
 
          // Construct new HttpClient object
@@ -1085,9 +1087,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
          
          // Remove the diagnostic context ID
-         if (_context != null) {
-            NDC.pop();
-            NDC.remove();
+         synchronized(_context) {
+            if (_context != null) {
+               NDC.pop();
+               NDC.remove();
+            }
          }
          
          // Set objects to null for garbage collection

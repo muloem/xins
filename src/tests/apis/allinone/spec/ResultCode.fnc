@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
 
 <function name="ResultCode"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -18,7 +18,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 	</output>
 
-	<example num="1" resultcode="_InvalidRequest">
+	<example resultcode="_InvalidRequest">
 		<description>Missing parameter.</description>
 		<data-example>
 			<element-example name="missing-param">
@@ -26,12 +26,12 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			</element-example>
 		</data-example>
 	</example>
-	<example num="2" resultcode="AlreadySet">
+	<example resultcode="AlreadySet">
 		<description>The text has already been set.</description>
 		<input-example name="inputText">hello</input-example>
 		<output-example name="count">1</output-example>
 	</example>
-	<example num="3">
+	<example>
 		<description>A new text was sent.</description>
 		<input-example name="inputText">hello you!</input-example>
 		<output-example name="outputText">hello you! added.</output-example>

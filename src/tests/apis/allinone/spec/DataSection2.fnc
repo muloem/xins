@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
 
 <function name="DataSection2"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -12,7 +12,10 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 	</input>
 	<output>
-		<data contains="packet">
+		<data>
+			<contains>
+				<contained element="packet" />
+			</contains>
 			<!-- packet has 1 attribute destination.
 			     It also can contain several product sub-element. -->
 			<element name="packet">
@@ -25,7 +28,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				</attribute>
 			</element>
 			<element name="product">
-				<description>The packet.</description>
+				<description>A product.</description>
 				<attribute name="id" required="true" type="_int64">
 					<description>The id of the product.</description>
 				</attribute>
@@ -36,9 +39,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</data>
 	</output>
 
-	<example num="1">
+	<example>
 		<description>Example for this data section.</description>
-		<data-example>
+		<output-data-example>
 			<element-example name="packet">
 				<attribute-example name="destination">20 West Street, New York</attribute-example>
 				<element-example name="product">
@@ -57,7 +60,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 					<attribute-example name="price">12</attribute-example>
 				</element-example>
 			</element-example>
-		</data-example>
+		</output-data-example>
 	</example>
 
 </function>
