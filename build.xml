@@ -366,7 +366,32 @@
 
 	<target name="src-package" depends="-prepare" description="Builds an archive with source files and dependencies">
 		<tar tarfile="build/${src-package-tarfile}">
-			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,CHANGES,COPYRIGHT,README,src/**/*,depends/**/*" />
+			<tarfileset
+			dir="${basedir}"
+			prefix="${name}-${version}"
+			mode="644">
+				<include name="build.xml"                      />
+				<include name="CHANGES"                        />
+				<include name="COPYRIGHT"                      />
+				<include name="README"                         />
+				<include name="src/ant/**/*"                   />
+				<include name="src/bin/xins.bat"               />
+				<include name="src/config/**/*"                />
+				<include name="src/css/**/*"                   />
+				<include name="src/java-client-framework/**/*" />
+				<include name="src/java-common/**/*"           />
+				<include name="src/java-server-framework/**/*" />
+				<include name="src/package-lists/**/*"         />
+				<include name="src/xml/**/*"                   />
+				<include name="src/xslt/**/*"                  />
+				<include name="depends/**/*"                   />
+			</tarfileset>
+			<tarfileset
+			dir="${basedir}"
+			prefix="${name}-${version}"
+			mode="755">
+				<include name="src/bin/xins" />
+			</tarfileset>
 		</tar>
 		<gzip zipfile="build/${src-package-tarfile}.gz" src="build/${src-package-tarfile}" />
 		<delete file="build/${src-package-tarfile}" />
@@ -374,7 +399,34 @@
 
 	<target name="bin-package" depends="javadoc,java-server-framework" description="Builds a complete distribution archive">
 		<tar tarfile="build/${bin-package-tarfile}">
-			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,CHANGES,COPYRIGHT,README,src/**/*,depends/**,build/javadoc/**,build/*.jar" />
+			<tarfileset
+			dir="${basedir}"
+			prefix="${name}-${version}"
+			mode="644">
+				<include name="build.xml"                      />
+				<include name="CHANGES"                        />
+				<include name="COPYRIGHT"                      />
+				<include name="README"                         />
+				<include name="build/javadoc/**/*"             />
+				<include name="build/*.jar"                    />
+				<include name="src/ant/**/*"                   />
+				<include name="src/bin/xins.bat"               />
+				<include name="src/config/**/*"                />
+				<include name="src/css/**/*"                   />
+				<include name="src/java-client-framework/**/*" />
+				<include name="src/java-common/**/*"           />
+				<include name="src/java-server-framework/**/*" />
+				<include name="src/package-lists/**/*"         />
+				<include name="src/xml/**/*"                   />
+				<include name="src/xslt/**/*"                  />
+				<include name="depends/**/*"                   />
+			</tarfileset>
+			<tarfileset
+			dir="${basedir}"
+			prefix="${name}-${version}"
+			mode="755">
+				<include name="src/bin/xins" />
+			</tarfileset>
 		</tar>
 		<gzip zipfile="build/${bin-package-tarfile}.gz" src="build/${bin-package-tarfile}" />
 		<delete file="build/${bin-package-tarfile}" />
