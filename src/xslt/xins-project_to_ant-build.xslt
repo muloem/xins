@@ -14,13 +14,13 @@
 		<project default="all" basedir="..">
 
 			<target name="-prepare">
-				<mkdir dir="specdocs" />
+				<mkdir dir="build/specdocs" />
 			</target>
 
 			<target name="specdocs" depends="-prepare">
 				<style
 				in="xins-project.xml"
-				out="specdocs/index.html"
+				out="build/specdocs/index.html"
 				style="${{xins_home}}/src/xslt/xins-project_to_specdocs-index.xslt">
 					<param name="projectdir" expression="${{projectdir}}" />
 				</style>
