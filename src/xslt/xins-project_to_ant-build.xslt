@@ -10,6 +10,10 @@
 
 	<xsl:output indent="yes" />
 
+	<xsl:param name="xins_home"    />
+	<xsl:param name="project_home" />
+	<xsl:param name="builddir"     />
+
 	<xsl:variable name="specsdir">
 		<xsl:choose>
 			<xsl:when test="//project/@specsdir">
@@ -22,65 +26,68 @@
 	<xsl:template match="project">
 		<project default="all" basedir="..">
 
-			<target name="-prepare" />
+			<target name="-prepare">
+				<echo message="xins_home: {$xins_home}" />
+			</target>
 
 			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="build/specdocs" />
 				<copy
 				todir="build/specdocs"
-				file="${{xins_home}}/src/css/specdocs/style.css" />
+				file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
-				style="${{xins_home}}/src/xslt/specdocs/xins-project_to_index.xslt">
-					<param name="project_home" expression="${{project_home}}" />
+				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
+					<param name="project_home" expression="{$project_home}" />
 					<param name="specsdir"     expression="{$specsdir}"       />
 				</style>
 			</target>
 
 			<xsl:for-each select="api">
-				<xsl:variable name="api" select="@name" />
+				<xsl:variable name="api"      select="@name" />
+				<xsl:variable name="api_file" select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
 
-				<target name="specdocs-api-{@name}" depends="-prepare-specdocs" description="Generates all specification docs for the '{@name}' API">
+				<target name="specdocs-api-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
-						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.fnc" />
-						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.typ" />
-						<targetfileset dir="${{project_home}}/build/specdocs/{@name}" includes="index.html" />
+						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.fnc" />
+						<srcfilelist   dir="{$project_home}/{$specsdir}/{$api}"    files="*.typ" />
+						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
 					<style
-					in="${{project_home}}/{$specsdir}/{@name}/api.xml"
-					out="${{project_home}}/build/specdocs/{@name}/index.html"
-					style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt">
-						<param name="project_home" expression="${{project_home}}" />
+					in="{$project_home}/{$specsdir}/{$api}/api.xml"
+					out="{$project_home}/build/specdocs/{$api}/index.html"
+					style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
+						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
 					</style>
 					<style
-					basedir="${{project_home}}/{$specsdir}"
-					destdir="${{project_home}}/build/specdocs"
-					style="${{xins_home}}/src/xslt/specdocs/function_to_html.xslt"
-					includes="{@name}/*.fnc">
-						<param name="project_home" expression="${{project_home}}" />
+					basedir="{$project_home}/{$specsdir}"
+					destdir="{$project_home}/build/specdocs"
+					style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
+					includes="{$api}/*.fnc">
+						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
 					</style>
 					<style
-					basedir="${{project_home}}/{$specsdir}"
-					destdir="${{project_home}}/build/specdocs"
-					style="${{xins_home}}/src/xslt/specdocs/type_to_html.xslt"
-					includes="{@name}/*.typ">
-						<param name="project_home" expression="${{project_home}}" />
+					basedir="{$project_home}/{$specsdir}"
+					destdir="{$project_home}/build/specdocs"
+					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
+					includes="{$api}/*.typ">
+						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
 					</style>
-					<xsl:for-each select="//api/environment">
+					<xsl:for-each select="document($api_file)/api/environment">
 						<style
-						basedir="${{project_home}}/{$specsdir}"
-						destdir="${{project_home}}/build/specdocs"
-						style="${{xins_home}}/src/xslt/testforms/function_to_html.xslt"
+						basedir="{$project_home}/{$specsdir}"
+						destdir="{$project_home}/build/specdocs"
+						style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 						includes="{$api}/*.fnc"
 						extension="-testform-{@id}.html">
-							<param name="project_home" expression="${{project_home}}" />
+							<param name="project_home" expression="{$project_home}" />
 							<param name="specsdir"     expression="{$specsdir}"       />
 							<param name="environment"  expression="{@id}" />
 						</style>
