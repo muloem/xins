@@ -777,7 +777,8 @@
 		</xsl:apply-templates>
 
 		<xsl:if test="boolean(element-example)">
-			<br />
+			<xsl:text>
+</xsl:text>
 			<xsl:value-of disable-output-escaping="yes" select="$indent" />
 		</xsl:if>
 

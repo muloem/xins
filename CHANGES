@@ -44,6 +44,7 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added support for the new directory structure for the broken freeze links.
   - Added output section for result codes that defines an output section.
   - Added support for the <pcdata> element for the data section.
+  - Fixed a layout problem for the element-example.
 
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is
@@ -57,6 +58,9 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added the possibility to release with a specific version
     (e.g. 1.0.0-beta2).
   - Added the help target that provides help for the main targets.
+
+* DTD
+  - Moved the pcdata-example after the attribute-example.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.208:

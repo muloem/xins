@@ -66,7 +66,7 @@
           name        NMTOKEN #REQUIRED
 >
 <!ELEMENT data-example (element-example+)>
-<!ELEMENT element-example (pcdata-example?, attribute-example*, element-example*)>
+<!ELEMENT element-example (attribute-example*, element-example*, pcdata-example?)>
 <!ELEMENT pcdata-example (#PCDATA)>
 <!ATTLIST element-example
           name        NMTOKEN #REQUIRED
