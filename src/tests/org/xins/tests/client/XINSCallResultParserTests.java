@@ -368,4 +368,81 @@ public class XINSCallResultParserTests extends TestCase {
          // as expected
       }
    }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * <code>parse(byte[])</code>, with regard to having <code>result</code>
+    * and <code>data</code> elements at different levels.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult4() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Unknown elements under 'result' root element should be ignored
+      xml = "<result>  <result/><result /><result errorcode='none' /></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+
+      // Elements within data section should be parsed
+      xml = "<result>  <data><result /></data>/></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      DataElement dataElement = result.getDataElement();
+      List children = dataElement.getChildElements();
+      DataElement child = (DataElement) children.get(0);
+      assertEquals("result", child.getName());
+   }
+
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * <code>parse(byte[])</code>, with regard to namespace handling.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult6() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
+      // Result element with namespace should not be accepted
+      xml = "<rs:result xmlns:rs='http://somenamespace/' />";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Result element with namespace should not be accepted
+      xml = "<result xmlns='http://somenamespace/' />";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("The XML document \"" + xml + "\" should cause XINSCallResultData.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Parameters with namespace should be ignored
+      xml = "<result><param xmlns='http://somenamespace/' name='a'>b</param></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertEquals(0, result.getParameters().size());
+
+      // Parameters with namespace should be ignored
+      xml = "<result><p:param xmlns:p='http://somenamespace/' name='a'>b</param></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertEquals(0, result.getParameters().size());
+   }
 }
