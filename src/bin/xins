@@ -156,4 +156,8 @@ if [ "${bypass}" = "false" ]; then
 fi
 
 # Run Ant against the build file
-(cd ${builddir} && ant -f ${buildfile_base} -Ddeployment=${deployment} ${ant_args})
+if [ "${deployment}" != "" ]; then
+	(cd ${builddir} && ant -f ${buildfile_base} -Ddeployment=${deployment} ${ant_args})
+else
+	(cd ${builddir} && ant -f ${buildfile_base}                            ${ant_args})
+fi
