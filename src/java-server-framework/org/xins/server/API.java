@@ -164,7 +164,6 @@ implements DefaultReturnCodes {
       // Configure the call context
       context.reset(request);
 
-      // TODO: Use a custom non-thread-safe StringBuffer equivalent
       FastStringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
