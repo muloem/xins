@@ -130,14 +130,14 @@ extends HttpServlet {
    private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED");
 
    /**
-    * The <em>DETERMINE_RELOAD_INTERVAL_STATE</em> state.
+    * The <em>DETERMINE_INTERVAL</em> state.
     */
-   private static final State DETERMINE_RELOAD_INTERVAL_STATE = new State("DETERMINE_RELOAD_INTERVAL_STATE");
+   private static final State DETERMINE_INTERVAL = new State("DETERMINE_INTERVAL");
 
    /**
-    * The <em>DETERMINE_RELOAD_INTERVAL_FAILED_STATE</em> state.
+    * The <em>DETERMINE_INTERVAL_FAILED</em> state.
     */
-   private static final State DETERMINE_RELOAD_INTERVAL_FAILED_STATE = new State("DETERMINE_RELOAD_INTERVAL_FAILED_STATE");
+   private static final State DETERMINE_INTERVAL_FAILED = new State("DETERMINE_INTERVAL_FAILED");
 
    /**
     * The <em>INITIALIZING_API</em> state.
@@ -406,17 +406,21 @@ extends HttpServlet {
 
       // Check state
       if (newState == INITIAL
-       || (_state == INITIAL                         && newState != BOOTSTRAPPING_FRAMEWORK                                                         )
-       || (_state == BOOTSTRAPPING_FRAMEWORK         && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API                      )
-       || (_state == CONSTRUCTING_API                && newState != API_CONSTRUCTION_FAILED    && newState != BOOTSTRAPPING_API                     )
-       || (_state == BOOTSTRAPPING_API               && newState != API_BOOTSTRAP_FAILED       && newState != DETERMINE_RELOAD_INTERVAL_STATE       )
-       || (_state == DETERMINE_RELOAD_INTERVAL_STATE && newState != INITIALIZING_API           && newState != DETERMINE_RELOAD_INTERVAL_FAILED_STATE)
-       || (_state == INITIALIZING_API                && newState != API_INITIALIZATION_FAILED  && newState != READY                                 )
-       || (_state == READY                           && newState != INITIALIZING_API           && newState != DISPOSING                             )
+       || (_state == INITIAL                         && newState != BOOTSTRAPPING_FRAMEWORK                                                  )
+       || (_state == BOOTSTRAPPING_FRAMEWORK         && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API               )
+       || (_state == FRAMEWORK_BOOTSTRAP_FAILED      && newState != BOOTSTRAPPING_FRAMEWORK                                                  )
+       || (_state == CONSTRUCTING_API                && newState != API_CONSTRUCTION_FAILED    && newState != BOOTSTRAPPING_API              )
+       || (_state == API_CONSTRUCTION_FAILED         && newState != CONSTRUCTING_API                                                         )
+       || (_state == BOOTSTRAPPING_API               && newState != API_BOOTSTRAP_FAILED       && newState != DETERMINE_INTERVAL             )
+       || (_state == API_BOOTSTRAP_FAILED            && newState != BOOTSTRAPPING_API                                                        )
+       || (_state == DETERMINE_INTERVAL              && newState != INITIALIZING_API           && newState != DETERMINE_INTERVAL_FAILED      )
+       || (_state == DETERMINE_INTERVAL_FAILED       && newState != DETERMINE_INTERVAL                                                       )
+       || (_state == INITIALIZING_API                && newState != API_INITIALIZATION_FAILED  && newState != READY                          )
+       || (_state == READY                           && newState != DETERMINE_INTERVAL         && newState != DISPOSING                      )
        || (_state == DISPOSING                       && newState != DISPOSED))
       {
          Log.log_1101(_state == null ? null : _state.getName(), newState.getName());
-         throw new IllegalArgumentException("The state " + newState + " cannot follow the state  " + _state + '.');
+         throw new IllegalArgumentException("The state " + newState + " cannot follow the state " + _state + '.');
       }
 
       State oldState;
@@ -452,7 +456,7 @@ extends HttpServlet {
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
-      setState(DETERMINE_RELOAD_INTERVAL_STATE);
+      setState(DETERMINE_INTERVAL);
 
       // Get the runtime property
       String s = _runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -464,14 +468,14 @@ extends HttpServlet {
             interval = Integer.parseInt(s);
             if (interval < 1) {
                Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               setState(DETERMINE_RELOAD_INTERVAL_FAILED_STATE);
+               setState(DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
                Log.log_1411(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
             Log.log_1410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            setState(DETERMINE_RELOAD_INTERVAL_FAILED_STATE);
+            setState(DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Not a 32-bit integer number.");
          }
 
