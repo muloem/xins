@@ -40,15 +40,6 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
-import java.util.Collections;
-import java.util.List;
-import org.jdom.Element;
-import org.xins.client.CallResult;
-import org.xins.client.InvalidCallResultException;
-import org.xins.types.TypeValueException;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.CollectionUtils;
-
 /**
  * Result of a call to the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
@@ -83,7 +74,7 @@ public final class ]]></xsl:text>
     * The result data element. This field will be <code>null</code> if no data
     * element was returned.
     */
-   private final Element _dataElement;]]></xsl:text>
+   private final org.jdom.Element _dataElement;]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
 
@@ -98,14 +89,14 @@ public final class ]]></xsl:text>
     * Gets the data element, if any. If there is no data element, then
     * <code>null</code> is returned.
     *
-    * <p>This method will always {@link Element#clone() clone} the underlying
-    * element and return the clone.
+    * <p>This method will always {@link org.jdom.Element#clone() clone}
+    * the underlying element and return the clone.
     *
     * @return
     *    the data element, or <code>null</code> if there is none.
     */
-   public Element getDataElement() {
-      return (Element) _dataElement.clone();
+   public org.jdom.Element getDataElement() {
+      return (org.jdom.Element) _dataElement.clone();
    }]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
@@ -129,7 +120,7 @@ public final class ]]></xsl:text>
     * @throws IllegalArgumentException
     *    if <code>result == null || result.isSuccess() == false</code>.
     *
-    * @throws InvalidCallResultException
+    * @throws org.xins.client.InvalidCallResultException
     *    if the specified call result is not valid as a result from the
     *    <em>]]></xsl:text>
 		<xsl:value-of select="$functionName" />
@@ -137,19 +128,23 @@ public final class ]]></xsl:text>
     */
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text>(CallResult result)
-   throws IllegalArgumentException, InvalidCallResultException {
+		<xsl:text>(org.xins.client.CallResult result)
+   throws IllegalArgumentException,
+          org.xins.client.InvalidCallResultException {
+
+      // Check preconditions
       if (result == null) {
          throw new IllegalArgumentException("result == null");
       } else if (!result.isSuccess()) {
          throw new IllegalArgumentException("result.isSuccess() == false");
       }
+
       String currentParam = "";</xsl:text>
 		<xsl:if test="output/data/element">
 			<xsl:text>
 
-      Element data = result.getDataElement();
-      _dataElement = data == null ? null : (Element) data.clone();</xsl:text>
+      org.jdom.Element data = result.getDataElement();
+      _dataElement = data == null ? null : (org.jdom.Element) data.clone();</xsl:text>
 		</xsl:if>
 		<xsl:if test="output/param">
 			<xsl:text>
@@ -157,8 +152,8 @@ public final class ]]></xsl:text>
 </xsl:text>
 			<xsl:apply-templates select="output/param" mode="setfield" />
 			<xsl:text> 
-      } catch (TypeValueException exception) {
-         throw new InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
+      } catch (org.xins.types.TypeValueException exception) {
+         throw new org.xins.client.InvalidCallResultException("The parameter \"" + currentParam + "\" has value \"" + exception.getValue() + "\", which is invalid for the type \"" + exception.getType().getName() + "\".");
       }</xsl:text>
 		</xsl:if>
 		<xsl:text>
