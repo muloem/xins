@@ -68,7 +68,7 @@
 	<target name="-prepare-java-common" depends="-prepare">
 		<mkdir dir="build/src/java-common" />
 		<copy todir="build/src/java-common">
-			<fileset dir="src/java-common" includes="**/*.java" />
+			<fileset dir="src/java-common" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
 	</target>
@@ -111,7 +111,7 @@
 		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
 		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
 		<copy todir="build/src/java-server-framework">
-			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-server-framework" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-server-framework" token="%%VERSION%%" value="${version}" />
 	</target>
@@ -152,7 +152,7 @@
 	<target name="-prepare-java-client-framework" depends="-prepare">
 		<mkdir dir="build/src/java-client-framework" />
 		<copy todir="build/src/java-client-framework">
-			<fileset dir="src/java-client-framework" includes="**/*.java" />
+			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
 	</target>
