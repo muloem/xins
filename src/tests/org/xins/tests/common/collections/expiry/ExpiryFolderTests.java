@@ -31,6 +31,11 @@ public class ExpiryFolderTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
+   private final static int    DURATION  = 500;
+   private final static int    PRECISION = 100;
+   private final static String NAME      = "TestFolder";
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -71,13 +76,20 @@ public class ExpiryFolderTests extends TestCase {
 
    // TODO: Stop all expiry strategies globally
 
-   public void testExpiryFolder() throws Throwable {
-      final int    DURATION  = 500;
-      final int    PRECISION = 100;
-      final String NAME      = "TestFolder";
+   public void testExpiryFolder() throws Exception {
 
       // Construct an ExpiryStrategy
       ExpiryStrategy strategy = new ExpiryStrategy(DURATION, PRECISION);
+      try {
+         doTestExpiryFolder(strategy);
+      } finally {
+         strategy.stop();
+      }
+   }
+
+   public void doTestExpiryFolder(ExpiryStrategy strategy)
+   throws Exception {
+
       assertEquals(DURATION,             strategy.getTimeOut());
       assertEquals(PRECISION,            strategy.getPrecision());
       assertEquals(DURATION / PRECISION, strategy.getSlotCount());
@@ -86,12 +98,14 @@ public class ExpiryFolderTests extends TestCase {
       ExpiryFolder folder = new ExpiryFolder(NAME, strategy);
       assertEquals(NAME,     folder.getName());
       assertEquals(strategy, folder.getStrategy());
+      assertEquals(0,        folder.size());
 
       // Nothing should be in the ExpiryFolder
       final String KEY_1 = "hello";
       final String VAL_1 = "world";
       assertNull(folder.get(KEY_1));
       assertNull(folder.find(KEY_1));
+      assertEquals(0, folder.size());
 
       // Test get, find and put with null values
       try {
@@ -129,24 +143,32 @@ public class ExpiryFolderTests extends TestCase {
       folder.put(KEY_1, VAL_1);
       assertEquals(VAL_1, folder.find(KEY_1));
       assertEquals(VAL_1, folder.get(KEY_1));
+      assertEquals(1,     folder.size());
 
       // Check expiry
       final String KEY_2 = "something";
       final String VAL_2 = "else";
       folder.put(KEY_2, VAL_2);
+      assertEquals(2,     folder.size());
       assertEquals(VAL_2, folder.find(KEY_2));
       assertEquals(VAL_2, folder.get(KEY_2));
       Thread.sleep(DURATION + 1);
+      assertEquals(0, folder.size());
       assertNull("Entry should have expired.", folder.find(KEY_2));
-      assertNull("Entry should have expired.", folder.find(KEY_2));
+      assertEquals(0, folder.size());
+      assertNull("Entry should have expired.", folder.get(KEY_2));
+      assertEquals(0, folder.size());
 
       // Test entry removal
       assertNull(folder.remove(KEY_1));
+      assertEquals(0, folder.size());
       folder.put(KEY_2, VAL_2);
       assertEquals(VAL_2, folder.find(KEY_2));
       assertEquals(VAL_2, folder.get(KEY_2));
       assertEquals(VAL_2, folder.remove(KEY_2));
+      assertEquals(0, folder.size());
       assertNull(folder.remove(KEY_2));
+      assertEquals(0, folder.size());
       assertNull(folder.find(KEY_2));
       assertNull(folder.get(KEY_2));
       assertNull(folder.remove("This is a key that was never entered"));
@@ -182,7 +204,7 @@ public class ExpiryFolderTests extends TestCase {
       assertEquals(0, folder.size());
       folder.put(KEY_2, VAL_2);
       assertEquals(1, folder.size());
-      final long WAIT_TIME = DURATION * 2L;
+      final long WAIT_TIME = DURATION * 5L;
       long before = System.currentTimeMillis();
       Thread.sleep(WAIT_TIME);
       assertNull(folder.get(KEY_2));
@@ -222,9 +244,6 @@ public class ExpiryFolderTests extends TestCase {
                      + " ms.";
       assertTrue(message, callbackTime >= DURATION);
       assertTrue(message, callbackTime <= (DURATION + PRECISION));
-
-      // Stop the ExpiryStrategy
-      strategy.stop();
    }
 
    /**
