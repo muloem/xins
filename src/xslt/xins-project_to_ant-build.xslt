@@ -545,6 +545,10 @@
 							<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
 							<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 						</dependset>
+						<dependset>
+							<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
+							<targetfileset dir="{$javaCombinedDir}/{$packageAsDir}" includes="*.java"/>
+						</dependset>
 						<xmlvalidate file="{$api_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>

@@ -157,7 +157,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.0//EN" "http://xins.sourceforge.net/dtd/resultcode_1_0.dtd">
 
-<resultcode name="]]>${rcd.name}&quot; value=&quot;${rcd.name}<![CDATA["
+<resultcode name="]]>${rcd.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description>]]>${rcd.description}<![CDATA[</description>

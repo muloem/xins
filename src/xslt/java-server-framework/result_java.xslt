@@ -92,27 +92,36 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+]]></xsl:text>
+		<!-- Generate the set methods, the inner classes and the add methods -->
+		<xsl:apply-templates select="output">
+		</xsl:apply-templates>
 
+	</xsl:template>
+
+	<xsl:template match="function/output | resultcode/output">
+		<xsl:text>
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:apply-templates select="output/param">
+   //-------------------------------------------------------------------------</xsl:text>
+		<xsl:apply-templates select="param">
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
 
-		<xsl:apply-templates select="output/data/element" mode="addMethod">
+		<xsl:apply-templates select="data/element" mode="addMethod">
 		</xsl:apply-templates>
 
 		<xsl:text>
+
    protected org.xins.server.InvalidResponseResult checkOutputParameters() {
       // check the output parameters
       org.xins.server.InvalidResponseResult _errorOutputResult = null;</xsl:text>
 
 		<!-- ************************************************************* -->
-		<!-- Check required output parameters                               -->
+		<!-- Check required output parameters                              -->
 		<!-- ************************************************************* -->
 
-		<xsl:for-each select="output/param[@required='true']">
+		<xsl:for-each select="param[@required='true']">
 			<xsl:text>
       if (getParameter("</xsl:text>
 				<xsl:value-of select="@name" />
@@ -130,11 +139,11 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<!-- Check values for types for the output parameters               -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="output/param[not(@type='_text' or string-length(@type) = 0)]">
+		<xsl:if test="param[not(@type='_text' or string-length(@type) = 0)]">
 			<xsl:text>
 
       // Check values are valid for the associated types</xsl:text>
-			<xsl:for-each select="output/param[not(@type='_text' or string-length(@type) = 0)]">
+			<xsl:for-each select="param[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
       if (!</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
@@ -163,11 +172,11 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    }
 }
 </xsl:text>
-		<xsl:apply-templates select="output/data/element" mode="elementClass">
+		<xsl:apply-templates select="data/element" mode="elementClass">
 		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template match="function/output/param | function/output/data/element/attribute">
+	<xsl:template match="output/param | output/data/element/attribute">
 
 		<!-- Define the variables used in the set methods -->
 
@@ -191,7 +200,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 				<xsl:with-param name="project_file" select="$project_file" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="'true'"     />
+				<xsl:with-param name="required"     select="'true'"        />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -235,16 +244,19 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 				<xsl:text>doesn't need</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text> to be called before returning the SuccessfulResult.
+		<xsl:text> to be called before returning the
+    * SuccessfulResult.
     *
     * @param </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[
     *    the value of the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em> output parameter, can be <code>null</code>.
-    *      The value is not added to the result if the value is <code>null</code> or
-    *      its <code>String</code> representation is an empty <code>String</code>.]]></xsl:text>
+		<xsl:text><![CDATA[</em> output parameter,
+    *      can be <code>null</code>.
+    *      The value is not added to the result if the value is <code>null</code>
+    *      or its <code>String</code> representation is an empty
+    *      <code>String</code>.]]></xsl:text>
 		<xsl:if test="deprecated">
 			<xsl:text>
     *
@@ -288,7 +300,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 	<!-- Generate the add data/element methods                         -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="function/output/data/element" mode="addMethod">
+	<xsl:template match="output/data/element" mode="addMethod">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -329,7 +341,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 	<!-- Generate the data/element classes.                            -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="function/output/data/element" mode="elementClass">
+	<xsl:template match="output/data/element" mode="elementClass">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -402,7 +414,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="function/output/data/element/contains/contained">
+	<xsl:template match="output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
 			<xsl:call-template name="hungarianUpper">

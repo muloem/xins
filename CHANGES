@@ -1,4 +1,16 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.188:
+
+* Specification:
+  - Added the possibility to have an output section in result codes.
+
+* Generated build file:
+  - The java files in the combined directory are removed if the impl.xml
+    file has changed.
+  - The create-rcd target doesn't create the value attribute for the result
+    code.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.187:
 
 * XINS/Java Common Library:

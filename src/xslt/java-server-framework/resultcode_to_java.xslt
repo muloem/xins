@@ -11,6 +11,7 @@
 
 	<xsl:output method="text" />
 
+	<!-- Define parameters -->
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
@@ -18,9 +19,11 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../hungarian.xslt" />
-	<xsl:include href="../java.xslt" />
+	<xsl:include href="../java.xslt"  />
+	<xsl:include href="../types.xslt"  />
+	<xsl:include href="result_java.xslt" />
 
 	<xsl:variable name="resultcode" select="//resultcode/@name" />
 	<xsl:variable name="className" select="concat($resultcode, 'Result')" />
@@ -33,6 +36,7 @@
 				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
+		<!-- Truncate the first ", " -->
 		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
 
 		<!-- Send a warning if no function uses this ResultCode -->
@@ -85,8 +89,13 @@ final class </xsl:text>
 		<xsl:call-template name="constructor" />
 		<xsl:text>
 
-}
+   //-------------------------------------------------------------------------
+   // Field
+   //-------------------------------------------------------------------------
 </xsl:text>
+		<!-- Generate the set methods, the inner classes and the add methods -->
+		<xsl:apply-templates select="output">
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template name="constructor">
