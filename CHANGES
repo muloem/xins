@@ -559,6 +559,125 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 * Added support for the -version argument for the xins commands.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 FINAL:
+
+* Tests
+  - The unknownFunction and unknownMetaFunction tests used to take 5 seconds.
+    This is fixed.
+
+* XINS/Java Common Library:
+  - Set the unused values to null in the HTTPServiceCaller after popping the
+    diagnostic context identifier.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 RC 3:
+
+* XINS/Java Common Library:
+  - Fixed a bug in the ExpiryStrategy class, which caused the slot count to be
+    incorrect if the time-out is not a multiple of the precision.
+  - Changed the ExpiryStrategy to use weak references to the ExpiryFolder
+    instances instead of strong references.
+  - Marked class Doorman as deprecated. The ExpiryFolder implementation no
+    longer uses a Doorman but uses synchronized sections instead. Effectively,
+    this fixes the follwing SF.net bugs:
+    . #1089007: Memory leak in Doorman
+    . #1089086: Programming error in ExpiryStrategy / Doorman
+    . #1089597: Time-outs while calling Doorman.enterAsWriter()
+    . #1089600: Time-outs while calling Doorman.enterAsReader()
+  - ExpiryFolder now has a constructor that just takes a name and an
+    ExpiryStrategy. The old constructor (which accepted a 'strict' flag and a
+    maximum queue wait time) has been deprecated.
+
+* Build and release process:
+  - Added 'netbeans-debug' target in build.xml file
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 RC 2:
+
+* XINS/Java Server Framework:
+  - No longer determining function name in API class _again_, but rather
+    pasing the FunctionRequest object from the APIServlet to the API. This
+    fixes the problem that XINS 1.0.1-rc1 only accepts a call if both
+    _function and function are specified.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 RC 1:
+
+* XINS/Java Common:
+  - The diagnostic context identifier is removed after being popped
+    otherwise the thread stays in memory.
+  - Reset some variables after the HTTP call, so that the variables can be
+    garbage collected. This should reduce the suspected memory leak.
+
+* XINS/Java Server Framework:
+  - Added NDC.remove() after popping the diagnostic context identifier for the
+    servlet.
+
+* Generated specification documentation:
+  - Sending down _convention=_xins-std with calls to _GetVersion,
+    _GetStatistics and _GetSettings.
+
+* Generation of server-side Java code:
+  - Fixed the parameter name set in the web.xml file used for the calling
+    convention to the correct value.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 BETA 2:
+
+* XINS/Java Server Framework:
+  - Added support for calling conventions. By default the "_xins-std" calling
+    convention (which is compatible with XINS 1.0.0) is used. However it can
+    be overridden in the impl.xml file by setting the property
+    org.xins.server.calling.convention to "_xins-old". And this one can again
+    be overridden by passing "_convention=_xins-std" with a call request.
+  - Improved logdoc:
+    - changed entry 3210, added the reason for an invalid property value at
+      bootstrap;
+    - changed entry 3412, added the reason for an invalid property value at
+      initialization;
+    - added entry 3230, regarding a security exception while retrieving the
+      runtime properties file location;
+    - changed entry 3300, regarding initializing the logging subsystem, now
+      including the config file name.
+  - Some minor improvements in the API servlet regarding state handling,
+    exception reporting, logging, etc.
+
+* XINS/Java Client Framework:
+  - Sending down "_convention=_xins-std" with each call request.
+
+* Generated test forms:
+  - Sending down "_convention=_xins-std" with each call request.
+
+* Libraries:
+  - Updated xmlenc from 0.43 to 0.46 to improve performance.
+    Typical impact on performance: Medium.
+  - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
+    Typical impact on performance: Unknown.
+
+* Logdoc:
+  - Optimized performance: the Logger object is looked up only once, the first
+    time that the entry is logged.
+    Typical impact on performance: Major.
+
+* DTD:
+  - Added the calling-convention element to api_1_0_alpha.dtd and
+    impl_1_0.dtd.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.0.1 BETA 1:
+
+* XINS/Java Server Framework:
+  - Fixed SF.net bug #1076638: The generated diagnostic context ID did not
+    conform to the Wanadoo NL Architect Group recommendation. It does now.
+  - When a function is called, the <result/> element now contains a "success"
+    attribute which is set to "false" if there is an error code and to "true"
+    if there is none.
+    Also, if there is an error code, it is not only put in the "errorcode"
+    attribute, but also in the "code" attribute.
+    This is to improve compatibility with XINS 0.130 and XINS 0.168, which are
+    still used in production systems.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 FINAL:
 
 No changes.
