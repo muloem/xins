@@ -201,6 +201,13 @@ public class APIImpl extends API {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Triggers re-initialization of this API.
+    */
+   void reinitialize() {
+      super.reinitializeImpl();
+   }
 </xsl:text>
 	<xsl:if test="instance">
 		<xsl:text>
