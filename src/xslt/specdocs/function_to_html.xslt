@@ -637,9 +637,7 @@
 							<xsl:text>=</xsl:text>
 							<span class="value">
 								<xsl:call-template name="urlencode">
-									<xsl:with-param name="text">
-										<xsl:value-of select="text()" />
-									</xsl:with-param>
+									<xsl:with-param name="text" select="text()" />
 								</xsl:call-template>
 							</span>
 						</span>
@@ -658,9 +656,7 @@
 							<xsl:text>=</xsl:text>
 							<span class="value">
 								<xsl:call-template name="urlencode">
-									<xsl:with-param name="text">
-										<xsl:value-of select="text()" />
-									</xsl:with-param>
+									<xsl:with-param name="text" select="text()" />
 								</xsl:call-template>
 							</span>
 						</span>
@@ -676,9 +672,7 @@
 							<xsl:text>=</xsl:text>
 							<span class="value">
 								<xsl:call-template name="urlencode">
-									<xsl:with-param name="text">
-										<xsl:value-of select="$example-inputdata" />
-									</xsl:with-param>
+									<xsl:with-param name="text" select="$example-inputdata" />
 								</xsl:call-template>
 							</span>
 						</span>
@@ -720,9 +714,7 @@
 								<!-- TODO: Get result code description for referenced result codes as well -->
 								<xsl:attribute name="title">
 									<xsl:call-template name="firstline">
-										<xsl:with-param name="text">
-											<xsl:value-of select="parent::function/output/resultcode[@value=$resultcode]/description/text()" />
-										</xsl:with-param>
+										<xsl:with-param name="text" select="parent::function/output/resultcode[@value=$resultcode]/description/text()" />
 									</xsl:call-template>
 								</xsl:attribute>
 								<span class="name">errorcode</span>
@@ -854,9 +846,7 @@
 									<xsl:value-of select="../@name" />
 									<xsl:text>=</xsl:text>
 									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text">
-											<xsl:value-of select="text()" />
-										</xsl:with-param>
+										<xsl:with-param name="text" select="text()" />
 									</xsl:call-template>
 								</xsl:for-each>
 								<xsl:for-each select="$example-inputparams2">
@@ -864,17 +854,13 @@
 									<xsl:value-of select="@name" />
 									<xsl:text>=</xsl:text>
 									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text">
-											<xsl:value-of select="text()" />
-										</xsl:with-param>
+										<xsl:with-param name="text" select="text()" />
 									</xsl:call-template>
 								</xsl:for-each>
 								<xsl:if test="$example-inputdata != ''">
 									<xsl:text>&amp;_data=</xsl:text>
 									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text">
-											<xsl:value-of select="$example-inputdata" />
-										</xsl:with-param>
+										<xsl:with-param name="text" select="$example-inputdata" />
 									</xsl:call-template>
 								</xsl:if>
 							</xsl:attribute>
@@ -896,9 +882,7 @@
 										<xsl:value-of select="../@name" />
 										<xsl:text>=</xsl:text>
 										<xsl:call-template name="urlencode">
-											<xsl:with-param name="text">
-												<xsl:value-of select="text()" />
-											</xsl:with-param>
+											<xsl:with-param name="text" select="text()" />
 										</xsl:call-template>
 									</xsl:for-each>
 									<xsl:for-each select="$example-inputparams2">
@@ -906,17 +890,13 @@
 										<xsl:value-of select="@name" />
 										<xsl:text>=</xsl:text>
 										<xsl:call-template name="urlencode">
-											<xsl:with-param name="text">
-												<xsl:value-of select="text()" />
-											</xsl:with-param>
+											<xsl:with-param name="text" select="text()" />
 										</xsl:call-template>
 									</xsl:for-each>
 									<xsl:if test="$example-inputdata != ''">
 										<xsl:text>&amp;_data=</xsl:text>
 										<xsl:call-template name="urlencode">
-											<xsl:with-param name="text">
-												<xsl:value-of select="$example-inputdata" />
-											</xsl:with-param>
+											<xsl:with-param name="text" select="$example-inputdata" />
 										</xsl:call-template>
 									</xsl:if>
 								</xsl:attribute>
@@ -1207,9 +1187,7 @@
 		<a href="{$reffunction}.html">
 			<xsl:attribute name="title">
 				<xsl:call-template name="firstline">
-					<xsl:with-param name="text">
-						<xsl:value-of select="document($reffunction_file)/function/description/text()" />
-					</xsl:with-param>
+					<xsl:with-param name="text" select="document($reffunction_file)/function/description/text()" />
 				</xsl:call-template>
 			</xsl:attribute>
 			<xsl:value-of select="$reffunction" />

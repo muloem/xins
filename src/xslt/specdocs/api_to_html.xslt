@@ -300,9 +300,7 @@
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="document($function_file)/function/@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="document($function_file)/function/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -366,9 +364,7 @@
 		<xsl:variable name="type_file" select="concat($specsdir, '/', @name, '.typ')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="document($type_file)/type/@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="document($type_file)/type/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -432,9 +428,7 @@
 		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="document($resultcode_file)/resultcode/@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="document($resultcode_file)/resultcode/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 

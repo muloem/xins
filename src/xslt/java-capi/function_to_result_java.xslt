@@ -29,9 +29,7 @@
 	<xsl:template match="function">
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="//function/@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="//function/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -245,9 +243,7 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:otherwise>get</xsl:otherwise>
 			</xsl:choose>
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="translate(@name, '.', '_')" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="translate(@name, '.', '_')" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javatype">

@@ -92,9 +92,7 @@
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">
-				<xsl:with-param name="text">
-					<xsl:value-of select="document($type_file)/type/description/text()" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="document($type_file)/type/description/text()" />
 			</xsl:call-template>
 		</xsl:variable>
 

@@ -168,11 +168,7 @@
 				<xsl:value-of select="$pattern_url" />
 				<xsl:text>?pattern=</xsl:text>
 				<xsl:call-template name="urlencode">
-					<xsl:with-param name="text">
-						<xsl:text>^(</xsl:text>
-						<xsl:value-of select="text()" />
-						<xsl:text>)$</xsl:text>
-					</xsl:with-param>
+					<xsl:with-param name="text" select="concat('^(', text(), ')$')" />
 				</xsl:call-template>
 			</xsl:attribute>
 			<xsl:text>Test this pattern</xsl:text>

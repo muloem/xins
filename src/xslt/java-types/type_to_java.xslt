@@ -306,9 +306,7 @@ public final class ]]></xsl:text>
 			<xsl:when test="$kind = 'pattern'">
 				<xsl:text>"</xsl:text>
 				<xsl:call-template name="xml_to_java_string">
-					<xsl:with-param name="text">
-						<xsl:value-of select="pattern/text()" />
-					</xsl:with-param>
+					<xsl:with-param name="text" select="pattern/text()" />
 				</xsl:call-template>
 				<xsl:text>"</xsl:text>
 			</xsl:when>

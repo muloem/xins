@@ -67,12 +67,8 @@
 					<param-name>org.xins.api.class</param-name>
 					<param-value>
 						<xsl:call-template name="package_for_server_api">
-							<xsl:with-param name="project_file">
-								<xsl:value-of select="$project_file" />
-							</xsl:with-param>
-							<xsl:with-param name="api">
-								<xsl:value-of select="$api" />
-							</xsl:with-param>
+							<xsl:with-param name="project_file" select="$project_file" />
+							<xsl:with-param name="api" select="$api" />
 						</xsl:call-template>
 						<xsl:text>.APIImpl</xsl:text>
 					</param-value>

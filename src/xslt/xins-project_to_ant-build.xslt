@@ -360,12 +360,8 @@ APIs in this project are:
 		</xsl:variable>
 		<xsl:variable name="clientPackage">
 			<xsl:call-template name="package_for_client_api">
-				<xsl:with-param name="project_file">
-					<xsl:value-of select="$project_file" />
-				</xsl:with-param>
-				<xsl:with-param name="api">
-					<xsl:value-of select="$api" />
-				</xsl:with-param>
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api" select="$api" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="clientPackageAsDir" select="translate($clientPackage, '.','/')" />
@@ -532,12 +528,8 @@ APIs in this project are:
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_type_classes">
-						<xsl:with-param name="project_file">
-							<xsl:value-of select="$project_file" />
-						</xsl:with-param>
-						<xsl:with-param name="api">
-							<xsl:value-of select="$api" />
-						</xsl:with-param>
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="api" select="$api" />
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
@@ -604,12 +596,8 @@ APIs in this project are:
 		<xsl:if test="document($api_file)/api/impl-java or impl">
 			<xsl:variable name="package">
 				<xsl:call-template name="package_for_server_api">
-					<xsl:with-param name="project_file">
-						<xsl:value-of select="$project_file" />
-					</xsl:with-param>
-					<xsl:with-param name="api">
-						<xsl:value-of select="$api" />
-					</xsl:with-param>
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api" select="$api" />
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />

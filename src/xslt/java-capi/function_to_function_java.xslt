@@ -29,9 +29,7 @@
 	<xsl:template match="function">
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="//function/@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="//function/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 

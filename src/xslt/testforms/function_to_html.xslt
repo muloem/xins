@@ -52,9 +52,7 @@
 			<body>
 				<xsl:call-template name="header">
 					<xsl:with-param name="active">testform</xsl:with-param>
-					<xsl:with-param name="name">
-						<xsl:value-of select="$functionName" />
-					</xsl:with-param>
+					<xsl:with-param name="name" select="$functionName" />
 				</xsl:call-template>
 
 				<h1>
@@ -209,9 +207,7 @@
 					<xsl:if test="boolean(description/text())">
 						<xsl:attribute name="title">
 							<xsl:call-template name="firstline">
-								<xsl:with-param name="text">
-									<xsl:value-of select="description/text()" />
-								</xsl:with-param>
+								<xsl:with-param name="text" select="description/text()" />
 							</xsl:call-template>
 						</xsl:attribute>
 					</xsl:if>

@@ -315,10 +315,7 @@
 			</xsl:when>
 		</xsl:choose>
 		<xsl:apply-templates select="contains/contained" mode="checkParams">
-			<xsl:with-param name="parentelement">
-				<xsl:value-of select="@name" />
-				<xsl:text>NextElement</xsl:text>
-			</xsl:with-param>
+			<xsl:with-param name="parentelement" select="concat(@name, 'NextElement')" />
 		</xsl:apply-templates>
 
 		<xsl:choose>

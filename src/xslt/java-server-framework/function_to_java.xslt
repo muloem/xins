@@ -36,9 +36,7 @@
 
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="@rcsversion" />
-				</xsl:with-param>
+				<xsl:with-param name="revision" select="@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
