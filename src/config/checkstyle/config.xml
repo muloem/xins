@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.0//EN" "http://www.puppycrawl.com/dtds/configuration_1_0.dtd">
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ Checkstyle configuration. Based on the recommendations in "Effective Java" by
+ Joshua Bloch.
+
+ $Id$
+-->
+
+<module name="Checker">
+	
+	<module name="TreeWalker">
+		
+		<!-- Avoid creating duplicate objects -->
+		<module name="IllegalInstantiation">
+			<property name="classes" value="java.lang.Boolean, java.lang.String" />
+		</module>
+		
+		<!-- Avoid finalizers -->
+		<module name="GenericIllegalRegexp">
+			<property name="format" value="((public)|(protected))\s+void\s+finalize\(\s*\)" />
+		</module>
+		
+		<!-- Always override hashCode when you override equals -->
+		<module name="EqualsHashCode" />
+		
+		<!-- Make all fields private -->
+		<module name="VisibilityModifier" />
+		
+		<!-- Avoid long parameter lists -->
+		<module name="ParameterNumber">
+			<property name="max" value="8" />
+		</module>
+		
+		<!-- Write Javadoc comments for all API elements -->
+		<module name="JavadocType">
+			<property name="scope" value="private" />
+		</module>
+		<module name="JavadocMethod">
+			<property name="scope" value="private" />
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="private" />
+		</module>
+		
+		<!-- Adhere to generally accepted naming conventions -->
+		<module name="PackageName">
+			<!-- no uppercase letters, between 2 and 8 characters -->
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,7})*$"/>
+		</module>
+		<module name="TypeName"/>
+		<module name="ConstantName"/>
+		<module name="LocalFinalVariableName"/>
+		<module name="LocalVariableName"/>
+		<module name="MemberName">
+			<!-- start with underscore followed by a lowercase letter -->
+			<property name="format" value="^_[a-z][a-zA-Z0-9]*$"/>
+		</module>
+		<module name="MethodName" />
+		<module name="ParameterName" />
+		<module name="StaticVariableName" />
+		
+		<!-- Don't ignore exceptions, require a comment -->
+		<module name="EmptyBlock">
+			<property name="tokens" value="LITERAL_CATCH" />
+			<property name="option" value="text" />
+		</module>
+	</module>
+</module>
