@@ -140,7 +140,7 @@
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
-		tofile="build/javadoc/stylesheet.css"
+		tofile="${javadoc.destdir}/stylesheet.css"
 		overwrite="true" />
 	</target>
 
