@@ -68,4 +68,13 @@ public abstract class Descriptor extends Object {
     *    descriptor, in the correct order, never <code>null</code>.
     */
    public abstract Iterator iterateTargets();
+
+   /**
+    * Counts the number of target service descriptors in this descriptor,
+    * recursively.
+    *
+    * @return
+    *    the total number of target descriptors, always &gt;= 1.
+    */
+   public abstract int getTargetCount();
 }

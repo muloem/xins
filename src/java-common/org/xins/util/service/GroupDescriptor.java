@@ -192,7 +192,8 @@ public final class GroupDescriptor extends Descriptor {
    private final Map _targetsByCRC32;
 
    /**
-    * The total number of targets in this group.
+    * The total number of targets in this group. The value of this field is
+    * always &gt;= 1.
     */
    private int _targetCount;
 

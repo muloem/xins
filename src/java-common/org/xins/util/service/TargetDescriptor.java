@@ -203,6 +203,10 @@ public final class TargetDescriptor extends Descriptor {
       return new Iterator();
    }
 
+   public int getTargetCount() {
+      return 1;
+   }
+
    public String toString() {
       return "TargetDescriptor(url=\"" + _url + "\"; timeOut=" + _timeOut + ')';
    }
