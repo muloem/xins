@@ -158,7 +158,7 @@ extends Object {
                String s = value instanceof String
                         ? "\"" + value + '"'
                         : value.getClass().getName() + " (\"" + value + "\")";
-               LOG.debug("Setting attribute \"" + key + "\" to " + s + '.');
+               LOG.debug("Setting session attribute \"" + key + "\" to " + s + '.');
             }
             _attributes.put(key, value);
          }
