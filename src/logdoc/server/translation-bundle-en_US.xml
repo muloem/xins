@@ -92,7 +92,7 @@
 	<translation entry="5007">Setting session attribute <value-of-param name="name" format="quoted" /> to (null).</translation>
 	<translation entry="5008">Getting session attribute <value-of-param name="name" format="quoted" />, value is <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
 	<translation entry="5009">Getting session attribute <value-of-param name="name" format="quoted" />, value is (null).</translation>
-	<translation entry="5010">Created session with unique ID <value-of-param name="id" /> in <value-of-param name="generationLoops" /> attempts.</translation>
+	<translation entry="5010">Created session with unique ID <value-of-param name="sessionID" /> in <value-of-param name="generationLoops" /> attempts.</translation>
 	<translation entry="5011">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: The received session ID <value-of-param name="sessionID" /> is invalid.</translation>
 	<translation entry="5012">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: The received session ID <value-of-param name="sessionID" /> is unknown.</translation>
 	<translation entry="5013">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>

@@ -92,7 +92,7 @@
 	<translation entry="5007">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde (null).</translation>
 	<translation entry="5008">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
 	<translation entry="5009">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde (null).</translation>
-	<translation entry="5010">Sessie aangemaakt met unieke identificatie <value-of-param name="id" /> in <value-of-param name="generationLoops" /> pogingen.</translation>
+	<translation entry="5010">Sessie aangemaakt met unieke identificatie <value-of-param name="sessionID" /> in <value-of-param name="generationLoops" /> pogingen.</translation>
 	<translation entry="5011">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontavngen sessie-identificatie <value-of-param name="sessionID" /> is niet valide.</translation>
 	<translation entry="5012">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontvangen sessie-identificatie <value-of-param name="sessionID" /> is onbekend.</translation>
 	<translation entry="5013">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Een exceptie is opgetreden.</translation>

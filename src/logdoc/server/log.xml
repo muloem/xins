@@ -436,7 +436,7 @@
 		</entry>
 		<entry id="5010" level="INFO">
 			<description>Created session.</description>
-			<param name="id" type="object" nullable="false" />
+			<param name="sessionID" type="object" nullable="false" />
 			<param name="generationLoops" type="int32" nullable="false" />
 		</entry>
 		<entry id="5011" level="INFO">
