@@ -3,6 +3,9 @@
  */
 package org.xins.logdoc;
 
+import org.apache.log4j.Level;
+import org.xins.util.MandatoryArgumentChecker;
+
 /**
  * Abstract base class for <em>logdoc</em> <code>Log</code> classes.
  *
@@ -91,4 +94,55 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Custom log level.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    */
+   private static class CustomLevel extends Level {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>CustomLevel</code> object.
+       *
+       * @param value
+       *    the <code>int</code> value for this level.
+       *
+       * @param name
+       *    the name for this level, should not be <code>null</code>.
+       *
+       * @param syslogEquivalent
+       *    the syslog equivalent.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>name == null</code>.
+       */
+      private CustomLevel(int value, String name, int syslogEquivalent)
+      throws IllegalArgumentException {
+
+         // Call superconstructor
+         super(value, name, syslogEquivalent);
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("name", name);
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+   }
 }
