@@ -102,11 +102,9 @@ public final class Text extends Type {
       return string;
    }
 
-   /**
-    * This method overrides the toString method in the Type class, however it
-    * isn't require to throw a TypeValueException as the String is always
-    * returned.
-    */
+   // This method overrides the toString method in the Type class, however it
+   // isn't require to throw a TypeValueException as the String is always
+   // returned.
    public String toString(Object value)
    throws IllegalArgumentException, TypeValueException, ClassCastException {
       return fromStringForRequired((String) value);
