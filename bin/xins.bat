@@ -14,8 +14,13 @@
 @ECHO OFF
 
 :: Make sure XINS_HOME is set
-IF NOT "%XINS_HOME%" == "" GOTO start_build
+IF NOT "%XINS_HOME%" == "" GOTO show_version
 ECHO FATAL: XINS_HOME not set
+GOTO end
+
+:show_version
+IF NOT "%1" == "-version" GOTO start_build
+CALL ant -q -f %XINS_HOME%\build.xml version
 GOTO end
 
 :start_build

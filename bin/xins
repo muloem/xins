@@ -26,6 +26,10 @@ if [ "${xins_home}a" = "a" ]; then
 	guessed_xins_home=true
 fi
 
+if [ "$1" = "-version" ]; then
+	ant -q -f ${xins_home}/build.xml version
+fi
+
 ant -q -f ${xins_home}/src/ant/make-build.xml \
 -Dxins_home=${xins_home}
 

@@ -29,6 +29,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
 
+* Added support for the -version argument.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 RELEASE CANDIDATE 2:
 
