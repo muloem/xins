@@ -23,6 +23,10 @@ import java.util.List;
 
 /**
  * Constants for the default return codes.
+ *
+ * @deprecated
+ *    Deprecated since XINS 0.15.
+ *    Use {@link DefaultResultCodes} instead.
  */
 public interface DefaultReturnCodes {</xsl:text>
 		<xsl:for-each select="code">
