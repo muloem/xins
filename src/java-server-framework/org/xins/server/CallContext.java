@@ -174,7 +174,7 @@ public final class CallContext {
     *    function does not define a data section or if the data section sent is
     *    empty.
     */
-   public org.xins.common.xml.Element getDataSection() {
+   public org.xins.common.xml.Element getDataElement() {
       String dataSectionValue = _parameters.get("_data");
       ElementParser parser = new ElementParser();
       try {

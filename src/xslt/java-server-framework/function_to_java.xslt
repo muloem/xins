@@ -167,7 +167,7 @@ public abstract class ]]></xsl:text>
 
 		<xsl:if test="input/data/element">
 			<xsl:text>
-      org.xins.common.xml.Element _dataSection = context.getDataSection();</xsl:text>
+      org.xins.common.xml.Element _dataSection = context.getDataElement();</xsl:text>
 		</xsl:if>
 
 		<xsl:text>
