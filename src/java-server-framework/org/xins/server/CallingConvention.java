@@ -146,10 +146,14 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>xinsResult == null || httpResponse == null</code>.
+    *
+    * @throws IOException
+    *    if calling any of the methods in <code>httpResponse</code> causes an
+    *    I/O error.
     */
    abstract void convertResult(FunctionResult      xinsResult,
                                HttpServletResponse httpResponse)
-   throws IOException;
+   throws IllegalArgumentException, IOException;
    // TODO: Use "Wrapper/Implementation Method" pattern
    // XXX: Replace IOException with more appropriate exception?
 }
