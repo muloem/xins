@@ -201,8 +201,13 @@ import org.xins.logdoc.LogdocStringBuffer;
 			<xsl:otherwise>
 				<xsl:text>
       buffer.append("</xsl:text>
+				<xsl:variable name="normalized-text">
+					<xsl:call-template name="normalize">
+						<xsl:with-param name="text" select="." />
+					</xsl:call-template>
+				</xsl:variable>
 				<xsl:call-template name="xml_to_java_string">
-					<xsl:with-param name="text" select="." />
+					<xsl:with-param name="text" select="$normalized-text" />
 				</xsl:call-template>
 				<xsl:text>");</xsl:text>
 			</xsl:otherwise>
