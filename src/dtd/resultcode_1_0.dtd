@@ -5,7 +5,7 @@
 -->
 <!ELEMENT resultcode (description)>
 <!ATTLIST resultcode
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
           value      CDATA #REQUIRED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED

@@ -14,20 +14,20 @@
 >
 <!ELEMENT group (entry*)>
 <!ATTLIST group
-          id               CDATA #REQUIRED
+          id               NMTOKEN #REQUIRED
           name             CDATA #IMPLIED
 >
 <!ELEMENT entry (description, param*)>
 <!ATTLIST entry
-          id               CDATA #REQUIRED
-          level            CDATA #IMPLIED
+          id               NMTOKEN #REQUIRED
+          level            NMTOKEN #IMPLIED
           exception        CDATA #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
 <!ELEMENT param EMPTY>
 <!ATTLIST param
-          name            CDATA #REQUIRED
-          type            CDATA #IMPLIED
-          nullable        CDATA #IMPLIED
+          name            NMTOKEN #REQUIRED
+          type            NMTOKEN #IMPLIED
+          nullable        (true | false) #IMPLIED
 >

@@ -15,6 +15,12 @@
 	<code name="InternalError" value="InternalError" success="false">
 		<description>There was an internal error.</description>
 	</code>
+	<code name="InvalidRequest" value="InvalidRequest" success="false" onlyIfInputParameters="true">
+		<description>At least one of the input parameter has an invalid value, or the combination of input parameter values is invalid or a required input parameter is missing.</description>
+	</code>
+	<code name="InvalidResponse" value="InvalidResponse" success="false" onlyIfInputParameters="false">
+		<description>At least one of the output parameter has an invalid value or a required output parameter is missing.</description>
+	</code>
 	<code name="InvalidParameters" value="InvalidParameters" success="false" onlyIfInputParameters="true">
 		<description>At least one parameter has an invalid value, or the combination of parameter values is invalid.</description>
 	</code>

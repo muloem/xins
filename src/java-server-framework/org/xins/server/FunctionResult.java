@@ -62,8 +62,25 @@ public class FunctionResult {
     *    the CallResultBuilder with the XML structure.
     */
    CallResult getCallResult() {
-       return _builder;
-    }
+      InvalidResponseResult _errorOutputResult = checkOutputParameters();
+      if (_errorOutputResult != null) {
+         return _errorOutputResult.getResultBuilder();
+      }
+      return _builder;
+   }
+
+   /**
+    * Checks that the output parameters are set as specified.
+    * If a parameter is missing of is invalid an <code>InvalidResponseResult</code>,
+    * if the parameters are correct <code>null</code> is returned.
+    *
+    * @return
+    *    the InvalidResponseResult if at least one output parameter is missing
+    *    or invalid, <code>null</code> otherwise.
+    */
+   protected InvalidResponseResult checkOutputParameters() {
+      return null;
+   }
 
    /**
     * Adds an output parameter to the result. The name and the value must
@@ -79,6 +96,20 @@ public class FunctionResult {
     */
    protected void param(String name, String value) {
       _builder.param(name, value);
+   }
+
+   /**
+    * Gets the value of the specified parameter.
+    *
+    * @param name
+    *    the parameter element name, not <code>null</code>.
+    *
+    * @return
+    *    string containing the value of the parameter element,
+    *    not <code>null</code>.
+    */
+   protected String getParameter(String name) {
+      return _builder.getParameter(name);
    }
 
    /**

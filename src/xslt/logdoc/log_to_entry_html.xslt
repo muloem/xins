@@ -68,6 +68,8 @@
 				<td>
 					<a href="index.html">Logdoc index</a>
 					<xsl:text> | </xsl:text>
+					<a href="entry-list.html">Logdoc entry list</a>
+					<xsl:text> | </xsl:text>
 					<a>
 						<xsl:attribute name="href">
 							<xsl:text>group-</xsl:text>

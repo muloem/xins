@@ -249,7 +249,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text> will result in an unsuccessful result with code </xsl:text>
-			<em>InvalidParameters</em>
+			<em>InvalidRequest</em>
 			<xsl:text>.</xsl:text>
 			<ul>
 				<xsl:apply-templates select="param-combo" />

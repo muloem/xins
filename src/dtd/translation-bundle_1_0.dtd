@@ -6,10 +6,10 @@
 <!ELEMENT translation-bundle (translation*)>
 <!ELEMENT translation (#PCDATA|value-of-param)*>
 <!ATTLIST translation
-          entry       CDATA #REQUIRED
+          entry       NMTOKEN #REQUIRED
 >
 <!ELEMENT value-of-param EMPTY>
 <!ATTLIST value-of-param
-          name        CDATA #REQUIRED
-          format      CDATA #IMPLIED
+          name        NMTOKEN #REQUIRED
+          format      NMTOKEN #IMPLIED
 >

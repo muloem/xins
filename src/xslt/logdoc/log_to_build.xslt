@@ -43,6 +43,12 @@
 				style="{$logdoc_xslt_dir}/log_to_html.xslt">
 					<xmlcatalog refid="log-dtds" />
 				</style>
+				<style
+				in="{$sourcedir}/log.xml"
+				out="{$html_destdir}/entry-list.html"
+				style="{$logdoc_xslt_dir}/log_to_list_html.xslt">
+					<xmlcatalog refid="log-dtds" />
+				</style>
 				<xsl:for-each select="group">
 					<style
 					in="{$sourcedir}/log.xml"

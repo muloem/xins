@@ -5,7 +5,7 @@
 -->
 <!ELEMENT project (specdocs, cvsweb, patterntest, java-impls, java-clients, java-types, api*)>
 <!ATTLIST project
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
           rcsid      CDATA #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
@@ -45,5 +45,5 @@
 >
 <!ELEMENT api EMPTY>
 <!ATTLIST api
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
 >

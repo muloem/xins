@@ -5,8 +5,8 @@
 -->
 <!ELEMENT type (description, pattern?, enum?, properties?)>
 <!ATTLIST type
-          name       CDATA #REQUIRED
-          extends    CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
+          extends    NMTOKEN #REQUIRED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >
@@ -21,6 +21,6 @@
 >
 <!ELEMENT properties EMPTY>
 <!ATTLIST properties
-          nameType    CDATA #IMPLIED
-          valueType   CDATA #REQUIRED
+          nameType    NMTOKEN #IMPLIED
+          valueType   NMTOKEN #REQUIRED
 >

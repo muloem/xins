@@ -41,6 +41,8 @@
 						<td>
 							<a href="index.html">Logdoc index</a>
 							<xsl:text> | </xsl:text>
+							<a href="entry-list.html">Logdoc entry list</a>
+							<xsl:text> | </xsl:text>
 							<span class="active">Log entry group</span>
 							<xsl:text> | </xsl:text>
 							<span class="disabled">Log entry</span>

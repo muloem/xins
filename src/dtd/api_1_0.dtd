@@ -5,12 +5,12 @@
 -->
 <!ELEMENT api (description?, session-based?, function*, type*, resultcode*, environment*, impl-java?)>
 <!ATTLIST api
-          name       CDATA #REQUIRED
-          freeze     CDATA #IMPLIED
-          owner      CDATA #IMPLIED
+          name       NMTOKEN #REQUIRED
+          freeze     NMTOKEN #IMPLIED
+          owner      CDATA   #IMPLIED
 	  sessionIDType CDATA #IMPLIED
-          rcsversion CDATA #IMPLIED
-          rcsdate    CDATA #IMPLIED
+          rcsversion CDATA   #IMPLIED
+          rcsdate    CDATA   #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>
@@ -22,18 +22,18 @@
 >
 <!ELEMENT function EMPTY>
 <!ATTLIST function
-          name       CDATA #REQUIRED
-          freeze     CDATA #IMPLIED
+          name       NMTOKEN #REQUIRED
+          freeze     NMTOKEN #IMPLIED
 >
 <!ELEMENT type EMPTY>
 <!ATTLIST type
-          name       CDATA #REQUIRED
-          freeze     CDATA #IMPLIED
+          name       NMTOKEN #REQUIRED
+          freeze     NMTOKEN #IMPLIED
 >
 <!ELEMENT resultcode EMPTY>
 <!ATTLIST resultcode
-          name       CDATA #REQUIRED
-          freeze     CDATA #IMPLIED
+          name       NMTOKEN #REQUIRED
+          freeze     NMTOKEN #IMPLIED
 >
 <!ELEMENT environment EMPTY>
 <!ATTLIST environment

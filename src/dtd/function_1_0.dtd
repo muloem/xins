@@ -5,10 +5,10 @@
 -->
 <!ELEMENT function (description, input?, output?, example*)>
 <!ATTLIST function
-          name           CDATA #REQUIRED
-          api            CDATA #IMPLIED
-	  createsSession CDATA #IMPLIED
-	  sessionBased   CDATA #IMPLIED
+          name           NMTOKEN #REQUIRED
+          api            NMTOKEN #IMPLIED
+          createsSession (true | false) #IMPLIED
+          sessionBased   (true | false) #IMPLIED
           rcsversion     CDATA #IMPLIED
           rcsdate        CDATA #IMPLIED
 >
@@ -17,27 +17,27 @@
 <!ELEMENT input (param*, param-combo*)>
 <!ELEMENT param (description, deprecated?, example-value*)>
 <!ATTLIST param
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
           required   (true|false) #REQUIRED
-          type       CDATA #IMPLIED
+          type       NMTOKEN #IMPLIED
 >
 <!ELEMENT deprecated (#PCDATA|em)*>
 <!ELEMENT param-combo (description?, param-ref*)>
 <!ATTLIST param-combo
-          type       CDATA #IMPLIED
+          type       NMTOKEN #IMPLIED
 >
 <!ELEMENT param-ref EMPTY>
 <!ATTLIST param-ref
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
 >
 <!ELEMENT output (resultcode-ref*, resultcode*, param*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
 >
 <!ELEMENT resultcode (description)>
 <!ATTLIST resultcode
-          success    CDATA #REQUIRED
+          success    (true | false) #REQUIRED
           value      CDATA #REQUIRED
 >
 <!ELEMENT data (element*)>
@@ -47,19 +47,19 @@
 >
 <!ELEMENT element (description?, deprecated?, contains?, attribute*)>
 <!ATTLIST element
-          name       CDATA #REQUIRED
+          name       NMTOKEN #REQUIRED
 >
 <!ELEMENT contains (contained*)>
 <!ELEMENT contained EMPTY>
 <!ATTLIST contained
-          element    CDATA #REQUIRED
+          element    NMTOKEN #REQUIRED
           multiplicity CDATA #IMPLIED
 >
 <!ELEMENT attribute (description, deprecated?)>
 <!ATTLIST attribute
-          name       CDATA #REQUIRED
-          required   CDATA #IMPLIED
-          type       CDATA #IMPLIED
+          name       NMTOKEN #REQUIRED
+          required   (true | false) #IMPLIED
+          type       NMTOKEN #IMPLIED
 >
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
@@ -67,17 +67,17 @@
 >
 <!ELEMENT example (description, data-example?)>
 <!ATTLIST example
-          num         CDATA #REQUIRED
+          num         NMTOKEN #REQUIRED
           resultcode  CDATA #IMPLIED
-          sessionID   CDATA #IMPLIED
-          success     CDATA #IMPLIED
+          sessionID   NMTOKEN #IMPLIED
+          success     (true | false) #IMPLIED
 >
 <!ELEMENT data-example (element-example*)>
 <!ELEMENT element-example (pcdata-example?, attribute-example*, element-example*)>
 <!ATTLIST element-example
-          name        CDATA #REQUIRED
+          name        NMTOKEN #REQUIRED
 >
 <!ELEMENT attribute-example (#PCDATA)>
 <!ATTLIST attribute-example
-          name        CDATA #REQUIRED
+          name        NMTOKEN #REQUIRED
 >

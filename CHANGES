@@ -1,4 +1,26 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.173:
+
+* XINS/Java Server Framework:
+  - Added the framework checks that the output parameters are set correctly
+    before returning the CallResult.
+  - Added InvalidRequest result code and InvalidResponse result code.
+  - All errors are returned if a Request is incorrect or a Response is
+    incorrect.
+
+* XINS/Java Common Library:
+  - The set() method of BasicPropertyReader now also store properties with
+    a null value instead of removing it.
+    This means that now if you send a property with no value, it will now be
+    present in the PropertyReader with a value null.
+
+* Generated specification documentation:
+  - Updated DTD to be more restrictive.
+
+* Logdoc:
+  - Added an HTML page that contains all the entries is also generated.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.172:
 
 * XINS/Java Server Framework:

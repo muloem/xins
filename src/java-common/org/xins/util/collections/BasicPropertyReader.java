@@ -44,10 +44,7 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
 
    /**
-    * Sets or resets the specified property. If the specified value is
-    * <code>null</code> then the property is reset to <code>null</code>,
-    * otherwise the property with the specified name is set to the specified
-    * value.
+    * Sets the specified property.
     *
     * @param name
     *    the name of the property to set or reset, cannot be
@@ -61,16 +58,31 @@ extends AbstractPropertyReader {
     */
    public void set(String name, String value)
    throws IllegalArgumentException {
-    
+
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
-   
+
       // Store the value
-      if (value != null) {
-        getPropertiesMap().put(name, value);
-      } else {
-        getPropertiesMap().remove(name);
-      }
+      getPropertiesMap().put(name, value);
+   }
+
+   /**
+    * Removes the specified property.
+    *
+    * @param name
+    *    the name of the property to set or reset, cannot be
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   public void remove(String name) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      // Remove the property
+      getPropertiesMap().remove(name);
    }
 
 }

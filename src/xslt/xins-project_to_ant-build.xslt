@@ -204,8 +204,7 @@
 					</dependset>
 					<dependset>
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="api.xml" />
-						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
-						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*-testform-*.html" />
+						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
 					</dependset>
 					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 					<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">

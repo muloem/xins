@@ -159,50 +159,29 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
+		<xsl:text>
+      org.xins.server.InvalidRequestResult _errorInputResult = null;</xsl:text>
 
 		<!-- ************************************************************* -->
-		<!-- Check required parameters                                     -->
+		<!-- Check required input parameters                               -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="input/param[@required='true']">
+		<xsl:for-each select="input/param[@required='true']">
 			<xsl:text>
-
-      // Check that required parameters are indeed given
       if (</xsl:text>
-			<xsl:for-each select="input/param[@required='true']">
-				<xsl:if test="not(position() = 1)"> || </xsl:if>
 				<xsl:value-of select="@name" />
-				<xsl:text> == null</xsl:text>
-			</xsl:for-each>
-			<xsl:text>) {
-          org.xins.server.MissingParametersResult _errorResult = new org.xins.server.MissingParametersResult();</xsl:text>
-			<xsl:choose>
-				<xsl:when test="count(input/param[@required='true']) &gt; 1">
-					<xsl:for-each select="input/param[@required='true']">
-						<xsl:text>
-         if (</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text> == null) {
-            _errorResult.addMissingParameter("</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>");
-         }</xsl:text>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>
-         _errorResult.addMissingParameter("</xsl:text>
-					<xsl:value-of select="input/param[@required='true']/@name" />
-						<xsl:text>");</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>
-         return _errorResult;
+				<xsl:text> == null) {
+	       if (_errorInputResult == null) {
+	          _errorInputResult = new org.xins.server.InvalidRequestResult();
+	       }
+         _errorInputResult.addMissingParameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>");
       }</xsl:text>
-		</xsl:if>
+		</xsl:for-each>
 
 		<!-- ************************************************************* -->
-		<!-- Check values for types                                        -->
+		<!-- Check values for types for the input parameters               -->
 		<!-- ************************************************************* -->
 
 		<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
@@ -221,13 +200,14 @@ public abstract class ]]></xsl:text>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
-         _errorResult.setInvalidTypeForValue("</xsl:text>
+	       if (_errorInputResult == null) {
+	          _errorInputResult = new org.xins.server.InvalidRequestResult();
+	       }
+         _errorInputResult.addInvalidTypeForValue("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
 				<xsl:value-of select="@type" />
 				<xsl:text>");
-         return _errorResult;
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -249,7 +229,9 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+	       if (_errorInputResult == null) {
+	          _errorInputResult = new org.xins.server.InvalidRequestResult();
+	       }
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 				<xsl:text>
@@ -258,8 +240,7 @@ public abstract class ]]></xsl:text>
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
-         _errorResult.setParamCombo("inclusive-or", _invalidComboElements);
-         return _errorResult;
+         _errorInputResult.addParamCombo("inclusive-or", _invalidComboElements);
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -287,7 +268,9 @@ public abstract class ]]></xsl:text>
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+	       if (_errorInputResult == null) {
+	          _errorInputResult = new org.xins.server.InvalidRequestResult();
+	       }
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 					<xsl:for-each select="param-ref">
 						<xsl:text>
@@ -296,8 +279,7 @@ public abstract class ]]></xsl:text>
 						<xsl:text>");</xsl:text>
 					</xsl:for-each>
 					<xsl:text>
-         _errorResult.setParamCombo("exclusive-or", _invalidComboElements);
-         return _errorResult;
+         _errorInputResult.addParamCombo("exclusive-or", _invalidComboElements);
       }</xsl:text>
 				</xsl:for-each>
 			</xsl:for-each>
@@ -326,7 +308,9 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
-         org.xins.server.InvalidParametersResult _errorResult = new org.xins.server.InvalidParametersResult();
+	       if (_errorInputResult == null) {
+	          _errorInputResult = new org.xins.server.InvalidRequestResult();
+	       }
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:text>
@@ -335,12 +319,16 @@ public abstract class ]]></xsl:text>
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
-         _errorResult.setParamCombo("all-or-none", _invalidComboElements);
-         return _errorResult;
-         }</xsl:text>
+         _errorInputResult.addParamCombo("all-or-none", _invalidComboElements);
+      }</xsl:text>
 
 			</xsl:for-each>
 		</xsl:if>
+
+		<xsl:text>
+	    if (_errorInputResult != null) {
+	       return _errorInputResult;
+	    }</xsl:text>
 
 		<!-- ************************************************************* -->
 		<!-- Invoke the abstract call method                               -->
@@ -382,6 +370,7 @@ public abstract class ]]></xsl:text>
 		</xsl:if>
 		<xsl:text>);
       Result _result = call(_callRequest);
+
       return (org.xins.server.FunctionResult) _result;</xsl:text>
 		<!-- TODO: Dispose the session if appropriate -->
 		<xsl:if test="$sessionBased = 'true'">

@@ -114,7 +114,63 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		</xsl:apply-templates>
 
 		<xsl:text>
+   protected org.xins.server.InvalidResponseResult checkOutputParameters() {
+      // check the output parameters
+      org.xins.server.InvalidResponseResult _errorOutputResult = null;</xsl:text>
 
+		<!-- ************************************************************* -->
+		<!-- Check required output parameters                               -->
+		<!-- ************************************************************* -->
+
+		<xsl:for-each select="output/param[@required='true']">
+			<xsl:text>
+      if (getParameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>") == null) {
+         if (_errorOutputResult == null) {
+            _errorOutputResult = new org.xins.server.InvalidResponseResult();
+         }
+         _errorOutputResult.addMissingParameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>");
+      }</xsl:text>
+		</xsl:for-each>
+
+		<!-- ************************************************************* -->
+		<!-- Check values for types for the output parameters               -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="output/param[not(@type='_text' or string-length(@type) = 0)]">
+			<xsl:text>
+
+      // Check values are valid for the associated types</xsl:text>
+			<xsl:for-each select="output/param[not(@type='_text' or string-length(@type) = 0)]">
+				<xsl:text>
+      if (!</xsl:text>
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="type"         select="@type"         />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON.isValidValue(getParameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>"))) {
+         if (_errorOutputResult == null) {
+            _errorOutputResult = new org.xins.server.InvalidResponseResult();
+         }
+         _errorOutputResult.addInvalidTypeForValue("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>", "</xsl:text>
+				<xsl:value-of select="@type" />
+				<xsl:text>");
+      }</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
+
+		<xsl:text>
+      return _errorOutputResult;
+   }
 }
 </xsl:text>
 		<xsl:apply-templates select="output/data/element" mode="elementClass">
