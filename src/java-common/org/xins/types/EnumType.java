@@ -13,7 +13,7 @@ import java.util.Map;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
  */
-public abstract class EnumType extends Type {
+public class EnumType extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -48,7 +48,7 @@ public abstract class EnumType extends Type {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   protected EnumType(String name, EnumItem[] items)
+   public EnumType(String name, EnumItem[] items)
    throws IllegalArgumentException {
       super(name, String.class);
 
