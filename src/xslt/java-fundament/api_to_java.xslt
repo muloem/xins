@@ -135,22 +135,24 @@ public class APIImpl extends API {
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------
-
-</xsl:text>
+   //-------------------------------------------------------------------------</xsl:text>
 		<xsl:for-each select="instance">
-			<xsl:text>   private final </xsl:text>
+			<xsl:text>
+
+   private final </xsl:text>
 			<xsl:value-of select="@class" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>;&#10;</xsl:text>
+			<xsl:text>;</xsl:text>
 		</xsl:for-each>
 		<xsl:for-each select="property">
-			<xsl:text>   private final </xsl:text>
+			<xsl:text>
+
+   private final </xsl:text>
 			<xsl:value-of select="@class" />
 			<xsl:text> _</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>;&#10;</xsl:text>
+			<xsl:text>;</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
 
