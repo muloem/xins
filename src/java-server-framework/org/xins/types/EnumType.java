@@ -109,7 +109,7 @@ public abstract class EnumType extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected void checkValueImpl(String value) throws TypeValueException {
+   protected final void checkValueImpl(String value) throws TypeValueException {
       for (int i = 0; i < _values.length; i++) {
          if (_values.equals(value)) {
             return;
@@ -120,15 +120,15 @@ public abstract class EnumType extends Type {
       throw new TypeValueException(this, value);
    }
 
-   protected Object fromStringImpl(String value) {
+   protected final Object fromStringImpl(String value) {
       return value;
    }
 
-   public String getByName(String name) {
+   public final String getByName(String name) {
       return _namesToValues(name);
    }
 
-   public String getByValue(String value) {
+   public final String getByValue(String value) {
       return _valuesToNames(value);
    }
 }
