@@ -563,6 +563,7 @@
 				<include name="xins-project/**/*.rcd" />
 				<include name="xins-project/**/*.java" />
 				<exclude name="build" />
+				<exclude name="xins-project/build" />
 			</fileset>
 		</copy>
 		<!-- Create and copy the documentation -->
