@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.95:
+
+* XINS/Java Server Framework:
+  - Call CallContext: Changed log level from ERROR to DEBUG for invalid
+    session ID.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.94:
 
 * XINS/Java Common Library
