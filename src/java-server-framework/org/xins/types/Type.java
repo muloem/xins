@@ -198,7 +198,7 @@ public abstract class Type extends Object {
     * @return
     *    an instance of the value class, cannot be <code>null</code>.
     */
-   protected abstract Object fromStringImpl(String value);
+   protected abstract Object fromStringImpl(String string);
 
    public final String toString() {
       return _name;
