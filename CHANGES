@@ -1,4 +1,16 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.113:
+
+* Generated Java type classes:
+  - Moved type_to_java.xslt from src/xslt/java-fundament to
+    src/xslt/java-types.
+
+* Generated CAPI classes:
+  - Refactored some of the XSLT.
+  - Fixed some small issues in the Javadoc comments of the generated CAPI
+    classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.112:
 
 * Generated CAPI classes:
