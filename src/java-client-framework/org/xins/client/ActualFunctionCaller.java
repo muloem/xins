@@ -58,22 +58,6 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Set the flag that indicates if at the construction of an
-    * <code>ActualFunctionCaller</code> the backend API is called to see if it
-    * is up.
-    *
-    * @param b
-    *    the new value for the flag.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.137. Use {@link #ping()} if necessary. This
-    *    method is a no-op.
-    */
-   public static void setCallAtConstruction(boolean b) {
-      // XXX: empty
-   }
-
-   /**
     * Computes the CRC-32 checksum for the specified URL.
     *
     * @param url
