@@ -105,7 +105,7 @@ public class TypeSpecTests extends TestCase {
             String name = invalidNames[i];
             String version = "1.1";
             spec = new TypeSpec(api, name, version);
-            fail("TypeSpec(\"" + name + "\", \"" + version + "\") should throw an InvalidNameException.");
+            fail("TypeSpec(APISpec, \"" + name + "\", \"" + version + "\") should throw an InvalidNameException.");
          } catch (InvalidNameException ine) { /* as expected */ }
       }
 
