@@ -4,6 +4,36 @@ CHANGES INTRODUCED IN XINS 0.48:
 * Hid some of the protected interface of CallTargetGroup, because only classes
   in the same package can derive from this class.
 
+* Fixed bug in statistics output. Previously the output was like this:
+
+     <function name="Login">
+        <successful count="1" average="351">
+           <min start="351" duration="351"/>
+           <max start="1056118455354" duration="351"/>
+           <last start="1056118455354" duration="351"/>
+        </successful>
+        <unsuccessful count="1" average="6">
+           <min duration="6"/>
+           <max duration="6"/>
+           <last start="1056119178887" duration="6"/>
+        </unsuccessful>
+     </function>
+
+  Now the output will be like this:
+
+     <function name="Login">
+        <successful count="1" average="351">
+           <min start="1056118455354" duration="351"/>
+           <max start="1056118455354" duration="351"/>
+           <last start="1056118455354" duration="351"/>
+        </successful>
+        <unsuccessful count="1" average="6">
+           <min start="1056119178887" duration="6"/>
+           <max start="1056119178887" duration="6"/>
+           <last start="1056119178887" duration="6"/>
+        </unsuccessful>
+     </function>
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.47:
 
