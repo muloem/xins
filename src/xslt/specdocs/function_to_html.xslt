@@ -10,6 +10,8 @@
 
 	<xsl:param name="project_home" />
 
+	<xsl:variable name="returncodes_file" select="'../../xml/default_returncodes.xml'" />
+
 	<xsl:output
 	method="xml"
 	indent="no"
@@ -221,7 +223,6 @@
 		<xsl:variable name="returncode"           select="@returncode" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
-		<xsl:variable name="returncodes_file"     select="'../../xml/default_returncodes.xml'" />
 		<xsl:variable name="success">
 			<xsl:choose>
 
@@ -633,29 +634,18 @@
 				<th>Success</th>
 				<th>Description</th>
 			</tr>
-			<xsl:call-template name="default_returncode">
-				<xsl:with-param name="value">NoSuchFunction</xsl:with-param>
-				<xsl:with-param name="description">There is no function with the specified name in this API implementation.</xsl:with-param>
-			</xsl:call-template>
-
-			<xsl:if test="boolean(//function/input/param)">
-				<xsl:call-template name="default_returncode">
-					<xsl:with-param name="value">InvalidParameters</xsl:with-param>
-					<xsl:with-param name="description">At least one parameter has an invalid value, or the combination of parameter values is invalid.</xsl:with-param>
-				</xsl:call-template>
-			</xsl:if>
-			<xsl:if test="boolean(//function/input/param[@required='true'])">
-				<xsl:call-template name="default_returncode">
-					<xsl:with-param name="value">MissingParameters</xsl:with-param>
-					<xsl:with-param name="description">There is at least one mandatory input parameter missing.</xsl:with-param>
-				</xsl:call-template>
-			</xsl:if>
-			<xsl:call-template name="default_returncode">
-				<xsl:with-param name="value">InternalError</xsl:with-param>
-				<xsl:with-param name="description">There was an internal error.</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="default_returncodes" />
 			<xsl:apply-templates select="returncode" />
 		</table>
+	</xsl:template>
+
+	<xsl:template name="default_returncodes">
+		<xsl:for-each select="document($returncodes_file)/returncodes/code">
+			<xsl:call-template name="default_returncode">
+				<xsl:with-param name="value"       select="@value" />
+				<xsl:with-param name="description" select="description/text()" />
+			</xsl:call-template>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template name="default_returncode">
