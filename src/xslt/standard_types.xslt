@@ -19,7 +19,7 @@
 		<xsl:param name="type" />
 
 		<xsl:choose>
-			<xsl:when test="$type = '_text'">Plain text.</xsl:when>
+			<xsl:when test="string-length($type) = 0 or $type = '_text'">Plain text.</xsl:when>
 			<xsl:when test="$type = '_properties'">Set of properties.</xsl:when>
 			<xsl:when test="$type = '_date'">Date, in the format YYYYMMDD.</xsl:when>
 			<xsl:when test="$type = '_timestamp'">Timestamp, in the format YYYYMMDDhhmmss.</xsl:when>
@@ -66,7 +66,7 @@
 		<xsl:choose>
 			<xsl:when test="$requiredBool = 'false'">
 				<xsl:choose>
-					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
@@ -89,7 +89,7 @@
 			</xsl:when>
 			<xsl:otherwise> <!-- $requiredBool = 'true' -->
 				<xsl:choose>
-					<xsl:when test="$type = '_text'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text'">java.lang.String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
@@ -117,11 +117,18 @@
 		<xsl:param name="type" />
 
 		<xsl:text>org.xins.common.types.standard.</xsl:text>
-		<xsl:call-template name="hungarianUpper">
-			<xsl:with-param name="text">
-				<xsl:value-of select="substring($type, 2)" />
-			</xsl:with-param>
-		</xsl:call-template>
+		<xsl:choose>
+			<xsl:when test="string-length($type) = 0">
+				<xsl:text>Text</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="substring($type, 2)" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="javatype_from_string_for_standardtype">
@@ -163,7 +170,7 @@
 		</xsl:variable>
 
 		<xsl:choose>
-			<xsl:when test="$type = '_text'">
+			<xsl:when test="string-length($type) = 0 or $type = '_text'">
 				<xsl:value-of select="$variable" />
 			</xsl:when>
 			<xsl:otherwise>

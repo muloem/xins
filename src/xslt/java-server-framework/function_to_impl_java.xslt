@@ -35,6 +35,8 @@ package ]]></xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text><![CDATA[;
 
+]]></xsl:text>
+		<xsl:text><![CDATA[
 /**
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />

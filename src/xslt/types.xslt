@@ -58,12 +58,8 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="type"     />
 
-		<xsl:if test="string-length($type) &lt; 1">
-			<xsl:message terminate="yes">No type specified.</xsl:message>
-		</xsl:if>
-
 		<xsl:choose>
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<span>
 					<xsl:attribute name="title">
 						<xsl:call-template name="firstline">
@@ -132,7 +128,7 @@
 		</xsl:if>
 
 		<xsl:choose>
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:call-template name="javatypeclass_for_standardtype">
 					<xsl:with-param name="type" select="$type" />
 				</xsl:call-template>
@@ -202,16 +198,8 @@
 		</xsl:if>
 
 		<xsl:choose>
-			<!-- Determine Java type for default standard type (_text) -->
-			<xsl:when test="string-length($type) = 0">
-				<xsl:call-template name="javatype_for_standardtype">
-					<xsl:with-param name="type"     select="'_text'"   />
-					<xsl:with-param name="required" select="$required" />
-				</xsl:call-template>
-			</xsl:when>
-
 			<!-- Determine Java type for standard type -->
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:call-template name="javatype_for_standardtype">
 					<xsl:with-param name="type"     select="$type"     />
 					<xsl:with-param name="required" select="$required" />
@@ -367,17 +355,8 @@
 		</xsl:if>
 
 		<xsl:choose>
-			<!-- Determine Java type for default standard type (_text) -->
-			<xsl:when test="string-length($type) = 0">
-				<xsl:call-template name="javatype_from_string_for_standardtype">
-					<xsl:with-param name="required" select="$required" />
-					<xsl:with-param name="type"     select="'_text'"   />
-					<xsl:with-param name="variable" select="$variable" />
-				</xsl:call-template>
-			</xsl:when>
-
 			<!-- Determine Java type for standard type -->
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:call-template name="javatype_from_string_for_standardtype">
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="$type"     />
@@ -466,17 +445,8 @@
 		</xsl:if>
 
 		<xsl:choose>
-			<!-- Determine Java type for default standard type (_text) -->
-			<xsl:when test="string-length($type) = 0">
-				<xsl:call-template name="javatype_to_string_for_standardtype">
-					<xsl:with-param name="required" select="$required" />
-					<xsl:with-param name="type"     select="'_text'"   />
-					<xsl:with-param name="variable" select="$variable" />
-				</xsl:call-template>
-			</xsl:when>
-
 			<!-- Determine Java type for standard type -->
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:call-template name="javatype_to_string_for_standardtype">
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="$type"     />

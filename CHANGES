@@ -80,6 +80,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     Java 1.4.0 or Java 1.4.1.
   - Added new types float32 and float64.
   - Added new type base64.
+  - If the type is not specified '_text' is used as default.
 
 * Logdoc:
   - Added new types float32 and float64.
