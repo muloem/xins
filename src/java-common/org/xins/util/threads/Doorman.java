@@ -209,16 +209,16 @@ public final class Doorman extends Object {
       Thread writer = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for " + writer + '.');
+         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for " + writer.toString() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          // Check preconditions
          if (_currentWriter == writer) {
-            throw new IllegalStateException("Thread cannot enter as a writer if it is already the active writer.");
+            throw new IllegalStateException(writer.toString() + " cannot enter as a writer if it is already the active writer.");
          } else if (_currentReaders.contains(writer)) {
-            throw new IllegalStateException("Thread cannot enter as a writer if it is already an active reader.");
+            throw new IllegalStateException(writer.toString() + " cannot enter as a writer if it is already an active reader.");
          }
 
          // If there is a current writer or one or more current readers, then
