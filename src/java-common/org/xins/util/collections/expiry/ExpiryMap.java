@@ -4,8 +4,11 @@
 package org.xins.util.collections.expiry;
 
 import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Expiry map. Items in this map will expire after a predefined amount of
@@ -15,8 +18,7 @@ import java.util.Map;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public abstract class ExpiryMap
-extends Object
-implements Map {
+extends AbstractMap {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -54,6 +56,11 @@ implements Map {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Entry set. This field is lazily initialized.
+    */
+   private EntrySet _entrySet;
 
    /**
     * The strategy used. This field cannot be <code>null</code>.
@@ -99,4 +106,160 @@ implements Map {
     * <p>If any entries are expirable, they will be removed from this map.
     */
    public abstract void tick();
+
+   public int size() {
+      int size = _recentlyAccessed.size();
+      for (int i = 0; i < _slots.length; i++) {
+         size += _slots[i].size();
+      }
+      return size;
+   }
+
+   public boolean isEmpty() {
+      return size() < 1;
+   }
+
+   public boolean containsKey(Object key) {
+      if (_recentlyAccessed.containsKey(key)) {
+         return true;
+      }
+
+      for (int i = 0; i < _slots.length; i++) {
+         if (_slots[i].containsKey(key)) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   public boolean containsValue(Object value) {
+      if (_recentlyAccessed.containsValue(value)) {
+         return true;
+      }
+
+      for (int i = 0; i < _slots.length; i++) {
+         if (_slots[i].containsValue(value)) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   public Object get(Object key) {
+      if (_recentlyAccessed.containsKey(key)) {
+         return _recentlyAccessed.get(key);
+      }
+
+      for (int i = 0; i < _slots.length; i++) {
+         if (_slots[i].containsKey(key)) {
+            return _recentlyAccessed.get(key);
+         }
+      }
+
+      return null;
+   }
+
+   public Object put(Object key, Object value) {
+      // XXX: Should we search the other maps to get the actual value?
+      return _recentlyAccessed.put(key, value);
+   }
+
+   public void putAll(Map t) {
+      java.util.Iterator i = t.entrySet().iterator();
+      while (i.hasNext()) {
+         Entry e = (Entry) i.next();
+         put(e.getKey(), e.getValue());
+      }
+   }
+
+   public void clear() {
+      _recentlyAccessed.clear();
+      for (int i = 0; i < _slots.length; i++) {
+         _slots[i].clear();
+      }
+   }
+
+   public Set entrySet() {
+      if (_entrySet == null) {
+         _entrySet = new EntrySet();
+      }
+      return _entrySet;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner class
+   //-------------------------------------------------------------------------
+
+   /**
+    * Entry set of the expiry map.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    */
+   private class EntrySet extends AbstractSet {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new entry set.
+       */
+      private EntrySet() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public int size() {
+         return ExpiryMap.this.size();
+      }
+
+      public java.util.Iterator iterator() {
+         return null;
+         // TODO: return new Iterator();
+      }
+
+
+      //----------------------------------------------------------------------
+      // Inner classes
+      //----------------------------------------------------------------------
+
+      /**
+       * Iterator for the entry set of the expiry map.
+       *
+       * @version $Revision$ $Date$
+       * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+      private class Iterator
+      extends Object
+      implements java.util.Iterator {
+
+         //-------------------------------------------------------------------
+         // Constructors
+         //-------------------------------------------------------------------
+
+         //-------------------------------------------------------------------
+         // Fields
+         //-------------------------------------------------------------------
+
+         //-------------------------------------------------------------------
+         // Methods
+         //-------------------------------------------------------------------
+
+         public boolean hasNext() {
+            
+         }
+      }
+       */
+   }
 }
