@@ -426,7 +426,7 @@ $Id$
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 								<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
-								<fileset dir="${ant.home}/lib" includes="**/*.jar" />
+								<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 							</classpath>
 						</javadoc>
 						<copy
@@ -442,7 +442,7 @@ $Id$
 							<xsl:variable name="functionName" select="@name" />
 							<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
 							<xsl:for-each select="document($functionFile)/function">
-								<xsl:if test="output/param">
+								<xsl:if test="output/param or output/data">
 									<xsl:value-of select="@name" />
 									<xsl:text>.fnc,</xsl:text>
 								</xsl:if>
@@ -536,7 +536,7 @@ $Id$
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/log4j.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/commons-logging.jar" />
 							<pathelement location="{$xins_home}/depends/compile_and_runtime/xmlenc.jar" />
-							<fileset dir="${ant.home}/lib" includes="**/*.jar" />
+							<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
 						</classpath>
 					</javadoc>
 					<copy
