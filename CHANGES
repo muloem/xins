@@ -3,6 +3,9 @@ CHANGES INTRODUCED IN XINS 0.62:
 
 * Removed deprecated class org.xins.server.RemoteAPI.
 
+* Fixed bug in output of _GetStatistics that caused total unsuccessful
+  duration to be displayed as last unsuccessful duration.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.61:
 
