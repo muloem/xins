@@ -17,6 +17,7 @@
 
 	<xsl:output method="text" />
 
+	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 
@@ -199,6 +200,19 @@ public class APIImpl extends API {
 						<xsl:value-of select="@name" />
 						<xsl:text>)</xsl:text>
 					</xsl:for-each>
+					<xsl:text>)) {
+            context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
+				</xsl:for-each>
+				<xsl:for-each select="document($function_file)/function/input/param[not(@type='text' or string-length(@type) = 0)]">
+					<xsl:text>
+         } else if (!</xsl:text>
+					<xsl:call-template name="hungarianUpper">
+						<xsl:with-param name="text">
+							<xsl:value-of select="@type" />
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text>.SINGLETON.isValidValue(</xsl:text>
+					<xsl:value-of select="@name" />
 					<xsl:text>)) {
             context.startResponse(false, INVALID_PARAMETERS);</xsl:text>
 				</xsl:for-each>
