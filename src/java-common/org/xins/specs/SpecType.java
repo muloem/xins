@@ -53,12 +53,12 @@ extends Object {
     *    if <code>name == null</code>.
     */
    SpecType(String typeName) throws IllegalArgumentException {
-      this(typeName, null);
+      this(typeName, null, null);
    }
 
    /**
     * Constructs a new <code>SpecType</code> with the specified name and
-    * regular expression for actual components.
+    * regular expression for actual component names.
     *
     * @param typeName
     *    the name for the type, not <code>null</code>.
@@ -72,12 +72,36 @@ extends Object {
     */
    SpecType(String typeName, String nameRE)
    throws IllegalArgumentException {
+      this(typeName, nameRE, null);
+   }
+
+   /**
+    * Constructs a new <code>SpecType</code> with the specified name, regular
+    * expression for actual component names and parent type.
+    *
+    * @param typeName
+    *    the name for the type, not <code>null</code>.
+    *
+    * @param nameRE
+    *    the regular expression that names for components must match, or
+    *    <code>null</code> if there are no restrictions on the name.
+    *
+    * @param parentType
+    *    the parent type, or <code>null</code> if components of this type have
+    *    no parent.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   SpecType(String typeName, String nameRE, SpecType parentType)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("typeName", typeName);
 
-      _typeName = typeName;
-      _nameRE   = nameRE;
+      _typeName   = typeName;
+      _nameRE     = nameRE;
+      _parentType = parentType;
 
       // Compile the regular expression
       if (nameRE != null) {
@@ -113,6 +137,12 @@ extends Object {
     */
    private final Pattern _namePattern;
 
+   /**
+    * The parent type. Is <code>null</code> if components of this type have
+    * no parent.
+    */
+   private final SpecType _parentType;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -136,7 +166,7 @@ extends Object {
     *    no parent.
     */
    public final SpecType getParentType() {
-      return null;
+      return _parentType;
    }
 
    /**
