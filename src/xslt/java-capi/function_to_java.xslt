@@ -38,6 +38,7 @@
 
 import org.xins.client.CallResult;
 import org.xins.client.DataUnavailableException;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Result of a call to the <em>]]></xsl:text>
@@ -69,11 +70,20 @@ public final class ]]></xsl:text>
     *    the call result to construct a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> from, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null || result.isSuccess() == false</code>.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[(CallResult result) {
-      // TODO
+		<xsl:text><![CDATA[(CallResult result)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("result", result);
+      if (!result.isSuccess()) {
+         throw new IllegalArgumentException("result.isSuccess() == false");
+      }
+
+      _result = result;
    }
 
 
@@ -81,11 +91,73 @@ public final class ]]></xsl:text>
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The <code>CallResult</code> this object is based on. The value of this
+    * field cannot be <code>null</code>.
+    */
+   private final CallResult _result;
+
+
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------]]></xsl:text>
+		<xsl:for-each select="output/param">
+			<xsl:variable name="methodName">
+				<xsl:choose>
+					<xsl:when test="@type = 'boolean'">is</xsl:when>
+					<xsl:otherwise>get</xsl:otherwise>
+				</xsl:choose>
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="@name" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="returnType">
+				<xsl:choose>
+					<xsl:when test="@type = 'boolean'">boolean</xsl:when>
+					<xsl:otherwise>java.lang.String</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+
+			<xsl:text><![CDATA[
+
+   /**
+    * Gets the <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[</em> output parameter.
+    *
+    * @return
+    *    the value of the <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[</em> output parameter.
+    *
+    * @throws DataUnavailableException
+    *    if the requested data is not available in the call result.
+    */
+   public ]]></xsl:text>
+			<xsl:value-of select="$returnType" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$methodName" />
+			<xsl:text>()
+   throws DataUnavailableException {
+      String value = _result.getParameter("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>");
+      if (value == null) {
+         throw new DataUnavailableException(); // TODO: Pass more info?
+      }
+      return </xsl:text>
+			<xsl:choose>
+				<xsl:when test="@type = 'boolean'">"true".equals(value)</xsl:when>
+				<xsl:otherwise>value</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>;
+   }</xsl:text>
+		</xsl:for-each>
+		<xsl:text>
 }
-]]></xsl:text>
+</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>
