@@ -126,6 +126,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<input-example name="inputByte">8</input-example>
 		<input-example name="inputInt">20</input-example>
 		<input-example name="inputLong">10000</input-example>
+		<input-example name="inputFloat">2.8</input-example>
 		<input-example name="inputText">Hello</input-example>
 		<output-example name="outputInt">16</output-example>
 		<output-example name="outputShort">-1</output-example>

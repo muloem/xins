@@ -404,16 +404,15 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:if test="not($resultcode)">
+		<xsl:if test="string-length($resultcode) &lt; 1">
+			<xsl:variable name="examplenode" select="current()" />
 			<!--
 			If this is an example of a successful case, then all required
 			input parameters need to be set.
 			-->
 			<xsl:for-each select="parent::function/input/param[@required='true']">
-				<xsl:variable name="required_attr">
-					<xsl:value-of select="@name" />
-				</xsl:variable>
-				<xsl:if test="not(boolean(/function/input/param[@name=$required_attr]/example-value[@example=$examplenum])) and not(boolean(/function/example[@num=$examplenum]/input-example[@name=$required_attr]))">
+				<xsl:variable name="required_attr" select="@name" />
+				<xsl:if test="not(/function/input/param[@name=$required_attr]/example-value[@example=$examplenum]) and not($examplenode/input-example[@name=$required_attr])">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
 						<xsl:value-of select="$examplenum" />
@@ -431,7 +430,7 @@
 				<xsl:variable name="required_attr">
 					<xsl:value-of select="@name" />
 				</xsl:variable>
-				<xsl:if test="not(boolean(/function/output/param[@name=$required_attr]/example-value[@example=$examplenum])) and not(boolean(/function/example[@num=$examplenum]/output-example[@name=$required_attr]))">
+				<xsl:if test="not(/function/output/param[@name=$required_attr]/example-value[@example=$examplenum]) and not($examplenode/output-example[@name=$required_attr])">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
 						<xsl:value-of select="$examplenum" />
