@@ -30,6 +30,14 @@
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/index.html"
 				style="{$logdoc_xslt_dir}/log_to_html.xslt" />
+				<xsl:for-each select="entry">
+					<style
+					in="{$sourcedir}/log.xml"
+					out="{$html_destdir}/entry-{@id}.html"
+					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
+						<param name="entry" expression="{@id}" />
+					</style>
+				</xsl:for-each>
 			</target>
 
 			<target name="java" description="Generates Java code">
