@@ -425,7 +425,6 @@ public abstract class ServiceCaller extends Object {
       _callConfig = config;
    }
 
-
    /**
     * Returns the <code>CallConfig</code> associated with this service caller.
     *
