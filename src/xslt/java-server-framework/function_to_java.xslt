@@ -95,7 +95,7 @@ public abstract class ]]></xsl:text>
 			<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 			<xsl:for-each select="document($impl_file)/impl/instance">
 				<xsl:text>
-				</xsl:text>
+      </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text> = api.</xsl:text>
 				<xsl:value-of select="@getter" />

@@ -412,12 +412,13 @@ implements Result {
 ]]></xsl:text>
 
 			<xsl:if test="contains/pcdata">
-				<xsl:text><![CDATA[");
+				<xsl:text><![CDATA[
       /**
        * Sets a <code>PCDATA</code> to the element. This method erases previous
        * <code>PCDATA</code> set by invoking this method.
+       *
        * @param data
-       *    the PCDATA for this element.
+       *    the PCDATA for this element, cannot be <code>null</code>.
        */
       final void pcdata(String data) {
          _jdomElement.setText(data);

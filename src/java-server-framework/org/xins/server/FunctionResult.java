@@ -125,6 +125,9 @@ public class FunctionResult {
 
    /**
     * Add a new JDOM element.
+    *
+    * @param element
+    *    the new element to add to the result, cannot be <code>null</code>.
     */
    protected void addJDOMElement(org.jdom.Element element) {
       _builder.startTag(element.getName());
@@ -132,6 +135,10 @@ public class FunctionResult {
       while (itAttributes.hasNext()) {
          org.jdom.Attribute nextAttribute = (org.jdom.Attribute) itAttributes.next();
          _builder.attribute(nextAttribute.getName(), nextAttribute.getValue());
+      }
+      String pcdata = element.getText();
+      if (pcdata != null && !pcdata.equals("")) {
+         _builder.pcdata(pcdata);
       }
       java.util.Iterator itSubElements = element.getChildren().iterator();
       while (itSubElements.hasNext()) {
