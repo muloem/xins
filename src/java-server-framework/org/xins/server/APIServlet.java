@@ -1141,7 +1141,7 @@ extends HttpServlet {
       // Methods
       //----------------------------------------------------------------------
 
-      public void fileModified() {
+      private void reinit() {
 
          Log.log_1407(_configFile);
 
@@ -1165,6 +1165,10 @@ extends HttpServlet {
          }
       }
 
+      public void fileFound() {
+         reinit();
+      }
+
       public void fileNotFound() {
          Log.log_1400(_configFile);
       }
@@ -1175,6 +1179,10 @@ extends HttpServlet {
 
       public void securityException(SecurityException exception) {
          Log.log_1401(exception, _configFile);
+      }
+
+      public void fileModified() {
+         reinit();
       }
    }
 }
