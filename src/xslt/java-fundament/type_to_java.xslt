@@ -178,7 +178,7 @@ public final class ]]></xsl:text>
 			<xsl:text><![CDATA[
 
    /**
-    * Get the <code>Item</code> for the specified string value.
+    * Gets the <code>Item</code> for the specified string value.
     *
     * @param value
     *    the value for which to lookup the matching {@link Item} instance,
@@ -205,6 +205,40 @@ public final class ]]></xsl:text>
    // Inner classes
    //-------------------------------------------------------------------------
 
+   /**
+    * Item of the <em>]]></xsl:text>
+		<xsl:value-of select="$type" />
+		<xsl:text><![CDATA[</em> enumeration type.
+    * The following items are defined in this type:
+    *
+    * <ul>]]></xsl:text>
+		<xsl:for-each select="enum/item">
+			<xsl:variable name="itemName">
+				<xsl:choose>
+					<xsl:when test="@name">
+						<xsl:value-of select="@name" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@value" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="fieldName">
+				<xsl:call-template name="toupper">
+					<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:text><![CDATA[
+    *    <li>{@link #]]></xsl:text>
+			<xsl:value-of select="$fieldName" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$fieldName" />
+			<xsl:text>}</xsl:text>
+		</xsl:for-each>
+		<xsl:text><![CDATA[
+    * </ul>
+    */
    public static final class Item
    extends EnumItem {
 
