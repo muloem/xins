@@ -63,12 +63,8 @@ extends AbstractCompositeFunctionCaller {
     *    if <code>type == null || members == null</code>.
     */
    CallTargetGroup(Type type, List members) throws IllegalArgumentException {
-
       super(members);
-
-      // Check preconditions
       MandatoryArgumentChecker.check("type", type);
-
       _type = type;
    }
 
@@ -96,6 +92,30 @@ extends AbstractCompositeFunctionCaller {
     */
    public final Type getType() {
       return _type;
+   }
+
+   /**
+    * Gets the actual function caller for the specified host.
+    *
+    * @param hostName
+    *    the name of the host to get the actual function caller for, not
+    *    <code>null</code>.
+    *
+    * @return
+    *    the actual function caller for the specified host, not
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>hostName == null</code>.
+    *
+    * @throws NoSuchActualFunctionCallerException
+    *    if there is no {@link ActualFunctionCaller} for the specified host in
+    *    this group or any of the contained groups (if any).
+    */
+   public final ActualFunctionCaller getActualFunctionCaller(String hostName)
+   throws IllegalArgumentException, NoSuchActualFunctionCallerException {
+      MandatoryArgumentChecker.check("hostName", hostName);
+      return null; // TODO
    }
 
    public final CallResult call(String sessionID,
@@ -132,6 +152,10 @@ extends AbstractCompositeFunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
+    * @throws NoSuchActualFunctionCallerException
+    *    if there is no {@link ActualFunctionCaller} for the specified host in
+    *    this group or any of the contained groups (if any).
+    *
     * @throws IOException
     *    if the API could not be contacted due to an I/O error.
     *
@@ -140,12 +164,11 @@ extends AbstractCompositeFunctionCaller {
     *    function was invalid.
     */
    public final CallResult call(String hostName, String sessionID, String functionName, Map parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException, NoSuchActualFunctionCallerException, IOException, InvalidCallResultException {
       if (hostName == null) {
          return callImpl(sessionID, functionName, parameters);
       } else {
-         // TODO: getActualFunctionCaller(hostName);
-         throw new IOException();
+         return getActualFunctionCaller(hostName).call(sessionID, functionName, parameters);
       }
    }
 
