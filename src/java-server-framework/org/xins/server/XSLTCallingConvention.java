@@ -10,17 +10,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -56,6 +55,12 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    public final static String TEMPLATE_PARAMETER = "_template";
    
+   /**
+    * The input parameter used to clear the template cache.
+    */
+   public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -88,6 +93,11 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * The XSLT transformer.
     */
    private final TransformerFactory _factory;
+
+   /**
+    * Cache for the templates.
+    */
+   private Map _templateCache = new HashMap();
 
 
    //-------------------------------------------------------------------------
@@ -130,8 +140,16 @@ class XSLTCallingConvention extends StandardCallingConvention {
          xsltLocation = _baseXSLTDir + httpRequest.getParameter("_function") + ".xslt";
       }
       try {
-         Templates template = _factory.newTemplates(new StreamSource(
-           new URL(xsltLocation).openStream()));
+         Templates template = null;
+         if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
+            _templateCache.clear();
+         }
+         if (_templateCache.containsKey(xsltLocation)) {
+            template = (Templates) _templateCache.get(xsltLocation);
+         } else {
+            template = _factory.newTemplates(new StreamSource(
+               new URL(xsltLocation).openStream()));
+         }
          Transformer xformer = template.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
          Writer buffer = new FastStringWriter();

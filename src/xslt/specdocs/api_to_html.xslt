@@ -306,6 +306,16 @@
 			</xsl:call-template>
 		</xsl:variable>
 
+		<xsl:if test="not(document($function_file)/function)">
+			<xsl:message terminate="yes">
+				<xsl:text>Function file '</xsl:text>
+				<xsl:value-of select="$function_file" />
+				<xsl:text>' not found for the defined function '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
 		<tr>
 			<td>
 				<a>
@@ -362,6 +372,16 @@
 			</xsl:call-template>
 		</xsl:variable>
 
+		<xsl:if test="not(document($type_file)/type)">
+			<xsl:message terminate="yes">
+				<xsl:text>Type file '</xsl:text>
+				<xsl:value-of select="$type_file" />
+				<xsl:text>' not found for the defined type '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
 		<tr>
 			<td>
 				<a>
@@ -417,6 +437,16 @@
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:variable>
+
+		<xsl:if test="not(document($resultcode_file)/resultcode)">
+			<xsl:message terminate="yes">
+				<xsl:text>Result code file '</xsl:text>
+				<xsl:value-of select="$resultcode_file" />
+				<xsl:text>' not found for the defined result code '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
 
 		<tr>
 			<td>
