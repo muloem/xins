@@ -37,14 +37,14 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryFolderTests.class);
 
-      suite.addTestSuite(org.xins.tests.common.util.net.IPAddressUtilsTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.net.URLEncodingTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.service.DescriptorBuilderTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.service.TargetDescriptorTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.service.UnsupportedProtocolExceptionTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.text.HexConverterTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.text.PatternParserTests.class);
-      suite.addTestSuite(org.xins.tests.common.util.text.SimplePatternParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
+      suite.addTestSuite(org.xins.tests.common.net.URLEncodingTests.class);
+      suite.addTestSuite(org.xins.tests.common.service.DescriptorBuilderTests.class);
+      suite.addTestSuite(org.xins.tests.common.service.TargetDescriptorTests.class);
+      suite.addTestSuite(org.xins.tests.common.service.UnsupportedProtocolExceptionTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.HexConverterTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.PatternParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.SimplePatternParserTests.class);
 
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
 
