@@ -12,7 +12,7 @@ import org.xins.types.TypeValueException;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public abstract class SessionID extends Type {
+public abstract class SessionIDType extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -27,7 +27,7 @@ public abstract class SessionID extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>SessionID</code> type for the specified API.
+    * Constructs a new <code>SessionIDType</code> type for the specified API.
     *
     * @param name
     *    the name for this type, cannot be <code>null</code>.
@@ -42,7 +42,7 @@ public abstract class SessionID extends Type {
     * @throws IllegalArgumentException
     *    if <code>name == null || api == null</code>.
     */
-   protected SessionID(String name, Class valueClass, API api)
+   protected SessionIDType(String name, Class valueClass, API api)
    throws IllegalArgumentException {
       super(name, valueClass);
       if (api == null) {

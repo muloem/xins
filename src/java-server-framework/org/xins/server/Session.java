@@ -61,7 +61,7 @@ extends Object {
     * The session ID type associated with this session, never
     * <code>null</code>.
     */
-   private final SessionID _sessionIDType;
+   private final SessionIDType _sessionIDType;
 
    /**
     * The identifier for this session.
@@ -89,7 +89,7 @@ extends Object {
     *    the session ID type associated with this session, never
     *    <code>null</code>.
     */
-   public SessionID getSessionIDType() {
+   public SessionIDType getSessionIDType() {
       return _sessionIDType;
    }
 

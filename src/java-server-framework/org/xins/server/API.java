@@ -263,13 +263,13 @@ implements DefaultResultCodes {
     * The type that applies for session identifiers. For session-based APIs
     * this will be set in {@link #init(PropertyReader)}.
     */
-   private SessionID _sessionIDType;
+   private SessionIDType _sessionIDType;
 
    /**
     * The session ID generator. For session-based APIs this will be set in
     * {@link #init(PropertyReader)}.
     */
-   private SessionID.Generator _sessionIDGenerator;
+   private SessionIDType.Generator _sessionIDGenerator;
 
    /**
     * Flag that indicates if the shutdown sequence has been initiated.
@@ -795,7 +795,7 @@ implements DefaultResultCodes {
     * @throws IllegalStateException
     *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
     */
-   public final SessionID getSessionIDType()
+   public final SessionIDType getSessionIDType()
    throws IllegalStateException {
 
       // Check preconditions
@@ -826,8 +826,11 @@ implements DefaultResultCodes {
          throw new IllegalStateException("This API is not session-based.");
       }
 
-      // Generate a session ID
-      Object sessionID = _sessionIDGenerator.generateSessionID();
+      // Generate a session ID that does not yet exist
+      Object sessionID;
+      do {
+         sessionID = _sessionIDGenerator.generateSessionID();
+      } while (_sessionsByID.get(sessionID) != null);
 
       // Construct a Session object...
       Session session = new Session(this, sessionID);
