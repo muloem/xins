@@ -19,7 +19,7 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 1.1.0
  */
-public class BasicUnsuccessfulXINSCallExceptionFactory
+public final class BasicUnsuccessfulXINSCallExceptionFactory
 extends UnsuccessfulXINSCallExceptionFactory {
 
    //-------------------------------------------------------------------------
