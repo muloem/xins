@@ -46,9 +46,13 @@ extends Object {
     */
    public Session(API api, Object id)
    throws IllegalArgumentException {
+
+      // Check preconditions
       MandatoryArgumentChecker.check("api", api, "id", id);
+
+      // Initialize fields
       _sessionIDType = api.getSessionIDType();
-      _id  = id;
+      _id            = id;
    }
 
 
