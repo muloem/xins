@@ -84,9 +84,9 @@ extends org.xins.client.AbstractCAPICallRequest {
    public ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
-      super("</xsl:text>
+      super(</xsl:text>
 		<xsl:value-of select="$functionName" />
-		<xsl:text><![CDATA[");
+		<xsl:text><![CDATA[Function.SINGLETON);
    }
 
 
@@ -102,45 +102,11 @@ extends org.xins.client.AbstractCAPICallRequest {
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
 
-		<xsl:call-template name="validateMethod" />
-
 		<xsl:apply-templates select="input/param" mode="methods" />
 
 		<xsl:text>
 }
 </xsl:text>
-	</xsl:template>
-
-	<xsl:template name="validateMethod">
-		<xsl:text><![CDATA[
-
-   /**
-    * Validates whether this request is considered acceptable (implementation
-    * method). If required parameters are missing or if certain parameter
-    * values are out of bounds, then a description or the problem is returned.
-    *
-    * <p>This method is called by {@link #validate()}. It should not be called
-    * from anywhere else.
-    *
-    * @return
-    *    <code>null</code> if this request is considered acceptable or a
-    *    non-<code>null</code> description if this request is considered
-    *    unacceptable.
-    */
-   protected java.lang.String validateImpl() {]]></xsl:text>
-		<xsl:for-each select="input/param[@required='true']">
-			<xsl:text>
-      if (_</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> == null) {
-         return "The input parameter \"</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>\" is required but not set.";
-      }</xsl:text>
-		</xsl:for-each>
-		<xsl:text>
-      return null;
-   }</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="input/param" mode="field">
@@ -297,10 +263,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>);
       super.parameter("</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>",
-      </xsl:text>
-				<xsl:value-of select="$typeclass" />
-				<xsl:text>.SINGLETON, _</xsl:text>
+				<xsl:text>", _</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>);
    }</xsl:text>
@@ -334,10 +297,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>;
       super.parameter("</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>",
-      </xsl:text>
-				<xsl:value-of select="$typeclass" />
-				<xsl:text>.SINGLETON, _</xsl:text>
+				<xsl:text>", _</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>);
    }</xsl:text>

@@ -160,12 +160,13 @@ extends org.xins.client.AbstractCAPICallResult {
 
       _dataElement = result.getDataElement();</xsl:text>
 		</xsl:if>
-		<xsl:if test="output/param">
-			<xsl:text>
+		<xsl:choose>
+			<xsl:when test="output/param[string-length(@type) &gt; 0 and not(@type = '_text')]">
+				<xsl:text>
       try {
 </xsl:text>
-			<xsl:apply-templates select="output/param" mode="setfield" />
-			<xsl:text>
+				<xsl:apply-templates select="output/param" mode="setfield" />
+				<xsl:text>
       } catch (org.xins.common.types.TypeValueException exception) {
          org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(203, "The parameter \"");
          buffer.append(currentParam);
@@ -176,7 +177,11 @@ extends org.xins.client.AbstractCAPICallResult {
          buffer.append("\".");
          throw new org.xins.client.UnacceptableResultXINSCallException(result, buffer.toString(), exception);
       }</xsl:text>
-		</xsl:if>
+			</xsl:when>
+			<xsl:when test="output/param">
+				<xsl:apply-templates select="output/param" mode="setfield" />
+			</xsl:when>
+		</xsl:choose>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>

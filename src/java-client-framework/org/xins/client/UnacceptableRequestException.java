@@ -6,7 +6,10 @@
  */
 package org.xins.client;
 
+import java.util.List;
+
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.collections.PropertyReader;
 
 /**
@@ -41,27 +44,37 @@ extends RuntimeException {
     * Constructs a new <code>UnacceptableRequestException</code> using the
     * specified <code>AbstractCAPICallRequest</code>.
     *
+    * <p>The list of violated constraints is passed. This list will be stored
+    * internally in this exception instance.
+    *
     * @param request
     *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
     *    never <code>null</code>.
     *
-    * @param detail
-    *    a detailed description of why the request is considered unacceptable,
-    *    or <code>null</code> if such a description is not available.
+    * @param violations
+    *    a list of violated constraints, cannot be <code>null</code> and
+    *    should contain at least one element; all elements should be instances
+    *    of class {@link Constraint}.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
+    *    if <code>request == null || violations == null</code>.
     */
    UnacceptableRequestException(AbstractCAPICallRequest request,
-                                String                  detail)
+                                List                    violations)
    throws IllegalArgumentException {
+
+      // TODO: Check violations better
 
       super("Unacceptable XINS call request.");
       // TODO: Improve exception message. Include request and detail.
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",    request,
+                                     "violations", violations);
+
       // Store the request and detail
-      _request = request;
-      _detail  = detail;
+      _request    = request;
+      _violations = violations;
    }
 
 
@@ -75,15 +88,14 @@ extends RuntimeException {
    private final AbstractCAPICallRequest _request;
 
    /**
-    * The detailed description of why the request is considered unacceptable.
-    * Is <code>null</code> if such a description is not available.
+    * The list of violated constraints. Cannot be <code>null</code>.
     */
-   private final String _detail;
+   private final List _violations;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   // TODO: Add getter(s)
+   // TODO: Add "List getViolatedConstraints()"
 }
