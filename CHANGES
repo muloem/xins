@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.182:
+
+* XINS/Java Common Library:
+  - Added a regression test for the PatternType.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.181:
 
 * XINS/Java Common Library:
