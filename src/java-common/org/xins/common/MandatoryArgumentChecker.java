@@ -46,8 +46,7 @@ public final class MandatoryArgumentChecker extends Object {
       }
 
       if (argumentValue == null) {
-         FastStringBuffer buffer = new FastStringBuffer(40);
-         buffer.append(argumentName);
+         FastStringBuffer buffer = new FastStringBuffer(argumentName.length() + 8, argumentName);
          buffer.append(" == null");
          throw new IllegalArgumentException(buffer.toString());
       }
@@ -82,20 +81,17 @@ public final class MandatoryArgumentChecker extends Object {
 
       if (argumentValue1 == null || argumentValue2 == null) {
          if (argumentValue1 == null && argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
+            FastStringBuffer buffer = new FastStringBuffer(20 + argumentName1.length() + argumentName2.length(), argumentName1);
             buffer.append(" == null && ");
             buffer.append(argumentName2);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          } else if (argumentValue1 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName1);
+            FastStringBuffer buffer = new FastStringBuffer(8 + argumentName1.length(), argumentName1);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          } else if (argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName2);
+            FastStringBuffer buffer = new FastStringBuffer(8 + argumentName2.length(), argumentName2);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          }
