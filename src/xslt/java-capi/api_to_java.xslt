@@ -176,7 +176,8 @@ public final class CAPI extends java.lang.Object {
 				<xsl:text><![CDATA[
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified remote API.
+    * Constructs a new <code>CAPI</code> object for the specified function
+    * caller.
     *
     * @param functionCaller
     *    the function caller, cannot be <code>null</code>.
@@ -205,7 +206,8 @@ public final class CAPI extends java.lang.Object {
 				<xsl:text><![CDATA[
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified remote API.
+    * Constructs a new <code>CAPI</code> object for the specified function
+    * caller.
     *
     * @param functionCaller
     *    the function caller, cannot be <code>null</code>.
