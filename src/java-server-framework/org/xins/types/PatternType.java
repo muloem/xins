@@ -14,8 +14,6 @@ import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.jdom.Document;
-import org.jdom.Element;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
