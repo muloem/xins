@@ -318,7 +318,7 @@ implements Responder, Log {
       if (resultCode == null) {
          startResponse(true, null);
       } else {
-         startResponse(resultCode.getSuccess(), resultCode.getValue());
+         startResponse(false, resultCode.getValue());
       }
    }
 
@@ -478,11 +478,6 @@ implements Responder, Log {
       // Check state
       if (_state != BEFORE_START) {
          throw new IllegalStateException("The state is " + _state + '.');
-      }
-
-      // Check argument
-      if (resultCode != null && resultCode.getSuccess()) {
-         throw new IllegalArgumentException("resultCode.getSuccess() == true");
       }
 
       // Start response

@@ -50,43 +50,6 @@ extends Object {
       MandatoryArgumentChecker.check("value", value);
 
       _api     = null;
-      _success = false;
-      _name    = name;
-      _value   = value;
-   }
-
-   /**
-    * Constructs a new generic <code>ResultCode</code>. This constructor can
-    * only be called by classes in the same package.
-    *
-    * @param success
-    *    the success indication.
-    *
-    * @param name
-    *    the symbolic name, can be <code>null</code>.
-    *
-    * @param value
-    *    the actual value of this code, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>value == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.117. Use {@link #ResultCode(String,String)}
-    *    instead.
-    */
-   ResultCode(boolean success, String name, String value)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("value", value);
-
-      if (success) {
-         Library.RUNTIME_LOG.warn("Result code \"" + name + "\" is marked as successful. Result codes should always indicate an error condition.");
-      }
-
-      _api     = null;
-      _success = success;
       _name    = name;
       _value   = value;
    }
@@ -115,47 +78,6 @@ extends Object {
       MandatoryArgumentChecker.check("api", api, "value", value);
 
       _api     = api;
-      _success = false;
-      _name    = name;
-      _value   = value;
-
-      _api.resultCodeAdded(this);
-   }
-
-   /**
-    * Constructs a new <code>ResultCode</code> for the specified API.
-    *
-    * @param api
-    *    the API to which this result code belongs, not <code>null</code>.
-    *
-    * @param success
-    *    the success indication.
-    *
-    * @param name
-    *    the symbolic name, can be <code>null</code>.
-    *
-    * @param value
-    *    the actual value of this code, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>api == null || value == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.117. Use {@link #ResultCode(API,String,String)}
-    *    instead.
-    */
-   public ResultCode(API api, boolean success, String name, String value)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("api", api, "value", value);
-
-      if (success) {
-         Library.RUNTIME_LOG.warn("Result code \"" + name + "\" in the " + api.getName() + " API is marked as successful. Result codes should always indicate an error condition.");
-      }
-
-      _api     = api;
-      _success = success;
       _name    = name;
       _value   = value;
 
@@ -174,11 +96,6 @@ extends Object {
    private final API _api;
 
    /**
-    * The success indication.
-    */
-   private final boolean _success;
-
-   /**
     * The symbolic name of this result code. Can be <code>null</code>.
     */
    private final String _name;
@@ -192,21 +109,6 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Returns the success indication.
-    *
-    * @return
-    *    <code>true</code> if this result code indicates a successful call,
-    *    <code>false</code> otherwise.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.117. All result codes should be unsuccessful
-    *    and indicate failure.
-    */
-   public final boolean getSuccess() {
-      return _success;
-   }
 
    /**
     * Returns the symbolic name of this result code.
