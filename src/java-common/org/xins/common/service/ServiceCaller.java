@@ -12,8 +12,8 @@ import org.xins.common.TimeOutController;
 import org.xins.common.TimeOutException;
 
 /**
- * Service caller. This abstract class must be subclasses by specific kinds
- * of service callers, for example for HTTP, FTP, JDBC, etc.
+ * Abstraction of a service caller for a TCP-based service. Possible
+ * implementations include service callers for HTTP, FTP, JDBC, etc.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
