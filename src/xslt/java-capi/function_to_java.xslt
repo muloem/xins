@@ -32,7 +32,6 @@
 	<xsl:variable name="functionName" select="//function/@name" />
 	<xsl:variable name="className" select="concat($functionName, 'Result')" />
 
-	<!-- TODO: Support session-based functions -->
 	<xsl:template match="function">
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
@@ -170,15 +169,12 @@ public final class ]]></xsl:text>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="setfield">
-		<!-- TODO: Use a named template to determine the base type -->
-		<xsl:variable name="baseType">
-			<xsl:choose>
-				<xsl:when test="starts-with(@type,'_')">
-					<xsl:value-of select="@type" />
-				</xsl:when>
-				<!-- TODO: Interpret 'extends' -->
-				<xsl:otherwise>_text</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="basetype">
+			<xsl:call-template name="basetype_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="type"     select="@type"     />
+			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="required">
 			<xsl:choose>
@@ -205,29 +201,26 @@ public final class ]]></xsl:text>
 			<xsl:with-param name="api"      select="$api" />
 			<xsl:with-param name="specsdir" select="$api" />
 			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="type"     select="$baseType" />
+			<xsl:with-param name="type"     select="$basetype" />
 			<xsl:with-param name="variable" select="'result.getParameter(currentParam)'" />
 		</xsl:call-template>
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="field">
-		<!-- TODO: Use a named template to determine the base type -->
-		<xsl:variable name="baseType">
-			<xsl:choose>
-				<xsl:when test="starts-with(@type,'_')">
-					<xsl:value-of select="@type" />
-				</xsl:when>
-				<!-- TODO: Interpret 'extends' -->
-				<xsl:otherwise>_text</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="basetype">
+			<xsl:call-template name="basetype_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="type"     select="@type"     />
+			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="required" select="@required" />
-				<xsl:with-param name="type"     select="$baseType" />
+				<xsl:with-param name="type"     select="$basetype" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -241,18 +234,16 @@ public final class ]]></xsl:text>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="method">
-		<xsl:variable name="baseType">
-			<xsl:choose>
-				<xsl:when test="starts-with(@type,'_')">
-					<xsl:value-of select="@type" />
-				</xsl:when>
-				<!-- TODO: Interpret 'extends' -->
-				<xsl:otherwise>_text</xsl:otherwise>
-			</xsl:choose>
+		<xsl:variable name="basetype">
+			<xsl:call-template name="basetype_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="type"     select="@type"     />
+			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="methodName">
 			<xsl:choose>
-				<xsl:when test="$baseType = '_boolean'">is</xsl:when>
+				<xsl:when test="$basetype = '_boolean'">is</xsl:when>
 				<xsl:otherwise>get</xsl:otherwise>
 			</xsl:choose>
 			<xsl:call-template name="hungarianUpper">
@@ -266,7 +257,7 @@ public final class ]]></xsl:text>
 				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="required" select="@required" />
-				<xsl:with-param name="type"     select="$baseType" />
+				<xsl:with-param name="type"     select="$basetype" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="required">
@@ -305,7 +296,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="not($baseType = '_text')">.</xsl:when>
+			<xsl:when test="not($basetype = '_text')">.</xsl:when>
 			<xsl:when test="@required = 'true'">
 				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
 			</xsl:when>

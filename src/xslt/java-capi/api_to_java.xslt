@@ -182,6 +182,14 @@ public final class API extends Object {
 						<xsl:when test="@createsSession = 'true'">
 							<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 						</xsl:when>
+						<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+							<xsl:call-template name="javatype_for_type">
+								<xsl:with-param name="api"      select="$api"                   />
+								<xsl:with-param name="specsdir" select="$specsdir"              />
+								<xsl:with-param name="required" select="output/param/@required" />
+								<xsl:with-param name="type"     select="output/param/@type"     />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:when test="output/param or output/data/element">
 							<xsl:value-of select="$functionName" />
 							<xsl:text>Result</xsl:text>
@@ -280,6 +288,15 @@ public final class API extends Object {
     *    the non-shared session (not <code>null</code>), a combination of the
     *    identifier of the created session and a link to the function caller
     *    that actually created the session.]]></xsl:text>
+					</xsl:when>
+					<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+						<xsl:text><![CDATA[
+    *
+    * @return
+    *    the value of the <em>]]></xsl:text>
+						<xsl:value-of select="output/param/@name" />
+						<!-- TODO: Can it not be null? And what if it is a Java basic data type such as boolean, char, short or int? -->
+						<xsl:text><![CDATA[</em> parameter, not <code>null</code>.]]></xsl:text>
 					</xsl:when>
 					<xsl:when test="output/param or output/data/element">
 						<xsl:text><![CDATA[
@@ -448,6 +465,17 @@ public final class API extends Object {
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:text>
+      } else {
+         throw new org.xins.client.UnsuccessfulCallException(result);
+      }</xsl:text>
+					</xsl:when>
+					<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
+						<!-- TODO: Return type-specific result, not always String! -->
+						<xsl:text>
+      if (result.isSuccess()) {
+         return result.getParameter("</xsl:text>
+						<xsl:value-of select="output/param/@name" />
+						<xsl:text>");
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
