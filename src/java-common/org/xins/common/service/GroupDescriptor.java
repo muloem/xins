@@ -241,6 +241,21 @@ public final class GroupDescriptor extends Descriptor {
       return true;
    }
 
+   /**
+    * Iterates over all leaves, the target descriptors.
+    *
+    * <p>The returned {@link Iterator} will not support
+    * {@link Iterator#remove()}. The iterator will only return
+    * {@link TargetDescriptor} instances, no instances of other classes and
+    * no <code>null</code> values.
+    *
+    * <p>Also, this iterator is guaranteed to return {@link #getTargetCount()}
+    * instances of class {@link TargetDescriptor}.
+    *
+    * @return
+    *    iterator over the service descriptors on any level in this
+    *    descriptor, in the correct order, never <code>null</code>.
+    */
    public Iterator iterateTargets() {
       if (_type == RANDOM_TYPE) {
          return new RandomIterator();
@@ -253,6 +268,13 @@ public final class GroupDescriptor extends Descriptor {
       }
    }
 
+   /**
+    * Counts the number of target service descriptors in this descriptor,
+    * recursively.
+    *
+    * @return
+    *    the total number of target descriptors, always &gt;= 1.
+    */
    public int getTargetCount() {
       return _targetCount;
    }
@@ -280,6 +302,17 @@ public final class GroupDescriptor extends Descriptor {
       return array;
    }
 
+   /**
+    * Returns the <code>TargetDescriptor</code> that matches the specified
+    * CRC-32 checksum.
+    *
+    * @param crc
+    *    the CRC-32 checksum.
+    *
+    * @return
+    *    the {@link TargetDescriptor} that matches the specified checksum, or
+    *    <code>null</code>, if none could be found in this descriptor.
+    */
    public TargetDescriptor getTargetByCRC(int crc) {
       return (TargetDescriptor) _targetsByCRC.get(new Integer(crc));
    }
@@ -335,6 +368,15 @@ public final class GroupDescriptor extends Descriptor {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Returns a textual representation of this object.
+       *
+       * <p>The implementation of this method returns the description for this
+       * type. However, this is not guaranteed to remain like this.
+       *
+       * @return
+       *    a textual representation of this object, never <code>null</code>.
+       */
       public String toString() {
          return _description;
       }
@@ -417,10 +459,26 @@ public final class GroupDescriptor extends Descriptor {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Checks if there is a next element.
+       *
+       * @return
+       *    <code>true</code> if there is a next element, <code>false</code>
+       *    if there is not.
+       */
       public boolean hasNext() {
          return (_currentIterator != null);
       }
 
+      /**
+       * Returns the next element.
+       *
+       * @return
+       *    the next element, never <code>null</code>.
+       *
+       * @throws NoSuchElementException
+       *    if there is no new element.
+       */
       public Object next() throws NoSuchElementException {
 
          // Check preconditions
@@ -456,6 +514,13 @@ public final class GroupDescriptor extends Descriptor {
          return o;
       }
 
+      /**
+       * Removes the element last returned by <code>next()</code> (unsupported
+       * operation).
+       *
+       * @throws UnsupportedOperationException
+       *    always thrown, since this operation is unsupported.
+       */
       public void remove() throws UnsupportedOperationException {
          throw new UnsupportedOperationException();
       }
@@ -521,10 +586,26 @@ public final class GroupDescriptor extends Descriptor {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Checks if there is a next element.
+       *
+       * @return
+       *    <code>true</code> if there is a next element, <code>false</code>
+       *    if there is not.
+       */
       public boolean hasNext() {
          return (_currentIterator != null) && _currentIterator.hasNext();
       }
 
+      /**
+       * Returns the next element.
+       *
+       * @return
+       *    the next element, never <code>null</code>.
+       *
+       * @throws NoSuchElementException
+       *    if there is no new element.
+       */
       public Object next() throws NoSuchElementException {
 
          // Check preconditions
@@ -556,6 +637,13 @@ public final class GroupDescriptor extends Descriptor {
          return o;
       }
 
+      /**
+       * Removes the element last returned by <code>next()</code> (unsupported
+       * operation).
+       *
+       * @throws UnsupportedOperationException
+       *    always thrown, since this operation is unsupported.
+       */
       public void remove() throws UnsupportedOperationException {
          throw new UnsupportedOperationException();
       }

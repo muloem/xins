@@ -510,10 +510,26 @@ public final class TargetDescriptor extends Descriptor {
       // Methods
       //----------------------------------------------------------------------
 
+      /**
+       * Checks if there is a next element.
+       *
+       * @return
+       *    <code>true</code> if there is a next element, <code>false</code>
+       *    if there is not.
+       */
       public boolean hasNext() {
          return ! _done;
       }
 
+      /**
+       * Returns the next element.
+       *
+       * @return
+       *    the next element, never <code>null</code>.
+       *
+       * @throws NoSuchElementException
+       *    if there is no new element.
+       */
       public Object next() {
          if (_done) {
             throw new NoSuchElementException();
@@ -523,6 +539,13 @@ public final class TargetDescriptor extends Descriptor {
          }
       }
 
+      /**
+       * Removes the element last returned by <code>next()</code> (unsupported
+       * operation).
+       *
+       * @throws UnsupportedOperationException
+       *    always thrown, since this operation is unsupported.
+       */
       public void remove() throws UnsupportedOperationException {
          throw new UnsupportedOperationException();
       }
