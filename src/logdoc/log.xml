@@ -397,6 +397,29 @@
 			<param name="exceptionClass" />
 			<param name="exceptionMessage" />
 		</entry>
+		<entry id="4031" level="WARNING">
+			<description>No access rule list defined.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="4032" level="NOTICE">
+			<description>Applying fallback default access rule list.</description>
+			<param name="defaultACL" />
+		</entry>
+		<entry id="4033" level="ERROR">
+			<description>Unable to apply default access rule list.</description>
+			<param name="defaultACL" />
+			<param name="message" />
+		</entry>
+		<entry id="4034" level="INFO">
+			<description>Access rule list defined and successfully loaded.</description>
+			<param name="ruleCount" nullable="false" />
+		</entry>
+		<entry id="4035" level="ERROR">
+			<description>Error loading access rule list.</description>
+			<param name="propertyName" nullable="false" />
+			<param name="propertyValue" nullable="false" />
+			<param name="message" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime" category="org.xins.server.runtime">
