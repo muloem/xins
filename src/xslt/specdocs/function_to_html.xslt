@@ -300,19 +300,6 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<!-- TODO: dependson -->
-	<xsl:template match="input/param/dependson[@type='and']">
-		<li>
-			<xsl:text>The parameter </xsl:text>
-			<em>
-				<xsl:value-of select="/param/@name" />
-			</em>
-			<xsl:text> can only be set if the following parameters are set: </xsl:text>
-			<xsl:apply-templates select="param-ref" mode="textlist" />
-			<xsl:text>.</xsl:text>
-		</li>
-	</xsl:template>
-
 	<xsl:template match="input/param-combo" priority="-1">
 		<xsl:message terminate="yes">Unrecognised type of param-combo.</xsl:message>
 	</xsl:template>
