@@ -10,12 +10,19 @@ CHANGES INTRODUCED IN XINS 0.97:
     not called, although it should have been.
     Vice versa, when a current reader attempts to enterAsWriter(), then
     leaveAsReader() is first called.
+    Furthermore, now resetting the interrupted state in enterAsReader() and
+    enterAsWriter(), since the thread may have been interrupted between the
+    Thread.sleep(long) call and the acquiry of the _currentActorLock lock.
     Hopefully this decreases the error sensitivity.
     Also: Throwing Error instead of IllegalStateException.
 
 * XINS/Java Server Framework:
   - Added method reinit(PropertyReader) to interface Singleton. Could
     potentially breaks existing code.
+
+  *** WARNING ***
+  There may be a 'memory leak' in this release. It is expected that this issue
+  exists at least since release 0.65.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.96:
