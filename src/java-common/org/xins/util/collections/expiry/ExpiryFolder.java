@@ -42,6 +42,12 @@ extends Object {
     */
    private static final Object INSTANCE_COUNT_LOCK = new Object();
 
+   /**
+    * The initial size for the queue of threads waiting to obtain read or
+    * write access to a resource.
+    */
+   private static final int INITIAL_QUEUE_SIZE = 89;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -57,19 +63,14 @@ extends Object {
     * @param strategy
     *    the strategy that should be applied, not <code>null</code>.
     *
-    * @param initialQueueSize
-    *    the initial size for the queue of threads waiting to obtain read or
-    *    write access, must be &gt;= 0.
-    *
     * @param maxQueueWaitTime
     *    the maximum time a thread can wait in the queue for obtaining read or
-    *    write access, must be &gt; 0L.
+    *    write access to a resource, must be &gt; 0L.
     *
     * @throws IllegalArgumentException
-    *    if <code>strategy == null</code>.
+    *    if <code>strategy == null || maxQueueWaitTime &lt;= 0L</code>.
     */
    public ExpiryFolder(ExpiryStrategy strategy,
-                       int            initialQueueSize,
                        long           maxQueueWaitTime)
    throws IllegalArgumentException {
 
@@ -91,8 +92,8 @@ extends Object {
       _listeners        = new ArrayList(5);
 
       // Create the doormen
-      _recentlyAccessedDoorman = new Doorman(initialQueueSize, maxQueueWaitTime);
-      _slotsDoorman            = new Doorman(initialQueueSize, maxQueueWaitTime);
+      _recentlyAccessedDoorman = new Doorman(INITIAL_QUEUE_SIZE, maxQueueWaitTime);
+      _slotsDoorman            = new Doorman(INITIAL_QUEUE_SIZE, maxQueueWaitTime);
 
       // Notify the strategy
       strategy.folderAdded(this);
