@@ -177,7 +177,7 @@ extends Object {
    }
 
    /**
-    * Gets the all attributes and their values.
+    * Gets all attributes and their values.
     *
     * @return
     *    the modifiable map of attributes, or <code>null</code> if there are
