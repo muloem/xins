@@ -3,7 +3,9 @@
  */
 package org.xins.util.collections.expiry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.threads.Doorman;
@@ -55,7 +57,9 @@ extends Object {
       _slots            = new Map[_slotCount];
       _lastSlot         = _slotCount - 1;
       _sizeLock         = new Object();
+      _listeners        = new ArrayList(5);
 
+      // Create the doormen
       _recentlyAccessedDoorman = new Doorman(89);
       _slotsDoorman            = new Doorman(89);
 
@@ -119,6 +123,11 @@ extends Object {
     * Lock for the <code>_size</code>.
     */
    private final Object _sizeLock;
+
+   /**
+    * The set of listeners. May be empty, but never is <code>null</code>.
+    */
+   private final List _listeners;
 
 
    //-------------------------------------------------------------------------
