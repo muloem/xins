@@ -28,6 +28,53 @@ public final class Int16 extends Type {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Converts the specified non-<code>null</code> string value to a
+    * <code>short</code>.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static short fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         try {
+            return Short.parseShort(string);
+         } catch (NumberFormatException nfe) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+      }
+   }
+
+   /**
+    * Converts the specified string value to a <code>Short</code> value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static Short fromStringForOptional(String string)
+   throws TypeValueException {
+      try {
+         return Short.valueOf(string);
+      } catch (NumberFormatException nfe) {
+         throw new TypeValueException(SINGLETON, string);
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -61,51 +108,5 @@ public final class Int16 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Short.valueOf(string);
-   }
-
-   /**
-    * Converts the specified non-<code>null</code> string value to a
-    * <code>short</code>.
-    *
-    * @param string
-    *    the string to convert, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public short fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
-      if (string == null) {
-         throw new IllegalArgumentException("string == null");
-      } else {
-         try {
-            return Short.parseShort(string);
-         } catch (NumberFormatException nfe) {
-            throw new TypeValueException(this, string);
-         }
-      }
-   }
-
-   /**
-    * Converts the specified string value to a <code>Short</code> value.
-    *
-    * @param string
-    *    the string to convert, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public Short fromStringForOptional(String string)
-   throws TypeValueException {
-      try {
-         return Short.valueOf(string);
-      } catch (NumberFormatException nfe) {
-         throw new TypeValueException(this, string);
-      }
    }
 }

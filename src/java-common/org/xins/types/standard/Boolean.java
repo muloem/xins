@@ -38,6 +38,58 @@ public final class Boolean extends Type {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Converts the specified non-<code>null</code> string value to a
+    * <code>boolean</code>.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static boolean fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+      if ("true".equals(string)) {
+         return true;
+      } else if ("false".equals(string)) {
+         return false;
+      } else if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         throw new TypeValueException(SINGLETON, string);
+      }
+   }
+
+   /**
+    * Converts the specified string value to a <code>java.lang.Boolean</code>
+    * value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static java.lang.Boolean fromStringForOptional(String string)
+   throws TypeValueException {
+      if ("true".equals(string)) {
+         return TRUE;
+      } else if ("false".equals(string)) {
+         return FALSE;
+      } else if (string == null) {
+         return null;
+      } else {
+         throw new TypeValueException(SINGLETON, string);
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -69,57 +121,6 @@ public final class Boolean extends Type {
          return TRUE;
       } else {
          return FALSE;
-      }
-   }
-
-   /**
-    * Converts the specified non-<code>null</code> string value to a
-    * <code>boolean</code>.
-    *
-    * @param string
-    *    the string to convert, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public boolean fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
-      if ("true".equals(string)) {
-         return true;
-      } else if ("false".equals(string)) {
-         return false;
-      } else if (string == null) {
-         throw new IllegalArgumentException("string == null");
-      } else {
-         throw new TypeValueException(this, string);
-      }
-   }
-
-   /**
-    * Converts the specified string value to a <code>java.lang.Boolean</code>
-    * value.
-    *
-    * @param string
-    *    the string to convert, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public java.lang.Boolean fromStringForOptional(String string)
-   throws TypeValueException {
-      if ("true".equals(string)) {
-         return TRUE;
-      } else if ("false".equals(string)) {
-         return FALSE;
-      } else if (string == null) {
-         return null;
-      } else {
-         throw new TypeValueException(this, string);
       }
    }
 }

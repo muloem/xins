@@ -28,6 +28,53 @@ public final class Int64 extends Type {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Converts the specified non-<code>null</code> string value to a
+    * <code>long</code>.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static long fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         try {
+            return Long.parseLong(string);
+         } catch (NumberFormatException nfe) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+      }
+   }
+
+   /**
+    * Converts the specified string value to a <code>Long</code> value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static Long fromStringForOptional(String string)
+   throws TypeValueException {
+      try {
+         return Long.valueOf(string);
+      } catch (NumberFormatException nfe) {
+         throw new TypeValueException(SINGLETON, string);
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -61,51 +108,5 @@ public final class Int64 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Long.valueOf(string);
-   }
-
-   /**
-    * Converts the specified non-<code>null</code> string value to a
-    * <code>long</code>.
-    *
-    * @param string
-    *    the string to convert, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public long fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
-      if (string == null) {
-         throw new IllegalArgumentException("string == null");
-      } else {
-         try {
-            return Long.parseLong(string);
-         } catch (NumberFormatException nfe) {
-            throw new TypeValueException(this, string);
-         }
-      }
-   }
-
-   /**
-    * Converts the specified string value to a <code>Long</code> value.
-    *
-    * @param string
-    *    the string to convert, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public Long fromStringForOptional(String string)
-   throws TypeValueException {
-      try {
-         return Long.valueOf(string);
-      } catch (NumberFormatException nfe) {
-         throw new TypeValueException(this, string);
-      }
    }
 }

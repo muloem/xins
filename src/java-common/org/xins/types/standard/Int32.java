@@ -28,6 +28,53 @@ public final class Int32 extends Type {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Converts the specified non-<code>null</code> string value to an
+    * <code>int</code>.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static int fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         try {
+            return Integer.parseInt(string);
+         } catch (NumberFormatException nfe) {
+            throw new TypeValueException(SINGLETON, string);
+         }
+      }
+   }
+
+   /**
+    * Converts the specified string value to an <code>Integer</code> value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static Integer fromStringForOptional(String string)
+   throws TypeValueException {
+      try {
+         return Integer.valueOf(string);
+      } catch (NumberFormatException nfe) {
+         throw new TypeValueException(SINGLETON, string);
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -61,51 +108,5 @@ public final class Int32 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Integer.valueOf(string);
-   }
-
-   /**
-    * Converts the specified non-<code>null</code> string value to an
-    * <code>int</code>.
-    *
-    * @param string
-    *    the string to convert, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public int fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
-      if (string == null) {
-         throw new IllegalArgumentException("string == null");
-      } else {
-         try {
-            return Integer.parseInt(string);
-         } catch (NumberFormatException nfe) {
-            throw new TypeValueException(this, string);
-         }
-      }
-   }
-
-   /**
-    * Converts the specified string value to an <code>Integer</code> value.
-    *
-    * @param string
-    *    the string to convert, can be <code>null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public Integer fromStringForOptional(String string)
-   throws TypeValueException {
-      try {
-         return Integer.valueOf(string);
-      } catch (NumberFormatException nfe) {
-         throw new TypeValueException(this, string);
-      }
    }
 }
