@@ -6,7 +6,8 @@ CHANGES INTRODUCED IN XINS 0.146:
 
 * XINS/Java Server Framework:
   - Method init() in LifespanManager subclasses can now throw any kind of
-    exception, the method is declared to throw Throwable.
+    exception, the method is declared to throw Throwable. Conclusively, class
+    InitializationException could now be marked package-private.
   - Slightly changed logging of lifespan manager bootstrap and initialization
     errors (in class API).
   - Removed org.xins.server.LifespanManager class (moved to XINS/Java Common
@@ -37,7 +38,10 @@ CHANGES INTRODUCED IN XINS 0.146:
 * Generateed CAPI classes:
   - Shared sessions are no longer supported. The support for it was untested
     and incomplete, so it has been removed completely, to simplify the code.
-    Support may be put back in in the future.
+    Support may be re-added in in the future.
+  - Generating correct <function>Result classes for output parameters that
+    contain dots ('.'), by replacing each dot with a hyphen ('-') in the field
+    and method names.
 
 * Upgraded from Jakarta ORO 2.0.7 to 2.0.8.
 
