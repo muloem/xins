@@ -184,26 +184,6 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
 
    /**
-    * Resets this <code>CallContext</code>. The servlet request will be set to
-    * <code>null</code> and the state will be set to {@link #UNINITIALIZED}.
-    *
-    * <p />Before this object can be used again,
-    * {@link #reset(ServletRequest)} must be called.
-    */
-   void reset() {
-      _request           = null;
-      _state             = UNINITIALIZED;
-      _success           = true;
-      _code              = null;
-      _functionName      = null;
-      _function          = null;
-      _logger            = null;
-      _callID            = -1;
-      _logPrefix         = null;
-      _session           = null;
-   }
-
-   /**
     * Resets this <code>CallContext</code> and configures it for the specified
     * servlet request. This resets the state to {@link #BEFORE_START}.
     *
