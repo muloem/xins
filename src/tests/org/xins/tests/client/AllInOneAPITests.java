@@ -6,6 +6,12 @@
  */
 package org.xins.tests.client;
 
+import com.mycompany.allinone.capi.CAPI;
+import com.mycompany.allinone.capi.DefinedTypesResult;
+import com.mycompany.allinone.capi.SimpleTypesResult;
+import com.mycompany.allinone.types.Salutation;
+import com.mycompany.allinone.types.TextList;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -20,28 +26,26 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.http.HTTPMethod;
-import org.xins.common.http.StatusCodeHTTPCallException;
-import org.xins.common.service.TargetDescriptor;
-import org.xins.common.types.standard.Date;
-import org.xins.common.types.standard.Timestamp;
-
 import org.xins.client.DataElement;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
 import org.xins.client.UnsuccessfulXINSCallException;
+
+import org.xins.common.collections.PropertyReader;
+
+import org.xins.common.http.HTTPMethod;
+import org.xins.common.http.StatusCodeHTTPCallException;
+
+import org.xins.common.service.TargetDescriptor;
+
+import org.xins.common.types.standard.Date;
+import org.xins.common.types.standard.Timestamp;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 import org.xins.tests.server.servlet.HTTPServletHandler;
-
-import com.mycompany.allinone.capi.CAPI;
-import com.mycompany.allinone.capi.DefinedTypesResult;
-import com.mycompany.allinone.capi.SimpleTypesResult;
-import com.mycompany.allinone.types.Salutation;
-import com.mycompany.allinone.types.TextList;
 
 /**
  * Tests the allinone functions using the generated CAPI.
