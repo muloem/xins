@@ -119,6 +119,17 @@ implements ResponseValidator {
       }
    }
 
+   private final void resetAttributes() {
+      Object o = _threadLocals.get();
+      if (o != null) {
+         Object[] arr = (Object[]) o;
+         o = arr[1];
+         if (o != null) {
+            ((Map) o).clear();
+         }
+      }
+   }
+
    /**
     * Gets the parameter <code>Map</code> for the current response. If there
     * is none, then one will be created and stored.
@@ -138,10 +149,35 @@ implements ResponseValidator {
          parameters = new HashMap();
          arr[0] = parameters;
       } else {
-         parameters = (Map) arr[0];
+         parameters = (Map) o;
       }
 
       return parameters;
+   }
+
+   /**
+    * Gets the attributes <code>Map</code> for the current element. If there
+    * is none, then one will be created and stored.
+    *
+    * @return
+    *    the attributes {@link Map}, never <code>null</code>.
+    */
+   protected final Map getAttributes() {
+
+      // Get the 3-size Map array
+      Object[] arr = getThreadLocals();
+
+      // Get the attributes Map
+      Object o = arr[1];
+      Map attributes;
+      if (o == null) {
+         attributes = new HashMap();
+         arr[1] = attributes;
+      } else {
+         attributes = (Map) o;
+      }
+
+      return attributes;
    }
 
    /**
@@ -239,12 +275,19 @@ implements ResponseValidator {
 
    public final void startTag(String name)
    throws InvalidResponseException {
-      // empty
+      resetAttributes();
+      FastStack elements = getElements();
+      elements.push(name);
    }
 
    public final void attribute(String name, String value)
    throws InvalidResponseException {
-      // empty
+      Map attributes = getAttributes();
+      if (attributes.containsKey(name)) {
+         String element = (String) getElements().peek();
+         fail("Duplicate attribute named \"" + name + "\" for element named \"" + element + "\".");
+      }
+      attributes.put(name, value);
    }
 
    public final void pcdata(String text)
@@ -254,7 +297,8 @@ implements ResponseValidator {
 
    public final void endTag()
    throws InvalidResponseException {
-      // empty
+      FastStack elements = getElements();
+      String element = (String) elements.pop();
    }
 
    public final void endResponse()
