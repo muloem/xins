@@ -28,6 +28,7 @@ import org.apache.log4j.NDC;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
+import org.xins.common.manageable.BootstrapException;
 
 import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
@@ -841,23 +842,6 @@ extends HttpServlet {
  */
          // XXX: Trim the API name?
 
-         // Determine the default calling convention
-         _defaultCallingConvention = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
-         if (! TextUtils.isEmpty(_defaultCallingConvention)) {
-            _callingConvention = createCallingConvention(_defaultCallingConvention);
-            if (_callingConvention == null) {
-               Log.log_3210(API_CALLING_CONVENTION_PROPERTY, _defaultCallingConvention, "No such calling convention.");
-               setState(API_BOOTSTRAP_FAILED);
-               throw new ServletException();
-            }
-            // TODO: Log that we use the specified calling convention
-         } else {
-            // TODO: Use shared StandardCallingConvention instance
-            _defaultCallingConvention = "_xins-std";
-            _callingConvention = new StandardCallingConvention();
-            // TODO: Log that we use the default calling convention
-         }
-
          // Bootstrap the API
          Throwable caught;
          try {
@@ -877,6 +861,29 @@ extends HttpServlet {
          // Other bootstrap error
          } catch (Throwable exception) {
             Log.log_3211(exception);
+            caught = exception;
+         }
+
+         // Determine the default calling convention
+         try {
+            _defaultCallingConvention = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
+            if (! TextUtils.isEmpty(_defaultCallingConvention)) {
+               _callingConvention = createCallingConvention(_defaultCallingConvention);
+               if (_callingConvention == null) {
+                  Log.log_3210(API_CALLING_CONVENTION_PROPERTY, _defaultCallingConvention, "No such calling convention.");
+                  setState(API_BOOTSTRAP_FAILED);
+                  throw new ServletException();
+               }
+               // TODO: Log that we use the specified calling convention
+            } else {
+               // TODO: Use shared StandardCallingConvention instance
+               _defaultCallingConvention = "_xins-std";
+               _callingConvention = new StandardCallingConvention();
+               _callingConvention.bootstrap(new ServletConfigPropertyReader(_servletConfig));
+               // TODO: Log that we use the default calling convention
+            }
+         } catch (Throwable exception) {
+            // TODO log
             caught = exception;
          }
 
@@ -963,12 +970,13 @@ extends HttpServlet {
 
          try {
             
+            _api.init(_runtimeProperties);
+            
             // Initialize the default calling convention for this API
             if (_callingConvention != null) {
-               _callingConvention.init(new ServletConfigPropertyReader(_servletConfig), _runtimeProperties);
+               _callingConvention.init(_runtimeProperties);
             }
 
-            _api.init(_runtimeProperties);
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3411(exception.getPropertyName());
@@ -1177,7 +1185,7 @@ extends HttpServlet {
          try {
             callingConvention = createCallingConvention(ccParam);
             if (callingConvention != null) {
-               callingConvention.init(new ServletConfigPropertyReader(_servletConfig), _runtimeProperties);
+               callingConvention.init(_runtimeProperties);
             }
          } catch (Exception ex) {
             
@@ -1280,23 +1288,27 @@ extends HttpServlet {
     *    a {@link CallingConvention} object that matches the specified calling
     *    convention name, or <code>null</code> if no match is found.
     */
-   CallingConvention createCallingConvention(String name) {
+   private CallingConvention createCallingConvention(String name) 
+   throws MissingRequiredPropertyException,
+          InvalidPropertyValueException,
+          BootstrapException {
 
+      CallingConvention createdConvention = null;
       // Old-style calling convention
       if (OLD_STYLE_CALLING_CONVENTION.equals(name)) {
-         return new OldStyleCallingConvention();
+         createdConvention = new OldStyleCallingConvention();
 
       // Standard calling convention
       } else if (STANDARD_CALLING_CONVENTION.equals(name)) {
-         return new StandardCallingConvention();
+         createdConvention = new StandardCallingConvention();
 
       // XML calling convention
       } else if (XML_CALLING_CONVENTION.equals(name)) {
-         return new XMLCallingConvention();
+         createdConvention = new XMLCallingConvention();
 
       // XSLT calling convention
       } else if (XSLT_CALLING_CONVENTION.equals(name)) {
-         return new XSLTCallingConvention();
+         createdConvention = new XSLTCallingConvention();
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {
@@ -1307,7 +1319,16 @@ extends HttpServlet {
          }
          String conventionClass = _servletConfig.getInitParameter(API_CALLING_CONVENTION_CLASS_PROPERTY);
          try {
-            return (CustomCallingConvention) Class.forName(conventionClass).newInstance();
+            
+            // First try with a constructor with the API as parameter then with the empty constructor
+            try {
+               Class[] construtorClasses = { API.class };
+               Object[] constructorArgs = { _api };
+               Constructor customConstructor = Class.forName(conventionClass).getConstructor(construtorClasses);
+               createdConvention = (CustomCallingConvention) customConstructor.newInstance(constructorArgs);
+            } catch (NoSuchMethodException nsmex) {
+               createdConvention = (CustomCallingConvention) Class.forName(conventionClass).newInstance();
+            }
          } catch (Exception ex) {
 
             // TODO Log
@@ -1319,6 +1340,8 @@ extends HttpServlet {
       } else {
          return null;
       }
+      createdConvention.bootstrap(new ServletConfigPropertyReader(_servletConfig));
+      return createdConvention;
    }
 
    /**

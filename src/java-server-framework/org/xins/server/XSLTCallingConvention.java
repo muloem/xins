@@ -94,7 +94,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected void initImpl(PropertyReader buildSettings, PropertyReader runtimeProperties)
+   protected void initImpl(PropertyReader runtimeProperties)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           InitializationException {

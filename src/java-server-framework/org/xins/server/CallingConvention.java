@@ -26,6 +26,7 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.InitializationException;
+import org.xins.common.manageable.Manageable;
 import org.xins.common.text.TextUtils;
 
 /**
@@ -41,7 +42,7 @@ import org.xins.common.text.TextUtils;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-abstract class CallingConvention extends Object {
+abstract class CallingConvention extends Manageable {
 
    //------------------------------------------------------------------------
    // Class fields
@@ -177,60 +178,6 @@ abstract class CallingConvention extends Object {
    //------------------------------------------------------------------------
    // Methods
    //------------------------------------------------------------------------
-
-   /**
-    * Initializes the calling convention with the build settings and the
-    * runtime properties. This method is invoked everytime the system detect
-    * that the runtime properties file has changed.
-    *
-    * @param buildSettings
-    *    The parameters stored in the Servlet configuration
-    *
-    * @param runtimeProperties
-    *    The runtime properties
-    *
-    * @throws MissingRequiredPropertyException
-    *    if a required property is not given.
-    *
-    * @throws InvalidPropertyValueException
-    *    if the value of a certain property is invalid.
-    *
-    * @throws InitializationException
-    *    if the initialization failed, for any other reason.
-    */
-   void init(PropertyReader buildSettings, PropertyReader runtimeProperties)
-   throws MissingRequiredPropertyException,
-          InvalidPropertyValueException,
-          InitializationException {
-      initImpl(buildSettings, runtimeProperties);
-   }
-
-   /**
-    * Initializes the calling convention with the build settings and the
-    * runtime properties. This method is invoked everytime the system detect
-    * that the runtime properties file has changed.
-    *
-    * @param buildSettings
-    *    The parameters stored in the Servlet configuration
-    *
-    * @param runtimeProperties
-    *    The runtime properties
-    *
-    * @throws MissingRequiredPropertyException
-    *    if a required property is not given.
-    *
-    * @throws InvalidPropertyValueException
-    *    if the value of a certain property is invalid.
-    *
-    * @throws InitializationException
-    *    if the initialization failed, for any other reason.
-    */
-   protected void initImpl(PropertyReader buildSettings, PropertyReader runtimeProperties)
-   throws MissingRequiredPropertyException,
-          InvalidPropertyValueException,
-          InitializationException {
-      // empty
-   }
 
    /**
     * Converts an HTTP request to a XINS request (wrapper method). This method
