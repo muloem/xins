@@ -167,6 +167,31 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals(1, params.size());
       assertEquals("1", params.get("a"));
 
+      // Unknown element, parameter before and after data section
+      xml = "<result><extra /><param name='a'>1</param><data><a/></data><param name='b'>2</param></result>";
+      result = parser.parse(xml.getBytes(ENCODING));
+      assertNotNull(result);
+      assertEquals(null, result.getErrorCode());
+      params = result.getParameters();
+      assertNotNull(params);
+      assertEquals(2, params.size());
+      assertEquals("1", params.get("a"));
+      assertEquals("2", params.get("b"));
+
+      // There should be a data section
+      DataElement dataElement = result.getDataElement();
+      assertNotNull(dataElement);
+
+      // Root element should be <data/>
+      assertEquals("data", dataElement.getName());
+
+      // There should be no attributes in the root element
+      Iterator dataElementAttributes = dataElement.getAttributes();
+      assertEquals(0, iteratorSize(dataElementAttributes));
+
+      // There should be 1 child elements
+      Iterator children = dataElement.getChildren();
+      assertEquals(1, iteratorSize(children));
    }
 
    /**
