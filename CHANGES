@@ -24,6 +24,8 @@ CHANGES INTRODUCED IN XINS 0.185:
     String.
   - Added the _list type.
   - Added the _set type.
+  - Improved log message generated when a queue time-out occurs in the Doorman
+    class.
 
 * Specification:
   - Added the elements int8, int16, int32 and int64 to the type XML file.
