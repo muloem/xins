@@ -108,4 +108,44 @@ public final class CallFailedException extends Exception {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the subject for the call.
+    *
+    * @return
+    *    the subject for the call, can be <code>null</code>.
+    */
+   public Object getSubject() {
+      return _subject;
+   }
+
+   /**
+    * Returns the list of targets for which the call failed. The returned
+    * {@link List} cannot be <code>null</code>. All elements in the
+    * {@link List} are {@link ServiceDescriptor} objects, and it contains no
+    * <code>null</code> elements. It may contain duplicates, though.
+    *
+    * <p>The returned {@link List} is unmodifiable.
+    *
+    * @return
+    *    the {@link List} of failed targets, not <code>null</code>.
+    */
+   public List getFailedTargets() {
+      return _failedTargets;
+   }
+
+   /**
+    * The list of caught exceptions, one per failed target. The returned
+    * {@link List} cannot be <code>null</code>, but if it is not then all elements in
+    * the {@link List} are {@link Throwable} objects, and it contains no
+    * <code>null</code> elements. It may contain duplicates, though.
+    *
+    * <p>The returned {@link List} is unmodifiable.
+    *
+    * @return
+    *    the {@link List} of exceptions, not <code>null</code>.
+    */
+   public List getExceptions() {
+      return _exceptions;
+   }
 }
