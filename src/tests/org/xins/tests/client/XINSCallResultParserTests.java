@@ -371,8 +371,8 @@ public class XINSCallResultParserTests extends TestCase {
 
    /**
     * Tests the behaviour of <code>XINSCallResultParser</code>, method
-    * <code>parse(byte[])</code>, with regard to having <code>result</code>
-    * and <code>data</code> elements at different levels.
+    * <code>parse(byte[])</code>, with regard to having a <code>result</code>
+    * element within the root element.
     *
     * @throws Exception
     *    if an unexpected exception is thrown.
@@ -390,14 +390,34 @@ public class XINSCallResultParserTests extends TestCase {
       // Unknown elements under 'result' root element should be ignored
       xml = "<result>  <result/><result /><result errorcode='none' /></result>";
       result = parser.parse(xml.getBytes(ENCODING));
+   }
 
-      // Elements within data section should be parsed
+   /**
+    * Tests the behaviour of <code>XINSCallResultParser</code>, method
+    * <code>parse(byte[])</code>, with regard to having a <code>data</code>
+    * or <code>result</code> element within the data section.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testParseXINSCallResult5() throws Exception {
+
+      XINSCallResultParser parser = new XINSCallResultParser();
+
+      // Prepare the string to parse
+      final String ENCODING = "UTF-8";
+      String xml;
+      XINSCallResultData result;
+      PropertyReader params;
+
       xml = "<result>  <data><result /></data>/></result>";
       result = parser.parse(xml.getBytes(ENCODING));
       DataElement dataElement = result.getDataElement();
       List children = dataElement.getChildElements();
       DataElement child = (DataElement) children.get(0);
       assertEquals("result", child.getName());
+      child = (DataElement) children.get(1);
+      assertEquals("data", child.getName());
    }
 
    /**
@@ -407,7 +427,7 @@ public class XINSCallResultParserTests extends TestCase {
     * @throws Exception
     *    if an unexpected exception is thrown.
     */
-   public void testParseXINSCallResult5() throws Exception {
+   public void testParseXINSCallResult6() throws Exception {
 
       XINSCallResultParser parser = new XINSCallResultParser();
 
