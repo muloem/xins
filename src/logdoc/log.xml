@@ -37,13 +37,13 @@
 		<param name="expected_version" />
 	</entry>
 	<entry id="104" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Unable to get system property that defines runtime configuration file to use, due to a security restriction.</description>
+		<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 		<param name="propertyName" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
 	<entry id="105" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>System property that defines runtime configuration file to use is not set.</description>
+		<description>System property that defines the runtime properties file to use is not set.</description>
 		<param name="propertyName" />
 	</entry>
 	<entry id="106" level="FATAL" category="org.xins.server.lifespan.bootstrap">
@@ -128,35 +128,55 @@
 
 	<!-- Initialization -->
 
-	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Configuration file modified. Re-initializing XINS/Java Server Framework.</description>
+	<entry id="230" level="WARNING" category="org.xins.server.lifespan.init">
+		<description>Runtime properties file cannot be opened.</description>
 		<param name="configFile" />
 	</entry>
+	<entry id="231" level="WARNING" category="org.xins.server.lifespan.init">
+		<description>Runtime properties file cannot be opened, due to a security restriction.</description>
+		<param name="configFile" />
+		<param name="exceptionClass" />
+		<param name="exceptionMessage" />
+	</entry>
+	<entry id="232" level="DEBUG" category="org.xins.server.lifespan.init">
+		<description>Runtime properties file is not modified.</description>
+		<param name="configFile" nullable="false" />
+	</entry>
+	<entry id="233" level="NOTICE" category="org.xins.server.lifespan.init">
+		<description>Runtime properties file watch interval changed.</description>
+		<param name="configFile" nullable="false" />
+		<param name="oldInterval" nullable="false" />
+		<param name="newInterval" nullable="false" />
+	</entry>
+	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
+		<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
+		<param name="configFile" nullable="false" />
+	</entry>
 	<entry id="250" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Configuration file watch interval not specified, using fallback default.</description>
+		<description>Runtime properties file watch interval not specified, using fallback default.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 	</entry>
 	<entry id="251" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Parsing the configuration file watch interval.</description>
+		<description>Parsing the runtime properties file watch interval.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
 	<entry id="252" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>Configuration file watch interval property value is invalid.</description>
+		<description>Runtime properties file watch interval property value is invalid.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
 	<entry id="253" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>Configuration file watch interval successfully parsed.</description>
+		<description>Runtime properties file watch interval successfully parsed.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
 	<entry id="254" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Commencing configuration file watching.</description>
+		<description>Commencing runtime properties file watching.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
@@ -164,6 +184,10 @@
 	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework initialized or re-initialized.</description>
 	</entry>
+
+
+	<!-- Shutdown -->
+
 	<entry id="300" level="NOTICE" category="org.xins.server.lifespan.shutdown">
 		<description>Shutting down XINS/Java Server Framework.</description>
 	</entry>
