@@ -147,10 +147,11 @@ public abstract class CallResult extends Object {
     * Returns the call duration, in milliseconds.
     *
     * @return
-    *    the duration of the succeeded calls, in milliseconds, guaranteed to
+    *    the duration of the succeeded call, in milliseconds, guaranteed to
     *    be a non-negative number.
     */
    public final long getDuration() {
+      // TODO: Duration of succeeded call or of the complete attempt?
       return _duration;
    }
 
