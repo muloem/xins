@@ -194,6 +194,39 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:value-of select="@name" />
 		<xsl:text>);
    }</xsl:text>
+
+		<xsl:if test="$isJavaDatatype = 'true'">
+
+			<!-- Print setter method that accepts a Java primary data type -->
+			<xsl:text><![CDATA[
+
+   /**
+    * Sets the <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+<!-- TODO: append "as a <code>byte</code>" or "as an <code>int</code>" etc. -->
+			<xsl:text><![CDATA[</em> parameter.
+    *
+    * @param ]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[
+    *    the new value for the parameter.
+    */
+   public void ]]></xsl:text>
+			<xsl:value-of select="$methodName" />
+			<xsl:text>(</xsl:text>
+			<xsl:value-of select="$javatype" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>) {
+      </xsl:text>
+			<xsl:value-of select="$methodName" />
+			<xsl:text>(new </xsl:text>
+			<xsl:value-of select="$javaclass" />
+			<xsl:text>(</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>));
+   }</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
