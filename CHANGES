@@ -10,8 +10,10 @@ CHANGES INTRODUCED IN XINS 0.199:
     generated APIImpl classes.
   - Added message parameter to logdoc entry 1224.
   - Added message parameter to logdoc entry 1232.
+  - Added message parameter to logdoc entry 1424.
   - Removed logdoc entry 1223, logging entry 1224 instead.
   - Removed logdoc entry 1231, logging entry 1232 instead.
+  - Removed logdoc entry 1423, logging entry 1424 instead.
 
 * XINS/Java Common Library:
   - Changed class PropertyReaderUtils:
