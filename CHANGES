@@ -13,6 +13,13 @@ CHANGES INTRODUCED IN XINS 0.115:
     org.xins.util.service.
   - Property 'timeOut' in class ServiceDescriptor is now an int instead of a
     long.
+  - Added Service class and friends in org.xins.util.service, meant to easen
+    and standardize implementations of service calling functionality that
+    supports load-balancing, failover and time-outs.
+  - Added HTTPService class in org.xins.util.service.http, as the first
+    implementation of a Service, new-style. In time, this class will replace
+    the HTTPRequester class and part of the FunctionCaller /
+    ActualFunctionCaller / CallTargetGroup hierarchy.
 
 * XINS/Java Client Framework:
   - UnsuccessfulCallException and InvalidCallResultException now both derive
