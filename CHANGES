@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.99:
+
+* Fixed bug that caused XINS projects that had deployment-required set to
+  false fail when no deployment was defined.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.98:
 
 * XINS/Java Server Framework:
