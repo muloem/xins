@@ -13,6 +13,7 @@
 	<xsl:param name="environment"  />
 
 	<xsl:variable name="api"          select="//function/@api" />
+	<xsl:variable name="api_file      select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:output
@@ -27,7 +28,7 @@
 	<xsl:include href="../footer.xslt" />
 	<xsl:include href="../firstline.xslt" />
 
-	<xsl:variable name="env_url" select="document($project_file)/project/environment[@id=$environment]/@url" />
+	<xsl:variable name="env_url" select="document($api_file)/api/environment[@id=$environment]/@url" />
 
 	<xsl:template match="function">
 
