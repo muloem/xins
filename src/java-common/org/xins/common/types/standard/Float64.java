@@ -11,7 +11,7 @@ import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Standard type <em>_Float64</em>.
+ * Standard type <em>_float64</em>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
