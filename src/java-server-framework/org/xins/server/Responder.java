@@ -143,6 +143,10 @@ extends ResponderStates, Log {
     *    if the response is considered invalid.
     *
     * @since XINS 0.15.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void startResponse(ResultCode resultCode)
    throws IllegalStateException, InvalidResponseException;
@@ -213,6 +217,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void param(String name, String value)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -231,6 +239,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void startTag(String type)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -255,6 +267,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void attribute(String name, String value)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -273,6 +289,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void pcdata(String text)
    throws IllegalStateException, IllegalArgumentException, InvalidResponseException;
@@ -285,6 +305,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void endTag()
    throws IllegalStateException, InvalidResponseException;
@@ -302,6 +326,10 @@ extends ResponderStates, Log {
     *    if the response is considered invalid.
     *
     * @since XINS 0.29.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void fail(ResultCode resultCode)
    throws IllegalStateException, InvalidResponseException;
@@ -322,6 +350,10 @@ extends ResponderStates, Log {
     *    if the response is considered invalid.
     *
     * @since XINS 0.29.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void fail(ResultCode resultCode, String message)
    throws IllegalStateException, InvalidResponseException;
@@ -333,6 +365,10 @@ extends ResponderStates, Log {
     *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.168.
+    *    Use {@link FunctionResult#getCallResult()} instead.
     */
    void endResponse() throws InvalidResponseException;
 }

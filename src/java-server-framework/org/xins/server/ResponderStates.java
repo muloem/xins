@@ -9,6 +9,11 @@ package org.xins.server;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ *
+ * @deprecated
+ *    Deprecated since XINS 0.168.
+ *    This class doesn't need to be used anymore as the responder which
+ *    is now the {@link FunctionResult} is executed from generated classes only.
  */
 public interface ResponderStates {
 
