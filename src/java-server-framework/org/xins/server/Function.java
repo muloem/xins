@@ -70,11 +70,14 @@ implements DefaultResultCodes {
       // Check arguments
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
+      // Initialize fields
+      _statistics   = new FunctionStatistics();
       _api          = api;
       _name         = name;
       _version      = version;
       _enabled      = true;
 
+      // Notify the API that a Function has been added
       _api.functionAdded(this);
    }
 
@@ -84,17 +87,19 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The API implementation this function is part of.
+    * The API implementation this function is part of. This field cannot be
+    * <code>null</code>.
     */
-   protected final API _api;
+   private final API _api;
 
    /**
-    * The name of this function.
+    * The name of this function. This field cannot be <code>null</code>.
     */
    private final String _name;
 
    /**
-    * The version of the specification this function implements.
+    * The version of the specification this function implements. This field
+    * cannot be <code>null</code>.
     */
    private final String _version;
 
@@ -104,7 +109,8 @@ implements DefaultResultCodes {
    private boolean _enabled;
 
    /**
-    * Lock object for <code>_callCount</code>.
+    * Lock object for <code>_callCount</code>. This field cannot be
+    * <code>null</code>.
     */
    private final Object _callCountLock = new Object();
 
@@ -114,9 +120,10 @@ implements DefaultResultCodes {
    private int _callCount;
 
    /**
-    * Statistics object linked to this function.
+    * Statistics object linked to this function. This field cannot be
+    * <code>null</code>.
     */
-   private final FunctionStatistics _statistics = new FunctionStatistics();
+   private final FunctionStatistics _statistics;
 
 
    //-------------------------------------------------------------------------
