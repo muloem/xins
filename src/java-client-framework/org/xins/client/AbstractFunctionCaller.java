@@ -72,4 +72,12 @@ implements FunctionCaller {
    throws IllegalArgumentException, IOException, InvalidCallResultException {
       return call(null, functionName, parameters);
    }
+
+   public CallResult call(CallRequest request)
+   throws IllegalArgumentException, IOException, InvalidCallResultException {
+      MandatoryArgumentChecker.check("request", request);
+      return call(request.getSessionID(),
+                  request.getFunctionName(),
+                  request.getParameters());
+   }
 }

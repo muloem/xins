@@ -99,4 +99,26 @@ public interface FunctionCaller {
                    String functionName,
                    Map    parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException;
+
+   /**
+    * Executes the specified request.
+    *
+    * @param request
+    *    the request to execute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws IOException
+    *    if the API could not be contacted due to an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the calling of the function failed or if the result from the
+    *    function was invalid.
+    */
+   CallResult call(CallRequest request)
+   throws IllegalArgumentException, IOException, InvalidCallResultException;
 }
