@@ -7,6 +7,8 @@ CHANGES INTRODUCED IN XINS 0.38:
 
 * Refactored some of the function_to_html.xslt files.
 
+* Moved org.xins.types package to XINS/Java Common.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.37:
 
