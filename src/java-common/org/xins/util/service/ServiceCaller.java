@@ -5,8 +5,8 @@ package org.xins.util.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
-import org.apache.log4j.Logger;
 
 /**
  * Service caller. This abstract class must be subclasses by specific kinds
@@ -22,12 +22,6 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logger for this class.
-    */
-   private static final Logger LOG = Logger.getLogger(ServiceCaller.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -108,8 +102,6 @@ public abstract class ServiceCaller extends Object {
       ArrayList failedTargets = null;
       ArrayList exceptions    = null;
 
-      boolean debugEnabled = LOG.isDebugEnabled();
-
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateTargets();
       while (iterator.hasNext()) {
@@ -122,9 +114,7 @@ public abstract class ServiceCaller extends Object {
 
             // Attempt the call
             Object result = doCallImpl(target, subject);
-            if (debugEnabled) {
-               LOG.debug("Call to " + target + " succeeded.");
-            }
+            Log.log_3312(target.toString());
 
             // Trim the collections to save on memory
             // XXX: Should we really trim the collections?
@@ -144,12 +134,12 @@ public abstract class ServiceCaller extends Object {
             failedTargets.add(target);
             exceptions.add(exception);
 
-            LOG.warn("Call to " + target + " failed. Reason: " + reasonFor(exception) + '.');
+            Log.log_3313(target.toString(), reasonFor(exception));
          }
       }
 
       // Loop ended, all calls failed
-      LOG.error("Failed to call any of the targets.");
+      Log.log_3314();
       throw new CallFailedException(subject, failedTargets, exceptions);
    }
 

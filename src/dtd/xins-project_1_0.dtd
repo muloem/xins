@@ -3,7 +3,7 @@
  by adding the following lines at the top of the file :
 <!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 1.0//EN" "http://xins.sourceforge.net/dtd/xins-project_1_0.dtd">
 -->
-<!ELEMENT project (specdocs, cvsweb, patterntest, java-impls, java-clients, java-types, api*)>
+<!ELEMENT project (specdocs?, cvsweb?, patterntest?, java-impls?, java-clients?, java-types?, api*)>
 <!ATTLIST project
           name       NMTOKEN #REQUIRED
           rcsid      CDATA #IMPLIED
@@ -12,7 +12,7 @@
           specsdir   CDATA #IMPLIED
           javadir    CDATA #IMPLIED
           dependenciesdir CDATA #IMPLIED
-          domain     CDATA #REQUIRED
+          domain     NMTOKEN #REQUIRED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT em (#PCDATA)>

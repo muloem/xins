@@ -128,7 +128,7 @@ extends Object {
       if (ruleCount > 0) {
          String s = rules[0].toString();
          buffer.append(s);
-         Log.log_4036(0, s);
+         Log.log_1436(0, s);
       }
       for (int i = 1; i < ruleCount; i++) {
          String s = rules[i].toString();
@@ -136,7 +136,7 @@ extends Object {
          buffer.append(';');
          buffer.append(s);
 
-         Log.log_4036(i, s);
+         Log.log_1436(i, s);
       }
       _asString = buffer.toString();
 
@@ -216,19 +216,19 @@ extends Object {
 
             // Log this match
             if (allow) {
-               Log.log_5500(ip, functionName, i, ruleString);
+               Log.log_1550(ip, functionName, i, ruleString);
             } else {
-               Log.log_5501(ip, functionName, i, ruleString);
+               Log.log_1551(ip, functionName, i, ruleString);
             }
 
             return allow;
          } else {
-            Log.log_5502(ip, functionName, i, ruleString);
+            Log.log_1552(ip, functionName, i, ruleString);
          }
       }
 
       // Log: No access rule match
-      Log.log_5503(ip, functionName);
+      Log.log_1553(ip, functionName);
 
       return false;
    }

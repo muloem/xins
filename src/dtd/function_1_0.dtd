@@ -1,6 +1,6 @@
 <!--
- XINS Function DTD. This DTD should be added to all function files created in
- your project by adding the following lines at the top of the .fnc file :
+ XINS Function DTD. This DTD should be added to all function files created of
+ the project by adding the following lines at the top of the .fnc file :
 <!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.0//EN" "http://xins.sourceforge.net/dtd/function_1_0.dtd">
 -->
 <!ELEMENT function (description, input?, output?, example*)>
@@ -22,7 +22,7 @@
           type       NMTOKEN #IMPLIED
 >
 <!ELEMENT deprecated (#PCDATA|em)*>
-<!ELEMENT param-combo (description?, param-ref*)>
+<!ELEMENT param-combo (param-ref, param-ref+)>
 <!ATTLIST param-combo
           type       NMTOKEN #IMPLIED
 >
@@ -40,7 +40,7 @@
           success    (true | false) #REQUIRED
           value      CDATA #REQUIRED
 >
-<!ELEMENT data (element*)>
+<!ELEMENT data (element+)>
 <!ATTLIST data
           contains   CDATA #REQUIRED
           multiplicity CDATA #IMPLIED
@@ -63,17 +63,18 @@
 >
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
-          example     CDATA #REQUIRED
+          example     NMTOKEN #REQUIRED
 >
 <!ELEMENT example (description, data-example?)>
 <!ATTLIST example
           num         NMTOKEN #REQUIRED
-          resultcode  CDATA #IMPLIED
+          resultcode  NMTOKEN #IMPLIED
           sessionID   NMTOKEN #IMPLIED
           success     (true | false) #IMPLIED
 >
-<!ELEMENT data-example (element-example*)>
+<!ELEMENT data-example (element-example+)>
 <!ELEMENT element-example (pcdata-example?, attribute-example*, element-example*)>
+<!ELEMENT pcdata-example (#PCDATA)>
 <!ATTLIST element-example
           name        NMTOKEN #REQUIRED
 >

@@ -3,7 +3,7 @@
  */
 package org.xins.util.text;
 
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -17,13 +17,6 @@ public class FastStringBuffer extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(FastStringBuffer.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -146,9 +139,7 @@ public class FastStringBuffer extends Object {
       if (current < needed) {
          int newCapacity = needed + 16; // XXX: Is this okay?
 
-         if (LOG.isDebugEnabled()) {
-            LOG.debug("Increasing capacity from " + current + " to " + newCapacity + '.');
-         }
+         Log.log_3205(current, newCapacity);
 
          char[] newBuffer = new char[newCapacity];
          System.arraycopy(_buffer, 0, newBuffer, 0, current);

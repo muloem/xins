@@ -8,112 +8,112 @@
 -->
 
 <translation-bundle>
-	<translation entry="1000">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
-	<translation entry="2000">XINS/Java Server Framework wordt gestart.</translation>
-	<translation entry="2001">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</translation>
-	<translation entry="2002">XINS/Java Server Framework kan niet gestart worden. Applicatie server gedraagt zich onverwacht. Reden: <value-of-param name="detail" /></translation>
-	<translation entry="2003">De applicatie server implementeert een onverwachte versie van de Java Servlet API specificatie. Verwachtte versie: <value-of-param name="expected_version" />. Werkelijke versie: <value-of-param name="actual_version" />.</translation>
-	<translation entry="2004">XINS/Java Server Framework kan niet gestart worden. Operationeel probleem gedetecteerd. De systeem-property <value-of-param name="propertyName" format="quoted" /> (definieert de locatie van het runtime configuratie-bestand) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</translation>
-	<translation entry="2005">XINS/Java Server Framework kan niet gestart worden. Operationeel probleem gedetecteerd. De systeem-property <value-of-param name="propertyName" format="quoted" /> (definieert de locatie van het runtime configuratie-bestand) is niet ingesteld.</translation>
-	<translation entry="2006">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is niet ingesteld.</translation>
-	<translation entry="2007">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class kan niet geladen worden.</translation>
-	<translation entry="2008">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class afgeleed niet van de class <value-of-param name="superClass" />.</translation>
-	<translation entry="2009">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
-	<translation entry="2010">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
-	<translation entry="2011">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="2012">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties.</translation>
-	<translation entry="2013">API is sessie-georienteerd.</translation>
-	<translation entry="2014">API is niet sessie-georienteerd.</translation>
-	<translation entry="2015">Sessie-gerelateerde eigenschappen van de API worden ingesteld.</translation>
-	<translation entry="2016">Sessie-gerelateerde eigenschappen van de API zijn ingesteld.</translation>
-	<translation entry="2017">Sessie time-out is <value-of-param name="timeOut" /> seconden met een precisie van <value-of-param name="timeOutPrecision" /> seconden.</translation>
-	<translation entry="2018">Applicatie-package is gebouwd op <value-of-param name="buildHost" /> op tijdstip <value-of-param name="buildTime" />, met XINS <value-of-param name="buildVersion" />.</translation>
-	<translation entry="2019">Manageable object <value-of-param name="className" /> wordt gestart.</translation>
-	<translation entry="2020">Manageable object <value-of-param name="className" /> is gestart.</translation>
-	<translation entry="2021">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="2022">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="2023">Manageable object <value-of-param name="className" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="2024">Manageable object <value-of-param name="className" /> kan niet gestart worden.</translation>
-	<translation entry="2025">Manageable object <value-of-param name="className" /> wordt geregistreerd bij de API.</translation>
-	<translation entry="2026">Manageable object <value-of-param name="className" /> is geregistreerd bij de API.</translation>
-	<translation entry="2027">Functie <value-of-param name="function" /> wordt gestart.</translation>
-	<translation entry="2028">Functie <value-of-param name="function" /> is gestart.</translation>
-	<translation entry="2029">Functie <value-of-param name="function" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="2030">Functie <value-of-param name="function" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="2031">Functie <value-of-param name="function" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="2032">Functie <value-of-param name="function" /> kan niet gestart worden.</translation>
-	<translation entry="3000">Logging subsysteem wordt geinitialiseerd.</translation>
-	<translation entry="3001">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopend worden.</translation>
-	<translation entry="3002">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een veiligheidsrestrictie.</translation>
-	<translation entry="3003">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een I/O fout.</translation>
-	<translation entry="3004">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert niet de juiste initialisatie-instellingen. Er wordt teruggevallen op de standaard-instellingen.</translation>
-	<translation entry="3005">Logging subsystem is geinitialiseerd.</translation>
-	<translation entry="3006">Taal voor de log-berichten wordt gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
-	<translation entry="3007">Taal voor de log-berichten is gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
-	<translation entry="3008">Taal voor de log-berichten kan niet gewijzigd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</translation>
-	<translation entry="4000">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopened worden.</translation>
-	<translation entry="4001">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</translation>
-	<translation entry="4002">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is niet gewijzigd.</translation>
-	<translation entry="4003">De interval voor het controleren van het bestand met runtime-properties is gewijzigd van <value-of-param name="oldInterval" /> naar <value-of-param name="newInterval" /> seconden.</translation>
-	<translation entry="4004">De lokale tijdzone is <value-of-param name="shortName" format="quoted" />. Uitgebreide naam is <value-of-param name="longName" format="quoted" />.</translation>
-	<translation entry="4005">API wordt geinitialiseerd.</translation>
-	<translation entry="4006">API is geinitialiseerd.</translation>
-	<translation entry="4007">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is gewijzigd. XINS/Java Server Framework wordt opnieuw geinitialiseerd.</translation>
-	<translation entry="4008">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert de interval niet voor het controleren van dit bestand, de property <value-of-param name="propertyName" format="quoted" /> is niet ingesteld. Standaardinstelling wordt gehanteerd.</translation>
-	<translation entry="4009">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> wordt geparsed.</translation>
-	<translation entry="4010">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is niet valide.</translation>
-	<translation entry="4011">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is successvol geparsed.</translation>
-	<translation entry="4012">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) wordt vanaf nu gecontroleerd op veranderingen. De controle op wijzigingen wordt iedere <value-of-param name="interval" /> seconden uitgevoerd, zoals bepaald in de runtime-property <value-of-param name="intervalPropertyName" format="quoted" />.</translation>
-	<translation entry="4013">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="4014">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="4015">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="4016">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API.</translation>
-	<translation entry="4018">XINS/Java Server Framework is (opnieuw) geinitialiseerd.</translation>
-	<translation entry="4019">Manageable object <value-of-param name="className" /> wordt geinitialiseerd.</translation>
-	<translation entry="4020">Manageable object <value-of-param name="className" /> is geinitialiseerd.</translation>
-	<translation entry="4021">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="4022">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="4023">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="4024">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden.</translation>
-	<translation entry="4025">Functie <value-of-param name="function" /> wordt geinitialiseerd.</translation>
-	<translation entry="4026">Functie <value-of-param name="function" /> is geinitialiseerd.</translation>
-	<translation entry="4027">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="4028">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="4029">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="4030">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden.</translation>
-	<translation entry="4031">Geen toegangsregels gedefinieerd in runtime-property <value-of-param name="propertyName" />.</translation>
-	<translation entry="4034">Lijst van toegangsregels is geladen, met <value-of-param name="ruleCount" /> regel(s).</translation>
-	<translation entry="4035">Fout bij het toepassen van de gespecificeerde toegangsregels. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="4036">Toegangsregel <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
-	<translation entry="5000">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="5001">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="5006">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
-	<translation entry="5007">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde (null).</translation>
-	<translation entry="5008">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
-	<translation entry="5009">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde (null).</translation>
-	<translation entry="5010">Sessie aangemaakt met unieke identificatie <value-of-param name="sessionID" /> in <value-of-param name="generationLoops" /> pogingen.</translation>
-	<translation entry="5011">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontavngen sessie-identificatie <value-of-param name="sessionID" /> is niet valide.</translation>
-	<translation entry="5012">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontvangen sessie-identificatie <value-of-param name="sessionID" /> is onbekend.</translation>
-	<translation entry="5013">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Een exceptie is opgetreden.</translation>
-	<translation entry="5014">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
-	<translation entry="5015">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
-	<translation entry="5016">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
-	<translation entry="5017">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
-	<translation entry="5018">Interne fout. Kan sessie-identificatie niet vertalen naar tekst. Reden: <value-of-param name="reason" format="quoted" />.</translation>
-	<translation entry="5500">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5501">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5502">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5503">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet niet aan een toegangsregel.</translation>
-	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
-	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework.</translation>
-	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>
-	<translation entry="6003">Alle open sessies (<value-of-param name="sessionCount" /> in totaal) worden gesloten.</translation>
-	<translation entry="6004">Manageable object <value-of-param name="className" /> wordt gedeinitialiseerd.</translation>
-	<translation entry="6005">Manageable object <value-of-param name="className" /> is gedeinitialiseerd.</translation>
-	<translation entry="6006">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="6007">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden.</translation>
-	<translation entry="6008">Functie <value-of-param name="function" /> wordt gedeinitialiseerd.</translation>
-	<translation entry="6009">Functie <value-of-param name="function" /> is gedeinitialiseerd.</translation>
-	<translation entry="6010">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="6011">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden.</translation>
+	<translation entry="1100">Status van APIServlet wijzigt van <value-of-param name="oldState" /> naar <value-of-param name="newState" />.</translation>
+	<translation entry="1200">XINS/Java Server Framework wordt gestart.</translation>
+	<translation entry="1201">XINS/Java Server Framework kan niet gestart worden vanwege een onverwachte status. De status is: <value-of-param name="state" />.</translation>
+	<translation entry="1202">XINS/Java Server Framework kan niet gestart worden. Applicatie server gedraagt zich onverwacht. Reden: <value-of-param name="detail" /></translation>
+	<translation entry="1203">De applicatie server implementeert een onverwachte versie van de Java Servlet API specificatie. Verwachtte versie: <value-of-param name="expected_version" />. Werkelijke versie: <value-of-param name="actual_version" />.</translation>
+	<translation entry="1204">XINS/Java Server Framework kan niet gestart worden. Operationeel probleem gedetecteerd. De systeem-property <value-of-param name="propertyName" format="quoted" /> (definieert de locatie van het runtime configuratie-bestand) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</translation>
+	<translation entry="1205">XINS/Java Server Framework kan niet gestart worden. Operationeel probleem gedetecteerd. De systeem-property <value-of-param name="propertyName" format="quoted" /> (definieert de locatie van het runtime configuratie-bestand) is niet ingesteld.</translation>
+	<translation entry="1206">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is niet ingesteld.</translation>
+	<translation entry="1207">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class kan niet geladen worden.</translation>
+	<translation entry="1208">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class afgeleed niet van de class <value-of-param name="superClass" />.</translation>
+	<translation entry="1209">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
+	<translation entry="1210">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
+	<translation entry="1211">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1212">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties.</translation>
+	<translation entry="1213">API is sessie-georienteerd.</translation>
+	<translation entry="1214">API is niet sessie-georienteerd.</translation>
+	<translation entry="1215">Sessie-gerelateerde eigenschappen van de API worden ingesteld.</translation>
+	<translation entry="1216">Sessie-gerelateerde eigenschappen van de API zijn ingesteld.</translation>
+	<translation entry="1217">Sessie time-out is <value-of-param name="timeOut" /> seconden met een precisie van <value-of-param name="timeOutPrecision" /> seconden.</translation>
+	<translation entry="1218">Applicatie-package is gebouwd op <value-of-param name="buildHost" /> op tijdstip <value-of-param name="buildTime" />, met XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="1219">Manageable object <value-of-param name="className" /> wordt gestart.</translation>
+	<translation entry="1220">Manageable object <value-of-param name="className" /> is gestart.</translation>
+	<translation entry="1221">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="1222">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1223">Manageable object <value-of-param name="className" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1224">Manageable object <value-of-param name="className" /> kan niet gestart worden.</translation>
+	<translation entry="1225">Manageable object <value-of-param name="className" /> wordt geregistreerd bij de API.</translation>
+	<translation entry="1226">Manageable object <value-of-param name="className" /> is geregistreerd bij de API.</translation>
+	<translation entry="1227">Functie <value-of-param name="function" /> wordt gestart.</translation>
+	<translation entry="1228">Functie <value-of-param name="function" /> is gestart.</translation>
+	<translation entry="1229">Functie <value-of-param name="function" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="1230">Functie <value-of-param name="function" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1231">Functie <value-of-param name="function" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1232">Functie <value-of-param name="function" /> kan niet gestart worden.</translation>
+	<translation entry="1300">Logging subsysteem wordt geinitialiseerd.</translation>
+	<translation entry="1301">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopend worden.</translation>
+	<translation entry="1302">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een veiligheidsrestrictie.</translation>
+	<translation entry="1303">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet gelezen worden vanwege een I/O fout.</translation>
+	<translation entry="1304">Logging subsystem kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert niet de juiste initialisatie-instellingen. Er wordt teruggevallen op de standaard-instellingen.</translation>
+	<translation entry="1305">Logging subsystem is geinitialiseerd.</translation>
+	<translation entry="1306">Taal voor de log-berichten wordt gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
+	<translation entry="1307">Taal voor de log-berichten is gewijzigd van <value-of-param name="oldLocale" /> naar <value-of-param name="newLocale" />.</translation>
+	<translation entry="1308">Taal voor de log-berichten kan niet gewijzigd worden naar <value-of-param name="failedLocale" />. Taal blijft <value-of-param name="currentLocale" />.</translation>
+	<translation entry="1400">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet geopened worden.</translation>
+	<translation entry="1401">XINS/Java Server Framework kan niet geinitialiseerd worden. Operationeel probleem gedetecteerd. Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) kan niet uitgelezen worden vanwege een veiligheidsrestrictie.</translation>
+	<translation entry="1402">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is niet gewijzigd.</translation>
+	<translation entry="1403">De interval voor het controleren van het bestand met runtime-properties is gewijzigd van <value-of-param name="oldInterval" /> naar <value-of-param name="newInterval" /> seconden.</translation>
+	<translation entry="1404">De lokale tijdzone is <value-of-param name="shortName" format="quoted" />. Uitgebreide naam is <value-of-param name="longName" format="quoted" />.</translation>
+	<translation entry="1405">API wordt geinitialiseerd.</translation>
+	<translation entry="1406">API is geinitialiseerd.</translation>
+	<translation entry="1407">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) is gewijzigd. XINS/Java Server Framework wordt opnieuw geinitialiseerd.</translation>
+	<translation entry="1408">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) definieert de interval niet voor het controleren van dit bestand, de property <value-of-param name="propertyName" format="quoted" /> is niet ingesteld. Standaardinstelling wordt gehanteerd.</translation>
+	<translation entry="1409">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> wordt geparsed.</translation>
+	<translation entry="1410">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is niet valide.</translation>
+	<translation entry="1411">De interval <value-of-param name="propertyValue" format="quoted" /> voor het runtime-properties bestand (<value-of-param name="configFile" format="quoted" />), bepaald in de property <value-of-param name="propertyName" format="quoted" /> is successvol geparsed.</translation>
+	<translation entry="1412">Het bestand met runtime-properties (<value-of-param name="configFile" format="quoted" />) wordt vanaf nu gecontroleerd op veranderingen. De controle op wijzigingen wordt iedere <value-of-param name="interval" /> seconden uitgevoerd, zoals bepaald in de runtime-property <value-of-param name="intervalPropertyName" format="quoted" />.</translation>
+	<translation entry="1413">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="1414">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1415">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1416">XINS/Java Server Framework kan niet (opnieuw) geinitialiseerd worden. Fout tijdens de initialisatie van de API.</translation>
+	<translation entry="1418">XINS/Java Server Framework is (opnieuw) geinitialiseerd.</translation>
+	<translation entry="1419">Manageable object <value-of-param name="className" /> wordt geinitialiseerd.</translation>
+	<translation entry="1420">Manageable object <value-of-param name="className" /> is geinitialiseerd.</translation>
+	<translation entry="1421">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="1422">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1423">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1424">Manageable object <value-of-param name="className" /> kan niet geinitialiseerd worden.</translation>
+	<translation entry="1425">Functie <value-of-param name="function" /> wordt geinitialiseerd.</translation>
+	<translation entry="1426">Functie <value-of-param name="function" /> is geinitialiseerd.</translation>
+	<translation entry="1427">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="1428">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="1429">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1430">Functie <value-of-param name="function" /> kan niet geinitialiseerd worden.</translation>
+	<translation entry="1431">Geen toegangsregels gedefinieerd in runtime-property <value-of-param name="propertyName" />.</translation>
+	<translation entry="1434">Lijst van toegangsregels is geladen, met <value-of-param name="ruleCount" /> regel(s).</translation>
+	<translation entry="1435">Fout bij het toepassen van de gespecificeerde toegangsregels. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1436">Toegangsregel <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
+	<translation entry="1500">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="1501">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="1506">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
+	<translation entry="1507">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde (null).</translation>
+	<translation entry="1508">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
+	<translation entry="1509">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde (null).</translation>
+	<translation entry="1510">Sessie aangemaakt met unieke identificatie <value-of-param name="sessionID" /> in <value-of-param name="generationLoops" /> pogingen.</translation>
+	<translation entry="1511">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontavngen sessie-identificatie <value-of-param name="sessionID" /> is niet valide.</translation>
+	<translation entry="1512">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontvangen sessie-identificatie <value-of-param name="sessionID" /> is onbekend.</translation>
+	<translation entry="1513">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Een exceptie is opgetreden.</translation>
+	<translation entry="1514">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
+	<translation entry="1515">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
+	<translation entry="1516">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
+	<translation entry="1517">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
+	<translation entry="1518">Interne fout. Kan sessie-identificatie niet vertalen naar tekst. Reden: <value-of-param name="reason" format="quoted" />.</translation>
+	<translation entry="1550">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="1551">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="1552">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="1553">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet niet aan een toegangsregel.</translation>
+	<translation entry="1600">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
+	<translation entry="1601">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework.</translation>
+	<translation entry="1602">XINS/Java Server Framework is gedeinitialiseerd.</translation>
+	<translation entry="1603">Alle open sessies (<value-of-param name="sessionCount" /> in totaal) worden gesloten.</translation>
+	<translation entry="1604">Manageable object <value-of-param name="className" /> wordt gedeinitialiseerd.</translation>
+	<translation entry="1605">Manageable object <value-of-param name="className" /> is gedeinitialiseerd.</translation>
+	<translation entry="1606">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1607">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden.</translation>
+	<translation entry="1608">Functie <value-of-param name="function" /> wordt gedeinitialiseerd.</translation>
+	<translation entry="1609">Functie <value-of-param name="function" /> is gedeinitialiseerd.</translation>
+	<translation entry="1610">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1611">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden.</translation>
 </translation-bundle>

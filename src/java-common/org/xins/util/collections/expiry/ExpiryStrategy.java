@@ -5,7 +5,7 @@ package org.xins.util.collections.expiry;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -19,12 +19,6 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private static final Logger LOG = Logger.getLogger(ExpiryStrategy.class.getName());
 
    /**
     * The number of instances of this class.
@@ -92,9 +86,7 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug("Created " + toString() + ", time-out duration is " + _timeOut + " ms, precision is " + _precision + " ms.");
-      }
+      Log.log_3403(toString(), _timeOut, _precision);
 
       // Create and start the timer thread
       _timerThread = new TimerThread();
@@ -186,7 +178,7 @@ public final class ExpiryStrategy extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("folder", folder);
 
-      LOG.debug(folder.toString() + " associated with " + toString() + '.');
+      Log.log_3404(folder.toString(), toString());
 
       synchronized (_folders) {
          _folders.add(folder);
@@ -251,7 +243,7 @@ public final class ExpiryStrategy extends Object {
 
       public void run() {
 
-         LOG.debug(getName() + " started.");
+         Log.log_3405(getName());
 
          while (! _stop) {
             try {
@@ -264,7 +256,7 @@ public final class ExpiryStrategy extends Object {
             }
          }
 
-         LOG.debug(getName() + " stopped.");
+         Log.log_3406(getName());
       }
 
       public String toString() {

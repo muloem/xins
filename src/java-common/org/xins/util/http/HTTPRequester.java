@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -24,13 +24,6 @@ public class HTTPRequester extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(HTTPRequester.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -80,7 +73,7 @@ public class HTTPRequester extends Object {
             try {
                input.close();
             } catch (IOException exception) {
-               LOG.error("I/O error while attempting to close input stream. Ignoring.", exception);
+               Log.log_3300(exception);
                // ignore
             }
          }
@@ -235,7 +228,7 @@ public class HTTPRequester extends Object {
                   // Flush and close the output stream
                   out.close();
                } catch (IOException exception) {
-                  LOG.error("I/O error while attempting to close output stream. Ignoring.", exception);
+                  Log.log_3301(exception);
                   // ignore
                }
             }
@@ -256,7 +249,7 @@ public class HTTPRequester extends Object {
             try {
                connection.disconnect();
             } catch (Exception exception) {
-               LOG.error("I/O error while attempting to disconnect. Ignoring.", exception);
+               Log.log_3302(exception);
                // ignore
             }
          }

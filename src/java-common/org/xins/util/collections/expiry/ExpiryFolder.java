@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.threads.Doorman;
 
@@ -32,12 +32,6 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(ExpiryFolder.class.getName());
 
    /**
     * The initial size for the queue of threads waiting to obtain read or
@@ -247,17 +241,15 @@ extends Object {
          }
 
          // Log debug message
-         if (LOG.isDebugEnabled()) {
-            if (toBeExpiredSize != 1) {
-               LOG.debug(_asString + ": Expired " + toBeExpiredSize + " entries (" + newSize + " remaining).");
-            } else {
-               LOG.debug(_asString + ": Expired 1 entry (" + newSize + " remaining).");
-            }
+         if (toBeExpiredSize != 1) {
+            Log.log_3400(_asString, toBeExpiredSize, newSize);
+         } else {
+            Log.log_3401(_asString, newSize);
          }
 
          // Check that new size is at minimum zero
          if (newSize < 0) {
-            LOG.error("Size of expiry folder dropped to " + newSize + ", adjusted to 0.");
+            Log.log_3402(newSize);
          }
       }
 

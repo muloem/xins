@@ -8,7 +8,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.service.CallFailedException;
@@ -30,11 +30,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Logger for this class.
-    */
-   public static final Logger LOG = Logger.getLogger(HTTPServiceCaller.class.getName());
 
    /**
     * Constant representing the HTTP GET method.
@@ -197,7 +192,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             try {
                method.releaseConnection();
             } catch (Throwable exception) {
-               LOG.error("Caught " + exception.getClass().getName() + " while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.", exception);
+               Log.log_3304(exception, exception.getClass().getName());
             }
          }
       }

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
@@ -26,12 +26,6 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logging category used by this class. This class field is never
-    * <code>null</code>.
-    */
-   private final static Logger LOG = Logger.getLogger(Doorman.class.getName());
 
    /**
     * The type for readers in the queue.
@@ -98,19 +92,7 @@ public final class Doorman extends Object {
       _queue            = new Queue(queueSize);
       _maxQueueWaitTime = maxQueueWaitTime;
 
-      if (LOG.isDebugEnabled()) {
-         FastStringBuffer buffer = new FastStringBuffer(250);
-         buffer.append("Constructed ");
-         buffer.append(_asString);
-         buffer.append(", initial queue size is ");
-         buffer.append(queueSize);
-         buffer.append(", maximum queue wait time is ");
-         buffer.append(maxQueueWaitTime);
-         buffer.append(" ms, thread synchronization checking is ");
-         buffer.append(strict ? "strict" : "loose");
-         buffer.append('.');
-         LOG.debug(buffer.toString());
-      }
+      Log.log_3407(_asString, queueSize, maxQueueWaitTime, strict ? "strict" : "loose");
    }
 
 
@@ -199,9 +181,7 @@ public final class Doorman extends Object {
 
       Thread reader = Thread.currentThread();
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug(_asString + ": enterAsReader() called for " + reader.getName() + '.');
-      }
+      Log.log_3408(_asString, reader.getName());
 
       synchronized (_currentActorLock) {
 
@@ -211,7 +191,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3409(_asString, reader.getName());
                leaveAsWriter();
             }
          } else if (_currentReaders.contains(reader)) {
@@ -219,7 +199,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3410(_asString, reader.getName());
                return;
             }
          }
@@ -290,9 +270,7 @@ public final class Doorman extends Object {
 
       Thread writer = Thread.currentThread();
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug(_asString + ": enterAsWriter() called for " + writer.getName() + '.');
-      }
+      Log.log_3411(_asString, writer.getName());
 
       synchronized (_currentActorLock) {
 
@@ -302,7 +280,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3412(_asString, writer.getName());
                return;
             }
          } else if (_currentReaders.contains(writer)) {
@@ -310,7 +288,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3413(_asString, writer.getName());
                leaveAsReader();
             }
          }
@@ -372,9 +350,7 @@ public final class Doorman extends Object {
 
       Thread reader = Thread.currentThread();
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug(_asString + ": leaveAsReader() called for " + reader.getName() + '.');
-      }
+      Log.log_3414(_asString, reader.getName());
 
       synchronized (_currentActorLock) {
          boolean readerRemoved = _currentReaders.remove(reader);
@@ -385,7 +361,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3415(_asString, reader.getName());
                return;
             }
          }
@@ -421,9 +397,7 @@ public final class Doorman extends Object {
 
       Thread writer = Thread.currentThread();
 
-      if (LOG.isDebugEnabled()) {
-         LOG.debug(_asString + ": leaveAsWriter() called for " + writer.getName() + '.');
-      }
+      Log.log_3416(_asString, writer.getName());
 
       synchronized (_currentActorLock) {
 
@@ -432,7 +406,7 @@ public final class Doorman extends Object {
             if (_strict) {
                throw new Error(message);
             } else {
-               LOG.warn(message);
+               Log.log_3417(_asString, writer.getName());
                return;
             }
          }

@@ -4,7 +4,7 @@
 package org.xins.util.io;
 
 import java.io.File;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -22,12 +22,6 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Logger for this thread.
-    */
-   private static final Logger LOG = Logger.getLogger(FileWatcher.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -130,9 +124,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread.currentThread() != this");
       }
 
-      if (LOG.isDebugEnabled()) {
-         LOG.info("Starting watch thread for file \"" + _file.getPath() + "\".");
-      }
+      Log.log_3200(_file.getPath());
 
       while (! _stopped) {
          try {
@@ -184,7 +176,7 @@ public final class FileWatcher extends Thread {
     */
    public void setInterval(int newInterval)
    throws IllegalStateException, IllegalArgumentException {
-      
+
       // Check preconditions
       if (Thread.currentThread() != this) {
          throw new IllegalStateException("Thread.currentThread() != this");
@@ -192,7 +184,7 @@ public final class FileWatcher extends Thread {
 
       // Change the interval
       if (newInterval != _interval) {
-         LOG.info("Changing the watch interval for file \"" + _file.getPath() + "\" from " + _interval + " to " + newInterval + " seconds.");
+         Log.log_3201(_file.getPath(), _interval, newInterval);
          _interval = newInterval;
       }
    }
@@ -202,10 +194,8 @@ public final class FileWatcher extends Thread {
     */
    public void end() {
       _stopped = true;
-      
-      if (LOG.isDebugEnabled()) {
-         LOG.info("Stopping watch thread for file \"" + _file.getPath() + "\".");
-      }
+
+      Log.log_3202(_file.getPath());
 
       this.interrupt();
    }

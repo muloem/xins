@@ -10,7 +10,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
@@ -31,11 +31,6 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The logger for this class.
-    */
-   private static final Logger LOG = Logger.getLogger(LDAPServiceCaller.class.getName());
 
    /**
     * Authentication details to be used when none are specified.
@@ -279,18 +274,16 @@ public final class LDAPServiceCaller extends ServiceCaller {
          return context;
       } finally {
          if (context != null) {
-            if (LOG.isDebugEnabled()) {
-               if (principal == null) {
-                  LOG.info("Authenticated with " + url + '.');
-               } else {
-                  LOG.info("Authenticated with " + url + " as \"" + principal + "\".");
-               }
+            if (principal == null) {
+               Log.log_3305(url);
+            } else {
+               Log.log_3306(url, principal);
             }
          } else {
             if (principal == null) {
-               LOG.info("Failed to authenticate with " + url + '.');
+               Log.log_3307(url);
             } else {
-               LOG.info("Failed to authenticate with " + url + " as \"" + principal + "\".");
+               Log.log_3308(url, principal);
             }
          }
       }
@@ -350,12 +343,12 @@ public final class LDAPServiceCaller extends ServiceCaller {
          succeeded = true;
       } finally {
          if (!succeeded) {
-            LOG.error("Failed to perform search with base \"" + searchBase + "\", filter \"" + filter + "\".");
+            Log.log_3309(searchBase, filter);
          }
       }
 
       if (ne == null) {
-         LOG.debug("Performed search with base \"" + searchBase + "\", filter \"" + filter + "\".");
+         Log.log_3310(searchBase, filter);
          return null;
       }
 
@@ -370,17 +363,17 @@ public final class LDAPServiceCaller extends ServiceCaller {
          // If no exception has been thrown yet, then still
          // NamingEnumeration.close() could throw one
          if (succeeded) {
-            LOG.debug("Performed search with base \"" + searchBase + "\", filter \"" + filter + "\".");
+            Log.log_3310(searchBase, filter);
             ne.close();
 
          // If an exception has been thrown, don't allow it to be hidden by an
          // exception thrown by NamingEnumeration.close()
          } else {
-            LOG.error("Failed to perform search with base \"" + searchBase + "\", filter \"" + filter + "\".");
+            Log.log_3309(searchBase, filter);
             try {
                ne.close();
             } catch (Throwable exception) {
-               LOG.error("Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.", exception);
+               Log.log_3311(exception);
             }
          }
       }

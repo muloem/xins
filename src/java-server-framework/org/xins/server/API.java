@@ -323,7 +323,7 @@ implements DefaultResultCodes {
       _timeZone = TimeZone.getDefault();
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
-      Log.log_4004(tzShortName, tzLongName);
+      Log.log_1404(tzShortName, tzLongName);
 
       // Store the build-time settings
       _buildSettings = buildSettings;
@@ -331,16 +331,16 @@ implements DefaultResultCodes {
       // Check if this API is session-based
       _sessionBased = PropertyReaderUtils.getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
       if (_sessionBased) {
-         Log.log_2013();
+         Log.log_1213();
       } else {
-         Log.log_2014();
+         Log.log_1214();
       }
 
       // XXX: Allow configuration of session ID type ?
 
       // Initialize session-based API
       if (_sessionBased) {
-         Log.log_2015();
+         Log.log_1215();
 
          // Initialize session ID type
          _sessionIDType      = new BasicSessionIDType(this);
@@ -350,7 +350,7 @@ implements DefaultResultCodes {
          int timeOut   = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
          int precision = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
-         Log.log_2017(timeOut, precision);
+         Log.log_1217(timeOut, precision);
 
          // Create expiry strategy and folder
          final long MINUTE_IN_MS = 60000L;
@@ -359,7 +359,7 @@ implements DefaultResultCodes {
                                                    _sessionExpiryStrategy, // expiry strategy
                                                    false,                  // strict thread sync checking? (TODO)
                                                    5000L);                 // max queue wait time in ms    (TODO)
-         Log.log_2016();
+         Log.log_1216();
       }
 
       // Get build-time properties
@@ -367,7 +367,7 @@ implements DefaultResultCodes {
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
-      Log.log_2018(_buildHost, _buildTime, _buildVersion);
+      Log.log_1218(_buildHost, _buildTime, _buildVersion);
 
       // Let the subclass perform initialization
       bootstrapImpl2(buildSettings);
@@ -377,21 +377,21 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_2019(className, _name);
+         Log.log_1219(className, _name);
          try {
             m.bootstrap(_buildSettings);
-            Log.log_2020(_name, className);
+            Log.log_1220(_name, className);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_2021(_name, className, exception.getPropertyName());
+            Log.log_1221(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_2022(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_1222(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_2023(_name, className, exception.getMessage());
+            Log.log_1223(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_2024(exception, _name, className);
+            Log.log_1224(exception, _name, className);
             throw new BootstrapException(exception);
          }
       }
@@ -401,21 +401,21 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         Log.log_2027(_name, functionName);
+         Log.log_1227(_name, functionName);
          try {
             f.bootstrap(_buildSettings);
-            Log.log_2028(_name, functionName);
+            Log.log_1228(_name, functionName);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_2029(_name, functionName, exception.getPropertyName());
+            Log.log_1229(_name, functionName, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_2030(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_1230(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_2031(_name, functionName, exception.getMessage());
+            Log.log_1231(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_2032(exception, _name, functionName);
+            Log.log_1232(exception, _name, functionName);
             throw new BootstrapException(exception);
          }
       }
@@ -478,7 +478,7 @@ implements DefaultResultCodes {
 
       // TODO: Perform rollback if initialization fails at some point
 
-      Log.log_4005(_name);
+      Log.log_1405(_name);
 
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
@@ -487,14 +487,14 @@ implements DefaultResultCodes {
       String acl = runtimeSettings.get(ACL_PROPERTY);
       if (acl == null || acl.trim().length() < 1) {
          _accessRuleList = AccessRuleList.EMPTY;
-         Log.log_4031(ACL_PROPERTY);
+         Log.log_1431(ACL_PROPERTY);
       } else {
          try {
             _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
             int ruleCount = _accessRuleList.getRuleCount();
-            Log.log_4034(ruleCount);
+            Log.log_1434(ruleCount);
          } catch (ParseException exception) {
-            Log.log_4035(ACL_PROPERTY, acl, exception.getMessage());
+            Log.log_1435(ACL_PROPERTY, acl, exception.getMessage());
             throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
          }
       }
@@ -504,21 +504,21 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_4019(_name, className);
+         Log.log_1419(_name, className);
          try {
             m.init(runtimeSettings);
-            Log.log_4020(_name, className);
+            Log.log_1420(_name, className);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_4021(_name, className, exception.getPropertyName());
+            Log.log_1421(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_4022(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_1422(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (InitializationException exception) {
-            Log.log_4023(_name, className, exception.getMessage());
+            Log.log_1423(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_4024(exception, _name, className);
+            Log.log_1424(exception, _name, className);
             throw new InitializationException(exception);
          }
       }
@@ -528,28 +528,28 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Function f = (Function) _functionList.get(i);
          String functionName = f.getName();
-         Log.log_4025(_name, functionName);
+         Log.log_1425(_name, functionName);
          try {
             f.init(runtimeSettings);
-            Log.log_4026(_name, functionName);
+            Log.log_1426(_name, functionName);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_4027(_name, functionName, exception.getPropertyName());
+            Log.log_1427(_name, functionName, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_4028(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_1428(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (InitializationException exception) {
-            Log.log_4029(_name, functionName, exception.getMessage());
+            Log.log_1429(_name, functionName, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_4030(exception, _name, functionName);
+            Log.log_1430(exception, _name, functionName);
             throw new InitializationException(exception);
          }
       }
 
       // TODO: Call initImpl2(PropertyReader) ?
 
-      Log.log_4006(_name);
+      Log.log_1406(_name);
    }
 
    /**
@@ -582,12 +582,12 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("m", m);
       String className = m.getClass().getName();
 
-      Log.log_2025(_name, className);
+      Log.log_1225(_name, className);
 
       // Store the manageable object in the list
       _manageableObjects.add(m);
 
-      Log.log_2026(_name, className);
+      Log.log_1226(_name, className);
    }
 
    /**
@@ -602,7 +602,7 @@ implements DefaultResultCodes {
       _sessionExpiryStrategy.stop();
 
       // Destroy all sessions
-      Log.log_6003(_sessionsByID.size());
+      Log.log_1603(_sessionsByID.size());
 
       _sessionsByID = null;
 
@@ -613,14 +613,14 @@ implements DefaultResultCodes {
 
          String className = m.getClass().getName();
 
-         Log.log_6004(_name, className);
+         Log.log_1604(_name, className);
          try {
             m.deinit();
-            Log.log_6005(_name, className);
+            Log.log_1605(_name, className);
          } catch (DeinitializationException exception) {
-            Log.log_6006(_name, className, exception.getMessage());
+            Log.log_1606(_name, className, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_6007(exception, _name, className);
+            Log.log_1607(exception, _name, className);
          }
       }
 
@@ -631,14 +631,14 @@ implements DefaultResultCodes {
 
          String functionName = f.getName();
 
-         Log.log_6008(_name, functionName);
+         Log.log_1608(_name, functionName);
          try {
             f.deinit();
-            Log.log_6009(_name, functionName);
+            Log.log_1609(_name, functionName);
          } catch (DeinitializationException exception) {
-            Log.log_6010(_name, functionName, exception.getMessage());
+            Log.log_1610(_name, functionName, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_6011(exception, _name, functionName);
+            Log.log_1611(exception, _name, functionName);
          }
       }
    }
@@ -716,7 +716,7 @@ implements DefaultResultCodes {
       _sessionsByID.put(sessionID, session);
 
       // ...log it...
-      Log.log_5010(sessionID, count);
+      Log.log_1510(sessionID, count);
 
       // ...and then return it
       return session;

@@ -1,4 +1,14 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.174:
+
+* XINS/Java Server Framework:
+  - Removed InvalidParameters and MissingParameters.
+  - Standard result codes now starts with a underscore '_' character.
+
+* Logdoc:
+  - Added logdoc for the client and common packages.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.173:
 
 * XINS/Java Server Framework:

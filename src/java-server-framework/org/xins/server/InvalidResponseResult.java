@@ -27,7 +27,7 @@ public class InvalidResponseResult extends FunctionResult {
    //-------------------------------------------------------------------------
 
    public InvalidResponseResult() {
-      super(false, DefaultResultCodes.INVALID_RESPONSE.getValue());
+      super(false, DefaultResultCodes._INVALID_RESPONSE.getValue());
    }
 
    //-------------------------------------------------------------------------

@@ -285,13 +285,13 @@ implements DefaultResultCodes {
             try {
                session = _api.getSessionByString(sessionID);
             } catch (TypeValueException exception) {
-               Log.log_5011(_name, callID, sessionID);
+               Log.log_1511(_name, callID, sessionID);
                // TODO: Cache CallResult and use ResultCode
                performedCall(start, callID, null, false, "InvalidSessionID");
                return new BasicCallResult(false, "InvalidSessionID", null, null);
             }
             if (session == null) {
-               Log.log_5012(_name, callID, sessionID);
+               Log.log_1512(_name, callID, sessionID);
                // TODO: Cache CallResult and use ResultCode
                performedCall(start, callID, null, false, "UnknownSessionID");
                return new BasicCallResult(false, "UnknownSessionID", null, null);
@@ -311,7 +311,7 @@ implements DefaultResultCodes {
       } catch (Throwable exception) {
 
          // TODO: Allow customization of what exceptions are logged?
-         Log.log_5013(exception, _name, callID);
+         Log.log_1513(exception, _name, callID);
 
          // Create a set of parameters for the result
          BasicPropertyReader parameters = new BasicPropertyReader();
@@ -394,16 +394,16 @@ implements DefaultResultCodes {
       // Call succeeded
       if (success) {
          if (session == null) {
-            Log.log_5014(_name, callID, duration);
+            Log.log_1514(_name, callID, duration);
          } else {
-            Log.log_5015(_name, callID, duration, session);
+            Log.log_1515(_name, callID, duration, session);
          }
       // Call failed
       } else {
          if (session == null) {
-            Log.log_5016(_name, callID, duration, code);
+            Log.log_1516(_name, callID, duration, code);
          } else {
-            Log.log_5017(_name, callID, duration, code, session);
+            Log.log_1517(_name, callID, duration, code, session);
          }
       }
    }

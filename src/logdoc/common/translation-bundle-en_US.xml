@@ -8,43 +8,47 @@
 -->
 
 <translation-bundle>
-	<translation entry="8000"><value-of-param name="pattern_class" />.matches(java.lang.String,<value-of-param name="pattern_class" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
-	<translation entry="9000"><value-of-param name="folder_name" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
-	<translation entry="9001"><value-of-param name="folder_name" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
-	<translation entry="9002">Size of expiry folder dropped to <value-of-param name="new_size" />, adjusted to 0.</translation>
-	<translation entry="9003">Created <value-of-param name="strategy" />, time-out duration is <value-of-param name="time_out" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
-	<translation entry="9004"><value-of-param name="folder_name" /> associated with <value-of-param name="strategy" />.</translation>
-	<translation entry="9005"><value-of-param name="strategy" /> started.</translation>
-	<translation entry="9006"><value-of-param name="strategy" /> stopped.</translation>
-	<translation entry="9007">I/O error while attempting to close input stream. Ignoring.</translation>
-	<translation entry="9008">I/O error while attempting to disconnect. Ignoring.</translation>
-	<translation entry="9009">Starting watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="9010">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="old_interval" /> to <value-of-param name="new_interval" /> seconds.</translation>
-	<translation entry="9011">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="9012"><value-of-param name="class_name" />: Failed to generate secure random int, falling back to pseudo-random.</translation>
-	<translation entry="9013"><value-of-param name="class_name" />: Failed to generate secure random long, falling back to pseudo-random.</translation>
-	<translation entry="9014">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
-	<translation entry="9015">Caught <value-of-param name="exception_name" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
-	<translation entry="9016">Authenticated with <value-of-param name="url" />.</translation>
-	<translation entry="9017">Authenticated with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
-	<translation entry="9018">Failed to authenticate with <value-of-param name="url" />.</translation>
-	<translation entry="9019">Failed to authenticate with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
-	<translation entry="9020">Failed to perform search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
-	<translation entry="9021">Performed search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
-	<translation entry="9022">Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</translation>
-	<translation entry="9023">Call to <value-of-param name="target" /> succeeded.</translation>
-	<translation entry="9024">Call to <value-of-param name="target" /> failed. Reason: <value-of-param name="reason" />.</translation>
-	<translation entry="9025">Failed to call any of the targets.</translation>
-	<translation entry="9026">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
-	<translation entry="9027">Constructed <value-of-param name="class_name" />, initial queue size is <value-of-param name="queue_size" />, maximum queue wait time is <value-of-param name="max_queue_size" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
-	<translation entry="9028"><value-of-param name="class_name" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="9029"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
-	<translation entry="9030"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
-	<translation entry="9031"><value-of-param name="class_name" />: enterAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="9032"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
-	<translation entry="9033"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
-	<translation entry="9034"><value-of-param name="class_name" />: leaveAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="9035"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
-	<translation entry="9036"><value-of-param name="class_name" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="9037"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
+	<translation entry="3100"><value-of-param name="pattern_matcher" />.matches(java.lang.String,<value-of-param name="pattern_class" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
+
+	<translation entry="3200">Starting watch thread for file <value-of-param name="file" format="quoted" />.</translation>
+	<translation entry="3201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="old_interval" /> to <value-of-param name="new_interval" /> seconds.</translation>
+	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
+	<translation entry="3203"><value-of-param name="class_name" />: Failed to generate secure random int, falling back to pseudo-random.</translation>
+	<translation entry="3204"><value-of-param name="class_name" />: Failed to generate secure random long, falling back to pseudo-random.</translation>
+	<translation entry="3205">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
+
+	<translation entry="3300">I/O error while attempting to close input stream. Ignoring.</translation>
+	<translation entry="3301">I/O error while attempting to close output stream. Ignoring.</translation>
+	<translation entry="3302">I/O error while attempting to disconnect. Ignoring.</translation>
+	<translation entry="3303">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
+	<translation entry="3304">Caught <value-of-param name="exception_name" /> while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.</translation>
+	<translation entry="3305">Authenticated with <value-of-param name="url" />.</translation>
+	<translation entry="3306">Authenticated with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
+	<translation entry="3307">Failed to authenticate with <value-of-param name="url" />.</translation>
+	<translation entry="3308">Failed to authenticate with <value-of-param name="url" /> as <value-of-param name="principal" format="quoted" />.</translation>
+	<translation entry="3309">Failed to perform search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
+	<translation entry="3310">Performed search with base <value-of-param name="search_base" format="quoted" />, filter <value-of-param name="filter" format="quoted" />.</translation>
+	<translation entry="3311">Ignoring exception thrown by NamingEnumeration.close() to avoid hiding earlier exception.</translation>
+	<translation entry="3312">Call to <value-of-param name="target" /> succeeded.</translation>
+	<translation entry="3313">Call to <value-of-param name="target" /> failed. Reason: <value-of-param name="reason" />.</translation>
+	<translation entry="3314">Failed to call any of the targets.</translation>
+
+	<translation entry="3400"><value-of-param name="folder_name" />: Expired <value-of-param name="to_be_expired_size" /> entries ( <value-of-param name="new_size" /> remaining).</translation>
+	<translation entry="3401"><value-of-param name="folder_name" />: Expired 1 entry ( <value-of-param name="new_size" /> remaining).</translation>
+	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="new_size" />, adjusted to 0.</translation>
+	<translation entry="3403">Created <value-of-param name="strategy" />, time-out duration is <value-of-param name="time_out" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
+	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
+	<translation entry="3405"><value-of-param name="strategy" /> started.</translation>
+	<translation entry="3406"><value-of-param name="strategy" /> stopped.</translation>
+	<translation entry="3407">Constructed <value-of-param name="class_name" />, initial queue size is <value-of-param name="queue_size" />, maximum queue wait time is <value-of-param name="max_queue_size" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
+	<translation entry="3408"><value-of-param name="class_name" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
+	<translation entry="3409"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
+	<translation entry="3410"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
+	<translation entry="3411"><value-of-param name="class_name" />: enterAsWriter() called for <value-of-param name="writer" />.</translation>
+	<translation entry="3412"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
+	<translation entry="3413"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
+	<translation entry="3414"><value-of-param name="class_name" />: leaveAsReader() called for <value-of-param name="reader" />.</translation>
+	<translation entry="3415"><value-of-param name="class_name" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
+	<translation entry="3416"><value-of-param name="class_name" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
+	<translation entry="3417"><value-of-param name="class_name" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
 </translation-bundle>

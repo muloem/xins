@@ -127,20 +127,26 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="-prepare-java-common" depends="-prepare">
+	<target name="-prepare-java-common" depends="logdoc-java-common">
 		<mkdir dir="build/src/java-common" />
 		<copy todir="build/src/java-common">
 			<fileset dir="src/java-common" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-common" token="%%VERSION%%" value="${version}" />
+		<copy todir="build/src/java-common/org/xins/util">
+			<fileset dir="build/logdoc/common/java" includes="**/*.java" />
+		</copy>
 	</target>
 
-	<target name="-prepare-java-client" depends="-prepare">
+	<target name="-prepare-java-client" depends="logdoc-java-client">
 		<mkdir dir="build/src/java-client-framework" />
 		<copy todir="build/src/java-client-framework">
 			<fileset dir="src/java-client-framework" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
+		<copy todir="build/src/java-client-framework/org/xins/client">
+			<fileset dir="build/logdoc/client/java" includes="**/*.java" />
+		</copy>
 	</target>
 
 	<target name="-prepare-java-server" depends="logdoc-java-server">
@@ -244,7 +250,22 @@
 		</antcall>
 	</target>
 
+	<target name="-prepare-logdoc-client">
+		<antcall target="-prepare-logdoc">
+			<param name="side" value="client"/>
+		</antcall>
+	</target>
+
+	<target name="-prepare-logdoc-common">
+		<antcall target="-prepare-logdoc">
+			<param name="side" value="common"/>
+			<param name="package" value="util"/>
+		</antcall>
+	</target>
+
 	<target name="-prepare-logdoc" depends="-prepare">
+		<!-- If not defined in the antcall, the default is the side -->
+		<property name="package" value="${side}" />
 		<style
 		in="src/logdoc/${side}/log.xml"
 		out="build/logdoc/${side}/build.xml"
@@ -254,13 +275,25 @@
 			<param name="sourcedir"       expression="../../../src/logdoc/${side}" />
 			<param name="html_destdir"    expression="html"                        />
 			<param name="java_destdir"    expression="java"                        />
-			<param name="package_name"    expression="org.xins.${side}"            />
+			<param name="package_name"    expression="org.xins.${package}"            />
 		</style>
 	</target>
 
 	<target name="logdoc-html-server" depends="-prepare-logdoc-server">
 		<antcall target="-logdoc-html">
 			<param name="side" value="server"/>
+		</antcall>
+	</target>
+
+	<target name="logdoc-html-client" depends="-prepare-logdoc-client">
+		<antcall target="-logdoc-html">
+			<param name="side" value="client"/>
+		</antcall>
+	</target>
+
+	<target name="logdoc-html-common" depends="-prepare-logdoc-common">
+		<antcall target="-logdoc-html">
+			<param name="side" value="common"/>
 		</antcall>
 	</target>
 
@@ -289,6 +322,18 @@
 		<antcall target="-logdoc-java">
 			<param name="side" value="server"/>
 		</antcall>
+	</target>
+
+	<target name="logdoc-java-client" depends="-prepare-logdoc-client">
+		<antcall target="-logdoc-java">
+			<param name="side" value="client"/>
+		</antcall>
+	</target>
+
+	<target name="logdoc-java-common" depends="-prepare-logdoc-common">
+		<ant dir="build/logdoc/common" target="java" inheritall="false">
+			<property name="accesslevel" value="public" />
+		</ant>
 	</target>
 
 	<target name="-logdoc-java">

@@ -5,8 +5,7 @@ package org.xins.util.math;
 
 import java.security.SecureRandom;
 import java.util.Random;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -24,12 +23,6 @@ public final class SafeRandom extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Logger for this class.
-    */
-   private static final Logger LOG = Logger.getLogger(SafeRandom.class.getName());
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -119,9 +112,7 @@ public final class SafeRandom extends Object {
       try {
          return _secureRandom.nextInt();
       } catch (Throwable exception) {
-         if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn(_intWarning);
-         }
+         Log.log_3203(_asString);
          return _random.nextInt();
       }
    }
@@ -136,9 +127,7 @@ public final class SafeRandom extends Object {
       try {
          return _secureRandom.nextLong();
       } catch (Throwable exception) {
-         if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn(_longWarning);
-         }
+         Log.log_3204(_asString);
          return _random.nextLong();
       }
    }

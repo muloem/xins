@@ -275,20 +275,20 @@ public final class XINSServiceCaller extends ServiceCaller {
             try {
                method.releaseConnection();
             } catch (Throwable exception) {
-               LOG.error("Caught " + exception.getClass().getName() + " while releasing HTTP connection after request failed. Ignoring this exception so the original exception is not hidden.", exception);
+               Log.log_2007(exception, exception.getClass().getName());
             }
          }
       }
 
       // Check the code
       if (code != 200 && code != 201) {
-         LOG.error("HTTP code " + code + '.');
+         Log.log_2008(code);
          throw new InvalidCallResultException("HTTP code " + code + '.');
       }
 
       // If the body is null, then there was an error
       if (body == null) {
-         LOG.error("Failed to read the response body.");
+         Log.log_2009();
          throw new InvalidCallResultException("Failed to read the response body.");
       }
 
@@ -391,7 +391,7 @@ public final class XINSServiceCaller extends ServiceCaller {
             throw (Error) ex;
          } else {
             String message = "Unexpected " + ex.getClass().getName() + " caught while calling doCall(org.xins.util.service.CallRequest).";
-            LOG.error(message, ex);
+            Log.log_2010(ex, ex.getClass().getName());
             throw new Error(message);
          }
       }

@@ -116,7 +116,7 @@ extends Object {
       try {
          return getSessionIDType().toString(_id);
       } catch (TypeValueException exception) {
-         Log.log_5018(exception.getMessage());
+         Log.log_1518(exception.getMessage());
          throw new Error("Failed to convert session identifier to character string.");
       }
    }
@@ -147,25 +147,25 @@ extends Object {
 
          if (value != null) {
             // Log this event
-            Log.log_5006(key, value.getClass().getName(), value.toString());
+            Log.log_1506(key, value.getClass().getName(), value.toString());
 
             // Perform the actual action
             _attributes = new HashMap(89);
             _attributes.put(key, value);
          } else {
-            Log.log_5007(key);
+            Log.log_1507(key);
          }
 
       // If the value is null, then remove the entry
       } else if (value == null) {
-         Log.log_5007(key);
+         Log.log_1507(key);
          _attributes.remove(key);
          // XXX: Check if the map is now empty and set it to null?
 
       // Otherwise store a new entry
       } else {
          // Log this event
-         Log.log_5006(key, value.getClass().getName(), value.toString());
+         Log.log_1506(key, value.getClass().getName(), value.toString());
 
          // Perform the actual action
          _attributes.put(key, value);
@@ -217,14 +217,14 @@ extends Object {
 
          // Log this event
          if (value != null) {
-            Log.log_5008(key, value.getClass().getName(), value.toString());
+            Log.log_1508(key, value.getClass().getName(), value.toString());
          } else {
-            Log.log_5009(key);
+            Log.log_1509(key);
          }
 
       // The Map does not exist, consequently the value is null
       } else {
-         Log.log_5009(key);
+         Log.log_1509(key);
          value = null;
       }
 

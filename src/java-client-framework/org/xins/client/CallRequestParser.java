@@ -135,7 +135,7 @@ public final class CallRequestParser extends Object {
             buffer.append('.');
          }
          String message = buffer.toString();
-         LOG.error(message, exception);
+         Log.log_2000(exception, detail);
          throw new ParseException(message);
       }
 
@@ -257,14 +257,14 @@ public final class CallRequestParser extends Object {
          boolean noKey   = (key   == null || key.length()   < 1);
          boolean noValue = (value == null || value.length() < 1);
          if (noKey && noValue) {
-            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key and empty value.");
+            Log.log_2001(ELEMENT_NAME);
          } else if (noKey) {
-            LOG.error("Found <" + ELEMENT_NAME + "/> with an empty key.");
+            Log.log_2002(ELEMENT_NAME);
          } else if (noValue) {
-            LOG.error("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" but an empty value.");
+            Log.log_2003(ELEMENT_NAME, KEY_ATTRIBUTE, key);
          } else {
 
-            LOG.debug("Found <" + ELEMENT_NAME + "/> with " + KEY_ATTRIBUTE + " \"" + key + "\" and value \"" + value + "\".");
+            Log.log_2004(ELEMENT_NAME, KEY_ATTRIBUTE, key, value);
 
             // Lazily initialize the Map
             if (map == null) {

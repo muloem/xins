@@ -5,7 +5,7 @@ package org.xins.util.service;
 
 import java.net.MalformedURLException;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
+import org.xins.util.Log;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.InvalidPropertyValueException;
 import org.xins.util.collections.MissingRequiredPropertyException;
@@ -55,11 +55,6 @@ public final class DescriptorBuilder extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Logger for this class.
-    */
-   public static final Logger LOG = Logger.getLogger(DescriptorBuilder.class.getName());
 
    /**
     * Delimiter between tokens within a property value. This is the comma
@@ -232,7 +227,7 @@ public final class DescriptorBuilder extends Object {
          try {
             return new TargetDescriptor(url, timeOut);
          } catch (MalformedURLException exception) {
-            LOG.error("URL \"" + url + "\" is malformed.", exception);
+            Log.log_3303(exception, url);
             throw new InvalidPropertyValueException(propertyName, value, "Malformed URL.");
          }
 
