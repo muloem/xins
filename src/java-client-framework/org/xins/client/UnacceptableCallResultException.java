@@ -32,7 +32,7 @@ extends CallException {
     *    the reason why the call result is unacceptable, or <code>null</code>.
     *
     * @return
-    *    the constructed message for the construcotr to pass up to the
+    *    the constructed message for the constructor to pass up to the
     *    superconstructor, never <code>null</code>.
     */
    private static final String createMessage(String reason) {

@@ -36,7 +36,7 @@ extends CallException {
     *    should be <code>false</code>.
     *
     * @return
-    *    the constructed message for the construcotr to pass up to the
+    *    the constructed message for the constructor to pass up to the
     *    superconstructor, never <code>null</code>.
     *
     * @throws IllegalArgumentException
