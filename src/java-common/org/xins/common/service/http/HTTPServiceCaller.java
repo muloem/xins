@@ -25,7 +25,21 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * HTTP service caller.
+ * HTTP service caller. This class can be used to perform a call to an HTTP
+ * server and fail-over to other HTTP servers if the first one fails.
+ *
+ * <p>The following example code snippet constructs an
+ * <code>HTTPServiceCaller</code> instance:
+ *
+ * <blockquote><code>{@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, PROPERTY_NAME);
+ * <br />HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor,HTTPServiceCaller.Method) HTTPServiceCaller}(descriptor, HTTPServiceCaller.{@link #GET GET});</code></blockquote>
+ *
+ * <p>A call can be executed as follows, using this <code>HTTPServiceCaller</code>:
+ *
+ * <blockquote><code>{@link org.xins.common.collections.PropertyReader PropertyReader} params = new {@link org.xins.common.collections.BasicPropertyReader BasicPropertyReader}();
+ * <br />params.set("street",      "Broadband Avenue");
+ * <br />params.set("houseNumber", "12");
+ * <br />{@link HTTPServiceCaller.Result HTTPServiceCaller.Result} result = caller.{@link #call(PropertyReader) call}(params);</code></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
