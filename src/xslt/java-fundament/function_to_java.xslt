@@ -22,7 +22,7 @@
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
 			<xsl:with-param name="revision">
-				<xsl:value-of select="document($function_file)/function/@rcsversion" />
+				<xsl:value-of select="//function/@rcsversion" />
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:variable>
