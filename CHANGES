@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Used another system to suspend any call to an API when the statistics
     are reset.
   - Added the possibility to transform the returned XML using XSLT.
+  - Removed _PerformGC metafunction.
+  - Removed support for XSLT transformations.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
@@ -29,11 +31,15 @@ CHANGES INTRODUCED IN XINS 0.207:
     PropertyReaderUtils and replaced it with
     serialize(PropertyReader,FastStringBuffer,String). The former was not used
     anywhere.
+  - Removed method getTimeOut() in class TargetDescriptor. It was deprecated
+    and replaced by getTotalTimeOut() in XINS 0.202.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
   - Using the new service caller framework.
   - Supporting checking of HTTP status codes.
+  - Removed AbstractCAPI(XINSServiceCaller). This constructor was deprecated
+    since XINS 0.192.
 
 * Logdoc
   - An error is thrown when you register a log that doesn't support the
