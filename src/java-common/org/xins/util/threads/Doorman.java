@@ -42,12 +42,6 @@ public final class Doorman extends Object {
    private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType();
 
    /**
-    * The maximum time an entry can be in the queue. This is currently set to
-    * 30 seconds.
-    */
-   private static final long MAX_QUEUE_WAIT_TIME = 10000L;
-
-   /**
     * The number of instances of this class.
     */
    private static int INSTANCE_COUNT;
@@ -73,27 +67,40 @@ public final class Doorman extends Object {
     * @param queueSize
     *    the initial queue size, must be &gt;= 0.
     *
+    * @param maxQueueWaitTime
+    *    the maximum number of milliseconds an entry should be allowed to wait
+    *    in the queue, must be &gt;= 0.
+    *
     * @throws IllegalArgumentException
-    *    if <code>queueSize &lt; 0</code>.
+    *    if <code>queueSize &lt; 0 || maxQueueWaitTime &lt; 0L</code>.
     */
-   public Doorman(int queueSize)
+   public Doorman(int queueSize, long maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // Check preconditions
-      if (queueSize < 0) {
-         throw new IllegalArgumentException("queueSize (" + queueSize + ") < 0");
+      if (queueSize < 0 || maxQueueWaitTime <= 0L) {
+         if (queueSize < 0 && maxQueueWaitTime <= 0L) {
+            throw new IllegalArgumentException("queueSize (" + queueSize + ") < 0 && maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L");
+         } else if (queueSize < 0) {
+            throw new IllegalArgumentException("queueSize (" + queueSize + ") < 0");
+         } else {
+            throw new IllegalArgumentException("maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L");
+         }
       }
 
-      // Initialize fields
+      // Determine instance number
       synchronized (INSTANCE_COUNT_LOCK) {
          _instanceID = INSTANCE_COUNT++;
       }
+
+      // Initialize other fields
       _currentActorLock = new Object();
       _currentReaders   = new HashSet();
       _queue            = new Queue(queueSize);
+      _maxQueueWaitTime = maxQueueWaitTime;
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Constructed Doorman #" + _instanceID + '.');
+         LOG.debug("Constructed Doorman #" + _instanceID + ", initial queue size is " + queueSize + ", maximum queue wait time is " + maxQueueWaitTime + " ms.");
       }
    }
 
@@ -101,6 +108,12 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Maximum wait time in the queue. After reaching this period of time, a
+    * {@link QueueTimeOutException} is thrown.
+    */
+   private final long _maxQueueWaitTime;
 
    /**
     * Lock object for reading and writing the set of current readers and the
@@ -133,6 +146,16 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets the maximum time to wait in the queue.
+    *
+    * @return
+    *    the maximum wait time, always &gt; 0.
+    */
+   public long getMaxQueueWaitTime() {
+      return _maxQueueWaitTime;
+   }
 
    /**
     * Enters the 'protected area' as a reader. If necessary, this method will
@@ -183,7 +206,7 @@ public final class Doorman extends Object {
 
       // Wait for read access
       try {
-         Thread.sleep(MAX_QUEUE_WAIT_TIME);
+         Thread.sleep(_maxQueueWaitTime);
          throw new QueueTimeOutException();
       } catch (InterruptedException exception) {
          // fall through
@@ -241,7 +264,7 @@ public final class Doorman extends Object {
 
       // Wait for write access
       try {
-         Thread.sleep(MAX_QUEUE_WAIT_TIME);
+         Thread.sleep(_maxQueueWaitTime);
          throw new QueueTimeOutException();
       } catch (InterruptedException exception) {
          // fall through
