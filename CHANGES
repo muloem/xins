@@ -6,9 +6,9 @@ CHANGES INTRODUCED IN XINS 0.125:
     between build-time configuration (called 'bootstrapping') and
     runtime-configuration ('initialization'). There is now no principal
     difference between initialization and re-initialization anymore.
-  - Response validation is now a runtime configuration settings.
+  - Response validation is now a runtime configuration setting.
   - Changed the output format of _GetSettings.
-  - Changed the interface of LifespanManager in an incompatible code. This may
+  - Changed the interface of LifespanManager in an incompatible way. This may
     break existing code that is based on the LifespanManager interface
     introduced in XINS 0.120.
   - Changed Log4J categories. There is now one category for the bootstrap
