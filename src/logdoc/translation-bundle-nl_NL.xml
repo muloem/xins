@@ -34,7 +34,7 @@
 	<translation entry="2023">Manageable object <value-of-param name="className" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="2024">Manageable object <value-of-param name="className" /> kan niet gestart worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="2025">Manageable object <value-of-param name="className" /> wordt geregistreerd bij de API.</translation>
-	<translation entry="2026">Added manageable <value-of-param name="className" /> is geregistreerd bij de API.</translation>
+	<translation entry="2026">Manageable object <value-of-param name="className" /> is geregistreerd bij de API.</translation>
 	<translation entry="2027">Functie <value-of-param name="function" /> wordt gestart.</translation>
 	<translation entry="2028">Functie <value-of-param name="function" /> is gestart.</translation>
 	<translation entry="2029">Functie <value-of-param name="function" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
