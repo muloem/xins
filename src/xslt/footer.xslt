@@ -22,6 +22,9 @@
 
 		<xsl:variable name="timestamp">
 			<xsl:choose>
+				<xsl:when test="@rcsdate = '$Date$'">
+					<xsl:text>?/?/? ?:?:?</xsl:text>
+				</xsl:when>
 				<xsl:when test="string-length(@rcsdate) &lt; 20">
 					<xsl:message>
 						<xsl:text>Unable to parse RCS date. It should be specified in the 'rcsdate' attribute of the '</xsl:text>
