@@ -24,14 +24,14 @@ import org.xins.common.text.FastStringBuffer;
  * kinds of time-out:
  *
  * <dl>
- *    <dt><em>total time-out</em></dt>
+ *    <dt><em>total time-out</em> ({@link #getTotalTimeOut()})</dt>
  *    <dd>the maximum duration of a call, including connection time, time used
  *    to send the request, time used to receive the response, etc.</dd>
  *
- *    <dt><em>connection time-out</em></dt>
+ *    <dt><em>connection time-out</em> ({@link #getConnectionTimeOut()})</dt>
  *    <dd>the maximum time for attempting to establish a connection.</dd>
  *
- *    <dt><em>socket time-out</em></dt>
+ *    <dt><em>socket time-out</em> ({@link #getSocketTimeOut()})</dt>
  *    <dd>the maximum time for attempting to receive data on a socket.</dd>
  * </dl>
  *
@@ -343,8 +343,25 @@ public final class TargetDescriptor extends Descriptor {
     *    milli-seconds, or 0 if there is no total time-out.
     *
     * @since XINS 0.195
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.202. Use {@link #getTotalTimeOut()} instead.
     */
    public int getTimeOut() {
+      return _timeOut;
+   }
+
+   /**
+    * Returns the total time-out for a call to the service. The value 0
+    * is returned if there is no total time-out.
+    *
+    * @return
+    *    the total time-out for the service, as a positive number, in
+    *    milli-seconds, or 0 if there is no total time-out.
+    *
+    * @since XINS 0.202
+    */
+   public int getTotalTimeOut() {
       return _timeOut;
    }
 

@@ -239,7 +239,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       HttpClient client = new HttpClient();
 
       // Set the correct time-out
-      client.setTimeout(target.getTimeOut());
+      client.setTimeout(target.getTotalTimeOut());
 
       // Use the right method, depends on _method
       HttpMethod method = createMethod(target.getURL(), reader);

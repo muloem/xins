@@ -237,7 +237,7 @@ public abstract class ServiceCaller extends Object {
       MandatoryArgumentChecker.check("thread",     thread,
                                      "descriptor", descriptor);
 
-      TimeOutController.execute(thread, descriptor.getTimeOut());
+      TimeOutController.execute(thread, descriptor.getTotalTimeOut());
    }
 
    /**
