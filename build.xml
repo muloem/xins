@@ -66,7 +66,7 @@
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
 		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server-framework:build/src/java-client-framework" />
 
-		<property name="java.target"         value="1.2" />
+		<property name="java.target"         value="1.3" />
 	</target>
 
 	<target name="version" depends="-init">
