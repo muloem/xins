@@ -28,6 +28,7 @@ fi
 
 if [ "$1" = "-version" ]; then
 	ant -q -f ${xins_home}/build.xml version
+	exit 1
 fi
 
 ant -q -f ${xins_home}/src/ant/make-build.xml \
