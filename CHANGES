@@ -10,7 +10,7 @@ CHANGES INTRODUCED IN XINS 0.20:
 
 * Result codes are now in external .rcd files.
 
-* Changed term 'return code' to 'result code' in some locations.
+* Changed term 'return code' to 'result code' in quite some locations.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.19:
