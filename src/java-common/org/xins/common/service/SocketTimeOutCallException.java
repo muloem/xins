@@ -46,9 +46,9 @@ public final class SocketTimeOutCallException extends GenericCallException {
     *
     * @since XINS 0.202
     */
-   SocketTimeOutCallException(CallRequest      request,
-                              TargetDescriptor target,
-                              long             duration)
+   public SocketTimeOutCallException(CallRequest      request,
+                                     TargetDescriptor target,
+                                     long             duration)
    throws IllegalArgumentException {
       super("Socket time-out", request, target, duration, null, null);
    }
