@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
       getChildElements(String), which returns a non-nullable List. The former
       method is marked as deprecated and may be removed before XINS 1.0.0-rc1.
 
+* XINS build file:
+  - Improved 'help' target slightly.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 10:
 

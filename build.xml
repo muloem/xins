@@ -895,23 +895,33 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
 
-	<target name="help" description="Print the help of the main targets">
-		<echo message="Main targets:" />
-		<echo message="clean                Clean anyting build before." />
-		<echo message="java                 Compile the source files." />
-		<echo message="javadoc              Generates the XINS javadoc." />
-		<echo message="logdoc-html          Generates the Logdoc HTML pages." />
-		<echo message="version              Prints the XINS version." />
-		<echo message="tests                Run the unit tests." />
-		<echo message="                     Options: -lib lib (required)" />
+	<target name="help" description="Print the help of the main targets" depends="-init">
+		<echo message="XINS ${version}" />
 		<echo message="" />
-		<echo message="release              Create a new release" />
-		<echo message="                     Options: -lib lib (required)" />
-		<echo message="                      -Dforce=true (optional) bypass the -dev suffix check" />
-		<echo message="                      -Dmajor.release=true (optional) won't change the .version.properties" />
-		<echo message="To create a release the following requirements are needed:" />
-		<echo message=" xins-docs and xins-examples CVS directories up-to-date and in the same directory as xins." />
-		<echo message=" A ${user.home}/.sourceforge.properties file with the sf.user and sf.password properties." />
-		<echo message=" A DOCBOOK_XSLT_HOME environment variable set to the Docbook XSLT." />
+		<echo message="Main targets:" />
+		<echo message="  clean        : Remove all generated files"                         />
+		<echo message="  java         : Compile all Java source files"                      />
+		<echo message="  javadoc      : Generate the Javadoc API docs"                      />
+		<echo message="  logdoc-html  : Generate the Logdoc HTML pages"                     />
+		<echo message="  version      : Print the XINS version"                             />
+		<echo message="* tests        : Run all unit tests"                                 />
+		<echo message="* release      : Create a new XINS release"                          />
+		<echo                                                                               />
+		<echo message="The targets marked with an asterisk (*) need '-lib lib' to be"       />
+		<echo message="passed on the command line:"                                         />
+		<echo                                                                               />
+		<echo message="Possible options for the 'release' target:"                          />
+		<echo message="1) -Dforce=true         (optional): Bypass the -dev suffix check"    />
+		<echo message="2) -Dmajor.release=true (optional): Bypass version update"           />
+		<echo                                                                               />
+		<echo message="To create a release the following requirements apply:"               />
+		<echo message="1) CVS module 'xins-docs' must be checked out in parent directory"   />
+		<echo message="   and should be up-to-date;"                                        />
+		<echo message="2) CVS module 'xins-examples' must be checked out in parent"         />
+		<echo message="   directory and should be up-to-date;"                              />
+		<echo message="3) File .sourceforge.properties must exist in home directory and"    />
+		<echo message="   must contain valid sf.user and sf.password properties."           />
+		<echo message="4) The DOCBOOK_XSLT_HOME environment variable must be set and"       />
+		<echo message="   refer to the directory containing the Docbook XSLT files."        />
 	</target>
 </project>
