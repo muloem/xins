@@ -74,4 +74,25 @@
 		</a>
 	</xsl:template>
 
+	<xsl:template name="javatypeclass_for_type">
+		<xsl:param name="type" />
+
+		<xsl:choose>
+			<xsl:when test="starts-with($type, '_')">
+				<xsl:text>org.xins.types.standard.</xsl:text>
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="substring($type, 2)" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text">
+						<xsl:value-of select="$type" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>
