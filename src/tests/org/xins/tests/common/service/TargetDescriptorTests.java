@@ -78,7 +78,10 @@ public class TargetDescriptorTests extends TestCase {
       // Test some invalid URLs
       String[] invalidURLs = new String[] {
          "", " ", "\n", "http:8", "http:/8", "blablabla",
-         "http://1.2.3.4.5", "http://1.2.3.4.5/"
+         "http://example%20com/", "http://", "http%3A%2F%2Fwww.example.com",
+         "http:///index.html", "/usr/local/something", "C:\\xins\\src",
+         "file://C:\\xins\\src", "http://http://www.example.com",
+         "http://www.example.com /index.html"
       };
       for (int i = 0; i < invalidURLs.length; i++) {
          String url = invalidURLs[i];
@@ -92,17 +95,22 @@ public class TargetDescriptorTests extends TestCase {
 
       // Test some valid URLs
       String[] validURLs = new String[] {
-         "file:/home/ernst/something.xml",
+         "file://home/ernst/something.xml",
+         "file://C/Documents%20and%20Settings/",
+         "file://home/janwb/../ernst/something.xml",
          "ftp://someserver.co.au/",
          "ftp://someserver.co.au/pub/content/",
          "ftp://someserver.co.au/pub/content/a.ico",
          "http://abc123.com/something",
-         "http://10.2.3.4/",
+         "http://127.0.0.1/",
          "http://10.2.3.4",
          "https://1.2.3.4/",
-         "jdbc:odbc://dataserv:80/mydomain"
+         "jdbc:odbc://dataserv:80/mydomain",
+         "http://www.example.com/some%20file",
+         "http://www.example.com:8080/",
+         "http://www.example.com/somedir/../index.html"
       };
-      for (int i = 0; i < invalidURLs.length; i++) {
+      for (int i = 0; i < validURLs.length; i++) {
          String url = validURLs[i];
          new TargetDescriptor(url);
       }
