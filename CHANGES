@@ -7,6 +7,9 @@ CHANGES INTRODUCED IN XINS 0.150:
 * XINS/Java Common Library:
   - Moved MissingRequiredPropertyException and InvalidPropertyValueException
     from org.xins.util.manageable to org.xins.util.collections.
+  - InvalidPropertyValueException now supports 'reason' property.
+  - DescriptorBuilder (in org.xins.util.service) now uses exceptions from
+    org.xins.util.collections package.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.149:
