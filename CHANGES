@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.136:
     except isSuccess(). Deprecated getCallResult() in the latter class.
   - Added class CallIOException that extends CallException and wraps around an
     IOException.
+  - Added class UnacceptableCallResultException that extends CallException and
+    accepts an optional reason only.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.135:
