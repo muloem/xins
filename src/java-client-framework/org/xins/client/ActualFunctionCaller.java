@@ -183,7 +183,7 @@ extends AbstractFunctionCaller {
       String urlHostName = url.getHost();
       InetAddress[] addresses = InetAddress.getAllByName(urlHostName);
       if (addresses.length > 1) {
-         throw new MultipleIPAddressesException(); // TODO: Pass host name and addresses
+         throw new MultipleIPAddressesException(urlHostName, addresses);
       }
 
       // Construct the internal URL, with absolute IP address, so no DNS
