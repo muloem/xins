@@ -6,6 +6,8 @@
 :: Converts xins-project.xml in the current directory to an Ant build file and
 :: then passes control to Ant.
 
+@ECHO OFF
+
 
 :: Recognise -version option
 IF NOT "%1" == "-version" GOTO no_version
