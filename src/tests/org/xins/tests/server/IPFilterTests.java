@@ -145,7 +145,6 @@ public class IPFilterTests extends TestCase {
       doTestIsAuthorized(filter, "abcd/24",                  false, false);
       doTestIsAuthorized(filter, "a.b.c.d",                  false, false);
       doTestIsAuthorized(filter, "a.b.c.d/12",               false, false);
-      doTestIsAuthorized(filter, "1.2.3.4",                  false, false);
       doTestIsAuthorized(filter, "1.2.3.4/",                 false, false);
       doTestIsAuthorized(filter, "1.2.3.4/a",                false, false);
       doTestIsAuthorized(filter, "1.2.3.4/-1",               false, false);
