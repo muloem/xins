@@ -66,8 +66,9 @@ public class FunctionResult {
    CallResult getCallResult() {
 
       // If the output parameters are invalid, return an error result
-      if (checkOutputParameters() != null) {
-         return _errorOutputResult.getResultBuilder();
+      InvalidResponseResult result = checkOutputParameters();
+      if (result != null) {
+         return result.getResultBuilder();
 
       // Otherwise return the built result
       } else {
