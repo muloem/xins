@@ -37,8 +37,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
 
 * XINS/Java Server Framework:
   - Added the possibility to point to an ACL file in the ACL runtime property.
-  - Added _GetStatistics meta function with error code by using the optional
-    parameter "detailed=true".
 
 * Generated CAPI classes:
   - The generated CAPI classes now offer a constructor that takes a
