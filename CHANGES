@@ -15,8 +15,8 @@ CHANGES INTRODUCED IN XINS 0.191:
   - Improved Javadoc for the getDOMElement() method.
 
 * Build and release process:
-  - Fails if the .sourceforge.properties does not exist or if it does not
-    defined the required properties.
+  - The release process is aborted if the .sourceforge.properties does not
+    exist or if it does not define the required properties.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.190:
