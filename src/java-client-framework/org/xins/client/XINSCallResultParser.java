@@ -571,6 +571,9 @@ extends Object {
        * @param length
        *    the number of characters to take from <code>ch</code>.
        *
+       * @throws IllegalStateException
+       *    if the current state does not allow character data.
+       *
        * @throws IndexOutOfBoundsException
        *    if characters outside the allowed range are specified.
        */
