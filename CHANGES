@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.102:
+
+* XINS/Java Server Framework:
+  - Added getAttributes() to class Session.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.101:
 
 * XINS/Java Common Library:
