@@ -11,10 +11,15 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Constraint on a single parameter.
  *
+ * <p><em>This class should not be used directly. It may be moved or removed
+ * in an upcoming minor XINS release.</em>
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.2.0
  */
-abstract class ParamConstraint
+public abstract class ParamConstraint
 extends Constraint {
 
    //-------------------------------------------------------------------------
@@ -76,6 +81,16 @@ extends Constraint {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the parameter name.
+    *
+    * @return
+    *    the name of the parameter, never <code>null</code>.
+    */
+   public String getParameterName() {
+      return _name;
+   }
+
+   /**
     * Validates this constraint in the specified context (implementation
     * method). If this constraint is violated, then <code>false</code> is
     * returned, otherwise <code>true</code> is returned.
@@ -84,7 +99,7 @@ extends Constraint {
     * {@link #check(ConstraintContext)}.
     *
     * <p>The implementation of this method in class {@link ParamConstraint}
-    * delegates to {@link #checkParameterValue(String)}.
+    * delegates to {@link #checkParameterValue(Object)}.
     *
     * @param context
     *    the context for the validation, guaranteed not to be
