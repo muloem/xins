@@ -64,7 +64,8 @@ extends Object {
 
    /**
     * The pattern which normal parameter names should match, as a character
-    * string.
+    * string. Note that this will be applied in a <em>case-insensitive</em>
+    * way.
     */
    private static final String PATTERN_STRING = "[a-z][a-z0-9_]*";
 
@@ -145,10 +146,13 @@ extends Object {
          } else if ("function".equals(name)) {
             parameters.set(secretKey, name, null);
 
+         // TODO: Enable this for XINS 2.0.0:
+/*
          // If the pattern is not matched, then log and remove it
          } else if (! PATTERN_MATCHER.matches(name, PATTERN)) {
-            // FIXME: Log this
+            // TODO: Log this
             parameters.set(secretKey, name, null);
+*/
          }
       }
    }
