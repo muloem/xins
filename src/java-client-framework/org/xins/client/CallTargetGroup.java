@@ -456,6 +456,53 @@ extends AbstractCompositeFunctionCaller {
       return result;
    }
 
+   /**
+    * Returns the result of <code>tryCall()</code>. This utility method can be
+    * called from {@link #callImpl(String,String,Map)} after
+    * {@link tryCall(FunctionCaller,String,String)} has been called as many
+    * times as necessary.
+    *
+    * <p>If the specified object is a <code>CallResult</code> object, then it
+    * will be <em>returned</em>. If it is an exception, then that exception
+    * will be <em>thrown</em>.
+    *
+    * @param result
+    *    the result from a call to
+    *    {@link #tryCall(FunctionCaller,String,String,Map)}, should not be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the {@link CallResult}, if <code>result instanceof CallResult</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null</code>.
+    *
+    * @throws IOException
+    *    if <code>result instanceof IOException</code>.
+    *
+    * @throws InvalidCallResultException
+    *    if <code>result instanceof InvalidCallResultException</code>.
+    */
+   protected final CallResult callImplResult(Object result)
+   throws IllegalArgumentException, IOException, InvalidCallResultException {
+
+      MandatoryArgumentChecker.check("result", result);
+
+      if (result instanceof CallResult) {
+         return (CallResult) result;
+      } else if (result instanceof IOException) {
+         throw (IOException) result;
+      } else if (result instanceof InvalidCallResultException) {
+         throw (InvalidCallResultException) result;
+      } else if (result instanceof Error) {
+         throw (Error) result;
+      } else if (result instanceof RuntimeException) {
+         throw (RuntimeException) result;
+      } else {
+         throw new InternalError("CallTargetGroup.tryCall() returned an instance of class " + result.getClass().getName() + ", which is unsupported.");
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
