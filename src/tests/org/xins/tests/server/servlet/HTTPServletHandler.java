@@ -158,7 +158,7 @@ public class HTTPServletHandler {
       } finally{
          // Clean up
          // System.out.println("Cleaning up connection: " + client);
-         outbound.flush();
+         outbound.close();
 
          // The following close statements doesn't work on Unix.
          // inbound.close();
