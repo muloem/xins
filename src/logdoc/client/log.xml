@@ -144,12 +144,28 @@
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="2110" level="NOTICE" exception="true">
-			<description>Unexpected exception while calling XINS service.</description>
+		<entry id="2110" level="NOTICE" exception="false">
+			<description>Invalid result received from XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
+			<param name="detail"     type="text"         nullable="false" />
+		</entry>
+		<entry id="2111" level="INFO" exception="false">
+			<description>Successful XINS result received.</description>
+			<param name="url"        type="text"         nullable="false" />
+			<param name="function"   type="text"         nullable="false" />
+			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="duration"   type="int64"        nullable="false" />
+		</entry>
+		<entry id="2112" level="INFO" exception="false">
+			<description>Unsuccessful XINS result received.</description>
+			<param name="url"        type="text"         nullable="false" />
+			<param name="function"   type="text"         nullable="false" />
+			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="duration"   type="int64"        nullable="false" />
+			<param name="errorCode"  type="text"         nullable="false" />
 		</entry>
 	</group>
 
