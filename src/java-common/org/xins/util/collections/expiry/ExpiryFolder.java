@@ -50,7 +50,8 @@ extends Object {
       // Initialize fields
       _strategy         = strategy;
       _recentlyAccessed = new HashMap(89);
-      _slots            = new Map[strategy.getSlotCount()];
+      _slotCount        = strategy.getSlotCount();
+      _slots            = new Map[_slotCount];
    }
 
 
@@ -70,6 +71,12 @@ extends Object {
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
    private final Map _recentlyAccessed;
+
+   /**
+    * Number of active slots. Always equals
+    * {@link #_slots}<code>.length</code>.
+    */
+   private final int _slotCount;
 
    /**
     * Slots to contain the maps with entries that are not the most recently
@@ -103,7 +110,9 @@ extends Object {
     *
     * <p>If any entries are expirable, they will be removed from this map.
     */
-   abstract void tick();
+   void tick() {
+
+   }
 
    /**
     * Gets the number of entries.
@@ -113,10 +122,11 @@ extends Object {
     */
    public int size() {
       int size;
+      int slotCount = _slots.length;
       synchronized (_recentlyAccessed) {
          synchronized (_slots) {
             size = _recentlyAccessed.size();
-            for (int i = 0; i < _slots.length; i++) {
+            for (int i = 0; i < slotCount; i++) {
                size += _slots[i].size();
             }
          }
@@ -138,7 +148,8 @@ extends Object {
          }
       }
 
-      for (int i = 0; i < _slots.length; i++) {
+      int slotCount = _slots.length;
+      for (int i = 0; i < slotCount; i++) {
          Map slot = _slots[i];
          synchronized (slot) {
             if (slot.isEmpty() == false) {
@@ -178,7 +189,8 @@ extends Object {
       }
 
       // Check all slots
-      for (int i = 0; i < _slots.length; i++) {
+      int slotCount = _slots.length;
+      for (int i = 0; i < slotCount; i++) {
          Map slot = _slots[i];
          synchronized (slot) {
             Object o = slot.get(key);
@@ -218,10 +230,11 @@ extends Object {
     * Removes all entries.
     */
    public void clear() {
+      int slotCount = _slots.length;
       synchronized (_recentlyAccessed) {
          _recentlyAccessed.clear();
 
-         for (int i = 0; i < _slots.length; i++) {
+         for (int i = 0; i < slotCount; i++) {
             Map slot = _slots[i];
             synchronized (slot) {
                slot.clear();
