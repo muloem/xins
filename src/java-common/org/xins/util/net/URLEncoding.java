@@ -4,9 +4,9 @@
 package org.xins.util.net;
 
 import java.net.URLDecoder;
-import org.xins.text.NonASCIIException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
+import org.xins.util.text.NonASCIIException;
 
 /**
  * URL encoding utility functions. This class supports both encoding and
