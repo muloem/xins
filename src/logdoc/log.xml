@@ -161,26 +161,26 @@
 			<param name="function" />
 		</entry>
 		<entry id="2029" level="ERROR">
-			<description>Function could not be initialized due to a missing required property.</description>
+			<description>Function could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 		</entry>
 		<entry id="2030" level="ERROR">
-			<description>Function could not be initialized due to an invalid property value.</description>
+			<description>Function could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
 		<entry id="2031" level="ERROR">
-			<description>Function could not be initialized.</description>
+			<description>Function could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
 		<entry id="2032" level="ERROR">
-			<description>Function could not be initialized due to an unexpected exception.</description>
+			<description>Function could not be bootstrapped due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="exceptionClass" />
