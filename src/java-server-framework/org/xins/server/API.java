@@ -46,6 +46,7 @@ implements DefaultResultCodes {
     *    value.length() != 0</code>.
     */
    protected static final boolean isMissing(String value) {
+      // TODO: Remove this method?
       return value == null || value.length() == 0;
    }
 
@@ -198,7 +199,7 @@ implements DefaultResultCodes {
       Thread thread = Thread.currentThread();
       CallContext context = (CallContext) _contextsByThread.get(thread);
       if (context == null) {
-         context = new CallContext();
+         context = new CallContext(this);
          _contextsByThread.put(thread, context);
       }
 

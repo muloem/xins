@@ -39,8 +39,19 @@ implements Responder, Log {
     *
     * <p />Before this object can be used, {@link #reset(ServletRequest)} must
     * be called.
+    *
+    * @param api
+    *    the API for which this <code>CallContext</code> will be used, cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null</code>.
     */
-   CallContext() {
+   CallContext(API api) throws IllegalArgumentException {
+
+      MandatoryArgumentChecker.check("api", api);
+
+      _api          = api;
       _state        = UNINITIALIZED;
       _success      = true;
       _code         = null;
@@ -53,6 +64,12 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The API for which this CallContext is used. This field is initialized by
+    * the constructor and can never be <code>null</code>.
+    */
+   private final API _api;
 
    /**
     * The start time of the call, as a number of milliseconds since midnight
