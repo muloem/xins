@@ -10,6 +10,16 @@ CHANGES INTRODUCED IN XINS 0.190:
     creation of the javadoc.
   - The create targets now create XML files with the encoding set to UTF-8.
 
+* Generated specification documentation:
+  - The XML encoding is now showed in the example output section.
+  - If an example result has a result code that requires some output
+    parameters but the example doesn't define them, the generation fails.
+
+* Specification:
+  - Removed the "success" attribute from the "example" element for functions.
+  - Added the elements "input-example" and "output-example" in the "example"
+    element. The "example-value" element is now deprecated.
+
 * Logdoc:
   - Changed the logdoc domain for common from org.xins.util to
     org.xins.common.

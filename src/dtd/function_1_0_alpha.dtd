@@ -49,7 +49,8 @@
 <!ATTLIST element
           name       NMTOKEN #REQUIRED
 >
-<!ELEMENT contains (contained*)>
+<!ELEMENT contains (pcdata | contained*)>
+<!ELEMENT pcdata EMPTY>
 <!ELEMENT contained EMPTY>
 <!ATTLIST contained
           element    NMTOKEN #REQUIRED
@@ -65,12 +66,20 @@
 <!ATTLIST example-value
           example     NMTOKEN #REQUIRED
 >
-<!ELEMENT example (description, data-example?)>
+<!ELEMENT example (description, input-example*, output-example*, data-example?)>
 <!ATTLIST example
           num         NMTOKEN #REQUIRED
           resultcode  NMTOKEN #IMPLIED
           sessionID   NMTOKEN #IMPLIED
           success     (true | false) #IMPLIED
+>
+<!ELEMENT input-example (#PCDATA)>
+<!ATTLIST input-example
+          name        NMTOKEN #REQUIRED
+>
+<!ELEMENT output-example (#PCDATA)>
+<!ATTLIST output-example
+          name        NMTOKEN #REQUIRED
 >
 <!ELEMENT data-example (element-example+)>
 <!ELEMENT element-example (pcdata-example?, attribute-example*, element-example*)>

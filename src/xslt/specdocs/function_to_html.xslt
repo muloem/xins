@@ -330,7 +330,9 @@
 
 		<xsl:variable name="examplenum"           select="@num" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
+		<xsl:variable name="example-inputparams2"  select="input-example" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
+		<xsl:variable name="example-outputparams2" select="output-example" />
 		<xsl:variable name="resultcode">
 			<xsl:choose>
 				<xsl:when test="@returncode">
@@ -382,7 +384,7 @@
 				<xsl:variable name="required_attr">
 					<xsl:value-of select="@name" />
 				</xsl:variable>
-				<xsl:if test="not(boolean(/function/input/param[@name=$required_attr]/example-value[@example=$examplenum]))">
+				<xsl:if test="not(boolean(/function/input/param[@name=$required_attr]/example-value[@example=$examplenum])) and not(boolean(/function/example[@num=$examplenum]/input-example[@name=$required_attr]))">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
 						<xsl:value-of select="$examplenum" />
@@ -400,11 +402,35 @@
 				<xsl:variable name="required_attr">
 					<xsl:value-of select="@name" />
 				</xsl:variable>
-				<xsl:if test="not(boolean(/function/output/param[@name=$required_attr]/example-value[@example=$examplenum]))">
+				<xsl:if test="not(boolean(/function/output/param[@name=$required_attr]/example-value[@example=$examplenum])) and not(boolean(/function/example[@num=$examplenum]/output-example[@name=$required_attr]))">
 					<xsl:message terminate="yes">
 						<xsl:text>Example </xsl:text>
 						<xsl:value-of select="$examplenum" />
 						<xsl:text> is marked as successful, but it does not specify a value for the required output parameter '</xsl:text>
+						<xsl:value-of select="$required_attr" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+
+		<!--
+		Same applies to result code with required output parameters.
+		-->
+		<xsl:if test="@resultcode">
+			<xsl:variable name="errorcode" select="@resultcode" />
+			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $errorcode, '.rcd')" />
+			<xsl:for-each select="document($rcd_file)/output/param[@required='true']">
+				<xsl:variable name="required_attr">
+					<xsl:value-of select="@name" />
+				</xsl:variable>
+				<xsl:if test="not(boolean(/function/example[@num=$examplenum]/output-example[@name=$required_attr]))">
+					<xsl:message terminate="yes">
+						<xsl:text>Example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text> is marked with the error code '</xsl:text>
+						<xsl:value-of select="$errorcode" />
+						<xsl:text>', but it does not specify a value for the required output parameter '</xsl:text>
 						<xsl:value-of select="$required_attr" />
 						<xsl:text>'.</xsl:text>
 					</xsl:message>
@@ -461,6 +487,27 @@
 							</span>
 						</span>
 					</xsl:for-each>
+					<xsl:for-each select="$example-inputparams2">
+						<xsl:text>&amp;</xsl:text>
+						<span class="param">
+							<xsl:attribute name="title">
+								<xsl:value-of select="@name" />
+								<xsl:text>: </xsl:text>
+								<xsl:value-of select="text()" />
+							</xsl:attribute>
+							<span class="name">
+								<xsl:value-of select="@name" />
+							</span>
+							<xsl:text>=</xsl:text>
+							<span class="value">
+								<xsl:call-template name="urlencode">
+									<xsl:with-param name="text">
+										<xsl:value-of select="text()" />
+									</xsl:with-param>
+								</xsl:call-template>
+							</span>
+						</span>
+					</xsl:for-each>
 				</span>
 			</td>
 		</tr>
@@ -478,6 +525,12 @@
 							<span class="name">version</span>
 							<xsl:text>=</xsl:text>
 							<span class="value">"1.0"</span>
+						</span>
+						<xsl:text> </xsl:text>
+						<span class="attr">
+							<span class="name">encoding</span>
+							<xsl:text>=</xsl:text>
+							<span class="value">"UTF-8"</span>
 						</span>
 						<xsl:text>?&gt;
 </xsl:text>
@@ -507,7 +560,7 @@
 							</span>
 						</xsl:if>
 						<xsl:choose>
-							<xsl:when test="$example-outputparams or data-example">
+							<xsl:when test="$example-outputparams or $example-outputparams2 or data-example">
 								<xsl:text>&gt;</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -516,7 +569,7 @@
 						</xsl:choose>
 					</span>
 					<xsl:choose>
-						<xsl:when test="$example-outputparams or data-example">
+						<xsl:when test="$example-outputparams or $example-outputparams2 or data-example">
 							<xsl:if test="$example-outputparams">
 								<xsl:for-each select="$example-outputparams">
 									<xsl:text>
@@ -532,6 +585,36 @@
 											<span class="value">
 												<xsl:text>"</xsl:text>
 												<xsl:value-of select="../@name" />
+												<xsl:text>"</xsl:text>
+											</span>
+										</span>
+										<xsl:text>&gt;</xsl:text>
+									</span>
+									<span class="pcdata">
+										<xsl:apply-templates select="." />
+									</span>
+									<span class="elem">
+										<xsl:text>&lt;/</xsl:text>
+										<span class="name">param</span>
+										<xsl:text>&gt;</xsl:text>
+									</span>
+								</xsl:for-each>
+							</xsl:if>
+							<xsl:if test="$example-outputparams2">
+								<xsl:for-each select="$example-outputparams2">
+									<xsl:text>
+</xsl:text>
+									<xsl:value-of disable-output-escaping="yes" select="$indentation" />
+									<span class="elem">
+										<xsl:text>&lt;</xsl:text>
+										<span class="name">param</span>
+										<xsl:text> </xsl:text>
+										<span class="attr">
+											<span class="name">name</span>
+											<xsl:text>=</xsl:text>
+											<span class="value">
+												<xsl:text>"</xsl:text>
+												<xsl:value-of select="@name" />
 												<xsl:text>"</xsl:text>
 											</span>
 										</span>
@@ -601,6 +684,16 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:for-each>
+								<xsl:for-each select="$example-inputparams2">
+									<xsl:text>&amp;</xsl:text>
+									<xsl:value-of select="@name" />
+									<xsl:text>=</xsl:text>
+									<xsl:call-template name="urlencode">
+										<xsl:with-param name="text">
+											<xsl:value-of select="text()" />
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:for-each>
 							</xsl:attribute>
 
 							<xsl:value-of select="@id" />
@@ -618,6 +711,16 @@
 									<xsl:for-each select="$example-inputparams">
 										<xsl:text>&amp;</xsl:text>
 										<xsl:value-of select="../@name" />
+										<xsl:text>=</xsl:text>
+										<xsl:call-template name="urlencode">
+											<xsl:with-param name="text">
+												<xsl:value-of select="text()" />
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:for-each>
+									<xsl:for-each select="$example-inputparams2">
+										<xsl:text>&amp;</xsl:text>
+										<xsl:value-of select="@name" />
 										<xsl:text>=</xsl:text>
 										<xsl:call-template name="urlencode">
 											<xsl:with-param name="text">
