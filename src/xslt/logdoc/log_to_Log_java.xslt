@@ -15,6 +15,22 @@
 	<xsl:output method="text" />
 
 	<xsl:template match="log">
+
+		<xsl:variable name="default_locale">
+			<xsl:if test="string-length(@default-locale) &lt; 1">
+				<xsl:message terminate="yes">No default locale has been set.</xsl:message>
+			</xsl:if>
+			<xsl:value-of select="@default-locale" />
+		</xsl:variable>
+
+		<xsl:if test="not(boolean(messageset[@id=$default_locale]))">
+			<xsl:message terminate="yes">
+				<xsl:text>The default locale "</xsl:text>
+				<xsl:value-of select="$default_locale" />
+				<xsl:text>" does not exist.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
@@ -105,8 +121,7 @@ public class Log extends Object {
       FATAL   = Level.FATAL;
 
       // Reference all translation bundles by name
-      TRANSLATION_BUNDLES_BY_NAME = new HashMap();
-      TRANSLATION_BUNDLES_BY_NAME.put("_raw", TranslationBundle.RAW);]]></xsl:text>
+      TRANSLATION_BUNDLES_BY_NAME = new HashMap();]]></xsl:text>
 			<xsl:for-each select="messageset">
 				<xsl:text>
       TRANSLATION_BUNDLES_BY_NAME.put("</xsl:text>
@@ -115,10 +130,12 @@ public class Log extends Object {
 				<xsl:value-of select="@id" />
 				<xsl:text>.SINGLETON);</xsl:text>
 			</xsl:for-each>
-			<xsl:text><![CDATA[
+			<xsl:text>
 
-      // Default translation bundle is _raw
-      TRANSLATION_BUNDLE = TranslationBundle.RAW;
+      // Initialize to the default translation bundle
+      TRANSLATION_BUNDLE = TranslationBundle_</xsl:text>
+			<xsl:value-of select="$default_locale" />
+			<xsl:text><![CDATA[.SINGLETON;
    }
 
    /**
@@ -130,6 +147,15 @@ public class Log extends Object {
     */
    public static final TranslationBundle getTranslationBundle() {
       return TRANSLATION_BUNDLE;
+   }
+
+   /**
+    * Activates the default translation bundle.
+    */
+   public static final void resetTranslationBundle() {
+      TRANSLATION_BUNDLE = TranslationBundle_]]></xsl:text>
+		<xsl:value-of select="$default_locale" />
+		<xsl:text><![CDATA[.SINGLETON;
    }
 
    /**
