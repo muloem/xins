@@ -16,7 +16,9 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Narrowed the definition of a service caller to TCP-based services.
   - Changed the interface and rewrote the implementation of the service caller
     framework in package org.xins.common.service.
-  - Removed some TODO done or no longer relevant.
+  - Removed deprecated method execute(Thread,int) from class
+    TimeOutController.
+  - Removed TODO entries that are done or no longer relevant.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
