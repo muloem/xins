@@ -106,7 +106,7 @@ public class Log extends Object {
 
       // Reference all translation bundles by name
       TRANSLATION_BUNDLES_BY_NAME = new HashMap();
-      TRANSLATION_BUNDLES_BY_NAME.put("_raw", TranslationBundle.SINGLETON);]]></xsl:text>
+      TRANSLATION_BUNDLES_BY_NAME.put("_raw", TranslationBundle.RAW);]]></xsl:text>
 			<xsl:for-each select="messageset">
 				<xsl:text>
       TRANSLATION_BUNDLES_BY_NAME.put("</xsl:text>
@@ -118,7 +118,7 @@ public class Log extends Object {
 			<xsl:text><![CDATA[
 
       // Default translation bundle is _raw
-      TRANSLATION_BUNDLE = TranslationBundle.SINGLETON;
+      TRANSLATION_BUNDLE = TranslationBundle.RAW;
    }
 
    /**
