@@ -165,7 +165,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
             // value, this is equivalent to having the parameter not set at
             // all.
             if (key != null && value != null) {
-            if (key != null && value != null) {
 
                if (query.getLength() > 0) {
                   query.append(",");
