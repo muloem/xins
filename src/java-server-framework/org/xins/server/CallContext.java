@@ -8,6 +8,7 @@ import javax.servlet.ServletRequest;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
+import org.apache.commons.logging.Log;
 
 /**
  * Context for a function call. Objects of this kind are passed with a
@@ -18,7 +19,7 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public final class CallContext
 extends Object
-implements Responder {
+implements Responder, Log {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -519,5 +520,77 @@ implements Responder {
 
       // Flush the output stream
       _xmlOutputter.getWriter().flush();
+   }
+
+   public void debug(Object message) {
+      // TODO
+   }
+
+   public void debug(Object message, Throwable t) {
+      // TODO
+   }
+
+   public void error(Object message) {
+      // TODO
+   }
+
+   public void error(Object message, Throwable t) {
+      // TODO
+   }
+
+   public void fatal(Object message) {
+      // TODO
+   }
+
+   public void fatal(Object message, Throwable t) {
+      // TODO
+   }
+
+   public void info(Object message) {
+      // TODO
+   }
+
+   public void info(Object message, Throwable t) {
+      // TODO
+   }
+
+   public boolean isDebugEnabled() {
+      return true; // TODO
+   }
+
+   public boolean isErrorEnabled() {
+      return true; // TODO
+   }
+
+   public boolean isFatalEnabled() {
+      return true; // TODO
+   }
+
+   public boolean isInfoEnabled() {
+      return true; // TODO
+   }
+
+   public boolean isTraceEnabled() {
+      return true; // TODO
+   }
+
+   public boolean isWarnEnabled() {
+      return true; // TODO
+   }
+
+   public void trace(Object message) {
+      // TODO
+   }
+
+   public void trace(Object message, Throwable t) {
+      // TODO
+   }
+
+   public void warn(Object message) {
+      // TODO
+   }
+
+   public void warn(Object message, Throwable t) {
+      // TODO
    }
 }
