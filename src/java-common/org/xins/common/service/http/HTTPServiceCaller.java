@@ -19,6 +19,8 @@ import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+import org.apache.log4j.NDC;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
@@ -274,11 +276,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if <code>target == null || request == null</code>.
     *
     * @throws GenericCallException
-    *    if the call to the specified target failed due to a generic reason.
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
     *
     * @throws HTTPCallException
-    *    if the call to the specified target failed due to an HTTP-specific
-    *    error.
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
     *
     * @since XINS 0.207
     */
@@ -292,7 +295,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // NOTE: Preconditions are checked by the CallExecutor constructor
       // Prepare a thread for execution of the call
-      CallExecutor executor = new CallExecutor(target, request);
+      CallExecutor executor = new CallExecutor(target, request, NDC.peek());
 
       // TODO: Log that we are about to make an HTTP call
 
@@ -381,6 +384,41 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
 
       return result;
+   }
+
+   /**
+    * Determines whether a call should fail-over to the next selected target.
+    *
+    * @param request
+    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    should not be <code>null</code>.
+    *
+    * @param exception
+    *    the exception caught while calling the most recently called target,
+    *    should not be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the call should fail-over to the next target, or
+    *    <code>false</code> if it should not.
+    *
+    * @since XINS 0.207
+    */
+   protected boolean shouldFailOver(CallRequest request,
+                                    Throwable   exception) {
+
+      // First let the superclass do it's job
+      if (super.shouldFailOver(request, exception)) {
+         return true;
+
+      // A non-2xx HTTP status code indicates the request was not handled
+      } else if (exception instanceof StatusCodeHTTPCallException) {
+         int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
+         return (code < 200 || code > 299);
+
+      // Otherwise do not fail over
+      } else {
+         return false;
+      }
    }
 
 
@@ -609,7 +647,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       /**
        * Constructs a new <code>CallExecutor</code> for the specified call to
-       * a XINS API.
+       * an HTTP service.
+       *
+       * <p>A <em>Nested Diagnostic Context identifier</em> (NDC) may be
+       * specified, which will be set for the new thread when it is executed.
+       * If the NDC is <code>null</code>, then it will be left unchanged. See
+       * the {@link NDC} class.
        *
        * @param target
        *    the service target on which to execute the request, cannot be
@@ -618,11 +661,16 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * @param request
        *    the call request to execute, cannot be <code>null</code>.
        *
+       * @param context
+       *    the <em>Nested Diagnostic Context identifier</em> (NDC), or
+       *    <code>null</code>.
+       *
        * @throws IllegalArgumentException
        *    if <code>target == null || request == null</code>.
        */
       private CallExecutor(TargetDescriptor target,
-                           HTTPCallRequest  request)
+                           HTTPCallRequest  request,
+                           String           context)
       throws IllegalArgumentException {
 
          // Create textual representation of this object
@@ -631,9 +679,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Check preconditions
          MandatoryArgumentChecker.check("target", target, "request", request);
 
-         // Store target and request for later use in the run() method
+         // Store data for later use in the run() method
          _target  = target;
          _request = request;
+         _context = context;
       }
 
 
@@ -658,6 +707,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
       private final HTTPCallRequest _request;
 
       /**
+       * The <em>Nested Diagnostic Context identifier</em> (NDC). Is set to
+       * <code>null</code> if it should be left unchanged.
+       */
+      private final String _context;
+
+      /**
        * The exception caught while executing the call. If there was no
        * exception, then this field is <code>null</code>.
        */
@@ -676,10 +731,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * Runs this thread. It will call the XINS API. If that call was
-       * successful, then the status code is stored in this object. Otherwise
-       * there is an exception. In that case the exception is stored in this
-       * object.
+       * Runs this thread. It will call the HTTP service. If that call was
+       * successful, then the result is stored in this object. Otherwise
+       * there is an exception, in which case that exception is stored in this
+       * object instead.
        */
       public void run() {
 
@@ -688,8 +743,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //       synchronized section, so it may no 2 threads may execute
          //       this request at the same time.
 
-         // NOTE: Performance could be improved by using local variables for
-         //       _target and _request
+         // XXX: Note that performance could be improved by using local
+         //      variables for _target and _request
+
+         // Activate the diagnostic context ID
+         if (_context != null) {
+            NDC.push(_context);
+         }
 
          // Get the input parameters
          PropertyReader params = _request.getParameters();
@@ -722,7 +782,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             int    statusCode = client.executeMethod(method);
             byte[] body       = method.getResponseBody();
 
-            // Store the result immediately
+            // Store the result
             _result = new Result(statusCode, body);
 
          // If an exception is thrown, store it for processing at later stage
@@ -735,6 +795,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
             method.releaseConnection();
          } catch (Throwable exception) {
             // TODO: Log
+         }
+
+         // Unset the diagnostic context ID
+         if (_context != null) {
+            NDC.pop();
          }
 
          // TODO: Mark this CallExecutor object as executed, so it may not be
