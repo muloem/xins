@@ -569,7 +569,7 @@ extends Object {
       throws IllegalStateException, IndexOutOfBoundsException {
 
          // Check state
-         if (_state != IN_PARAM_ELEMENT && state != IN_DATA_SECTION) {
+         if (_state != IN_PARAM_ELEMENT && _state != IN_DATA_SECTION) {
             String detail = "Found PCDATA content in state " + _state + '.';
             // TODO: Log parse error
             throw new IllegalStateException(detail);
