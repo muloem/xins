@@ -4,6 +4,9 @@ CHANGES INTRODUCED IN XINS 0.168:
 * Generated specification documentation:
   - Added the version number to the DTD files.
 
+* XINS/Java Server Framework:
+  - Fixed translations for log messages 2007 and 2008.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.167:
 
