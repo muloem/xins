@@ -160,12 +160,21 @@
 		<delete file="build/${src-package-tarfile}" />
 	</target>
 
-	<target name="packages" depends="src-package" description="Build all distribution archives"/>
+	<target name="bin-package" depends="javadoc,java-server-framework" description="Builds a complete distribution archive">
+		<tar tarfile="build/${bin-package-tarfile}">
+			<tarfileset dir="${basedir}" prefix="${name}-${version}" includes="build.xml,src/**/*,build/javadoc/**,build/${name}.jar" />
+		</tar>
+		<gzip zipfile="build/${bin-package-tarfile}.gz" src="build/${bin-package-tarfile}" />
+		<delete file="build/${bin-package-tarfile}" />
+	</target>
+
+	<target name="packages" depends="src-package,bin-package" description="Build all distribution archives"/>
 
 	<target name="do-upload-packages" depends="-init" description="Uploads the packages to the web server">
 		<echo message="Uploading ${src-package-tarfile}.gz to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
 			<arg value="${src-package-tarfile}.gz" />
+			<arg value="${bin-package-tarfile}.gz" />
 			<arg value="${www.target}" />
 		</exec>
 	</target>
