@@ -432,11 +432,11 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
          _sessionIDSplitter.splitSessionID(session, arr);
          crc = org.xins.util.text.HexConverter.parseHexInt(arr[0]);
       } catch (Throwable t) {
-         throw new org.xins.client.NoSuchSessionException(); // TODO: Message
+         throw new org.xins.client.NoSuchSessionException("Unable to convert \"" + arr[0] + "\" to an integer number to be interpreted as the CRC-32 of the service target URL.");
       }
       org.xins.util.service.TargetDescriptor target = caller.getDescriptor().getTargetByCRC(crc);
       if (target == null) {
-         throw new org.xins.client.NoSuchSessionException(); // TODO: Message
+         throw new org.xins.client.NoSuchSessionException("No target service found of which the CRC-32 of the URL is " + arr[0] + '.');
       }
       session = arr[1];</xsl:text>
 		</xsl:if>
