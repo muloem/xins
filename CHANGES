@@ -14,11 +14,13 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
     null.
   - Added logging message with HTTP parameters and duration for the 
     HTTPServiceCaller.
+  - Fixed links in Javadoc.
 
 * XINS/Java Client Framework:
   - Removed unused imports.
   - Removed unused log numbers.
   - Added missing tranlations for some logging messages.
+  - Fixed links in Javadoc.
 
 * Generation of specification documentation:
   - Added missing forward slash for the URL generated for broken links.

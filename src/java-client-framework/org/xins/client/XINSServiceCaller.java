@@ -40,10 +40,11 @@ import org.xins.common.text.ParseException;
  * <p>How load-balancing is done depends on the {@link Descriptor} passed to
  * the {@link #XINSServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
- * and no load-balancing is performed. If it is a {@link GroupDescriptor},
- * then the configuration of the <code>GroupDescriptor</code> determines how
- * the load-balancing is done. A <code>GroupDescriptor</code> is a recursive
- * data structure, which allows for fairly advanced load-balancing algorithms.
+ * and no load-balancing is performed. If it is a 
+ * {@link org.xins.common.service.GroupDescriptor}, then the configuration of 
+ * the <code>GroupDescriptor</code> determines how the load-balancing is done. 
+ * A <code>GroupDescriptor</code> is a recursive data structure, which allows 
+ * for fairly advanced load-balancing algorithms.
  *
  * <p>If a call attempt fails and there are more available target services,
  * then the <code>XINSServiceCaller</code> may or may not fail-over to a next
@@ -71,10 +72,10 @@ import org.xins.common.text.ParseException;
  *
  * <blockquote><pre>// Initialize properties for the services. Normally these
 // properties would come from a configuration source, like a file.
-{@link BasicPropertyReader} properties = new {@link BasicPropertyReader#BasicPropertyReader() BasicPropertyReader}();
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
+{@link org.xins.common.collections.BasicPropertyReader} properties = new {@link org.xins.common.collections.BasicPropertyReader#BasicPropertyReader() org.xins.common.collections.BasicPropertyReader}();
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
 
 // Construct a descriptor and a XINSServiceCaller instance
 {@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, "myapi");
@@ -86,9 +87,9 @@ XINSServiceCaller caller = new {@link #XINSServiceCaller(Descriptor) XINSService
  *
  * <blockquote><pre>// Prepare for the call
 {@link String}          function = "_GetStatistics";
-{@link PropertyReader}  params   = null;
+{@link org.xins.common.collections.PropertyReader}  params   = null;
 boolean         failOver = true;
-{@link HTTPMethod}      method   = {@link HTTPMethod}.{@link HTTPMethod#POST POST};
+{@link org.xins.common.http.HTTPMethod}      method   = {@link org.xins.common.http.HTTPMethod}.{@link org.xins.common.http.HTTPMethod#POST POST};
 {@link XINSCallRequest} request  = new {@link XINSCallRequest#XINSCallRequest(String,PropertyReader,boolean,HTTPMethod) XINSCallRequest}(function, params, failOver, method);
 
 // Perform the call
@@ -153,12 +154,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     * Performs the specified request towards the XINS service. If the call
     * succeeds with one of the targets, then a {@link XINSCallResult} object
     * is returned. Otherwise, if none of the targets could successfully be
-    * called, a {@link CallException} is thrown.
+    * called, a {@link org.xins.common.service.CallException} is thrown.
     *
     * <p>If the result is unsuccessful, then an
-    * {@link UnsuccessfulXINSCallException} is thrown. In this respect, this
-    * method behaves different from
-    * {@link #call(XINSCallRequest,TargetDescriptor)}.
+    * {@link UnsuccessfulXINSCallException} is thrown.
     *
     * @param request
     *    the call request, not <code>null</code>.
@@ -228,7 +227,7 @@ public final class XINSServiceCaller extends ServiceCaller {
    /**
     * Calls the specified target using the specified subject. If the call
     * succeeds, then a {@link XINSCallResult} object is returned, otherwise a
-    * {@link CallException} is thrown.
+    * {@link org.xins.common.service.CallException} is thrown.
     *
     * @param target
     *    the target to call, cannot be <code>null</code>.
@@ -339,8 +338,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the call duration in milliseconds, must be a non-negative number.
     *
     * @param exceptions
-    *    the list of {@link CallException} instances, or <code>null</code> if
-    *    there were no call failures.
+    *    the list of {@link org.xins.common.service.CallException} instances, 
+    *    or <code>null</code> if there were no call failures.
     *
     * @param result
     *    the result from the call, which is the object returned by

@@ -439,7 +439,7 @@ public final class TargetDescriptor extends Descriptor {
    /**
     * Iterates over all leaves, the target descriptors.
     *
-    * <p>The returned {@link Iterator} will only return this target
+    * <p>The returned {@link java.util.Iterator} will only return this target
     * descriptor.
     *
     * @return

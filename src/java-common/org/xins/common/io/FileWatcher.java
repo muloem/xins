@@ -333,7 +333,7 @@ public final class FileWatcher extends Thread {
        * Callback method, called if the file is found for the first time since
        * the <code>FileWatcher</code> was started. Each consecutive time the
        * file still exists, either {@link #fileModified()} or
-       * {@link fileNotModified()} is called.
+       * {@link #fileNotModified()} is called.
        *
        * @since XINS 0.209
        */

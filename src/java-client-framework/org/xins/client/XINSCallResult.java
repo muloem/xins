@@ -53,9 +53,9 @@ implements XINSCallResultData {
     *    the call duration, should be &gt;= 0.
     *
     * @param exceptions
-    *    the list of {@link CallException}s, collected in a
-    *    {@link CallExceptionList} object, or <code>null</code> if the first
-    *    call attempt succeeded.
+    *    the list of {@link org.xins.common.service.CallException}s, collected
+    *    in a {@link CallExceptionList} object, or <code>null</code> if the 
+    *    first call attempt succeeded.
     *
     * @param data
     *    the {@link XINSCallResultData} returned from the call, cannot be

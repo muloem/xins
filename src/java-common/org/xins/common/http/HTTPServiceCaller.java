@@ -74,10 +74,11 @@ import org.xins.logdoc.LogdocSerializable;
  * {@link Descriptor} passed to the
  * {@link #HTTPServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
- * and no load-balancing is performed. If it is a {@link GroupDescriptor},
- * then the configuration of the <code>GroupDescriptor</code> determines how
- * the load-balancing is done. A <code>GroupDescriptor</code> is a recursive
- * data structure, which allows for fairly advanced load-balancing algorithms.
+ * and no load-balancing is performed. If it is a 
+ * {@link org.xins.common.service.GroupDescriptor}, then the configuration of 
+ * the <code>GroupDescriptor</code> determines how the load-balancing is done. 
+ * A <code>GroupDescriptor</code> is a recursive data structure, which allows 
+ * for fairly advanced load-balancing algorithms.
  *
  * <p>If a call attempt fails and there are more available target services,
  * then the <code>HTTPServiceCaller</code> may or may not fail-over to a next
@@ -104,10 +105,10 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * <blockquote><pre>// Initialize properties for the services. Normally these
 // properties would come from a configuration source, like a file.
-{@link BasicPropertyReader} properties = new {@link BasicPropertyReader#BasicPropertyReader() BasicPropertyReader}();
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
-properties.{@link BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
+{@link org.xins.common.collections.BasicPropertyReader} properties = new {@link org.xins.common.collections.BasicPropertyReader#BasicPropertyReader() BasicPropertyReader}();
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi",         "group, random, server1, server2");
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi.server1", "service, http://server1/myapi, 10000");
+properties.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("myapi.server2", "service, http://server2/myapi, 12000");
 
 // Construct a descriptor and an HTTPServiceCaller instance
 {@link Descriptor Descriptor} descriptor = {@link org.xins.common.service.DescriptorBuilder DescriptorBuilder}.{@link org.xins.common.service.DescriptorBuilder#build(PropertyReader,String) build}(properties, "myapi");
@@ -116,9 +117,9 @@ HTTPServiceCaller caller = new {@link #HTTPServiceCaller(Descriptor) HTTPService
  * <p>Then the following code snippet uses this <code>HTTPServiceCaller</code>
  * to perform an HTTP GET call:
  *
- * <blockquote><pre>{@link BasicPropertyReader} params = new {@link BasicPropertyReader BasicPropertyReader}();
-params.{@link BasicPropertyReader#set(String,String) set}("street",      "Broadband Avenue");
-params.{@link BasicPropertyReader#set(String,String) set}("houseNumber", "12");
+ * <blockquote><pre>{@link org.xins.common.collections.BasicPropertyReader} params = new {@link org.xins.common.collections.BasicPropertyReader BasicPropertyReader}();
+params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("street",      "Broadband Avenue");
+params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String) set}("houseNumber", "12");
 
 {@link HTTPCallRequest} request = new {@link HTTPCallRequest#HTTPCallRequest(HTTPMethod,PropertyReader) HTTPCallRequest}({@link HTTPMethod}.{@link HTTPMethod#GET GET}, params);
 {@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</pre></blockquote>

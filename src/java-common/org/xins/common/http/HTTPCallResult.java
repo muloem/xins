@@ -59,7 +59,7 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
     *    the call duration in milliseconds, must be a non-negative number.
     *
     * @param exceptions
-    *    the list of {@link CallException}s, or <code>null</code> if the first
+    *    the list of {@link CallExceptionList}s, or <code>null</code> if the first
     *    call attempt succeeded.
     *
     * @param data
