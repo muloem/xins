@@ -283,7 +283,7 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java-server-framework,-prepare-java-client-framework,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="-prepare-java-server-framework,-prepare-java-client-framework,-prepare-java-common,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
