@@ -149,18 +149,6 @@ implements DefaultResultCodes {
    private final Object _unsuccessfulCallLock = new Object();
 
    /**
-    * Buffer for log messages for successful calls. This field is
-    * initialized at construction time and cannot be <code>null</code>.
-    */
-   private final FastStringBuffer _successfulCallStringBuffer = new FastStringBuffer(256);
-
-   /**
-    * Buffer for log messages for unsuccessful calls. This field is
-    * initialized at construction time and cannot be <code>null</code>.
-    */
-   private final FastStringBuffer _unsuccessfulCallStringBuffer = new FastStringBuffer(256);
-
-   /**
     * The number of successful calls executed up until now.
     */
    private int _successfulCalls;
@@ -362,24 +350,22 @@ implements DefaultResultCodes {
       String message = null;
       if (success) {
          if (debugEnabled) {
-            synchronized (_successfulCallStringBuffer) {
-               _successfulCallStringBuffer.clear();
-               if (_sessionBased) {
-                  _successfulCallStringBuffer.append("Call succeeded for session ");
-                  _successfulCallStringBuffer.append(context.getSession().toString());
-                  _successfulCallStringBuffer.append(". Duration: ");
-               } else {
-                  _successfulCallStringBuffer.append("Call succeeded. Duration: ");
-               }
-               _successfulCallStringBuffer.append(String.valueOf(duration));
-               _successfulCallStringBuffer.append(" ms.");
-               if (code != null) {
-                  _successfulCallStringBuffer.append(" Code: \"");
-                  _successfulCallStringBuffer.append(code);
-                  _successfulCallStringBuffer.append("\".");
-               }
-               message = _successfulCallStringBuffer.toString();
+            FastStringBuffer buffer = new FastStringBuffer(250);
+            if (_sessionBased) {
+               buffer.append("Call succeeded for session ");
+               buffer.append(context.getSession().toString());
+               buffer.append(". Duration: ");
+            } else {
+               buffer.append("Call succeeded. Duration: ");
             }
+            buffer.append(String.valueOf(duration));
+            buffer.append(" ms.");
+            if (code != null) {
+               buffer.append(" Code: \"");
+               buffer.append(code);
+               buffer.append("\".");
+            }
+            message = buffer.toString();
          }
 
          synchronized (_successfulCallLock) {
@@ -387,25 +373,24 @@ implements DefaultResultCodes {
             _lastSuccessfulDuration = duration;
             _successfulCalls++;
             _successfulDuration += duration;
-            _successfulMin = _successfulMin > duration ? duration : _successfulMin;
-            _successfulMax = _successfulMax < duration ? duration : _successfulMax;
+            _successfulMin      = _successfulMin > duration ? duration : _successfulMin;
+            _successfulMax      = _successfulMax < duration ? duration : _successfulMax;
             _successfulMinStart = (_successfulMin == duration) ? start : _successfulMinStart;
             _successfulMaxStart = (_successfulMax == duration) ? start : _successfulMaxStart;
          }
       } else {
          if (debugEnabled) {
-            synchronized (_unsuccessfulCallStringBuffer) {
-               _unsuccessfulCallStringBuffer.clear();
-               _unsuccessfulCallStringBuffer.append("Call failed. Duration: ");
-               _unsuccessfulCallStringBuffer.append(String.valueOf(duration));
-               _unsuccessfulCallStringBuffer.append(" ms.");
-               if (code != null) {
-                  _unsuccessfulCallStringBuffer.append(" Code: \"");
-                  _unsuccessfulCallStringBuffer.append(code);
-                  _unsuccessfulCallStringBuffer.append("\".");
-               }
-               message = _unsuccessfulCallStringBuffer.toString();
+            FastStringBuffer buffer = new FastStringBuffer(250);
+            buffer.clear();
+            buffer.append("Call failed. Duration: ");
+            buffer.append(String.valueOf(duration));
+            buffer.append(" ms.");
+            if (code != null) {
+               buffer.append(" Code: \"");
+               buffer.append(code);
+               buffer.append("\".");
             }
+            message = buffer.toString();
          }
 
          synchronized (_unsuccessfulCallLock) {
