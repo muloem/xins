@@ -10,6 +10,12 @@ CHANGES INTRODUCED IN XINS 0.119:
   - Removed UNININITIALIZED state in class ResponderStates.
   - None of the methods in the Responder interface now throws an IOException
     anymore.
+  - Improved accuracy of the duration in the function statistics.
+  - In the past MissingSessionID, InvalidSessionID and UnknownSessionID were
+    ignored in the logging and function statistics keeping. This is now fixed.
+  - Removed InvalidSessionIDException, MissingSessionIDException and
+    UnknownSessionIDException classes.
+  - Improved logging. Always including call ID.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.118:
