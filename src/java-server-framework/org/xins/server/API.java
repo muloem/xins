@@ -16,6 +16,7 @@ import java.util.Properties;
 import javax.servlet.ServletRequest;
 import org.apache.log4j.Logger;
 import org.xins.types.Type;
+import org.xins.types.TypeValueException;
 import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
@@ -199,7 +200,7 @@ implements DefaultResultCodes {
       }
 
       // TODO: Allow configuration of session ID type
-      _sessionIDType = new BasicSessionID(this);
+      _sessionIDType      = new BasicSessionID(this);
       _sessionIDGenerator = _sessionIDType.getGenerator();
 
       // TODO: Set state to INITIALIZING
@@ -427,7 +428,7 @@ implements DefaultResultCodes {
     *    the type for session IDs in this API, unless otherwise defined this
     *    is {@link Text}.
     */
-   public final Type getSessionIDType() {
+   public final SessionID getSessionIDType() {
       return _sessionIDType;
    }
 
@@ -438,14 +439,21 @@ implements DefaultResultCodes {
     *    the newly constructed session, never <code>null</code>.
     */
    final Session createSession() {
-      String sessionID = _sessionIDGenerator.generateSessionID();
-      Session session = new Session(sessionID);
+      Object sessionID = _sessionIDGenerator.generateSessionID();
+      Session session = new Session(this, sessionID);
       _sessionsByID.put(sessionID, session);
       return session;
    }
 
-   final Session getSession(String id) {
+   // TODO: Document
+   final Session getSession(Object id) {
       return (Session) _sessionsByID.get(id);
+   }
+
+   // TODO: Document
+   final Session getSessionByString(String idString)
+   throws TypeValueException {
+      return getSession(_sessionIDType.fromString(idString));
    }
 
    /**
