@@ -37,7 +37,6 @@
 		<xsl:text><![CDATA[;
 
 import org.xins.client.CallResult;
-import org.xins.client.DataUnavailableException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -115,7 +114,8 @@ public final class ]]></xsl:text>
 			</xsl:variable>
 			<xsl:variable name="returnType">
 				<xsl:choose>
-					<xsl:when test="@type = 'boolean'">boolean</xsl:when>
+					<xsl:when test="@type = 'boolean' and @required = 'true'">boolean</xsl:when>
+					<xsl:when test="@type = 'boolean'">java.lang.Boolean</xsl:when>
 					<xsl:otherwise>java.lang.String</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -130,29 +130,46 @@ public final class ]]></xsl:text>
     * @return
     *    the value of the <em>]]></xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em> output parameter.
-    *
-    * @throws DataUnavailableException
-    *    if the requested data is not available in the call result.
+			<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
+			<xsl:choose>
+				<xsl:when test="$returnType = 'boolean'">.</xsl:when>
+				<xsl:when test="@required = 'true'">
+					<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text><![CDATA[, or <code>null</code> if the parameter is not set.]]></xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text><![CDATA[
     */
    public ]]></xsl:text>
 			<xsl:value-of select="$returnType" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="$methodName" />
-			<xsl:text>()
-   throws DataUnavailableException {
+			<xsl:text>() {
       String value = _result.getParameter("</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>");
-      if (value == null) {
-         throw new DataUnavailableException(); // TODO: Pass more info?
-      }
-      return </xsl:text>
+			<xsl:text>");</xsl:text>
 			<xsl:choose>
-				<xsl:when test="@type = 'boolean'">"true".equals(value)</xsl:when>
-				<xsl:otherwise>value</xsl:otherwise>
+				<xsl:when test="$returnType = 'boolean'">
+					<xsl:text>
+      return "true".equals(value);
+					</xsl:text>
+				</xsl:when>
+				<xsl:when test="$returnType = 'java.lang.Boolean'">
+					<xsl:text>
+      if (value == null) {
+         return null;
+      } else {
+         return "true".equals(value) ? new Boolean(true) : new Boolean(false);
+      }</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>
+      return value;</xsl:text>
+				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>;
+			<xsl:text>
    }</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
