@@ -28,8 +28,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
   - Added the possibility to point to an ACL file in the ACL runtime property.
 
 * Generated CAPI classes:
-  - The generated CAPI classes now support specifying the HTTPMethod. The
-    HTTPMethod can be passed to the CAPI constructor.
+  - The generated CAPI classes now offer a constructor that takes a
+    XINSServiceCaller.
 
 * Other:
   - Removed src/ant/transform.xml which was no longer used since XINS 0.165.
@@ -41,6 +41,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:
     Note that the xins.bat batch file has not been changed yet.
   - Linking to Apache Ant 1.6.2 API docs at xins.sourceforge.net, since they
     are not available at apache.org.
+  - Improved performance of release process greatly. Biggest gain is made by
+    sending a compressed archive of files to the web server instead of all
+    individual files separately.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
