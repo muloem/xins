@@ -3,6 +3,7 @@ package org.xins.tests.common.types.standard;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Int16;
 import org.xins.common.types.standard.Properties;
@@ -13,8 +14,7 @@ import org.xins.common.collections.PropertyReader;
  * Tests for class <code>Int16</code>.
  *
  * @version $Revision$ $Date$
- * @author Chris Gilbride (<a
- * href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
+ * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
  */
 public class Int16Tests extends TestCase {
 
@@ -57,6 +57,7 @@ public class Int16Tests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   ZeroToTen lowerLimit = new ZeroToTen();
 
    //-------------------------------------------------------------------------
    // Methods
@@ -73,12 +74,13 @@ public class Int16Tests extends TestCase {
       // empty
    }
 
-   public void testLimit() throws Throwable {
-      ZeroToTen lowerLimit = new ZeroToTen();
+   public void testToString() {
       lowerLimit.toString((short)12);
       lowerLimit.toString(Short.valueOf("12"));
       lowerLimit.toString(null);
+   }
 
+   public void testFromStringForRequired() throws Throwable {
       /* This should cause the specified error. However for some reason it
        * isn't. To prevent the rest of the tests failing this test is commented out.
       
@@ -104,6 +106,15 @@ public class Int16Tests extends TestCase {
          // this is good
       }
 
+      try {
+         lowerLimit.fromStringForRequired("7");
+      } catch (Exception e) {
+         fail("Caught an unexpected error.");
+      }
+   }
+
+   public void testFromStringForOptional() throws Throwable {
+
       try { 
          lowerLimit.fromStringForOptional("fred");
          fail("Should have thrown a TypeValueException from a NumberFormatException.");
@@ -111,31 +122,24 @@ public class Int16Tests extends TestCase {
          // this is good
       }
 
-      lowerLimit.fromStringForOptional(null);
-
-     /* try {
-        lowerLimit.isValidValueImpl("fred");
-         fail("Should throw a number format exception.");
-      } catch (NumberFormatException nfe2) {
-         // this is good
-      }
-     */
-
-      if (lowerLimit.validImpl("12")) {
-         fail("Should have returned false as this value is outside of the bounds.");
+      try {
+         lowerLimit.fromStringForOptional("4");
+      } catch (Exception e1) {
+         fail("Caught unexpected error.");
       }
 
-      if (! lowerLimit.validImpl("9")) {
-         fail("Should have returned true as the value is within the bounds.");
-      }
+      assertNull("Null should be returned when a null is passed.",lowerLimit.fromStringForOptional(null));
+   }
 
-      lowerLimit.validImpl(null);
-      lowerLimit.validImpl("fred");
+   public void testValidValue() throws Throwable {
+    
+      assertFalse("fred is not a valid value.",lowerLimit.isValidValue("fred"));
+     
+      assertFalse("12 is outside the bounds of the instance.",lowerLimit.isValidValue("12"));
 
-//      lowerLimit.fromString2Obj("22");
-      Short valueShort = (Short) lowerLimit.fromString2Obj("9");
+      assertTrue("9 is a valid value as it is within the bounds.",lowerLimit.isValidValue("9"));
 
-      lowerLimit.objToString(valueShort);
+      assertTrue("null is considered to be a valid object",lowerLimit.isValidValue(null));
    }
 
    class ZeroToTen extends Int16 {
@@ -145,21 +149,6 @@ public class Int16Tests extends TestCase {
          super("ZeroToTen", (short) 0, (short) 10);
       }
 
-      public boolean validImpl(String value) {
-         if (isValidValueImpl(value)) {
-            return true;
-         }
-         return false;
-      }
-
-      public Object fromString2Obj(String value) {
-         return fromStringImpl("21");
-      }
-     
-      public String objToString(Object value)
-         throws TypeValueException {
-         return toString(value);
-      }
-   }
+  }
 
 }
