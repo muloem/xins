@@ -27,6 +27,12 @@ CHANGES INTRODUCED IN XINS 0.192:
   - No longer warning for servlet containers that implement version 2.2 of the
     Java Servlet specification instead of 2.3. Both are supported.
 
+* Generated CAPI classes:
+  - Added constructor to the generated CAPI class that accepts a Descriptor
+    instance. This is from now on the preferred way of constructing a CAPI
+    instance. The other constructor, which takes a XINSServiceCaller argument,
+    is now marked as deprecated.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
 
