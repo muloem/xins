@@ -23,10 +23,7 @@ import org.xins.common.text.FastStringBuffer;
  * <h2>Thread-safety</h2>
  *
  * <p>This class is thread-safe, and subclasses <em>must</em> be thread-safe
- * as well. They should use {@link #_doorman} to synchronize the read and
- * write operations to all fields.
- *
- * <p>When reading or writing a field, the code should synchronize on
+ * as well. When reading or writing a field, the code should synchronize on
  * {@link #_lock}. For example, the <em>failOverAllowed</em> getter and setter
  * methods in this class could be implemented as follows:
  *
