@@ -729,7 +729,7 @@
 							<param name="hostname"     expression="${{hostname}}"   />
 							<param name="timestamp"    expression="${{timestamp}}"  />
 						</style>
-						<fixdrlf includes="build/webapps/{$api}/web.xml" eol="unix" />
+						<fixcrlf includes="build/webapps/{$api}/web.xml" eol="unix" />
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">
