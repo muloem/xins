@@ -95,7 +95,29 @@ public abstract class Type extends Object {
    }
 
    /**
-    * Checks if the specified value is valid for this type.
+    * Checks if the specified value is valid for this type and throws an
+    * exception if not.
+    *
+    * <p />Note that <code>null</code> values are <em>always</em> considered
+    * to be valid.
+    *
+    * @param value
+    *    the value that should be checked for validity, can be
+    *    <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value is invalid for this type.
+    */
+   public final void checkValue(String value) {
+      if (value == null) {
+         return;
+      } else if (! isValidValueImpl(value)) {
+         throw new TypeValueException(this, value);
+      }
+   }
+
+   /**
+    * Determines if the specified value is valid for this type.
     *
     * <p />This method first checks if <code>value == null</code> and if it is
     * not, then it returns the result of a call to
