@@ -11,6 +11,7 @@
 	<xsl:output method="text" />
 
 	<xsl:include href="../casechange.xslt" />
+	<xsl:include href="../hungarian.xslt" />
 	<xsl:include href="../java.xslt" />
 
 	<xsl:template match="resultcodes">
