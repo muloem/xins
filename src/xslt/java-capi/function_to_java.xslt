@@ -98,7 +98,7 @@ public final class ]]></xsl:text>
     * Gets the data element, if any. If there is no data element, then
     * <code>null</code> is returned.
     *
-    * <p>This method will always {@link Element#clone()} the underlying
+    * <p>This method will always {@link Element#clone() clone} the underlying
     * element and return the clone.
     *
     * @return
@@ -195,30 +195,23 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text> = </xsl:text>
 		<xsl:call-template name="javatype_from_string_for_type">
-			<xsl:with-param name="api"      select="$api" />
-			<xsl:with-param name="specsdir" select="$api" />
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="specsdir" select="$specsdir" />
 			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="type"     select="$basetype" />
+			<xsl:with-param name="type"     select="@type"     />
 			<xsl:with-param name="variable" select="'result.getParameter(currentParam)'" />
 		</xsl:call-template>
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="field">
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-			</xsl:call-template>
-		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_file" select="$project_file" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
-				<xsl:with-param name="type"         select="$basetype"     />
+				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -256,7 +249,7 @@ public final class ]]></xsl:text>
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
-				<xsl:with-param name="type"         select="$basetype"     />
+				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="required">
