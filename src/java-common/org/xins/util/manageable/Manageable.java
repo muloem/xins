@@ -62,6 +62,11 @@ public abstract class Manageable extends Object {
     */
    public static final State USABLE = new State("USABLE");
 
+   /**
+    * The <em>DEINITIALIZING</em> state.
+    */
+   public static final State DEINITIALIZING = new State("DEINITIALIZING");
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -171,6 +176,8 @@ public abstract class Manageable extends Object {
       try {
          bootstrapImpl(properties);
          done = true;
+
+      // Catch expected exceptions
       } catch (MissingRequiredPropertyException exception) {
          throw exception;
       } catch (InvalidPropertyValueException exception) {
@@ -178,7 +185,7 @@ public abstract class Manageable extends Object {
       } catch (BootstrapException exception) {
          throw exception;
 
-      // Catch-all: Wrap other exceptions in a BootstrapException
+      // Wrap other exceptions in an InitializationException
       } catch (Throwable exception) {
          throw new BootstrapException(exception);
 
@@ -197,7 +204,8 @@ public abstract class Manageable extends Object {
    /**
     * Performs the bootstrap procedure (actual implementation). When this
     * method is called from {@link #bootstrap(PropertyReader)}, the state and
-    * the argument will have been checked.
+    * the argument will have been checked and the state will have been set to
+    * {@link #BOOTSTRAPPING}.
     *
     * <p>The implementation of this method in class {@link Manageable} is
     * empty.
@@ -228,7 +236,8 @@ public abstract class Manageable extends Object {
     * {@link #BOOTSTRAPPED} or {@link USABLE}) and the argument is not
     * <code>null</code>, then {@link #initImpl(PropertyReader)} will be
     * called. If that method succeeds, then this object will be left in the
-    * {@link #USABLE} state.
+    * {@link #USABLE} state. If an exception is thrown, then this object will
+    * be left in the {@link #BOOTSTRAPPED} state instead.
     *
     * <p>If {@link #initImpl(PropertyReader)} throws any exception (even
     * {@link Error}s), it is wrapped in an {@link InitializationException} and
@@ -259,40 +268,60 @@ public abstract class Manageable extends Object {
           InvalidPropertyValueException,
           InitializationException {
 
+      State erroneousState = null;
+
+      // Get the current state and change to INITIALIZING if it is valid
       synchronized (_stateLock) {
-
-         // Check state
          if (_state != BOOTSTRAPPED && _state != USABLE) {
-            throw new IllegalStateException("The current state is " + _state + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+            erroneousState = _state;
+         } else {
+            _state = INITIALIZING;
          }
+      }
 
-         // Check arguments
-         MandatoryArgumentChecker.check("properties", properties);
+      // If the state was invalid, then fail
+      if (erroneousState != null) {
+         throw new IllegalStateException("The current state is " + erroneousState + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+      }
 
-         // Delegate to subclass
-         try {
-            initImpl(properties);
-         } catch (MissingRequiredPropertyException exception) {
-            throw exception;
-         } catch (InvalidPropertyValueException exception) {
-            throw exception;
-         } catch (InitializationException exception) {
-            throw exception;
+      // Check arguments
+      MandatoryArgumentChecker.check("properties", properties);
 
-         // Catch-all: Wrap other exceptions in an InitializationException
-         } catch (Throwable exception) {
-            throw new InitializationException(exception);
+      // Delegate to subclass
+      boolean done = false;
+      try {
+         initImpl(properties);
+         done = true;
+
+      // Catch expected exceptions
+      } catch (MissingRequiredPropertyException exception) {
+         throw exception;
+      } catch (InvalidPropertyValueException exception) {
+         throw exception;
+      } catch (InitializationException exception) {
+         throw exception;
+
+      // Wrap other exceptions in an InitializationException
+      } catch (Throwable exception) {
+         throw new InitializationException(exception);
+
+      // Always set the state before returning
+      } finally {
+         synchronized (_stateLock) {
+            if (done) {
+               _state = USABLE;
+            } else {
+               _state = BOOTSTRAPPED;
+            }
          }
-
-         // Upgrade the state
-         _state = USABLE;
       }
    }
 
    /**
     * Performs the initialization procedure (actual implementation). When this
     * method is called from {@link #bootstrap(PropertyReader)}, the state and
-    * the argument will have been checked.
+    * the argument will have been checked and the state will have been set to
+    * {@link #INITIALIZING}.
     *
     * <p>The implementation of this method in class {@link Manageable} is
     * empty.
@@ -340,13 +369,40 @@ public abstract class Manageable extends Object {
    public final void deinit()
    throws IllegalStateException, DeinitializationException {
 
+      State erroneousState = null;
+
+      // Get the current state and change to DEINITIALIZING if it is valid
       synchronized (_stateLock) {
-         try {
-            deinitImpl();
-         } catch (Throwable exception) {
-            throw new DeinitializationException(exception);
-         } finally {
-            _state = UNUSABLE;
+         if (_state != BOOTSTRAPPED && _state != USABLE) {
+            erroneousState = _state;
+         } else {
+            _state = DEINITIALIZING;
+         }
+      }
+
+      // If the state was invalid, then fail
+      if (erroneousState != null) {
+         throw new IllegalStateException("The current state is " + erroneousState + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+      }
+
+      // Delegate to subclass
+      boolean done = false;
+      try {
+         deinitImpl();
+         done = true;
+
+      // Catch and wrap all caught exceptions
+      } catch (Throwable exception) {
+         throw new DeinitializationException(exception);
+
+      // Always set the state before returning
+      } finally {
+         synchronized (_stateLock) {
+            if (done) {
+               _state = USABLE;
+            } else {
+               _state = BOOTSTRAPPED;
+            }
          }
       }
    }
@@ -354,7 +410,8 @@ public abstract class Manageable extends Object {
    /**
     * Deinitializes this instance (actual implementation). This method will be
     * called from {@link #deinit()} each time the latter is called and it
-    * finds that the state is correct.
+    * finds that the state is correct. The state will have been set to
+    * {@link #DEINITIALIZING}.
     *
     * @throws Throwable
     *    if the deinitialization caused an exception.
