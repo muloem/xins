@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.74:
 
+* XINS/Java Common Library:
+  - Added class BooleanConstants.
+
 * XINS/Java Client Framework:
   - Added class SessionIDSplitter.
   - Added method getActualFunctionCallers() to interface
