@@ -67,6 +67,14 @@ public class FastStringBuffer extends Object {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Ensures that the specified needed capacity is actually available. If it
+    * is not, then the internal buffer will be expanded. The new capacity will
+    * be larger than or equal to the needed capacity.
+    *
+    * @param needed
+    *    the needed capacity.
+    */
    private void ensureCapacity(int needed) {
       int current = _buffer.length;
       if (current < needed) {
@@ -77,11 +85,28 @@ public class FastStringBuffer extends Object {
       }
    }
 
+   /**
+    * Appends the specified character. If necessary, the capacity of this
+    * string buffer will be increased.
+    *
+    * @param c
+    *    the character to append.
+    */
    public void append(char c) {
       ensureCapacity(_length + 1);
       _buffer[_length++] = c;
    }
 
+   /**
+    * Appends all characters in the specified character buffer. If necessary,
+    * the capacity of this string buffer will be increased.
+    *
+    * @param cbuf
+    *    the character array to copy characters from, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>cbuf == null</code>.
+    */
    public void append(char[] cbuf)
    throws IllegalArgumentException {
 
@@ -92,6 +117,28 @@ public class FastStringBuffer extends Object {
       System.arraycopy(cbuf, 0, _buffer, _length, cbuf.length);
    }
 
+   /**
+    * Appends characters from the specified character buffer. If necessary,
+    * the capacity of this string buffer will be increased.
+    *
+    * @param cbuf
+    *    the character array to copy characters from, not <code>null</code>.
+    *
+    * @param off
+    *    the offset in <code>cbuf</code>, must be &gt;= 0 and &lt;
+    *    <code>cbuf.length</code>.
+    *
+    * @param len
+    *    the number of characters to copy, must be &gt;= 0 and <code>(off +
+    *    len)</code> must be &lt;= <code>cbuf.length</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>cbuf == null
+    *          || off &lt; 0
+    *          || off &gt;= cbuf.length
+    *          || len &lt; 0
+    *          || (off + len &gt; cbuf.length)</code>.
+    */
    public void append(char[] cbuf, int off, int len)
    throws IllegalArgumentException {
 
@@ -111,6 +158,16 @@ public class FastStringBuffer extends Object {
       System.arraycopy(cbuf, off, _buffer, _length, len);
    }
 
+   /**
+    * Appends all characters in the specified character string. If necessary,
+    * the capacity of this string buffer will be increased.
+    *
+    * @param str
+    *    the character string to copy characters from, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>str == null</code>.
+    */
    public void append(String str)
    throws IllegalArgumentException {
 
@@ -126,6 +183,9 @@ public class FastStringBuffer extends Object {
       _length = newLength;
    }
 
+   /**
+    * Clears this string buffer. The capacity will remain untouched, though.
+    */
    public void clear() {
       _length = 0;
    }
