@@ -61,7 +61,9 @@ Adapt HTTP service caller to build upon improved service framework:
 [ ] Document what kind of exception to expect in what case
 [ ] Document when fail-over will be applied and when not
 [ ] Do not access (private) HTTPCallResult.Data fields directly
-[ ] Externalize HTTPCallResult.Data to HTTPCallResultData
+[ ] Externalize inner class HTTPCallResult.Data to interface HTTPCallResultData
+[ ] Make HTTPCallResultParser.Handler implement HTTPCallResultData
+[ ] Return HTTPCallResultData from HTTPCallResultParser
 
 Adapt XINS/Java Client Framework to build upon improved service framework:
 [x] Rename CallException to XINSCallException
@@ -100,7 +102,9 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Document what kind of exception to expect in what case
 [ ] Document when fail-over will be applied and when not
 [x] Do not access (private) XINSCallResult.Data fields directly
-[ ] Externalize HTTPCallResult.Data to HTTPCallResultData
+[x] Externalize inner class XINSCallResult.Data to interface XINSCallResultData
+[x] Make XINSCallResultParser.Handler implement XINSCallResultData
+[x] Return XINSCallResultData from XINSCallResultParser
 
 Adapt CAPI generation:
 [x] Build upon new XINS/Java Client Framework
