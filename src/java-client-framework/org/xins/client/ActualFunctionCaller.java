@@ -5,12 +5,15 @@ package org.xins.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.zip.Checksum;
+import java.util.zip.CRC32;
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -57,6 +60,41 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Computes the CRC-32 checksum for the specified string. If
+    * <code>null</code> is passed, then <code>0L</code> is returned.
+    *
+    * @param string
+    *    the string for which to compute the checksum, or <code>null</code>.
+    *
+    * @return
+    *    the checksum for <code>url.</code>{@link URL#toString() toString()}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>url == null</code>.
+    */
+   private long computeCRC32(URL url)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("url", url);
+
+      // Get the string
+      String string = url.toString();
+
+      Checksum checksum = new CRC32();
+      byte[] bytes;
+      final String ENCODING = "US-ASCII";
+      try {
+         bytes = string.getBytes(ENCODING);
+      } catch (UnsupportedEncodingException exception) {
+         throw new InternalError("Encoding \"" + ENCODING + "\" is not supported.");
+      }
+      checksum.update(bytes, 0, bytes.length);
+      return checksum.getValue();
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -162,6 +200,7 @@ extends AbstractFunctionCaller {
       // Initialize fields
       _hostName         = (hostName != null) ? hostName : urlHostName;
       _callResultParser = new CallResultParser();
+      _crc32            = computeCRC32(_url);
    }
 
 
@@ -190,6 +229,11 @@ extends AbstractFunctionCaller {
     * Call result parser. This field cannot be <code>null</code>.
     */
    private final CallResultParser _callResultParser;
+
+   /**
+    * The CRC-32 checksum for the URL.
+    */
+   private final long _crc32;
 
 
    //-------------------------------------------------------------------------
@@ -342,5 +386,15 @@ extends AbstractFunctionCaller {
       }
 
       return buffer.toString();
+   }
+
+   /**
+    * Returns the CRC-32 checksum for the URL of this function caller.
+    *
+    * @return
+    *    the CRC-32 checksum.
+    */
+   public long getCRC32() {
+      return _crc32;
    }
 }
