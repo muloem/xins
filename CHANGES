@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.208:
     value is null, then the parameter is now passed down, with the empty
     string as the value. Previously the parameter would not be sent down at
     all.
+  - Added 'failOverAllowed' property to HTTPCallRequest. If this flag is set,
+    then fail-over is always allowed.
 
 * XINS/Java Client Framework:
   - Applied some refactorings and improved documentation.
