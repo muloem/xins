@@ -197,6 +197,9 @@ extends HttpServlet {
     */
    static final String dueToUnexpected(Throwable exception)
    throws NullPointerException {
+
+      // TODO: Remove this function
+
       FastStringBuffer buffer = new FastStringBuffer(256);
       buffer.append("due to unexpected ");
       buffer.append(exception.getClass().getName());
@@ -211,6 +214,25 @@ extends HttpServlet {
       }
 
       return buffer.toString();
+   }
+
+   /**
+    * Initializes the loggers to log to the console using a simple format
+    * and no threshold.
+    */
+   static {
+      configureLoggerFallback();
+   }
+
+   /**
+    * Initializes the logging subsystem with fallback default settings.
+    */
+   private static final void configureLoggerFallback() {
+      Properties settings = new Properties();
+      settings.setProperty("log4j.rootLogger",              "ALL, console");
+      settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
+      PropertyConfigurator.configure(settings);
    }
 
 
@@ -261,6 +283,7 @@ extends HttpServlet {
     * Description of the current error, if any.
     */
    private String _error;
+   // TODO: Remove this field
 
    /**
     * The listener that is notified when the configuration file changes. Only
@@ -382,28 +405,23 @@ extends HttpServlet {
       // Make sure the Library class is initialized
       String version = Library.getVersion();
 
-      // Get a reference to the appropriate logger
-      Logger log = Library.BOOTSTRAP_LOG;
-
       // Check preconditions
       synchronized (_stateLock) {
          if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
           && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
           && _state != API_INITIALIZATION_FAILED) {
             Log.log_101(_state == null ? null : _state._name);
-            throw new ServletException("state is " + _state);
+            throw new ServletException();
          } else if (config == null) {
-            final String reason = "config == null";
-            Log.log_102(reason);
-            throw new ServletException(reason);
+            Log.log_102("config == null");
+            throw new ServletException();
          }
 
          // Get the ServletContext
          ServletContext context = config.getServletContext();
          if (context == null) {
-            final String reason = "config.getServletContext() == null";
-            Log.log_102(reason);
-            throw new ServletException(reason);
+            Log.log_102("config.getServletContext() == null");
+            throw new ServletException();
          }
 
          // Check the expected vs implemented Java Servlet API version
@@ -431,24 +449,22 @@ extends HttpServlet {
          try {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
          } catch (SecurityException exception) {
+            Log.log_104(CONFIG_FILE_SYSTEM_PROPERTY, exception.getClass().getName(), exception.getMessage());
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
-            _error = "System administration issue detected. Unable to get system property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" due to a security restriction.";
-            log.error(_error, exception);
-            return;
+            throw new ServletException();
          }
          
          // Property value must be set
          // NOTE: Don't trim the configuration file name, since it may start
          //       with a space or other whitespace character.
          if (_configFile == null || _configFile.length() < 1) {
+            Log.log_105(CONFIG_FILE_SYSTEM_PROPERTY);
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
-            _error = "System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.";
-            log.error(_error);
-            return;
+            throw new ServletException();
          }
 
-         // Apply the properties to the framework
-         PropertyReader runtimeProperties = applyConfigFile(log);
+         // Initialize the logging subsystem
+         PropertyReader runtimeProperties = applyConfigFile();
 
 
          //----------------------------------------------------------------//
@@ -457,15 +473,14 @@ extends HttpServlet {
 
          // Proceed to next stage
          setState(CONSTRUCTING_API);
-         log.debug("Constructing API.");
 
          // Determine the API class
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
-         if (apiClassName == null || apiClassName.trim().length() < 1) {
+         apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
+         if (apiClassName == null || apiClassName.length() < 1) {
+            Log.log_106(API_CLASS_PROPERTY);
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. API class name not set in build property \"" + API_CLASS_PROPERTY + "\".";
-            log.fatal(_error);
-            return;
+            throw new ServletException();
          }
 
          // Load the API class
@@ -473,57 +488,39 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
+            Log.log_107(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName(), exception.getMessage());
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. Failed to load API class \"" + apiClassName + "\", as set in build property \"" + API_CLASS_PROPERTY + "\" " + dueToUnexpected(exception);
-            log.fatal(_error);
-            return;
+            throw new ServletException();
          }
 
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
+            Log.log_108(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. The \"" + apiClassName + "\" is not derived from class " + API.class.getName() + '.';
-            log.fatal(_error);
-            return;
+            throw new ServletException();
          }
 
-         // Get the SINGLETON field
+         // Get the SINGLETON field and the value of it
          Field singletonField;
          try {
             singletonField = apiClass.getDeclaredField("SINGLETON");
-         } catch (Exception exception) {
-            setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\" " + dueToUnexpected(exception);
-            log.fatal(_error, exception);
-            return;
-         }
-
-         // Get the value of the SINGLETON field
-         try {
             _api = (API) singletonField.get(null);
-         } catch (Exception exception) {
+         } catch (Throwable exception) {
+            Log.log_108(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. Failed to get value of the SINGLETON field of API class \"" + apiClassName + "\". Caught unexpected " + exception.getClass().getName() + '.';
-            log.fatal(_error, exception);
-            return;
+            throw new ServletException();
          }
 
          // Make sure that the field is an instance of that same class
          if (_api == null) {
+            Log.log_108(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is null.";
-            log.fatal(_error);
-            return;
+            throw new ServletException();
          } else if (_api.getClass() != apiClass) {
+            Log.log_108(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
             setState(API_CONSTRUCTION_FAILED);
-            _error = "Invalid application package. The value of the SINGLETON field of API class \"" + apiClassName + "\" is not an instance of that class.";
-            log.fatal(_error);
-            return;
+            throw new ServletException();
          }
-
-         // Get the name of the API
-         String apiName = _api.getName();
-         log.debug("Constructed " + apiName + " API.");
 
 
          //----------------------------------------------------------------//
@@ -532,18 +529,23 @@ extends HttpServlet {
 
          // Proceed to next stage
          setState(BOOTSTRAPPING_API);
-         log.debug("Bootstrapping " + apiName + " API.");
 
+         // Bootstrap the API
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
-         } catch (Throwable exception) {
+         } catch (MissingRequiredPropertyException exception) {
+            Log.log_109(exception.getPropertyName());
             setState(API_BOOTSTRAP_FAILED);
-            _error = "Application package may be invalid. Unable to bootstrap \"" + apiName + "\" API " + dueToUnexpected(exception);
-            log.fatal(_error, exception);
-            return;
+            throw new ServletException();
+         } catch (InvalidPropertyValueException exception) {
+            Log.log_110(exception.getPropertyName(), exception.getPropertyValue());
+            setState(API_BOOTSTRAP_FAILED);
+            throw new ServletException();
+         } catch (Throwable exception) {
+            Log.log_111(exception.getClass().getName(), exception.getMessage());
+            setState(API_BOOTSTRAP_FAILED);
+            throw new ServletException();
          }
-
-         log.info("Bootstrapped " + apiName + " API.");
 
 
          //----------------------------------------------------------------//
@@ -559,32 +561,35 @@ extends HttpServlet {
 
          // Get the runtime property
          String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
-         int interval;
+         int interval = -1;
 
          // If the property is set, parse it
          if (s != null && s.length() >= 1) {
+            Log.log_251(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             try {
                interval = Integer.parseInt(s);
                if (interval < 1) {
-                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
-                  interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+                  Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                } else {
-                  log.debug("Using configuration file check interval of " + interval + " second(s) as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
+                  Log.log_253(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                }
             } catch (NumberFormatException nfe) {
-               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
-               interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+               Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
 
          // Otherwise, if the property is not set, use the default
          } else {
-            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
+            Log.log_250(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
+         }
+
+         // If the interval is not set, using the default
+         if (interval < 0) {
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
          }
 
          // Create a file watch thread and start it
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
+         Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
          _configFileWatcher.start();
       }
    }
@@ -619,45 +624,54 @@ extends HttpServlet {
    }
 
    /**
-    * Reads the configuration file and applies the settings in it to this
-    * library. If this fails, then an error is logged on the specified logger.
-    * Still, a {@link Properties} object is always returned.
+    * Reads the configuration file and applies the settings in it.
     *
     * <p>Note that the settings are <em>not</em> applied to the API.
     *
-    * @param log
-    *    the logger to log messages to, should not be <code>null</code>.
-    *
     * @return
     *    the properties read from the config file, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>log = null</code>.
     */
-   private PropertyReader applyConfigFile(Logger log)
-   throws IllegalArgumentException {
+   private PropertyReader applyConfigFile() {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("log", log);
+      Log.log_150();
 
       Properties properties = new Properties();
-      PropertyReader pr = new ProtectedPropertyReader(new Object());
-
       try {
-         FileInputStream in = new FileInputStream(_configFile);
-         properties.load(in);
-         pr = new PropertiesPropertyReader(properties);
 
-         Library.configure(log, properties);
+         // Open the file
+         FileInputStream in = new FileInputStream(_configFile);
+
+         // Load the properties
+         properties.load(in);
+
       } catch (FileNotFoundException exception) {
-         log.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         Log.log_151(_configFile, exception.getClass().getName(), exception.getMessage());
       } catch (SecurityException exception) {
-         log.error("System administration issue detected. Access denied while loading configuration file \"" + _configFile + "\".");
+         Log.log_152(_configFile, exception.getClass().getName(), exception.getMessage());
       } catch (IOException exception) {
-         log.error("System administration issue detected. Unable to read configuration", exception);
+         Log.log_153(_configFile, exception.getClass().getName(), exception.getMessage());
       }
 
-      return pr;
+      // TODO: Should we reset the logging subsystem if the Log4J
+      // TODO  properties have been removed from the xins.properties file?
+      // TODO  Determine the current behaviour and make a decision.
+
+      // Get the root logger
+      Logger rootLogger = null; // TODO
+
+      // Attempt to configure Log4J
+      PropertyConfigurator.configure(properties);
+
+      // Determine if Log4J is properly initialized
+      Enumeration appenders = rootLogger.getAllAppenders();
+      if (appenders instanceof NullEnumeration) {
+         Log.log_154();
+         configureLoggerFallback();
+      } else {
+         Log.log_160();
+      }
+
+      return new PropertiesPropertyReader(properties);
    }
 
    /**
@@ -927,7 +941,7 @@ extends HttpServlet {
          log.info("Configuration file \"" + _configFile + "\" is modified. Re-initializing XINS/Java Server Framework.");
 
          // Apply the new runtime settings to the logging subsystem
-         PropertyReader runtimeProperties = applyConfigFile(log);
+         PropertyReader runtimeProperties = applyConfigFile();
 
          // Determine the log locale
          String newLocale = runtimeProperties.get(LOG_LOCALE_PROPERTY);
