@@ -608,8 +608,20 @@ implements DefaultResultCodes {
     * @return
     *    the type for session IDs in this API, unless otherwise defined this
     *    is {@link Text}.
+    *
+    * @throws IllegalStateException
+    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
     */
-   public final SessionID getSessionIDType() {
+   public final SessionID getSessionIDType()
+   throws IllegalStateException {
+
+      // Check preconditions
+      if (_state != INITIALIZED) {
+         throw new IllegalStateException("This API is not in the 'initialized' state.");
+      } else if (! _sessionBased) {
+         throw new IllegalStateException("This API is not session-based.");
+      }
+
       return _sessionIDType;
    }
 
@@ -618,11 +630,29 @@ implements DefaultResultCodes {
     *
     * @return
     *    the newly constructed session, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
     */
-   final Session createSession() {
+   final Session createSession() throws IllegalStateException {
+
+      // Check preconditions
+      if (_state != INITIALIZED) {
+         throw new IllegalStateException("This API is not in the 'initialized' state.");
+      } else if (! _sessionBased) {
+         throw new IllegalStateException("This API is not session-based.");
+      }
+
+      // Generate a session ID
       Object sessionID = _sessionIDGenerator.generateSessionID();
+
+      // Construct a Session object...
       Session session = new Session(this, sessionID);
+
+      // ...store it...
       _sessionsByID.put(sessionID, session);
+
+      // ...and then return it
       return session;
    }
 
@@ -636,8 +666,19 @@ implements DefaultResultCodes {
     *    the session with the specified identifier, or <code>null</code> if
     *    there is no match; if <code>id == null</code>, then <code>null</code>
     *    is returned.
+    *
+    * @throws IllegalStateException
+    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
     */
-   final Session getSession(Object id) {
+   final Session getSession(Object id) throws IllegalStateException {
+
+      // Check preconditions
+      if (_state != INITIALIZED) {
+         throw new IllegalStateException("This API is not in the 'initialized' state.");
+      } else if (! _sessionBased) {
+         throw new IllegalStateException("This API is not session-based.");
+      }
+
       return (Session) _sessionsByID.get(id);
    }
 
@@ -652,12 +693,23 @@ implements DefaultResultCodes {
     *    there is no match; if <code>idString == null</code>, then
     *    <code>null</code> is returned.
     *
+    * @throws IllegalStateException
+    *    if this API is not in the <em>initialized</em> state or if this API is not session-based.
+    *
     * @throws TypeValueException
     *    if the specified string is not a valid representation for a value for
     *    the specified type.
     */
    final Session getSessionByString(String idString)
-   throws TypeValueException {
+   throws IllegalStateException, TypeValueException {
+
+      // Check preconditions
+      if (_state != INITIALIZED) {
+         throw new IllegalStateException("This API is not in the 'initialized' state.");
+      } else if (! _sessionBased) {
+         throw new IllegalStateException("This API is not session-based.");
+      }
+
       return getSession(_sessionIDType.fromString(idString));
    }
 
