@@ -43,12 +43,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    public static final Logger LOG = Logger.getLogger(XINSServiceCaller.class.getName());
 
-   /**
-    * Initial buffer size for a parameter string. See
-    * {@link #createParameterString(String,String,Map)}.
-    */
-   private static int PARAMETER_STRING_BUFFER_SIZE = 256;
-
 
    //-------------------------------------------------------------------------
    // Class functions
