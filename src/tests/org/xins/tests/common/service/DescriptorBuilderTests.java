@@ -156,8 +156,8 @@ public class DescriptorBuilderTests extends TestCase {
       _properties.setProperty(base, gprop);
       try {
          DescriptorBuilder.build(_propertyReader, base);
-         fail("Expected MissingRequiredPropertyException.");
-      } catch (MissingRequiredPropertyException exception) {
+         fail("Expected InvalidPropertyValueException.");
+      } catch (InvalidPropertyValueException exception) {
          // as expected
       }
 
