@@ -123,7 +123,7 @@
 		</entry>
 		<!-- XXX: 2107 -->
 		<entry id="2108" level="INFO">
-			<description>XINS result received, status code is considered unacceptable.</description>
+			<description>Unacceptable status code received while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
