@@ -208,6 +208,9 @@
 		</xsl:if>
 		<xsl:if test="param-combo">
 			<h4>Additional constraints</h4>
+			<xsl:text>The following constraints apply to the input parameters, additional to the input parameters marked as required. A violation of any of these constraints will return an unsuccessful result with code </xsl:text>
+			<em>InvalidParameters</em>
+			<xsl:text>.</xsl:text>
 			<ul>
 				<xsl:apply-templates select="param-combo" />
 			</ul>
@@ -254,7 +257,9 @@
 			<xsl:if test="position() &gt; 1">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
-			<xsl:value-of select="@name" />
+			<em>
+				<xsl:value-of select="@name" />
+			</em>
 		</xsl:for-each>
 	</xsl:template>
 
