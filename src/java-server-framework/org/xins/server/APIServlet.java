@@ -213,6 +213,12 @@ extends HttpServlet {
     */
    public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
+   /**
+    * Regular expression that production release versions of XINS match, and
+    * non-production release version do not.
+    */
+   private static final String PRODUCTION_RELEASE_PATTERN = "[1-9][0-9]*\\.[0-9]+\\.[0-9]+";
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -592,10 +598,17 @@ extends HttpServlet {
 
          // Log XINS version
          String serverVersion = Library.getVersion();
-         String commonVersion = org.xins.common.Library.getVersion();
          Log.log_1233(serverVersion);
+
+         // Warn if Server version differs from Common version
+         String commonVersion = org.xins.common.Library.getVersion();
          if (! serverVersion.equals(commonVersion)) {
             Log.log_1234(serverVersion, commonVersion);
+         }
+
+         // Warn if the current XINS version is not a production version
+         if (! serverVersion.matches(PRODUCTION_RELEASE_PATTERN)) {
+            Log.log_1235(serverVersion);
          }
 
 
