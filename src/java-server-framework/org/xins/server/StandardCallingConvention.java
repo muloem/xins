@@ -107,7 +107,7 @@ extends CallingConvention {
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
       // Determine function name
-      String functionName = determineFunction(httpRequest);
+      String functionName = httpRequest.getParameter("_function");
 
       // Determine function parameters
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);

@@ -240,7 +240,8 @@ public class CallingConventionTests extends TestCase {
       PostMethod post = new PostMethod("http://localhost:8080/");
       post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
       post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-              "<request function=\"ResultCode\">" +
+              "<request>" +
+              "  <param name=\"_function\">ResultCode</param>" +
               "  <param name=\"inputText\">" + randomFive + "</param>" +
               "</request>");
       HttpClient client = new HttpClient();

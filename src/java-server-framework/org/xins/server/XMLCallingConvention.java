@@ -124,12 +124,8 @@ extends CallingConvention {
          String contentString = content.toString();
          ElementParser parser = new ElementParser();
          Element requestElem = parser.parse(contentString.getBytes(REQUEST_ENCODING));
-         
-         // Determine function name
-         String functionName = determineFunction(
-            requestElem.getAttribute("_function"),
-            requestElem.getAttribute("function")
-         );
+
+         String functionName = null;
 
          // Determine function parameters
          ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
@@ -138,9 +134,12 @@ extends CallingConvention {
             Element nextParam = (Element) parameters.next();
             String name  = nextParam.getAttribute("name");
             String value = nextParam.getText();
+            if (name.equals("_function")) {
+               functionName = value;
+            }
             functionParams.set(SECRET_KEY, name, value);
          }
-         
+
          // Remove all invalid parameters
          cleanUpParameters(functionParams, SECRET_KEY);
 
@@ -151,11 +150,11 @@ extends CallingConvention {
          } else if (dataElementList.size() > 1) {
             throw new InvalidRequestException("The request has more than two data section specified.", null);
          }
-         
+
          if (TextUtils.isEmpty(functionName)) {
             throw new FunctionNotSpecifiedException();
          }
-         
+
          return new FunctionRequest(functionName, functionParams, dataElement);
       } catch (UnsupportedEncodingException ex) {
          final String DETAIL = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";

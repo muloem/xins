@@ -100,7 +100,8 @@ extends CallingConvention {
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
       // Determine function name
-      String functionName = determineFunction(httpRequest);
+      String functionName = determineFunction(httpRequest.getParameter("_function"),
+         httpRequest.getParameter("function"));
 
       // Determine function parameters
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
@@ -143,5 +144,60 @@ extends CallingConvention {
       httpResponse.setStatus(HttpServletResponse.SC_OK);
       CallResultOutputter.output(out, RESPONSE_ENCODING, xinsResult, true);
       out.close();
+   }
+
+   /**
+    * Determines the name of the function to be called based on the specified
+    * values for the parameters <code>"_function"</code> and
+    * <code>"function"</code>.
+    *
+    * @param withUnderScore
+    *    the value of the parameter <code>"_function"</code>.
+    *
+    * @param withoutUnderScore
+    *    the value of the parameter <code>"function"</code>.
+    *
+    * @throws FunctionNotSpecifiedException
+    *    if the function name is not specified in either of the parameters.
+    *
+    * @throws InvalidRequestException
+    *    if both the parameter <code>"_function"</code> and the parameter
+    *    <code>"function"</code> are specified, but they have different
+    *    values.
+    */
+   static String determineFunction(String withUnderScore,
+                                   String withoutUnderScore)
+   throws FunctionNotSpecifiedException, InvalidRequestException {
+
+      String functionName;
+
+      // Function name is not specified
+      if (TextUtils.isEmpty(withUnderScore)
+      && TextUtils.isEmpty(withoutUnderScore)) {
+
+         throw new FunctionNotSpecifiedException();
+
+      // Only "function" is specified
+      } else if (TextUtils.isEmpty(withUnderScore)) {
+         functionName = withoutUnderScore;
+
+      // Only "_function" is specified
+      } else if (TextUtils.isEmpty(withoutUnderScore)) {
+         functionName = withUnderScore;
+
+      // Both "function" and "_function" are specified, and they are equal
+      } else if (withUnderScore.equals(withoutUnderScore)) {
+         functionName = withUnderScore;
+
+      // Both "function" and "_function" are specified, but they are different
+      } else {
+         final String DETAIL = "_function="
+                             + TextUtils.quote(withUnderScore)
+                             + "; function="
+                             + TextUtils.quote(withoutUnderScore);
+         throw new InvalidRequestException(DETAIL, null);
+      }
+
+      return functionName;
    }
 }
