@@ -108,7 +108,7 @@ public abstract class CallException extends Exception {
     *    Deprecated since XINS 0.198. Use
     *    {@link CallException(CallRequest,String,Throwable)} instead.
     */
-   protected CallException(String message, Throwable cause) {
+   CallException(String message, Throwable cause) {
       super(message, rootCauseFor(cause));
 
       _request = null;
@@ -127,10 +127,10 @@ public abstract class CallException extends Exception {
     * @throws IllegalArgumentException
     *    if <code>request == null || target == null</code>.
     */
-   protected CallException(CallRequest      request,
-                           TargetDescriptor target,
-                           String           message,
-                           Throwable        cause)
+   CallException(CallRequest      request,
+                 TargetDescriptor target,
+                 String           message,
+                 Throwable        cause)
    throws IllegalArgumentException {
 
       // Call superconstructor with fabricated message
