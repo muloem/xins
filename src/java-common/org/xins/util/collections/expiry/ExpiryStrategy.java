@@ -61,4 +61,24 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the time-out.
+    *
+    * @return
+    *    the time-out, in milliseconds.
+    */
+   public final long getTimeOut() {
+      return _timeOut;
+   }
+
+   /**
+    * Returns the time-out precision.
+    *
+    * @return
+    *    the time-out precision, in milliseconds.
+    */
+   public final long getPrecision() {
+      return _precision;
+   }
 }
