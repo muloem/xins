@@ -74,11 +74,13 @@ $Id$
 			
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
-					in="{$project_file}"
-					out="{$builddir}/specdocs/index.html"
-					style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
+				in="{$project_file}"
+				out="{$builddir}/specdocs/index.html"
+				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
+					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
-					<param name="specsdir"     expression="{$specsdir}"       />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$specsdir}"     />
 				</style>
 			</target>
 			
@@ -132,50 +134,65 @@ $Id$
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
 					<style
-						in="{$specsdir}/{$api}/api.xml"
-						out="{$project_home}/build/specdocs/{$api}/index.html"
-						style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
+					in="{$specsdir}/{$api}/api.xml"
+					out="{$project_home}/build/specdocs/{$api}/index.html"
+					style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 					<style
-						basedir="{$specsdir}/{$api}"
-						destdir="{$project_home}/build/specdocs/{$api}"
-						style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
-						includes="{$functionIncludes}">
+					basedir="{$specsdir}/{$api}"
+					destdir="{$project_home}/build/specdocs/{$api}"
+					style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
+					includes="{$functionIncludes}">
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 					<style
-						basedir="{$specsdir}/{$api}"
-						destdir="{$project_home}/build/specdocs/{$api}"
-						style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
-						includes="{$typeIncludes}">
+					basedir="{$specsdir}/{$api}"
+					destdir="{$project_home}/build/specdocs/{$api}"
+					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
+					includes="{$typeIncludes}">
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 					<style
-						basedir="{$specsdir}/{$api}"
-						destdir="{$project_home}/build/specdocs/{$api}"
-						style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
-						includes="{$resultcodeIncludes}">
+					basedir="{$specsdir}/{$api}"
+					destdir="{$project_home}/build/specdocs/{$api}"
+					style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
+					includes="{$resultcodeIncludes}">
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
 						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
-							basedir="{$specsdir}/{$api}"
-							destdir="{$project_home}/build/specdocs/{$api}"
-							style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
-							includes="{$functionIncludes}"
-							extension="-testform-{@id}.html">
+						basedir="{$specsdir}/{$api}"
+						destdir="{$project_home}/build/specdocs/{$api}"
+						style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
+						includes="{$functionIncludes}"
+						extension="-testform-{@id}.html">
+							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
 							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
 							<param name="environment"  expression="{@id}"           />
 						</style>
 					</xsl:for-each>
@@ -223,11 +240,13 @@ $Id$
 					destdir="{$javaDestDir}/{$packageAsDir}/"
 					style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt"
 					extension=".java">
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
-						<param name="package"      expression="{$package}"      />
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
+						<param name="package"      expression="{$package}"      />
 					</style>
 					<delete dir="{$copiedTypesDir}" />
 
@@ -307,13 +326,17 @@ $Id$
 							depends="-impl-{$api}-{$function}-unavail"
 							unless="exists-{$api}-{$classname}">
 							<style
-								in="{$specsdir}/{$api}/{$function}.fnc"
-								out="{$javaImplFile}"
-								style="{$xins_home}/src/xslt/java-skeleton/function_to_java.xslt">
-								<param name="specsdir"  expression="{$specsdir}"  />
-								<param name="api"       expression="{$api}"       />
-								<param name="package"   expression="{$package}"   />
-								<param name="classname" expression="{$classname}" />
+							in="{$specsdir}/{$api}/{$function}.fnc"
+							out="{$javaImplFile}"
+							style="{$xins_home}/src/xslt/java-skeleton/function_to_java.xslt">
+								<param name="xins_version" expression="{$xins_version}" />
+								<param name="project_home" expression="{$project_home}" />
+								<param name="project_file" expression="{$project_file}" />
+								<param name="specsdir"     expression="{$specsdir}"     />
+								<param name="api"          expression="{$api}"          />
+								<param name="api_file"     expression="{$api_file}"     />
+								<param name="package"      expression="{$package}"      />
+								<param name="classname"    expression="{$classname}"    />
 							</style>
 						</target>
 					</xsl:for-each>
@@ -334,20 +357,26 @@ $Id$
 					<target name="classes-api-{$api}" depends="-classes-types-{$api},-skeletons-impl-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<style
-							in="{$api_file}"
-							out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
-							style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
+						in="{$api_file}"
+						out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
+						style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
+							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
 						<style
-							basedir="{$specsdir}/{$api}"
-							destdir="{$javaDestDir}/{$packageAsDir}"
-							style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
-							extension=".java"
-							includes="{$functionIncludes}">
+						basedir="{$specsdir}/{$api}"
+						destdir="{$javaDestDir}/{$packageAsDir}"
+						style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
+						extension=".java"
+						includes="{$functionIncludes}">
+							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
 							<param name="package"      expression="{$package}"      />
 							<param name="api"          expression="{$api}"          />
@@ -366,10 +395,10 @@ $Id$
 						<!-- Compile all classes -->
 						<mkdir dir="{$classesDestDir}" />
 						<javac
-							srcdir="{$javaCombinedDir}"
-							destdir="{$classesDestDir}"
-							debug="true"
-							deprecation="true">
+						srcdir="{$javaCombinedDir}"
+						destdir="{$classesDestDir}"
+						debug="true"
+						deprecation="true">
 							<classpath>
 								<pathelement path="build/classes-types/{$api}" />
 								<pathelement path="{$xins-common.jar}"         />
@@ -409,13 +438,17 @@ $Id$
 						<!-- If deployment is not set yet, then set it to an empty value -->
 						<property name="deployment" value="" />
 						<style
-							in="{$specsdir}/{$api}/api.xml"
-							out="build/webapps/{$api}/web.xml"
-							style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
+						in="{$specsdir}/{$api}/api.xml"
+						out="build/webapps/{$api}/web.xml"
+						style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
+							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
 							<param name="deployment"   expression="${{deployment}}" />
-							<param name="hostname"     expression="${{hostname}}" />
-							<param name="timestamp"    expression="${{timestamp}}" />
+							<param name="hostname"     expression="${{hostname}}"   />
+							<param name="timestamp"    expression="${{timestamp}}"  />
 						</style>
 						<war
 							webxml="build/webapps/{$api}/web.xml"
@@ -520,12 +553,13 @@ $Id$
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/API.java"
 					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
+						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="project_file" expression="{$project_file}"  />
 						<param name="specsdir"     expression="{$specsdir}"      />
-						<param name="package"      expression="{$clientPackage}" />
 						<param name="api"          expression="{$api}"           />
 						<param name="api_file"     expression="{$api_file}"      />
+						<param name="package"      expression="{$clientPackage}" />
 					</style>
 					<style
 					basedir="{$specsdir}/{$api}"
@@ -533,12 +567,13 @@ $Id$
 					style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
 					extension="Result.java"
 					includes="{$functionResultIncludes}">
+						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="project_file" expression="{$project_file}"  />
 						<param name="specsdir"     expression="{$specsdir}"      />
-						<param name="package"      expression="{$clientPackage}" />
 						<param name="api"          expression="{$api}"           />
 						<param name="api_file"     expression="{$api_file}"      />
+						<param name="package"      expression="{$clientPackage}" />
 					</style>
 				</target>
 
