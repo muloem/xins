@@ -41,18 +41,9 @@
 				</style>
 			</target>
 
-			<target name="specdocs-apis" depends="-prepare-specdocs" description="Generates all API overview pages">
-				<style
-				basedir="${{project_home}}/{$specsdir}"
-				destdir="${{project_home}}/build/specdocs"
-				style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt"
-				includes="**/api.xml">
-					<param name="project_home" expression="${{project_home}}" />
-					<param name="specsdir"     expression="{$specsdir}"       />
-				</style>
-			</target>
-
 			<xsl:for-each select="api">
+				<xsl:variable name="api" select="@name" />
+
 				<target name="specdocs-api-{@name}" depends="-prepare-specdocs" description="Generates all specification docs for the '{@name}' API">
 					<dependset>
 						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.fnc" />
@@ -82,49 +73,12 @@
 						<param name="project_home" expression="${{project_home}}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
 					</style>
-				</target>
-			</xsl:for-each>
-
-			<target name="specdocs-functions" depends="-prepare-specdocs" description="Generates the specification docs for all functions">
-				<style
-				basedir="${{project_home}}/{$specsdir}"
-				destdir="${{project_home}}/build/specdocs"
-				style="${{xins_home}}/src/xslt/specdocs/function_to_html.xslt"
-				includes="**/*.fnc">
-					<param name="project_home" expression="${{project_home}}" />
-					<param name="specsdir"     expression="{$specsdir}"       />
-				</style>
-			</target>
-
-			<target name="specdocs-types" depends="-prepare-specdocs" description="Generates the specification docs for all types">
-				<style
-				basedir="${{project_home}}/{$specsdir}"
-				destdir="${{project_home}}/build/specdocs"
-				style="${{xins_home}}/src/xslt/specdocs/type_to_html.xslt"
-				includes="**/*.typ">
-					<param name="project_home" expression="${{project_home}}" />
-					<param name="specsdir"     expression="{$specsdir}"       />
-				</style>
-			</target>
-
-			<target name="testforms" description="Generates all test forms">
-				<xsl:attribute name="depends">
-					<xsl:for-each select="api">
-						<xsl:if test="position() &gt; 1">,</xsl:if>
-						<xsl:text>testforms-</xsl:text>
-						<xsl:value-of select="@name" />
-					</xsl:for-each>
-				</xsl:attribute>
-			</target>
-
-			<xsl:for-each select="api">
-				<target name="testforms-{@name}" depends="-prepare-specdocs" description="Generates the test forms for the '{@name}' API">
-					<xsl:for-each select="//project/environment">
+					<xsl:for-each select="//api/environment">
 						<style
 						basedir="${{project_home}}/{$specsdir}"
 						destdir="${{project_home}}/build/specdocs"
 						style="${{xins_home}}/src/xslt/testforms/function_to_html.xslt"
-						includes="**/*.fnc"
+						includes="{$api}/*.fnc"
 						extension="-testform-{@id}.html">
 							<param name="project_home" expression="${{project_home}}" />
 							<param name="specsdir"     expression="{$specsdir}"       />
@@ -134,7 +88,15 @@
 				</target>
 			</xsl:for-each>
 
-			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types,testforms" description="Generates the specification docs for all APIs"/>
+			<target name="specdocs" description="Generates the specification docs for all APIs">
+				<xsl:attribute name="depends">
+					<xsl:text>specdocs-index</xsl:text>
+					<xsl:for-each select="api">
+						<xsl:text>,specdocs-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
 
 			<target name="all" depends="specdocs" description="Generates everything" />
 		</project>
