@@ -89,6 +89,26 @@ public final class IPAddressUtils extends Object {
       return value;
    }
 
+   /**
+    * Converts the specified component of an IP address to a number between 0
+    * and 255.
+    *
+    * @param ip
+    *    the complete IP address, needed when throwing a
+    *    {@link ParseException}, should not be <code>null</code>; if it is,
+    *    then the behaviour is undefined.
+    *
+    * @param part
+    *    the part to convert to an <code>int</code> number, should not be
+    *    <code>null</code>; if it is, then the behaviour is undefined.
+    *
+    * @return
+    *    the <code>int</code> value of the part, between 0 and 255
+    *    (inclusive).
+    *
+    * @throws ParseException
+    *    if the part cannot be parsed.
+    */
    private static final int ipPartToInt(String ip, String part)
    throws ParseException {
 
@@ -104,7 +124,7 @@ public final class IPAddressUtils extends Object {
          char c0 = part.charAt(0);
          char c1 = part.charAt(1);
 
-         if (c0 >= '0' && c0 <= '9' && c1 >= '0' && c1 <= '9') {
+         if (c0 >= '1' && c0 <= '9' && c1 >= '0' && c1 <= '9') {
             return ((c0 - '0') * 10) + (c1 - '0');
          }
 
@@ -113,7 +133,7 @@ public final class IPAddressUtils extends Object {
          char c1 = part.charAt(1);
          char c2 = part.charAt(2);
 
-         if (c0 >= '0' && c0 <= '9' && c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9') {
+         if (c0 >= '1' && c0 <= '2' && c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9') {
             int value = ((c0 - '0') * 100) + ((c1 - '0') * 10) + (c2 - '0');
             if (value <= 255) {
                return value;
