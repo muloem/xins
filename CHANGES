@@ -1,6 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.167:
 
+* Generated type classes:
+  - Supporting '/' (slash) in item names.
+
+* XINS/Java Common Library:
+  - Implemented toString() method in class Date.Value in package
+    org.xins.types.standard.
+
 * XINS/Java Server Framework:
   - Changed log messages 5000 and 5001 to log the query string.
   - Removed unused package-private dueToUnexpected(Throwable) class function
