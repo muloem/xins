@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added unit test class for Int8, Int16, Int32 and Int64 types.
   - removed redundant code from all the Intxx type classes.
   - Added unit test class for Boolean type.
+  - Removed redundant TypeValueException calls from Text class.
  
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
