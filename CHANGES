@@ -1,6 +1,19 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.169:
 
+* XINS/Java Server Framework:
+  - Enabled the new call framework and removed the old call framework.
+  - The _GetStatistics function now support the reset=true argument that
+    resets the statistics just after getting them.
+
+* Generated specification documentation:
+  - Added DTD validation before any stylesheet transformation.
+  - Set the output elements in the correct order for function_1_0.dtd.
+
+* Build and release process:
+  - The CVSROOT argument is added in the cvs tasks in order to be able to
+    create a release on Windows.
+
 * Fixed bug. If the pattern for a pattern type contained a double quote ('"')
   character, then the generated Java classes for that type would not be
   correctly generated and it would not compile.

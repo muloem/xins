@@ -58,11 +58,6 @@
 			<xsl:otherwise>depends</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<!-- XXX temporary variable for the new call framework.
-	Also change the handleCall in src/java-server-framework/org/xins/server/Function.java
-	and execute 'ant java-server'
-	-->
-	<xsl:variable name="newCallFramework" select="false()" />
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
@@ -88,6 +83,10 @@
 			</target>
 
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
+				<xmlvalidate file="{$project_file}" warn="false">
+					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
+							 location="{$xins_home}/src/dtd/xins-project_1_0.dtd"/>
+				</xmlvalidate>
 				<style
 				in="{$project_file}"
 				out="{$builddir}/specdocs/index.html"
@@ -156,6 +155,10 @@
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 					</dependset>
 					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
+					<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">
+						<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+								 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+					</xmlvalidate>
 					<style
 					in="{$specsdir}/{$api}/api.xml"
 					out="{$project_home}/build/specdocs/{$api}/index.html"
@@ -167,6 +170,11 @@
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
+					<xmlvalidate warn="false">
+						<fileset dir="{$specsdir}/{$api}" includes="{$functionIncludes}"/>
+						<dtd publicId="-//XINS//DTD Function 1.0//EN"
+								 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+					</xmlvalidate>
 					<style
 					basedir="{$specsdir}/{$api}"
 					destdir="{$project_home}/build/specdocs/{$api}"
@@ -180,6 +188,11 @@
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 					<xsl:if test="string-length($typeIncludes) &gt; 0">
+						<xmlvalidate warn="false">
+							<fileset dir="{$specsdir}/{$api}" includes="{$typeIncludes}"/>
+							<dtd publicId="-//XINS//DTD Type 1.0//EN"
+									 location="{$xins_home}/src/dtd/type_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/specdocs/{$api}"
@@ -194,6 +207,11 @@
 						</style>
 					</xsl:if>
 					<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+						<xmlvalidate warn="false">
+							<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
+							<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
+									 location="{$xins_home}/src/dtd/resultcode_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/specdocs/{$api}"
@@ -261,6 +279,10 @@
 							tofile="{$copiedTypesDir}/{$classname}.typ" />
 						</xsl:for-each>
 
+						<xmlvalidate file="{$api_file}" warn="false">
+							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/package.html"
@@ -273,6 +295,11 @@
 							<param name="api_file"     expression="{$api_file}"      />
 							<param name="package"      expression="{$package}"       />
 						</style>
+						<xmlvalidate warn="false">
+							<fileset dir="{$copiedTypesDir}" includes="**/*.typ"/>
+							<dtd publicId="-//XINS//DTD Type 1.0//EN"
+									 location="{$xins_home}/src/dtd/type_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						basedir="{$copiedTypesDir}"
 						destdir="{$javaDestDir}/{$packageAsDir}/"
@@ -360,25 +387,18 @@
 							if="exists-{$api}-{$classname}">
 							<echo message="Not overwriting existing file: {$javaImplFile}" />
 						</target>
-						<!-- XXX java-skeleton -> java-server-framework/function_to_impl_java -->
-						<xsl:variable name="callFrameworkTransformation">
-							<xsl:choose>
-								<xsl:when test="$newCallFramework">
-									<xsl:value-of select="'java-server-framework/function_to_impl_java'" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="'java-skeleton/function_to_java'" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
 						<target
 							name="-skeleton-impl-{$api}-{$function}"
 							depends="-impl-{$api}-{$function}-unavail"
 							unless="exists-{$api}-{$classname}">
+							<xmlvalidate file="{$specsdir}/{$api}/{$function}.fnc" warn="false">
+								<dtd publicId="-//XINS//DTD Function 1.0//EN"
+										 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+							</xmlvalidate>
 							<style
 							in="{$specsdir}/{$api}/{$function}.fnc"
 							out="{$javaImplFile}"
-							style="{$xins_home}/src/xslt/{$callFrameworkTransformation}.xslt">
+							style="{$xins_home}/src/xslt/java-server-framework/function_to_impl_java.xslt">
 								<param name="xins_version" expression="{$xins_version}" />
 								<param name="project_home" expression="{$project_home}" />
 								<param name="project_file" expression="{$project_file}" />
@@ -415,10 +435,14 @@
 							<xsl:value-of select="$api" />
 						</xsl:attribute>
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
+						<xmlvalidate file="{$api_file}" warn="false">
+							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
-						style="{$xins_home}/src/xslt/java-fundament/api_to_java.xslt">
+						style="{$xins_home}/src/xslt/java-server-framework/api_to_java.xslt">
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -427,21 +451,15 @@
 							<param name="api_file"     expression="{$api_file}"     />
 							<param name="package"      expression="{$package}"      />
 						</style>
-						<!-- XXX new call java-fundament -> java-server-framwork + added choose -->
-						<xsl:variable name="callFrameworkTransformation">
-							<xsl:choose>
-								<xsl:when test="$newCallFramework">
-									<xsl:value-of select="'java-server-framework'" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="'java-fundament'" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
+						<xmlvalidate warn="false">
+							<fileset dir="{$specsdir}/{$api}" includes="{$functionIncludes}"/>
+							<dtd publicId="-//XINS//DTD Function 1.0//EN"
+									 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$javaDestDir}/{$packageAsDir}"
-						style="{$xins_home}/src/xslt/{$callFrameworkTransformation}/function_to_java.xslt"
+						style="{$xins_home}/src/xslt/java-server-framework/function_to_java.xslt"
 						extension=".java"
 						includes="{$functionIncludes}">
 							<param name="xins_version" expression="{$xins_version}" />
@@ -452,23 +470,26 @@
 							<param name="api"          expression="{$api}"          />
 							<param name="api_file"     expression="{$api_file}"     />
 						</style>
-						<!-- Generation of the result code added. -->
-						<xsl:if test="$newCallFramework and string-length($resultcodeIncludes) &gt; 0">
-							<style
-							basedir="{$specsdir}/{$api}"
-							destdir="{$javaDestDir}/{$packageAsDir}"
-							style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
-							extension="Result.java"
-							includes="{$resultcodeIncludes}">
-								<param name="xins_version" expression="{$xins_version}" />
-								<param name="project_home" expression="{$project_home}" />
-								<param name="project_file" expression="{$project_file}" />
-								<param name="specsdir"     expression="{$specsdir}"     />
-								<param name="package"      expression="{$package}"      />
-								<param name="api"          expression="{$api}"          />
-								<param name="api_file"     expression="{$api_file}"     />
-							</style>
-						</xsl:if>
+						<!-- Generation of the result code files. -->
+						<xmlvalidate warn="false">
+							<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
+							<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
+									 location="{$xins_home}/src/dtd/resultcode_1_0.dtd"/>
+						</xmlvalidate>
+						<style
+						basedir="{$specsdir}/{$api}"
+						destdir="{$javaDestDir}/{$packageAsDir}"
+						style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
+						extension="Result.java"
+						includes="{$resultcodeIncludes}">
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="package"      expression="{$package}"      />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+						</style>
 
 						<!-- Copy all .java files to a single directory -->
 						<mkdir dir="{$javaCombinedDir}" />
@@ -518,6 +539,10 @@
 						</tstamp>
 						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
+						<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">
+							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						in="{$specsdir}/{$api}/api.xml"
 						out="build/webapps/{$api}/web.xml"
@@ -650,6 +675,10 @@
 					</xsl:variable>
 
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
+					<xmlvalidate file="{$api_file}" warn="false">
+						<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+								 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+					</xmlvalidate>
 					<style
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
@@ -675,6 +704,11 @@
 						<param name="package"      expression="{$clientPackage}" />
 					</style>
 					<xsl:if test="string-length($functionResultIncludes) &gt; 0">
+						<xmlvalidate warn="false">
+							<fileset dir="{$specsdir}/{$api}" includes="{$functionResultIncludes}"/>
+							<dtd publicId="-//XINS//DTD Function 1.0//EN"
+									 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
