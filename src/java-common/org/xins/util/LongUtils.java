@@ -96,24 +96,23 @@ public class LongUtils extends Object {
     */
    public static void toHexString(FastStringBuffer buffer, long n) {
 
-      char[] chars = new char[LENGTH];
-      int pos      = LENGTH - 1;
+      // Check preconditions
+      if (buffer == null) {
+         throw new IllegalArgumentException("buffer == null");
+      }
+
+      // Append 16 zero characters to the buffer
+      final char[] ZEROES = new char[] { '0', '0', '0', '0',
+                                         '0', '0', '0', '0',
+                                         '0', '0', '0', '0',
+                                         '0', '0', '0', '0' };
+      buffer.append(ZEROES);
+
+      int pos = LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
-         chars[pos--] = DIGITS[(int) (n & MASK)];
-      }
-
-      // Fill the rest with '0' characters
-      for (; pos >= 0; pos--) {
-         chars[pos] = '0';
-      }
-
-      // TODO: Improve performance
-
-      // Move all characters to the buffer
-      for (int i = 0; i < LENGTH; i++) {
-         buffer.append(chars[i]);
+         buffer.setChar(pos--, DIGITS[(int) (n & MASK)]);
       }
    }
 
