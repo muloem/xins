@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import org.xins.types.Type;
 import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.PropertyReader;
+import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -211,7 +213,7 @@ implements DefaultResultCodes {
     * be thrown.
     *
     * <p>The initialization will be performed by calling
-    * {@link Singleton#init(Properties)}.
+    * {@link Singleton#init(PropertyReader)}.
     *
     * <p>At shutdown time {@link Singleton#destroy()} will be called.
     *
@@ -231,7 +233,28 @@ implements DefaultResultCodes {
    throws IllegalStateException,
           IllegalArgumentException,
           InitializationException {
-      addInstance((Object) instance);
+
+      // TODO: Check that state equals INITIALIZING
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("instance", instance);
+
+      _instances.add(instance);
+
+      boolean succeeded = false;
+      try {
+         // TODO: Use one instance of PropertiesPropertyReader
+         instance.init(new PropertiesPropertyReader(_initSettings));
+         succeeded = true;
+      } finally {
+         String className = instance.getClass().getName();
+         if (succeeded) {
+            LOG.info("Initialized instance of " + className + '.');
+         } else {
+            String message = "Failed to initialize instance of " + className + '.';
+            LOG.error(message);
+         }
+      }
    }
 
    /**
@@ -272,6 +295,10 @@ implements DefaultResultCodes {
    throws IllegalStateException,
           IllegalArgumentException,
           InitializationException {
+
+      if (instance instanceof Singleton) {
+         addInstance((Singleton) instance);
+      }
 
       // TODO: Check that state equals INITIALIZING
 
