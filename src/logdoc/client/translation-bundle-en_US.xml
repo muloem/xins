@@ -25,4 +25,6 @@
 	<translation entry="2014">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
 	<translation entry="2015">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
 	<translation entry="2016">Received HTTP result with code <value-of-param name="code" /> while calling URL <value-of-param name="url" format="quoted" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2017">I/O error while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2018">Unexpected exception while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
 </translation-bundle>

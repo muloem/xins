@@ -99,6 +99,15 @@
 			<param name="function" type="text"  nullable="false" />
 			<param name="code"     type="int32" nullable="false" />
 		</entry>
+		<entry id="2017" level="NOTICE" exception="true">
+			<description>Unrecognized I/O error while calling API function.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+		</entry>
+		<entry id="2018" level="NOTICE" exception="true">
+			<description>Unexpected exception while calling API function.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+		</entry>
 	</group>
-
 </log>

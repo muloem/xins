@@ -322,19 +322,24 @@ public final class XINSServiceCaller extends ServiceCaller {
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_2014(url, functionName, socketTimeOut);
                throw new SocketTimeOutException();
+
+            // Unspecific I/O error
             } else {
-               // TODO: Log this?
+               Log.log_2017(exception, url, functionName);
                throw new CallIOException((IOException) exception);
             }
 
+         // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            // TODO: Log this?
+            Log.log_2017(exception, url, functionName);
             throw new CallIOException((IOException) exception);
 
          } else if (exception instanceof RuntimeException) {
+            Log.log_2018(exception, url, functionName);
             throw (RuntimeException) exception;
 
          } else if (exception instanceof Error) {
+            Log.log_2018(exception, url, functionName);
             throw (Error) exception;
          }
 
