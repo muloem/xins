@@ -27,14 +27,35 @@ public class HexConverter extends Object {
    private static final int LONG_LENGTH = 16;
 
    /**
-    * The radix when converting (16).
+    * The number of characters written when converting a <code>long</code> to
+    * an unsigned hex string.
     */
-   private static final long RADIX = 16L;
+   private static final int INT_LENGTH = 8;
 
    /**
-    * The radix mask. Equal to {@link #RADIX}<code> - 1</code>.
+    * The radix when converting (16).
     */
-   private static final long MASK = RADIX - 1L;
+   private static final int RADIX = 16;
+
+   /**
+    * The radix mask as an <code>int</code>. Equal to {@link #RADIX}<code> -
+    * 1</code>.
+    */
+   private static final int INT_MASK = RADIX - 1;
+
+   /**
+    * The radix mask as a <code>long</code>. Equal to {@link #RADIX}<code> -
+    * 1L</code>.
+    */
+   private static final long LONG_MASK = RADIX - 1L;
+
+   /**
+    * Array of 8 zero characters.
+    */
+   private static final char[] EIGHT_ZEROES = {
+      '0', '0', '0', '0',
+      '0', '0', '0', '0',
+   };
 
    /**
     * Array of 16 zero characters.
@@ -62,15 +83,45 @@ public class HexConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Convert the specified <code>long</code> to an unsigned number text
-    * string. The returned string will always consist of 16 characters, zeroes
-    * will be prepended as necessary.
+    * Convert the specified <code>int</code> to an unsigned number hex
+    * string. The returned string will always consist of 8 hex characters,
+    * zeroes will be prepended as necessary.
     *
     * @param n
-    *    the number to be converted to a text string.
+    *    the number to be converted to a hex string.
     *
     * @return
-    *    the text string, cannot be <code>null</code>, the length is always 16
+    *    the hex string, cannot be <code>null</code>, the length is always 8
+    *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 8</code>).
+    */
+   public static String toHexString(int n) {
+
+      char[] chars = new char[INT_LENGTH];
+      int pos      = INT_LENGTH - 1;
+
+      // Convert the int to a hex string until the remainder is 0
+      for (; n != 0; n >>>= 4) {
+         chars[pos--] = DIGITS[n & INT_MASK];
+      }
+
+      // Fill the rest with '0' characters
+      for (; pos >= 0; pos--) {
+         chars[pos] = '0';
+      }
+
+      return new String(chars, 0, LONG_LENGTH);
+   }
+
+   /**
+    * Convert the specified <code>long</code> to an unsigned number hex
+    * string. The returned string will always consist of 16 hex characters,
+    * zeroes will be prepended as necessary.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @return
+    *    the hex string, cannot be <code>null</code>, the length is always 16
     *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 16</code>).
     */
    public static String toHexString(long n) {
@@ -80,7 +131,7 @@ public class HexConverter extends Object {
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
-         chars[pos--] = DIGITS[(int) (n & MASK)];
+         chars[pos--] = DIGITS[(int) (n & LONG_MASK)];
       }
 
       // Fill the rest with '0' characters
@@ -89,6 +140,39 @@ public class HexConverter extends Object {
       }
 
       return new String(chars, 0, LONG_LENGTH);
+   }
+
+   /**
+    * Converts the specified <code>int</code> to unsigned number and appends
+    * it to the specified string buffer. Exactly 8 characters will be
+    * appended, all between <code>'0'</code> to <code>'9'</code> or between
+    * <code>'a'</code> and <code>'f'</code>.
+    *
+    * @param buffer
+    *    the string buffer to append to, cannot be <code>null</code>.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>buffer == null</code>.
+    */
+   public static void toHexString(FastStringBuffer buffer, int n) {
+
+      // Check preconditions
+      if (buffer == null) {
+         throw new IllegalArgumentException("buffer == null");
+      }
+
+      // Append 8 zero characters to the buffer
+      buffer.append(EIGHT_ZEROES);
+
+      int pos = INT_LENGTH - 1;
+
+      // Convert the int to a hex string until the remainder is 0
+      for (; n != 0; n >>>= 4) {
+         buffer.setChar(pos--, DIGITS[n & INT_MASK]);
+      }
    }
 
    /**
@@ -101,7 +185,7 @@ public class HexConverter extends Object {
     *    the string buffer to append to, cannot be <code>null</code>.
     *
     * @param n
-    *    the number to be converted to a text string.
+    *    the number to be converted to a hex string.
     *
     * @throws IllegalArgumentException
     *    if <code>buffer == null</code>.
@@ -120,7 +204,7 @@ public class HexConverter extends Object {
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
-         buffer.setChar(pos--, DIGITS[(int) (n & MASK)]);
+         buffer.setChar(pos--, DIGITS[(int) (n & LONG_MASK)]);
       }
    }
 
