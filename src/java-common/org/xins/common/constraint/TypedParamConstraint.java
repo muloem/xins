@@ -7,7 +7,9 @@
 package org.xins.common.constraint;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
+
+import org.xins.common.text.TextUtils;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
@@ -123,14 +125,18 @@ extends ParamConstraint {
     *    violated) <code>null</code>.
     */
    String checkParameterValue(Object value) {
+
+      // Null is always allowed
       if (value == null) {
          return null;
       }
       
+      // Convert to a string and then check it
+      String string;
       try {
-         String string = _type.toString(value);
-         _type.checkValue(string);
-         return null;
+         string = _type.toString(value);
+
+      // Class mismatch
       } catch (ClassCastException exception) {
          return "Class of value for parameter \""
               + getParameterName()
@@ -143,20 +149,62 @@ extends ParamConstraint {
               + ").";
       } catch (TypeValueException exception) {
          String detail = exception.getDetail();
+
+         // Invalid value, detailed description not available
          if (detail == null || detail.length() < 1) {
-            return "Value for parameter \""
+            return "Value of class \""
+                 + Utils.getClassName(value)
+                 + "\" for parameter \""
                  + getParameterName()
                  + "\" does not match type \""
                  + _type.getName()
                  + "\".";
+
+         // Invalid value, detailed description indeed available
          } else {
-            return "Value for parameter \""
+            return "Value of class \""
+                 + Utils.getClassName(value)
+                 + "\" for parameter \""
                  + getParameterName()
                  + "\" does not match type \""
                  + _type.getName()
                  + "\" (detail: \""
                  + detail
                  + "\").";
+         }
+      }
+
+      try {
+         _type.checkValue(string);
+         return null;
+      } catch (TypeValueException exception) {
+         String detail = exception.getDetail();
+
+         // Invalid value, detailed description not available
+         if (detail == null || detail.length() < 1) {
+            return "Value of class \""
+                 + Utils.getClassName(value)
+                 + "\" for parameter \""
+                 + getParameterName()
+                 + "\" does not match type \""
+                 + _type.getName()
+                 + "\" when converted to a character string ("
+                 + TextUtils.quote(string)
+                 + ").";
+
+         // Invalid value, detailed description indeed available
+         } else {
+            return "Value of class \""
+                 + Utils.getClassName(value)
+                 + "\" for parameter \""
+                 + getParameterName()
+                 + "\" does not match type \""
+                 + _type.getName()
+                 + "\" (detail: \""
+                 + detail
+                 + "\" when converted to a character string ("
+                 + TextUtils.quote(string)
+                 + ").";
          }
       }
    }
