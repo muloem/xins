@@ -88,10 +88,6 @@
 	<translation entry="4036">Toegangsregel <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
 	<translation entry="5000">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan.</translation>
 	<translation entry="5001">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />.</translation>
-	<translation entry="5002">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5003">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5004">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="5005">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet aan geen van de toegangsregels.</translation>
 	<translation entry="5006">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
 	<translation entry="5007">Sessie-attribuut <value-of-param name="name" format="quoted" /> krijgt waarde (null).</translation>
 	<translation entry="5008">Sessie-attribuut <value-of-param name="name" format="quoted" /> wordt opgevraagd en heeft waarde <value-of-param name="valueString" format="quoted" /> (<value-of-param name="valueClass" />).</translation>
@@ -105,6 +101,10 @@
 	<translation entry="5016">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
 	<translation entry="5017">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
 	<translation entry="5018">Kan sessie identificatie niet vertalen naar tekst. Reden: <value-of-param name="reason" format="quoted" />.</translation>
+	<translation entry="5500">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5501">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5502">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5503">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet aan geen van de toegangsregels.</translation>
 	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
 	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>
