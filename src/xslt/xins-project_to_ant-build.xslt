@@ -48,11 +48,11 @@
 					<dependset>
 						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.fnc" />
 						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.typ" />
-						<targetfileset dir="${{project_home}}/build/specdocs/{@name}" includes="api.html" />
+						<targetfileset dir="${{project_home}}/build/specdocs/{@name}" includes="index.html" />
 					</dependset>
 					<style
 					in="${{project_home}}/{$specsdir}/{@name}/api.xml"
-					out="${{project_home}}/build/specdocs/{@name}/api.html"
+					out="${{project_home}}/build/specdocs/{@name}/index.html"
 					style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt">
 						<param name="project_home" expression="${{project_home}}" />
 						<param name="specsdir"     expression="{$specsdir}"       />
@@ -97,6 +97,13 @@
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
+
+
+			<target name="-prepare-classes" depends="-prepare">
+				<mkdir dir="build/classes" />
+			</target>
+
+			<target name="classes" depends="-prepare-classes" description="Compiles all Java classes" />
 
 			<target name="all" depends="specdocs" description="Generates everything" />
 		</project>
