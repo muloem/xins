@@ -60,6 +60,14 @@
 						<xsl:text>.APIImpl</xsl:text>
 					</param-value>
 				</init-param>
+				<xsl:if test="boolean(//api/@default)">
+					<init-param>
+						<param-name>org.xins.api.defaultFunction</param-name>
+						<param-value>
+							<xsl:value-of select="//api/@default" />
+						</param-value>
+					</init-param>
+				</xsl:if>
 				<init-param>
 					<param-name>org.xins.api.sessionBased</param-name>
 					<param-value>
