@@ -1,7 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.63:
 
-* Optimized generated java-fundament classes.
+* XINS/Java Server Framework:
+  - Optimized generated java-fundament classes.
+  - Improved performance of session ID parsing.
+  - Deprecated NoSuchActualFunctionCallerException.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.62:
