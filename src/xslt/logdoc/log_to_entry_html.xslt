@@ -35,6 +35,15 @@
 						<td>
 							<a href="index.html">Logdoc index</a>
 							<xsl:text> | </xsl:text>
+							<a>
+								<xsl:attribute name="href">
+									<xsl:text>group-</xsl:text>
+									<xsl:value-of select="group[entry/@name=$entry]/@name" />
+									<xsl:text>.html</xsl:text>
+								</xsl:attribute>
+								<xsl:text>Log entry group</xsl:text>
+							</a>
+							<xsl:text> | </xsl:text>
 							<span class="active">Log entry</span>
 						</td>
 					</tr>
