@@ -10,7 +10,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:template match="api" method="owner">
+	<xsl:template match="api" mode="owner">
 		<xsl:variable name="owner">
 			<xsl:if test="boolean(@owner) and not(owner = '')">
 				<xsl:variable name="new_authors_file" select="concat($project_home, '/authors.xml')" />
