@@ -17,6 +17,7 @@
 	<xsl:variable name="api"              select="//function/@api" />
 	<xsl:variable name="api_file"         select="concat($specsdir, '/', $api, '/api.xml')" />
 	<xsl:variable name="function_name"    select="//function/@name" />
+	<xsl:variable name="function_file"    select="concat($specsdir, '/', $api, '/', $function_name, '.fnc')" />
 
 	<xsl:output
 	method="xml"
@@ -74,6 +75,15 @@
 
 				<xsl:call-template name="broken_freeze" />
 				<xsl:apply-templates select="description" />
+				<xsl:if test="deprecated">
+					<xsl:if test="description">
+						<p />
+					</xsl:if>
+					<em>
+						<strong>Deprecated: </strong>
+						<xsl:apply-templates select="deprecated" />
+					</em>
+				</xsl:if>
 
 				<xsl:if test="see">
 					<table class="metadata">
@@ -1166,6 +1176,14 @@
 				</div>
 			</xsl:if>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="function-ref[@name]">
+		<xsl:variable name="reffunction" select="@name" />
+		<xsl:variable name="reffunction_file" select="concat($specsdir, '/', $api, '/', $reffunction, '.fnc')" />
+		<a href="{$reffunction}.html" title="{document($reffunction_file)/function/description/text()}">
+			<xsl:value-of select="$reffunction" />
+		</a>
 	</xsl:template>
 
 </xsl:stylesheet>
