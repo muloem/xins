@@ -96,6 +96,11 @@ public class AddReleaseTask extends Task {
    private String _releaseName;
 
    /**
+    * The location of the keystore file.
+    */
+   private String _keystore;
+
+   /**
     * The <code>HttpClient</code> object to use.
     */
    private HttpClient _httpClient;
@@ -206,6 +211,21 @@ public class AddReleaseTask extends Task {
    }
 
    /**
+    * Sets the location of the keystore file. Neither <code>null</code> nor
+    * <code>""</code> are valid.
+    *
+    * @param keystore
+    *    the location of the keystore file.
+    */
+   public void setKeystore(String keystore) {
+      if (keystore == null || keystore.length() < 1) {
+         _keystore = null;
+      } else {
+         _keystore = keystore;
+      }
+   }
+
+   /**
     * Called by the project to let the task do its work.
     *
     * @throws BuildException
@@ -226,6 +246,8 @@ public class AddReleaseTask extends Task {
          throw new BuildException("The SourceForge release name must be set, but it is not.");
       } else if (_packageID == null) {
          throw new BuildException("The SourceForge package ID must be set, but it is not.");
+      } else if (_keystore == null) {
+         throw new BuildException("The keystore location must be set, but it is not.");
       }
 
       // Upload the file
@@ -238,6 +260,10 @@ public class AddReleaseTask extends Task {
       } else {
          uploadFile();
       }
+
+      // Use our own keystore
+      log("Using keystore file \"" + _keystore + "\".");
+      System.setProperty("javax.net.ssl.trustStore", _keystore);
 
       // Login to SourceForge site
       disableCertificateValidation();
@@ -264,20 +290,19 @@ public class AddReleaseTask extends Task {
                // empty
             }
          }
-     };
+      };
     
       // Install the all-trusting trust manager
       try {
          log("Disabling SSL certificate validation.", Project.MSG_VERBOSE);
-         SSLContext sc = SSLContext.getInstance("SSL");
+         SSLContext sc = SSLContext.getInstance("SSLv3");
          sc.init(null, trustAllCerts, new SecureRandom());
          HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
          log("Disabled SSL certificate validation.", Project.MSG_DEBUG);
       } catch (Exception e) {
-         log("Error while disabling SSL certificate validation. Caught unexpected " + e.getClass().getName() + ", message is: " + e.getMessage());
+         throw new BuildException("Error while disabling SSL certificate validation.", e);
       }
    }
-
 
    private void uploadFile() throws BuildException {
 
@@ -331,7 +356,7 @@ public class AddReleaseTask extends Task {
          log("Uploaded \"" + _file + "\" to ftp://" + FTP_SERVER + '/' + FTP_DIR + '/' + fileName, Project.MSG_DEBUG);
 
       } catch(IOException e) {
-         throw new BuildException("I/O error while uploading file. Caught " + e.getClass().getName() + ", message is: " + e.getMessage());
+         throw new BuildException("I/O error while uploading file.", e);
       } finally {
          if(ftp.isConnected()) {
             try {
@@ -356,12 +381,13 @@ public class AddReleaseTask extends Task {
          _httpClient.executeMethod(method);
          code = method.getStatusCode();
       } catch (IOException e) {
-         throw new BuildException("I/O error during SourceForge login. Caught " + e.getClass().getName() + ", message is: " + e.getMessage());
+         throw new BuildException("I/O error during SourceForge login.", e);
       } finally {
          method.releaseConnection();
       }
 
-      if (code != 200) {
+      // Expect a HTTP redirect (302)
+      if (code != 302) {
          throw new BuildException("HTTP result code " + code + " while logging in. Status line: " + method.getStatusLine());
       }
       log("Logged in to SourceForge site as \"" + _user + "\".", Project.MSG_DEBUG);
@@ -380,14 +406,15 @@ public class AddReleaseTask extends Task {
          _httpClient.executeMethod(method);
          code = method.getStatusCode();
       } catch (IOException e) {
-         throw new BuildException("I/O error while creating release. Caught " + e.getClass().getName() + ", message is: " + e.getMessage());
+         throw new BuildException("I/O error while creating release.", e);
       } finally {
          method.releaseConnection();
       }
 
-      if (code != 200) {
+      // Expect a HTTP redirect (302)
+      if (code != 302) {
          throw new BuildException("HTTP result code " + code + " while creating release. Status line: " + method.getStatusLine());
       }
-      log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', Project.MSG_DEBUG);
+      log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.');
    }
 }
