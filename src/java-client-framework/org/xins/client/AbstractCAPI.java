@@ -51,39 +51,6 @@ public abstract class AbstractCAPI extends Object {
 
    /**
     * Creates a new <code>AbstractCAPI</code> object, using the specified
-    * service descriptor and optional call configuration.
-    *
-    * <p>This constructor is considered internal to XINS. Do not use it
-    * directly.
-    *
-    * @param descriptor
-    *    the descriptor for the service(s), cannot be <code>null</code>.
-    *
-    * @param callConfig
-    *    fallback configuration for the calls, or <code>null</code> if a
-    *    default should be used.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws UnsupportedProtocolException
-    *    if any of the target descriptors specifies an unsupported protocol.
-    *
-    * @since XINS 1.1.0
-    */
-   protected AbstractCAPI(Descriptor descriptor, XINSCallConfig callConfig)
-   throws IllegalArgumentException, UnsupportedProtocolException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("descriptor", descriptor);
-
-      // Create and store service caller
-      _caller = new XINSServiceCaller(descriptor, callConfig);
-      _caller.setCAPI(this);
-   }
-
-   /**
-    * Creates a new <code>AbstractCAPI</code> object, using the specified
     * service descriptor.
     *
     * <p>A default XINS call configuration will be used.
@@ -100,15 +67,16 @@ public abstract class AbstractCAPI extends Object {
     * @throws UnsupportedProtocolException
     *    if any of the target descriptors specifies an unsupported protocol
     *    (<em>since XINS 1.1.0</em>).
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0. This constructor is expected to be
-    *    removed in a later version of XINS. It is not removed yet to remain
-    *    fully compatible with XINS 1.0.
     */
    protected AbstractCAPI(Descriptor descriptor)
    throws IllegalArgumentException, UnsupportedProtocolException {
-      this(descriptor, null);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("descriptor", descriptor);
+
+      // Create and store service caller
+      _caller = new XINSServiceCaller(descriptor);
+      _caller.setCAPI(this);
    }
 
 
