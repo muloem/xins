@@ -3,6 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
+ XSLT that generates the build.xml that will create the logdoc java or html files.
+
  $Id$
 -->
 
@@ -17,7 +19,6 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="../hungarian.xslt"       />
-	<xsl:include href="../package_to_dir.xslt"  />
 	<xsl:include href="../package_for_api.xslt" />
 
 	<xsl:output indent="yes" />

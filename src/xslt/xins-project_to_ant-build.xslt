@@ -18,7 +18,6 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="hungarian.xslt"       />
-	<xsl:include href="package_to_dir.xslt"  />
 	<xsl:include href="package_for_api.xslt" />
 	<xsl:include href="create_project.xslt"  />
 
