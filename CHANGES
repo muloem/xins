@@ -24,6 +24,10 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Added more logs for the Doorman.
   - The Properties type now returns a PropectedPropertyReader instead of the
     BasicPropertyReader.
+  - Removed method serialize(PropertyReader,LogdocStringBuffer) from class
+    PropertyReaderUtils and replaced it with
+    serialize(PropertyReader,FastStringBuffer,String). The former was not used
+    anywhere.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
