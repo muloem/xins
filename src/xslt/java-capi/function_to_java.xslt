@@ -123,9 +123,18 @@ public final class ]]></xsl:text>
 			<xsl:text><![CDATA[
 
    /**
-    * Gets the <em>]]></xsl:text>
+    * Gets the value of the ]]></xsl:text>
+			<xsl:choose>
+				<xsl:when test="@required = 'true'">
+					<xsl:text>required</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>optional</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text><![CDATA[ output parameter <em>]]></xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text><![CDATA[</em> output parameter.
+			<xsl:text><![CDATA[</em>.
     *
     * @return
     *    the value of the <em>]]></xsl:text>
