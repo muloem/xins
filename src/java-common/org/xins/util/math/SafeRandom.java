@@ -60,6 +60,8 @@ public final class SafeRandom extends Object {
       _asString     = "SafeRandom \"" + name + '"';
       _secureRandom = new SecureRandom();
       _random       = new Random();
+      _intWarning   = _asString + ": Failed to generate secure random int, falling back to pseudo-random.";
+      _longWarning  = _asString + ": Failed to generate secure random long, falling back to pseudo-random.";
    }
 
 
@@ -89,6 +91,18 @@ public final class SafeRandom extends Object {
     */
    private final Random _random;
 
+   /**
+    * The warning logged if an <code>int</code> could not be generated using
+    * the <code>SecureRandom</code>.
+    */
+   private final String _intWarning;
+
+   /**
+    * The warning logged if an <code>long</code> could not be generated using
+    * the <code>SecureRandom</code>.
+    */
+   private final String _longWarning;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -106,7 +120,7 @@ public final class SafeRandom extends Object {
          return _secureRandom.nextInt();
       } catch (Throwable exception) {
          if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn(_asString + ": Failed to generate secure random int, falling back to pseudo-random.");
+            LOG.warn(_intWarning);
          }
          return _random.nextInt();
       }
@@ -123,7 +137,7 @@ public final class SafeRandom extends Object {
          return _secureRandom.nextLong();
       } catch (Throwable exception) {
          if (LOG.isEnabledFor(Level.WARN)) {
-            LOG.warn(_asString + ": Failed to generate secure random long, falling back to pseudo-random.");
+            LOG.warn(_longWarning);
          }
          return _random.nextLong();
       }
