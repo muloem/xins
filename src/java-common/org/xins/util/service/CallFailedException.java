@@ -68,7 +68,7 @@ public final class CallFailedException extends Exception {
       int count = exceptions.size();
 
       // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(100);
+      FastStringBuffer buffer = new FastStringBuffer(50);
       buffer.append("Failed to call service. Tried ");
       if (count == 1) {
          buffer.append("1 target.");
