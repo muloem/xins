@@ -8,7 +8,6 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:param name="xins_home"    />
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
@@ -43,10 +42,11 @@
 			</xsl:when>
 			<xsl:when test="$sessionBased = 'true'">
 				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="required" select="'true'"    />
-					<xsl:with-param name="type"     select="_text"     />
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="required"     select="'true'"        />
+					<xsl:with-param name="type"         select="_text"         />
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
@@ -294,10 +294,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				</xsl:when>
 				<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
 					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="api"      select="$api"                   />
-						<xsl:with-param name="specsdir" select="$specsdir"              />
-						<xsl:with-param name="required" select="output/param/@required" />
-						<xsl:with-param name="type"     select="output/param/@type"     />
+						<xsl:with-param name="project_file" select="$project_file"          />
+						<xsl:with-param name="api"          select="$api"                   />
+						<xsl:with-param name="specsdir"     select="$specsdir"              />
+						<xsl:with-param name="required"     select="output/param/@required" />
+						<xsl:with-param name="type"         select="output/param/@type"     />
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:when test="output/param or output/data/element">
@@ -320,16 +321,17 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em> function.
     *
-    * <p>See the <a href="]]></xsl:text>
+    * <p>Generated from function specification version ]]></xsl:text>
+		<xsl:call-template name="revision2string">
+			<xsl:with-param name="revision" select="@rcsversion" />
+		</xsl:call-template>
+		<xsl:text><![CDATA[. See the <a href="]]></xsl:text>
 		<xsl:value-of select="$specdocsURL" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="$name" />
-		<xsl:text>.html</xsl:text>
-		<xsl:text><![CDATA["><em>]]></xsl:text>
-		<xsl:value-of select="$name" />
-		<xsl:text><![CDATA[</em> function specification</a>.]]></xsl:text>
+		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="$kind = 'sharedSessionBased'">
 				<xsl:text>
@@ -551,10 +553,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		     parameter -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="$required" />
-				<xsl:with-param name="type"     select="@type" />
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="$required"     />
+				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -614,7 +617,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
 
 	<!-- ***************************************************************** -->
-	<!-- Prints a parameter definition for a function calling method       -->
+	<!-- Prints an argument definition for a function calling method       -->
 	<!-- ***************************************************************** -->
 
 	<xsl:template match="input/param" mode="methodSignature">
@@ -638,10 +641,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		<!-- Determine the Java class or primary data type -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="$required" />
-				<xsl:with-param name="type"     select="@type" />
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="$required"     />
+				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
 
