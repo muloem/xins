@@ -58,6 +58,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 2:
 * Generation of server-side Java code:
   - Import type classes for the generated implementation class.
 
+* Generation of specification documentation:
+  - Added support for multiple elements in the output data section.
+
 * Logdoc:
   - Added French locale.
   - XML files are now in UTF-8 encoding format.

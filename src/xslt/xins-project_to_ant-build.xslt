@@ -164,6 +164,9 @@
 					     location="{$xins_home}/src/dtd/log_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" 
 					     location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd" />
+
+					<dtd publicId="-//XINS//DTD Function 1.1//EN"
+					     location="{$xins_home}/src/dtd/function_1_1.dtd" />
 				</xmlcatalog>
 			</target>
 

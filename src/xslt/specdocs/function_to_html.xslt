@@ -850,7 +850,21 @@
 	<xsl:template name="datasection">
 		<h3>Data section</h3>
 		<xsl:choose>
-			<xsl:when test="data">
+			<xsl:when test="data/contains">
+				<p>Root element(s):
+					<ul>
+						<xsl:for-each select="data/contains/contained">
+							<li><code>
+								<xsl:text>&lt;</xsl:text>
+								<xsl:value-of select="@element" />
+								<xsl:text>/&gt;</xsl:text>
+							</code>.</li>
+						</xsl:for-each>
+					</ul>
+				</p>
+				<xsl:apply-templates select="data/element" />
+			</xsl:when>
+			<xsl:when test="data/@contains">
 				<p>
 					<xsl:text>Root element: </xsl:text>
 					<code>

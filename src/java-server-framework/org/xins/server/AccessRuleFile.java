@@ -206,13 +206,13 @@ public class AccessRuleFile implements AccessRuleContainer {
       while(reader.ready() && nextLine != null) {
          nextLine = reader.readLine();
          lineNumber++;
-         if (nextLine != null && (nextLine.startsWith("allow") || nextLine.startsWith("deny"))) {
-            rules.add(AccessRule.parseAccessRule(nextLine));
-         } else if (nextLine != null && nextLine.startsWith("file")) {
-            rules.add(new AccessRuleFile(nextLine, interval));
-         } else if (nextLine == null || nextLine.trim().equals("") || nextLine.startsWith("#")) {
+         if (nextLine == null || nextLine.trim().equals("") || nextLine.startsWith("#")) {
 
             // Ignore comments and empty lines
+         } else if (nextLine.startsWith("allow") || nextLine.startsWith("deny")) {
+            rules.add(AccessRule.parseAccessRule(nextLine));
+         } else if (nextLine.startsWith("file")) {
+            rules.add(new AccessRuleFile(nextLine, interval));
          } else {
 
             // Incorrect line
