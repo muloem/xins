@@ -24,6 +24,7 @@ import org.xins.common.TimeOutException;
 
 import org.xins.common.collections.CollectionUtils;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.service.CallFailedException;
 import org.xins.common.service.CallResult;
@@ -32,6 +33,8 @@ import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.text.ParseException;
+
+import org.xins.logdoc.LogdocSerializable;
 
 /**
  * XINS service caller.
@@ -227,8 +230,12 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("target", target, "request", request);
 
-      String         functionName = request.getFunctionName();
-      PropertyReader parameters   = request.getParameters();
+      // Get the name of the function to call
+      String functionName = request.getFunctionName();
+
+      // Get the input parameters
+      PropertyReader     params    = request.getParameters();
+      LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
 
       // Construct new HttpClient object
       HttpClient client = new HttpClient();
@@ -239,27 +246,30 @@ public final class XINSServiceCaller extends ServiceCaller {
       int    connectionTimeOut = target.getConnectionTimeOut();
       int    socketTimeOut     = target.getSocketTimeOut();
 
-      Log.log_2011(url, functionName, totalTimeOut, connectionTimeOut, socketTimeOut);
-
       // Configure connection time-out and socket time-out
       client.setConnectionTimeout(connectionTimeOut);
       client.setTimeout          (socketTimeOut);
 
       // Construct the method object
-      PostMethod method = createPostMethod(url, functionName, parameters);
+      PostMethod method = createPostMethod(url, functionName, params);
 
       // Prepare a thread for execution of the call
       CallExecutor executor = new CallExecutor(NDC.peek(), client, method);
 
+      // Log that we are about to call the API
+      Log.log_2011(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
+
+      // Call the API function
       boolean succeeded = false;
       long start = System.currentTimeMillis();
       try {
          controlTimeOut(executor, target);
          succeeded = true;
 
+      // Total time-out exceeded
       } catch (TimeOutException exception) {
-         Log.log_2015(url, functionName, totalTimeOut);
          long duration = System.currentTimeMillis() - start;
+         Log.log_2015(duration, url, functionName, serParams, totalTimeOut);
          throw new TotalTimeOutException(request, target, duration);
 
       } finally {
@@ -273,7 +283,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
             // If there was an exception, then log it
             } catch (Throwable exception) {
-               Log.log_2007(exception, exception.getClass().getName());
+               Log.log_2007(exception, url, functionName, serParams, exception.getClass().getName());
             }
          }
       }
@@ -290,14 +300,14 @@ public final class XINSServiceCaller extends ServiceCaller {
 
          // Connection refusal
          if (exception instanceof ConnectException) {
-            Log.log_2012(url, functionName);
             long duration = System.currentTimeMillis() - start;
+            Log.log_2012(duration, url, functionName, serParams);
             throw new ConnectionRefusedException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_2013(url, functionName, connectionTimeOut);
             long duration = System.currentTimeMillis() - start;
+            Log.log_2013(duration, url, functionName, serParams, connectionTimeOut);
             throw new ConnectionTimeOutException(request, target, duration);
 
          // Socket time-out
@@ -310,29 +320,33 @@ public final class XINSServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_2014(url, functionName, socketTimeOut);
                long duration = System.currentTimeMillis() - start;
+               Log.log_2014(duration, url, functionName, serParams, socketTimeOut);
                throw new SocketTimeOutException(request, target, duration);
 
             // Unspecific I/O error
             } else {
-               Log.log_2017(exception, url, functionName);
                long duration = System.currentTimeMillis() - start;
+               Log.log_2017(exception, duration, url, functionName, serParams);
                throw new CallIOException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            Log.log_2017(exception, url, functionName);
             long duration = System.currentTimeMillis() - start;
+            Log.log_2017(exception, duration, url, functionName, serParams);
             throw new CallIOException(request, target, duration, (IOException) exception);
 
          } else if (exception instanceof RuntimeException) {
-            Log.log_2018(exception, url, functionName);
+            long duration = System.currentTimeMillis() - start;
+            Log.log_2018(exception, duration, url, functionName, serParams);
+            // TODO: Throw CallException
             throw (RuntimeException) exception;
 
          } else if (exception instanceof Error) {
-            Log.log_2018(exception, url, functionName);
+            long duration = System.currentTimeMillis() - start;
+            Log.log_2018(exception, duration, url, functionName, serParams);
+            // TODO: Throw CallException
             throw (Error) exception;
          }
 
@@ -344,19 +358,19 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Check the code
       int code = executor._statusCode;
 
-      Log.log_2016(url, functionName, code);
+      Log.log_2016(System.currentTimeMillis() - start, url, functionName, serParams, code);
 
       // If HTTP status code is not in 2xx range, abort
       if (code < 200 || code > 299) {
-         Log.log_2008(url, functionName, code);
+         Log.log_2008(url, functionName, serParams, code);
          long duration = System.currentTimeMillis() - start;
          throw new UnexpectedHTTPStatusCodeException(request, target, duration, code);
       }
 
       // If the body is null, then there was an error
       if (body == null) {
-         Log.log_2009();
          long duration = System.currentTimeMillis() - start;
+         Log.log_2009(duration, url, functionName, serParams);
          throw new InvalidCallResultException(request, target, duration, "Failed to read the response body.", null);
       }
 

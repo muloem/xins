@@ -107,7 +107,6 @@ public class ResultParser extends Object {
             buffer.append('.');
          }
          String message = buffer.toString();
-         //LOG.error(message, exception);
          Log.log_2005(exception, detail);
          throw new ParseException(message);
       } finally {
@@ -244,7 +243,7 @@ public class ResultParser extends Object {
          if (noKey && noValue) {
             Log.log_2001(ELEMENT_NAME);
          } else if (noKey) {
-            Log.log_2002(ELEMENT_NAME);
+            Log.log_2002(ELEMENT_NAME, KEY_ATTRIBUTE);
          } else if (noValue) {
             Log.log_2003(ELEMENT_NAME, KEY_ATTRIBUTE, key);
          } else {
