@@ -29,6 +29,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
       . InvalidRequestException;
       . InvalidResponseException.
     - added UnsuccessfulXINSCallExceptionFactory class.
+    - added BasicUnsuccessfulXINSCallExceptionFactory class, extends
+      UnsuccessfulXINSCallExceptionFactory.
     [ work in progress, XINSServiceCaller needs to support the factory, CAPI
       needs to create and set the factory ]
 
