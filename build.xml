@@ -669,6 +669,8 @@
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
 		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
 			<property name="version" value="${version.major}.${version.minor}" />
+			<property name="sf.user" value="${sf.user}" />
+			<property name="sf.password" value="${sf.password}" />
 		</ant>
 	</target>
 
