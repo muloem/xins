@@ -96,7 +96,7 @@ final class CallResultOutputter extends Object {
       // XXX: For backwards compatibility, set the 'success' attribute to
       //      'true'
       } else {
-         outputter.attribute("success", "false");
+         outputter.attribute("success", "true");
       }
 
       // Write the output parameters
