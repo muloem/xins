@@ -14,7 +14,9 @@
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
+	<!-- TODO: Use variable for 'api' -->
 	<xsl:variable name="api" select="//api/@name" />
+	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 	<xsl:variable name="sessionBased">
 		<xsl:choose>
 			<xsl:when test="boolean(//api/session-based)">true</xsl:when>
@@ -80,6 +82,12 @@ import org.xins.util.MandatoryArgumentChecker;
  * Stub for the <em>]]></xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[</em> API.
+ *
+ * <p>See the <a href="]]></xsl:text>
+				<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+				<xsl:text>/</xsl:text>
+				<xsl:value-of select="$api" />
+				<xsl:text><![CDATA[/">API specification</a>.
  */
 public final class API extends Object {
 
@@ -202,7 +210,18 @@ public final class API extends Object {
    /**
     * Calls the <em>]]></xsl:text>
 				<xsl:value-of select="$functionName" />
-				<xsl:text><![CDATA[</em> function.]]></xsl:text>
+				<xsl:text><![CDATA[</em> function.
+    *
+    * <p>See the <a href="]]></xsl:text>
+				<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+				<xsl:text>/</xsl:text>
+				<xsl:value-of select="$api" />
+				<xsl:text>/</xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text>.html</xsl:text>
+				<xsl:text><![CDATA["><code>]]></xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text><![CDATA[</em> function specification</a>.]]></xsl:text>
 				<xsl:choose>
 					<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
 						<xsl:text><![CDATA[
