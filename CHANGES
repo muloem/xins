@@ -2,6 +2,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
 
 * XINS/Java Server Framework:
+  - Added support for meta-function _GetLogStatistics.
   - The statistics which were in Function are now in a separate
     FunctionStatistics class. This class has also a method to update the
     statistics.
