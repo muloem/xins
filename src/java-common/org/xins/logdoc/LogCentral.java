@@ -35,7 +35,7 @@ extends Object {
     * <em>logdoc</em> <code>Log</code> class.
     *
     * @param controller
-    *    the {@link LogController}, cannot be <code>null</code>.
+    *    the {@link AbstractLog.LogController}, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>controller == null</code>.
