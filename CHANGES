@@ -13,6 +13,11 @@ CHANGES INTRODUCED IN XINS 0.131:
 * The xins -version command now prints Java and Ant version directly from the
   XINS build file.
 
+* Generated build file:
+  - Previously, the generated build file would assume that an API defines at
+    least one type. Otherwise the build would abort in an unexpected way.
+    Fixed that.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.130:
 
