@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.122:
+
+* XINS/Java Server Framework:
+  - Improved documentation of APIServlet class.
+  - Improved error-checking and logging in APIServlet class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.121:
 
 * The XINS JAR file is now built to run on Java 1.3+ VMs. Java 1.2 is no
