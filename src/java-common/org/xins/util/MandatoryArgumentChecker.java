@@ -67,23 +67,26 @@ public final class MandatoryArgumentChecker extends Object {
    public static void check(String argumentName1, Object argumentValue1,
                             String argumentName2, Object argumentValue2)
    throws IllegalArgumentException {
-      if (argumentValue1 == null && argumentValue2 == null) {
-         FastStringBuffer buffer = new FastStringBuffer(80);
-         buffer.append(argumentName1);
-         buffer.append(" == null && ");
-         buffer.append(argumentName2);
-         buffer.append(" == null");
-         throw new IllegalArgumentException(buffer.toString());
-      } else if (argumentValue1 == null) {
-         FastStringBuffer buffer = new FastStringBuffer(40);
-         buffer.append(argumentName1);
-         buffer.append(" == null");
-         throw new IllegalArgumentException(buffer.toString());
-      } else if (argumentValue2 == null) {
-         FastStringBuffer buffer = new FastStringBuffer(40);
-         buffer.append(argumentName2);
-         buffer.append(" == null");
-         throw new IllegalArgumentException(buffer.toString());
+
+      if (argumentValue1 == null || argumentValue2 == null) {
+	 if (argumentValue1 == null && argumentValue2 == null) {
+	    FastStringBuffer buffer = new FastStringBuffer(80);
+	    buffer.append(argumentName1);
+	    buffer.append(" == null && ");
+	    buffer.append(argumentName2);
+	    buffer.append(" == null");
+	    throw new IllegalArgumentException(buffer.toString());
+	 } else if (argumentValue1 == null) {
+	    FastStringBuffer buffer = new FastStringBuffer(40);
+	    buffer.append(argumentName1);
+	    buffer.append(" == null");
+	    throw new IllegalArgumentException(buffer.toString());
+	 } else if (argumentValue2 == null) {
+	    FastStringBuffer buffer = new FastStringBuffer(40);
+	    buffer.append(argumentName2);
+	    buffer.append(" == null");
+	    throw new IllegalArgumentException(buffer.toString());
+	 }
       }
    }
 
