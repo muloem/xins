@@ -16,7 +16,6 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Added unit test class for Int8, Int16, Int32 and Int64 types.
   - removed boundary checks on all methods except the isValidvalue method in all the Intxx type classes.
   - Added unit test class for Boolean type.
-  - Removed redundant TypeValueException calls from Text class.
 
 * XINS/Java Client Framework:
   - Fixed the Javadoc for the UnsuccessfulXINSCallException.
@@ -44,12 +43,18 @@ CHANGES INTRODUCED IN XINS 0.209:
     the code generation.
 
 * Generated client-side Java code (CAPI):
-  - The TypeValueException is no longer caught if the parameter is either of
-    type _text or a pattern type.
   - Fixed a compilation error when a function had no input parameters.
     This bug has been in XINS since version 0.208.
   - Generated function call result classes now extend class
     org.xins.client.AbstractCAPICallResult instead of class java.lang.Object.
+
+* Generated types Java code:
+  - Added fromStringForOptional and fromStringForRequired methods for the
+    types int8, int16, int32 and int64. The method will throw a
+    TypeValueException if the value passed as parameter is out of the
+    bounderies.
+  - Added fromStringForOptional and fromStringForRequired methods for the
+    PatternType.
 
 * Generated specification documentation:
   - Added the broken freeze warning message for types and result codes.

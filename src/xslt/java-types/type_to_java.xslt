@@ -112,7 +112,76 @@ public final class ]]></xsl:text>
 
    //-------------------------------------------------------------------------
    // Class functions
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------]]></xsl:text>
+
+		<xsl:if test="$kind = 'pattern'">
+			<xsl:text>
+   public static String fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("string", string);
+
+      return (String) SINGLETON.fromString(string);
+   }
+
+   public static String fromStringForOptional(String string)
+   throws TypeValueException {
+      return (String) SINGLETON.fromString(string);
+   }
+</xsl:text>
+		</xsl:if>
+
+		<xsl:if test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64'">
+			<xsl:variable name="optional_object">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_file"     select="$project_file" />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="api"     select="$api" />
+					<xsl:with-param name="type"     select="concat('_', $kind)" />
+					<xsl:with-param name="required" select="'false'" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:text>
+
+   public static </xsl:text>
+			<xsl:value-of select="$optional_object"/>
+			<xsl:text> fromStringForOptional(String string)
+   throws TypeValueException {
+      return (</xsl:text>
+			<xsl:value-of select="$optional_object"/>
+			<xsl:text>) SINGLETON.fromString(string);
+   }</xsl:text>
+
+			<xsl:variable name="required_object">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_file"     select="$project_file" />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="api"     select="$api" />
+					<xsl:with-param name="type"     select="concat('_', $kind)" />
+					<xsl:with-param name="required" select="'true'" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:text>
+
+   public static </xsl:text>
+			<xsl:value-of select="$required_object"/>
+			<xsl:text> fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("string", string);
+
+      return ((</xsl:text>
+			<xsl:value-of select="$optional_object"/>
+			<xsl:text>)SINGLETON.fromString(string)).</xsl:text>
+			<xsl:value-of select="$required_object"/>
+			<xsl:text>Value();
+   }
+</xsl:text>
+		</xsl:if>
+
+		<xsl:text><![CDATA[
 
    //-------------------------------------------------------------------------
    // Constructors

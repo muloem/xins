@@ -393,19 +393,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
       </xsl:text>
 				<xsl:variable name="type" select="output/param/@type" />
-				<xsl:variable name="basetype">
-					<xsl:call-template name="basetype_for_type">
-                				<xsl:with-param name="specsdir" select="$specsdir" />
-                				<xsl:with-param name="api"      select="$api" />
-                				<xsl:with-param name="type"     select="$type" />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<xsl:if test="not($basetype = '_text')">
 					<xsl:text>try {
-         </xsl:text>
-				</xsl:if>
-				<xsl:text>return </xsl:text>
+         return </xsl:text>
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="api"      select="$api"      />
@@ -418,12 +407,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text>;</xsl:text>
-				<xsl:if test="not($basetype = '_text')">
-					<xsl:text>
+				<xsl:text>
       } catch (org.xins.common.types.TypeValueException exception) {
          throw new org.xins.client.UnacceptableResultXINSCallException(result, null, exception);
       }</xsl:text>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
