@@ -417,7 +417,31 @@ public final class XINSCallRequest extends CallRequest {
       setCallConfig(callConfig);
    }
 
-   // FIXME: Document
+   /**
+    * Creates an appropriate <code>UnsuccessfulXINSCallException</code> for
+    * the specified target, duration and result data.
+    *
+    * @param target
+    *    the target on which the request was executed, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the call duration, must be &gt;= <code>0L</code>.
+    *
+    * @param resultData
+    *    the data returned from the call, cannot be <code>null</code> and must
+    *    have an error code set.
+    *
+    * @return
+    *    a new {@link UnsuccessfulXINSCallException} instance, never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target                    ==   null
+    *          || duration                  &lt; 0
+    *          || resultData                ==   null
+    *          || resultData.getErrorCode() ==   null</code>.
+    */
    UnsuccessfulXINSCallException
    createUnsuccessfulXINSCallException(TargetDescriptor   target,
                                        long               duration,

@@ -88,6 +88,7 @@ extends Object {
     *    if <code>request                   ==   null
     *          || target                    ==   null
     *          || duration                  &lt; 0
+    *          || resultData                ==   null
     *          || resultData.getErrorCode() ==   null</code>.
     */
    public final UnsuccessfulXINSCallException
