@@ -31,7 +31,7 @@ public class MandatoryArgumentChecker extends Object {
    // Class constants
    //-------------------------------------------------------------------------
 
-   private final static String[] STRING_ARRAY = new String[0];
+   private static final String[] STRING_ARRAY = new String[0];
 
 
    //-------------------------------------------------------------------------

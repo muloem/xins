@@ -24,12 +24,12 @@ public abstract class PatternType extends Type {
    /**
     * Perl 5 pattern compiler.
     */
-   private final static Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
     * Pattern matcher.
     */
-   private final static Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
 
 
    //-------------------------------------------------------------------------

@@ -43,7 +43,7 @@ implements DefaultReturnCodes {
     *    <code>true</code> if and only if <code>value != null &amp;&amp;
     *    value.length() != 0</code>.
     */
-   protected final static boolean isMissing(String value) {
+   protected static final boolean isMissing(String value) {
       return value == null || value.length() == 0;
    }
 
