@@ -28,6 +28,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     XINS service).
   - Fixed SF.net bug #1063672 (XINS call logging: Only first failure is
     logged). Each individual failure is now logged, per target.
+  - Unified translations in the 21xx range.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.
