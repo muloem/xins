@@ -91,7 +91,7 @@ public class HostnameTask extends Task {
     */
    public void execute() throws BuildException {
 
-      if (project.getUserProperty(_propertyName) != null) {
+      if (getProject().getUserProperty(_propertyName) != null) {
          log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
       }
 
@@ -118,6 +118,6 @@ public class HostnameTask extends Task {
          log("Determining hostname of localhost failed. Not setting property \"" + _propertyName + "\".");
       }
 
-      project.setUserProperty(_propertyName, hostname);
+      getProject().setUserProperty(_propertyName, hostname);
    }
 }
