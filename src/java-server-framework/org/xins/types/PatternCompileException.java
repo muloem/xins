@@ -4,8 +4,7 @@
 package org.xins.types;
 
 /**
- * Patterns type. An enumeration type only accepts values that match a certain
- * pattern.
+ * Exception thrown to indicate a pattern string could not be compiled.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
