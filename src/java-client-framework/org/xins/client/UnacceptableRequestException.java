@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedList;
@@ -112,7 +113,10 @@ extends RuntimeException {
 
          // Disallow other than ConstraintViolation instances
          } else if (! (elem instanceof ConstraintViolation)) {
-            throw new IllegalArgumentException("violations[" + i + "] is an instance of class " + elem.getClass().getName());
+            throw new IllegalArgumentException("violations["
+                                             + i
+                                             + "] is an instance of class "
+                                             + Utils.getClassName(elem));
          }
 
          // Disallow duplicates
@@ -147,8 +151,8 @@ extends RuntimeException {
                   buffer.append(WhislEncoding.encode(key));
                   buffer.append('=');
 
-                  // TODO: Do not call val.toString, but use type to convert
-                  //       from value instance to String instead
+                  // FIXME: Do not call val.toString, but use type to convert
+                  //        from value instance to String instead
                   buffer.append(WhislEncoding.encode(val.toString()));
                   buffer.append('&');
                   hadOne = true;
