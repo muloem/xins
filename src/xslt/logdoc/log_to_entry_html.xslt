@@ -30,29 +30,6 @@
 				<link rel="stylesheet" type="text/css" href="style.css" />
 			</head>
 			<body>
-				<table class="headerlinks">
-					<tr>
-						<td>
-							<a href="index.html">Logdoc index</a>
-							<xsl:text> | </xsl:text>
-							<a>
-								<xsl:attribute name="href">
-									<xsl:text>group-</xsl:text>
-									<xsl:value-of select="group[entry/@name=$entry]/@name" />
-									<xsl:text>.html</xsl:text>
-								</xsl:attribute>
-								<xsl:text>Log entry group</xsl:text>
-							</a>
-							<xsl:text> | </xsl:text>
-							<span class="active">Log entry</span>
-						</td>
-					</tr>
-				</table>
-
-				<h1>
-					<xsl:text>Log entry </xsl:text>
-					<xsl:value-of select="$entry" />
-				</h1>
 				<xsl:apply-templates select="group/entry[@id = $entry]" />
 
 				<h2>Message sets</h2>
@@ -75,12 +52,43 @@
 	</xsl:template>
 
 	<xsl:template match="group/entry">
+		<table class="headerlinks">
+			<tr>
+				<td>
+					<a href="index.html">Logdoc index</a>
+					<xsl:text> | </xsl:text>
+					<a>
+						<xsl:attribute name="href">
+							<xsl:text>group-</xsl:text>
+							<xsl:value-of select="../@name" />
+							<xsl:text>.html</xsl:text>
+						</xsl:attribute>
+						<xsl:text>Log entry group</xsl:text>
+					</a>
+					<xsl:text> | </xsl:text>
+					<span class="active">Log entry</span>
+				</td>
+			</tr>
+		</table>
+
+		<h1>
+			<xsl:text>Log entry </xsl:text>
+			<xsl:value-of select="$entry" />
+		</h1>
+
 		<h2>Details for this entry</h2>
 		<table type="entry">
 			<tr>
 				<th>Group</th>
 				<td>
-					<xsl:value-of select="../@name" />
+					<a>
+						<xsl:attribute name="href">
+							<xsl:text>group-</xsl:text>
+							<xsl:value-of select="../@name" />
+							<xsl:text>.html</xsl:text>
+						</xsl:attribute>
+						<xsl:value-of select="../@name" />
+					</a>
 				</td>
 			</tr>
 			<tr>
