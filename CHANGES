@@ -15,6 +15,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added a toDate() method for the Date and Timestamp types.
   - If the main() method is used to start the servlet container, the thread
     accepting connections is not a daemon thread.
+  - Added new logProprammingError methods.
+  - The Java version returned has been changed from an object to a double 
+    number.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
@@ -47,6 +50,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     and org.xins.server.config.
   - Added support for the jikes compiler.
   - Added run-<api> target that runs your API implementation.
+  - Replace the "for-each api" loop with an apply-template.
 
 * Examples:
   - Added .version.properties in the demo directory of the release.

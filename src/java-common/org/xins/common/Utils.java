@@ -25,91 +25,11 @@ public final class Utils extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The Java 1.1 version.
-    */
-   public static final JavaVersion JAVA_1_1 = new JavaVersion("1.1", 1);
-
-   /**
-    * The Java 1.2 version.
-    */
-   public static final JavaVersion JAVA_1_2 = new JavaVersion("1.2", 2);
-
-   /**
-    * The Java 1.3 version.
-    */
-   public static final JavaVersion JAVA_1_3 = new JavaVersion("1.3", 3);
-
-   /**
-    * The Java 1.4 version.
-    */
-   public static final JavaVersion JAVA_1_4 = new JavaVersion("1.4", 4);
-
-   /**
-    * The Java 1.5 version. This version is also known as Java 5.0.
-    */
-   public static final JavaVersion JAVA_1_5 = new JavaVersion("1.5", 5);
-
-   /**
-    * The Java 1.6 version. This version is also known as Java 6.0.
-    */
-   public static final JavaVersion JAVA_1_6 = new JavaVersion("1.6", 6);
-
-   /**
-    * The current Java version. Never <code>null</code>.
-    */
-   private static final JavaVersion JAVA_VERSION;
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Initializes this class.
-    */
-   static {
-
-      // Get the system property that contains the Java VM version
-      final String PROPERTY_KEY = "java.vm.version";
-      String s = System.getProperty(PROPERTY_KEY);
-      if (s == null) {
-         final String DETAIL = "Unable to determine Java version. Value of property \""
-                             + PROPERTY_KEY
-                             + "\" is null.";
-         throw new RuntimeException(DETAIL);
-      }
-
-      // Forward to the version number in the string
-      String s2 = s;
-      while (s2.length() >= 3 && !s2.startsWith("1.")) {
-         s2 = s2.substring(1);
-      }
-
-      // Determine the major Java version
-      if (s2.startsWith("1.1")) {
-         JAVA_VERSION = JAVA_1_1;
-      } else if (s2.startsWith("1.2")) {
-         JAVA_VERSION = JAVA_1_2;
-      } else if (s2.startsWith("1.3")) {
-         JAVA_VERSION = JAVA_1_3;
-      } else if (s2.startsWith("1.4")) {
-         JAVA_VERSION = JAVA_1_4;
-      } else if (s2.startsWith("1.5")) {
-         JAVA_VERSION = JAVA_1_5;
-      } else if (s2.startsWith("1.6")) {
-         JAVA_VERSION = JAVA_1_6;
-
-      // Unable to determine major Java version
-      } else {
-         final String DETAIL = "Unable to determine Java version. Value of property \""
-                             + PROPERTY_KEY
-                             + "\" is \""
-                             + s
-                             + "\".";
-         throw new RuntimeException(DETAIL);
-      }
-   }
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -119,12 +39,12 @@ public final class Utils extends Object {
     * Retrieves the actual (major) Java version.
     *
     * @return
-    *    the actual Java version, never <code>null</code>.
+    *    the actual Java version.
     *
     * @since XINS 1.2.0
     */
-   public static final JavaVersion getJavaVersion() {
-      return JAVA_VERSION;
+   public static final double getJavaVersion() {
+      return Double.parseDouble(System.getProperty("java.version").substring(0, 3));
    }
 
    /**
@@ -136,7 +56,7 @@ public final class Utils extends Object {
     *    empty string and never <code>null</code>.
     */
    public static final String getCallingClass() {
-      if (! JAVA_VERSION.olderThan(JAVA_1_4)) {
+      if (getJavaVersion() >= 1.4) {
          Throwable exception = new Throwable();
          StackTraceElement[] trace = exception.getStackTrace();
          if (trace != null && trace.length >= 3) {
@@ -163,7 +83,7 @@ public final class Utils extends Object {
     *    empty string and never <code>null</code>.
     */
    public static final String getCallingMethod() {
-      if (! JAVA_VERSION.olderThan(JAVA_1_4)) {
+      if (getJavaVersion() >= 1.4) {
          Throwable exception = new Throwable();
          StackTraceElement[] trace = exception.getStackTrace();
          if (trace != null && trace.length >= 3) {
@@ -179,6 +99,47 @@ public final class Utils extends Object {
 
       // Fallback
       return "<unknown>";
+   }
+
+   /**
+    * Logs a programming error with an optional cause exception, and returns a
+    * <code>ProgrammingException</code> object for it.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    *
+    * @return
+    *    an appropriate {@link ProgrammingException} that can be thrown by the
+    *    calling method, never <code>null</code>.
+    */
+   public static final ProgrammingException
+   logProgrammingError(String details) {
+      return logProgrammingError(getCallingClass(), getCallingMethod(), getCallingClass(), getCallingMethod(), details);
+   }
+
+   /**
+    * Logs a programming error with an optional cause exception, and returns a
+    * <code>ProgrammingException</code> object for it.
+    *
+    * @param cause
+    *    the cause exception, cannot be <code>null</code>.
+    *
+    * @return
+    *    an appropriate {@link ProgrammingException} that can be thrown by the
+    *    calling method, never <code>null</code>.
+    */
+   public static final ProgrammingException
+   logProgrammingError(Throwable cause) {
+      String sourceClass = "<unknown>";
+      String sourceMethod = "<unknown>";
+      try {
+         StackTraceElement[] trace = cause.getStackTrace();
+         StackTraceElement source = trace[trace.length - 1];
+         sourceClass = source.getClassName();
+         sourceMethod = source.getMethodName();
+      } catch (Throwable t) {
+      }
+      return logProgrammingError(getCallingClass(), getCallingMethod(), sourceClass, sourceMethod, cause.getMessage(), cause);
    }
 
    /**
@@ -359,87 +320,4 @@ public final class Utils extends Object {
    // Methods
    //-------------------------------------------------------------------------
 
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Abstraction of a major Java release.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.2.0
-    */
-   public static final class JavaVersion extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>JavaVersion</code> object with the specified
-       * version string.
-       *
-       * @param version
-       *    the version string, should not be <code>null</code>.
-       *
-       * @param value
-       *    value indicating whether the version is newer or older.
-       */
-      private JavaVersion(String version, int value) {
-         _version = version;
-         _value   = value;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The version string. Should not be <code>null</code>.
-       */
-      private final String _version;
-
-      /**
-       * Value indicating whether the version is newer or older.
-       */
-      private final int _value;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Checks if this version is older than the specified one.
-       *
-       * @param other
-       *    the version to compare against, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>other == null</code>.
-       */
-      public boolean olderThan(JavaVersion other)
-      throws IllegalArgumentException {
-         MandatoryArgumentChecker.check("other", other);
-         return _value < other._value;
-      }
-
-      /**
-       * Checks if this version is newer than or equal to the specified one.
-       *
-       * @param other
-       *    the version to compare against, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>other == null</code>.
-       */
-      public boolean newerOrEqual(JavaVersion other)
-      throws IllegalArgumentException {
-         MandatoryArgumentChecker.check("other", other);
-         return _value >= other._value;
-      }
-   }
 }

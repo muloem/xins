@@ -165,7 +165,7 @@ public final class IPAddressUtils extends Object {
     *    the string <code>"localhost"</code>.
     */
    public static final String getLocalHost() {
-      if (Utils.getJavaVersion().olderThan(Utils.JAVA_1_4)) {
+      if (Utils.getJavaVersion() < 1.4) {
          return getLocalHost_Java_1_3();
       } else {
          return getLocalHost_Java_1_4();

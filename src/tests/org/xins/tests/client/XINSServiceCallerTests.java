@@ -106,7 +106,7 @@ public class XINSServiceCallerTests extends TestCase {
     */
    public void testXINSServiceCallerWithHTTPS() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
-      TargetDescriptor descriptor = new TargetDescriptor("https://sourceforge.net/");
+      TargetDescriptor descriptor = new TargetDescriptor("https://sourceforge.net/", 10000);
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       try {
          caller.call(request);

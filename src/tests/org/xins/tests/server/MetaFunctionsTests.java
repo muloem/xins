@@ -123,9 +123,7 @@ public class MetaFunctionsTests extends TestCase {
       String javaVersion = parameters.get("java.version");
       assertNotNull("No Java version returned by _GetVersion.", javaVersion);
       assertTrue(javaVersion.length() > 0);
-      boolean java14 = javaVersion.startsWith("1.4")
-                    || javaVersion.startsWith("1.5")
-                    || javaVersion.startsWith("1.6");
+      boolean java14 = javaVersion.startsWith("1.");
 
       // Get the statistics
       request = new XINSCallRequest("_GetStatistics", null);

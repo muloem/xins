@@ -65,7 +65,7 @@ public class UtilsTests extends TestCase {
 
    public void testGetCallingClassAndMethod() {
       // TODO: Test this for Java 1.3 (and down) as well?
-      if (Utils.getJavaVersion().newerOrEqual(Utils.JAVA_1_4)) {
+      if (Utils.getJavaVersion() >= 1.4) {
          doTestGetCallingClassAndMethod(getClass().getName(), "testGetCallingClassAndMethod");
       }
    }
@@ -114,5 +114,9 @@ public class UtilsTests extends TestCase {
       assertEquals("java.lang.Object[]", Utils.getClassName(new Object[1]));
       assertEquals("int[]",              Utils.getClassName(new int[0]));
       assertEquals("int[]",              Utils.getClassName(new int[1]));
+   }
+   
+   public void testGetJavaVersion() {
+      assertTrue("Incorrect Java version.", Utils.getJavaVersion() > 1.2);
    }
 }
