@@ -14,8 +14,8 @@ import java.util.Map;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Enumeration type. An enumeration type only accepts a limited set of
- * possible values.
+ * Abstract base class for enumeration types. An enumeration type only accepts
+ * a defined set of possible values.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)

@@ -13,7 +13,7 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.common.types.standard.Text;
 
 /**
- * Standard type <em>_list</em>.
+ * Abstract base class for list types.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
