@@ -725,7 +725,7 @@ ${sf.file}</fail>
 
 		<!-- Create TAR GZ file for Javadoc -->
 		<echo level="verbose" message="Creating TAR GZ file for Javadoc HTML" />
-		<tar tarfile="build/javadoc.tar">
+		<tar tarfile="build/javadoc.tar" longfile="gnu">
 			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
 			<tarfileset dir="docs/javadoc-private" mode="664" dirmode="775" prefix="javadoc-private/${version}" />
 		</tar>
