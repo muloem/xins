@@ -132,6 +132,11 @@ implements Responder, Log {
    private Logger _logger;
 
    /**
+    * The log prefix for log messages.
+    */
+   private String _logPrefix;
+
+   /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -170,10 +175,11 @@ implements Responder, Log {
       _state   = UNINITIALIZED;
       _success = true;
       _code    = null;
-      _callID  = -1;
       _functionName = null;
       _function     = null;
       _logger       = null;
+      _callID       = -1;
+      _logPrefix    = null;
    }
 
    /**
@@ -217,6 +223,9 @@ implements Responder, Log {
 
       // Assign a call ID
       _callID  = _function.assignCallID();
+
+      // Determine the prefix text for log messages
+      _logPrefix = "Call " + _functionName + ':' + _callID + ": ";
    }
 
    /**
@@ -548,51 +557,51 @@ implements Responder, Log {
    }
 
    public void trace(Object message) {
-      _logger.log(FQCN, Priority.DEBUG, message, null);
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, null);
    }
 
    public void trace(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.DEBUG, message, t );
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t );
    }
 
    public void debug(Object message) {
-      _logger.log(FQCN, Priority.DEBUG, message, null);
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, null);
    }
 
    public void debug(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.DEBUG, message, t );
+      _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t );
    }
 
    public void info(Object message) {
-      _logger.log(FQCN, Priority.INFO, message, null );
+      _logger.log(FQCN, Priority.INFO, _logPrefix + message, null );
    }
 
    public void info(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.INFO, message, t );
+      _logger.log(FQCN, Priority.INFO, _logPrefix + message, t );
    }
 
    public void warn(Object message) {
-      _logger.log(FQCN, Priority.WARN, message, null );
+      _logger.log(FQCN, Priority.WARN, _logPrefix + message, null );
    }
 
    public void warn(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.WARN, message, t );
+      _logger.log(FQCN, Priority.WARN, _logPrefix + message, t );
    }
 
    public void error(Object message) {
-      _logger.log(FQCN, Priority.ERROR, message, null );
+      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, null );
    }
 
    public void error(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.ERROR, message, t );
+      _logger.log(FQCN, Priority.ERROR, _logPrefix + message, t );
    }
 
    public void fatal(Object message) {
-      _logger.log(FQCN, Priority.FATAL, message, null );
+      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, null );
    }
 
    public void fatal(Object message, Throwable t) {
-      _logger.log(FQCN, Priority.FATAL, message, t );
+      _logger.log(FQCN, Priority.FATAL, _logPrefix + message, t );
    }
 
    public boolean isDebugEnabled() {
