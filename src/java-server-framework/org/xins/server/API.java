@@ -137,6 +137,17 @@ implements DefaultReturnCodes {
    }
 
    /**
+    * Returns an unmodifiable view of the function list.
+    *
+    * @return
+    *    an unmodifiable view of the list of functions, never
+    *    <code>null</code>.
+    */
+   final List getFunctions() {
+      return _unmodifiableFunctionList;
+   }
+
+   /**
     * Forwards a call to the <code>handleCall(CallContext)</code> method.
     *
     * @param out
