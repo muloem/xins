@@ -42,11 +42,18 @@ public final class Library extends Object {
    /**
     * Checks if the specified version indicates a production release of XINS.
     *
+    * @param version
+    *    the XINS version to check, cannot be <code>null</code>.
+    *
     * @return
     *    <code>true</code> is the specified XINS version identifies a
     *    production release of XINS, <code>false</code> if it does not.
+    *
+    * @throws NullPointerException
+    *    if <code>version == null</code>.
     */
-   static final boolean isProductionRelease(String version) {
+   static final boolean isProductionRelease(String version)
+   throws NullPointerException {
       return version.matches(PRODUCTION_RELEASE_PATTERN);
    }
 
