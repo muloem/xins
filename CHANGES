@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.89:
+
+* XINS/Java Server Framework:
+  - Added 'startup' attribute to 'initialization' tag in output of function
+    _GetSettings.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.88:
 
 * XINS/Java Server Framework:
