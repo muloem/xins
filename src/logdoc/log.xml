@@ -8,5 +8,5 @@
 
 <log>
 	<messageset id="en_US" />
-	<entry id="1" level="INFO" category="org.xins.server.lifespan.init" />
+	<entry id="1" level="info" category="org.xins.server.lifespan.init" />
 </log>
