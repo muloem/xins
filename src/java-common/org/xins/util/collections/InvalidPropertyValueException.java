@@ -32,6 +32,9 @@ extends Exception {
     *    the (invalid) value set for the property, cannot be
     *    <code>null</code>.
     *
+    * @param reason
+    *    additional description of the problem, or <code>null</code>.
+    *
     * @return
     *    the message, never <code>null</code>.
     *
