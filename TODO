@@ -94,6 +94,8 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Have a page per environment with links to _GetVersion, _GetStatistics,
   _GetSettings, etc. Let the link on the page for an API link to that page.
 * Link to CVSweb or ViewCVS.
+* Generate an anchor for each input parameter, output parameter, element and
+  attribute in the generated file for a function.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
