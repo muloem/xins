@@ -104,6 +104,9 @@ XINS/JAVA COMMON LIBRARY
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
+* Add class function getContextID() in class LogCentral. This function should
+  return the diagnostic context identifier using Log4J; e.g.
+  return NDC.peek().
 
 ______________________________________________________________________________
 LOGDOC
