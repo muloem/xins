@@ -26,9 +26,8 @@ Improve service framework in org.xins.common.service:
 [x] Make CallResult class abstract
 [x] Remove getResult() from CallResult class
 [x] Add createCallResult method in class ServiceCaller
-[ ] Combine TargetDescriptor, duration and exception in CallFailure object
-[x] Combine a number of CallFailures in a CallFailureList object
-[ ] Make the CallResult constructor accept a CallFailureList
+[x] Combine a number of CallExceptions in a CallExceptionList object
+[x] Make the CallResult constructor accept a CallExceptionList
 
 Adapt HTTP service caller to build upon improved service framework:
 [x] Add HTTPCallException class (abstract, extends CallException)
