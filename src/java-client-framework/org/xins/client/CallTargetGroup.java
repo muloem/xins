@@ -315,64 +315,6 @@ extends AbstractCompositeFunctionCaller {
    }
 
    /**
-    * Calls the specified API function with the specified parameters,
-    * optionally at the specified URL only.
-    *
-    * @param url
-    *    the URL that identifies the API to call the function on, or
-    *    <code>null</code> if any of the underlying actual function callers
-    *    can be called.
-    *
-    * @param sessionID
-    *    the session identifier, if any, or <code>null</code> if the function
-    *    is session-less.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed to that function, or
-    *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
-    * @throws NoSuchActualFunctionCallerException
-    *    if there is no {@link ActualFunctionCaller} for the specified URL in
-    *    this group or any of the contained groups (if any).
-    *
-    * @throws IOException
-    *    if the API could not be contacted due to an I/O error.
-    *
-    * @throws InvalidCallResultException
-    *    if the calling of the function failed or if the result from the
-    *    function was invalid.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.63. Use
-    *    {@link #getActualFunctionCaller(String)} instead, and then use on of
-    *    the normal <code>call(...)</code> methods.
-    */
-   public final CallResult call(String url, String sessionID, String functionName, Map parameters)
-   throws IllegalArgumentException, NoSuchActualFunctionCallerException, IOException, InvalidCallResultException {
-      MandatoryArgumentChecker.check("functionName", functionName);
-      if (url == null) {
-         return callImpl(sessionID, functionName, parameters);
-      } else {
-         ActualFunctionCaller afc = getActualFunctionCaller(url);
-         if (afc != null) {
-            return afc.call(sessionID, functionName, parameters);
-         } else {
-            throw new NoSuchActualFunctionCallerException(url);
-         }
-      }
-   }
-
-   /**
     * Calls the specified API function with the specified parameters (actual
     * implementation). The type (see {@link #getType()}) determines what
     * actual function caller will be used.
