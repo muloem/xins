@@ -6,6 +6,26 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
+* XINS/Java Common Library:
+  - Added tests for class PropertyReaderUtils.
+  - Added toString class function in PropertyReaderUtils.
+  - Added class CollectionUtils with one class function called "list". This
+    function converts an Iterator to an ArrayList.
+  - Improved tests for class HTTPServiceCaller.
+
+* XINS/Java Server Framework:
+  - Changed some classes to use the Common log messages for programming
+    errors.
+  - Moved some common functionality from the CallingConvention subclasses up
+    to class CallingConvention self. The calling conventions now behave the
+    same with regard to the determination of the function name. If the
+    function name is specified both in the paramter "_function" and in the
+    parameter "function", then both must be the same. Otherwise the request is
+    considered invalid.
+    All incoming parameters that do not match the pattern "[a-z][a-z0-9_]*"
+    (without the quotes) are considered ignorable and will not be sent down to
+    the function.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
 
