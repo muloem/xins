@@ -159,8 +159,7 @@ public final class GroupDescriptor extends Descriptor {
       if (_type == RANDOM_TYPE) {
          return new RandomIterator();
       } else if (_type == ORDERED_TYPE) {
-         return new RandomIterator();
-         // return new OrderedIterator(); // TODO
+         return new OrderedIterator();
       } else {
          throw new Error("Unexpected condition: Unknown type: " + _type + '.');
       }
@@ -341,6 +340,100 @@ public final class GroupDescriptor extends Descriptor {
                // _remaining to null
                if (size == 1) {
                   _remaining = null;
+               }
+            }
+         }
+
+         return o;
+      }
+
+      public void remove() throws UnsupportedOperationException {
+         throw new UnsupportedOperationException();
+      }
+   }
+
+   /**
+    * Ordered iterator over the leaf service descriptors contained in this
+    * group descriptor. Needed for the implementation of
+    * {@link #iterateServices()}.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.116
+    */
+   private final class OrderedIterator
+   extends Object
+   implements Iterator {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>OrderedIterator</code>.
+       */
+      private OrderedIterator() {
+
+         // Copy all members to _remaining
+         _currentIndex = 0;
+
+         // Initialize the current iterator to link to that member's services
+         _currentIterator = _members[0].iterateServices();
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The current index into the list of members. Will be set to a negative
+       * value if there are no more members.
+       */
+      private int _currentIndex;
+
+      /**
+       * Current iterator of one of the members.
+       *
+       * <p>This field will be set to <code>null</code> as soon as there are
+       * no more remaining services to be iterated over.
+       */
+      private Iterator _currentIterator;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public boolean hasNext() {
+         return (_currentIterator != null);
+      }
+
+      public Object next() throws NoSuchElementException {
+
+         // Check preconditions
+         if (_currentIterator == null) {
+            throw new NoSuchElementException();
+         }
+
+         // Get the next service
+         Object o = _currentIterator.next();
+
+         // Check if this member/iterator has any more
+         if (! _currentIterator.hasNext()) {
+
+            // If there are no remaining members, set _currentIterator to null
+            if (_currentIndex < 0) {
+               _currentIterator = null;
+
+            } else {
+               _currentIndex++;
+
+               if (_currentIndex < _members.length) {
+                  _currentIterator = _members[_currentIndex].iterateServices();
+               } else {
+                  _currentIndex = -1;
                }
             }
          }
