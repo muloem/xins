@@ -23,9 +23,13 @@ public class InvalidResponseResult extends FunctionResult {
    // Constructors
    //-------------------------------------------------------------------------
 
+   /**
+    * Constructs a new <code>InvalidResponseResult</code> object.
+    */
    public InvalidResponseResult() {
       super(DefaultResultCodes._INVALID_RESPONSE.getValue());
    }
+
 
    //-------------------------------------------------------------------------
    // Fields
@@ -52,6 +56,7 @@ public class InvalidResponseResult extends FunctionResult {
     *
     * @param parameter
     *    the parameter passed by the user.
+    *
     * @param type
     *    the type which this parameter should be compliant with.
     */
