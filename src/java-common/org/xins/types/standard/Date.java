@@ -116,11 +116,6 @@ public class Date extends Type {
     */
    private static String toString(int year, int month, int day) {
 
-      // Short-circuit if the argument is null
-      if (value == null) {
-         return null;
-      }
-
       // Use a buffer to create the string
       FastStringBuffer buffer = new FastStringBuffer(8);
 
