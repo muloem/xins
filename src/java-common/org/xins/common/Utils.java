@@ -101,13 +101,18 @@ public final class Utils extends Object {
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
+    *
+    * @return
+    *    an appropriate {@link ProgrammingError} that can be thrown by the
+    *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingError logProgrammingError(String    detectingClass,
-                                                            String    detectingMethod,
-                                                            String    subjectClass,
-                                                            String    subjectMethod,
-                                                            String    detail,
-                                                            Throwable cause) {
+   public static final ProgrammingError
+   logProgrammingError(String    detectingClass,
+                       String    detectingMethod,
+                       String    subjectClass,
+                       String    subjectMethod,
+                       String    detail,
+                       Throwable cause) {
 
       // Log programming error (not due to exception)
       if (cause == null) {
@@ -152,12 +157,17 @@ public final class Utils extends Object {
     *
     * @param detail
     *    the detail message, can be <code>null</code>.
+    *
+    * @return
+    *    an appropriate {@link ProgrammingError} that can be thrown by the
+    *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingError logProgrammingError(String    detectingClass,
-                                                            String    detectingMethod,
-                                                            String    subjectClass,
-                                                            String    subjectMethod,
-                                                            String    detail) {
+   public static final ProgrammingError
+   logProgrammingError(String    detectingClass,
+                       String    detectingMethod,
+                       String    subjectClass,
+                       String    subjectMethod,
+                       String    detail) {
 
       return logProgrammingError(detectingClass, detectingMethod,
                                  subjectClass,   subjectMethod,
