@@ -407,7 +407,7 @@ $Id$
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/jdom/" />
 							<link
-							href="http://xmlenc.sourceforge.net/javadoc/0.36/"
+							href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 							<classpath>
@@ -512,7 +512,7 @@ $Id$
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/jdom/" />
 						<link
-						href="http://xmlenc.sourceforge.net/javadoc/0.36/"
+						href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 						<classpath>

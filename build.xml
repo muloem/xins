@@ -323,7 +323,7 @@
 			offline="true"
 			packagelistloc="src/package-lists/commons-logging/" />
 			<link
-			href="http://xmlenc.sourceforge.net/javadoc/0.36/"
+			href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 			offline="true"
 			packagelistloc="src/package-lists/xmlenc/" />
 			<link
