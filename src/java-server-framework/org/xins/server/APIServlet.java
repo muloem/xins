@@ -6,11 +6,11 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
+import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.xins.util.servlet.ServletUtils;
@@ -22,7 +22,8 @@ import org.xins.util.servlet.ServletUtils;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class APIServlet
-extends HttpServlet {
+extends Object
+implements Servlet {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -49,6 +50,11 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
+    * The stored servlet configuration object.
+    */
+   private ServletConfig _config;
+
+   /**
     * The API that this servlet forwards requests to.
     */
    private API _api;
@@ -67,9 +73,9 @@ extends HttpServlet {
    public void init(ServletConfig config)
    throws ServletException {
 
-      // Call the superclass, in accordance with the Servlet API spec, see:
-      // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/GenericServlet.html#init(javax.servlet.ServletConfig)
-      super.init(config);
+      // Store the ServletConfig object, per the Servlet API Spec, see:
+      // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
+      _config = config;
 
       String apiClass = config.getInitParameter("org.xins.api.class");
       if (apiClass == null || apiClass.equals("")) {
@@ -128,30 +134,11 @@ extends HttpServlet {
       PropertyConfigurator.configure(settings);
    }
 
-   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-   throws IOException {
-      handleRequest(req, resp);
+   public ServletConfig getServletConfig() {
+      return _config;
    }
 
-   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-   throws IOException {
-      handleRequest(req, resp);
-   }
-
-   /**
-    * Handles all HTTP GET and POST requests.
-    *
-    * @param request
-    *    the HTTP request, not <code>null</code>.
-    *
-    * @param response
-    *    the HTTP response, not <code>null</code>.
-    *
-    * @throws IOException
-    *    there was an I/O problem.
-    */
-   private void handleRequest(HttpServletRequest request,
-                              HttpServletResponse response)
+   public void service(ServletRequest request, ServletResponse response)
    throws IOException {
 
       // Set the content output type to XML
@@ -163,5 +150,13 @@ extends HttpServlet {
 
       // Flush
       out.flush();
+   }
+
+   public String getServletInfo() {
+      return "XINS " + Library.getVersion() + " API Servlet";
+   }
+
+   public void destroy() {
+      // empty
    }
 }
