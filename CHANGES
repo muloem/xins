@@ -1,6 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 
+* XINS/Java Common Library:
+  - Set the log numbers in the correct order.
+  - Fixed missing translations.
+
+* Specific documentation:
+  - Fixed a missing forward slash for the url generated for broken links.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
 

@@ -161,7 +161,7 @@ public abstract class ServiceCaller extends Object {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
-         Log.log_3312(target.getURL());
+         Log.log_3301(target.getURL());
          Object result = null;
          boolean succeeded = false;
          long start = System.currentTimeMillis();
@@ -174,7 +174,7 @@ public abstract class ServiceCaller extends Object {
          // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
 
-            Log.log_3313(target.getURL());
+            Log.log_3302(target.getURL());
 
             long duration = System.currentTimeMillis() - start;
 
@@ -212,22 +212,22 @@ public abstract class ServiceCaller extends Object {
 
             // No more targets and no fail-over
             if (!haveNext && !failOver) {
-               Log.log_3315();
+               Log.log_3304();
                shouldContinue = false;
 
             // No more targets but fail-over would be allowed
             } else if (!haveNext) {
-               Log.log_3316();
+               Log.log_3305();
                shouldContinue = false;
 
             // More targets available but fail-over is not allowed
             } else if (!failOver) {
-               Log.log_3317();
+               Log.log_3306();
                shouldContinue = false;
 
             // More targets available and fail-over is allowed
             } else {
-               Log.log_3318();
+               Log.log_3307();
                shouldContinue = true;
             }
          }
@@ -244,7 +244,7 @@ public abstract class ServiceCaller extends Object {
       }
 
       // Loop ended, call failed completely
-      Log.log_3314();
+      Log.log_3303();
 
       // Get the first exception from the list, this one should be thrown
       CallException first = exceptions.get(0);

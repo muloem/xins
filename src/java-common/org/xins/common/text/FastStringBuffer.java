@@ -139,7 +139,7 @@ public class FastStringBuffer extends Object {
       if (current < needed) {
          int newCapacity = needed * 2; // XXX: Is this okay?
 
-         Log.log_3205(current, newCapacity);
+         Log.log_3250(current, newCapacity);
 
          char[] newBuffer = new char[newCapacity];
          System.arraycopy(_buffer, 0, newBuffer, 0, current);

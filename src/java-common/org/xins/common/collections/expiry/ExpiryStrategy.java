@@ -201,7 +201,7 @@ public final class ExpiryStrategy extends Object {
       MandatoryArgumentChecker.check("folder", folder);
 
       // TODO: Review this log message. Generally, toString() is not wise.
-      Log.log_3404(folder.toString(), toString());
+      Log.log_3401(folder.toString(), toString());
 
       synchronized (_folders) {
          _folders.add(folder);
@@ -292,7 +292,7 @@ public final class ExpiryStrategy extends Object {
        */
       public void run() {
 
-         Log.log_3405(getName());
+         Log.log_3402(getName());
 
          while (! _stop) {
             try {
@@ -305,7 +305,7 @@ public final class ExpiryStrategy extends Object {
             }
          }
 
-         Log.log_3406(getName());
+         Log.log_3403(getName());
       }
 
       /**

@@ -47,7 +47,7 @@
 										<xsl:value-of select="concat('apis/', $api, '/spec')" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat('src/apis', $api)" />
+										<xsl:value-of select="concat('src/apis/', $api)" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>

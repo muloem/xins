@@ -286,7 +286,7 @@ public final class DescriptorBuilder extends Object {
          try {
             return new TargetDescriptor(url, timeOut, connectionTimeOut, socketTimeOut);
          } catch (MalformedURLException exception) {
-            Log.log_3303(exception, url);
+            Log.log_3300(exception, url);
             throw new InvalidPropertyValueException(propertyName, value, "Malformed URL.");
          }
 
