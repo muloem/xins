@@ -644,19 +644,19 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Unknown host
          if (exception instanceof UnknownHostException) {
             Log.log_1102(url, params, duration);
-            // TODO: executor.dispose();
+            executor.dispose();
             throw new UnknownHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
             Log.log_1103(url, params, duration);
-            // TODO: executor.dispose();
+            executor.dispose();
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
             Log.log_1104(url, params, duration, connectionTimeOut);
-            // TODO: executor.dispose();
+            executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -670,20 +670,20 @@ public final class HTTPServiceCaller extends ServiceCaller {
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
                Log.log_1105(url, params, duration, socketTimeOut);
-               // TODO: executor.dispose();
+               executor.dispose();
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
             } else {
                Log.log_1109(exception, url, params, duration);
-               // TODO: executor.dispose();
+               executor.dispose();
                throw new IOCallException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
             Log.log_1109(exception, url, params, duration);
-            // TODO: executor.dispose();
+            executor.dispose();
             throw new IOCallException(request, target, duration, (IOException) exception);
 
          // Unrecognized kind of exception caught
@@ -692,7 +692,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             final String SUBJECT_METHOD = executor.getThrowingMethod();
             final String DETAIL         = null;
             Log.log_1052(exception, CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
-            // TODO: executor.dispose();
+            executor.dispose();
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -717,14 +717,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
 
-         // TODO: executor.dispose();
+         executor.dispose();
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
 
       // TRACE: Leave method
       Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
-      // TODO: executor.dispose();
+      executor.dispose();
       return new HTTPCallResult(request, target, duration, null, data);
    }
 
@@ -1027,10 +1027,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //      variables for _target and _request
 
          // Activate the diagnostic context ID
-         synchronized(_context) {
-            if (_context != null) {
-               NDC.push(_context);
-            }
+         if (_context != null) {
+            NDC.push(_context);
          }
 
          // Construct new HttpClient object
@@ -1087,11 +1085,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
          
          // Remove the diagnostic context ID
-         synchronized(_context) {
-            if (_context != null) {
-               NDC.pop();
-               NDC.remove();
-            }
+         if (_context != null) {
+            NDC.pop();
+            NDC.remove();
          }
          
          // Set objects to null for garbage collection
@@ -1145,6 +1141,17 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       private HTTPCallResultData getData() {
          return _result;
+      }
+      
+      /**
+       * Disposes the result variables, so that the variables could be
+       * garbage collected.
+       */
+      private void dispose() {
+         _exception = null;
+         _throwingClass = null;
+         _throwingMethod = null;
+         _result = null;
       }
    }
 

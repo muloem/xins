@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
   - Improved tests for class HTTPServiceCaller.
   - Set the unused values to null in the HTTPServiceCaller after poping the
     diagnotisc context identifier.
+  - Dispose the variables of the CallExecutor after getting the HTTP result.
 
 * XINS/Java Server Framework:
   - Changed some classes to use the Common log messages for programming
@@ -33,12 +34,17 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
     the function.
   - If an access rule file contains itself, the parsing will fail.
 
+* Generated build file:
+  - Added the type_1_1.dtd file to the DTD catalog.
+
 * Documentation:
   - Added the documentation about the XINS protocol to the release.
 
 * Tests
   - Added new tests for the base64 type, the param combos and the input data
     sections.
+  - Adapted the framework to facilitate the testing of the XML calling 
+    convention.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:

@@ -8,6 +8,7 @@ package org.xins.tests.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -209,36 +210,74 @@ public class CallingConventionTests extends TestCase {
    /**
     * Test the XML calling convention.
     */
-   /* Not working
-   public void testXMLCallingConvention() throws Throwable {
+   // To run this test add <calling-convention name="_xins-xml" /> to impl.xml
+   // and remove a input.realLine() in the HTTPServletHandler.
+   /*public void testXMLCallingConvention() throws Throwable {
       FastStringBuffer buffer = new FastStringBuffer(16);
       HexConverter.toHexString(buffer, RANDOM.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
+
+      // Successful call
+      postXMLRequest(randomFive, true);
       
-      PostMethod post = new PostMethod("http://localhost:8080/?_convention=_xins-xml");
+      // Unsuccessful call
+      postXMLRequest(randomFive, false);
+   }*/
+   
+   /**
+    * Posts XML request.
+    * 
+    * @param randomFive
+    *    A randomly generated String.
+    * @param success
+    *    <code>true</code> if the expected result should be successfal, 
+    *    <code>false</code> otherwise.
+    *
+    * @throws Exception
+    *    If anything goes wrong.
+    */
+   private void postXMLRequest(String randomFive, boolean success) throws Exception {
+      PostMethod post = new PostMethod("http://localhost:8080/");
       post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
       post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request function=\"ResultCode\">" +
               "  <param name=\"inputText\">" + randomFive + "</param>" +
               "</request>");
       HttpClient client = new HttpClient();
-      client.setConnectionTimeout(30000);
-      client.setTimeout(30000);
+      client.setConnectionTimeout(5000);
+      client.setTimeout(5000);
       try {
          int code = client.executeMethod(post);
          byte[] data = post.getResponseBody();
          ElementParser parser = new ElementParser();
          Element result = parser.parse(data);
-         assertNull("The method returned an error code for the first call: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
-         assertNull("The method returned a code attribute for the first call: " + result.getAttribute("code"), result.getAttribute("code"));
-         assertNotNull("The method returned a success attribute for the first call.", result.getAttribute("success"));
+         assertEquals("result", result.getLocalName());
+         if (success) {
+            assertNull("The method returned an error code: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
+         } else {
+            assertNotNull("The method did not return an error code for the second call: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
+            assertEquals("AlreadySet", result.getAttribute("errorcode"));
+         }
+         assertNull("The method returned a code attribute: " + result.getAttribute("code"), result.getAttribute("code"));
+         assertNull("The method returned a success attribute.", result.getAttribute("success"));
+         List child = result.getChildElements();
+         assertEquals(1, child.size());
+         Element param = (Element) child.get(0);
+         assertEquals("param", param.getLocalName());
+         if (success) {
+            assertEquals("outputText", param.getAttribute("name"));
+            assertEquals(randomFive + " added.", param.getText());
+         } else {
+            assertEquals("count", param.getAttribute("name"));
+            assertEquals("1", param.getText());
+         }
       } finally {
          
          // Release current connection to the connection pool once you are done
          post.releaseConnection();
       }
-   }*/
-          
+   }
+
    /**
     * Stop the server.
     */

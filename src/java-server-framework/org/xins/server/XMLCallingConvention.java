@@ -121,8 +121,9 @@ extends CallingConvention {
             content.append("\n");
          }
 
+         String contentString = content.toString();
          ElementParser parser = new ElementParser();
-         Element requestElem = parser.parse(content.toString().getBytes(REQUEST_ENCODING));
+         Element requestElem = parser.parse(contentString.getBytes(REQUEST_ENCODING));
          
          // Determine function name
          String functionName = determineFunction(

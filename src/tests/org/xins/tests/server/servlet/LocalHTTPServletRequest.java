@@ -58,7 +58,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
       // Parse the URL
       _parameters = new Properties();
       int questionMarkPos = url.lastIndexOf('?');
-      if (questionMarkPos != -1 ) {
+      if (questionMarkPos != -1 && !url.startsWith("<?xml")) {
          _queryString = url.substring(questionMarkPos);
       } else {
          _queryString = url;
@@ -214,7 +214,10 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
    }
 
    public String getContentType() {
-      throw new UnsupportedOperationException();
+      
+      // This method is only used by the XMLCallingConvention
+      // so it returns what the calling convention expects.
+      return "text/xml; charset=UTF-8";
    }
 
    public String getContextPath() {
@@ -234,7 +237,7 @@ public class LocalHTTPServletRequest implements HttpServletRequest {
    }
 
    public java.io.BufferedReader getReader() {
-      throw new UnsupportedOperationException();
+      return new java.io.BufferedReader(new java.io.StringReader(_queryString));
    }
 
    public String getRemoteAddr() {

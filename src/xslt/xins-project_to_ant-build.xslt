@@ -167,6 +167,8 @@
 
 					<dtd publicId="-//XINS//DTD Function 1.1//EN"
 					     location="{$xins_home}/src/dtd/function_1_1.dtd" />
+					<dtd publicId="-//XINS//DTD Type 1.1//EN"
+					     location="{$xins_home}/src/dtd/type_1_1.dtd" />
 					<dtd publicId="-//XINS//DTD Implementation 1.1//EN"
 					     location="{$xins_home}/src/dtd/impl_1_1.dtd" />
 				</xmlcatalog>
