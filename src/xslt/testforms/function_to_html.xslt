@@ -23,6 +23,7 @@
 	<xsl:include href="../types.xslt" />
 
 	<xsl:variable name="env_url" select="document($api_file)/api/environment[@id=$environment]/@url" />
+	<xsl:variable name="functionName" select="//function/@name" />
 	<xsl:variable name="sessionBased">
 		<xsl:for-each select="//function">
 			<xsl:call-template name="is_function_session_based" />
@@ -42,7 +43,7 @@
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$functionName" />
 					<xsl:text> test form</xsl:text>
 				</title>
 				<!-- TODO: Use separate stylesheet? -->
@@ -53,14 +54,14 @@
 				<xsl:call-template name="header">
 					<xsl:with-param name="active">testform</xsl:with-param>
 					<xsl:with-param name="name">
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$functionName" />
 					</xsl:with-param>
 				</xsl:call-template>
 
 				<h1>
 					<xsl:text>Function </xsl:text>
 					<em>
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$functionName" />
 					</em>
 					<xsl:text> test form</xsl:text>
 				</h1>
@@ -119,7 +120,7 @@
 			</xsl:attribute>
 			<input name="function" type="hidden">
 				<xsl:attribute name="value">
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$functionName" />
 				</xsl:attribute>
 			</input>
 			<xsl:choose>
@@ -140,6 +141,37 @@
 						<tr>
 							<td colspan="2">
 								<input type="submit" name="submit" value="Submit" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<hr />
+								<xsl:text>Control of the </xsl:text>
+								<em>
+									<xsl:value-of select="$functionName" />
+								</em>
+								<xsl:text> function on the </xsl:text>
+								<em>
+									<xsl:value-of select="$environment" />
+								</em>
+								<xsl:text>: </xsl:text>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="$env_url" />
+										<xsl:text>?_function=_DisableFunction&amp;functionName=</xsl:text>
+										<xsl:value-of select="$functionName" />
+									</xsl:attribute>
+									<xsl:text>Disable</xsl:text>
+								</a>
+								<xsl:text> | </xsl:text>
+								<a>
+									<xsl:attribute name="href">
+										<xsl:value-of select="$env_url" />
+										<xsl:text>?_function=_EnableFunction&amp;functionName=</xsl:text>
+										<xsl:value-of select="$functionName" />
+									</xsl:attribute>
+									<xsl:text>Enable</xsl:text>
+								</a>
 							</td>
 						</tr>
 					</table>
