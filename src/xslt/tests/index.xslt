@@ -219,7 +219,7 @@
 			<tr>
 				<th>Details:</th>
 				<td class="testdetails_details">
-					<xsl:value-of select="$details" />
+					<pre><xsl:value-of select="$details" /></pre>
 				</td>
 			</tr>
 		</table>
