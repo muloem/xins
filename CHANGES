@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Set the log numbers in a sequential order.
   - Added missing tranlations for some logging messages.
   - Switched log numbers from 1XXX to 3XXX.
+  - Warn if the build version of the API is more recent than the running
+    version.
 
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.

@@ -218,6 +218,11 @@
 			<description>API package was not built with a production release of XINS.</description>
 			<param name="version" />
 		</entry>
+		<entry id="3229" level="WARNING">
+			<description>API package was built with a more recent version than the running XINS version.</description>
+			<param name="buildVersion" />
+			<param name="currentVersion" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">

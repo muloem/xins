@@ -50,6 +50,7 @@
 	<translation entry="3226">XINS/Java Server Framework (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="3227">XINS/Java Server Framework <value-of-param name="version" /> is not a production release.</translation>
 	<translation entry="3228">Package was built with XINS <value-of-param name="version" />, which is not a production release.</translation>
+	<translation entry="3229">Package was built with XINS <value-of-param name="buildVersion" /> which is more recent version than the running version XINS <value-of-param name="currentVersion" />.</translation>
 
 	<translation entry="3300">Initializing logging subsystem.</translation>
 	<translation entry="3301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>

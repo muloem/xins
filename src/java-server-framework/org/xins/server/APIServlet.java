@@ -205,6 +205,12 @@ extends HttpServlet {
    public static final String API_NAME_PROPERTY = "org.xins.api.name";
 
    /**
+    * The name of the build property that specifies the version with which the
+    * API was built.
+    */
+   public static final String API_BUILD_VERSION_PROPERTY = "org.xins.api.build.version";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *
@@ -627,8 +633,14 @@ extends HttpServlet {
          // Warn if the current XINS version is not a production version
          if (! Library.isProductionRelease(serverVersion)) {
             Log.log_3227(serverVersion);
-         }
+         } else {
 
+            // Warn if the build version of the API is more recent than the running version
+            String buildVersion = config.getInitParameter(API_BUILD_VERSION_PROPERTY);
+            if (Library.isProductionRelease(buildVersion) && Library.isMoreRecent(buildVersion)) {
+               Log.log_3229(buildVersion, serverVersion);
+            }
+         }
 
          //----------------------------------------------------------------//
          //                        Construct API                           //
