@@ -102,7 +102,7 @@ extends Object {
     *
     * <p>If any entries are expirable, they will be removed from this map.
     */
-   public abstract void tick();
+   abstract void tick();
 
    /**
     * Gets the number of entries.
