@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.104:
 * XINS/Java Client Framework:
   - MultipleIPAddressesException: Improved message. Storing host name and
     addresses.
+  - At construction time, ActualFunctionCaller checks if the API is actually
+    up or not, and logs this.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.103:
