@@ -92,55 +92,111 @@ public abstract class ServiceCaller extends Object {
     * <p>Each attempt consists of a call to
     * {@link #doCallImpl(TargetDescriptor,Object)}.
     *
-    * @param subject
-    *    the subject passed, could possibly be <code>null</code>.
+    * @param request
+    *    the call request, not <code>null</code>.
     *
     * @return
     *    a combination of the call result and a link to the
     *    {@link TargetDescriptor target} that returned this result, if and
     *    only if one of the calls succeeded, could be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
     * @throws CallFailedException
     *    if all calls failed.
+    *
+    * @since XINS 0.207
     */
-   protected final CallResult doCall(Object subject)
-   throws CallFailedException {
+   protected final CallResult doCall(CallRequest request)
+   throws CallException {
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // Keep a reference to the most recent CallException since
+      // setNext(CallException) needs to be called on it to make it link to
+      // the next one, if there is one
+      CallException lastException = null;
+
+      // Keep a reference to the very first CallException since that is the
+      // exception that will be thrown, if there will be any CallException
+      CallException firstException = null;
+
+      // Maintain the list of failed targets and the corresponding exceptions;
+      // This is needed if a successful result (a CallResult object) is
+      // returned, since it will contain references to the failures as well;
+      // Note that these lists are lazily initialized because this code is
+      // performance- and memory-optimized for the successful case
       ArrayList failedTargets = null;
       ArrayList exceptions    = null;
 
       // Iterate over all targets
       Iterator iterator = _descriptor.iterateTargets();
-      boolean shouldContinue = true;
-      while (iterator.hasNext() && shouldContinue) {
 
-         // Determine the service descriptor target
+      // There should be at least one target
+      if (! iterator.hasNext()) {
+         throw new Error("Unexpected situation: " + _descriptor.getClass().getName() + " contains no target descriptors.");
+      }
+
+      // Loop over all TargetDescriptors
+      boolean shouldContinue = true;
+      while (shouldContinue) {
+
+         // Get a reference to the next TargetDescriptor
          TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
          Log.log_3312(target.getURL());
          Object result = null;
          boolean succeeded = false;
+         long start = System.currentTimeMillis();
          try {
 
             // Attempt the call
-            result = doCallImpl(target, subject);
+            result = doCallImpl(target, request);
             succeeded = true;
 
          // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
-            if (failedTargets == null) {
-               failedTargets = new ArrayList();
-               exceptions    = new ArrayList();
-            }
-            failedTargets.add(target);
-            exceptions.add(exception);
 
             Log.log_3313(target.getURL());
 
+            long duration = System.currentTimeMillis() - start;
+
+            // If the caught exception is not a CallException, then
+            // encapsulate it in one
+            CallException currentException;
+            if (exception instanceof CallException) {
+               currentException = (CallException) exception;
+            } else {
+               currentException = new UnexpectedExceptionCallException(request, target, duration, null, exception);
+            }
+
+            // Link the previous exception (if there is one) to this one
+            if (lastException != null) {
+               lastException.setNext(currentException);
+            }
+
+            // Now set this exception as the most recent CallException
+            lastException = currentException;
+
+            // If this is the first exception being caught, then lazily
+            // initialize the list of failed targets and the list of
+            // exceptions and keep a reference to the first exception
+            if (failedTargets == null) {
+               failedTargets  = new ArrayList();
+               exceptions     = new ArrayList();
+               firstException = currentException;
+            }
+
+            // Store the failed target and the corresponding exception
+            failedTargets.add(target);
+            exceptions.add(exception);
+
             // Determine whether fail-over is allowed and whether we have
             // another target to fail-over to
-            boolean failOver = shouldFailOver(subject, exception);
+            boolean failOver = shouldFailOver(request, exception);
             boolean haveNext = iterator.hasNext();
 
             // No more targets and no fail-over
@@ -173,7 +229,7 @@ public abstract class ServiceCaller extends Object {
 
       // Loop ended, call failed completely
       Log.log_3314();
-      throw new CallFailedException(subject, failedTargets, exceptions);
+      throw firstException;
    }
 
    /**
@@ -195,9 +251,11 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws Throwable
     *    if the call to the specified target failed.
+    *
+    * @since XINS 0.207
     */
    protected abstract Object doCallImpl(TargetDescriptor target,
-                                        Object           subject)
+                                        CallRequest      request)
    throws Throwable;
 
    /**
@@ -259,9 +317,9 @@ public abstract class ServiceCaller extends Object {
     * This method should be overridden by subclasses. The implementation in
     * class {@link ServiceCaller} always returns <code>false</code>.
     *
-    * @param subject
-    *    the subject for the call, as passed to {@link #doCall(Object)}, can
-    *    be <code>null</code>.
+    * @param request
+    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    can be <code>null</code>.
     *
     * @param exception
     *    the exception caught while calling the most recently called target,
@@ -270,8 +328,10 @@ public abstract class ServiceCaller extends Object {
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
+    *
+    * @since XINS 0.207
     */
-   protected boolean shouldFailOver(Object subject, Throwable exception) {
+   protected boolean shouldFailOver(CallRequest request, Throwable exception) {
       return false;
    }
 }
