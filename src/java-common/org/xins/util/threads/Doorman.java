@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Monitor that acts like a doorman. It implements a variation of the
@@ -94,7 +95,17 @@ public final class Doorman extends Object {
       _maxQueueWaitTime = maxQueueWaitTime;
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Constructed " + _asString + ", initial queue size is " + queueSize + ", maximum queue wait time is " + maxQueueWaitTime + " ms, strict thread synchronization checking is " + (strict ? "en" : "dis") + "abled.");
+         FastStringBuffer buffer = new FastStringBuffer(250);
+         buffer.append("Constructed ");
+         buffer.append(_asString);
+         buffer.append(", initial queue size is ");
+         buffer.append(queueSize);
+         buffer.append(", maximum queue wait time is ");
+         buffer.append(maxQueueWaitTime);
+         buffer.append(" ms, thread synchronization checking is ");
+         buffer.append(strict ? "strict" : "loose");
+         buffer.append('.');
+         LOG.debug(buffer.toString());
       }
    }
 
@@ -191,17 +202,19 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == reader) {
+            String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.";
             if (_strict) {
-               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already the active writer.");
+               throw new IllegalStateException(message);
             } else {
-               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.");
-               return;
+               LOG.warn(message);
+               leaveAsWriter();
             }
          } else if (_currentReaders.contains(reader)) {
+            String message = _asString + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.";
             if (_strict) {
-               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already an active reader.");
+               throw new IllegalStateException(message);
             } else {
-               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.");
+               LOG.warn(message);
                return;
             }
          }
@@ -232,6 +245,7 @@ public final class Doorman extends Object {
       try {
          Thread.sleep(_maxQueueWaitTime);
          synchronized (_currentActorLock) {
+            // TODO: Call Thread.interrupted() ?
             if (_currentReaders.contains(reader)) {
                return;
             }
@@ -240,14 +254,14 @@ public final class Doorman extends Object {
                _queue.remove(reader);
             }
          }
-         throw new QueueTimeOutException("Unable to add " + reader.getName() + " to queue for " + _asString + '.');
+         throw new QueueTimeOutException(_asString + ": Unable to add " + reader.getName() + " to queue.");
       } catch (InterruptedException exception) {
          // fall through
       }
 
       synchronized (_currentActorLock) {
          if (! _currentReaders.contains(reader)) {
-            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.");
+            throw new IllegalStateException(_asString + ": " + reader.getName() + " was interrupted in enterAsReader(), but not in the set of current readers.");
          }
       }
    }
@@ -272,14 +286,21 @@ public final class Doorman extends Object {
 
          // Check preconditions
          if (_currentWriter == writer) {
+            String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer.";
             if (_strict) {
-               throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already the active writer.");
+               throw new IllegalStateException(message);
             } else {
-               LOG.warn("Doorman " + _name + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer. Ignoring.");
+               LOG.warn(message);
                return;
             }
          } else if (_currentReaders.contains(writer)) {
-            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already an active reader.");
+            String message = _asString + ": " + writer.getName() + " attempts to enter as a writer but it is already an active reader.";
+            if (_strict) {
+               throw new IllegalStateException(message);
+            } else {
+               LOG.warn(message);
+               leaveAsReader();
+            }
          }
 
          // If there is a current writer or one or more current readers, then
@@ -304,6 +325,7 @@ public final class Doorman extends Object {
       try {
          Thread.sleep(_maxQueueWaitTime);
          synchronized (_currentActorLock) {
+            // TODO: Call Thread.interrupted() ?
             if (_currentWriter == writer) {
                return;
             }
@@ -312,14 +334,14 @@ public final class Doorman extends Object {
                _queue.remove(writer);
             }
          }
-         throw new QueueTimeOutException("Unable to add " + writer.getName() + " to queue for " + _asString + '.');
+         throw new QueueTimeOutException(_asString + ": Unable to add " + writer.getName() + " to queue.");
       } catch (InterruptedException exception) {
          // fall through
       }
 
       synchronized (_currentActorLock) {
          if (_currentWriter != writer) {
-            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.');
+            throw new IllegalStateException(_asString + " : " + writer.getName() + " was interrupted in enterAsWriter(), but the current writer is " + _currentWriter.getName() + '.');
          }
       }
    }
@@ -340,10 +362,11 @@ public final class Doorman extends Object {
 
          if (!readerRemoved) {
             // TODO: Remove from queue if it is in there?
+            String message = _asString + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader.";
             if (_strict) {
-               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot leave protected area as reader, since it has not entered as a reader.");
+               throw new IllegalStateException(message);
             } else {
-               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader. Ignoring.");
+               LOG.warn(message);
                return;
             }
          }
@@ -365,7 +388,7 @@ public final class Doorman extends Object {
 
                   // If a reader leaves, the queue cannot contain a reader at the
                   // top, it must be either empty or have a writer at the top
-                  throw new IllegalStateException("Doorman " + _name + ": Found writer at top of queue while a reader is leaving the protected area.");
+                  throw new IllegalStateException(_asString + ": Found reader at top of queue while a reader is leaving the protected area.");
                }
             }
          }
@@ -386,10 +409,11 @@ public final class Doorman extends Object {
       synchronized (_currentActorLock) {
 
          if (_currentWriter != writer) {
+            String message = _asString + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer.";
             if (_strict) {
-               throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot leave protected area as writer, since it has not entered as a writer.");
+               throw new IllegalStateException(message);
             } else {
-               LOG.warn("Doorman " + _name + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer. Ignoring.");
+               LOG.warn(message);
                return;
             }
          }
@@ -549,7 +573,7 @@ public final class Doorman extends Object {
          // Check preconditions
          if (_entryTypes.containsKey(thread)) {
             QueueEntryType existingType = (QueueEntryType) _entryTypes.get(thread);
-            throw new IllegalStateException("Doorman " + _name + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
+            throw new IllegalStateException(_asString + ": " + thread.getName() + " is already in this queue as a " + existingType + ", cannot add it as a " + type + '.');
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -620,7 +644,7 @@ public final class Doorman extends Object {
 
             // Remove the thread from the list
             if (! _entries.remove(thread)) {
-               throw new IllegalStateException("Doorman " + _name + ": " + thread.getName() + " is not in this queue.");
+               throw new IllegalStateException(_asString + ": " + thread.getName() + " is not in this queue.");
             }
          }
 
