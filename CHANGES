@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 10:
   - Added getChildren(String) to class DataElement.
   - Various other improvements to DataElement class.
 
+* Tests:
+  - Changed max queue time-out in ExpiryFolderTests from 10 ms to 2 sec.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 9:
 
