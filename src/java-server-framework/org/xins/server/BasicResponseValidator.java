@@ -276,8 +276,23 @@ implements ResponseValidator {
    public final void startTag(String name)
    throws InvalidResponseException {
       resetAttributes();
-      FastStack elements = getElements();
-      elements.push(name);
+      boolean succeeded = false;
+      try {
+         startTagImpl(name);
+         succeeded = true;
+      } finally {
+         // If an exception is thrown, then reset, just in case the subclass
+         // threw something other than an InvalidResponseException
+         if (succeeded == false) {
+            reset();
+         }
+      }
+      getElements().push(name);
+   }
+
+   protected void startTagImpl(String name)
+   throws InvalidResponseException {
+      // empty
    }
 
    public final void attribute(String name, String value)
@@ -297,8 +312,23 @@ implements ResponseValidator {
 
    public final void endTag()
    throws InvalidResponseException {
-      FastStack elements = getElements();
-      String element = (String) elements.pop();
+      boolean succeeded = false;
+      try {
+         endTagImpl(name);
+         succeeded = true;
+      } finally {
+         // If an exception is thrown, then reset, just in case the subclass
+         // threw something other than an InvalidResponseException
+         if (succeeded == false) {
+            reset();
+         }
+      }
+      getElements().pop();
+   }
+
+   protected void endTagImpl()
+   throws InvalidResponseException {
+      // empty
    }
 
    public final void endResponse()
