@@ -79,9 +79,9 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
    // Methods
    //-------------------------------------------------------------------------
 
-   public CallResult call(String sessionID,
-                          String functionName,
-                          Map    parameters)
+   public final CallResult call(String sessionID,
+                                String functionName,
+                                Map    parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
       return callImpl(sessionID, functionName, parameters);
    }
@@ -120,7 +120,7 @@ public abstract class CallTargetGroup extends AbstractFunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   public CallResult call(String hostName, String sessionID, String functionName, Map parameters)
+   public final CallResult call(String hostName, String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
       return callImpl(sessionID, functionName, parameters);
    }
