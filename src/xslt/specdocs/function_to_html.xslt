@@ -29,16 +29,21 @@
 
 	<xsl:preserve-space elements="function/examples" />
 
-	<xsl:include href="../header.xslt" />
-	<xsl:include href="../footer.xslt" />
+	<xsl:include href="../header.xslt"    />
 	<xsl:include href="../firstline.xslt" />
-	<xsl:include href="../types.xslt" />
+	<xsl:include href="../footer.xslt"    />
+	<xsl:include href="../function.xslt"  />
+	<xsl:include href="../types.xslt"     />
 	<xsl:include href="../urlencode.xslt" />
 
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
 	<xsl:template match="function">
+
+		<xsl:variable name="sessionBased">
+			<xsl:call-template name="is_function_session_based" />
+		</xsl:variable>
 
 		<xsl:if test="not(@name)">
 			<xsl:message terminate="yes">
@@ -75,18 +80,28 @@
 					</em>
 				</h1>
 
+				<!-- Broken freezes -->
 				<xsl:call-template name="broken_freeze" />
+
+				<!-- Description -->
 				<xsl:apply-templates select="description" />
+
+				<!-- Session-based -->
+				<xsl:if test="$sessionBased = 'true'">
+					<p />
+					<em>This function is session-based.</em>
+				</xsl:if>
+
+				<!-- Deprecation -->
 				<xsl:if test="deprecated">
-					<xsl:if test="description">
-						<p />
-					</xsl:if>
+					<p />
 					<em>
 						<strong>Deprecated: </strong>
 						<xsl:apply-templates select="deprecated" />
 					</em>
 				</xsl:if>
 
+				<!-- References to other functions -->
 				<xsl:if test="see">
 					<table class="metadata">
 						<tr>
