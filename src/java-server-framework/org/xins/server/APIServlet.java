@@ -1238,7 +1238,7 @@ extends HttpServlet {
 
       // Send the output only if GET or POST
       if (sendOutput) {
-         callingConvention.convertResult(result, response);
+         callingConvention.convertResult(result, response, request);
       }
    }
 

@@ -281,24 +281,29 @@ abstract class CallingConvention extends Object {
     * @param httpResponse
     *    the HTTP response object to configure, cannot be <code>null</code>.
     *
+    * @param httpRequest
+    *    the HTTP request, will not be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>xinsResult == null || httpResponse == null</code>.
+    *    if <code>xinsResult == null || httpResponse == null || httpRequest == null</code>.
     *
     * @throws IOException
     *    if calling any of the methods in <code>httpResponse</code> causes an
     *    I/O error.
     */
    final void convertResult(FunctionResult      xinsResult,
-                            HttpServletResponse httpResponse)
+                            HttpServletResponse httpResponse,
+                            HttpServletRequest  httpRequest)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("xinsResult",   xinsResult,
-                                     "httpResponse", httpResponse);
+                                     "httpResponse", httpResponse,
+                                     "httpRequest",  httpRequest);
 
       // Delegate to the implementation method
       try {
-         convertResultImpl(xinsResult, httpResponse);
+         convertResultImpl(xinsResult, httpResponse, httpRequest);
 
       // Filter any thrown exceptions
       } catch (Throwable exception) {
@@ -309,6 +314,8 @@ abstract class CallingConvention extends Object {
                                         + FunctionResult.class.getName()
                                         + ','
                                         + HttpServletResponse.class.getName()
+                                        + ','
+                                        + HttpServletRequest.class.getName()
                                         + ')';
             final String SUBJECT_CLASS  = getClass().getName();
             final String SUBJECT_METHOD = "convertResultImpl("
@@ -335,12 +342,16 @@ abstract class CallingConvention extends Object {
     * @param httpResponse
     *    the HTTP response object to configure, will not be <code>null</code>.
     *
+    * @param httpRequest
+    *    the HTTP request, will not be <code>null</code>.
+    *
     * @throws IOException
     *    if calling any of the methods in <code>httpResponse</code> causes an
     *    I/O error.
     */
    protected abstract void convertResultImpl(FunctionResult      xinsResult,
-                                             HttpServletResponse httpResponse)
+                                             HttpServletResponse httpResponse,
+                                             HttpServletRequest  httpRequest)
    throws IOException;
    // XXX: Replace IOException with more appropriate exception?
 }

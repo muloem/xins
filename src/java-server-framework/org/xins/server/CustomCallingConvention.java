@@ -81,12 +81,16 @@ public abstract class CustomCallingConvention extends CallingConvention {
     * @param httpResponse
     *    the HTTP response object to configure, will not be <code>null</code>.
     *
+    * @param httpRequest
+    *    the HTTP request, will not be <code>null</code>.
+    *
     * @throws IOException
     *    if calling any of the methods in <code>httpResponse</code> causes an
     *    I/O error.
     */
    protected abstract void convertResultImpl(FunctionResult      xinsResult,
-                                             HttpServletResponse httpResponse)
+                                             HttpServletResponse httpResponse,
+                                             HttpServletRequest  httpRequest)
    throws IOException;
 
 }
