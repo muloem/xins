@@ -961,34 +961,32 @@ implements DefaultResultCodes {
    final void handleCall(ServletRequest request, PrintWriter out)
    throws IOException {
 
-      // Get call context
-      CallContext context = new CallContext(this);
-
       // Configure the call context
+      CallContext context;
       try {
-         context.reset(request);
+         context = new CallContext(this, request);
       } catch (MissingSessionIDException exception) {
-         XMLOutputter xmlOutputter = context.getXMLOutputter();
-         xmlOutputter.reset(out, "UTF-8");
+         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
+         xmlOutputter.declaration();
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "MissingSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.attribute("code", "MissingSessionID");
          xmlOutputter.endDocument();
          return;
       } catch (InvalidSessionIDException exception) {
-         XMLOutputter xmlOutputter = context.getXMLOutputter();
-         xmlOutputter.reset(out, "UTF-8");
+         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
+         xmlOutputter.declaration();
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "InvalidSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.attribute("code", "InvalidSessionID");
          xmlOutputter.endDocument();
          return;
       } catch (UnknownSessionIDException exception) {
-         XMLOutputter xmlOutputter = context.getXMLOutputter();
-         xmlOutputter.reset(out, "UTF-8");
+         XMLOutputter xmlOutputter = new XMLOutputter(out, "UTF-8");
+         xmlOutputter.declaration();
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
-         xmlOutputter.attribute("code", "UnknownSessionID"); // TODO: Use special ResultCode
+         xmlOutputter.attribute("code", "UnknownSessionID");
          xmlOutputter.endDocument();
          return;
       }

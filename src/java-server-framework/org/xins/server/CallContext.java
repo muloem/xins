@@ -49,149 +49,18 @@ implements Responder, Log {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallContext</code>. The state will be set
-    * to {@link #UNINITIALIZED}.
-    *
-    * <p />Before this object can be used, {@link #reset(ServletRequest)} must
-    * be called.
+    * Constructs a new <code>CallContext</code> and configures it for the
+    * specified servlet request. The state is set to {@link #BEFORE_START}.
     *
     * @param api
     *    the API for which this <code>CallContext</code> will be used, cannot
     *    be <code>null</code>.
     *
-    * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
-    */
-   CallContext(API api) throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("api", api);
-
-      // Initialize fields
-      _api          = api;
-      _state        = UNINITIALIZED;
-      _success      = true;
-      _code         = null;
-      _stringWriter = new FastStringWriter();
-      _xmlOutputter = new XMLOutputter();
-      _callID       = -1;
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The API for which this CallContext is used. This field is initialized by
-    * the constructor and can never be <code>null</code>.
-    */
-   private final API _api;
-
-   /**
-    * The start time of the call, as a number of milliseconds since midnight
-    * January 1, 1970 UTC.
-    */
-   private long _start;
-
-   /**
-    * The original servlet request.
-    */
-   private ServletRequest _request;
-
-   /**
-    * The character stream to send the output to. This field is initialized by
-    * the constructor and can never be <code>null</code>.
-    */
-   private final FastStringWriter _stringWriter;
-
-   /**
-    * The XML outputter. It is initialized by the constructor and sends its
-    * output to {@link #_stringWriter}.
-    */
-   private final XMLOutputter _xmlOutputter;
-
-   /**
-    * The current state.
-    */
-   private ResponderState _state;
-
-   /**
-    * The number of element tags currently open within the data section.
-    */
-   private int _elementDepth;
-
-   /**
-    * The name of the function currently being called. This field is
-    * initialized by {@link #reset(ServletRequest)} and can be set to
-    * <code>null</code>.
-    */
-   private String _functionName;
-
-   /**
-    * The function currently being called. This field is initialized by
-    * {@link #reset(ServletRequest)} and can be set to <code>null</code>.
-    */
-   private Function _function;
-
-   /**
-    * The logger associated with the function. This field is set if and only
-    * if {@link #_function} is set.
-    */
-   private Logger _logger;
-
-   /**
-    * The log prefix for log messages.
-    */
-   private String _logPrefix;
-
-   /**
-    * The session for this call.
-    */
-   private Session _session;
-
-   /**
-    * Flag that indicates if the session ID should be added as a parameter to
-    * the response.
-    */
-   private boolean _returnSessionID;
-
-   /**
-    * Success indication. Defaults to <code>true</code> and will <em>only</em>
-    * be set to <code>false</code> if and only if
-    * {@link #startResponse(boolean,String)} is called with the first
-    * parameter (<em>success</em>) set to <code>false</code>.
-    */
-   private boolean _success;
-
-   /**
-    * Return code. The default is <code>null</code> and will <em>only</em> be
-    * set to something else if and only if
-    * {@link #startResponse(boolean,String)} is called with the second
-    * parameter (<em>code</em>) set to a non-<code>null</code>, non-empty
-    * value.
-    */
-   private String _code;
-
-   /**
-    * The call ID, unique in the context of the pertaining function.
-    */
-   private int _callID;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
-   /**
-    * Resets this <code>CallContext</code> and configures it for the specified
-    * servlet request. This resets the state to {@link #BEFORE_START}.
-    *
     * @param request
     *    the servlet request, should not be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
+    *    if <code>api == null || request == null</code>.
     *
     * @throws MissingSessionIDException
     *    if no session ID is specified in the request.
@@ -205,7 +74,7 @@ implements Responder, Log {
     * @throws IOException
     *    if an I/O error occurs.
     */
-   void reset(ServletRequest request)
+   CallContext(API api, ServletRequest request)
    throws IllegalArgumentException,
           MissingSessionIDException,
           InvalidSessionIDException,
@@ -213,15 +82,19 @@ implements Responder, Log {
           IOException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
+      MandatoryArgumentChecker.check("api", api, "request", request);
 
-      _start   = System.currentTimeMillis();
-      _request = request;
-      _state   = BEFORE_START;
-      _success = true;
-      _code    = null;
+      // Initialize fields
+      _api          = api;
+      _request      = request;
+      _state        = BEFORE_START;
+      _start        = System.currentTimeMillis();
+      _success      = true;
+      _code         = null;
+      _stringWriter = new FastStringWriter();
+      _xmlOutputter = new XMLOutputter();
 
-      _stringWriter.getBuffer().clear();
+      // Reset the XMLOutputter
       _xmlOutputter.reset(_stringWriter, "UTF-8");
       _xmlOutputter.declaration();
 
@@ -269,6 +142,110 @@ implements Responder, Log {
 
       _returnSessionID = false;
    }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * The API for which this CallContext is used. This field is initialized by
+    * the constructor and can never be <code>null</code>.
+    */
+   private final API _api;
+
+   /**
+    * The start time of the call, as a number of milliseconds since midnight
+    * January 1, 1970 UTC.
+    */
+   private long _start;
+
+   /**
+    * The original servlet request.
+    */
+   private ServletRequest _request;
+
+   /**
+    * The character stream to send the output to. This field is initialized by
+    * the constructor and can never be <code>null</code>.
+    */
+   private final FastStringWriter _stringWriter;
+
+   /**
+    * The XML outputter. It is initialized by the constructor and sends its
+    * output to {@link #_stringWriter}.
+    */
+   private final XMLOutputter _xmlOutputter;
+
+   /**
+    * The current state.
+    */
+   private ResponderState _state;
+
+   /**
+    * The number of element tags currently open within the data section.
+    */
+   private int _elementDepth;
+
+   /**
+    * The name of the function currently being called. Can be set to
+    * <code>null</code>.
+    */
+   private final String _functionName;
+
+   /**
+    * The function currently being called. Can be set to <code>null</code>.
+    */
+   private final Function _function;
+
+   /**
+    * The logger associated with the function. This field is set if and only
+    * if {@link #_function} is set.
+    */
+   private final Logger _logger;
+
+   /**
+    * The log prefix for log messages.
+    */
+   private final String _logPrefix;
+
+   /**
+    * The session for this call.
+    */
+   private Session _session;
+
+   /**
+    * Flag that indicates if the session ID should be added as a parameter to
+    * the response.
+    */
+   private boolean _returnSessionID;
+
+   /**
+    * Success indication. Defaults to <code>true</code> and will <em>only</em>
+    * be set to <code>false</code> if and only if
+    * {@link #startResponse(boolean,String)} is called with the first
+    * parameter (<em>success</em>) set to <code>false</code>.
+    */
+   private boolean _success;
+
+   /**
+    * Return code. The default is <code>null</code> and will <em>only</em> be
+    * set to something else if and only if
+    * {@link #startResponse(boolean,String)} is called with the second
+    * parameter (<em>code</em>) set to a non-<code>null</code>, non-empty
+    * value.
+    */
+   private String _code;
+
+   /**
+    * The call ID, unique in the context of the pertaining function.
+    */
+   private int _callID;
+
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 
    /**
     * Returns the start time of the call.
