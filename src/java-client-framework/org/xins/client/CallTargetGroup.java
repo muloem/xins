@@ -4,6 +4,11 @@
 package org.xins.client;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
@@ -48,6 +53,62 @@ extends AbstractCompositeFunctionCaller {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Creates a new <code>CallTargetGroup</code> of the specified type, using
+    * the specified URL. The host name in the URL may resolve to multiple IP
+    * addresses. Each one will be added as a member.
+    *
+    * @param type
+    *    the type, either {@link #ORDERED_TYPE}, {@link #RANDOM_TYPE} or
+    *    {@link #ROUND_ROBIN_TYPE}, cannot be <code>null</code>.
+    *
+    * @param url
+    *    the {@link URL} that is used to create {@link FunctionCaller}
+    *    members, one per resolved IP address, cannot be <code>null</code>.
+    *
+    * @return
+    *    the <code>CallTargetGroup</code>, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || url == null</code>.
+    *
+    * @throws SecurityException
+    *    if a security manager does not allow the DNS lookup operation for the
+    *    host specified in the URL.
+    *
+    * @throws UnknownHostException
+    *    if no IP address could be found for the host specified in the URL.
+    *
+    * @since XINS 0.44
+    */
+   public final static CallTargetGroup create(Type type, URL url)
+   throws IllegalArgumentException, SecurityException, UnknownHostException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type, "url", url);
+
+      List members = new ArrayList();
+
+      String hostName = url.getHost();
+      InetAddress[] addresses = InetAddress.getAllByName(hostName);
+      int addressCount = addresses.length;
+      try {
+         for (int i = 0; i < addressCount; i++) {
+            URL afcURL = new URL(url.getProtocol(),             // protocol
+                                 addresses[i].getHostAddress(), // host
+                                 url.getPort(),                 // port
+                                 url.getFile());                // file
+            members.add(new ActualFunctionCaller(afcURL, hostName));
+         }
+      } catch (MalformedURLException mue) {
+         throw new InternalError("Caught MalformedURLException for a protocol that was previously accepted: \"" + url.getProtocol() + "\".");
+      } catch (MultipleIPAddressesException miae) {
+         throw new InternalError("Caught MultipleIPAddressesException while only using resolved IP addresses.");
+      }
+
+      return create(type, members);
+   }
 
    /**
     * Creates a new <code>CallTargetGroup</code> of the specified type, with
