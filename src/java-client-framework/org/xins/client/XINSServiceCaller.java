@@ -782,6 +782,10 @@ public final class XINSServiceCaller extends ServiceCaller {
          _contextID  = contextID;
          _httpClient = httpClient;
          _call       = call;
+
+         // The Java Virtual Machine exits when the only threads running are
+         // all daemon threads. This is such a thread.
+         setDaemon(true);
       }
 
 
