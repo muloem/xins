@@ -292,14 +292,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Read response body (mandatory operation)
-      //SAX String body = method.getResponseBodyAsString();
       byte[] xml = method.getResponseBody();
 
       // Release the connection
       method.releaseConnection();
 
       // Check for exceptions
-      Throwable exception =  executor._exception;
+      Throwable exception = executor._exception;
       if (exception != null) {
 
          // Connection refusal
@@ -336,13 +335,13 @@ public final class XINSServiceCaller extends ServiceCaller {
             Log.log_2017(exception, duration, url, functionName, serParams);
             throw new CallIOException(request, target, duration, (IOException) exception);
 
-         /* TODO: (1) add the lines below
+         /* TODO: (1/2) add the lines below
          } else {
             Log.log_2018(exception, duration, url, functionName, serParams);
             throw new UnexpectedExceptionException(request, target, duration, exception);
          }
 
-         // TODO: (2) remove the lines below
+         // TODO: (2/2) remove the lines below
          */
 
          } else if (exception instanceof RuntimeException) {
