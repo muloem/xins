@@ -12,15 +12,24 @@
 prog=`basename $0`
 
 # Make sure XINS_HOME is set
-if [ "${XINS_HOME}a" = "a" ]; then
-	echo "${prog}: XINS_HOME not set."
-	exit 1
+xins_home=${XINS_HOME}
+if [ "${xins_home}a" = "a" ]; then
+	echo "${prog}: ERROR: XINS_HOME not set. Guessing."
+	xins_home=`dirname $0`
+	while [ ! `basename ${xins_home}` = "xins" ]; do
+		xins_home=`dirname ${xins_home}`
+	done
+	if [ "${xins_home}a" = "a" ]; then
+		echo "${prog}: FATAL: XINS_HOME not set and unable to guess."
+		exit 1
+	fi
+	echo "${prog}: INFO: Assuming XINS_HOME is ${xins_home}."
 fi
 
 # Make sure the XSLT style sheet exists
-style=${XINS_HOME}/src/xslt/xins-project_to_ant-build.xslt
+style=${xins_home}/src/xslt/xins-project_to_ant-build.xslt
 if [ ! -f ${style} ]; then
-	echo "${prog}: Cannot find stylesheet at:"
+	echo "${prog}: FATAL: Cannot find stylesheet at:"
 	echo ${style}
 	exit 1
 fi
@@ -28,7 +37,7 @@ fi
 # Make sure the input file exists
 in=xins-project.xml
 if [ ! -f ${in} ]; then
-	echo "${prog}: Cannot find input file:"
+	echo "${prog}: ERROR: Cannot find input file:"
 	echo ${style}
 	exit 1
 fi
@@ -44,12 +53,12 @@ out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
 returncode=$?
 if [ ! "${returncode}a" = "0a" ]; then
-	echo "${prog}: Unable to transform ${in}."
+	echo "${prog}: ERROR: Unable to transform ${in}."
 	exit 1
 fi
 
 # Run Ant against the build file
 project_home=`pwd`
-(cd ${builddir} && ant -Dxins_home=${XINS_HOME} \
+(cd ${builddir} && ant -Dxins_home=${xins_home} \
                        -Dproject_home=${project_home} \
                        $*)
