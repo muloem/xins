@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.39:
+
+* Made shell script 'xins' executable.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.38:
 
 * Removed DataUnavailableException from XINS/Java Client Framework.
