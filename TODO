@@ -115,8 +115,6 @@ XINS/JAVA COMMON LIBRARY
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
-* EnumItem should override the equals() and hashCode() methods so that two
-  EnumItem with the same name and the same value should be equals.
 * Implemented and test method isValidValueImpl in class
   org.xins.types.standard.Properties.
 
@@ -145,7 +143,6 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Generate Docbook from the specifications.
 * If the api.xml has changed, the specification documentation should be
   regenerated.
-
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
@@ -189,3 +186,6 @@ MISCELLANEOUS
   -prepare-java-client, -prepare-java-server, -prepare-java-common).
 * Link the javadoc to the correct XINS version on sourceforge.
 * xslt & xml files should contain a description in their header.
+* Generate DocBook and PDF from the Javadoc using the Doclet available at
+  http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
+* Include a few examples in the release.
