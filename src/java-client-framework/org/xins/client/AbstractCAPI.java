@@ -21,6 +21,8 @@ import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Base class for generated Client-side Application Programming Interface
  * (CAPI) classes.
@@ -133,17 +135,20 @@ public abstract class AbstractCAPI extends Object {
          _caller.setCAPI(this);
 
       // Invalid property value due to unsupported protocol
-      } catch (UnsupportedProtocolException e) {
+      } catch (UnsupportedProtocolException cause) {
          // TODO: Use correct property name for specific target descriptor
          // TODO: Use correct property value for specific target descriptor
-         org.xins.common.service.TargetDescriptor target = e.getTargetDescriptor();
+         org.xins.common.service.TargetDescriptor target = cause.getTargetDescriptor();
          final String PROPERTY_VALUE = properties.get(propertyName);
          final String DETAIL         = "Protocol in URL \""
                                      + target.getURL()
                                      + "\" is not supported.";
-         throw new InvalidPropertyValueException(propertyName,
-                                                 PROPERTY_VALUE,
-                                                 DETAIL);
+         InvalidPropertyValueException e =
+            new InvalidPropertyValueException(propertyName,
+                                              PROPERTY_VALUE,
+                                              DETAIL);
+         ExceptionUtils.setCause(e, cause);
+         throw e;
       }
    }
 
