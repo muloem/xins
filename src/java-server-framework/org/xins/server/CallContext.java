@@ -66,10 +66,6 @@ implements Responder, Log {
     * @param request
     *    the servlet request, should not be <code>null</code>.
     *
-    * @param api
-    *    the API for which this <code>CallContext</code> will be used, cannot
-    *    be <code>null</code>.
-    *
     * @param start
     *    the start time of the call, as milliseconds since midnight January 1,
     *    1970.
