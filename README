@@ -1,4 +1,4 @@
-XINS Is Not Soap
+XML-based Interface for Network Services
 $Id$
 
 Standard for system-to-system communication. Requests are HTTP GET or POST,
