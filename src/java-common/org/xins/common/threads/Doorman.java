@@ -104,7 +104,7 @@ public final class Doorman extends Object {
    public Doorman(String name, boolean strict, int queueSize, long maxQueueWaitTime)
    throws IllegalArgumentException {
 
-      // TRACE: Entering constructor
+      // TRACE: Enter constructor
       String traceDetail = "name=" + quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
       Log.log_3000(DOORMAN_CLASSNAME, traceDetail);
 
@@ -131,7 +131,7 @@ public final class Doorman extends Object {
       _queue            = new Queue(queueSize);
       _maxQueueWaitTime = maxQueueWaitTime;
 
-      // TRACE: Leaving constructor
+      // TRACE: Leave constructor
       Log.log_3002(DOORMAN_CLASSNAME, traceDetail);
    }
 
@@ -219,7 +219,7 @@ public final class Doorman extends Object {
    public void enterAsReader()
    throws QueueTimeOutException {
 
-      // TRACE: Entering method
+      // TRACE: Enter method
       Log.log_3003(DOORMAN_CLASSNAME, "enterAsReader()", null);
 
       // TODO: Return successfully from this method in only a single place, so
@@ -245,7 +245,7 @@ public final class Doorman extends Object {
                throw new Error(message);
             } else {
 
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
 
                return;
@@ -271,7 +271,7 @@ public final class Doorman extends Object {
          if (!enterQueue) {
             _currentReaders.add(reader);
 
-            // TRACE: Leaving method
+            // TRACE: Leave method
             Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader", null);
 
             return;
@@ -292,7 +292,7 @@ public final class Doorman extends Object {
 
             if (_currentReaders.contains(reader)) {
 
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader", null);
 
                return;
@@ -317,7 +317,7 @@ public final class Doorman extends Object {
          }
       }
 
-      // TRACE: Leaving method
+      // TRACE: Leave method
       Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
    }
 
@@ -331,7 +331,7 @@ public final class Doorman extends Object {
    public void enterAsWriter()
    throws QueueTimeOutException {
 
-      // TRACE: Entering method
+      // TRACE: Enter method
       Log.log_3003(DOORMAN_CLASSNAME, "enterAsWriter()", null);
 
       Thread writer = Thread.currentThread();
@@ -346,7 +346,7 @@ public final class Doorman extends Object {
                throw new Error(message);
             } else {
 
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
                return;
             }
@@ -375,7 +375,7 @@ public final class Doorman extends Object {
          } else {
             _currentWriter = writer;
 
-            // TRACE: Leaving method
+            // TRACE: Leave method
             Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
             return;
          }
@@ -394,7 +394,7 @@ public final class Doorman extends Object {
             Thread.interrupted();
 
             if (_currentWriter == writer) {
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
 
                return;
@@ -420,7 +420,7 @@ public final class Doorman extends Object {
          }
       }
 
-      // TRACE: Leaving method
+      // TRACE: Leave method
       Log.log_3005(DOORMAN_CLASSNAME, "enterAsReader()", null);
    }
 
@@ -429,7 +429,7 @@ public final class Doorman extends Object {
     */
    public void leaveAsReader() {
 
-      // TRACE: Entering method
+      // TRACE: Enter method
       Log.log_3003(DOORMAN_CLASSNAME, "leaveAsReader()", null);
 
       Thread reader = Thread.currentThread();
@@ -445,7 +445,7 @@ public final class Doorman extends Object {
                throw new Error(message);
             } else {
 
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "leaveAsReader()", null);
 
                return;
@@ -477,7 +477,7 @@ public final class Doorman extends Object {
          }
       }
 
-      // TRACE: Leaving method
+      // TRACE: Leave method
       Log.log_3005(DOORMAN_CLASSNAME, "leaveAsReader()", null);
    }
 
@@ -486,7 +486,7 @@ public final class Doorman extends Object {
     */
    public void leaveAsWriter() {
 
-      // TRACE: Entering method
+      // TRACE: Enter method
       Log.log_3003(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
 
       Thread writer = Thread.currentThread();
@@ -500,7 +500,7 @@ public final class Doorman extends Object {
                throw new Error(message);
             } else {
 
-               // TRACE: Leaving method
+               // TRACE: Leave method
                Log.log_3005(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
 
                return;
@@ -535,7 +535,7 @@ public final class Doorman extends Object {
          }
       }
 
-      // TRACE: Leaving method
+      // TRACE: Leave method
       Log.log_3005(DOORMAN_CLASSNAME, "leaveAsWriter()", null);
    }
 

@@ -56,7 +56,7 @@ public final class ExpiryStrategy extends Object {
    public ExpiryStrategy(long timeOut, long precision)
    throws IllegalArgumentException {
 
-      // TRACE: Entering constructor
+      // TRACE: Enter constructor
       Log.log_3000(ExpiryStrategy.class.getName(), "timeOut=" + timeOut + "; precision=" + precision);
 
       // Check preconditions
@@ -96,7 +96,7 @@ public final class ExpiryStrategy extends Object {
       _timerThread.setDaemon(true);
       _timerThread.start();
 
-      // TRACE: Leaving constructor
+      // TRACE: Leave constructor
       Log.log_3002(ExpiryStrategy.class.getName(), null);
 
       // TODO: Add field _asString
