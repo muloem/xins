@@ -1,9 +1,17 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.72:
 
+* Format of api.xml: Added boolean attribute 'shared-sessions' to
+  'session-based' tag. Default value is 'false'.
+
 * XINS/Java Client Framework:
   - Added getActualFunctionCaller(long) to class CallTargetGroup that
     retrieves an ActualFunctionCaller by CRC-32 checksum of its URL.
+  - Added class NonSharedSession.
+
+* Generated CAPI classes:
+  - Returning NonSharedSession from functions that create a session within
+    APIs that do not have 'shared-sessions' set to 'true'.
 
 * Small Javadoc improvements.
 
