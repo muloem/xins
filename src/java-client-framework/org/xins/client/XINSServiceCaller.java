@@ -244,29 +244,35 @@ public final class XINSServiceCaller extends ServiceCaller {
       try {
          result = (XINSCallResult) doCall(request);
 
-      // Allow GenericCallException, HTTPCallException, XINSCallException and
-      // Error to proceed, but block other kinds of exceptions and throw an
-      // Error instead.
+      // Allow only GenericCallException, HTTPCallException and
+      // XINSCallException to proceed
       } catch (GenericCallException exception) {
+         // TODO: Log: Call completely failed
          throw exception;
       } catch (HTTPCallException exception) {
+         // TODO: Log: Call completely failed
          throw exception;
       } catch (XINSCallException exception) {
+         // TODO: Log: Call completely failed
          throw exception;
-      } catch (Exception exception) {
-         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
-         message.append(".doCall(CallRequest) threw ");
+
+      // Unknown kind of exception. This should never happen. Log and re-throw
+      // the exception, packed up as an Error.
+      } catch (Throwable exception) {
+         final String methodName = "doCall(CallRequest)";
+         Log.log_2052(exception, CLASSNAME, methodName);
+
+         FastStringBuffer message = new FastStringBuffer(190);
+         message.append(CLASSNAME);
+         message.append('.');
+         message.append(methodName);
+         message.append(" threw unexpected ");
          message.append(exception.getClass().getName());
          message.append(". Message: ");
          message.append(TextUtils.quote(exception.getMessage()));
          message.append('.');
-         throw new Error(message.toString(), exception);
-      }
 
-      // If there is an error code, throw UnsuccessfulXINSCallException
-      // TODO: FIXME: This should be done in doCallImpl, I'd say! (znerd)
-      if (result.getErrorCode() != null) {
-         throw new UnsuccessfulXINSCallException(result);
+         throw new Error(message.toString(), exception);
       }
 
       // TRACE: Leave method
