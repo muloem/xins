@@ -32,20 +32,20 @@
 	<translation entry="3207">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" />, qui défini le nom de la classe de l'API, est défini à <value-of-param name="apiClass" format="quoted" />, mais la classe ne peut pas être chargée.</translation>
 	<translation entry="3208">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" />, qui défini le nom de la classe de l'API, est défini à <value-of-param name="apiClass" format="quoted" />, mais la classes ne dérive pas de la classe <value-of-param name="superClass" />.</translation>
 	<translation entry="3209">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" /> est manquante.</translation>
-	<translation entry="3210">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" /> est définie à <value-of-param name="propertyValue" format="quoted" />, est considérée comme une valeur invalide.</translation>
+	<translation entry="3210">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" /> est définie à <value-of-param name="propertyValue" format="quoted" />, est considérée comme une valeur invalide. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3211">Le XINS/Java Server Framework ne peut pas être démarré pour une raison inconnue.</translation>
 	<translation entry="3212">Le paquetage à été construit avec <value-of-param name="buildHost" /> à <value-of-param name="buildTime" />, utilisant XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="3213">Démarrage du manageable <value-of-param name="className" />.</translation>
 	<translation entry="3214">Manageable <value-of-param name="className" /> démarré.</translation>
 	<translation entry="3215">Le démarrage du manageable <value-of-param name="className" /> a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas défini.</translation>
-	<translation entry="3216">Le démarrage du manageable <value-of-param name="className" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="3216">Le démarrage du manageable <value-of-param name="className" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3217">Le démarrage du manageable <value-of-param name="className" /> a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3218">Ajout du manageable <value-of-param name="className" /> à l'API.</translation>
 	<translation entry="3219">Manageable <value-of-param name="className" /> ajouté à l'API.</translation>
 	<translation entry="3220">Démarrage de la fonction <value-of-param name="function" />.</translation>
 	<translation entry="3221">Fonction <value-of-param name="function" /> démarré.</translation>
 	<translation entry="3222">Le démarrage de la fonction <value-of-param name="function" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> est manquante.</translation>
-	<translation entry="3223">Le démarrage de la fonction <value-of-param name="function" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="3223">Le démarrage de la fonction <value-of-param name="function" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3224">Le démarrage de la fonction <value-of-param name="function" /> a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3225">Le XINS/Java Server Framework <value-of-param name="version" /> est démarré.</translation>
 	<translation entry="3226">La version du XINS/Java Server Framework (<value-of-param name="serverVersion" />) est différente de la version du XINS/Java Common Library (<value-of-param name="commonVersion" />).</translation>
@@ -77,19 +77,19 @@
 	<translation entry="3409">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> est invalide.</translation>
 	<translation entry="3410">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> a été lu correctement.</translation>
 	<translation entry="3411">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
-	<translation entry="3412">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="3412">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3413">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3414">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué.</translation>
 	<translation entry="3415">La (ré)-initialisation du XINS/Java Server Framework a réussi.</translation>
 	<translation entry="3416">Initialisation du manageable <value-of-param name="className" />.</translation>
 	<translation entry="3417">Manageable <value-of-param name="className" /> initialisé.</translation>
 	<translation entry="3418">L'initialisation du manageable <value-of-param name="className" /> a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
-	<translation entry="3419">L'initialisation du manageable <value-of-param name="className" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="3419">L'initialisation du manageable <value-of-param name="className" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3420">L'initialisation du manageable <value-of-param name="className" /> a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3421">L'initialisation de la fonction <value-of-param name="function" />.</translation>
 	<translation entry="3422">La fonction <value-of-param name="function" /> a été initialisée.</translation>
 	<translation entry="3423">L'initialisation de la fonction <value-of-param name="function" /> a echoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
-	<translation entry="3424">L'initialisation de la fonction <value-of-param name="function" /> a echoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="3424">L'initialisation de la fonction <value-of-param name="function" /> a echoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3425">L'initialisation de la fonction <value-of-param name="function" /> a echoué.</translation>
 	<translation entry="3426">Pas de liste de règles d'accès définie dans la propriété <value-of-param name="propertyName" />.</translation>
 	<translation entry="3427">Le chargement de la liste de règles d'accès a réussi avec <value-of-param name="ruleCount" /> règle(s).</translation>

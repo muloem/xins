@@ -129,6 +129,7 @@
 			<description>Bootstrap of API class failed due to an invalid property value.</description>
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3211" level="FATAL" exception="true">
 			<description>Bootstrap of API class failed.</description>
@@ -161,6 +162,7 @@
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3217" level="FATAL" exception="true">
 			<description>Manageable object could not be bootstrapped.</description>
@@ -200,6 +202,7 @@
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3224" level="FATAL" exception="true">
 			<description>Function could not be bootstrapped.</description>
@@ -342,6 +345,7 @@
 			<description>API could not be initialized due to an invalid property value.</description>
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3413" level="FATAL">
 			<description>API could not be initialized.</description>
@@ -375,6 +379,7 @@
 			<param name="className" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3420" level="FATAL" exception="true">
 			<description>Manageable object could not be initialized.</description>
@@ -404,6 +409,7 @@
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
+			<param name="reason" />
 		</entry>
 		<entry id="3425" level="ERROR" exception="true">
 			<description>Function could not be initialized, exception available.</description>

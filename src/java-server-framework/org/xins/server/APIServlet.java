@@ -745,7 +745,7 @@ extends HttpServlet {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3210(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3210(exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
 
          // Other bootstrap error
          } catch (Throwable exception) {
@@ -837,7 +837,7 @@ extends HttpServlet {
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3411(exception.getPropertyName());
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3412(exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3412(exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
          } catch (InitializationException exception) {
             Log.log_3413(exception.getMessage());
          } catch (Throwable exception) {

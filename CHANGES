@@ -37,6 +37,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - The _GetStatistics meta-function now supports statistics per error code.
     To retrieve these details, pass "detailed=true" to this function.
   - Added the possibility to have a data element as input.
+  - If an InvalidPropertyValueException is thrown, the reason is also logged.
 
 * Generated CAPI classes:
   - All call methods now return a function result object, never void. This

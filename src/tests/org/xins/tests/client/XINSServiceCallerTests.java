@@ -116,4 +116,11 @@ public class XINSServiceCallerTests extends TestCase {
          // As expected.
       }
    }
+
+   /**
+    * Stop the server.
+    */
+   protected void tearDown() {
+      _httpServer.close();
+   }
 }

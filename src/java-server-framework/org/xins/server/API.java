@@ -311,7 +311,7 @@ implements DefaultResultCodes {
 
          // Invalid property
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3216(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3216(_name, className, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
             throw exception;
 
          // Catch BootstrapException and any other exceptions not caught
@@ -348,7 +348,7 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
             throw exception;
 
          // Catch BootstrapException and any other exceptions not caught
@@ -501,7 +501,7 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3419(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3419(_name, className, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
@@ -535,7 +535,7 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3424(_name, functionName, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_3424(_name, functionName, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
