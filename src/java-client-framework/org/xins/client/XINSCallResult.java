@@ -54,7 +54,8 @@ public final class XINSCallResult extends CallResult {
     *    call attempt succeeded.
     *
     * @param data
-    *    the {@link Data} returned from the call, cannot be <code>null</code>.
+    *    the {@link XINSCallResultData} returned from the call, cannot be
+    *    <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request         ==   null
@@ -62,11 +63,11 @@ public final class XINSCallResult extends CallResult {
     *          || data            ==   null
     *          || duration        &lt; 0</code>.
     */
-   XINSCallResult(XINSCallRequest   request,
-                  TargetDescriptor  succeededTarget,
-                  long              duration,
-                  CallExceptionList exceptions,
-                  Data              data)
+   XINSCallResult(XINSCallRequest    request,
+                  TargetDescriptor   succeededTarget,
+                  long               duration,
+                  CallExceptionList  exceptions,
+                  XINSCallResultData data)
 
    throws IllegalArgumentException {
 
@@ -87,10 +88,11 @@ public final class XINSCallResult extends CallResult {
    //-------------------------------------------------------------------------
 
    /**
-    * The <code>Data</code> object that contains the information returned from
-    * the call. This field cannot be <code>null</code>.
+    * The <code>XINSCallResultData</code> object that contains all the
+    * information returned from the call. This field cannot be
+    * <code>null</code>.
     */
-   private final Data _data;
+   private final XINSCallResultData _data;
 
 
    //----------------------------------------------------------------------
@@ -159,122 +161,5 @@ public final class XINSCallResult extends CallResult {
    public DataElement getDataElement() {
 
       return _data.getDataElement();
-   }
-
-
-   //----------------------------------------------------------------------
-   // Inner classes
-   //----------------------------------------------------------------------
-
-   /**
-    * Data part of a XINS call result.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.207
-    */
-   static final class Data extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>Data</code> object.
-       *
-       * @param code
-       *    the error code returned, if any, or <code>null</code> if none was
-       *    returned.
-       *
-       * @param parameters
-       *    output parameters returned by the function, or <code>null</code>.
-       *
-       * @param dataElement
-       *    the data element returned by the function, or <code>null</code>;
-       *    if specified then the name must be <code>"data"</code>, with no
-       *    namespace.
-       */
-      Data(String         code,
-           PropertyReader parameters,
-           DataElement    dataElement) {
-
-         _code        = code;
-         _parameters  = parameters;
-         _dataElement = dataElement;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The error code. This field is <code>null</code> if the call was
-       * successful and thus no error code was returned.
-       */
-      private final String _code;
-
-      /**
-       * The parameters and their values. This field is never <code>null</code>.
-       */
-      private final PropertyReader _parameters;
-
-      /**
-       * The data element. This field is <code>null</code> if there is no data
-       * element.
-       */
-      private final DataElement _dataElement;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Determines if the call was successful or not.
-       *
-       * @return
-       *    <code>true</code> if the call result indicated success,
-       *    <code>false</code> otherwise.
-       */
-      boolean isSuccess() {
-         return (_code == null);
-      }
-
-      /**
-       * Returns the error code. If <code>null</code> is returned the call was
-       * successful and thus no error code was returned. Otherwise the call
-       * was unsuccessful.
-       *
-       * @return
-       *    the returned error code, or <code>null</code>.
-       */
-      private String getErrorCode() {
-         return _code;
-      }
-
-      /**
-       * Gets all parameters.
-       *
-       * @return
-       *    a {@link PropertyReader} with all parameters, or <code>null</code>
-       *    if there are none.
-       */
-      public PropertyReader getParameters() {
-         return _parameters;
-      }
-
-      /**
-       * Returns the optional extra data. The data is an XML
-       * {@link DataElement}, or <code>null</code>.
-       *
-       * @return
-       *    the extra data as an XML {@link DataElement}, can be
-       *    <code>null</code>;
-       */
-      public DataElement getDataElement() {
-         return _dataElement;
-      }
    }
 }

@@ -275,7 +275,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       long duration = httpResult.getDuration();
 
       // Parse the result
-      XINSCallResult.Data data;
+      XINSCallResultData data;
       try {
          data = _parser.parse(httpResult.getData());
       } catch (ParseException parseException) {
@@ -289,7 +289,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                                                      data);
 
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
-      if (! data.isSuccess()) {
+      if (data.getErrorCode() != null) {
          throw new UnsuccessfulXINSCallException(xinsResult);
 
       // Otherwise just return the result
@@ -350,7 +350,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                                 succeededTarget,
                                 duration,
                                 exceptions,
-                                (XINSCallResult.Data) result);
+                                (XINSCallResultData) result);
    }
 
    /**

@@ -26,6 +26,7 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.207
  */
@@ -53,7 +54,7 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Parses the given XML string to create a <code>XINSCallResult.Data</code>
+    * Parses the given XML string to create a <code>XINSCallResultData</code>
     * object.
     *
     * @param xml
@@ -69,7 +70,7 @@ extends Object {
     *    if the specified string is not valid XML or if it is not a valid XINS
     *    API function call result.
     */
-   public XINSCallResult.Data parse(byte[] xml)
+   public XINSCallResultData parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
@@ -97,9 +98,7 @@ extends Object {
          throw new ParseException(message);
       }
 
-      return new XINSCallResult.Data(handler.getErrorCode(),
-                                     handler.getParameters(),
-                                     handler.getDataElement());
+      return handler;
    }
 
    //-------------------------------------------------------------------------
@@ -115,7 +114,9 @@ extends Object {
     *
     * @since XINS 0.207
     */
-   private class Handler extends DefaultHandler {
+   private class Handler
+   extends DefaultHandler
+   implements XINSCallResultData {
 
       //-------------------------------------------------------------------------
       // Class fields
@@ -128,6 +129,14 @@ extends Object {
       //-------------------------------------------------------------------------
       // Constructors
       //-------------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Handler</code> instance.
+       */
+      private Handler() {
+         // empty
+      }
+
 
       //-------------------------------------------------------------------------
       // Fields
@@ -172,6 +181,7 @@ extends Object {
        * Indicates if the parsing of the result has started
        */
       private boolean _parsingStarted  = false;
+
 
       //-------------------------------------------------------------------------
       // Methods
