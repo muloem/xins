@@ -186,7 +186,7 @@
 				<h2>API Owner</h2>
 				<p>
 				<xsl:variable name="owner_info">
-					<xsl:apply-templates mode="owner" />
+					<xsl:apply-templates select="current()" mode="owner" />
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="$owner_info != ''">

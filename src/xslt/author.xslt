@@ -62,11 +62,13 @@
 			</xsl:variable>
 
 				<xsl:value-of select="$owner_name" />
-				<xsl:text> (</xsl:text>
-				<a href="mailto:{$owner_email}">
-					<xsl:value-of select="$owner_email" />
-				</a>
-				<xsl:text>)</xsl:text>
+				(<a>
+					<xsl:attribute name="href">
+						<xsl:text>mailto:</xsl:text>
+						<xsl:value-of select="$owner_email" />
+					</xsl:attribute>
+				<xsl:value-of select="$owner_email" />
+				</a>)
 		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

@@ -15,6 +15,7 @@
 	<translation entry="3202">Stopping watch thread for file <value-of-param name="file" format="quoted" />.</translation>
 	<translation entry="3205">Increasing capacity from <value-of-param name="current_capacity" /> to <value-of-param name="new_capacity" />.</translation>
 
+	<translation entry="3303">URL <value-of-param name="url" format="quoted" /> is malformed.</translation>
 	<translation entry="3312">Call to service at URL <value-of-param name="url" /> succeeded.</translation>
 	<translation entry="3313">Call to service at URL <value-of-param name="url" /> failed.</translation>
 	<translation entry="3314">Call completely failed.</translation>

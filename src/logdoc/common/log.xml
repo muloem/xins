@@ -43,6 +43,10 @@
 	</group>
 
 	<group id="io_connection" name="I/O operations">
+		<entry id="3303" level="ERROR" exception="true">
+			<description>URL is malformed.</description>
+			<param name="url" />
+		</entry>
 		<entry id="3312" level="DEBUG">
 			<description>Call to a specific target succeeded.</description>
 			<param name="url" />
