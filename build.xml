@@ -217,9 +217,14 @@
 		<mkdir dir="build/classes/tests" />
 		<javac destdir="build/classes/tests" includes="**/*.java" debug="true" deprecation="true">
 			<src path="src/tests" />
-			<classpath location="build/xins-common.jar" />
-			<classpath location="build/xins-server.jar" />
-			<classpath location="build/xins-client.jar" />
+			<classpath>
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
 		</javac>
 	</target>
 
@@ -228,10 +233,15 @@
 		<mkdir dir="build/testresults/xml" />
 		<junit printsummary="true" failureproperty="tests.failed">
 			<formatter type="xml" />
-			<test name="org.znerd.xmlenc.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
-				<pathelement location="build/classes/main" />
 				<pathelement location="build/classes/tests" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
 			</classpath>
 		</junit>
 	</target>
