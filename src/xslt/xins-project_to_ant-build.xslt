@@ -108,7 +108,19 @@
 				<mkdir dir="build/classes" />
 			</target>
 
-			<target name="classes" depends="-prepare-classes" description="Compiles all Java classes" />
+			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+				<target name="classes-api-{@name}" depends="-prepare-classes" description="Compiles the Java classes for the '{@name}' API" />
+			</xsl:for-each>
+
+			<target name="classes" description="Compiles all Java classes">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>classes-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
 
 			<target name="all" depends="specdocs,classes" description="Generates everything" />
 		</project>
