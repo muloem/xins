@@ -198,7 +198,7 @@ implements DefaultResultCodes {
     *
     * <p />For session-based APIs, this field is initialized to a
     * non-<code>null</code> value by the initialization method
-    * {@link #init(PropertyReader,PropertyReader)}.
+    * {@link #init(PropertyReader)}.
     */
    private ExpiryStrategy _sessionExpiryStrategy;
 
@@ -208,7 +208,7 @@ implements DefaultResultCodes {
     *
     * <p />For session-based APIs, this field is initialized to a
     * non-<code>null</code> value by the initialization method
-    * {@link #init(PropertyReader,PropertyReader)}.
+    * {@link #init(PropertyReader)}.
     */
    private ExpiryFolder _sessionsByID;
 
@@ -261,13 +261,13 @@ implements DefaultResultCodes {
 
    /**
     * The type that applies for session identifiers. For session-based APIs
-    * this will be set in {@link #init(PropertyReader,PropertyReader)}.
+    * this will be set in {@link #init(PropertyReader)}.
     */
    private SessionID _sessionIDType;
 
    /**
     * The session ID generator. For session-based APIs this will be set in
-    * {@link #init(PropertyReader,PropertyReader)}.
+    * {@link #init(PropertyReader)}.
     */
    private SessionID.Generator _sessionIDGenerator;
 
@@ -467,7 +467,7 @@ implements DefaultResultCodes {
          MandatoryArgumentChecker.check("buildSettings", buildSettings);
 
          // Set the state
-         _state = INITIALIZING;
+         _state = BOOTSTRAPPING;
 
          // Log the time zone
          // TODO: Why log the time zone?
@@ -584,13 +584,13 @@ implements DefaultResultCodes {
          for (int i = 0; i < count; i++) {
             LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
             String className = lsm.getClass().getName();
-            Library.BOOTSTRAP_LOG.debug("Bootstrapping lifespan manager " + className + " for API \"" + _name + "\".");
+            Library.BOOTSTRAP_LOG.debug("Bootstrapping lifespan manager " + className + " for " + _name + " API.");
             try {
                lsm.bootstrap(_buildSettings);
-               Library.BOOTSTRAP_LOG.info("Bootstrapped lifespan manager " + className + " for API \"" + _name + "\".");
+               Library.BOOTSTRAP_LOG.info("Bootstrapped lifespan manager " + className + " for " + _name +  " API.");
             } catch (Throwable exception) {
                // XXX: The exception is not logged anywhere!
-               String message = "Failed to initialize lifespan manager " + className + " for API \"" + _name + "\" due to unexpected " + exception.getClass().getName() + '.';
+               String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API due to unexpected " + exception.getClass().getName() + '.';
                Library.BOOTSTRAP_LOG.error(message);
                throw new InitializationException(message);
             }
@@ -623,13 +623,48 @@ implements DefaultResultCodes {
       // empty
    }
 
+   /**
+    * Initializes this API.
+    *
+    * @param runtimeSettings
+    *    the runtime configuration settings, cannot be <code>null</code>.
+    *
+    * @throws InitializationException
+    *    if the initialization failed.
+    */
    public void init(PropertyReader runtimeSettings)
    throws InitializationException {
+
+      // TODO: Check state
+
+      Logger log = Library.INIT_LOG;
+      log.debug("Initializing " + _name + " API.");
+
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation");
-      Library.INIT_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+      log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+
+      // Initialize all instances
+      int count = _lifespanManagers.size();
+      for (int i = 0; i < count; i++) {
+         LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
+         String className = lsm.getClass().getName();
+         log.debug("Initializing lifespan manager " + className + " for " + _name + " API.");
+         try {
+            lsm.init(runtimeSettings);
+            log.info("Initialized lifespan manager " + className + " for " + _name + " API.");
+         } catch (Throwable exception) {
+            // XXX: The exception is not logged anywhere!
+            String message = "Failed to initialize lifespan manager " + className + " for " + _name + " API due to unexpected " + exception.getClass().getName() + '.';
+            log.error(message);
+            throw new InitializationException(message);
+         }
+      }
 
       // TODO: Call initImpl(PropertyReader)
+
+      log.debug("Initialized " + _name + " API.");
+      _state = INITIALIZED;
    }
 
    /**
@@ -667,7 +702,7 @@ implements DefaultResultCodes {
       synchronized (_stateLock) {
          if (_state != BOOTSTRAPPING) {
             // TODO: Log and throw?
-            throw new IllegalStateException("Currently not bootstrapping.");
+            throw new IllegalStateException("State is " + _state + " instead of " + BOOTSTRAPPING + '.');
          }
       }
 
@@ -676,6 +711,8 @@ implements DefaultResultCodes {
 
       // Store the lifespan manager in the list
       _lifespanManagers.add(lsm);
+
+      Library.BOOTSTRAP_LOG.debug("Added lifespan manager " + lsm.getClass().getName() + " for " + _name + " API.");
    }
 
    /**
@@ -706,9 +743,9 @@ implements DefaultResultCodes {
 
          try {
             lsm.destroy();
-            Library.SHUTDOWN_LOG.info("Deinitialized lifespan manager " + className + " for API \"" + _name + "\".");
+            Library.SHUTDOWN_LOG.info("Deinitialized lifespan manager " + className + " for " + _name + " API.");
          } catch (Throwable exception) {
-            Library.SHUTDOWN_LOG.error("Failed to deinitialize lifespan manager " + className + " for API \"" + _name + "\".", exception);
+            Library.SHUTDOWN_LOG.error("Failed to deinitialize lifespan manager " + className + " for " + _name + " API.", exception);
          }
       }
    }

@@ -22,6 +22,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertiesPropertyReader;
+import org.xins.util.collections.PropertyReader;
+import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
 import org.xins.util.servlet.ServletConfigPropertyReader;
 import org.xins.util.text.Replacer;
@@ -315,7 +317,7 @@ implements Servlet {
          }
 
          // Apply the properties to the framework
-         Properties runtimeProperties = applyConfigFile(log);
+         PropertyReader runtimeProperties = applyConfigFile(log);
 
 
          //----------------------------------------------------------------//
@@ -390,7 +392,7 @@ implements Servlet {
 
          // Get the name of the API
          String apiName = _api.getName();
-         log.debug("Constructed \"" + apiName + "\" API.");
+         log.debug("Constructed " + apiName + " API.");
 
 
          //----------------------------------------------------------------//
@@ -399,7 +401,7 @@ implements Servlet {
 
          // Proceed to next stage
          _state = BOOTSTRAPPING_API;
-         log.debug("Bootstrapping \"" + apiName + "\" API.");
+         log.debug("Bootstrapping " + apiName + " API.");
 
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
@@ -410,7 +412,7 @@ implements Servlet {
             return;
          }
 
-         log.info("Bootstrapped \"" + apiName + "\" API.");
+         log.info("Bootstrapped " + apiName + " API.");
 
          // Watch the configuration file
          // TODO: Do this somewhere else?
@@ -421,29 +423,34 @@ implements Servlet {
          log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
 
 
-
          //----------------------------------------------------------------//
          //                      Initialize the API                        //
          //----------------------------------------------------------------//
 
-         // Proceed to next stage
-         log = Library.INIT_LOG;
-         _state = INITIALIZING_API;
-         log.debug("Initializing \"" + apiName + "\" API.");
-
-         try {
-            _api.init(new PropertiesPropertyReader(runtimeProperties));
-         } catch (Throwable e) {
-            _state = API_INITIALIZATION_FAILED;
-            _error = "Failed to initialize \"" + apiName + "\" API.";
-            log.error(_error);
-            return;
-         }
-
-         // Finished!
-         _state = READY;
-         log.debug("Initialized \"" + apiName + "\" API.");
+         initAPI(runtimeProperties);
       }
+   }
+
+   /**
+    * Initializes the API using the specified runtime settings.
+    *
+    * @param runtimeProperties
+    *    the runtime settings, guaranteed not to be <code>null</code>.
+    */
+   private final void initAPI(PropertyReader runtimeProperties) {
+
+      _state = INITIALIZING_API;
+
+      try {
+         _api.init(runtimeProperties);
+      } catch (InitializationException e) {
+         _state = API_INITIALIZATION_FAILED;
+         _error = "Failed to initialize " + _api.getName() + " API.";
+         Library.INIT_LOG.error(_error);
+         return;
+      }
+
+      _state = READY;
    }
 
    /**
@@ -462,17 +469,19 @@ implements Servlet {
     * @throws IllegalArgumentException
     *    if <code>log = null</code>.
     */
-   private Properties applyConfigFile(Logger log)
+   private PropertyReader applyConfigFile(Logger log)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("log", log);
 
       Properties properties = new Properties();
+      PropertyReader pr = new ProtectedPropertyReader(new Object());
 
       try {
          FileInputStream in = new FileInputStream(_configFile);
          properties.load(in);
+         pr = new PropertiesPropertyReader(properties);
 
          Library.configure(log, properties);
       } catch (FileNotFoundException exception) {
@@ -483,7 +492,7 @@ implements Servlet {
          log.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
       }
 
-      return properties;
+      return pr;
    }
 
    /**
@@ -705,8 +714,8 @@ implements Servlet {
 
       public void fileModified() {
          Library.INIT_LOG.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
-         applyConfigFile(Library.INIT_LOG);
-         // TODO: reinit API
+         PropertyReader config = applyConfigFile(Library.INIT_LOG);
+         initAPI(config);
          Library.INIT_LOG.info("XINS/Java Server Framework re-initialized.");
       }
 
