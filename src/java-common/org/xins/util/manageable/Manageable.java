@@ -43,9 +43,19 @@ public abstract class Manageable extends Object {
    public static final State UNUSABLE = new State("UNUSABLE");
 
    /**
+    * The <em>BOOTSTRAPPING</em> state.
+    */
+   public static final State BOOTSTRAPPING = new State("BOOTSTRAPPING");
+
+   /**
     * The <em>BOOTSTRAPPED</em> state.
     */
    public static final State BOOTSTRAPPED = new State("BOOTSTRAPPED");
+
+   /**
+    * The <em>INITIALIZING</em> state.
+    */
+   public static final State INITIALIZING = new State("INITIALIZING");
 
    /**
     * The <em>USABLE</em> state.
@@ -65,7 +75,8 @@ public abstract class Manageable extends Object {
     * Constructs a new <code>Manageable</code>.
     */
    protected Manageable() {
-      _state = UNUSABLE;
+      _state     = UNUSABLE;
+      _stateLock = new Object();
    }
 
 
@@ -77,6 +88,11 @@ public abstract class Manageable extends Object {
     * The state of this manageable object.
     */
    private State _state;
+
+   /**
+    * The lock for the state object.
+    */
+   private Object _stateLock;
 
 
    //-------------------------------------------------------------------------
@@ -131,17 +147,30 @@ public abstract class Manageable extends Object {
           InvalidPropertyValueException,
           BootstrapException {
 
-      // Check state
-      if (_state != UNUSABLE) {
-         throw new IllegalStateException("The current state is " + _state + " instead of " + UNUSABLE + '.');
+      State erroneousState = null;
+
+      // Get the current state and change to BOOTSTRAPPING if it is valid
+      synchronized (_stateLock) {
+         if (_state != UNUSABLE) {
+            erroneousState = _state;
+         } else {
+            _state = BOOTSTRAPPING;
+         }
+      }
+
+      // If the state was invalid, then fail
+      if (erroneousState != null) {
+         throw new IllegalStateException("The current state is " + erroneousState + " instead of " + UNUSABLE + '.');
       }
 
       // Check arguments
       MandatoryArgumentChecker.check("properties", properties);
 
       // Delegate to subclass
+      boolean done = false;
       try {
          bootstrapImpl(properties);
+         done = true;
       } catch (MissingRequiredPropertyException exception) {
          throw exception;
       } catch (InvalidPropertyValueException exception) {
@@ -152,10 +181,17 @@ public abstract class Manageable extends Object {
       // Catch-all: Wrap other exceptions in a BootstrapException
       } catch (Throwable exception) {
          throw new BootstrapException(exception);
-      }
 
-      // Upgrade the state
-      _state = BOOTSTRAPPED;
+      // Always set the state before returning
+      } finally {
+         synchronized (_stateLock) {
+            if (done) {
+               _state = BOOTSTRAPPED;
+            } else {
+               _state = UNUSABLE;
+            }
+         }
+      }
    }
 
    /**
@@ -223,31 +259,34 @@ public abstract class Manageable extends Object {
           InvalidPropertyValueException,
           InitializationException {
 
-      // Check state
-      if (_state != BOOTSTRAPPED && _state != USABLE) {
-         throw new IllegalStateException("The current state is " + _state + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+      synchronized (_stateLock) {
+
+         // Check state
+         if (_state != BOOTSTRAPPED && _state != USABLE) {
+            throw new IllegalStateException("The current state is " + _state + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+         }
+
+         // Check arguments
+         MandatoryArgumentChecker.check("properties", properties);
+
+         // Delegate to subclass
+         try {
+            initImpl(properties);
+         } catch (MissingRequiredPropertyException exception) {
+            throw exception;
+         } catch (InvalidPropertyValueException exception) {
+            throw exception;
+         } catch (InitializationException exception) {
+            throw exception;
+
+         // Catch-all: Wrap other exceptions in an InitializationException
+         } catch (Throwable exception) {
+            throw new InitializationException(exception);
+         }
+
+         // Upgrade the state
+         _state = USABLE;
       }
-
-      // Check arguments
-      MandatoryArgumentChecker.check("properties", properties);
-
-      // Delegate to subclass
-      try {
-         initImpl(properties);
-      } catch (MissingRequiredPropertyException exception) {
-         throw exception;
-      } catch (InvalidPropertyValueException exception) {
-         throw exception;
-      } catch (InitializationException exception) {
-         throw exception;
-
-      // Catch-all: Wrap other exceptions in an InitializationException
-      } catch (Throwable exception) {
-         throw new InitializationException(exception);
-      }
-
-      // Upgrade the state
-      _state = USABLE;
    }
 
    /**
@@ -301,12 +340,14 @@ public abstract class Manageable extends Object {
    public final void deinit()
    throws IllegalStateException, DeinitializationException {
 
-      try {
-         deinitImpl();
-      } catch (Throwable exception) {
-         throw new DeinitializationException(exception);
-      } finally {
-         _state = UNUSABLE;
+      synchronized (_stateLock) {
+         try {
+            deinitImpl();
+         } catch (Throwable exception) {
+            throw new DeinitializationException(exception);
+         } finally {
+            _state = UNUSABLE;
+         }
       }
    }
 
@@ -332,7 +373,16 @@ public abstract class Manageable extends Object {
     */
    protected final void assertUsable()
    throws IllegalStateException {
-      if (_state != USABLE) {
+
+      boolean usable;
+
+      // Minimize the time the lock is held
+      synchronized (_stateLock) {
+         usable = (_state == USABLE);
+      }
+
+      // Construct and throw an exception, if appropriate
+      if (!usable) {
          throw new IllegalStateException("The current state is " + _state + " instead of " + USABLE + '.');
       }
    }
