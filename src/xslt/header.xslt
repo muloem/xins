@@ -24,11 +24,6 @@
 					</xsl:call-template>
 					<xsl:text> | </xsl:text>
 					<xsl:call-template name="header_item">
-						<xsl:with-param name="item">help</xsl:with-param>
-						<xsl:with-param name="active" select="$active" />
-					</xsl:call-template>
-					<xsl:text> | </xsl:text>
-					<xsl:call-template name="header_item">
 						<xsl:with-param name="item">api</xsl:with-param>
 						<xsl:with-param name="active" select="$active" />
 					</xsl:call-template>
@@ -155,7 +150,6 @@
 		<xsl:choose>
 			<xsl:when test="$item='apilist'">API Index</xsl:when>
 			<xsl:when test="$item='api'">Overview</xsl:when>
-			<xsl:when test="$item='help'">Help</xsl:when>
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
@@ -168,7 +162,6 @@
 		<xsl:choose>
 			<xsl:when test="$item='apilist'">Overview of all API specifications</xsl:when>
 			<xsl:when test="$item='api'">Overview of the current API</xsl:when>
-			<xsl:when test="$item='help'">Help documentation</xsl:when>
 			<xsl:when test="$item='function'">Function</xsl:when>
 			<xsl:when test="$item='testform'">Test form for this function</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
@@ -182,24 +175,18 @@
 
 		<xsl:choose>
 			<xsl:when test="$active='apilist'">
-				<xsl:choose>
-					<xsl:when test="$item='help'">help/index.html</xsl:when>
-					<xsl:otherwise>
-						<xsl:message terminate="yes">
-							<xsl:text>Unsupported combination: item is '</xsl:text>
-							<xsl:value-of select="$item" />
-							<xsl:text>', while '</xsl:text>
-							<xsl:value-of select="$active" />
-							<xsl:text>' is active.</xsl:text>
-						</xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:message terminate="yes">
+					<xsl:text>Unsupported combination: item is '</xsl:text>
+					<xsl:value-of select="$item" />
+					<xsl:text>', while '</xsl:text>
+					<xsl:value-of select="$active" />
+					<xsl:text>' is active.</xsl:text>
+				</xsl:message>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="$item='apilist'">../index.html</xsl:when>
 					<xsl:when test="$item='api'">index.html</xsl:when>
-					<xsl:when test="$item='help'">../help/index.html</xsl:when>
 					<xsl:when test="$item='function'">
 						<xsl:value-of select="@name" />
 						<xsl:text>.html</xsl:text>
