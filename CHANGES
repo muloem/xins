@@ -13,6 +13,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Improved the accuracy and stability of the ExpiryFolder and ExpiryStrategy
     classes. The tests have been extended a lot.
 
+* XINS/Java Server Framework:
+  - Added custom calling convention.
+
 * Build and release process:
   - Added -init-release in the dependencies to facilitate the making of a
     release if a target fails.

@@ -104,13 +104,21 @@
 						<xsl:value-of select="$timestamp" />
 					</param-value>
 				</init-param>
-				<xsl:if test="calling-convention">
+				<xsl:if test="count(calling-convention) > 0">
 					<init-param>
 						<param-name>org.xins.api.calling.convention</param-name>
 						<param-value>
 							<xsl:value-of select="calling-convention/@name" />
 						</param-value>
 					</init-param>
+					<xsl:if test="calling-convention/@class">
+						<init-param>
+							<param-name>org.xins.api.calling.convention.class</param-name>
+							<param-value>
+								<xsl:value-of select="calling-convention/@class" />
+							</param-value>
+						</init-param>
+					</xsl:if>
 				</xsl:if>
 				<load-on-startup>
 					<!-- XXX: Should we be able to configure the load-on-startup setting ? -->

@@ -229,6 +229,11 @@ extends HttpServlet {
    public static final String API_CALLING_CONVENTION_PROPERTY = "org.xins.api.calling.convention";
 
    /**
+    * The name of the build property that specifies the class of the default calling convention.
+    */
+   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY = "org.xins.api.calling.convention.class";
+
+   /**
     * The parameter of the query to specify the calling convention.
     */
    public static final String CALLING_CONVENTION_PARAMETER = "_convention";
@@ -1262,6 +1267,23 @@ extends HttpServlet {
       // XML calling convention
       } else if (XML_CALLING_CONVENTION.equals(name)) {
          return new XMLCallingConvention();
+
+      // Custom calling convention
+      } else if (name.charAt(0) != '_') {
+         if (name.equals(_servletConfig.getInitParameter(API_CALLING_CONVENTION_PROPERTY))) {
+            
+            // TODO Log
+            return null;
+         }
+         String conventionClass = _servletConfig.getInitParameter(API_CALLING_CONVENTION_CLASS_PROPERTY);
+         try {
+            CallingConvention convention = (CallingConvention) Class.forName(conventionClass).newInstance();
+            return convention;
+         } catch (Exception ex) {
+
+            // TODO Log
+            return null;
+         }
 
       // Otherwise return nothing
       } else {

@@ -16,6 +16,7 @@
 <!ELEMENT calling-convention EMPTY>
 <!ATTLIST calling-convention
           name       CDATA #REQUIRED
+          class      CDATA #IMPLIED
 >
 <!ELEMENT instance EMPTY>
 <!ATTLIST instance
