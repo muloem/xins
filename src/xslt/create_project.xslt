@@ -28,11 +28,11 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
- $Id$
+ $]]><![CDATA[Id$
 -->
 
 <api name="]]>${project.name}<![CDATA[" owner="]]>${user.name}<![CDATA["
-rcsversion="$Revision$" rcsdate="$Date$">
+rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description></description>
 
@@ -59,11 +59,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
- $Id$
+ $]]><![CDATA[Id$
 -->
 
 <function name="]]>${function.name}<![CDATA["
-rcsversion="$Revision$" rcsdate="$Date$">
+rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description></description>
 
@@ -87,11 +87,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
- $Id$
+ $]]><![CDATA[Id$
 -->
 
 <resultcode name="]]>${rcd.name}&quot; value=&quot;${rcd.name}<![CDATA["
-rcsversion="$Revision$" rcsdate="$Date$">
+rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description></description>
 
@@ -115,11 +115,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
- $Id$
+ $]]><![CDATA[Id$
 -->
 
 <type name="]]>${type.name}<![CDATA[" extends="_text"
-rcsversion="$Revision$" rcsdate="$Date$">
+rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description></description>
 
