@@ -38,8 +38,6 @@
 			</xsl:when>
 			<xsl:otherwise>src/impl-java</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
 	</xsl:variable>
 	<xsl:variable name="dependenciesDir">
 		<xsl:value-of select="$project_home" />
@@ -50,8 +48,6 @@
 			</xsl:when>
 			<xsl:otherwise>depends</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="$api" />
 	</xsl:variable>
 
 	<xsl:template match="project">
@@ -193,7 +189,7 @@
 					<!-- Copy all .java files to a single directory -->
 					<mkdir dir="{$javaCombinedDir}" />
 					<copy todir="{$javaCombinedDir}">
-						<fileset dir="{$javaImplDir}" includes="**/*.java" />
+						<fileset dir="{$javaImplDir}/{$api}" includes="**/*.java" />
 					</copy>
 					<copy todir="{$javaCombinedDir}" overwrite="true">
 						<fileset dir="{$javaDestDir}" includes="**/*.java" />
@@ -206,7 +202,23 @@
 					destdir="{$classesDestDir}"
 					debug="true"
 					deprecation="true">
-						<classpath path="{$xins_jar}" />
+						<classpath>
+							<pathelement path="{$xins_jar}" />
+							<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
+							<fileset dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+							<xsl:for-each select="document($api_file)/api/impl-java/dependency">
+								<fileset dir="{$dependenciesDir}/{@dir}">
+									<xsl:attribute name="includes">
+										<xsl:choose>
+											<xsl:when test="@includes">
+												<xsl:value-of select="@includes" />
+											</xsl:when>
+											<xsl:otherwise>**/*.jar</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+								</fileset>
+							</xsl:for-each>
+						</classpath>
 					</javac>
 				</target>
 			</xsl:for-each>
@@ -223,6 +235,7 @@
 
 			<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
 				<xsl:variable name="api"            select="@name" />
+				<xsl:variable name="api_file"       select="concat($specsdir, '/', @name, '/api.xml')" />
 				<xsl:variable name="classesDestDir" select="concat($project_home, '/build/classes/', $api)" />
 
 				<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
@@ -236,8 +249,21 @@
 					<war
 					webxml="build/webapps/{$api}/web.xml"
 					destfile="build/webapps/{$api}/{$api}.war">
-						<lib dir="{$xins_home}/build" includes="xins.jar" />
-						<lib dir="{$xins_home}/depends" includes="**/*.jar" />
+						<lib dir="{$xins_home}/build"                       includes="xins.jar" />
+						<lib dir="{$xins_home}/depends/compile_and_runtime" includes="**/*.jar" />
+						<lib dir="{$xins_home}/depends/runtime"             includes="**/*.jar" />
+						<xsl:for-each select="document($api_file)/api/impl-java/dependency">
+							<lib dir="{$dependenciesDir}/{@dir}">
+								<xsl:attribute name="includes">
+									<xsl:choose>
+										<xsl:when test="@includes">
+											<xsl:value-of select="@includes" />
+										</xsl:when>
+										<xsl:otherwise>**/*.jar</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+							</lib>
+						</xsl:for-each>
 						<classes dir="{$classesDestDir}" includes="**/*.class" />
 					</war>
 				</target>
