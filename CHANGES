@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.127:
+
+* Added Jakarta Commons Net 1.0.0 to compile-time dependencies, for the
+  SourceForge upload task.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.126:
 
 * Updated xmlenc to 0.39.
