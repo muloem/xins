@@ -90,7 +90,7 @@ extends Object {
 
       // Get the IP part
       String ip = expression.substring(0, slashPosition);
-      if (isValidIP(ip) == false) {
+      if (getIPFields(ip) == null) {
          throw new ParseException("The string \"" + expression + "\" is not a valid IP filter expression.");
       }
 
@@ -267,26 +267,6 @@ extends Object {
     */
    public final String toString() {
       return getExpression();
-   }
-
-   /**
-    * Determines whether the provided IP address is of a valid format.
-    *
-    * @param ip
-    *    the IP address, may not be <code>null</code>.
-    *
-    * @return
-    *    boolean with the value <code>true</code> if the IP is valid,
-    *    otherwise false.
-    */
-   private static boolean isValidIP(String ip) {
-
-      // NOTE: This method depends on the reliability of the getIPFields()
-      //       method.
-
-      String[] ipFields = getIPFields(ip);
-      boolean validIP = ipFields == null ? false : true;
-      return validIP;
    }
 
    /**
