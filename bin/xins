@@ -22,4 +22,4 @@ if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
 fi
 
 # Generate the build file and run it
-ant -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home=${XINS_HOME} -Dargs="$*"
+ant -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home="${XINS_HOME}" -Dpwd="`pwd`" -Dargs="$*"

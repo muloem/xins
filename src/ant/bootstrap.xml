@@ -13,8 +13,7 @@
 <project name="xins-bootstrap-ant" default="run" basedir=".">
 
 	<target name="run" depends="make-build">
-		<echo message="Arguments: ${args}" />
-		<ant antfile="${project_home}/build/build.xml" target="${args}"/>
+		<ant antfile="${project_home}/build/build.xml" target="${args}" dir="${pwd}"/>
 	</target>
 
 	<target name="make-build">
