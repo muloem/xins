@@ -17,6 +17,7 @@ import org.xins.common.manageable.Manageable;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.FastStringBuffer;
 
+import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.LogdocStringBuffer;
 
@@ -351,8 +352,7 @@ implements DefaultResultCodes {
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
    private static final class FormattedDate
-   extends Object
-   implements LogdocSerializable {
+   extends AbstractLogdocSerializable {
 
       //---------------------------------------------------------------------
       // Constructor
@@ -388,24 +388,16 @@ implements DefaultResultCodes {
       // Methods
       //---------------------------------------------------------------------
 
-      public void serialize(LogdocStringBuffer buffer)
+      public void serializeImpl(LogdocStringBuffer buffer)
       throws NullPointerException {
-
-         if (_asString == null) {
-            convertToString();
-         }
-
          buffer.append(_asString);
       }
 
-      /**
-       * Actually formats the date and stores it in 
-       */
-      private final void convertToString() {
+      public void initialize() {
 
          // Create a FastStringBuffer with an initial size as follows:
          //  2 for the century     (e.g.  20)
-         //  2 for the century     (e.g.  20)
+         //  2 for the year        (e.g.  04)
          //  2 for the month       (e.g.  07)
          //  1 for a hyphen
          //  2 for the day         (e.g.  30)
