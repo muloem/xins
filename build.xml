@@ -562,7 +562,9 @@
 				<include name="src/java-client-framework/**/*" />
 				<include name="src/java-common/**/*"           />
 				<include name="src/java-server-framework/**/*" />
-				<include name="src/logdoc/**/*"                   />
+				<include name="src/logdoc/client/*"            />
+				<include name="src/logdoc/common/*"            />
+				<include name="src/logdoc/server/*"            />
 				<include name="src/package-lists/**/*"         />
 				<include name="src/xml/**/*"                   />
 				<include name="src/xslt/**/*"                  />
