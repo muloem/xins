@@ -4,10 +4,10 @@
 package org.xins.client;
 
 import java.util.Iterator;
-import java.util.Map;
 
 import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.WhislEncoding;
@@ -88,15 +88,15 @@ public abstract class CallException extends Exception {
       buffer.append(" ms while calling function ");
       buffer.append(request.getFunctionName());
 
-      Map parameters = request.getParameters();
+      PropertyReader parameters = request.getParameters();
       if (parameters == null || parameters.size() < 1) {
          buffer.append(" with no parameters");
       } else {
          buffer.append(" with parameters ");
-         Iterator keys = parameters.keySet().iterator();
+         Iterator names = parameters.getNames();
          boolean first = true;
-         while (keys.hasNext()) {
-            String key = (String) keys.next();
+         while (names.hasNext()) {
+            String key = (String) names.next();
             String val = (String) parameters.get(key);
 
             if (first) {

@@ -3,11 +3,10 @@
  */
 package org.xins.client;
 
-import java.util.Map;
-
 import org.jdom.Element;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 
@@ -169,16 +168,12 @@ public final class UnsuccessfulCallException extends CallException {
     * Gets all returned parameters.
     *
     * @return
-    *    a <code>Map</code> containing all parameters, never
-    *    <code>null</code>; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values
-    *    will be the parameter values ({@link String} objects as well, cannot
-    *    be <code>null</code>).
+    *    a {@link PropertyReader} containing all parameters, or
+    *    <code>null</code> if there are none.
     *
-    * @since XINS 0.136
+    * @since XINS 0.202
     */
-   public Map getParameters() {
-      // TODO: Return PropertyReader
+   public PropertyReader getParameters() {
       return _result.getParameters();
    }
 
