@@ -20,8 +20,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
     constructor.
     This object is now used in the org.xins.common.xml.Element.
     Typical impact on performance: Small.
-  - Slightly improved performance of ElementSerializer.
-    Typical impact on performance: Small.
 
 * XINS/Java Client Framework:
   - Hid some classes by changing the access level from public to
