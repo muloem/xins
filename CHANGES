@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 * Generation of specification documentation:
   - Added missing forward slash for the URL generated for broken links.
 
+* Added copyright statement at the beginning of the java and xslt files.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
 

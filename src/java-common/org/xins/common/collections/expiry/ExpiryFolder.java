@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.collections.expiry;
 
@@ -71,7 +74,7 @@ extends Object {
     *    should be strict or loose.
     *
     * @param maxQueueWaitTime
-    *    the maximum time in milliseconds a thread can wait in the queue for 
+    *    the maximum time in milliseconds a thread can wait in the queue for
     *    obtaining read or write access to a resource, must be &gt; 0L.
     *
     * @throws IllegalArgumentException

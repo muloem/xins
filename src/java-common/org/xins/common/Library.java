@@ -1,4 +1,5 @@
-/* $Id$
+/*
+ * $Id$
  *
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.

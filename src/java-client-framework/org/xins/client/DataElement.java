@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client;
 
@@ -150,7 +153,7 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    an {@link Iterator} that returns each child of this element as
-    *    another <code>DataElement</code> instance. Can be <code>null</code>, 
+    *    another <code>DataElement</code> instance. Can be <code>null</code>,
     *    if the DataElement has no elements.
     */
    public Iterator getChildren() {
@@ -170,7 +173,7 @@ public class DataElement implements Cloneable {
    public String getText() {
       return _pcdata;
    }
-    
+
    /**
     * Clones this object. The clone will have the same name and equivalent
     * attributes, children and PCDATA content.

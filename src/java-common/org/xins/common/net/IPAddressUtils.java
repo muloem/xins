@@ -1,5 +1,8 @@
 /*
  * $Id$
+ *
+ * Copyright 2004 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.net;
 
@@ -186,7 +189,7 @@ public final class IPAddressUtils extends Object {
          return "localhost";
       }
    }
-   
+
    /**
     * Constructs a new <code>ParseException</code> for the specified malformed
     * IP address.
