@@ -1236,7 +1236,7 @@ implements DefaultResultCodes {
       CallResultBuilder builder = new CallResultBuilder();
 
       // Build settings
-      Iterator names = _runtimeSettings.getNames();
+      Iterator names = _buildSettings.getNames();
       builder.startTag("build");
       while (names.hasNext()) {
          String key   = (String) names.next();
