@@ -109,5 +109,5 @@ extends Object {
     *    (can be an empty string), otherwise (if this constraint was not
     *    violated) <code>null</code>.
     */
-   abstract String checkImpl(ConstraintContext context);
+   protected abstract String checkImpl(ConstraintContext context);
 }
