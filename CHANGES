@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 0.118:
   - Added session-related result codes. Only displaying appropriate result
     codes.
 
+* Generation of test forms:
+  - Displaying input field for session identifier for session-based functions.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.117:
 
