@@ -489,6 +489,18 @@
 			<param name="id" type="object" nullable="false" />
 			<param name="generationLoops" type="int32" nullable="false" />
 		</entry>
+		<entry id="5011" level="INFO">
+			<description>Received session ID is invalid.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int" nullable="false" />
+			<param name="sessionID" nullable="false" />
+		</entry>
+		<entry id="5012" level="INFO">
+			<description>Received session ID is valid but unknown.</description>
+			<param name="function" nullable="false" />
+			<param name="callID" type="int" nullable="false" />
+			<param name="sessionID" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="lifespan.shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
