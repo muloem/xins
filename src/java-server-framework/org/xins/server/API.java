@@ -33,6 +33,7 @@ import org.xins.util.manageable.InitializationException;
 import org.xins.util.manageable.Manageable;
 import org.xins.util.text.DateConverter;
 import org.xins.util.text.FastStringBuffer;
+import org.xins.util.text.ParseException;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -59,6 +60,11 @@ implements DefaultResultCodes {
     * Successful empty call result.
     */
    private static final CallResult SUCCESSFUL_RESULT = new BasicCallResult(true, null, null, null);
+
+   /**
+    * The default access rule list.
+    */
+   private static final String DEFAULT_ACCESS_RULE_LIST = "allow 0.0.0.0/0 *";
 
 
    //-------------------------------------------------------------------------
@@ -243,6 +249,11 @@ implements DefaultResultCodes {
     */
    private TimeZone _timeZone;
 
+   /**
+    * The access rule list.
+    */
+   private AccessRuleList _accessRuleList;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -408,7 +419,7 @@ implements DefaultResultCodes {
     *    if a property has an invalid value.
     *
     * @throws BootstrapException
-    *    if the initialization fails.
+    *    if the bootstrap fails.
     */
    protected final void bootstrapImpl(PropertyReader buildSettings)
    throws MissingRequiredPropertyException,
@@ -575,7 +586,7 @@ implements DefaultResultCodes {
     *    if a property has an invalid value.
     *
     * @throws BootstrapException
-    *    if the initialization fails.
+    *    if the bootstrap fails.
     */
    protected void bootstrapImpl2(PropertyReader buildSettings)
    throws MissingRequiredPropertyException,
@@ -601,6 +612,8 @@ implements DefaultResultCodes {
 
       // TODO: Check state
 
+      // TODO: Perform rollback if initialization fails at some point
+
       Logger log = Library.INIT_LOG;
       log.debug("Initializing " + _name + " API.");
 
@@ -610,6 +623,24 @@ implements DefaultResultCodes {
       // Check if response validation is enabled
       _responseValidationEnabled = getBooleanProperty(runtimeSettings, "org.xins.api.responseValidation", false);
       log.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
+
+      // Initialize ACL subsystem
+      String acl = runtimeSettings.get("acl");
+      if (acl == null || acl.trim().length() < 1) {
+         try {
+            log.info("Property \"acl\" not set. Falling back to default: \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
+            log.warn("Property \"acl\" not set. Allowing all requests. In the future, this behaviour will change so that if the property is not set, then all requests will be denied instead of allowed.");
+            _accessRuleList = AccessRuleList.parseAccessRuleList(DEFAULT_ACCESS_RULE_LIST);
+         } catch (ParseException exception) {
+            throw new InitializationException("Unable to apply the default access rule list \"" + DEFAULT_ACCESS_RULE_LIST + "\".");
+         }
+      } else {
+         try {
+            _accessRuleList = AccessRuleList.parseAccessRuleList(acl);
+         } catch (ParseException exception) {
+            throw new InvalidPropertyValueException("acl", acl, exception.getMessage());
+         }
+      }
 
       // Initialize all instances
       int count = _manageableObjects.size();
