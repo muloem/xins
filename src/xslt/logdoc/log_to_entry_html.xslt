@@ -147,4 +147,12 @@
 			<xsl:value-of select="@name" />
 		</span>
 	</xsl:template>
+
+	<xsl:template match="message/value-of-param[@format='quoted']">
+		<span class="value-of-param">
+			<xsl:text>"</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>"</xsl:text>
+		</span>
+	</xsl:template>
 </xsl:stylesheet>
