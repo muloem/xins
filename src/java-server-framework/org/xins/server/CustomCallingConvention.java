@@ -50,10 +50,8 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Converts an HTTP request to a XINS request (implementation method). This
-    * method should only be called from class {@link CallingConvention}. Only
-    * then it is guaranteed that the <code>httpRequest</code> argument is not
-    * <code>null</code>.
+    * Converts an HTTP request to a XINS request (implementation method).
+    * This method should be implemented by your calling convention.
     *
     * @param httpRequest
     *    the HTTP request, will not be <code>null</code>.
@@ -73,6 +71,7 @@ public abstract class CustomCallingConvention extends CallingConvention {
 
    /**
     * Converts a XINS result to an HTTP response (implementation method).
+    * This method should be implemented by your calling convention.
     *
     * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
