@@ -189,25 +189,13 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:value-of select="$name" />
 		</xsl:variable>
 
-		<!-- Determine the return type of the method, either a Java primary
-		     data type or a Java class name. -->
+		<!-- Determine if this methods returns a <FunctionName>Result
+		     object or just void -->
 		<xsl:variable name="returnType">
 			<xsl:choose>
-				<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
+				<xsl:when test="output/param or output/data/element">
 					<xsl:value-of select="$name" />
 					<xsl:text>Result</xsl:text>
-				</xsl:when>
-				<xsl:when test="output/param">
-					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_file" select="$project_file"          />
-						<xsl:with-param name="api"          select="$api"                   />
-						<xsl:with-param name="specsdir"     select="$specsdir"              />
-						<xsl:with-param name="required"     select="output/param/@required" />
-						<xsl:with-param name="type"         select="output/param/@type"     />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="output/data/element">
-					<xsl:text>org.xins.client.DataElement</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>void</xsl:otherwise>
 			</xsl:choose>
@@ -239,97 +227,32 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[.html">online function specification</a>.]]></xsl:text>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
-		<xsl:choose>
-			<xsl:when test="output/param and output/data/element">
-				<xsl:text><![CDATA[
+		<xsl:if test="not ($returnType = 'void')">
+			<xsl:text><![CDATA[
     *
     * @return
     *    the result, not <code>null</code>.]]></xsl:text>
-			</xsl:when>
-			<xsl:when test="output/param">
-				<!-- Determine if this parameter is required -->
-				<xsl:variable name="required">
-					<xsl:choose>
-						<xsl:when test="string-length(output/param/@required) &lt; 1">false</xsl:when>
-						<xsl:when test="output/param/@required = 'false'">false</xsl:when>
-						<xsl:when test="output/param/@required = 'true'">true</xsl:when>
-						<xsl:otherwise>
-							<xsl:message terminate="yes">
-								<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-								<xsl:value-of select="output/param/@required" />
-								<xsl:text>'.</xsl:text>
-							</xsl:message>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<!-- Determine the Java primary data type or class for the
-		     		 input parameter -->
-				<xsl:variable name="javatype">
-					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_file" select="$project_file"      />
-						<xsl:with-param name="api"          select="$api"               />
-						<xsl:with-param name="specsdir"     select="$specsdir"          />
-						<xsl:with-param name="required"     select="$required"          />
-						<xsl:with-param name="type"         select="output/param/@type" />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<!-- Determine if $javatype is a Java primary data type -->
-				<xsl:variable name="typeIsPrimary">
-					<xsl:call-template name="is_java_datatype">
-						<xsl:with-param name="text" select="$javatype" />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<xsl:text><![CDATA[
-    *
-    * @return
-    *    the value of the <em>]]></xsl:text>
-				<xsl:value-of select="output/param/@name" />
-				<xsl:text><![CDATA[</em> parameter]]></xsl:text>
-				<xsl:choose>
-					<xsl:when test="$typeIsPrimary = 'false' and $required = 'true'">
-						<xsl:text><![CDATA[, not <code>null</code>.]]></xsl:text>
-					</xsl:when>
-					<xsl:when test="$typeIsPrimary = 'false'">
-						<xsl:text><![CDATA[, can be <code>null</code>.]]></xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>.</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:when test="output/data/element">
-				<xsl:text><![CDATA[
-    *
-    * @return
-    *    a {@link org.xins.client.DataElement} of the returned data
-    *    element, or <code>null</code> if no data element is returned.]]></xsl:text>
-			</xsl:when>
-		</xsl:choose>
+		</xsl:if>
 		<xsl:text><![CDATA[
     *
     * @throws org.xins.common.service.GenericCallException
     *    if the first call attempt failed due to a generic reason and all the
-    *    other call attempts failed as well.
+    *    other call attempts (if any) failed as well.
     *
     * @throws org.xins.common.http.HTTPCallException
     *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts failed as well.
+    *    all the other call attempts (if any) failed as well.
     *
     * @throws org.xins.client.XINSCallException
     *    if the first call attempt failed due to a XINS-related reason and
-    *    all the other call attempts failed as well.
+    *    all the other call attempts (if any) failed as well.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
-
-			<xsl:apply-templates select="input/param" mode="methodSignature" />
-
+		<xsl:apply-templates select="input/param" mode="methodSignature" />
 		<xsl:text>)
    throws org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
@@ -368,58 +291,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
       // Execute the call request
       org.xins.client.XINSCallResult result = caller.call(request);</xsl:text>
-		<xsl:choose>
-			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
-				<xsl:text>
+		<xsl:if test="not ($returnType = 'void')">
+			<xsl:text>
       return new </xsl:text>
-				<xsl:value-of select="$returnType" />
-				<xsl:text>(result);</xsl:text>
-			</xsl:when>
-			<xsl:when test="output/param">
-				<!-- Determine if this parameter is required -->
-				<xsl:variable name="required">
-					<xsl:choose>
-						<xsl:when test="string-length(output/param/@required) &lt; 1">false</xsl:when>
-						<xsl:when test="output/param/@required = 'false'">false</xsl:when>
-						<xsl:when test="output/param/@required = 'true'">true</xsl:when>
-						<xsl:otherwise>
-							<xsl:message terminate="yes">
-								<xsl:text>The attribute 'required' has an illegal value: '</xsl:text>
-								<xsl:value-of select="output/param/@required" />
-								<xsl:text>'.</xsl:text>
-							</xsl:message>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:text>
-
-      </xsl:text>
-				<xsl:variable name="type" select="output/param/@type" />
-					<xsl:text>try {
-         return </xsl:text>
-				<xsl:call-template name="javatype_from_string_for_type">
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="type"     select="$type"     />
-					<xsl:with-param name="required" select="$required" />
-					<xsl:with-param name="variable">
-						<xsl:text>result.getParameter("</xsl:text>
-						<xsl:value-of select="output/param/@name" />
-						<xsl:text>")</xsl:text>
-					</xsl:with-param>
-				</xsl:call-template>
-				<xsl:text>;</xsl:text>
-				<xsl:text>
-      } catch (org.xins.common.types.TypeValueException exception) {
-         throw new org.xins.client.UnacceptableResultXINSCallException(result, null, exception);
-      }</xsl:text>
-			</xsl:when>
-			<xsl:when test="output/data/element">
-				<xsl:text>
-      return result.getDataElement();</xsl:text>
-			</xsl:when>
-		</xsl:choose>
+			<xsl:value-of select="$returnType" />
+			<xsl:text>(result);</xsl:text>
+		</xsl:if>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>
