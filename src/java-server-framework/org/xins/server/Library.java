@@ -29,13 +29,13 @@ public final class Library extends Object {
     * The logging category used by the XINS/Java Server Framework during
     * startup/initialization. This field is not <code>null</code>.
     */
-   static final Logger STARTUP_LOG = Logger.getLogger("org.xins.server.LIFESPAN.STARTUP");
+   static final Logger BOOTSTRAP_LOG = Logger.getLogger("org.xins.server.LIFESPAN.BOOTSTRAP");
 
    /**
     * The logging category used by the XINS/Java Server Framework during
     * re-initialization. This field is not <code>null</code>.
     */
-   static final Logger REINIT_LOG = Logger.getLogger("org.xins.server.LIFESPAN.REINIT");
+   static final Logger INIT_LOG = Logger.getLogger("org.xins.server.LIFESPAN.INIT");
 
    /**
     * The logging category used by the XINS/Java Server Framework during
