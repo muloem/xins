@@ -77,7 +77,7 @@ import org.xins.logdoc.LogdocSerializable;
  * the following situations:
  *
  * <ul>
- *    <li>if the <code>failOver</code> property is set to <code>true</code>
+ *    <li>if the <em>failOverAllowed</em> property is set to <code>true</code>
  *        for the {@link XINSCallRequest};
  *    <li>on connection refusal;
  *    <li>if a connection attempt times out;
