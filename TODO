@@ -40,7 +40,10 @@ XINS/JAVA SERVER FRAMEWORK
 * Consider returning an HTTP error code if the call is unsuccessful.
 * Consider initializing all LifespanManagers at once.
 * CallResultBuilder should perhaps not implement CallResult.
-* Allow replacement of strings in system properties.
+* Allow replacement of strings in system properties? This is probably
+  impossible.
+* If an invalid value is passed for an input parameter of type _properties,
+* the InternalError result code is returned instead of an InvalidParameters.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
