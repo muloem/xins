@@ -7,14 +7,18 @@
 package org.xins.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.CollectionUtils;
 
 import org.xins.common.constraint.Constraint;
-import org.xins.common.constraint.ConstraintContext;
 import org.xins.common.constraint.ConstraintViolation;
 
 import org.xins.common.types.Type;
@@ -64,7 +68,8 @@ extends Object {
    protected AbstractCAPICallRequest(AbstractCAPIFunction function)
    throws IllegalArgumentException {
       _function          = function;
-      _constraintContext = new RequestConstraintContext();
+      _constraintContext = new ConstraintContext();
+      _parameterTypes    = new HashMap();
    }
 
 
@@ -80,7 +85,7 @@ extends Object {
    /**
     * Constraint context. Never <code>null</code>.
     */
-   private final RequestConstraintContext _constraintContext;
+   private final ConstraintContext _constraintContext;
 
    /**
     * The call configuration. Initially <code>null</code>.
@@ -88,15 +93,81 @@ extends Object {
    private XINSCallConfig _callConfig;
 
    /**
-    * Mapping from parameter names to their associated values. This field is
+    * Mapping from parameter names to their associated types. This field is
+    * initialized by the constructor and never <code>null</code>.
+    */
+   private final HashMap _parameterTypes;
+
+   /**
+    * Mapping from parameter names to either their associated string values or
+    * to an exception if the conversion to a string failed. This field is
     * lazily initialized and initially <code>null</code>.
     */
-   private HashMap _parameters;
+   private HashMap _parameterValues;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Sets the type for the specified parameter.
+    *
+    * @param name
+    *    the name of the parameter to set the type for, cannot be
+    *    <code>null</code>.
+    *
+    * @param type
+    *    the type of the parameter, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || type == null</code>.
+    */
+   protected final void parameterType(String name, Type type)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name",  name, "type", type);
+
+      // TODO: Make sure there is no type defined for the param yet
+
+      // Store the association
+      _parameterTypes.put(name, type);
+   }
+
+   /**
+    * Sets the specified parameter to the specified value.
+    *
+    * @param name
+    *    the name of the parameter to set, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value of the parameter, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   protected final void parameterValue(String name, Object value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name",  name);
+
+      // If there is no value, then remove the entry from the map
+      if (value == null) {
+         if (_parameterValues != null) {
+            _parameterValues.remove(name);
+         }
+
+      // Otherwise just store
+      } else {
+
+         if (_parameterValues == null) {
+            _parameterValues = new HashMap();
+         }
+         _parameterValues.put(name, value);
+      }
+   }
 
    /**
     * Returns the <code>AbstractCAPIFunction</code> instance representing the
@@ -105,20 +176,34 @@ extends Object {
     * @return
     *    the function to call, never <code>null</code>.
     */
-   AbstractCAPIFunction function() {
+   final AbstractCAPIFunction function() {
       return _function;
    }
 
    /**
-    * Returns the parameter map. This is a mapping from parameter names to
-    * their associated values. This field is lazily initialized and initially
-    * <code>null</code>.
+    * Returns the parameter type map. This is a mapping from parameter names
+    * to their associated types.
     *
     * @return
-    *    the parameter map, can be <code>null</code>.
+    *    the parameter type map, never <code>null</code>.
     */
-   Map parameterMap() {
-      return _parameters;
+   final Map parameterTypeMap() {
+      return _parameterTypes;
+   }
+
+   /**
+    * Returns the parameter value map. This is a mapping from parameter names
+    * to their associated values.
+    *
+    * @return
+    *    the parameter value map, never <code>null</code>.
+    */
+   final Map parameterValueMap() {
+      if (_parameterValues == null) {
+         return Collections.EMPTY_MAP;
+      } else {
+         return _parameterValues;
+      }
    }
 
    /**
@@ -127,12 +212,45 @@ extends Object {
     * @return
     *    a {@link XINSCallRequest}, never <code>null</code>.
     */
-   XINSCallRequest xinsCallRequest() {
+   final XINSCallRequest xinsCallRequest() {
+
+      final String THIS_METHOD = "xinsCallRequest()";
 
       // Construct a XINSCallRequest object
       XINSCallRequest request = new XINSCallRequest(_function.getName());
 
-      // FIXME: Set all parameters
+      // Set all parameters on the request, if any
+      if (_parameterValues != null && _parameterValues.size() > 0) {
+
+         // Loop over all parameters in the map containing the types
+         Iterator iterator = _parameterTypes.keySet().iterator();
+         while (iterator.hasNext()) {
+
+            // Determine parameter name, type and value
+            String name  = (String) iterator.next();
+            Type   type  = (Type)   _parameterTypes.get(name);
+            Object value = _parameterValues.get(name);
+
+            if (value != null) {
+               // Convert the value to a string
+               String valueString;
+               try {
+                  valueString = type.toString(value);
+               } catch (TypeValueException exception) {
+                  throw Utils.logProgrammingError(
+                     CLASSNAME,
+                     THIS_METHOD,
+                     CLASSNAME,
+                     THIS_METHOD,
+                     null,
+                     exception);
+               }
+
+               // Set the parameter on the request
+               request.setParameter(name, valueString);
+            }
+         }
+      }
 
       return request;
    }
@@ -145,7 +263,7 @@ extends Object {
     *    <code>null</code> if no specific call configuration should be
     *    associated with this request.
     */
-   public void configure(XINSCallConfig config) {
+   public final void configure(XINSCallConfig config) {
       _callConfig = config;
    }
 
@@ -157,32 +275,8 @@ extends Object {
     *    will be applied when executing this request, or <code>null</code> if
     *    no specific call configuration is associated with this request.
     */
-   public XINSCallConfig configuration() {
+   public final XINSCallConfig configuration() {
       return _callConfig;
-   }
-
-   /**
-    * Sets the specified parameter to the specified value.
-    *
-    * @param name
-    *    the parameter name, cannot be <code>null</code>.
-    *
-    * @param value
-    *    the parameter value, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || type == null</code> or if <code>name</code>
-    *    does not match the constraints for a parameter name, see
-    *    {@link XINSCallRequest#PARAMETER_NAME_PATTERN_STRING} or if it equals
-    *    <code>"function"</code>, which is currently still reserved.
-    */
-   protected final void parameter(String name, Object value)
-   throws IllegalArgumentException {
-      if (_parameters == null) {
-         _parameters = new HashMap();
-      }
-
-      _parameters.put(name, value);
    }
 
    /**
@@ -242,18 +336,18 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
-   private class RequestConstraintContext
+   private class ConstraintContext
    extends Object
-   implements ConstraintContext {
+   implements org.xins.common.constraint.ConstraintContext {
 
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>RequestConstraintContext</code>.
+       * Constructs a new <code>ConstraintContext</code> instance.
        */
-      private RequestConstraintContext() {
+      private ConstraintContext() {
          // empty
       }
 
@@ -280,10 +374,10 @@ extends Object {
        */
       public Object getParameter(String name)
       throws IllegalArgumentException {
-         if (_parameters == null) {
+         if (_parameterValues == null) {
             return null;
          } else {
-            return _parameters.get(name);
+            return _parameterValues.get(name);
          }
       }
    }

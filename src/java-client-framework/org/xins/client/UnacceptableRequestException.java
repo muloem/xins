@@ -22,6 +22,9 @@ import org.xins.common.constraint.ConstraintViolation;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.WhislEncoding;
 
+import org.xins.common.types.Type;
+import org.xins.common.types.TypeValueException;
+
 /**
  * Exception that indicates that a request for an API call is considered
  * unacceptable on the application-level. For example, a mandatory input
@@ -133,37 +136,50 @@ extends RuntimeException {
       // Append function name
       buffer.append("Request is to function \"");
       buffer.append(request.function().getName());
+      buffer.append("\" with ");
 
-      // Append parameters
-      Map params = request.parameterMap();
-      int paramCount = (params == null) ? 0 : params.size();
-      if (paramCount == 0) {
-         buffer.append("\" with no parameters.");
-      } else {
-         buffer.append("\" with parameters ");
-         Iterator keys = params.keySet().iterator();
-         boolean hadOne = false;
-         while (keys.hasNext()) {
-            String key = (String) keys.next();
-            if (key != null) {
-               Object val = params.get(key);
-               if (val != null) {
-                  buffer.append(WhislEncoding.encode(key));
-                  buffer.append('=');
+      // Determine parameter names, types and values
+      Map paramTypes  = request.parameterTypeMap();
+      Map paramValues = request.parameterValueMap();
 
-                  // FIXME: Do not call val.toString, but use type to convert
-                  //        from value instance to String instead
-                  buffer.append(WhislEncoding.encode(val.toString()));
-                  buffer.append('&');
-                  hadOne = true;
-               }
+      // Loop through all defined parameters
+      Iterator iterator = paramTypes.keySet().iterator();
+      boolean hadOne = false;
+      while (iterator.hasNext()) {
+
+         // For this parameter, get name, type and value
+         String name  = (String) iterator.next();
+         Type   type  = (Type)   paramTypes.get(name);
+         Object value = paramValues.get(name);
+
+         // If there is a value, then print the name and value
+         if (value != null) {
+            if (! hadOne) {
+               buffer.append("parameters ");
+               hadOne = true;
             }
-         }
 
-         if (hadOne) {
-            // Remove last ampersand
-            buffer.crop(buffer.getLength() - 1);
+            // Print the parameter name
+            buffer.append(WhislEncoding.encode(name));
+            buffer.append('=');
+
+            // Print the parameter value
+            String valueString;
+            try {
+               valueString = WhislEncoding.encode(type.toString(value));
+            } catch (TypeValueException exception) {
+               valueString = "<invalid>";
+            }
+            buffer.append(valueString);
+            buffer.append('&');
          }
+      }
+
+      if (hadOne) {
+         // Remove last ampersand
+         buffer.crop(buffer.getLength() - 1);
+      } else {
+         buffer.append("no parameters.");
       }
 
       return buffer.toString();

@@ -87,12 +87,28 @@ extends org.xins.client.AbstractCAPICallRequest {
       super(</xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[Function.SINGLETON);
+
+      // Register all (input) parameters with their corresponding types]]></xsl:text>
+		<xsl:for-each select="input/param">
+			<xsl:text>
+      super.parameterType("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", </xsl:text>
+			<xsl:call-template name="javatypeclass_for_type">
+				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+			<xsl:text>.SINGLETON);</xsl:text>
+		</xsl:for-each>
+		<xsl:text>
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------]]></xsl:text>
+   //-------------------------------------------------------------------------></xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="field" />
 
@@ -261,7 +277,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text>(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>);
-      super.parameter("</xsl:text>
+      super.parameterValue("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", _</xsl:text>
 				<xsl:value-of select="@name" />
@@ -295,7 +311,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:text> = </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>;
-      super.parameter("</xsl:text>
+      super.parameterValue("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", _</xsl:text>
 				<xsl:value-of select="@name" />
