@@ -144,21 +144,45 @@ public class ResultParser {
       // Fields
       //-------------------------------------------------------------------------
 
+      /**
+       * The error code returned by the function or <code>null</code>, if no
+       * error code is returned.
+       */
       private String _errorCode;
 
+      /**
+       * The list of the parameters (name/value) returned by the function.
+       */
       private Properties _parameters = new Properties();
+
+      /**
+       * The parameter name of the parameter that is actually parsed.
+       */
       private String _parameterKey;
+
+      /**
+       * The PCDATA element of the tag that is actually parsed.
+       */
       private FastStringBuffer _pcdata;
 
-      //private DataElement _dataElement;
+      /**
+       * The content of the data element that is actually parsed.
+       */
       private Hashtable _elements = new Hashtable();
+
+      /**
+       * The level of the element that is actually parsed in the data element.
+       * -1 means that no element is parsed,
+       * 0 means that the parser just read the &lt;data&gt; tag,
+       * 1 means that the parser entered in an direct sub-element of the &lt;data&gt; tag
+       * ...
+       */
       private int _level = -1;
 
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
 
-      // todo throw the parse exception
       public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
          if (_level >= 0) {
             _level++;
@@ -229,14 +253,32 @@ public class ResultParser {
          }
       }
 
+      /**
+       * Gets the error code returned by the function if any.
+       *
+       * @return
+       *    the error code returned by the function or <code>null<code>
+       *    if no error code has been returned from the function.
+       */
       public String getErrorCode() {
          return _errorCode;
       }
 
+      /**
+       * Get the parameters returned by the function.
+       *
+       * @return
+       *    the parameters (name/value), cannot be <code>null</code>.
       public PropertyReader getParameters() {
          return new PropertiesPropertyReader(_parameters);
       }
 
+      /**
+       * Get the data element returned by the function if any.
+       *
+       * @return
+       *    the data element or <code>null</code> if the function did not return any data element.
+       */
       public DataElement getDataElement() {
          return (DataElement) _elements.get(new Integer(0));
       }

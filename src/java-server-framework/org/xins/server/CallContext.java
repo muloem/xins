@@ -97,12 +97,6 @@ public final class CallContext {
    // Methods
    //-------------------------------------------------------------------------
 
-   // TODO: Document
-   // TODO: Probably take a different approach
-   FunctionResult getCallResult() {
-      return _builder;
-   }
-
    /**
     * Returns the start time of the call.
     *

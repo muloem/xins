@@ -296,8 +296,6 @@ class FunctionStatistics {
       return _unsuccessfulMinStart;
    }
 
-   // TODO: Have a similar description for all these getters
-
    /**
     * Returns the duration of the successful call that took the longest.
     *

@@ -9,21 +9,6 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:output method="text" />
-
-	<xsl:param name="project_home" />
-	<xsl:param name="project_file" />
-	<xsl:param name="specsdir"     />
-	<xsl:param name="package"      />
-	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
-
-	<xsl:variable name="version">
-		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision" select="//function/@rcsversion" />
-		</xsl:call-template>
-	</xsl:variable>
-
 	<xsl:variable name="functionName" select="//function/@name" />
 	<xsl:variable name="className" select="'SuccessfulResult'" />
 

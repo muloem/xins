@@ -18,18 +18,6 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:variable name="old_authors_file" select="concat($project_home, '/src/authors/authors.xml')" />
-	<xsl:variable name="authors_file">
-		<xsl:choose>
-			<xsl:when test="document($old_authors_file)">
-				<xsl:value-of select="$old_authors_file" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="concat($project_home, '/authors.xml')" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
 	<xsl:output
 	method="html"
 	indent="yes"
@@ -46,6 +34,18 @@
 
 		<xsl:variable name="owner">
 			<xsl:if test="boolean(@owner) and not(owner = '')">
+				<xsl:variable name="new_authors_file" select="concat($project_home, '/authors.xml')" />
+				<xsl:variable name="authors_file">
+					<xsl:choose>
+						<xsl:when test="document($new_authors_file)">
+							<xsl:value-of select="$new_authors_file" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($project_home, '/src/authors/authors.xml')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
 				<xsl:choose>
 					<xsl:when test="document($authors_file)/authors/author[@id=current()/@owner]">
 						<xsl:value-of select="@owner" />
@@ -216,6 +216,17 @@
 				<h2>API Owner</h2>
 				<xsl:choose>
 					<xsl:when test="$owner != ''">
+						<xsl:variable name="new_authors_file" select="concat($project_home, '/authors.xml')" />
+						<xsl:variable name="authors_file">
+							<xsl:choose>
+								<xsl:when test="document($new_authors_file)">
+									<xsl:value-of select="$new_authors_file" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="concat($project_home, '/src/authors/authors.xml')" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<xsl:variable name="owner_name">
 							<xsl:value-of select="document($authors_file)/authors/author[@id=$owner]/@name" />
 						</xsl:variable>

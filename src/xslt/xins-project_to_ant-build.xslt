@@ -176,18 +176,14 @@
 
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
-				<xsl:variable name="old_api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
+				<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', $api, '/spec/api.xml')" />
 				<xsl:variable name="api_specsdir">
 					<xsl:choose>
-						<xsl:when test="document($project_file)/project/api[@name = $api]/impl or document($project_file)/project/api[@name = $api]/environments">
+						<xsl:when test="impl or environments or document($new_api_file)">
 							<xsl:value-of select="concat($project_home, '/apis/', $api, '/spec')" />
-						</xsl:when>
-						<!-- This test is not garanted to work with all XSLT processors. -->
-						<xsl:when test="document($old_api_file)">
-							<xsl:value-of select="concat($specsdir, '/', $api)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat($project_home, '/apis/', $api, '/spec')" />
+							<xsl:value-of select="concat($specsdir, '/', $api)" />
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -466,7 +462,10 @@
 						<xsl:value-of select="$project_home" />
 						<xsl:text>/</xsl:text>
 						<xsl:choose>
-							<xsl:when test="document($old_api_file)">
+							<xsl:when test="document($new_api_file)">
+								<xsl:value-of select="concat('apis/', $api, '/impl')" />
+							</xsl:when>
+							<xsl:otherwise>
 								<xsl:choose>
 									<xsl:when test="document($project_file)/project/@javadir">
 										<xsl:value-of select="document($project_file)/project/@javadir" />
@@ -475,9 +474,6 @@
 								</xsl:choose>
 								<xsl:text>/</xsl:text>
 								<xsl:value-of select="$api" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="concat('apis/', $api, '/impl')" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -488,11 +484,11 @@
 					<!-- This test is not garanted to work with all XSLT processors. -->
 					<xsl:variable name="logdoc_dir">
 						<xsl:choose>
-							<xsl:when test="document($old_api_file)">
-								<xsl:value-of select="concat($project_home, '/src/logdoc/', $api)" />
+							<xsl:when test="document($new_api_file)">
+								<xsl:value-of select="$javaImplDir" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="$javaImplDir" />
+								<xsl:value-of select="concat($project_home, '/src/logdoc/', $api)" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -1077,10 +1073,16 @@
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="../@name" />
 					</xsl:for-each>
-					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-						<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
-						<xsl:text>classes-api-</xsl:text>
-						<xsl:value-of select="@name" />
+					<xsl:for-each select="api">
+						<!-- If old API -->
+						<xsl:variable name="api"      select="@name" />
+						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
+							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
+								<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
+								<xsl:text>classes-api-</xsl:text>
+								<xsl:value-of select="@name" />
+							</xsl:if>
+						</xsl:if>
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
@@ -1102,10 +1104,16 @@
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="../@name" />
 					</xsl:for-each>
-					<xsl:for-each select="api[document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java]">
-						<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
-						<xsl:text>war-</xsl:text>
-						<xsl:value-of select="@name" />
+					<xsl:for-each select="api">
+						<!-- If old API -->
+						<xsl:variable name="api"      select="@name" />
+						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
+							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
+								<xsl:if test="position() &gt; 1 or count(document($project_file)/project/api/impl) &gt; 0">,</xsl:if>
+								<xsl:text>war-</xsl:text>
+								<xsl:value-of select="@name" />
+							</xsl:if>
+						</xsl:if>
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>

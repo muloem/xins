@@ -69,14 +69,14 @@
 
 	<xsl:template match="api">
 		<!-- This test is not garanted to work with all XSLT processors. -->
-		<xsl:variable name="old_api_file" select="concat($specsdir, '/', @name, '/api.xml')" />
+		<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
 		<xsl:variable name="path">
 			<xsl:choose>
-				<xsl:when test="document($old_api_file)">
-					<xsl:value-of select="$old_api_file" />
+				<xsl:when test="impl or environments or document($new_api_file)">
+					<xsl:value-of select="$new_api_file" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
+					<xsl:value-of select="concat($specsdir, '/', @name, '/api.xml')" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
