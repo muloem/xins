@@ -255,23 +255,6 @@ public class APIImpl extends API {
 				<xsl:text>         }&#10;</xsl:text>
 			</xsl:if>
 		</xsl:for-each>
-		<xsl:text>      } else if ("_GetFunctionList".equals(function)) {
-         context.startResponse(true, null);</xsl:text>
-		<xsl:for-each select="//api/function">
-			<xsl:variable name="function_file" select="concat($specsdir, '/', $api, '/', @name, '.fnc')" />
-			<xsl:text>&#10;         context.startTag("function");</xsl:text>
-			<xsl:text>&#10;         context.attribute("name", "</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>");</xsl:text>
-			<xsl:text>&#10;         context.attribute("version", "</xsl:text>
-			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision">
-					<xsl:value-of select="document($function_file)/function/@rcsversion" />
-				</xsl:with-param>
-			</xsl:call-template>
-			<xsl:text>");</xsl:text>
-			<xsl:text>&#10;         context.endTag();</xsl:text>
-		</xsl:for-each>
 		<xsl:text>
       } else {
          context.startResponse(false, "NoSuchFunction");
