@@ -63,7 +63,11 @@ public abstract class EnumType extends Type {
       _namesToValues = new HashMap();
       _valuesToNames = new HashMap();
 
+      // TODO: Use ArrayMap ?
+
       int count = items == null ? 0 : items.length;
+      String[] values = new String[count];
+      int actualItems = 0;
       for (int i = 0; i < count; i++) {
          EnumItem item = items[i];
          if (item != null) {
@@ -72,8 +76,12 @@ public abstract class EnumType extends Type {
 
             _namesToValues.put(itemName,  itemValue);
             _valuesToNames.put(itemValue, itemName);
+            values[actualItems++] = itemValue;
          }
       }
+
+      _values = new String[actualItems];
+      System.arraycopy(values, 0, _values, 0, actualItems);
    }
 
 
@@ -90,6 +98,11 @@ public abstract class EnumType extends Type {
     * Map that links enumeration values to their symbolic names.
     */
    private final Map _valuesToNames;
+
+   /**
+    * The list of accepted values.
+    */
+   private final String[] _values;
 
 
    //-------------------------------------------------------------------------
