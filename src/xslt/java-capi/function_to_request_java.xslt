@@ -135,15 +135,17 @@ extends org.xins.client.AbstractCAPICallRequest {
    /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
-    * values are out of bounds, then an exception is thrown.
+    * values are out of bounds, then a description or the problem is returned.
     *
     * <p>This method is called by {@link #validate()}. It should not be called
     * from anywhere else.
     *
-    * @throws org.xins.client.UnacceptableRequestException
-    *    if this request is considered unacceptable.
+    * @return
+    *    <code>null</code> if this request is considered acceptable or a
+    *    non-<code>null</code> description if this request is considered
+    *    unacceptable.
     */
-   public void validateImpl()
+   public java.lang.String validateImpl()
    throws org.xins.client.UnacceptableRequestException {
       // TODO
    }

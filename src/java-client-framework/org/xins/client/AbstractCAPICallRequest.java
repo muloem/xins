@@ -68,19 +68,28 @@ extends Object {
     */
    public final void validate()
    throws UnacceptableRequestException {
-      validateImpl();
+
+      // Call implementation method
+      String s = validateImpl();
+
+      // Throw an exception on error
+      if (s != null) {
+         throw new UnacceptableRequestException(this, s);
+      }
    }
 
    /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
-    * values are out of bounds, then an exception is thrown.
+    * values are out of bounds, then a description or the problem is returned.
     *
     * <p>This method is called by {@link #validate()}. It should not be called
     * from anywhere else.
     *
-    * @throws UnacceptableRequestException
-    *    if this request is considered unacceptable.
+    * @return
+    *    <code>null</code> if this request is considered acceptable or a
+    *    non-<code>null</code> description if this request is considered
+    *    unacceptable.
     */
-   protected abstract void validateImpl();
+   protected abstract String validateImpl();
 }
