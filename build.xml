@@ -83,7 +83,7 @@
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
 		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
-		<property name="package-tarfile"     value="${name}-${version}.tar" />
+		<property name="package-basename"    value="${name}-${version}" />
 		<property name="vendor"              value="Wanadoo Nederland B.V." />
 		<property name="cvs.module"          value="${name}" />
 
@@ -540,7 +540,7 @@
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
-		<tar tarfile="build/${package-tarfile}">
+		<tar tarfile="build/${package-basename}.tar">
 			<tarfileset
 			dir="${basedir}"
 			prefix="${name}-${version}"
@@ -573,8 +573,8 @@
 				<include name="src/bin/xins" />
 			</tarfileset>
 		</tar>
-		<gzip zipfile="build/${package-tarfile}.gz" src="build/${package-tarfile}" />
-		<delete file="build/${package-tarfile}" />
+		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
+		<delete file="build/${package-basename}.tar" />
 	</target>
 
 	<target name="sfaddrelease" depends="java-common" description="Adds a release to the SourceForge package [BROKEN]">
@@ -587,7 +587,7 @@
 		</taskdef>
 
 		<sfaddrelease
-		file="build/${name}-${version}.tar.gz"
+		file="build/${name}-${version}.tgz"
 		user="${sf.user}"
 		password="${sf.password}"
 		group="${sf.group}"
@@ -599,7 +599,7 @@
 	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="${package-tarfile}.gz" />
+			<arg value="${package-basename}.tgz" />
 			<arg value="${www.target}" />
 		</exec>
 	</target>
