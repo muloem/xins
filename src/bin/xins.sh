@@ -17,13 +17,17 @@ if [ ! -f ${style} ]; then
 	exit 1
 fi
 
-
 builddir="build"
 
+# Create the build directory
 if [ ! -d build ]; then
 	mkdir ${builddir}
 fi
 
+# Create the Ant build file
 in="xins-project.xml"
 out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
+
+# Run Ant against the build file
+(cd ${builddir} && ant)
