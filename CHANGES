@@ -4,6 +4,8 @@ CHANGES INTRODUCED IN XINS 0.88:
 * XINS/Java Server Framework:
   - Fixed the class description for MissingSessionIDException and
     UnknownSessionIDException.
+  - Expecting Log4J config file to be specified in property
+    'org.apache.log4j.config'.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.87:
