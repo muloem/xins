@@ -425,12 +425,14 @@ implements Result {
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:text><![CDATA[
+		<xsl:text>
 
    /**
     * Adds a sub-element to this element.
     *
-    * @param
+    * @param </xsl:text>
+		<xsl:value-of select="@element" />
+		<xsl:text><![CDATA[
     *    the value of the sub-element to add, cannot be <code>null</code>.
     */
    public void add]]></xsl:text>

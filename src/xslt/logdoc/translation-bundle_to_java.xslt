@@ -128,80 +128,60 @@ import org.xins.logdoc.LogdocStringBuffer;
 		<xsl:variable name="param-type" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@type" />
 		<xsl:variable name="param-nullable" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@nullable" />
 
-		<xsl:choose>
-			<xsl:when test="($param-type = 'serializable') and ($param-nullable = 'false')">
-				<xsl:text>
+		<xsl:text>
       </xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>.serialize(buffer);</xsl:text>
-			</xsl:when>
-			<xsl:when test="($param-type = 'serializable')">
-				<xsl:text>
-      if (</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> == null) {
+		<xsl:if test="not($param-nullable = 'false')">
+			<xsl:text>if (</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> == null) {
          buffer.append("(null)");
       } else {
          </xsl:text>
+		</xsl:if>
+		<xsl:if test="@format = 'quoted'">
+			<xsl:text>buffer.append('"');
+         </xsl:text>
+		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="$param-type = 'serializable'">
 				<xsl:value-of select="@name" />
-				<xsl:text>.serialize(buffer);
-      }</xsl:text>
-			</xsl:when>
-			<xsl:when test="($param-type = 'object') and ($param-nullable = 'false')">
-				<xsl:text>
-      buffer.append(</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>.toString()</xsl:text>
-				<xsl:text>);</xsl:text>
+				<xsl:text>.serialize(buffer);</xsl:text>
 			</xsl:when>
 			<xsl:when test="$param-type = 'object'">
-				<xsl:text>
-      buffer.append(</xsl:text>
-				<xsl:text>(</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> == null) ? "(null)" : </xsl:text>
+				<xsl:text>buffer.append(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>.toString()</xsl:text>
 				<xsl:text>);</xsl:text>
 			</xsl:when>
-			<xsl:when test="$param-nullable = 'false'">
-				<xsl:text>
-      buffer.append(</xsl:text>
+			<xsl:when test="@format = 'hex' and (not($param-nullable = 'false') or (not($param-type = 'int32') and not($param-type = 'int64')))">
+				<xsl:message terminate="yes">
+					<xsl:text>The parameter "</xsl:text>
+					<xsl:value-of select="@name"/>
+					<xsl:text>" can be formatted as hex because its type is not int32 or int64 or its value is nullable.</xsl:text>
+				</xsl:message>
+			</xsl:when>
+			<xsl:when test="@format = 'hex' and $param-nullable = 'false' and ($param-type = 'int32' or $param-type = 'int64')">
+				<xsl:text>org.xins.logdoc.LogdocHexConverter.toHexString(buffer, </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>);</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text>
-      buffer.append(</xsl:text>
-				<xsl:text>(</xsl:text>
+				<xsl:text>buffer.append(</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text> == null) ? "(null)" : </xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:if test="not($param-nullable = 'false') and string-length($param-type) &gt; 0 and not($param-type = 'text')">
+					<xsl:text>.toString()</xsl:text>
+				</xsl:if>
 				<xsl:text>);</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="translation/value-of-param[@format='quoted']">
-		<xsl:text>
-      if (</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text> == null) {
-         buffer.append("(null)");
-      } else {
-         buffer.append('"');
-         buffer.append(</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>);
-         buffer.append('"');
+		<xsl:if test="@format = 'quoted'">
+			<xsl:text>
+         buffer.append('"');</xsl:text>
+		</xsl:if>
+		<xsl:if test="not($param-nullable = 'false')">
+			<xsl:text>
       }</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="translation/value-of-param[@format='hex']">
-		<xsl:text>
-      org.xins.logdoc.LogdocHexConverter.toHexString(buffer, </xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>);</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="translation/text()">

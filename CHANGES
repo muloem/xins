@@ -26,10 +26,16 @@ CHANGES INTRODUCED IN XINS 0.209:
 * Logdoc
   - The boolean type was not declared in the log_to_entry_html.xslt as a
     logdoc type.
+  - Refactored the translation-bundle_to_java.xslt as the previous
+    implementation failed when in some possible situations.
 
 * Generated server-side Java code:
   - Fixed a problem when generating the author in the @author tag.
     This bug has been in XINS since version 0.208.
+  - Fixed some Javadoc tags.
+
+* Generated server-side Java code:
+  - The TypeValueException is no longer catched is the parameter is a String.
 
 * Generated build file
   - Fixed bug 1040507. If the authors.xml file does not exists the owner is

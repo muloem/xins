@@ -49,11 +49,12 @@ public final static class Request {
    // Methods
    //-------------------------------------------------------------------------
 
-	 /**
-	  * Gets the IP address of the host that requested the function.
-		*
-		* @return IP address (e.g. 192.168.0.1), cannot be &lt;code&gt;null&lt;/code&gt;.
-		*/
+   /**
+    * Gets the IP address of the host that requested the function.
+    *
+    * @return
+    *    IP address (e.g. 192.168.0.1), cannot be &lt;code&gt;null&lt;/code&gt;.
+    */
    public final String remoteIP() {
       return __ip;
    }</xsl:text>
@@ -226,7 +227,7 @@ public final static class Request {
 		<xsl:if test="not(@required = 'true')">
 			<xsl:text>
     *
-    * @throw ParameterNotInitializedException
+    * @throws ParameterNotInitializedException
     *    if the value has not been set.</xsl:text>
 		</xsl:if>
 		<xsl:if test="deprecated">

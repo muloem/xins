@@ -391,23 +391,31 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 				<xsl:text>
 
-      try {
-         return </xsl:text>
+      </xsl:text>
+				<xsl:variable name="type" select="output/param/@type" />
+				<xsl:if test="string-length($type) &gt; 0 and not($type = '_text')">
+					<xsl:text>try {
+         </xsl:text>
+				</xsl:if>
+				<xsl:text>return </xsl:text>
 				<xsl:call-template name="javatype_from_string_for_type">
-					<xsl:with-param name="specsdir" select="$specsdir"          />
-					<xsl:with-param name="api"      select="$api"               />
-					<xsl:with-param name="type"     select="output/param/@type" />
-					<xsl:with-param name="required" select="$required"          />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="type"     select="$type"     />
+					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="variable">
 						<xsl:text>result.getParameter("</xsl:text>
 						<xsl:value-of select="output/param/@name" />
 						<xsl:text>")</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
-				<xsl:text>;
+				<xsl:text>;</xsl:text>
+				<xsl:if test="string-length($type) &gt; 0 and not($type = '_text')">
+					<xsl:text>
       } catch (org.xins.common.types.TypeValueException exception) {
          throw new org.xins.client.UnacceptableResultXINSCallException(result, null, exception);
       }</xsl:text>
+				</xsl:if>
 			</xsl:when>
 			<xsl:when test="output/data/element">
 				<xsl:text>
