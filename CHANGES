@@ -1,4 +1,23 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.97:
+
+* XINS/Java Common Library:
+  - Class Doorman: Changed the way failed thread synchronization checks are
+    dealt with if strict thread synchronization checking is disabled (i.e. set
+    to loose).
+    When the current writer attempts to enterAsReader(), then
+    leaveAsWriter() is first called. It is assumed that for some reason it was
+    not called, although it should have been.
+    Vice versa, when a current reader attempts to enterAsWriter(), then
+    leaveAsReader() is first called.
+    Hopefully this decreases the error sensitivity.
+    Also: Throwing Error instead of IllegalStateException.
+
+* XINS/Java Server Framework:
+  - Added method reinit(PropertyReader) to interface Singleton. Could
+    potentially breaks existing code.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.96:
 
 * XINS/Java Common Library:
