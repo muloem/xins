@@ -27,9 +27,12 @@ extends RuntimeException {
 
    /**
     * Constructs a new <code>QueueTimeOutException</code>.
+    *
+    * @param message
+    *    the detail message, can be <code>null</code>.
     */
-   public QueueTimeOutException() {
-      // empty
+   public QueueTimeOutException(String message) {
+      super(message);
    }
 
 
