@@ -14,7 +14,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added _url standard type.
   - Added a toDate() method for the Date and Timestamp types.
   - If the main() method is used to start the servlet container, the thread
-    listening to connection is not a deamon thread.
+    accepting connections is not a daemon thread.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
