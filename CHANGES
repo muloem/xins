@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.54:
+
+* Fixed bug in CallContext.getSession().
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.53:
 
 * Upgraded to JDOM 1.0b9.
