@@ -13,7 +13,7 @@
 	<xsl:param name="environment"  />
 
 	<xsl:variable name="api"          select="//function/@api" />
-	<xsl:variable name="api_file"     select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
+	<xsl:variable name="api_file"     select="$specsdir, '/', $api, '/api.xml')" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:output
@@ -145,7 +145,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="type_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
 
 		<xsl:variable name="isenum">
 			<xsl:choose>
@@ -231,7 +231,7 @@
 		<xsl:param name="type" />
 
 		<xsl:variable name="type_file">
-			<xsl:value-of select="concat($project_home, '/', $specsdir, '/', $api, '/', $type, '.typ')" />
+			<xsl:value-of select="concat($specsdir, '/', $api, '/', $type, '.typ')" />
 		</xsl:variable>
 
 		<xsl:variable name="type_url">
