@@ -111,31 +111,52 @@ public abstract class ]]></xsl:text>
 
 </xsl:text>
 		</xsl:for-each>
-		<xsl:text><![CDATA[
+		<xsl:text>
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    protected final void handleCall(CallContext context)
    throws Throwable {
-      boolean debugEnabled = context.isDebugEnabled();]]></xsl:text>
+      boolean debugEnabled = context.isDebugEnabled();</xsl:text>
+
+
+		<!-- ************************************************************* -->
+		<!-- Retrieve session                                              -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text>
+
+      // Get the session
+      Session session = context.getSession();</xsl:text>
+		</xsl:if>
+
+
+		<!-- ************************************************************* -->
+		<!-- Retrieve input parameters                                     -->
+		<!-- ************************************************************* -->
+
 		<xsl:if test="input/param">
 			<xsl:text>
 
       // Get the input parameters</xsl:text>
+
+			<xsl:for-each select="input/param">
+				<xsl:text>
+      String </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> = context.getParameter("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>");</xsl:text>
+			</xsl:for-each>
 		</xsl:if>
 
-		<xsl:for-each select="input/param">
-			<xsl:if test="@name = 'context'">
-				<xsl:message terminate="yes">Name 'context' is reserved. It cannot be used as a parameter name.</xsl:message>
-			</xsl:if>
-			<xsl:text>
-      String </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text> = context.getParameter("</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>");</xsl:text>
-		</xsl:for-each>
+
+		<!-- ************************************************************* -->
+		<!-- Check required parameters                                     -->
+		<!-- ************************************************************* -->
+
 		<xsl:if test="input/param[@required='true']">
 			<xsl:text>
 
@@ -143,62 +164,78 @@ public abstract class ]]></xsl:text>
       if (</xsl:text>
 			<xsl:for-each select="input/param[@required='true']">
 				<xsl:if test="not(position() = 1)"> || </xsl:if>
-				<xsl:text>isMissing(</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>)</xsl:text>
+				<xsl:text> == null</xsl:text>
 			</xsl:for-each>
 			<xsl:text>) {
-         context.startResponse(MISSING_PARAMETERS);
-         if (debugEnabled) {</xsl:text>
+         context.startResponse(MISSING_PARAMETERS);</xsl:text>
 			<xsl:for-each select="input/param[@required='true']">
 				<xsl:text>
-            if (isMissing(</xsl:text>
+         if (</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>)) {
-               context.debug("Missing parameter \"</xsl:text>
+				<xsl:text> == null) {
+            context.startTag("missing-param");
+            context.attribute("name", "</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>\".");
-            }</xsl:text>
+				<xsl:text>");
+            context.endTag();
+         }</xsl:text>
 			</xsl:for-each>
 			<xsl:text>
-         }</xsl:text>
-			<xsl:if test="input/param-combo[@type='inclusive-or']">
-				<xsl:text>
+         return;
+      }</xsl:text>
+		</xsl:if>
+
+
+		<!-- ************************************************************* -->
+		<!-- Check 'inclusive-or' combos                                   -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="input/param-combo[@type='inclusive-or']">
+			<xsl:text>
 
       // Check inclusive-or parameter combinations</xsl:text>
-			</xsl:if>
 			<xsl:for-each select="input/param-combo[@type='inclusive-or']">
 				<xsl:text>
-      } else if (</xsl:text>
+      if (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:text>isMissing(</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>)</xsl:text>
+					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
          context.startResponse(INVALID_PARAMETERS);
-         if (debugEnabled) {
-            context.debug("Either </xsl:text>
+         context.startTag("param-combo");
+         context.attribute("type", "inclusive-or");</xsl:text>
 				<xsl:for-each select="param-ref">
-					<xsl:if test="position() &gt; 1"> or </xsl:if>
-					<xsl:text>\"</xsl:text>
+					<xsl:text>
+         context.startTag("param");
+         context.attribute("name", "</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>\"</xsl:text>
+					<xsl:text>");
+         context.endTag();</xsl:text>
 				</xsl:for-each>
-				<xsl:text> should be set.");
-         }</xsl:text>
-			</xsl:for-each>
-			<xsl:if test="input/param-combo[@type='exclusive-or']">
 				<xsl:text>
+         context.endTag();
+         return;
+      }</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
+
+
+		<!-- ************************************************************* -->
+		<!-- Check 'exclusive-or' combos                                   -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="input/param-combo[@type='exclusive-or']">
+			<xsl:text>
 
       // Check exclusive-or parameter combinations</xsl:text>
-			</xsl:if>
 			<xsl:for-each select="input/param-combo[@type='exclusive-or']">
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:text>
-      } else if (!isMissing(</xsl:text>
+      if (!isMissing(</xsl:text>
 					<xsl:value-of select="$active" />
 					<xsl:text>) &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
@@ -209,26 +246,34 @@ public abstract class ]]></xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
          context.startResponse(INVALID_PARAMETERS);
-         if (debugEnabled) {
-            context.debug("Exactly one of </xsl:text>
-				<xsl:for-each select="param-ref">
-					<xsl:if test="position() &gt; 1"> and </xsl:if>
-					<xsl:text>\"</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>\"</xsl:text>
-				</xsl:for-each>
-				<xsl:text> must be set.");
-         }</xsl:text>
+         context.startTag("param-combo");
+         context.attribute("type", "exclusive-or");</xsl:text>
+					<xsl:for-each select="param-ref">
+						<xsl:text>
+         context.startTag("param");
+         context.attribute("name", "</xsl:text>
+						<xsl:value-of select="$active" />
+						<xsl:text>");</xsl:text>
+					</xsl:for-each>
+					<xsl:text>
+         context.endTag();
+      }</xsl:text>
 				</xsl:for-each>
 			</xsl:for-each>
-			<xsl:if test="input/param-combo[@type='exclusive-or']">
-				<xsl:text>
+		</xsl:if>
+
+
+		<!-- ************************************************************* -->
+		<!-- Check 'all-or-none' combos                                    -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="input/param-combo[@type='all-or-none']">
+			<xsl:text>
 
       // Check all-or-none parameter combinations</xsl:text>
-			</xsl:if>
 			<xsl:for-each select="input/param-combo[@type='all-or-none']">
 				<xsl:text>
-      } else if (!(</xsl:text>
+      if (!(</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
 					<xsl:text>isMissing(</xsl:text>
@@ -244,28 +289,35 @@ public abstract class ]]></xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
          context.startResponse(INVALID_PARAMETERS);
-         if (debugEnabled) {
-            context.debug("Either </xsl:text>
+         context.startTag("param-combo");
+         context.attribute("type", "all-or-none");</xsl:text>
 				<xsl:for-each select="param-ref">
-					<xsl:if test="position() &gt; 1"> and </xsl:if>
-					<xsl:text>\"</xsl:text>
+					<xsl:text>
+         context.startTag("param");
+         context.attribute("name", "</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>\"</xsl:text>
+					<xsl:text>");</xsl:text>
 				</xsl:for-each>
-				<xsl:text> should all be set, or none these should be set.");
+				<xsl:text>
          }</xsl:text>
 
 			</xsl:for-each>
-			<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
-				<xsl:text>
+		</xsl:if>
+
+
+		<!-- ************************************************************* -->
+		<!-- Check values for types                                        -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
+			<xsl:text>
 
       // Check values are valid for the associated types</xsl:text>
-			</xsl:if>
 			<xsl:for-each select="input/param[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:text>
-      } else if (!isMissing(</xsl:text>
+      if (</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>) &amp;&amp; !</xsl:text>
+				<xsl:text> != null &amp;&amp; !</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="specsdir" select="$specsdir" />
@@ -275,29 +327,35 @@ public abstract class ]]></xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
          context.startResponse(INVALID_PARAMETERS);
-         if (debugEnabled) {
-            context.debug("The value " + </xsl:text>
+         context.startTag("invalid-value-for-type");
+         context.attribute("param", "</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text> + " is not valid for parameter \"</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>\".");
-         }</xsl:text>
+				<xsl:text>");
+         context.attribute("type", "</xsl:text>
+				<xsl:value-of select="@type" />
+				<xsl:text>");
+         context.endTag();
+         return;
+      }</xsl:text>
 			</xsl:for-each>
-			<xsl:text>
-
-      // Otherwise everything is okay, let the subclass do the thing
-      } else {
-         call(context</xsl:text>
 		</xsl:if>
-		<xsl:if test="not(input/param[@required='true'])">
-			<xsl:text>
 
-      // Nothing to check, just let the subclass do the thing
+		<xsl:choose>
+			<xsl:when test="$sessionBased = 'true'">
+				<xsl:text>
+
+      // Lock on the session and then call the subclass
+      synchronized (session) {
+         call(context, session</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>
+
+      // Call the subclass
       call(context</xsl:text>
-		</xsl:if>
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>, context.getSession()</xsl:text>
-		</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_from_string_for_type">
@@ -309,10 +367,6 @@ public abstract class ]]></xsl:text>
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:text>);</xsl:text>
-		<xsl:if test="input/param[@required='true']">
-			<xsl:text>
-      }</xsl:text>
-		</xsl:if>
 		<xsl:if test="@createsSession = 'true'">
 			<xsl:if test="input/param">
 				<xsl:message terminate="yes">No input parameters allowed for functions that create sessions.</xsl:message>
@@ -324,6 +378,10 @@ public abstract class ]]></xsl:text>
 
       // Create the session
       context.createSession();</xsl:text>
+		</xsl:if>
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text>
+      }</xsl:text>
 		</xsl:if>
 		<xsl:text><![CDATA[
    }
