@@ -333,11 +333,13 @@ $Id$
 					
 					<target name="war-api-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
 						<mkdir dir="build/webapps/{$api}" />
+						<delete file="build/webapps/{$api}/web.xml" />
 						<style
 							in="{$specsdir}/{$api}/api.xml"
 							out="build/webapps/{$api}/web.xml"
 							style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
 							<param name="project_home" expression="{$project_home}" />
+							<param name="deployment"   expression="${{deployment}}" />
 						</style>
 						<war
 							webxml="build/webapps/{$api}/web.xml"
