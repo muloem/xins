@@ -378,6 +378,14 @@ public final class Doorman extends Object {
       // Inner classes
       //----------------------------------------------------------------------
 
+      /**
+       * Type of an entry in a queue for a doorman.
+       *
+       * @version $Revision$ $Date$
+       * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+       *
+       * @since XINS 0.66
+       */
       public static final class EntryType
       extends Object {
 
