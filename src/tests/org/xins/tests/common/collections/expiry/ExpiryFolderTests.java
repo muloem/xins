@@ -67,11 +67,13 @@ public class ExpiryFolderTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
+   // TODO: Stop all expiry strategies globally
+
    public void testExpiryFolder() throws Throwable {
-      ExpiryStrategy stategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, MAX_QUEUE_WAIT_TIME);
+      ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
+      ExpiryFolder folder = new ExpiryFolder("Test1", strategy, false, MAX_QUEUE_WAIT_TIME);
       assertEquals("Incorrect name.", "Test1", folder.getName());
-      assertEquals("Incorrect strategy.", stategy, folder.getStrategy());
+      assertEquals("Incorrect strategy.", strategy, folder.getStrategy());
       assertNull(folder.get("hello"));
       assertNull(folder.find("hello"));
       try {
@@ -112,6 +114,8 @@ public class ExpiryFolderTests extends TestCase {
       Thread.sleep(50);
       assertNull("Incorrect value found.", folder.find("hello"));
       assertNull("Got incorrect value.", folder.get("hello"));
+
+      strategy.stop();
    }
 
    public void testStategy() throws Throwable {
@@ -119,11 +123,13 @@ public class ExpiryFolderTests extends TestCase {
       assertEquals(15, strategy.getPrecision());
       assertEquals(60, strategy.getTimeOut());
       assertEquals(4, strategy.getSlotCount());
+
+      strategy.stop();
    }
 
    public void testRemove() throws Throwable {
-      ExpiryStrategy stategy = new ExpiryStrategy(60, 15);
-      ExpiryFolder folder = new ExpiryFolder("Test1", stategy, false, MAX_QUEUE_WAIT_TIME);
+      ExpiryStrategy strategy = new ExpiryStrategy(60, 15);
+      ExpiryFolder folder = new ExpiryFolder("Test1", strategy, false, MAX_QUEUE_WAIT_TIME);
       folder.put("hello", "world");
       try {
          Thread.sleep(20);
@@ -142,5 +148,7 @@ public class ExpiryFolderTests extends TestCase {
 
       // remove a non existing object
       assertNull(folder.remove("hello2"));
+
+      strategy.stop();
    }
 }
