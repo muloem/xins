@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Collections;
 import org.apache.commons.httpclient.HttpClient;
@@ -172,12 +173,20 @@ public final class XINSServiceCaller extends ServiceCaller {
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
       super(descriptor);
+
+      _parser = new ResultParser();
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The result parser.
+    */
+   private final ResultParser _parser;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -198,7 +207,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       client.setTimeout(target.getTimeOut());
 
       boolean succeeded = false;
-      byte[] data;
+      String body;
       int    code;
 
       try {
@@ -206,7 +215,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          client.executeMethod(method);
 
          // Read response body (mandatory operation) and determine status
-         data = method.getResponseBody();
+         body = method.getResponseBodyAsString();
          code = method.getStatusCode();
 
          succeeded = true;
@@ -224,11 +233,19 @@ public final class XINSServiceCaller extends ServiceCaller {
          }
       }
 
-      return new Result(target,
-                        true,  // TODO:          success,
-                        null,  // TODO:          code,
-                        null,  // TODO:          parameters,
-                        null); // TODO:          dataElement)
+      // Check the code
+      // TODO: Support HTTP codes other than 200
+      if (code != 200) {
+         throw new Error("HTTP code " + code + '.'); // TODO: Throw CallException
+      }
+
+      // If the body is null, then there was an error
+      if (body == null) {
+         throw new Error("Failed to read the response body."); // TODO: Throw CallException
+      }
+
+      // Parse and return the result
+      return _parser.parse(target, body);
    }
 
    /**
@@ -249,13 +266,11 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws CallFailedException
+    * @throws CallException
     *    if the call failed.
     */
-   public Result call(String functionName,
-                      Map    parameters)
-   throws IllegalArgumentException,
-          CallFailedException {
+   public Result call(String functionName, Map parameters)
+   throws IllegalArgumentException, CallException {
       return call(new CallRequest(null, functionName, parameters));
    }
 
@@ -280,14 +295,13 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws CallFailedException
+    * @throws CallException
     *    if the call failed.
     */
    public Result call(String sessionID,
                       String functionName,
                       Map    parameters)
-   throws IllegalArgumentException,
-          CallFailedException {
+   throws IllegalArgumentException, CallException {
       return call(new CallRequest(sessionID, functionName, parameters));
    }
 
@@ -303,21 +317,32 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws CallFailedException
+    * @throws CallException
     *    if the call failed.
     */
    public Result call(CallRequest request)
-   throws IllegalArgumentException,
-          CallFailedException {
+   throws IllegalArgumentException, CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
       // Attempt to perform the call
-      CallResult callResult = doCall(request);
-
-      // On success, return the result
-      return (Result) callResult.getResult();
+      try {
+         CallResult callResult = doCall(request);
+         return (Result) callResult.getResult();
+      } catch (CallFailedException cfe) {
+         List exceptions = cfe.getExceptions();
+         Throwable ex = (Throwable) exceptions.get(0);
+         if (ex instanceof CallException) {
+            throw (CallException) ex;
+         } else if (ex instanceof Error) {
+            throw (Error) ex;
+         } else {
+            String message = "Unexpected " + ex.getClass().getName() + " caught while calling doCall(org.xins.util.service.CallRequest).";
+            LOG.error(message, ex);
+            throw new Error(message);
+         }
+      }
    }
 
 
