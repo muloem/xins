@@ -205,18 +205,18 @@ extends Object {
 
             // Log this match
             if (allow) {
-               Log.log_5002(ip, functionName, i, ruleString);
+               Log.log_5500(ip, functionName, i, ruleString);
             } else {
-               Log.log_5003(ip, functionName, i, ruleString);
+               Log.log_5501(ip, functionName, i, ruleString);
             }
 
             return allow;
          } else {
-            Log.log_5004(ip, functionName, i, ruleString);
+            Log.log_5502(ip, functionName, i, ruleString);
          }
       }
 
-      Log.log_5005(ip, functionName);
+      Log.log_5503(ip, functionName);
 
       return false;
    }
