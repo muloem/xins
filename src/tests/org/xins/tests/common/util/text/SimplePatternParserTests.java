@@ -88,6 +88,10 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("aa?a?*a",  null);
       doTestParseSimplePattern("aa*a*?a",  null);
       doTestParseSimplePattern("aa?a??a",  null);
+      doTestParseSimplePattern("aa%aa",    null);
+      doTestParseSimplePattern("aaaa%",    null);
+      doTestParseSimplePattern("%aaaa",    null);
+      doTestParseSimplePattern("%",        null);
 
       doTestParseSimplePattern("",         "^$");
       doTestParseSimplePattern("*",        "^.*$");
@@ -95,6 +99,9 @@ public class SimplePatternParserTests extends TestCase {
       doTestParseSimplePattern("_Get*",    "^_Get.*$");
       doTestParseSimplePattern("_Get*i?n", "^_Get.*i.n$");
       doTestParseSimplePattern("*on",      "^.*on$");
+      doTestParseSimplePattern("...",      "^\\.\\.\\.$");
+
+      doTestParseSimplePattern("abcdefghijklmnopqrstuvwxyz1234567890-_.", "^abcdefghijklmnopqrstuvwxyz1234567890-_\\.$");
    }
 
    private void doTestParseSimplePattern(String simple, String re)
