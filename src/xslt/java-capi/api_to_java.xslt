@@ -127,6 +127,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<xsl:text><![CDATA[
 
+   /**
+    * Returns the version of XINS used to build this CAPI class.
+    *
+    * @return
+    *    the version as a {@link String}, cannot be <code>null</code>.
+    */
    public String getXINSVersion() {
       return "]]></xsl:text>
 			<xsl:value-of select="$xins_version" />
@@ -151,10 +157,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * caller.
     *
     * <p>The preferred way of constructing a <code>CAPI</code> object is using
-    * {@link #CAPI(Descriptor) the other constructor}.
+    * {@link #CAPI(org.xins.common.service.Descriptor) the other constructor}.
     *
     * @param caller
-    *    the XINS service caller, cannot be <code>null</code>.
+    *    the {@link XINSServiceCaller} object, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>caller == null</code>.
@@ -325,12 +331,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:choose>
 		<xsl:text><![CDATA[
     *
-    * @throws org.xins.client.CallException
-    *    if the call failed for any reason.
+    * @throws org.xins.common.service.GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
     *
-    * @throws org.xins.client.UnacceptableCallResultException
-    *    if the call succeeded, but the result was considered incompatible
-    *    with the specification for this API.
+    * @throws org.xins.common.http.HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
+    *
+    * @throws org.xins.client.XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts failed as well.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
@@ -341,8 +352,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:apply-templates select="input/param" mode="methodSignature" />
 
 		<xsl:text>)
-   throws org.xins.client.CallException,
-          org.xins.client.UnacceptableCallResultException {
+   throws org.xins.common.service.GenericCallException,
+          org.xins.common.http.HTTPCallException,
+          org.xins.client.XINSCallException {
 
       // Get the XINS service caller
       org.xins.client.XINSServiceCaller caller = getCaller();</xsl:text>
@@ -360,8 +372,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<xsl:text>
 
-      // Construct a CallRequest object
-      org.xins.client.CallRequest request = new org.xins.client.CallRequest(</xsl:text>
+      // Construct a call request
+      org.xins.client.XINSCallRequest request = new org.xins.client.XINSCallRequest(</xsl:text>
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>", </xsl:text>
@@ -376,7 +388,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>);
 
       // Execute the call request
-      org.xins.client.Result result = caller.execute(request);</xsl:text>
+      org.xins.client.XINSCallResult result = caller.call(request);</xsl:text>
 		<xsl:choose>
 			<xsl:when test="(output/param and output/data/element) or count(output/param) &gt; 1">
 				<xsl:text>
@@ -418,7 +430,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				</xsl:call-template>
 				<xsl:text>;
       } catch (org.xins.common.types.TypeValueException exception) {
-         throw new org.xins.client.UnacceptableCallResultException(result, null, exception);
+         throw new org.xins.client.UnacceptableResultXINSCallException(result, null, exception);
       }</xsl:text>
 			</xsl:when>
 			<xsl:when test="output/data/element">

@@ -118,7 +118,7 @@ public final class ]]></xsl:text>
     * @throws java.lang.IllegalArgumentException
     *    if <code>result == null || result.getErrorCode() != null</code>.
     *
-    * @throws org.xins.client.UnacceptableCallResultException
+    * @throws org.xins.client.UnacceptableResultXINSCallException
     *    if the specified call result is considered unacceptable as a result
     *    from the <em>]]></xsl:text>
 		<xsl:value-of select="$functionName" />
@@ -126,9 +126,9 @@ public final class ]]></xsl:text>
     */
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text>(org.xins.client.Result result)
+		<xsl:text>(org.xins.client.XINSCallResult result)
    throws java.lang.IllegalArgumentException,
-          org.xins.client.UnacceptableCallResultException {
+          org.xins.client.UnacceptableResultXINSCallException {
 
       // Check preconditions
       if (result == null) {
@@ -157,7 +157,7 @@ public final class ]]></xsl:text>
          buffer.append("\", which is invalid for the type \"");
          buffer.append(exception.getType().getName());
          buffer.append("\".");
-         throw new org.xins.client.UnacceptableCallResultException(result, buffer.toString(), exception);
+         throw new org.xins.client.UnacceptableResultXINSCallException(result, buffer.toString(), exception);
       }</xsl:text>
 		</xsl:if>
 		<xsl:text>
