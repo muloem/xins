@@ -113,6 +113,21 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="javaimport_for_standardtype">
+		<xsl:param name="type"     />
+		<xsl:choose>
+			<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date</xsl:when>
+			<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp</xsl:when>
+			<xsl:when test="$type = '_base64'" />
+			<xsl:otherwise>
+				<xsl:call-template name="javatype_for_standardtype">
+					<xsl:with-param name="type" select="$type" />
+					<xsl:with-param name="required" select="'false'" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template name="javatypeclass_for_standardtype">
 		<xsl:param name="type" />
 

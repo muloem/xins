@@ -535,4 +535,87 @@
 			<xsl:with-param name="text" select="$type" />
 		</xsl:call-template>
 	</xsl:template>
+	
+	<!--
+	* Returns the Java class to import for the specified XINS type. 
+	* This Java data type or class is what values for the specified XINS
+	* type will be instances of.
+	*
+	* @param specsdir
+	*    the specification directory for the concerning XINS project, must be
+	*    specified.
+	*
+	* @param api
+	*    the name of the API to which the type belongs, must be specified.
+	*
+	* @param type
+	*    the name of the type to lookup the base type for, can be empty.
+	*
+	* @return
+	*    the Java type for the specified XINS type, for example 
+	*    'java.lang.Boolean', 'org.xins.common.collections.PropertyReader',
+  *    'org.xins.common.types.standard.Date', 
+	*    'com.mycompany.allinone.types.Salutation'.
+	-->
+	<xsl:template name="javaimport_for_type">
+
+		<!-- Define parameters -->
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		<xsl:param name="type"         />
+		
+		<!-- Determine file that defines type -->
+		<xsl:variable name="type_file">
+			<xsl:value-of select="$specsdir" />
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="$type" />
+			<xsl:text>.typ</xsl:text>
+		</xsl:variable>
+
+		<!-- Check preconditions -->
+		<xsl:if test="string-length($project_file) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'project_file' is mandatory.</xsl:message>
+		</xsl:if>
+		<xsl:if test="string-length($specsdir) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
+		</xsl:if>
+		<xsl:if test="string-length($api) &lt; 1">
+			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
+		</xsl:if>
+
+		<xsl:choose>
+			<!-- Determine Java import for standard type -->
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
+				<xsl:call-template name="javaimport_for_standardtype">
+					<xsl:with-param name="type"     select="$type" />
+				</xsl:call-template>
+			</xsl:when>
+
+			<!-- Determine Java type for list type or set type -->
+			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0 or document($type_file)/type/list or document($type_file)/type/set">
+				<xsl:call-template name="javatype_for_enumtype">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="type"         select="$type"         />
+				</xsl:call-template>
+			</xsl:when>
+
+			<!-- Determine Java type for base type -->
+			<xsl:otherwise>
+				<!-- Determine base type -->
+				<xsl:variable name="basetype">
+					<xsl:call-template name="basetype_for_type">
+						<xsl:with-param name="specsdir" select="$specsdir" />
+						<xsl:with-param name="api"      select="$api"      />
+						<xsl:with-param name="type"     select="$type"     />
+					</xsl:call-template>
+				</xsl:variable>
+
+				<xsl:call-template name="javaimport_for_standardtype">
+					<xsl:with-param name="type"     select="$basetype" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

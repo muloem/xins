@@ -36,6 +36,10 @@ package ]]></xsl:text>
 		<xsl:text><![CDATA[;
 
 ]]></xsl:text>
+		<xsl:call-template name="imports">
+			<xsl:with-param name="types" select="input/param | output/param" />
+			<xsl:with-param name="imports-set" select="''" />
+		</xsl:call-template>
 		<xsl:text><![CDATA[
 /**
  * Implementation of the <code>]]></xsl:text>
@@ -110,6 +114,34 @@ public class ]]></xsl:text>
    }
 }
 </xsl:text>
+	</xsl:template>
+
+	<!-- Writes the import statements for the function -->
+	<xsl:template name="imports">
+		<xsl:param name="types" />
+		<xsl:param name="imports-set" />
+
+		<xsl:if test="$types">
+			<xsl:variable name="import">
+				<xsl:call-template name="javaimport_for_type">
+					<xsl:with-param name="project_file" select="$project_file"   />
+					<xsl:with-param name="specsdir"     select="$specsdir"       />
+					<xsl:with-param name="api"          select="$api"            />
+					<xsl:with-param name="type"         select="$types[1]/@type" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:if test="not(contains($imports-set, $import)) and not(starts-with($import, 'java.lang.')) and not($import = 'byte[]')">
+				<xsl:text>import </xsl:text>
+				<xsl:value-of select="$import" />
+				<xsl:text>;
+</xsl:text>
+			</xsl:if>
+			<xsl:call-template name="imports">
+				<xsl:with-param name="types" select="$types[position()!=1]" />
+				<xsl:with-param name="imports-set" select="concat($imports-set, ';', $import)" />
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
