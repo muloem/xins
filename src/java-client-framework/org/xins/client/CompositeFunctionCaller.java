@@ -14,7 +14,8 @@ import java.util.List;
 public interface CompositeFunctionCaller extends FunctionCaller {
 
    /**
-    * Gets the members of this composite function caller.
+    * Gets the members of this composite function caller. All instances in the
+    * returned list are guaranteed to be {@link FunctionCaller} instances.
     *
     * @return
     *    an unmodifiable view of the members, cannot be <code>null</code>.
