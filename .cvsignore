@@ -7,4 +7,5 @@ depends
 .classpath
 .checkstyle
 .clover
+.directory
 .nbintdb
