@@ -514,6 +514,7 @@
 		<tempfile destdir="${java.io.tmpdir}" prefix="xins-release-diff." property="diff-file" suffix=".diff" />
 		<cvs command="diff" output="${diff-file}" quiet="true" />
 		<loadfile srcfile="${diff-file}" property="diff-contents" />
+		<echo message="Diff contents: &quot;${diff-contents}&quot;." />
 		<condition property="diff-contents-empty">
 			<equals arg1="${diff-contents}" arg2="" />
 		</condition>
