@@ -90,7 +90,7 @@ extends UnsuccessfulXINSCallExceptionFactory {
 
       // Otherwise just return a plain UnsuccessfulXINSCallException
       } else {
-         return new UnsuccessfulXINSCallException(request,  target, duration, resultData, null);
+         return new UnsuccessfulXINSCallException(request, target, duration, resultData, null);
       }
    }
 }
