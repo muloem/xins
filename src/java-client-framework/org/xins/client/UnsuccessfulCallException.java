@@ -3,6 +3,8 @@
  */
 package org.xins.client;
 
+import java.util.Map;
+import org.jdom.Element;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
@@ -52,6 +54,7 @@ extends CallException {
          throw new IllegalArgumentException("result.isSuccess() == true");
       }
 
+      // Create message in buffer
       FastStringBuffer buffer = new FastStringBuffer(80);
       buffer.append("Call was unsuccessful");
       String code = result.getCode();
@@ -61,6 +64,8 @@ extends CallException {
          buffer.append('"');
       }
       buffer.append('.');
+
+      // Return the message string
       return buffer.toString();
    }
 
@@ -110,8 +115,85 @@ extends CallException {
     *
     * @return
     *    the call result, cannot be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.136.
     */
    public CallResult getCallResult() {
       return _result;
+   }
+
+   /**
+    * Returns the <code>ActualFunctionCaller</code> that executed the call.
+    *
+    * @return
+    *    the {@link ActualFunctionCaller} that executed the call, or
+    *    <code>null</code> if this information is not available.
+    *
+    * @since XINS 0.136
+    */
+   public ActualFunctionCaller getFunctionCaller() {
+      return _result.getFunctionCaller();
+   }
+
+   /**
+    * Returns the result code.
+    *
+    * @return
+    *    the result code or <code>null</code> if no code was returned.
+    *
+    * @since XINS 0.136
+    */
+   public String getCode() {
+      return _result.getCode();
+   }
+
+   /**
+    * Gets all returned parameters.
+    *
+    * @return
+    *    a <code>Map</code> containing all parameters, never
+    *    <code>null</code>; the keys will be the names of the parameters
+    *    ({@link String} objects, cannot be <code>null</code>), the values will be the parameter values
+    *    ({@link String} objects as well, cannot be <code>null</code>).
+    *
+    * @since XINS 0.136
+    */
+   public Map getParameters() {
+      return _result.getParameters();
+   }
+
+   /**
+    * Gets the value of the specified returned parameter.
+    *
+    * @param name
+    *    the parameter element name, not <code>null</code>.
+    *
+    * @return
+    *    string containing the value of the parameter, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
+    * @since XINS 0.136
+    */
+   public String getParameter(String name)
+   throws IllegalArgumentException {
+      return _result.getParameter(name);
+   }
+
+   /**
+    * Returns the optional extra data. The data is an XML {@link Element}, or
+    * <code>null</code>.
+    *
+    * @return
+    *    the extra data as an XML {@link Element}, can be <code>null</code>;
+    *    if it is not <code>null</code>, then
+    *    <code><em>return</em>.{@link Element#getName() getName()}.equals("data") &amp;&amp; <em>return</em>.{@link Element#getNamespace() getNamespace()}.equals({@link Namespace#NO_NAMESPACE NO_NAMESPACE})</code>.
+    *
+    * @since XINS 0.136
+    */
+   public Element getDataElement() {
+      return _result.getDataElement();
    }
 }
