@@ -6,21 +6,52 @@ package org.xins.server;
 import org.xins.util.collections.PropertyReader;
 
 /**
- * Interface for lifespan management classes registered with an API
- * implementation. Implementations must have a public no-argument constructor.
- * The {@link #init(PropertyReader,PropertyReader)} method will be called
- * during the initialization of the XINS/Java Server Framework, while
- * {@link #destroy()} will be called during shutdown.
+ * Lifespan manager. Abstract base class for lifespan management classes
+ * registered with an API implementation. Implementations must have a public
+ * no-argument constructor. The {@link #init(PropertyReader,PropertyReader)}
+ * method will be called during initialization and re-initialization of the
+ * XINS/Java Server Framework, while {@link #destroy()} will be called at
+ * shutdown.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  *
  * @since XINS 0.120
  */
-public interface LifespanManager {
+public abstract class LifespanManager extends Object {
+
+   // TODO: Add state management
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
 
    /**
-    * Bootstraps this instance.
+    * Constructs a new <code>LifespanManager</code>.
+    */
+   protected LifespanManager() {
+      // empty
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   /**
+    * Performs the bootstrap procedure
     *
     * @param buildSettings
     *    the build-time configuration properties, not <code>null</code>.
@@ -28,7 +59,7 @@ public interface LifespanManager {
     * @throws Throwable
     *    if the bootstrapping failed, for any reason.
     */
-   void bootstrap(PropertyReader buildSettings)
+   public abstract void bootstrap(PropertyReader buildSettings)
    throws Throwable;
 
    /**
@@ -40,7 +71,7 @@ public interface LifespanManager {
     * @throws InitializationException
     *    if the initialization failed, for any reason.
     */
-   void init(PropertyReader runtimeSettings)
+   public abstract void init(PropertyReader runtimeSettings)
    throws InitializationException;
 
    /**
@@ -49,5 +80,6 @@ public interface LifespanManager {
     * @throws Throwable
     *    if the deinitialization fails.
     */
-   void destroy() throws Throwable;
+   public abstract void destroy()
+   throws Throwable;
 }
