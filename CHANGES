@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.121:
 
+* The XINS JAR file is now built to run on Java 1.3+ VMs. Java 1.2 is no
+  longer supported.
+
 * XINS/Java Server Framework:
   - Some small improvements.
   - The _NoOp function now also works if the API is in the process of shutting
