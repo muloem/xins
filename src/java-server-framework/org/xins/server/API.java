@@ -144,14 +144,11 @@ implements DefaultReturnCodes {
     */
    final void handleCall(ServletRequest request, PrintWriter out) throws IOException {
 
-      // TODO: Be less memory-intensive
-
-      // Reset the XMLOutputter
-      StringWriter stringWriter = new StringWriter();
-      XMLOutputter xmlOutputter = new XMLOutputter(stringWriter, "UTF-8");
-
       // Create a new call context
-      CallContext context = new CallContext(request, xmlOutputter);
+      CallContext context = new CallContext(request, out);
+      // TODO: Fetch CallContext by Thread
+
+      StringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
       String functionName = context.getFunction();
@@ -200,6 +197,7 @@ implements DefaultReturnCodes {
          success = false;
          code    = INTERNAL_ERROR;
 
+         XMLOutputter xmlOutputter = context.getXMLOutputter();
          xmlOutputter.reset(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");

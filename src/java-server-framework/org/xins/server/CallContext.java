@@ -4,6 +4,8 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.znerd.xmlenc.XMLOutputter;
@@ -33,11 +35,17 @@ implements Responder {
 
    /**
     * Constructs a new <code>CallContext</code> object.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
     */
-   CallContext(ServletRequest request, XMLOutputter xmlOutputter) {
+   CallContext(ServletRequest request, PrintWriter out)
+   throws IOException {
+
       _start        = System.currentTimeMillis();
       _request      = request;
-      _xmlOutputter = xmlOutputter;
+      _stringWriter = new StringWriter();
+      _xmlOutputter = new XMLOutputter(_stringWriter, "UTF-8");
       _state        = BEFORE_START;
    }
 
@@ -58,7 +66,14 @@ implements Responder {
    private final ServletRequest _request;
 
    /**
-    * The XML outputter.
+    * The <code>StringWriter</code> to send the output to. This field is
+    * initialized by the constructor and can never be <code>null</code>.
+    */
+   private final StringWriter _stringWriter;
+
+   /**
+    * The XML outputter. It is initialized by the constructor and sends its
+    * output to {@link #_stringWriter}.
     */
    private final XMLOutputter _xmlOutputter;
 
@@ -102,6 +117,27 @@ implements Responder {
     */
    long getStart() {
       return _start;
+   }
+
+   /**
+    * Returns the <code>StringWriter</code> the XML output is sent to.
+    *
+    * @return
+    *    the underlying {@link StringWriter}.
+    */
+   StringWriter getStringWriter() {
+      return _stringWriter;
+   }
+
+   /**
+    * Returns the <code>XMLOutputter</code> that is used to generate XML.
+    *
+    * @return
+    *    the underlying {@link XMLOutputter} that sends its output to the
+    *    {@link StringWriter}.
+    */
+   XMLOutputter getXMLOutputter() {
+      return _xmlOutputter;
    }
 
    /**
