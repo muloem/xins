@@ -38,7 +38,7 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
 
-import org.xins.logdoc.FastStringBuffer;
+import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Translation bundle for the <em>]]></xsl:text>
@@ -111,7 +111,7 @@ import org.xins.logdoc.FastStringBuffer;
 				<xsl:with-param name="had-argument" select="'true'" />
 			</xsl:apply-templates>
 			<xsl:text>) {
-      FastStringBuffer buffer = new FastStringBuffer(255);
+      LogdocStringBuffer buffer = new LogdocStringBuffer(255);
       buffer.append(id);
       buffer.append(' ');</xsl:text>
 			<xsl:apply-templates />

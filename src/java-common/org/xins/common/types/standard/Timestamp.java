@@ -303,7 +303,7 @@ public class Timestamp extends Type {
        *    the second of the minute, e.g. <code>0</code> for the first second
        *    of the minute.
        */
-      Value(int year, int month, int day, int hour, int minute, int second) {
+      public Value(int year, int month, int day, int hour, int minute, int second) {
          _year   = year;
          _month  = month;
          _day    = day;

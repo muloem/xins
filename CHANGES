@@ -4,9 +4,22 @@ CHANGES INTRODUCED IN XINS 0.183:
 * XINS/Java Server Framework:
   - Fixed broken link in Javadoc.
 
+* XINS/Java Common Library:
+  - Set the constructor of Date.Value and Timestamp.Value public.
+
+* The generated implementation return by default a new SuccessfulResult
+  instead of null.
+
+* Build and release process:
+  - Put the logdoc package in a apart jar file (logdoc.jar).
+
 * Generated build file:
   - Added a "clients" target that builds all the client api's for all the
     projects.
+  - Added a ant mapper to copy the type files that changes the first character
+    to an uppercase if needed.
+  - Set the construction of the war file as last argument for the targets
+    server-<api> and all-<api>.
 
 * Generated specification documentation:
   - Added a link to download the client zip file.

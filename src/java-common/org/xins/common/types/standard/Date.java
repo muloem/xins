@@ -251,7 +251,7 @@ public class Date extends Type {
        *    the day of the month, e.g. <code>1</code> for the first day of the
        *    month.
        */
-      Value(int year, int month, int day) {
+      public Value(int year, int month, int day) {
          _year  = year;
          _month = month;
          _day   = day;

@@ -14,7 +14,7 @@ package org.xins.logdoc;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public class FastStringBuffer {
+public class LogdocStringBuffer {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -29,7 +29,7 @@ public class FastStringBuffer {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>FastStringBuffer</code> object with the specified
+    * Constructs a new <code>LogdocStringBuffer</code> object with the specified
     * initial capacity.
     *
     * @param capacity
@@ -38,7 +38,7 @@ public class FastStringBuffer {
     * @throws IllegalArgumentException
     *    if <code>capacity &lt; 0</code>.
     */
-   public FastStringBuffer(int capacity)
+   public LogdocStringBuffer(int capacity)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -52,7 +52,7 @@ public class FastStringBuffer {
    }
 
    /**
-    * Constructs a new <code>FastStringBuffer</code> object with the specified
+    * Constructs a new <code>LogdocStringBuffer</code> object with the specified
     * initial content. The capacity will be equal to the length of the
     * specified string.
     *
@@ -62,7 +62,7 @@ public class FastStringBuffer {
     * @throws IllegalArgumentException
     *    if <code>s == null</code>.
     */
-   public FastStringBuffer(String s)
+   public LogdocStringBuffer(String s)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -74,7 +74,7 @@ public class FastStringBuffer {
    }
 
    /**
-    * Constructs a new <code>FastStringBuffer</code> object with the specified
+    * Constructs a new <code>LogdocStringBuffer</code> object with the specified
     * initial capacity and content.
     *
     * @param capacity
@@ -87,7 +87,7 @@ public class FastStringBuffer {
     * @throws IllegalArgumentException
     *    if <code>s == null || capacity &lt; <code>s.</code>{@link String#length()}.
     */
-   public FastStringBuffer(int capacity, String s)
+   public LogdocStringBuffer(int capacity, String s)
    throws IllegalArgumentException {
 
       // Check preconditions

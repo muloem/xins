@@ -119,7 +119,35 @@
 		<delete dir="demo" />
 	</target>
 
-	<target name="java-common" depends="-init, logdoc-java-common" description="Compiles the XINS/Java common code">
+	<target name="java-logdoc" depends="-init" description="Compiles the XINS/Java logdoc code">
+		<mkdir dir="build/classes/logdoc" />
+		<javac srcdir="src/java-common"
+		       includes="org/xins/logdoc/*.java"
+		       destdir="build/classes/logdoc"
+		       debug="${javac.debug}"
+		       deprecation="${javac.deprecation}"
+		       optimize="${javac.optimize}"
+		       target="${javac.targetvm}">
+			<classpath>
+				<fileset dir="lib"             includes="*.jar" />
+			</classpath>
+		</javac>
+		<manifest file="build/MANIFEST.MF">
+			<section name="logdoc">
+				<attribute name="Specification-Title"    value="Logdoc" />
+				<attribute name="Specification-Version"  value="${version}" />
+				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Implementation-Title"   value="Logdoc" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+			</section>
+		</manifest>
+		<jar jarfile="build/logdoc.jar"
+		     basedir="build/classes/logdoc"
+		     manifest="build/MANIFEST.MF" />
+	</target>
+
+	<target name="java-common" depends="java-logdoc, logdoc-java-common" description="Compiles the XINS/Java common code">
 		<antcall target="-build-framework">
 			<param name="src.side" value="common" />
 			<param name="side"     value="common" />
@@ -156,7 +184,7 @@
 	<target name="-build-framework">
 		<mkdir dir="build/src/java-${src.side}" />
 		<copy todir="build/src/java-${src.side}">
-			<fileset dir="src/java-${src.side}" includes="**/*.java,**/package.html" />
+			<fileset dir="src/java-${src.side}/org/xins/${side}" includes="**/*.java,**/package.html" />
 		</copy>
 		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
 		<copy todir="build/src/java-${src.side}/org/xins/${side}">
@@ -172,6 +200,7 @@
 		target="${javac.targetvm}">
 			<classpath>
 				<path refid="path.common" />
+				<pathelement location="build/logdoc.jar" />
 				<fileset dir="lib"             includes="*.jar" />
 			</classpath>
 		</javac>
@@ -191,7 +220,7 @@
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="java" depends="java-common,java-client,java-server" description="Compiles the XINS/Java java code (common, server and client)"/>
+	<target name="java" depends="java-logdoc,java-common,java-client,java-server" description="Compiles the XINS/Java java code (common, server and client)"/>
 
 	<target name="-prepare-logdoc-server">
 		<antcall target="-prepare-logdoc">
@@ -326,6 +355,7 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
@@ -342,6 +372,7 @@
 				<pathelement location="build/xins-common.jar" />
 				<pathelement location="build/xins-server.jar" />
 				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>

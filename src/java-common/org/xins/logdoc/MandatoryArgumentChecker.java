@@ -38,7 +38,7 @@ final class MandatoryArgumentChecker extends Object {
    throws IllegalArgumentException {
 
       if (argumentValue == null) {
-         FastStringBuffer buffer = new FastStringBuffer(40);
+         LogdocStringBuffer buffer = new LogdocStringBuffer(40);
          buffer.append(argumentName);
          buffer.append(" == null");
          throw new IllegalArgumentException(buffer.toString());

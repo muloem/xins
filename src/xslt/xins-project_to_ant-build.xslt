@@ -26,6 +26,7 @@
 	<xsl:variable name="xmlenc_version"    select="'0.43'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
+	<xsl:variable name="logdoc.jar"        select="concat($xins_home,    '/build/logdoc.jar')" />
 	<xsl:variable name="xins-common.jar"   select="concat($xins_home,    '/build/xins-common.jar')" />
 	<xsl:variable name="xins-server.jar"   select="concat($xins_home,    '/build/xins-server.jar')" />
 	<xsl:variable name="xins-client.jar"   select="concat($xins_home,    '/build/xins-client.jar')" />
@@ -351,19 +352,10 @@
 						<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 						<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
-						<xsl:for-each select="document($api_file)/api/type">
-							<xsl:variable name="type" select="@name" />
-							<xsl:variable name="classname">
-								<xsl:call-template name="hungarianUpper">
-									<xsl:with-param name="text">
-										<xsl:value-of select="$type" />
-									</xsl:with-param>
-								</xsl:call-template>
-							</xsl:variable>
-							<copy
-							file="{$api_specsdir}/{$type}.typ"
-							tofile="{$copiedTypesDir}/{$classname}.typ" />
-						</xsl:for-each>
+						<copy todir="{$copiedTypesDir}">
+							<fileset dir="{$api_specsdir}" includes="{$typeIncludes}" />
+							<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
+						</copy>
 
 						<xmlvalidate file="{$api_file}" warn="false">
 							<xmlcatalog refid="all-dtds" />
@@ -408,6 +400,7 @@
 						debug="true"
 						deprecation="${{deprecated}}">
 							<classpath>
+								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 								<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
@@ -645,6 +638,7 @@
 								<xsl:if test="$apiHasTypes = 'true'">
 									<pathelement path="{$typeClassesDir}" />
 								</xsl:if>
+								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
 								<pathelement path="{$xins-server.jar}" />
 								<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
@@ -680,6 +674,7 @@
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">
+							<lib dir="{$xins_home}/build"                       includes="logdoc.jar" />
 							<lib dir="{$xins_home}/build"                       includes="xins-common.jar" />
 							<lib dir="{$xins_home}/build"                       includes="xins-server.jar" />
 							<lib dir="{$xins_home}/lib" includes="**/*.jar" />
@@ -736,6 +731,7 @@
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/ant/" />
 							<classpath>
+								<pathelement location="{$xins_home}/build/logdoc.jar"       />
 								<pathelement location="{$xins_home}/build/xins-common.jar"   />
 								<pathelement location="{$xins_home}/build/xins-server.jar"   />
 								<pathelement location="{$xins_home}/lib/jdom.jar"            />
@@ -753,7 +749,7 @@
 					</target>
 
 					<target name="server-{$api}"
-					        depends="war-{$api}, specdocs-{$api}, javadoc-api-{$api}"
+					        depends="specdocs-{$api}, javadoc-api-{$api}, war-{$api}"
 					        description="Generates the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}' API stubs">
 					</target>
 				</xsl:if>
@@ -846,6 +842,7 @@
 					debug="true"
 					deprecation="${{deprecated}}">
 						<classpath>
+							<pathelement path="{$logdoc.jar}"      />
 							<pathelement path="{$xins-common.jar}" />
 							<pathelement path="{$xins-client.jar}" />
 							<xsl:if test="$apiHasTypes = 'true'">
@@ -914,6 +911,7 @@
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/ant/" />
 						<classpath>
+							<pathelement location="{$xins_home}/build/logdoc.jar"       />
 							<pathelement location="{$xins_home}/build/xins-common.jar"   />
 							<pathelement location="{$xins_home}/build/xins-client.jar"   />
 							<pathelement location="{$xins_home}/lib/jdom.jar"            />
@@ -943,13 +941,12 @@
 				<target name="all-{$api}"
 				        description="Generates everything for the '{$api}' API stubs.">
 					<xsl:attribute name="depends">
-						<xsl:if test="document($api_file)/api/impl-java">
-							<xsl:text>server-</xsl:text>
-							<xsl:value-of select="$api" />
-							<xsl:text>,</xsl:text>
-						</xsl:if>
 						<xsl:text>client-</xsl:text>
 						<xsl:value-of select="$api" />
+						<xsl:if test="document($api_file)/api/impl-java">
+							<xsl:text>, server-</xsl:text>
+							<xsl:value-of select="$api" />
+						</xsl:if>
 					</xsl:attribute>
 				</target>
 
