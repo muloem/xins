@@ -86,13 +86,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws IllegalArgumentException
     *    if <code>caller == null || sessionIDSplitter == null</code>.
     */
-   private static final org.xins.client.XINSServiceCaller checkArguments(XINSServiceCaller caller,
-                                                                         SessionIDSplitter sessionIDSplitter)
+   private static final org.xins.client.XINSServiceCaller checkArguments(
+      org.xins.client.XINSServiceCaller caller,
+      org.xins.client.SessionIDSplitter sessionIDSplitter
+   )
    throws IllegalArgumentException {
 
       // Check preconditions
-      org.xins.util.MandatoryArgumentChecker.check("caller", caller,
-                                                   "sessionIDSplitter", sessionIDSplitter);
+      org.xins.util.MandatoryArgumentChecker.check(
+         "caller", caller,
+         "sessionIDSplitter", sessionIDSplitter
+      );
 
       return caller;
    }
@@ -408,8 +412,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:apply-templates>
 
 		<xsl:text>)
-   throws </xsl:text>
-		<xsl:text>org.xins.client.CallException {</xsl:text>
+   throws org.xins.client.CallException {</xsl:text>
 		<xsl:if test="$kind = 'sessionBased'">
 			<xsl:text>
 
