@@ -359,6 +359,10 @@
 			offline="true"
 			packagelistloc="src/package-lists/commons-logging/" />
 			<link
+			href="http://jakarta.apache.org/oro/api/"
+			offline="true"
+			packagelistloc="src/package-lists/oro/" />
+			<link
 			href="http://xmlenc.sourceforge.net/javadoc/0.37/"
 			offline="true"
 			packagelistloc="src/package-lists/xmlenc/" />
