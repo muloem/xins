@@ -71,7 +71,7 @@ CHANGES INTRODUCED IN XINS 0.110:
     org.jdom.Element object directly.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 0.109:
+CHANGES INTRODUCED IN XINS 0.109: (based on XINS 0.108)
 
 * Generated CAPI classes:
   - Main class is now called 'CAPI' instead of 'API' to reduce confusion with
@@ -90,6 +90,17 @@ CHANGES INTRODUCED IN XINS 0.109:
     denote enumeration types. This may break existing implementation code that
     expects that the signature of the call method accepts a java.lang.String
     instead.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.108.1:
+
+* Fixed XINS build.xml file: The 'bin-package' target now correctly depends on
+  'java-client-framework' target.
+
+* Generation of Java type classes:
+  - Set reloadstylesheet='true' for the type_to_java conversions.
+    This is to work around a bug in Java 1.4.1.
+    Note that this doesn't work in Ant versions prior to 1.5.2.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.108:
