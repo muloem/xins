@@ -25,7 +25,6 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
-import java.io.IOException;
 import org.xins.server.Function;
 import org.xins.server.Responder;
 
