@@ -168,7 +168,7 @@ public abstract class ServiceCaller extends Object {
 
    /**
     * Determines the reason for a specific exception. The reason should not
-    * and with a punctuation mark like a period (<code>'.'</code>).
+    * end with a punctuation mark like a period (<code>'.'</code>).
     *
     * @return
     *    a description of the reason for the exception, never
@@ -176,6 +176,8 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
+    *
+    * @since XINS 0.116
     */
    protected final String reasonFor(Throwable exception)
    throws IllegalArgumentException {
@@ -198,7 +200,19 @@ public abstract class ServiceCaller extends Object {
       }
    }
 
-   // TODO: Document
+   /**
+    * Determines the reason for a specific exception (implementation method).
+    *
+    * <p>Note that the reason should not end with a punctuation mark like a
+    * period (<code>'.'</code>).
+    *
+    * @return
+    *    a description of the reason for the exception, or <code>null</code>
+    *    if the calling method ({@link #reasonFor(Throwable)}) should
+    *    determine the reason, never an empty character string.
+    *
+    * @since XINS 0.116
+    */
    protected String reasonForImpl(Throwable exception) {
       return null;
    }
