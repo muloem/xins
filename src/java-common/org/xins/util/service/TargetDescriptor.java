@@ -3,8 +3,10 @@
  */
 package org.xins.util.service;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
+import java.util.zip.CRC32;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
@@ -50,6 +52,10 @@ public final class TargetDescriptor extends Descriptor {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Initializes this class. This function compiles {@link #PATTERN_STRING}
+    * to a {@link Pattern} and then stores that in {@link #PATTERN}.
+    */
    static {
       try {
          PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
@@ -57,6 +63,42 @@ public final class TargetDescriptor extends Descriptor {
          throw new Error("The pattern \"" + PATTERN_STRING + "\" is malformed.");
       }
    }
+
+   /**
+    * Computes the CRC-32 checksum for the specified character string.
+    *
+    * @param s
+    *    the string for which to compute the checksum, not <code>null</code>.
+    *
+    * @return
+    *    the checksum for <code>s</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null</code>.
+    */
+   private int computeCRC32(String s)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // Compute the CRC-32 checksum
+      CRC32 checksum = new CRC32();
+      byte[] bytes;
+      final String ENCODING = "US-ASCII";
+      try {
+         bytes = s.getBytes(ENCODING);
+      } catch (UnsupportedEncodingException exception) {
+         throw new Error("Encoding \"" + ENCODING + "\" is not supported.");
+      }
+      checksum.update(bytes, 0, bytes.length);
+      return (int) (checksum.getValue() & 0x00000000ffffffffL);
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Constructors
+   //-------------------------------------------------------------------------
 
 
    //-------------------------------------------------------------------------
@@ -91,6 +133,7 @@ public final class TargetDescriptor extends Descriptor {
       // Set fields
       _url     = url;
       _timeOut = timeOut;
+      _crc32   = computeCRC32(url);
    }
 
 
@@ -108,6 +151,11 @@ public final class TargetDescriptor extends Descriptor {
     * should be waited for forever.
     */
    private final int _timeOut;
+
+   /**
+    * The CRC-32 checksum for the URL. See {@link #_url}.
+    */
+   private final int _crc32;
 
 
    //-------------------------------------------------------------------------
