@@ -64,10 +64,32 @@
 			<description>Calling API function.</description>
 			<param name="url"               type="text"  nullable="false" />
 			<param name="function"          type="text"  nullable="false" />
-			<param name="queryString"       type="text"  nullable="false" />
 			<param name="totalTimeOut"      type="int32" nullable="false" />
 			<param name="connectionTimeOut" type="int32" nullable="false" />
 			<param name="socketTimeOut"     type="int32" nullable="false" />
+		</entry>
+		<entry id="2012" level="NOTICE">
+			<description>Connection refused while calling API function.</description>
+			<param name="url"      type="text" nullable="false" />
+			<param name="function" type="text" nullable="false" />
+		</entry>
+		<entry id="2013" level="NOTICE">
+			<description>Connection time-out while calling API function.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="timeOut"  type="int32" nullable="false" />
+		</entry>
+		<entry id="2014" level="NOTICE">
+			<description>Socket time-out while calling API function.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="timeOut"  type="int32" nullable="false" />
+		</entry>
+		<entry id="2015" level="NOTICE">
+			<description>Total call time-out while calling API function.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="timeOut"  type="int32" nullable="false" />
 		</entry>
 	</group>
 

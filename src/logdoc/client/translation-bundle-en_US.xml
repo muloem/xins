@@ -19,5 +19,9 @@
 	<translation entry="2008">HTTP code <value-of-param name="code" />.</translation>
 	<translation entry="2009">Failed to read the response body.</translation>
 	<translation entry="2010">Unexpected <value-of-param name="class_name" /> caught while calling doCall(org.xins.util.service.CallRequest).</translation>
-	<translation entry="2011">Calling <value-of-param name="url" />, function <value-of-param name="function" />, query string is <value-of-param name="queryString" format="quoted" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="connectionTimeOut" /> ms.</translation>
+	<translation entry="2011">Calling <value-of-param name="url" />, function <value-of-param name="function" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="connectionTimeOut" /> ms.</translation>
+	<translation entry="2012">Connection refused while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2013">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2014">Socket time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
+	<translation entry="2015">Total call time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />, function <value-of-param name="function" />.</translation>
 </translation-bundle>
