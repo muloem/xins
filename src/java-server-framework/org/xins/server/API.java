@@ -3,8 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
