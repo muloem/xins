@@ -42,6 +42,8 @@ public abstract class ExpiryMap extends AbstractMap {
 
       // XXX: Allow customization of Map construction?
       _recentlyAccessed = new HashMap(89);
+
+      _slots = new Map[strategy.getSlotCount()];
    }
 
 
@@ -61,6 +63,13 @@ public abstract class ExpiryMap extends AbstractMap {
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
    private final Map _recentlyAccessed;
+
+   /**
+    * Slots to contain the maps with entries that are not the most recently
+    * accessed. The further back in the array, the faster the entries will
+    * expire.
+    */
+   private final Map[] _slots;
 
 
    //-------------------------------------------------------------------------
