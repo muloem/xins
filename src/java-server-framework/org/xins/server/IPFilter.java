@@ -3,9 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.net.IPAddressUtils;
 import org.xins.util.text.ParseException;
@@ -66,7 +63,7 @@ extends Object {
     * Creates an <code>IPFilter</code> object for the specified filter
     * expression. The expression consists of a base IP address and a bit
     * count. The bit count indicates how many bits in an IP address must match
-    * the bits in the base IP address. 
+    * the bits in the base IP address.
     *
     * @param expression
     *    the filter expression, cannot be <code>null</code> and must match
@@ -167,7 +164,7 @@ extends Object {
     * Creates an <code>IPFilter</code> object for the specified filter
     * expression. The expression consists of a base IP address and a bit
     * count. The bit count indicates how many bits in an IP address must match
-    * the bits in the base IP address. 
+    * the bits in the base IP address.
     *
     * @param ipString
     *    the base IP address, as a character string, should not be
@@ -237,7 +234,7 @@ extends Object {
     * Returns the base IP address.
     *
     * @return
-    *    the base IP address, in the form 
+    *    the base IP address, in the form
     *    <code><em>a</em>.<em>a</em>.<em>a</em>.<em>a</em>/<em>n</em></code>,
     *    where <em>a</em> is a number between 0 and 255, with no leading
     *    zeroes; never <code>null</code>.

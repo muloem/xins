@@ -39,15 +39,15 @@ public final class PropertyReaderConverter extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("propertyReader", propertyReader);
 
-      Properties p = new Properties();
+      Properties prop = new Properties();
       Iterator keys = propertyReader.getNames();
       while (keys.hasNext()) {
          String key = (String) keys.next();
          String value = propertyReader.get(key);
 
-         p.setProperty(key, value);
+         prop.setProperty(key, value);
       }
-      return p;
+      return prop;
    }
 
 

@@ -4,7 +4,6 @@
 package org.xins.server;
 
 import org.xins.types.Type;
-import org.xins.types.TypeValueException;
 
 /**
  * Base type for session ID types.

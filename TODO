@@ -22,7 +22,6 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
 
-* Change _GetStatistics to support reset=true.
 * Change implementation of meta-functions from one method per meta-function to
   one class per meta-function.
 * Include the timezone in every message that contains a time?
@@ -67,6 +66,9 @@ XINS/JAVA SERVER FRAMEWORK
 * Log 5014/5015 for meta-functions.
 * Return InvalidParameters if an input parameter of type _properties has a
   single key used multiple times.
+* Optional parameters should generate a isSet<ParamName> and throw an
+  exception is the get<ParamName> is called and the value is not set.
+* Verify the required 'set' methods in the SuccessfulResult are set.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -94,6 +96,8 @@ XINS/JAVA CLIENT FRAMEWORK
   performance.
 * Throw an InvalidKeyException in class XINSServiceCaller, when and where
   appropriate.
+* Add the possibility to link CAPI to a local WAR file. The invokation of the
+  method is then done normally and not through HTTP.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
@@ -122,6 +126,9 @@ LOGDOC
 * Add the French translation in src/logdoc/translation-bundle-fr_FR.xml.
 * Support element in log.xml to reserve an ID that was previously used. For
   example <reserve id="5002" />
+* Add the possibility for the implementation to use its own logdoc.
+* The XINS client framework should use the logdoc approach.
+* The java common classes should use the logdoc approac.
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
@@ -195,3 +202,5 @@ MISCELLANEOUS
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
 * Include a few examples in the release.
+* Rename build targets to war-<api> specdocs-<api> jar-<api>
+* Look at unused classes/methods.

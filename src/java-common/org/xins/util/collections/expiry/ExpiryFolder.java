@@ -354,35 +354,35 @@ extends Object {
 
       // Search in the recently accessed map before
       _recentlyAccessedDoorman.enterAsReader();
-      Object o;
+      Object value;
       try {
-         o = _recentlyAccessed.get(key);
+         value = _recentlyAccessed.get(key);
       } finally {
          _recentlyAccessedDoorman.leaveAsReader();
       }
 
       // If not found, then look in the slots
-      if (o == null) {
+      if (value == null) {
          _slotsDoorman.enterAsReader();
          try {
-            for (int i = 0; i < _slotCount && o == null; i++) {
-               o = _slots[i].remove(key);
+            for (int i = 0; i < _slotCount && value == null; i++) {
+               value = _slots[i].remove(key);
             }
          } finally {
             _slotsDoorman.leaveAsReader();
          }
 
-         if (o != null) {
+         if (value != null) {
             _recentlyAccessedDoorman.enterAsWriter();
             try {
-               _recentlyAccessed.put(key, o);
+               _recentlyAccessed.put(key, value);
             } finally {
                _recentlyAccessedDoorman.leaveAsWriter();
             }
          }
       }
 
-      return o;
+      return value;
    }
 
    /**

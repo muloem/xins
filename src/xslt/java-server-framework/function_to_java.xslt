@@ -123,8 +123,7 @@ public abstract class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
-   throws Throwable {
-      boolean _debugEnabled = context.isDebugEnabled();</xsl:text>
+   throws Throwable {</xsl:text>
 
 
 		<!-- ************************************************************* -->

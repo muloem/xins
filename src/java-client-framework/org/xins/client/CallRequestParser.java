@@ -8,14 +8,11 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.CollectionUtils;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
 

@@ -3,8 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.xins.util.MandatoryArgumentChecker;

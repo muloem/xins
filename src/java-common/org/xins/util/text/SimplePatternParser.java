@@ -8,7 +8,6 @@ import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
 
 /**
  * Simple pattern parser.
@@ -117,7 +116,7 @@ public class SimplePatternParser extends Object {
          parseError = true;
       }
 
-      if (parseError == true) {
+      if (parseError) {
          throw new ParseException("An error occurred while parsing the pattern '" + simplePattern + "'.");
       }
 

@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import org.xins.types.Type;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.math.SafeRandom;
@@ -76,7 +75,7 @@ public final class BasicSessionIDType extends SessionIDType {
          return false;
 
       // Check string starts with prefix
-      } else if (_prefix.equals(value.substring(0, 17)) == false) {
+      } else if (!_prefix.equals(value.substring(0, 17))) {
          return false;
       }
 
@@ -102,7 +101,7 @@ public final class BasicSessionIDType extends SessionIDType {
       }
 
       // Check string starts with prefix
-      if (_prefix.equals(string.substring(0, 17)) == false) {
+      if (!_prefix.equals(string.substring(0, 17))) {
          throw new TypeValueException(this, string);
       }
 

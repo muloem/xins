@@ -3,9 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collections;
 import org.xins.util.collections.PropertyReader;
 
 /**

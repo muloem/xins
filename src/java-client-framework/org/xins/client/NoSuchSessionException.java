@@ -3,11 +3,6 @@
  */
 package org.xins.client;
 
-import java.util.Map;
-import org.jdom.Element;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
-
 /**
  * Exception that indicates that a specified session does not exist.
  *

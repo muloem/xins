@@ -3,7 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,17 +26,14 @@ import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.InvalidPropertyValueException;
 import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
 import org.xins.util.manageable.BootstrapException;
 import org.xins.util.manageable.InitializationException;
 import org.xins.util.servlet.ServletConfigPropertyReader;
-import org.xins.util.text.FastStringBuffer;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -477,7 +473,7 @@ extends HttpServlet {
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
-         
+
          // Property value must be set
          // NOTE: Don't trim the configuration file name, since it may start
          //       with a space or other whitespace character.
@@ -841,7 +837,7 @@ extends HttpServlet {
          String xslt = request.getParameter("_xslt");
 
          // Send the XML output to the stream and flush
-         PrintWriter out = response.getWriter(); 
+         PrintWriter out = response.getWriter();
          response.setContentType("text/xml");
          response.setStatus(HttpServletResponse.SC_OK);
          CallResultOutputter.output(out, result, xslt);
@@ -922,7 +918,7 @@ extends HttpServlet {
       /**
        * The name of this state. Cannot be <code>null</code>.
        */
-      private final String _name; 
+      private final String _name;
 
 
       //----------------------------------------------------------------------

@@ -60,7 +60,7 @@
 	</xsl:variable>
 
 	<xsl:template match="project">
-		<project default="all" basedir="..">
+		<project default="help" basedir="..">
 
 			<target name="clean" description="Removes all generated files">
 				<delete dir="{$builddir}" />
@@ -68,6 +68,32 @@
 
 			<target name="version">
 				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
+			</target>
+
+			<target name="help">
+				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
+				<echo message="" />
+				<echo message="Possible targets:" />
+				<echo message="" />
+				<echo message="war-api-&lt;api&gt;       Creates the WAR for the API." />
+				<echo message="specdocs-api-&lt;api&gt;  Generates all specification docs for the API." />
+				<echo message="javadoc-api-&lt;api&gt;   Generates Javadoc API docs for the API." />
+				<echo message="server-&lt;api&gt;        Generates the war file, the Javadoc API docs for the server side and the specdocs for the API." />
+				<echo message="jar-capi-&lt;api&gt;      Generates and compiles the Java classes for the client-side API." />
+				<echo message="javadoc-capi-&lt;api&gt;  Generates Javadoc API docs for the client-side API." />
+				<echo message="client-&lt;api&gt;        Generates the Javadoc API docs for the client side and the client jar file for the API." />
+				<echo message="rebuild-&lt;api&gt;       Regenerates everything for the API." />
+				<echo message="all-&lt;api&gt;           Generates everything for the API." />
+				<echo message="" />
+				<echo message="all                 Generates everything." />
+				<echo message="clean               Removes all generated files." />
+				<echo message="specdocs            Generates all specification docs." />
+				<echo message="wars                Creates the WARs for all APIs." />
+				<echo message="" />
+				<echo message="create-api          Generates a new api specification file." />
+				<echo message="create-function     Generates a new function specification file." />
+				<echo message="create-rcd          Generates a new result code specification file." />
+				<echo message="create-type         Generates a new type specification file." />
 			</target>
 
 			<xsl:call-template name="createproject">
@@ -324,7 +350,7 @@
 						srcdir="{$javaDestDir}"
 						destdir="{$typeClassesDir}"
 						debug="true"
-						deprecation="true">
+						deprecation="${{deprecated}}">
 							<classpath>
 								<pathelement path="{$xins-common.jar}" />
 								<fileset dir="{$xins_home}/depends/compile"             includes="**/*.jar" />
@@ -511,11 +537,13 @@
 
 						<!-- Compile all classes -->
 						<mkdir dir="{$classesDestDir}" />
+						<!-- If not set by the user set it to true. -->
+						<property name="deprecated" value="true" />
 						<javac
 						srcdir="{$javaCombinedDir}"
 						destdir="{$classesDestDir}"
 						debug="true"
-						deprecation="true">
+						deprecation="${{deprecated}}">
 							<classpath>
 								<xsl:if test="$apiHasTypes = 'true'">
 									<pathelement path="{$typeClassesDir}" />
@@ -746,11 +774,13 @@
 						<xsl:value-of select="$api" />
 					</xsl:attribute>
 					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
+					<!-- If not set by the user set it to true. -->
+					<property name="deprecated" value="true" />
 					<javac
 					srcdir="{$project_home}/build/java-capi/{$api}/"
 					destdir="{$project_home}/build/classes-capi/{$api}"
 					debug="true"
-					deprecation="true">
+					deprecation="${{deprecated}}">
 						<classpath>
 							<pathelement path="{$xins-common.jar}" />
 							<pathelement path="{$xins-client.jar}" />
@@ -869,6 +899,8 @@
 			</target>
 
 			<target name="-prepare-classes" depends="-prepare">
+				<!-- If not set by the user set it to true. -->
+				<property name="deprecated" value="true" />
 				<mkdir dir="build/classes" />
 			</target>
 

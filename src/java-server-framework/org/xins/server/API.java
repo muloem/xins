@@ -3,42 +3,31 @@
  */
 package org.xins.server;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TimeZone;
 
 import javax.servlet.ServletRequest;
 
 import org.xins.logdoc.LogStatistics;
-import org.xins.types.Type;
 import org.xins.types.TypeValueException;
-import org.xins.types.standard.Text;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.InvalidPropertyValueException;
 import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertyReaderUtils;
-import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
-import org.xins.util.io.FastStringWriter;
 import org.xins.util.manageable.BootstrapException;
 import org.xins.util.manageable.DeinitializationException;
 import org.xins.util.manageable.InitializationException;
 import org.xins.util.manageable.Manageable;
 import org.xins.util.text.DateConverter;
-import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
-
-import org.znerd.xmlenc.XMLOutputter;
 
 /**
  * Base class for API implementation classes.

@@ -29,7 +29,7 @@ public class ServletUtils extends Object {
     *
     * @param config
     *    the servlet configuration object, not <code>null</code>.
-    * 
+    *
     * @return
     *    a <code>Properties</code> object containing all initialization
     *    parameters from the servlet configuration object.
@@ -47,9 +47,9 @@ public class ServletUtils extends Object {
 
       Properties properties = new Properties();
 
-      Enumeration e = config.getInitParameterNames();
-      while (e.hasMoreElements()) {
-         String name = (String) e.nextElement();
+      Enumeration paramNames = config.getInitParameterNames();
+      while (paramNames.hasMoreElements()) {
+         String name = (String) paramNames.nextElement();
          Object value = config.getInitParameter(name);
 
          if (value instanceof String) {

@@ -3,14 +3,8 @@
  */
 package org.xins.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Collections;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
-import org.xins.util.collections.ProtectedPropertyReader;
 
 /**
  * Basic implementation of a <code>CallResult</code>.

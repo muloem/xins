@@ -115,16 +115,16 @@ public class Properties extends Type {
          }
 
          // Get name and value
-         String n = (String) names.next();
-         String v = value.get(n);
+         String propName = (String) names.next();
+         String propValue = value.get(propName);
 
          // Append the name encoded
-         buffer.append(URLEncoding.encode(n));
+         buffer.append(URLEncoding.encode(propName));
          buffer.append('=');
 
          // Append the value encoded, iff it is not null
-         if (v != null) {
-            buffer.append(URLEncoding.encode(v));
+         if (propValue != null) {
+            buffer.append(URLEncoding.encode(propValue));
          }
       }
 

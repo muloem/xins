@@ -4,11 +4,8 @@
 package org.xins.server;
 
 import javax.servlet.ServletRequest;
-import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.io.FastStringWriter;
 import org.xins.util.text.FastStringBuffer;
-import org.znerd.xmlenc.XMLOutputter;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;

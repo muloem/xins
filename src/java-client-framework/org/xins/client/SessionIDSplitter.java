@@ -4,7 +4,6 @@
 package org.xins.client;
 
 import org.xins.types.TypeValueException;
-import org.xins.util.service.TargetDescriptor;
 
 /**
  * Splitter that takes a client-side session ID and returns a server

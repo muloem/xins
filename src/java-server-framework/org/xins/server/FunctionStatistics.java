@@ -3,17 +3,6 @@
  */
 package org.xins.server;
 
-import java.io.PrintWriter;
-import javax.servlet.ServletRequest;
-import org.apache.log4j.Logger;
-import org.xins.types.TypeValueException;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.collections.BasicPropertyReader;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.manageable.Manageable;
-import org.xins.util.io.FastStringWriter;
-import org.xins.util.text.FastStringBuffer;
-
 /**
  * Statistics of a function.
  *
@@ -145,7 +134,7 @@ class FunctionStatistics {
     *
     * @param success
     *    indication if the call was successful.
-    * 
+    *
     * @return
     *    returns the duration in milliseconds of the call of the function.
     *    The duration is computed as the difference in between
@@ -157,7 +146,7 @@ class FunctionStatistics {
 
       // Call succeeded
       if (success) {
-        
+
          synchronized (_successfulCallLock) {
             _lastSuccessfulStart    = start;
             _lastSuccessfulDuration = duration;
@@ -354,7 +343,7 @@ class FunctionStatistics {
    public long getUnsuccessfulMaxStart() {
       return _unsuccessfulMaxStart;
    }
-   
+
    /**
     * Resets the statistics for this function.
     */

@@ -3,13 +3,6 @@
  */
 package org.xins.server;
 
-import java.util.Enumeration;
-import java.util.Properties;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.helpers.NullEnumeration;
-import org.xins.util.MandatoryArgumentChecker;
-
 /**
  * Class that represents the XINS/Java Server Framework library.
  *

@@ -20,12 +20,12 @@ public final class BooleanConstants extends Object {
    /**
     * Constant <code>Boolean</code> for the value <code>true</code>.
     */
-   public static final Boolean TRUE = new Boolean(true);
+   public static final Boolean TRUE = Boolean.TRUE;
 
    /**
     * Constant <code>Boolean</code> for the value <code>false</code>.
     */
-   public static final Boolean FALSE = new Boolean(false);
+   public static final Boolean FALSE = Boolean.FALSE;
 
 
    //-------------------------------------------------------------------------

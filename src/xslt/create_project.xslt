@@ -14,7 +14,7 @@
 		<!-- Define parameters -->
 		<xsl:param name="specsdir"    />
 
-		<target name="create-api" description="Generates a new api file.">
+		<target name="create-api" description="Generates a new api specification file.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api (in lowercase) :" />
 			<mkdir dir="{$specsdir}/${{api.name}}" />
@@ -39,7 +39,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." />
 		</target>
 
-		<target name="create-function" description="Generates a new function.">
+		<target name="create-function" description="Generates a new function specification file.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<input addproperty="function.name"
@@ -62,7 +62,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<echo message="Don't forget to add &lt;function name=&quot;${{function.name}}&quot; /&gt; to the api.xml file." />
 		</target>
 
-		<target name="create-rcd" description="Generates a new result code.">
+		<target name="create-rcd" description="Generates a new result code specification file.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<input addproperty="rcd.name"
@@ -85,7 +85,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<echo message="Don't forget to add &lt;resultcode name=&quot;${{rcd.name}}&quot; /&gt; to the api.xml file." />
 		</target>
 
-		<target name="create-type" description="Generates a new result code.">
+		<target name="create-type" description="Generates a new type specification file.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<input addproperty="type.name"

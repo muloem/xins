@@ -4,9 +4,7 @@
 package org.xins.server;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
@@ -119,13 +117,13 @@ final class Element extends Object {
     * Adds an attribute.
     *
     * @param name
-    *    the name of the attribute, cannot be <code>null</code>. 
+    *    the name of the attribute, cannot be <code>null</code>.
     *
     * @param value
-    *    the value of the attribute, cannot be <code>null</code>. 
+    *    the value of the attribute, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || value == null</code>. 
+    *    if <code>name == null || value == null</code>.
     */
    public void addAttribute(String name, String value)
    throws IllegalArgumentException {

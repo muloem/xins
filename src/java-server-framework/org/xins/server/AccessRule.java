@@ -124,7 +124,7 @@ extends Object {
     * @param tokenizer
     *   the {@link StringTokenizer} to retrieve the next token from.
     *
-    * @return 
+    * @return
     *   the next token, never <code>null</code>.
     *
     * @throws ParseException
@@ -255,13 +255,11 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      if (_ipFilter.match(ip) == false) {
-         return false;
-      } else if (PATTERN_MATCHER.matches(functionName, _functionNamePattern) == false) {
+      if (!_ipFilter.match(ip)) {
          return false;
       } else {
-         return true;
-      } 
+         return PATTERN_MATCHER.matches(functionName, _functionNamePattern);
+      }
    }
 
    /**

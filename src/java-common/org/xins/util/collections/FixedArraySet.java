@@ -5,7 +5,6 @@ package org.xins.util.collections;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Unmodifiable <code>Set</code> implementation, based on an array.

@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
 
 /**
  * Utility class for converting an Epoch date to a human-readable time stamp.

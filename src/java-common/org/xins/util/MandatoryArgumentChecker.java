@@ -3,8 +3,6 @@
  */
 package org.xins.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.xins.util.text.FastStringBuffer;
 
 /**

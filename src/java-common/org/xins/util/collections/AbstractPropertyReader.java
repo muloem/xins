@@ -30,9 +30,9 @@ implements PropertyReader {
 
    /**
     * Constructs a new <code>AbstractPropertyReader</code>.
-    * 
+    *
     * @param map
-    *    the map used to put the data of this PropertyReader, cannot be 
+    *    the map used to put the data of this PropertyReader, cannot be
     *    <code>null</code>.
     */
    public AbstractPropertyReader(Map map) {
@@ -56,20 +56,20 @@ implements PropertyReader {
 
    public String get(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      Object o = _properties.get(name);
-      return (String) o;
+      Object value = _properties.get(name);
+      return (String) value;
    }
 
    public Iterator getNames() {
       return _properties.keySet().iterator();
    }
-   
+
    /**
     * Returns the Map that contains the properties.
-    * 
+    *
     * @return
-    *    the map used to store the properties, cannot be 
-    *    <code>null</code>. 
+    *    the map used to store the properties, cannot be
+    *    <code>null</code>.
     */
    protected Map getPropertiesMap() {
       return _properties;

@@ -3,9 +3,6 @@
  */
 package org.xins.client;
 
-import java.util.Map;
-import org.jdom.Element;
-import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 
 /**

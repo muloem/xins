@@ -16,14 +16,11 @@ import org.jdom.Namespace;
 import org.apache.log4j.NDC;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.CollectionUtils;
-import org.xins.util.collections.PropertyReader;
-import org.xins.util.net.URLEncoding;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
 import org.xins.util.service.Descriptor;
 import org.xins.util.service.ServiceCaller;
 import org.xins.util.service.TargetDescriptor;
-import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
 
 /**

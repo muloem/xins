@@ -3,11 +3,9 @@
  */
 package org.xins.util.net;
 
-import java.net.URLDecoder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.FormatException;
-import org.xins.util.text.HexConverter;
 import org.xins.util.text.NonASCIIException;
 
 /**
@@ -101,7 +99,7 @@ public final class URLEncoding extends Object {
       } catch (IndexOutOfBoundsException exception) {
          throw new NonASCIIException((char) c);
       }
-      
+
       return buffer.toString();
    }
 

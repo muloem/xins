@@ -3,10 +3,7 @@
  */
 package org.xins.util.net;
 
-import java.net.URLDecoder;
 import java.util.StringTokenizer;
-import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
 
 /**

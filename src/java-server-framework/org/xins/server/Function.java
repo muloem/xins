@@ -9,10 +9,8 @@ import org.apache.log4j.Logger;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
-import org.xins.util.collections.PropertyReader;
 import org.xins.util.manageable.Manageable;
 import org.xins.util.io.FastStringWriter;
-import org.xins.util.text.FastStringBuffer;
 
 /**
  * Base class for function implementation classes.
@@ -283,7 +281,7 @@ implements DefaultResultCodes {
       int callID = assignCallID();
 
       // Check if this function is enabled
-      if (_enabled == false) {
+      if (!_enabled) {
          performedCall(start, callID, null, false, "DisabledFunction");
          return DISABLED_FUNCTION_RESULT;
       }
@@ -402,8 +400,6 @@ implements DefaultResultCodes {
    private final void performedCall(long start, int callID, Session session, boolean success, String code) {
 
       // TODO: Accept ResultCode
-
-      String message = null;
 
       // TODO: If the Logging is moved somewhere else the
       // The method invoking this method (performedCall) can directly

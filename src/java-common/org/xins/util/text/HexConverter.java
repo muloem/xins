@@ -3,8 +3,6 @@
  */
 package org.xins.util.text;
 
-import org.xins.util.text.FastStringBuffer;
-
 /**
  * Utility class for converting numbers to unsigned hex strings and vice
  * versa.
@@ -64,7 +62,7 @@ public class HexConverter extends Object {
       '0', '0', '0', '0',
       '0', '0', '0', '0',
       '0', '0', '0', '0',
-      '0', '0', '0', '0' 
+      '0', '0', '0', '0'
    };
 
    /**
@@ -282,7 +280,7 @@ public class HexConverter extends Object {
          } else if (c >= CHAR_A && c <= CHAR_F) {
             n |= (c - CHAR_A_FACTOR);
          } else {
-            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\''); 
+            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
          }
       }
 
@@ -370,7 +368,7 @@ public class HexConverter extends Object {
          } else if (c >= CHAR_A && c <= CHAR_F) {
             n |= (c - CHAR_A_FACTOR);
          } else {
-            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\''); 
+            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
          }
       }
 

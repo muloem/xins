@@ -53,10 +53,10 @@ extends Object {
          CONTROLLERS = new AbstractLog.LogController[] { controller };
       } else {
          int size = CONTROLLERS.length;
-         AbstractLog.LogController[] a = new AbstractLog.LogController[size + 1];
-         System.arraycopy(CONTROLLERS, 0, a, 0, size);
-         a[size] = controller;
-         CONTROLLERS = a;
+         AbstractLog.LogController[] newControlers = new AbstractLog.LogController[size + 1];
+         System.arraycopy(CONTROLLERS, 0, newControlers, 0, size);
+         newControlers[size] = controller;
+         CONTROLLERS = newControlers;
       }
    }
 

@@ -10,7 +10,6 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.InvalidPropertyValueException;
 import org.xins.util.collections.MissingRequiredPropertyException;
 import org.xins.util.collections.PropertyReader;
-import org.xins.util.text.FastStringBuffer;
 
 /**
  * Builder that can build a <code>Descriptor</code> object based on a set of

@@ -70,10 +70,10 @@ public final class Query extends Object {
       _searchBase = searchBase;
       _filter     = filter;
       if (attributes == null) {
-	 _attributes = null;
+         _attributes = null;
       } else {
-	 _attributes = new String[attributes.length];
-	 System.arraycopy(attributes, 0, _attributes, 0, attributes.length);
+         _attributes = new String[attributes.length];
+         System.arraycopy(attributes, 0, _attributes, 0, attributes.length);
       }
    }
 
