@@ -6,9 +6,24 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
+* General:
+  - Executed all unit tests on the Blackdown 1.4.1_01 JVM. The tests did NOT
+    succeed. In fact, at least 2 problems were found:
+    . SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on Blackdown
+      JVM 1.4.1. This problem was worked around since this was very easy to
+      implement.
+    . SF.net bug #1113881: 'ant -lib lib tests' hangs on Blackdown JVM 1.4.1
+    Then the tests were rerun using the Blackdown 1.4.2_01. On this JVM the
+    tests did succeed. No more time is spent on supporting the Blackdown 1.4.1
+    JVM and this JVM is considered incompatible with XINS.
+
 * XINS/Java Common Library:
   - Fixed SF.net bug #1113843: Utils.getJavaVersion() does not work with
-    Blackdown JVM.
+    Blackdown JVM. It now properly recognizes the major Java version on
+    Blackdown JVMs. Tested this successfully on both 1.4.1_01 and 1.4.2_01.
+  - Fixed SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on
+    Blackdown JVM 1.4.1. This problem was not really fixed, since the source
+    of the problem is in the Blackdown JVM self. It was worked around though.
   - Added 'copyFrom' method to class ProtectedPropertyReader.
   - Introduced IncorrectSecretKeyException class to be used by the
     ProtectedPropertyReader and the ProtectedList classes so clients can
