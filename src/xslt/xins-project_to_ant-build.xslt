@@ -168,8 +168,8 @@ $Id$
 							basedir="{$specsdir}/{$api}"
 							destdir="{$javaDestDir}/{$packageAsDir}"
 							style="{$xins_home}/src/xslt/java-fundament/function_to_java.xslt"
-							extension=".java">
-							<xsl:attribute name="includes" select="$functionIncludes" />
+							extension=".java"
+							includes="{$functionIncludes}">
 							<param name="project_home" expression="{$project_home}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
 							<param name="package"      expression="{$package}"      />
