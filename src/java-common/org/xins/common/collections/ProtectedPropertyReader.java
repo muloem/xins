@@ -52,8 +52,8 @@ extends AbstractPropertyReader {
     * Constructs a new <code>ProtectedPropertyReader</code>.
     *
     * @param secretKey
-    *    the secret key that must be passed to {@link #set(Object,String,String)}
-    *    in order to be authorized to modify this set of properties.
+    *    the secret key that must be passed to the modification methods in
+    *    order to be authorized to modify this collection.
     *
     * @throws IllegalArgumentException
     *    if <code>secretKey == null</code>.
