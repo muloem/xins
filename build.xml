@@ -263,6 +263,10 @@
 			href="http://jakarta.apache.org/commons/logging/api/"
 			offline="true"
 			packagelistloc="src/package-lists/commons-logging/" />
+			<link
+			href="http://www.jdom.org/docs/apidocs/"
+			offline="true"
+			packagelistloc="src/package-lists/jdom/" />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
