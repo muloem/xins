@@ -79,20 +79,6 @@
 
 				<xsl:if test="boolean(@extends) or boolean(see)">
 					<table class="metadata">
-						<xsl:if test="boolean(@extends)">
-							<tr>
-								<td class="key">Extends:</td>
-								<td class="value">
-									<a>
-										<xsl:attribute name="href">
-											<xsl:value-of select="@extends" />
-											<xsl:text>.html</xsl:text>
-										</xsl:attribute>
-										<xsl:value-of select="@extends" />
-									</a>
-								</td>
-							</tr>
-						</xsl:if>
 						<xsl:if test="boolean(see)">
 							<tr>
 								<td class="key">See also:</td>
@@ -176,8 +162,14 @@
 			<p />
 			<a>
 				<xsl:attribute name="href">
+					<xsl:value-of select="document($project_file)/project/patterntest/@href" />
+					<xsl:text>?pattern=</xsl:text>
 					<xsl:call-template name="urlencode">
-						<xsl:with-param name="text" select="concat(document($project_file)/project/patterntest/@href, '?pattern=^(', text(), ')$')" />
+						<xsl:with-param name="text">
+							<xsl:text>^(</xsl:text>
+							<xsl:value-of select="text()" />
+							<xsl:text>)$</xsl:text>
+						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:attribute>
 				<xsl:text>Test this pattern</xsl:text>
