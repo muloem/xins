@@ -111,7 +111,7 @@ public abstract class EnumType extends Type {
 
    protected final boolean isValidValueImpl(String value) {
       for (int i = 0; i < _values.length; i++) {
-         if (_values.equals(value)) {
+         if (_values[i].equals(value)) {
             return true;
          }
       }
