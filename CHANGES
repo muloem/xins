@@ -1,7 +1,10 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.159:
 
-* XINS/Java Server Framework:
+* Dependencies:
+  - Updated to xmlenc 0.42.
+
+* Generated specification documentation:
   - The examples listed in the html page can be executed by clicking
     on the links to the test forms.
 
@@ -133,7 +136,7 @@ CHANGES INTRODUCED IN XINS 0.154:
     caught.
 
 * Dependencies:
-  - Updated xmlenc to 0.41.
+  - Updated to xmlenc 0.41.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.153:
@@ -248,8 +251,8 @@ CHANGES INTRODUCED IN XINS 0.147:
   - Class API now derives from class Manageable.
 
 * Dependencies:
-  - Updated commons-httpclient to 2.0rc2.
-  - Updated xmlenc to 0.40.
+  - Updated to Jakarta Commons HttpClient 2.0rc2.
+  - Updated to xmlenc 0.40.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.146:
@@ -582,7 +585,7 @@ CHANGES INTRODUCED IN XINS 0.127:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.126:
 
-* Updated xmlenc to 0.39.
+* Updated to xmlenc 0.39.
 
 * Added TODO file.
 
@@ -961,7 +964,7 @@ CHANGES INTRODUCED IN XINS 0.105:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.104:
 
-* Updated xmlenc to 0.37.
+* Updated to xmlenc 0.37.
 
 * XINS/Java Client Framework:
   - MultipleIPAddressesException: Improved message. Storing host name and
@@ -1291,7 +1294,7 @@ CHANGES INTRODUCED IN XINS 0.75:
   - A warning is logged if APIServlet has to initialize Log4J without
     initialization settings.
 
-* Upgraded xmlenc from 0.34 to 0.36.
+* Updated to xmlenc 0.36.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.74:
@@ -1877,7 +1880,7 @@ CHANGES INTRODUCED IN XINS 0.29:
 
 * Responder: Added method fail(ResultCode).
 
-* Upgraded xmlenc to release 0.33.
+* Upgraded to xmlenc 0.33.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.28:
