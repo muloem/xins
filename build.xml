@@ -148,7 +148,7 @@ ${sf.file}</fail>
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
-		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server-framework:build/src/java-client-framework" />
+		<property name="javadoc.srcdir.xins" value="src/java-common:build/src/java-common:src/java-server-framework:build/src/java-server-framework:src/java-client-framework:build/src/java-client-framework" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -234,9 +234,6 @@ ${sf.file}</fail>
 		<mkdir dir="build/src/java-${src.side}" />
 		<copy file="src/java-${src.side}/org/xins/${side}/Library.java" todir="build/src/java-${src.side}/org/xins/${side}/" />
 		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
-		<copy todir="build/src/java-${src.side}/org/xins/${side}">
-			<fileset dir="build/logdoc/${side}/java" includes="**/*.java" />
-		</copy>
 		<mkdir dir="build/classes/java-${side}" />
 		<javac
 		sourcepath=""
@@ -291,18 +288,21 @@ ${sf.file}</fail>
 
 	<target name="-prepare-logdoc-server">
 		<antcall target="-prepare-logdoc">
+			<param name="src.side" value="server-framework" />
 			<param name="side" value="server"/>
 		</antcall>
 	</target>
 
 	<target name="-prepare-logdoc-client">
 		<antcall target="-prepare-logdoc">
+			<param name="src.side" value="client-framework" />
 			<param name="side" value="client"/>
 		</antcall>
 	</target>
 
 	<target name="-prepare-logdoc-common">
 		<antcall target="-prepare-logdoc">
+			<param name="src.side" value="common" />
 			<param name="side" value="common"/>
 		</antcall>
 	</target>
@@ -327,7 +327,7 @@ ${sf.file}</fail>
 			<param name="logdoc_dtd_dir"  expression="${basedir}/src/dtd"            />
 			<param name="sourcedir"       expression="${basedir}/src/logdoc/${side}" />
 			<param name="html_destdir"    expression="html"                          />
-			<param name="java_destdir"    expression="java"                          />
+			<param name="java_destdir"    expression="${basedir}/build/src/java-${src.side}/org/xins/${side}" />
 			<param name="package_name"    expression="org.xins.${package}"           />
 		</style>
 	</target>
@@ -374,7 +374,7 @@ ${sf.file}</fail>
 
 		<!-- Create TAR GZ file for Logdoc HTML -->
 		<echo level="verbose" message="Creating TAR GZ file for Logdoc HTML" />
-		<tar tarfile="build/logdoc.tar">
+		<tar tarfile="build/logdoc.tar" longfile="gnu">
 			<tarfileset dir="build/logdoc/common/html" mode="664" prefix="${version}/common" />
 			<tarfileset dir="build/logdoc/client/html" mode="664" prefix="${version}/client" />
 			<tarfileset dir="build/logdoc/server/html" mode="664" prefix="${version}/server" />
@@ -607,13 +607,13 @@ ${sf.file}</fail>
 		title="Source X-ref for ${title} ${version}"
 		destination="build/j2h"
 		footer="no">
-			<fileset dir="build/src/java-common">
+			<fileset dir="src/java-common">
 				<include name="**/*.java" />
 			</fileset>
-			<fileset dir="build/src/java-server-framework">
+			<fileset dir="src/java-server-framework">
 				<include name="**/*.java" />
 			</fileset>
-			<fileset dir="build/src/java-client-framework">
+			<fileset dir="src/java-client-framework">
 				<include name="**/*.java" />
 			</fileset>
 		</java2html>
@@ -827,7 +827,7 @@ ${sf.file}</fail>
 		
 		<!-- Create TAR GZ file for Java2HTML -->
 		<echo level="verbose" message="Creating TAR GZ file for Java2HTML" />
-		<tar tarfile="build/j2h.tar">
+		<tar tarfile="build/j2h.tar" longfile="gnu">
 			<tarfileset dir="build/j2h" mode="664" dirmode="775" prefix="j2h/${version}" />
 		</tar>
 		<gzip src="build/j2h.tar" zipfile="build/j2h.tgz" />
@@ -934,22 +934,23 @@ ${sf.file}</fail>
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
 		</patternset>
-		<copy todir="build" includeEmptyDirs="false">
+		<mkdir dir="build-lf" />
+		<copy todir="build-lf" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
 				<include name="bin/*"              />
 			</fileset>
 		</copy>
-		<fixcrlf srcdir="build" eol="unix" eof="remove">
+		<fixcrlf srcdir="build-lf" eol="unix" eof="remove">
 			<patternset refid="release.text.files" />
 			<include name="bin/xins" />
 		</fixcrlf>
-		<fixcrlf srcdir="build/bin" eol="dos" eof="asis">
+		<fixcrlf srcdir="build-lf/bin" eol="dos" eof="asis">
 			<include name="xins.bat" />
 		</fixcrlf>
 
 		<!-- Tar the release file -->
-		<tar tarfile="build/${package-basename}.tar">
+		<tar tarfile="build/${package-basename}.tar" longfile="gnu">
 			<tarfileset
 			dir="${basedir}"
 			prefix="${name}-${version}"
@@ -965,14 +966,14 @@ ${sf.file}</fail>
 				<include name="lib/servlet.jar"                />
 			</tarfileset>
 			<tarfileset
-			dir="${basedir}/build"
+			dir="${basedir}/build-lf"
 			prefix="${name}-${version}"
 			mode="644">
 				<patternset refid="release.text.files"/>
 				<include name="bin/xins.bat" />
 			</tarfileset>
 			<tarfileset
-			dir="${basedir}/build"
+			dir="${basedir}/build-lf"
 			prefix="${name}-${version}"
 			mode="755">
 				<include name="bin/xins" />
@@ -980,6 +981,7 @@ ${sf.file}</fail>
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
 		<delete file="build/${package-basename}.tar" />
+		<delete dir="build-lf" />
 	</target>
 
 	<target
