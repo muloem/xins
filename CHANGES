@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 0.115:
     implementation of a Service, new-style. In time, this class will replace
     the HTTPRequester class and part of the FunctionCaller /
     ActualFunctionCaller / CallTargetGroup hierarchy.
+  - Added LDAPService class in org.xins.util.service.ldap, another
+    implementation of a Service, new-style.
 
 * XINS/Java Client Framework:
   - UnsuccessfulCallException and InvalidCallResultException now both derive
