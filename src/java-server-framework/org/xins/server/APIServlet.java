@@ -79,7 +79,7 @@ extends HttpServlet {
       Properties settings = ServletUtils.settingsAsProperties(config);
 
       // Initialize Log4J
-      PropertyConfigurator.configure(settings);
+      configureLogger(settings);
       _log = Logger.getLogger(getClass().getName());
       if (_log == null) {
          throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
@@ -106,6 +106,17 @@ extends HttpServlet {
          _log.error(message, e);
          throw new ServletException(message);
       }
+   }
+
+   /**
+    * Configures the logger using the specified settings. This method is
+    * called from {@link #init(ServletConfig)}.
+    *
+    * @param settings
+    *    the initialization settings, not <code>null</code>.
+    */
+   private void configureLogger(Properties settings) {
+      PropertyConfigurator.configure(settings);
    }
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
