@@ -3,6 +3,7 @@
  */
 package org.xins.server;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
@@ -155,7 +156,9 @@ extends Object {
 
       MandatoryArgumentChecker.check("ip", ip);
 
-      if (isValidIp(ip) == false) {
+      List ipFieldList = getIPFields(ip);
+
+      if (ipFieldList == null) {
          throw new ParseException("The provided IP " + ip + " is invalid.");
       }
 
@@ -176,9 +179,11 @@ extends Object {
    /**
     * Determines whether the provided expression is a valid IP filter.
     *
-    * @param expression the IP filter expression.
+    * @param
+    *    expression the IP filter expression.
     *
-    * @return a boolean with the value <code>true</code> when the expression
+    * @return
+    *    a boolean with the value <code>true</code> when the expression
     *    is a valid IP filter, otherwise <code>false</code>.
     */
    private static boolean isValidFilter(String expression) {
@@ -211,37 +216,27 @@ extends Object {
    /**
     * Determines whether the provided IP address is of a valid format.
     *
-    * @param ip the IP address.
+    * @param
+    *    ip the IP address.
     *
-    * @return boolean with the value <code>true</code> if the IP is valid,
+    * @return
+    *    boolean with the value <code>true</code> if the IP is valid,
     *    otherwise false.
     */
    private static boolean isValidIp(String ip) {
-      StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
-      String currIPSection = null;
-      boolean validToken = true;
-      boolean validIP = false;
-      int counter = 0;
-
-      while (tokenizer.hasMoreTokens() && validToken == true) {
-          currIPSection = tokenizer.nextToken();
-          validToken = isValidIPSection(currIPSection);
-          counter++;
-      }
-
-      if (validToken == true && counter == 4) {
-         validIP = true;
-      }
-
+      List ipFieldList = getIPFields(ip);
+      boolean validIP = ipFieldList == null ? false : true;
       return validIP;
    }
 
    /**
     * Determines whether the provided mask is of a valid format.
     *
-    * @param mask the mask.
+    * @param
+    *    mask the mask.
     *
-    * @return boolean with the value <code>true</code> if the mask is valid,
+    * @return
+    *    boolean with the value <code>true</code> if the mask is valid,
     *    otherwise false.
     */
    private static boolean isValidMask(String mask) {
@@ -252,9 +247,11 @@ extends Object {
     * Determines whether the provided IP section (the part of the IP address)
     * is of a valid format, i.e. an integer between 0 and 255.
     *
-    * @param ipSection the IP section.
+    * @param
+    *    ipSection the IP section.
     *
-    * @return boolean with the value <code>true</code> if the IP section is
+    * @return
+    *    boolean with the value <code>true</code> if the IP section is
     *    valid, otherwise false.
     */
    private static boolean isValidIPSection(String ipSection) {
@@ -266,11 +263,14 @@ extends Object {
     * can be translated into an integer value that lies between zero and the
     * specified maximum allowed value.
     *
-    * @param value the value to be checked.
+    * @param
+    *    value the value to be checked.
     *
-    * @param maxAllowedValue the maximum allowed integer value.
+    * @param
+    *    maxAllowedValue the maximum allowed integer value.
     *
-    * @return boolean with the value <code>true</code> if the provided value
+    * @return
+    *    boolean with the value <code>true</code> if the provided value
     *    is valid, otherwise false.
     */
    private static boolean isAllowedValue(String value, int maxAllowedValue) {
@@ -289,6 +289,44 @@ extends Object {
       }
 
       return validValue;
+   }
+
+   /**
+    * Creates a list with the several fields (parts separated by a dot) of 
+    * the provided IP. If the provided IP is invalid <code>null</code> is
+    * returned.
+    *
+    * @param
+    *    ip the IP address.
+    *
+    * @return
+    *    a list with the strings representing the value of each IP field
+    *    or <code>null</code> if the provided IP is invalid.
+    */
+   private static List getIPFields(String ip) {
+      StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
+      String currIPSection = null;
+      boolean validToken = true;
+      boolean validIP = false;
+      int counter = 0;
+      List ipFieldList = new ArrayList(4);
+
+      while (tokenizer.hasMoreTokens() && validToken == true) {
+          currIPSection = tokenizer.nextToken();
+          validToken = isValidIPSection(currIPSection);
+          ipFieldList.add(currIPSection);
+          counter++;
+      }
+
+      if (validToken == true && counter == 4) {
+         validIP = true;
+      }
+
+      if (validIP == false) {
+         ipFieldList = null;
+      }
+
+      return ipFieldList;
    }
 
 }
