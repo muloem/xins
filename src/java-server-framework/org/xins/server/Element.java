@@ -187,4 +187,12 @@ final class Element extends Object {
       _content.add(child);
       child._parent = this;
    }
+
+   public Object clone() {
+      try {
+         return super.clone();
+      } catch (CloneNotSupportedException exception) {
+         throw new Error("Caught unexpected " + exception.getClass() + '.');
+      }
+   }
 }
