@@ -197,6 +197,16 @@ public final class Element {
       child._parent = this;
    }
 
+   /**
+    * Returns the content of this element. May contain PCDATA (as
+    * {@link String} objects) and other elements (as {@link Element} objects).
+    *
+    * <p>Since the content is lazily initialized, <code>null</code> is
+    * returned if there is no content.
+    *
+    * @return
+    *    the {@link List} of content items, or <code>null</code>.
+    */
    public List getContent() {
       return _content;
    }
