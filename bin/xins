@@ -6,7 +6,7 @@
 # $Id$
 #
 # Converts xins-project.xml in the current directory to an Ant build file and
-# then passes control to Ant.
+# then executes that Ant build file.
 #
 
 # Make sure XINS_HOME is set
@@ -15,7 +15,7 @@ if [ "${XINS_HOME}" = "" ]; then
 	exit 1
 fi
 
-# Recognize -version option
+# Recognize version option
 if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
 	ant -q -f ${XINS_HOME}/build.xml version
 	exit 0
