@@ -181,12 +181,12 @@ public abstract class CallException extends Exception {
     *          || target == null
     *          || duration &lt; 0</code>.
     */
-   CallException(String           shortReason,
-                 CallRequest      request,
-                 TargetDescriptor target,
-                 long             duration,
-                 String           detail,
-                 Throwable        cause)
+   protected CallException(String           shortReason,
+                           CallRequest      request,
+                           TargetDescriptor target,
+                           long             duration,
+                           String           detail,
+                           Throwable        cause)
    throws IllegalArgumentException {
 
       // Call superconstructor with fabricated message
