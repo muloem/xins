@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.56:
 
 * Improved generated CAPI classes, now support sessions.
 
+* Test forms now display a SELECT box for booleans with the options: empty,
+  'true' and 'false'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.55:
 
