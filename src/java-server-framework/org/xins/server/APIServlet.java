@@ -155,7 +155,7 @@ extends HttpServlet {
    public static final String CONFIG_FILE_SYSTEM_PROPERTY = "org.xins.server.config";
 
    /**
-    * The name of the configuration property that specifies the interval
+    * The name of the runtime property that specifies the interval
     * for the configuration file modification checks, in seconds.
     */
    public static final String CONFIG_RELOAD_INTERVAL_PROPERTY = "org.xins.server.config.reload";
@@ -170,6 +170,12 @@ extends HttpServlet {
     * API class to load.
     */
    public static final String API_CLASS_PROPERTY = "org.xins.api.class";
+
+   /**
+    * The name of the runtime property that specifies the locale for the log
+    * messages.
+    */
+   public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
 
    //-------------------------------------------------------------------------
@@ -915,6 +921,18 @@ extends HttpServlet {
          } else {
             log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
             interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+         }
+
+         // Determine the log locale
+         s = runtimeProperties.get(LOG_LOCALE_PROPERTY);
+
+         // If the log locale is set, apply it
+         if (s != null) {
+            try {
+               Log.setTranslationBundle(s);
+            } catch (NoSuchTranslationBundleException exception) {
+               // TODO: Log
+            }
          }
 
          // Update the file watch interval
