@@ -84,7 +84,7 @@ implements DefaultResultCodes {
     * The logger used by this function. This field is initialized by the
     * constructor and set to a non-<code>null</code> value.
     */
-   private final Logger _log;
+   protected final Logger _log;
 
    /**
     * The API implementation this function is part of.
