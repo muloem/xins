@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
-import org.xins.util.BooleanConstants;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
@@ -71,7 +70,7 @@ public class Properties extends Type {
     *    the string to convert, can be <code>null</code>.
     *
     * @return
-    *    the {@link java.lang.Boolean}, or <code>null</code> if
+    *    the {@link PropertyReader}, or <code>null</code> if
     *    <code>string == null</code>.
     *
     * @throws TypeValueException
