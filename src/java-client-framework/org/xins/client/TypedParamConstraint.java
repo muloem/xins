@@ -16,7 +16,7 @@ import org.xins.common.types.Type;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-abstract class TypedParamConstraint
+final class TypedParamConstraint
 extends ParamConstraint {
 
    //-------------------------------------------------------------------------
@@ -113,7 +113,12 @@ extends ParamConstraint {
     *    flag that indicates if this constraint was violated,
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
-   boolean checkParameterValue(String value) {
-      return _type.isValidValue(value);
+   boolean checkParameterValue(Object value) {
+      try {
+         String string = _type.toString(value);
+         return _type.isValidValue(string);
+      } catch (ClassCastException exception) {
+         return false;
+      }
    }
 }
