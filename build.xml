@@ -931,6 +931,7 @@ ${sf.file}</fail>
 			<include name="docs/protocol/*.css"            />
 			<include name="docs/javadoc/**/*.html"         />
 			<include name="docs/javadoc/*.css"             />
+			<include name="docs/javadoc/package-list"      />
 			<include name="docs/logdoc/**/*.html"          />
 			<include name="docs/logdoc/**/*.css"           />
 			<include name="demo/**/*"                      />

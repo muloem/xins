@@ -45,6 +45,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     data type it returns the fully-qualified name of the corresponding wrapper
     class. E.g. for 'int' it returns 'java.lang.Integer'.
 
+* Build- and release-process:
+  - Fixed SF.net bug #1113838: CAPI Javadoc does not link to XINS Javadoc
+    (package).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
