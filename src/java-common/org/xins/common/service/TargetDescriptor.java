@@ -178,15 +178,39 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the time-out for the service. A negative value is returned if the service
-    * should be waited for forever.
+    * Returns the total time-out for a call to the service. A negative
+    * value indicates there is no time-out.
     *
     * @return
-    *    the time-out for the service, or a negative value if the service
-    *    should be waited for forever.
+    *    the total time-out for the service, in milli-seconds, or a
+    *    negative number if there is no total time-out.
     */
    public int getTimeOut() {
       return _timeOut;
+   }
+
+   /**
+    * Returns the connection time-out for a call to the service. A negative
+    * value indicates there is no connection time-out.
+    *
+    * @return
+    *    the connection time-out for the service, in milli-seconds, or a
+    *    negative number if there is no connection time-out.
+    */
+   public int getConnectionTimeOut() {
+      return _timeOut; // TODO: Get from distinct field
+   }
+
+   /**
+    * Returns the socket time-out for a call to the service. A negative
+    * value indicates there is no socket time-out.
+    *
+    * @return
+    *    the socket time-out for the service, in milli-seconds, or a
+    *    negative number if there is no socket time-out.
+    */
+   public int getSocketTimeOut() {
+      return _timeOut; // TODO: Get from distinct field
    }
 
    /**
@@ -211,7 +235,16 @@ public final class TargetDescriptor extends Descriptor {
       return (_crc == crc) ? this : null;
    }
 
+   /**
+    * Textual description of this object.
+    *
+    * @return
+    *    this <code>TargetDescriptor</code> as a {@link String}, never
+    *    <code>null</code>.
+    */
    public String toString() {
+      // XXX: Cache in _asString ?
+      // TODO: Include connection time-out and socket time-out
       return "TargetDescriptor(url=\"" + _url + "\"; timeOut=" + _timeOut + ')';
    }
 
