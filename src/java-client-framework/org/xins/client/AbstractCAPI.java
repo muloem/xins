@@ -18,7 +18,12 @@ import org.xins.common.service.GenericCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 
 /**
- * Base class for client-side calling interface classes.
+ * Base class for generated Client-side Application Programming Interface
+ * (CAPI) classes.
+ *
+ * <p>This class should not be derived from manually. This class is only
+ * intended to be used as a superclass of <code>CAPI</code> classes generated
+ * by the XINS framework.
  *
  * <p>The constructors of this class are considered internal to XINS and
  * should not be used directly. The behavior of the constructors may be
@@ -227,4 +232,22 @@ public abstract class AbstractCAPI extends Object {
       // Execute the call request
       return _caller.call(request.getXINSCallRequest());
    }
+
+   /**
+    * Creates an <code>AbstractCAPIErrorCodeException</code> for the specified
+    * error code. If the specified error code is not recognized, then
+    * <code>null</code> is returned.
+    *
+    * @param errorCode
+    *    the error code, never <code>null</code>.
+    *
+    * @return
+    *    if the error code is recognized, then a matching
+    *    {@link AbstractCAPIErrorCodeException} instance, otherwise
+    *    <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   protected abstract AbstractCAPIErrorCodeException
+   convertErrorCode(String errorCode);
 }
