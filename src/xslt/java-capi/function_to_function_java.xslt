@@ -98,6 +98,7 @@ extends org.xins.client.AbstractCAPIFunction {
 		<xsl:value-of select="$functionName" />
 		<xsl:text>",
             new org.xins.common.constraint.Constraint[] {</xsl:text>
+
 		<!-- Required input parameters -->
 		<xsl:for-each select="input/param[@required='true']">
 			<xsl:text>
@@ -106,7 +107,7 @@ extends org.xins.client.AbstractCAPIFunction {
 			<xsl:text>"),</xsl:text>
 		</xsl:for-each>
 
-		<!-- TODO: Input parameter types -->
+		<!-- Input parameter types -->
 		<xsl:for-each select="input/param[string-length(@type) &gt; 1 and not (@type = '_text')]">
 			<xsl:text>
                new org.xins.common.constraint.TypedParamConstraint("</xsl:text>
@@ -123,9 +124,32 @@ extends org.xins.client.AbstractCAPIFunction {
 			<xsl:text>.SINGLETON),</xsl:text>
 		</xsl:for-each>
 
-		<!-- TODO: Input parameter combos type 1 -->
-		<!-- TODO: Input parameter combos type 2 -->
-		<!-- TODO: Input parameter combos type 3 -->
+		<!-- Input param-combos -->
+		<xsl:for-each select="input/param-combo">
+			<xsl:text>
+               new org.xins.common.constraint.</xsl:text>
+			<xsl:choose>
+				<xsl:when test="@type = 'all-or-none'">AllOrNone</xsl:when>
+				<xsl:when test="@type = 'exclusive-or'">ExclusiveOr</xsl:when>
+				<xsl:when test="@type = 'inclusive-or'">InclusiveOr</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Unrecognized param-combo type '</xsl:text>
+						<xsl:value-of select="@type" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>ParamComboConstraint(new java.lang.String[] {</xsl:text>
+			<xsl:for-each select="param-ref">
+				<xsl:text>
+                  "</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>",</xsl:text>
+			</xsl:for-each>
+			<xsl:text>}),</xsl:text>
+		</xsl:for-each>
+
 		<xsl:text>},
             new org.xins.common.constraint.Constraint[] {</xsl:text>
 
@@ -154,9 +178,32 @@ extends org.xins.client.AbstractCAPIFunction {
 			<xsl:text>.SINGLETON),</xsl:text>
 		</xsl:for-each>
 
-		<!-- TODO: Output parameter combos type 1 -->
-		<!-- TODO: Output parameter combos type 2 -->
-		<!-- TODO: Output parameter combos type 3 -->
+		<!-- Output param-combos -->
+		<xsl:for-each select="output/param-combo">
+			<xsl:text>
+               new org.xins.common.constraint.</xsl:text>
+			<xsl:choose>
+				<xsl:when test="@type = 'all-or-none'">AllOrNone</xsl:when>
+				<xsl:when test="@type = 'exclusive-or'">ExclusiveOr</xsl:when>
+				<xsl:when test="@type = 'inclusive-or'">InclusiveOr</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Unrecognized param-combo type '</xsl:text>
+						<xsl:value-of select="@type" />
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>ParamComboConstraint(new java.lang.String[] {</xsl:text>
+			<xsl:for-each select="param-ref">
+				<xsl:text>
+                  "</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>",</xsl:text>
+			</xsl:for-each>
+			<xsl:text>}),</xsl:text>
+		</xsl:for-each>
+
 		<xsl:text>});
    }
 
