@@ -128,9 +128,24 @@ Improved Logdoc for XINS/Java Common Library:
 [x] Let Logdoc groups match Java package names
 [x] Make parameter names match hungarian notation
 [x] Review Logdoc entry descriptions
+[x] Combine 3400 and 3401
 [ ] Make Logdoc entry descriptions and translations match
 [ ] Review Logdoc translations
 [ ] Add groups for missing Java packages
-[ ] Review Logdoc entry IDs
 [ ] Add missing Logdoc entries
 [ ] Remove Dutch translations
+[x] Introduce trace messages 3000, 3001, 3002 for constructors to log.xml
+[ ] Introduce trace messages 3003, 3004, 3005 for methods to translations-en_US.xml
+[x] Replace 3403 and 3407 with trace message 3000+3002
+[x] Replace 3408, 3411 and 3414, 3416 with trace message 3003+3005 (in Java code)
+[x] Remove messages 3408, 3411 and 3414, 3416 from log.xml
+[x] Remove messages 3408, 3411 and 3414, 3416 from translations-en_US.xml
+[x] Add log message for programming error (3006)
+[ ] Replace 3100, 3402, 3409, 3410, 3412, 3413, 3415, 3417, 3418, 3419, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429 and 3430 with 3006 (in Java code)
+[x] Remove 3100, 3402, 3409, 3410, 3412, 3413, 3415, 3417, 3418, 3419, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429 and 3430 from log.xml
+[x] Remove 3100, 3402, 3409, 3410, 3412, 3413, 3415, 3417, 3418, 3419, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429 and 3430 from translations-en_US.xml
+[ ] Review Logdoc entry IDs
+
+After XINS 1.0.0-beta2:
+[ ] Trace all constructors enter/leave with 3000+3002
+[ ] Trace all constructor exceptions with 3001

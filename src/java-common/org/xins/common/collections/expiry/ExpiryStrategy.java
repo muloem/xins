@@ -56,15 +56,20 @@ public final class ExpiryStrategy extends Object {
    public ExpiryStrategy(long timeOut, long precision)
    throws IllegalArgumentException {
 
+      // TRACE: Entering constructor
+      Log.log_3000(ExpiryStrategy.class.getName(), "timeOut=" + timeOut + "; precision=" + precision);
+
       // Check preconditions
       if (timeOut < 1 || precision < 1) {
+         String message;
          if (timeOut < 1 && precision < 1) {
-            throw new IllegalArgumentException("timeOut (" + timeOut + ") < 1 && precision (" + precision + ") < 1");
+            message = "timeOut (" + timeOut + ") < 1 && precision (" + precision + ") < 1";
          } else if (timeOut < 1) {
-            throw new IllegalArgumentException("timeOut (" + timeOut + ") < 1");
+            message = "timeOut (" + timeOut + ") < 1";
          } else {
-            throw new IllegalArgumentException("precision (" + precision + ") < 1");
+            message = "precision (" + precision + ") < 1";
          }
+         throw new IllegalArgumentException(message);
       } else if (timeOut < precision) {
          throw new IllegalArgumentException("timeOut < precision");
       }
@@ -86,12 +91,18 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
 
-      Log.log_3403(toString(), _timeOut, _precision);
-
       // Create and start the timer thread
       _timerThread = new TimerThread();
       _timerThread.setDaemon(true);
       _timerThread.start();
+
+      // TRACE: Leaving constructor
+      Log.log_3002(ExpiryStrategy.class.getName(), null);
+
+      // TODO: Add field _asString
+      // TODO: Fill _asString in constructor
+      // TODO: Send _asString to log message 3002
+      // TODO: Return _asString from toString()
    }
 
 

@@ -10,22 +10,56 @@
 <log>
 	<translation-bundle locale="en_US" />
 
-	<group id="collections.expiry">
+	<group id="lowlevel" name="Low-level (tracing, programming errors)">
+		<entry id="3000" level="DEBUG">
+			<description>Entering constructor.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3001" level="DEBUG" exception="true">
+			<description>Returning from constructor with exception.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3002" level="DEBUG">
+			<description>Returning from constructor successfully.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3003" level="DEBUG">
+			<description>Entering method.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="method" type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3004" level="DEBUG" exception="true">
+			<description>Returning from method with exception.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="method" type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3005" level="DEBUG">
+			<description>Returning from method successfully.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="method" type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+		<entry id="3006" level="ERROR">
+			<description>Programming error detected.</description>
+			<param name="class"  type="text" nullable="false" />
+			<param name="method" type="text" nullable="false" />
+			<param name="detail" type="text" nullable="true" />
+		</entry>
+	</group>
+
+	<group id="collections" name="Generic collection classes" />
+
+	<group id="collections.expiry" name="Expiry-related collection classes">
 		<entry id="3400" level="DEBUG">
 			<description>Tick processed.</description>
 			<param name="folderName" type="text"  nullable="false" />
 			<param name="expired"    type="int32" nullable="false" />
 			<param name="remaining"  type="int32" nullable="false" />
-		</entry>
-		<entry id="3402" level="ERROR">
-			<description>The expiry folder size was negative and has been adjusted to 0.</description>
-			<param name="size" type="int32" nullable="false" />
-		</entry>
-		<entry id="3403" level="DEBUG">
-			<description>Creating expiry strategy thread.</description>
-			<param name="name"      type="text"  nullable="false" />
-			<param name="timeOut"   type="int64" nullable="false" />
-			<param name="precision" type="int64" nullable="false" />
 		</entry>
 		<entry id="3404" level="DEBUG">
 			<description>Associating expiry folder with expiry stategy thread.</description>
@@ -41,6 +75,8 @@
 			<param name="name" type="text" nullable="false" />
 		</entry>
 	</group>
+
+	<group id="http" name="HTTP-related" />
 
 	<group id="io" name="General I/O">
 		<entry id="3200" level="INFO">
@@ -107,139 +143,13 @@
 	</group>
 
 	<group id="threads" name="Threading">
-		<entry id="3407" level="DEBUG">
-			<description>Constructed new Doorman.</description>
-			<param name="className"    type="text"  nullable="false" />
-			<param name="queueSize"    type="int32" nullable="false" />
-			<param name="maxQueueSize" type="int64" nullable="false" />
-			<param name="strict"       type="text"  nullable="false" />
-		</entry>
-		<entry id="3408" level="DEBUG">
-			<!-- TODO: To TRACE level ? -->
-			<description>enterAsReader().</description>
-			<param name="className" nullable="false" />
-			<param name="reader" nullable="false" />
-		</entry>
-		<entry id="3409" level="WARNING">
-			<description>Active writer attempts to enter as reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3410" level="WARNING">
-			<description>Active reader attempts to enter as reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3411" level="DEBUG">
-			<description>enterAsWriter() called.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3412" level="WARNING">
-			<description>Active writer attempts to enter as writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3413" level="WARNING">
-			<description>Active reader attempts to enter as writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3414" level="DEBUG">
-			<!-- TODO: To TRACE level ? -->
-			<description>leaveAsReader() called.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3415" level="WARNING">
-			<description>Thread attempts to leave protected area as reader, while not an active reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3416" level="DEBUG">
-			<description>leaveAsWriter() called.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3417" level="WARNING">
-			<description>Thread attempts to leave protected area as writer, while not the current writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3418" level="ERROR">
-			<description>Active writer attempts to enter as reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3419" level="ERROR">
-			<description>Active reader attempts to enter as reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
 		<entry id="3420" level="ERROR">
 			<description>Unable to add Thread to Doorman queue due to a time-out.</description>
 			<param name="className"        type="text"  nullable="false" />
 			<param name="thread"           type="text"  nullable="false" />
 			<param name="maxQueueWaitTime" type="int64" nullable="false" />
 		</entry>
-		<entry id="3421" level="ERROR">
-			<description>Thread interrupted in enterAsReader(), while not in the set of current readers.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3422" level="ERROR">
-			<description>Active writer attempts to enter as writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3423" level="ERROR">
-			<description>Active reader attempts to enter as writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3424" level="ERROR">
-			<description>Thread interrupted in enterAsWriter().</description>
-			<param name="className"     type="text" nullable="false" />
-			<param name="writer"        type="text" nullable="false" />
-			<param name="currentWriter" type="text" nullable="false" />
-		</entry>
-		<entry id="3425" level="ERROR">
-			<description>Reader attempts to leave protected area as reader, while not an active reader.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="reader"    type="text" nullable="false" />
-		</entry>
-		<entry id="3426" level="ERROR">
-			<description>Found reader at top of queue while a reader is leaving the protected area.</description>
-			<param name="className" type="text" nullable="false" />
-		</entry>
-		<entry id="3427" level="ERROR">
-			<description>Thread attempts to leave protected area as writer, while it is not the current writer.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="writer"    type="text" nullable="false" />
-		</entry>
-		<entry id="3428" level="ERROR">
-			<description>The thread cannot be added because it is already in the queue.</description>
-			<param name="className"    type="text" nullable="false" />
-			<param name="thread"       type="text" nullable="false" />
-			<param name="existingType" type="text" nullable="false" />
-			<param name="type"         type="text" nullable="false" />
-		</entry>
-		<entry id="3429" level="ERROR">
-			<description>Attempt to pop empty queue.</description>
-		</entry>
-		<entry id="3430" level="ERROR">
-			<description>Attempt to remove thread from Doorman queue, while it is not in the queue.</description>
-			<param name="className" type="text" nullable="false" />
-			<param name="thread"    type="text" nullable="false" />
-		</entry>
 	</group>
 
-	<group id="types" name="Types">
-		<entry id="3100" level="ERROR" exception="true">
-			<description>The pattern.matches(java.lang.String, pattern) has thrown an exception. Assuming the value is invalid..</description>
-			<param name="patternMatcher" />
-			<param name="patternClass" />
-			<param name="value" />
-		</entry>
-	</group>
+	<group id="types" name="Types" />
 </log>

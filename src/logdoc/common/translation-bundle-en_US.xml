@@ -9,7 +9,6 @@
 
 <translation-bundle>
 	<translation entry="3400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
-	<translation entry="3402">Size of expiry folder dropped to <value-of-param name="size" />, adjusted to 0.</translation>
 	<translation entry="3403">Created expiry strategy thread <value-of-param name="name" format="quoted" />, time-out duration is <value-of-param name="timeOut" /> ms, precision is <value-of-param name="precision" /> ms.</translation>
 	<translation entry="3404"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="3405">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
@@ -32,29 +31,7 @@
 	<translation entry="3319">Target descriptor constructed for URL <value-of-param name="url" format="quoted" />, URL CRC-32 is <value-of-param name="urlCRC" format="hex" />, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms, total time-out is <value-of-param name="totalTimeOut" /> ms.</translation>
 
 	<translation entry="3407">Constructed <value-of-param name="className" />, initial queue size is <value-of-param name="queueSize" />, maximum queue wait time is <value-of-param name="maxQueueSize" /> ms, thread synchronization checking is <value-of-param name="strict" />.</translation>
-	<translation entry="3408"><value-of-param name="className" />: enterAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="3409"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
-	<translation entry="3410"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
-	<translation entry="3411"><value-of-param name="className" />: enterAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="3412"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
-	<translation entry="3413"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
-	<translation entry="3414"><value-of-param name="className" />: leaveAsReader() called for <value-of-param name="reader" />.</translation>
-	<translation entry="3415"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
-	<translation entry="3416"><value-of-param name="className" />: leaveAsWriter() called for <value-of-param name="writer" />.</translation>
-	<translation entry="3417"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
-	<translation entry="3418"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already the active writer.</translation>
-	<translation entry="3419"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to enter as a reader while it is already an active reader.</translation>
 	<translation entry="3420"><value-of-param name="className" />: Unable to add a thread name <value-of-param name="thread" format="quoted" /> to queue. Time-out after <value-of-param name="maxQueueWaitTime" /> ms.</translation>
-	<translation entry="3421"><value-of-param name="className" />: <value-of-param name="reader" /> was interrupted in enterAsReader(), but not in the set of current readers.</translation>
-	<translation entry="3422"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already the active writer.</translation>
-	<translation entry="3423"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to enter as a writer but it is already an active reader.</translation>
-	<translation entry="3424"><value-of-param name="className" />: <value-of-param name="writer" /> was interrupted in enterAsWriter(), but the current writer is <value-of-param name="currentWriter" />.</translation>
-	<translation entry="3425"><value-of-param name="className" />: <value-of-param name="reader" /> attempts to leave protected area as reader, but it is not an active reader.</translation>
-	<translation entry="3426"><value-of-param name="className" />: Found reader at top of queue while a reader is leaving the protected area.</translation>
-	<translation entry="3427"><value-of-param name="className" />: <value-of-param name="writer" /> attempts to leave protected area as writer, but it is not the current writer.</translation>
-	<translation entry="3428"><value-of-param name="className" />: <value-of-param name="thread" /> is already in this queue as a <value-of-param name="existingType" />, cannot add it as a <value-of-param name="type" />.</translation>
-	<translation entry="3429">This queue is empty.</translation>
-	<translation entry="3430"><value-of-param name="className" />: <value-of-param name="thread" /> is not in this queue.</translation>
 
 	<translation entry="3100"><value-of-param name="patternMatcher" />.matches(java.lang.String,<value-of-param name="patternClass" />) has thrown an unexpected exception. Assuming the value <value-of-param name="value" format="quoted" /> is invalid.</translation>
 </translation-bundle>
