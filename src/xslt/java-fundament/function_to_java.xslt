@@ -264,7 +264,14 @@ public abstract class ]]></xsl:text>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-         context.startResponse(INVALID_PARAMETERS);</xsl:text>
+         context.startResponse(INVALID_PARAMETERS);
+         if (debugEnabled) {
+            context.debug("The value " + </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> + " is not valid for parameter \"</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>\".");
+         }</xsl:text>
 			</xsl:for-each>
 			<xsl:text>
 
