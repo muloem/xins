@@ -32,6 +32,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     exceptions. The class is derived from class IllegalArgumentException to
     retain backwards compatibility.
   - Added tests for class ProtectedPropertyReader.
+  - Added crop(int) to class FastStringBuffer.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in UnsuccessfulCallException
