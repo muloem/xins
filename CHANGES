@@ -1,12 +1,16 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.157:
 
+* Shell script 'xins':
+  - Removed support for -deployment option (introduced in XINS 0.79).
+
 * Generated specification documentation:
   - Indenting text 'This function supports no input parameters', to have a
     more consistent layout.
 
 * XINS/Java Server Framework:
   - Removed support for default functions (introduced in XINS 0.78).
+  - Removed support for deployments (introduced in XINS 0.79).
   - Trimming API class name property value.
   - Consistently logging an error first and then setting the state.
   - Always throwing a ServletException if the bootstrap failed. This fixes the
