@@ -61,8 +61,8 @@
 		</entry>
 		<entry id="2052" level="ERROR" exception="true">
 			<description>Caught unexpected exception.</description>
-			<param name="className"  type="text" nullable="false" />
-			<param name="methodName" type="text" nullable="false" />
+			<param name="throwingClass"  type="text" nullable="false" />
+			<param name="throwingMethod" type="text" nullable="false" />
 		</entry>
 	</group>
 
