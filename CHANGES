@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.87:
+
+* XINS/Java Server Framework:
+  - Changes to function _GetSettings:
+    - All properties are returned as a <property /> elements.
+    - New section <build /> added, containing deployment identifier, build
+      host and build time stamp.
+    - Renamed section <init-settings /> to <initialization />.
+    - Renamed section <system-properties /> to <runtime />.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.86:
 
 * Added support for _xslt parameter. When specified, the returned XML will
