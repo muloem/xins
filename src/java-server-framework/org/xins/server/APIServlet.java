@@ -783,7 +783,7 @@ extends HttpServlet {
     * undefined.
     *
     * <p>This method is called from
-    * {@link #service(HttpServletRequest,HttpServletResponse}. The latter
+    * {@link #service(HttpServletRequest,HttpServletResponse)}. The latter
     * first determines the <em>nested diagnostic context</em> and then
     * forwards the call to this method.
     *
