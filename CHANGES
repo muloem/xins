@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Switched log numbers from 1XXX to 3XXX.
   - Warn if the build version of the API is more recent than the running
     version.
+  - Removed @since for all fields and methods.
 
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.
@@ -15,16 +16,18 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Removed unused imports.
   - The MandatoryArgumentChecker also checks that the argument names are not
     null.
-  - Added logging message with HTTP parameters and duration for the 
+  - Added logging message with HTTP parameters and duration for the
     HTTPServiceCaller.
   - Fixed some incorrect links in Javadoc.
   - Switched log numbers from 3XXX to 1XXX.
+  - Removed @since for all fields and methods.
 
 * XINS/Java Client Framework:
   - Removed unused imports.
   - Removed unused log numbers.
   - Added missing tranlations for some logging messages.
   - Fixed some incorrect links in Javadoc.
+  - Removed @since for all fields and methods.
 
 * Generation of specification documentation:
   - Added missing forward slash for the URL generated for broken links.
@@ -56,7 +59,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
     content in the data section to be not parsed correctly.
 
 * Tests
-  - Added JCoverage to the libraries and added a coverage task that shows the 
+  - Added JCoverage to the libraries and added a coverage task that shows the
     code covered by the tests.
   - Integrated the allinone example to the src/tests directory.
 
@@ -165,7 +168,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
   - Added unit tests for the HTTPServiceCaller.
   - Class HTTPCallResultData is now an interface.
   - Class HTTPCallResult now implements HTTPCallResultData interface.
-  - A ClassCastException was thrown if HTTPServiceCaller.call(HTTPCallRequest) 
+  - A ClassCastException was thrown if HTTPServiceCaller.call(HTTPCallRequest)
     was called and the call succeeded. This is now fixed.
 
 * XINS/Java Client Framework:

@@ -294,8 +294,6 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
-    *
-    * @since XINS 0.207
     */
    public static final void serialize(PropertyReader   properties,
                                       FastStringBuffer buffer,

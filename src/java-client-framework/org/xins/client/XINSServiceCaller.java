@@ -40,10 +40,10 @@ import org.xins.common.text.ParseException;
  * <p>How load-balancing is done depends on the {@link Descriptor} passed to
  * the {@link #XINSServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
- * and no load-balancing is performed. If it is a 
- * {@link org.xins.common.service.GroupDescriptor}, then the configuration of 
- * the <code>GroupDescriptor</code> determines how the load-balancing is done. 
- * A <code>GroupDescriptor</code> is a recursive data structure, which allows 
+ * and no load-balancing is performed. If it is a
+ * {@link org.xins.common.service.GroupDescriptor}, then the configuration of
+ * the <code>GroupDescriptor</code> determines how the load-balancing is done.
+ * A <code>GroupDescriptor</code> is a recursive data structure, which allows
  * for fairly advanced load-balancing algorithms.
  *
  * <p>If a call attempt fails and there are more available target services,
@@ -193,8 +193,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws XINSCallException
     *    if the first call attempt failed due to a XINS-related reason and
     *    all the other call attempts failed as well.
-    *
-    * @since XINS 0.207
     */
    public XINSCallResult call(XINSCallRequest request)
    throws IllegalArgumentException,
@@ -272,8 +270,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws XINSCallException
     *    if the call attempt failed due to a XINS-related reason.
-    *
-    * @since XINS 0.207
     */
    protected Object doCallImpl(CallRequest      request,
                                TargetDescriptor target)
@@ -360,7 +356,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the call duration in milliseconds, must be a non-negative number.
     *
     * @param exceptions
-    *    the list of {@link org.xins.common.service.CallException} instances, 
+    *    the list of {@link org.xins.common.service.CallException} instances,
     *    or <code>null</code> if there were no call failures.
     *
     * @param result
@@ -374,8 +370,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws ClassCastException
     *    if either <code>request</code> or <code>result</code> is not of the
     *    correct class.
-    *
-    * @since XINS 0.207
     */
    protected CallResult createCallResult(CallRequest       request,
                                          TargetDescriptor  succeededTarget,
@@ -417,8 +411,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws ClassCastException
     *    if <code>request</code> is not an instance of class
     *    {@link XINSCallRequest}.
-    *
-    * @since XINS 0.207
     */
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception)

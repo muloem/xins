@@ -276,8 +276,6 @@ public abstract class Type extends Object {
     *
     * @throws TypeValueException
     *    if the specified value is not in the allowed range.
-    *
-    * @since XINS 0.57
     */
    public String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {

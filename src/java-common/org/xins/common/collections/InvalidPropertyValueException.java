@@ -111,8 +111,6 @@ extends Exception {
     *
     * @throws IllegalArgumentException
     *    if <code>propertyName == null || propertyValue == null</code>.
-    *
-    * @since XINS 0.150
     */
    public InvalidPropertyValueException(String propertyName,
                                         String propertyValue,
@@ -178,8 +176,6 @@ extends Exception {
     *
     * @return
     *    the reason, or <code>null</code>.
-    *
-    * @since XINS 0.150
     */
    public String getReason() {
       return _reason;

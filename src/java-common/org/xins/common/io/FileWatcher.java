@@ -334,8 +334,6 @@ public final class FileWatcher extends Thread {
        * the <code>FileWatcher</code> was started. Each consecutive time the
        * file still exists, either {@link #fileModified()} or
        * {@link #fileNotModified()} is called.
-       *
-       * @since XINS 0.209
        */
       void fileFound();
 

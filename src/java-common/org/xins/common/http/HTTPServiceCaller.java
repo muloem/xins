@@ -603,8 +603,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @throws ClassCastException
     *    if either <code>request</code> or <code>result</code> is not of the
     *    correct class.
-    *
-    * @since XINS 0.207
     */
    protected CallResult createCallResult(CallRequest       request,
                                          TargetDescriptor  succeededTarget,
@@ -670,8 +668,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.207
     */
    private static final class CallExecutor extends Thread {
 

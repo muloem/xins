@@ -51,8 +51,6 @@ public interface PropertyReader {
     *
     * @return
     *    the size, always &gt;= 0.
-    *
-    * @since XINS 0.202
     */
    int size();
 }

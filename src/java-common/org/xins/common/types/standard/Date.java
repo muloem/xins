@@ -247,8 +247,6 @@ public class Date extends Type {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.166
     */
    public static final class Value {
 

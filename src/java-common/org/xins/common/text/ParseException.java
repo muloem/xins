@@ -54,8 +54,6 @@ public final class ParseException extends Exception {
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
-    *
-    * @since XINS 0.198
     */
    public ParseException(String message, Throwable cause) {
       super(message, cause);

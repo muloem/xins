@@ -228,8 +228,6 @@ implements DefaultResultCodes {
     *
     * @return
     *    the time zone, not <code>null</code>.
-    *
-    * @since XINS 0.95
     */
    public final TimeZone getTimeZone() {
       return _timeZone;
@@ -390,8 +388,6 @@ implements DefaultResultCodes {
     * Triggers re-initialization of this API. This method is meant to be
     * called by API function implementations when it is anticipated that the
     * API should be re-initialized.
-    *
-    * @since XINS 0.199
     */
    protected final void reinitializeImpl() {
       _apiServlet.initAPI();
@@ -537,8 +533,6 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>instance == null</code>.
-    *
-    * @since XINS 0.147
     */
    protected final void add(Manageable m)
    throws IllegalStateException,

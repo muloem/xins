@@ -182,8 +182,6 @@ public class HexConverter extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>n == null || n.length &lt; 1</code>.
-    *
-    * @since XINS 0.199
     */
    public static String toHexString(byte[] input)
    throws IllegalArgumentException {
@@ -220,8 +218,6 @@ public class HexConverter extends Object {
     * @return
     *    the hex string, cannot be <code>null</code>, the length is always 2
     *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 2</code>).
-    *
-    * @since XINS 0.199
     */
    public static String toHexString(byte n) {
 
@@ -246,8 +242,6 @@ public class HexConverter extends Object {
     * @return
     *    the hex string, cannot be <code>null</code>, the length is always 4
     *    (i.e. <code><em>return</em>.</code>{@link String#length() length()}<code> == 4</code>).
-    *
-    * @since XINS 0.199
     */
    public static String toHexString(short n) {
 

@@ -202,8 +202,6 @@ public abstract class EnumType extends Type {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
-    *
-    * @since XINS 0.109
     */
    public final String getValueByName(String name)
    throws IllegalArgumentException {
@@ -226,8 +224,6 @@ public abstract class EnumType extends Type {
     *
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
-    *
-    * @since XINS 0.109
     */
    public final String getNameByValue(String value)
    throws IllegalArgumentException {

@@ -43,8 +43,6 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
-    *
-    * @since XINS 0.117.
     */
    ResultCode(String name, String value)
    throws IllegalArgumentException {
@@ -71,8 +69,6 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>api == null || value == null</code>.
-    *
-    * @since XINS 0.117
     */
    public ResultCode(API api, String name, String value)
    throws IllegalArgumentException {

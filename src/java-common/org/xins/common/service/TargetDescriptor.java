@@ -213,8 +213,6 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @throws MalformedURLException
     *    if the specified URL is malformed.
-    *
-    * @since XINS 0.195
     */
    public TargetDescriptor(String url, int timeOut, int connectionTimeOut)
    throws IllegalArgumentException, MalformedURLException {
@@ -255,8 +253,6 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @throws MalformedURLException
     *    if the specified URL is malformed.
-    *
-    * @since XINS 0.195
     */
    public TargetDescriptor(String url,
                            int    timeOut,
@@ -393,8 +389,6 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the total time-out for the service, as a positive number, in
     *    milli-seconds, or 0 if there is no total time-out.
-    *
-    * @since XINS 0.202
     */
    public int getTotalTimeOut() {
       return _timeOut;
@@ -406,8 +400,6 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the connection time-out for the service; always greater than 0 and
     *    smaller than or equal to the total time-out.
-    *
-    * @since XINS 0.195
     */
    public int getConnectionTimeOut() {
       return _connectionTimeOut;
@@ -419,8 +411,6 @@ public final class TargetDescriptor extends Descriptor {
     * @return
     *    the socket time-out for the service; always greater than 0 and
     *    smaller than or equal to the total time-out.
-    *
-    * @since XINS 0.195
     */
    public int getSocketTimeOut() {
       return _socketTimeOut;

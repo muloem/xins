@@ -536,8 +536,6 @@ public final class Doorman extends Object {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.66
     */
    private final class Queue
    extends Object {
@@ -738,8 +736,6 @@ public final class Doorman extends Object {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 0.66
     */
    public static final class QueueEntryType
    extends Object {

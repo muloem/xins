@@ -94,8 +94,6 @@ implements LogdocSerializable {
     *    the serialized form of this object which will from then on be
     *    returned from {@link #serialize(LogdocStringBuffer)}, a
     *    <code>null</code> will be interpreted as an empty string.
-    *
-    * @since XINS 0.203
     */
    protected abstract String initialize();
 }

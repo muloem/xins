@@ -158,8 +158,6 @@ public class FastStringBuffer extends Object {
     *    the boolean to append, if it is <code>true</code> then the string
     *    <code>"true"</code> will be appended, otherwise the string
     *    <code>"false"</code> will be appended..
-    *
-    * @since XINS 0.196
     */
    public void append(boolean b) {
       append(b ? "true" : "false");

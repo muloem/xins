@@ -95,8 +95,6 @@ implements PropertyReader {
     *
     * @return
     *    the size, always &gt;= 0.
-    *
-    * @since XINS 0.202
     */
    public int size() {
       return _properties.size();

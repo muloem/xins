@@ -119,8 +119,6 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws CallException
     *    if all call attempts failed.
-    *
-    * @since XINS 0.207
     */
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
@@ -284,8 +282,6 @@ public abstract class ServiceCaller extends Object {
     *
     * @throws CallException
     *    if the call to the specified target failed.
-    *
-    * @since XINS 0.207
     */
    protected abstract Object doCallImpl(CallRequest      request,
                                         TargetDescriptor target)
@@ -359,8 +355,6 @@ public abstract class ServiceCaller extends Object {
     * @throws TimeOutException
     *    if the task did not finish within the total time-out period and was
     *    interrupted.
-    *
-    * @since XINS 0.204
     */
    protected final void controlTimeOut(Runnable         task,
                                        TargetDescriptor descriptor)
@@ -410,8 +404,6 @@ public abstract class ServiceCaller extends Object {
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
-    *
-    * @since XINS 0.207
     */
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception) {
