@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.204:
+
+* Logdoc:
+  - Fixed a bug in XINS 0.203 that failed the creation of the HTML logdoc
+    pages.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.203:
 
 * XINS/Java Server Framework:
