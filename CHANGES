@@ -1,6 +1,13 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
+* XINS/Java Server Framework:
+  - The recordCall() in FunctionStatistics now returns the duration of the
+    call. It replaces the getLastDuration() method introduced in
+    XINS 0.162.
+    In XINS 0.162 the FunctionStatistics.getLastDuration() may not return
+    the duration of the expected function call.
+
 * XINS/Java Common Library:
   - Added missing package.html for org.xins.logdoc.
 

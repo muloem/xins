@@ -128,11 +128,6 @@ class FunctionStatistics {
     */
    private long _unsuccessfulMaxStart;
 
-   /**
-    * The last duration of a call.
-    */
-   private long _lastDuration;
-   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -150,11 +145,15 @@ class FunctionStatistics {
     *
     * @param success
     *    indication if the call was successful.
+    * 
+    * @return
+    *    returns the duration in milliseconds of the call of the function.
+    *    The duration is computed as the difference in between
+    *    the start time and the time that this method has been invoked.
     */
-   final void recordCall(long start, boolean success) {
+   final long recordCall(long start, boolean success) {
 
       long duration = System.currentTimeMillis() - start;
-      _lastDuration = duration;
 
       // Call succeeded
       if (success) {
@@ -184,6 +183,7 @@ class FunctionStatistics {
             _unsuccessfulMaxStart = (_unsuccessfulMax == duration) ? start : _unsuccessfulMaxStart;
          }
       }
+      return duration;
    }
 
    /**
@@ -355,16 +355,6 @@ class FunctionStatistics {
       return _unsuccessfulMaxStart;
    }
    
-   /**
-    * Returns the last duration of a call.
-    *
-    * @return
-    *    the duration of the last call.
-    */
-   public long getLastDuration() {
-      return _lastDuration;
-   }
-
    /**
     * Resets the statistics for this function.
     */

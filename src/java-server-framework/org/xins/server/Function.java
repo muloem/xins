@@ -408,9 +408,7 @@ implements DefaultResultCodes {
       // TODO: If the Logging is moved somewhere else the  
       // The method invoking this method (performedCall) can directly
       // invoke recordCall and this method can be removed.
-      _statistics.recordCall(start, success);
-      
-      long duration = _statistics.getLastDuration();
+      long duration = _statistics.recordCall(start, success);
       
       // Call succeeded
       if (success) {
