@@ -5,6 +5,7 @@ package org.xins.types.standard;
 
 import org.xins.types.Type;
 import org.xins.types.TypeValueException;
+import org.xins.util.BooleanConstants;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -23,16 +24,6 @@ public final class Boolean extends Type {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Boolean SINGLETON = new Boolean();
-
-   /**
-    * Value <code>true</code>.
-    */
-   private final static java.lang.Boolean TRUE = new java.lang.Boolean(true);
-
-   /**
-    * Value <code>false</code>.
-    */
-   private final static java.lang.Boolean FALSE = new java.lang.Boolean(false);
 
 
    //-------------------------------------------------------------------------
@@ -87,9 +78,9 @@ public final class Boolean extends Type {
    public static java.lang.Boolean fromStringForOptional(String string)
    throws TypeValueException {
       if ("true".equals(string)) {
-         return TRUE;
+         return BooleanConstants.TRUE;
       } else if ("false".equals(string)) {
-         return FALSE;
+         return BooleanConstants.FALSE;
       } else if (string == null) {
          return null;
       } else {
@@ -156,7 +147,7 @@ public final class Boolean extends Type {
    }
 
    protected Object fromStringImpl(String string) {
-      return "true".equals(string) ? TRUE : FALSE;
+      return "true".equals(string) ? BooleanConstants.TRUE : BooleanConstants.FALSE;
    }
 
    public final String toString(Object value)
