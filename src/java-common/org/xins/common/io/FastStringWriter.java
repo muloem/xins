@@ -207,7 +207,7 @@ public class FastStringWriter extends Writer {
     *    if the offset and/or the length is invalid.
     */
    public void write(String str, int off, int len)
-   throws IllegalArgumentException, IOException {
+   throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
       assertOpen();
       MandatoryArgumentChecker.check("str", str);
       _buffer.append(str.substring(off, off + len));
