@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 0.146:
   - Changed CallFailedException to add a rule: At least one target must have
     failed.
   - Improved performance of SafeRandom in case a warning is logged.
+  - Renamed method iterateServices() in Descriptor to iterateTargets().
   - Added getTargetCount() method to class Descriptor (and subclasses).
 
 * XINS/Java Client Framework:
@@ -22,6 +23,11 @@ CHANGES INTRODUCED IN XINS 0.146:
     CallResult class in package org.xins.util.service.
   - Removed setCallAtConstruction(boolean) method in class
     ActualFunctionCaller.
+
+# Generateed CAPI classes:
+  - Shared sessions are no longer supported. The support for it was untested
+    and incomplete, so it has been removed completely, to simplify the code.
+    Support may be put back in in the future.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.145:
