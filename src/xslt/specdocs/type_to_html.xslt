@@ -34,7 +34,7 @@
 				</title>
 				<link rel="stylesheet" type="text/css" href="../style.css" />
 				<link rel="top" href="../index.html" title="API index" />
-				<link rel="up" href="index.html" title="Type index" />
+				<link rel="up" href="index.html" title="Overview of this API" />
 			</head>
 			<body>
 				<xsl:call-template name="header">
