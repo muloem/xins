@@ -169,13 +169,16 @@ public final class HTTPServiceCaller extends ServiceCaller {
       HttpMethod method = createMethod(target.getURL());
 
       boolean succeeded = false;
+      byte[] data;
+      int    code;
       try {
          // Execute the request
          client.executeMethod(method);
 
          // Read response body (mandatory operation) and determine status
-         byte[] data = method.getResponseBody();
-         int    code = method.getStatusCode();
+         data = method.getResponseBody();
+         code = method.getStatusCode();
+
          succeeded = true;
       } finally {
          // Release the connection
