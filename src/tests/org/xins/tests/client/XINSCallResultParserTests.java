@@ -196,11 +196,20 @@ public class XINSCallResultParserTests extends TestCase {
       Iterator children = dataElement.getChildren();
       assertEquals(1, iteratorSize(children));
 
-      // Do not allow 'result' within 'result'
+      // Do not allow 'result' element within 'result' element
       xml = "<result><result /></result>";
       try {
          parser.parse(xml.getBytes(ENCODING));
          fail("Element 'result' within 'result' should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
+      } catch (ParseException ex) {
+         // as expected
+      }
+
+      // Do not allow PCDATA content within 'result'
+      xml = "<result>Some PCDATA content</result>";
+      try {
+         parser.parse(xml.getBytes(ENCODING));
+         fail("PCDATA content within 'result' should cause XINSCallResultParser.parse(byte[]) to throw a ParseException.");
       } catch (ParseException ex) {
          // as expected
       }
