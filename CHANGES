@@ -28,7 +28,10 @@ CHANGES INTRODUCED IN XINS 0.157:
   - Using logdoc-approach throughout the complete APIServlet class.
   - Added some log messages. For example, now logging every request with the
     request method (GET, POST, HEAD, OPTIONS) and the IP address (log messages
-    10 and 11).
+    5000 and 5001).
+  - Deprecated all logging-related methods in CallContext.
+  - Deprecated isResponseValidationEnabled() in class API.
+  - Deprecated getAttributes() in class Session.
 
 * Logdoc:
   - Changed names of files.
