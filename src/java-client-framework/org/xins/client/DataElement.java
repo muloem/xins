@@ -8,14 +8,23 @@ package org.xins.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.BasicPropertyReader;
 
 /**
- * The data element received from the server when any.
+ * Element in a XINS result data section.
+ *
+ * <p><em>Note that the behavior of this class has been slightly redefined in XINS
+ * 1.1. In XINS 1.0, the name for a <code>DataElement</code> was a combination
+ * of the namespace prefix and the local name. In XINS 1.1, the name is just
+ * the local name. Since XINS 1.0 did not support XML Namespaces yet, this is
+ * not considered an incompatibility.</em>
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -38,25 +47,32 @@ public class DataElement implements Cloneable {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new DataElement with the specified qualified name.
+    * Creates a new <code>DataElement</code>.
     *
-    * @param name
-    *    the type of the element, cannot be <code>null</code>.
+    * @param namespaceURI
+    *    the namespace URI for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null<code>.
+    *
+    * @param localName
+    *    the local name of the element, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>localName == null</code>.
     */
-   DataElement(String name) throws IllegalArgumentException {
+   DataElement(String namespaceURI, String localName)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
+      MandatoryArgumentChecker.check("localName", localName);
 
-      // Initialize all fields
-      _name       = name;
-      _children   = new ArrayList();
-      _attributes = new BasicPropertyReader();
+      // An empty namespace URI is equivalent to null
+      if (namespaceURI != null && namespaceURI.length() < 1) {
+         namespaceURI = null;
+      }
 
-      // XXX: Lazily initialize children and attributes?
+      // Store namespace URI and local name
+      _namespaceURI = namespaceURI;
+      _localName    = localName;
    }
 
 
@@ -65,22 +81,30 @@ public class DataElement implements Cloneable {
    //-------------------------------------------------------------------------
 
    /**
-    * The name of this element. This field is never <code>null</code>.
+    * The namespace URI. This field can be <code>null</code>, but it can never
+    * be an empty string.
     */
-   private final String _name;
+   private final String _namespaceURI;
 
    /**
-    * The sub-elements of this element. This field is never <code>null</code>.
+    * The local name. This field is never <code>null</code>.
     */
-   private final List _children;
+   private final String _localName;
 
    /**
-    * The attributes of this elements. This field is never <code>null</code>.
+    * The child elements. This field is lazily initialized is initially
+    * <code>null</code>.
     */
-   private final BasicPropertyReader _attributes;
+   private ArrayList _children;
 
    /**
-    * The character data content for this element. Can be <code>null</code>.
+    * The attributes. This field is lazily initialized and is initially
+    * <code>null</code>.
+    */
+   private HashMap _attributes;
+
+   /**
+    * The character content for this element. Can be <code>null</code>.
     */
    private String _text;
 
@@ -90,92 +114,258 @@ public class DataElement implements Cloneable {
    //-------------------------------------------------------------------------
 
    /**
-    * Gets the name of the element.
+    * Gets the namespace URI.
     *
-    * @return element
-    *    the name of this element, cannot be <code>null</code>.
+    * @return
+    *    the namespace URI for this element, or <code>null</code> if there is
+    *    none, but never an empty string.
+    *
+    * @since XINS 1.1.0
+    */
+   public String getNamespaceURI() {
+      return _namespaceURI;
+   }
+
+   /**
+    * Gets the local name.
+    *
+    * @return
+    *    the local name of this element, cannot be <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public String getLocalName() {
+      return _localName;
+   }
+
+   /**
+    * Gets the local name.
+    *
+    * @return
+    *    the local name of this element, cannot be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0. Use {@link #getLocalName()} instead,
+    *    which has the same functionality and behavior. This method has been
+    *    deprecated since it returned a combination of the namespace prefix
+    *    and the local name in XINS 1.0. This method is guaranteed not to be
+    *    removed before XINS 2.0.0.
     */
    public String getName() {
-      return _name;
+      return getLocalName();
    }
 
    /**
-    * Adds a new child to this element.
-    *
-    * @param element
-    *    the new child to add to this element, cannot be <code>null</code>.
-    */
-   void addChild(DataElement element) {
-      _children.add(element);
-   }
-
-   /**
-    * Adds an attribute to this element. If the value for the specified
+    * Sets the specified attribute. If the value for the specified
     * attribute is already set, then the previous value is replaced.
     *
-    * @param name
-    *    the name of the attribute, cannot be <code>null</code>.
+    * @param namespaceURI
+    *    the namespace URI for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null<code>.
+    *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
     *
     * @param value
-    *    the value of the attribute, can be <code>null</code>.
+    *    the value for the attribute, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>localName == null</code>.
+    *
+    * @since XINS 1.1.0
     */
-   void addAttribute(String name, String value)
+   void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
+      // Construct a QualifiedName object. This will check the preconditions.
+      QualifiedName qn = new QualifiedName(namespaceURI, localName);
 
-      _attributes.set(name, value);
+      if (_attributes == null) {
+         if (value == null) {
+            return;
+         }
+
+         // Lazily initialize
+         _attributes = new HashMap();
+      }
+
+      // Set or reset the attribute
+      _attributes.put(qn, value);
    }
 
    /**
-    * Sets the character data content.
+    * Gets an unmodifiable view of all attributes.
     *
-    * @param text
-    *    the character data content for this element, can be <code>null</code>.
+    * @return
+    *    an unmodifiable {@link Map} (never <code>null</code>) which is a view
+    *    on all the attributes; each key in the <code>Map</code> is a
+    *    {@link QualifiedName} instance (not <code>null</code>) and each value
+    *    in it is a <code>String</code> instance (not <code>null</code>).
+    *
+    * @since XINS 1.1.0
     */
-   void setText(String text) {
-      _text = text;
+   public Map getAttributeMap() {
+      if (_attributes == null) {
+         return Collections.EMPTY_MAP;
+      } else {
+         return Collections.unmodifiableMap(_attributes);
+      }
    }
 
    /**
-    * Gets the list of the attributes.
+    * Gets the names of all attributes that do not have a namespace defined.
     *
     * @return
     *    an {@link Iterator} returning each attribute name as a
-    *    {@link String}; can be <code>null</code>, if the DataElement has no
-    *    elements.
+    *    {@link String}; or <code>null</code>, which indicates the
+    *    <code>DataElement</code> has no elements.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0. Use {@link #getAttributeMap()}
+    *    instead, which returns all attributes names and values and which
+    *    supports XML Namespaces. This method has been deprecated since it
+    *    does not support namespaces and since it returned a combination of
+    *    the namespace prefix and the local name in XINS 1.0, although XML
+    *    Namespaces were not supported yet. This method is guaranteed not to
+    *    be removed before XINS 2.0.0.
     */
    public Iterator getAttributes() {
-      if (_attributes.size() == 0) {
-         return null;
+
+      Set set = null;
+
+      // Find all matches and put them in a lazily-initialized Set
+      if (_attributes != null) {
+         Iterator it = _attributes.keySet().iterator();
+         while (it.hasNext()) {
+            QualifiedName qn = (QualifiedName) it.next();
+            if (qn.getNamespaceURI() == null) {
+               if (set == null) {
+                  set = new HashSet();
+               }
+               set.add(qn.getLocalName());
+            }
+         }
       }
-      return _attributes.getNames();
+
+      if (set == null) {
+         return null;
+      } else {
+         return set.iterator();
+      }
    }
 
    /**
-    * Gets the value of an attribute.
+    * Gets the value of the attribute with the qualified name. If the
+    * qualified name does not specify a namespace, then only an attribute that
+    * does not have a namespace will match.
     *
-    * @param name
-    *    the name of the attribute, cannot be <code>null</code>.
+    * @param qn
+    *    a combination of an optional namespace and a mandatory local name, or
+    *    <code>null</code>.
     *
     * @return
-    *    the value of the attribute, or <code>null</code> if the attribute is
-    *    either not set or set to <code>null</code>.
+    *    the value of the attribute that matches the specified namespace and
+    *    local name, or <code>null</code> if such an attribute is either not
+    *    set or set to <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>qn == null</code>.
+    *
+    * @since XINS 1.1.0
     */
-   public String get(String name)
+   public String getAttribute(QualifiedName qn)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
+      MandatoryArgumentChecker.check("qn", qn);
 
-      return _attributes.get(name);
+      if (_attributes == null) {
+         return null;
+      } else {
+         return (String) _attributes.get(qn);
+      }
+   }
+
+   /**
+    * Gets the value of the attribute with the specified namespace and local
+    * name. The namespace is optional. If the namespace is not given, then only
+    * an attribute that does not have a namespace will match.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>; if specified this
+    *    string must be a valid namespace URI.
+    *
+    * @param localName
+    *    the local name of the attribute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the attribute that matches the specified namespace and
+    *    local name, or <code>null</code> if such an attribute is either not
+    *    set or set to <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public String getAttribute(String namespaceURI, String localName)
+   throws IllegalArgumentException {
+      QualifiedName qn = new QualifiedName(namespaceURI, localName);
+      return getAttribute(qn);
+   }
+
+   /**
+    * Gets the value of an attribute that has no namespace.
+    *
+    * @param localName
+    *    the local name of the attribute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the attribute that matches the specified local name and
+    *    has no namespace defined, or <code>null</code> if the attribute is
+    *    either not set or set to <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.1.0. Use either
+    *    {@link #getAttribute(String,String)} or
+    *    {@link #getAttribute(DataElement.QualifiedName)} instead. This method
+    *    has been deprecated since it used to expect/accept a combination of
+    *    the namespace prefix and the local name in XINS 1.0, although that
+    *    XML Namespaces were not supported yet. This method is guaranteed not
+    *    to be removed before XINS 2.0.0.
+    */
+   public String get(String localName) throws IllegalArgumentException {
+      return getAttribute(null, localName);
+   }
+
+   /**
+    * Adds a new child element.
+    *
+    * @param child
+    *    the new child to add to this element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>child == null || child == <em>this</em></code>.
+    */
+   void addChild(DataElement child) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("child", child);
+      if (child == this) {
+         // TODO: Log
+         throw new IllegalArgumentException("child == this");
+      }
+
+      // Lazily initialize
+      if (_children == null) {
+         _children = new ArrayList();
+      }
+
+      _children.add(child);
    }
 
    /**
@@ -203,7 +393,7 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Gets the list of child elements that match specified name.
+    * Gets the list of child elements that match the specified name.
     *
     * @param name
     *    the name for the child elements to match, cannot be
@@ -219,6 +409,8 @@ public class DataElement implements Cloneable {
     */
    public List getChildElements(String name)
    throws IllegalArgumentException {
+
+      // TODO: Support namespaces
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
@@ -254,46 +446,173 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Gets the text of this element.
+    * Sets the character content. The existing character content, if any, is
+    * replaced
+    *
+    * @param text
+    *    the character content for this element, or <code>null</code>.
+    */
+   void setText(String text) {
+      _text = text;
+   }
+
+   /**
+    * Gets the character content, if any.
     *
     * @return
-    *    the text of this element or <code>null</code> if no text has been
-    *    specified for this element.
+    *    the character content of this element, or <code>null</code> if no
+    *    text has been specified for this element.
     */
    public String getText() {
       return _text;
    }
 
    /**
-    * Clones this object. The clone will have the same name and equivalent
-    * attributes, children and character data content.
+    * Clones this object. The clone will have the same namespace URI and local
+    * name and equivalent attributes, children and character content.
     *
     * @return
-    *    the clone of this object, never <code>null</code>.
+    *    a new clone of this object, never <code>null</code>.
     */
    public Object clone() {
 
       // Construct a new DataElement, copy the name
-      DataElement clone = new DataElement(getName());
+      DataElement clone = new DataElement(getNamespaceURI(), getLocalName());
 
       // Copy the children
-      List children = getChildElements();
-      int size = children.size();
-      for (int i = 0; i < size; i++) {
-         DataElement child = (DataElement) children.get(i);
-         clone.addChild((DataElement) child.clone());
+      if (_children != null) {
+         clone._children = (ArrayList) _children.clone();
       }
 
       // Copy the attributes
-      Iterator itAttributes = getAttributes();
-      while (itAttributes.hasNext()) {
-         String nextKey = (String) itAttributes.next();
-         clone.addAttribute(nextKey, get(nextKey));
+      if (_attributes != null) {
+         clone._attributes = (HashMap) _attributes.clone();
       }
 
-      // Copy the character data content
-      clone.setText(getText());
+      // Copy the character content
+      clone._text = _text;
 
       return clone;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Qualified name for an element or attribute. This is a combination of an
+    * optional namespace URI and a mandatory local name.
+    *
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.1.0
+    */
+   public static final class QualifiedName extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>QualifiedName</code> with the specified
+       * namespace and local name.
+       *
+       * @param namespaceURI
+       *    the namespace URI for the element, can be <code>null</code>; an
+       *    empty string is equivalent to <code>null<code>.
+       *
+       * @param localName
+       *    the local name of the element, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>localName == null</code>.
+       */
+      public QualifiedName(String namespaceURI, String localName)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("localName", localName);
+
+         // An empty namespace URI is equivalent to null
+         if (namespaceURI != null && namespaceURI.length() < 1) {
+            namespaceURI = null;
+         }
+
+         // TODO: Check format of namespaceURI
+         // TODO: Check format of localName
+
+         // Initialize fields
+         _namespaceURI = namespaceURI;
+         _localName    = localName;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The namespace URI. Can be <code>null</code>.
+       */
+      private final String _namespaceURI;
+
+      /**
+       * The local name. Cannot be <code>null</code>.
+       */
+      private final String _localName;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Compares this object with the specified object for equality.
+       *
+       * @param o
+       *    the object to compare with, or <code>null</code>.
+       *
+       * @return
+       *    <code>true</code> if this object and the argument are considered
+       *    equal, <code>false</code> otherwise.
+       */
+      public boolean equals(Object o) {
+
+         boolean equal = false;
+
+         if (o instanceof QualifiedName) {
+            QualifiedName qn = (QualifiedName) o;
+            if (_namespaceURI == null) {
+               if (qn._namespaceURI == null) {
+                  equal = _localName.equals(qn._localName);
+               }
+            } else if (_namespaceURI.equals(qn._namespaceURI)) {
+               equal = _localName.equals(qn._localName);
+            }
+         }
+
+         return equal;
+      }
+
+      /**
+       * Gets the namespace URI.
+       *
+       * @return
+       *    the namespace URI, can be <code>null</code>.
+       */
+      private String getNamespaceURI() {
+         return _namespaceURI;
+      }
+
+      /**
+       * Gets the local name.
+       *
+       * @return
+       *    the local name, never <code>null</code>.
+       */
+      private String getLocalName() {
+         return _localName;
+      }
    }
 }

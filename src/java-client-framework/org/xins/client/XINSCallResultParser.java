@@ -454,7 +454,7 @@ extends Object {
                }
 
                // Maintain a list of the elements, with data as the root
-               _dataElementStack.push(new DataElement("data"));
+               _dataElementStack.push(new DataElement(null, "data"));
 
                // Update the state
                _state = IN_DATA_SECTION;
@@ -473,16 +473,16 @@ extends Object {
          // Within the data section
          } else if (currentState == IN_DATA_SECTION) {
 
-            // TODO: Make DataElement support namespaces
-
             // Construct a DataElement
-            DataElement element = new DataElement(localName);
+            DataElement element = new DataElement(namespaceURI, localName);
 
             // Add all attributes
             for (int i = 0; i < atts.getLength(); i++) {
-               String key = atts.getQName(i);
-               String value = atts.getValue(i);
-               element.addAttribute(key, value);
+               String attrNamespaceURI = atts.getURI(i);
+               String attrLocalName    = atts.getLocalName(i);
+               String attrValue        = atts.getValue(i);
+
+               element.setAttribute(attrNamespaceURI, attrLocalName, attrValue);
             }
 
             // Push the element on the stack
