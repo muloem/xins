@@ -887,7 +887,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
    }
    
-   class HTTPCallResultDataHandler implements HTTPCallResultData {
+   private final static class HTTPCallResultDataHandler implements HTTPCallResultData {
       
       //-------------------------------------------------------------------------
       // Class fields
