@@ -2,6 +2,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.68:
 
 * Added package.html for package org.xins.util.threads.
+* Removed unused class NoSuchEntryException.
+* Improved Javadoc comments.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.67:
