@@ -92,6 +92,8 @@ XINS/JAVA COMMON LIBRARY
   PropertyReader for which get(String) has not been called.
 * Create an AbstractPropertyReader that would implements the common parts
   of the different PropertyReader classes.
+* Fix @return for method fromStringForOptional(String) in class
+  org.xins.types.standard.Properties.
 
 ______________________________________________________________________________
 LOGDOC
