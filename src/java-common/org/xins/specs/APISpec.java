@@ -12,7 +12,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class APISpec
-extends Spec {
+extends VersionedSpec {
 
    //-------------------------------------------------------------------------
    // Class fields

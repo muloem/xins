@@ -34,20 +34,16 @@ extends Spec {
 
    /**
     * Constructs a new <code>ElementAttributeSpec</code> for an element
-    * attribute with the specified name and version.
+    * attribute with the specified name.
     *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
-    * @param version
-    *    the version for the component, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>name == null || version == null</code>.
+    *    if <code>name == null</code>.
     */
-   public ElementAttributeSpec(String name, String version)
-   throws IllegalArgumentException {
-      super(TYPE, name, version);
+   public ElementAttributeSpec(String name) throws IllegalArgumentException {
+      super(TYPE, name);
    }
 
 

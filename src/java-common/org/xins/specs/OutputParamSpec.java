@@ -34,20 +34,16 @@ extends Spec {
 
    /**
     * Constructs a new <code>OutputParamSpec</code> for an output parameter
-    * with the specified name and version.
+    * with the specified name.
     *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
-    * @param version
-    *    the version for the component, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>name == null || version == null</code>.
+    *    if <code>name == null</code>.
     */
-   public OutputParamSpec(String name, String version)
-   throws IllegalArgumentException {
-      super(TYPE, name, version);
+   public OutputParamSpec(String name) throws IllegalArgumentException {
+      super(TYPE, name);
    }
 
 

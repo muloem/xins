@@ -7,7 +7,7 @@ import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Specification for a component of a XINS API specification. Each of these
- * components have at least a type, a name, and a version.
+ * components have at least a type and a name.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -28,8 +28,8 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Spec</code> object with the specified type, name
-    * and version. This constructor can only be called by subclasses in the
+    * Constructs a new <code>Spec</code> object with the specified type and
+    * name. This constructor can only be called by subclasses in the
     * same package.
     *
     * @param type
@@ -38,21 +38,17 @@ extends Object {
     * @param name
     *    the name for the component, not <code>null</code>.
     *
-    * @param version
-    *    the version for the component, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>type == null || name == null || version == null</code>.
+    *    if <code>type == null || name == null</code>.
     */
-   Spec(SpecType type, String name, String version)
+   Spec(SpecType type, String name)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("type", type, "name", name, "version", version);
+      MandatoryArgumentChecker.check("type", type, "name", name);
 
       _type    = type;
       _name    = name;
-      _version = version;
    }
 
 
@@ -69,11 +65,6 @@ extends Object {
     * The name of the component. Cannot be <code>null</code>.
     */
    private final String _name;
-
-   /**
-    * The version of the component. Cannot be <code>null</code>.
-    */
-   private final String _version;
 
 
    //-------------------------------------------------------------------------
@@ -98,15 +89,5 @@ extends Object {
     */
    public final String getName() {
       return _name;
-   }
-
-   /**
-    * Returns the version of the component.
-    *
-    * @return
-    *    the version, cannot be <code>null</code>.
-    */
-   public final String getVersion() {
-      return _version;
    }
 }

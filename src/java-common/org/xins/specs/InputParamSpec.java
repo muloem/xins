@@ -34,20 +34,16 @@ extends Spec {
 
    /**
     * Constructs a new <code>InputParamSpec</code> for an input parameter with
-    * the specified name and version.
+    * the specified name.
     *
     * @param name
     *    the name for the component, not <code>null</code>.
     *
-    * @param version
-    *    the version for the component, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>name == null || version == null</code>.
+    *    if <code>name == null</code>.
     */
-   public InputParamSpec(String name, String version)
-   throws IllegalArgumentException {
-      super(TYPE, name, version);
+   public InputParamSpec(String name) throws IllegalArgumentException {
+      super(TYPE, name);
    }
 
 
