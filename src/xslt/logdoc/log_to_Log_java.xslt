@@ -289,7 +289,7 @@ public class Log extends AbstractLog {
 		</xsl:for-each>
 		<xsl:text>), </xsl:text>
 		<xsl:choose>
-			<xsl:when test="$exception = 'true'">
+			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
 				<xsl:text>exception</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -297,7 +297,14 @@ public class Log extends AbstractLog {
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>);
-      }
+      }</xsl:text>
+		<xsl:if test="$exception = 'true' and not(@level = 'DEBUG')">
+			<xsl:text>
+      if (LOG.isEnabledFor(DEBUG)) {
+         LOG.log(FQCN, DEBUG, null, exception);
+      }</xsl:text>
+		</xsl:if>
+		<xsl:text>
    }</xsl:text>
 	</xsl:template>
 
