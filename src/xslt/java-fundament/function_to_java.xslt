@@ -16,6 +16,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<xsl:include href="../function.xslt" />
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
@@ -30,24 +31,7 @@
 
 	<xsl:template match="function">
 		<xsl:variable name="sessionBased">
-			<xsl:choose>
-				<xsl:when test="string-length(@sessionBased) &lt; 1">
-					<xsl:text>false</xsl:text>
-				</xsl:when>
-				<xsl:when test="@sessionBased = 'false'">
-					<xsl:text>false</xsl:text>
-				</xsl:when>
-				<xsl:when test="@sessionBased = 'true'">
-					<xsl:text>true</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>The attribute 'sessionBased' has an invalid value: '</xsl:text>
-						<xsl:value-of select="@sessionBased" />
-						<xsl:text>'.</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
 
 		<xsl:call-template name="java-header" />
