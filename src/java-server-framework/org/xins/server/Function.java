@@ -248,7 +248,7 @@ implements DefaultResultCodes {
     * @return
     *    the {@link API}, not <code>null</code>.
     */
-   final API getAPI() {
+   public final API getAPI() {
       return _api;
    }
 
