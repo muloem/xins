@@ -289,7 +289,7 @@ public final class DescriptorBuilder extends Object {
 
          GroupDescriptor.Type groupType = GroupDescriptor.getType(tokens[1]);
          if (groupType == null) {
-            throw new InvalidPropertyValueException(propertyName, value, "Unrecognized group descriptor type.");
+            throw new InvalidPropertyValueException(propertyName, value, "Unrecognized group descriptor type \"" + tokens[1] + "\".");
          }
 
          int memberCount = tokenCount - 2;
