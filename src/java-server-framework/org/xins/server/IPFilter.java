@@ -46,6 +46,11 @@ extends Object {
     *    zeroes, and <em>n</em> is a number between <em>0</em> and
     *    <em>32</em>, no leading zeroes.
     *
+    * @return
+    *    the constructed <code>IPFilter</code> object that has
+    *    <code>expression</code> as the filter expression; never
+    *    <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>expression == null</code>.
     *
