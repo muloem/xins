@@ -50,22 +50,11 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * <h2>Load-balancing and fail-over</h2>
  *
- * <p>There are 2 ways to perform a XINS call using a
- * <code>XINSServiceCaller</code> instance:
+ * <p>To perform a XINS call, use {@link #call(XINSCallRequest)}. Fail-over
+ * and load-balancing can be performed automatically.
  *
- * <ul>
- *    <li>to a single XINS service, using
- *        {@link #call(XINSCallRequest,TargetDescriptor)};
- *    <li>to a set of one or more XINS services, using
- *        {@link #call(XINSCallRequest)};
- * </ul>
- *
- * <p>With the second form of a XINS call, fail-over and load-balancing can be
- * performed.
- *
- * <p>How load-balancing is done (in the second form) depends on the
- * {@link Descriptor} passed to the
- * {@link #XINSServiceCaller(Descriptor)} constructor. If it is a
+ * <p>How load-balancing is done depends on the {@link Descriptor} passed to
+ * the {@link #XINSServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
  * and no load-balancing is performed. If it is a {@link GroupDescriptor},
  * then the configuration of the <code>GroupDescriptor</code> determines how
@@ -203,50 +192,15 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Calls the specified target using the specified subject. If the call
-    * succeeds, then a {@link XINSCallResult} object is returned, otherwise a
-    * {@link CallException} is thrown.
-    *
-    * <p>The implementation of this method in class
-    * <code>XINSServiceCaller</code> delegates to
-    * {@link #call(XINSCallRequest,TargetDescriptor)}.
-    *
-    * @param target
-    *    the target to call, cannot be <code>null</code>.
-    *
-    * @param request
-    *    the call request to be executed, must be an instance of class
-    *    {@link XINSCallRequest}, cannot be <code>null</code>.
-    *
-    * @return
-    *    the result, if and only if the call succeeded, always an instance of
-    *    class {@link XINSCallResult}, never <code>null</code>.
-    *
-    * @throws ClassCastException
-    *    if the specified <code>request</code> object is not <code>null</code>
-    *    and not an instance of class {@link XINSCallRequest}.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>target == null || request == null</code>.
-    *
-    * @throws CallException
-    *    if the call to the specified target failed.
-    *
-    * @since XINS 0.207
-    */
-   protected Object doCallImpl(CallRequest      request,
-                               TargetDescriptor target)
-   throws ClassCastException, IllegalArgumentException, CallException {
-
-      // Delegate to method with more specialized interface
-      return call((XINSCallRequest) request, target);
-   }
-
-   /**
     * Performs the specified request towards the XINS service. If the call
     * succeeds with one of the targets, then a {@link XINSCallResult} object
     * is returned. Otherwise, if none of the targets could successfully be
     * called, a {@link CallException} is thrown.
+    *
+    * <p>If the result is unsuccessful, then an
+    * {@link UnsuccessfulXINSCallException} is thrown. In this respect, this
+    * method behaves different from
+    * {@link #call(XINSCallRequest,TargetDescriptor)}.
     *
     * @param request
     *    the call request, not <code>null</code>.
@@ -302,28 +256,39 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw new Error(message.toString(), exception);
       }
 
+      // On failure, throw UnsuccessfulXINSCallException, otherwise return result
+      XINSCallResult xinsResult = (XINSCallResult) result;
+      if (xinsResult.getErrorCode() != null) {
+         throw new UnsuccessfulXINSCallException(xinsResult);
+      }
+
       // TODO: TRACE: Leave method
 
-      return (XINSCallResult) result;
+      return xinsResult;
    }
 
    /**
-    * Executes the specified call request on the specified XINS API. If the
-    * call fails in any way or if the result is unsuccessful, then a
-    * {@link XINSCallException} is thrown.
+    * Calls the specified target using the specified subject. If the call
+    * succeeds, then a {@link XINSCallResult} object is returned, otherwise a
+    * {@link CallException} is thrown.
     *
     * @param target
-    *    the service target on which to execute the request, cannot be
-    *    <code>null</code>.
+    *    the target to call, cannot be <code>null</code>.
     *
     * @param request
-    *    the call request to execute, cannot be <code>null</code>.
+    *    the call request to be executed, must be an instance of class
+    *    {@link XINSCallRequest}, cannot be <code>null</code>.
     *
     * @return
-    *    the call result, never <code>null</code> and always successful.
+    *    the result, if and only if the call succeeded, always an instance of
+    *    class {@link XINSCallResult}, never <code>null</code>.
+    *
+    * @throws ClassCastException
+    *    if the specified <code>request</code> object is not <code>null</code>
+    *    and not an instance of class {@link XINSCallRequest}.
     *
     * @throws IllegalArgumentException
-    *    if <code>target == null || request == null</code>.
+    *    if <code>request == null || target == null</code>.
     *
     * @throws GenericCallException
     *    if the call attempt failed due to a generic reason.
@@ -337,8 +302,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.207
     */
-   public XINSCallResult call(XINSCallRequest  request,
-                              TargetDescriptor target)
+   protected Object doCallImpl(CallRequest      request,
+                               TargetDescriptor target)
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException,
@@ -347,46 +312,49 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("request", request, "target", target);
 
+      // Convert the request to the appropriate class
+      XINSCallRequest xinsRequest = (XINSCallRequest) request;
+
       // Log that we are about to call the API
       // TODO: Either uncomment or remove the following line
       // Log.log_2011(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Delegate the actual HTTP call to the HTTPServiceCaller. This may
       // cause a CallException
-      HTTPCallRequest httpRequest = request.getHTTPCallRequest();
+      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
       HTTPCallResult  httpResult  = _httpCaller.call(httpRequest, target);
-
-      long duration = httpResult.getDuration();
 
       // Make sure data was received
       byte[] httpData = httpResult.getData();
       if (httpData == null || httpData.length == 0) {
-         throw new InvalidResultXINSCallException(request, target, duration, "No data received.", null);
+         throw new InvalidResultXINSCallException(xinsRequest,
+                                                  target,
+                                                  httpResult.getDuration(),
+                                                  "No data received.",
+                                                  null);
       }
 
       // Parse the result
-      XINSCallResultData data;
+      XINSCallResultData resultData;
       try {
-         data = _parser.parse(httpData);
+         resultData = _parser.parse(httpData);
       } catch (ParseException parseException) {
-         throw new InvalidResultXINSCallException(request, target, duration, "Failed to parse result.", parseException);
+         throw new InvalidResultXINSCallException(xinsRequest,
+                                                  target,
+                                                  httpResult.getDuration(),
+                                                  "Failed to parse result.",
+                                                  parseException);
       }
 
-      // Construct a XINSCallResult object to contain the data
-      XINSCallResult xinsResult = new XINSCallResult(request,
-                                                     target,
-                                                     duration,
-                                                     null,
-                                                     data);
-
-      // On failure, throw UnsuccessfulXINSCallException, otherwise return result
-      if (data.getErrorCode() != null) {
-         throw new UnsuccessfulXINSCallException(xinsResult);
-
-      // Otherwise just return the result
-      } else {
-         return xinsResult;
+      // If the result is unsuccessful, throw an exception
+      if (resultData.getErrorCode() != null) {
+         throw new UnsuccessfulXINSCallException(xinsRequest,
+                                                 target,
+                                                 httpResult.getDuration(),
+                                                 resultData);
       }
+
+      return resultData;
    }
 
    /**
@@ -435,7 +403,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                                          CallExceptionList exceptions,
                                          Object            result)
    throws ClassCastException {
-
 
       return new XINSCallResult((XINSCallRequest) request,
                                 succeededTarget,
