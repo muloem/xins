@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 0.196:
   - Added log message 3315-3318, which describe the decision making process
     for fail-over, depending on available targets and whether or not fail-over
     is in principle allowed, considering the problem at hand.
+  - Added log message 3319: Target descriptor constructed.
   - Added append(boolean) method to class FastStringBuffer.
 
 * XINS/Java Client Framework:
