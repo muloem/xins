@@ -17,6 +17,10 @@
 		<xsl:call-template name="java-header" />
 		<xsl:text>package org.xins.server;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Constants for the default return codes.
  */
@@ -45,6 +49,19 @@ public interface DefaultReturnCodes {</xsl:text>
 </xsl:text>
 		</xsl:for-each>
 		<xsl:text>
+
+   /**
+    * List containing the values of all defined return codes.
+    */
+   final List CODES = Collections.unmodifiableList(Arrays.asList(new String[]
+{</xsl:text>
+		<xsl:for-each select="code">
+			<xsl:if test="position() &gt; 1">, </xsl:if>
+			<xsl:text>"</xsl:text>
+			<xsl:value-of select="@value" />
+			<xsl:text>"</xsl:text>
+		</xsl:for-each>
+		<xsl:text>}));
 }</xsl:text>
 	</xsl:template>
 
