@@ -65,6 +65,8 @@
 
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
 		<property name="javadoc.srcdir.xins" value="build/src/java-common:build/src/java-server-framework:build/src/java-client-framework" />
+
+		<property name="java.target"         value="1.2" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -99,7 +101,7 @@
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
-		target="1.2">
+		target="${java.target}">
 			<classpath>
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
@@ -141,7 +143,7 @@
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
-		target="1.2">
+		target="${java.target}">
 			<classpath>
 				<pathelement path="build/classes/java-common" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
@@ -181,7 +183,7 @@
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
-		target="1.2">
+		target="${java.target}">
 			<classpath>
 				<pathelement path="build/classes/java-common" />
 				<fileset dir="depends/compile"             includes="**/*.jar" />
@@ -634,7 +636,7 @@
 		debug="true"
 		deprecation="true"
 		optimize="false"
-		target="1.2">
+		target="${java.target}">
 			<classpath>
 				<pathelement path="build/xins-common.jar" />
 				<pathelement path="build/xins-client.jar" />
