@@ -388,8 +388,10 @@ public abstract class ]]></xsl:text>
 			</xsl:if>
 			<xsl:text>
 
-      // Create the session
-      context.createSession();</xsl:text>
+      if (context.isSuccess()) {
+         // Create the session
+         context.createSession();
+      }</xsl:text>
 		</xsl:if>
 		<xsl:if test="$sessionBased = 'true'">
 			<xsl:text>
