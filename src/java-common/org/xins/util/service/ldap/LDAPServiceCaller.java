@@ -84,9 +84,9 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
    /**
     * Performs the specified LDAP query using the specified authentication
-    * details. If this succeeds with one of the targets, then a {@link Result}
-    * object is returned. Otherwise, if none of the targets could successfully
-    * be called, a {@link CallFailedException} is thrown.
+    * details. If this succeeds with one of the targets, then a
+    * {@link NamingEnumeration} is returned. Otherwise, if none of the targets
+    * could successfully be called, a {@link CallFailedException} is thrown.
     *
     * @param authenticationDetails
     *    the authentication details, or <code>null</code> if no authentication
@@ -133,7 +133,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Perform a query if applicable
       Query query = request._query;
       if (query != null) {
-         return query(context, query);
+         return query(target, context, query);
       } else {
          return null;
       }
@@ -183,19 +183,49 @@ public final class LDAPServiceCaller extends ServiceCaller {
    /**
     * Performs the specified query.
     *
+    * @param target
+    *    the target service, cannot be <code>null</code>.
+    *
     * @param context
     *    the directory context for the query, cannot be <code>null</code>.
     *
     * @param query
     *    the query to execute, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result of the query, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || context == null || query == null</code>.
+    *
+    * @throws NamingException
+    *    if the search failed.
     */
-   private NamingEnumeration query(InitialDirContext context, Query query)
+   private NamingEnumeration query(ServiceDescriptor target,
+                                   InitialDirContext context,
+                                   Query             query)
    throws IllegalArgumentException, NamingException {
 
-      String         searchBase     = null; // TODO
-      String         filter         = null; // TODO
-      SearchControls searchControls = null; // TODO
+      // Check preconditions
+      MandatoryArgumentChecker.check("target",  target,
+                                     "context", context,
+                                     "query",   query);
 
+      // Get search base and filter
+      String searchBase = query.getSearchBase();
+      String filter     = query.getFilter();
+
+      // Create SearchControls object
+      SearchControls searchControls = new SearchControls(
+         SearchControls.SUBTREE_SCOPE, // scope
+         0L,                           // return all entries that match, no maximum
+         target.getTimeOut(),          // time-out (in ms) or 0 if unlimited
+         null,                         // return all attributes
+         false,                        // do not return named objects
+         false                         // do not dereference links
+      );
+
+      // Perform the search and return the result
       return context.search(searchBase, filter, searchControls);
    }
 
@@ -388,6 +418,12 @@ public final class LDAPServiceCaller extends ServiceCaller {
    public static final class Query
    extends Object {
 
+      // TODO: Accept optionally list of attributes to fetch
+      // TODO: Be able to set flag to return named objects or not
+      // TODO: Be able to set flag to dereference links or not
+      // TODO: Allow configuration of maximum items
+      // TODO: Allow configuration of scope
+
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
@@ -399,6 +435,26 @@ public final class LDAPServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Returns the search base.
+       *
+       * @return
+       *    the search base, can be <code>null</code>.
+       */
+      public String getSearchBase() {
+         return null; // TODO
+      }
+
+      /**
+       * Returns the filter.
+       *
+       * @return
+       *    the filter, can be <code>null</code>.
+       */
+      public String getFilter() {
+         return null; // TODO
+      }
    }
 
    /**
