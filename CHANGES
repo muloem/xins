@@ -52,9 +52,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     XINS API specification.
   - Added getClassName(Object) and getNameOfClass(Class) functions to class
     Utils.
-  - Fixed the method fromString() of the base64 standard type.
-  - Fixed the method toString(Object) of the base64 standard type.
-  - Removed the org.xins.common.text.Base64 class.
+  - Fixed the method fromString() of the _base64 standard type.
+  - Fixed the method toString(Object) of the _base64 standard type.
+  - Removed the org.xins.common.text.Base64 class. It was introduced in XINS
+    1.1.0 but already marked as deprecated and it had a note stating that it
+    could be removed at anytime.
   - Added getProtocol() method to class TargetDescriptor (with unit tests).
 
 * XINS/Java Client Framework:
