@@ -38,34 +38,6 @@ implements Responder, Log {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Returns the text to prefix to all log messages for the specified
-    * function and the specified call identifier.
-    *
-    * @param functionName
-    *    the name of the function, should not be <code>null</code>.
-    *
-    * @param callID
-    *    the call identifier.
-    *
-    * @return
-    *    the prefix for log messages, never <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.158. Should no longer be useful if logdoc is
-    *    used for logging.
-    */
-   static final String getLogPrefix(String functionName, int callID) {
-      FastStringBuffer buffer = new FastStringBuffer(50);
-      buffer.append("Call ");
-      buffer.append(functionName);
-      buffer.append(':');
-      buffer.append(callID);
-      buffer.append(": ");
-      return buffer.toString();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
