@@ -19,9 +19,7 @@ import org.xins.util.MandatoryArgumentChecker;
  *
  * @since XINS 0.146
  */
-public class TargetDescriptor extends Descriptor {
-
-   // TODO: Make final as soon as ServiceDescriptor class has been removed
+public final class TargetDescriptor extends Descriptor {
 
    //-------------------------------------------------------------------------
    // Class fields
