@@ -103,13 +103,13 @@ public abstract class ServiceCaller extends Object {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws CallFailedException
+    * @throws CallException
     *    if all call attempts failed.
     *
     * @since XINS 0.207
     */
    protected final CallResult doCall(CallRequest request)
-   throws CallException {
+   throws IllegalArgumentException, CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);

@@ -39,6 +39,9 @@ public final class IOCallException extends GenericCallException {
     * @param ioException
     *    the cause {@link IOException}, cannot be <code>null</code>.
     *
+    * @return
+    *    the short reason, never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null

@@ -91,19 +91,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    be <code>null</code>.
     *
     * @param request
-    *    the HTTP call request, should not be <code>null</code>.
-    *    be sent.
+    *    the HTTP call request, not <code>null</code>.
     *
     * @return
-    *    the constructed {@link HttpMethod} object, never <code>null</code>.
+    *    the constructed {@link HttpMethod} object, not <code>null</code>.
     *
-    * @throws NullPointerException
-    *    if <code>request == null</code>.
+    * @throws IllegalArgumentException
+    *    if <code>url == null || request == null</code>.
     */
    private static HttpMethod createMethod(String          url,
-                                          HTTPCallRequest request) {
+                                          HTTPCallRequest request)
+   throws IllegalArgumentException {
 
-      HTTPMethod method = request.getMethod();
+      // Check preconditions
+      MandatoryArgumentChecker.check("url", url, "request", request);
+
+      // Get the HTTP method (like GET and POST) and parameters
+      HTTPMethod     method     = request.getMethod();
       PropertyReader parameters = request.getParameters();
 
       // HTTP POST request
@@ -255,8 +259,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    all the other call attempts failed as well.
     */
    public HTTPCallResult call(HTTPCallRequest request)
-   throws GenericCallException, HTTPCallException {
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException {
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // Perform the call
       CallResult callResult;
       try {
          callResult = doCall(request);
