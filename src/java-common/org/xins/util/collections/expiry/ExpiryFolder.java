@@ -70,7 +70,7 @@ extends Object {
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private final Map _recentlyAccessed;
+   private Map _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -111,7 +111,17 @@ extends Object {
     * <p>If any entries are expirable, they will be removed from this map.
     */
    void tick() {
+      int lastSlotIndex = _slotCount - 1;
 
+      synchronized (_recentlyAccessed) {
+         Map toBeExpired = _slots[lastSlotIndex];
+         // TODO: Map doNotExpire = _validator.validateExpiry(toBeExpired);
+         for (int i = lastSlotIndex; i > 0; i--) {
+            _slots[i] = _slots[i - 1];
+         }
+         _slots[0] = _recentlyAccessed;
+         _recentlyAccessed = new HashMap(89);
+      }
    }
 
    /**
