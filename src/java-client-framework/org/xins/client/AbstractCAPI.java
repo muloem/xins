@@ -31,20 +31,20 @@ extends Object {
    /**
     * Creates a new <code>AbstractCAPI</code> object.
     *
-    * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.
+    * @param caller
+    *    the XINS service caller, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionCaller == null</code>.
+    *    if <code>caller == null</code>.
     */
-   protected AbstractCAPI(FunctionCaller functionCaller)
+   protected AbstractCAPI(XINSServiceCaller caller)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller", functionCaller);
+      MandatoryArgumentChecker.check("caller", caller);
 
       // Set fields
-      _functionCaller = functionCaller;
+      _caller = caller;
    }
 
 
@@ -53,9 +53,9 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The function caller to use. This field cannot be <code>null</code>.
+    * The XINS service caller to use. This field cannot be <code>null</code>.
     */
-   private FunctionCaller _functionCaller;
+   private XINSServiceCaller _caller;
 
 
    //-------------------------------------------------------------------------
@@ -63,12 +63,12 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the function caller to use.
+    * Returns the XINS service caller to use.
     *
     * @return
-    *    the function caller to use, never <code>null</code>.
+    *    the XINS service caller to use, never <code>null</code>.
     */
-   protected FunctionCaller getFunctionCaller() {
-      return _functionCaller;
+   protected XINSServiceCaller getCaller() {
+      return _caller;
    }
 }
