@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.170:
+
+* Generated specification documentation:
+  - Added more possible elements for the api_1_0.dtd.
+
+* Build and release process:
+  - Keep the changes-<version>.txt when making a release.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.169:
 
 * XINS/Java Server Framework:
