@@ -309,7 +309,9 @@
 		<mkdir dir="build/checkstyle" />
 		<mkdir dir="build/checkstyle/xml" />
 		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
+			<fileset dir="src/java-common"           includes="**/*.java" />
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-client-framework" includes="**/*.java" />
 			<formatter type="xml" tofile="build/checkstyle/xml/results.xml"/>
 		</checkstyle>
 	</target>
