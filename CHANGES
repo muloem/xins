@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.33:
 
 * Added XINS/Java Client Framework. Translates into a xins-client.jar.
 
+* Having groups in the Javadoc API documentation set.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.32:
 
