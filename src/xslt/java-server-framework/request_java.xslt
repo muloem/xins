@@ -92,7 +92,7 @@ public final static class Request {
    /**
     * Constructs a new <code>Request</code> instance.
     */
-   public Request(String _ip]]></xsl:text>
+   public Request(String __ipArg]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
@@ -112,7 +112,7 @@ public final static class Request {
 			<xsl:text>, org.xins.common.xml.Element _dataSection</xsl:text>
 		</xsl:if>
 		<xsl:text>) {
-      __ip = _ip;
+      __ip = __ipArg;
 </xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:text>      _</xsl:text>
