@@ -324,7 +324,7 @@ public final class ]]></xsl:text>
 	<xsl:template name="name_for_itemfield">
 		<xsl:param name="itemName" />
 		<xsl:call-template name="toupper">
-			<xsl:with-param name="text" select="translate($itemName, ' .-', '___')" />
+			<xsl:with-param name="text" select="translate($itemName, ' .-/', '____')" />
 		</xsl:call-template>
 	</xsl:template>
 </xsl:stylesheet>
