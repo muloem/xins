@@ -33,8 +33,8 @@ implements DefaultResultCodes {
     *    the value to check.
     *
     * @return
-    *    <code>true</code> if and only if <code>value != null &amp;&amp;
-    *    value.length() != 0</code>.
+    *    <code>true</code> if and only if <code>value == null ||
+    *    value.length() == 0</code>.
     */
    protected static final boolean isMissing(String value) {
       return value == null || value.length() == 0;
