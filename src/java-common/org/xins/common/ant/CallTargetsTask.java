@@ -3,13 +3,6 @@
  *
  * Copyright 2004 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
- *
- * Part of the code in this class is based on code in Apache Ant 1.6.2,
- * specifically on code in the class org.apache.tools.ant.taskdefs.Ant, which
- * falls under Apache copyright:
- *
- * Copyright 2000-2004 The Apache Software Foundation.
- * See http://www.apache.org/licenses/LICENSE-2.0 for more details.
  */
 package org.xins.common.ant;
 
