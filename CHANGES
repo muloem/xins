@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.117:
+
+* XINS/Java Common Library:
+  - Refactored MandatoryArgumentChecker. Simplified. No longer using
+    MissingArgumentException.
+  - Removed MissingArgumentException class.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.116:
 
 * XINS/Java Common Library:
