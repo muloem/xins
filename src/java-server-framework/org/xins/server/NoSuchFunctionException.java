@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Exception that indicates that there is no function matching the request.
  *
@@ -33,17 +35,17 @@ extends Exception {
     *
     * @return
     *    the error message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
     */
-   private static String createMessage(String functionName) {
+   private static String createMessage(String functionName)
+   throws IllegalArgumentException {
 
       // Function name specified
-      if (functionName != null) {
-         return "The function \"" + functionName + "\" cannot be found.";
+      MandatoryArgumentChecker.check("functionName", functionName);
 
-      // Function name not specified
-      } else {
-         return "An unspecified function cannot be found.";
-      }
+      return "The function \"" + functionName + "\" cannot be found.";
    }
 
 
@@ -56,9 +58,13 @@ extends Exception {
     * function name.
     *
     * @param functionName
-    *    the name, or <code>null</code>.
+    *    the name, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
     */
-   NoSuchFunctionException(String functionName) {
+   NoSuchFunctionException(String functionName)
+   throws IllegalArgumentException {
       super(createMessage(functionName));
       _functionName = functionName;
    }
@@ -68,10 +74,10 @@ extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
-    /**
-     * The name of the function.
-     */
-    private final String _functionName;
+   /**
+    * The name of the function.
+    */
+   private final String _functionName;
 
 
    //-------------------------------------------------------------------------
@@ -82,7 +88,7 @@ extends Exception {
     * Gets the name of the function.
     *
     * @return
-    *    the name of the function, or <code>null</code> if no function was provided.
+    *    the name of the function, never <code>null</code>.
     */
    public String getFunctionName() {
       return _functionName;
