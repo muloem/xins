@@ -73,7 +73,7 @@ public final class CallFailedException extends Exception {
       int count = exceptions.size();
 
       // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(50);
+      FastStringBuffer buffer = new FastStringBuffer(50 + 250 * count);
       buffer.append("Failed to call service. Tried ");
       if (count == 1) {
          buffer.append("1 target.");
@@ -82,8 +82,20 @@ public final class CallFailedException extends Exception {
          buffer.append(" targets.");
       }
 
-      // XXX: We could possibly improve the message by including more
-      //      information.
+      buffer.append(" [");
+      for (int i = 0; i < count; i++) {
+         TargetDescriptor failedDescriptor = (TargetDescriptor) failedTargets.get(i);
+         Throwable failedException = (Throwable) exceptions.get(i);
+         buffer.append("Target \"");
+         buffer.append(failedDescriptor.getURL());
+         buffer.append("\" failed with \"");
+         buffer.append(failedException.getMessage());
+         buffer.append("\"");
+         if (i < count - 1) {
+            buffer.append(", ");
+         }
+      }
+      buffer.append("]");
 
       // Returns the message to the constructor
       return buffer.toString();

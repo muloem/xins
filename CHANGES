@@ -1,9 +1,14 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.204:
 
+* XINS/Java Common Library:
+  - Improved the CallFailedException message to return more information.
+
 * Logdoc:
   - Fixed a bug in XINS 0.203 that failed the creation of the HTML logdoc
     pages.
+  - Changed the property org.xins.server.log.locale to org.xins.logdoc.locale.
+    The property org.xins.server.log.locale is now deprecated.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.203:

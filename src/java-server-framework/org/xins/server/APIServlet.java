@@ -183,6 +183,8 @@ extends HttpServlet {
    /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
+    * @deprecated
+    *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
    public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
@@ -191,12 +193,6 @@ extends HttpServlet {
     * that the generated output xml should comply with.
     */
    public static final String OUTPUT_COMPATIBILITY_PROPERTY = "org.xins.server.output.compatibility";
-
-   /**
-    * The default locale used for starting up when the locale is not defined in
-    * command line arguments.
-    */
-   public static final String DEFAULT_LOCALE = "us_US";
 
    /**
     * The response encoding format.
@@ -737,7 +733,10 @@ extends HttpServlet {
          boolean succeeded = false;
 
          // Determine the log locale
-         String newLocale = _runtimeProperties.get(LOG_LOCALE_PROPERTY);
+         String newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
+         if (newLocale == null) {
+            newLocale = _runtimeProperties.get(LOG_LOCALE_PROPERTY);
+         }
 
          // If the log locale is set, apply it
          if (newLocale != null) {

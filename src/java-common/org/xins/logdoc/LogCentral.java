@@ -19,6 +19,17 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The property used to change the locale of the logdoc.
+    */
+   public final static String LOG_LOCALE_PROPERTY = "org.xins.logdoc.locale";
+
+   /**
+    * The default locale used for starting up when the locale is not defined in
+    * command line arguments.
+    */
+   public static final String DEFAULT_LOCALE = "us_US";
+
+   /**
     * All registered <code>LogController</code> instances.
     *
     * @see #registerLog(AbstractLog.LogController)
@@ -59,11 +70,11 @@ extends Object {
 
       // When the first LogController registers, set the locale.
       if (LOCALE == null) {
-         String defaultLocale = System.getProperty("org.xins.server.locale");
-         if (defaultLocale == null || defaultLocale.equals("")) {
-            LOCALE = "en_US";
+         String startupLocale = System.getProperty(LOG_LOCALE_PROPERTY);
+         if (startupLocale == null || startupLocale.equals("")) {
+            LOCALE = DEFAULT_LOCALE;
          } else {
-            LOCALE = defaultLocale;
+            LOCALE = startupLocale;
          }
       }
 
