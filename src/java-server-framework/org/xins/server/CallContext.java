@@ -680,6 +680,11 @@ implements Responder, Log {
 
    public void fail(ResultCode resultCode)
    throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException {
+      fail(resultCode, null);
+   }
+
+   public void fail(ResultCode resultCode, String message)
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException {
 
       // Check state
       if (_state != BEFORE_START) {
@@ -696,6 +701,11 @@ implements Responder, Log {
          startResponse(false);
       } else {
          startResponse(resultCode);
+      }
+
+      // Include the message, if any
+      if (message != null) {
+         param("_message", message);
       }
 
       // End response

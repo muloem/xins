@@ -337,6 +337,32 @@ extends ResponderStates {
    throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException;
 
    /**
+    * Indicates a failure with the specified message.
+    *
+    * @param resultCode
+    *    the result code, can be <code>null</code>.
+    *
+    * @param message
+    *    detail message, can be <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the response output has already started.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>resultCode.getSuccess() == true</code>.
+    *
+    * @throws InvalidResponseException
+    *    if the response is considered invalid.
+    *
+    * @throws IOException
+    *    if an I/O error occurred.
+    *
+    * @since XINS 0.29.
+    */
+   void fail(ResultCode resultCode, String message)
+   throws IllegalArgumentException, IllegalStateException, InvalidResponseException, IOException;
+
+   /**
     * Ends the response output. This is done by writing a <code>result</code>
     * end tag. If necessary a <code>result</code> start tag is written as
     * well.
