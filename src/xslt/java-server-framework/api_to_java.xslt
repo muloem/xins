@@ -46,11 +46,7 @@
 		<xsl:text>;</xsl:text>
 		<xsl:text><![CDATA[
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
 import org.xins.server.API;
-import org.xins.server.CallContext;
 
 /**
  * Implementation of <code>]]></xsl:text>

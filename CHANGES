@@ -18,8 +18,12 @@ CHANGES INTRODUCED IN XINS 0.207:
   - An error is thrown when you register a log that doesn't support the
     current locale.
 
+* Generated java code:
+  - Removed unused imports in the generated APIImpl.java.
+
 * Generated build file
   - Added some missing description for the targets help, version and run.
+  - Remove the directory build/classes from being created as it's not used.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.206:

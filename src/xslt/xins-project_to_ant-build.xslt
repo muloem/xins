@@ -1068,7 +1068,6 @@
 			<target name="-prepare-classes" depends="-prepare,-load-dtds">
 				<!-- If not set by the user set it to true. -->
 				<property name="deprecated" value="true" />
-				<mkdir dir="build/classes" />
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">
