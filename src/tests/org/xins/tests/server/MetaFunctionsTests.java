@@ -26,7 +26,7 @@ import org.xins.tests.server.servlet.HTTPServletHandler;
  * Tests for class <code>IPFilter</code>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class MetaFunctionsTests extends TestCase {
 
@@ -54,7 +54,7 @@ public class MetaFunctionsTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>IPFilterTests</code> test suite with
+    * Constructs a new <code>MetaFunctionsTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
@@ -74,6 +74,7 @@ public class MetaFunctionsTests extends TestCase {
     */
    private HTTPServletHandler _httpServer;
    
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
