@@ -8,17 +8,7 @@
 
 <project name="xins" default="all" basedir=".">
 
-	<target name="-checkstyle-avail">
-		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
-			<classpath>
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</available>
-		<fail unless="checkstyle.available" message="Checkstyle not available" />
-	</target>
-
-	<target name="-junit-avail">
+	<target name="-junit-task">
 		<available classname="junit.framework.TestListener" property="junit.available">
 			<classpath>
 				<fileset dir="depends/compile"             includes="*.jar" />
@@ -26,9 +16,17 @@
 			</classpath>
 		</available>
 		<fail unless="junit.available" message="JUnit not available" />
+		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
 	</target>
 
-	<target name="-checkstyle-task" depends="-checkstyle-avail">
+	<target name="-checkstyle-task">
+		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
+			<classpath>
+				<fileset dir="depends/compile"             includes="*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
+			</classpath>
+		</available>
+		<fail unless="checkstyle.available" message="Checkstyle not available" />
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 			<classpath>
 				<fileset dir="depends/compile"             includes="*.jar" />
@@ -37,7 +35,7 @@
 		</taskdef>
 	</target>
 
-	<target name="-junit-task" depends="-junit-avail">
+	<target name="-junit-task" depends="-junit-task">
 		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
 			<classpath>
 				<fileset dir="depends/compile"             includes="*.jar" />
