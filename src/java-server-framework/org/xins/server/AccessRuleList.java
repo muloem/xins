@@ -6,7 +6,6 @@ package org.xins.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
@@ -115,15 +114,13 @@ extends Object {
       // Store the rules
       _rules = rules;
 
-      Logger log = Library.INIT_ACL_LOG;
-
       // Build string representation
       int ruleCount = rules.length;
       FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
          String s = rules[0].toString();
          buffer.append(s);
-         log.info("Access rule 0 is: " + s + '.');
+         Log.log_4036("0", s);
       }
       for (int i = 1; i < ruleCount; i++) {
          String s = rules[i].toString();
@@ -131,7 +128,7 @@ extends Object {
          buffer.append(';');
          buffer.append(s);
 
-         log.info("Access rule " + i + " is: " + s + '.');
+         Log.log_4036(String.valueOf(i), s);
       }
       _asString = buffer.toString();
    }
@@ -195,56 +192,32 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      Logger log = Library.RUNTIME_ACL_LOG;
-
-      FastStringBuffer request = new FastStringBuffer(160);
-      request.append("Request (ip=");
-      request.append(ip);
-      request.append("; function=\"");
-      request.append(functionName);
-      request.append("\")");
-
       int ruleCount = _rules.length;
       for (int i = 0; i < ruleCount; i++) {
          AccessRule rule = _rules[i];
+
+         String ruleString = rule.toString();
+         String iString = String.valueOf(i);
+
          if (rule.match(ip, functionName)) {
 
             // Choose between 'allow' and 'deny'
             boolean allow = rule.isAllowRule();
 
             // Log this match
-            FastStringBuffer buffer = new FastStringBuffer(160);
-            buffer.append(request.toString());
-            buffer.append(" matches rule ");
-            buffer.append(i);
-            buffer.append(" (");
-            buffer.append(rule.toString());
-            buffer.append("). ");
             if (allow) {
-               buffer.append("Allowing.");
+               Log.log_4037(ip, functionName, iString, ruleString);
             } else {
-               buffer.append("Denying.");
+               Log.log_4038(ip, functionName, iString, ruleString);
             }
-            log.info(buffer.toString());
 
             return allow;
          } else {
-
-            // Log this mismatch
-            FastStringBuffer buffer = new FastStringBuffer(160);
-            buffer.append(request.toString());
-            buffer.append(" does not match rule ");
-            buffer.append(i);
-            buffer.append(" (");
-            buffer.append(rule.toString());
-            buffer.append(").");
-            log.info(buffer.toString());
+            Log.log_4039(ip, functionName, iString, ruleString);
          }
       }
 
-      if (log.isInfoEnabled()) {
-         log.info("Request (ip=" + ip + "; function=\"" + functionName + "\") matches none of the access rules. Denying.");
-      }
+      Log.log_4040(ip, functionName);
 
       return false;
    }
