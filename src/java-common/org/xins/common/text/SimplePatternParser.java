@@ -168,7 +168,7 @@ public class SimplePatternParser extends Object {
          } else if (currChar == '.') {
             buffer.append("\\.");
          } else if ((currChar == '*' || currChar == '?') && (prevChar == '*' || prevChar == '?')) {
-            throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wilcard characters next to each other.");
+            throw new ParseException("The pattern \"" + pattern + "\" is invalid. It is not allowed to have two wildcard characters next to each other.");
          } else if (currChar == '*') {
             buffer.append(".*");
          } else if (currChar == '?') {
