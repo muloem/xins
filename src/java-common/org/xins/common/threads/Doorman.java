@@ -77,13 +77,18 @@ public final class Doorman extends Object {
     *    in the queue, must be &gt;= 0.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || queueSize &lt; 0 || maxQueueWaitTime &lt; 0L</code>.
+    *    if <code>name == null
+    *          || queueSize &lt; 0
+    *          || maxQueueWaitTime &lt; 0L</code>.
     */
-   public Doorman(String name, boolean strict, int queueSize, long maxQueueWaitTime)
+   public Doorman(String  name,
+                  boolean strict,
+                  int     queueSize,
+                  long    maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // TRACE: Enter constructor
-      String traceDetail = "name=" + TextUtils.quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
+      final String traceDetail = "name=" + TextUtils.quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
       Log.log_1000(DOORMAN_CLASSNAME, traceDetail);
 
       // Check preconditions
@@ -97,6 +102,7 @@ public final class Doorman extends Object {
          } else {
             message = "maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L";
          }
+         // TODO: Log programming error
          throw new IllegalArgumentException(message);
       }
 
@@ -201,7 +207,7 @@ public final class Doorman extends Object {
       Log.log_1003(DOORMAN_CLASSNAME, "enterAsReader()", null);
 
       // TODO: Return successfully from this method in only a single place, so
-      //       only log 3005 in that place.
+      //       only log entry 1005 in that place.
 
       Thread reader = Thread.currentThread();
 
