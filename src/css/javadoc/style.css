@@ -1,0 +1,94 @@
+/*
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ $Id$
+*/
+
+body {
+	background-color: #FFFFFF;
+}
+
+@media screen {
+body {
+	font-family: Verdana, Arial, sans-serif;
+}
+}
+
+@media print {
+body {
+	font-family: serif;
+}
+}
+
+.TableHeadingColor {
+	background: #CCCCFF;
+}
+
+.TableSubHeadingColor {
+	background: #EEEEFF;
+}
+
+.TableRowColor {
+	background: #FFFFFF;
+}
+
+.FrameTitleFont {
+	font-size: normal;
+	font-family: normal;
+}
+
+.FrameHeadingFont {
+	font-size: normal;
+	font-family: normal;
+}
+
+.FrameItemFont {
+	font-size: normal;
+	font-family: normal;
+}
+
+.NavBarCell1 {
+	background-color: #EEEEFF;
+}
+
+.NavBarCell1Rev {
+	background-color: #00008B;
+}
+
+.NavBarFont1 {
+	color: #000000;
+}
+
+.NavBarFont1Rev {
+	color: #FFFFFF;
+}
+
+.NavBarCell2 {
+	background-color: #FFFFFF;
+}
+
+.NavBarCell3 {
+	background-color: #FFFFFF;
+}
+
+
+table.states {
+	border-collapse: collapse;
+}
+
+table.states tr th {
+	background-color: #CCCCFF;
+	font-weight: bold;
+	text-align: left;
+	padding: 2px;
+}
+
+table.states tr td {
+	width: 70px;
+	padding: 2px;
+}
+
+table.states tr td.err {
+	background-color: #FFCCCC;
+}
