@@ -105,6 +105,13 @@ implements Responder, Log {
    private int _elementDepth;
 
    /**
+    * The name of the function currently being called. This field is
+    * initialized by {@link #reset(ServletRequest)} and can be set to
+    * <code>null</code>.
+    */
+   private String _functionName;
+
+   /**
     * Success indication. Defaults to <code>true</code> and will <em>only</em>
     * be set to <code>false</code> if and only if
     * {@link #startResponse(boolean,String)} is called with the first
@@ -144,6 +151,7 @@ implements Responder, Log {
       _success = true;
       _code    = null;
       _callID  = -1;
+      _functionName = null;
    }
 
    /**
@@ -174,6 +182,13 @@ implements Responder, Log {
 
       _stringWriter.getBuffer().clear();
       _xmlOutputter.reset(_stringWriter, "UTF-8");
+
+      // Determine the function name
+      String functionName = _request.getParameter("_function");
+      if (functionName == null) {
+         functionName = _request.getParameter("function");
+      }
+      _functionName = functionName;
    }
 
    /**
@@ -243,17 +258,7 @@ implements Responder, Log {
     *    specificied.
     */
    public String getFunctionName() {
-
-      // Check arguments
-      if (_request != null) {
-         String function = _request.getParameter("_function");
-         if (function == null) {
-            function = _request.getParameter("function");
-         }
-         return function;
-      } else {
-         return null;
-      }
+      return _functionName;
    }
 
    /**
