@@ -9,6 +9,11 @@ import org.xins.common.service.TargetDescriptor;
 /**
  * Exception thrown to indicate that a call to a XINS API failed.
  *
+ * <p>When a cause exception is passed to any of the constructors, then the
+ * root cause of that exception is passed up to the {@link Exception} class.
+ * The root cause of an exception can be determined using
+ * {@link ExceptionUtils#getRootCause(Throwable)}.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -54,6 +59,15 @@ public abstract class CallException extends Exception {
       return null; // TODO
    }
 
+   // TODO: Document
+   private static final Throwable rootCauseFor(Throwable t) {
+      if (t == null) {
+         return null;
+      } else {
+         return ExceptionUtils.getRootCause(t);
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -74,7 +88,7 @@ public abstract class CallException extends Exception {
     *    {@link CallException(CallRequest,String,Throwable)} instead.
     */
    protected CallException(String message, Throwable cause) {
-      super(message, cause);
+      super(message, rootCauseFor(cause));
 
       _request = null;
    }

@@ -48,10 +48,7 @@ extends CallException {
     */
    public CallIOException(IOException ioException)
    throws IllegalArgumentException {
-
-      // Call superconstructor
-      super(ExceptionUtils.getRootCause(ioException).getMessage(),
-            ExceptionUtils.getRootCause(ioException));
+      super(ioException, null);
    }
 
 
