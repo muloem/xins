@@ -11,16 +11,24 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
       method is marked as deprecated and may be removed before XINS 1.0.0-rc1.
 
 * XINS/Java Server Framework:
-  - Applied some refactorings as preparations to fix SF.net bug #1058074:
-    Changed FormattedDate and FormattedParameters from inner classes in class
-    Function to outer class with package-private access.
+  - Fixed SF.net bug #1058074. Transaction logging now also applies to meta
+    functions. Applied some refactorings during the process: Changed
+    FormattedDate and FormattedParameters from inner classes in class Function to
+    outer class with package-private access.
   - Changed log messages 3540 and 3541 so they no longer accept a 'callID'
     parameter. The parameter is not used in the translation. This is done
-    because it simplifies the introduction of transaction logging for
-    meta-functions (SF.net bug #1058074).
+    because it simplified the introduction of transaction logging for
+    meta-functions.
 
 * XINS build file:
   - Improved 'help' target slightly.
+
+* Generated build file:
+  - Implemented SF.net RFE #1060606: Added 'capis' target.
+
+* Generated CAPI classes:
+  - Implemented SF.net RFE #1060282: Not generating dead code for
+    'currentParam' variable if there are in fact no parameters.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 10:
