@@ -177,12 +177,18 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Gets all child elements of this element.
+    * Gets all child elements, through an <code>Iterator</code>.
     *
     * @return
     *    an {@link Iterator} that returns each child of this element as
     *    another <code>DataElement</code> instance; can be <code>null</code>,
     *    if this element has no children.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0-beta11. Use {@link #getChildElements()}
+    *    instead, which returns a {@link List} instead of an {@link Iterator},
+    *    and which never returns <code>null</code>, which should make that
+    *    method easier and safer to use.
     */
    public Iterator getChildren() {
 
@@ -192,6 +198,30 @@ public class DataElement implements Cloneable {
       }
 
       return _children.iterator();
+   }
+
+   /**
+    * Gets the list of all child elements.
+    *
+    * @return
+    *    an unmodifiable {@link List} containing all child elements; each
+    *    element in the list is another <code>DataElement</code> instance;
+    *    never <code>null</code>.
+    */
+   public List getChildElements() {
+
+      List children;
+
+      // If there are no children, then return an immutable empty List
+      if (_children.size() == 0) {
+         children = Collections.EMPTY_LIST;
+
+      // Otherwise return an immutable view of the list of children
+      } else {
+         children = Collections.unmodifiableList(_children);
+      }
+
+      return children;
    }
 
    /**
@@ -208,6 +238,13 @@ public class DataElement implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0-beta11. Use
+    *    {@link #getChildElements(String)} instead, which returns a
+    *    {@link List} instead of an {@link Iterator} and which never returns
+    *    <code>null</code>, which should make that method easier and safer to
+    *    use.
     */
    public Iterator getChildren(String name)
    throws IllegalArgumentException {
@@ -235,6 +272,57 @@ public class DataElement implements Cloneable {
       }
 
       return matches.iterator();
+   }
+
+   /**
+    * Gets the list of child elements that match specified name.
+    *
+    * @param name
+    *    the name for the child elements to match, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    a {@link List} containing each child element that matches the
+    *    specified name as another <code>DataElement</code> instance;
+    *    never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    */
+   public List getChildElements(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
+      List matches;
+
+      // If there are no children, then return null
+      if (_children.size() == 0) {
+         matches = Collections.EMPTY_LIST;
+
+      // There are children, find all matching ones
+      } else {
+         matches = new ArrayList();
+         Iterator it = _children.iterator();
+         while (it.hasNext()) {
+            DataElement child = (DataElement) it.next();
+            if (name.equals(child.getName())) {
+               matches.add(child);
+            }
+         }
+
+         // If there are no matching children, then return null
+         if (matches.size() == 0) {
+            matches = Collections.EMPTY_LIST;
+
+         // Otherwise return an immutable list with all matches
+         } else {
+            matches = Collections.unmodifiableList(matches);
+         }
+      }
+
+      return matches;
    }
 
    /**

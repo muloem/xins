@@ -1,6 +1,15 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
 
+* XINS/Java Client Framework:
+  - Improved the interface of class DataElement:
+    . Replaced getChildren(), which returns an nullable Iterator, with
+      getChildElements(), which returns a non-nullable List. The former method
+      is marked as deprecated and may be removed before XINS 1.0.0-rc1.
+    . Replaced getChildren(String), which returns an nullable Iterator, with
+      getChildElements(String), which returns a non-nullable List. The former
+      method is marked as deprecated and may be removed before XINS 1.0.0-rc1.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 10:
 
