@@ -196,14 +196,14 @@
 			<param name="type" value="Client"/>
 		</antcall>
 	</target>
-	
+
 	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
 		<antcall target="-build-framework">
 			<param name="side" value="server"/>
 			<param name="type" value="Server"/>
 		</antcall>
 	</target>
-	
+
 	<target name="-build-framework">
 		<mkdir dir="build/classes/java-${side}" />
 		<javac
@@ -271,16 +271,13 @@
 	<target name="upload-logdoc" depends="-init,logdoc-html-server">
 		<echo message="Uploading ${title} ${version} logdoc report to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/logdoc/${version} on ${www.host}" />
-		<exec executable="ssh" failonerror="true">
-			<arg value="${www.user}@${www.host}" />
-			<arg value="mkdir -p ${www.dir}/logdoc/${version}" />
-		</exec>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}"
+		         command="mkdir -p ${www.dir}/logdoc/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version} on ${www.host}" />
-		<exec dir="build/logdoc/server/html" executable="scp" failonerror="true">
-			<arg value="-r" />
-			<arg value="." />
-			<arg value="${www.target}/logdoc/${version}" />
-		</exec>
+		<scp todir="${www.target}/logdoc/${version}"
+		     password="${sf.password}">
+			<fileset dir="build/logdoc/server/html" />
+		</scp>
 	</target>
 
 	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
@@ -297,18 +294,25 @@
 
 	<target name="upload-jars" depends="java" description="Uploads the JAR files to the web server">
 		<echo message="Uploading JAR files to ${www.host}" />
-		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="xins-common.jar" />
-			<arg value="${www.target}/xins-common-${version}.jar" />
-		</exec>
-		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="xins-server.jar" />
-			<arg value="${www.target}/xins-server-${version}.jar" />
-		</exec>
-		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="xins-client.jar" />
-			<arg value="${www.target}/xins-client-${version}.jar" />
-		</exec>
+		<copy todir="build">
+			<fileset dir="build">
+				<include name="xins-common.jar" />
+				<include name="xins-client.jar" />
+				<include name="xins-server.jar" />
+				<mapper type="glob" from="xins-*.jar" to="xins-*-${version}.jar" />
+			</fileset>
+		</copy>
+		<scp todir="${www.target}"
+		     password="${sf.password}">
+			<fileset dir="build">
+				<include name="xins-*-${version}.jar" />
+			</fileset>
+		</scp>
+		<delete>
+			<fileset dir="build">
+				<include name="xins-*-${version}.jar" />
+			</fileset>
+		</delete>
 	</target>
 
 	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
@@ -452,28 +456,22 @@
 		<echo message="Uploading ${title} ${version} API docs to ${www.host}" />
 
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
-		<exec executable="ssh" failonerror="true">
-			<arg value="${www.user}@${www.host}" />
-			<arg value="mkdir -p ${www.dir}/javadoc/${version}" />
-		</exec>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}"
+		         command="mkdir -p ${www.dir}/javadoc/${version}" />
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc/${version} on ${www.host}" />
-		<exec dir="build/javadoc" executable="scp" failonerror="true">
-			<arg value="-r" />
-			<arg value="." />
-			<arg value="${www.target}/javadoc/${version}/" />
-		</exec>
+		<scp todir="${www.target}/javadoc/${version}"
+		     password="${sf.password}">
+			<fileset dir="build/javadoc" />
+		</scp>
 
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc-private/${version} on ${www.host}" />
-		<exec executable="ssh" failonerror="true">
-			<arg value="${www.user}@${www.host}" />
-			<arg value="mkdir -p ${www.dir}/javadoc-private/${version}" />
-		</exec>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}"
+		         command="mkdir -p ${www.dir}/javadoc-private/${version}" />
 		<echo level="verbose" message="Copying files to ${www.dir}/javadoc-private/${version} on ${www.host}" />
-		<exec dir="build/javadoc-private" executable="scp" failonerror="true">
-			<arg value="-r" />
-			<arg value="." />
-			<arg value="${www.target}/javadoc-private/${version}/" />
-		</exec>
+		<scp todir="${www.target}/javadoc-private/${version}"
+		     password="${sf.password}">
+			<fileset dir="build/javadoc-private" />
+		</scp>
 	</target>
 
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
@@ -514,31 +512,25 @@
 	<target name="upload-checkstyle" depends="-init,checkstyle">
 		<echo message="Uploading ${title} ${version} Checkstyle report to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/checkstyle/${version} on ${www.host}" />
-		<exec executable="ssh" failonerror="true">
-			<arg value="${www.user}@${www.host}" />
-			<arg value="mkdir -p ${www.dir}/checkstyle/${version}" />
-		</exec>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}"
+		         command="mkdir -p ${www.dir}/checkstyle/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/checkstyle/${version} on ${www.host}" />
-		<exec dir="build/checkstyle/html" executable="scp" failonerror="true">
-			<arg value="-r" />
-			<arg value="." />
-			<arg value="${www.target}/checkstyle/${version}" />
-		</exec>
+		<scp todir="${www.target}/checkstyle/${version}"
+		     password="${sf.password}">
+			<fileset dir="build/checkstyle/html" />
+		</scp>
 	</target>
 
 	<target name="upload-j2h" depends="-init,j2h">
 		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/j2h/${version} on ${www.host}" />
-		<exec executable="ssh" failonerror="true">
-			<arg value="${www.user}@${www.host}" />
-			<arg value="mkdir -p ${www.dir}/checkstyle/${version}" />
-		</exec>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}"
+		         command="mkdir -p ${www.dir}/j2h/${version}" />
 		<echo level="verbose" message="Copying files to directory ${www.dir}/j2h/${version} on ${www.host}" />
-		<exec dir="build/j2h" executable="scp" failonerror="true">
-			<arg value="-r" />
-			<arg value="." />
-			<arg value="${www.target}/j2h/${version}" />
-		</exec>
+		<scp todir="${www.target}/j2h/${version}"
+		     password="${sf.password}">
+			<fileset dir="build/j2h" />
+		</scp>
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
@@ -604,10 +596,9 @@
 
 	<target name="do-upload-package" depends="-init" description="Uploads the package to the web server">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
-		<exec dir="build/" executable="scp" failonerror="true">
-			<arg value="${package-basename}.tgz" />
-			<arg value="${www.target}" />
-		</exec>
+		<scp file="build/${package-basename}.tgz"
+		     todir="${www.target}/"
+		     password="${sf.password}" />
 	</target>
 
 	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
@@ -623,7 +614,7 @@
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
-		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins" 
+		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins"
 		     failonerror="true">
 			<commandline>
 				<argument value="commit" />
@@ -665,10 +656,11 @@
 
 	<target name="upload-changes" depends="-init">
 		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
-		<exec executable="scp" failonerror="true">
-			<arg value="CHANGES" />
-			<arg value="${www.target}/changes-${version}.txt" />
-		</exec>
+		<copy file="CHANGES" tofile="changes-${version}.txt" />
+		<scp file="changes-${version}.txt"
+		     todir="${www.target}"
+		     password="${sf.password}" />
+		<delete file="changes-${version}.txt" />
 	</target>
 
 	<target name="upload-homepage" depends="-init">

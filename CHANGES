@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 0.169:
 * Build and release process:
   - The CVSROOT argument is added in the cvs tasks in order to be able to
     create a release on Windows.
+  - The scp and ssh tasks now use the <scp> and <sshexec> ANT tasks.
 
 * Fixed bug. If the pattern for a pattern type contained a double quote ('"')
   character, then the generated Java classes for that type would not be
