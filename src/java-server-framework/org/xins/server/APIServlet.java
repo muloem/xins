@@ -109,7 +109,7 @@ implements Servlet {
             // TODO: configure delay for configureAndWatch
             PropertyConfigurator.configureAndWatch(configFile);
             doConfigure = false;
-            Library.LIFESPAN_LOG.debug("Using Log4J configuration file \"" + configFile + "\".");
+            Library.LIFESPAN_LOG.info("Using Log4J configuration file \"" + configFile + "\".");
          } else {
             configureLoggerFallback();
             doConfigure = false;
