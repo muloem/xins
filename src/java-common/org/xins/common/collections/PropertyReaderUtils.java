@@ -347,24 +347,18 @@ extends Object {
     *
     * @param p
     *    the {@link PropertyReader} to construct a {@link LogdocSerializable}
-    *    for, cannot be <code>null</code>.
+    *    for, or <code>null</code>.
     *
     * @param valueIfEmpty
-    *    the value to return if the specified set of properties is empty,
-    *    can be <code>null</code>.
+    *    the value to return if the specified set of properties is either
+    *    <code>null</code> or empty, can be <code>null</code>.
     *
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>p == null</code>.
     */
    public static final LogdocSerializable serialize(PropertyReader p,
                                                     String         valueIfEmpty)
    throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("p", p);
 
       return new SerializedPropertyReader(p, valueIfEmpty);
    }
@@ -415,20 +409,14 @@ extends Object {
        * specified <code>PropertyReader</code>.
        *
        * @param p
-       *    the {@link PropertyReader}, cannot be <code>null</code>.
+       *    the {@link PropertyReader}, or <code>null</code>.
        *
        * @param valueIfEmpty
-       *    the value to return if the specified set of properties is empty,
-       *    can be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>p == null</code>.
+       *    the value to return if the specified set of properties is either
+       *    <code>null</code> or empty, can be <code>null</code>.
        */
-      private SerializedPropertyReader(PropertyReader p, String valueIfEmpty)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("p", p);
+      private SerializedPropertyReader(PropertyReader p,
+                                       String         valueIfEmpty) {
 
          _propertyReader = p;
          _valueIfEmpty   = valueIfEmpty;
@@ -440,7 +428,8 @@ extends Object {
       //----------------------------------------------------------------------
 
       /**
-       * The <code>PropertyReader<code> to serialize. Never <code>null</code>.
+       * The <code>PropertyReader<code> to serialize. Can be
+       * <code>null</code>.
        */
       private final PropertyReader _propertyReader;
 
@@ -465,9 +454,14 @@ extends Object {
        */
       protected String initialize() {
 
+         // If the property set if null, return the fallback
+         if (_propertyReader == null) {
+            return _valueIfEmpty;
+         }
+
          Iterator names = _propertyReader.getNames();
 
-         // If there are no parameters, then just return a hyphen
+         // If there are no parameters, then return the fallback
          if (! names.hasNext()) {
             return _valueIfEmpty;
          }
