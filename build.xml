@@ -89,6 +89,8 @@
 	</target>
 
 	<target name="version" depends="-init">
+		<echo message="Java ${java.version}" />
+		<echo message="${ant.version}" />
 		<echo message="${title} ${version}" />
 	</target>
 

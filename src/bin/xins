@@ -52,10 +52,6 @@ while [ ! "$#" = "0" ]; do
 			if [ "${guessed_xins_home}" = "true" ]; then
 				echo
 			fi
-			java -version
-			echo
-			ant -version
-			echo
 			ant -f ${xins_home}/build.xml version
 			exit 0
 			;;

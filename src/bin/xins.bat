@@ -16,8 +16,6 @@
 
 :: Recognise -version option
 IF NOT "%1" == "-version" GOTO no_version
-java -version
-CALL ant -version
 CALL ant -f %XINS_HOME%\build.xml version
 GOTO end
 
