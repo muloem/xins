@@ -56,6 +56,7 @@
 		<xsl:text>;
 
 import org.xins.types.EnumItem;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * </xsl:text>
@@ -87,35 +88,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text>();</xsl:text>
 		<xsl:if test="$kind = 'enum'">
-			<xsl:for-each select="enum/item">
-				<xsl:variable name="itemName">
-					<xsl:choose>
-						<xsl:when test="@name">
-							<xsl:value-of select="@name" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="@value" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:text><![CDATA[
-
-   /**
-    * The <em>]]></xsl:text>
-				<xsl:value-of select="$itemName" />
-				<xsl:text><![CDATA[</em> item.
-    */
-   public static final Item ]]></xsl:text>
-				<xsl:call-template name="toupper">
-					<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
-				</xsl:call-template>
-				<xsl:text> = new Item("</xsl:text>
-				<xsl:value-of select="$itemName" />
-				<xsl:text>", "</xsl:text>
-				<xsl:value-of select="@value" />
-				<xsl:text>");
-</xsl:text>
-			</xsl:for-each>
+			<xsl:apply-templates select="enum/item" mode="field" />
 		</xsl:if>
 		<xsl:text><![CDATA[
 
@@ -204,6 +177,30 @@ public final class ]]></xsl:text>
 		<xsl:if test="$kind = 'enum'">
 			<xsl:text><![CDATA[
 
+   /**
+    * Get the <code>Item</code> for the specified string value.
+    *
+    * @param value
+    *    the value for which to lookup the matching {@link Item} instance,
+    *    cannot be <code>null</code>.
+    *
+    * @return
+    *    the matching {@link Item} instance, or <code>null</code> if there is
+    *    none.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    */
+   public Item getItemByValue(String value)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("value", value);
+
+      return (Item) _valuesToItems.get(value);
+   }
+
+
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
@@ -246,6 +243,37 @@ public final class ]]></xsl:text>
 
 		<xsl:text>
 }
+</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="enum/item" mode="field">
+		<xsl:variable name="itemName">
+			<xsl:choose>
+				<xsl:when test="@name">
+					<xsl:value-of select="@name" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@value" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:text><![CDATA[
+
+   /**
+    * The <em>]]></xsl:text>
+		<xsl:value-of select="$itemName" />
+		<xsl:text><![CDATA[</em> item.
+    */
+   public static final Item ]]></xsl:text>
+		<xsl:call-template name="toupper">
+			<xsl:with-param name="text" select="translate($itemName, ' ', '_')" />
+		</xsl:call-template>
+		<xsl:text> = new Item("</xsl:text>
+		<xsl:value-of select="$itemName" />
+		<xsl:text>", "</xsl:text>
+		<xsl:value-of select="@value" />
+		<xsl:text>");
 </xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
