@@ -32,8 +32,8 @@ extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UnsuccessfulXINSCallException</code> based the
-    * specified XINS call result object.
+    * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
+    * <code>XINSCallResult</code> instance.
     *
     * @param result
     *    the call result, cannot be <code>null</code>; stores the original
@@ -62,7 +62,8 @@ extends XINSCallException {
    }
 
    /**
-    * Constructs a new <code>InvalidCallResultException</code>.
+    * Constructs a new <code>Unsuccessful</code> based on a
+    * <code>XINSCallResultData</code> instance.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
@@ -80,9 +81,9 @@ extends XINSCallException {
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
+    *          || duration  &lt; 0
     *          || resultData  == null
-    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null
-    *          || duration  &lt; 0</code>.
+    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
     *
     * @since XINS 0.209
     */
@@ -92,6 +93,11 @@ extends XINSCallException {
                                  XINSCallResultData resultData) {
 
       super("Unsuccessful XINS call result", request, target, duration, null, null);
+
+      // Check additional precondition
+      MandatoryArgumentChecker.check("resultData", resultData);
+
+      // TODO: Check all mandatory arguments at once
 
       // Result object must be unsuccessful
       String errorCode = resultData.getErrorCode();
