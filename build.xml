@@ -597,8 +597,9 @@
 			<include name="src/xslt/**/*"                  />
 			<include name="lib/*.LICENSE"                  />
 			<include name="docs/javadoc/**/*.html"         />
+			<include name="docs/javadoc/*.css"             />
 			<include name="docs/*.html"                    />
-			<include name="docs/**/*.css"                  />
+			<include name="docs/*.css"                     />
 			<include name="demo/**/*"                      />
 			<include name="build.xml"                      />
 			<include name=".version.properties"            />
