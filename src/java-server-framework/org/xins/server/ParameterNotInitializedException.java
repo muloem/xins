@@ -7,8 +7,8 @@
 package org.xins.server;
 
 /**
- * Exception that indicates that you are trying to get the value of a parameter
- * that has not been set.
+ * Exception that indicates that it is attempted to get the value of a
+ * parameter that has not been set.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
