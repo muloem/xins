@@ -11,6 +11,9 @@ import org.xins.util.text.FastStringBuffer;
  * Exception thrown when one or more mandatory arguments for an object method
  * were found missing (<code>null</code>).
  *
+ * <p>TODO: Remove {@link #getArgumentNames()} and internal data structures,
+ * for improved performance and decreased memory usage.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
