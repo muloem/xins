@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.185:
+
+* XINS/Java Server Framework:
+  - Fixed bug that existed since 0.179. All standard result codes were from
+    then on supposed to start with an underscore. However, there were still
+    references to the 'InternalError' result code. This has now been fixed to
+    '_InternalError'.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.184:
 
 * Specification:
