@@ -82,7 +82,7 @@ public abstract class Service extends Object {
     * none succeeds, then a {@link CallFailedException} is thrown.
     *
     * <p>Each attempt consists of a call to
-    * {@link doCallImpl(ServiceDescriptor,Object)}.
+    * {@link #doCallImpl(ServiceDescriptor,Object)}.
     *
     * @param subject
     *    the subject passed, could possibly be <code>null</code>.
