@@ -8,9 +8,14 @@ CHANGES INTRODUCED IN XINS 0.104:
     addresses.
   - At construction time, ActualFunctionCaller checks if the API is actually
     up or not, and logs this.
+  - Improved stability of ExpiryFolder. Fixed bug in counting of members.
 
 * Generated API docs and XINS API docs now correctly link to Apache Ant API
   docs at nagoya.apache.org.
+
+  *** NOTE ***
+  The memory leak reported about in the XINS 0.97 release notes has probably
+  been fixed in 0.98.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.103:
