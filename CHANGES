@@ -2,7 +2,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.116:
 
 * XINS/Java Common Library:
-  - GroupDescriptor: Fixed bug in random service iteration mechanism.
+  - GroupDescriptor: Now correctly iterating over services, either randomly or
+    ordered.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.115:
