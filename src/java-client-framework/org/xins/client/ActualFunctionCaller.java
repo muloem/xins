@@ -315,7 +315,7 @@ extends AbstractFunctionCaller {
 
                // The key cannot equal 'function'
                } else if ("function".equals(key)) {
-                  throw new IllegalArgumentException("The parameter key \"function\" is invalid, since that is a reserved word.");
+                  throw new IllegalArgumentException("The parameter key \"function\" is invalid, since \"function\" is a reserved word.");
                }
 
                // TODO: Make sure the key is properly formatted
