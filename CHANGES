@@ -19,11 +19,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
   - Slightly improved performance of ElementSerializer.
     Typical impact on performance: Small.
 
-
 * XINS/Java Server Framework:
   - Small style improvements.
   - Slightly improved performance of CallResultOutputter.
     Typical impact on performance: Small.
+  - Added constructor to class InvalidRequestException that only accepts a
+    message and no cause exception.
 
 * Generation of server-side Java code:
   - Fixed SF.net bug #1100792: Conflicting duplicate names for input param
