@@ -11,6 +11,11 @@ CHANGES INTRODUCED IN XINS 0.189:
 
 * Updated Checkstyle from 3.2 to 3.4.
 
+* XINS/Java Common Library:
+  - Added find(Object) method to class ExpiryFolder. The difference with the
+    get(Object) method is that the latter extends the lifetime of the matching
+    entry.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.188:
 
