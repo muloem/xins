@@ -196,13 +196,15 @@ public final class XINSServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Performs the specified request towards the XINS service. If the call
-    * succeeds with one of the targets, then a {@link XINSCallResult} object
-    * is returned. Otherwise, if none of the targets could successfully be
-    * called, a {@link org.xins.common.service.CallException} is thrown.
+    * Executes the specified XINS call request towards one of the associated
+    * targets. If the call succeeds with one of these targets, then a
+    * {@link XINSCallResult} object is returned. Otherwise, if none of the
+    * targets could successfully be called, a
+    * {@link org.xins.common.service.CallException} is thrown.
     *
-    * <p>If the result is unsuccessful, then an
-    * {@link UnsuccessfulXINSCallException} is thrown.
+    * <p>If the call succeeds, but the result is unsuccessful, then an
+    * {@link UnsuccessfulXINSCallException} is thrown, which contains the
+    * result.
     *
     * @param request
     *    the call request, not <code>null</code>.
@@ -231,7 +233,7 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      final String METHODNAME = "call(XINSCallException";
+      final String METHODNAME = "call(XINSCallException)";
 
       // TRACE: Enter method
       Log.log_2003(CLASSNAME, METHODNAME, null);
@@ -296,15 +298,16 @@ public final class XINSServiceCaller extends ServiceCaller {
          // XINS-specific call exception
          } else if (exception instanceof XINSCallException) {
             if (exception instanceof InvalidResultXINSCallException) {
-               // Log.log_TODO
+               String detail = exception.getDetail();
+               Log.log_2110(url, function, params, duration, detail);
             } else if (exception instanceof UnsuccessfulXINSCallException) {
                // Log.log_TODO
             } else if (exception instanceof UnacceptableResultXINSCallException) {
-               // Log.log_TODO
-               // XXX: Can this ever happen here?
+               // Log: Unexpected exception. This should never happen.
+               Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
             } else {
                Log.log_2050(CLASSNAME, METHODNAME,
-                            "Unrecognized HTTPCallException subclass " +
+                            "Unrecognized XINSCallException subclass " +
                             exception.getClass().getName() + '.');
             }
             throw (XINSCallException) exception;
@@ -322,6 +325,20 @@ public final class XINSServiceCaller extends ServiceCaller {
 
             throw new Error(message.toString(), exception);
          }
+
+      // Not a CallException but other kind of exception
+      } catch (Throwable exception) {
+         // Log: Unexpected exception
+         Log.log_2052(exception, CLASSNAME, "doCall(CallRequest)");
+
+         FastStringBuffer message = new FastStringBuffer(190);
+         message.append("XINSServiceCaller.doCall(CallRequest) threw unexpected ");
+         message.append(exception.getClass().getName());
+         message.append(". Message: ");
+         message.append(TextUtils.quote(exception.getMessage()));
+         message.append('.');
+
+         throw new Error(message.toString(), exception);
       }
 
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
@@ -376,8 +393,10 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
+      final String METHODNAME = "doCallImpl(CallRequest,TargetDescriptor)";
+
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_2003(CLASSNAME, METHODNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request, "target", target);
@@ -421,8 +440,22 @@ public final class XINSServiceCaller extends ServiceCaller {
       try {
          resultData = _parser.parse(httpData);
       } catch (ParseException e) {
+
+         // Get the parse error description
+         String detail = e.getDetail();
+
+         // Create a message for the new exception
+         FastStringBuffer message = new FastStringBuffer(69);
+         message.append("Failed to parse result");
+         if (detail != null) {
+            message.append(": ");
+            message.append(detail);
+         } else {
+            message.append('.');
+         }
+
          throw new InvalidResultXINSCallException(
-            xinsRequest, target, duration, "Failed to parse result.", e);
+            xinsRequest, target, duration, message.toString(), e);
       }
 
       // If the result is unsuccessful, throw an exception
@@ -432,7 +465,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_2005(CLASSNAME, METHODNAME, null);
 
       return resultData;
    }
@@ -482,8 +515,10 @@ public final class XINSServiceCaller extends ServiceCaller {
                                          Object            result)
    throws ClassCastException {
 
+      final String METHODNAME = "createCallResult(CallRequest,TargetDescriptor,long,CallExceptionList,Object)";
+
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_2003(CLASSNAME, METHODNAME, null);
 
       XINSCallResult r = new XINSCallResult((XINSCallRequest) request,
                                             succeededTarget,
@@ -492,7 +527,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                                             (XINSCallResultData) result);
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_2005(CLASSNAME, METHODNAME, null);
 
       return r;
    }
@@ -520,8 +555,10 @@ public final class XINSServiceCaller extends ServiceCaller {
                                     Throwable   exception)
    throws ClassCastException {
 
+      final String METHODNAME = "shouldFailOver(CallRequest,Throwable)";
+
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, "shouldFailOver(CallRequest,Throwable)", null);
+      Log.log_2003(CLASSNAME, METHODNAME, null);
 
       // The request must be a XINS call request
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
@@ -538,7 +575,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       //      internal error that does not have anything to do with the
       //      service being called, e.g. an OutOfMemoryError or an
       //      InterruptedException. This could be improved by checking the
-      //      type of exception and only allowingt fail-over if the exception
+      //      type of exception and only allowing fail-over if the exception
       //      indicates an I/O error.
       } else if (xinsRequest.isFailOverAllowed()) {
          should = true;
@@ -567,7 +604,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, "shouldFailOver(CallRequest,Throwable)", should ? "true" : "false");
+      Log.log_2005(CLASSNAME, METHODNAME, should ? "true" : "false");
 
       return should;
    }
