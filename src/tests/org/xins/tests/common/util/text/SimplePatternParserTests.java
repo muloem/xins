@@ -81,13 +81,13 @@ public class SimplePatternParserTests extends TestCase {
          // as expected
       }
 
-      doTestParseSimplePattern("**",       null);
-      doTestParseSimplePattern("??",       null);
-      doTestParseSimplePattern("*?",       null);
-      doTestParseSimplePattern("?*",       null);
-      doTestParseSimplePattern("aa?a?*a",  null);
-      doTestParseSimplePattern("aa*a*?a",  null);
-      doTestParseSimplePattern("aa?a??a",  null);
+      doTestParseSimplePattern("**");
+      doTestParseSimplePattern("??");
+      doTestParseSimplePattern("*?");
+      doTestParseSimplePattern("?*");
+      doTestParseSimplePattern("aa?a?*a");
+      doTestParseSimplePattern("aa*a*?a");
+      doTestParseSimplePattern("aa?a??a");
 
       doTestParseSimplePattern("",         "^$");
       doTestParseSimplePattern("*",        "^.*$");
@@ -102,27 +102,27 @@ public class SimplePatternParserTests extends TestCase {
       final String invalidChars = "~`!@#$%^&()=+[]{}|\\:;\"'<>,/";
       for (int i = 0; i < invalidChars.length(); i++) {
          char invalidChar = invalidChars.charAt(i);
-         doTestParseSimplePattern(""   + invalidChar + "",   null);
-         doTestParseSimplePattern("aa" + invalidChar + "",   null);
-         doTestParseSimplePattern(""   + invalidChar + "aa", null);
-         doTestParseSimplePattern("aa" + invalidChar + "aa", null);
+         doTestParseSimplePattern(""   + invalidChar + "");
+         doTestParseSimplePattern("aa" + invalidChar + "");
+         doTestParseSimplePattern(""   + invalidChar + "aa");
+         doTestParseSimplePattern("aa" + invalidChar + "aa");
+      }
+   }
+
+   private void doTestParseSimplePattern(String simple)
+   throws Throwable {
+      try {
+         _parser.parseSimplePattern(simple);
+         fail("SimplePatternParser.parseSimplePattern(\"" + simple + "\") should throw a ParseException.");
+         return;
+      } catch (ParseException exception) {
+         // as expected
       }
    }
 
    private void doTestParseSimplePattern(String simple, String re)
    throws Throwable {
-
-      if (re != null) {
-         Perl5Pattern pattern = _parser.parseSimplePattern(simple);
-         assertEquals(re, pattern.getPattern());
-      } else {
-         try {
-            _parser.parseSimplePattern(simple);
-            fail("SimplePatternParser.parseSimplePattern(\"" + simple + "\") should throw a ParseException.");
-            return;
-         } catch (ParseException exception) {
-            // as expected
-         }
-      }
+      Perl5Pattern pattern = _parser.parseSimplePattern(simple);
+      assertEquals(re, pattern.getPattern());
    }
 }
