@@ -82,7 +82,7 @@ extends Spec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super(FunctionSpec.TYPE, "function input parameter", "^[a-z]+$");
+         super(FunctionSpec.TYPE, "function input parameter", "^[a-z]+[A-Za-z0-9]*$");
       }
 
 
