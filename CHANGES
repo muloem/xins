@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.90:
+
+* XINS/Java Common Library:
+  - Doorman: Fixed bug. Improved logging.
+  - ExpiryFolder: Improved stability in case of out-of-memory errors.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.89:
 
 * XINS/Java Server Framework:
