@@ -281,12 +281,6 @@ extends HttpServlet {
    private API _api;
 
    /**
-    * Description of the current error, if any.
-    */
-   private String _error;
-   // TODO: Remove this field
-
-   /**
     * The listener that is notified when the configuration file changes. Only
     * one instance is created ever.
     */
@@ -347,6 +341,60 @@ extends HttpServlet {
       }
 
       Log.log_0(oldState._name, newState._name);
+   }
+
+   /**
+    * Determines the interval for checking the runtime properties file for
+    * modifications.
+    *
+    * @param properties
+    *    the runtime properties to read from, should not be <code>null</code>.
+    *
+    * @return
+    *    the interval to use, always &gt;= 1.
+    */
+   private final int determineConfigReloadInterval(PropertyReader properties) {
+
+      // Get the runtime property
+      String s = properties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
+      int interval = -1;
+
+      // If the property is set, parse it
+      if (s != null && s.length() >= 1) {
+         Log.log_251(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+         try {
+            interval = Integer.parseInt(s);
+            if (interval < 1) {
+               Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            } else {
+               Log.log_253(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            }
+         } catch (NumberFormatException nfe) {
+            Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+         }
+
+      // Otherwise, if the property is not set, use the default
+      } else {
+         Log.log_250(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
+      }
+
+      // If the interval is not set, using the default
+      if (interval < 0) {
+         interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+      }
+
+      return interval;
+   }
+
+   /**
+    * Returns information about this servlet, as plain text.
+    *
+    * @return
+    *    textual description of this servlet, not <code>null</code> and not an
+    *    empty character string.
+    */
+   public String getServletInfo() {
+      return "XINS/Java Server Framework " + Library.getVersion();
    }
 
    /**
@@ -467,7 +515,7 @@ extends HttpServlet {
          }
 
          // Initialize the logging subsystem
-         PropertyReader runtimeProperties = applyConfigFile();
+         PropertyReader runtimeProperties = readRuntimeProperties();
 
 
          //----------------------------------------------------------------//
@@ -562,37 +610,11 @@ extends HttpServlet {
          //                      Watch the config file                     //
          //----------------------------------------------------------------//
 
-         // Get the runtime property
-         String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
-         int interval = -1;
-
-         // If the property is set, parse it
-         if (s != null && s.length() >= 1) {
-            Log.log_251(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            try {
-               interval = Integer.parseInt(s);
-               if (interval < 1) {
-                  Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               } else {
-                  Log.log_253(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               }
-            } catch (NumberFormatException nfe) {
-               Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            }
-
-         // Otherwise, if the property is not set, use the default
-         } else {
-            Log.log_250(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
-         }
-
-         // If the interval is not set, using the default
-         if (interval < 0) {
-            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-         }
+         int interval = determineConfigReloadInterval(runtimeProperties);
 
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+         Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, String.valueOf(interval));
          _configFileWatcher.start();
       }
    }
@@ -612,11 +634,9 @@ extends HttpServlet {
       } catch (Throwable e) {
          setState(API_INITIALIZATION_FAILED);
          if (e instanceof InvalidPropertyValueException || e instanceof MissingRequiredPropertyException || e instanceof InitializationException) {
-            _error = "Failed to initialize " + _api.getName() + " API: " + e.getMessage();
-            Library.INIT_LOG.error(_error);
+            Library.INIT_LOG.error(null);
          } else {
-            _error = "Failed to initialize " + _api.getName() + " API " + dueToUnexpected(e);
-            Library.INIT_LOG.error(_error, e);
+            Library.INIT_LOG.error(null);
          }
          return;
       }
@@ -625,14 +645,15 @@ extends HttpServlet {
    }
 
    /**
-    * Reads the configuration file and applies the settings in it.
-    *
-    * <p>Note that the settings are <em>not</em> applied to the API.
+    * Reads the runtime properties file, initializes the logging subsystem
+    * with the read properties and then returns those properties. If the
+    * properties cannot be read from the file for any reason, then an empty
+    * set of properties is returned.
     *
     * @return
     *    the properties read from the config file, never <code>null</code>.
     */
-   private PropertyReader applyConfigFile() {
+   private PropertyReader readRuntimeProperties() {
 
       Log.log_150();
 
@@ -668,6 +689,23 @@ extends HttpServlet {
          configureLoggerFallback();
       } else {
          Log.log_160();
+      }
+
+      // Determine the log locale
+      String newLocale = properties.getProperty(LOG_LOCALE_PROPERTY);
+
+      // If the log locale is set, apply it
+      if (newLocale != null) {
+         String currentLocale = Log.getTranslationBundle().getName();
+         if (currentLocale.equals(newLocale) == false) {
+            Log.log_201(currentLocale, newLocale);
+            try {
+               Log.setTranslationBundle(newLocale);
+               Log.log_202(currentLocale, newLocale);
+            } catch (NoSuchTranslationBundleException exception) {
+               Log.log_203(currentLocale, newLocale);
+            }
+         }
       }
 
       return new PropertiesPropertyReader(properties);
@@ -791,17 +829,6 @@ extends HttpServlet {
    }
 
    /**
-    * Returns information about this servlet, as plain text.
-    *
-    * @return
-    *    textual description of this servlet, not <code>null</code> and not an
-    *    empty character string.
-    */
-   public String getServletInfo() {
-      return "XINS/Java Server Framework " + Library.getVersion();
-   }
-
-   /**
     * Destroys this servlet. A best attempt will be made to release all
     * resources.
     *
@@ -810,7 +837,7 @@ extends HttpServlet {
     */
    public void destroy() {
 
-      Library.SHUTDOWN_LOG.debug("Shutting down XINS/Java Server Framework.");
+      Log.log_300();
 
       // Set the state temporarily to DISPOSING
       setState(DISPOSING);
@@ -819,15 +846,15 @@ extends HttpServlet {
       if (_api != null) {
          try {
             _api.deinit();
-         } catch (Throwable t) {
-            Library.SHUTDOWN_LOG.error("Caught exception while deinitializing API.", t);
+         } catch (Throwable exception) {
+            Log.log_305(exception.getClass().getName(), exception.getMessage());
          }
       }
 
       // Set the state to DISPOSED
       setState(DISPOSED);
 
-      Library.SHUTDOWN_LOG.info("XINS/Java Server Framework shutdown completed.");
+      Log.log_310();
    }
 
 
@@ -936,74 +963,37 @@ extends HttpServlet {
 
       public void fileModified() {
 
-         Logger log = Library.INIT_LOG;
-         log.info("Configuration file \"" + _configFile + "\" is modified. Re-initializing XINS/Java Server Framework.");
+         Log.log_240(_configFile);
 
          // Apply the new runtime settings to the logging subsystem
-         PropertyReader runtimeProperties = applyConfigFile();
-
-         // Determine the log locale
-         String newLocale = runtimeProperties.get(LOG_LOCALE_PROPERTY);
-
-         // If the log locale is set, apply it
-         if (newLocale != null) {
-            String currentLocale = Log.getTranslationBundle().getName();
-            if (currentLocale.equals(newLocale) == false) {
-               Log.log_201(currentLocale, newLocale);
-               try {
-                  Log.setTranslationBundle(newLocale);
-                  Log.log_202(currentLocale, newLocale);
-               } catch (NoSuchTranslationBundleException exception) {
-                  Log.log_203(currentLocale, newLocale);
-               }
-            }
-         }
+         PropertyReader runtimeProperties = readRuntimeProperties();
 
          // Re-initialize the API
          initAPI(runtimeProperties);
 
          // Determine the interval
-         String s = runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
-         int interval;
-
-         // If the property is set, parse it
-         if (s != null && s.length() >= 1) {
-            try {
-               interval = Integer.parseInt(s);
-               if (interval < 1) {
-                  log.error("System administration issue detected. Configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is less than 1. Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
-                  interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-               } else {
-                  log.debug("Using configuration file check interval of " + interval + " second(s) as specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\".");
-               }
-            } catch (NumberFormatException nfe) {
-               log.error("System administration issue detected. Unable to parse configuration file reload interval \"" + s + "\", specified in runtime property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\". Using fallback default of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
-               interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-            }
-
-         // Otherwise, if the property is not set, use the default
-         } else {
-            log.debug("Property \"" + CONFIG_RELOAD_INTERVAL_PROPERTY + "\" is not set. Using fallback default configuration file reload interval of " + DEFAULT_CONFIG_RELOAD_INTERVAL + " second(s).");
-            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-         }
+         int newInterval = determineConfigReloadInterval(runtimeProperties);
 
          // Update the file watch interval
-         _configFileWatcher.setInterval(interval);
-         log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
+         int oldInterval = _configFileWatcher.getInterval();
+         if (oldInterval != newInterval) {
+            _configFileWatcher.setInterval(newInterval);
+            Log.log_233(_configFile, String.valueOf(oldInterval), String.valueOf(newInterval));
+         }
 
          Log.log_200();
       }
 
       public void fileNotFound() {
-         Library.INIT_LOG.error("System administration issue detected. Configuration file \"" + _configFile + "\" cannot be opened.");
+         Log.log_230(_configFile);
       }
 
       public void fileNotModified() {
-         Library.INIT_LOG.debug("Configuration file \"" + _configFile + "\" is not modified.");
+         Log.log_232(_configFile);
       }
 
       public void securityException(SecurityException exception) {
-         Library.INIT_LOG.error("System administration issue detected. Access denied while reading file \"" + _configFile + "\".");
+         Log.log_231(_configFile, exception.getClass().getName(), exception.getMessage());
       }
    }
 }
