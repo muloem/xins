@@ -58,7 +58,6 @@ implements DefaultReturnCodes {
    protected API() {
       _functionsByName          = new HashMap();
       _functionList             = new ArrayList();
-      _unmodifiableFunctionList = Collections.unmodifiableList(_functionList);
    }
 
 
@@ -79,12 +78,6 @@ implements DefaultReturnCodes {
     * List of all functions. This field cannot be <code>null</code>.
     */
    private final List _functionList;
-
-   /**
-    * Unmodifiable view of the list of all functions. This field cannot be
-    * <code>null</code>.
-    */
-   private final List _unmodifiableFunctionList;
 
 
    //-------------------------------------------------------------------------
@@ -137,17 +130,6 @@ implements DefaultReturnCodes {
    }
 
    /**
-    * Returns an unmodifiable view of the function list.
-    *
-    * @return
-    *    an unmodifiable view of the list of functions, never
-    *    <code>null</code>.
-    */
-   final List getFunctions() {
-      return _unmodifiableFunctionList;
-   }
-
-   /**
     * Forwards a call to the <code>handleCall(CallContext)</code> method.
     *
     * @param out
@@ -171,7 +153,7 @@ implements DefaultReturnCodes {
       // Determine the function name
       String functionName = context.getFunction();
       if ("_GetFunctionList".equals(functionName)) {
-         doGetFunctionList(out, map);
+         doGetFunctionList(context);
       }
 
       // Forward the call
@@ -243,21 +225,21 @@ implements DefaultReturnCodes {
     * Returns a list of all functions in this API. Per function the name and
     * the version are returned.
     *
-    * @param out
-    *    the output stream to write to, not <code>null</code>.
-    *
-    * @param map
-    *    the parameters, not <code>null</code>.
+    * @param context
+    *    the context, guaranteed to be not <code>null</code>.
     *
     * @throws IOException
     *    if an I/O error occurs.
     */
-   private final void doGetFunctionList(PrintWriter out, Map map)
+   private final void doGetFunctionList(CallContext context)
    throws IOException {
-      // TODO: For each function:
-      // context.startTag("function");
-      // context.attribute("name", name);
-      // context.attribute("version", version);
-      // context.endTag();</xsl:text>
+      int count = _functionList.size();
+      for (int i = 0; i < count; i++) {
+         Function function = (Function) _functionList.get(i);
+         context.startTag("function");
+         context.attribute("name",    function.getName());
+         context.attribute("version", function.getVersion());
+         context.endTag();
+      }
    }
 }
