@@ -171,10 +171,10 @@ implements Responder, Log {
     * {@link #reset(ServletRequest)} must be called.
     */
    void reset() {
-      _request = null;
-      _state   = UNINITIALIZED;
-      _success = true;
-      _code    = null;
+      _request      = null;
+      _state        = UNINITIALIZED;
+      _success      = true;
+      _code         = null;
       _functionName = null;
       _function     = null;
       _logger       = null;
@@ -222,7 +222,7 @@ implements Responder, Log {
       _logger   = (_function    == null) ? null : _function.getLogger();
 
       // Assign a call ID
-      _callID  = (_function     == null) ? -1   : _function.assignCallID();
+      _callID = (_function     == null) ? -1   : _function.assignCallID();
 
       // Determine the prefix text for log messages
       _logPrefix = (_function   == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
