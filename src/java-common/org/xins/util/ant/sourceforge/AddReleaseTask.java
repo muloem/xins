@@ -335,7 +335,7 @@ public final class AddReleaseTask extends Task {
       login();
 
       // Create a new release
-      // XXX: addRelease();
+      addRelease();
    }
 
    /**
