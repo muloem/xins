@@ -31,8 +31,6 @@
 		<property name="www.dir"             value="/home/groups/x/xi/xins/htdocs" />
 		<property name="www.target"          value="${www.user}@${www.host}:${www.dir}" />
 		<property name="url"                 value="http://${www.host}/" />
-		<property name="javadoc.title"       value="${title} ${version}" />
-		<property name="javadoc.footer"      value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;." />
 		<property name="vendor"              value="Wanadoo Nederland B.V." />
 	</target>
 
@@ -113,15 +111,15 @@
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="javadoc" depends="-prepare-java,-javadoc-sourcepath" description="Generates Javadoc API documentation">
-		<mkdir dir="build/javadoc" />
+	<target name="-do-javadoc" depends="-prepare-java,-javadoc-sourcepath">
+		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
-		destdir="build/javadoc"
+		destdir="${javadoc.destdir}"
 		version="yes"
 		use="yes"
 		author="yes"
-		private="no"
+		private="${javadoc.private}"
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
@@ -144,6 +142,15 @@
 		file="src/css/javadoc/style.css"
 		tofile="build/javadoc/stylesheet.css"
 		overwrite="true" />
+	</target>
+
+	<target name="javadoc" description="Generates Javadoc API documentation">
+		<antcall target="-do-javadoc">
+			<param name="javadoc.private" value="no" />
+			<param name="javadoc.destdir" value="build/javadoc" />
+			<param name="javadoc.title"   value="${title} ${version}" />
+			<param name="javadoc.footer"  value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;." />
+		</antcall>
 	</target>
 
 	<target name="upload-javadoc" depends="javadoc" description="Uploads the Javadoc documentation to the webserver">
