@@ -95,7 +95,7 @@ extends Object {
 
       // Determine if it is an 'allow' or a 'deny' rule
       boolean allow;
-      String token = nextToken(tokenizer);
+      String token = nextToken(descriptor, tokenizer);
       if ("allow".equals(token)) {
          allow = true;
       } else if ("deny".equals(token)) {
@@ -106,13 +106,13 @@ extends Object {
       FastStringBuffer asString = new FastStringBuffer(40, token);
 
       // Determine the IP address to be checked
-      token = nextToken(tokenizer);
+      token = nextToken(descriptor, tokenizer);
       IPFilter filter = IPFilter.parseIPFilter(token);
       asString.append(' ');
       asString.append(filter.toString());
 
       // Determine the function the access is to be checked for
-      token = nextToken(tokenizer);
+      token = nextToken(descriptor, tokenizer);
       Perl5Pattern pattern = new SimplePatternParser().parseSimplePattern(token);
       asString.append(' ');
       asString.append(token);
@@ -123,20 +123,24 @@ extends Object {
    /**
     * Returns the next token in the descriptor
     *
+    * @param descriptor
+    *   the original descriptor, for use in the {@link ParseException}, if
+    *   necessary.
+    *
     * @param tokenizer
-    *   The StringTokenizer to retrieve the next token from
+    *   the {@link StringTokenizer} to retrieve the next token from.
     *
     * @return 
-    *   The next token. Never <code>null</code>.
+    *   the next token, never <code>null</code>.
     *
     * @throws ParseException
-    *   If <code>tokenizer.hasMoreTokens() == false</code>.
+    *   if <code>tokenizer.</code>{@link StringTokenizer#hasMoreTokens() hasMoreTokens}()<code> == false</code>.
     */
-   private static String nextToken(StringTokenizer tokenizer)
+   private static String nextToken(String descriptor, StringTokenizer tokenizer)
    throws ParseException {
 
       if (!tokenizer.hasMoreTokens()) {
-         throw new ParseException("Too few tokens retrieved from the descriptor.");
+         throw new ParseException("The string \"" + descriptor + "\" is invalid as an access rule descriptor. Too few tokens retrieved from the descriptor.");
       } else {
          return tokenizer.nextToken();
       }
