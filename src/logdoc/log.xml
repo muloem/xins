@@ -150,36 +150,36 @@
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="138" level="DEBUG">
+		<entry id="2027" level="DEBUG">
 			<description>Bootstrapping function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="139" level="DEBUG">
+		<entry id="2028" level="DEBUG">
 			<description>Bootstrapped function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="140" level="ERROR">
+		<entry id="2029" level="ERROR">
 			<description>Function could not be initialized due to a missing required property.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 		</entry>
-		<entry id="141" level="ERROR">
+		<entry id="2030" level="ERROR">
 			<description>Function could not be initialized due to an invalid property value.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
 			<param name="propertyValue" />
 		</entry>
-		<entry id="142" level="ERROR">
+		<entry id="2031" level="ERROR">
 			<description>Function could not be initialized.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="143" level="ERROR">
+		<entry id="2032" level="ERROR">
 			<description>Function could not be initialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
