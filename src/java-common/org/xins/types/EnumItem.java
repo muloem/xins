@@ -11,7 +11,7 @@ import org.xins.util.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
  */
-public final class EnumItem extends Object {
+public class EnumItem extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
