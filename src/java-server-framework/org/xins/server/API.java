@@ -19,6 +19,22 @@ extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Checks if the specified value is <code>null</code> or an empty string.
+    * Only if it is then <code>true</code> is returned.
+    *
+    * @param value
+    *    the value to check.
+    *
+    * @return
+    *    <code>true</code> if and only if <code>value != null &amp;&amp;
+    *    value.length() != 0</code>.
+    */
+   protected final static boolean isMissing(String value) {
+      return value == null || value.length() == 0;
+   }
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
