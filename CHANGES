@@ -1,4 +1,7 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.162:
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.161:
 
 * Dependencies:
@@ -7,9 +10,8 @@ CHANGES INTRODUCED IN XINS 0.161:
 * XINS/Java Server Framework:
   - Documented the Throwable exception thrown by call(...) method in the
     generated fundament class for a function.
-  - Changed levels for log message entries:
-    . 3005 from DEBUG to INFO (Logging subsystem has been properly
-      initialized)
+  - Changed levels for log message entry 3005 from DEBUG to INFO (Logging
+    subsystem has been properly initialized)
   - Changed fallback default log message output pattern to:
     "%-4c{1} %-6p %m%n" (without the quotes). 
   - Improved translations for log message 5018.
