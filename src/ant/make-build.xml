@@ -66,7 +66,7 @@
 			</xmlcatalog>
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />
-			<param name="builddir"     expression="${build}"     />
+			<param name="builddir"     expression="build"     />
 			<param name="xins_version" expression="${version}"     />
 		</style>
 

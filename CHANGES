@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.189:
 
+* Generated build file:
+  - Fixed bug #985218. The index.html and css are now generated or copied in
+    in the correct directory.
+    This bug has been in XINS since 0.188.
+
 * Updated Checkstyle from 3.2 to 3.4.
 
 ______________________________________________________________________________
