@@ -104,10 +104,12 @@ implements DefaultReturnCodes {
 
       // Forward the call
       boolean succeeded = false;
+      long start = System.currentTimeMillis();
       try {
          handleCall(context);
          succeeded = true;
       } catch (Throwable exception) {
+         long duration = System.currentTimeMillis() - start;
          xmlOutputter.reset(out, "UTF-8");
          xmlOutputter.startTag("result");
          xmlOutputter.attribute("success", "false");
@@ -135,6 +137,8 @@ implements DefaultReturnCodes {
             xmlOutputter.pcdata(stackTrace);
          }
          xmlOutputter.close();
+
+         callFailed(context.getFunction(), start, duration);
       }
 
       if (succeeded) {
@@ -154,4 +158,23 @@ implements DefaultReturnCodes {
     */
    protected abstract void handleCall(CallContext context)
    throws Throwable;
+
+   /**
+    * Callback method invoked when a function throws an exception. This method
+    * will be invoked if and only if {@link #handleCall(context)} throws an
+    * exception of some sort.
+    *
+    * @param function
+    *    the name of the function, will not be <code>null</code>.
+    *
+    * @param start
+    *    the timestamp indicating when the call was started, as a number of
+    *    milliseconds since midnight January 1, 1970 UTC.
+    *
+    * @param duration
+    *    the duration of the function call, as a number of milliseconds.
+    */
+   protected void callFailed(String function, long start, long duration) {
+      // empty
+   }
 }
