@@ -141,9 +141,9 @@ public final class XINSCallRequest extends CallRequest {
    }
 
    /**
-    * Constructs a new <code>CallRequest</code> for the specified function and
-    * parameters, possibly allowing fail-over, optionally specifying the HTTP
-    * method to use.
+    * Constructs a new <code>XINSCallRequest</code> for the specified function
+    * and parameters, possibly allowing fail-over, optionally specifying the
+    * HTTP method to use.
     *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
@@ -212,8 +212,10 @@ public final class XINSCallRequest extends CallRequest {
       _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
       _parameters      = parameters; // XXX: Make unmodifiable and change @param?
-      _failOverAllowed = failOverAllowed;
-      _httpRequest     = new HTTPCallRequest(method, httpParams, HTTP_STATUS_CODE_VERIFIER);
+      _httpRequest     = new HTTPCallRequest(method,
+                                             httpParams,
+                                             failOverAllowed,
+                                             HTTP_STATUS_CODE_VERIFIER);
 
       // XXX: Note that _asString is lazily initialized.
    }
@@ -249,12 +251,6 @@ public final class XINSCallRequest extends CallRequest {
    private final PropertyReader _parameters;
 
    /**
-    * Flag that indicates whether fail-over is in principle allowed, even if
-    * the request was already sent to the other end.
-    */
-   private final boolean _failOverAllowed;
-
-   /**
     * The HTTP service caller used to execute the request to a XINS service
     * over HTTP. This field is never <code>null</code>.
     */
@@ -281,7 +277,7 @@ public final class XINSCallRequest extends CallRequest {
          buffer.append(_instanceNumber);
          buffer.append(", parameters: ");
          PropertyReaderUtils.serialize(_parameters, buffer, "-");
-         if (_failOverAllowed) {
+         if (isFailOverAllowed()) {
             buffer.append(", fail-over allowed, ");
          } else {
             buffer.append(", fail-over disallowed, ");
@@ -354,7 +350,7 @@ public final class XINSCallRequest extends CallRequest {
     *    otherwise.
     */
    public boolean isFailOverAllowed() {
-      return _failOverAllowed;
+      return _httpRequest.isFailOverAllowed();
    }
 
    /**
