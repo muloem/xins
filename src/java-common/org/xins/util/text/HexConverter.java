@@ -21,20 +21,10 @@ public class HexConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
-    */
-   private static final char[] DIGITS = {
-      '0' , '1' , '2' , '3' ,
-      '4' , '5' , '6' , '7' ,
-      '8' , '9' , 'a' , 'b' ,
-      'c' , 'd' , 'e' , 'f'
-   };
-
-   /**
     * The number of characters written when converting a <code>long</code> to
     * an unsigned hex string.
     */
-   private static final int LENGTH = 16;
+   private static final int LONG_LENGTH = 16;
 
    /**
     * The radix when converting (16).
@@ -56,6 +46,16 @@ public class HexConverter extends Object {
       '0', '0', '0', '0' 
    };
 
+   /**
+    * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
+    */
+   private static final char[] DIGITS = {
+      '0' , '1' , '2' , '3' ,
+      '4' , '5' , '6' , '7' ,
+      '8' , '9' , 'a' , 'b' ,
+      'c' , 'd' , 'e' , 'f'
+   };
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -75,8 +75,8 @@ public class HexConverter extends Object {
     */
    public static String toHexString(long n) {
 
-      char[] chars = new char[LENGTH];
-      int pos      = LENGTH - 1;
+      char[] chars = new char[LONG_LENGTH];
+      int pos      = LONG_LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
@@ -88,7 +88,7 @@ public class HexConverter extends Object {
          chars[pos] = '0';
       }
 
-      return new String(chars, 0, LENGTH);
+      return new String(chars, 0, LONG_LENGTH);
    }
 
    /**
@@ -116,7 +116,7 @@ public class HexConverter extends Object {
       // Append 16 zero characters to the buffer
       buffer.append(SIXTEEN_ZEROES);
 
-      int pos = LENGTH - 1;
+      int pos = LONG_LENGTH - 1;
 
       // Convert the long to a hex string until the remainder is 0
       for (; n != 0; n >>>= 4) {
