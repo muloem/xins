@@ -131,7 +131,7 @@ extends Object {
     * @param code
     *    the function result code, or <code>null</code>.
     */
-   public final void performedCall(long start, long duration, boolean success, String code) {
+   final void performedCall(long start, long duration, boolean success, String code) {
       if (success) {
          synchronized (_successfulCallLock) {
             _successfulCalls++;
