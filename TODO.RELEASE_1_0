@@ -5,7 +5,9 @@ $Id$
 Version control:
 [ ] Create a branch called BRANCH_1_0_x. Make sure empty directories are not included in the new branch.
 [ ] Set @since tags on all classes to: XINS 1.0.0.
-[ ] CHANGES file should be moved to xins-docs.
+[ ] File CHANGES file should be moved to xins-docs.
+[ ] File TODO should be removed.
+[ ] File TODO.RELEASE_1_0 should be removed.
 [ ] First tag on the BRANCH_1_0_x branch should be RELEASE_1_0_0_RC1
 
 Improve service framework in org.xins.common.service:
