@@ -24,8 +24,16 @@ public final class Doorman extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The type for readers in the queue.
+    */
    private static final Queue.EntryType READ_QUEUE_ENTRY_TYPE = new Queue.EntryType();
+
+   /**
+    * The type for writers in the queue.
+    */
    private static final Queue.EntryType WRITE_QUEUE_ENTRY_TYPE = new Queue.EntryType();
+
 
    //-------------------------------------------------------------------------
    // Class functions
