@@ -465,7 +465,7 @@ implements Servlet {
 
          // Create a file watch thread and start it
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+         log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
          _configFileWatcher.start();
       }
    }
@@ -754,7 +754,7 @@ implements Servlet {
       public void fileModified() {
 
          Logger log = Library.INIT_LOG;
-         log.info("Configuration file \"" + _configFile + "\" changed. Re-initializing XINS/Java Server Framework.");
+         log.info("Configuration file \"" + _configFile + "\" is modified. Re-initializing XINS/Java Server Framework.");
 
          // Stop the file watch thread
          _configFileWatcher.end();
@@ -793,7 +793,7 @@ implements Servlet {
 
          // Create a new file watch thread and start it
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         log.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
+         log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
          _configFileWatcher.start();
 
          log.info("XINS/Java Server Framework re-initialized.");
