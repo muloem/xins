@@ -111,7 +111,7 @@
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
-			<section name="xins">
+			<section name="xins-server">
 				<attribute name="Specification-Title"    value="${title}"   />
 				<attribute name="Specification-Version"  value="${version}" />
 				<attribute name="Specification-Vendor"   value="${vendor}"  />
@@ -121,8 +121,48 @@
 			</section>
 		</manifest>
 		<jar
-		jarfile="build/xins.jar"
+		jarfile="build/xins-server.jar"
 		basedir="build/classes/java-server-framework"
+		manifest="build/MANIFEST.MF" />
+	</target>
+
+	<target name="-prepare-java-client-framework" depends="-prepare">
+		<mkdir dir="build/src/java-client-framework" />
+		<copy todir="build/src/java-client-framework">
+			<fileset dir="src/java-client-framework" includes="**/*.java" />
+		</copy>
+		<replace dir="build/src/java-client-framework" token="%%VERSION%%" value="${version}" />
+	</target>
+
+	<target name="java-client-framework" depends="java-common,-prepare-java-client-framework" description="Compiles the XINS/Java client framework">
+		<mkdir dir="build/classes/java-client-framework" />
+		<javac
+		srcdir="build/src/java-client-framework"
+		destdir="build/classes/java-client-framework"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		target="1.2">
+			<classpath>
+				<pathelement path="build/classes/java-common" />
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
+		</javac>
+		<manifest file="build/MANIFEST.MF">
+			<section name="xins-client">
+				<attribute name="Specification-Title"    value="${title}"   />
+				<attribute name="Specification-Version"  value="${version}" />
+				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Implementation-Title"   value="${title}"   />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+			</section>
+		</manifest>
+		<jar
+		jarfile="build/xins-client.jar"
+		basedir="build/classes/java-client-framework"
 		manifest="build/MANIFEST.MF" />
 	</target>
 
@@ -131,18 +171,18 @@
 	</target>
 
 	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
-		<property name="javadoc.sourcepath" value="build/src/java-server-framework" />
+		<property name="javadoc.sourcepath" value="build/src/java-server-framework:build/src/java-client-framework" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
 
 	<target name="-javadoc-sourcepath-jdksrc" depends="-jdksrc-avail" if="jdksrc.available">
-		<property name="javadoc.sourcepath" value="build/src/java-server-framework:${java.home}/src" />
+		<property name="javadoc.sourcepath" value="build/src/java-server-framework:build/java-client/framework:${java.home}/src" />
 		<echo level="verbose" message="JDK source code available." />
 	</target>
 
 	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="-prepare-java-server-framework,-javadoc-sourcepath">
+	<target name="-do-javadoc" depends="-prepare-java-server-framework,-prepare-java-client-framework,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
@@ -155,6 +195,7 @@
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
 			<packageset dir="src/java-server-framework" />
+			<packageset dir="src/java-client-framework" />
 			<classpath>
 				<fileset dir="depends/compile"             includes="**/*.jar" />
 				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
