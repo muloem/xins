@@ -3,8 +3,12 @@ CHANGES INTRODUCED IN XINS 0.51:
 
 * XINS/Java Common Library: Added class FastStack.
 
-* XINS/Java Server Framework: Duplicate attributes per element are now
-  checked.
+* XINS/Java Server Framework:
+  - Performing initialization in a compiler-safe method. If an instance has
+    not init(Properties) method, this will be logged and ignored.
+  - Performing deinitialization at shutdown using a destroy() method in the
+    instances registered with an API.
+  - Duplicate attributes per element are now checked.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.50:
