@@ -185,8 +185,9 @@
 					<xsl:otherwise>
 						<table class="functionlist">
 							<tr>
-								<th>Name</th>
-								<th>Value</th>
+								<th>Result code</th>
+								<th>Version</th>
+								<th>Status</th>
 								<th>Description</th>
 							</tr>
 							<xsl:apply-templates select="resultcode" />
@@ -370,17 +371,59 @@
 	</xsl:template>
 
 	<xsl:template match="resultcode">
+
+		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', $api, '/', @name, '.rcd')" />
+		<xsl:variable name="version">
+			<xsl:call-template name="revision2string">
+				<xsl:with-param name="revision">
+					<xsl:value-of select="document($resultcode_file)/resultcode/@rcsversion" />
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+
 		<tr>
 			<td>
-				<xsl:value-of select="@name" />
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@name" />
+						<xsl:text>.html</xsl:text>
+					</xsl:attribute>
+					<xsl:value-of select="@name" />
+				</a>
 			</td>
 			<td>
-				<xsl:value-of select="@value" />
+				<xsl:value-of select="$version" />
+			</td>
+			<td class="status">
+				<xsl:choose>
+					<xsl:when test="@freeze = $version">Frozen</xsl:when>
+					<xsl:when test="@freeze">
+						<span class="broken_freeze">
+							<xsl:attribute name="title">
+								<xsl:text>Freeze broken after version </xsl:text>
+								<xsl:value-of select="@freeze" />
+								<xsl:text>.</xsl:text>
+							</xsl:attribute>
+							<xsl:text>Broken Freeze</xsl:text>
+						</span>
+					</xsl:when>
+					<xsl:when test="document($resultcode_file)/resultcode/deprecated">
+						<span class="broken_freeze" title="{document($resultcode_file)/resultcode/deprecated/text()}">
+							<xsl:text>Deprecated</xsl:text>
+						</span>
+					</xsl:when>
+				</xsl:choose>
 			</td>
 			<td>
-				<xsl:apply-templates select="description" />
+				<xsl:apply-templates select="document($resultcode_file)/resultcode/description" />
 			</td>
 		</tr>
+	</xsl:template>
+
+	<xsl:template match="resultcode/description">
+		<xsl:call-template name="firstline">
+			<xsl:with-param name="text" select="text()" />
+		</xsl:call-template>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -334,8 +334,7 @@
 		</xsl:variable>
 		<xsl:variable name="isapiresultcode">
 			<xsl:choose>
-				<!-- TODO: We're referring to the resultcode _value_. Fix. -->
-				<xsl:when test="document($api_file)/api/resultcode[@value=$resultcode]">true</xsl:when>
+				<xsl:when test="document($api_file)/api/resultcode[@name=$resultcode]">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -399,7 +398,7 @@
 							<xsl:value-of select="@success" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="document($api_file)/api/resultcode[@value=$resultcode]/@success" />
+							<xsl:value-of select="document(concat($specsdir, '/', $api, '/', $resultcode, '.rcd'))/resultcode/@success" />
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>
