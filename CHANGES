@@ -4,6 +4,8 @@ CHANGES INTRODUCED IN XINS 0.145:
 * Moved jakarta-oro.jar from depends/runtime to depends/compile_and_runtime,
   where it belongs.
 
+* Generated build file now works even if depends/[subdir] is empty.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.144:
 
