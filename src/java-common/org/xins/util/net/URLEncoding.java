@@ -64,11 +64,14 @@ public final class URLEncoding extends Object {
     *    <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>s == null || s.charAt(<em>n</em>) &gt; 127</code>
-    *    (where <code>0 &lt;= <em>n</em> &lt; s.length</code>).
+    *    if <code>s == null</code>
+    *
+    * @throws NonASCIIException
+    *    if <code>s.charAt(<em>n</em>) &gt; 127</code>,
+    *    where <code>0 &lt;= <em>n</em> &lt; s.length</code>.
     */
    public static String encode(String s)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, NonASCIIException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
@@ -86,8 +89,7 @@ public final class URLEncoding extends Object {
             buffer.append(UNENCODED_TO_ENCODED[c]);
          }
       } catch (IndexOutOfBoundsException exception) {
-         // TODO: Choose a different exception class ?
-         throw new IllegalArgumentException("c (" + c + ") > 127");
+         throw new NonASCIIException(c);
       }
       
       return buffer.toString();
