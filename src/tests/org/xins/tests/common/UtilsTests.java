@@ -78,4 +78,41 @@ public class UtilsTests extends TestCase {
       assertEquals(expectedClass, c);
       assertEquals(expectedMethod, m);
    }
+
+   public void testGetNameOfClass() {
+      doTestGetNameOfClass("java.lang.Object",       Object.class);
+      doTestGetNameOfClass("java.lang.Object",       Object.class);
+      doTestGetNameOfClass("java.util.Date",         java.util.Date.class);
+      doTestGetNameOfClass("boolean",                Boolean.TYPE);
+      doTestGetNameOfClass("char",                   Character.TYPE);
+      doTestGetNameOfClass("byte",                   Byte.TYPE);
+      doTestGetNameOfClass("short",                  Short.TYPE);
+      doTestGetNameOfClass("int",                    Integer.TYPE);
+      doTestGetNameOfClass("long",                   Long.TYPE);
+      doTestGetNameOfClass("float",                  Float.TYPE);
+      doTestGetNameOfClass("double",                 Double.TYPE);
+      doTestGetNameOfClass("void",                   Void.TYPE);
+      doTestGetNameOfClass("java.lang.Object[]",     Object[].class);
+      doTestGetNameOfClass("java.lang.Object[][]",   Object[][].class);
+      doTestGetNameOfClass("java.lang.Object[][][]", Object[][][].class);
+      doTestGetNameOfClass("int[]",                  int[].class);
+      doTestGetNameOfClass("int[][]",                int[][].class);
+      doTestGetNameOfClass("int[][][]",              int[][][].class);
+      doTestGetNameOfClass("int[][][][]",            int[][][][].class);
+   }
+
+   private void doTestGetNameOfClass(String expected, Class c) {
+      String actual = Utils.getNameOfClass(c);
+      String message = "Expected \"" + expected + "\" instead of \"" + actual + "\". Java-reported class name is \"" + c.getName() + "\".";
+      assertEquals(message, expected, actual);
+   }
+
+   public void testGetClassName() {
+      assertEquals("java.lang.Object",   Utils.getClassName(new Object()));
+      assertEquals("java.util.Date",     Utils.getClassName(new java.util.Date()));
+      assertEquals("java.lang.Object[]", Utils.getClassName(new Object[0]));
+      assertEquals("java.lang.Object[]", Utils.getClassName(new Object[1]));
+      assertEquals("int[]",              Utils.getClassName(new int[0]));
+      assertEquals("int[]",              Utils.getClassName(new int[1]));
+   }
 }
