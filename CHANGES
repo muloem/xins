@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 0.203:
 * XINS/Java Client Framework:
   - Removed the deprecated getCode() method from UnsuccessfulCallException.
   - Extended interface of UnacceptableCallResultException.
+  - Removed the unused class MultipleIPAddressesException.
   - Overhaul of logdoc entries.
 
 * Logdoc:
