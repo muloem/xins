@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.80:
+
+* Fix minor typo in Javadoc comment (class FunctionCallerParser).
+
+* Simplified and improved logging in class APIServlet.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.79:
 
 * Shell script 'xins' has been improved. These changes have not been applied
