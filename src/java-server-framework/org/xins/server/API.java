@@ -314,6 +314,9 @@ implements DefaultResultCodes {
     * @param propertyName
     *    the name of the property to read, cannot be <code>null</code>.
     *
+    * @return
+    *    the value of the property, as an <code>int</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     *
@@ -736,6 +739,9 @@ implements DefaultResultCodes {
 
    /**
     * Calls the specified method with the specified arguments.
+    *
+    * @param log
+    *    the log to use, not <code>null</code>.
     *
     * @param instance
     *    the instance on which to call the method, should not be

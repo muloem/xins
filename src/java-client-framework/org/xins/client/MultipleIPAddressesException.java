@@ -38,6 +38,9 @@ extends Exception {
     *    the array of IP addresses, cannot be <code>null</code>, size must be
     *    at least 2, cannot contain <code>null</code> values.
     *
+    * @return
+    *    the constructed message, never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>hostName == null
     *          || addresses == null
