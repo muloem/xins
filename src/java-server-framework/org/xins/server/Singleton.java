@@ -3,7 +3,7 @@
  */
 package org.xins.server;
 
-import java.util.Properties;
+import org.xins.util.collections.PropertyReader;
 
 /**
  * Interface for singleton classes registered with an API implementation.
@@ -28,7 +28,7 @@ public interface Singleton {
     * @throws InitializationException
     *    if the initialization failed, for any reason.
     */
-   void init(Properties properties)
+   void init(PropertyReader properties)
    throws InitializationException;
 
    /**
