@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.44:
+
+* Major change to the way ActualFunctionCaller works: DNS lookups are now
+  performed at construction time. No longer are DNS names accepted that
+  resolve to multiple IP addresses. Use CallTargetGroups for this.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.43:
 
 * AbstractCompositeFunctionCaller now actually implements
