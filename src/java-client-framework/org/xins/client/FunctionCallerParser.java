@@ -115,7 +115,7 @@ extends Object {
     * @throws NullPointerException
     *    if <code>document == null || document.getRootElement() == null</code>
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the specified XML document is not valid as the definition of a
     *    {@link FunctionCaller}.
     */
@@ -138,7 +138,7 @@ extends Object {
     * @throws NullPointerException
     *    if <code>element == null</code>
     *
-    * @throws InvalidCallResultException
+    * @throws ParseException
     *    if the specified XML element is not valid as the definition of a
     *    {@link FunctionCaller}.
     */
