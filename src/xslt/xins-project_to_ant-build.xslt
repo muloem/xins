@@ -93,7 +93,7 @@
 				</target>
 			</xsl:for-each>
 
-			<target name="specdocs" description="Generates the specification docs for all APIs">
+			<target name="specdocs" description="Generates all specification docs">
 				<xsl:attribute name="depends">
 					<xsl:text>specdocs-index</xsl:text>
 					<xsl:for-each select="api">
@@ -102,7 +102,6 @@
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
-
 
 			<target name="-prepare-classes" depends="-prepare">
 				<mkdir dir="build/classes" />
@@ -122,7 +121,21 @@
 				</xsl:attribute>
 			</target>
 
-			<target name="all" depends="specdocs,classes" description="Generates everything" />
+			<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+				<target name="war-api-{@name}" depends="classes-api-{@name}" description="Creates the WAR for the '{@name}' API" />
+			</xsl:for-each>
+
+			<target name="wars" description="Creates the WARs for all APIs">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api[document(concat($project_home, '/', $specsdir, '/', @name, '/api.xml'))/api/impl-java]">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>war-api-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<target name="all" depends="specdocs,wars" description="Generates everything" />
 		</project>
 	</xsl:template>
 </xsl:stylesheet>
