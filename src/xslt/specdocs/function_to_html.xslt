@@ -317,6 +317,25 @@
 		<xsl:variable name="returncode"           select="@returncode" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
+		<xsl:variable name="isgenericreturncode">
+			<xsl:choose>
+				<xsl:when test="document($returncodes_file)/returncodes/code[@value=$returncode]">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="isapireturncode">
+			<xsl:choose>
+				<!-- TODO: We're referring to the returncode _value_. Fix. -->
+				<xsl:when test="document($api_file)/api/returncode[@value=$returncode]">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="isfunctionreturncode">
+			<xsl:choose>
+				<xsl:when test="boolean(parent::function/output/returncode[@value=$returncode])">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="success">
 			<xsl:choose>
 
@@ -333,7 +352,7 @@
 				</xsl:when>
 
 				<!-- Generic return code -->
-				<xsl:when test="document($returncodes_file)/returncodes/code[@value=$returncode]">
+				<xsl:when test="$isgenericreturncode = 'true'">
 					<xsl:if test="boolean(@success) and not(@success=document($returncodes_file)/returncodes/code[@value=$returncode]/@success)">
 						<xsl:message terminate="yes">
 							<xsl:text>The returncode '</xsl:text>
@@ -350,13 +369,39 @@
 					<xsl:text>false</xsl:text>
 				</xsl:when>
 
-				<!-- Custom return code -->
-				<xsl:when test="boolean(parent::function/output/returncode[@value=$returncode])">
+				<!-- API-specific return code -->
+				<xsl:when test="$isapireturncode = 'true'">
 					<xsl:choose>
 						<xsl:when test="boolean(@success)">
 							<xsl:if test="not(@success=parent::function/output/returncode[@value=$returncode]/@success)">
 								<xsl:message terminate="yes">
-									<xsl:text>The returncode '</xsl:text>
+									<xsl:text>The API-specific returncode '</xsl:text>
+									<xsl:value-of select="$returncode" />
+									<xsl:text>' is defined as </xsl:text>
+									<xsl:choose>
+										<xsl:when test="@success='true'">a successful return code, but it is claimed to be unsuccessful</xsl:when>
+										<xsl:otherwise>an unsuccessful return code, but it is claimed to be successful</xsl:otherwise>
+									</xsl:choose>
+									<xsl:text> in example </xsl:text>
+									<xsl:value-of select="$examplenum" />
+									<xsl:text>.</xsl:text>
+								</xsl:message>
+							</xsl:if>
+							<xsl:value-of select="@success" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="document($api_file)/api/returncode[@value=$returncode]/@success" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+
+				<!-- Function-specific return code -->
+				<xsl:when test="$isfunctionreturncode = 'true'">
+					<xsl:choose>
+						<xsl:when test="boolean(@success)">
+							<xsl:if test="not(@success=parent::function/output/returncode[@value=$returncode]/@success)">
+								<xsl:message terminate="yes">
+									<xsl:text>The function-specific returncode '</xsl:text>
 									<xsl:value-of select="$returncode" />
 									<xsl:text>' is defined as </xsl:text>
 									<xsl:choose>
@@ -375,6 +420,8 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>
+
+				<!-- TODO: Check that the return code is not defined in 2 places -->
 
 				<!-- Unrecognised return code -->
 				<xsl:otherwise>
@@ -539,6 +586,7 @@
 						<xsl:if test="$returncode">
 							<xsl:text> </xsl:text>
 							<span class="attr">
+								<!-- TODO: Get returncode description for referenced returncodes as well -->
 								<xsl:attribute name="title">
 									<xsl:call-template name="firstline">
 										<xsl:with-param name="text">
@@ -729,8 +777,29 @@
 				<th>Description</th>
 			</tr>
 			<xsl:call-template name="default_returncodes" />
+			<xsl:call-template name="referenced_returncodes" />
 			<xsl:apply-templates select="//function/output/returncode" />
 		</table>
+	</xsl:template>
+
+	<xsl:template name="referenced_returncodes">
+		<xsl:for-each select="//function/output/returncode-ref">
+			<xsl:variable name="code" select="@code" />
+			<!-- TODO: Use name of return code, not value -->
+			<xsl:for-each select="document($api_file)/api/returncode[@value = $code]">
+				<tr>
+					<td class="value">
+						<xsl:value-of select="@value" />
+					</td>
+					<td>
+						<xsl:value-of select="@success" />
+					</td>
+					<td class="description">
+						<xsl:apply-templates select="description" />
+					</td>
+				</tr>
+			</xsl:for-each>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template name="default_returncodes">
@@ -767,6 +836,7 @@
 
 	<xsl:template match="returncode">
 		<xsl:if test="not(boolean(@success))">
+			<!-- TODO: Let this check terminate -->
 			<xsl:message>
 				<xsl:text>It is not indicated if the return code '</xsl:text>
 				<xsl:value-of select="@value" />

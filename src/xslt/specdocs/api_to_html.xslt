@@ -175,6 +175,25 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
+				<h2>Return codes</h2>
+				<xsl:choose>
+					<xsl:when test="count(returncode) = 0">
+						<p>
+							<em>This API defines no specific return codes.</em>
+						</p>
+					</xsl:when>
+					<xsl:otherwise>
+						<table class="functionlist">
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+								<th>Description</th>
+							</tr>
+							<xsl:apply-templates select="returncode" />
+						</table>
+					</xsl:otherwise>
+				</xsl:choose>
+
 				<h2>API Owner</h2>
 				<xsl:choose>
 					<xsl:when test="$owner != ''">
@@ -348,6 +367,21 @@
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />
 		</xsl:call-template>
+	</xsl:template>
+
+	<!-- TODO: Rename to result code -->
+	<xsl:template match="returncode">
+		<tr>
+			<td>
+				<xsl:value-of select="@name" />
+			</td>
+			<td>
+				<xsl:value-of select="@value" />
+			</td>
+			<td>
+				<xsl:apply-templates select="description" />
+			</td>
+		</tr>
 	</xsl:template>
 
 </xsl:stylesheet>
