@@ -6,6 +6,7 @@ package org.xins.server;
 import java.util.StringTokenizer;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.text.FastStringBuffer;
 import org.xins.util.text.ParseException;
 import org.xins.util.text.SimplePatternParser;
 
@@ -79,7 +80,7 @@ extends Object {
 
       StringTokenizer tokenizer = new StringTokenizer(descriptor," \t\n\r");
 
-      // determine if it is an 'allow' or a 'deny' rule
+      // Determine if it is an 'allow' or a 'deny' rule
       boolean allow;
       String token = nextToken(tokenizer);
       if ("allow".equals(token)) {
@@ -89,16 +90,21 @@ extends Object {
       } else {
          throw new ParseException("First token of descriptor is \"" + token + "\", instead of either 'allow' or 'deny'.");
       }
+      FastStringBuffer asString = new FastStringBuffer(40, token);
 
-      // determine the IP address to be checked
+      // Determine the IP address to be checked
       token = nextToken(tokenizer);
       IPFilter filter = IPFilter.parseIPFilter(token);
+      asString.append(' ');
+      asString.append(filter.toString());
 
-      // determine the function the access is to be checked for
+      // Determine the function the access is to be checked for
       token = nextToken(tokenizer);
       Perl5Pattern pattern = new SimplePatternParser().parseSimplePattern(token);
-     
-      return new AccessRule( allow, filter, pattern);
+      asString.append(' ');
+      asString.append(token);
+
+      return new AccessRule(allow, filter, pattern, asString.toString());
    }
 
    /**
@@ -147,7 +153,8 @@ extends Object {
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
-                      Perl5Pattern functionNamePattern)
+                      Perl5Pattern functionNamePattern,
+                      String       asString)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -155,7 +162,8 @@ extends Object {
                                      "functionNamePattern", functionNamePattern);
 
       _ipFilter = ipFilter;
-      _allow = allow;
+      _allow    = allow;
+      _asString = asString;
    }
 
 
@@ -164,16 +172,20 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The IPFilter used to create the Access rule.
-    *
-    * Cannot be <code>null</code>.
+    * The IP address filter used to create the access rule. Cannot be
+    * <code>null</code>.
     */
    private final IPFilter _ipFilter;
 
    /**
-    * If the Access method is 'allow' or not.
+    * If the access method is 'allow' or not.
     */
    private final boolean _allow;
+
+   /**
+    * String representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
 
 
    //-------------------------------------------------------------------------
@@ -223,5 +235,23 @@ extends Object {
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
       return false; // TODO
+   }
+
+   /**
+    * Returns a character string representation of this object. The returned
+    * string is in the form:
+    *
+    * <blockquote><em>type a.b.c.d/m pattern</em></blockquote>
+    *
+    * where <em>type</em> is either <code>"allow"</code> or
+    * <code>"deny"</code>, <em>a.b.c.d</em> is the base IP address, <em>m</em>
+    * is the mask, and <em>pattern</em> is the function name simple pattern.
+    *
+    * @return
+    *    a character string representation of this access rule, never
+    *    <code>null</code>.
+    */
+   public String toString() {
+      return _asString;
    }
 }
