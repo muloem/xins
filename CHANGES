@@ -58,6 +58,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - The source code is no longer copied to the build directory for the javadoc
     or the j2h command. Only the package target will copy them to a new
     build-lf directory to fix the line feed problems.
+  - The clean target does not delete the file that are not regenerated in
+    the release anymore.
 
 * Tests:
   - Improved performance of tests. Starting server before any of the tests.

@@ -113,7 +113,7 @@ ${sf.file}</fail>
 
 	<target name="-init-release-properties" depends="-load-version">
 		<property name="version"           value="${version.major}.${version.middle}.${version.minor}${version.build}" />
-                <property name="tests.deprecation" value="false"  />
+		<property name="tests.deprecation" value="false"  />
 	</target>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
@@ -144,7 +144,7 @@ ${sf.file}</fail>
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.deprecation"   value="true"  />
 		<property name="javac.optimize"      value="false" />
-                <property name="tests.deprecation"   value="true"  />
+		<property name="tests.deprecation"   value="true"  />
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
@@ -159,8 +159,9 @@ ${sf.file}</fail>
 
 	<target name="clean" description="Removes all generated files">
 		<delete dir="build" />
-		<delete dir="docs" />
-		<delete dir="demo" />
+		<delete dir="docs/javadoc" />
+		<delete dir="docs/javadoc-private" />
+		<delete dir="docs/logdoc" />
 		<delete dir="src/tests/build" />
 	</target>
 
@@ -853,6 +854,7 @@ ${sf.file}</fail>
 
 	<target name="copy-docs-demo" depends="-init">
 		<!-- Copy the examples in the release -->
+		<delete dir="demo" />
 		<mkdir dir="demo" />
 		<copy todir="demo">
 			<fileset dir="../${name}-examples">
@@ -877,6 +879,12 @@ ${sf.file}</fail>
 		<ant dir="../${name}-docs" target="guide" inheritall="false">
 			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
 		</ant>
+		<delete dir="docs/protocol" />
+		<delete>
+			<fileset dir="docs">
+				<include name="*" />
+			</fileset>
+		</delete>
 		<mkdir dir="docs" />
 		<copy todir="docs">
 			<fileset dir="../${name}-docs/build/guide">
