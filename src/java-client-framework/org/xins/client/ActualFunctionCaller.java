@@ -382,8 +382,9 @@ extends AbstractFunctionCaller {
       MandatoryArgumentChecker.check("functionName", functionName);
 
       // Initialize a buffer
+      // TODO: Use _function
       FastStringBuffer buffer = new FastStringBuffer(PARAMETER_STRING_BUFFER_SIZE);
-      buffer.append("_function=");
+      buffer.append("function=");
       buffer.append(functionName);
 
       // If there is a session identifier, process it
