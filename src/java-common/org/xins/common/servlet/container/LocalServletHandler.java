@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -110,6 +111,19 @@ public class LocalServletHandler {
    public final static int USE_WAR_LIB = 4;
 
    /**
+    * Load the servlet code and the standard libraries from the CLASSPATH.
+    * Load the included external libraries from the WAR file.
+    */
+   public final static int USE_WAR_EXTERNAL_LIB = 5;
+   
+   /**
+    * The name of the standard libraries.
+    */
+   private final static String[] STANDARD_LIBS = {"xins-server.jar", "xins-common.jar",
+      "xins-client.jar", "logdoc.jar", "commons-codec.jar", "commons-httpclient.jar", 
+      "commons-logging.jar", "jakarta-oro.jar", "log4j.jar", "xmlenc.jar"};
+
+   /**
     * The Map&lt;String, LocalServletHandler&gt; containing the Servlets.
     */
    private final static Map SERVLET_MAP = new HashMap();
@@ -172,6 +186,7 @@ public class LocalServletHandler {
          Log.log_1508(exception);
          throw exception;
       } catch (Exception exception) {
+         exception.printStackTrace();
          Log.log_1509(exception);
          throw new ServletException(exception);
       }
@@ -192,14 +207,15 @@ public class LocalServletHandler {
       if (mode == USE_CURRENT_CLASSPATH) {
          return getClass().getClassLoader();
       }
-      URL classesURL = new URL("jar:file:" + warFile.getAbsolutePath().replace(File.separatorChar, '/') + "!/WEB-INF/classes/");
       List urlList = new ArrayList();
-      urlList.add(classesURL);
+      if (mode != USE_WAR_EXTERNAL_LIB) {
+         URL classesURL = new URL("jar:file:" + warFile.getAbsolutePath().replace(File.separatorChar, '/') + "!/WEB-INF/classes/");
+         urlList.add(classesURL);
+      }
       
       if (mode == USE_XINS_LIB) {
          String classLocation = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-         System.err.println("common location: " + classLocation);
-         String commonJar = classLocation.substring(9, classLocation.lastIndexOf('!'));
+         String commonJar = classLocation.substring(6).replace('/', File.separatorChar);
          File baseDir = new File(commonJar).getParentFile();
          File[] xinsFiles = baseDir.listFiles(); 
          for (int i = 0; i < xinsFiles.length; i++) {
@@ -214,15 +230,22 @@ public class LocalServletHandler {
                urlList.add(libFiles[i].toURL());
             }
          }
-      } else if (mode == USE_WAR_LIB) {
+      } else if (mode == USE_WAR_LIB || mode == USE_WAR_EXTERNAL_LIB) {
+         List standardLibs = new ArrayList();
+         if (mode == USE_WAR_EXTERNAL_LIB) {
+            for (int i = 0; i < STANDARD_LIBS.length; i++) {
+               standardLibs.add(STANDARD_LIBS[i]);
+            }
+         }
          JarInputStream jarStream = new JarInputStream(new FileInputStream(warFile));
          JarEntry entry = jarStream.getNextJarEntry();
          while(entry != null) {
             String entryName = entry.getName();
-            if (entryName.startsWith("WEB-INF/lib/") && entryName.endsWith(".jar")) {
+            if (entryName.startsWith("WEB-INF/lib/") && entryName.endsWith(".jar") && !standardLibs.contains(entryName.substring(12))) {
                File tempJarFile = unpack(jarStream, entryName);
                urlList.add(tempJarFile.toURL());
             }
+            entry = jarStream.getNextJarEntry();
          }
          jarStream.close();
       }
@@ -230,7 +253,8 @@ public class LocalServletHandler {
       for (int i=0; i<urlList.size(); i++) {
          urls[i] = (URL) urlList.get(i);
       }
-      return new URLClassLoader(urls, getClass().getClassLoader());
+      ClassLoader loader = new URLClassLoader(urls, getClass().getClassLoader());
+      return loader;
    }
 
    /**
@@ -242,7 +266,7 @@ public class LocalServletHandler {
     *    The name of the entry to extract.
     *
     * @return
-    *    The extracted file. Teh created file is a temporary file in the 
+    *    The extracted file. The created file is a temporary file in the 
     *    temporary directory.
     */
    private File unpack(JarInputStream jarStream, String entryName) throws IOException {

@@ -940,7 +940,7 @@ APIs in this project are:
 					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
 					<arg path="build/webapps/{$api}/{$api}.war" />
 					<classpath>
-						<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-server.jar xins-client.jar" />
+						<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-client.jar xins-server.jar" />
 						<fileset dir="{$xins_home}/lib" includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar" />
 						<path location="build/classes-api/{$api}" />
 						<xsl:if test="$apiHasTypes">

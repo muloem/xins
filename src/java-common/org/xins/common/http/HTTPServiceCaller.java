@@ -20,12 +20,13 @@ import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.util.TimeoutController;
+import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 
 import org.apache.log4j.NDC;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.TimeOutException;
 import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
@@ -679,10 +680,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
       long start = System.currentTimeMillis();
       long duration;
       try {
-         controlTimeOut(executor, target);
+         TimeoutController.execute(executor, totalTimeOut);
 
       // Total time-out exceeded
-      } catch (TimeOutException exception) {
+      } catch (TimeoutException exception) {
          duration = System.currentTimeMillis() - start;
          Log.log_1106(url, params, duration, totalTimeOut);
          throw new TotalTimeOutCallException(request, target, duration);
@@ -1104,8 +1105,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
          int    socketTimeOut     = _target.getSocketTimeOut();
 
          // Configure connection time-out and socket time-out
-         client.setConnectionTimeout(connectionTimeOut);
-         client.setTimeout          (socketTimeOut);
+         client.getParams().setConnectionManagerTimeout(connectionTimeOut);
+         client.getParams().setSoTimeout(socketTimeOut);
 
          // Construct the method object
          HttpMethod method = createMethod(url, _request, _callConfig);
