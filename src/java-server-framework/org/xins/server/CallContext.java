@@ -403,7 +403,9 @@ implements Responder, Log {
    }
 
    /**
-    * Returns the value of a parameter with the specificied name.
+    * Returns the value of a parameter with the specificied name. Note that
+    * reserved parameters, i.e. those starting with an underscore
+    * (<code>'_'</code>) cannot be retrieved.
     *
     * @param name
     *    the name of the parameter, not <code>null</code>.
@@ -423,11 +425,10 @@ implements Responder, Log {
          throw new IllegalArgumentException("name == null");
       }
 
-      if (_request != null && !"function".equals(name)) {
+      if (_request != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
          return _request.getParameter(name);
-      } else {
-         return null;
       }
+      return null;
    }
 
    /**
