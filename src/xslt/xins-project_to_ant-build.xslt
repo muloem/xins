@@ -694,7 +694,9 @@
 									<param name="package_name"    expression="{$package}" />
 								</style>
 								<ant antfile="build/logdoc/{$api}/build.xml" target="java">
+<!-- FIXME for anthonyg:
 									<property name="accesslevel" value="{$accesslevel}" />
+-->
 								</ant>
 							</xsl:if>
 						</xsl:if>
