@@ -66,6 +66,12 @@ implements DefaultResultCodes {
     */
    private static final int INITIALIZED = 2;
 
+   /**
+    * String returned by the function <code>_GetStatistics</code> when certain
+    * information is not available.
+    */
+   private static final String NOT_AVAILABLE = "N/A"
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -1044,13 +1050,13 @@ implements DefaultResultCodes {
          String lastSuccessfulStart;
          String lastSuccessfulDuration;
          if (successfulCalls == 0) {
-            successfulAverage      = "NA";
-            successfulMin          = "NA";
-            successfulMinStart     = "NA";
-            successfulMax          = "NA";
-            successfulMaxStart     = "NA";
-            lastSuccessfulStart    = "NA";
-            lastSuccessfulDuration = "NA";
+            successfulAverage      = NOT_AVAILABLE;
+            successfulMin          = NOT_AVAILABLE;
+            successfulMinStart     = NOT_AVAILABLE;
+            successfulMax          = NOT_AVAILABLE;
+            successfulMaxStart     = NOT_AVAILABLE;
+            lastSuccessfulStart    = NOT_AVAILABLE;
+            lastSuccessfulDuration = NOT_AVAILABLE;
          } else if (successfulDuration == 0) {
             successfulAverage      = "0";
             successfulMin          = String.valueOf(stats.getSuccessfulMin());
@@ -1077,13 +1083,13 @@ implements DefaultResultCodes {
          String lastUnsuccessfulStart;
          String lastUnsuccessfulDuration;
          if (unsuccessfulCalls == 0) {
-            unsuccessfulAverage      = "NA";
-            unsuccessfulMin          = "NA";
-            unsuccessfulMinStart     = "NA";
-            unsuccessfulMax          = "NA";
-            unsuccessfulMaxStart     = "NA";
-            lastUnsuccessfulStart    = "NA";
-            lastUnsuccessfulDuration = "NA";
+            unsuccessfulAverage      = NOT_AVAILABLE;
+            unsuccessfulMin          = NOT_AVAILABLE;
+            unsuccessfulMinStart     = NOT_AVAILABLE;
+            unsuccessfulMax          = NOT_AVAILABLE;
+            unsuccessfulMaxStart     = NOT_AVAILABLE;
+            lastUnsuccessfulStart    = NOT_AVAILABLE;
+            lastUnsuccessfulDuration = NOT_AVAILABLE;
          } else if (unsuccessfulDuration == 0) {
             unsuccessfulAverage      = "0";
             unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
