@@ -4,6 +4,7 @@
 package org.xins.types.standard;
 
 import org.xins.types.Type;
+import org.xins.types.TypeValueException;
 
 /**
  * Standard type <em>_text</em>.
@@ -26,6 +27,54 @@ public final class Text extends Type {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Converts the specified non-<code>null</code> string value to a
+    * <code>String</code>. This is in fact a no-op, the method will just
+    * return the input value. This method exists to be in line with the
+    * interfaces of the other standard type classes.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @return
+    *    the original {@link String}.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type (never).
+    */
+   public static String fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+      if (string == null) {
+         throw new IllegalArgumentException("string == null");
+      } else {
+         return string;
+      }
+   }
+
+   /**
+    * Converts the specified string value to a <code>String</code>
+    * value.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the original {@link String}, can be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type (never).
+    */
+   public static String fromStringForOptional(String string)
+   throws TypeValueException {
+      return string;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
