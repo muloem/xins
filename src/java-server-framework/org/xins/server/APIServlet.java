@@ -83,6 +83,9 @@ extends HttpServlet {
       // Initialize Log4J
       PropertyConfigurator.configure(settings);
       _log = Logger.getLogger(getClass().getName());
+      if (_log == null) {
+         throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
+      }
 
       // Create an API instance
       try {
