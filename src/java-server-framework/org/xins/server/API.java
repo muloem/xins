@@ -25,6 +25,8 @@ import org.xins.common.manageable.Manageable;
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
 
+import org.xins.logdoc.LogdocSerializable;
+
 /**
  * Base class for API implementation classes.
  *
@@ -768,9 +770,23 @@ implements DefaultResultCodes {
             throw new NoSuchFunctionException(functionName);
          }
 
+         // Determine duration
+         long duration = System.currentTimeMillis() - start;
+
+         // Prepare for transaction logging
+         LogdocSerializable serStart  = new FormattedDate(start);
+         LogdocSerializable inParams  = new FormattedParameters(parameters);
+         LogdocSerializable outParams = new FormattedParameters(result.getParameters());
+
+         // Determine error code, fallback is a zero character
+         String code = result.getErrorCode();
+         if (code == null) {
+            code = "0";
+         }
+
          // Log transaction before returning the result
-         // TODO: Log.log_3540(serStart, ip, _name, callID, duration, code, inParams, outParams);
-         // TODO: Log.log_3541(serStart, ip, _name, callID, duration, code);
+         Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);
+         Log.log_3541(serStart, ip, _name, duration, code);
 
          return result;
       }
