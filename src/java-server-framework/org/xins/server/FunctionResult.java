@@ -8,6 +8,8 @@ package org.xins.server;
 
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Result from a function call.
@@ -79,10 +81,10 @@ public class FunctionResult extends Object {
    private BasicPropertyReader _parameters;
 
    /**
-    * The data element. This field is <code>null</code> if there is no data
-    * element.
+    * The data element builder. This field is <code>null</code> if there is no 
+    * data element.
     */
-   private Element _dataElement;
+   private ElementBuilder _dataElementBuilder;
 
 
    //-------------------------------------------------------------------------
@@ -172,10 +174,10 @@ public class FunctionResult extends Object {
     *    the new element to add to the result, cannot be <code>null</code>.
     */
    protected void add(Element element) {
-      if (_dataElement == null) {
-         _dataElement = new Element("data");
+      if (_dataElementBuilder == null) {
+         _dataElementBuilder = new ElementBuilder("data");
       }
-      _dataElement.add(element);
+      _dataElementBuilder.addChild(element);
    }
 
    /**
@@ -185,6 +187,10 @@ public class FunctionResult extends Object {
     *    the data element of the result, can be <code>null</code>.
     */
    Element getDataElement() {
-      return _dataElement;
+      if (_dataElementBuilder == null) {
+         return null;
+      } else {
+         return _dataElementBuilder.createElement();
+      }
    }
 }

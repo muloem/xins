@@ -9,6 +9,8 @@ package org.xins.server;
 import java.util.Iterator;
 import java.util.List;
 
+import org.xins.common.xml.ElementBuilder;
+
 /**
  * Result code that indicates that an input parameter is either missing or invalid.
  *
@@ -54,9 +56,9 @@ public class InvalidRequestResult extends FunctionResult {
     *    the missing parameter.
     */
    public void addMissingParameter(String parameter) {
-      Element missingParam = new Element("missing-param");
-      missingParam.addAttribute("param", parameter);
-      add(missingParam);
+      ElementBuilder missingParam = new ElementBuilder("missing-param");
+      missingParam.setAttribute("param", parameter);
+      add(missingParam.createElement());
    }
 
    /**
@@ -69,10 +71,10 @@ public class InvalidRequestResult extends FunctionResult {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      Element invalidValue = new Element("invalid-value-for-type");
-      invalidValue.addAttribute("param", parameter);
-      invalidValue.addAttribute("type", type);
-      add(invalidValue);
+      ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
+      invalidValue.setAttribute("param", parameter);
+      invalidValue.setAttribute("type", type);
+      add(invalidValue.createElement());
    }
 
    /**
@@ -87,17 +89,17 @@ public class InvalidRequestResult extends FunctionResult {
     */
    public void addParamCombo(String type, List elements) {
 
-      Element paramCombo = new Element("param-combo");
-      paramCombo.addAttribute("type", type);
+      ElementBuilder paramCombo = new ElementBuilder("param-combo");
+      paramCombo.setAttribute("type", type);
 
       // Iterate ober all elements
       Iterator itElements = elements.iterator();
       while(itElements.hasNext()) {
-         Element param = new Element("param");
-         param.addAttribute("name", (String) itElements.next());
-         paramCombo.add(param);
+         ElementBuilder param = new ElementBuilder("param");
+         param.setAttribute("name", (String) itElements.next());
+         paramCombo.addChild(param.createElement());
       }
 
-      add(paramCombo);
+      add(paramCombo.createElement());
    }
 }

@@ -157,7 +157,7 @@ public final class ElementSerializer extends Object {
          _inUse = false;
       }
 
-      String xml = out.toString();
+      String xml = fsw.toString();
 
       // TODO: TRACE logging
 
@@ -180,7 +180,7 @@ public final class ElementSerializer extends Object {
     * @throws IOException
     *    if there is an I/O error.
     */
-   private void output(XMLOutputter out, Element element)
+   public void output(XMLOutputter out, Element element)
    throws NullPointerException, IOException {
 
       String namespaceURI = element.getNamespaceURI();

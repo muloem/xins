@@ -25,6 +25,8 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 import org.xins.logdoc.LogdocSerializable;
 
@@ -864,11 +866,11 @@ implements DefaultResultCodes {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
-         Element functionElem = new Element("function");
-         functionElem.addAttribute("name",    function.getName());
-         functionElem.addAttribute("version", function.getVersion());
-         functionElem.addAttribute("enabled", function.isEnabled() ? "true" : "false");
-         builder.add(functionElem);
+         ElementBuilder functionElem = new ElementBuilder("function");
+         functionElem.setAttribute("name",    function.getName());
+         functionElem.setAttribute("version", function.getVersion());
+         functionElem.setAttribute("enabled", function.isEnabled() ? "true" : "false");
+         builder.add(functionElem.createElement());
       }
 
       return builder;
@@ -902,18 +904,18 @@ implements DefaultResultCodes {
       }
 
       // Heap memory statistics
-      Element heap = new Element("heap");
+      ElementBuilder heap = new ElementBuilder("heap");
       long free  = rt.freeMemory();
       long total = rt.totalMemory();
-      heap.addAttribute("used",  String.valueOf(total - free));
-      heap.addAttribute("free",  String.valueOf(free));
-      heap.addAttribute("total", String.valueOf(total));
+      heap.setAttribute("used",  String.valueOf(total - free));
+      heap.setAttribute("free",  String.valueOf(free));
+      heap.setAttribute("total", String.valueOf(total));
       try {
-         heap.addAttribute("max", String.valueOf(rt.maxMemory()));
+         heap.setAttribute("max", String.valueOf(rt.maxMemory()));
       } catch (NoSuchMethodError error) {
          // NOTE: Runtime.maxMemory() is not available in Java 1.3
       }
-      builder.add(heap);
+      builder.add(heap.createElement());
 
       // Function-specific statistics
       int count = _functionList.size();
@@ -921,20 +923,20 @@ implements DefaultResultCodes {
          Function function = (Function) _functionList.get(i);
          FunctionStatistics stats = function.getStatistics();
 
-         Element functionElem = new Element("function");
-         functionElem.addAttribute("name", function.getName());
+         ElementBuilder functionElem = new ElementBuilder("function");
+         functionElem.setAttribute("name", function.getName());
 
          // Successful
          Element successful = stats.getSuccessfulElement();
-         functionElem.add(successful);
+         functionElem.addChild(successful);
 
          // Unsuccessful
          Element[] unsuccessful = stats.getUnsuccessfulElement(detailed);
          for(int j = 0; j < unsuccessful.length; j++) {
-            functionElem.add(unsuccessful[j]);
+            functionElem.addChild(unsuccessful[j]);
          }
 
-         builder.add(functionElem);
+         builder.add(functionElem.createElement());
       }
 
       return builder;
@@ -969,31 +971,31 @@ implements DefaultResultCodes {
 
       // Build settings
       Iterator names = _buildSettings.getNames();
-      Element build = new Element("build");
+      ElementBuilder build = new ElementBuilder("build");
       while (names.hasNext()) {
          String key   = (String) names.next();
          String value = _buildSettings.get(key);
 
-         Element property = new Element("property");
-         property.addAttribute("name", key);
+         ElementBuilder property = new ElementBuilder("property");
+         property.setAttribute("name", key);
          property.setText(value);
-         build.add(property);
+         build.addChild(property.createElement());
       }
-      builder.add(build);
+      builder.add(build.createElement());
 
       // Runtime settings
       names = _runtimeSettings.getNames();
-      Element runtime = new Element("runtime");
+      ElementBuilder runtime = new ElementBuilder("runtime");
       while (names.hasNext()) {
          String key   = (String) names.next();
          String value = _runtimeSettings.get(key);
 
-         Element property = new Element("property");
-         property.addAttribute("name", key);
+         ElementBuilder property = new ElementBuilder("property");
+         property.setAttribute("name", key);
          property.setText(value);
-         runtime.add(property);
+         runtime.addChild(property.createElement());
       }
-      builder.add(runtime);
+      builder.add(runtime.createElement());
 
       // System properties
       Properties sysProps;
@@ -1005,20 +1007,20 @@ implements DefaultResultCodes {
       }
 
       Enumeration e = sysProps.propertyNames();
-      Element system = new Element("system");
+      ElementBuilder system = new ElementBuilder("system");
       while (e.hasMoreElements()) {
          String key   = (String) e.nextElement();
          String value = sysProps.getProperty(key);
 
          if (  key != null &&   key.trim().length() > 0
           && value != null && value.trim().length() > 0) {
-            Element property = new Element("property");
-            property.addAttribute("name", key);
+            ElementBuilder property = new ElementBuilder("property");
+            property.setAttribute("name", key);
             property.setText(value);
-            system.add(property);
+            system.addChild(property.createElement());
          }
       }
-      builder.add(system);
+      builder.add(system.createElement());
 
       return builder;
    }

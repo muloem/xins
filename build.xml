@@ -167,11 +167,7 @@ ${sf.file}</fail>
 
 	<target name="java-logdoc" depends="-init" description="Compiles the XINS/Java logdoc code">
 		<mkdir dir="build/classes/logdoc" />
-		<mkdir dir="build/src/java-common" />
-		<copy todir="build/src/java-common">
-			<fileset dir="src/java-common" includes="org/xins/logdoc/**/*.java,org/xins/logdoc/**/package.html" />
-		</copy>
-		<javac srcdir="build/src/java-common"
+		<javac srcdir="src/java-common"
 		       includes="org/xins/logdoc/*.java"
 		       destdir="build/classes/logdoc"
 		       debug="${javac.debug}"
@@ -235,22 +231,33 @@ ${sf.file}</fail>
 
 	<target name="-build-framework">
 		<mkdir dir="build/src/java-${src.side}" />
-		<copy todir="build/src/java-${src.side}">
-			<fileset dir="src/java-${src.side}" includes="org/xins/${side}/**/*.java,org/xins/${side}/**/package.html" />
-		</copy>
+		<copy file="src/java-${src.side}/org/xins/${side}/Library.java" todir="build/src/java-${src.side}/org/xins/${side}/" />
 		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
 		<copy todir="build/src/java-${src.side}/org/xins/${side}">
 			<fileset dir="build/logdoc/${side}/java" includes="**/*.java" />
 		</copy>
 		<mkdir dir="build/classes/java-${side}" />
-		<javac srcdir="build/src/java-${src.side}"
+		<javac sourcepath=""
 		       destdir="build/classes/java-${side}"
 		       debug="${javac.debug}"
 		       deprecation="${javac.deprecation}"
 		       optimize="${javac.optimize}"
 		       source="${javac.targetvm}"
 		       target="${javac.targetvm}">
-			<classpath>
+			<src path="build/src/java-${src.side}" />
+			<include name="org/xins/${side}/Library.java" />
+		</javac>
+		<javac destdir="build/classes/java-${side}"
+		       debug="${javac.debug}"
+		       deprecation="${javac.deprecation}"
+		       optimize="${javac.optimize}"
+		       source="${javac.targetvm}"
+		       target="${javac.targetvm}">
+			<src path="src/java-${src.side}" />
+			<src path="build/src/java-${src.side}" />
+			<exclude name="org/xins/${side}/Library.java" />
+			<exclude name="org/xins/logdoc/**" />
+ 			<classpath>
 				<path refid="path.common" />
 				<pathelement location="build/logdoc.jar" />
 				<fileset dir="lib"             includes="*.jar" />
@@ -435,7 +442,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		
-		<junit printsummary="true" failureproperty="tests.failed">
+		<junit fork="true" printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
@@ -559,9 +566,9 @@ ${sf.file}</fail>
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
-			<packageset dir="build/src/java-common" />
-			<packageset dir="build/src/java-server-framework" />
-			<packageset dir="build/src/java-client-framework" />
+			<packageset dir="src/java-common" />
+			<packageset dir="src/java-server-framework" />
+			<packageset dir="src/java-client-framework" />
 			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
 			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />

@@ -10,7 +10,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+
 import org.xins.common.text.DateConverter;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Statistics of a function.
@@ -131,7 +134,7 @@ class FunctionStatistics {
    }
    
    /**
-    * Get the successful statistic as an {@link Element}.
+    * Get the successful statistic as an {@link org.xins.common.xml.Element}.
     *
     * @return
     *    the successful element, cannot be <code>null</code>
@@ -142,7 +145,7 @@ class FunctionStatistics {
 
    
    /**
-    * Get the unsuccessful statistics as an array of {@link Element}.
+    * Get the unsuccessful statistics as an array of {@link org.xins.common.xml.Element}.
     *
     * @param detailed
     *    If <code>true</code>, the unsuccessful results will be returned
@@ -165,7 +168,6 @@ class FunctionStatistics {
             String nextErrorCode = (String) itErrorCodeStats.next();
             Statistic nextStat = (Statistic) _errorCodeStatistics.get(nextErrorCode);
             result[i] = nextStat.getElement(false, nextErrorCode);
-            result[i].addAttribute("errorcode", nextErrorCode);
             i++;
          }
          return result;
@@ -265,6 +267,12 @@ class FunctionStatistics {
       /**
        * Get this statistic as an {@link Element}.
        *
+       * @param successful
+       *    true if the result is successful, false otherwise.
+       * @param errorCode
+       *    the errorCode of the unsuccessful result, if you want it also
+       *    specified in the returned element.
+       *
        * @return
        *    the statistic, cannot be <code>null</code>
        */
@@ -301,22 +309,25 @@ class FunctionStatistics {
             lastStart    = DateConverter.toDateString(TIME_ZONE, _lastStart);
             lastDuration = String.valueOf(_lastDuration);
          }
-         Element element = new Element(successful ? "successful" : "unsuccessful");
-         element.addAttribute("count",    String.valueOf(_calls));
-         element.addAttribute("average",  average);
-         Element minElem = new Element("min");
-         minElem.addAttribute("start",    minStart);
-         minElem.addAttribute("duration", min);
-         element.add(minElem);
-         Element maxElem = new Element("max");
-         maxElem.addAttribute("start",    maxStart);
-         maxElem.addAttribute("duration", max);
-         element.add(maxElem);
-         Element lastElem = new Element("last");
-         lastElem.addAttribute("start",    lastStart);
-         lastElem.addAttribute("duration", lastDuration);
-         element.add(lastElem);
-         return element;
+         ElementBuilder element = new ElementBuilder(successful ? "successful" : "unsuccessful");
+         element.setAttribute("count",    String.valueOf(_calls));
+         element.setAttribute("average",  average);
+         if (errorCode != null) {
+            element.setAttribute("errorcode", errorCode);
+         }
+         ElementBuilder minElem = new ElementBuilder("min");
+         minElem.setAttribute("start",    minStart);
+         minElem.setAttribute("duration", min);
+         element.addChild(minElem.createElement());
+         ElementBuilder maxElem = new ElementBuilder("max");
+         maxElem.setAttribute("start",    maxStart);
+         maxElem.setAttribute("duration", max);
+         element.addChild(maxElem.createElement());
+         ElementBuilder lastElem = new ElementBuilder("last");
+         lastElem.setAttribute("start",    lastStart);
+         lastElem.setAttribute("duration", lastDuration);
+         element.addChild(lastElem.createElement());
+         return element.createElement();
       }
       
       /**

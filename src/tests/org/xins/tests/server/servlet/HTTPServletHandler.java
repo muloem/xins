@@ -210,9 +210,9 @@ public class HTTPServletHandler {
          //System.err.println("*** query " + query);
          LocalHTTPServletResponse response = query(query);
          String result = response.getResult();
+         //System.err.println("*** result " + result);
          if (result == null) {
             result = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
-            //System.err.println("*** result " + result);
             return result;
          }
          String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";

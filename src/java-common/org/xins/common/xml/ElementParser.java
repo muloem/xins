@@ -29,8 +29,8 @@ import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 
 /**
- * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
- * object.
+ * XINS call result parser. XML is parsed to produce a 
+ * {@link org.xins.client.XINSCallResult} object.
  *
  * <p>The root element in the XML must be of type <code>result</code>. Inside
  * this element, <code>param</code> elements optionally define parameters and

@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementSerializer;
 
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -100,58 +102,12 @@ final class CallResultOutputter extends Object {
       // Write the data element
       Element dataElement = result.getDataElement();
       if (dataElement != null) {
-         output(xmlout, dataElement);
+         ElementSerializer serializer = new ElementSerializer();
+         serializer.output(xmlout, dataElement);
       }
 
       xmlout.endTag(); // result
    }
-
-   /**
-    * Generates XML for the specified element.
-    *
-    * @param xmlout
-    *    the {@link XMLOutputter} to use, cannot be <code>null</code>.
-    *
-    * @param element
-    *    the {@link Element} object to convert to XML, cannot be
-    *    <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>xmlout == null || element == null</code>.
-    *
-    * @throws IOException
-    *    if there is an I/O error.
-    */
-   private static final void output(XMLOutputter xmlout, Element element)
-   throws NullPointerException, IOException {
-
-      // Start the tag
-      xmlout.startTag(element.getType());
-
-      // Write the attributes
-      PropertyReader attributes = element.getAttributes();
-      Iterator names = attributes.getNames();
-      while (names.hasNext()) {
-         String name  = (String) names.next();
-         String value = attributes.get(name);
-         xmlout.attribute(name, value);
-      }
-
-      // Process all contained elements and PCDATA sections
-      List content = element.getChildren();
-      int count = content == null ? 0 : content.size();
-      for (int i = 0; i < count; i++) {
-         Object o = content.get(i);
-         output(xmlout, (Element) o);
-      }
-      if (element.getText() != null) {
-         xmlout.pcdata(element.getText());
-      }
-
-      // End the tag
-      xmlout.endTag();
-   }
-
 
    //-------------------------------------------------------------------------
    // Constructors

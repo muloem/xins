@@ -46,7 +46,7 @@ extends RuntimeException {
     * Constructs a new <code>UnsupportedProtocolException</code> for the
     * specified target descriptor.
     *
-    * @param descriptor
+    * @param target
     *    the {@link TargetDescriptor} that has an unsupported protocol, cannot
     *    be <code>null</code>.
     *

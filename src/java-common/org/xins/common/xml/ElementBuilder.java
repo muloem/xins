@@ -209,7 +209,7 @@ public class ElementBuilder extends Object {
     * @throws IllegalStateException
     *    if the <code>ElementBuilder</code> is in an incorrect state.
     */
-   void setText(String text) throws IllegalStateException {
+   public void setText(String text) throws IllegalStateException {
       if (_state == INITIAL) {
          final String METHODNAME = "setText(String)";
          String message = "_state=" + _state;
@@ -285,7 +285,6 @@ public class ElementBuilder extends Object {
          Log.log_1050(CLASSNAME, METHODNAME, message);
          throw new IllegalStateException("Unexpected state: " + message + ". Programming error suspected.");
       }
-      _state = INITIAL;
       return _element;
    }
 

@@ -25,12 +25,17 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     properties.
   - Fixed bug #1076638: The generated context ID was not conform to the
     architect group recommendation.
+  - Changed the deprecated org.xins.server.Element with 
+    org.xins.common.xml.Element.
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
 
 * Generation of server-side Java code:
   - An object is created for the data input parameter.
+
+* Build and release process:
+  - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:

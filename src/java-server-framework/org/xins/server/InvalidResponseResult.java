@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import org.xins.common.xml.ElementBuilder;
+
 /**
  * Result code that indicates that an output parameter is either missing or
  * invalid.
@@ -52,9 +54,9 @@ public class InvalidResponseResult extends FunctionResult {
     *    the missing parameter.
     */
    public void addMissingParameter(String parameter) {
-      Element missingParam = new Element("missing-param");
-      missingParam.addAttribute("param", parameter);
-      add(missingParam);
+      ElementBuilder missingParam = new ElementBuilder("missing-param");
+      missingParam.setAttribute("param", parameter);
+      add(missingParam.createElement());
    }
 
    /**
@@ -67,9 +69,9 @@ public class InvalidResponseResult extends FunctionResult {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      Element invalidValue = new Element("invalid-value-for-type");
-      invalidValue.addAttribute("param", parameter);
-      invalidValue.addAttribute("type", type);
-      add(invalidValue);
+      ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
+      invalidValue.setAttribute("param", parameter);
+      invalidValue.setAttribute("type", type);
+      add(invalidValue.createElement());
    }
 }

@@ -218,7 +218,7 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @deprecated
     *    Deprecated since XINS 1.1.0.
-    *    Use {@link #XINSCallRequest(String,PropertyReader} in combination
+    *    Use {@link #XINSCallRequest(String,PropertyReader)} in combination
     *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
     *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
@@ -258,7 +258,7 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @deprecated
     *    Deprecated since XINS 1.1.0.
-    *    Use {@link #XINSCallRequest(String,PropertyReader} in combination
+    *    Use {@link #XINSCallRequest(String,PropertyReader)} in combination
     *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
     *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */

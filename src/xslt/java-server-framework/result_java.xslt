@@ -317,7 +317,7 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
-      add((org.xins.server.Element)</xsl:text>
+      add((org.xins.common.xml.Element)</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>.getElement().clone());
    }
@@ -374,7 +374,7 @@ implements Result {
       /**
        * Element containing the values of this object.
        */
-      private final org.xins.server.Element _element = new org.xins.server.Element("</xsl:text>
+      private final org.xins.common.xml.ElementBuilder _elementBuilder = new org.xins.common.xml.ElementBuilder("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[");
 
@@ -390,8 +390,8 @@ implements Result {
        *    the element created by invoking the different set methods
        *    of this object, never <code>null</code>.
        */
-      final org.xins.server.Element getElement() {
-         return _element;
+      final org.xins.common.xml.Element getElement() {
+         return _elementBuilder.createElement();
       }
 
 ]]></xsl:text>
@@ -406,14 +406,14 @@ implements Result {
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
       final void pcdata(String data) {
-         _element.setText(data);
+         _elementBuilder.setText(data);
       }
 
 ]]></xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute">
-				<xsl:with-param name="methodImpl" select="'_element.addAttribute'" />
+				<xsl:with-param name="methodImpl" select="'_elementBuilder.setAttribute'" />
 			</xsl:apply-templates>
 			<xsl:apply-templates select="contains/contained" />
 			<xsl:text>
@@ -453,7 +453,7 @@ implements Result {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>) {
-      _element.add((org.xins.server.Element)</xsl:text>
+      _elementBuilder.addChild((org.xins.common.xml.Element)</xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>.getElement().clone());
    }
