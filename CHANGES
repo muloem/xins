@@ -3,7 +3,11 @@ CHANGES INTRODUCED IN XINS 0.122:
 
 * XINS/Java Server Framework:
   - Improved Javadoc documentation of a few classes, like APIServlet and API.
-  - Improved error-checking and logging in APIServlet class.
+  - Improved error-checking and logging.
+  - Removed Singleton interface. Warning: This may break existing code.
+  - Changed the interface of LifespanManager in an incompatible way. Warning:
+    This may break existing code.
+  - Supporting re-initialization of a LifespanManager.
 
 * XINS/Java Client Framework:
   - Improved Javadoc for MultipleIPAddressesException class.
