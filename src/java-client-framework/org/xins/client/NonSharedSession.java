@@ -51,6 +51,7 @@ extends Object {
       MandatoryArgumentChecker.check("target",    target,
                                      "sessionID", sessionID);
 
+      // Store information
       _target    = target;
       _sessionID = sessionID;
    }
