@@ -18,6 +18,12 @@ extends Exception {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The one and only <code>UnknownSessionIDException</code> instance.
+    */
+   static final UnknownSessionIDException SINGLETON = new UnknownSessionIDException();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -29,7 +35,7 @@ extends Exception {
    /**
     * Constructs a new <code>UnknownSessionIDException</code>.
     */
-   UnknownSessionIDException() {
+   private UnknownSessionIDException() {
       // empty
    }
 

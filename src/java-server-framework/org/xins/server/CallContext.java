@@ -255,11 +255,11 @@ implements Responder, Log {
       if (_function != null && _function.isSessionBased()) {
          String sessionID = request.getParameter("_session");
          if (sessionID == null || sessionID.length() == 0) {
-            throw new MissingSessionIDException();
+            throw MissingSessionIDException.SINGLETON;
          } else {
             _session = _api.getSession(sessionID);
             if (_session == null) {
-               throw new UnknownSessionIDException();
+               throw UnknownSessionIDException.SINGLETON;
             }
          }
       }

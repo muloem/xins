@@ -18,6 +18,12 @@ extends Exception {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The one and only <code>MissingSessionIDException</code> instance.
+    */
+   static final MissingSessionIDException SINGLETON = new MissingSessionIDException();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -29,7 +35,7 @@ extends Exception {
    /**
     * Constructs a new <code>MissingSessionIDException</code>.
     */
-   MissingSessionIDException() {
+   private MissingSessionIDException() {
       // empty
    }
 
