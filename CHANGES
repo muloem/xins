@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.67:
+
+* XINS/Java Server Framework:
+  - Including Java version in output of _GetVersion.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.66:
 
 * XINS/Java Server Framework:
