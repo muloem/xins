@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.96:
+
+* XINS/Java Common Library:
+  - ExpiryStrategy now allows explicit stopping of timer thread.
+
+* XINS/Java Server Framework:
+  - API.destroy() now explicitly stops ExpiryStrategy timer thread.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.95:
 
 * XINS/Java Server Framework:
