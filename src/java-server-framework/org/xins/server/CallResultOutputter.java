@@ -9,16 +9,21 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+
+import org.xins.common.io.FastStringWriter;
+
 import org.xins.common.text.TextUtils;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
 
-import org.znerd.xmlenc.XMLOutputter;
+import org.znerd.xmlenc.XMLEncoder;
 
 /**
  * Transformer that is able to externalize a <code>FunctionResult</code> object to
@@ -75,30 +80,39 @@ final class CallResultOutputter extends Object {
                                      "result",   result);
 
       // Store the result in a StringWriter before sending it.
-      StringWriter outputBuffer = new StringWriter();
+      FastStringWriter buffer = new FastStringWriter();
 
-      // Create an XMLOutputter
-      XMLOutputter xmlout = new XMLOutputter(outputBuffer, encoding);
+      // Create an XML encoder
+      XMLEncoder xmlout = XMLEncoder.getEncoder(encoding);
 
       // Output the declaration
       // XXX: Make it configurable whether the declaration is output or not?
-      xmlout.declaration();
+      xmlout.declaration(buffer);
 
-      // Write the result start tag
-      xmlout.startTag("result");
-
-      // Write the error code
+      // Determine the error code
       String code = result.getErrorCode();
-      if (oldStyle) {
-         xmlout.attribute("success", code == null ? "true" : "false");
-         if (code != null) {
-            xmlout.attribute("code", code);
-         }
-      }
 
-      // TODO: Only print the 'errorcode' attribute if not oldStyle?
-      if (code != null) {
-         xmlout.attribute("errorcode", code);
+      // Write <result/> tag for old-style
+      if (oldStyle) {
+         if (code == null) {
+            buffer.write("<result success=\"true\">");
+         } else {
+            buffer.write("<result success=\"false\" code=\"");
+            buffer.write(code);
+            buffer.write("\" errorcode=\"");
+            buffer.write(code);
+            buffer.write("\">");
+         }
+
+      // Write <result/> tag for new-style
+      } else {
+         if (code == null) {
+            buffer.write("<result>");
+         } else {
+            buffer.write("<result errorcode=\"");
+            buffer.write(code);
+            buffer.write("\">");
+         }
       }
 
       // Write the output parameters
@@ -111,10 +125,11 @@ final class CallResultOutputter extends Object {
                String value = params.get(name);
 
                if (! TextUtils.isEmpty(value)) {
-                  xmlout.startTag("param");
-                  xmlout.attribute("name", name);
-                  xmlout.pcdata(value);
-                  xmlout.endTag(); // param
+                  buffer.write("<param");
+                  xmlout.attribute(buffer, "name", name, '"', true);
+                  buffer.write('>');
+                  xmlout.text(buffer, value, true);
+                  buffer.write("</param>");
                }
             }
          }
@@ -124,13 +139,13 @@ final class CallResultOutputter extends Object {
       Element dataElement = result.getDataElement();
       if (dataElement != null) {
          ElementSerializer serializer = new ElementSerializer();
-         serializer.output(xmlout, dataElement);
+         serializer.output(buffer, xmlout, dataElement);
       }
 
-      xmlout.endTag(); // result
+      buffer.write("</result>");
 
       // Write the result to the servlet response
-      out.write(outputBuffer.toString());
+      out.write(buffer.toString());
    }
 
 
