@@ -88,8 +88,8 @@ public class LongUtils extends Object {
       // Check preconditions
       if (s == null) {
          throw new IllegalArgumentException("s == null");
-      } else if (s.length() != 16) {
-         throw new IllegalArgumentException("s.length() != 16");
+      } else if (s.length() < index + 16) {
+         throw new IllegalArgumentException("s.length() (" + s.length() + ") < index (" + index + ") + 16 (" + (index + 16) + ')');
       }
 
       long n = 0L;
