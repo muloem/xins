@@ -12,6 +12,7 @@
 
 	<xsl:template match="project">
 		<project default="all" basedir="..">
+
 			<target name="-prepare">
 				<mkdir dir="specdocs" />
 			</target>
@@ -20,7 +21,9 @@
 				<style
 				in="xins-project.xml"
 				out="specdocs/index.html"
-				style="${{xins_home}}/src/xslt/xins-project_to_specdocs-index.xslt" />
+				style="${{xins_home}}/src/xslt/xins-project_to_specdocs-index.xslt">
+					<param name="projectdir" expression="${{projectdir}}" />
+				</style>
 			</target>
 
 			<target name="all" depends="specdocs" />
