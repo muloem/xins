@@ -10,3 +10,6 @@ List of things to be done for XINS release 1.0:
 - Set @since tags on all classes to 1.0 (should we really do this?)
 - Extend unit tests
 - Make sure the automated release process works for the 1.x.y releases.
+- Client Framework: Rethink and re-implement the failover. Distinguish between
+  connection and socket time-outs and do not fail-over on the latter, except
+  if the function is explicitly as supporting fail-over.
