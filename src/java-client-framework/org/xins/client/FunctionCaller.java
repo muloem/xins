@@ -15,13 +15,14 @@ import java.util.Map;
 public interface FunctionCaller {
 
    /**
-    * Calls the specified API function.
+    * Calls the specified session-less API function with the specified
+    * parameters.
     *
     * @param functionName
     *    the name of the function to be called, not <code>null</code>.
     *
     * @param parameters
-    *    the parameters which are passed to that function, or
+    *    the parameters to be passed to that function, or
     *    <code>null</code>; keys must be {@link String Strings}, values can be
     *    of any class.
     *
