@@ -464,8 +464,25 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    <code>false</code> if it should not.
     */
    protected boolean shouldFailOver(Object subject, Throwable exception) {
-      return (exception instanceof ConnectionException) ||
-             (exception instanceof UnexpectedHTTPStatusCodeException);
+
+      // Connection refusal or connection time-outs
+      if (exception instanceof ConnectionException) {
+         return true;
+
+      // A non-2xx HTTP status code indicates the request was not handled
+      } else if (exception instanceof UnexpectedHTTPStatusCodeException) {
+         return true;
+
+      // Some XINS error codes indicate the request was not accepted
+      } else if (exception instanceof UnsuccessfulCallException) {
+         String code = ((UnsuccessfulCallException) exception).getErrorCode();
+         if ("_InvalidRequest".equals(code) ||
+             "_DisabledFunction".equals(code)) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
 
