@@ -1125,8 +1125,10 @@ implements DefaultResultCodes {
     */
    private final void doGetSettings(CallContext context)
    throws IOException {
-      context.startTag("init-settings");
+
+      // Initialization settings
       Enumeration names = _initSettings.propertyNames();
+      context.startTag("init-settings");
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = _initSettings.getProperty(key);
@@ -1136,6 +1138,22 @@ implements DefaultResultCodes {
          context.pcdata(value);
          context.endTag();
       }
+      context.endTag();
+
+      // System properties
+      Properties properties = System.getProperties();
+      names = properties.propertyNames();
+      context.startTag("system-properties");
+      while (names.hasMoreElements()) {
+         String key   = (String) names.nextElement();
+         String value = _initSettings.getProperty(key);
+
+         context.startTag("property");
+         context.attribute("name", key);
+         context.pcdata(value);
+         context.endTag();
+      }
+      context.endTag();
       context.endTag();
    }
 }
