@@ -43,7 +43,10 @@ public interface DefaultResultCodes {</xsl:text>
 					<xsl:value-of select="@name" />
 				</xsl:with-param>
 			</xsl:call-template>
-			<xsl:text> = new ResultCode("</xsl:text>
+			<xsl:text> = new ResultCode(</xsl:text>
+			<!-- TODO: Make sure success is either 'true' or 'false' -->
+			<xsl:value-of select="@success" />
+			<xsl:text>, "</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>", "</xsl:text>
 			<xsl:value-of select="@value" />

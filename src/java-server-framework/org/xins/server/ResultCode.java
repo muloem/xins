@@ -33,6 +33,9 @@ extends Object {
     * Constructs a new generic <code>ResultCode</code>. This constructor can
     * only be called by classes in the same package.
     *
+    * @param success
+    *    the success indication.
+    *
     * @param name
     *    the symbolic name, can be <code>null</code>.
     *
@@ -42,7 +45,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
     */
-   ResultCode(String name, String value)
+   ResultCode(boolean success, String name, String value)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -50,6 +53,7 @@ extends Object {
 
       _log     = Logger.getLogger(getClass().getName());
       _api     = null;
+      _success = success;
       _name    = name;
       _value   = value;
    }
@@ -60,6 +64,9 @@ extends Object {
     * @param api
     *    the API to which this result code belongs, not <code>null</code>.
     *
+    * @param success
+    *    the success indication.
+    *
     * @param name
     *    the symbolic name, can be <code>null</code>.
     *
@@ -69,7 +76,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>api == null || value == null</code>.
     */
-   public ResultCode(API api, String name, String value)
+   public ResultCode(API api, boolean success, String name, String value)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -77,6 +84,7 @@ extends Object {
 
       _log     = Logger.getLogger(getClass().getName());
       _api     = api;
+      _success = success;
       _name    = name;
       _value   = value;
 
@@ -102,6 +110,11 @@ extends Object {
    private final API _api;
 
    /**
+    * The success indication.
+    */
+   private final boolean _success;
+
+   /**
     * The symbolic name of this result code. Can be <code>null</code>.
     */
    private final String _name;
@@ -115,6 +128,17 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the success indication.
+    *
+    * @return
+    *    <code>true</code> if this result code indicates a successful call,
+    *    <code>false</code> otherwise.
+    */
+   public final boolean getSuccess() {
+      return _success;
+   }
 
    /**
     * Returns the symbolic name of this result code.
