@@ -21,13 +21,15 @@ import org.jdom.Namespace;
 
 import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.TimeOutException;
+
 import org.xins.common.collections.CollectionUtils;
+
 import org.xins.common.service.CallFailedException;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.service.TimeOutException;
 import org.xins.common.text.ParseException;
 
 /**
@@ -101,8 +103,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Construct PostMethod object
       PostMethod method = new PostMethod(baseURL);
 
-      // TODO: Change to _function at some point
-
+      // TODO: Allow this to be configured to either "function" or "_function"
+      //       for now. Completely change to _function at some point.
       method.addParameter("function", functionName);
 
       // If a diagnostic context is available, pass it on
@@ -230,12 +232,13 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    if <code>target == null || functionName == null</code>.
     *
     * @throws CallException
-    *    if the call failed.
+    *    if the call to the specified target failed.
     */
    public Result call(TargetDescriptor target,
                       String           functionName,
                       Map              parameters)
-   throws IllegalArgumentException, CallException {
+   throws IllegalArgumentException,
+          CallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("target",       target,
@@ -250,6 +253,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       int    connectionTimeOut = target.getConnectionTimeOut();
       int    socketTimeOut     = target.getSocketTimeOut();
 
+      Log.log_2011(url, functionName, totalTimeOut, connectionTimeOut, socketTimeOut);
+
       // Configure connection time-out and socket time-out
       client.setConnectionTimeout(connectionTimeOut);
       client.setTimeout          (socketTimeOut);
@@ -262,14 +267,12 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       boolean succeeded = false;
       try {
-         Log.log_2011(url, functionName, method.getQueryString(), totalTimeOut, connectionTimeOut, socketTimeOut);
-
          controlTimeOut(executor, target);
          succeeded = true;
 
       } catch (TimeOutException exception) {
-         // TODO: Log total time-out
-         System.exit(1);
+         Log.log_2015(url, functionName, totalTimeOut);
+         throw new TotalTimeOutException();
 
       } finally {
          if (succeeded == false) {
@@ -298,23 +301,21 @@ public final class XINSServiceCaller extends ServiceCaller {
       Throwable exception =  executor._exception;
       if (exception != null) {
 
-         // TODO: Detect connection refusal, socket time-out and connection
-         //       time-out
-
          // Connection refusal
          if (exception instanceof ConnectException) {
-            // TODO: Log connection refusal
-            // TODO: Throw some kind of CallException
+            Log.log_2012(url, functionName);
+            throw new ConnectionRefusedException();
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            // TODO: Log connection time-out
-            // TODO: Throw some kind of CallException
+            Log.log_2013(url, functionName, connectionTimeOut);
+            throw new ConnectionTimeOutException();
 
          // TODO: Socket time-out
          /* } else if .... {
-            // TODO: Log connection time-out
+            Log.log_2014(url, functionName, socketTimeOut);
             // TODO: Throw some kind of CallException
+            throw new SocketTimeOutException();
          } */
 
          } else if (exception instanceof IOException) {
@@ -400,7 +401,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       try {
          CallResult callResult = doCall(request);
          return (Result) callResult.getResult();
+
       } catch (CallFailedException cfe) {
+
+         // TODO: Improve this code
          List exceptions = cfe.getExceptions();
          Throwable ex = (Throwable) exceptions.get(0);
          if (ex instanceof CallException) {
@@ -643,7 +647,7 @@ public final class XINSServiceCaller extends ServiceCaller {
        * Constructs a new <code>CallExecutor</code> for the specified call to
        * a XINS API.
        *
-       * @param httpClient
+       * @param contextID
        *    the diagnostic context identifier, can be <code>null</code>.
        *
        * @param httpClient
