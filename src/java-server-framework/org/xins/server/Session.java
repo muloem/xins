@@ -117,7 +117,7 @@ extends Object {
       try {
          return getSessionIDType().toString(_id);
       } catch (TypeValueException exception) {
-         Log.log_5018(exception.getClass().getName(), exception.getMessage());
+         Log.log_5018(exception.getMessage());
          throw new Error("Failed to convert session identifier to character string.");
       }
    }
