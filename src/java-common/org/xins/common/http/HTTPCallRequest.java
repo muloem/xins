@@ -71,8 +71,7 @@ public final class HTTPCallRequest extends CallRequest {
     * @since XINS 1.1.0
     */
    public HTTPCallRequest(PropertyReader         parameters,
-                          HTTPStatusCodeVerifier statusCodeVerifier)
-   throws IllegalArgumentException {
+                          HTTPStatusCodeVerifier statusCodeVerifier) {
 
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
@@ -81,7 +80,9 @@ public final class HTTPCallRequest extends CallRequest {
       Log.log_1000(CLASSNAME, "#" + _instanceNumber);
 
       // Store information
-      _parameters         = parameters;
+      _parameters         = (parameters != null)
+                          ? parameters
+                          : PropertyReaderUtils.EMPTY_PROPERTY_READER;
       _statusCodeVerifier = statusCodeVerifier;
 
       // TRACE: Leave constructor
@@ -229,7 +230,8 @@ public final class HTTPCallRequest extends CallRequest {
    private final PropertyReader _parameters;
 
    /**
-    * The HTTP status code verifier, or <code>null</code> if all HTTP status codes are allowed.
+    * The HTTP status code verifier, or <code>null</code> if all HTTP status
+    * codes are allowed.
     */
    private final HTTPStatusCodeVerifier _statusCodeVerifier;
 
@@ -323,11 +325,12 @@ public final class HTTPCallRequest extends CallRequest {
    /**
     * Returns the parameters associated with this call request.
     *
+    * <p>Since XINS 1.1.0, this method will never return <code>null</code>.
+    *
     * @return
-    *    the parameters, can be <code>null</code>.
+    *    the parameters, never <code>null</code>.
     */
    public PropertyReader getParameters() {
-      // TODO: Never return null
       return _parameters;
    }
 
