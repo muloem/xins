@@ -413,6 +413,49 @@ extends AbstractCompositeFunctionCaller {
                                 Map    parameters)
    throws IOException, InvalidCallResultException;
 
+   /**
+    * Attempts to call the specified <code>FunctionCaller</code>. If the call
+    * succeeds, then the {@link CallResult} will be returned. If it fails,
+    * then the {@link Throwable} exception will be returned.
+    *
+    * @param caller
+    *    the {@link FunctionCaller} to call, not <code>null</code>.
+    *
+    * @param sessionID
+    *    the session identifier, or <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function to call, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed to the function, or <code>null</code>;
+    *    keys must be {@link String Strings}, values can be of any class.
+    *
+    * @return
+    *    a {@link Throwable} if
+    *    <code>caller.</code>{@link FunctionCaller#call(String,String,Map)}
+    *    throws an exception, otherwise the return value of that call, but
+    *    never <code>null</code>.
+    *
+    * @throws InternalError
+    *    if <code>caller.</code>{@link FunctionCaller#call(String,String,Map)}
+    *    returned <code>null</code>.
+    */
+   protected final Object tryCall(FunctionCaller caller, String sessionID, String functionName, Map parameters)
+   throws InternalError {
+      CallResult result;
+      try {
+         result = caller.call(sessionID, functionName, parameters);
+      } catch (Throwable exception) {
+         return exception;
+      }
+
+      if (result == null) {
+         throw new InternalError(caller.getClass().getName() + ".call(String,String,Map) returned null.");
+      }
+      return result;
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
