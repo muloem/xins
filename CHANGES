@@ -11,7 +11,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - The Base64 class has been deprecated and may be removed in coming
     releases.
   - Improved the accuracy and stability of the ExpiryFolder and ExpiryStrategy
-    classes. The tests have been extended a lot.
+    classes. The tests have been extended a lot. They now also test the
+    addListener and removeListener methods and the listener callback. Improved
+    the logging in the ExpiryStrategy; added log messages 1404-1407.
 
 * XINS/Java Server Framework:
   - Added custom calling convention.
@@ -26,7 +28,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.2 to 3.0-beta1.
-  - Added Apache Jakarta Commons Codec 1.3.
+  - Added Apache Jakarta Commons Codec 1.3 (because it is a dependency for
+    HttpClient 3.0-beta1).
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
