@@ -28,8 +28,6 @@
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../types.xslt" />
 
-	<xsl:variable name="functionName" select="//function/@name" />
-
 	<xsl:output
 	method="xml"
 	indent="no"
@@ -39,6 +37,8 @@
 	omit-xml-declaration="yes" />
 
 	<xsl:template match="function">
+
+		<xsl:variable name="functionName" select="@name" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
@@ -79,7 +79,9 @@
 					<xsl:text> environment.</xsl:text>
 				</p>
 
-				<xsl:call-template name="input_section" />
+				<xsl:call-template name="input_section">
+					<xsl:with-param name="functionName" select="$functionName" />
+				</xsl:call-template>
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
@@ -112,6 +114,8 @@
 	</xsl:template>
 
 	<xsl:template name="input_section">
+		<xsl:param name="functionName" />
+		
 		<h2>Test form</h2>
 		<form method="GET">
 			<xsl:attribute name="action">

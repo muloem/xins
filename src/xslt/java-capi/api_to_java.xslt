@@ -22,11 +22,6 @@
 	<xsl:param name="api_file"     />
 	<xsl:param name="xins_version" />
 
-	<!-- Determine the location of the online specification docs -->
-	<xsl:variable name="specdocsURL">
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
-	</xsl:variable>
-
 	<!-- Output is text/plain -->
 	<xsl:output method="text" />
 
@@ -36,12 +31,17 @@
 	<xsl:include href="../rcs.xslt"        />
 	<xsl:include href="../types.xslt"      />
 
+	<!-- Determine the location of the online specification docs -->
+	<xsl:variable name="specdocsURL">
+		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+	</xsl:variable>
 
 	<!-- ***************************************************************** -->
 	<!-- Match the root element: api                                       -->
 	<!-- ***************************************************************** -->
 
 	<xsl:template match="api">
+
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />

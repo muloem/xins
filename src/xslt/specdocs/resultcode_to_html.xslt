@@ -37,9 +37,9 @@
 	<xsl:include href="../types.xslt"       />
 	<xsl:include href="../urlencode.xslt"   />
 
-	<xsl:variable name="resultcode_name" select="//resultcode/@name" />
-
 	<xsl:template match="resultcode">
+
+		<xsl:variable name="resultcode_name" select="@name" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
@@ -67,6 +67,7 @@
 				</h1>
 
 				<!-- Broken freezes -->
+				<xsl:variable name="broken_file" select="concat($resultcode_name,'.rcd')" />
 				<xsl:call-template name="broken_freeze">
 					<xsl:with-param name="project_home" select="$project_home" />
 					<xsl:with-param name="project_file" select="$project_file" />
@@ -74,7 +75,7 @@
 					<xsl:with-param name="api" select="$api" />
 					<xsl:with-param name="api_file" select="$api_file" />
 					<xsl:with-param name="frozen_version" select="document($api_file)/api/resultcode[@name=$resultcode_name]/@freeze" />
-					<xsl:with-param name="broken_file" select="concat($resultcode_name, '.rcd')" />
+					<xsl:with-param name="broken_file" select="$broken_file" />
 				</xsl:call-template>
 
 				<!-- Description -->

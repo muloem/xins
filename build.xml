@@ -353,7 +353,7 @@
 
 	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
 		<!-- Compiles the example used for the tests -->
-		<!--delete dir="src/tests/build" /-->
+		<delete dir="src/tests/build" />
 		<ant antfile="${basedir}/src/ant/make-build.xml" dir="src/tests">
 			<property name="xins_home" value="${basedir}"/>
 			<property name="user.dir" value="${basedir}/src/tests"/>

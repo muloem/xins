@@ -36,9 +36,9 @@
 	<xsl:include href="../types.xslt"      />
 	<xsl:include href="../urlencode.xslt"  />
 
-	<xsl:variable name="type_name"    select="//type/@name" />
-
 	<xsl:template match="type">
+
+		<xsl:variable name="type_name"    select="@name" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>

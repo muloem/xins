@@ -28,14 +28,16 @@
 	<xsl:include href="../types.xslt"  />
 	<xsl:include href="result_java.xslt" />
 
-	<xsl:variable name="resultcode" select="//resultcode/@name" />
-	<xsl:variable name="className" select="concat($resultcode, 'Result')" />
-
 	<xsl:template match="resultcode">
+
+		<xsl:variable name="resultcode" select="@name" />
+		<xsl:variable name="className" select="concat($resultcode, 'Result')" />
+
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="document($api_file)/api/function">
 				<xsl:call-template name="search-matching-resultcode">
 					<xsl:with-param name="functionName" select="@name" />
+					<xsl:with-param name="resultcode" select="$resultcode" />
 				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
@@ -89,7 +91,9 @@ final class </xsl:text>
    // Constructors
    //-------------------------------------------------------------------------
 </xsl:text>
-		<xsl:call-template name="constructor" />
+		<xsl:call-template name="constructor">
+			<xsl:with-param name="className" select="$className" />
+		</xsl:call-template>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
@@ -107,6 +111,7 @@ final class </xsl:text>
 	</xsl:template>
 
 	<xsl:template name="constructor">
+		<xsl:param name="className" />
 		<xsl:text><![CDATA[
    /**
     * Constructs a new <code>]]></xsl:text>
@@ -132,6 +137,7 @@ final class </xsl:text>
 	<xsl:template name="search-matching-resultcode">
 		<!-- Define parameters -->
 		<xsl:param name="functionName" />
+		<xsl:param name="resultcode" />
 
 		<!-- Determine file that defines type -->
 		<xsl:variable name="functionFile"    select="concat($specsdir, '/', $functionName, '.fnc')" />

@@ -27,49 +27,50 @@
 	<xsl:include href="../java.xslt"          />
 	<xsl:include href="../types.xslt"         />
 
-	<xsl:variable name="type" select="//type/@name" />
-	<xsl:variable name="classname">
-		<xsl:call-template name="hungarianUpper">
-			<xsl:with-param name="text">
-				<xsl:value-of select="$type" />
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="kind">
-		<xsl:choose>
-			<xsl:when test="type/enum">enum</xsl:when>
-			<xsl:when test="type/pattern">pattern</xsl:when>
-			<xsl:when test="type/properties">properties</xsl:when>
-			<xsl:when test="type/int8">int8</xsl:when>
-			<xsl:when test="type/int16">int16</xsl:when>
-			<xsl:when test="type/int32">int32</xsl:when>
-			<xsl:when test="type/int64">int64</xsl:when>
-			<xsl:when test="type/list">list</xsl:when>
-			<xsl:when test="type/set">set</xsl:when>
-			<xsl:otherwise>
-				<xsl:message terminate="yes">
-					<xsl:text>Unable to determine kind of type. Seems to be neither enum nor pattern type.</xsl:text>
-				</xsl:message>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	<xsl:variable name="superclass">
-		<xsl:choose>
-			<xsl:when test="$kind = 'enum'">org.xins.common.types.EnumType</xsl:when>
-			<xsl:when test="$kind = 'pattern'">org.xins.common.types.PatternType</xsl:when>
-			<xsl:when test="$kind = 'properties'">org.xins.common.types.standard.Properties</xsl:when>
-			<xsl:when test="$kind = 'int8'">org.xins.common.types.standard.Int8</xsl:when>
-			<xsl:when test="$kind = 'int16'">org.xins.common.types.standard.Int16</xsl:when>
-			<xsl:when test="$kind = 'int32'">org.xins.common.types.standard.Int32</xsl:when>
-			<xsl:when test="$kind = 'int64'">org.xins.common.types.standard.Int64</xsl:when>
-			<xsl:when test="$kind = 'list'">org.xins.common.types.List</xsl:when>
-			<xsl:when test="$kind = 'set'">org.xins.common.types.List</xsl:when>
-		</xsl:choose>
-	</xsl:variable>
-
 	<xsl:output method="text" />
 
 	<xsl:template match="type">
+
+		<xsl:variable name="type" select="@name" />
+		<xsl:variable name="classname">
+			<xsl:call-template name="hungarianUpper">
+				<xsl:with-param name="text">
+					<xsl:value-of select="$type" />
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="kind">
+			<xsl:choose>
+				<xsl:when test="enum">enum</xsl:when>
+				<xsl:when test="pattern">pattern</xsl:when>
+				<xsl:when test="properties">properties</xsl:when>
+				<xsl:when test="int8">int8</xsl:when>
+				<xsl:when test="int16">int16</xsl:when>
+				<xsl:when test="int32">int32</xsl:when>
+				<xsl:when test="int64">int64</xsl:when>
+				<xsl:when test="list">list</xsl:when>
+				<xsl:when test="set">set</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Unable to determine kind of type.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="superclass">
+			<xsl:choose>
+				<xsl:when test="$kind = 'enum'">org.xins.common.types.EnumType</xsl:when>
+				<xsl:when test="$kind = 'pattern'">org.xins.common.types.PatternType</xsl:when>
+				<xsl:when test="$kind = 'properties'">org.xins.common.types.standard.Properties</xsl:when>
+				<xsl:when test="$kind = 'int8'">org.xins.common.types.standard.Int8</xsl:when>
+				<xsl:when test="$kind = 'int16'">org.xins.common.types.standard.Int16</xsl:when>
+				<xsl:when test="$kind = 'int32'">org.xins.common.types.standard.Int32</xsl:when>
+				<xsl:when test="$kind = 'int64'">org.xins.common.types.standard.Int64</xsl:when>
+				<xsl:when test="$kind = 'list'">org.xins.common.types.List</xsl:when>
+				<xsl:when test="$kind = 'set'">org.xins.common.types.List</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text>;

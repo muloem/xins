@@ -22,9 +22,6 @@
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
-	<!-- Determine name of API -->
-	<xsl:variable name="api" select="//api/@name" />
-
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />
 	<xsl:include href="../hungarian.xslt" />
@@ -33,7 +30,11 @@
 
 	<xsl:output method="text" />
 
+	<!-- Determine name of API -->
+	<xsl:variable name="api" select="document($api_file)/api/@name" />
+
 	<xsl:template match="api">
+
 		<xsl:apply-templates select="impl-java" />
 		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
 			<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>

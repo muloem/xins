@@ -26,18 +26,18 @@
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
 
-	<xsl:variable name="version">
-		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision">
-				<xsl:value-of select="//function/@rcsversion" />
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:variable>
-
-	<xsl:variable name="functionName" select="//function/@name" />
-	<xsl:variable name="className" select="concat($functionName, 'Result')" />
-
 	<xsl:template match="function">
+		<xsl:variable name="version">
+			<xsl:call-template name="revision2string">
+				<xsl:with-param name="revision">
+					<xsl:value-of select="//function/@rcsversion" />
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:variable name="functionName" select="@name" />
+		<xsl:variable name="className" select="concat($functionName, 'Result')" />
+
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
@@ -63,7 +63,9 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------</xsl:text>
-		<xsl:call-template name="constructor" />
+		<xsl:call-template name="constructor">
+			<xsl:with-param name="className" select="$className" />
+		</xsl:call-template>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
@@ -105,6 +107,8 @@ public final class ]]></xsl:text>
 	</xsl:template>
 
 	<xsl:template name="constructor">
+		<xsl:param name="className" />
+		
 		<xsl:text><![CDATA[
    /**
     * Constructs a new <code>]]></xsl:text>
@@ -123,7 +127,7 @@ public final class ]]></xsl:text>
     * @throws org.xins.client.UnacceptableResultXINSCallException
     *    if the specified call result is considered unacceptable as a result
     *    from the <em>]]></xsl:text>
-		<xsl:value-of select="$functionName" />
+		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
     */
    ]]></xsl:text>

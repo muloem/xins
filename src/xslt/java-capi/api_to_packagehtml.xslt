@@ -21,11 +21,6 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<!-- Determine the location of the online specification docs -->
-	<xsl:variable name="specdocsURL">
-		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
-	</xsl:variable>
-
 	<!-- Output is text/plain -->
 	<xsl:output method="html" />
 
@@ -34,12 +29,17 @@
 	<xsl:include href="../rcs.xslt"        />
 	<xsl:include href="../types.xslt"      />
 
+	<!-- Determine the location of the online specification docs -->
+	<xsl:variable name="specdocsURL">
+		<xsl:value-of select="document($project_file)/project/specdocs/@href" />
+	</xsl:variable>
 
 	<!-- ***************************************************************** -->
 	<!-- Match the root element: api                                       -->
 	<!-- ***************************************************************** -->
 
 	<xsl:template match="api">
+
 		<html>
 			<body>
 				<xsl:text>Client-side calling interface (CAPI) for the </xsl:text>

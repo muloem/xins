@@ -1,6 +1,22 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 1:
 
+* Generated CAPI classes:
+  - Fixed bug #1061692: A NullPointerException was thrown when using 
+    Java 1.4.0 or Java 1.4.1.
+
+* Generation of specification documentation:
+  - Fixed bug #1061692: A NullPointerException was thrown when using 
+    Java 1.4.0 or Java 1.4.1.
+
+* Generation of server-side Java code:
+  - Fixed bug #1061692: A NullPointerException was thrown when using 
+    Java 1.4.0 or Java 1.4.1.
+
+* Generation of types Java code:
+  - Fixed bug #1061692: A NullPointerException was thrown when using 
+    Java 1.4.0 or Java 1.4.1.
+
 * Libraries:
   - Updated Apache Jakarta Commons HttpClient from 2.0.1 to 2.0.2.
 

@@ -30,10 +30,6 @@
 	<xsl:include href="../types.xslt"       />
 	<xsl:include href="../urlencode.xslt"   />
 
-	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'"                       />
-	<xsl:variable name="function_name"    select="//function/@name"                                          />
-	<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
-
 	<xsl:output
 	method="html"
 	indent="yes"
@@ -42,12 +38,17 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:preserve-space elements="function/examples" />
+	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'" />
 
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
+	<xsl:preserve-space elements="function/examples" />
+
 	<xsl:template match="function">
+
+		<xsl:variable name="function_name"    select="//function/@name"                               />
+		<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
 
 		<xsl:if test="not(@name)">
 			<xsl:message terminate="yes">
@@ -107,8 +108,12 @@
 
 				<xsl:call-template name="input_section" />
 				<xsl:call-template name="output_section" />
-				<xsl:call-template name="testforms_section" />
-				<xsl:call-template name="examples_section" />
+				<xsl:call-template name="testforms_section">
+					<xsl:with-param name="function_name" select="$function_name" />
+				</xsl:call-template>
+				<xsl:call-template name="examples_section">
+					<xsl:with-param name="function_name" select="$function_name" />
+				</xsl:call-template>
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
@@ -153,6 +158,8 @@
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
+		<xsl:param name="function_name" />
+		
 		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/project/api[@name = $api]/environments">
 			<h2>Test forms</h2>
 			<ul>
@@ -329,6 +336,7 @@
 	</xsl:template>
 
 	<xsl:template match="function/example">
+		<xsl:param name="function_name" />
 
 		<xsl:variable name="examplenum"           select="@num" />
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />

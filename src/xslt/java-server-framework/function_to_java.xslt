@@ -31,15 +31,15 @@
 	<xsl:include href="request_java.xslt"       />
 	<xsl:include href="result_java.xslt"  />
 
-	<xsl:variable name="version">
-		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision">
-				<xsl:value-of select="//function/@rcsversion" />
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:variable>
-
 	<xsl:template match="function">
+
+		<xsl:variable name="version">
+			<xsl:call-template name="revision2string">
+				<xsl:with-param name="revision">
+					<xsl:value-of select="@rcsversion" />
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Create the function abstract class. -->
 		<xsl:call-template name="java-header" />
