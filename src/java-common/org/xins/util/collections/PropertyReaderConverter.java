@@ -29,6 +29,9 @@ public final class PropertyReaderConverter extends Object {
     *
     * @return
     *    a new {@link Properties} object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>propertyReader == null</code>.
     */
    public static final Properties toProperties(PropertyReader propertyReader)
    throws IllegalArgumentException {
