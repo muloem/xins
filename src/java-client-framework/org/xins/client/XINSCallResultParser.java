@@ -546,6 +546,9 @@ extends Object {
 
          // Unknown state
          } else {
+            String detail = "Unrecognized state: " + _state + '.';
+            Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
+            throw new Error(detail);
          }
       }
 
