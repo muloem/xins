@@ -137,14 +137,13 @@ extends Object {
     *    the XML to be parsed, not <code>null</code>.
     *
     * @return
-    *    the parsed result of the call, not <code>null</code>.
+    *    the parsed result, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>xml == null</code>.
     *
     * @throws ParseException
-    *    if the specified string is not valid XML or if it is not a valid XINS
-    *    API function call result.
+    *    if the specified string is not considered to be valid XML.
     */
    public Element parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
@@ -216,8 +215,7 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * SAX event handler that will parse the result from a call to a XINS
-    * service.
+    * SAX event handler that will parse XML.
     *
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
