@@ -7,7 +7,8 @@
 package org.xins.common.service;
 
 import org.xins.common.Log;
-import org.xins.common.threads.Doorman;
+
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Configuration for a service call. Objects of this type specify certain
@@ -60,6 +61,11 @@ public class CallConfig extends Object {
     */
    private static final String CLASSNAME = CallConfig.class.getName();
 
+   /**
+    * The number of instances of this class. Initially zero.
+    */
+   private static int INSTANCE_COUNT;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -74,20 +80,30 @@ public class CallConfig extends Object {
     */
    public CallConfig() {
 
+      // First determine instance number
+      _instanceNumber = ++INSTANCE_COUNT;
+
       // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
 
       // Create lock object
       _lock = new Object();
 
       // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
+      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
 
    /**
     * Access controller for the fields in this object. Field reading or
@@ -104,6 +120,52 @@ public class CallConfig extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Describes this configuration. The description should be trimmed and
+    * should fit in a sentence. Good examples include
+    * <code>"HTTP call config #1592 [failOverAllowed=true, method=\"POST\"]"</code>
+    * and
+    * <code>"HTTP call config #12 [failOverAllowed=false, method=(null)]"</code>
+    *
+    * <p>The implementation of this method in class {@link CallConfig} returns
+    * a descriptive string that contains an instance number and the
+    * <em>failOverAllowed</em> setting.
+    *
+    * @return
+    *    the description of this configuration, should never be
+    *    <code>null</code>, should never be empty and should never start or
+    *    end with whitespace characters.
+    */
+   public String describe() {
+      boolean failOverAllowed;
+      synchronized (_lock) {
+         failOverAllowed = _failOverAllowed;
+      }
+
+      FastStringBuffer buffer = new FastStringBuffer(55);
+      buffer.append("call config #");
+      buffer.append(_instanceNumber);
+      buffer.append(" [failOverAllowed=");
+      buffer.append(failOverAllowed);
+      buffer.append(']');
+
+      return buffer.toString();
+   }
+
+   /**
+    * Returns a textual presentation of this object.
+    *
+    * <p>The implementation of this method in class {@link CallRequest}
+    * returns {@link #describe()}.
+    *
+    * @return
+    *    a textual presentation of this object, should never be
+    *    <code>null</code>.
+    */
+   public final String toString() {
+      return describe();
+   }
 
    /**
     * Determines whether fail-over is unconditionally allowed.
