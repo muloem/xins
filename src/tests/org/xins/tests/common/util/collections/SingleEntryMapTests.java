@@ -116,15 +116,22 @@ public class SingleEntryMapTests extends TestCase {
       assertTrue("The map does not contain the same value as expected.", entry3.get(key).equals(value));
       assertTrue("The map get a value from a not existing key.", entry3.get(key2) == null);
       
-      entry3.put(key2, value2);
+      try {
+      	entry3.put(key2, value2);
+         fail("The key can be modified using the put method.");
+      } catch (IllegalArgumentException iae) {
+        
+         // as expected 
+      }
+      entry3.put(key, value2);
       
       assertTrue("The map has a different size than one.", entry3.size() == 1);
-      assertTrue("The map does not contain the same key as expected.", entry3.containsKey(key2));
-      assertFalse("The map found a key that should be there.", entry3.containsKey(key));
+      assertTrue("The map does not contain the same key as expected.", entry3.containsKey("test key"));
+      assertFalse("The map found a key that should be there.", entry3.containsKey(key2));
       assertTrue("The map does not contain the same value as expected.", entry3.containsValue(value2));
       assertFalse("The map found a value that should be there.", entry3.containsValue(value));
 
-      assertTrue("The map does not contain the same value as expected.", entry3.get(key2).equals(value2));
-      assertTrue("The map get a value from a not existing key.", entry3.get(key) == null);
+      assertTrue("The map does not contain the same value as expected.", entry3.get(key).equals(value2));
+      assertTrue("The map get a value from a not existing key.", entry3.get(key2) == null);
    }
 }

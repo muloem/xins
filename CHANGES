@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.165:
 
 * XINS/Java Common Library:
   - Fixed @see tag in LogCentral class.
+  - Changed SingleEntryMap class, so that the put() method throws an exception
+    if the new key does not match the old key.
 
 * Generated specification documentation:
   - Added the freeze parameter in the api.dtd.

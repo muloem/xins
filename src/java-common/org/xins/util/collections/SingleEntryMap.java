@@ -14,9 +14,11 @@ import java.util.TreeSet;
  * 
  * This <code>Map</code> accept a <code>null</code> key and/or a 
  * <code>null</code> value.
- * To key and value of the entry are passed when you create the new 
+ * The key and value of the entry are passed when you create the new 
  * <code>SingleEntryMap</code>, then you can change the value of the 
- * entry  by using the {@link #put(Object, Object) put} method.
+ * entry by using the {@link #put(Object, Object) put} method. This 
+ * method will throw an {@link java.lang.IllegalArgumentException} 
+ * if the key is different than the initial key.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -93,35 +95,22 @@ public class SingleEntryMap implements Map {
    }
    
    public Object get(Object key) {
-      if (key == null) {
-         if (_key == null) {
-            return _value; 
-         } else {
-            return null;  
-         }
-      } else if (key.equals(_key)) {
+      if ((key == null && _key == null) || (key !=null && key.equals(_key))) {
          return _value; 
       } else {
-         return null; 
+         return null;  
       }
    }
    
    public Object put(Object key, Object value) {
+      if ((key == null && _key != null) || (key !=null && !key.equals(_key))) {
+         throw new IllegalArgumentException("The key of this map can't be modified"); 
+      }
       Object oldKey = _key;
       Object oldValue = _value;
       _key = key;
       _value = value;
-      if (oldKey == null) {
-         if (key == null) {
-            return oldValue; 
-         } else {
-            return null;  
-         }
-      } else if (oldKey.equals(key)) {
-         return oldValue;
-      } else {
-         return null; 
-      }
+      return oldValue;
    }
     
    public Object remove(Object key) {
