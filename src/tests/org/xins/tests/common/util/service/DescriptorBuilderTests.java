@@ -114,6 +114,6 @@ public class DescriptorBuilderTests extends TestCase {
       assertEquals(TargetDescriptor.class, d.getClass());
       TargetDescriptor target = (TargetDescriptor) d;
       assertEquals(url,     target.getURL());
-      assertEquals(timeOut, target.getTimeOut());
+      assertEquals(timeOut, target.getTotalTimeOut());
    }
 }
