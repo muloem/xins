@@ -6,6 +6,9 @@ CHANGES INTRODUCED IN XINS 0.120:
     only 2 categories: org.xins.server.LIFESPAN and org.xins.server.RUNTIME.
     Logging the build-time XINS version now, too.
   - Responder interface now extends Log interface too. Use this for logging.
+  - Replaced Singleton interface with LifespanManager interface. The Singleton
+    interface and all methods that accept a Singleton instance are marked as
+    deprecated.
 
 * XINS/Java Client Framework:
   - Fixed a typo in the Javadoc comment for parse(Reader) in class
