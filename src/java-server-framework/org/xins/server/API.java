@@ -59,6 +59,7 @@ implements DefaultReturnCodes {
    protected API() {
       _functionsByName = new HashMap();
       _functionList    = new ArrayList();
+      _contextsByThread = new HashMap();
    }
 
 
@@ -79,6 +80,14 @@ implements DefaultReturnCodes {
     * List of all functions. This field cannot be <code>null</code>.
     */
    private final List _functionList;
+
+   /**
+    * Map that maps threads to <code>CallContext</code> instances.
+    *
+    * <p />This field is initialized to a non-<code>null</code> value by the
+    * constructor.
+    */
+   private final Map _contextsByThread;
 
 
    //-------------------------------------------------------------------------
@@ -146,12 +155,17 @@ implements DefaultReturnCodes {
    throws IOException {
 
       // Get call context
-      CallContext context = new CallContext();
-      // TODO: Fetch CallContext by Thread
+      Thread thread = Thread.currentThread();
+      CallContext context = (CallContext) _contextsByThread.get(thread);
+      if (context == null) {
+         context = new CallContext();
+         _contextsByThread.put(thread, context);
+      }
 
       // Configure the call context
       context.reset(request);
 
+      // TODO: Use a custom non-thread-safe StringBuffer equivalent
       StringWriter stringWriter = context.getStringWriter();
 
       // Determine the function name
