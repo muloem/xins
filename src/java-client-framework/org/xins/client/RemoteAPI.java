@@ -21,7 +21,7 @@ import org.xins.util.http.HTTPRequester;
  * Accessor for a remote XINS API.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">ernst.dehaan@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public class RemoteAPI
 extends Object
