@@ -31,8 +31,13 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     - added UnsuccessfulXINSCallExceptionFactory class.
     - added BasicUnsuccessfulXINSCallExceptionFactory class, extends
       UnsuccessfulXINSCallExceptionFactory.
-    [ work in progress, XINSServiceCaller needs to support the factory, CAPI
-      needs to create and set the factory ]
+    - changed XINSServiceCaller to use an UnsuccessfulXINSCallExceptionFactory
+      to create UnsuccessfulXINSCallException instances, added a getter and a
+      setter for this;
+    [ work in progress, one AbstractCAPIErrorCodeException subclass needs to
+      be generated per error code, an UnsuccessfulXINSCallExceptionFactory
+      class needs to be generated and the CAPI class needs to create the
+      factory and set it on the XINSServiceCaller ]
 
 * XINS/Java Server Framework:
   - If the org.xins.server.config is not set as a system property, the server
