@@ -14,7 +14,6 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - Fixed SF.net bug #1079069. The first line of the class description was:
     "Abstractgion of a manageanble object". Fixed those 2 typos.
 
-
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
     appropriate.
@@ -37,10 +36,12 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 * Generated build file:
   - Fixed bug #1078317: Compilation and Javadoc of the API is now done using 
     the files of the impl directory without copying them to the build 
-    directory.
+    directory. This will increase compilation and javadoc generation 
+    performances.
 
 * Build and release process:
   - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
+    Compilation and Javadoc generation will be faster.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
