@@ -2,9 +2,14 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.119:
 
 * XINS/Java Server Framework:
-  - Refactored CallContext and API classes.
+  - Added CallResult, CallResultBuilder, BasicCallResult and
+    CallResultOutputter classes.
+  - Refactored the core. Including APIServlet, API, CallContext and Function
+    classes. Now using a CallResult-based approach.
   - Removed ResponseValidator class.
   - Removed UNININITIALIZED state in class ResponderStates.
+  - None of the methods in the Responder interface now throws an IOException
+    anymore.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.118:
