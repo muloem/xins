@@ -4,8 +4,7 @@
 package org.xins.client;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
@@ -20,6 +19,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
+import org.xins.common.text.TextUtils;
 
 /**
  * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
@@ -64,16 +64,15 @@ extends Object {
    private static final String HANDLER_CLASSNAME = XINSCallResultParser.Handler.class.getName();
 
    /**
-    * Constant for an <code>Integer</code> object representing the number
-    * zero. This field is not <code>null</code>.
-    */
-   private static final Integer ZERO = new Integer(0);
-
-   /**
     * The key for the <code>ProtectedPropertyReader</code> instances created
     * by this class.
     */
    private static final Object PROTECTION_KEY = new Object();
+
+   /**
+    * Error state for the SAX event handler.
+    */
+   private static final State ERROR = new State("ERROR");
 
    /**
     * Initial state for the SAX event handler, before the root element is
@@ -83,9 +82,15 @@ extends Object {
 
    /**
     * State for the SAX event handler for the level just within the root
-    * element (<code>result</code>).
+    * element (<code>result</code>) before a data section is parsed.
     */
    private static final State AT_ROOT_LEVEL = new State("AT_ROOT_LEVEL");
+
+   /**
+    * State for the SAX event handler for the level within an ignorable
+    * element.
+    */
+   private static final State WITHIN_IGNORABLE_ELEMENT = new State("WITHIN_IGNORABLE_ELEMENT");
 
    /**
     * State for the SAX event handler for the level within the output
@@ -118,7 +123,14 @@ extends Object {
     * Constructs a new <code>XINSCallResultParser</code>.
     */
    public XINSCallResultParser() {
+
+      // TRACE: Enter constructor
+      Log.log_2000(CLASSNAME, null);
+
       // empty
+
+      // TRACE: Leave constructor
+      Log.log_2002(CLASSNAME, null);
    }
 
 
@@ -150,8 +162,10 @@ extends Object {
    public XINSCallResultData parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
+      final String METHODNAME = "parse(byte[])";
+
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, "parse(byte[])", null);
+      Log.log_2003(CLASSNAME, METHODNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
@@ -162,11 +176,9 @@ extends Object {
       try {
 
          // Construct a SAX parser
-         SAXParserFactory factory   = SAXParserFactory.newInstance();
-         SAXParser        saxParser = factory.newSAXParser();
-
-         // TODO: Enable namespace processing and use localName instead of
-         //       qName in the startElement and endElement methods
+         SAXParserFactory factory = SAXParserFactory.newInstance();
+         factory.setNamespaceAware(true);
+         SAXParser saxParser = factory.newSAXParser();
 
          // Convert the byte array to an input stream
          ByteArrayInputStream bais = new ByteArrayInputStream(xml);
@@ -199,7 +211,7 @@ extends Object {
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, "parse(byte[])", null);
+      Log.log_2005(CLASSNAME, METHODNAME, null);
 
       return handler;
    }
@@ -231,7 +243,15 @@ extends Object {
        * Constructs a new <code>Handler</code> instance.
        */
       private Handler() {
+
+         // TRACE: Enter constructor
+         Log.log_2000(HANDLER_CLASSNAME, null);
+
          _state = INITIAL;
+         _level = -1;
+
+         // TRACE: Leave constructor
+         Log.log_2002(HANDLER_CLASSNAME, null);
       }
 
 
@@ -267,19 +287,23 @@ extends Object {
       private FastStringBuffer _pcdata;
 
       /**
-       * The child elements of the data element that is currently being
-       * parsed.
+       * The stack of child elements within the data section. The top element
+       * is always <code>&lt;data/&gt;</code>.
        */
-      private Map _elements;
+      private Stack _dataElementStack;
 
       /**
-       * The level of the element that is currently being parsed in the data
-       * section. Initially this field is set to -1, which means that no
-       * element is parsed; 0 means that the parser just read the &lt;data&gt;
-       * tag; 1 means that the parser entered in an direct sub-element of the
-       * &lt;data&gt; tag, etc.
+       * The data element.
        */
-      private int _dataSectionLevel = -1;
+      private DataElement _dataElement;
+
+      /**
+       * The level within the XML document. Initially this field is
+       * <code>0</code>, which indicates the current element is outside the
+       * document. The value <code>1</code> is for the root element
+       * (<code>result</code>).
+       */
+      private int _level;
 
 
       //-------------------------------------------------------------------------
@@ -318,16 +342,50 @@ extends Object {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
+         final String METHODNAME = "startElement(String,String,String,Attributes)";
+
+         // Temporarily enter ERROR state, on success this state is left
+         State currentState = _state;
+         _state = ERROR;
+
+         // Make sure namespaceURI is either null or non-empty
+         namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
+
+         // Cache quoted version of namespaceURI
+         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
+
+         // TRACE: Enter method
+         Log.log_2003(HANDLER_CLASSNAME, METHODNAME,
+                        "_state="       + currentState
+                    + "; _level="       + _level
+                    + "; namespaceURI=" + quotedNamespaceURI
+                    + "; localName="    + TextUtils.quote(localName)
+                    + "; qName="        + TextUtils.quote(qName));
+
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName, "atts", atts);
 
-         // TODO: Handle namespaces properly
+         // Increase the element depth level
+         _level++;
 
-         // Root element must be 'result'
-         if (_state == INITIAL) {
-            if (! qName.equals("result")) {
-               Log.log_2200(qName);
-               throw new SAXException("Root element is \"" + qName + "\" while only \"result\" is supported.");
+         if (currentState == ERROR) {
+            String message = "_state=" + currentState + "; _level=" + _level;
+            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
+            throw new SAXException("Unexpected state: " + message);
+
+         } else if (currentState == INITIAL) {
+
+            // Level and state must comply
+            if (_level != 0) {
+               String message = "_state=" + currentState + "; _level=" + _level;
+               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
+               throw new SAXException("Unexpected state: " + message);
+            }
+
+            // Root element must be 'result' without namespace
+            if (! (namespaceURI == null && localName.equals("result"))) {
+               Log.log_2200(namespaceURI, localName);
+               throw new SAXException("Root element is \"" + localName + "\" with namespace " + quotedNamespaceURI + " instead of \"result\" with namespace (null).");
             }
 
             // Get the 'errorcode' and 'code attributes
@@ -348,64 +406,63 @@ extends Object {
 
             // Conflicting error codes
             } else {
-               // NOTE: This will be logged already (message 2205)
-               throw new SAXException("Found conflicting duplicate value for error code. First is \"" + code1 + "\". Second is \"" + code2 + "\".");
+               // NOTE: No need to log here. This will be logged already (message 2205)
+               throw new SAXException("Found conflicting duplicate value for error code, since errorcode=\"" + code1 + "\", while code=\"" + code2 + "\".");
             }
 
             // Change state
             _state = AT_ROOT_LEVEL;
 
-         // Start of data section
-         } else if (_state == AT_ROOT_LEVEL) {
+         } else if (currentState == AT_ROOT_LEVEL) {
 
             // Output parameter
-            if (qName.equals("param")) {
+            if (namespaceURI == null && "param".equals(localName)) {
 
                // Store the name of the parameter. It may be null, but that will
                // be checked only after the element end tag is processed.
                _parameterName = atts.getValue("name");
 
-               // Reserve a buffer for the PCDATA content already
+               // TODO: Check parameter name here (null and pattern)
+
+               // Reserve a buffer for the character content already
+               // TODO: Rename _pcdata because it may also be CDATA
                _pcdata = new FastStringBuffer(20);
 
                // Update the state
                _state = IN_PARAM_ELEMENT;
 
             // Start of data section
-            } else if (qName.equals("data")) {
+            } else if (namespaceURI == null && "data".equals(localName)) {
+
+               if (_dataElement != null) {
+                  throw new SAXException("Found second data section.");
+               }
 
                // Maintain a list of the elements, with data as the root
-               _elements = new HashMap();
-               _elements.put(ZERO, new DataElement("data"));
-               _dataSectionLevel = 0;
+               _dataElementStack = new Stack();
+               _dataElementStack.push(new DataElement("data"));
 
                // Update the state
                _state = IN_DATA_SECTION;
 
-            // No 'result' element allowed within 'result' element
-            } else if (qName.equals("result")) {
-               // NOTE: This will be logged already (message 2205)
-               throw new SAXException("Found \"result\" element within \"result\" element.");
-
-            // Unknown elements at the root level are okay
+            // Ignore unrecognized element at root level
             } else {
-               // Ignore unrecognized element
-               Log.log_2206(qName);
+               _state = WITHIN_IGNORABLE_ELEMENT;
+               Log.log_2206(namespaceURI, localName);
             }
 
-         // Within output parameter element
-         } else if (_state == IN_PARAM_ELEMENT) {
-            // NOTE: This will be logged already (message 2205)
-            throw new SAXException("Found \"" + qName + "\" element within \"param\" element.");
+         // Within output parameter element, no elements are allowed
+         } else if (currentState == IN_PARAM_ELEMENT) {
+            // NOTE: No need to log here. This will be logged already (message 2205)
+            throw new SAXException("Found \"" + localName + "\" element with namespace " + quotedNamespaceURI + " within \"param\" element.");
 
          // Within the data section
-         } else if (_state == IN_DATA_SECTION) {
+         } else if (currentState == IN_DATA_SECTION) {
 
-            // Increase the depth level
-            _dataSectionLevel++;
+            // TODO: Make DataElement support namespaces
 
             // Construct a DataElement
-            DataElement element = new DataElement(qName);
+            DataElement element = new DataElement(localName);
 
             // Add all attributes
             for (int i = 0; i < atts.getLength(); i++) {
@@ -413,17 +470,32 @@ extends Object {
                String value = atts.getValue(i);
                element.addAttribute(key, value);
             }
-            _elements.put(new Integer(_dataSectionLevel), element);
+            _dataElementStack.push(element);
 
             // Reserve buffer for PCDATA
+            // TODO: Lazily initialize this field to improve performance
             _pcdata = new FastStringBuffer(20);
+
+            // Reset the state from ERROR back to IN_DATA_SECTION
+            _state = IN_DATA_SECTION;
+
+         // Deeper level within ignorable element
+         } else if (currentState == WITHIN_IGNORABLE_ELEMENT) {
+            _state = WITHIN_IGNORABLE_ELEMENT;
 
          // Unrecognized state
          } else {
-            String detail = "Unrecognized state: " + _state + '.';
-            Log.log_2050(HANDLER_CLASSNAME, "startElement(String,String,String,Attributes)", detail);
-            throw new Error(detail);
+            String message = "_state=" + currentState + "; _level=" + _level;
+            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
+            throw new SAXException("Unexpected state: " + message);
          }
+
+         Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
+                        "_state="       + _state
+                    + "; _level="       + _level
+                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
+                    + "; localName="    + TextUtils.quote(localName)
+                    + "; qName="        + TextUtils.quote(qName));
       }
 
       /**
@@ -452,34 +524,70 @@ extends Object {
                              String qName)
       throws IllegalArgumentException, SAXException {
 
+         final String METHODNAME = "endElement(String,String,String)";
+
+         // Temporarily enter ERROR state, on success this state is left
+         State currentState = _state;
+         _state = ERROR;
+
+         // Make sure namespaceURI is either null or non-empty
+         namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
+
+         // Cache quoted version of namespaceURI
+         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
+
+         // TRACE: Enter method
+         Log.log_2003(HANDLER_CLASSNAME, METHODNAME,
+                        "_state="       + _state
+                    + "; _level="       + _level
+                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
+                    + "; localName="    + TextUtils.quote(localName)
+                    + "; qName="        + TextUtils.quote(qName));
+
          // Check preconditions
          MandatoryArgumentChecker.check("qName", qName);
 
-         // At root level
-         if (_state == AT_ROOT_LEVEL) {
+         if (currentState == ERROR) {
+            String message = "_state=" + currentState + "; _level=" + _level;
+            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
+            throw new SAXException("Unexpected state: " + message);
 
-            if ("result".equals(qName)) {
-               _state = FINISHED;
+         // At root level
+         } else if (currentState == AT_ROOT_LEVEL) {
+
+            if (! (namespaceURI == null && "result".equals(localName))) {
+               String detail = "Expected end of element of type \"result\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
+               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
+               throw new SAXException(detail);
+            }
+            _state = FINISHED;
+
+         // Ignorable element
+         } else if (currentState == WITHIN_IGNORABLE_ELEMENT) {
+            if (_level == 1) { // XXX: Is this correct???
+               _state = AT_ROOT_LEVEL;
             } else {
-               // ignorable element
+               _state = WITHIN_IGNORABLE_ELEMENT;
             }
 
          // Within data section
-         } else if (_state == IN_DATA_SECTION) {
+         } else if (currentState == IN_DATA_SECTION) {
 
             // Get the DataElement for which we process the end tag
-            DataElement child = (DataElement) _elements.get(new Integer(_dataSectionLevel));
+            DataElement child = (DataElement) _dataElementStack.pop();
 
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
-            if (_dataSectionLevel == 0) {
-               if (! qName.equals("data")) {
-                  String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
-                  Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
-                  throw new Error(detail);
+            if (_dataElementStack.size() < 1) {
+               if (! (namespaceURI == null && "data".equals(localName))) {
+                  String detail = "Expected end of element of type \"data\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
+                  Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
+                  throw new SAXException(detail);
                }
 
+               // Store the root DataElement
+               _dataElement = child;
+
                // Reset the state
-               _dataSectionLevel = -1;
                _state = AT_ROOT_LEVEL;
 
             // Otherwise it's a custom element
@@ -492,19 +600,22 @@ extends Object {
 
                // Reset the PCDATA content and the level
                _pcdata = null;
-               _dataSectionLevel--;
 
                // Add the child to the parent
-               DataElement parent = (DataElement) _elements.get(new Integer(_dataSectionLevel));
+               DataElement parent = (DataElement) _dataElementStack.peek();
                parent.addChild(child);
+
+               // Reset the state back frmo ERROR to IN_DATA_SECTION
+               _state = IN_DATA_SECTION;
             }
 
          // Output parameter
-         } else if (_state == IN_PARAM_ELEMENT) {
+         } else if (currentState == IN_PARAM_ELEMENT) {
 
-            if (! qName.equals("param")) {
-               String detail = "Expected element name \"param\" instead of \"" + qName + "\".";
-               Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
+            final String expectedName = "param";
+            if (! qName.equals(expectedName)) {
+               String detail = "Expected end tag for \"" + expectedName + "\" element instead of \"" + qName + "\".";
+               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
                throw new Error(detail);
             }
 
@@ -552,10 +663,21 @@ extends Object {
 
          // Unknown state
          } else {
-            String detail = "Unrecognized state: " + _state + '.';
-            Log.log_2050(HANDLER_CLASSNAME, "endElement(String,String,String)", detail);
+            String detail = "Unrecognized state: " + currentState + '.';
+            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
             throw new Error(detail);
          }
+
+         _level--;
+
+         // TRACE: Leave method
+         Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
+                        "_state="       + _state
+                    + "; _level="       + _level
+                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
+                    + "; localName="    + TextUtils.quote(localName)
+                    + "; qName="        + TextUtils.quote(qName));
+
       }
 
       /**
@@ -571,27 +693,41 @@ extends Object {
        * @param length
        *    the number of characters to take from <code>ch</code>.
        *
-       * @throws IllegalStateException
-       *    if the current state does not allow character data.
-       *
        * @throws IndexOutOfBoundsException
        *    if characters outside the allowed range are specified.
+       *
+       * @throws SAXException
+       *    if the parsing failed.
        */
       public void characters(char[] ch, int start, int length)
-      throws IllegalStateException, IndexOutOfBoundsException {
+      throws IndexOutOfBoundsException, SAXException {
+
+         final String METHODNAME = "characters(char[],int,int)";
+
+         // Temporarily enter ERROR state, on success this state is left
+         State currentState = _state;
+         _state = ERROR;
+
+         // TRACE: Enter method
+         Log.log_2003(HANDLER_CLASSNAME, METHODNAME, null);
 
          // Check state
-         if (_state != IN_PARAM_ELEMENT && _state != IN_DATA_SECTION) {
+         if (currentState != IN_PARAM_ELEMENT
+          && currentState != IN_DATA_SECTION
+          && currentState != WITHIN_IGNORABLE_ELEMENT) {
             String text = new String(ch, start, length);
-            if (!text.trim().equals("")) {
+            if (text.trim().length() > 0) {
                // NOTE: This will be logged already (message 2205)
-               throw new IllegalStateException("Found PCDATA content in state " + _state + '.');
+               throw new SAXException("Found character content \"" + text + "\" in state " + currentState + '.');
             }
          }
 
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
          }
+
+         // Reset _state
+         _state = currentState;
       }
 
       /**
@@ -664,11 +800,7 @@ extends Object {
          // Check state
          assertFinished();
 
-         if (_elements == null) {
-            return null;
-         } else {
-            return (DataElement) _elements.get(ZERO);
-         }
+         return _dataElement;
       }
    }
 
