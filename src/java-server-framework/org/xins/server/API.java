@@ -248,82 +248,6 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Gets the specified property and converts it to a <code>boolean</code>.
-    *
-    * @param properties
-    *    the set of properties to read from, cannot be <code>null</code>.
-    *
-    * @param propertyName
-    *    the name of the property to read, cannot be <code>null</code>.
-    *
-    * @param fallbackDefault
-    *    the fallback default value, returned if the value of the property is
-    *    either <code>null</code> or <code>""</code> (an empty string).
-    *
-    * @return
-    *    the value of the property.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null || propertyName == null</code>.
-    *
-    * @throws InvalidPropertyValueException
-    *    if the value of the property is neither <code>null</code> nor
-    *    <code>""</code> (an empty string), nor <code>"true"</code> nor
-    *    <code>"false"</code>.
-    */
-   private final boolean getBooleanProperty(PropertyReader properties,
-                                            String         propertyName,
-                                            boolean        fallbackDefault)
-   throws IllegalArgumentException,
-          InvalidPropertyValueException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
-
-      String value = properties.get(propertyName);
-
-      if (value == null || value.length() == 0) {
-         return fallbackDefault;
-      }
-
-      if ("true".equals(value)) {
-         return true;
-      } else if ("false".equals(value)) {
-         return false;
-      } else {
-         throw new InvalidPropertyValueException(propertyName, value);
-      }
-   }
-
-   /**
-    * Gets the specified property and converts it to an <code>int</code>.
-    *
-    * @param properties
-    *    the set of properties to read from, cannot be <code>null</code>.
-    *
-    * @param propertyName
-    *    the name of the property to read, cannot be <code>null</code>.
-    *
-    * @return
-    *    the value of the property, as an <code>int</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null || propertyName == null</code>.
-    *
-    * @throws NumberFormatException
-    *    if the conversion to an <code>int</code> failed.
-    */
-   private final int getIntProperty(PropertyReader properties, String propertyName)
-   throws IllegalArgumentException, NumberFormatException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
-
-      String value = properties.get(propertyName);
-      return Integer.parseInt(value);
-   }
-
-   /**
     * Gets the name of this API.
     *
     * @return
@@ -429,7 +353,7 @@ implements DefaultResultCodes {
       _buildSettings = buildSettings;
 
       // Check if this API is session-based
-      _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
+      _sessionBased = PropertyReaderUtils.getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
       if (_sessionBased) {
          Log.log_112();
       } else {
@@ -447,8 +371,8 @@ implements DefaultResultCodes {
          _sessionIDGenerator = _sessionIDType.getGenerator();
 
          // Determine session time-out duration and precision (in seconds)
-         int timeOut   = getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
-         int precision = getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
+         int timeOut   = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
+         int precision = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
          Log.log_116(String.valueOf(timeOut), String.valueOf(precision));
 
