@@ -83,14 +83,14 @@ table {
 table tr th {
 	color: #ffffff;
 	background-color: #8888dd;
-	vertical-align: text-top;
+	vertical-align: top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 	font-weight: bold;
 }
 
 table tr td {
-	vertical-align: text-top;
+	vertical-align: top;
 	border: solid 1px #8888dd;
 	padding: 2pt;
 }
