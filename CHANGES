@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 0.207:
 * Generated build file
   - Added some missing description for the targets help, version and run.
   - Remove the directory build/classes from being created as it's not used.
+  - The owner is created in api.xml only if a authors.xml file exists.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.206:
