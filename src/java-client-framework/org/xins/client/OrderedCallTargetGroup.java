@@ -53,9 +53,7 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
    // Methods
    //-------------------------------------------------------------------------
 
-   CallResult callImpl(String sessionID,
-                       String functionName,
-                       Map    parameters)
+   CallResult callImpl(String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, IOException, InvalidCallResultException {
 
       List members = getMembers();
