@@ -170,7 +170,7 @@
 	<target name="packages" depends="src-package,bin-package" description="Build all distribution archives"/>
 
 	<target name="do-upload-packages" depends="-init" description="Uploads the packages to the web server">
-		<echo message="Uploading ${src-package-tarfile}.gz to ${www.host}" />
+		<echo message="Uploading ${title} ${version} packages to ${www.host}" />
 		<exec dir="build/" executable="scp" failonerror="true">
 			<arg value="${src-package-tarfile}.gz" />
 			<arg value="${bin-package-tarfile}.gz" />
