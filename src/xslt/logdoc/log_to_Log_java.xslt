@@ -36,12 +36,42 @@ public class Log extends Object {
     */
    private static final String FQCN = "]]></xsl:text>
 		<xsl:value-of select="$package_name" />
-		<xsl:text>.Log";
+		<xsl:text><![CDATA[.Log";
+
+   /**
+    * The <em>debug</em> log level.
+    */
+   private static final Level DEBUG = Level.DEBUG;
+
+   /**
+    * The <em>info</em> log level.
+    */
+   private static final Level INFO = Level.INFO;
+
+   /**
+    * The <em>notice</em> log level.
+    */
+   private static final Level NOTICE = new NoticeLevel();
+
+   /**
+    * The <em>warning</em> log level.
+    */
+   private static final Level WARNING = Level.WARN;
+
+   /**
+    * The <em>error</em> log level.
+    */
+   private static final Level ERROR = Level.ERROR;
+
+   /**
+    * The <em>fatal</em> log level.
+    */
+   private static final Level FATAL = Level.FATAL;
 
 
    //-------------------------------------------------------------------------
    // Class functions
-   //-------------------------------------------------------------------------</xsl:text>
+   //-------------------------------------------------------------------------]]></xsl:text>
 
 		<xsl:apply-templates select="entry" />
 
@@ -68,6 +98,36 @@ public class Log extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * The <em>notice</em> log level.
+    */
+   private static class NoticeLevel extends Level {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>NoticeLevel</code> object.
+       */
+      private NoticeLevel() {
+         super((Level.INFO_INT + Level.WARN_INT) / 2, "NOTICE", 5);
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+   }
 }
 ]]></xsl:text>
 	</xsl:template>
