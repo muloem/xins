@@ -62,7 +62,7 @@
 	</group>
 
 	<group id="call" name="XINS service calling">
-		<entry id="2100" level="INFO">
+		<entry id="2100" level="INFO" />
 	</group>
 
 	<group id="parse" name="XINS call result parsing">
