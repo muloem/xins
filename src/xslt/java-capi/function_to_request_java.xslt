@@ -72,20 +72,6 @@ extends org.xins.client.AbstractCAPICallRequest {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Creates a new <code>]]></xsl:text>
-		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[</code> instance.
-    */
-   public static final ]]></xsl:text>
-		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[ create() {
-      return new ]]></xsl:text>
-		<xsl:value-of select="$className" />
-		<xsl:text><![CDATA[();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -95,7 +81,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> instance.
     */
-   private ]]></xsl:text>
+   public ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
       super("</xsl:text>
