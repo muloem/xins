@@ -119,4 +119,49 @@ public class BasicResponseValidatorTests extends TestCase {
       _validator.startResponse(true, null);
       _validator.param(name, value);
    }
+
+   public void testStartTag() throws Throwable {
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.startTag("element2");
+      _validator.cancelResponse();
+
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.startTag("element2");
+      _validator.endResponse();
+
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.startTag("element2");
+      _validator.cancelResponse();
+   }
+
+   public void testAttribute() throws Throwable {
+
+      final String name = "name";
+      final String value = "value";
+
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.attribute(name, value);
+      _validator.startTag("element2");
+      _validator.attribute(name, value);
+
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.attribute(name, value);
+      try {
+         _validator.attribute(name, value);
+         fail("BasicResponseValidator.attribute(String,String) should throw an InvalidResponseException if called twice with the same attribute name for the same element.");
+      } catch (InvalidResponseException exception) {
+         // as expected
+      }
+
+      _validator.startResponse(true, null);
+      _validator.startTag("element1");
+      _validator.attribute(name, value);
+      _validator.startTag("element2");
+      _validator.attribute(name, value);
+   }
 }
