@@ -397,7 +397,9 @@
 		todir="build/testresults/html" />
 	</target>
 
-	<target name="tests" depends="do-tests,testreports" description="Runs the unit tests and generates reports" />
+	<target name="tests" depends="do-tests,testreports" description="Runs the unit tests and generates reports">
+		<fail if="tests.failed" message="All tests should run" />
+	</target>
 
 	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
 		<mkdir dir="build/j2h" />
@@ -736,13 +738,10 @@
 
 	<target name="upload-package" depends="package,do-upload-package" description="Creates and uploads package to the web server" />
 
-	<target name="-check-version-suffix" depends="-init">
+	<target name="-check-release-version" depends="-init" unless="force">
 		<condition property="version.suffix.set">
 			<equals arg1="${version.suffix}" arg2="-dev" />
 		</condition>
-	</target>
-
-	<target name="-check-release-version" depends="-check-version-suffix" unless="force">
 		<fail unless="version.suffix.set" message="Version suffix is not set to -dev. If you do want to release, please set 'force'." />
 	</target>
 
@@ -773,10 +772,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<delete file="${diff-file}" />
 	</target>
 
-	<target
-	name="-pre-release-checks"
-	depends="-init-release,-check-release-version,-check-directories,-nodiffs-check,tests">
-		<fail if="tests.failed" message="All tests should run" />
+	<target name="-pre-commit-version" depends="-init" unless="major.release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
@@ -789,6 +785,11 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<argument value="${version.file}" />
 			</commandline>
 		</cvs>
+	</target>
+
+	<target
+	name="-pre-release-checks"
+	depends="-init-release,-check-release-version,-check-directories,-nodiffs-check,tests,-pre-commit-version">
 	</target>
 
 	<target
@@ -819,10 +820,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		</ant>
 	</target>
 
-	<target
-	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc"
-	description="Performs a release">
+	<target name="-post-commit-version" depends="-init" unless="major.release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.minor"      type="int" operation="+" value="1"      />
 			<entry key="version.suffix"                operation="=" value="-dev"   />
@@ -835,6 +833,12 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<argument value="${version.file}" />
 			</commandline>
 		</cvs>
+	</target>
+
+	<target
+	name="release"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc,-post-commit-version"
+	description="Performs a release">
 		<antcall target="upload-homepage" />
 		<delete>
 			<fileset dir="build/src" />
@@ -842,4 +846,5 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	</target>
 
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
+
 </project>
