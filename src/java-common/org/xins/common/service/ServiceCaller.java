@@ -171,12 +171,49 @@ public abstract class ServiceCaller extends Object {
       _newStyle   = false;
       _descriptor = descriptor;
       _callConfig = null;
+      _className  = getClass().getName();
 
-      // TODO: Make sure the old-style doCallImpl     method is implemented
+      // Make sure the old-style doCallImpl method is implemented
+      try {
+         doCallImpl(null, null);
+         throw new Error();
+      } catch (Throwable t) {
+         if (t instanceof MethodNotImplementedError) {
+            final String METHOD = "doCallImpl(CallRequest,TargetDescriptor)";
+            String message = "Method " + METHOD + " is not implemented although this class (" + _className + ") uses the old-style constructor.";
+            Log.log_1050(_className, METHOD, message);
+            throw new ProgrammingError(message);
+         }
+      }
+
       // TODO: Make sure the old-style shouldFailOver method is implemented
 
-      // TODO: Make sure the new-style doCallImpl     method is not implemented
-      // TODO: Make sure the new-style shouldFailOver method is not implemented
+      // Make sure the new-style doCallImpl method is not implemented
+      try {
+         doCallImpl(null, null, null);
+         throw new Error();
+      } catch (Throwable t) {
+         if (! (t instanceof MethodNotImplementedError)) {
+            final String METHOD = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
+            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the old-style constructor.";
+            Log.log_1050(_className, METHOD, message);
+            throw new ProgrammingError(message);
+         }
+      }
+
+      // Make sure the new-style shouldFailOver method is not implemented
+      try {
+         shouldFailOver(null, null, null);
+         throw new Error();
+      } catch (Throwable t) {
+         final String METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
+         if (! (t instanceof MethodNotImplementedError)) {
+            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the old-style constructor.";
+            Log.log_1050(_className, METHOD, message);
+            throw new ProgrammingError(message);
+         }
+      }
+
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -207,6 +244,11 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
+      // Initialize all fields except callConfig
+      _className  = getClass().getName();
+      _newStyle   = true;
+      _descriptor = descriptor;
+
       // If no CallConfig is specified, then use a default one
       if (callConfig == null) {
 
@@ -235,16 +277,37 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // TODO: Make sure the old-style doCallImpl     method is not implemented
-      // TODO: Make sure the old-style shouldFailOver method is not implemented
-
-      // TODO: Make sure the new-style doCallImpl     method is implemented
-      // TODO: Make sure the new-style shouldFailOver method is implemented
-
-      // Set fields
-      _newStyle   = true;
-      _descriptor = descriptor;
+      // Set call configuration
       _callConfig = callConfig;
+
+      // Make sure the old-style doCallImpl method is not implemented
+      try {
+         doCallImpl(null, null);
+         throw new Error();
+      } catch (Throwable t) {
+         if (! (t instanceof MethodNotImplementedError)) {
+            final String METHOD = "doCallImpl(CallRequest,TargetDescriptor)";
+            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the new-style constructor.";
+            Log.log_1050(_className, METHOD, message);
+            throw new ProgrammingError(message);
+         }
+      }
+
+      // Make sure the old-style shouldFailOver method is not implemented
+      try {
+         shouldFailOver(null, null);
+         throw new Error();
+      } catch (Throwable t) {
+         if (! (t instanceof MethodNotImplementedError)) {
+            final String METHOD = "shouldFailOver(CallRequest,CallException)";
+            String message = "Method " + METHOD + " is implemented although this class (" + _className + ") uses the new-style constructor.";
+            Log.log_1050(_className, METHOD, message);
+            throw new ProgrammingError(message);
+         }
+      }
+
+      // TODO: Make sure the new-style doCallImpl method is implemented
+      // TODO: Make sure the new-style shouldFailOver method is implemented
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -254,6 +317,11 @@ public abstract class ServiceCaller extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The name of the current (concrete) class. Never <code>null</code>.
+    */
+   private final String _className;
 
    /**
     * Flag that indicates if the new-style (since XINS 1.1.0) or the old-style
@@ -364,7 +432,6 @@ public abstract class ServiceCaller extends Object {
                                      CallConfig  callConfig)
    throws IllegalArgumentException, CallException {
 
-      final String THIS_CLASS  = getClass().getName();
       final String THIS_METHOD = "doCall(CallRequest,CallConfig)";
 
       // TRACE: Enter method
@@ -372,8 +439,8 @@ public abstract class ServiceCaller extends Object {
 
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses old-style constructor.";
-         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style constructor.";
+         Log.log_1050(_className, THIS_METHOD, message);
          throw new ProgrammingError(message);
       }
 
@@ -557,7 +624,6 @@ public abstract class ServiceCaller extends Object {
    protected final CallResult doCall(CallRequest request)
    throws IllegalArgumentException, CallException {
 
-      final String THIS_CLASS  = getClass().getName();
       final String THIS_METHOD = "doCall(CallRequest)";
 
       // TRACE: Enter method
@@ -565,8 +631,8 @@ public abstract class ServiceCaller extends Object {
 
       // This method should only be called if the subclass uses the old style
       if (_newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses new-style constructor.";
-         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses new-style constructor.";
+         Log.log_1050(_className, THIS_METHOD, message);
          throw new ProgrammingError(message);
       }
 
@@ -916,18 +982,14 @@ public abstract class ServiceCaller extends Object {
    protected boolean shouldFailOver(CallRequest request,
                                     Throwable   exception) {
 
-      final String THIS_CLASS  = getClass().getName();
+      if (_newStyle) {
+         throw new MethodNotImplementedError();
+      }
+
       final String THIS_METHOD = "shouldFailOver(CallRequest,Throwable)";
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
-      // This method should only be called if the subclass uses the old style
-      if (_newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses new-style constructor.";
-         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
-         throw new ProgrammingError(message);
-      }
 
       // Determine if fail-over is applicable
       boolean should = (exception instanceof ConnectionCallException);
@@ -975,7 +1037,6 @@ public abstract class ServiceCaller extends Object {
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
 
-      final String THIS_CLASS  = getClass().getName();
       final String THIS_METHOD = "shouldFailOver(CallRequest,CallConfig,CallExceptionList)";
 
       // TRACE: Enter method
@@ -983,8 +1044,8 @@ public abstract class ServiceCaller extends Object {
 
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
-         String message = "Method " + THIS_METHOD + " called while class " + THIS_CLASS + " uses old-style constructor.";
-         Log.log_1050(THIS_CLASS, THIS_METHOD, message);
+         String message = "Method " + THIS_METHOD + " called while class " + _className + " uses old-style constructor.";
+         Log.log_1050(_className, THIS_METHOD, message);
          throw new ProgrammingError(message);
       }
 
