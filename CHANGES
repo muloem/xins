@@ -1,4 +1,18 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.144:
+
+* XINS/Java Server Framework:
+  - Renamed SessionID to SessionIDType.
+  - Renamed BasicSessionID to BasicSessionIDType.
+  - BasicSessionIDType now generates random session IDs.
+
+* XINS/Java Common Library:
+  - Fixed small bug in ExpiryFolder that could cause a NPE.
+
+* Generated CAPI classes:
+  - Fixed small bug in generation of CAPI class that caused compiler errors.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.143:
 
 * XINS/Java Client Framework:
