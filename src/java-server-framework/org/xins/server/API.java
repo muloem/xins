@@ -24,7 +24,7 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public abstract class API
 extends Object
-implements DefaultReturnCodes {
+implements DefaultReturnCodes, DefaultResultCodes {
 
    //-------------------------------------------------------------------------
    // Class fields

@@ -15,7 +15,7 @@ import org.xins.util.text.FastStringBuffer;
  */
 public abstract class Function
 extends Object
-implements DefaultReturnCodes {
+implements DefaultReturnCodes, DefaultResultCodes {
 
    //-------------------------------------------------------------------------
    // Class fields
