@@ -412,7 +412,8 @@ implements Responder, Log {
     *
     * @return
     *    the value of the parameter, or <code>null</code> if the parameter is
-    *    not set.
+    *    not set, never an empty string (<code>""</code>) because it will be
+    *    returned as being <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
@@ -425,8 +426,11 @@ implements Responder, Log {
          throw new IllegalArgumentException("name == null");
       }
 
+      // XXX: In a later version, support a parameter named 'function'
+
       if (_request != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
-         return _request.getParameter(name);
+         String value = _request.getParameter(name);
+         return "".equals(value) ? null : value;
       }
       return null;
    }
