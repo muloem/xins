@@ -103,6 +103,9 @@ XINS/JAVA COMMON LIBRARY
 * Fix @return for method fromStringForOptional(String) in class
   org.xins.types.standard.Properties.
 * Create an implementation of interface IndexedMap.
+* Change SingleEntryMap class, so that the set() method conform to the Map
+  contract. If the new key does not match the old key, then an exception
+  should be thrown.
 
 ______________________________________________________________________________
 LOGDOC
