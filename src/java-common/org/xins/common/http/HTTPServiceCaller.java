@@ -536,7 +536,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Unrecognized kind of exception caught
          } else {
-            Log.log_1110(exception, url, params, duration);
+            Log.log_1052(exception, executor.getThrowingClass(), executor.getThrowingMethod());
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -764,6 +764,18 @@ public final class HTTPServiceCaller extends ServiceCaller {
       private Throwable _exception;
 
       /**
+       * The name of the class that threw the exception. This field is
+       * <code>null</code> if the call was performed successfully.
+       */
+      private String _throwingClass;
+
+      /**
+       * The name of the method that threw the exception. This field is
+       * <code>null</code> if the call was performed successfully.
+       */
+      private String _throwingMethod;
+
+      /**
        * The result from the call. The value of this field is
        * <code>null</code> if the call was unsuccessful or if it was not
        * executed yet.
@@ -814,11 +826,24 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Perform the HTTP call
          try {
-            int    statusCode = client.executeMethod(method);
-            byte[] body       = method.getResponseBody();
+            // Execute call
+            _throwingClass  = client.getClass().getName();
+            _throwingMethod = "executeMethod(" + method.getClass().getName() + ')';
+            int statusCode  = client.executeMethod(method);
+
+            // Get response body
+            _throwingClass  = method.getClass().getName();
+            _throwingMethod = "getResponseBody()";
+            byte[] body     = method.getResponseBody();
 
             // Store the result
-            _result = new HTTPCallResultDataHandler(statusCode, body);
+            _throwingClass  = HTTPCallResultDataHandler.class.getName();
+            _throwingMethod = "<init>(int,byte[])";
+            _result         = new HTTPCallResultDataHandler(statusCode, body);
+
+            // No exception thrown, reset _throwingXXXX fields
+            _throwingClass  = null;
+            _throwingMethod = null;
 
          // If an exception is thrown, store it for processing at later stage
          } catch (Throwable exception) {
@@ -845,11 +870,33 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * Gets the exception if any generated when calling the method.
        *
        * @return
-       *    the invocation exception or <code>null</code> if the call
+       *    the invocation exception or <code>null</code> if the call was
        *    performed successfully.
        */
       private Throwable getException() {
          return _exception;
+      }
+
+      /**
+       * Gets the name of the class that threw the exception.
+       *
+       * @return
+       *    the name of the class that threw the exception or
+       *    <code>null</code> if the call was performed successfully.
+       */
+      private String getThrowingClass() {
+         return _throwingClass;
+      }
+
+      /**
+       * Gets the name of the method that threw the exception.
+       *
+       * @return
+       *    the name of the method that threw the exception or
+       *    <code>null</code> if the call was performed successfully.
+       */
+      private String getThrowingMethod() {
+         return _throwingMethod;
       }
 
       /**
