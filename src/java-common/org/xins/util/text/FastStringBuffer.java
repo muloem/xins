@@ -294,7 +294,7 @@ public class FastStringBuffer extends Object {
     *    the old character value.
     *
     * @throws IndexOutOfBoundsException
-    *    if <code>index &lt; 0 || index &gt;= </code>{@link getLength()}.
+    *    if <code>index &lt; 0 || index &gt;= </code>{@link #getLength()}.
     */
    public char setChar(int index, char newChar)
    throws IndexOutOfBoundsException {
