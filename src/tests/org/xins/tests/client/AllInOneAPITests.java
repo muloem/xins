@@ -162,6 +162,13 @@ public class AllInOneAPITests extends TestCase {
 
       SimpleTypesRequest request = new SimpleTypesRequest();
       try {
+         request.validate();
+         fail("Expected UnacceptableRequestException.");
+      } catch (UnacceptableRequestException exception) {
+         // as expected
+      }
+
+      try {
          _capi.callSimpleTypes(request);
          fail("Expected UnacceptableRequestException.");
       } catch (InvalidRequestException exception) {
