@@ -52,7 +52,8 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>api == null || id == null</code>.
     */
-   public Session(API api, Object id) {
+   public Session(API api, Object id)
+   throws IllegalArgumentException {
       MandatoryArgumentChecker.check("api", api, "id", id);
       _sessionIDType = api.getSessionIDType();
       _id  = id;
