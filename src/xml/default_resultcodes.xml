@@ -5,10 +5,10 @@
 
  $Id$
 
- Default return codes.
+ Default result codes.
 -->
 
-<returncodes rcsversion="$Revision$" rcsdate="$Date$">
+<resultcodes rcsversion="$Revision$" rcsdate="$Date$">
 	<code name="missing_function_name" value="MissingFunctionName" success="false">
 		<description>No function name specified.</description>
 	</code>
@@ -24,4 +24,4 @@
 	<code name="missing_parameters" value="MissingParameters" success="false" onlyIfInputParameters="true">
 		<description>There is at least one mandatory input parameter missing.</description>
 	</code>
-</returncodes>
+</resultcodes>
