@@ -30,14 +30,14 @@ Adapt HTTP service caller to build upon improved service framework:
 [x] Add StatusCodeHTTPCallException (extends HTTPCallException)
 [x] Add HTTPStatusCodeVerifier interface
 [x] Store HTTPStatusCodeVerifier object in HTTPCallRequest
-[ ] Call HTTPStatusCodeVerifier from HTTPServiceCaller
+[x] Call HTTPStatusCodeVerifier from HTTPServiceCaller
 [x] Throw SocketTimeOutCallException when appropriate
 [x] Throw ConnectionRefusedCallException when appropriate
 [x] Throw ConnectionTimeOutCallException when appropriate
 [x] Throw TotalTimeOutCallException when appropriate
 [x] Throw UnexpectedExceptionCallException when appropriate
 [x] Throw IOCallException when appropriate
-[ ] Throw StatusCodeHTTPCallException when appropriate
+[x] Throw StatusCodeHTTPCallException when appropriate
 [x] Add call(TargetDescriptor,HTTPCallRequest) to HTTPServiceCaller
 [x] Add getResult() to HTTPServiceCaller.Result
 [x] Remove getErrorCode() in class HTTPServiceCaller.Result
