@@ -48,7 +48,8 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * <h2>Load-balancing and fail-over</h2>
  *
- * <p>There are 2 ways to perform a XINS call:
+ * <p>There are 2 ways to perform a XINS call using a
+ * <code>XINSServiceCaller</code> instance:
  *
  * <ul>
  *    <li>to a single XINS service, using
@@ -215,7 +216,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * Performs the specified request towards the XINS service. If the call
     * succeeds with one of the targets, then a {@link XINSCallResult} object
     * is returned. Otherwise, if none of the targets could successfully be
-    * called, a {@link XINSCallException} is thrown.
+    * called, a {@link CallException} is thrown.
     *
     * @param request
     *    the call request, not <code>null</code>.
