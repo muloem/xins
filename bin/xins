@@ -10,29 +10,21 @@
 #
 
 # Make sure XINS_HOME is set
-xins_home=${XINS_HOME}
-guessed_xins_home=false
-if [ "${xins_home}a" = "a" ]; then
-	echo "${prog}: ERROR: XINS_HOME not set. Guessing."
-	xins_home=`dirname $0`
-	while [ ! `basename ${xins_home}` = "xins" ]; do
-		xins_home=`dirname ${xins_home}`
-	done
-	if [ "${xins_home}a" = "a" ]; then
-		echo "${prog}: FATAL: XINS_HOME not set and unable to guess."
-		exit 1
-	fi
-	echo "${prog}: INFO: Assuming XINS_HOME is ${xins_home}."
-	guessed_xins_home=true
+if [ "${XINS_HOME}a" = "a" ]; then
+	echo "`basename $0`: ERROR: XINS_HOME not set."
+	exit 1
 fi
 
+# Recognize -version option
 if [ "$1" = "-version" ]; then
-	ant -q -f ${xins_home}/build.xml version
+	ant -q -f ${XINS_HOME}/build.xml version
 	exit 0
 fi
 
-ant -q -f ${xins_home}/src/ant/make-build.xml \
--Dxins_home=${xins_home}
+# Generate the build file
+ant -q -f ${XINS_HOME}/src/ant/make-build.xml -Dxins_home=${XINS_HOME}
 
 # Run Ant against the build file
-ant -f build/build.xml $*
+if [ "$?a" = "0a" ]; then
+	ant -f build/build.xml $*
+fi
