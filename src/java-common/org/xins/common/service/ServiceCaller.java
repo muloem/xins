@@ -17,12 +17,41 @@ import org.xins.common.TimeOutException;
  * Abstraction of a service caller for a TCP-based service. Possible
  * implementations include service callers for HTTP, FTP, JDBC, etc.
  *
+ * <h2>Call configuration</h2>
+ *
+ * <p>Some aspects of a call can be configured using a {@link CallConfig}
+ * object. For example, the <code>CallConfig</code> base class indicates
+ * whether fail-over is unconditionally allowed. Like this, some aspects of
+ * the behaviour of the caller can be tweaked.
+ *
+ * <p>There are different places where a <code>CallConfig</code> can be
+ * applied:
+ *
+ * <ul>
+ *    <li>stored in a <code>ServiceCaller</code>;
+ *    <li>stored in a <code>CallRequest</code>;
+ *    <li>passed with the call method.
+ * </ul>
+ *
+ * <p>First of all, each <code>ServiceCaller</code> instance will have a
+ * fall-back <code>CallConfig</code>.
+ *
+ * <p>Secondly, a {@link CallRequest} instance may have a
+ * <code>CallConfig</code> associated with it as well. If it does, then this
+ * overrides the one on the <code>ServiceCaller</code> instance.
+ *
+ * <p>Finally, a <code>CallConfig</code> can be passed as an argument to the
+ * call method. If it is, then this overrides any other settings.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
 public abstract class ServiceCaller extends Object {
+
+   // TODO: Describe load-balancing and fail-over in class description
+   // FIXME: Implement CallConfig support
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -45,6 +74,8 @@ public abstract class ServiceCaller extends Object {
    /**
     * Constructs a new <code>ServiceCaller</code> object.
     *
+    * <p>A default {@link CallConfig} object will be used.
+    *
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
     *
@@ -53,6 +84,27 @@ public abstract class ServiceCaller extends Object {
     */
    protected ServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
+      this(descriptor, null);
+   }
+
+   /**
+    * Constructs a new <code>ServiceCaller</code> with the specified
+    * <code>CallConfig</code>.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the {@link CallConfig} object, or <code>null</code> if the default
+    *    should be used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   protected ServiceCaller(Descriptor descriptor, CallConfig callConfig)
+   throws IllegalArgumentException {
 
       // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, null);
@@ -60,8 +112,24 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
+      // If no CallConfig is specified, then use a default one
+      if (callConfig == null) {
+         try {
+            callConfig = getDefaultCallConfig();
+         } catch (Throwable t) {
+            // TODO: Log and create message
+            throw new Error(t);
+         }
+
+         if (callConfig == null) {
+            // TODO: Log and create message
+            throw new Error();
+         }
+      }
+
       // Set fields
       _descriptor = descriptor;
+      _callConfig = callConfig;
 
       // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, null);
@@ -77,6 +145,12 @@ public abstract class ServiceCaller extends Object {
     */
    private final Descriptor _descriptor;
 
+   /**
+    * The fall-back call config object for this service caller. Cannot be
+    * <code>null</code>.
+    */
+   private final CallConfig _callConfig;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -90,6 +164,40 @@ public abstract class ServiceCaller extends Object {
     */
    public final Descriptor getDescriptor() {
       return _descriptor;
+   }
+
+   /**
+    * Returns the <code>CallConfig</code> associated with this service caller.
+    *
+    * @return
+    *    the fall-back {@link CallConfig} object for this service caller,
+    *    never <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public final CallConfig getCallConfig() {
+      return _callConfig;
+   }
+
+   /**
+    * Returns a default <code>CallConfig</code> object. This method is called
+    * by the <code>ServiceCaller</code> constructor if no
+    * <code>CallConfig</code> object was given.
+    *
+    * <p>The implementation of this method in class {@link ServiceCaller}
+    * returns a standard {@link CallConfig} object which has unconditional
+    * fail-over disabled.
+    *
+    * <p>Subclasses are free to override this method to return a more suitable
+    * <code>CallConfig</code> instance.
+    *
+    * @return
+    *    a new {@link CallConfig} instance, never <code>null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   protected CallConfig getDefaultCallConfig() {
+      return new CallConfig();
    }
 
    /**
