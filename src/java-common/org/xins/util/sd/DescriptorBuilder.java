@@ -3,6 +3,7 @@
  */
 package org.xins.util.sd;
 
+import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
 
@@ -21,9 +22,25 @@ public final class DescriptorBuilder extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   public static final String DELIMITERS = ",";
+   public static final String SERVICE_DESCRIPTOR_TYPE = "service";
+   public static final String GROUP_DESCRIPTOR_TYPE = "group";
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   private static String[] tokenize(String s) {
+      StringTokenizer tokenizer = new StringTokenizer(s, DELIMITERS);
+      int count = tokenizer.countTokens();
+      String[] tokens = new String[count];
+      for (int i = 0; i < count; i++) {
+         tokens[i] = tokenizer.nextToken().trim();
+      }
+      return tokens;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -70,12 +87,57 @@ public final class DescriptorBuilder extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
 
+      // Get the value of the property
       String value = properties.get(propertyName);
       if (value == null) {
          throw new DescriptorBuilder.Exception("Base property \"" + propertyName + "\" not found.");
       }
 
-      return null; // TODO
+      // Tokenize the value
+      String[] tokens = tokenize(value);
+      int tokenCount = tokens.length;
+      if (tokenCount < 3) {
+         throw new PropertyValueException(propertyName, value, "Expected at least 3 tokens.");
+      }
+
+      // Determine the type
+      String descriptorType = tokens[0];
+
+      // Parse service descriptor
+      if (SERVICE_DESCRIPTOR_TYPE.equals(descriptorType)) {
+         if (tokenCount != 3) {
+            throw new PropertyValueException(propertyName, value, "Expected URL and time-out.");
+         }
+         String url = tokens[1];
+         // TODO: Check URL in TargetDescriptor class, using pattern:
+         //       ^[a-z][a-z0-9]*:\/\/[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*$
+         long timeOut;
+         try {
+            timeOut = Long.parseLong(tokens[2]);
+         } catch (NumberFormatException nfe) {
+            throw new PropertyValueException(propertyName, value, "Unable to parse time-out.");
+         }
+         return new TargetDescriptor(url, timeOut);
+
+      // Parse group descriptor
+      } else if (GROUP_DESCRIPTOR_TYPE.equals(descriptorType)) {
+
+         GroupDescriptor.Type groupType = GroupDescriptor.getType(tokens[1]);
+         if (groupType == null) {
+            throw new PropertyValueException(propertyName, value, "Unrecognized group descriptor type.");
+         }
+
+         int memberCount = tokenCount - 2;
+         Descriptor[] members = new Descriptor[memberCount];
+         for (int i = 0; i < memberCount; i++) {
+            
+         }
+         return new GroupDescriptor(groupType, members);
+
+      // Unrecognized descriptor type
+      } else {
+         throw new PropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + SERVICE_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
+      }
    }
 
 
@@ -91,7 +153,7 @@ public final class DescriptorBuilder extends Object {
     *
     * @since XINS 0.105
     */
-   public static final class Exception extends java.lang.Exception {
+   public static class Exception extends java.lang.Exception {
 
       //----------------------------------------------------------------------
       // Constructor
@@ -106,6 +168,52 @@ public final class DescriptorBuilder extends Object {
        */
       Exception(String message) {
          super(message);
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+   }
+
+   /**
+    * Exception thrown if a service descriptor object could not be built due
+    * to an invalid property value.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.105
+    */
+   public static final class PropertyValueException extends DescriptorBuilder.Exception {
+
+      //----------------------------------------------------------------------
+      // Constructor
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new
+       * <code>DescriptorBuilder.PropertyValueException</code>.
+       *
+       * @param propertyName
+       *    the name of the property, cannot be <code>null</code>.
+       *
+       * @param propertyValue
+       *    the value of the property, cannot be <code>null</code>.
+       *
+       * @param message
+       *    the detail message, can be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>propertyName == null || propertyValue == null</code>.
+       */
+      PropertyValueException(String propertyName, String propertyValue, String message) {
+         super("Property \"" + propertyName.toString() + "\" is set to invalid value \"" + propertyValue.toString() + '"' + (message == null ? "." : (": " + message)));
+         MandatoryArgumentChecker.check("propertyName", propertyName, "propertyValue", propertyValue);
       }
 
 
