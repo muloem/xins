@@ -204,6 +204,16 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns the logger associated with this function.
+    *
+    * @return
+    *    the associated logger, constant, and cannot be <code>null</code>.
+    */
+   final Logger getLogger() {
+      return _log;
+   }
+
+   /**
     * Returns the name of this function.
     *
     * @return
