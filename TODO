@@ -46,11 +46,11 @@ XINS/JAVA SERVER FRAMEWORK
   separated line in a text file.
 * Number all requests and log this number with all or most log messages.
 * Make generated logdoc classes package-private.
-* Create an apart Statistics object that would contain the statistics and
-  the methods to update them.
 * Stop runtime configuration file watch thread when the servlet is disposed.
 * Access control rules: Make default behaviour to deny requests. We should
   then be able to remove log message 4033.
+* Move the logs in the Function#performedCall() method somewhere else
+  and remove this method from Function.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK

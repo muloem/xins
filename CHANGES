@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.162:
 
+* XINS/Java Server Framework:
+  - The statitics which were in Function are now in a separated 
+    FunctionStatistics class. This class has also a method to
+    update the statistics.
+  
 * XINS/Java Common Library:
   - Added class org.xins.logdoc.AbstractLog.
 
