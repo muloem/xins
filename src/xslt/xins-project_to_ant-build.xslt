@@ -31,7 +31,7 @@
 				file="${{xins_home}}/src/css/specdocs/style.css" />
 			</target>
 
-			<target name="specdocs-index" depends="-prepare-specdocs">
+			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
@@ -41,7 +41,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs-apis" depends="-prepare-specdocs">
+			<target name="specdocs-apis" depends="-prepare-specdocs" description="Generates all API overview pages">
 				<style
 				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
@@ -53,7 +53,7 @@
 			</target>
 
 			<xsl:for-each select="api">
-				<target name="specdocs-api-{@name}" depends="-prepare-specdocs">
+				<target name="specdocs-api-{@name}" depends="-prepare-specdocs" description="Generates all specification docs for the '{@name}' API">
 					<dependset>
 						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.fnc" />
 						<srcfilelist   dir="${{project_home}}/{$specsdir}/{@name}"    files="*.typ" />
@@ -85,7 +85,7 @@
 				</target>
 			</xsl:for-each>
 
-			<target name="specdocs-functions" depends="-prepare-specdocs">
+			<target name="specdocs-functions" depends="-prepare-specdocs" description="Generates the specification docs for all functions">
 				<style
 				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
@@ -96,7 +96,7 @@
 				</style>
 			</target>
 
-			<target name="specdocs-types" depends="-prepare-specdocs">
+			<target name="specdocs-types" depends="-prepare-specdocs" description="Generates the specification docs for all types">
 				<style
 				basedir="${{project_home}}/{$specsdir}"
 				destdir="${{project_home}}/build/specdocs"
@@ -107,7 +107,7 @@
 				</style>
 			</target>
 
-			<target name="testforms">
+			<target name="testforms" description="Generates all test forms">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api">
 						<xsl:if test="position() &gt; 1">,</xsl:if>
@@ -118,7 +118,7 @@
 			</target>
 
 			<xsl:for-each select="api">
-				<target name="testforms-{@name}" depends="-prepare-specdocs">
+				<target name="testforms-{@name}" depends="-prepare-specdocs" description="Generates the test forms for the '{@name}' API">
 					<xsl:for-each select="//project/environment">
 						<style
 						basedir="${{project_home}}/{$specsdir}"
@@ -134,9 +134,9 @@
 				</target>
 			</xsl:for-each>
 
-			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types,testforms" />
+			<target name="specdocs" depends="specdocs-index,specdocs-apis,specdocs-functions,specdocs-types,testforms" description="Generates the specification docs for all APIs"/>
 
-			<target name="all" depends="specdocs" />
+			<target name="all" depends="specdocs" description="Generates everything" />
 		</project>
 	</xsl:template>
 </xsl:stylesheet>
