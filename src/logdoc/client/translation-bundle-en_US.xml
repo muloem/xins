@@ -33,11 +33,11 @@
 	<translation entry="2112">Received unsuccessful XINS result (error code <value-of-param name="errorCode" />) while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
 	<translation entry="2113">Call request for function <value-of-param name="function" /> with parameters <value-of-param name="parameters" /> failed completely after <value-of-param name="duration" /> ms.</translation>
 
-	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" /> instead of "result" with namespace (null).</translation>
+	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" format="quoted" /> instead of "result" with namespace (null).</translation>
 	<translation entry="2201">Found output parameter with name nor value.</translation>
 	<translation entry="2202">Found output parameter without name. Value is <value-of-param name="value" format="quoted" />.</translation>
 	<translation entry="2203">Found output parameter without value. Name is <value-of-param name="name" format="quoted" />.</translation>
 	<translation entry="2204">Found output parameter <value-of-param name="name" format="quoted" /> with value <value-of-param name="value" format="quoted" />.</translation>
 	<translation entry="2205">Unable to convert the specified character string to XML: <value-of-param name="detail" />.</translation>
-	<translation entry="2206">Ignoring unrecognized element with type <value-of-param name="type" format="quoted" /> at root level.</translation>
+	<translation entry="2206">Ignoring unrecognized element of type <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" format="quoted" /> at root level.</translation>
 </translation-bundle>

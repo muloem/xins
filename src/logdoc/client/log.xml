@@ -172,7 +172,7 @@
 	<group id="parse" name="XINS call result parsing">
 		<entry id="2200" level="NOTICE">
 			<description>Root element is not "result".</description>
-			<param name="namespaceURI" type="text" nullable="false" />
+			<param name="namespaceURI" type="text" nullable="true" />
 			<param name="localName"    type="text" nullable="false" />
 		</entry>
 		<entry id="2201" level="INFO">
@@ -197,7 +197,8 @@
 		</entry>
 		<entry id="2206" level="INFO">
 			<description>Ignoring unrecognized element at root level.</description>
-			<param name="type" type="text" nullable="false" />
+			<param name="namespaceURI" type="text" nullable="true" />
+			<param name="localName"    type="text" nullable="false" />
 		</entry>
 	</group>
 </log>
