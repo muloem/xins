@@ -8,7 +8,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:include href="package_to_dir.xslt" />
+	<xsl:include href="hungarian.xslt"       />
+	<xsl:include href="package_to_dir.xslt"  />
 	<xsl:include href="package_for_api.xslt" />
 
 	<xsl:output indent="yes" />
@@ -163,7 +164,7 @@
 				<xsl:variable name="javaCombinedDir" select="concat($project_home, '/build/java-combined/', $api)" />
 
 				<target name="classes-api-{$api}" depends="-prepare-classes" description="Compiles the Java classes for the '{$api}' API">
-					<mkdir dir="{$project_home}/build/java-fundament/{$packageAsDir}" />
+					<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 					<style
 					in="{$api_file}"
 					out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
@@ -185,6 +186,27 @@
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 					</style>
+					<xsl:for-each select="document($api_file)/api/type">
+						<xsl:variable name="type" select="@name" />
+						<xsl:variable name="classname">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text">
+									<xsl:value-of select="$type" />
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:variable>
+
+						<style
+						in="{$specsdir}/{$api}/{$type}.typ"
+						out="{$javaDestDir}/{$packageAsDir}/{$classname}.java"
+						style="{$xins_home}/src/xslt/java-fundament/type_to_java.xslt">
+							<param name="project_home" expression="{$project_home}" />
+							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="package"      expression="{$package}"      />
+							<param name="api"          expression="{$api}"          />
+							<param name="api_file"     expression="{$api_file}"     />
+						</style>
+					</xsl:for-each>
 
 					<!-- Copy all .java files to a single directory -->
 					<mkdir dir="{$javaCombinedDir}" />
