@@ -179,6 +179,12 @@ extends Object {
     * @return
     *    the modifiable map of attributes, or <code>null</code> if there are
     *    no attributes.
+    (
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. This method allows
+    *    direct changing of the underlying collection. Also, it interferes
+    *    with the logging of session attribute get and set operations.
+    *    Although this method is deprecated, it still works as described.
     */
    public Map getAttributes() {
 
