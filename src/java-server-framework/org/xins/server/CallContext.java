@@ -531,74 +531,164 @@ implements Responder, Log {
       _state = AFTER_END;
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void trace(Object message) {
       _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void trace(Object message, Throwable t) {
       _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void debug(Object message) {
       _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void debug(Object message, Throwable t) {
       _logger.log(FQCN, Priority.DEBUG, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void info(Object message) {
       _logger.log(FQCN, Priority.INFO, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void info(Object message, Throwable t) {
       _logger.log(FQCN, Priority.INFO, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void warn(Object message) {
       _logger.log(FQCN, Priority.WARN, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void warn(Object message, Throwable t) {
       _logger.log(FQCN, Priority.WARN, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void error(Object message) {
       _logger.log(FQCN, Priority.ERROR, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void error(Object message, Throwable t) {
       _logger.log(FQCN, Priority.ERROR, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void fatal(Object message) {
       _logger.log(FQCN, Priority.FATAL, _logPrefix + message, null);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public void fatal(Object message, Throwable t) {
       _logger.log(FQCN, Priority.FATAL, _logPrefix + message, t);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isDebugEnabled() {
       return _logger.isDebugEnabled();
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isErrorEnabled() {
       return _logger.isEnabledFor(Priority.ERROR);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isFatalEnabled() {
       return _logger.isEnabledFor(Priority.FATAL);
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isInfoEnabled() {
       return _logger.isInfoEnabled();
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isTraceEnabled() {
       return _logger.isDebugEnabled();
    }
 
+   /**
+    * @deprecated
+    *    Deprecated since XINS 0.157 with no replacement. Use <em>logdoc</em>
+    *    instead.
+    */
    public boolean isWarnEnabled() {
       return _logger.isEnabledFor(Priority.WARN);
    }
