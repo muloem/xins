@@ -6,7 +6,7 @@ package org.xins.server;
 import org.apache.log4j.Logger;
 
 /**
- * Class that represents the XINS/Server Framework library.
+ * Class that represents the XINS/Java Server Framework library.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
