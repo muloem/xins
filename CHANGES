@@ -13,8 +13,10 @@ CHANGES INTRODUCED IN XINS 0.193:
     getCause() method in class Throwable, which was introduced in Java 1.4.
 
 * XINS/Java Server Framework:
-  - Outputting log message 1430 instead of 1429 if a cause exception is
-    available. The cause exception will be logged.
+  - Outputting log message 1430 instead of 1429. The passed exception is
+    always the root cause exception, if there is one. The Throwable.getCause()
+    method, introduced in Java 1.4, is used to determine the cause of an
+    exception.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.192:
