@@ -114,7 +114,7 @@
 			<xsl:attribute name="action">
 				<xsl:value-of select="$env_url" />
 			</xsl:attribute>
-			<input name="function" type="hidden">
+			<input name="_function" type="hidden">
 				<xsl:attribute name="value">
 					<xsl:value-of select="$functionName" />
 				</xsl:attribute>

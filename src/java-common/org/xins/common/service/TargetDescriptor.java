@@ -47,6 +47,11 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
+    * The default time-out when no time-out is specified.
+    */
+   private static final int DEFAULT_TIMEOUT = 5000;
+
+   /**
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
@@ -95,7 +100,7 @@ public final class TargetDescriptor extends Descriptor {
     * @throws IllegalArgumentException
     *    if <code>s == null</code>.
     */
-   private int computeCRC32(String s)
+   private static int computeCRC32(String s)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -120,6 +125,26 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a new <code>TargetDescriptor</code> for the specified URL.
+    *
+    * <p>Note: Both the connection time-out and the socket time-out will be
+    * set to the default time-out: 5 seconds.
+    *
+    * @param url
+    *    the URL of the service, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>url == null</code>.
+    *
+    * @throws MalformedURLException
+    *    if the specified URL is malformed.
+    */
+   public TargetDescriptor(String url)
+   throws IllegalArgumentException, MalformedURLException {
+      this(url, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT);
+   }
+
+   /**
     * Constructs a new <code>TargetDescriptor</code> for the specified URL,
     * with the specifed total time-out.
     *
@@ -138,10 +163,6 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @throws MalformedURLException
     *    if the specified URL is malformed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.203.
-    *    Use {@link #TargetDescriptor(String,int,int,int)} instead.
     */
    public TargetDescriptor(String url, int timeOut)
    throws IllegalArgumentException, MalformedURLException {
@@ -177,10 +198,6 @@ public final class TargetDescriptor extends Descriptor {
     *    if the specified URL is malformed.
     *
     * @since XINS 0.195
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.203.
-    *    Use {@link #TargetDescriptor(String,int,int,int)} instead.
     */
    public TargetDescriptor(String url, int timeOut, int connectionTimeOut)
    throws IllegalArgumentException, MalformedURLException {
