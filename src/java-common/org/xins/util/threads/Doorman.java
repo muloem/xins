@@ -42,16 +42,6 @@ public final class Doorman extends Object {
     */
    private static final QueueEntryType WRITE_QUEUE_ENTRY_TYPE = new QueueEntryType("writer");
 
-   /**
-    * The number of instances of this class.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
-    * The lock object for <code>INSTANCE_COUNT</code>.
-    */
-   private static final Object INSTANCE_COUNT_LOCK = new Object();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -79,7 +69,7 @@ public final class Doorman extends Object {
     * @throws IllegalArgumentException
     *    if <code>name == null || queueSize &lt; 0 || maxQueueWaitTime &lt; 0L</code>.
     */
-   public Doorman(String name, int queueSize, long maxQueueWaitTime)
+   public Doorman(String name, boolean strict, int queueSize, long maxQueueWaitTime)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -94,20 +84,17 @@ public final class Doorman extends Object {
          }
       }
 
-      // Determine instance number
-      synchronized (INSTANCE_COUNT_LOCK) {
-         _instanceID = INSTANCE_COUNT++;
-      }
-
       // Initialize other fields
       _name             = name;
+      _asString         = "Doorman for protected area \"" + _name + '"';
+      _strict           = strict;
       _currentActorLock = new Object();
       _currentReaders   = new HashSet();
       _queue            = new Queue(queueSize);
       _maxQueueWaitTime = maxQueueWaitTime;
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Constructed Doorman #" + _instanceID + ", initial queue size is " + queueSize + ", maximum queue wait time is " + maxQueueWaitTime + " ms.");
+         LOG.debug("Constructed " + _asString + ", initial queue size is " + queueSize + ", maximum queue wait time is " + maxQueueWaitTime + " ms, strict thread synchronization checking is " + (strict ? "en" : "dis") + "abled.");
       }
    }
 
@@ -117,9 +104,19 @@ public final class Doorman extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Name of this doorman. Used in log and exception messages .
+    * Name of this doorman. Used in log and exception messages.
     */
    private final String _name;
+
+   /**
+    * Textual presentation of this object. Returned by {@link #toString()}.
+    */
+   private final String _asString;
+
+   /**
+    * Flag that indicates if state checking should be strict or loose.
+    */
+   private final boolean _strict;
 
    /**
     * Maximum wait time in the queue. After reaching this period of time, a
@@ -148,11 +145,6 @@ public final class Doorman extends Object {
     * The queue that contains the waiting readers and/or writers.
     */
    private final Queue _queue;
-
-   /**
-    * Unique numeric identifier for this instance.
-    */
-   private final int _instanceID;
 
 
    //-------------------------------------------------------------------------
@@ -192,16 +184,26 @@ public final class Doorman extends Object {
       Thread reader = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", enterAsReader() called for " + reader.getName() + '.');
+         LOG.debug(_asString + ": enterAsReader() called for " + reader.getName() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          // Check preconditions
          if (_currentWriter == reader) {
-            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already the active writer.");
+            if (_strict) {
+               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already the active writer.");
+            } else {
+               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to enter as a reader while it is already the active writer.");
+               return;
+            }
          } else if (_currentReaders.contains(reader)) {
-            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already an active reader.");
+            if (_strict) {
+               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot enter as a reader since it is already an active reader.");
+            } else {
+               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to enter as a reader while it is already an active reader.");
+               return;
+            }
          }
 
          // If there is a current writer, then we need to wait in the queue
@@ -229,10 +231,16 @@ public final class Doorman extends Object {
       // Wait for read access
       try {
          Thread.sleep(_maxQueueWaitTime);
-         synchronized (_queue) {
-            _queue.remove(reader);
+         synchronized (_currentActorLock) {
+            if (_currentReaders.contains(reader)) {
+               return;
+            }
+
+            synchronized (_queue) {
+               _queue.remove(reader);
+            }
          }
-         throw new QueueTimeOutException();
+         throw new QueueTimeOutException("Unable to add " + reader.getName() + " to queue for " + _asString + '.');
       } catch (InterruptedException exception) {
          // fall through
       }
@@ -257,14 +265,19 @@ public final class Doorman extends Object {
       Thread writer = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", enterAsWriter() called for " + writer.getName() + '.');
+         LOG.debug(_asString + ": enterAsWriter() called for " + writer.getName() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          // Check preconditions
          if (_currentWriter == writer) {
-            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already the active writer.");
+            if (_strict) {
+               throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already the active writer.");
+            } else {
+               LOG.warn("Doorman " + _name + ": " + writer.getName() + " attempts to enter as a writer but it is already the active writer. Ignoring.");
+               return;
+            }
          } else if (_currentReaders.contains(writer)) {
             throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot enter as a writer since it is already an active reader.");
          }
@@ -290,10 +303,16 @@ public final class Doorman extends Object {
       // Wait for write access
       try {
          Thread.sleep(_maxQueueWaitTime);
-         synchronized (_queue) {
-            _queue.remove(writer);
+         synchronized (_currentActorLock) {
+            if (_currentWriter == writer) {
+               return;
+            }
+
+            synchronized (_queue) {
+               _queue.remove(writer);
+            }
          }
-         throw new QueueTimeOutException(); // TODO: Message ?
+         throw new QueueTimeOutException("Unable to add " + writer.getName() + " to queue for " + _asString + '.');
       } catch (InterruptedException exception) {
          // fall through
       }
@@ -313,14 +332,20 @@ public final class Doorman extends Object {
       Thread reader = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", leaveAsReader() called for " + reader.getName() + '.');
+         LOG.debug(_asString + ": leaveAsReader() called for " + reader.getName() + '.');
       }
 
       synchronized (_currentActorLock) {
          boolean readerRemoved = _currentReaders.remove(reader);
 
          if (!readerRemoved) {
-            throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot leave protected area as reader, since it has not entered as a reader.");
+            // TODO: Remove from queue if it is in there?
+            if (_strict) {
+               throw new IllegalStateException("Doorman " + _name + ": " + reader.getName() + " cannot leave protected area as reader, since it has not entered as a reader.");
+            } else {
+               LOG.warn("Doorman " + _name + ": " + reader.getName() + " attempts to leave protected area as reader, but it is not an active reader. Ignoring.");
+               return;
+            }
          }
 
          if (_currentReaders.isEmpty()) {
@@ -355,13 +380,18 @@ public final class Doorman extends Object {
       Thread writer = Thread.currentThread();
 
       if (LOG.isDebugEnabled()) {
-         LOG.debug("Doorman #" + _instanceID + ", leaveAsWriter() called for " + writer.getName() + '.');
+         LOG.debug(_asString + ": leaveAsWriter() called for " + writer.getName() + '.');
       }
 
       synchronized (_currentActorLock) {
 
          if (_currentWriter != writer) {
-            throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot leave protected area as writer, since it has not entered as a writer.");
+            if (_strict) {
+               throw new IllegalStateException("Doorman " + _name + ": " + writer.getName() + " cannot leave protected area as writer, since it has not entered as a writer.");
+            } else {
+               LOG.warn("Doorman " + _name + ": " + writer.getName() + " attempts to leave protected area as writer, but it is not the current writer. Ignoring.");
+               return;
+            }
          }
 
          synchronized (_queue) {
@@ -391,6 +421,10 @@ public final class Doorman extends Object {
             }
          }
       }
+   }
+
+   public String toString() {
+      return _asString;
    }
 
 
