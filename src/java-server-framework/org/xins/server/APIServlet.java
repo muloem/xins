@@ -127,7 +127,7 @@ extends HttpServlet {
          xmlOutputter.pcdata(exception.getClass().getName());
 
          String message = exception.getMessage();
-         if (message != null && !message.length() == 0) {
+         if (message != null && message.length() > 0) {
             xmlOutputter.endTag();
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.message");
@@ -138,7 +138,7 @@ extends HttpServlet {
          PrintWriter printWriter = new PrintWriter(stWriter);
          exception.printStackTrace(printWriter);
          String stackTrace = stWriter.toString();
-         if (stackTrace != null && !message.length() == 0) {
+         if (stackTrace != null && message.length() > 0) {
             xmlOutputter.endTag();
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.stacktrace");
