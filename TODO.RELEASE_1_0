@@ -1,4 +1,12 @@
 List of things to be done for XINS release 1.0:
 
-- Start with empty CHANGES file.
-- Set @since tags on all classes to 1.0.
+* General:
+  - Create a branch called STABLE
+  - First tag on the STABLE branch should be RELEASE_1_0_BETA_1
+  - Start with empty CHANGES file
+  - Set @since tags on all classes to 1.0
+  - Support logdoc for API implementations
+  - Have DTD-based validation in place
+  - Finish refactoring of generated 'fundament classes' for API
+    implementations
+  - Make sure empty directories are not included in the new branch
