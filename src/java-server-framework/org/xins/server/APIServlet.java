@@ -629,19 +629,27 @@ extends HttpServlet {
 
       setState(INITIALIZING_API);
 
+      boolean succeeded = false;
       try {
          _api.init(runtimeProperties);
-      } catch (Throwable e) {
-         setState(API_INITIALIZATION_FAILED);
-         if (e instanceof InvalidPropertyValueException || e instanceof MissingRequiredPropertyException || e instanceof InitializationException) {
-            Library.INIT_LOG.error(null);
-         } else {
-            Library.INIT_LOG.error(null);
-         }
-         return;
-      }
+         succeeded = true;
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_255(exception.getPropertyName());
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_256(exception.getPropertyName(), exception.getPropertyValue());
+      } catch (InitializationException exception) {
+         Log.log_257(exception.getMessage());
+      } catch (Throwable exception) {
+         Log.log_258(exception.getClass().getName(), exception.getMessage());
+      } finally {
 
-      setState(READY);
+         if (succeeded) {
+            setState(READY);
+         } else {
+            setState(API_INITIALIZATION_FAILED);
+            return;
+         }
+      }
    }
 
    /**
@@ -726,17 +734,14 @@ extends HttpServlet {
    }
 
    /**
-    * Handles a request to this servlet.
+    * Handles a request to this servlet. If any of the arguments is
+    * <code>null</code>, then the behaviour of this method is undefined.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
     *
     * @param response
     *    the servlet response, should not be <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the state of this servlet is not <em>ready</em>, or
-    *    if <code>request == null || response == null</code>.
     *
     * @throws IOException
     *    if there is an error error writing to the response output stream.
@@ -746,20 +751,6 @@ extends HttpServlet {
 
       // Determine current time
       long start = System.currentTimeMillis();
-
-      // Check arguments
-      if (request == null || response == null) {
-         String message = "Application server malfunction detected. ";
-         if (request == null && response == null) {
-            message += "Both request and response are null.";
-         } else if (request == null) {
-            message += "Request is null.";
-         } else {
-            message += "Response is null.";
-         }
-         Library.RUNTIME_LOG.error(message);
-         throw new ServletException(message);
-      }
 
       // Check the HTTP request method
       String method = request.getMethod();
