@@ -100,7 +100,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals(2840783247L, checksum(text));
    }
 
-   public void testParameters() throws Exception {
+   public void testPostParameters() throws Exception {
       final int timeOut = 60000;
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
@@ -108,6 +108,23 @@ public class HTTPServiceCallerTests extends TestCase {
       parameters.set("submit", "submit");
       // XXX GET method doesn't work
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, parameters);
+      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", timeOut);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+      HTTPCallResult result = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result.getStatusCode());
+      assertEquals("Incorrect succeeded descriptor.", descriptor, result.getSucceededTarget());
+      assertTrue("Incorrect duration.", result.getDuration() >= 0);
+      String text = result.getString();
+      assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
+   }
+
+   public void testGetParameters() throws Exception {
+      final int timeOut = 60000;
+      BasicPropertyReader parameters = new BasicPropertyReader();
+      parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
+      parameters.set("string", "Janwillem");
+      parameters.set("submit", "submit");
+      HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
       Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", timeOut);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);

@@ -335,6 +335,18 @@ public class Date extends Type {
          return _day;
       }
 
+      public boolean equals(Object obj) {
+         if (!(obj instanceof Value)) {
+            return false;
+         }
+         Value obj2 = (Value) obj;
+         return obj2.getYear() == _year && obj2.getMonthOfYear() == _month && obj2.getDayOfMonth() == _day;
+      }
+      
+      public int hashCode() {
+         return _asString.hashCode();
+      }
+      
       public String toString() {
          return _asString;
       }

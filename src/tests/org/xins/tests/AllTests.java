@@ -50,13 +50,14 @@ public class AllTests extends TestSuite {
       
       suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 
+      suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
       
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
-      suite.addTestSuite(org.xins.tests.server.AllInOneAPITests.class);
+      
       return suite;
    }
 

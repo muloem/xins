@@ -272,7 +272,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                if (key != null) {
 
                   if (query.getLength() > 0) {
-                     query.append(",");
+                     query.append("&");
                   }
                   query.append(URLEncoding.encode(key));
                   query.append("=");

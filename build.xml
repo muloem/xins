@@ -409,6 +409,44 @@
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
+	<target name="-prepare-coverage">
+		<taskdef classpath="c:\java\jcoverage-1.0.5\jcoverage.jar" resource="tasks.properties"/>
+		<instrument todir="build/instrumented-classes/java-client">
+			<fileset dir="build/classes/java-client" includes="**/*.class" />
+		</instrument>
+		<instrument todir="build/instrumented-classes/java-server">
+			<fileset dir="build/classes/java-server" includes="**/*.class" />
+		</instrument>
+		<instrument todir="build/instrumented-classes/java-common">
+			<fileset dir="build/classes/java-common" includes="**/*.class" />
+		</instrument>
+	</target>
+
+	<target name="tests-coverage" depends="classes-tests, -prepare-coverage">
+		<mkdir dir="build/testresults" />
+		<mkdir dir="build/testresults/xml" />
+		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="true">
+			<sysproperty key="user.dir" value="${basedir}"/>
+			<formatter type="xml" />
+			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<classpath>
+				<pathelement location="build/instrumented-classes/java-client" />
+				<pathelement location="build/instrumented-classes/java-server" />
+				<pathelement location="build/instrumented-classes/java-common" />
+				<pathelement location="build/classes/java-client" />
+				<pathelement location="build/classes/java-server" />
+				<pathelement location="build/classes/java-common" />
+				<pathelement location="build/classes/tests" />
+				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
+				<pathelement location="../xins-examples/xins-project/build/classes-api/allinone" />
+				<pathelement location="../xins-examples/xins-project/build/classes-types/allinone" />
+				<pathelement location="c:\java\jcoverage-1.0.5\jcoverage.jar" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</junit>
+		<report srcdir="src/java-common" destdir="build"/>
+	</target>
+
 	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
 		<mkdir dir="build/j2h" />
 		<java2html title="Source X-ref for ${title} ${version}" destination="build/j2h" footer="no">

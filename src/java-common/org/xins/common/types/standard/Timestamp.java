@@ -444,6 +444,20 @@ public class Timestamp extends Type {
          return _second;
       }
 
+      public boolean equals(Object obj) {
+         if (!(obj instanceof Value)) {
+            return false;
+         }
+         Value obj2 = (Value) obj;
+         return obj2.getYear() == _year && obj2.getMonthOfYear() == _month && 
+            obj2.getDayOfMonth() == _day && obj2.getHourOfDay() == _hour &&
+            obj2.getMinuteOfHour() == _minute && obj2.getSecondOfMinute() == _second;
+      }
+      
+      public int hashCode() {
+         return _asString.hashCode();
+      }
+      
       public String toString() {
          return _asString;
       }

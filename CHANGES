@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
 
+* XINS/Java Common Library:
+  - Added the hashCode() and equals() method to the types Date and Timestamp.
+  - Fixed the HTTPServiceCaller did not pass the arguments correctly when using
+    the GET method.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.212:                                (1.0.0-beta5)
 
