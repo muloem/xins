@@ -4,10 +4,10 @@
 package org.xins.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 import javax.servlet.ServletRequest;
+import org.xins.util.MandatoryArgumentChecker;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -34,19 +34,37 @@ implements Responder {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallContext</code> object.
+    * Constructs a new <code>CallContext</code>. The state will be set
+    * to {@link #UNINITIALIZED}.
+    *
+    * <p />Before this object can be used, {@link #reset(ServletRequest)} must
+    * be called.
+    */
+   CallContext() {
+      _state = UNINITIALIZED;
+      _stringWriter = new StringWriter();
+      _xmlOutputter = new XMLOutputter();
+   }
+
+   /**
+    * Constructs a new <code>CallContext</code> and initializes it for the
+    * specified servlet request. The state will be set to
+    * {@link #BEFORE_START}.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
     *
     * @throws IOException
     *    if an I/O error occurs.
     */
-   CallContext(ServletRequest request, PrintWriter out)
-   throws IOException {
+   CallContext(ServletRequest request)
+   throws IllegalArgumentException, IOException {
 
-      _start        = System.currentTimeMillis();
-      _request      = request;
-      _stringWriter = new StringWriter();
-      _xmlOutputter = new XMLOutputter(_stringWriter, "UTF-8");
-      _state        = BEFORE_START;
+      this();
+      reset(request);
    }
 
 
@@ -58,12 +76,12 @@ implements Responder {
     * The start time of the call, as a number of milliseconds since midnight
     * January 1, 1970 UTC.
     */
-   private final long _start;
+   private long _start;
 
    /**
     * The original servlet request.
     */
-   private final ServletRequest _request;
+   private ServletRequest _request;
 
    /**
     * The <code>StringWriter</code> to send the output to. This field is
@@ -107,6 +125,45 @@ implements Responder {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Resets this <code>CallContext</code>. The servlet request will be set to
+    * <code>null</code> and the state will be set to {@link #UNINITIALIZED}.
+    *
+    * <p />Before this object can be used again,
+    * {@link #reset(ServletRequest)} must be called.
+    */
+   void reset() {
+      _request = null;
+      _state   = UNINITIALIZED;
+   }
+
+   /**
+    * Resets this <code>CallContext</code> and configures it for the specified
+    * servlet request. This resets the state to {@link #BEFORE_START}.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   void reset(ServletRequest request)
+   throws IllegalArgumentException, IOException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      _start   = System.currentTimeMillis();
+      _request = request;
+      _state   = BEFORE_START;
+
+      _stringWriter.getBuffer().setLength(0);
+      _xmlOutputter.reset(_stringWriter, "UTF-8");
+   }
 
    /**
     * Returns the start time of the call.

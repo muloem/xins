@@ -145,7 +145,7 @@ implements DefaultReturnCodes {
    final void handleCall(ServletRequest request, PrintWriter out) throws IOException {
 
       // Create a new call context
-      CallContext context = new CallContext(request, out);
+      CallContext context = new CallContext(request);
       // TODO: Fetch CallContext by Thread
 
       StringWriter stringWriter = context.getStringWriter();
