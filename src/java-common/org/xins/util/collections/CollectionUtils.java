@@ -10,7 +10,7 @@ import java.util.Map;
  * Utility functions for collections.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
 public final class CollectionUtils extends Object {
 
