@@ -1,10 +1,16 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.203:
+
+* XINS/Java Common Library:
+  - Replaced the way to find the hostname for the hostname task.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.202:
 
 * XINS/Java Server Framework:
   - Added the optional org.xins.server.output.compatibility property that
     sets the output format compatibility for the returned XML. The APIs that
-    want to keep compatibility with XINS 1.180 or below should set the value
+    want to keep compatibility with XINS 0.180 or below should set the value
     to "alpha".
 
 * XINS/Java Common Library:

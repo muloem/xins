@@ -4,7 +4,10 @@
 package org.xins.common.ant;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -92,15 +95,21 @@ public class HostnameTask extends Task {
          localhost = InetAddress.getLocalHost();
       } catch (UnknownHostException unknownHostException) {
          try {
-            InetAddress[] addresses = InetAddress.getAllByName("localhost");
-            for (int i=0; i < addresses.length; i++) {
-               if (!addresses[i].getHostAddress().equals("127.0.0.1")) {
-                  localhost = addresses[i];
-                  break;
+            Enumeration enuNetworks = NetworkInterface.getNetworkInterfaces();
+            while (localhost == null && enuNetworks.hasMoreElements()) {
+               NetworkInterface network = (NetworkInterface) enuNetworks.nextElement();
+               Enumeration addresses = network.getInetAddresses();
+               while (localhost == null && addresses.hasMoreElements()) {
+                  InetAddress address = (InetAddress) addresses.nextElement();
+                  try {
+                     localhost = address.getLocalHost();
+                  } catch (UnknownHostException unknownHostException2) {
+                     // Ignore maybe another network interface will find it
+                  }
                }
             }
-         } catch (UnknownHostException unknownHostException2) {
-            log("Unable to find any internet address for localhost. Not setting property \"" + _propertyName + "\".");
+         } catch (SocketException socketException) {
+            log("Unable to find any defined network. Not setting property \"" + _propertyName + "\".");
             return;
          }
          if (localhost == null) {
