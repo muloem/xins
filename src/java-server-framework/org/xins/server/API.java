@@ -1037,10 +1037,10 @@ implements DefaultResultCodes {
          Function function = (Function) _functionList.get(i);
          Function.Statistics stats = function.getStatistics();
 
-         long successfulCalls       = stats.getSuccessfulCalls();
-         long unsuccessfulCalls     = stats.getUnsuccessfulCalls();
-         long successfulDuration    = stats.getSuccessfulDuration();
-         long unsuccessfulDuration  = stats.getUnsuccessfulDuration();
+         long successfulCalls      = stats.getSuccessfulCalls();
+         long unsuccessfulCalls    = stats.getUnsuccessfulCalls();
+         long successfulDuration   = stats.getSuccessfulDuration();
+         long unsuccessfulDuration = stats.getUnsuccessfulDuration();
 
          String successfulAverage;
          String successfulMin;
