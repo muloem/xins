@@ -18,6 +18,9 @@ import org.xins.common.text.FastStringBuffer;
  */
 public final class MandatoryArgumentChecker extends Object {
 
+   // TODO: Log 1050 when appropriate, with the correct class name and method
+   //       signature
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
