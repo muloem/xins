@@ -203,9 +203,9 @@
 
 				<h2>Environments</h2>
 				<xsl:choose>
-					<xsl:when test="document($project_file)/project/environment">
+					<xsl:when test="environment">
 						<ul>
-							<xsl:for-each select="document($project_file)/project/environment">
+							<xsl:for-each select="environment">
 								<li>
 									<a>
 										<xsl:attribute name="href">
