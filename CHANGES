@@ -14,8 +14,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
   - Added support for exception-property elements in translation definition
     documents. Had to add a new version of the DTD for this.
 
-* XINS/Java Common:
-  - The diagnotic context identifier is removed after being poped
+* XINS/Java Common Library:
+  - The diagnostic context identifier is removed after being poped
     otherwise the thread stays in memory.
   - Reset some variables after the HTTP call, so that the variables can be
     garbage collected.
@@ -28,7 +28,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 * XINS/Java Server Framework:
   - Applied a lot of small improvements to the APIServlet class in terms of
     documentation, exception handling, logging, etc.
-  - Added the XML calling convention.
+  - Fixed SF.net bug #1091683: Log message 3213 now correctly logs the class
+    name of the Manageable object that is bootstrapping.
+  - Added support for the XINS XML calling convention (_xins-xml).
 
 * Libraries:
   - Updated xmlenc from 0.45 to 0.46.
