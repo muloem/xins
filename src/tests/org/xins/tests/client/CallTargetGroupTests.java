@@ -108,6 +108,76 @@ public class CallTargetGroupTests extends TestCase {
       members.add(afc1);
       members.add(afc2);
       CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+
+      // Test
       assertNotNull(ctg);
+   }
+
+   public void testGetActualFunctionCallers()
+   throws Throwable {
+
+      // Create CallTargetGroup with 2 ActualFunctionCallers
+      List members = new ArrayList();
+      ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL("http://sf.net/1"));
+      ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL("http://sf.net/2"));
+      members.add(afc1);
+      members.add(afc2);
+      CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+
+      // Test
+      List members2 = ctg.getActualFunctionCallers();
+      assertEquals(members, members2);
+   }
+
+   public void testGetActualFunctionCaller_java_lang_String()
+   throws Throwable {
+
+      // Create CallTargetGroup with 2 ActualFunctionCallers
+      List members = new ArrayList();
+      String url1 = "http://sf.net/1";
+      String url2 = "http://sf.net/2";
+      ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL(url1));
+      ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL(url2));
+      members.add(afc1);
+      members.add(afc2);
+      CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+
+      // Test
+      assertEquals(afc1, ctg.getActualFunctionCaller(url1));
+      assertEquals(afc2, ctg.getActualFunctionCaller(url2));
+   }
+
+   public void testGetActualFunctionCaller_long()
+   throws Throwable {
+
+      // Create CallTargetGroup with 2 ActualFunctionCallers
+      List members = new ArrayList();
+      ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL("http://sf.net/1"));
+      ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL("http://sf.net/2"));
+      long crc1 = afc1.getCRC32();
+      long crc2 = afc2.getCRC32();
+      members.add(afc1);
+      members.add(afc2);
+      CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+
+      assertEquals(afc1, ctg.getActualFunctionCaller(crc1));
+      assertEquals(afc2, ctg.getActualFunctionCaller(crc2));
+   }
+
+   public void testGetActualFunctionCallerByCRC32()
+   throws Throwable {
+
+      // Create CallTargetGroup with 2 ActualFunctionCallers
+      List members = new ArrayList();
+      ActualFunctionCaller afc1 = new ActualFunctionCaller(new URL("http://sf.net/1"));
+      ActualFunctionCaller afc2 = new ActualFunctionCaller(new URL("http://sf.net/2"));
+      String crc1 = afc1.getCRC32String();
+      String crc2 = afc2.getCRC32String();
+      members.add(afc1);
+      members.add(afc2);
+      CallTargetGroup ctg = CallTargetGroup.create(CallTargetGroup.RANDOM_TYPE, members);
+
+      assertEquals(afc1, ctg.getActualFunctionCallerByCRC32(crc1));
+      assertEquals(afc2, ctg.getActualFunctionCallerByCRC32(crc2));
    }
 }
