@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import org.apache.commons.httpclient.util.TimeoutController;
 
+import org.xins.common.ExceptionUtils;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -191,6 +192,9 @@ public abstract class ServiceCaller extends Object {
 
       // Check preconditions
       MandatoryArgumentChecker.check("exception", exception);
+
+      // Determine the cause of the exception
+      exception = ExceptionUtils.getRootCause(exception);
 
       // Allow subclass to determine reason
       String reason = reasonForImpl(exception);
