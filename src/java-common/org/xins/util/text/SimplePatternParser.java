@@ -10,9 +10,13 @@ import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
- * Simple pattern parser. A simple pattern is a text string that may contain
- * the wildcard characters <code>'*'</code> (asterisk) and <code>'?'</code>
- * (question mark).
+ * Simple pattern parser.
+ *
+ * <h3>Format</h3>
+ *
+ * <p>A simple pattern is a text string that may contain letters, digits,
+ * underscores, hyphens, dots and the wildcard characters <code>'*'</code>
+ * (asterisk) and <code>'?'</code> (question mark).
  *
  * <p>The location of an asterisk indicates any number of characters is
  * allowed. The location of a question mark indicates exactly one character is
@@ -22,6 +26,8 @@ import org.xins.util.MandatoryArgumentChecker;
  * into a Perl 5 regular expression. Every asterisk is converted to
  * <code>".*"</code>, while every question mark is converted to
  * <code>"."</code>.
+ *
+ * <h3>Examples</h3>
  *
  * <p>Examples of conversions from a simple pattern to a Perl 4 regular
  * expression:
@@ -54,9 +60,9 @@ public class SimplePatternParser extends Object {
    private static final char DOT = '.';
 
    /**
-    * The asterix character.
+    * The asterisk character.
     */
-   private static final char ASTERIX = '*';
+   private static final char ASTERISK = '*';
 
    /**
     * The question mark character.
@@ -75,15 +81,15 @@ public class SimplePatternParser extends Object {
 
    /**
     * The regular expression that is used to replace all occurrences of an
-    * asterix within the pattern by a dot and an asterix.
+    * asterisk within the pattern by a dot and an asterisk.
     */
-   private static final String ASTERIX_REGEXP = "\\*";
+   private static final String ASTERISK_REGEXP = "\\*";
 
    /**
-    * The wilcard (dot and asterix) to which each asterix that appears 
+    * The wilcard (dot and asterisk) to which each asterisk that appears 
     * within the pattern is converted.
     */
-   private static final String PERL5_ASTERIX_WILDCARD = ".*";
+   private static final String PERL5_ASTERISK_WILDCARD = ".*";
 
 
    //-------------------------------------------------------------------------
@@ -161,7 +167,7 @@ public class SimplePatternParser extends Object {
 
    /**
     * Converts the pattern to a Perl 5 Regular Expression. This means that
-    * every asterix is replaced by a dot and an asterix, every question mark
+    * every asterisk is replaced by a dot and an asterisk, every question mark
     * is replaced by a dot, an accent circunflex is prepended to the pattern
     * and a dollar sign is appended to the pattern.
     *
@@ -176,7 +182,7 @@ public class SimplePatternParser extends Object {
     */
    private String convertToPerl5RegularExpression(String pattern)
    throws NullPointerException {
-      pattern = pattern.replaceAll(ASTERIX_REGEXP, PERL5_ASTERIX_WILDCARD);
+      pattern = pattern.replaceAll(ASTERISK_REGEXP, PERL5_ASTERISK_WILDCARD);
       pattern = pattern.replace(QUESTION_MARK, DOT);
       pattern = CIRCUNFLEX + pattern + DOLLAR_SIGN;
       return pattern;
@@ -204,9 +210,9 @@ public class SimplePatternParser extends Object {
       for (int i= 0;i < patternContentsLength && valid == true; i++) {
          char currChar = patternContents[i];
          if (i < patternContentsLength - 1) {
-            if (currChar == ASTERIX || currChar == QUESTION_MARK || currChar == CIRCUNFLEX || currChar == DOLLAR_SIGN) {
+            if (currChar == ASTERISK || currChar == QUESTION_MARK || currChar == CIRCUNFLEX || currChar == DOLLAR_SIGN) {
                char nextChar = patternContents[i + 1];
-               if (nextChar == ASTERIX || nextChar == QUESTION_MARK || nextChar == CIRCUNFLEX || nextChar == DOLLAR_SIGN) {
+               if (nextChar == ASTERISK || nextChar == QUESTION_MARK || nextChar == CIRCUNFLEX || nextChar == DOLLAR_SIGN) {
                   valid = false;
                }
             }
