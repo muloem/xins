@@ -30,16 +30,8 @@ extends Exception {
     * Constructs a new <code>InvalidResponseException</code> with the
     * specified detail message.
     */
-   public InvalidResponseException(String message) {
+   InvalidResponseException(String message) {
       super(message);
-   }
-
-   /**
-    * Constructs a new <code>InvalidResponseException</code> with no detail
-    * message.
-    */
-   public InvalidResponseException() {
-      // empty
    }
 
 
