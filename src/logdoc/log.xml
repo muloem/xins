@@ -536,6 +536,11 @@
 			<param name="code" nullable="true" />
 			<param name="session" type="object" nullable="false" />
 		</entry>
+		<entry id="5018" level="ERROR">
+			<description>Failed to convert session ID to character string.</description>
+			<param name="exceptionClass" nullable="false" />
+			<param name="exceptionMessage" type="true" />
+		</entry>
 	</group>
 
 	<group id="lifespan.shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
