@@ -157,10 +157,13 @@
 
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
-				<!-- This test is not garanted to work with all XSLT processors. -->
 				<xsl:variable name="old_api_file" select="concat($specsdir, '/', $api, '/api.xml')" />
 				<xsl:variable name="api_specsdir">
 					<xsl:choose>
+						<xsl:when test="document($project_file)/project/api[@name = $api]/impl or document($project_file)/project/api[@name = $api]/environments">
+							<xsl:value-of select="concat($project_home, '/apis/', $api, '/spec')" />
+						</xsl:when>
+						<!-- This test is not garanted to work with all XSLT processors. -->
 						<xsl:when test="document($old_api_file)">
 							<xsl:value-of select="concat($specsdir, '/', $api)" />
 						</xsl:when>
@@ -212,7 +215,7 @@
 					</xsl:choose>
 				</xsl:variable>
 
-				<target name="specdocs-{$api}" depends="-prepare-specdocs" description="Generates all specification docs for the '{$api}' API">
+				<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 					<dependset>
 						<srcfilelist   dir="{$api_specsdir}"    files="{$functionIncludes}" />
 						<srcfilelist   dir="{$api_specsdir}"    files="*.typ"         />
@@ -222,6 +225,13 @@
 						<srcfilelist   dir="{$api_specsdir}"    files="api.xml" />
 						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
 					</dependset>
+					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
+						<xsl:variable name="env_dir" select="concat($project_home, '/apis/', $api)" />
+						<dependset>
+							<srcfilelist   dir="{$env_dir}"    files="environments.xml" />
+							<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
+						</dependset>
+					</xsl:if>
 					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 					<xmlvalidate file="{$api_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
@@ -719,6 +729,7 @@
 							<param name="hostname"     expression="${{hostname}}"   />
 							<param name="timestamp"    expression="${{timestamp}}"  />
 						</style>
+						<fixdrlf includes="build/webapps/{$api}/web.xml" eol="unix" />
 						<war
 							webxml="build/webapps/{$api}/web.xml"
 							destfile="build/webapps/{$api}/{$api}.war">

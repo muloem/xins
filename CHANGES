@@ -11,6 +11,15 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Removed the deprecated getCode() method from UnsuccessfulCallException.
   - Extended interface of UnacceptableCallResultException.
 
+* Generated specification documentation:
+  - Fixed regeneration of the test forms if the environments.xml file has
+    changed. This bug has been in XINS since version 0.183.
+
+* Generated build file:
+  - Set the format of the web.xml with Unix line feed.
+  - The index of the APIs are regenerated if needed when executing
+    specdocs-<api>.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.202:
 

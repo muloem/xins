@@ -27,9 +27,10 @@
 		<property file="${xins_home}/.version.properties" />
 		<property name="version" value="${version.major}.${version.minor}${version.suffix}" />
 		<dependset>
-			<srcfileset    file="${xins_home}/.version.properties"         />
-			<srcfileset    dir="${project_home}"    includes="**/api.xml"  />
-			<srcfileset    dir="${project_home}"    includes="**/impl.xml" />
+			<srcfileset    file="${xins_home}/.version.properties"                 />
+			<srcfileset    dir="${project_home}"    includes="**/api.xml"          />
+			<srcfileset    dir="${project_home}"    includes="**/impl.xml"         />
+			<srcfileset    dir="${project_home}"    includes="**/environments.xml" />
 			<targetfileset file="${project_home}/build/build.xml" />
 		</dependset>
 		<style in="${project_home}/xins-project.xml"
