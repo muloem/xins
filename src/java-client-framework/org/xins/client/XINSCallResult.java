@@ -19,6 +19,14 @@ public final class XINSCallResult
 extends Object {
 
    //----------------------------------------------------------------------
+   // Class fields
+   //----------------------------------------------------------------------
+
+   //----------------------------------------------------------------------
+   // Class functions
+   //----------------------------------------------------------------------
+
+   //----------------------------------------------------------------------
    // Constructors
    //----------------------------------------------------------------------
 
@@ -76,14 +84,14 @@ extends Object {
    }
 
 
-   //----------------------------------------------------------------------
+   //-------------------------------------------------------------------------
    // Fields
-   //----------------------------------------------------------------------
+   //-------------------------------------------------------------------------
 
    /**
-    * The original <code>CallRequest</code>. Cannot be <code>null</code>.
+    * The original <code>XINSCallRequest</code>. Cannot be <code>null</code>.
     */
-   private final CallRequest _request;
+   private final XINSCallRequest _request;
 
    /**
     * The <code>TargetDescriptor</code> that was used to produce this
@@ -120,12 +128,12 @@ extends Object {
    //----------------------------------------------------------------------
 
    /**
-    * Returns the original <code>CallRequest</code>.
+    * Returns the original <code>XINSCallRequest</code>.
     *
     * @return
-    *    the {@link CallRequest}, cannot be <code>null</code>.
+    *    the {@link XINSCallRequest}, never <code>null</code>.
     */
-   public CallRequest getRequest() {
+   public XINSCallRequest getRequest() {
       return _request;
    }
 
