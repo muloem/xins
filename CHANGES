@@ -6,12 +6,15 @@ CHANGES INTRODUCED IN XINS 0.202:
   - Changed the getItemByValue() to a static method.
   - Renamed getTimeOut() in class TargetDescriptor to getTotalTimeOut().
     Deprecated the method with the old name.
+  - Added size() method to PropertyReader interface and to all implementing
+    classes.
 
 * XINS/Java Client Framework:
   - CallException and all subclasses now take CallRequest, TargetDescriptor
     and duration arguments. The exception message has been greatly improved.
     The old constructors have been removed, so existing code may need
     altering.
+  - Removed deprecated methods from XINSServiceCaller class.
 
 * Generated specification documentation:
   - Implemented the pcdata-example attribute.
