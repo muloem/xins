@@ -19,6 +19,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     will also try to get the org.xins.server.config from the bootstrap
     properties.
 
+* Logdoc:
+  - The parameter types are now defined in the DTD.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 

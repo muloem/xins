@@ -24,6 +24,6 @@
 <!ELEMENT param EMPTY>
 <!ATTLIST param
           name            NMTOKEN #REQUIRED
-          type            (text | boolean | int8 | int16 | int32 | int64 | object | serializable) #IMPLIED
+          type            (text | boolean | int8 | int16 | int32 | int64 | float32 | float64 | object | serializable) #IMPLIED
           nullable        (true | false) #IMPLIED
 >

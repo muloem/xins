@@ -172,42 +172,11 @@
 							</td>
 							<td>
 								<xsl:choose>
-									<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
+									<xsl:when test="(string-length(@type) &lt; 1)">
 										<xsl:text>text</xsl:text>
 									</xsl:when>
-									<xsl:when test="@type = 'serializable'">
-										<xsl:text>serializable</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'object'">
-										<xsl:text>object</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'float64'">
-										<xsl:text>float64</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'float32'">
-										<xsl:text>float32</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'int64'">
-										<xsl:text>int64</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'int32'">
-										<xsl:text>int32</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'int16'">
-										<xsl:text>int16</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'int8'">
-										<xsl:text>int8</xsl:text>
-									</xsl:when>
-									<xsl:when test="@type = 'boolean'">
-										<xsl:text>boolean</xsl:text>
-									</xsl:when>
 									<xsl:otherwise>
-										<xsl:message terminate="yes">
-											<xsl:text>The type '</xsl:text>
-											<xsl:value-of select="@type" />
-											<xsl:text>' is unknown.</xsl:text>
-										</xsl:message>
+										<xsl:value-of select="@type" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</td>
