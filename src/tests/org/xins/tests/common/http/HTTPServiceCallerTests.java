@@ -68,18 +68,19 @@ public class HTTPServiceCallerTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testXinsURL() throws Exception {
+   public void testW3URL() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
-      Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net");
+      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/TR/2004/REC-xml-20040204/");
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
       assertEquals("Incorrect succeeded descriptor.", descriptor, result.getSucceededTarget());
       assertTrue("Incorrect duration.", result.getDuration() > 0 && result.getDuration() < 5000);
       String text = result.getString();
-      boolean correctStart = text.startsWith("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
-      assertTrue("Incorrect HTML received.", correctStart);
-      assertTrue("Incorrect content.", text.indexOf("XML Interface for Network Services") != -1);
+      boolean correctStart = text.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html lang=\"EN\" xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" /><title>Extensible Markup Language (XML) 1.0 (Third Edition)</title>");
+      assertTrue("Unexpected HTML received.", correctStart);
+
+      // XXX: Test MD5 ?
    }
 
    public void testParameters() throws Exception {
@@ -105,32 +106,26 @@ public class HTTPServiceCallerTests extends TestCase {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
       Descriptor descriptor = new TargetDescriptor("http://xins.sourceforge.net/fakeURL.html");
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
-      try {
-         HTTPCallResult result = caller.call(request);
-         assertEquals("Received incorrect status code.", result.getStatusCode(), 404);
-         assertTrue("Incorrect duration.", result.getDuration() > 0);
-      } catch (CallException exception) {
-         fail("The fake URL should throw a HTTPCallException");
-      }
+
+      HTTPCallResult result = caller.call(request);
+      assertEquals("Received incorrect status code.", result.getStatusCode(), 404);
+      assertTrue("Incorrect duration.", result.getDuration() > 0);
    }
    
    public void testFailOverGet() throws Exception {
-      HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, true, null);
+      HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org");
       TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net");
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
-      try {
-         HTTPCallResult result = caller.call(request);
-         assertEquals("Received incorrect status code.", 200, result.getStatusCode());
-         assertTrue("Incorrect duration.", result.getDuration() > 0);
-         assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
-         String text = result.getString();
-         assertTrue("Incorrect content.", text.indexOf("XML Interface for Network Services") != -1);
-      } catch (CallException exception) {
-         fail("The call throw a CallException");
-      }
+
+      HTTPCallResult result = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result.getStatusCode());
+      assertTrue("Incorrect duration.", result.getDuration() > 0);
+      assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
+      String text = result.getString();
+      assertTrue("Incorrect content.", text.indexOf("XML Interface for Network Services") != -1);
    }
    
    public void testFailOverPost() throws Exception {
@@ -140,15 +135,12 @@ public class HTTPServiceCallerTests extends TestCase {
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
-      try {
-         HTTPCallResult result = caller.call(request);
-         assertEquals("Received incorrect status code.", 200, result.getStatusCode());
-         assertTrue("Incorrect duration.", result.getDuration() > 0);
-         assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
-         String text = result.getString();
-         assertTrue("Incorrect content.", text.indexOf("Pattern test form") != -1);
-      } catch (CallException exception) {
-         fail("The call throw a CallException");
-      }
+
+      HTTPCallResult result = caller.call(request);
+      assertEquals("Received incorrect status code.", 200, result.getStatusCode());
+      assertTrue("Incorrect duration.", result.getDuration() > 0);
+      assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
+      String text = result.getString();
+      assertTrue("Incorrect content.", text.indexOf("Pattern test form") != -1);
    }
 }
