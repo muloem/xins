@@ -100,6 +100,12 @@
 	<translation entry="5010">Sessie aangemaakt met unieke identificatie <value-of-param name="id" /> in <value-of-param name="generationLoops" /> pogingen.</translation>
 	<translation entry="5011">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontavngen sessie-identificatie <value-of-param name="sessionID" /> is niet valide.</translation>
 	<translation entry="5012">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: De ontvangen sessie-identificatie <value-of-param name="sessionID" /> is onbekend.</translation>
+	<translation entry="5013">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="5014">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
+	<translation entry="5015">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Slaagde in <value-of-param name="duration" /> ms.</translation>
+	<translation entry="5016">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
+	<translation entry="5017">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />, sessie <value-of-param name="session" />: Faalde in <value-of-param name="duration" /> ms. Code is <value-of-param name="code" format="quoted" />.</translation>
+	<translation entry="5018">Kan sessie identificatie niet vertalen naar tekst. Reden: <value-of-param name="reason" format="quoted" />.</translation>
 	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
 	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>
