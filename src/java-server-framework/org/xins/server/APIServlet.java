@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.NDC;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
@@ -619,8 +620,6 @@ extends HttpServlet {
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
          Log.log_4012(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, interval);
          _configFileWatcher.start();
-
-         Log.log_4017();
       }
    }
 
@@ -650,6 +649,7 @@ extends HttpServlet {
 
          if (succeeded) {
             setState(READY);
+            Log.log_4018();
          } else {
             setState(API_INITIALIZATION_FAILED);
             return;
@@ -739,8 +739,9 @@ extends HttpServlet {
    }
 
    /**
-    * Handles a request to this servlet. If any of the arguments is
-    * <code>null</code>, then the behaviour of this method is undefined.
+    * Handles a request to this servlet (wrapper method). If any of the
+    * arguments is <code>null</code>, then the behaviour of this method is
+    * undefined.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
@@ -752,7 +753,46 @@ extends HttpServlet {
     *    if there is an error error writing to the response output stream.
     */
    public void service(HttpServletRequest request, HttpServletResponse response)
-   throws ServletException, IOException {
+   throws IOException {
+
+      // Determine context ID
+      String contextID = request.getParameter("_context");
+      boolean haveContextID = (contextID != null) && (contextID.length() > 0);
+      if (haveContextID) {
+         NDC.push(contextID);
+         try {
+            doService(request, response);
+         } finally {
+            NDC.pop();
+         }
+      } else {
+         doService(request, response);
+      }
+
+      // TODO: Document _context somewhere
+   }
+
+   /**
+    * Handles a request to this servlet (implementation method). If any of the
+    * arguments is <code>null</code>, then the behaviour of this method is
+    * undefined.
+    *
+    * <p>This method is called from
+    * {@link #service(HttpServletRequest,HttpServletResponse}. The latter
+    * first determines the <em>nested diagnostic context</em> and then
+    * forwards the call to this method.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws IOException
+    *    if there is an error error writing to the response output stream.
+    */
+   private void doService(HttpServletRequest request, HttpServletResponse response)
+   throws IOException {
 
       // Determine current time
       long start = System.currentTimeMillis();
@@ -970,9 +1010,6 @@ extends HttpServlet {
          // Apply the new runtime settings to the logging subsystem
          PropertyReader runtimeProperties = readRuntimeProperties();
 
-         // Re-initialize the API
-         initAPI(runtimeProperties);
-
          // Determine the interval
          int newInterval = determineConfigReloadInterval(runtimeProperties);
 
@@ -983,7 +1020,8 @@ extends HttpServlet {
             Log.log_4003(_configFile, oldInterval, newInterval);
          }
 
-         Log.log_4018();
+         // Re-initialize the API
+         initAPI(runtimeProperties);
       }
 
       public void fileNotFound() {
