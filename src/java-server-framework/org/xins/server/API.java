@@ -4,6 +4,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Base class for API implementation classes.
@@ -43,11 +44,30 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Initialises this API.
+    *
+    * <p />The implementation of this method in class {@link API} is empty.
+    *
+    * @param properties
+    *    the properties, can be <code>null</code>.
+    *
+    * @throws Throwable
+    *    if the initialisation fails.
+    */
+   public void init(Properties properties)
+   throws Throwable {
+      // empty
+   }
+
+   /**
     * Handles a call to this API.
     *
     * @param context
     *    the context for this call, never <code>null</code>.
+    *
+    * @throws Throwable
+    *    if anything goes wrong.
     */
    protected abstract void handleCall(CallContext context)
-   throws IOException;
+   throws Throwable;
 }
