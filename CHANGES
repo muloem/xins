@@ -22,6 +22,10 @@ CHANGES INTRODUCED IN XINS 0.196:
   - Not logging query string with log message 2011 anymore, since POST is used
     and consequently the query string is always null.
 
+* Build and release process:
+  - CSS stylesheet for the Javadoc generated for XINS now no longer specifies
+    explicit font names.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.195:
 
