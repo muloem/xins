@@ -1,4 +1,17 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.71:
+
+* Added missing Javadoc comments for some private members.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.70:
+
+* Added session-based tag to api.xml. Needs to be set for session-based APIs.
+  A session-based API is defined as an API that contains at least one
+  session-based function.
+  The specification documentation now marks session-based APIs and functions.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.69:
 
 * Fixed 22 Checkstyle warnings.
