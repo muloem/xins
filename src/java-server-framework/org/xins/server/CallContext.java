@@ -372,6 +372,7 @@ implements Responder, Log {
       // Temporarily enter the ERROR state
       _state = ERROR;
 
+      _xmlOutputter.declaration();
       _xmlOutputter.startTag("result");
 
       if (success) {
