@@ -13,6 +13,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.ParseException;
@@ -20,14 +21,18 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * The calling convention previous to XINS 1.0.0.
+ * Calling convention that aims to be compatible with old, pre-1.0, XINS
+ * releases. The output is especially aimed to be fully compatible with XINS
+ * 0.168.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.1.0
  */
-public final class OldStyleCallingConvention implements CallingConvention {
+public final class OldStyleCallingConvention
+extends Object
+implements CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -59,9 +64,10 @@ public final class OldStyleCallingConvention implements CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>OldStyleCallingConvention</code>.
+    * Constructs a new <code>OldStyleCallingConvention</code> object.
     */
    OldStyleCallingConvention() {
+      // empty
    }
 
 
@@ -73,13 +79,21 @@ public final class OldStyleCallingConvention implements CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   public FunctionRequest getFunctionRequest(HttpServletRequest request) throws ParseException {
+   public FunctionRequest getFunctionRequest(HttpServletRequest request)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // XXX: What if invalid URL, e.g. query string ends with percent sign?
+
       ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
       String functionName = parameters.get("_function");
       if (functionName == null || functionName.length() == 0) {
          functionName = parameters.get("function");
       }
       if (functionName == null || functionName.length() == 0) {
+         // TODO: Throw special exception indicating function is unspecified
          throw new ParseException("No function specified.");
       }
 
@@ -95,13 +109,16 @@ public final class OldStyleCallingConvention implements CallingConvention {
       return new FunctionRequest(functionName, functionParams, null);
    }
 
-   public void handleResult(HttpServletResponse response, FunctionResult result) throws IOException {
-      
+   public void handleResult(HttpServletResponse response, FunctionResult result)
+   throws IllegalArgumentException, IOException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("response", response, "result", result);
+
       // Send the XML output to the stream and flush
       PrintWriter out = response.getWriter();
       response.setContentType(RESPONSE_CONTENT_TYPE);
       response.setStatus(HttpServletResponse.SC_OK);
-
       CallResultOutputter.output(out, RESPONSE_ENCODING, result, true);
       out.close();
    }

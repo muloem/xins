@@ -42,6 +42,7 @@ public interface CallingConvention {
     */
    FunctionRequest getFunctionRequest(HttpServletRequest request)
    throws IllegalArgumentException, ParseException;
+   // TODO: Distinguish situation where function is not specified
    // TODO: Replace ParseException with more appropriate exception
    
    /**

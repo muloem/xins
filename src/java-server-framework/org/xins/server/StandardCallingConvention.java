@@ -14,6 +14,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.ParseException;
@@ -21,7 +22,7 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * The standard calling convention.
+ * Standard calling convention.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -60,9 +61,10 @@ public final class StandardCallingConvention implements CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>StandardCallingConvention</code>.
+    * Constructs a new <code>StandardCallingConvention</code> object.
     */
    StandardCallingConvention() {
+      // empty
    }
 
 
@@ -74,10 +76,18 @@ public final class StandardCallingConvention implements CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   public FunctionRequest getFunctionRequest(HttpServletRequest request) throws ParseException {
+   public FunctionRequest getFunctionRequest(HttpServletRequest request)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // XXX: What if invalid URL, e.g. query string ends with percent sign?
+
       ServletRequestPropertyReader parameters = new ServletRequestPropertyReader(request);
       String functionName = parameters.get("_function");
       if (functionName == null || functionName.length() == 0) {
+         // TODO: Throw special exception indicating function is unspecified
          throw new ParseException("No function specified.");
       }
       String dataSectionValue = parameters.get("_data");
@@ -87,6 +97,7 @@ public final class StandardCallingConvention implements CallingConvention {
             ElementParser parser = new ElementParser();
             dataElement = parser.parse(dataSectionValue.getBytes("UTF-8"));
          } catch (UnsupportedEncodingException uee) {
+            // TODO: Throw different kind of exception
             throw new ParseException("Cannot parse the data section.", uee, null);
          }
       }
@@ -103,13 +114,16 @@ public final class StandardCallingConvention implements CallingConvention {
       return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
-   public void handleResult(HttpServletResponse response, FunctionResult result) throws IOException {
-      
+   public void handleResult(HttpServletResponse response, FunctionResult result)
+   throws IllegalArgumentException, IOException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("response", response, "result", result);
+
       // Send the XML output to the stream and flush
       PrintWriter out = response.getWriter();
       response.setContentType(RESPONSE_CONTENT_TYPE);
       response.setStatus(HttpServletResponse.SC_OK);
-
       CallResultOutputter.output(out, RESPONSE_ENCODING, result, false);
       out.close();
    }

@@ -358,6 +358,7 @@ extends HttpServlet {
     */
    private CallingConvention _callingConvention;
 
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -748,6 +749,7 @@ extends HttpServlet {
          String callingConventionName = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
          _callingConvention = createCallingConvention(callingConventionName);
 
+
          //----------------------------------------------------------------//
          //                        Bootstrap API                           //
          //----------------------------------------------------------------//
@@ -1100,20 +1102,21 @@ extends HttpServlet {
    }
 
    /**
-    * Creates the calling convention.
+    * Creates a calling convention based on a name. If the name is not
+    * recognized as identifying a certain calling convention, then the
+    * standard calling convention is returned.
     *
     * @param name
     *    the name of the default calling convention, can be <code>null</code>.
     */
    CallingConvention createCallingConvention(String name) {
-      if (name == null) {
-         return new StandardCallingConvention();
-      }
-      if (name.equals(OLD_STYLE_CALLING_CONVENTION)) {
+
+      // Recognize the old-style calling convention
+      if (OLD_STYLE_CALLING_CONVENTION.equals(name)) {
          return new OldStyleCallingConvention();
       }
 
-      // The default calling convention is returned otherwise
+      // The standard calling convention is returned otherwise
       return new StandardCallingConvention();
    }
 
