@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Collections;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -24,12 +23,14 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
 import org.xins.common.collections.CollectionUtils;
+import org.xins.common.collections.PropertyReader;
 
 import org.xins.common.service.CallFailedException;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
+
 import org.xins.common.text.ParseException;
 
 /**
@@ -60,7 +61,8 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    /**
     * Creates a <code>PostMethod</code> object for the specific base URL,
-    * function name and parameter set.
+    * function name and parameter set. If any of the parameters does not have
+    * both a key and a value, then it is not sent down.
     *
     * @param baseURL
     *    the base URL, cannot be <code>null</code>.
@@ -69,15 +71,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the name of the function, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the parameters to be passed, or <code>null</code>; keys must be
-    *    either <code>null</code> or otherwise {@link String} instances;
-    *    values can be of any class; if
-    *    <code>(key == null
-    *        || key.</code>{@link String#length() length()} &lt; 1
-    *        || value == null
-    *        || value.</code>{@link Object#toString() toString()} == null
-    *        || value.</code>{@link Object#toString() toString()}<code>.</code>{@link String#length() length()}<code> &lt; 1)</code>,
-    *    then this parameter will not be sent down.
+    *    the parameters to be passed, or <code>null</code>;
     *
     * @return
     *    the {@link PostMethod} object, never <code>null</code>.
@@ -85,15 +79,10 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws IllegalArgumentException
     *    if <code>baseURL == null || functionName == null</code>.
     */
-   private static final PostMethod createPostMethod(String baseURL,
-                                                    String functionName,
-                                                    Map    parameters)
+   private static final PostMethod createPostMethod(String         baseURL,
+                                                    String         functionName,
+                                                    PropertyReader parameters)
    throws IllegalArgumentException {
-
-      // TODO: Accept a PropertyReader instead of a Map?
-
-      // TODO: Consider using an IndexedMap, for improved iteration
-      //       performance
 
       // Check preconditions
       MandatoryArgumentChecker.check("baseURL",      baseURL,
@@ -120,11 +109,11 @@ public final class XINSServiceCaller extends ServiceCaller {
       if (paramCount > 0) {
 
          // Loop through them all
-         Iterator keys = parameters.keySet().iterator();
+         Iterator names = parameters.getNames();
          for (int i = 0; i < paramCount; i++) {
 
             // Get the parameter key
-            String key = (String) keys.next();
+            String key = (String) names.next();
 
             // Process key only if it is not null and not an empty string
             if (key != null && key.length() > 0) {
@@ -236,8 +225,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("target", target, "request", request);
 
-      String functionName = request.getFunctionName();
-      Map    parameters   = request.getParameters();
+      String         functionName = request.getFunctionName();
+      PropertyReader parameters   = request.getParameters();
 
       // Construct new HttpClient object
       HttpClient client = new HttpClient();
@@ -375,128 +364,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Calls the XINS service at the specified target.
-    *
-    * @param target
-    *    the service target on which to execute the request, cannot be
-    *    <code>null</code>.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed to that function, or
-    *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class; this {@link Map} may be unmodifiable, since it is
-    *    guaranteed that it will not be changed.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>target == null || functionName == null</code>.
-    *
-    * @throws CallException
-    *    if the call to the specified target failed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.198. Use
-    *    {@link #call(TargetDescriptor,CallRequest)} instead.
-    */
-   public Result call(TargetDescriptor target,
-                      String           functionName,
-                      Map              parameters)
-   throws IllegalArgumentException,
-          CallException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("target",       target,
-                                     "functionName", functionName);
-
-      return call(target, new CallRequest(functionName, parameters));
-   }
-
-   /**
-    * Calls the specified API function with the specified
-    * parameters.
-    *
-    * @param functionName
-    *    the name of the function to be called, not <code>null</code>.
-    *
-    * @param parameters
-    *    the parameters to be passed to that function, or
-    *    <code>null</code>; keys must be {@link String Strings}, values can be
-    *    of any class; this {@link Map} may be unmodifiable, since it is
-    *    guaranteed that it will not be changed.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    *
-    * @throws CallException
-    *    if the call failed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.198. Use {@link #execute(CallRequest)}
-    *    instead.
-    */
-   public Result call(String functionName, Map parameters)
-   throws IllegalArgumentException, CallException {
-      return call(new CallRequest(functionName, parameters));
-   }
-
-   /**
-    * Executes the specified request.
-    *
-    * @param request
-    *    the request to execute, cannot be <code>null</code>.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
-    *
-    * @throws CallException
-    *    if the call failed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.198. Use {@link #execute(CallRequest)}
-    *    instead.
-    */
-   public Result call(CallRequest request)
-   throws IllegalArgumentException, CallException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
-
-      // Attempt to perform the call
-      try {
-         return execute(request);
-
-      // Convert the CallFailedException to a CallException
-      } catch (CallFailedException cfe) {
-
-         // TODO: Improve this code
-         List exceptions = cfe.getExceptions();
-         Throwable ex = (Throwable) exceptions.get(0);
-         if (ex instanceof CallException) {
-            throw (CallException) ex;
-         } else if (ex instanceof RuntimeException) {
-            throw (RuntimeException) ex;
-         } else if (ex instanceof Error) {
-            throw (Error) ex;
-         } else {
-            String message = "Unexpected " + ex.getClass().getName() + " caught while calling execute(" + request.getClass().getName() + ").";
-            Log.log_2010(ex, ex.getClass().getName());
-            throw new Error(message);
-         }
-      }
-   }
-
-   /**
     * Executes the specified request.
     *
     * @param request
@@ -545,20 +412,30 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    protected boolean shouldFailOver(Object subject, Throwable exception) {
 
-      // Connection refusal or connection time-outs
-      if (exception instanceof ConnectionException) {
-         return true;
+      if (exception instanceof CallException) {
 
-      // A non-2xx HTTP status code indicates the request was not handled
-      } else if (exception instanceof UnexpectedHTTPStatusCodeException) {
-         return true;
-
-      // Some XINS error codes indicate the request was not accepted
-      } else if (exception instanceof UnsuccessfulCallException) {
-         String code = ((UnsuccessfulCallException) exception).getErrorCode();
-         if ("_InvalidRequest".equals(code) ||
-             "_DisabledFunction".equals(code)) {
+         // If fail-over is allowed even if request is already sent, then
+         // short-circuit
+         CallException callException = (CallException) exception;
+         if (callException.getRequest().isFailOverAllowed()) {
             return true;
+         }
+
+         // Connection refusal or connection time-outs
+         if (exception instanceof ConnectionException) {
+            return true;
+
+         // A non-2xx HTTP status code indicates the request was not handled
+         } else if (exception instanceof UnexpectedHTTPStatusCodeException) {
+            return true;
+
+         // Some XINS error codes indicate the request was not accepted
+         } else if (exception instanceof UnsuccessfulCallException) {
+            String code = ((UnsuccessfulCallException) exception).getErrorCode();
+            if ("_InvalidRequest".equals(code) ||
+                "_DisabledFunction".equals(code)) {
+               return true;
+            }
          }
       }
 
@@ -609,7 +486,7 @@ public final class XINSServiceCaller extends ServiceCaller {
        */
       public Result(TargetDescriptor target,
                     String           code,
-                    Map              parameters,
+                    PropertyReader   parameters,
                     Element          dataElement)
       throws IllegalArgumentException {
 
@@ -629,9 +506,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Store all the information
          _target      = target;
          _code        = code;
-         _parameters  = parameters == null
-                      ? CollectionUtils.EMPTY_MAP
-                      : Collections.unmodifiableMap(parameters);
+         _parameters  = parameters;
          _dataElement = dataElement;
       }
 
@@ -641,23 +516,21 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * The <code>TargetDescriptor</code> that was used to produced this
+       * The <code>TargetDescriptor</code> that was used to produce this
        * result. Cannot be <code>null</code>.
        */
       private final TargetDescriptor _target;
 
       /**
-       * The result code. This field is <code>null</code> if no code was
-       * returned.
+       * The error code. This field is <code>null</code> if the call was
+       * successful and thus no error code was returned.
        */
       private final String _code;
 
       /**
        * The parameters and their values. This field is never <code>null</code>.
-       * If there are no parameters, then this field will be set to
-       * {@link CollectionUtils#EMPTY_MAP}.
        */
-      private final Map _parameters;
+      private final PropertyReader _parameters;
 
       /**
        * The data element. This field is <code>null</code> if there is no data
@@ -711,17 +584,15 @@ public final class XINSServiceCaller extends ServiceCaller {
       public boolean isSuccess() {
          return getErrorCode() == null;
       }
+
       /**
        * Gets all parameters.
        *
        * @return
-       *    a <code>Map</code> containing all parameters, never
-       *    <code>null</code>; the keys will be the names of the parameters
-       *    ({@link String} objects, cannot be <code>null</code>), the values
-       *    will be the parameter values ({@link String} objects as well, cannot
-       *    be <code>null</code>).
+       *    a {@link PropertyReader} with all parameters, or <code>null</code>
+       *    if there are none.
        */
-      public Map getParameters() {
+      public PropertyReader getParameters() {
          return _parameters;
       }
 
@@ -750,7 +621,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          }
 
          // Otherwise return the parameter value
-         return (String) _parameters.get(name);
+         return _parameters.get(name);
       }
 
       /**

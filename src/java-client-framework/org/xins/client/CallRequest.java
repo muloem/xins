@@ -3,11 +3,11 @@
  */
 package org.xins.client;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collections;
+
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.CollectionUtils;
+
+import org.xins.common.collections.PropertyReader;
 
 /**
  * Abstraction of a XINS request.
@@ -32,28 +32,54 @@ public final class CallRequest extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallRequest</code> object.
+    * Constructs a new <code>CallRequest</code> for the specified function and
+    * parameters, disallowing fail-over.
     *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the input parameters, if any, can be <code>null</code>.
+    *    the input parameters, if any, can be <code>null</code> and should not
+    *    be modifiable.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   public CallRequest(String functionName, Map parameters)
+   public CallRequest(String functionName, PropertyReader parameters)
+   throws IllegalArgumentException {
+      this(functionName, parameters, false);
+   }
+
+   /**
+    * Constructs a new <code>CallRequest</code> for the specified function and
+    * parameters, possibly allowing fail-over.
+    *
+    * @param functionName
+    *    the name of the function to call, cannot be <code>null</code>.
+    *
+    * @param parameters
+    *    the input parameters, if any, can be <code>null</code> and should not
+    *    be modifiable.
+    *
+    * @param failOverAllowed
+    *    flag that indicates whether fail-over is in principle allowed, even
+    *    if the request was already sent to the other end.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    */
+   public CallRequest(String         functionName,
+                      PropertyReader parameters,
+                      boolean        failOverAllowed)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 
-      // Store the function name and copy the Map
-      _functionName = functionName;
-      _parameters   = (parameters != null)
-                    ? Collections.unmodifiableMap(new HashMap(parameters))
-                    : CollectionUtils.EMPTY_MAP;
+      // Store the function name and copy the parameters
+      _functionName    = functionName;
+      _parameters      = parameters; // XXX: Make unmodifiable and change @param?
+      _failOverAllowed = failOverAllowed;
    }
 
 
@@ -69,10 +95,15 @@ public final class CallRequest extends Object {
 
    /**
     * The parameters to pass in the request, and their respective values. This
-    * field is never <code>null</code>. If there are no parameters, then this
-    * field will be set to {@link CollectionUtils#EMPTY_MAP}.
+    * field can be <code>null</code>.
     */
-   private final Map _parameters;
+   private final PropertyReader _parameters;
+
+   /**
+    * Flag that indicates whether fail-over is in principle allowed, even if
+    * the request was already sent to the other end.
+    */
+   private final boolean _failOverAllowed;
 
 
    //-------------------------------------------------------------------------
@@ -93,12 +124,9 @@ public final class CallRequest extends Object {
     * Gets all parameters to pass with the call, with their respective values.
     *
     * @return
-    *    an unmodifiable <code>Map</code> containing all parameters, never
-    *    <code>null</code>; the keys will be the names of the parameters
-    *    ({@link String} objects, cannot be <code>null</code>), the values will be the parameter values
-    *    ({@link String} objects as well, cannot be <code>null</code>).
+    *    the parameters, or <code>null</code> if there are none.
     */
-   public Map getParameters() {
+   public PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -120,7 +148,21 @@ public final class CallRequest extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      // The map can never be null, so call get(key) directly
-      return (String) _parameters.get(name);
+      return _parameters == null ? null : _parameters.get(name);
+   }
+
+   /**
+    * Determines whether fail-over is in principle allowed, even if the
+    * request was already sent to the other end. 
+    *
+    * @return
+    *    <code>true</code> if fail-over is in principle allowed, even if the
+    *    request was already sent to the other end, <code>false</code>
+    *    otherwise.
+    *
+    * @since XINS 0.202
+    */
+   public boolean isFailOverAllowed() {
+      return _failOverAllowed;
    }
 }
