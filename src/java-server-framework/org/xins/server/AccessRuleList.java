@@ -8,10 +8,19 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
 
 /**
- * Access rule list. This class can take a character string to produce an
- * {@link AccessRuleList} object from it.
+ * Access rule list.
  *
- * <h3>Examples</h3>
+ * <h3>Descriptor format</h3>
+ *
+ * <p>An access rule list <em>descriptor</em>, a character string, can be
+ * converted to produce an {@link AccessRuleList} object. A valid descriptor
+ * consists of a list of access rule descriptors (see class
+ * {@link AccessRule}), separated by semi-colon characters (<code>';'</code>).
+ * Optionally, the rules can have any amount of whitespace (space-, tab-,
+ * newline- and carriage return-characters), before and after them. The last
+ * descriptor cannot end with a semi-colon.
+ *
+ * <h3>Descriptor examples</h3>
  *
  * <p>An example of an access rule list descriptor is:
  *
