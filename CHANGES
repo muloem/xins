@@ -59,8 +59,8 @@ CHANGES INTRODUCED IN XINS 0.209:
   - Fixed a layout problem for the element-example.
 
 * Generated build file
-  - Fixed bug 1040507. If the authors.xml file does not exists the owner is
-    not declared in the api.xml.
+  - Fixed SF.net bug #1040507. If the authors.xml file does not exists the
+    owner is not declared in the api.xml.
     This bug has been in XINS since version 0.207.
   - The create-logdoc doesn't generated the domain and default-locale
     attributes in the log.xml file.
