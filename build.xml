@@ -37,7 +37,7 @@
 		<property name="name"                value="${ant.project.name}" />
 		<property name="version.major"       value="0" />
 		<property name="version.minor"       value="71" />
-		<property name="version.suffix"      value="-dev" />
+		<property name="version.suffix"      value="" />
 		<property name="version"             value="${version.major}.${version.minor}${version.suffix}" />
 		<property name="src-package-tarfile" value="${name}-${version}.tar" />
 		<property name="bin-package-tarfile" value="${name}-${version}-bin.tar" />
@@ -503,7 +503,7 @@
 
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
-	<target name="-check-release-version">
+	<target name="-check-release-version" depends="-init-release,-init">
 		<condition property="version.suffix.unset">
 			<equals arg1="${version.suffix}" arg2="" />
 		</condition>
@@ -512,7 +512,6 @@
 
 	<target name="-nodiffs-check" depends="clean">
 		<tempfile destdir="${java.io.tmpdir}" prefix="xins-release-diff." property="diff-file" suffix=".diff" />
-		<echo message="Creating temporary file ${diff-file}" />
 		<cvs command="diff" output="${diff-file}" quiet="true" />
 		<loadfile srcfile="${diff-file}" property="diff-contents" />
 		<condition property="diff-contents-empty">
@@ -524,7 +523,7 @@
 
 	<target
 	name="-pre-release-checks"
-	depends="-init-release,-check-release-version,-nodiffs-check,tests">
+	depends="-check-release-version,-nodiffs-check,tests">
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
