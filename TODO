@@ -44,9 +44,14 @@ XINS/JAVA SERVER FRAMEWORK
 * Consider making ACL-related classes package-private.
 * Log an INFO message if some runtime properties are unused.
 * Implement a _ResetStatistics function.
-* Implement a _DumpStatistics function.
+* Implement a _DumpStatistics function that writes the statistics in a comma
+  separated line in a text file.
 * Number all requests and log this number with all or most log messages.
 * Make generated logdoc classes package-private.
+* If an <output><param> section exists for a function the generation of the
+  implementation should generate the responder.param("...", "TODO");
+* Create an apart Statistics object that would contain the statistics and
+  the methods to update them.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -80,11 +85,13 @@ XINS/JAVA COMMON LIBRARY
 * Add DateType class to represent standard type '_date'. Add Date class to
   represent an actual date and make this the value class for the DateType.
 * Change ExpiryFolder to allow retrieval of slot info.
-* Create SingleEntryMap that contains only a single entry. It should have a
-  constructor SingleEntryMap(Object key, Object value) and perhaps also a
-  method set(Object key, Object value).
+* Create SingleEntryMap that would be a Map that contains only a single entry.
+  It should have a constructor SingleEntryMap(Object key, Object value) 
+  and perhaps also a method set(Object key, Object value).
 * Add functionality to allow the retrieval of property names from a
   PropertyReader for which get(String) has not been called.
+* Create an AbstractPropertyReader that would implements the common parts
+  of the different PropertyReader classes.
 
 ______________________________________________________________________________
 LOGDOC
@@ -94,6 +101,7 @@ LOGDOC
 * Add AbstractLog class that defines getDomain() method.
 * Add org.logdoc package with class LogCentral with method 'void
   registerLog(AbstractLog)' and 'AbstractLog getLogByDomain(String)'.
+* Add the French translation : xins\src\logdoc\translation-bundle-fr_FR.xml
 
 ______________________________________________________________________________
 GENERATED SPECIFICATION DOCUMENTATION
@@ -108,6 +116,7 @@ GENERATED SPECIFICATION DOCUMENTATION
   attribute in the generated file for a function.
 * On specification documentation page for a result code: Have a list of links
   to the functions that specify they may return the result code.
+* Remove the dependency to version controllers.
 
 ______________________________________________________________________________
 GENERATED TEST FORMS
@@ -127,7 +136,7 @@ GENERATED XINS/JAVA SERVER FUNDAMENT CLASSES
 ______________________________________________________________________________
 GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
-* Add a method to the CAPI interface that provides functionality to determine
+* Add a method to the CAPI class that provides functionality to determine
   what XINS version was used to generate the class.
 
 ______________________________________________________________________________
@@ -149,3 +158,12 @@ MISCELLANEOUS
   task would need to be developed for this.
 * Support the Freshmeat.net XML-RPC interface for notification of new
   releases.
+* Add a target all ANT target -> war + specdocs + javadoc-api + javadoc-capi.
+* Move as much as possible tasks from the xins shell scripts to ANT tasks.
+* Refactor documentation.
+* Merge the similar targets in build.xml (java-client, java-server, 
+  -prepare-java-client, -prepare-java-server, -prepare-java-common).
+* Link the javadoc to the correct XINS version on sourceforge.
+* Update the <propertyfile> target to also update all the fields in
+  .version.properties.
+* Add a ANT target that creates given the name an empty XINS project.
