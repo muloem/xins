@@ -341,7 +341,7 @@ $Id$
 						<mkdir dir="build/webapps/{$api}" />
 						<taskdef name="hostname" classname="org.xins.util.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 						<tstamp>
-							<format property="timestamp" pattern="yyyyMMdd_HHmm" />
+							<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
 						</tstamp>
 						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
