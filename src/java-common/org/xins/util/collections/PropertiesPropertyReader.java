@@ -3,6 +3,7 @@
  */
 package org.xins.util.collections;
 
+import java.util.Iterator;
 import java.util.Properties;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -63,5 +64,9 @@ implements PropertyReader {
       MandatoryArgumentChecker.check("name", name);
       Object o = _properties.get(name);
       return (o == null) ? null : (String) o;
+   }
+
+   public Iterator getNames() {
+      return _properties.keySet().iterator();
    }
 }

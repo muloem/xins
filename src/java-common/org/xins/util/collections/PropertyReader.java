@@ -3,6 +3,8 @@
  */
 package org.xins.util.collections;
 
+import java.util.Iterator;
+
 /**
  * Property reader.
  *
@@ -23,5 +25,14 @@ public interface PropertyReader {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   public String get(String name) throws IllegalArgumentException;
+   String get(String name) throws IllegalArgumentException;
+
+   /**
+    * Gets an iterator that iterates over all the property names.
+    *
+    * @return
+    *    the {@link Iterator} that will iterate over all the names, never
+    *    <code>null</code>.
+    */
+   Iterator getNames();
 }
