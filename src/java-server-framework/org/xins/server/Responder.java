@@ -298,16 +298,13 @@ extends ResponderStates, Log {
     * @throws IllegalStateException
     *    if the response output has already started.
     *
-    * @throws IllegalArgumentException
-    *    if <code>resultCode.getSuccess() == true</code>.
-    *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
     * @since XINS 0.29.
     */
    void fail(ResultCode resultCode)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Indicates a failure with the specified message.
@@ -321,16 +318,13 @@ extends ResponderStates, Log {
     * @throws IllegalStateException
     *    if the response output has already started.
     *
-    * @throws IllegalArgumentException
-    *    if <code>resultCode.getSuccess() == true</code>.
-    *
     * @throws InvalidResponseException
     *    if the response is considered invalid.
     *
     * @since XINS 0.29.
     */
    void fail(ResultCode resultCode, String message)
-   throws IllegalArgumentException, IllegalStateException, InvalidResponseException;
+   throws IllegalStateException, InvalidResponseException;
 
    /**
     * Ends the response output. This is done by writing a <code>result</code>
