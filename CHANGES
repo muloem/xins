@@ -1,4 +1,24 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.93:
+
+* XINS/Java Commons Library:
+  - Added logging of expired entries in class ExpiryFolder.
+  - Fixed 4 bugs in class Doorman.
+  - Improved logging in class Doorman.
+  - Allowing strict thread synchronization checking to be enabled or disabled
+    in class Doorman. If disabled, some checks will result in a warning being
+    logged instead of an exception being thrown.
+  - Made class org.xins.util.text.DateConverter Java 1.3-compliant.
+
+* XINS/Java Server Framework:
+  - Fixed API class so it runs under Java 1.3. Needs Java 1.4+ to compile,
+    though.
+  - Fixed queue time-out for the collection of sessions to 5 seconds.
+
+* This release must still be compiled with Java 1.4+, but at runtime this
+  release is compatible with Java 1.3+.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.92:
 
 * Improved stability of Doorman.
@@ -38,6 +58,10 @@ CHANGES INTRODUCED IN XINS 0.89:
 * Printing time stamps in format 'yyyy.MM.dd HH:mm:ss.SS' everywhere. Not
   displaying milliseconds since Epoch anymore. This applies to _GetStatistics
   and to the build time returned by _GetSettings.
+
+* This release must be compiled with Java 1.4+.
+
+* At runtime this release is compatible with Java 1.4+ only.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.88:
