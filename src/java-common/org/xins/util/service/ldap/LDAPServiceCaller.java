@@ -3,6 +3,10 @@
  */
 package org.xins.util.service.ldap;
 
+import java.util.Hashtable;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.InitialDirContext;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.service.CallFailedException;
 import org.xins.util.service.CallResult;
@@ -23,6 +27,22 @@ public final class LDAPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Constant representing the <em>none</em> authentication method.
+    */
+   public static final AuthenticationMethod NO_AUTHENTICATION = new AuthenticationMethod("none");
+
+   /**
+    * Constant representing the <em>simple</em> authentication method.
+    */
+   public static final AuthenticationMethod SIMPLE_AUTHENTICATION = new AuthenticationMethod("simple");
+
+   /**
+    * The initial context factory.
+    */
+   private static final String INITIAL_CONTEXT_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -78,7 +98,14 @@ public final class LDAPServiceCaller extends ServiceCaller {
    public Result call(AuthenticationDetails authenticationDetails,
                       Query                 query)
    throws CallFailedException {
-      CallResult callResult = doCall(new Request(authenticationDetails, query));
+
+      // Construct a Request object
+      Request request = new Request(authenticationDetails, query);
+
+      // Perform the call
+      CallResult callResult = doCall(request);
+
+      // Return the result
       return (Result) callResult.getResult();
    }
 
@@ -89,13 +116,96 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Convert subject to a Request object
       Request request = (Request) subject;
 
+      InitialDirContext context = authenticate(target, request._authenticationDetails);
+
       return null; // TODO
+   }
+
+   private InitialDirContext authenticate(ServiceDescriptor     target,
+                                          AuthenticationDetails authenticationDetails)
+   throws IllegalArgumentException, NamingException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target",                target,
+                                     "authenticationDetails", authenticationDetails);
+
+      // Determine what location to connect to
+      String url = target.getURL();
+
+      // TODO: Time-out
+
+      // Initialize connection settings
+      Hashtable env = new Hashtable();
+      env.put(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY);
+      env.put(Context.PROVIDER_URL,            url);
+      env.put(Context.SECURITY_AUTHENTICATION, authenticationDetails.getMethod().getName());
+      env.put(Context.SECURITY_PRINCIPAL,      authenticationDetails.getPrincipal());
+      env.put(Context.SECURITY_CREDENTIALS,    authenticationDetails.getCredentials());
+
+      // Connect
+      return new InitialDirContext(env);
    }
 
 
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
+
+   /**
+    * LDAP authentication method.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.115
+    */
+   public static final class AuthenticationMethod
+   extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>AuthenticationMethod</code> object.
+       *
+       * @param name
+       *    the name of this authentication method, for example
+       *    <code>"none"</code> or <code>"simple"</code>.
+       */
+      private AuthenticationMethod(String name) {
+         _name = name;
+      }
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The name of this authentication method. Cannot be <code>null</code>.
+       */
+      private final String _name;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Returns the name of this authentication method. For example,
+       * <code>"none"</code> or <code>"simple"</code>.
+       *
+       * @return
+       *    the name of this authentication method, not <code>null</code>.
+       */
+      public String getName() {
+         return _name;
+      }
+
+      public String toString() {
+         return _name;
+      }
+   }
 
    /**
     * LDAP authentication details. Combines authentication method, principal
@@ -115,27 +225,104 @@ public final class LDAPServiceCaller extends ServiceCaller {
 
       /**
        * Constructs a new <code>AuthenticationDetails</code> object.
+       *
+       * @param method
+       *    the authentication method, for example {@link #NO_AUTHENTICATION}
+       *    or {@link #SIMPLE_AUTHENTICATION}, cannot be <code>null</code>.
+       *
+       * @param principal
+       *    the principal, cannot be <code>null</code> unless
+       *    <code>method == </code>{@link #NO_AUTHENTICATION}.
+       *
+       * @param credentials
+       *    the credentials, can be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>method == null
+       *    || (method != NO_AUTHENTICATION &amp;&amp; principal == null)
+       *    || (method == NO_AUTHENTICATION &amp;&amp; principal != null)
+       *    || (method == NO_AUTHENTICATION &amp;&amp; credentials != null)</code>.
        */
-      public AuthenticationDetails(String method,
-                                   String principal,
-                                   String credentials) {
+      public AuthenticationDetails(AuthenticationMethod method,
+                                   String               principal,
+                                   String               credentials) {
+         // Check preconditions
+         if (method == null) {
+            throw new IllegalArgumentException("method == null");
+         } else if (method != NO_AUTHENTICATION && principal == null) {
+            throw new IllegalArgumentException("method != NO_AUTHENTICATION && principal == null");
+         } else if (method == NO_AUTHENTICATION && principal != null) {
+            throw new IllegalArgumentException("method == NO_AUTHENTICATION && principal != null");
+         } else if (method == NO_AUTHENTICATION && credentials != null) {
+            throw new IllegalArgumentException("method == NO_AUTHENTICATION && credentials != null");
+         }
+
+         // Set fields
          _method      = method;
          _principal   = principal;
          _credentials = credentials;
       }
 
+
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
 
-      private final String _method;
+      /**
+       * The authentication method. Cannot be <code>null</code>.
+       */
+      private final AuthenticationMethod _method;
+
+      /**
+       * The principal. Is <code>null</code> if and only if
+       * {@link #_method}<code> == </code>{@link #NO_AUTHENTICATION}.
+       */
       private final String _principal;
+
+      /**
+       * The credentials. Can be <code>null</code>. This field is always
+       * <code>null</code> if
+       * {@link #_method}<code> == </code>{@link #NO_AUTHENTICATION}.
+       */
       private final String _credentials;
 
 
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Returns the authentication method.
+       *
+       * @return
+       *    the authentication method, not <code>null</code>.
+       */
+      public final AuthenticationMethod getMethod() {
+         return _method;
+      }
+
+      /**
+       * Returns the principal. Is <code>null</code> if and only if
+       * {@link #getMethod()}<code> == </code>{@link #NO_AUTHENTICATION}.
+       *
+       * @return
+       *    the principal, possibly <code>null</code>.
+       */
+      public final String getPrincipal() {
+         return _principal;
+      }
+
+      /**
+       * The credentials. Can be <code>null</code>. This field is always
+       * <code>null</code> if
+       * {@link #getMethod()}<code> == </code>{@link #NO_AUTHENTICATION}.
+       *
+       * @return
+       *    the credentials, possibly <code>null</code>.
+       */
+      public final String getCredentials() {
+         return _credentials;
+      }
    }
 
    /**
