@@ -6,7 +6,9 @@ package org.xins.common.collections;
 import java.util.Iterator;
 
 /**
- * Property reader.
+ * Property reader. Object that implement this interface allow read-only
+ * access to a set of property entries. Each entry consists of a name and a
+ * value. Both are {@link String} objects.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -30,11 +32,22 @@ public interface PropertyReader {
    String get(String name) throws IllegalArgumentException;
 
    /**
-    * Gets an iterator that iterates over all the property names.
+    * Gets an iterator that iterates over all the property names. The
+    * {@link Iterator} will return only {@link String} instances.
     *
     * @return
     *    the {@link Iterator} that will iterate over all the names, never
     *    <code>null</code>.
     */
    Iterator getNames();
+
+   /**
+    * Returns the number of entries.
+    *
+    * @return
+    *    the size, always &gt;= 0.
+    *
+    * @since XINS 0.202
+    */
+   int size();
 }

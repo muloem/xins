@@ -78,4 +78,8 @@ implements PropertyReader {
    public Iterator getNames() {
       return new EnumerationIterator(_request.getParameterNames());
    }
+
+   public int size() {
+      return _request.getParameterMap().size();
+   }
 }

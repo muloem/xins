@@ -65,6 +65,10 @@ implements PropertyReader {
       return _properties.keySet().iterator();
    }
 
+   public int size() {
+      return _properties.size();
+   }
+
    /**
     * Returns the <code>Map</code> that contains the properties.
     *

@@ -3,6 +3,7 @@
  */
 package org.xins.common.servlet;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
@@ -65,6 +66,12 @@ implements PropertyReader {
     */
    private final ServletConfig _servletConfig;
 
+   /**
+    * The number of properties. This field is lazily initialized by
+    * {@link #size()}.
+    */
+   private int _size;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -77,5 +84,19 @@ implements PropertyReader {
 
    public Iterator getNames() {
       return new EnumerationIterator(_servletConfig.getInitParameterNames());
+   }
+
+   public int size() {
+      if (_size < 0) {
+         int size = 0;
+         Enumeration e = _servletConfig.getInitParameterNames();
+         while (e.hasMoreElements()) {
+            e.nextElement();
+            size++;
+         }
+         _size = size;
+      }
+
+      return _size;
    }
 }
