@@ -166,6 +166,8 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
+    *
+    * @since XINS 1.1.0
     */
    public XINSServiceCaller(Descriptor descriptor, HTTPMethod httpMethod)
    throws IllegalArgumentException {
