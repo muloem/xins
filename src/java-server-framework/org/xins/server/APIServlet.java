@@ -32,6 +32,11 @@ implements Servlet {
    //-------------------------------------------------------------------------
 
    /**
+    * The logger used by this servlet. This field is never <code>null</code>.
+    */
+   private static final  Logger LOG = Logger.getLogger(APIServlet.class.getName());
+
+   /**
     * Constant indicating the <em>uninitialized</em> state. See
     * {@link #_state}.
     */
@@ -102,12 +107,6 @@ implements Servlet {
     */
    private API _api;
 
-   /**
-    * The logger used by this servlet. This field is initialized by
-    * {@link #init(ServletConfig)} and set to a non-<code>null</code> value.
-    */
-   private Logger _log;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -138,19 +137,15 @@ implements Servlet {
 
       // Initialize Log4J
       boolean setProperties = configureLogger(settings);
-      _log = Logger.getLogger(getClass().getName());
-      if (_log == null) {
-         throw new ServletException("Unable to initialize logger. Logger.getLogger(String) returned null.");
-      }
 
       // Log startup
-      if (_log.isDebugEnabled()) {
-         _log.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("XINS/Java Server Framework " + org.xins.server.Library.getVersion() + " is initializing.");
       }
 
       // Warn if there were no Log4J initialization settings
       if (setProperties) {
-         _log.warn("No initialization settings found for Log4J, using fallback defaults.");
+         LOG.warn("No initialization settings found for Log4J, using fallback defaults.");
       }
 
       // Get the API class
@@ -159,7 +154,7 @@ implements Servlet {
          apiClass = Class.forName(apiClassName);
       } catch (Exception e) {
          String message = "Failed to load API class: \"" + apiClassName + "\".";
-         _log.error(message, e);
+         LOG.error(message, e);
          throw new ServletException(message);
       }
 
@@ -169,7 +164,7 @@ implements Servlet {
          singletonField = apiClass.getDeclaredField("SINGLETON");
       } catch (Exception e) {
          String message = "Failed to lookup class field SINGLETON in API class \"" + apiClassName + "\".";
-         _log.error(message, e);
+         LOG.error(message, e);
          throw new ServletException(message);
       }
 
@@ -178,22 +173,26 @@ implements Servlet {
          _api = (API) singletonField.get(null);
       } catch (Exception e) {
          String message = "Failed to get value of SINGLETON field of API class \"" + apiClassName + "\".";
-         _log.error(message, e);
+         LOG.error(message, e);
          throw new ServletException(message);
       }
-      _log.debug("Obtained API instance of class: \"" + apiClassName + "\".");
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("Obtained API instance of class: \"" + apiClassName + "\".");
+      }
 
       // Initialize the API
       try {
-         _log.debug("Initializing API.");
+         if (LOG.isDebugEnabled()) {
+            LOG.debug("Initializing API.");
+         }
          _api.init(settings);
       } catch (Throwable e) {
          String message = "Failed to initialize API.";
-         _log.error(message, e);
+         LOG.error(message, e);
          throw new ServletException(message);
       }
 
-      _log.info("XINS/Java Server Framework is initialized.");
+      LOG.info("XINS/Java Server Framework is initialized.");
 
       _state = READY;
    }
@@ -220,20 +219,19 @@ implements Servlet {
       // Check preconditions
       MandatoryArgumentChecker.check("settings", settings);
 
-      // TODO: Take a better approach to checking if Log4J is initialized
-
-      // Check if Log4J is already initialized
-      String value = settings.getProperty("log4j.rootCategory");
-      boolean setProperties = (value == null || "".equals(value));
-      if (setProperties) {
-         settings.setProperty("log4j.rootCategory",                              "DEBUG, console");
-         settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-         settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-         settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %-5p - %m%n");
-      }
-
       // Perform the actual initialization of the logger
       PropertyConfigurator.configure(settings);
+
+      // Check if Log4J is already initialized
+      boolean setProperties = ! LOG.getAllAppenders().hasMoreElements();
+      if (setProperties) {
+         settings.setProperty("log4j.rootCategory",            "DEBUG, console");
+         settings.setProperty("log4j.appender.console",        "org.apache.log4j.ConsoleAppender");
+         settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.SimpleLayout");
+
+         // Perform the actual initialization of the logger
+         PropertyConfigurator.configure(settings);
+      }
 
       return setProperties;
    }
@@ -279,15 +277,15 @@ implements Servlet {
    }
 
    public void destroy() {
-      if (_log != null) {
-         _log.debug("XINS/Java Server Framework shutdown initiated.");
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("XINS/Java Server Framework shutdown initiated.");
       }
 
       synchronized (_stateLock) {
          _state = DISPOSING;
          _api.destroy();
-         if (_log != null) {
-            _log.info("XINS/Java Server Framework shutdown completed.");
+         if (LOG != null) {
+            LOG.info("XINS/Java Server Framework shutdown completed.");
          }
          _state = DISPOSED;
       }
