@@ -11,7 +11,7 @@
 
 # Make sure XINS_HOME is set
 if [ "${XINS_HOME}" = "" ]; then
-	echo "`basename $0`: ERROR: XINS_HOME not set."
+	echo "`basename $0`: FATAL: XINS_HOME not set."
 	exit 1
 fi
 
@@ -21,5 +21,5 @@ if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
 	exit 0
 fi
 
-# Generate the build file and run it
+# Generate the Ant build file and execute it
 ant -lib ${XINS_HOME}/lib -f ${XINS_HOME}/src/ant/bootstrap.xml -Dxins_home="${XINS_HOME}" -Dpwd="`pwd`" -Dargs="$*"
