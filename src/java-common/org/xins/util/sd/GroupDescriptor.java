@@ -19,6 +19,17 @@ public abstract class GroupDescriptor extends Descriptor {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The <em>random</em> group type.
+    */
+   public static final Type RANDOM_TYPE  = new Type("random");
+
+   /**
+    * The <em>ordered</em> group type.
+    */
+   public static final Type ORDERED_TYPE = new Type("ordered");
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -93,5 +104,54 @@ public abstract class GroupDescriptor extends Descriptor {
       Descriptor[] array = new Descriptor[count];
       System.arraycopy(_members, 0, array, 0, count);
       return array;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Type of a group.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    *
+    * @since XINS 0.105
+    */
+   public static final class Type extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Type</code> with the specified description.
+       *
+       * @param description
+       *    the description for this type.
+       */
+      private Type(String description) {
+         _description = description;
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The description for this type.
+       */
+      private final String _description;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public String toString() {
+         return _description;
+      }
    }
 }
