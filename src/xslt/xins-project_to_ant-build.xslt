@@ -61,46 +61,54 @@
 				<delete dir="{$builddir}" />
 			</target>
 
-			<target name="version" description="Shows XINS version used.">
-				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
+			<target name="version" description="Prints current versions of Java, Ant and XINS">
+				<ant
+				antfile="build.xml"
+				dir="{$xins_home}"
+				target="version"
+				inheritall="false" />
+				<echo>
+					<xsl:text>
+This build file was generated with XINS </xsl:text>
+					<xsl:value-of select="$xins_version" />
+					<xsl:text>.</xsl:text>
+				</echo>
 			</target>
 
-			<target name="help" description="Shows the commands and APIs.">
-				<ant antfile="build.xml" dir="{$xins_home}" target="version"/>
-				<echo message="" />
-				<echo message="Possible targets:" />
-				<echo message="" />
-				<echo message="war-&lt;api&gt;           Creates the WAR for the API." />
-				<echo message="specdocs-&lt;api&gt;      Generates all specification docs for the API." />
-				<echo message="javadoc-api-&lt;api&gt;   Generates Javadoc API docs for the API." />
-				<echo message="server-&lt;api&gt;        Generates the war file, the Javadoc API docs for the server side and the specdocs for the API." />
-				<echo message="jar-&lt;api&gt;           Generates and compiles the Java classes for the client-side API." />
-				<echo message="javadoc-capi-&lt;api&gt;  Generates Javadoc API docs for the client-side API." />
-				<echo message="client-&lt;api&gt;        Generates the Javadoc API docs for the client side and the client JAR file for the API." />
-				<echo message="clean-&lt;api&gt;         Cleans everything for the API." />
-				<echo message="rebuild-&lt;api&gt;       Regenerates everything for the API." />
-				<echo message="all-&lt;api&gt;           Generates everything for the API." />
-				<echo message="" />
-				<echo message="all                 Generates everything." />
-				<echo message="clean               Removes all generated files." />
-				<echo message="specdocs            Generates all specification docs." />
-				<echo message="wars                Creates the WARs for all APIs." />
-				<echo message="capis               Generates all CAPI JAR files." />
-				<echo message="" />
-				<echo message="version             Prints the version of XINS." />
-				<echo message="help                Prints this message." />
-				<echo message="" />
-				<echo message="create-api          Generates a new api specification file." />
-				<echo message="create-function     Generates a new function specification file." />
-				<echo message="create-rcd          Generates a new result code specification file." />
-				<echo message="create-type         Generates a new type specification file." />
-				<echo message="" />
-				<echo message="Possible APIs:" />
-				<echo message="" />
+			<target name="help" depends="version" description="Shows the supported commands.">
+				<echo><![CDATA[Generic targets:
+- version             Prints the version of XINS.
+- help                Prints this message.
+- all                 Generates everything.
+- clean               Removes all generated files.
+- specdocs            Generates all specification docs.
+- wars                Generates all WAR files.
+- capis               Generates all CAPI JAR files.
+
+The following commands assist in authoring specifications:
+- create-api          Generates a new api specification file.
+- create-function     Generates a new function specification file.
+- create-rcd          Generates a new result code specification file.
+- create-type         Generates a new type specification file.
+
+The following targets are specific for a single API, replace <api> with the
+name of an existing API:
+- war-<api>           Creates the WAR file for the API.
+- specdocs-<api>      Generates all specification docs for the API.
+- javadoc-api-<api>   Generates Javadoc for the API implementation (server).
+- server-<api>        Generates the WAR file, Javadoc API docs for the server side and the specdocs for the API.
+- jar-<api>           Generates and compiles the CAPI classes.
+- javadoc-capi-<api>  Generates Javadoc docs for the CAPI classes (client).
+- client-<api>        Generates the CAPI JAR file and corresponding Javadoc.
+- clean-<api>         Cleans everything for the API.
+- rebuild-<api>       Regenerates everything for the API.
+- all-<api>           Generates everything for the API.
+
+APIs in this project are:
+]]></echo>
 				<echo><xsl:for-each select="api">
-						<xsl:text>"</xsl:text>
+						<xsl:text>- </xsl:text>
 						<xsl:value-of select="@name" />
-						<xsl:text>" </xsl:text>
 					</xsl:for-each>
 				</echo>
 			</target>
