@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.106:
 * XINS/Java Common Library:
   - Added class Properties to represent new type _properties.
   - Added class PropertiesPropertyReader.
+  - Added fast URL encoding/decoding functions in new class
+    org.xins.util.net.URLEncoding.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.105:
