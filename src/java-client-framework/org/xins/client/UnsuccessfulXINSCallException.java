@@ -13,12 +13,15 @@ import org.xins.common.service.TargetDescriptor;
 /**
  * Exception that indicates that a result code was returned by the API call.
  *
+ * <p><em>Since XINS 1.1.0, this class is no longer <code>final</code>.</em>.
+ * However, all methods still are.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
-public final class UnsuccessfulXINSCallException
+public class UnsuccessfulXINSCallException
 extends XINSCallException {
 
    //-------------------------------------------------------------------------
@@ -32,6 +35,33 @@ extends XINSCallException {
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>UnsuccessfulXINSCallException</code> based on
+    * another <code>UnsuccessfulXINSCallException</code>.
+    *
+    * @param exception
+    *    the <code>UnsuccessfulXINSCallException</code> to base this one on,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>exception == null</code>.
+    */
+   UnsuccessfulXINSCallException(UnsuccessfulXINSCallException exception)
+   throws IllegalArgumentException {
+      super("Unsuccessful XINS call result",
+            (XINSCallRequest) exception.getRequest(),
+            exception.getTarget(),
+            exception.getDuration(),
+            exception.getDetail(),
+            exception);
+
+      // XXX: What about next/previous?
+
+      _errorCode   = exception.getErrorCode();
+      _parameters  = exception.getParameters();
+      _dataElement = exception.getDataElement();
+   }
 
    /**
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
@@ -64,7 +94,7 @@ extends XINSCallException {
    }
 
    /**
-    * Constructs a new <code>Unsuccessful</code> based on a
+    * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
     * <code>XINSCallResultData</code> instance.
     *
     * @param request
@@ -143,7 +173,7 @@ extends XINSCallException {
     * @return
     *    the error code, never <code>null</code>.
     */
-   public String getErrorCode() {
+   public final String getErrorCode() {
       return _errorCode;
    }
 
@@ -154,7 +184,7 @@ extends XINSCallException {
     *    a {@link PropertyReader} containing all parameters, or
     *    <code>null</code> if there are none.
     */
-   public PropertyReader getParameters() {
+   public final PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -170,7 +200,7 @@ extends XINSCallException {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   public String getParameter(String name)
+   public final String getParameter(String name)
    throws IllegalArgumentException {
       return _parameters.get(name);
    }
@@ -181,7 +211,7 @@ extends XINSCallException {
     * @return
     *    the extra data as a {@link DataElement}, can be <code>null</code>;
     */
-   public DataElement getDataElement() {
+   public final DataElement getDataElement() {
       return _dataElement;
    }
 }
