@@ -169,8 +169,6 @@ MISCELLANEOUS
 * Merge the similar targets in build.xml (java-client, java-server, 
   -prepare-java-client, -prepare-java-server, -prepare-java-common).
 * Link the javadoc to the correct XINS version on sourceforge.
-* Update the <propertyfile> target to also update all the fields in
-  .version.properties.
 * Add a ANT target that creates given the name an empty XINS project.
 * xslt & xml files should contain a description in their header.
 * The ANT build file should be regenerated only if a source file have changed.

@@ -191,42 +191,24 @@
 	</target>
 
 	<target name="java-client" depends="java-common,-prepare-java-client" description="Compiles the XINS/Java client framework">
-		<mkdir dir="build/classes/java-client" />
-		<javac
-		srcdir="build/src/java-client-framework"
-		destdir="build/classes/java-client"
-		debug="${javac.debug}"
-		deprecation="${javac.deprecation}"
-		optimize="${javac.optimize}"
-		target="${javac.targetvm}">
-			<classpath>
-				<pathelement path="build/classes/java-common" />
-				<fileset dir="depends/compile"             includes="*.jar" />
-				<fileset dir="depends/compile_and_runtime" includes="*.jar" />
-			</classpath>
-		</javac>
-		<manifest file="build/MANIFEST.MF">
-			<attribute name="Class-Path" value="xins-common.jar" />
-			<section name="xins-client">
-				<attribute name="Specification-Title"    value="XINS/Java Client Framework" />
-				<attribute name="Specification-Version"  value="${version}" />
-				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="XINS/Java Client Framework" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Implementation-Vendor"  value="${vendor}"  />
-			</section>
-		</manifest>
-		<jar
-		jarfile="build/xins-client.jar"
-		basedir="build/classes/java-client"
-		manifest="build/MANIFEST.MF" />
+		<antcall target="-build-framework">
+			<param name="side" value="client"/>
+			<param name="type" value="Client"/>
+		</antcall>
 	</target>
-
+	
 	<target name="java-server" depends="java-common,-prepare-java-server" description="Compiles the XINS/Java server framework">
-		<mkdir dir="build/classes/java-server" />
+		<antcall target="-build-framework">
+			<param name="side" value="server"/>
+			<param name="type" value="Server"/>
+		</antcall>
+	</target>
+	
+	<target name="-build-framework">
+		<mkdir dir="build/classes/java-${side}" />
 		<javac
-		srcdir="build/src/java-server-framework"
-		destdir="build/classes/java-server"
+		srcdir="build/src/java-${side}-framework"
+		destdir="build/classes/java-${side}"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
@@ -239,22 +221,22 @@
 		</javac>
 		<manifest file="build/MANIFEST.MF">
 			<attribute name="Class-Path" value="xins-common.jar" />
-			<section name="xins-server">
-				<attribute name="Specification-Title"    value="XINS/Java Server Framework" />
+			<section name="xins-${side}">
+				<attribute name="Specification-Title"    value="XINS/Java ${type} Framework" />
 				<attribute name="Specification-Version"  value="${version}" />
 				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="XINS/Java Server Framework" />
+				<attribute name="Implementation-Title"   value="XINS/Java ${type} Framework" />
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Implementation-Vendor"  value="${vendor}"  />
 			</section>
 		</manifest>
 		<jar
-		jarfile="build/xins-server.jar"
-		basedir="build/classes/java-server"
+		jarfile="build/xins-${side}.jar"
+		basedir="build/classes/java-${side}"
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="java" depends="java-common,java-client,java-server" />
+	<target name="java" depends="java-common,java-client,java-server" description="Compiles the XINS/Java java code (common, server and client)"/>
 
 	<target name="-prepare-logdoc" depends="-prepare">
 		<style
@@ -558,9 +540,11 @@
 				<include name="src/config/**/*"                />
 				<include name="src/css/**/*"                   />
 				<include name="src/demos/**/*"                 />
+				<include name="src/dtd/**/*"                   />
 				<include name="src/java-client-framework/**/*" />
 				<include name="src/java-common/**/*"           />
 				<include name="src/java-server-framework/**/*" />
+				<include name="src/logdoc/**/*"                   />
 				<include name="src/package-lists/**/*"         />
 				<include name="src/xml/**/*"                   />
 				<include name="src/xslt/**/*"                  />
@@ -676,8 +660,9 @@
 	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-jars,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc"
 	description="Performs a release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
-			<entry key="version.minor" type="int" operation="+" value="1"    />
-			<entry key="version.suffix"           operation="=" value="-dev" />
+			<entry key="version.minor"      type="int" operation="+" value="1"      />
+			<entry key="version.prev.minor" type="int" operation="+" value="1" />
+			<entry key="version.suffix"                operation="=" value="-dev"   />
 		</propertyfile>
 		<cvs failonerror="true">
 			<commandline>
