@@ -212,8 +212,8 @@ implements DefaultResultCodes {
     *    the start time of the call, as milliseconds since midnight January 1,
     *    1970.
     *
-    * @param parameters
-    *    the parameters of the request, never <code>null</code>.
+    * @param functionRequest
+    *    the request, never <code>null</code>.
     *
     * @param ip
     *    the IP address of the requester, never <code>null</code>.
@@ -224,7 +224,9 @@ implements DefaultResultCodes {
     * @throws IllegalStateException
     *    if this object is currently not initialized.
     */
-   FunctionResult handleCall(long start, FunctionRequest functionRequest, String ip)
+   FunctionResult handleCall(long            start,
+                             FunctionRequest functionRequest,
+                             String          ip)
    throws IllegalStateException {
 
       // Check state first
@@ -306,8 +308,8 @@ implements DefaultResultCodes {
     * {@link RuntimeException}. If it does, then that should be considered a
     * serious bug.
     *
-    * @param parameters
-    *    the parameters of the request, should not be <code>null</code>.
+    * @param functionRequest
+    *    the request, should not be <code>null</code>.
     *
     * @param ip
     *    the ip of the requester, should not be <code>null</code>.

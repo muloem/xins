@@ -38,8 +38,8 @@ public final class CallContext {
     * Constructs a new <code>CallContext</code> and configures it for the
     * specified request.
     *
-    * @param parameters
-    *    the parameters of the request, never <code>null</code>.
+    * @param functionRequest
+    *    the request, never <code>null</code>.
     *
     * @param start
     *    the start time of the call, as milliseconds since midnight January 1,
@@ -57,11 +57,16 @@ public final class CallContext {
     * @throws IllegalArgumentException
     *    if <code>parameters == null || function == null</code>.
     */
-   CallContext(FunctionRequest functionRequest, long start, Function function, int callID, String remoteIP)
+   CallContext(FunctionRequest functionRequest,
+               long            start,
+               Function        function,
+               int             callID,
+               String          remoteIP)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionRequest",  functionRequest, "function", function);
+      MandatoryArgumentChecker.check("functionRequest",  functionRequest,
+                                     "function",         function);
 
       // Initialize fields
       _parameters   = functionRequest.getParameters();
