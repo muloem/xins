@@ -69,7 +69,7 @@
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@name" />
-						<xsl:text>/api.html</xsl:text>
+						<xsl:text>/index.html</xsl:text>
 					</xsl:attribute>
 					<xsl:value-of select="@name" />
 				</a>

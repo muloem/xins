@@ -198,7 +198,7 @@
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="$item='apilist'">../index.html</xsl:when>
-					<xsl:when test="$item='api'">api.html</xsl:when>
+					<xsl:when test="$item='api'">index.html</xsl:when>
 					<xsl:when test="$item='help'">../help/index.html</xsl:when>
 					<xsl:when test="$item='function'">
 						<xsl:value-of select="@name" />

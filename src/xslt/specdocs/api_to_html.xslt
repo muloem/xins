@@ -50,9 +50,9 @@
 
 		<xsl:variable name="prevcount" select="count(document($project_file)/project/api[@name = $api]/preceding::api)" />
 		<xsl:variable name="prev"      select="document($project_file)/project/api[$prevcount]/@name" />
-		<xsl:variable name="prev_url"  select="concat('../', $prev, '/api.html')" />
+		<xsl:variable name="prev_url"  select="concat('../', $prev, '/index.html')" />
 		<xsl:variable name="next"      select="document($project_file)/project/api[@name = $api]/following-sibling::api/@name" />
-		<xsl:variable name="next_url"  select="concat('../', $next, '/api.html')" />
+		<xsl:variable name="next_url"  select="concat('../', $next, '/index.html')" />
 
 		<xsl:variable name="prev_title">
 			<xsl:if test="boolean($prev) and not($prev = '')">
@@ -93,7 +93,7 @@
 					<xsl:attribute name="href">
 						<xsl:text>../</xsl:text>
 						<xsl:value-of select="document($project_file)/project/api[1]/@name" />
-						<xsl:text>/api.html</xsl:text>
+						<xsl:text>/index.html</xsl:text>
 					</xsl:attribute>
 				</link>
 				<xsl:if test="boolean($prev) and not($prev = '')">
