@@ -148,6 +148,13 @@ public class MetaFunctionsTests extends TestCase {
       } catch (Exception exception) {
          fail("Incorrect value while parsing a memory size.");
       }
+      
+      while (children.hasNext()) {
+         DataElement nextFunction = (DataElement) children.next();
+         assertEquals("Object other than a fnuction has been found.", "function", nextFunction.getName());
+         assertNotNull("The functino does not have a name", nextFunction.get("name"));
+         // XXX also test the children.
+      }
    }
    
    /**

@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
 
 * XINS/Java Client Framework:
   - Fixed parsing problem of when a result had a data section.
+  - Added a getName() method to the DataElement.
 
 * Build and release process:
   - Fixed incorrect URL in the README.html.

@@ -73,6 +73,16 @@ public class DataElement {
    //-------------------------------------------------------------------------
 
    /**
+    * Gets the name of the element.
+    *
+    * @return element
+    *    the name of this element, cannot be <code>null</code>.
+    */
+   public String getName() {
+      return _name;
+   }
+
+   /**
     * Adds a new child to this element.
     *
     * @param element
