@@ -664,7 +664,7 @@ extends HttpServlet {
       // Determine if Log4J is properly initialized
       Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
       if (appenders instanceof NullEnumeration) {
-         Log.log_154();
+         Log.log_154(_configFile);
          configureLoggerFallback();
       } else {
          Log.log_160();
