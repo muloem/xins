@@ -9,11 +9,13 @@ import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.xins.util.servlet.ServletUtils;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -130,6 +132,17 @@ extends HttpServlet {
             xmlOutputter.startTag("param");
             xmlOutputter.attribute("name", "_exception.message");
             xmlOutputter.pcdata(exception.getMessage());
+         }
+
+         StringWriter stWriter = new StringWriter();
+         PrintWriter printWriter = new PrintWriter(stWriter);
+         exception.printStackTrace(printWriter);
+         String stackTrace = stWriter.toString();
+         if (stackTrace != null) {
+            xmlOutputter.endTag();
+            xmlOutputter.startTag("param");
+            xmlOutputter.attribute("name", "_exception.stacktrace");
+            xmlOutputter.pcdata(stackTrace);
          }
          xmlOutputter.close();
       }
