@@ -312,9 +312,9 @@ public final class XINSCallRequest extends CallRequest {
          String contextID = _httpRequest.getParameters().get(CONTEXT_ID_HTTP_PARAMETER_NAME);
 
          if (contextID == null) {
-            buffer.append(" no diagnostic context ID");
+            buffer.append("no diagnostic context ID");
          } else {
-            buffer.append(" diagnostic context ID: \"");
+            buffer.append("diagnostic context ID: \"");
             buffer.append(contextID);
             buffer.append('"');
          }
