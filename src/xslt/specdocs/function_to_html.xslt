@@ -12,6 +12,11 @@
 	<xsl:param name="specsdir"     />
 
 	<xsl:variable name="returncodes_file" select="'../../xml/default_returncodes.xml'" />
+	<xsl:variable name="project_file"     select="concat($project_home, '/xins-project.xml')" />
+	<xsl:variable name="cvsweb_url"       select="document($project_file)/project/cvsweb/@href" />
+	<xsl:variable name="api"              select="//function/@api" />
+	<xsl:variable name="api_file"         select="concat($project_home, '/', $specsdir, '/', $api, '/api.xml')" />
+	<xsl:variable name="function_name"    select="//function/@name" />
 
 	<xsl:output
 	method="xml"
@@ -33,10 +38,16 @@
 
 	<xsl:template match="function">
 
-		<xsl:if test="not(boolean(@api))">
+		<xsl:if test="not(@name)">
+			<xsl:message terminate="yes">
+				<xsl:text>Function does not specify the mandatory 'name' attribute.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<xsl:if test="not(@api)">
 			<xsl:message terminate="yes">
 				<xsl:text>Function '</xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$function_name" />
 				<xsl:text>' does not specify the mandatory 'api' attribute.</xsl:text>
 			</xsl:message>
 		</xsl:if>
@@ -44,7 +55,7 @@
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$function_name" />
 				</title>
 				<link rel="stylesheet" type="text/css" href="../style.css" />
 				<link rel="top" href="../index.html" title="API index" />
@@ -57,7 +68,7 @@
 				<h1>
 					<xsl:text>Function </xsl:text>
 					<em>
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$function_name" />
 					</em>
 				</h1>
 
@@ -121,13 +132,10 @@
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
-		<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
-		<xsl:variable name="function_name" select="@name" />
-
-		<xsl:if test="boolean(document($project_file)/project/environment)">
+		<xsl:if test="boolean(document($api_file)/api/environment)">
 			<h2>Test forms</h2>
 			<ul>
-				<xsl:for-each select="document($project_file)/project/environment">
+				<xsl:for-each select="document($api_file)/api/environment">
 					<li>
 						<a>
 							<xsl:attribute name="href">
@@ -371,7 +379,7 @@
 						<span class="name">function</span>
 						<xsl:text>=</xsl:text>
 						<span class="value">
-							<xsl:value-of select="/function/@name" />
+							<xsl:value-of select="$function_name" />
 						</span>
 					</span>
 					<xsl:for-each select="$example-inputparams">
@@ -807,7 +815,6 @@
 	<xsl:template name="typelink">
 		<xsl:param name="type" />
 
-		<xsl:variable name="api"       select="//function/@api" />
 		<xsl:variable name="type_file" select="concat($project_home, '/', $specsdir, '/', $api, '/', $type, '.typ')" />
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
@@ -1038,10 +1045,6 @@
 	</xsl:template>
 
 	<xsl:template name="broken_freeze">
-		<xsl:variable name="project_file"   select="concat($project_home, '/xins-project.xml')" />
-		<xsl:variable name="cvswebURL"      select="document($project_file)/project/cvsweb/@href" />
-		<xsl:variable name="api_file"       select="concat($project_home, '/', $specsdir, '/', @api, '/api.xml')" />
-		<xsl:variable name="function_name"  select="@name" />
 		<xsl:variable name="frozen_version" select="document($api_file)/api/function[@name=$function_name]/@freeze" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
@@ -1057,18 +1060,18 @@
 						<xsl:text>Version </xsl:text>
 						<xsl:value-of select="$frozen_version" />
 						<xsl:text> is marked as frozen.</xsl:text>
-						<xsl:if test="string-length($cvswebURL) &gt; 0">
+						<xsl:if test="string-length($cvsweb_url) &gt; 0">
 							<br />
 							<xsl:text>View differences between this version and the frozen version:</xsl:text>
 							<br />
-							<a href="{$cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}">
+							<a href="{$cvsweb_url}/wanadoo-apis/src/apis/{$api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}">
 								<xsl:text>diff </xsl:text>
 								<xsl:value-of select="$frozen_version" />
 								<xsl:text> and </xsl:text>
 								<xsl:value-of select="$version" />
 							</a>
 							<xsl:text> (</xsl:text>
-							<a href="{$cvswebURL}/wanadoo-apis/src/apis/{@api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}&amp;f=h">
+							<a href="{$cvsweb_url}/wanadoo-apis/src/apis/{$api}/{$function_name}.fnc.diff?r1={$frozen_version}&amp;r2={$version}&amp;f=h">
 								<xsl:text>colored</xsl:text>
 							</a>
 							<xsl:text>)</xsl:text>
