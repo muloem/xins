@@ -33,7 +33,7 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *    <tr>
+ *    </tr>
  *    <tr>
  *       <th>{@link #startResponse(boolean)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
@@ -41,7 +41,7 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *    <tr>
+ *    </tr>
  *    <tr>
  *       <th>{@link #startResponse(boolean,String)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
@@ -49,8 +49,8 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
- *    <tr>
  *    </tr>
+ *    <tr>
  *       <th>{@link #param(String,String)}</th>
  *       <td><acronym title="WITHIN_PARAMS">S1</acronym></td>
  *       <td class="nochange"><acronym title="WITHIN_PARAMS">S1</acronym></td>
@@ -58,7 +58,7 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
- *    </tr>
+ *    <tr>
  *       <th>{@link #startTag(String)}</th>
  *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
  *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
@@ -66,7 +66,7 @@ import java.io.IOException;
  *       <td><acronym title="START_TAG_OPEN">S2</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
- *    </tr>
+ *    <tr>
  *       <th>{@link #attribute(String,String)}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -74,7 +74,7 @@ import java.io.IOException;
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
- *    </tr>
+ *    <tr>
  *       <th>{@link #pcdata(String)}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -82,7 +82,7 @@ import java.io.IOException;
  *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S3</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
- *    </tr>
+ *    <tr>
  *       <th>{@link #endTag()}</th>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
@@ -90,7 +90,15 @@ import java.io.IOException;
  *       <td class="nochange"><acronym title="WITHIN_ELEMENT">S3</acronym></td>
  *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
+ *    <tr>
+ *       <th>{@link #fail(ResultCode)}</th>
+ *       <td><acronym title="AFTER_END">S4</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
+ *       <td class="err"><acronym title="IllegalStateException">ISE</acronym></td>
  *    </tr>
+ *    <tr>
  *       <th>{@link #endResponse()}</th>
  *       <td><acronym title="AFTER_END">S4</acronym></td>
  *       <td><acronym title="AFTER_END">S4</acronym></td>
@@ -111,9 +119,9 @@ import java.io.IOException;
  * </ul>
  *
  * <p />If {@link #startResponse(boolean,String)},
- * {@link #startResponse(boolean)} or {@link #startResponse(ResultCode)} is
- * not called, then a <code>result</code> element is written with
- * <code>success="true"</code> and no result code.
+ * {@link #startResponse(boolean)}, {@link #startResponse(ResultCode)} or
+ * {@link #fail(ResultCode)} is not called, then a <code>result</code> element
+ * is written with <code>success="true"</code> and no result code.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -276,6 +284,26 @@ extends ResponderStates {
     */
    void endTag()
    throws IllegalStateException, IOException;
+
+   /**
+    * Indicates a failure.
+    *
+    * @param resultCode
+    *    the result code, can be <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the response output has already started.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>resultCode.getSuccess() == true</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurred.
+    *
+    * @since XINS 0.29.
+    */
+   void fail(ResultCode resultCode)
+   throws IllegalArgumentException, IllegalStateException, IOException;
 
    /**
     * Ends the response output. This is done by writing a <code>result</code>

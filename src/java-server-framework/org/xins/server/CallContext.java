@@ -531,6 +531,25 @@ implements Responder, Log {
       _state = WITHIN_ELEMENT;
    }
 
+   public void fail(ResultCode resultCode)
+   throws IllegalArgumentException, IllegalStateException, IOException {
+
+      // Check state
+      if (_state != START_TAG_OPEN) {
+         throw new IllegalStateException("The state is " + _state + '.');
+      }
+
+      // Check argument
+      if (resultCode == null) {
+         throw new IllegalArgumentException("resultCode == null");
+      } else if (resultCode.getSuccess()) {
+         throw new IllegalArgumentException("resultCode.getSuccess() == true");
+      }
+
+      startResponse(resultCode);
+      endResponse();
+   }
+
    public final void endResponse() throws IOException {
 
       // Short-circuit if the response is already ended
