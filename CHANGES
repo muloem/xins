@@ -4,6 +4,11 @@ CHANGES INTRODUCED IN XINS 0.158:
 * Libraries commited as binaries:
   - Some jar files were commited in CVS as ASCII files, this is fixed.
 
+* XINS/Java Server Framework:
+  - Interface Responder and implementation in CallContext: The method
+    param(String,String) now allows a null or empty value. In that case
+    nothing is output.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.157:
 
