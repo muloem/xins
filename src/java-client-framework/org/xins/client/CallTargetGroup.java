@@ -202,8 +202,9 @@ extends AbstractCompositeFunctionCaller {
       MandatoryArgumentChecker.check("type", type);
 
       // Initialize fields
-      _type                       = type;
-      _actualFunctionCallersByURL = new HashMap();
+      _type                               = type;
+      _actualFunctionCallersByURL         = new HashMap();
+      _actualFunctionCallersByURLChecksum = new HashMap();
 
       addActualFunctionCallers(members);
    }
@@ -224,6 +225,13 @@ extends AbstractCompositeFunctionCaller {
     * <code>null</code>.
     */
    private final Map _actualFunctionCallersByURL;
+
+   /**
+    * Mappings from URL checksums to <code>ActualFunctionCaller</code>. The
+    * checksums are stored as {@link Long} instances. This {@link Map} cannot be
+    * <code>null</code>.
+    */
+   private final Map _actualFunctionCallersByURLChecksum;
 
 
    //-------------------------------------------------------------------------
@@ -263,6 +271,8 @@ extends AbstractCompositeFunctionCaller {
             ActualFunctionCaller afc = (ActualFunctionCaller) member;
             String url = afc.getURL().toString();
             _actualFunctionCallersByURL.put(url, afc);
+            long checksum = afc.getCRC32();
+            _actualFunctionCallersByURLChecksum.put(new Long(checksum), afc);
 
          // If the member is composite, get all its members
          } else if (member instanceof CompositeFunctionCaller) {
@@ -305,6 +315,24 @@ extends AbstractCompositeFunctionCaller {
       MandatoryArgumentChecker.check("url", url);
 
       return (ActualFunctionCaller) _actualFunctionCallersByURL.get(url);
+   }
+
+   /**
+    * Gets the actual function caller for the specified URL checksum.
+    *
+    * @param checksum
+    *    the CRC-32 checksum of the API URL.
+    *
+    * @return
+    *    the actual function caller for the specified checksum, or
+    *    <code>null</code> if there is no {@link ActualFunctionCaller} for the
+    *    specified URL checksum in this group or any of the contained groups
+    *    (if any).
+    */
+   public final ActualFunctionCaller getActualFunctionCaller(long checksum)
+   throws IllegalArgumentException {
+
+      return (ActualFunctionCaller) _actualFunctionCallersByURLChecksum.get(new Long(checksum));
    }
 
    public final CallResult call(String sessionID,
