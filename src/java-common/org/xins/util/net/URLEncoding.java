@@ -90,7 +90,7 @@ public final class URLEncoding extends Object {
             buffer.append(UNENCODED_TO_ENCODED[c]);
          }
       } catch (IndexOutOfBoundsException exception) {
-         throw new NonASCIIException(c);
+         throw new NonASCIIException((char) c);
       }
       
       return buffer.toString();
