@@ -20,23 +20,19 @@ import org.xins.util.collections.PropertyReader;
 public interface LifespanManager {
 
    /**
-    * Initializes this instance.
+    * Bootstraps this instance.
     *
     * @param buildSettings
     *    the build-time configuration properties, not <code>null</code>.
     *
-    * @param runtimeSettings
-    *    the runtime configuration properties, not <code>null</code>.
-    *
-    * @throws InitializationException
-    *    if the initialization failed, for any reason.
+    * @throws Throwable
+    *    if the bootstrapping failed, for any reason.
     */
-   void init(PropertyReader buildSettings,
-             PropertyReader runtimeSettings)
-   throws InitializationException;
+   void bootstrap(PropertyReader buildSettings)
+   throws Throwable;
 
    /**
-    * Reinitializes this instance.
+    * Initializes or re-initializes this instance.
     *
     * @param runtimeSettings
     *    the runtime configuration properties, not <code>null</code>.
@@ -44,7 +40,7 @@ public interface LifespanManager {
     * @throws InitializationException
     *    if the initialization failed, for any reason.
     */
-   void reinit(PropertyReader runtimeSettings)
+   void init(PropertyReader runtimeSettings)
    throws InitializationException;
 
    /**
