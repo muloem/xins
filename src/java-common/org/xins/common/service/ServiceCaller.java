@@ -781,8 +781,6 @@ public abstract class ServiceCaller extends Object {
       // Iterate over all targets
       Iterator iterator = descriptor.iterateTargets();
 
-      // TODO: Improve performance, do not use an iterator?
-
       // There should be at least one target
       if (! iterator.hasNext()) {
          final String SUBJECT_CLASS  = descriptor.getClass().getName();
