@@ -6,6 +6,7 @@ package org.xins.util.service.http;
 import java.io.UnsupportedEncodingException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
@@ -44,6 +45,31 @@ public final class HTTPServiceCaller extends ServiceCaller {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Checks the arguments passed to the constructor, and returns the
+    * descriptor.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @param method
+    *    the HTTP method, cannot be <code>null</code>.
+    *
+    * @return
+    *    the descriptor,
+    *    if <code>descriptor != null &amp;&amp; method != null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null || method == null</code>.
+    */
+   private static Descriptor checkConstructorArguments(Descriptor descriptor,
+                                                       Method     method)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("descriptor", descriptor,
+                                     "method",     method);
+      return descriptor;
+   }
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -54,18 +80,29 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param descriptor
     *    the descriptor of the service, cannot be <code>null</code>.
     *
+    * @param method
+    *    the method for executing HTTP calls, for example {@link #GET} or
+    *    {@link #POST}, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
+    *    if <code>descriptor == null || method == null</code>.
     */
-   public HTTPServiceCaller(Descriptor descriptor)
+   public HTTPServiceCaller(Descriptor descriptor, Method method)
    throws IllegalArgumentException {
-      super(descriptor);
+      super(checkConstructorArguments(descriptor, method));
+      _method = method;
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The HTTP method to use. Cannot be <code>null</code>.
+    */
+   private final Method _method;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -94,6 +131,27 @@ public final class HTTPServiceCaller extends ServiceCaller {
       return (Result) callResult.getResult();
    }
 
+   /**
+    * Creates an appropriate <code>HttpMethod</code> object for the specified
+    * URL.
+    *
+    * @param url
+    *    the URL for which to create a {@link HttpMethod} object, should not
+    *    be <code>null</code>.
+    *
+    * @return
+    *    the constructed {@link HttpMethod} object, never <code>null</code>.
+    */
+   private HttpMethod createMethod(String url) {
+      if (_method == POST) {
+         return new PostMethod(url);
+      } else if (_method == GET) {
+         return new GetMethod(url);
+      } else {
+         throw new Error("Value of _method is unrecognized.");
+      }
+   }
+
    protected Object doCallImpl(ServiceDescriptor target,
                                Object            subject)
    throws Throwable {
@@ -108,8 +166,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       client.setTimeout(target.getTimeOut());
 
       // Use the POST method
-      // TODO: Allow configuration of method?
-      HttpMethod method = new PostMethod(target.getURL());
+      HttpMethod method = createMethod(target.getURL());
 
       // Execute the request
       client.executeMethod(method);
