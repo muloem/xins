@@ -19,7 +19,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Added missing tranlations for some logging messages.
 
 * Generation of specification documentation:
-  - Fixed a missing forward slash for the url generated for broken links.
+  - Added missing forward slash for the URL generated for broken links.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
