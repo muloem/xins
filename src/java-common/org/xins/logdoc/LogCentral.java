@@ -22,6 +22,25 @@ extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Sets the locale on all <em>logdoc</em> <code>Log</code> classes.
+    *
+    * @param newLocale
+    *    the new locale, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>newLocale == null</code>.
+    */
+   public static final void setLocale(String newLocale)
+   throws IllegalArgumentException {
+
+     // Check preconditions
+     MandatoryArgumentChecker.check("newLocale", newLocale);
+
+     // TODO: Call setLocale on all LogController instances
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
