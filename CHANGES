@@ -1,6 +1,16 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 9:
 
+* Generated CAPI classes:
+  - The method 'getDataElement()' in <FunctionName>Result classes has been
+    renamed to 'dataElement()' to avoid a clash with a generated method for an
+    output parameter named 'dataElement'.
+    The 'getDataElement()' method is marked as deprecated and is planned to be
+    removed before XINS 1.0.0-rc1. As soon as this method is removed, SF.net
+    bug #1060230 is resolved.
+    WARNING: When the getDataElement() method is removed, this may break
+    existing code.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 8:
 
