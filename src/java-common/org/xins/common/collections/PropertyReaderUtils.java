@@ -75,7 +75,7 @@ extends Object {
    }
 
    /**
-    * Gets the property with the specified name and converts it to a
+    * Gets the property with the specified name and converts it to an
     * <code>int</code>.
     *
     * @param properties
@@ -90,12 +90,17 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     *
+    * @throws MissingRequiredPropertyException
+    *    if the specified property is not set, or if it is set to an empty
+    *    string.
+    *
     * @throws InvalidPropertyValueException
     *    if the conversion to an <code>int</code> failed.
     */
    public static final int getIntProperty(PropertyReader properties,
                                           String         propertyName)
    throws IllegalArgumentException,
+          MissingRequiredPropertyException,
           InvalidPropertyValueException {
 
       // Check preconditions
@@ -103,6 +108,11 @@ extends Object {
 
       // Query the PropertyReader
       String value = properties.get(propertyName);
+
+      // Make sure the value is set
+      if (value == null || value.length() == 0) {
+         throw new MissingRequiredPropertyException(propertyName);
+      }
 
       // Parse the string
       try {
