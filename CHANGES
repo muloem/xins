@@ -1,10 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.55:
 
-* Improved logging.
-
-* Improved initialization and shutdown of XINS/Java Server Framework. Added
-  Singleton interface and InitializationException.
+* XINS/Java Server Framework:
+  - Improved logging.
+  - Improved initialization and shutdown of XINS/Java Server Framework. Added
+    Singleton interface and InitializationException.
+  - Slightly improved performance of detection of missing or unknown session
+    ID in XINS/Java Server Framework.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.54:
