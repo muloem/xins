@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -21,6 +22,7 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.BasicPropertyReader;
 import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.PropertiesPropertyReader;
+import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.collections.expiry.ExpiryFolder;
 import org.xins.util.collections.expiry.ExpiryStrategy;
 import org.xins.util.io.FastStringWriter;
@@ -116,7 +118,7 @@ implements DefaultResultCodes {
       _name              = name;
       _stateLock         = new Object();
       _startupTimestamp  = System.currentTimeMillis();
-      _instances         = new ArrayList();
+      _lifespanManagers  = new ArrayList();
       _functionsByName   = new HashMap();
       _functionList      = new ArrayList();
       _resultCodesByName = new HashMap();
@@ -157,18 +159,20 @@ implements DefaultResultCodes {
    private boolean _responseValidationEnabled;
 
    /**
-    * List of registered instances. See {@link #addInstance(Object)}.
+    * List of registered lifespan managers. See
+    * {@link #addInstance(LifespanManager)}.
     *
     * <p />This field is initialized to a non-<code>null</code> value by the
     * constructor.
     */
-   private final List _instances;
+   private final List _lifespanManagers;
 
    /**
     * Expiry strategy for <code>_sessionsByID</code>.
     *
-    * <p />This field is initialized to a non-<code>null</code> value by the
-    * initialization method {@link #init(Properties)}.
+    * <p />For session-based APIs, this field is initialized to a
+    * non-<code>null</code> value by the initialization method
+    * {@link #init(PropertyReader,PropertyReader)}.
     */
    private ExpiryStrategy _sessionExpiryStrategy;
 
@@ -176,8 +180,9 @@ implements DefaultResultCodes {
     * Collection that maps session identifiers to <code>Session</code>
     * instances. Contains all sessions associated with this API.
     *
-    * <p />This field is initialized to a non-<code>null</code> value by the
-    * initialization method {@link #init(Properties)}.
+    * <p />For session-based APIs, this field is initialized to a
+    * non-<code>null</code> value by the initialization method
+    * {@link #init(PropertyReader,PropertyReader)}.
     */
    private ExpiryFolder _sessionsByID;
 
@@ -210,16 +215,18 @@ implements DefaultResultCodes {
    private final List _resultCodeList;
 
    /**
-    * The initialization settings. This field is initialized by
-    * {@link #init(Properties)}. It can be <code>null</code> before that.
+    * The build-time settings. This field is initialized by
+    * {@link #init(PropertyReader,PropertyReader)}. It can be
+    * <code>null</code> before that.
     */
-   private Properties _initSettings;
+   private PropertyReader _buildSettings;
 
    /**
-    * A reader for the initialization settings. This field is initialized by
-    * {@link #init(Properties)}. It can be <code>null</code> before that.
+    * The runtime settings. This field is initialized by
+    * {@link #init(PropertyReader,PropertyReader)}. It can be
+    * <code>null</code> before that.
     */
-   private PropertyReader _initSettingsReader;
+   private PropertyReader _runtimeSettings;
 
    /**
     * The name of the default function. Is <code>null</code> if there is no
@@ -228,13 +235,14 @@ implements DefaultResultCodes {
    private String _defaultFunction;
 
    /**
-    * The type that applies for session identifiers. Will be set in
-    * {@link #init(Properties)}.
+    * The type that applies for session identifiers. For session-based APIs
+    * this will be set in {@link #init(PropertyReader,PropertyReader)}.
     */
    private SessionID _sessionIDType;
 
    /**
-    * The session ID generator. Will be set in {@link #init(Properties)}.
+    * The session ID generator. For session-based APIs this will be set in
+    * {@link #init(PropertyReader,PropertyReader)}.
     */
    private SessionID.Generator _sessionIDGenerator;
 
@@ -242,6 +250,7 @@ implements DefaultResultCodes {
     * Flag that indicates if the shutdown sequence has been initiated.
     */
    private boolean _shutDown;
+   // TODO: Use a state for this
 
    /**
     * Timestamp indicating when this API instance was created.
@@ -295,13 +304,13 @@ implements DefaultResultCodes {
     * @throws IllegalArgumentException
     *    if <code>properties == null || propertyName == null</code>.
     */
-   private final boolean getBooleanProperty(Properties properties, String propertyName)
+   private final boolean getBooleanProperty(PropertyReader properties, String propertyName)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
 
-      String value = properties.getProperty(propertyName);
+      String value = properties.get(propertyName);
       return "true".equals(value);
    }
 
@@ -323,13 +332,13 @@ implements DefaultResultCodes {
     * @throws NumberFormatException
     *    if the conversion to an <code>int</code> failed.
     */
-   private final int getIntProperty(Properties properties, String propertyName)
+   private final int getIntProperty(PropertyReader properties, String propertyName)
    throws IllegalArgumentException, NumberFormatException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
 
-      String value = properties.getProperty(propertyName);
+      String value = properties.get(propertyName);
       return Integer.parseInt(value);
    }
 
@@ -404,31 +413,40 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Initializes this API (wrapper method). The properties are stored
-    * internally before the actual implementation method
-    * {@link #initImpl(Properties)} is called.
+    * Initializes this API (wrapper method). The build-time configuration
+    * settings are stored internally before the actual implementation method
+    * {@link #initImpl(PropertyReader,PropertyReader)} is called.
     *
-    * @param properties
-    *    the properties, can be <code>null</code>.
+    * @param buildSettings
+    *    the build-time configuration properties, can be <code>null</code>.
+    *
+    * @param runtimeSettings
+    *    the runtime configuration properties, can be <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this API is already initialized.
     *
     * @throws Throwable
-    *    if the initialization fails (in {@link #initImpl(Properties)}).
+    *    if the initialization fails
+    *    (in {@link #initImpl(PropertyReader,PropertyReader)}).
     */
-   public final void init(Properties properties)
+   public final void init(PropertyReader buildSettings,
+                          PropertyReader runtimeSettings)
    throws IllegalStateException, Throwable {
-
-      // TODO: Accept PropertyReader instead of Properties
 
       // Check and set state
       synchronized (_stateLock) {
          if (_state != UNINITIALIZED) {
+            // TODO: Log ?
+            // TODO: String message = "The state is " + _state + " instead of " + UNINITIALIZED + '.');
+            // TODO: Library.LIFESPAN_LOG.error(message);
+            // TODO: throw new IllegalStateException(message);
             throw new IllegalStateException("This API is not uninitialized anymore.");
          }
          _state = INITIALIZING;
       }
+
+      // TODO: Check arguments
 
       // Set the time zone
       _timeZone = TimeZone.getDefault();
@@ -441,26 +459,26 @@ implements DefaultResultCodes {
       }
 
       // Store the settings
-      if (properties == null) {
-         _initSettings = new Properties();
-      } else {
-         _initSettings = (Properties) properties.clone();
-      }
-      _initSettingsReader = new PropertiesPropertyReader(_initSettings);
+      _buildSettings = buildSettings != null
+                     ? buildSettings
+                     : new ProtectedPropertyReader(new Object());
+      _runtimeSettings = runtimeSettings != null
+                       ? runtimeSettings
+                       : new ProtectedPropertyReader(new Object());
 
       // Check if a default function is set
-      _defaultFunction = properties.getProperty("org.xins.api.defaultFunction");
+      _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
       if (_defaultFunction != null) {
          Library.LIFESPAN_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
       }
       // TODO: Check that default function exists
 
       // Check if response validation is enabled
-      _responseValidationEnabled = getBooleanProperty(properties, "org.xins.api.responseValidation");
+      _responseValidationEnabled = getBooleanProperty(buildSettings, "org.xins.api.responseValidation");
       Library.LIFESPAN_LOG.info("Response validation is " + (_responseValidationEnabled ? "enabled." : "disabled."));
 
       // Check if this API is session-based
-      _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
+      _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased");
 
       // XXX: Allow configuration of session ID type ?
 
@@ -474,8 +492,8 @@ implements DefaultResultCodes {
 
          // Determine session time-out duration and precision
          final long MINUTE_IN_MS = 60000L;
-         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOut");
-         long precision = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOutPrecision");
+         long timeOut   = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
+         long precision = MINUTE_IN_MS * (long) getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
          // Create expiry strategy and folder
          _sessionExpiryStrategy = new ExpiryStrategy(timeOut, precision);
@@ -486,10 +504,10 @@ implements DefaultResultCodes {
       }
 
       // Get build-time properties
-      _deployment   = properties.getProperty("org.xins.api.deployment");
-      _buildHost    = properties.getProperty("org.xins.api.build.host");
-      _buildTime    = properties.getProperty("org.xins.api.build.time");
-      _buildVersion = properties.getProperty("org.xins.api.build.version");
+      _deployment   = _buildSettings.get("org.xins.api.deployment");
+      _buildHost    = _buildSettings.get("org.xins.api.build.host");
+      _buildTime    = _buildSettings.get("org.xins.api.build.time");
+      _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
       // Log build-time properties
       FastStringBuffer buffer = new FastStringBuffer(160);
@@ -539,7 +557,7 @@ implements DefaultResultCodes {
       // Let the subclass perform initialization
       boolean succeeded = false;
       try {
-         initImpl(properties);
+         initImpl(buildSettings, runtimeSettings);
          succeeded = true;
 
       // Set the state
@@ -563,52 +581,19 @@ implements DefaultResultCodes {
     * Custom subclasses can perform any necessary initialization in this
     * class.
     *
-    * @param properties
-    *    the properties, can be <code>null</code>.
+    * @param buildSettings
+    *    the build-time properties, guaranteed not to be <code>null</code>.
+    *
+    * @param runtimeSettings
+    *    the runtime properties, guaranteed not to be <code>null</code>.
     *
     * @throws Throwable
     *    if the initialization fails.
     */
-   protected void initImpl(Properties properties)
+   protected void initImpl(PropertyReader buildSettings,
+                           PropertyReader runtimeSettings)
    throws Throwable {
       // empty
-   }
-
-   /**
-    * Adds the specified instance as an object to initialize at startup and
-    * deinitialize at shutdown. The object will immediately be initialized. If
-    * the initialization fails, then an {@link InitializationException} will
-    * be thrown.
-    *
-    * <p>The initialization will be performed by calling
-    * {@link Singleton#init(PropertyReader)}.
-    *
-    * <p>At shutdown time {@link Singleton#destroy()} will be called.
-    *
-    * @param instance
-    *    the instance to initialize now and deinitialize at shutdown time, not
-    *    <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not in the initializing state.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>instance == null</code>.
-    *
-    * @throws InitializationException
-    *    if the initialization of the instance failed.
-    *
-    * @since XINS 0.55
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.120. Use
-    *    {@link #addInstance(LifespanManager)} instead.
-    */
-   protected final void addInstance(Singleton instance)
-   throws IllegalStateException,
-          IllegalArgumentException,
-          InitializationException {
-      addInstance((LifespanManager) instance);
    }
 
    /**
@@ -617,12 +602,13 @@ implements DefaultResultCodes {
     * will be thrown.
     *
     * <p>The initialization will be performed by calling
-    * {@link LifespanManager#init(PropertyReader)}.
+    * {@link LifespanManager#init(PropertyReader,PropertyReader)}.
     *
     * <p>At shutdown time {@link LifespanManager#destroy()} will be called.
     *
-    * @param instance
-    *    the lifespan manager to initialize now and deinitialize at shutdown time, not <code>null</code>.
+    * @param lsm
+    *    the lifespan manager to initialize now, reinitialize when appropriate
+    *    and deinitialize at shutdown time, not <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this API is currently not in the initializing state.
@@ -635,188 +621,36 @@ implements DefaultResultCodes {
     *
     * @since XINS 0.120
     */
-   protected final void addInstance(LifespanManager instance)
+   protected final void addInstance(LifespanManager lsm)
    throws IllegalStateException,
           IllegalArgumentException,
           InitializationException {
 
       // Check state
       if (_state != INITIALIZING) {
+         // TODO: Log and throw
          throw new IllegalStateException("Currently not initializing.");
       }
 
       // Check preconditions
-      MandatoryArgumentChecker.check("instance", instance);
+      MandatoryArgumentChecker.check("lsm", lsm);
 
-      _instances.add(instance);
+      // Store the lifespan manager in a list
+      _lifespanManagers.add(lsm);
 
       boolean succeeded = false;
-      String className = instance.getClass().getName();
-      Library.LIFESPAN_LOG.debug("Initializing instance of class \"" + className + "\".");
+      String className = lsm.getClass().getName();
+      Library.LIFESPAN_LOG.debug("Initializing lifespan manager " + className + " for API \"" + _name + "\".");
       try {
-         instance.init(_initSettingsReader);
+         lsm.init(_buildSettings, _runtimeSettings);
          succeeded = true;
       } finally {
          if (succeeded) {
-            Library.LIFESPAN_LOG.info("Initialized instance of class \"" + className + "\".");
+            Library.LIFESPAN_LOG.info("Initialized lifespan manager " + className + " for API \"" + _name + "\".");
          } else {
-            String message = "Failed to initialize instance of \"" + className + "\".";
-            Library.LIFESPAN_LOG.error(message);
+            Library.LIFESPAN_LOG.error("Failed to initialize lifespan manager " + className + " for API \"" + _name + "\".");
          }
       }
-   }
-
-   /**
-    * Adds the specified instance as an object to initialize at startup and
-    * deinitialize at shutdown. The object will immediately be initialized. If
-    * the initialization fails, then an {@link InitializationException} will
-    * be thrown.
-    *
-    * <p>The initialization will be performed by calling a method
-    * <code>init(</code>{@link Properties}<code>)</code> in the specified
-    * instance with the following characteristics:
-    *
-    * <ul>
-    *    <li>Must be <em>public</em>
-    *    <li>Cannot be <em>static</em>
-    *    <li>Cannot be <em>abstract</em>
-    * </ul>
-    *
-    * <p>At shutdown time, a method <code>destroy()</code> will be
-    * called using the same approach. The conditions for the <code>init</code>
-    * method also apply to this method.
-    *
-    * @param instance
-    *    the instance to initialize now and deinitialize at shutdown time, not
-    *    <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not in the initializing state.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>instance == null</code>.
-    *
-    * @throws InitializationException
-    *    if the initialization of the instance failed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 0.55. Use {@link #addInstance(LifespanManager)}
-    *    instead.
-    */
-   protected final void addInstance(Object instance)
-   throws IllegalStateException,
-          IllegalArgumentException,
-          InitializationException {
-
-      // Forward call to non-deprecated method, if possible
-      if (instance instanceof LifespanManager) {
-         addInstance((LifespanManager) instance);
-         return;
-      }
-
-      // Check state
-      if (_state != INITIALIZING) {
-         throw new IllegalStateException("Currently not initializing.");
-      }
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("instance", instance);
-
-      Library.LIFESPAN_LOG.warn("Registering API singleton of class " + instance.getClass().getName() + ", which does not implement the interface " + Singleton.class.getName() + '.');
-      _instances.add(instance);
-
-      boolean succeeded = callMethod(Library.LIFESPAN_LOG, instance, "init", new Class[] { Properties.class }, new Object[] { _initSettings.clone() });
-     
-      String className = instance.getClass().getName();
-      if (succeeded) {
-         Library.LIFESPAN_LOG.info("Initialized instance of " + className + '.');
-      } else {
-         String message = "Failed to initialize instance of " + className + '.';
-         Library.LIFESPAN_LOG.error(message);
-         throw new InitializationException(message);
-      }
-   }
-
-   /**
-    * Calls the specified method with the specified arguments.
-    *
-    * @param log
-    *    the log to use, not <code>null</code>.
-    *
-    * @param instance
-    *    the instance on which to call the method, should not be
-    *    <code>null</code>.
-    *
-    * @param methodName
-    *    the name of the method to call.
-    *
-    * @param parameterTypes
-    *    the parameter types for the method.
-    *
-    * @param arguments
-    *    the arguments to pass to the method.
-    *
-    * @return
-    *    the value returned by the call, can be <code>null</code>.
-    */
-   private final boolean callMethod(Logger   log,
-                                    Object   instance,
-                                    String   methodName,
-                                    Class[]  parameterTypes,
-                                    Object[] arguments) {
-
-      Class clazz      = instance.getClass();
-      String className = clazz.getName();
-
-      // Determine the signature
-      StringBuffer sb = new StringBuffer(128);
-      sb.append(className);
-      sb.append('.');
-      sb.append(methodName);
-      sb.append('(');
-      for (int i = 0; i < parameterTypes.length; i++) {
-         if (i > 0) {
-            sb.append(", ");
-         }
-         sb.append(parameterTypes[i].getClass().getName());
-      }
-      sb.append(')');
-      String signature = sb.toString();
-
-      // Get the method
-      Method method;
-      try {
-         method = clazz.getDeclaredMethod(methodName, parameterTypes);
-      } catch (NoSuchMethodException exception) {
-         log.warn("Unable to find method " + signature + '.');
-         return false;
-      } catch (SecurityException exception) {
-         log.warn("Access denied while attempting to lookup method " + signature + '.');
-         return false;
-      }
-
-      // The method must be public, non-abstract and non-static
-      int modifiers = method.getModifiers();
-      if (Modifier.isAbstract(modifiers)) {
-         log.warn("Unable to call abstract method " + signature + '.');
-         return false;
-      } else if (Modifier.isStatic(modifiers)) {
-         log.warn("Unable to call abstract method " + signature + '.');
-         return false;
-      } else if (Modifier.isPublic(modifiers) == false) {
-         log.warn("Unable to call non-public method " + signature + '.');
-         return false;
-      }
-
-      // Attempt the call
-      try {
-         method.invoke(instance, arguments);
-      } catch (Throwable exception) {
-         log.error("Unable to call " + signature + " due to unexpected exception.", exception);
-         return false;
-      }
-
-      return true;
    }
 
    /**
@@ -838,16 +672,17 @@ implements DefaultResultCodes {
       _sessionsByID = null;
 
       // Deinitialize instances
-      for (int i = 0; i < _instances.size(); i++) {
-         Object instance = _instances.get(i);
+      int count = _lifespanManagers.size();
+      for (int i = 0; i < count; i++) {
+         LifespanManager lsm = (LifespanManager) _lifespanManagers.get(i);
 
-         boolean succeeded = callMethod(Library.LIFESPAN_LOG, instance, "destroy", new Class[] {}, null);
-     
-         String className = instance.getClass().getName();
-         if (succeeded) {
-            Library.LIFESPAN_LOG.info("Deinitialized instance of " + className + '.');
-         } else {
-            Library.LIFESPAN_LOG.error("Failed to deinitialize instance of " + className + '.');
+         String className = lsm.getClass().getName();
+
+         try {
+            lsm.destroy();
+            Library.LIFESPAN_LOG.info("Deinitialized lifespan manager " + className + " for API \"" + _name + "\".");
+         } catch (Throwable exception) {
+            Library.LIFESPAN_LOG.error("Failed to deinitialize lifespan manager " + className + " for API \"" + _name + "\".", exception);
          }
       }
    }
@@ -1335,11 +1170,11 @@ implements DefaultResultCodes {
       CallResultBuilder builder = new CallResultBuilder();
 
       // Initialization settings
-      Enumeration names = _initSettings.propertyNames();
+      Iterator names = _runtimeSettings.getNames();
       builder.startTag("initialization");
-      while (names.hasMoreElements()) {
-         String key   = (String) names.nextElement();
-         String value = _initSettings.getProperty(key);
+      while (names.hasNext()) {
+         String key   = (String) names.next();
+         String value = _runtimeSettings.get(key);
 
          builder.startTag("property");
          builder.attribute("name", key);
@@ -1349,10 +1184,10 @@ implements DefaultResultCodes {
       builder.endTag();
 
       // System properties
-      names = System.getProperties().propertyNames();
+      Enumeration e = System.getProperties().propertyNames();
       builder.startTag("runtime");
-      while (names.hasMoreElements()) {
-         String key   = (String) names.nextElement();
+      while (e.hasMoreElements()) {
+         String key   = (String) e.nextElement();
          String value = System.getProperty(key);
 
          if (key != null && value != null && key.length() > 0 && value.length() > 0) {

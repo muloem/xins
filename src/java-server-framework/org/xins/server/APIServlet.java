@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.PropertiesPropertyReader;
 import org.xins.util.io.FileWatcher;
 import org.xins.util.servlet.ServletUtils;
 import org.xins.util.text.Replacer;
@@ -103,8 +104,7 @@ implements Servlet {
    //-------------------------------------------------------------------------
 
    /**
-    * Initializes an API instance based on the specified servlet
-    * configuration.
+    * Loads an API instance based on the specified servlet configuration.
     *
     * @param config
     *    the servlet configuration, cannot be <code>null</code>.
@@ -115,7 +115,7 @@ implements Servlet {
     * @throws ServletException
     *    if an API instance could not be initialized.
     */
-   private static API configureAPI(ServletConfig config)
+   private static API loadAPI(ServletConfig config)
    throws ServletException { 
 
       API api;
@@ -177,20 +177,8 @@ implements Servlet {
 
       // Get the name of the API
       String apiName = api.getName();
+      Library.LIFESPAN_LOG.debug("Loaded \"" + apiName + "\" API.");
 
-      // Initialize the API
-      Library.LIFESPAN_LOG.debug("Initializing \"" + apiName + "\" API.");
-      Properties settings = ServletUtils.settingsAsProperties(config);
-      try {
-         api.init(settings);
-      } catch (Throwable e) {
-         String message = "Failed to initialize \"" + apiName + "\" API.";
-         Library.LIFESPAN_LOG.fatal(message, e);
-         throw new ServletException(message);
-      }
-
-      // Done!
-      Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
       return api;
    }
 
@@ -337,17 +325,32 @@ implements Servlet {
             _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
 
             // Read properties from the config file
+            Properties runtimeProperties = null;
             if (_configFile == null || _configFile.length() < 1) {
                Library.LIFESPAN_LOG.error("System administration issue detected. System property \"" + CONFIG_FILE_SYSTEM_PROPERTY + "\" is not set.");
             } else {
-               applyConfigFile();
+               runtimeProperties = applyConfigFile();
             }
 
             // Initialization starting
             Library.LIFESPAN_LOG.debug("XINS/Java Server Framework " + version + " is initializing.");
 
-            // Initialize API instance
-            _api = configureAPI(config);
+            // Load the API instance
+            _api = loadAPI(config);
+            String apiName = _api.getName();
+
+            // Initialize the API
+            Library.LIFESPAN_LOG.debug("Initializing \"" + apiName + "\" API.");
+            try {
+               // TODO: Use ServletConfigPropertyReader
+               _api.init(new PropertiesPropertyReader(ServletUtils.settingsAsProperties(config)),
+                         new PropertiesPropertyReader(runtimeProperties));
+            } catch (Throwable e) {
+               String message = "Failed to initialize \"" + apiName + "\" API.";
+               Library.LIFESPAN_LOG.fatal(message, e); // TODO: Does this need to be fatal ?
+               throw new ServletException(message);
+            }
+            Library.LIFESPAN_LOG.debug("Initialized \"" + apiName + "\" API.");
 
             // Watch the configuration file
             if (_configFile != null) {
@@ -355,7 +358,7 @@ implements Servlet {
                int interval = 10; // TODO: Read from config file
                FileWatcher watcher = new FileWatcher(_configFile, interval, listener);
                watcher.start();
-               Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + delay + " seconds.");
+               Library.LIFESPAN_LOG.info("Using config file \"" + _configFile + "\". Checking for changes every " + interval + " seconds.");
             }
 
             // Initialization done
@@ -381,11 +384,17 @@ implements Servlet {
     * Reads the configuration file and applies the settings in it. If this
     * fails, then an error is logged on the {@link Library#LIFESPAN_LOG}
     * logger.
+    *
+    * @return
+    *    the properties read from the config file, or <code>null</code> if the
+    *    reading of properties failed.
     */
-   private void applyConfigFile() {
+   private Properties applyConfigFile() {
+      Properties properties = null;
+
       try {
          FileInputStream in = new FileInputStream(_configFile);
-         Properties properties = new Properties();
+         properties = new Properties();
          properties.load(in);
 
          Library.configure(properties);
@@ -396,6 +405,8 @@ implements Servlet {
       } catch (IOException exception) {
          Library.LIFESPAN_LOG.error("System administration issue detected. Unable to read configuration file \"" + _configFile + "\".");
       }
+
+      return properties;
    }
 
    /**
@@ -480,7 +491,7 @@ implements Servlet {
     *    empty character string.
     */
    public String getServletInfo() {
-      return "XINS " + Library.getVersion() + " API Servlet";
+      return "XINS/Java Server Framework " + Library.getVersion();
    }
 
    /**
