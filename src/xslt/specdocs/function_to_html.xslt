@@ -422,7 +422,6 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
-
 			<!--
 			Same applies to output parameters.
 			-->
@@ -442,7 +441,8 @@
 			</xsl:for-each>
 			
 			<!--
-			Checks that the names set in the example element match the name of the input and output section.
+			Checks that the names set in the example element match the name 
+			of the input section.
 			-->
 			<xsl:for-each select="input-example">
 				<xsl:variable name="examplename">
@@ -458,6 +458,9 @@
 					</xsl:message>
 				</xsl:if>
 			</xsl:for-each>
+			<!--
+			Same applies to output parameters.
+			-->
 			<xsl:for-each select="output-example">
 				<xsl:variable name="examplename">
 					<xsl:value-of select="@name" />
@@ -468,6 +471,85 @@
 						<xsl:value-of select="$examplenum" />
 						<xsl:text> has a parameter named '</xsl:text>
 						<xsl:value-of select="$examplename" />
+						<xsl:text>' which is not defined in the output section.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+			</xsl:for-each>
+
+			<!--
+			Same applies to required attributes.
+			-->
+			<xsl:for-each select="parent::function/input/data/element/attribute[@required='true']">
+				<xsl:variable name="required_element" select="../@name" />
+				<xsl:variable name="required_attr" select="@name" />
+				<xsl:for-each select="$examplenode/input-data-example/element-example[@name=$required_element]">
+					<xsl:if test="not(attribute-example[@name=$required_attr])">
+						<xsl:message terminate="yes">
+							<xsl:text>Example </xsl:text>
+							<xsl:value-of select="$examplenum" />
+							<xsl:text> is marked as successful, but it does not specify a value for the required input attribute '</xsl:text>
+							<xsl:value-of select="$required_attr" />
+							<xsl:text>' of the element '</xsl:text>
+							<xsl:value-of select="$required_element" />
+							<xsl:text>'.</xsl:text>
+						</xsl:message>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:for-each>
+			<!--
+			Same applies to output attributes.
+			-->
+			<xsl:for-each select="parent::function/output/data/element/attribute[@required='true']">
+				<xsl:variable name="required_element" select="../@name" />
+				<xsl:variable name="required_attr" select="@name" />
+				<xsl:for-each select="$examplenode/data-example/element-example[@name=$required_element] | $examplenode/output-data-example/element-example[@name=$required_element]">
+					<xsl:if test="not(attribute-example[@name=$required_attr])">
+						<xsl:message terminate="yes">
+							<xsl:text>Example </xsl:text>
+							<xsl:value-of select="$examplenum" />
+							<xsl:text> is marked as successful, but it does not specify a value for the required output attribute '</xsl:text>
+							<xsl:value-of select="$required_attr" />
+							<xsl:text>' of the element '</xsl:text>
+							<xsl:value-of select="$required_element" />
+							<xsl:text>'.</xsl:text>
+						</xsl:message>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:for-each>
+			
+			<!--
+			Checks that the names set in the example element match the name 
+			of the input section.
+			-->
+			<xsl:for-each select="input-data-example/element-example/attribute-example">
+				<xsl:variable name="element_name" select="../@name" />
+				<xsl:variable name="attr_name" select="@name" />
+				<xsl:if test="not(/function/input/data/element[@name=$element_name]/attribute[@name=$attr_name])">
+					<xsl:message terminate="yes">
+						<xsl:text>Example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text> has a attribute named '</xsl:text>
+						<xsl:value-of select="$attr_name" />
+						<xsl:text>' in the element '</xsl:text>
+						<xsl:value-of select="$element_name" />
+						<xsl:text>' which is not defined in the input section.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+			</xsl:for-each>
+			<!--
+			Same applies to output parameters.
+			-->
+			<xsl:for-each select="data-example/element-example/attribute-example | output-data-example/element-example/attribute-example">
+				<xsl:variable name="element_name" select="../@name" />
+				<xsl:variable name="attr_name" select="@name" />
+				<xsl:if test="not(/function/output/data/element[@name=$element_name]/attribute[@name=$attr_name])">
+					<xsl:message terminate="yes">
+						<xsl:text>Example </xsl:text>
+						<xsl:value-of select="$examplenum" />
+						<xsl:text> has a attribute named '</xsl:text>
+						<xsl:value-of select="$attr_name" />
+						<xsl:text>' in the element '</xsl:text>
+						<xsl:value-of select="$element_name" />
 						<xsl:text>' which is not defined in the output section.</xsl:text>
 					</xsl:message>
 				</xsl:if>

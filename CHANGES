@@ -33,6 +33,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Fixed SF.net bug #1165828: Required parameters are not checked in the 
     examples.
   - Fixed SF.net bug #1064480: Name for input/output-example is not checked.
+  - Required attributes are now check in the examples.
+  - Name for attribute-example is now checked.
 
 * Generated build file:
   - Fixed a bug that prevented APIs using the old directory structure to
