@@ -41,23 +41,10 @@
 			<and>
 				<isset property="version.major" />
 				<isset property="version.minor" />
-				<isset property="version.prev.major" />
-				<isset property="version.prev.minor" />
 			</and>
 		</condition>
 		<fail unless="version.isset" message="Version must be set in file ${version.file}." />
-		<property name="version.prev" value="${version.prev.major}.${version.prev.minor}" />
 	</target>
-
-	<target name="-determine-version-dev" depends="-load-version" if="version.suffix">
-		<property name="version.real" value="${version.prev}" />
-	</target>
-
-	<target name="-determine-version-nondev" depends="-load-version" unless="version.suffix">
-		<property name="version.real" value="${version}" />
-	</target>
-
-	<target name="-determine-version" depends="-determine-version-dev,-determine-version-nondev" />
 
 	<target name="-load-sfproperties">
 		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
@@ -74,9 +61,7 @@
 	</target>
 
 	<target name="-init-release-properties" depends="-determine-version">
-		<property name="javac.debug"         value="false" />
-		<property name="javac.deprecation"   value="false" />
-		<property name="version"             value="${version.major}.${version.minor}" />
+		<property name="version" value="${version.major}.${version.minor}" />
 	</target>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
@@ -116,7 +101,7 @@
 	<target name="version" depends="-init">
 		<echo message="Java ${java.version}" />
 		<echo message="${ant.version}" />
-		<echo message="${title} ${version} (real: ${version.real})" />
+		<echo message="${title} ${version}" />
 	</target>
 
 	<target name="clean" description="Removes all generated files">
@@ -783,7 +768,6 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	depends="-init-release,-check-release-version,-check-directories,-nodiffs-check,tests">
 		<fail if="tests.failed" message="All tests should run" />
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
-			<entry key="version.prev.minor" type="int" operation="+" value="1" />
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
 		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"

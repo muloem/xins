@@ -1,8 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.198:
 
-* Tests:
+* Unit tests:
   - Added BasicPropertyReader tests.
+
+* Build and release process:
+  - Removed previous version from .version.properties file. It is hardly
+    useful and makes things unnecessarily complexity.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.197:
