@@ -318,7 +318,7 @@
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="resultcode">
 			<xsl:choose>
-				<xsl:when test="@resultcode">
+				<xsl:when test="@returncode">
 					<xsl:value-of select="@returncode" />
 				</xsl:when>
 				<xsl:otherwise>
