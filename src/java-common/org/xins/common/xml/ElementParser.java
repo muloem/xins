@@ -8,13 +8,16 @@ package org.xins.common.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Reader;
 
 import java.util.Stack;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -99,6 +102,7 @@ extends Object {
     */
    static {
       SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+      SAX_PARSER_FACTORY.setValidating(true);
       SAX_PARSER_FACTORY.setNamespaceAware(true);
    }
 
@@ -131,82 +135,119 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Parses the given XML string to create a <code>Element</code> object.
+    * Parses content of a character stream to create an XML
+    * <code>Element</code> object.
     *
-    * @param xml
-    *    the XML to be parsed, not <code>null</code>.
+    * @param in
+    *    the character stream that is supposed to contain XML to be parsed,
+    *    not <code>null</code>.
     *
     * @return
     *    the parsed result, not <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>xml == null</code>.
+    *    if <code>in == null</code>.
+    *
+    * @throws IOException
+    *    if there is an I/O error.
     *
     * @throws ParseException
-    *    if the specified string is not considered to be valid XML.
+    *    if the content of the character stream is not considered to be valid
+    *    XML.
     */
-   public Element parse(byte[] xml)
-   throws IllegalArgumentException, ParseException {
+   public Element parse(Reader in)
+   throws IllegalArgumentException,
+          IOException,
+          ParseException {
 
-      final String THIS_METHOD = "parse(byte[])";
+      // TODO: Consider using an XMLReader instead of a SAXParser
+
+      final String THIS_METHOD = "parse(java.io.Reader)";
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
-      MandatoryArgumentChecker.check("xml", xml);
+      MandatoryArgumentChecker.check("in", in);
 
       // Initialize our SAX event handler
       Handler handler = new Handler();
 
-      ByteArrayInputStream bais = null;
+      // Construct a SAX parser
+      SAXParser saxParser;
       try {
+         saxParser = SAX_PARSER_FACTORY.newSAXParser();
 
-         // Construct a SAX parser
-         SAXParser saxParser = SAX_PARSER_FACTORY.newSAXParser();
+      // Factory method may fail with an exception
+      } catch (Exception exception) {
+         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
+         final String SUBJECT_METHOD = "newSAXParser()";
+         final String DETAIL         = null;
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        exception);
+      }
 
-         // Convert the byte array to an input stream
-         bais = new ByteArrayInputStream(xml);
+      // Make sure the returned reference is not null
+      if (saxParser == null) {
+         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
+         final String SUBJECT_METHOD = "newSAXParser()";
+         final String DETAIL         = "Method returned null";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
 
+      // Make sure the parser validates XML documents
+      if (! saxParser.isValidating()) {
+         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
+         final String SUBJECT_METHOD = "newSAXParser()";
+         final String DETAIL         = "Returned parser does not validate XML documents.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
+
+      // Make sure the parser supports XML Namespaces
+      if (! saxParser.isNamespaceAware()) {
+         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
+         final String SUBJECT_METHOD = "newSAXParser()";
+         final String DETAIL         = "Returned parser does not support XML Namespaces.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
+
+      // Wrap the Reader in a SAX InputSource object
+      InputSource source = new InputSource(in);
+
+      try {
          // Let SAX parse the XML, using our handler
-         saxParser.parse(bais, handler);
+         saxParser.parse(source, handler);
 
-      } catch (Throwable exception) {
+      } catch (SAXException exception) {
 
-         // Log: Parsing failed
-         String detail = exception.getMessage();
-         // XXX: Log.log_2205(exception, detail);
+         // TODO: Log: Parsing failed
+         final String exMessage = exception.getMessage();
 
-         // Construct a buffer for the error message
-         FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
-
-         // Include the exception message in our error message, if any
-         if (detail != null && detail.length() > 0) {
-            buffer.append(": ");
-            buffer.append(detail);
+         // Construct complete message
+         String message = "Failed to parse XML";
+         if (TextUtils.isEmpty(exMessage)) {
+            message += '.';
          } else {
-            buffer.append('.');
+            message += ": " + exMessage;
          }
 
          // Throw exception with message, and register cause exception
-         throw new ParseException(buffer.toString(), exception, detail);
-
-      // Always dispose the ByteArrayInputStream
-      } finally {
-         if (bais != null) {
-            try {
-               bais.close();
-            } catch (IOException ioException) {
-               Log.log_1051(ioException, CLASSNAME, THIS_METHOD, bais.getClass().getName(), "close()", null);
-               // ignore
-            }
-         }
+         throw new ParseException(message, exception, exMessage);
       }
+
+      Element element = handler.getElement();
 
       // TRACE: Leave method
       Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
-      return handler.getElement();
+      return element;
    }
 
 
@@ -525,7 +566,9 @@ extends Object {
                                 + _state
                                 + " instead of "
                                 + FINISHED;
-            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, DETAIL);
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                            HANDLER_CLASSNAME, THIS_METHOD,
+                                            DETAIL);
          }
 
          return _element;

@@ -9,7 +9,9 @@ package org.xins.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -130,10 +132,9 @@ extends CallingConvention {
             content.append("\n");
          }
 
-         // TODO: Consider passing the Reader to the ElementParser
          String contentString = content.toString();
          ElementParser parser = new ElementParser();
-         Element requestElem = parser.parse(contentString.getBytes(REQUEST_ENCODING));
+         Element requestElem = parser.parse(new StringReader(contentString));
 
          String functionName = null;
 

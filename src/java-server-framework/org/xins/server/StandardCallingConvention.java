@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import java.util.Enumeration;
@@ -141,16 +142,21 @@ extends CallingConvention {
       String dataSectionValue = httpRequest.getParameter("_data");
       Element dataElement;
       if (dataSectionValue != null && dataSectionValue.length() > 0) {
+         ElementParser parser = new ElementParser();
+
+         // Parse the data section
          try {
-            ElementParser parser = new ElementParser();
-            dataElement = parser.parse(dataSectionValue.getBytes(DATA_ENCODING));
-         } catch (UnsupportedEncodingException ex) {
+            dataElement = parser.parse(new StringReader(dataSectionValue));
+
+         // I/O error, should never happen on a StringReader
+         } catch (IOException ex) {
             final String SUBJECT_CLASS  = "java.lang.String";
             final String SUBJECT_METHOD = "getBytes(java.lang.String)";
             final String DETAIL         = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
             throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
                                             SUBJECT_CLASS, SUBJECT_METHOD,
                                             DETAIL,        ex);
+         // Parsing error
          } catch (ParseException ex) {
             throw new InvalidRequestException("Cannot parse the data section.", ex);
          }

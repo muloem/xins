@@ -8,6 +8,8 @@ package org.xins.tests.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+
 import java.util.List;
 import java.util.Random;
 
@@ -204,7 +206,7 @@ public class CallingConventionTests extends TestCase {
       HTTPCallResult result = caller.call(request);
       byte[] data = result.getData();
       ElementParser parser = new ElementParser();
-      return parser.parse(data);
+      return parser.parse(new StringReader(new String(data)));
    }
 
    /**
@@ -251,7 +253,7 @@ public class CallingConventionTests extends TestCase {
          int code = client.executeMethod(post);
          byte[] data = post.getResponseBody();
          ElementParser parser = new ElementParser();
-         Element result = parser.parse(data);
+         Element result = parser.parse(new StringReader(new String(data)));
          assertEquals("result", result.getLocalName());
          if (success) {
             assertNull("The method returned an error code: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
