@@ -106,8 +106,8 @@ public final class XINSCallRequest extends CallRequest {
     *    the name of the function to call, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the input parameters, if any, can be <code>null</code> and should not
-    *    be modifiable.
+    *    the input parameters, if any, can be <code>null</code> if there are
+    *    none.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
@@ -126,8 +126,8 @@ public final class XINSCallRequest extends CallRequest {
     *    the name of the function to call, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the input parameters, if any, can be <code>null</code> and should not
-    *    be modifiable.
+    *    the input parameters, if any, can be <code>null</code> if there are
+    *    none.
     *
     * @param failOverAllowed
     *    flag that indicates whether fail-over is in principle allowed, even
@@ -152,8 +152,8 @@ public final class XINSCallRequest extends CallRequest {
     *    the name of the function to call, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the input parameters, if any, can be <code>null</code> and should not
-    *    be modifiable.
+    *    the input parameters, if any, can be <code>null</code> if there are
+    *    none.
     *
     * @param failOverAllowed
     *    flag that indicates whether fail-over is in principle allowed, even
@@ -182,8 +182,9 @@ public final class XINSCallRequest extends CallRequest {
       // Create PropertyReader for the HTTP parameters
       final Object SECRET_KEY = new Object();
       ProtectedPropertyReader httpParams = new ProtectedPropertyReader(SECRET_KEY);
+      ProtectedPropertyReader xinsParams = new ProtectedPropertyReader(SECRET_KEY);
 
-      // Check and copy all XINS parameters to HTTP parameters
+      // Check and copy all parameters to XINS and HTTP parameters
       if (parameters != null) {
          Iterator names = parameters.getNames();
          while (names.hasNext()) {
@@ -212,6 +213,7 @@ public final class XINSCallRequest extends CallRequest {
 
             // Name is considered valid, store it
             } else {
+               xinsParams.set(SECRET_KEY, name, value);
                httpParams.set(SECRET_KEY, name, value);
             }
          }
@@ -231,12 +233,10 @@ public final class XINSCallRequest extends CallRequest {
          httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
       }
 
-      // FIXME for XINS 1.1.0: Make parameters unmodifiable and change @param
-
       // Initialize fields
       _instanceNumber  = ++INSTANCE_COUNT;
       _functionName    = functionName;
-      _parameters      = parameters;
+      _parameters      = xinsParams;
       _failOverAllowed = failOverAllowed;
       _httpMethod      = method;
       _httpParams      = httpParams;
@@ -316,7 +316,7 @@ public final class XINSCallRequest extends CallRequest {
          buffer.append(TextUtils.quote(_httpMethod));
 
          // Function name
-         buffer.append(" [function=\"");
+         buffer.append("; function=\"");
          buffer.append(_functionName);
 
          // Parameters
