@@ -87,12 +87,13 @@ public final class AddReleaseTask extends Task {
     * Constructs a new <code>AddReleaseTask</code>.
     */
    public AddReleaseTask() {
+      HttpState httpState = new HttpState();
+      httpState.setCookiePolicy(CookiePolicy.COMPATIBILITY);
+
       _httpClient = new HttpClient();
       _httpClient.setConnectionTimeout(7000); // 7 seconds
       _httpClient.setTimeout(5000);           // 5 seconds
-
-      _httpState = _httpClient.getState();
-      _httpState.setCookiePolicy(CookiePolicy.COMPATIBILITY);
+      _httpClient.setState(httpState);
    }
 
 
@@ -146,9 +147,9 @@ public final class AddReleaseTask extends Task {
    private HttpClient _httpClient;
 
    /**
-    * The state holder object for the HTTP connection.
+    * The <em>GET</em> method to use for executing requests.
     */
-   private HttpState _httpState;
+   private GetMethod _method;
 
 
    //-------------------------------------------------------------------------
@@ -433,22 +434,19 @@ public final class AddReleaseTask extends Task {
       GetMethod method = new GetMethod(url);
 
       log("Logging in to SourceForge site as \"" + _user + "\".", VERBOSE);
-      int code;
       try {
          // Execute the request
          log("Executing request \"" + url + "\".", DEBUG);
-         _httpClient.executeMethod(method);
+         int code = _httpClient.executeMethod(method);
 
-         // Determine the status code
-         code = method.getStatusCode();
-
-         // Expect a HTTP OK (200)
-         if (code != 302) {
-            throw fail("Expected result code 302 while logging in. Received: " + method.getStatusLine());
+         // Check status code
+         final int EXPECTED_CODE = 302;
+         if (code != EXPECTED_CODE) {
+            throw fail("Expected result code " + EXPECTED_CODE + " while logging in. Received: " + method.getStatusLine());
          }
 
          // Get all cookies
-         Cookie[] cookies = _httpState.getCookies();
+         Cookie[] cookies = _httpClient.getState().getCookies();
          int cookieCount = cookies == null ? 0 : cookies.length;
          if (cookieCount < 1) {
             throw fail("SourceForge login failed. No cookies returned.");
@@ -462,53 +460,44 @@ public final class AddReleaseTask extends Task {
 
       } catch (IOException e) {
          throw fail("I/O error during SourceForge login.", e);
-      } finally {
-         log("Releasing HTTP connection.", DEBUG);
-         method.releaseConnection();
-         log("Released HTTP connection.", DEBUG);
       }
 
       log("Logged in to SourceForge site as \"" + _user + "\".", DEBUG);
    }
 
    private void addRelease() throws BuildException {
-      PostMethod method = new PostMethod("http://sourceforge.net/project/admin/newrelease.php");
-      method.addParameter("group_id",     _groupID);
-      method.addParameter("release_name", _releaseName);
-      method.addParameter("package_id",   _packageID);
-      method.addParameter("submit",       "Create This Release");
+
+      FastStringBuffer buffer = new FastStringBuffer(256);
+      buffer.append("http://sourceforge.net/project/admin/newrelease.php?group_id=");
+      buffer.append(_groupID);
+      buffer.append("&release_name=");
+      buffer.append(_releaseName);
+      buffer.append("&package_id=");
+      buffer.append(_packageID);
+      buffer.append("&submit=Create+This+Release");
+
+      String url = buffer.toString();
+
+      GetMethod method = new GetMethod(url);
 
       log("Creating release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.', VERBOSE);
-      int code;
       try {
-         _httpClient.executeMethod(method);
-         code = method.getStatusCode();
+         // Execute the request
+         log("Current cookie count is " + _httpClient.getState().getCookies().length);
+         log("Executing request \"" + url + "\".", DEBUG);
+         int code = _httpClient.executeMethod(method);
+         log("Current cookie count is " + _httpClient.getState().getCookies().length);
+
+         // Check status code
+         final int EXPECTED_CODE = 200;
+         if (code != EXPECTED_CODE) {
+            throw fail("Expected result code " + EXPECTED_CODE + " while adding release. Received: " + method.getStatusLine());
+         }
       } catch (IOException e) {
          throw fail("I/O error while creating release.", e);
-      } finally {
-         log("Releasing HTTP connection.", DEBUG);
-         method.releaseConnection();
-         log("Released HTTP connection.", DEBUG);
       }
 
-      // Expect a HTTP redirect (302)
-      if (code != 302) {
-         throw fail("HTTP result code " + code + " while creating release. Status line: " + method.getStatusLine());
-      }
-
-      // Determine redirect location
-      Header locationHeader = method.getResponseHeader("Location");
-      // TODO: Make more safe
-      try {
-         String location = locationHeader.getValues()[0].toString();
-         log("Login resulted in 302 redirect to: " + location);
-      } catch (HttpException e) {
-         throw fail("Unable to determine redirect location.", e);
-      }
-
-      // Fetch cookies
-      
-      
+      // Succeeded
       log("Created release \"" + _releaseName + "\" for group " + _groupID + ", package " + _packageID + '.');
    }
 }
