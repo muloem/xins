@@ -247,6 +247,11 @@ public abstract class CallException extends Exception {
     */
    private final long _duration;
 
+   /**
+    * The next linked <code>CallException</code>. Can be <code>null</code> if
+    * there is none or if it has not been set yet.
+    */
+   private CallException _next;
 
    //-------------------------------------------------------------------------
    // Methods
@@ -287,5 +292,46 @@ public abstract class CallException extends Exception {
     */
    public final long getDuration() {
       return _duration;
+   }
+
+   /**
+    * Sets the next linked <code>CallException</code>. This method should be
+    * called either never or once during the lifetime of a
+    * <code>CallException</code> object.
+    *
+    * @param next
+    *    the next linked <code>CallException</code>, not <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the next linked <code>CallException</code> has already been set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>next == null</code>.
+    *
+    * @since XINS 0.202
+    */
+   final void setNext(CallException next)
+   throws IllegalStateException, IllegalArgumentException {
+
+      // Check preconditions
+      if (_next != null) {
+         throw new IllegalStateException("Next linked CallException already set.");
+      }
+      MandatoryArgumentChecker.check("next", next);
+
+      _next = next;
+   }
+
+   /**
+    * Gets the next linked <code>CallException</code>, if there is any.
+    *
+    * @return
+    *    the next linked <code>CallException</code>, or <code>null</code> if
+    *    there is none.
+    *
+    * @since XINS 0.202
+    */
+   public final CallException getNext() {
+      return _next;
    }
 }
