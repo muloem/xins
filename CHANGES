@@ -102,6 +102,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
   - Implemented RFE #1110691: Deprecate create methods in CAPI class. These
     have been replaced by equivalent constructors.
 
+* Generated build file:
+  - Fixed SF.net bug #1110726: Invalid generated build.xml can't be removed
+    with 'xins clean'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
 
