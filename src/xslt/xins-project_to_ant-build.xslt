@@ -373,7 +373,7 @@ $Id$
 						bottom="TODO">
 							<packageset dir="build/java-combined/{$api}" />
 							<link
-							href="http://xins.sourceforge.net/javadoc/0.33/"
+							href="http://xins.sourceforge.net/javadoc/0.56/"
 							offline="true"
 							packagelistloc="{$xins_home}/build/javadoc/" />
 							<link
@@ -470,7 +470,7 @@ $Id$
 					bottom="TODO">
 						<packageset dir="build/java-capi/{$api}" />
 						<link
-						href="http://xins.sourceforge.net/javadoc/0.33/"
+						href="http://xins.sourceforge.net/javadoc/0.56/"
 						offline="true"
 						packagelistloc="{$xins_home}/build/javadoc/" />
 						<link
