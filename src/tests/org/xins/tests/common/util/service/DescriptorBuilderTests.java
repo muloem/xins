@@ -111,7 +111,7 @@ public class DescriptorBuilderTests extends TestCase {
       String url = "http://somehost.somecompany.com:3003/something/else";
       long timeOut = 1500;
       String base = "server";
-      _properties.setProperty(base, DescriptorBuilder.SERVICE_DESCRIPTOR_TYPE + DescriptorBuilder.DELIMITER + url + DescriptorBuilder.DELIMITER + String.valueOf(timeOut));
+      _properties.setProperty(base, DescriptorBuilder.TARGET_DESCRIPTOR_TYPE + DescriptorBuilder.DELIMITER + url + DescriptorBuilder.DELIMITER + String.valueOf(timeOut));
       Descriptor d = DescriptorBuilder.build(_propertyReader, base);
       assertNotNull(d);
       assertEquals(TargetDescriptor.class, d.getClass());

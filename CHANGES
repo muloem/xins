@@ -8,6 +8,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . public Iterator getChildren()
     . public Iterator getChildren(String name)
     Changed the tests accordingly.
+  - Removed class field SERVICE_DESCRIPTOR_TYPE that was deprecated since XINS
+    1.0.0-beta6.
 
 * XINS/Java Common Library:
   - Added new types Float32 and Float64.

@@ -89,15 +89,6 @@ public final class DescriptorBuilder extends Object {
    public static final String TARGET_DESCRIPTOR_TYPE = "service";
 
    /**
-    * Name identifying an actual target descriptor.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0-beta6. Use
-    *    {@link #TARGET_DESCRIPTOR_TYPE} instead.
-    */
-   public static final String SERVICE_DESCRIPTOR_TYPE = TARGET_DESCRIPTOR_TYPE;
-
-   /**
     * Name identifying a group of descriptors.
     */
    public static final String GROUP_DESCRIPTOR_TYPE = "group";
