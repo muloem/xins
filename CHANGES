@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 1:
 * XINS/Java Common Library:
   - The Base64 class has been deprecated and may be removed in coming
     releases.
+  - Improved the accuracy and stability of the ExpiryFolder and ExpiryStrategy
+    classes. The tests have been extended a lot.
 
 * Build and release process:
   - Added -init-release in the dependencies to facilitate the making of a
