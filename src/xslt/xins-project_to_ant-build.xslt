@@ -18,6 +18,9 @@
 			</target>
 
 			<target name="specdocs" depends="-prepare">
+				<copy
+				todir="build/specdocs"
+				file="${{xins_home}}/src/css/specdocs/style.css" />
 				<style
 				in="xins-project.xml"
 				out="build/specdocs/index.html"
