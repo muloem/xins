@@ -222,10 +222,10 @@ implements Responder, Log {
       _logger   = (_function    == null) ? null : _function.getLogger();
 
       // Assign a call ID
-      _callID  = _function.assignCallID();
+      _callID  = (_function     == null) ? -1   : _function.assignCallID();
 
       // Determine the prefix text for log messages
-      _logPrefix = "Call " + _functionName + ':' + _callID + ": ";
+      _logPrefix = (_function   == null) ? ""   : "Call " + _functionName + ':' + _callID + ": ";
    }
 
    /**
