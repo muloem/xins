@@ -41,6 +41,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added support for the jikes compiler.
   - Added run-<api> target that runs your API implementation.
 
+* DTD:
+  - The order of the elements in the impl.xml file does not matter anymore.
+
 * Examples:
   - Added .version.properties in the demo directory of the release.
   - Added PHP and Perl examples for the client side. Contribution from 
