@@ -13,8 +13,16 @@ import java.util.HashMap;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public class MissingArgumentException
+public final class MissingArgumentException
 extends IllegalArgumentException {
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -122,17 +130,17 @@ extends IllegalArgumentException {
    /**
     * The number of arguments that were found missing.
     */
-   protected final int _argumentCount;
+   private final int _argumentCount;
 
    /**
     * The names of the arguments that were found missing.
     */
-   protected final String[] _argumentNames;
+   private final String[] _argumentNames;
 
    /**
     * The message that will be returned by <CODE>getMessage()</CODE>.
     */
-   protected final String _message;
+   private final String _message;
 
 
    //-------------------------------------------------------------------------
