@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
+* XINS/Java Common Library:
+  - Added package.html for org.xins.logdoc.
+
 * Build and release process:
   - Linking to xmlenc 0.43 API docs.
 
@@ -17,11 +20,14 @@ CHANGES INTRODUCED IN XINS 0.162:
     statistics.
 
 * XINS/Java Common Library:
-  - Added class org.xins.logdoc.AbstractLog.
+  - Added package org.xins.logdoc. Including classes AbstractLog,
+    LogStatistics and NoSuchTranslationBundleException.
 
 * Logdoc:
   - Generating counter per log entry.
   - Logdoc Log classes now extend org.xins.logdoc.AbstractLog.
+  - Not generating NoSuchTranslationBundleException, but using the
+    org.xins.logdoc package.
 
 * Generated specification documentation:
   - Added DTD's for to project, API, type, result code and function XML files.
