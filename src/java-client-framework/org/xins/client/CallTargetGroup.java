@@ -46,12 +46,6 @@ extends AbstractCompositeFunctionCaller {
     */
    public static final Type RANDOM_TYPE = new Type("random");
 
-   /**
-    * The <em>round robin</em> call target group type. The name of this type
-    * is: <code>"round robin"</code>.
-    */
-   public static final Type ROUND_ROBIN_TYPE = new Type("round robin");
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -80,8 +74,6 @@ extends AbstractCompositeFunctionCaller {
          return ORDERED_TYPE;
       } else if (RANDOM_TYPE.getName().equals(name)) {
          return RANDOM_TYPE;
-      } else if (ROUND_ROBIN_TYPE.getName().equals(name)) {
-         return ROUND_ROBIN_TYPE;
 
       // Fail if name is null
       } else if (name == null) {
@@ -99,8 +91,8 @@ extends AbstractCompositeFunctionCaller {
     * addresses. Each one will be added as a member.
     *
     * @param type
-    *    the type, either {@link #ORDERED_TYPE}, {@link #RANDOM_TYPE} or
-    *    {@link #ROUND_ROBIN_TYPE}, cannot be <code>null</code>.
+    *    the type, either {@link #ORDERED_TYPE}, or
+    *    {@link #RANDOM_TYPE}, cannot be <code>null</code>.
     *
     * @param url
     *    the {@link URL} that is used to create {@link FunctionCaller}
@@ -154,8 +146,8 @@ extends AbstractCompositeFunctionCaller {
     * the specified members.
     *
     * @param type
-    *    the type, either {@link #ORDERED_TYPE}, {@link #RANDOM_TYPE} or
-    *    {@link #ROUND_ROBIN_TYPE}, cannot be <code>null</code>.
+    *    the type, either {@link #ORDERED_TYPE}, or {@link #RANDOM_TYPE},
+    *    cannot be <code>null</code>.
     *
     * @param members
     *    the {@link List} of {@link FunctionCaller} members, cannot be
@@ -178,8 +170,6 @@ extends AbstractCompositeFunctionCaller {
          return new OrderedCallTargetGroup(members);
       } else if (type == RANDOM_TYPE) {
          return new RandomCallTargetGroup(members);
-      } else if (type == ROUND_ROBIN_TYPE) {
-         return new RoundRobinCallTargetGroup(members);
       } else {
          throw new InternalError("Type not recognized.");
       }
@@ -285,8 +275,8 @@ extends AbstractCompositeFunctionCaller {
     * Returns the type of this group.
     *
     * @return
-    *    the type of this group, either {@link #ORDERED_TYPE},
-    *     {@link #RANDOM_TYPE} or {@link #ROUND_ROBIN_TYPE}.
+    *    the type of this group, either {@link #ORDERED_TYPE}, or
+    *     {@link #RANDOM_TYPE}.
     */
    public final Type getType() {
       return _type;
@@ -441,18 +431,29 @@ extends AbstractCompositeFunctionCaller {
     *    if <code>caller.</code>{@link FunctionCaller#call(String,String,Map)}
     *    returned <code>null</code>.
     */
-   protected final Object tryCall(FunctionCaller caller, String sessionID, String functionName, Map parameters)
+   protected final Object tryCall(FunctionCaller caller,
+                                  String         sessionID,
+                                  String         functionName,
+                                  Map            parameters)
    throws InternalError {
+
+      // Perform the call
       CallResult result;
       try {
          result = caller.call(sessionID, functionName, parameters);
+
+      // If there was an exception, return it...
       } catch (Throwable exception) {
          return exception;
       }
 
+
+      // otherwise if the result was null, then throw an error...
       if (result == null) {
          throw new InternalError(caller.getClass().getName() + ".call(String,String,Map) returned null.");
       }
+
+      // otherwise return the CallResult object
       return result;
    }
 
