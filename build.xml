@@ -645,7 +645,7 @@
 			<entry key="version.prev.minor" type="int" operation="+" value="1" />
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
-		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins"
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true">
 			<commandline>
 				<argument value="commit" />
@@ -658,7 +658,7 @@
 
 	<target name="-nodiffs-check" depends="clean">
 		<tempfile destdir="${java.io.tmpdir}" prefix="${name}-release-diff." property="diff-file" suffix=".diff" />
-		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins"
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="diff" output="${diff-file}" quiet="true" />
 		<loadfile srcfile="${diff-file}" property="diff-contents" />
 		<property name="diff-contents" value="" />
@@ -681,7 +681,7 @@
 	depends="-pre-release-checks">
 		<property name="tagname" value="RELEASE_${version.major}_${version.minor}" />
 		<echo message="Tagging ${tagname}" />
-		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins"
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="tag -F ${tagname}" quiet="true" />
 	</target>
 
@@ -712,7 +712,7 @@
 			<entry key="version.minor"      type="int" operation="+" value="1"      />
 			<entry key="version.suffix"                operation="=" value="-dev"   />
 		</propertyfile>
-		<cvs cvsRoot=":ext:${sf.user}@cvs.xins.sourceforge.net:/cvsroot/xins" failonerror="true">
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins" failonerror="true">
 			<commandline>
 				<argument value="commit" />
 				<argument value="-m" />

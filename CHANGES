@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 0.172:
 * Build and release process:
   - A symbolic link latest is created in the directory javadoc, j2h,
     checkstyle, javadoc-private and logdoc that points to the latest version.
+  - Updated build.xml for the new CVS server cvs.sourceforge.net.
 
 * Logdoc:
   - Added the DTD for the logdoc xml files.
