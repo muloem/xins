@@ -420,10 +420,36 @@
 			<param name="propertyValue" nullable="false" />
 			<param name="message" />
 		</entry>
-		<entry id="4036" level="ERROR">
+		<entry id="4036" level="INFO">
 			<description>Access rule parsed.</description>
 			<param name="index" nullable="false" />
+			<param name="rule" nullable="false" />
+		</entry>
+		<entry id="4037" level="INFO">
+			<description>Access rule matches. Allowing function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" nullable="false" />
+			<param name="rule" nullable="false" />
+		</entry>
+		<entry id="4038" level="INFO">
+			<description>Access rule matches. Denying function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" nullable="false" />
 			<param name="rule"  nullable="false" />
+		</entry>
+		<entry id="4039" level="INFO">
+			<description>Access rule does not match.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
+			<param name="index" nullable="false" />
+			<param name="rule"  nullable="false" />
+		</entry>
+		<entry id="4040" level="INFO">
+			<description>Request matches none of the access rules. Denying function call.</description>
+			<param name="ip" nullable="false" />
+			<param name="function" nullable="false" />
 		</entry>
 	</group>
 

@@ -87,6 +87,10 @@
 	<translation entry="4034">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
 	<translation entry="4035">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="4036">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
+	<translation entry="4037">Allowing call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="4038">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="4039">Request from <value-of-param name="ip" /> to function <value-of-param name="function" /> does not match access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="4040">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches none of the access rules.</translation>
 	<translation entry="5000">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed.</translation>
 	<translation entry="5001">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />.</translation>
 	<translation entry="6000">Shutting down XINS/Java Server Framework.</translation>
