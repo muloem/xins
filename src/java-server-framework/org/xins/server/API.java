@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletRequest;
+import org.apache.log4j.Logger;
 import org.xins.util.io.FastStringWriter;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -56,6 +57,7 @@ implements DefaultReturnCodes {
     * Constructs a new <code>API</code> object.
     */
    protected API() {
+      _log             = Logger.getLogger(getClass().getName());
       _functionsByName = new HashMap();
       _functionList    = new ArrayList();
       _contextsByThread = new HashMap();
@@ -65,6 +67,12 @@ implements DefaultReturnCodes {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The logger used by this API instance. This field is initialized by the
+    * constructor and set to a non-<code>null</code> value.
+    */
+   private Logger _log;
 
    /**
     * Map that maps function names to <code>Function</code> instances.
@@ -212,7 +220,7 @@ implements DefaultReturnCodes {
          code    = context.getCode();
          exceptionThrown = false;
       } catch (Throwable exception) {
-         LOG.error("Caught exception while calling API.", exception);
+         _log.error("Caught exception while calling API.", exception);
 
          success = false;
          code    = INTERNAL_ERROR;
