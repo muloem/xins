@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 0.162:
   - Generating counter per log entry.
   - Logdoc Log classes now extend org.xins.logdoc.AbstractLog.
 
+* Generated specification documentation:
+  - Added the DTD files associated to xins.project.xml, api.xml, 
+    the type XML file, the result code XML file and the function XML file.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.161:
 

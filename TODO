@@ -176,6 +176,4 @@ MISCELLANEOUS
 * Add a ANT target that creates given the name an empty XINS project.
 * xslt & xml files should contain a description in their header.
 * The ANT build file should be regenerated only if a source file have changed.
-* Write the DTD the functions, types, result code, api.xml and 
-  xins-project.xml.
 
