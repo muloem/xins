@@ -66,6 +66,7 @@
 <!ATTLIST output-example
           name        NMTOKEN #REQUIRED
 >
+<!ELEMENT output-data-example (element-example+)>
 <!ELEMENT data-example (element-example+)>
 <!ELEMENT element-example (attribute-example*, element-example*, pcdata-example?)>
 <!ELEMENT pcdata-example (#PCDATA)>

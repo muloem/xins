@@ -20,9 +20,14 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
   - If the org.xins.server.config is not set as a system property, the server
     will also try to get the org.xins.server.config from the bootstrap
     properties.
+  - Fixed bug #1076638: The generated context ID was not conform to the
+    architect group recommendation.
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
+
+* Generation of server-side Java code:
+  - An object is created for the data input parameter.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:

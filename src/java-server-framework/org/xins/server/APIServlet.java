@@ -170,7 +170,7 @@ extends HttpServlet {
    /**
     * The date formatter used for the context identifier.
     */
-   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyMMdd-HHmmssSSS");
 
    /**
     * The name of the system property that specifies the location of the

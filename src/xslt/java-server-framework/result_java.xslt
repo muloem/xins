@@ -436,9 +436,17 @@ implements Result {
     * @param </xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text><![CDATA[
-    *    the value of the sub-element to add, cannot be <code>null</code>.
+    *    the value of the sub-element to add, cannot be <code>null</code>.]]></xsl:text>
+		<xsl:if test="deprecated">
+			<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
+		</xsl:if>
+		<xsl:text>
     */
-   public void add]]></xsl:text>
+   public void add</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$methodName" />
