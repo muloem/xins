@@ -44,9 +44,9 @@ extends Object {
 
    /**
     * The character that is used to determine whether the provided expression
-    * IP contains leading zero's.
+    * IP contains zero's.
     */
-   private static final char LEADING_ZERO_CHAR = '0';
+   private static final char ZERO_CHAR = '0';
 
 
    //-------------------------------------------------------------------------
@@ -67,7 +67,8 @@ extends Object {
     *    zeroes, and <em>n</em> is a number between <em>0</em> and
     *    <em>32</em>, no leading zeroes.
     *
-    * @return the created IP Filter object.
+    * @return
+    *    the created IP Filter object.
     *
     * @throws IllegalArgumentException
     *    if <code>expression == null</code>.
@@ -119,12 +120,12 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The expression of this filter.
+    * The expression of this filter, cannot be <code>null</code>.
     */
    private final String _expression;
 
    /**
-    * The mask of this filter.
+    * The mask of this filter. Can only have a value between 0 and 32.
     */
    private final int _mask;
 
@@ -192,11 +193,14 @@ extends Object {
     * Determines whether the provided expression is a valid IP filter.
     *
     * @param expression
-    *    the IP filter expression.
+    *    the IP filter expression, may not be <code>null</code>.
     *
     * @return
     *    a boolean with the value <code>true</code> when the expression
     *    is a valid IP filter, otherwise <code>false</code>.
+    *
+    * @throws
+    *    NullPointerException when <code>expression == null</code>.
     */
    private static boolean isValidFilter(String expression) {
       String ip = null;
@@ -210,7 +214,7 @@ extends Object {
          ip = expression.substring(0, slashPosition);
       }
 
-      if (validFilter == true && isValidIp(ip) == false) {
+      if (validFilter == true && isValidIP(ip) == false) {
          validFilter = false;
       }
 
@@ -229,13 +233,13 @@ extends Object {
     * Determines whether the provided IP address is of a valid format.
     *
     * @param ip
-    *    the IP address.
+    *    the IP address, may not be <code>null</code>.
     *
     * @return
     *    boolean with the value <code>true</code> if the IP is valid,
     *    otherwise false.
     */
-   private static boolean isValidIp(String ip) {
+   private static boolean isValidIP(String ip) {
       String[] ipFields = getIPFields(ip);
       boolean validIP = ipFields == null ? false : true;
       return validIP;
@@ -245,11 +249,14 @@ extends Object {
     * Determines whether the provided mask is of a valid format.
     *
     * @param mask
-    *    the mask.
+    *    the mask, may not be <code>null</code>.
     *
     * @return
     *    boolean with the value <code>true</code> if the mask is valid,
     *    otherwise false.
+    *
+    * @throws
+    *    NullPointerException when <code>mask == null</code>.
     */
    private static boolean isValidMask(String mask) {
       int maskLength = mask.length();
@@ -258,7 +265,7 @@ extends Object {
          return false;
       }
 
-      if (maskLength == 2 && mask.charAt(0) == LEADING_ZERO_CHAR) {
+      if (maskLength == 2 && mask.charAt(0) == ZERO_CHAR) {
          return false;
       }
 
@@ -267,14 +274,18 @@ extends Object {
 
    /**
     * Determines whether the provided IP section (the part of the IP address)
-    * is of a valid format, i.e. an integer between 0 and 255.
+    * is of a valid format. This means that it has to be possible to convert
+    * the provided IP section to an integer between 0 and 255.
     *
     * @param ipSection
-    *    the IP section.
+    *    the IP section, may not be <code>null</code>.
     *
     * @return
     *    boolean with the value <code>true</code> if the IP section is
     *    valid, otherwise false.
+    *
+    * @throws
+    *    NullPointerException when <code>ipSection == null</code>.
     */
    private static boolean isValidIPSection(String ipSection) {
       int sectionLength = ipSection.length();
@@ -283,7 +294,7 @@ extends Object {
          return false;
       }
 
-      if (sectionLength > 1 && ipSection.charAt(0) == LEADING_ZERO_CHAR) {
+      if (sectionLength > 1 && ipSection.charAt(0) == ZERO_CHAR) {
          return false;
       }
 
@@ -291,7 +302,7 @@ extends Object {
    }
 
    /**
-    * Determines whether the contents of the provided string are valid, i.e.
+    * Determines whether the contents of the provided string are valid, thus.
     * can be translated into an integer value that lies between zero and the
     * specified maximum allowed value.
     *
@@ -311,8 +322,7 @@ extends Object {
 
       try {
          intValue = Integer.parseInt(value);
-      }
-      catch (NumberFormatException nfe) {
+      } catch (NumberFormatException nfe) {
          validValue = false;
       }
 
@@ -329,11 +339,14 @@ extends Object {
     * returned.
     *
     * @param ip
-    *    the IP address.
+    *    the IP address, may not be <code>null</code>.
     *
     * @return
     *    an array with the strings representing the value of each IP field
     *    or <code>null</code> if the provided IP is invalid.
+    *
+    * @throws
+    *    NullPointerException when <code>ip == null</code>.
     */
    private static String[] getIPFields(String ip) {
       StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
@@ -367,10 +380,13 @@ extends Object {
     * Determines what the mask is of the provided expression.
     *
     * @param expression
-    *    the expression.
+    *    the expression, may not be <code>null</code>.
     *
     * @return
     *    An integer representing the value of the mask of this expression.
+    *
+    * @throws
+    *    NullPointerException when <code>expression == null</code>.
     */
    private int determineMask(String expression) {
       int mask = -1;
@@ -384,8 +400,7 @@ extends Object {
 
       try {
          mask = Integer.parseInt(maskString);
-      }
-      catch (NumberFormatException nfe) {
+      } catch (NumberFormatException nfe) {
          throw new InternalError("The mask within the provided filter " + expression + " could not be translated to an integer.");
       }
 
@@ -396,10 +411,13 @@ extends Object {
     * Determines what the IP address is of the provided expression.
     *
     * @param expression
-    *    the expression.
+    *    the expression, may not be <code>null</code>.
     *
     * @return
     *    A string with the IP address of this expression.
+    *
+    * @throws
+    *    NullPointerException when <code>expression == null</code>.
     */
    private String determineIP(String expression) {
       String ip = null;
@@ -420,7 +438,7 @@ extends Object {
     *
     * @param ipFields
     *    the array containing the values of each IP section separated by the
-    *    dots.
+    *    dots, may not be <code>null</code>.
     *
     * @return
     *    a boolean with the value <code>true</code> if the IP address is 
@@ -450,11 +468,14 @@ extends Object {
     *
     * @param ipFields
     *    the array containing the values of each IP section separated by the
-    *    dots.
+    *    dots, may not be <code>null</code>.
     *
     * @return
     *    String with the binary value of the IP that was provided through the
     *    the string array with the values of each IP section.
+    *
+    * @throws
+    *    NullPointerException when <code>ipFields == null</code>.
     */
    private String getIpBinaryValue(String[] ipFields) {
       int ipFieldLength = ipFields.length;
