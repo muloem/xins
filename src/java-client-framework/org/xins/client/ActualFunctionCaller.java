@@ -215,7 +215,7 @@ extends AbstractFunctionCaller {
 
       // Log message
       if (debugEnabled) {
-         LOG.debug("Created ActualFunctionCaller. URL is \"" + _urlString + "\". CRC-32 is " + _crc32String + '.');
+         LOG.debug("Created ActualFunctionCaller for URL \"" + _urlString + "\", CRC-32 is " + _crc32String + '.');
       }
    }
 
