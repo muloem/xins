@@ -116,9 +116,6 @@
 		</xsl:variable>
 
 		<xsl:choose>
-			<xsl:when test="$type = '_text'">
-				<xsl:value-of select="$variable" />
-			</xsl:when>
 			<xsl:when test="$required = 'true'">
 				<xsl:value-of select="$javatypeclass" />
 				<xsl:text>.fromStringForRequired(</xsl:text>
