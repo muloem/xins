@@ -61,6 +61,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
 * Generation of specification documentation:
   - The num attribute for the examples is now optional.
   - Added the possibility to have a data element as input.
+  - Added the input-data-example element to specify a data section example 
+    in the input.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 3:

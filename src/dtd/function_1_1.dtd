@@ -52,7 +52,7 @@
           required   (true | false) #IMPLIED
           type       NMTOKEN #IMPLIED
 >
-<!ELEMENT example (description, input-example*, output-example*, data-example?)>
+<!ELEMENT example (description, input-example*, input-data-example?, output-example*, data-example?)>
 <!ATTLIST example
           num         NMTOKEN #IMPLIED
           resultcode  NMTOKEN #IMPLIED
@@ -61,6 +61,7 @@
 <!ATTLIST input-example
           name        NMTOKEN #REQUIRED
 >
+<!ELEMENT input-data-example (element-example+)>
 <!ELEMENT output-example (#PCDATA)>
 <!ATTLIST output-example
           name        NMTOKEN #REQUIRED

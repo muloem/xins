@@ -362,6 +362,13 @@
 		</xsl:variable>
 		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-inputparams2"  select="input-example" />
+		<xsl:variable name="example-inputdata">
+			<xsl:if test="input-data-example/element-example">
+				<xsl:text>&lt;data&gt;</xsl:text>
+				<xsl:apply-templates select="input-data-example/element-example" mode="input" />
+				<xsl:text>&lt;/data&gt;</xsl:text>
+			</xsl:if>
+		</xsl:variable>
 		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
 		<xsl:variable name="example-outputparams2" select="output-example" />
 		<xsl:variable name="resultcode">
@@ -538,6 +545,24 @@
 							</span>
 						</span>
 					</xsl:for-each>
+					<xsl:if test="$example-inputdata">
+						<xsl:text>&amp;</xsl:text>
+						<span class="param">
+							<xsl:attribute name="title">
+								<xsl:text>Data section: </xsl:text>
+								<xsl:value-of select="$example-inputdata" />
+							</xsl:attribute>
+							<span class="name">_data</span>
+							<xsl:text>=</xsl:text>
+							<span class="value">
+								<xsl:call-template name="urlencode">
+									<xsl:with-param name="text">
+										<xsl:value-of select="$example-inputdata" />
+									</xsl:with-param>
+								</xsl:call-template>
+							</span>
+						</span>
+					</xsl:if>
 				</span>
 			</td>
 		</tr>
@@ -724,6 +749,14 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:for-each>
+								<xsl:if test="$example-inputdata">
+									<xsl:text>&amp;_data=</xsl:text>
+									<xsl:call-template name="urlencode">
+										<xsl:with-param name="text">
+											<xsl:value-of select="$example-inputdata" />
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:if>
 							</xsl:attribute>
 
 							<xsl:value-of select="@id" />
@@ -758,6 +791,14 @@
 											</xsl:with-param>
 										</xsl:call-template>
 									</xsl:for-each>
+									<xsl:if test="$example-inputdata">
+										<xsl:text>&amp;_data=</xsl:text>
+										<xsl:call-template name="urlencode">
+											<xsl:with-param name="text">
+												<xsl:value-of select="$example-inputdata" />
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:if>
 								</xsl:attribute>
 
 								<xsl:value-of select="@id" />
@@ -852,6 +893,62 @@
 		</span>
 	</xsl:template>
 
+	<xsl:template match="element-example" mode="input">
+
+		<xsl:variable name="text">
+			<xsl:value-of select="pcdata-example/text()" />
+		</xsl:variable>
+
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:apply-templates select="attribute-example" mode="input" />
+		<xsl:if test="not(element-example) and not(boolean($text) and not($text = ''))">
+			<xsl:text> /</xsl:text>
+		</xsl:if>
+		<xsl:text>&gt;</xsl:text>
+
+		<xsl:if test="boolean(element-example) and boolean($text) and not($text = '')">
+			<xsl:message terminate="yes">
+				<xsl:text>Mixed content is currently not supported in element-examples.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<xsl:if test="boolean($text) and not($text = '')">
+			<xsl:value-of select="$text" />
+		</xsl:if>
+
+		<xsl:apply-templates select="element-example" mode="input" />
+
+		<xsl:if test="boolean(element-example) or (boolean($text) and not($text=''))">
+			<span class="elem">
+				<xsl:text>&lt;/</xsl:text>
+				<span class="name">
+					<xsl:value-of select="@name" />
+				</span>
+				<xsl:text>&gt;</xsl:text>
+			</span>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="attribute-example" mode="input">
+		<xsl:variable name="name" select="@name" />
+		<xsl:if test="not(count(parent::*/attribute-example[@name = $name]) = 1)">
+			<xsl:message terminate="yes">
+				<xsl:text>There are </xsl:text>
+				<xsl:value-of select="count(parent::*/attribute-example[@name = $name])" />
+				<xsl:text> attribute-example tags for the element '</xsl:text>
+				<xsl:value-of select="parent::*/@name" />
+				<xsl:text>' that have the same attribute name '</xsl:text>
+				<xsl:value-of select="$name" />
+				<xsl:text>' while there can be only one.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>="</xsl:text>
+		<xsl:value-of select="text()" />
+		<xsl:text>"</xsl:text>
+	</xsl:template>
 <!-- end -->
 
 	<xsl:template match="function/output">
