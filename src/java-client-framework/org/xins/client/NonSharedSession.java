@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.service.TargetDescriptor;
 
 /**
  * Non-shared session. Consists of a session identifier and a reference to the
@@ -31,11 +32,11 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>NonSharedSession</code> for the specified function
-    * caller and session identifier.
+    * Creates a new <code>NonSharedSession</code> for the specified target
+    * and session identifier.
     *
-    * @param functionCaller
-    *    the function caller, cannot be <code>null</code>.
+    * @param target
+    *    the {@link TargetDescriptor}, cannot be <code>null</code>.
     *
     * @param sessionID
     *    the session identifier, cannot be <code>null</code>.
@@ -43,15 +44,15 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>functionCaller == null || sessionID == null</code>.
     */
-   public NonSharedSession(FunctionCaller functionCaller, String sessionID)
+   public NonSharedSession(TargetDescriptor target, String sessionID)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("functionCaller", functionCaller,
-                                     "sessionID",      sessionID);
+      MandatoryArgumentChecker.check("target",    target,
+                                     "sessionID", sessionID);
 
-      _functionCaller = functionCaller;
-      _sessionID      = sessionID;
+      _target    = target;
+      _sessionID = sessionID;
    }
 
 
@@ -60,10 +61,10 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The function caller that generated the session identifier. Never
-    * <code>null</code>.
+    * The <code>TargetDescriptor</code> that identifies the target that
+    * generated the session identifier. Never <code>null</code>.
     */
-   private final FunctionCaller _functionCaller;
+   private final TargetDescriptor _target;
 
    /**
     * The generated session identifier. Never <code>null</code>.
@@ -76,14 +77,15 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the function caller that generated the session identifier.
+    * Returns a descriptor of the target that generated the session
+    * identifier. Never <code>null</code>.
     *
     * @return
-    *    the function caller that generated the session identifier, never
+    *    the target that generated the session identifier, never
     *    <code>null</code>.
     */
-   public final FunctionCaller getFunctionCaller() {
-      return _functionCaller;
+   public final TargetDescriptor getTarget() {
+      return _target;
    }
 
    /**

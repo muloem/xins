@@ -4,6 +4,7 @@
 package org.xins.client;
 
 import org.xins.types.TypeValueException;
+import org.xins.util.service.TargetDescriptor;
 
 /**
  * Splitter that takes a client-side session ID and returns a server
@@ -25,7 +26,7 @@ public interface SessionIDSplitter {
     * <ul>
     *    <li>the first element in the array should be set to the CRC-32 of the
     *        target API URL, as a {@link String} (see
-    *        {@link ActualFunctionCaller#getCRC32()}).
+    *        {@link TargetDescriptor#getCRC32()}).
     *    <li>the second element in the array should be set to the server-side
     *        session identifier, specific to the target API (which is
     *        identified by the the CRC-32 checksum in the first element.)
