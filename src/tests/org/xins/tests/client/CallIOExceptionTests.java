@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.client.CallIOException;
+import org.xins.common.ExceptionUtils;
 
 /**
  * Tests for class <code>CallIOException</code>.
@@ -90,5 +91,15 @@ public class CallIOExceptionTests extends TestCase {
       IOException ioe = new IOException();
       CallIOException cie = new CallIOException(ioe);
       assertEquals(ioe, cie.getCause());
+
+      // Test once more, give the IOException a message
+      final String message = "message";
+      ioe = new IOException(message);
+      cie = new CallIOException(ioe);
+      assertEquals(ioe,     cie.getCause());
+      assertEquals(message, cie.getMessage());
+
+      // Test with ExceptionUtils.getRootCause() method
+      assertEquals(ioe, ExceptionUtils.getRootCause(cie));
    }
 }
