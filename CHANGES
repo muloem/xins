@@ -1,7 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.166:
 
+* General XINS-related changes:
+  - Added support for type _date.
+
 * XINS/Java Common Library:
+  - Added support for _date type by means of class
+    org.xins.types.standard.Date.
   - Added class function getContext() to class LogCentral. This class function
     returns the current diagnostic context identifier.
   - Removed the following unused packages:
