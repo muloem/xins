@@ -100,7 +100,8 @@ implements DefaultResultCodes {
     *    empty string.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || name.length() &lt; 1</code>.
+    *    if <code>name == null
+    *          || name.{@link String#length() length()} &lt; 1</code>.
     */
    protected API(String name)
    throws IllegalArgumentException {
@@ -412,6 +413,8 @@ implements DefaultResultCodes {
     */
    public final void init(Properties properties)
    throws IllegalStateException, Throwable {
+
+      // TODO: Accept PropertyReader instead of Properties
 
       // Check and set state
       synchronized (_stateLock) {
