@@ -496,7 +496,7 @@
 							</xsl:if>
 							<classes dir="{$javaImplDir}" excludes="**/*.java" />
 						</war>
-						<echo message="Build time: {$timestamp}" />
+						<echo message="Build time: ${{timestamp}}" />
 					</target>
 					
 					<target name="javadoc-api-{$api}" depends="classes-api-{$api}" description="Generates Javadoc API docs for the '{$api}' API">
