@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 0.195:
     The String returned by toString() is now constructed when the object is
     constructed and cached in a field.
   - Added controlTimeOut() method to the ServiceCaller class.
+  - Added ExceptionUtils class with a single class function getRootCause().
+    This method determines the root cause of an exception using the method
+    Throwable.getCause().
 
 * XINS/Java Server Framework:
   - Made the method getResultBuilder() in class FunctionResult
@@ -17,6 +20,8 @@ CHANGES INTRODUCED IN XINS 0.195:
   - Slightly improved performance in error reporting code in classes
     InvalidRequestResult and InvalidResponseResult, which represent
     respectively the result code _InvalidRequest and _InvalidResponse.
+  - Changed log message 1513. The logged exception is now always the root
+    cause exception.
 
 * XINS/Java Client Framework:
   - Changed XINSServiceCaller to use connection and socket time-out as
@@ -29,6 +34,11 @@ CHANGES INTRODUCED IN XINS 0.195:
 * Generated build file:
   - Generated Javadoc now links to Java 1.4.2 documentation instead of to the
     Java 1.3 documentation.
+
+* Logdoc:
+  - Referring to correct local location of Logdoc DTD files. This severely
+    speeds up the validation of Logdoc XML files and consequently the
+    generation of the Logdoc Java classes, for example.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.194:
