@@ -150,6 +150,9 @@
 							</td>
 							<td>
 								<xsl:choose>
+									<xsl:when test="@type = 'object'">
+										<xsl:text>object</xsl:text>
+									</xsl:when>
 									<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
 										<xsl:text>text</xsl:text>
 									</xsl:when>

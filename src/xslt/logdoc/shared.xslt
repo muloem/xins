@@ -28,6 +28,9 @@
 			<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
 				<xsl:text>java.lang.String</xsl:text>
 			</xsl:when>
+			<xsl:when test="@type = 'object'">
+				<xsl:text>java.lang.Object</xsl:text>
+			</xsl:when>
 			<xsl:when test="(@type = 'int64') and ($nullable = 'true')">
 				<xsl:text>java.lang.Long</xsl:text>
 			</xsl:when>
