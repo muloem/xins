@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.31:
+
+* Fixed bug in CallContext.endResponse(). If it was called more than once,
+  then it would throw an exception.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.30:
 
 * Fixed bug in CallContext.fail(ResultCode).
