@@ -3,7 +3,6 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
@@ -54,7 +53,9 @@ final class OrderedCallTargetGroup extends CallTargetGroup {
    //-------------------------------------------------------------------------
 
    CallResult callImpl(String sessionID, String functionName, Map parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
 
       List members = getMembers();
       int count = (members == null) ? 0 : members.size();

@@ -3,7 +3,6 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -28,7 +27,7 @@ public interface FunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws IOException
+    * @throws CallIOException
     *    if the API could not be contacted due to an I/O error.
     *
     * @throws InvalidCallResultException
@@ -36,7 +35,9 @@ public interface FunctionCaller {
     *    function was invalid.
     */
    CallResult call(String functionName)
-   throws IllegalArgumentException, IOException, InvalidCallResultException;
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException;
 
    /**
     * Calls the specified session-less API function with the specified
@@ -56,7 +57,7 @@ public interface FunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws IOException
+    * @throws CallIOException
     *    if the API could not be contacted due to an I/O error.
     *
     * @throws InvalidCallResultException
@@ -65,7 +66,9 @@ public interface FunctionCaller {
     */
    CallResult call(String functionName,
                    Map    parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException;
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException;
 
    /**
     * Calls the specified API function with the specified parameters.
@@ -88,7 +91,7 @@ public interface FunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @throws IOException
+    * @throws CallIOException
     *    if the API could not be contacted due to an I/O error.
     *
     * @throws InvalidCallResultException
@@ -98,7 +101,9 @@ public interface FunctionCaller {
    CallResult call(String sessionID,
                    String functionName,
                    Map    parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException;
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException;
 
    /**
     * Executes the specified request.
@@ -112,7 +117,7 @@ public interface FunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
-    * @throws IOException
+    * @throws CallIOException
     *    if the API could not be contacted due to an I/O error.
     *
     * @throws InvalidCallResultException
@@ -120,7 +125,9 @@ public interface FunctionCaller {
     *    function was invalid.
     */
    CallResult call(CallRequest request)
-   throws IllegalArgumentException, IOException, InvalidCallResultException;
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException;
 
    /**
     * Gets the contained actual function caller by checksum.

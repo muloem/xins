@@ -4,7 +4,6 @@
 package org.xins.client;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.net.URL;
@@ -57,17 +56,21 @@ implements FunctionCaller {
    //-------------------------------------------------------------------------
 
    public CallResult call(String functionName)
-   throws IOException, InvalidCallResultException {
+   throws CallIOException, InvalidCallResultException {
       return call(null, functionName, null);
    }
 
    public CallResult call(String functionName, Map parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
       return call(null, functionName, parameters);
    }
 
    public CallResult call(CallRequest request)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
       MandatoryArgumentChecker.check("request", request);
       return call(request.getSessionID(),
                   request.getFunctionName(),

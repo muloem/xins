@@ -5,7 +5,7 @@ package org.xins.client;
 
 /**
  * Exception thrown to indicate that the result from a XINS API call was
- * invalid.
+ * invalid according to the XINS standard.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)

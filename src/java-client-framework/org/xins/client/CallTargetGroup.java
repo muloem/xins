@@ -3,7 +3,6 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -373,8 +372,14 @@ extends AbstractCompositeFunctionCaller {
    public final CallResult call(String sessionID,
                                 String functionName,
                                 Map    parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
+
+      // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
+
+      // Pass control to callImpl(...) method
       return callImpl(sessionID, functionName, parameters);
    }
 
@@ -399,7 +404,7 @@ extends AbstractCompositeFunctionCaller {
     * @return
     *    the call result, never <code>null</code>.
     *
-    * @throws IOException
+    * @throws CallIOException
     *    if the API could not be contacted due to an I/O error.
     *
     * @throws InvalidCallResultException
@@ -409,7 +414,7 @@ extends AbstractCompositeFunctionCaller {
    abstract CallResult callImpl(String sessionID,
                                 String functionName,
                                 Map    parameters)
-   throws IOException, InvalidCallResultException;
+   throws CallIOException, InvalidCallResultException;
 
    /**
     * Attempts to call the specified <code>FunctionCaller</code>. If the call
@@ -486,21 +491,25 @@ extends AbstractCompositeFunctionCaller {
     * @throws IllegalArgumentException
     *    if <code>result == null</code>.
     *
-    * @throws IOException
-    *    if <code>result instanceof IOException</code>.
+    * @throws CallIOException
+    *    if <code>result instanceof CallIOException</code>.
     *
     * @throws InvalidCallResultException
     *    if <code>result instanceof InvalidCallResultException</code>.
     */
    final CallResult callImplResult(Object result)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("result", result);
 
+      // Determine behaviour based on result object
       if (result instanceof CallResult) {
          return (CallResult) result;
-      } else if (result instanceof IOException) {
-         throw (IOException) result;
+      } else if (result instanceof CallIOException) {
+         throw (CallIOException) result;
       } else if (result instanceof InvalidCallResultException) {
          throw (InvalidCallResultException) result;
       } else if (result instanceof Error) {

@@ -224,7 +224,7 @@ extends AbstractFunctionCaller {
          try {
             call(null, "_NoOp", null);
             LOG.info("API at " + urlString + " is up.");
-         } catch (IOException exception) {
+         } catch (CallIOException exception) {
             LOG.error("API at " + urlString + " is not accessible.");
          } catch (InvalidCallResultException exception) {
             LOG.error("API at " + urlString + " returned an invalid call result.");
@@ -326,7 +326,9 @@ extends AbstractFunctionCaller {
    }
 
    public CallResult call(String sessionID, String functionName, Map parameters)
-   throws IllegalArgumentException, IOException, InvalidCallResultException {
+   throws IllegalArgumentException,
+          CallIOException,
+          InvalidCallResultException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
@@ -340,7 +342,12 @@ extends AbstractFunctionCaller {
       if (debugEnabled) {
          LOG.debug("Posting to API: " + _url + '?' + parameterString);
       }
-      HTTPRequester.Result result = performRequest(parameterString);
+      HTTPRequester.Result result;
+      try {
+         result = performRequest(parameterString);
+      } catch (IOException ioException) {
+         throw new CallIOException(ioException);
+      }
       int httpCode = result.getCode();
 
       // Evaluate the HTTP response code
@@ -351,6 +358,8 @@ extends AbstractFunctionCaller {
       // Parse the result of the HTTP call
       try {
          return _callResultParser.parse(this, result.getString());
+      } catch (IOException ioException) {
+         throw new CallIOException(ioException);
       } catch (ParseException exception) {
          throw new InvalidCallResultException(exception.getMessage(), exception.getCauseException());
       }
