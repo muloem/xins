@@ -153,6 +153,15 @@
 		</antcall>
 	</target>
 
+	<target name="javadoc-private" description="Generates private Javadoc API documentation">
+		<antcall target="-do-javadoc">
+			<param name="javadoc.private" value="yes" />
+			<param name="javadoc.destdir" value="build/javadoc-private" />
+			<param name="javadoc.title"   value="${title} ${version}" />
+			<param name="javadoc.footer"  value="See &lt;a href='${url}'&gt;${url}&lt;/a&gt;.&lt;br /&gt;This Javadoc API documentation set contains private and package private members as well." />
+		</antcall>
+	</target>
+
 	<target name="upload-javadoc" depends="javadoc" description="Uploads the Javadoc documentation to the webserver">
 		<echo message="Uploading API documentation to ${www.host}" />
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc/${version} on ${www.host}" />
