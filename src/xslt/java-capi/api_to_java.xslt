@@ -256,6 +256,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:if>
 			<xsl:text>org.xins.common.xml.Element _dataSection</xsl:text>
 		</xsl:if>
+		<!-- TODO: Make SECRET_KEY a private class field for slightly
+		improved performance and reduced memory footprint -->
 		<xsl:text>)
    throws org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,
