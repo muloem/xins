@@ -52,6 +52,35 @@
 				</style>
 			</target>
 
+			<xsl:for-each select="api">
+				<target name="specdocs-api-{@name}" depends="-prepare-specdocs">
+					<style
+					basedir="${{project_home}}/{$specsdir}"
+					destdir="${{project_home}}/build/specdocs"
+					style="${{xins_home}}/src/xslt/specdocs/api_to_html.xslt"
+					includes="{@name}/api.xml">
+						<param name="project_home" expression="${{project_home}}" />
+						<param name="specsdir"     expression="{$specsdir}"       />
+					</style>
+					<style
+					basedir="${{project_home}}/{$specsdir}"
+					destdir="${{project_home}}/build/specdocs"
+					style="${{xins_home}}/src/xslt/specdocs/function_to_html.xslt"
+					includes="{@name}/*.fnc">
+						<param name="project_home" expression="${{project_home}}" />
+						<param name="specsdir"     expression="{$specsdir}"       />
+					</style>
+					<style
+					basedir="${{project_home}}/{$specsdir}"
+					destdir="${{project_home}}/build/specdocs"
+					style="${{xins_home}}/src/xslt/specdocs/type_to_html.xslt"
+					includes="{@name}/*.typ">
+						<param name="project_home" expression="${{project_home}}" />
+						<param name="specsdir"     expression="{$specsdir}"       />
+					</style>
+				</target>
+			</xsl:for-each>
+
 			<target name="specdocs-functions" depends="-prepare-specdocs">
 				<style
 				basedir="${{project_home}}/{$specsdir}"
