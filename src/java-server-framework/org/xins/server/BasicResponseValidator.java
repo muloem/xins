@@ -79,6 +79,27 @@ implements ResponseValidator {
       return arr;
    }
 
+   private final void reset() {
+      Object o = _threadLocals.get();
+      if (o != null) {
+         Map[] arr = (Map[]) o;
+
+         // Clean the parameter map, if any
+         o = arr[0];
+         if (o != null) {
+            Map map = (Map) o;
+            map.clear();
+         }
+
+         // Clean the attribute map, if any
+         o = arr[1];
+         if (o != null) {
+            Map map = (Map) o;
+            map.clear();
+         }
+      }
+   }
+
    protected final Map getParameters() {
 
       // Get the 2-size Map array
@@ -97,6 +118,12 @@ implements ResponseValidator {
       return parameters;
    }
 
+   protected final void fail(String message)
+   throws InvalidResponseException {
+      reset();
+      throw new InvalidResponseException(message);
+   }
+
    public void startResponse(boolean success, String code)
    throws InvalidResponseException {
       // empty
@@ -107,7 +134,7 @@ implements ResponseValidator {
       Map parameters = getParameters();
       Object o = parameters.get(name);
       if (o != null) {
-         throw new InvalidResponseException("Duplicate parameter named \"" + name + "\".");
+         fail("Duplicate parameter named \"" + name + "\".");
       }
       parameters.put(name, value);
    }
@@ -116,10 +143,12 @@ implements ResponseValidator {
    throws InvalidResponseException {
       // TODO: Cleanup parameter map, if any
       // TODO: Cleanup attribute map, if any
+      reset();
    }
 
    public void cancelResponse() {
       // TODO: Cleanup parameter map, if any
       // TODO: Cleanup attribute map, if any
+      reset();
    }
 }
