@@ -10,6 +10,13 @@ CHANGES INTRODUCED IN XINS 0.198:
     error.
   - Added log entry 2018 which indicates a call failed due an unexpected error
     condition.
+  - Deprecated the existing CallException constructor that takes a String
+    message and a Throwable cause in favor of a new one that also takes a
+    CallRequest and a TargetDescriptor object.
+  - Changed class XINSServiceCaller:
+    . Deprecated call(TargetDescriptor,String,Map) in favor of
+      call(TargetDescriptor,CallRequest).
+    . Deprecated call(String,Map) in favor of call(CallRequest).
 
 * XINS/Java Common Library:
   - Removed reasonFor(Throwable) method and it's brother
