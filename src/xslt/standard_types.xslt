@@ -130,4 +130,28 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:template name="javatype_to_string_for_standardtype">
+		<xsl:param name="required" />
+		<xsl:param name="type"     />
+		<xsl:param name="variable" />
+
+		<xsl:variable name="javatypeclass">
+			<xsl:call-template name="javatypeclass_for_standardtype">
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:choose>
+			<xsl:when test="$type = '_text'">
+				<xsl:value-of select="$variable" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$javatypeclass" />
+				<xsl:text>.toString(</xsl:text>
+				<xsl:value-of select="$variable" />
+				<xsl:text>)</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>
