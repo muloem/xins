@@ -43,7 +43,7 @@ import org.xins.common.text.ParseException;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.207
+ * @since XINS 1.0.0
  */
 public class XINSCallResultParser
 extends Object {
@@ -217,7 +217,7 @@ extends Object {
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.207
+    * @since XINS 1.0.0
     */
    private class Handler
    extends DefaultHandler
@@ -672,7 +672,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 1.0.0-beta6
+    * @since XINS 1.0.0
     */
    private static final class State extends Object {
 

@@ -17,7 +17,7 @@ import org.xins.common.net.IPAddressUtils;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.87
+ * @since XINS 1.0.0
  */
 public class HostnameTask extends Task {
 

@@ -127,7 +127,7 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.207
+ * @since XINS 1.0.0
  */
 public final class HTTPServiceCaller extends ServiceCaller {
 
@@ -866,7 +866,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     *
-    * @since XINS 1.0.0-beta2
+    * @since XINS 1.0.0
     */
    private final static class HTTPCallResultDataHandler
    implements HTTPCallResultData {

@@ -12,7 +12,7 @@ package org.xins.common.text;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 1.0.0-beta6
+ * @since XINS 1.0.0
  */
 public final class TextUtils extends Object {
 

@@ -18,7 +18,7 @@ import org.xins.common.text.FastStringBuffer;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.166
+ * @since XINS 1.0.0
  */
 public class Date extends Type {
 

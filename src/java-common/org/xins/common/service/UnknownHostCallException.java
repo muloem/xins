@@ -15,7 +15,7 @@ import org.xins.common.Log;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 1.0.0-beta4
+ * @since XINS 1.0.0
  */
 public final class UnknownHostCallException
 extends ConnectionCallException {

@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Warn if the build version of the API is more recent than the running
     version.
   - Removed @since for all fields and methods.
+  - All classes are now marked with @since XINS 1.0.0.
 
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.
@@ -21,6 +22,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Fixed some incorrect links in Javadoc.
   - Switched log numbers from 3XXX to 1XXX.
   - Removed @since for all fields and methods.
+  - All classes are now marked with @since XINS 1.0.0.
 
 * XINS/Java Client Framework:
   - Removed unused imports.
@@ -28,6 +30,7 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Added missing tranlations for some logging messages.
   - Fixed some incorrect links in Javadoc.
   - Removed @since for all fields and methods.
+  - All classes are now marked with @since XINS 1.0.0.
 
 * Generation of specification documentation:
   - Added missing forward slash for the URL generated for broken links.

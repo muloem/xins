@@ -18,7 +18,7 @@ import org.xins.common.text.FastStringBuffer;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 0.173
+ * @since XINS 1.0.0
  */
 public class Timestamp extends Type {
 

@@ -11,6 +11,8 @@ package org.xins.server;
  *
  * @version $Revision$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>), Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 class FunctionStatistics {
 

@@ -30,7 +30,7 @@ import org.xins.common.text.FastStringBuffer;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.207
+ * @since XINS 1.0.0
  */
 public final class XINSCallRequest extends CallRequest {
 
@@ -378,7 +378,7 @@ public final class XINSCallRequest extends CallRequest {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.207
+    * @since XINS 1.0.0
     */
    private static final class HTTPStatusCodeVerifier
    extends Object

@@ -49,7 +49,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  * @author Peter Troon (<a href="mailto:peter.troon@nl.wanadoo.com">peter.troon@nl.wanadoo.com</a>)
  *
- * @since XINS 0.152
+ * @since XINS 1.0.0
  */
 public class SimplePatternParser extends Object {
 

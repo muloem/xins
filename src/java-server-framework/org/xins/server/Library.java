@@ -12,7 +12,7 @@ package org.xins.server;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.8
+ * @since XINS 1.0.0
  */
 public final class Library extends Object {
 
@@ -67,8 +67,8 @@ public final class Library extends Object {
     *    the XINS version to check, cannot be <code>null</code>.
     *
     * @return
-    *    <code>true</code> is the given version is the same version or more 
-    *    recent, false is the given version is not a production released or is 
+    *    <code>true</code> is the given version is the same version or more
+    *    recent, false is the given version is not a production released or is
     *    less recent or the current version is not a production released.
     *
     * @throws NullPointerException
@@ -76,7 +76,7 @@ public final class Library extends Object {
     */
    static final boolean isMoreRecent(String buildVersion)
    throws NullPointerException {
-      if (!buildVersion.matches(PRODUCTION_RELEASE_PATTERN) || 
+      if (!buildVersion.matches(PRODUCTION_RELEASE_PATTERN) ||
           isProductionRelease(getVersion())) {
          return false;
       }

@@ -25,6 +25,8 @@ import org.xins.logdoc.LogdocStringBuffer;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public final class PropertyReaderUtils
 extends Object {

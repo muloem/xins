@@ -13,7 +13,7 @@ package org.xins.logdoc;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.201
+ * @since XINS 1.0.0
  */
 public abstract class AbstractLogdocSerializable
 extends Object

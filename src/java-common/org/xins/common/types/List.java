@@ -18,7 +18,7 @@ import org.xins.common.types.standard.Text;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 0.185
+ * @since XINS 1.0.0
  */
 public class List extends Type {
 

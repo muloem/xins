@@ -34,7 +34,7 @@ import org.xins.common.collections.PropertyReader;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.147
+ * @since XINS 1.0.0
  */
 public abstract class Manageable extends Object {
 
@@ -460,7 +460,7 @@ public abstract class Manageable extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.147
+    * @since XINS 1.0.0
     */
    public static final class State extends Object {
 

@@ -20,7 +20,7 @@ import org.xins.common.collections.PropertyReader;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.207
+ * @since XINS 1.0.0
  */
 public final class UnacceptableResultXINSCallException
 extends XINSCallException {

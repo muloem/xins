@@ -14,6 +14,8 @@ import java.util.List;
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public class InvalidRequestResult extends FunctionResult {
 

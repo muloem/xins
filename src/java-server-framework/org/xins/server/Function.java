@@ -27,6 +27,8 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public abstract class Function
 extends Manageable
@@ -363,7 +365,7 @@ implements DefaultResultCodes {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.198
+    * @since XINS 1.0.0
     */
    private static final class FormattedDate
    extends AbstractLogdocSerializable {
@@ -426,7 +428,7 @@ implements DefaultResultCodes {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.201
+    * @since XINS 1.0.0
     */
    private static final class FormattedParameters
    extends AbstractLogdocSerializable {

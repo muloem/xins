@@ -12,7 +12,7 @@ package org.xins.common.http;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.209
+ * @since XINS 1.0.0
  */
 public interface HTTPCallResultData {
 

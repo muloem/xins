@@ -19,6 +19,8 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public abstract class PatternType extends Type {
 

@@ -20,7 +20,7 @@ import org.xins.common.collections.PropertyReader;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.207
+ * @since XINS 1.0.0
  */
 public final class XINSCallResult
 extends CallResult
@@ -54,7 +54,7 @@ implements XINSCallResultData {
     *
     * @param exceptions
     *    the list of {@link org.xins.common.service.CallException}s, collected
-    *    in a {@link CallExceptionList} object, or <code>null</code> if the 
+    *    in a {@link CallExceptionList} object, or <code>null</code> if the
     *    first call attempt succeeded.
     *
     * @param data

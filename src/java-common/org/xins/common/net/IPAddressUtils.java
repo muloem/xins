@@ -20,7 +20,7 @@ import org.xins.common.text.ParseException;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.153
+ * @since XINS 1.0.0
  */
 public final class IPAddressUtils extends Object {
 

@@ -20,6 +20,8 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
  *
+ * @since XINS 1.0.0
+ *
  * @see EnumItem
  */
 public abstract class EnumType extends Type {

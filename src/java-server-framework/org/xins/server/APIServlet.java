@@ -86,6 +86,8 @@ import org.xins.common.text.HexConverter;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.0.0
  */
 public final class APIServlet
 extends HttpServlet {
@@ -1162,7 +1164,7 @@ extends HttpServlet {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
-    * @since XINS 0.121
+    * @since XINS 1.0.0
     */
    private final class ConfigurationFileListener
    extends Object

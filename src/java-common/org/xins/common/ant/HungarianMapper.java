@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 0.183
+ * @since XINS 1.0.0
  */
 public class HungarianMapper implements FileNameMapper {
 
