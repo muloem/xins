@@ -85,6 +85,7 @@
 				<echo message="clean               Removes all generated files." />
 				<echo message="specdocs            Generates all specification docs." />
 				<echo message="wars                Creates the WARs for all APIs." />
+				<echo message="capis               Generates all CAPI JAR files." />
 				<echo message="" />
 				<echo message="version             Prints the version of XINS." />
 				<echo message="help                Prints this message." />
