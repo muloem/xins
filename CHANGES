@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Removed deprecated method execute(Thread,int) from class
     TimeOutController.
   - Removed TODO entries that are done or no longer relevant.
+  - Added more logs for the Doorman.
 
 * XINS/Java Client Framework:
   - Added some Javadoc to the ResultParser class.
