@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.63:
+
+* Optimized generated java-fundament classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.62:
 
 * Removed deprecated class org.xins.server.RemoteAPI.
