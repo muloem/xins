@@ -87,13 +87,29 @@ extends HttpServlet {
       handleRequest(req, resp);
    }
 
-   private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
+   /**
+    * Handles all HTTP GET and POST requests.
+    *
+    * @param request
+    *    the HTTP request, not <code>null</code>.
+    *
+    * @param response
+    *    the HTTP response, not <code>null</code>.
+    *
+    * @throws ServletException
+    *    this servlet encountered an error.
+    *
+    * @throws IOException
+    *    there was an I/O problem.
+    */
+   private void handleRequest(HttpServletRequest request,
+                              HttpServletResponse response)
    throws ServletException, IOException {
 
       // TODO: Be less memory-intensive
 
       // Set the content output type to XML
-      resp.setContentType("text/xml");
+      response.setContentType("text/xml");
 
       // Reset the XMLOutputter
       StringWriter stringWriter = new StringWriter();
@@ -101,10 +117,10 @@ extends HttpServlet {
 
       // Stick all parameters in a map
       Map map = new HashMap();
-      Enumeration names = req.getParameterNames();
+      Enumeration names = request.getParameterNames();
       while (names.hasMoreElements()) {
          String name = (String) names.nextElement();
-         String value = req.getParameter(name);
+         String value = request.getParameter(name);
          map.put(name, value);
       }
 
@@ -112,7 +128,7 @@ extends HttpServlet {
       CallContext context = new CallContext(xmlOutputter, map);
 
       // Forward the call
-      PrintWriter out = resp.getWriter();
+      PrintWriter out = response.getWriter();
       boolean succeeded = false;
       try {
          _api.handleCall(context);
