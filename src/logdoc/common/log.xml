@@ -134,12 +134,6 @@
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
-		<entry id="1110" level="NOTICE" exception="true">
-			<description>Unexpected exception while calling HTTP service.</description>
-			<param name="url"        type="text"  nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
-			<param name="duration"   type="int64"        nullable="false" />
-		</entry>
 	</group>
 
 	<group id="io" name="General I/O">

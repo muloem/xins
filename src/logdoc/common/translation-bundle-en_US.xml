@@ -29,7 +29,6 @@
 	<translation entry="1107">Received acceptable HTTP result with code <value-of-param name="code" /> while calling <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
 	<translation entry="1108">Received unacceptable HTTP result with code <value-of-param name="code" /> while calling <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
 	<translation entry="1109">I/O error while calling <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
-	<translation entry="1110">Unexpected exception while calling <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
 
 	<translation entry="1200">Starting watch thread for file <value-of-param name="file" format="quoted" />. Checking for modifications every <value-of-param name="interval" /> seconds.</translation>
 	<translation entry="1201">Changing the watch interval for file <value-of-param name="file" format="quoted" /> from <value-of-param name="oldInterval" /> to <value-of-param name="newInterval" /> seconds.</translation>
