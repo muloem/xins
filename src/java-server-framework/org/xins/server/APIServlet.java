@@ -238,6 +238,11 @@ extends HttpServlet {
    public static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
 
    /**
+    * The XML calling convention.
+    */
+   public static final String XML_CALLING_CONVENTION = "_xins-xml";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *
@@ -1211,6 +1216,10 @@ extends HttpServlet {
       // Standard calling convention
       } else if (STANDARD_CALLING_CONVENTION.equals(name)) {
          return new StandardCallingConvention();
+
+      // XML calling convention
+      } else if (XML_CALLING_CONVENTION.equals(name)) {
+         return new XMLCallingConvention();
 
       // Otherwise return nothing
       } else {

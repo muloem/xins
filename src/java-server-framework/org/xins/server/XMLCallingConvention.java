@@ -6,10 +6,13 @@
  */
 package org.xins.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,19 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.ProgrammingError;
 import org.xins.common.collections.ProtectedPropertyReader;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * Standard calling convention.
+ * XML calling convention.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-final class StandardCallingConvention
+final class XMLCallingConvention
 extends CallingConvention {
 
    //-------------------------------------------------------------------------
@@ -37,9 +40,9 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The enconding for the data section
+    * The request encoding format.
     */
-   static final String DATA_ENCODING = "UTF-8";
+   static final String REQUEST_ENCODING = "UTF-8";
 
    /**
     * The response encoding format.
@@ -67,9 +70,9 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>StandardCallingConvention</code> object.
+    * Constructs a new <code>XMLCallingConvention</code> object.
     */
-   StandardCallingConvention() {
+   XMLCallingConvention() {
       // empty
    }
 
@@ -104,58 +107,65 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      // XXX: What if invalid URL, e.g. query string ends with percent sign?
+      String contentType = httpRequest.getContentType();
+      if (!contentType.startsWith("text/xml;") && !contentType.endsWith("charset=UTF-8")) {
+         throw new InvalidRequestException("Incorrect content type.", null);
+      }
+      
+      try {
+         BufferedReader reader = httpRequest.getReader();
+         FastStringBuffer content = new FastStringBuffer(1024);
+         String nextLine;
+         while ((nextLine = reader.readLine()) !=null) {
+            content.append(nextLine);
+            content.append("\n");
+         }
 
-      // Determine function name
-      String functionName = httpRequest.getParameter("_function");
-      if (TextUtils.isEmpty(functionName)) {
-         functionName = httpRequest.getParameter("function");
+         ElementParser parser = new ElementParser();
+         Element requestElem = parser.parse(content.toString().getBytes(REQUEST_ENCODING));
+         
+         ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+         String functionName = requestElem.getAttribute("function");
+         Iterator parameters = requestElem.getChildElements("param").iterator();
+         while (parameters.hasNext()) {
+            Element nextParam = (Element)parameters.next();
+            String name = nextParam.getAttribute("name");
+            String value = nextParam.getText();
+            if ("_function".equals(name) || "function".equals("name")) {
+               if (functionName == null) {
+                  functionName = value;
+               } else if (!functionName.equals(value)) {
+                  throw new InvalidRequestException("The request has more than two different function's name specified.", null);
+               }
+            } else if ((!TextUtils.isEmpty(name) && name.charAt(0) != '_')) {
+               if (!TextUtils.isEmpty(value)) {
+                  functionParams.set(SECRET_KEY, name, value);
+               }
+            }
+         }
+         
+         Element dataElement = null;
+         List dataElementList = requestElem.getChildElements("data");
+         if (dataElementList.size() == 1) {
+            dataElement = (Element)dataElementList.get(0);
+         } else if (dataElementList.size() > 1) {
+            throw new InvalidRequestException("The request has more than two data section specified.", null);
+         }
+         
          if (TextUtils.isEmpty(functionName)) {
             throw new FunctionNotSpecifiedException();
          }
+         
+         return new FunctionRequest(functionName, functionParams, dataElement);
+      } catch (UnsupportedEncodingException ex) {
+         final String message = "Encoding \"" + REQUEST_ENCODING + "\" is not supported.";
+         Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", message);
+         throw new ProgrammingError(message);
+      } catch (IOException ex) {
+         throw new InvalidRequestException("Cannot read the XML request.", ex);
+      } catch (ParseException ex) {
+         throw new InvalidRequestException("Cannot parse the XML request.", ex);
       }
-
-      // Get data section
-      String dataSectionValue = httpRequest.getParameter("_data");
-      Element dataElement;
-      if (dataSectionValue != null && dataSectionValue.length() > 0) {
-         try {
-            ElementParser parser = new ElementParser();
-            dataElement = parser.parse(dataSectionValue.getBytes(DATA_ENCODING));
-         } catch (UnsupportedEncodingException ex) {
-            final String message = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
-            Log.log_3050(getClass().getName(), "convertRequestImpl(HttpServletRequest)", message);
-            throw new ProgrammingError(message);
-         } catch (ParseException ex) {
-            throw new InvalidRequestException("Cannot parse the data section.", ex);
-         }
-      } else {
-         dataElement = null;
-      }
-
-      // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-      Enumeration params = httpRequest.getParameterNames();
-      while (params.hasMoreElements()) {
-         String name = (String) params.nextElement();
-
-         // XXX: If parameter "function" contained function name, then do not
-         //      pass it down. This should be changed in the future.
-         if ("function".equals(name) && TextUtils.isEmpty(httpRequest.getParameter("_function"))) {
-            // ignore
-
-         // Pass parameters if the name is not empty and does not start with
-         // an underscore
-         } else if (! TextUtils.isEmpty(name) && name.charAt(0) != '_') {
-            String value = httpRequest.getParameter(name);
-            if (! TextUtils.isEmpty(value)) {
-               functionParams.set(SECRET_KEY, name, value);
-            }
-         }
-         // TODO: Decide: Just ignore invalid parameter names?
-      }
-
-      return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
    /**

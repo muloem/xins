@@ -74,7 +74,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
 
       // Test just a test
-      //suite.addTest(new org.xins.tests.server.MetaFunctionsTests("testUnknownMetaFunction"));
+      //suite.addTest(new org.xins.tests.server.CallingConventionTests("testXMLCallingConvention"));
 
       return suite;
    }

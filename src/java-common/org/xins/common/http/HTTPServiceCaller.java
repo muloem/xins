@@ -136,6 +136,7 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -1002,7 +1003,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          if (_context != null) {
             NDC.push(_context);
          }
-         
+
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
 

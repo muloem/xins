@@ -40,10 +40,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputTimestamp" required="false" type="_timestamp">
 			<description>An example of input for a timestamp.</description>
 		</param>
-		<param-combo type="all-or-none">
-			<param-ref name="inputDate"      />
-			<param-ref name="inputTimestamp" />
-		</param-combo>
 	</input>
 
 	<output>

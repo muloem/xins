@@ -15,6 +15,8 @@ import javax.servlet.ServletException;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.http.HTTPCallRequest;
@@ -204,6 +206,39 @@ public class CallingConventionTests extends TestCase {
       return parser.parse(data);
    }
 
+   /**
+    * Test the XML calling convention.
+    */
+   /* Not working
+   public void testXMLCallingConvention() throws Throwable {
+      FastStringBuffer buffer = new FastStringBuffer(16);
+      HexConverter.toHexString(buffer, RANDOM.nextLong());
+      String randomFive = buffer.toString().substring(0, 5);
+      
+      PostMethod post = new PostMethod("http://localhost:8080/?_convention=_xins-xml");
+      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+      post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+              "<request function=\"ResultCode\">" +
+              "  <param name=\"inputText\">" + randomFive + "</param>" +
+              "</request>");
+      HttpClient client = new HttpClient();
+      client.setConnectionTimeout(30000);
+      client.setTimeout(30000);
+      try {
+         int code = client.executeMethod(post);
+         byte[] data = post.getResponseBody();
+         ElementParser parser = new ElementParser();
+         Element result = parser.parse(data);
+         assertNull("The method returned an error code for the first call: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
+         assertNull("The method returned a code attribute for the first call: " + result.getAttribute("code"), result.getAttribute("code"));
+         assertNotNull("The method returned a success attribute for the first call.", result.getAttribute("success"));
+      } finally {
+         
+         // Release current connection to the connection pool once you are done
+         post.releaseConnection();
+      }
+   }*/
+          
    /**
     * Stop the server.
     */

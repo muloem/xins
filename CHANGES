@@ -11,7 +11,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
     include the reason.
 
 * XINS/Java Common:
-  - The diagnotic context identifier should be removed after being poped
+  - The diagnotic context identifier is removed after being poped
     otherwise the thread stays in memory.
   - Reset some variables after the HTTP call, so that the variables can be
     garbage collected.
@@ -22,6 +22,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 * XINS/Java Server Framework:
   - Applied a lot of small improvements to the APIServlet class in terms of
     documentation, exception handling, logging, etc.
+  - Added the XML calling convention.
 
 * Libraries:
   - Updated xmlenc from 0.45 to 0.46.
@@ -36,6 +37,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 * Generated specification documentation:
   - Sending down _convention=_xins-std with calls to _GetVersion,
     _GetStatistics and _GetSettings.
+
+* Generation of server-side Java code:
+  - Fixed bug #1089121: The exclusive-or param-combo did not work properly.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:

@@ -266,6 +266,27 @@ public abstract class ]]></xsl:text>
 
       // Check exclusive-or parameter combinations</xsl:text>
 			<xsl:for-each select="input/param-combo[@type='exclusive-or']">
+				<xsl:text>
+      if (</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
+					<xsl:value-of select="@name" />
+					<xsl:text> == null</xsl:text>
+				</xsl:for-each>
+				<xsl:text>) {
+         if (_errorInputResult == null) {
+            _errorInputResult = new org.xins.server.InvalidRequestResult();
+         }
+         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
+				<xsl:for-each select="param-ref">
+				<xsl:text>
+         _invalidComboElements.add("</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>");</xsl:text>
+				</xsl:for-each>
+				<xsl:text>
+         _errorInputResult.addParamCombo("exclusive-or", _invalidComboElements);
+      }</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:text>
@@ -274,7 +295,6 @@ public abstract class ]]></xsl:text>
 					<xsl:text>!= null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
-						<xsl:text></xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
@@ -282,12 +302,19 @@ public abstract class ]]></xsl:text>
          if (_errorInputResult == null) {
             _errorInputResult = new org.xins.server.InvalidRequestResult();
          }
-         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
-					<xsl:for-each select="param-ref">
-						<xsl:text>
+         java.util.List _invalidComboElements = new java.util.ArrayList();
          _invalidComboElements.add("</xsl:text>
-						<xsl:value-of select="$active" />
-						<xsl:text>");</xsl:text>
+					<xsl:value-of select="$active" />
+					<xsl:text>");</xsl:text>
+					<xsl:for-each select="../param-ref[not(@name = $active)]">
+						<xsl:text>
+         if (</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text> != null) {
+            _invalidComboElements.add("</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>");
+         }</xsl:text>
 					</xsl:for-each>
 					<xsl:text>
          _errorInputResult.addParamCombo("exclusive-or", _invalidComboElements);
