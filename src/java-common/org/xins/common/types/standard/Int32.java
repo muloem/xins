@@ -5,6 +5,7 @@ package org.xins.common.types.standard;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Standard type <em>_int32</em>.
@@ -193,5 +194,12 @@ public final class Int32 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Integer.valueOf(string);
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      java.lang.Integer i = (java.lang.Integer) value;
+      return i.toString();
    }
 }

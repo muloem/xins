@@ -1,10 +1,9 @@
 /*
  * $Id$
  */
-package org.xins.common.types.standard;
+package org.xins.common.types;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.types.Type;
 
 /**
  * Item in an enumeration type.
@@ -13,7 +12,6 @@ import org.xins.common.types.Type;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @see List
- * @see Set
  */
 public class ItemList {
 
@@ -31,9 +29,22 @@ public class ItemList {
 
    /**
     * Creates a new <code>ItemList</code>.
+    * The list will be able to contain several instances of an object.
     */
    public ItemList() {
+      this(false);
+   }
+
+   /**
+    * Creates a new <code>ItemList</code>.
+    *
+    * @param setType
+    *    if <code>true</code> an object can be added only once in the list,
+    *    if <code>false</code> an object can be added several times in the list.
+    */
+   public ItemList(boolean setType) {
       _list = new java.util.ArrayList(10);
+      _setType = setType;
    }
 
 
@@ -45,6 +56,11 @@ public class ItemList {
     * The list that contains the items. Cannot <code>null</code>.
     */
    private final java.util.List _list;
+
+   /**
+    * Indicates whether this list accepts equal objects.
+    */
+   private final boolean _setType;
 
 
    //-------------------------------------------------------------------------
@@ -60,10 +76,14 @@ public class ItemList {
     * @throws IllegalArgumentException
     *    if <code>value == null</code>.
     */
-   protected final  void add(Object value) {
+   protected final void addItem(Object value) {
 
       MandatoryArgumentChecker.check("value", value);
 
+      // A set can not have the same value twice
+      if (_setType && _list.contains(value)) {
+         return;
+      }
       _list.add(value);
    }
 
@@ -76,8 +96,8 @@ public class ItemList {
     * @return
     *    the item, not <code>null</code>.
     */
-   protected final Type get(int index) {
-      return (Type) _list.get(index);
+   protected final Object getItem(int index) {
+      return _list.get(index);
    }
 
    /**

@@ -33,6 +33,11 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${api.description}<![CDATA[</description>
 
 </api>]]></echo>
+			<replace file="xins-project.xml">
+				<replacetoken><![CDATA[</project>]]></replacetoken>
+				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[" />
+</project>]]></replacevalue>
+			</replace>
 			<input message="Do you want to create an implementation for the API (y/n)?"
 			       validargs="y,n"
 			       addproperty="do.implementation" />
@@ -46,9 +51,9 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<condition property="create.environments">
 				<equals arg1="y" arg2="${{do.environments}}"/>
 			</condition>
-			<echo message="do.environments ${{do.environments}} ; create.environments ${{create.environments}}" />
 			<antcall target="create-environments" />
-			<echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." />
+			<replace file="xins-project.xml" token="$${{api.name}}" value="${{api.name}}" />
+			<!--echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." /-->
 		</target>
 
 		<target name="create-impl" if="create.impl">
@@ -58,11 +63,17 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="impl.exists" file="${{impl.file}}" />
 			<fail message="The file ${{impl.file}} already exists!" if="impl.exists" />
 			<echo file="${{impl.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" "http://xins.sourceforge.net/dtd/impl_1_0.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.0//EN" "http://xins.sourceforge.net/dtd/impl_1_0.dtd">
 
 <impl>
 </impl>
 ]]></echo>
+			<replace file="xins-project.xml">
+				<replacetoken><![CDATA[	<api name="]]>${api.name}<![CDATA[" />]]></replacetoken>
+				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[">
+		<impl />
+	</api>]]></replacevalue>
+			</replace>
 		</target>
 
 		<target name="create-environments" if="create.environments">
@@ -70,14 +81,29 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="environments.exists" file="${{environments.file}}" />
 			<fail message="The file ${{environments.file}} already exists!" if="environments.exists" />
 			<echo file="${{environments.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API//EN" "http://xins.sourceforge.net/dtd/environments_1_0.dtd">
+<!DOCTYPE environments PUBLIC "-//XINS//DTD Environments 1.0//EN" "http://xins.sourceforge.net/dtd/environments_1_0.dtd">
 
 <environments>
 
-	<environment id="localhost" url="http://127.0.0.1:8080/" />
+	<environment id="localhost" url="http://127.0.0.1:8080/]]>${api.name}<![CDATA[/" />
 
 </environments>
 ]]></echo>
+			<replace file="xins-project.xml">
+				<replacetoken><![CDATA[	<api name="]]>${api.name}<![CDATA[" />]]></replacetoken>
+				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[">
+		<environments />
+	</api>]]></replacevalue>
+			</replace>
+			<replace file="xins-project.xml">
+				<replacetoken><![CDATA[	<api name="]]>${api.name}<![CDATA[">
+		<impl />
+	</api>]]></replacetoken>
+				<replacevalue><![CDATA[	<api name="]]>${api.name}<![CDATA[">
+		<impl />
+		<environments />
+	</api>]]></replacevalue>
+			</replace>
 		</target>
 
 		<target name="create-function" description="Generates a new function specification file.">
@@ -99,6 +125,22 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${function.description}<![CDATA[</description>
 
 </function>]]></echo>
+			<replace file="apis/${{api.name}}/spec/api.xml">
+				<replacetoken><![CDATA[</description>
+]]></replacetoken>
+				<replacevalue><![CDATA[</description>
+
+	<function name="]]>${function.name}<![CDATA[" />]]></replacevalue>
+			</replace>
+			<replace file="apis/${{api.name}}/spec/api.xml" token="$${{function.name}}" value="${{function.name}}" />
+			<!-- Make sure that there is always a blank line before the </api> -->
+			<replace file="apis/${{api.name}}/spec/api.xml">
+				<replacetoken><![CDATA[/>
+</api>]]></replacetoken>
+				<replacevalue><![CDATA[/>
+
+</api>]]></replacevalue>
+			</replace>
 			<echo message="Don't forget to add &lt;function name=&quot;${{function.name}}&quot; /&gt; to the api.xml file." />
 		</target>
 
@@ -121,7 +163,15 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<description>]]>${rcd.description}<![CDATA[</description>
 
 </resultcode>]]></echo>
-			<echo message="Don't forget to add &lt;resultcode name=&quot;${{rcd.name}}&quot; /&gt; to the api.xml file." />
+			<replace file="apis/${{api.name}}/spec/api.xml">
+				<replacetoken><![CDATA[
+</api>]]></replacetoken>
+				<replacevalue><![CDATA[	<resultcode name="]]>${rcd.name}<![CDATA[" />
+
+</api>]]></replacevalue>
+			</replace>
+			<replace file="apis/${{api.name}}/spec/api.xml" token="$${{rcd.name}}" value="${{rcd.name}}" />
+			<!--echo message="Don't forget to add &lt;resultcode name=&quot;${{rcd.name}}&quot; /&gt; to the api.xml file." /-->
 		</target>
 
 		<target name="create-type" description="Generates a new type specification file.">
@@ -166,11 +216,14 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<translation-bundle locale="en_US" />
 
-	<group id="myapi" name="MyProject">
-		<entry id="10000" level="INFO">
+	<group id="exampleid" name="Example">
+		<entry id="10000" level="DEBUG">
 			<description>Example of logdoc with some parameters.</description>
 			<param name="functionName" />
 			<param name="number" nullable="false" type="int32" />
+		</entry>
+		<entry id="10001" level="ERROR" exception="true">
+			<description>Example with an exception.</description>
 		</entry>
 	</group>
 </log>
@@ -180,8 +233,14 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 <translation-bundle>
 	<translation entry="10000">Example of logdoc with the parameters <value-of-param name="functionName" format="quoted" /> and <value-of-param name="number" />.</translation>
+	<translation entry="10001">Example of an exception.</translation>
 </translation-bundle>
 ]]></echo>
+			<replace file="apis/${{api.name}}/impl/impl.xml">
+				<replacetoken><![CDATA[<impl>]]></replacetoken>
+				<replacevalue><![CDATA[<impl>
+	<logdoc />]]></replacevalue>
+			</replace>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>

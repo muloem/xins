@@ -225,6 +225,16 @@
 				<xsl:text>.Item</xsl:text>
 			</xsl:when>
 
+			<!-- Determine Java type for list type or set type -->
+			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
+				<xsl:call-template name="javatype_for_enumtype">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="type"         select="$type"         />
+				</xsl:call-template>
+				<xsl:text>.Value</xsl:text>
+			</xsl:when>
+
 			<!-- Determine Java type for base type -->
 			<xsl:otherwise>
 				<!-- Determine base type -->
@@ -396,6 +406,25 @@
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 
+			<!-- Determine Java type for list type or set type-->
+			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
+				<xsl:variable name="enumclass">
+					<xsl:call-template name="javatype_for_enumtype">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="api"          select="$api"          />
+						<xsl:with-param name="type"         select="$type"         />
+					</xsl:call-template>
+				</xsl:variable>
+
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="$enumclass" />
+				<xsl:text>.Value)</xsl:text>
+				<xsl:value-of select="$enumclass" />
+				<xsl:text>.SINGLETON.fromString(</xsl:text>
+				<xsl:value-of select="$variable" />
+				<xsl:text>)</xsl:text>
+			</xsl:when>
+
 			<!-- Determine Java type for base type -->
 			<xsl:otherwise>
 				<!-- Determine base type -->
@@ -464,6 +493,22 @@
 			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
 				<xsl:value-of select="$variable" />
 				<xsl:text>.getValue()</xsl:text>
+			</xsl:when>
+
+			<!-- Determine Java type for list type or set type -->
+			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
+				<xsl:variable name="enumclass">
+					<xsl:call-template name="javatype_for_enumtype">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="api"          select="$api"          />
+						<xsl:with-param name="type"         select="$type"         />
+					</xsl:call-template>
+				</xsl:variable>
+
+				<xsl:value-of select="$enumclass" />
+				<xsl:text>.SINGLETON.toString(</xsl:text>
+				<xsl:value-of select="$variable" />
+				<xsl:text>)</xsl:text>
 			</xsl:when>
 
 			<!-- Determine Java type for base type -->

@@ -5,6 +5,7 @@ package org.xins.common.types.standard;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Standard type <em>_int8</em>.
@@ -95,6 +96,38 @@ public final class Int8 extends Type {
       }
    }
 
+   /**
+    * Converts the specified <code>Byte</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public static String toString(Byte value) {
+      if (value == null) {
+         return null;
+      } else {
+         return toString(value.byteValue());
+      }
+   }
+
+   /**
+    * Converts the specified <code>byte</code> to a string.
+    *
+    * @param value
+    *    the value to convert.
+    *
+    * @return
+    *    the textual representation of the value, never <code>null</code>.
+    */
+   public static String toString(byte value) {
+
+      return String.valueOf(value);
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -163,5 +196,12 @@ public final class Int8 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Byte.valueOf(string);
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      java.lang.Byte b = (java.lang.Byte) value;
+      return b.toString();
    }
 }

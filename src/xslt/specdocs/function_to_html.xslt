@@ -141,7 +141,7 @@
 	</xsl:template>
 
 	<xsl:template name="testforms_section">
-		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/projects/api[@name = $api]/environments">
+		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/project/api[@name = $api]/environments">
 			<h2>Test forms</h2>
 			<ul>
 				<xsl:for-each select="document($api_file)/api/environment">
@@ -157,7 +157,7 @@
 						</a>
 					</li>
 				</xsl:for-each>
-				<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+				<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
 					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 					<xsl:for-each select="document($env_file)/environments/environment">
 						<li>
@@ -581,7 +581,7 @@
 				</span>
 			</td>
 		</tr>
-		<xsl:if test="count(document($api_file)/api/environment) &gt; 0 or document($project_file)/projects/api[@name = $api]/environments">
+		<xsl:if test="count(document($api_file)/api/environment) &gt; 0 or document($project_file)/project/api[@name = $api]/environments">
 			<tr>
 				<th>Test on:</th>
 				<td>
@@ -607,7 +607,7 @@
 						</a>
 						<xsl:text> </xsl:text>
 					</xsl:for-each>
-					<xsl:if test="document($project_file)/projects/api[@name = $api]/environments">
+					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 						<xsl:for-each select="document($env_file)/environments/environment">
 							<a>

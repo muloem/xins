@@ -1,16 +1,13 @@
 /*
  * $Id$
  */
-package org.xins.common.types.standard;
+package org.xins.common.types;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.StringTokenizer;
-import org.xins.common.types.Type;
-import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.net.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.types.standard.Text;
 
 /**
  * Standard type <em>_list</em>.
@@ -18,7 +15,7 @@ import org.xins.common.text.FastStringBuffer;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
- * @since XINS 0.179
+ * @since XINS 0.185
  */
 public class List extends Type {
 
@@ -26,61 +23,9 @@ public class List extends Type {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The only instance of this class. This field is never <code>null</code>.
-    */
-   public final static List SINGLETON = new List();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a <code>java.util.List</code> from the specified string
-    * which is guaranteed to be non-<code>null</code>.
-    *
-    * @param string
-    *    the string to convert, cannot be <code>null</code>.
-    *
-    * @return
-    *    the {@link ItemList} object, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public static ItemList fromStringForRequired(String string)
-   throws IllegalArgumentException, TypeValueException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("string", string);
-
-      return (ItemList) SINGLETON.fromString(string);
-   }
-
-   /**
-    * Constructs a <code>List</code> from the specified string.
-    *
-    * @param string
-    *    the string to convert, can be <code>null</code>.
-    *
-    * @return
-    *    the {@link ItemList}, or <code>null</code> if
-    *    <code>string == null</code>.
-    *
-    * @throws TypeValueException
-    *    if the specified string does not represent a valid value for this
-    *    type.
-    */
-   public static ItemList fromStringForOptional(String string)
-   throws TypeValueException {
-      return (ItemList) SINGLETON.fromString(string);
-   }
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -149,7 +94,7 @@ public class List extends Type {
    throws TypeValueException {
 
       // Construct a ItemList to store the values in
-      ItemList list = new ItemList();
+      ItemList list = createList();
 
       // Separate the string by ampersands
       StringTokenizer tokenizer = new StringTokenizer(string, "&");
@@ -157,10 +102,62 @@ public class List extends Type {
          String token = tokenizer.nextToken();
          String itemString = URLEncoding.decode(token);
          Object item = _itemType.fromString(itemString);
-         list.add(item);
+         list.addItem(item);
       }
 
       return list;
+   }
+
+   /**
+    * Creates a new ItemList.
+    *
+    * @return
+    *    the new list created, never <code>null</code>.
+    */
+   public ItemList createList() {
+      return null;
+   }
+
+   /**
+    * Converts the specified <code>ItemList</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public String toString(ItemList value) {
+
+      // Short-circuit if the argument is null
+      if (value == null) {
+         return null;
+      }
+
+      // Use a buffer to create the string
+      FastStringBuffer buffer = new FastStringBuffer(255);
+
+      // Iterate over the list
+      int listSize = value.getSize();
+      for (int i=0; i < listSize; i++) {
+         if (i != 0) {
+            buffer.append('&');
+         }
+
+         Object nextItem = value.getItem(i);
+         String stringItem = null;
+         try {
+            stringItem = _itemType.toString(nextItem);
+         } catch (Exception ex) {
+            ex.printStackTrace();
+            // Should never happens as only add() is able to add items in the list.
+            throw new IllegalArgumentException("Incorrect value for type: " + nextItem);
+         }
+         buffer.append(URLEncoding.encode(stringItem));
+      }
+
+      return buffer.toString();
    }
 
    public final String toString(Object value)
@@ -170,25 +167,6 @@ public class List extends Type {
       MandatoryArgumentChecker.check("value", value);
 
       // The argument must be a ItemList
-      ItemList list = (ItemList) value;
-      // Short-circuit if the argument is null
-      if (list == null) {
-         return null;
-      }
-
-      // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(255);
-
-      // Iterate over the list
-      for (int i=0; i < list.getSize(); i++) {
-         if (i != 0) {
-            buffer.append('&');
-         }
-         Type nextItem = list.get(i);
-
-         buffer.append(URLEncoding.encode(nextItem.toString(nextItem)));
-      }
-
-      return buffer.toString();
+      return toString((ItemList) value);
    }
 }

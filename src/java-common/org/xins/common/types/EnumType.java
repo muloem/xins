@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @see EnumItem
  */
-public class EnumType extends Type {
+public abstract class EnumType extends Type {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -56,7 +56,7 @@ public class EnumType extends Type {
     */
    public EnumType(String name, EnumItem[] items)
    throws IllegalArgumentException {
-      super(name, String.class);
+      super(name, EnumItem.class);
 
       Map namesToValues = new HashMap();
       Map valuesToNames = new HashMap();
@@ -147,18 +147,11 @@ public class EnumType extends Type {
       return false;
    }
 
-   protected final Object fromStringImpl(String value) {
-      return value;
-   }
-
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      String s = (String) value;
-      if (!isValidValueImpl(s)) {
-         throw new TypeValueException(this, s);
-      }
-      return s;
+      EnumItem item = (EnumItem) value;
+      return item.getValue();
    }
 
    /**

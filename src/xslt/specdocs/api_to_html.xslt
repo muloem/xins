@@ -246,7 +246,7 @@
 							<xsl:apply-templates select="environment" />
 						</ul>
 					</xsl:when>
-					<xsl:when test="document($project_file)/projects/api[@name = $api]/environments">
+					<xsl:when test="document($project_file)/project/api[@name = $api]/environments">
 						<ul>
 							<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 							<xsl:apply-templates select="document($env_file)/environments/environment" />

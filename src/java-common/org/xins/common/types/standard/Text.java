@@ -101,4 +101,9 @@ public final class Text extends Type {
    protected Object fromStringImpl(String string) {
       return string;
    }
+
+   public String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      return fromStringForRequired((String) value);
+   }
 }

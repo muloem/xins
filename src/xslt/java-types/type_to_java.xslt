@@ -41,6 +41,8 @@
 			<xsl:when test="type/int16">int16</xsl:when>
 			<xsl:when test="type/int32">int32</xsl:when>
 			<xsl:when test="type/int64">int64</xsl:when>
+			<xsl:when test="type/list">list</xsl:when>
+			<xsl:when test="type/set">set</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unable to determine kind of type. Seems to be neither enum nor pattern type.</xsl:text>
@@ -57,6 +59,8 @@
 			<xsl:when test="$kind = 'int16'">org.xins.common.types.standard.Int16</xsl:when>
 			<xsl:when test="$kind = 'int32'">org.xins.common.types.standard.Int32</xsl:when>
 			<xsl:when test="$kind = 'int64'">org.xins.common.types.standard.Int64</xsl:when>
+			<xsl:when test="$kind = 'list'">org.xins.common.types.List</xsl:when>
+			<xsl:when test="$kind = 'set'">org.xins.common.types.List</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 
@@ -235,7 +239,7 @@ public final class ]]></xsl:text>
 				<xsl:choose>
 					<xsl:when test="int64/@min">
 						<xsl:value-of select="int64/@min" />
-						<xsl:text>l</xsl:text>
+						<xsl:text>L</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>Long.MIN_VALUE</xsl:text>
@@ -245,12 +249,30 @@ public final class ]]></xsl:text>
 				<xsl:choose>
 					<xsl:when test="int64/@max">
 						<xsl:value-of select="int64/@max" />
-						<xsl:text>l</xsl:text>
+						<xsl:text>L</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>Long.MAX_VALUE</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'list'">
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"      />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="type"         select="list/@type" />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON</xsl:text>
+			</xsl:when>
+			<xsl:when test="$kind = 'set'">
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"      />
+					<xsl:with-param name="specsdir"     select="$specsdir" />
+					<xsl:with-param name="type"         select="set/@type" />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text>);
@@ -264,6 +286,167 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
+
+		<xsl:if test="$kind = 'list' or $kind = 'set'">
+			<xsl:variable name="innertype">
+				<xsl:choose>
+					<xsl:when test="$kind = 'list'">
+						<xsl:value-of select="list/@type" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="set/@type" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="javasimpletype">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="required"     select="'true'"        />
+					<xsl:with-param name="type"         select="$innertype"    />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="javaoptionaltype">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="required"     select="'false'"       />
+					<xsl:with-param name="type"         select="$innertype"    />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="typeIsPrimary">
+				<xsl:call-template name="is_java_datatype">
+					<xsl:with-param name="text" select="$javasimpletype" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:text><![CDATA[
+
+   public org.xins.common.types.ItemList createList() {
+      return new Value();
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+	/**
+	 * Inner class that represents a ]]></xsl:text>
+			<xsl:value-of select="$kind" />
+	 		<xsl:text> of </xsl:text>
+			<xsl:value-of select="$javasimpletype" />
+			<xsl:text>.
+	 */
+   public static final class Value extends org.xins.common.types.ItemList {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------</xsl:text>
+			<xsl:if test="$kind = 'set'">
+	      <xsl:text>
+      /**
+       * Creates a new set.
+       */
+      public Value() {
+         super(true);
+      }
+</xsl:text>
+			</xsl:if>
+			<xsl:text>
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Add a new element in the </xsl:text>
+			<xsl:value-of select="$kind" />
+			<xsl:text>.
+       *
+       * @param value
+			 *    the new value to add</xsl:text>
+			<xsl:if test="not($typeIsPrimary = 'true')">
+	      <xsl:text><![CDATA[, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>value == null</code>]]></xsl:text>
+			</xsl:if>
+			<xsl:text>.
+       */
+      public void add(</xsl:text>
+			<xsl:value-of select="$javasimpletype" />
+			<xsl:text> value) {
+
+			</xsl:text>
+			<xsl:if test="not($typeIsPrimary = 'true')">
+         MandatoryArgumentChecker.check("value", value);
+			</xsl:if>
+			<xsl:variable name="valueasobject">
+				<xsl:choose>
+					<xsl:when test="$typeIsPrimary = 'true'">
+						<xsl:text>new </xsl:text>
+						<xsl:value-of select="$javaoptionaltype" />
+						<xsl:text>(value)</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>value</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:text>
+         addItem(</xsl:text>
+			<xsl:value-of select="$valueasobject" />
+      <xsl:text>);
+      }
+
+      /**
+       * Get an element from the </xsl:text>
+			<xsl:value-of select="$kind" />
+			<xsl:text>.
+       *
+       * @param index
+       *    The position of the required element.
+       *
+       * @return
+       *    The element at the specified position</xsl:text>
+			<xsl:if test="not($typeIsPrimary = 'true')">
+	      <xsl:text><![CDATA[, cannot be <code>null</code>]]></xsl:text>
+			</xsl:if>
+      <xsl:text>.
+       */
+      public </xsl:text>
+			<xsl:value-of select="$javasimpletype" />
+			<xsl:text> get(int index) {
+
+         return </xsl:text>
+			<xsl:choose>
+				<xsl:when test="$typeIsPrimary = 'true'">
+					<xsl:text>((</xsl:text>
+					<xsl:value-of select="$javaoptionaltype" />
+					<xsl:text>) getItem(index)).</xsl:text>
+					<xsl:value-of select="$javasimpletype" />
+					<xsl:text>Value()</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="$javasimpletype" />
+					<xsl:text>) </xsl:text>
+					<xsl:text>getItem(index)</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:if test="not($typeIsPrimary = 'true')">
+			</xsl:if>
+			<xsl:text>;
+
+      }
+   }</xsl:text>
+		</xsl:if>
 
 		<xsl:if test="$kind = 'enum'">
 			<xsl:text><![CDATA[
@@ -296,6 +479,11 @@ public final class ]]></xsl:text>
       } else {
          return null;
       }
+   }
+
+   public Object fromStringImpl(String value)
+   throws TypeValueException {
+      return getItemByValue(value);
    }
 
 

@@ -76,7 +76,7 @@ extends Object {
 
    /**
     * Gets the property with the specified name and converts it to a
-    * <code>boolean</code>.
+    * <code>int</code>.
     *
     * @param properties
     *    the set of properties to read from, cannot be <code>null</code>.

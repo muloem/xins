@@ -102,4 +102,8 @@ public class EnumItem extends Object {
       return (_name == null ? other.getName() == null : _name.equals(other.getName()))  &&
          (_value == null ? other.getValue() == null : _value.equals(other.getValue()));
    }
+
+   public String toString() {
+      return _value;
+   }
 }

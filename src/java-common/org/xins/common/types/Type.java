@@ -268,7 +268,8 @@ public abstract class Type extends Object {
     * @since XINS 0.57
     */
    public String toString(Object value)
-   throws IllegalArgumentException, ClassCastException, TypeValueException {
+   throws IllegalArgumentException, ClassCastException, TypeValueException
+   {
       MandatoryArgumentChecker.check("value", value);
       if (getValueClass().isInstance(value) == false) {
          throw new ClassCastException();

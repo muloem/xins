@@ -5,6 +5,7 @@ package org.xins.common.types.standard;
 
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Standard type <em>_int64</em>.
@@ -194,5 +195,12 @@ public final class Int64 extends Type {
 
    protected Object fromStringImpl(String string) {
       return Long.valueOf(string);
+   }
+
+   public final String toString(Object value)
+   throws IllegalArgumentException, ClassCastException, TypeValueException {
+      MandatoryArgumentChecker.check("value", value);
+      java.lang.Long l = (java.lang.Long) value;
+      return l.toString();
    }
 }

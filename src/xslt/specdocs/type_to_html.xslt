@@ -81,6 +81,8 @@
 				<xsl:apply-templates select="int16"      />
 				<xsl:apply-templates select="int32"      />
 				<xsl:apply-templates select="int64"      />
+				<xsl:apply-templates select="list"       />
+				<xsl:apply-templates select="set"        />
 
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
@@ -176,5 +178,19 @@
 			<xsl:value-of select="@max" />
 			<xsl:text>.</xsl:text><br />
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="list | set">
+		<p />
+		<xsl:text>This is a </xsl:text>
+		<em>
+		<xsl:value-of select="name()" />
+		type</em>
+		<xsl:text>. The elements must conform to the type </xsl:text>
+		<xsl:call-template name="typelink">
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="type"     select="@type" />
+		</xsl:call-template>
 	</xsl:template>
 </xsl:stylesheet>

@@ -16,12 +16,36 @@ CHANGES INTRODUCED IN XINS 0.185:
     methods overwrote the content of the FastStringBuffer when it was not
     empty.
     This bug existed since 0.72.
+  - Added the missing static toString(...) methods for the Int8 type.
+    This bug existed since 0.56.
+  - The fromString method of EnumType now returns an Item object instead of a
+    String.
+  - The toString method of EnumType now requires an Item object instead of a
+    String.
+  - Added the _list type.
+  - Added the _set type.
 
 * Specification:
-  - Added the element int8, int16, int32 and int64 to to the type XML file.
+  - Added the elements int8, int16, int32 and int64 to the type XML file.
     The elements accept the min and max attributes.
   - Removed the value attribute for the result codes. The name attribute will
     be used for XINS 1.0.
+
+* Generated specification documentation:
+  - Fixed a bug that did not generated the link to the environment with the
+    new directory structure.
+    This bug existed since 0.183.
+
+* Generated build file:
+  - The create-api target now adds the api element automaticcaly to the
+    xins-project.xml file.
+  - The create-function target now adds the function element automaticcaly to
+    the api.xml file.
+  - The create-rcd target now adds the resultcode element automaticcaly to
+    the api.xml file.
+  - The create-logdoc target now adds the logdoc element automaticcaly to
+    the impl.xml.
+  - Added the validation of the environments.xml, impl.xml and log.xml.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.184:

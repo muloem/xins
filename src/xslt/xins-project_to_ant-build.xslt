@@ -121,6 +121,7 @@
 					     location="{$xins_home}/src/dtd/type_1_0_alpha.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
 					     location="{$xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
+
 					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
 					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
@@ -131,6 +132,12 @@
 					     location="{$xins_home}/src/dtd/type_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
 					     location="{$xins_home}/src/dtd/resultcode_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Implementation 1.0//EN"
+					     location="{$xins_home}/src/dtd/impl_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Environments 1.0//EN"
+					     location="{$xins_home}/src/dtd/environments_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
+					     location="{$xins_home}/src/dtd/log_1_0.dtd" />
 				</xmlcatalog>
 			</target>
 
@@ -309,6 +316,9 @@
 					</xsl:for-each>
 					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+						<xmlvalidate file="{$env_file}" warn="false">
+							<xmlcatalog refid="all-dtds" />
+						</xmlvalidate>
 						<xsl:for-each select="document($env_file)/environments/environment">
 							<style
 							basedir="{$api_specsdir}"
@@ -615,9 +625,15 @@
 						<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
 							<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl')" />
 							<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+							<xmlvalidate file="{$impl_file}" warn="false">
+								<xmlcatalog refid="all-dtds" />
+							</xmlvalidate>
 							<xsl:if test="document($impl_file)/logdoc">
 								<echo message="Generating the logdoc for {$api}" />
 								<mkdir dir="build/logdoc/{$api}" />
+								<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
+									<xmlcatalog refid="all-dtds" />
+								</xmlvalidate>
 								<style
 								in="{$impl_dir}/log.xml"
 								out="build/logdoc/{$api}/build.xml"
