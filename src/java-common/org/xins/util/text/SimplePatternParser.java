@@ -48,6 +48,44 @@ public class SimplePatternParser extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The dot character.
+    */
+   private static final char DOT = '.';
+
+   /**
+    * The asterix character.
+    */
+   private static final char ASTERIX = '*';
+
+   /**
+    * The question mark character.
+    */
+   private static final char QUESTION_MARK = '?';
+
+   /**
+    * The accent circunflex character.
+    */
+   private static final char CIRCUNFLEX = '^';
+
+   /**
+    * The dollar sign character.
+    */
+   private static final char DOLLAR_SIGN = '$';
+
+   /**
+    * The regular expression that is used to replace all occurrences of an
+    * asterix within the pattern by a dot and an asterix.
+    */
+   private static final String ASTERIX_REGEXP = "\\*";
+
+   /**
+    * The wilcard (dot and asterix) to which each asterix that appears 
+    * within the pattern is converted.
+    */
+   private static final String PERL5_ASTERIX_WILDCARD = ".*";
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -80,6 +118,12 @@ public class SimplePatternParser extends Object {
     *
     * @return
     *    the Perl 5 regular expression, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>simplePattern == null</code>.
+    *
+    * @throws ParseException
+    *    if provided simplePattern is invalid or could not be parsed.
     */
    public Perl5Pattern parseSimplePattern(String simplePattern)
    throws IllegalArgumentException, ParseException {
@@ -90,7 +134,7 @@ public class SimplePatternParser extends Object {
          throw new ParseException("The pattern '" + simplePattern + "' is invalid.");
       }
 
-      simplePattern = createPerl5RegularExpression(simplePattern);
+      simplePattern = convertToPerl5RegularExpression(simplePattern);
 
       Perl5Pattern perl5pattern = null;
       Perl5Compiler perl5compiler = new Perl5Compiler();
@@ -115,17 +159,44 @@ public class SimplePatternParser extends Object {
       return perl5pattern;
    }
 
-
-   private String createPerl5RegularExpression(String pattern) {
-      pattern = pattern.replaceAll("\\*", ".*");
-      pattern = pattern.replace('?', '.');
-      pattern = '^' + pattern + '$';
+   /**
+    * Converts the pattern to a Perl 5 Regular Expression. This means that
+    * every asterix is replaced by a dot and an asterix, every question mark
+    * is replaced by a dot, an accent circunflex is prepended to the pattern
+    * and a dollar sign is appended to the pattern.
+    *
+    * @param pattern
+    *    the pattern to be converted, may not be <code>null</code>.
+    *
+    * @return
+    *    the converted pattern, not <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>pattern == null</code>.
+    */
+   private String convertToPerl5RegularExpression(String pattern)
+   throws NullPointerException {
+      pattern = pattern.replaceAll(ASTERIX_REGEXP, PERL5_ASTERIX_WILDCARD);
+      pattern = pattern.replace(QUESTION_MARK, DOT);
+      pattern = CIRCUNFLEX + pattern + DOLLAR_SIGN;
       return pattern;
    }
 
-
-
-   private boolean isValidPattern(String pattern) {
+   /**
+    * Determines whether the provided pattern is valid.
+    *
+    * @param pattern
+    *    the pattern to be validated, not <code>null</code>.
+    *
+    * @return
+    *    boolean with the value <code>true</code> if the pattern is valid,
+    *    otherwise <code>false</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>pattern == null</code>.
+    */
+   private boolean isValidPattern(String pattern)
+   throws NullPointerException {
       char[] patternContents = pattern.toCharArray();
       int patternContentsLength = patternContents.length;
       boolean valid = true;
@@ -133,9 +204,9 @@ public class SimplePatternParser extends Object {
       for (int i= 0;i < patternContentsLength && valid == true; i++) {
          char currChar = patternContents[i];
          if (i < patternContentsLength - 1) {
-            if (currChar == '*' || currChar == '?' || currChar == '^' || currChar == '$') {
+            if (currChar == ASTERIX || currChar == QUESTION_MARK || currChar == CIRCUNFLEX || currChar == DOLLAR_SIGN) {
                char nextChar = patternContents[i + 1];
-               if (nextChar == '*' || nextChar == '?' || nextChar == '^' || nextChar == '$') {
+               if (nextChar == ASTERIX || nextChar == QUESTION_MARK || nextChar == CIRCUNFLEX || nextChar == DOLLAR_SIGN) {
                   valid = false;
                }
             }
