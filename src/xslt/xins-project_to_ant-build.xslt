@@ -213,6 +213,19 @@ APIs in this project are:
 				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 
+			<target name="-load-version">
+				<xsl:variable name="version_file" select="concat($project_home, '/.version.properties')" />
+				<property prefix="api.">
+					<xsl:attribute name="file">
+						<xsl:value-of select="$version_file" />
+					</xsl:attribute>
+				</property>
+				<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
+					<isset property="api.version.major" />
+				</condition>
+				<property name="api.version" value="Not specified" />
+			</target>
+				
 			<xsl:for-each select="api">
 				<xsl:variable name="api"      select="@name" />
 				<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', $api, '/spec/api.xml')" />
@@ -748,7 +761,7 @@ APIs in this project are:
 						</javac>
 					</target>
 
-					<target name="war-{$api}" depends="classes-api-{$api}" description="Creates the WAR for the '{$api}' API">
+					<target name="war-{$api}" depends="classes-api-{$api}, -load-version" description="Creates the WAR for the '{$api}' API">
 						<mkdir dir="build/webapps/{$api}" />
 						<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 						<tstamp>
@@ -764,17 +777,19 @@ APIs in this project are:
 						out="build/webapps/{$api}/web.xml"
 						style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
 							<xmlcatalog refid="all-dtds" />
-							<param name="xins_version" expression="{$xins_version}" />
-							<param name="project_home" expression="{$project_home}" />
-							<param name="project_file" expression="{$project_file}" />
-							<param name="api"          expression="{$api}"          />
-							<param name="api_file"     expression="{$api_file}"     />
-							<param name="hostname"     expression="${{hostname}}"   />
-							<param name="timestamp"    expression="${{timestamp}}"  />
+							<param name="xins_version" expression="{$xins_version}"  />
+							<param name="project_home" expression="{$project_home}"  />
+							<param name="project_file" expression="{$project_file}"  />
+							<param name="api"          expression="{$api}"           />
+							<param name="api_file"     expression="{$api_file}"      />
+							<param name="api_version"  expression="${{api.version}}" />
+							<param name="hostname"     expression="${{hostname}}"    />
+							<param name="timestamp"    expression="${{timestamp}}"   />
 						</style>
 						<fixcrlf srcdir="build/webapps/{$api}" includes="web.xml" eol="unix" />
 						<manifest file="build/webapps/{$api}/MANIFEST.MF">
 							<attribute name="XINS-Version" value="{$xins_version}" />
+							<attribute name="API-Version" value="${{api.version}}" />
 						</manifest>
 						<war
 							webxml="build/webapps/{$api}/web.xml"
@@ -962,6 +977,7 @@ APIs in this project are:
 						</xsl:if>
 						<xsl:text>-stubs-capi-</xsl:text>
 						<xsl:value-of select="$api" />
+						<xsl:text>,-load-version</xsl:text>
 					</xsl:attribute>
 					<mkdir dir="{$project_home}/build/classes-capi/{$api}" />
 					<!-- If not set by the user set it to true. -->
@@ -991,6 +1007,7 @@ APIs in this project are:
 					<mkdir dir="{$project_home}/build/capis/" />
 					<manifest file="{$project_home}/build/capis/{$api}-MANIFEST.MF">
 						<attribute name="XINS-Version" value="{$xins_version}" />
+						<attribute name="API-Version" value="${{api.version}}" />
 					</manifest>
 					<jar
 					destfile="{$project_home}/build/capis/{$api}-capi.jar"

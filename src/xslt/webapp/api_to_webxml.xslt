@@ -17,6 +17,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="api"          />
+	<xsl:param name="api_version"  />
 	<xsl:param name="hostname"     />
 	<xsl:param name="timestamp"    />
 
@@ -90,6 +91,12 @@
 					<param-name>org.xins.api.build.version</param-name>
 					<param-value>
 						<xsl:value-of select="$xins_version" />
+					</param-value>
+				</init-param>
+				<init-param>
+					<param-name>org.xins.api.version</param-name>
+					<param-value>
+						<xsl:value-of select="$api_version" />
 					</param-value>
 				</init-param>
 				<init-param>

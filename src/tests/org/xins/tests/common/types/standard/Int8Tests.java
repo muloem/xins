@@ -83,7 +83,7 @@ public class Int8Tests extends TestCase {
       assertEquals((byte)9, nine.byteValue());
       try {
          Byte twentyTwo = (Byte)lowerLimit.fromString("Twenty 2");
-         fail("Converted an invalid base64 String.");
+         fail("Converted an invalid String.");
       } catch (TypeValueException tve) {
          // As expected
       }

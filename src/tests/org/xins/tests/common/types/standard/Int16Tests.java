@@ -71,23 +71,35 @@ public class Int16Tests extends TestCase {
       // empty
    }
 
-   public void testToString() {
+   public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((short)12) should return a value of \"12\"", "12", lowerLimit.toString((short)12));
       assertEquals("lowerLimit.toString(Short.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString(Short.valueOf("12")));
+      assertEquals("lowerLimit.toString(Short.valueOf(\"12\")) should return a value of \"12\"","12", lowerLimit.toString((Object)Short.valueOf("12")));
       assertNull("lowerLimit.toString(null) should return null", lowerLimit.toString(null));
    }
 
+   public void testFromString() throws Throwable {
+      Short nine = (Short)lowerLimit.fromString("9");
+      assertEquals((short)9, nine.shortValue());
+      try {
+         Short twentyTwo = (Short)lowerLimit.fromString("Twenty 2");
+         fail("Converted an invalid String.");
+      } catch (TypeValueException tve) {
+         // As expected
+      }
+   }
+   
    public void testFromStringForRequired() throws Throwable {
       /* This should cause the specified error. However for some reason it
        * isn't. To prevent the rest of the tests failing this test is commented out.
-
+       * Note that generated type classes override the fromString...() methods
+       * and work correctly.
       try {
          lowerLimit.fromStringForRequired("120");
          fail("Should fail with a TypeValueException due to out of bounds.");
       } catch (TypeValueException tve3) {
          // good
-      }
-      */
+      }*/
 
       try {
          lowerLimit.fromStringForRequired(null);

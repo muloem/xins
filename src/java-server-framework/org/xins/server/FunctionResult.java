@@ -161,9 +161,12 @@ public class FunctionResult extends Object {
     *
     * @return
     *    string containing the value of the parameter element,
-    *    not <code>null</code>.
+    *    or <code>null</code> if the value is not set.
     */
    public String getParameter(String name) {
+      if (_parameters == null) {
+         return null;
+      }
       return _parameters.get(name);
    }
 

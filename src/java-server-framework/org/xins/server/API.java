@@ -72,6 +72,11 @@ implements DefaultResultCodes {
     */
    private static final String ACL_PROPERTY = "org.xins.server.acl";
 
+   /**
+    * The name of the build property that contains the version of the API.
+    */
+   private static final String API_VERSION_PROPERTY = "org.xins.api.version";
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -202,6 +207,11 @@ implements DefaultResultCodes {
    private TimeZone _timeZone;
 
    /**
+    * Version of the API.
+    */
+   private String _apiVersion;
+
+   /**
     * The access rule list.
     */
    private AccessRuleList _accessRuleList;
@@ -295,8 +305,9 @@ implements DefaultResultCodes {
       _buildHost    = _buildSettings.get("org.xins.api.build.host");
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
+      _apiVersion = _buildSettings.get(API_VERSION_PROPERTY);
 
-      Log.log_3212(_buildHost, _buildTime, _buildVersion);
+      Log.log_3212(_buildHost, _buildTime, _buildVersion, _apiVersion);
 
       // Check if build version identifies a production release of XINS
       if (_buildVersion == null || ! Library.isProductionRelease(_buildVersion)) {
@@ -974,6 +985,7 @@ implements DefaultResultCodes {
       builder.param("java.version",   System.getProperty("java.version"));
       builder.param("xmlenc.version", org.znerd.xmlenc.Library.getVersion());
       builder.param("xins.version",   Library.getVersion());
+      builder.param("api.version",    _apiVersion);
 
       return builder;
    }

@@ -237,7 +237,7 @@ public class FastStringBuffer extends Object {
       MandatoryArgumentChecker.check("cbuf", cbuf);
       if (off < 0) {
          throw new IllegalArgumentException("off (" + off + ") < 0");
-      } else if (off >= cbuf.length) {
+      } else if (off >= cbuf.length && off > 0) {
          throw new IllegalArgumentException("off (" + off + ") >= cbuf.length (" + cbuf.length + ')');
       } else if (len < 0) {
          throw new IllegalArgumentException("len (" + len + ") < 0");

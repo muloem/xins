@@ -23,7 +23,7 @@
 	<translation entry="3209">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" /> est manquante.</translation>
 	<translation entry="3210">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" /> est définie à <value-of-param name="propertyValue" format="quoted" />, est considérée comme une valeur invalide. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3211">Le XINS/Java Server Framework ne peut pas être démarré pour une raison inconnue.</translation>
-	<translation entry="3212">Le paquetage à été construit avec <value-of-param name="buildHost" /> à <value-of-param name="buildTime" />, utilisant XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="3212">Le paquetage pour l'API version <value-of-param name="apiVersion" format="quoted"/> à été construit avec <value-of-param name="buildHost" /> à <value-of-param name="buildTime" />, utilisant XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="3213">Démarrage du manageable <value-of-param name="className" />.</translation>
 	<translation entry="3214">Manageable <value-of-param name="className" /> démarré.</translation>
 	<translation entry="3215">Le démarrage du manageable <value-of-param name="className" /> a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas défini.</translation>

@@ -83,6 +83,7 @@
 			<param name="buildHost" />
 			<param name="buildTime" />
 			<param name="buildVersion" />
+			<param name="apiVersion" />
 		</entry>
 		<entry id="3213" level="DEBUG">
 			<description>Bootstrapping manageable object.</description>

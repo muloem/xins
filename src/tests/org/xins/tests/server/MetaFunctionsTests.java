@@ -103,7 +103,9 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No java version specified.", parameters.get("java.version"));
       assertNotNull("No XINS version specified.", parameters.get("xins.version"));
       assertNotNull("No xmlenc version specified.", parameters.get("xmlenc.version"));
-      assertEquals("Incorrect number of parameters.", 3, parameters.size());
+      assertNotNull("No API version specified.", parameters.get("api.version"));
+      assertEquals("Wrong API version specified.", "1.6", parameters.get("api.version"));
+      assertEquals("Incorrect number of parameters.", 4, parameters.size());
    }
 
    /**

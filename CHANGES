@@ -60,6 +60,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added getProtocol() method to class TargetDescriptor (with unit tests).
   - Changed ServiceCaller to support that the descriptor is null.
   - Added no-arg HTTPServiceCaller constructor.
+  - Do not throw an exception if the buffer and the offset are nil in the
+    FastStringBuffer.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
@@ -68,6 +70,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     Removed the UnsuccessfulXINSCallExceptionFactory class and added quite a
     few UnsuccessfulXINSCallException subclasses.
   - Added no-arg XINSServiceCaller constructor.
+  - If available the version of the API is set in the manifest of the JAR file.
 
 * XINS/Java Server Framework:
   - Improved documentation and some small aspects of the implementation of
@@ -77,6 +80,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     public.
   - Added the HttpServletRequest as a parameter when creating the result
     in the calling convention.
+  - If the function has not output parameters, getParameter() will return null. 
+  - If available the version of the API is set in the manifest of the WAR file
+    and in the web.xml file. The _GetVersion meta function now returns the
+    version of the API.
 
 * Generation of CAPI classes:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
