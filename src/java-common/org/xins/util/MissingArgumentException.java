@@ -5,6 +5,7 @@ package org.xins.util;
 
 import java.util.Map;
 import java.util.HashMap;
+import org.xins.util.text.FastStringBuffer;
 
 /**
  * Exception thrown when one or more mandatory arguments for an object method
@@ -39,7 +40,7 @@ extends IllegalArgumentException {
     *    If <code>argumentName == null</code>.
     */
    public MissingArgumentException(String argumentName)
-      throws IllegalArgumentException {
+   throws IllegalArgumentException {
 
       // Check the precondition
       if (argumentName == null) {
@@ -88,7 +89,7 @@ extends IllegalArgumentException {
       Map table = new HashMap();
 
       // Check and save every argument name
-      StringBuffer message = new StringBuffer();
+      FastStringBuffer message = new FastStringBuffer(_argumentCount * 10);
       for (int i = 0; i < _argumentCount; i++) {
 
          // Get the argument name from the array
@@ -144,7 +145,7 @@ extends IllegalArgumentException {
 
 
    //-------------------------------------------------------------------------
-   // Getters
+   // Methods
    //-------------------------------------------------------------------------
 
    /**
