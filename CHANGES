@@ -11,6 +11,12 @@ CHANGES INTRODUCED IN XINS 0.164:
   - Removed setTranslationBundle() from generated Log class.
   - Moved XML files from src/logdoc to src/logdoc/server.
 
+* Generated specification documentation:
+  - Removed the dependency on rcs. The specification is now created if 
+    a rcsdate or rcsversion attribute is missing from the type, 
+    the result code or the function. 
+    The version number is then replaced with '?.?'.
+
 * Generated build file:
   - Added a new target server-<api> that builds the war file, the specdocs 
     and the javadoc on the server-side.
