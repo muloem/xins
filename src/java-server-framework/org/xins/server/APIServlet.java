@@ -26,7 +26,6 @@ import org.xins.util.collections.PropertyReader;
 import org.xins.util.collections.ProtectedPropertyReader;
 import org.xins.util.io.FileWatcher;
 import org.xins.util.servlet.ServletConfigPropertyReader;
-import org.xins.util.text.Replacer;
 
 /**
  * Servlet that forwards requests to an <code>API</code>.
