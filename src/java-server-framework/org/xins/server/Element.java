@@ -163,6 +163,9 @@ final class Element extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("pcdata", pcdata);
 
+      if (_content == null) {
+         _content = new ArrayList(7);
+      }
       _content.add(pcdata);
    }
 
@@ -182,6 +185,10 @@ final class Element extends Object {
       MandatoryArgumentChecker.check("child", child);
       if (child._parent != null) {
          throw new IllegalArgumentException("child.getParent() != null");
+      }
+
+      if (_content == null) {
+         _content = new ArrayList(7);
       }
 
       _content.add(child);
