@@ -148,9 +148,7 @@ extends Object {
 
          if (value != null) {
             // Log this event
-            String valueClass  = (value == null) ? null : value.getClass().getName();
-            String valueString = (value == null) ? null : String.valueOf(value);
-            Log.log_5006(key, valueClass, valueString);
+            Log.log_5006(key, value.getClass().getName(), valueString);
 
             // Perform the actual action
             _attributes = new HashMap(89);
@@ -168,9 +166,7 @@ extends Object {
       // Otherwise store a new entry
       } else {
          // Log this event
-         String valueClass  = (value == null) ? null : value.getClass().getName();
-         String valueString = (value == null) ? null : String.valueOf(value);
-         Log.log_5006(key, valueClass, valueString);
+         Log.log_5006(key, value.getClass().getName(), valueString);
 
          // Perform the actual action
          _attributes.put(key, value);
