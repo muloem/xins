@@ -69,14 +69,11 @@ public interface UnsuccessfulResult extends Result {
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
  */
-public final static class SuccessfulResult implements Result {
+public final static class SuccessfulResult extends org.xins.server.FunctionResult implements Result {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   final static org.xins.server.CallResultBuilder _builder = new org.xins.server.CallResultBuilder();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -92,7 +89,7 @@ public final static class SuccessfulResult implements Result {
    public SuccessfulResult() {
 
       // Reports the success
-      _builder.startResponse(true, null);
+      super(true, null);
    }
 
    //-------------------------------------------------------------------------
@@ -103,45 +100,13 @@ public final static class SuccessfulResult implements Result {
    // Methods
    //-------------------------------------------------------------------------]]></xsl:text>
 		<xsl:apply-templates select="output/param">
-			<xsl:with-param name="methodImpl" select="'_builder.param'" />
+			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
 
 		<xsl:apply-templates select="output/data/element" mode="addMethod">
 		</xsl:apply-templates>
 
-		<xsl:if test="output/data/element">
-			<xsl:text><![CDATA[
-
-   /**
-    * Add a new JDOM element.
-    */
-   private void addJDOMElement(org.jdom.Element element) {
-      _builder.startTag(element.getName());
-      java.util.Iterator itAttributes = element.getAttributes().iterator();
-      while (itAttributes.hasNext()) {
-         org.jdom.Attribute nextAttribute = (org.jdom.Attribute) itAttribute.next();
-         _builder.attribute(nextAttribute.getName(), nextAttribute.getValue());
-      }
-      java.util.Iterator itSubElements = element.getChildren().iterator();
-      while (itSubElements.hasNext()) {
-         org.jdom.Attribute nextChild = (org.jdom.Element) itSubElements.next();
-         addJDOMElement(nextChild);
-      }
-      _builder.endTag();
-   }]]></xsl:text>
-		</xsl:if>
 		<xsl:text>
-
-   /**
-    * Returns the XML structure which is creating by invoking the different
-    * 'set' and 'add' methods
-    *
-    * @return
-    *    the CallResult with the XML structure.
-    */
-   org.xins.server.CallResult getCallResult() {
-      return _builder;
-   }
 
 }
 </xsl:text>
@@ -319,11 +284,11 @@ public final static class SuccessfulResult implements Result {
       // Constructors
       //-------------------------------------------------------------------------
 
-   /**
-    * Creates a new <code>]]></xsl:text>
+      /**
+       * Creates a new <code>]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code> instance.
-    */
+       */
       ]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
@@ -373,10 +338,11 @@ public final static class SuccessfulResult implements Result {
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:text><![CDATA[
+
    /**
     * Adds a sub-element to this element.
-		*
-		* @param
+    *
+    * @param
     *    the value of the sub-element to add, cannot be <code>null</code>.
     */
    public void add]]></xsl:text>

@@ -133,7 +133,7 @@ public abstract class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------
 
-   protected final void handleCall(org.xins.server.CallContext context)
+   protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
    throws Throwable {
       boolean debugEnabled = context.isDebugEnabled();</xsl:text>
 
@@ -185,7 +185,7 @@ public abstract class ]]></xsl:text>
 				<xsl:text> == null</xsl:text>
 			</xsl:for-each>
 			<xsl:text>) {
-         context.startResponse(MISSING_PARAMETERS);</xsl:text>
+          org.xins.server.MissingParametersResult result = new org.xins.server.MissingParametersResult();</xsl:text>
 			<xsl:choose>
 				<xsl:when test="count(input/param[@required='true']) &gt; 1">
 					<xsl:for-each select="input/param[@required='true']">
@@ -193,25 +193,21 @@ public abstract class ]]></xsl:text>
          if (</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text> == null) {
-            context.startTag("missing-param");
-            context.attribute("name", "</xsl:text>
+            result.addMissingParameter("</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>");
-            context.endTag();
          }</xsl:text>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>
-         context.startTag("missing-param");
-         context.attribute("name", "</xsl:text>
+         result.addMissingParameter("</xsl:text>
 					<xsl:value-of select="input/param[@required='true']/@name" />
-						<xsl:text>");
-         context.endTag();</xsl:text>
+						<xsl:text>");</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>
-         return;
+         return result;
       }</xsl:text>
 		</xsl:if>
 
@@ -233,20 +229,17 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         context.startResponse(INVALID_PARAMETERS);
-         context.startTag("param-combo");
-         context.attribute("type", "inclusive-or");</xsl:text>
+         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
+         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
-					<xsl:text>
-         context.startTag("param");
-         context.attribute("name", "</xsl:text>
+				<xsl:text>
+         invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
-					<xsl:text>");
-         context.endTag();</xsl:text>
+					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
-         context.endTag();
-         return;
+         result.setParamCombo("inclusive-or", invalidComboElements);
+         return result;
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -274,18 +267,17 @@ public abstract class ]]></xsl:text>
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {
-         context.startResponse(INVALID_PARAMETERS);
-         context.startTag("param-combo");
-         context.attribute("type", "exclusive-or");</xsl:text>
+         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
+         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
 					<xsl:for-each select="param-ref">
 						<xsl:text>
-         context.startTag("param");
-         context.attribute("name", "</xsl:text>
+         invalidComboElements.add("</xsl:text>
 						<xsl:value-of select="$active" />
 						<xsl:text>");</xsl:text>
 					</xsl:for-each>
 					<xsl:text>
-         context.endTag();
+         result.setParamCombo("exclusive-or", invalidComboElements);
+         return result;
       }</xsl:text>
 				</xsl:for-each>
 			</xsl:for-each>
@@ -315,17 +307,17 @@ public abstract class ]]></xsl:text>
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {
-         context.startResponse(INVALID_PARAMETERS);
-         context.startTag("param-combo");
-         context.attribute("type", "all-or-none");</xsl:text>
+         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
+         java.util.List invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:text>
-         context.startTag("param");
-         context.attribute("name", "</xsl:text>
+         invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
+         result.setParamCombo("all-or-none", invalidComboElements);
+         return result;
          }</xsl:text>
 
 			</xsl:for-each>
@@ -352,16 +344,13 @@ public abstract class ]]></xsl:text>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>)) {
-         context.startResponse(INVALID_PARAMETERS);
-         context.startTag("invalid-value-for-type");
-         context.attribute("param", "</xsl:text>
+         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
+         result.setInvalidTypeForValue("</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>");
-         context.attribute("type", "</xsl:text>
+				<xsl:text>", "</xsl:text>
 				<xsl:value-of select="@type" />
 				<xsl:text>");
-         context.endTag();
-         return;
+         return result;
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -402,8 +391,8 @@ public abstract class ]]></xsl:text>
 			<xsl:text>session</xsl:text>
 		</xsl:if>
 		<xsl:text>);
-      Result callResult = call(callRequest);</xsl:text>
-
+      Result result = call(callRequest);</xsl:text>
+      return (org.xins.server.FunctionResult) result;
 		<!-- TODO: Dispose the session if appropriate -->
 		<xsl:if test="$sessionBased = 'true'">
 			<xsl:text>

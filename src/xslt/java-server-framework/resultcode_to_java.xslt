@@ -40,7 +40,7 @@
  */
 final class </xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text> implements </xsl:text>
+		<xsl:text> extends org.xins.server.FunctionResult implements </xsl:text>
 		<!-- This class should implements the UnsuccessfulResult from all the functions
 		     that reference to this result code. -->
 		<xsl:variable name="resultcodeIncludes">
@@ -84,6 +84,9 @@ final class </xsl:text>
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>() {
+      super(false, "</xsl:text>
+		<xsl:value-of select="@value" />
+		<xsl:text>");
    }</xsl:text>
 	</xsl:template>
 
