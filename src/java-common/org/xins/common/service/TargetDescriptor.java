@@ -20,6 +20,7 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.HexConverter;
 
 /**
  * Descriptor for a single target service. A target descriptor defines a URL
@@ -53,6 +54,11 @@ public final class TargetDescriptor extends Descriptor {
     * The fully-qualified name of this class.
     */
    private static final String CLASSNAME = TargetDescriptor.class.getName();
+
+   /**
+    * The number of instances of this class. Initially 0.
+    */
+   private static int INSTANCE_COUNT;
 
    /**
     * The fully-qualified name of the inner class <code>Iterator</code>.
@@ -128,6 +134,8 @@ public final class TargetDescriptor extends Descriptor {
       try {
          bytes = s.getBytes(ENCODING);
       } catch (UnsupportedEncodingException exception) {
+         // TODO: Is log message 1052 not more appropriate?
+         // TODO: Should the caught exception not be set as the cause for the Error?
          String message = "Encoding \"" + ENCODING + "\" is not supported.";
          Log.log_1050(CLASSNAME, "computeCRC32(String)", message);
          throw new Error(message);
@@ -260,8 +268,11 @@ public final class TargetDescriptor extends Descriptor {
                            int    socketTimeOut)
    throws IllegalArgumentException, MalformedURLException {
 
+      // Determine instance number first
+      _instanceNumber = ++INSTANCE_COUNT;
+
       // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
+      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
@@ -290,9 +301,13 @@ public final class TargetDescriptor extends Descriptor {
       _crc               = computeCRC32(url);
 
       // Convert to a string
-      // TODO: Include CRC in _asString
-      FastStringBuffer buffer = new FastStringBuffer(290, "TargetDescriptor(url=\"");
+      // TODO: Lazily initialize _asString
+      FastStringBuffer buffer = new FastStringBuffer(233, "TargetDescriptor #");
+      buffer.append(_instanceNumber);
+      buffer.append(" [url=\"");
       buffer.append(url);
+      buffer.append("\"; crc=\"");
+      buffer.append(HexConverter.toHexString(_crc));
       buffer.append("\"; total time-out is ");
       if (_timeOut < 1) {
          buffer.append("disabled; connection time-out is ");
@@ -307,21 +322,28 @@ public final class TargetDescriptor extends Descriptor {
          buffer.append(" ms; socket time-out is ");
       }
       if (_socketTimeOut < 1) {
-         buffer.append("disabled)");
+         buffer.append("disabled]");
       } else {
          buffer.append(_socketTimeOut);
-         buffer.append(" ms)");
+         buffer.append(" ms]");
       }
       _asString = buffer.toString();
 
       // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, _asString);
+      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
 
    /**
     * A textual representation of this object. Cannot be <code>null</code>.
