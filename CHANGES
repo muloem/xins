@@ -1,4 +1,10 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.124:
+
+* Generation of Java fundament classes:
+  - Fixed a bug that kept the APIImpl class from being initialized properly.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.123:
 
 * Generation of Java fundament classes:
