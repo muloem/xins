@@ -691,7 +691,14 @@ implements Responder, Log {
          throw new IllegalArgumentException("resultCode.getSuccess() == true");
       }
 
-      startResponse(resultCode);
+      // Start response
+      if (resultCode == null) {
+         startResponse(false);
+      } else {
+         startResponse(resultCode);
+      }
+
+      // End response
       endResponse();
    }
 
