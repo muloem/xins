@@ -137,6 +137,14 @@ extends Object {
       return _parentType;
    }
 
+   /**
+    * Checks if the specified <code>Spec</code> is potentially a valid parent
+    * for a component of this type.
+    *
+    * @return
+    *    if <code>(parent == null &amp;&amp; </code>{@link #getParentType()}<code> == null)
+    *          || (parent != null &amp;&amp; </code>{@link #getParentType()}<code> == parent.</code>{@link Spec#getType() getType}<code>())</code>
+    */
    public final boolean isValidParent(Spec parent) {
       return (parent == null && _parentType == null)
           || (parent != null && _parentType == parent.getType());
