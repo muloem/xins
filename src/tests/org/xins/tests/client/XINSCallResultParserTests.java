@@ -253,6 +253,12 @@ public class XINSCallResultParserTests extends TestCase {
    
    /**
     * Verifies that the result is correctly formatted as expected.
+    *
+    * @param result
+    *    the XML result as parsed by the XINSCallResultParser.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
     */
    public void verifyCorrectResult(XINSCallResultData result) throws Exception {
       assertNotNull(result);
@@ -316,7 +322,7 @@ public class XINSCallResultParserTests extends TestCase {
 
       // The 'available' attribute must be 'false'
       assertEquals("true", childTwo.get("available"));
-  }
+   }
 
    /**
     * Tests the behaviour of <code>XINSCallResultParser</code>, method
