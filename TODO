@@ -88,6 +88,8 @@ XINS/JAVA CLIENT FRAMEWORK
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
 
+* Improve description of class Manageable. It still refers to the term
+  'lifespan manager'.
 * Convert to logdoc-approach.
 * Make LDAPServiceCaller class correctly detect time-outs.
 * Change Type class to add a 'version' property.
