@@ -28,7 +28,10 @@ public final class HTTPCallResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>HTTPCallResult</code> object.
+    * Constructs a new <code>HTTPCallResult</code> object. The status code and
+    * the byte data need to be given. Note that the byte data will be stored
+    * as-is, no copying will be done. And the data will be returned as-is by
+    * {@link #getData()}.
     *
     * @param code
     *    the HTTP return code, must be &gt;= 0.
@@ -89,7 +92,7 @@ public final class HTTPCallResult extends Object {
     * data structure itself.
     *
     * @return
-    *    a byte array of the result data, not <code>null</code>.
+    *    a byte array of the result data, never <code>null</code>.
     */
    public byte[] getData() {
       return _data;
