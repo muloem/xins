@@ -291,7 +291,7 @@ extends AbstractFunctionCaller {
 
       // If there is a session identifier, process it
       if (sessionID != null) {
-         buffer.append("_session=");
+         buffer.append("&_session=");
          buffer.append(sessionID);
       }
 
