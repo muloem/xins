@@ -11,6 +11,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="environment" />
 
+	<xsl:variable name="api"          select="//function/@api" />
 	<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
 
 	<xsl:output
@@ -64,7 +65,7 @@
 						<xsl:attribute name="title">
 							<xsl:value-of select="$env_url" />
 						</xsl:attribute>
-						<xsl:value-of select="$env" />
+						<xsl:value-of select="$environment" />
 					</a>
 					<xsl:text> environment.</xsl:text>
 				</p>
@@ -142,7 +143,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="type_file" select="concat('../types/', $type, '.typ')" />
+		<xsl:variable name="type_file" select="concat($project_home, '/src/specs/', $api, '/', $type, '.typ')" />
 
 		<xsl:variable name="isenum">
 			<xsl:choose>
@@ -228,7 +229,7 @@
 		<xsl:param name="type" />
 
 		<xsl:variable name="type_file">
-			<xsl:value-of select="concat('../types/', $type, '.typ')" />
+			<xsl:value-of select="concat($project_home, '/src/specs/', $api, '/', $type, '.typ')" />
 		</xsl:variable>
 
 		<xsl:variable name="type_url">
