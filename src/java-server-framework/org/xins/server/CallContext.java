@@ -248,6 +248,13 @@ implements Responder, Log {
       return _session;
    }
 
+   /**
+    * Creates a session, stores it and remembers that it will have to be
+    * returned in the result.
+    *
+    * @return
+    *    the constructed session, cannot be <code>null</code>.
+    */
    public Session createSession() {
 
       // Create the session
