@@ -238,15 +238,17 @@ public class Log extends AbstractLog {
       // Methods
       //----------------------------------------------------------------------
 
-      protected void setLocale(String newLocale) {
+      protected boolean isLocaleSupported(String locale) {
 
          // Fetch the translation bundle
          TranslationBundle bundle = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(newLocale);
 
-         // Use this bundle
-         if (bundle != null) {
-            TRANSLATION_BUNDLE = bundle;
-         }
+         // Return true if the bundle exists
+         return (bundle != null);
+      }
+
+      protected void setLocale(String newLocale) {
+         TRANSLATION_BUNDLE = (TranslationBundle) TRANSLATION_BUNDLES_BY_NAME.get(newLocale);
       }
    }
 }
