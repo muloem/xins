@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.132:
+
+* XINS/Java Client Framework:
+  - Sending 'function=FunctionName' instead of '_function=FunctionName' for
+    backwards compatibility.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.131:
 
 * XINS/Java Common Library:
