@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.61:
+
+* Fixed problem with invalid call results in generated CAPI classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.60:
 
 * Improved automatic generation of session identifiers in API implementation.
