@@ -89,7 +89,7 @@ implements DefaultResultCodes {
       // Check argument
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
 
-      _log          = Logger.getLogger(getClass().getName());
+      _log          = Logger.getLogger("org.xins.server.apis." + api.getName() + '.' + name);
       _api          = api;
       _name         = name;
       _version      = version;
