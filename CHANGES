@@ -1,4 +1,15 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.135:
+
+* XINS/Java Client Framework:
+  - By default not calling _NoOp at construction of ActualFunctionCaller.
+
+* Generation of test forms:
+  - Using 'function' parameter instead of '_function' parameter again. This is
+    due to the fact that old APIs may not have switched to '_function' yet,
+    while the newer APIs still support 'function.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.134:
 
 * XINS/Java Client Framework:
