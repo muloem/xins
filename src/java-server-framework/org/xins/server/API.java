@@ -1036,7 +1036,8 @@ implements DefaultResultCodes {
    private final void doGetStatistics(CallContext context)
    throws IOException {
       long now = System.currentTimeMillis();
-      context.param("now", DateConverter.toDateString(_timeZone, now));
+      context.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
+      context.param("now",     DateConverter.toDateString(_timeZone, now));
 
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
@@ -1188,7 +1189,6 @@ implements DefaultResultCodes {
       // Initialization settings
       Enumeration names = _initSettings.propertyNames();
       context.startTag("initialization");
-      context.attribute("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
       while (names.hasMoreElements()) {
          String key   = (String) names.nextElement();
          String value = _initSettings.getProperty(key);
