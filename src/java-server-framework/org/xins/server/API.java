@@ -177,7 +177,7 @@ implements DefaultResultCodes {
    private PropertyReader _buildSettings;
 
    /**
-    * The {@link RuntimeProperies} containing the method to verify and access
+    * The {@link RuntimeProperties} containing the method to verify and access
     * the defined runtime properties.
     */
    private RuntimeProperties _emptyProperties;
