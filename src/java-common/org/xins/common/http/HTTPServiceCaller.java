@@ -24,6 +24,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.text.URLEncoding;
 
@@ -45,6 +46,7 @@ import org.xins.common.service.UnknownHostCallException;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
+import org.xins.logdoc.LogdocSerializable;
 
 /**
  * HTTP service caller. This class can be used to perform a call to an HTTP
@@ -466,7 +468,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Total time-out exceeded
       } catch (TimeOutException exception) {
          duration = System.currentTimeMillis() - start;
-         Log.log_3104(url, target.getTotalTimeOut());
+         Log.log_3105(url, target.getTotalTimeOut());
          throw new TotalTimeOutCallException(request, target, duration);
 
       } finally {
@@ -475,23 +477,28 @@ public final class HTTPServiceCaller extends ServiceCaller {
          duration = System.currentTimeMillis() - start;
       }
 
+      // Log the HTTP call done.
+      PropertyReader params = request.getParameters();
+      LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
+      Log.log_3101(url, serParams, duration);
+
       // Check for exceptions
       Throwable exception = executor.getException();
       if (exception != null) {
 
          // Connection refusal
          if (exception instanceof UnknownHostException) {
-            Log.log_3109(url);
+            Log.log_3110(url);
             throw new UnknownHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
-            Log.log_3101(url);
+            Log.log_3102(url);
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
          } else if (exception instanceof HttpConnection.ConnectionTimeoutException) {
-            Log.log_3102(url, target.getConnectionTimeOut());
+            Log.log_3103(url, target.getConnectionTimeOut());
             throw new ConnectionTimeOutCallException(request, target, duration);
 
          // Socket time-out
@@ -504,23 +511,23 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             String exMessage = exception.getMessage();
             if (exMessage != null && exMessage.startsWith("java.net.SocketTimeoutException")) {
-               Log.log_3103(url, target.getSocketTimeOut());
+               Log.log_3104(url, target.getSocketTimeOut());
                throw new SocketTimeOutCallException(request, target, duration);
 
             // Unspecific I/O error
             } else {
-               Log.log_3107(exception, url);
+               Log.log_3108(exception, url);
                throw new IOCallException(request, target, duration, (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
-            Log.log_3107(exception, url);
+            Log.log_3108(exception, url);
             throw new IOCallException(request, target, duration, (IOException) exception);
 
          // Unrecognized kind of exception caught
          } else {
-            Log.log_3108(exception, url);
+            Log.log_3109(exception, url);
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
       }
@@ -535,7 +542,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Status code is considered acceptable
       if (verifier == null || verifier.isAcceptable(code)) {
-         Log.log_3105(url, code);
+         Log.log_3106(url, code);
 
       // Status code is considered unacceptable
       } else {
@@ -543,7 +550,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //       HTTPCallResult object and add getter for the body to the
          //       StatusCodeHTTPCallException class.
 
-         Log.log_3106(url, code);
+         Log.log_3107(url, code);
 
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
@@ -798,13 +805,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Construct the method object
          HttpMethod method = createMethod(url, _request);
-
-         // Log that we are about to make the HTTP call
-         // TODO: Uncomment or remove the following line:
-         // Get the input parameters
-         // PropertyReader params = _request.getParameters();
-         // LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
-         // Log.log_2011(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
 
          // Perform the HTTP call
          try {

@@ -64,49 +64,55 @@
 	<group id="http" name="HTTP-related">
 		<entry id="3100" level="INFO">
 			<description>Calling HTTP service.</description>
-			<param name="url"	       type="text"  nullable="false" />
+			<param name="url"	              type="text"  nullable="false" />
 			<param name="totalTimeOut"      type="int32" nullable="false" />
 			<param name="connectionTimeOut" type="int32" nullable="false" />
 			<param name="socketTimeOut"     type="int32" nullable="false" />
 		</entry>
-		<entry id="3101" level="NOTICE">
+		<entry id="3101" level="INFO">
+			<description>Calling HTTP service.</description>
+			<param name="url"	              type="text"  nullable="false" />
+			<param name="parameters"        type="serializable"  nullable="true" />
+			<param name="duration"          type="int64" nullable="false" />
+		</entry>
+		<entry id="3102" level="NOTICE">
 			<description>Connection refused while calling HTTP service.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="3102" level="NOTICE">
+		<entry id="3103" level="NOTICE">
 			<description>Connection time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3103" level="NOTICE">
+		<entry id="3104" level="NOTICE">
 			<description>Socket time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3104" level="NOTICE">
+		<entry id="3105" level="NOTICE">
 			<description>Total call time-out while calling HTTP service.</description>
 			<param name="url"     type="text"  nullable="false" />
 			<param name="timeOut" type="int32" nullable="false" />
 		</entry>
-		<entry id="3105" level="INFO">
+		<entry id="3106" level="INFO">
 			<description>HTTP result received, status code is considered acceptable.</description>
 			<param name="url"  type="text"  nullable="false" />
 			<param name="code" type="int32" nullable="false" />
 		</entry>
-		<entry id="3106" level="INFO">
+		<entry id="3107" level="INFO">
 			<description>HTTP result received, status code is considered unacceptable.</description>
 			<param name="url"  type="text"  nullable="false" />
 			<param name="code" type="int32" nullable="false" />
 		</entry>
-		<entry id="3107" level="NOTICE" exception="true">
+		<entry id="3108" level="NOTICE" exception="true">
 			<description>Unrecognized I/O error while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
-		<entry id="3108" level="NOTICE" exception="true">
+		<entry id="3109" level="NOTICE" exception="true">
 			<description>Unexpected exception while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>
-		<entry id="3109" level="NOTICE" exception="false">
+		<entry id="3110" level="NOTICE" exception="false">
 			<description>Unknown host error while calling HTTP service.</description>
 			<param name="url" type="text"  nullable="false" />
 		</entry>

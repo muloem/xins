@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
   - Removed unused imports.
   - The MandatoryArgumentChecker also checks that the argument names are not
     null.
+  - Added logging message with HTTP parameters and duration for the 
+    HTTPServiceCaller.
 
 * XINS/Java Client Framework:
   - Removed unused imports.
