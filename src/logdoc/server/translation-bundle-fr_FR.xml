@@ -8,17 +8,6 @@
 -->
 
 <translation-bundle>
-	<translation entry="3000">TRACE: Entre dans le constructeur <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3001">TRACE: Quitte le constructeur <value-of-param name="className" /> avec une exception. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3002">TRACE: Quitte dans le constructeur <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3003">TRACE: Entre la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3004">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" /> avec une exception. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3005">TRACE: Quitte la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-
-	<translation entry="3050">Erreur de programmation dans la méthode <value-of-param name="methodName" /> de la classe <value-of-param name="className" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3051">L'exception <value-of-param name="exceptionClass" /> avec le message <value-of-param name="exceptionMessage" format="quoted" /> est ignorée. Détail: <value-of-param name="description" format="quoted" />.</translation>
-	<translation entry="3052">Une exception non prévu rejetée par <value-of-param name="throwingClass" /> a été attrapée.<value-of-param name="throwingMethod" />.</translation>
-
 	<translation entry="3100">Changement de l'état de l'APIServlet de <value-of-param name="oldState" /> à <value-of-param name="newState" />.</translation>
 	<translation entry="3101">Changement de l'état à échoué. L'état <value-of-param name="newState" /> ne peut pas suivre l'état <value-of-param name="oldState" />.</translation>
 

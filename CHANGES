@@ -6,9 +6,13 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 BETA 3:
 
+* XINS/Java Server Framework:
+  - Implemented SF.net RFE #1102205: Let Server use Common log messages.
+    Removed all logdoc entries in the range 30xx.
+
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1093174: Let Client use Common log messages.
-    Removed logdoc entries in the range 20xx.
+    Removed all logdoc entries in the range 20xx.
 
 * XINS/Java Common Library:
   - Added a toHexString(char) method to the HexConverter class.

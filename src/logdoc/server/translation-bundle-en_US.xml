@@ -8,17 +8,6 @@
 -->
 
 <translation-bundle>
-	<translation entry="3000">TRACE: Enter <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3001">TRACE: Leave <value-of-param name="className" /> constructor with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3002">TRACE: Leave <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3003">TRACE: Enter <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3004">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" /> with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3005">TRACE: Leave <value-of-param name="methodName" /> method of class <value-of-param name="className" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-
-	<translation entry="3050">Programming error in the <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
-	<translation entry="3051">Ignoring <value-of-param name="exceptionClass" /> exception with message <value-of-param name="exceptionMessage" format="quoted" />. Detail: <value-of-param name="description" format="quoted" />.</translation>
-	<translation entry="3052">Caught unexpected exception thrown by <value-of-param name="throwingClass" />.<value-of-param name="throwingMethod" />.</translation>
-
 	<translation entry="3100">Changing APIServlet state from <value-of-param name="oldState" />	to <value-of-param name="newState" />.</translation>
 	<translation entry="3101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
 

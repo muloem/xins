@@ -127,7 +127,7 @@ extends Object {
       }
 
       final String SUBJECT_CLASS  = getClass().getName();
-      final String SUBJECT_METHOD = THIS_METHOD.replaceFirst("(", "Impl(");
+      final String SUBJECT_METHOD = THIS_METHOD.replaceFirst("\\(", "Impl\\(");
 
       // Delegate to the implementation method
       UnsuccessfulXINSCallException e;
