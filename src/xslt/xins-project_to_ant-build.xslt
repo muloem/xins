@@ -1005,6 +1005,16 @@
 				</xsl:attribute>
 			</target>
 
+			<target name="clients" description="Creates the WARs for all APIs">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="api">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>client-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
 			<target name="wars" description="Creates the WARs for all APIs">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="api[document($project_file)/project/api/impl]">

@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.183:
+
+* Generated build file:
+  - Added a "clients" target that builds all the client api's for all the
+    projects.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.182:
 
 * XINS/Java Client Framework:
