@@ -7,7 +7,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Iterator implementation that reads from an array.
+ * Iterator implementation that reads from an array. No modifications are
+ * allowed, so {@link #remove()} will throw an
+ * {@link UnsupportedOperationException}.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
