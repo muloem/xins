@@ -40,10 +40,14 @@
 		<!-- TODO: Link to online specdocs ? -->
 		<xsl:text><![CDATA[;
 
+import java.util.Collections;
+import java.util.List;
+import org.jdom.Element;
 import org.xins.client.CallResult;
 import org.xins.client.InvalidCallResultException;
 import org.xins.types.TypeValueException;
 import org.xins.util.MandatoryArgumentChecker;
+import org.xins.util.collections.CollectionUtils;
 
 /**
  * Result of a call to the <em>]]></xsl:text>
@@ -72,12 +76,33 @@ public final class ]]></xsl:text>
    // Fields
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="output/param" mode="field" />
+		<xsl:if test="output/data/element">
+			<xsl:text>
+
+   private final List _dataElements;</xsl:text>
+		</xsl:if>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="output/param" mode="method" />
+		<xsl:if test="output/data/element">
+			<xsl:text><![CDATA[
+
+   /**
+    * Gets the elements within the data section. If there are none, then an
+    * empty {@link List} is returned. All elements in the list are instances
+    * of class {@link Element}.
+    *
+    * @return
+    *    the {@link List} of elements within the data section, never
+    *    <code>null</code>.
+    */
+   public List getDataElements() {
+      return _dataElements;
+   }]]></xsl:text>
+		</xsl:if>
 		<xsl:text>
 }
 </xsl:text>
@@ -114,7 +139,23 @@ public final class ]]></xsl:text>
       } else if (!result.isSuccess()) {
          throw new IllegalArgumentException("result.isSuccess() == false");
       }
-      String currentParam = "";
+      String currentParam = "";</xsl:text>
+		<xsl:if test="output/data/element">
+			<xsl:text>
+
+      Element data = result.getDataElement();
+      if (data == null) {
+         _dataElements = CollectionUtils.EMPTY_LIST;
+      } else {
+         List children = data.getChildren();
+         if (children == null || children.size() &lt; 1) {
+            _dataElements = CollectionUtils.EMPTY_LIST;
+         } else {
+            _dataElements = Collections.unmodifiableList(children);
+         }
+      }</xsl:text>
+		</xsl:if>
+		<xsl:text>
       try {
 </xsl:text>
 		<xsl:apply-templates select="output/param" mode="setfield" />

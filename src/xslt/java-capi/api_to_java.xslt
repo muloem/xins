@@ -182,7 +182,7 @@ public final class API extends Object {
 						<xsl:when test="@createsSession = 'true'">
 							<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 						</xsl:when>
-						<xsl:when test="output/param">
+						<xsl:when test="output/param or output/data/element">
 							<xsl:value-of select="$functionName" />
 							<xsl:text>Result</xsl:text>
 						</xsl:when>
@@ -281,7 +281,7 @@ public final class API extends Object {
     *    identifier of the created session and a link to the function caller
     *    that actually created the session.]]></xsl:text>
 					</xsl:when>
-					<xsl:when test="output/param">
+					<xsl:when test="output/param or output/data/element">
 						<xsl:text><![CDATA[
     *
     * @return
@@ -452,7 +452,7 @@ public final class API extends Object {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
 					</xsl:when>
-					<xsl:when test="output/param">
+					<xsl:when test="output/param or output/data/element">
 						<xsl:text>
       if (result.isSuccess()) {
          return new </xsl:text>
