@@ -89,7 +89,7 @@ extends Object {
       _value   = value;
 
       // TODO: Remove _log ?
-      // TODO: _api.resultCodeAdded(this);
+      _api.resultCodeAdded(this);
    }
 
 
