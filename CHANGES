@@ -1,4 +1,18 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.152:
+
+* XINS/Java Common Library:
+  - Fixed bug in LDAPServiceCaller class, in the logging of authentication
+    attempts. The error was that if DEBUG log messages are disabled, then ANY
+    authentication attempt will generate an ERROR message.
+    Changes:
+    . Fixed the bug, so the message is now reflecting reality
+    . Changed the log level from ERROR to INFO for failed authentications
+    . Changed the log level from DEBUG to INFO for succeeded authentications
+    This bug has been in the code since the introduction of the
+    LDAPServiceCaller class in XINS 0.115
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.151:
 
 * Fixed some Checkstyle-reported issues.
