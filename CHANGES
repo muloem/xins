@@ -7,6 +7,12 @@ CHANGES INTRODUCED IN XINS 0.145:
 * XINS/Java Common Library:
   - Logging buffer increase in FastStringBuffer.
 
+* XINS/Java Server Framework:
+  - Changed log category for a function to
+    "org.xins.server.apis.<api>.<function>", where <api> is the name of the
+    API and <function> is the name of the function.
+  - Changed internal logging categories to be all lower case.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.144:
 
