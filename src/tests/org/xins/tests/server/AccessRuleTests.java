@@ -66,4 +66,14 @@ public class AccessRuleTests extends TestCase {
    protected void setUp() {
       // empty
    }
+
+   public void testParseAccessRule() throws Throwable {
+
+      try {
+         AccessRule.parseAccessRule(null);
+         fail("AccessRule.parseAccessRule(null) should throw an IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+   }
 }
