@@ -3,10 +3,23 @@
  */
 package org.xins.server;
 
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.Result;
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
@@ -64,7 +77,8 @@ final class CallResultOutputter extends Object {
                              String encoding,
                              FunctionResult result,
                              String xslt,
-                             String compatibility)
+                             String compatibility,
+                             String xsltUrl)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
@@ -72,8 +86,16 @@ final class CallResultOutputter extends Object {
                                      "encoding", encoding,
                                      "result",   result);
 
+      // If the XML should be tranformed store the result in a String
+      Writer output = null;
+      if (xsltUrl == null) {
+         output = out;
+      } else {
+         output = new StringWriter();
+      }
+
       // Create an XMLOutputter
-      XMLOutputter outputter = new XMLOutputter(out, encoding);
+      XMLOutputter outputter = new XMLOutputter(output, encoding);
 
       // Output the declaration
       // XXX: Make it configurable whether the declaration is output or not?
@@ -131,6 +153,29 @@ final class CallResultOutputter extends Object {
       }
 
       outputter.endTag(); // result
+
+      // Transform the result with the given XSLT.
+      if (xsltUrl != null) {
+         String originalResult = output.toString();
+         try {
+            Source xmlSource = new StreamSource(originalResult);
+            Result xmlResult = new StreamResult(out);
+
+            // Create transformer factory
+            TransformerFactory factory = TransformerFactory.newInstance();
+
+            // Use the factory to create a template containing the xsl file
+            InputStream urlStream = new URL(xsltUrl).openStream();
+            Templates template = factory.newTemplates(new StreamSource(urlStream));
+            urlStream.close();
+
+            // Use the template to create a transformer
+            Transformer xformer = template.newTransformer();
+            xformer.transform(xmlSource, xmlResult);
+         } catch (Exception ex) {
+            out.write(originalResult);
+         }
+      }
    }
 
    /**

@@ -196,6 +196,12 @@ extends HttpServlet {
    public static final String OUTPUT_COMPATIBILITY_PROPERTY = "org.xins.server.output.compatibility";
 
    /**
+    * The name of the runtime property that specifies the xslt location
+    * for transformation of the result.
+    */
+   public static final String XSLT_URL_PROPERTY = "org.xins.server.xslt.url";
+
+   /**
     * The response encoding format.
     */
    public static final String RESPONSE_ENCODING = "UTF-8";
@@ -299,6 +305,11 @@ extends HttpServlet {
     * The output format compatibility for the returned XML.
     */
    private String _outputCompatibility;
+
+   /**
+    * The XSLT URL to transform the output.
+    */
+   private String _xsltUrl;
 
    /**
     * The properties read from the runtime configuration file.
@@ -762,6 +773,12 @@ extends HttpServlet {
          // Store the output compatibility format that should be returned
          _outputCompatibility = _runtimeProperties.get(OUTPUT_COMPATIBILITY_PROPERTY);
 
+         // Store the xslt url for the output transformation
+         _xsltUrl = _runtimeProperties.get(XSLT_URL_PROPERTY);
+         if (_xsltUrl != null) {
+            _xsltUrl += _api.getName();
+         }
+
          try {
             _api.init(_runtimeProperties);
             succeeded = true;
@@ -994,7 +1011,17 @@ extends HttpServlet {
          PrintWriter out = response.getWriter();
          response.setContentType(RESPONSE_CONTENT_TYPE);
          response.setStatus(HttpServletResponse.SC_OK);
-         CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt, _outputCompatibility);
+
+         // Create the URL for the transformation is needed
+         String xsltUrl = _xsltUrl;
+         if (_xsltUrl != null) {
+            String functionName = request.getParameter("_function");
+            if (functionName == null) {
+               functionName = request.getParameter("function");
+            }
+            xsltUrl += '/' + functionName + ".xslt";
+         }
+         CallResultOutputter.output(out, RESPONSE_ENCODING, result, xslt, _outputCompatibility, xsltUrl);
          out.flush();
       }
    }

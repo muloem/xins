@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 0.207:
   - Check the state of API and APIServlet before calling a method.
   - Used another system to suspend any call to an API when the statistics
     are reset.
+  - Added the possibility to transform the returned XML using XSLT.
 
 * XINS/Java Common Library:
   - Small refactoring in ServiceCaller.doCall(Object) that should have no
