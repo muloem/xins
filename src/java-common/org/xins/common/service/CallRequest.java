@@ -17,6 +17,8 @@ import org.xins.common.Log;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see ServiceCaller
  */
 public abstract class CallRequest extends Object {
 

@@ -53,6 +53,9 @@ import org.xins.common.threads.Doorman;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.1.0
+ *
+ * @see ServiceCaller
+ * @see CallRequest
  */
 public class CallConfig extends Object {
 
