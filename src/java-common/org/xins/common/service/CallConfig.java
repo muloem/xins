@@ -23,7 +23,22 @@ import org.xins.common.threads.Doorman;
  *
  * <p>Note to implementors of this class: Subclasses <em>must</em> be
  * thread-safe as well. They should use {@link #_doorman} to synchronize the
- * read and write operations to all fields.
+ * read and write operations to all fields. For example, the
+ * <em>failOverAllowed</em> getter and setter methods in this class could be
+ * implemented as follows:
+ *
+ * <blockquote><pre>public final boolean isFailOverAllowed() {
+ *   _doorman.enterAsReader();
+ *   boolean b = _failOverAllowed;
+ *   _doorman.leaveAsReader();
+ *   return b;
+ *}
+ *
+ *public final void setFailOverAllowed(boolean allowed) {
+ *   _doorman.enterAsWriter();
+ *   _failOverAllowed = allowed;
+ *   _doorman.leaveAsWriter();
+ *}</pre></blockquote>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
