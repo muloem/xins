@@ -4,6 +4,8 @@
 package org.xins.server;
 
 import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Pattern;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.FastStringBuffer;
@@ -50,6 +52,17 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Log for this class.
+    */
+   private static final Logger LOG = Logger.getLogger(AccessRule.class.getName());
+
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -161,9 +174,11 @@ extends Object {
       MandatoryArgumentChecker.check("ipFilter", ipFilter,
                                      "functionNamePattern", functionNamePattern);
 
-      _ipFilter = ipFilter;
-      _allow    = allow;
-      _asString = asString;
+      // Store the data
+      _allow               = allow;
+      _ipFilter            = ipFilter;
+      _functionNamePattern = functionNamePattern;
+      _asString            = asString;
    }
 
 
@@ -172,15 +187,20 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * If the access method is 'allow' or not.
+    */
+   private final boolean _allow;
+
+   /**
     * The IP address filter used to create the access rule. Cannot be
     * <code>null</code>.
     */
    private final IPFilter _ipFilter;
 
    /**
-    * If the access method is 'allow' or not.
+    * The function name pattern. Cannot be <code>null</code>.
     */
-   private final boolean _allow;
+   private final Perl5Pattern _functionNamePattern;
 
    /**
     * String representation of this object. Cannot be <code>null</code>.
@@ -227,14 +247,25 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
+    *
+    * @throws ParseException
+    *    if the specified IP address cannot be parsed.
     */
    public boolean match(String ip, String functionName)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      return false; // TODO
+      boolean matchIP       = _ipFilter.match(ip);
+      boolean matchFunction = PATTERN_MATCHER.matches(functionName, _functionNamePattern);
+
+System.out.println("AccessRule \"" + _asString + "\" IP=\"" + ip + "\"; function=\"" + functionName + "\": IP match=" + matchIP + "; Function match=" + matchFunction + '.');
+      if (LOG.isDebugEnabled()) {
+         LOG.debug("AccessRule \"" + _asString + "\" IP=\"" + ip + "\"; function=\"" + functionName + "\": IP match=" + matchIP + "; Function match=" + matchFunction + '.');
+      }
+
+      return matchIP && matchFunction;
    }
 
    /**
