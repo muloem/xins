@@ -136,6 +136,52 @@ public final class DescriptorBuilder extends Object {
 
    /**
     * Builds a <code>Descriptor</code> based on the specified set of
+    * properties, for the specified service caller.
+    *
+    * @param caller
+    *    the caller to create a {@link Descriptor} for, can be
+    *    <code>null</code> if unknown.
+    *
+    * @param properties
+    *    the properties to read from, cannot be <code>null</code>.
+    *
+    * @param propertyName
+    *    the base for the property names, cannot be <code>null</code>.
+    *
+    * @return
+    *    the {@link Descriptor} that was built, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || propertyName == null</code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if the property named <code>propertyName</code> cannot be found in
+    *    <code>properties</code>, or if a referenced property cannot be found.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the property named <code>propertyName</code> is found in
+    *    <code>properties</code>, but the format of this property or the
+    *    format of a referenced property is invalid.
+    *
+    * @since XINS 1.2.0
+    */
+   public static Descriptor build(ServiceCaller  caller,
+                                  PropertyReader properties,
+                                  String         propertyName)
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
+
+      // FIXME: Do something with the caller
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties,
+                                     "propertyName", propertyName);
+      return build(properties, propertyName, null);
+   }
+
+   /**
+    * Builds a <code>Descriptor</code> based on the specified set of
     * properties.
     *
     * @param properties
