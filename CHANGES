@@ -5,7 +5,7 @@ CHANGES INTRODUCED IN XINS 0.145:
   where it belongs.
 
 * XINS/Java Common Library:
-  - Logging buffer increase in FastStringBuffer.
+  - Logging each buffer increase in FastStringBuffer.
 
 * XINS/Java Server Framework:
   - Changed log category for a function to
