@@ -24,21 +24,38 @@ public final class ParseException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ParseException</code> with no detail message.
+    * Constructs a new <code>ParseException</code> with no detail message and
+    * no cause exception.
     */
    public ParseException() {
-      // empty
+      this(null, null);
    }
 
    /**
     * Constructs a new <code>ParseException</code> with the specified detail
-    * message.
+    * message and no cause exception.
     *
     * @param message
     *    the detail message, can be <code>null</code>.
     */
    public ParseException(String message) {
-      super(message);
+      this(message, null);
+   }
+
+   /**
+    * Constructs a new <code>ParseException</code> with the specified detail
+    * message and cause exception.
+    *
+    * @param message
+    *    the detail message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
+    * @since XINS 0.198
+    */
+   public ParseException(String message, Throwable cause) {
+      super(message, cause);
    }
 
 
