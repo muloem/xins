@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.192:
+
+* XINS/Java Client Framework:
+  - Setting connection time-out as well. Previously, a socket time-out would
+    only be set. The connection time-out is assumed to be the same as the
+    socket time-out (specified in the ServiceDescriptor class).
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.191:
 
 * XINS/Java Server Framework:
