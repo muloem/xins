@@ -61,7 +61,9 @@ import org.xins.logdoc.LogdocSerializable;
  * <p>With the second form of a XINS call, fail-over and load-balancing can be
  * performed.
  *
- * <p>How load-balancing is done depends on the {@link Descriptor}. If it is a
+ * <p>How load-balancing is done (in the second form) depends on the
+ * {@link Descriptor} passed to the
+ * {@link #XINSServiceCaller(Descriptor)} constructor. If it is a
  * {@link TargetDescriptor}, then only this single target service is called
  * and no load-balancing is performed. If it is a {@link GroupDescriptor},
  * then the configuration of the <code>GroupDescriptor</code> determines how
