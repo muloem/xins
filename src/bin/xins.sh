@@ -30,5 +30,5 @@ out=${builddir}/build.xml
 xsltproc -o ${out} ${style} ${in}
 
 # Run Ant against the build file
-projectdir=`pwd`
-(cd ${builddir} && ant -Dxins_home=${XINS_HOME} -Dprojectdir=${projectdir})
+project_home=`pwd`
+(cd ${builddir} && ant -Dxins_home=${XINS_HOME} -Dproject_home=${project_home})

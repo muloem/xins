@@ -8,7 +8,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:param name="projectdir" />
+	<xsl:param name="project_home" />
 
 	<xsl:output
 	method="xml"
@@ -50,7 +50,7 @@
 
 	<xsl:template match="api">
 		<xsl:variable name="path">
-			<xsl:value-of select="concat($projectdir, '/src/specs/', @name, '/api.xml')" />
+			<xsl:value-of select="concat($project_home, '/src/specs/', @name, '/api.xml')" />
 		</xsl:variable>
 		<xsl:variable name="functioncount">
 			<xsl:value-of select="count(document($path)/api/function)" />
