@@ -65,7 +65,7 @@ public abstract class AbstractLog {
       // Determine the int value for the NOTICE level
       int noticeInt = (Level.INFO_INT + Level.WARN_INT) / 2;
       if (noticeInt <= Level.INFO_INT || noticeInt >= Level.WARN_INT) {
-         throw new ProgrammingError("Unable to determine int value for NOTICE level between INFO and WARN. Value for INFO level is " + Level.INFO_INT + ". Value for WARN level is " + Level.WARN_INT + '.');
+         throw new Error("Unable to determine int value for NOTICE level between INFO and WARN. Value for INFO level is " + Level.INFO_INT + ". Value for WARN level is " + Level.WARN_INT + '.');
       }
 
       // Initialize all the log levels
