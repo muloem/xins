@@ -3,23 +3,10 @@
  */
 package org.xins.server;
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.transform.Source;
-import javax.xml.transform.Result;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;

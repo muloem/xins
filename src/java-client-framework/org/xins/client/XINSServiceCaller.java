@@ -3,30 +3,13 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnection;
-import org.apache.commons.httpclient.HttpRecoverableException;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.TimeOutException;
 
-import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
-
-import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
-import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
@@ -36,13 +19,10 @@ import org.xins.common.text.TextUtils;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
 import org.xins.common.text.ParseException;
-
-import org.xins.logdoc.LogdocSerializable;
 
 /**
  * XINS service caller. This class can be used to perform a call to a XINS
@@ -427,9 +407,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       if (xinsRequest.isFailOverAllowed()) {
          return true;
       }
-
-      // Get the HTTP request underlying the XINS request
-      HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();
 
       // Check if the request may fail-over from HTTP point-of-view
       //

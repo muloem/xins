@@ -12,7 +12,6 @@ import java.util.Set;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**

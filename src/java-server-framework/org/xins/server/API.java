@@ -573,14 +573,14 @@ implements DefaultResultCodes {
 
          String className = m.getClass().getName();
 
-         Log.log_1604(_name, className);
+         Log.log_1603(_name, className);
          try {
             m.deinit();
-            Log.log_1605(_name, className);
+            Log.log_1604(_name, className);
          } catch (DeinitializationException exception) {
-            Log.log_1606(_name, className, exception.getMessage());
+            Log.log_1605(_name, className, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1607(exception, _name, className);
+            Log.log_1606(exception, _name, className);
          }
       }
       _manageableObjects.clear();
@@ -592,14 +592,14 @@ implements DefaultResultCodes {
 
          String functionName = f.getName();
 
-         Log.log_1608(_name, functionName);
+         Log.log_1607(_name, functionName);
          try {
             f.deinit();
-            Log.log_1609(_name, functionName);
+            Log.log_1608(_name, functionName);
          } catch (DeinitializationException exception) {
-            Log.log_1610(_name, functionName, exception.getMessage());
+            Log.log_1609(_name, functionName, exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_1611(exception, _name, functionName);
+            Log.log_1610(exception, _name, functionName);
          }
       }
    }
@@ -770,7 +770,7 @@ implements DefaultResultCodes {
 
       // Short-circuit if we are shutting down
       if (getState().equals(DEINITIALIZING)) {
-         Log.log_1612(_name, functionName);
+         Log.log_1611(_name, functionName);
          return new FunctionResult("_InternalError");
       }
 

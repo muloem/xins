@@ -6,7 +6,6 @@ package org.xins.client;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception that indicates that a result code was returned by the API call.

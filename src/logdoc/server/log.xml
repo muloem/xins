@@ -517,49 +517,49 @@
 		<entry id="1602" level="NOTICE">
 			<description>XINS/Java Server Framework shutdown completed.</description>
 		</entry>
-		<entry id="1604" level="DEBUG">
+		<entry id="1603" level="DEBUG">
 			<description>Deinitializing manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1605" level="DEBUG">
+		<entry id="1604" level="DEBUG">
 			<description>Deinitialized manageable object.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1606" level="WARNING">
+		<entry id="1605" level="WARNING">
 			<description>Manageable object could not be deinitialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
-		<entry id="1607" level="WARNING" exception="true">
+		<entry id="1606" level="WARNING" exception="true">
 			<description>Manageable object could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="1608" level="DEBUG">
+		<entry id="1607" level="DEBUG">
 			<description>Deinitializing function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1609" level="DEBUG">
+		<entry id="1608" level="DEBUG">
 			<description>Deinitialized function.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1610" level="WARNING">
+		<entry id="1609" level="WARNING">
 			<description>Function could not be deinitialized.</description>
 			<param name="api" />
 			<param name="function" />
 			<param name="message" />
 		</entry>
-		<entry id="1611" level="WARNING" exception="true">
+		<entry id="1610" level="WARNING" exception="true">
 			<description>Function could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="1612" level="DEBUG">
+		<entry id="1611" level="DEBUG">
 			<description>Function returned _InternalError because the API is shutting down.</description>
 			<param name="api" />
 			<param name="function" />

@@ -3,7 +3,6 @@
  */
 package org.xins.common.service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.xins.common.Log;

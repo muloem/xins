@@ -74,10 +74,10 @@ public final class LogCentral {
          }
       }
 
-      if (!controller.isLocaleSupported(LOCALE)) {
-         throw new UnsupportedLocaleException(LOCALE);
-      } else {
+      if (controller.isLocaleSupported(LOCALE)) {
          controller.setLocale(LOCALE);
+      } else {
+         throw new UnsupportedLocaleException(LOCALE);
       }
 
       // Add the controller to the List

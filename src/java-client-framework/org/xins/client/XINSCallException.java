@@ -3,18 +3,11 @@
  */
 package org.xins.client;
 
-import java.util.Iterator;
-
-import org.xins.common.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 
-import org.xins.common.collections.PropertyReader;
 
 import org.xins.common.service.CallException;
 import org.xins.common.service.TargetDescriptor;
-
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.WhislEncoding;
 
 /**
  * XINS-specific call exception.

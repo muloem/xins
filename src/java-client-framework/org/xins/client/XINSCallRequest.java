@@ -19,7 +19,6 @@ import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.service.CallRequest;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
-import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.text.FastStringBuffer;
 
 /**

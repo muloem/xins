@@ -17,7 +17,7 @@
 
 	<translation entry="3050">TRACE: Programming error in the <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="3051">TRACE: Ignoring the <value-of-param name="exceptionClass" /> exception with the message <value-of-param name="exceptionMessage" format="quoted" /> class. Detail: <value-of-param name="description" format="quoted" />.</translation>
-	
+
 	<translation entry="3100">Calling <value-of-param name="url" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
 	<translation entry="3101">Connection refused while calling <value-of-param name="url" />.</translation>
 	<translation entry="3102">Connection time-out after <value-of-param name="timeOut" /> ms while calling <value-of-param name="url" />.</translation>

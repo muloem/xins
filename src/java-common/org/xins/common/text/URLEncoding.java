@@ -4,9 +4,6 @@
 package org.xins.common.text;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.FormatException;
-import org.xins.common.text.NonASCIIException;
 
 /**
  * URL encoding utility functions. This class supports both encoding and

@@ -3,10 +3,7 @@
  */
 package org.xins.common.http;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -26,9 +23,7 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.TimeOutException;
 
-import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.text.URLEncoding;
 
@@ -40,7 +35,6 @@ import org.xins.common.service.ConnectionRefusedCallException;
 import org.xins.common.service.ConnectionTimeOutCallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
-import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.IOCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.SocketTimeOutCallException;
@@ -464,12 +458,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
                    target.getSocketTimeOut());
 
       // Perform the HTTP call
-      boolean succeeded = false;
       long start = System.currentTimeMillis();
       long duration;
       try {
          controlTimeOut(executor, target);
-         succeeded = true;
 
       // Total time-out exceeded
       } catch (TimeOutException exception) {
@@ -791,12 +783,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
             NDC.push(_context);
          }
 
-         // Get the input parameters
-         PropertyReader params = _request.getParameters();
-
-         // TODO: Uncomment or remove the following line:
-         // LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
-
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
 
@@ -815,6 +801,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Log that we are about to make the HTTP call
          // TODO: Uncomment or remove the following line:
+         // Get the input parameters
+         // PropertyReader params = _request.getParameters();
+         // LogdocSerializable serParams = PropertyReaderUtils.serialize(params, "-");
          // Log.log_2011(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
 
          // Perform the HTTP call
@@ -869,7 +858,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          return _result;
       }
    }
-   
+
    /**
     * Container of the data part of an HTTP call result.
     *
@@ -880,11 +869,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private final static class HTTPCallResultDataHandler
    implements HTTPCallResultData {
-      
+
       //-------------------------------------------------------------------------
       // Constructor
       //-------------------------------------------------------------------------
-      
+
       /**
        * Constructs a new <code>HTTPCallResultDataHandler</code> object.
        *

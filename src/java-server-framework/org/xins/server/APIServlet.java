@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -40,7 +38,6 @@ import org.xins.common.collections.PropertyReader;
 
 import org.xins.common.io.FileWatcher;
 
-import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.net.IPAddressUtils;
 import org.xins.common.servlet.ServletConfigPropertyReader;
@@ -831,7 +828,6 @@ extends HttpServlet {
                Log.log_1418();
             } else {
                setState(API_INITIALIZATION_FAILED);
-               return;
             }
          }
       }

@@ -1,9 +1,16 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.0.0 BETA 7:
 
+* XINS/Java Server Framework:
+  - Removed unused imports.
+
 * XINS/Java Common Library:
   - Set the log numbers in the correct order.
   - Fixed missing translations.
+  - Removed unused imports.
+
+* XINS/Java Client Framework:
+  - Removed unused imports.
 
 * Specific documentation:
   - Fixed a missing forward slash for the url generated for broken links.

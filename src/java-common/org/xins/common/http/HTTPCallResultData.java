@@ -3,18 +3,6 @@
  */
 package org.xins.common.http;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-
-import org.xins.common.Log;
-import org.xins.common.MandatoryArgumentChecker;
-
-import org.xins.common.service.CallException;
-import org.xins.common.service.CallExceptionList;
-import org.xins.common.service.CallResult;
-import org.xins.common.service.TargetDescriptor;
-
 /**
  * Abstraction of the data part of an HTTP call result.
  *

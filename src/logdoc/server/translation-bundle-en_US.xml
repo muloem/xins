@@ -8,8 +8,20 @@
 -->
 
 <translation-bundle>
+
+	<translation entry="1000">TRACE: Enter <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1001">TRACE: Leave <value-of-param name="className" /> constructor with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1002">TRACE: Leave <value-of-param name="className" /> constructor. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1003">TRACE: Enter <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1004">TRACE: Leave <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class with an exception. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1005">TRACE: Leave <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+
+	<translation entry="1050">TRACE: Programming error in the <value-of-param name="methodName" /> method of the <value-of-param name="className" /> class. Detail: <value-of-param name="detail" format="quoted" />.</translation>
+	<translation entry="1051">TRACE: Ignoring the <value-of-param name="exceptionClass" /> exception with the message <value-of-param name="exceptionMessage" format="quoted" /> class. Detail: <value-of-param name="description" format="quoted" />.</translation>
+
 	<translation entry="1100">Changing APIServlet state from <value-of-param name="oldState" /> to <value-of-param name="newState" />.</translation>
 	<translation entry="1101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
+
 	<translation entry="1200">Bootstrapping XINS/Java Server Framework.</translation>
 	<translation entry="1201">XINS/Java Server Framework cannot be bootstrapped. State <value-of-param name="state" /> is unexpected.</translation>
 	<translation entry="1202">XINS/Java Server Framework cannot be bootstrapped. Application server is behaving unexpectedly. Reason: <value-of-param name="detail" format="quoted" />.</translation>
@@ -19,6 +31,7 @@
 	<translation entry="1206">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is not set.</translation>
 	<translation entry="1207">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to "<value-of-param name="apiClass" />", but that class cannot be loaded.</translation>
 	<translation entry="1208">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to "<value-of-param name="apiClass" />", but that class does not derive from class <value-of-param name="superClass" />.</translation>
+	<translation entry="1209">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
 	<translation entry="1210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value.</translation>
 	<translation entry="1211">XINS/Java Server Framework cannot be bootstrapped for an unknown reason.</translation>
 	<translation entry="1218">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
@@ -91,13 +104,13 @@
 	<translation entry="1600">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="1601">Deinitialization of API failed during XINS/Java Server Framework shutdown.</translation>
 	<translation entry="1602">XINS/Java Server Framework shutdown completed.</translation>
-	<translation entry="1604">Deinitializing manageable <value-of-param name="className" />.</translation>
-	<translation entry="1605">Deinitialized manageable <value-of-param name="className" />.</translation>
-	<translation entry="1606">Deinitialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1607">Deinitialization of manageable <value-of-param name="className" /> failed.</translation>
-	<translation entry="1608">Deinitializing <value-of-param name="function" /> function.</translation>
-	<translation entry="1609">Deinitialized <value-of-param name="function" /> function.</translation>
-	<translation entry="1610">Deinitialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="1611">Deinitialization of <value-of-param name="function" /> function failed.</translation>
-	<translation entry="1612">The function <value-of-param name="function" format="quoted" /> is returning "_InternalError" bacause the API <value-of-param name="api" format="quoted" /> is shutting down.</translation>
+	<translation entry="1603">Deinitializing manageable <value-of-param name="className" />.</translation>
+	<translation entry="1604">Deinitialized manageable <value-of-param name="className" />.</translation>
+	<translation entry="1605">Deinitialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1606">Deinitialization of manageable <value-of-param name="className" /> failed.</translation>
+	<translation entry="1607">Deinitializing <value-of-param name="function" /> function.</translation>
+	<translation entry="1608">Deinitialized <value-of-param name="function" /> function.</translation>
+	<translation entry="1609">Deinitialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="1610">Deinitialization of <value-of-param name="function" /> function failed.</translation>
+	<translation entry="1611">The function <value-of-param name="function" format="quoted" /> is returning "_InternalError" bacause the API <value-of-param name="api" format="quoted" /> is shutting down.</translation>
 </translation-bundle>

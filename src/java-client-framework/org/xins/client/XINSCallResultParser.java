@@ -18,7 +18,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
 
-import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
@@ -441,7 +440,7 @@ extends Object {
             if (_level == 0) {
                if (! qName.equals("data")) {
                   // TODO: Log programming error
-                  throw new Error("Expected element name \"param\" instead of \"" + qName + "\"."); 
+                  throw new Error("Expected element name \"param\" instead of \"" + qName + "\".");
                }
 
                // Reset the state
@@ -470,7 +469,7 @@ extends Object {
 
             if (! qName.equals("param")) {
                // TODO: Log programming error
-               throw new Error("Expected element name \"param\" instead of \"" + qName + "\"."); 
+               throw new Error("Expected element name \"param\" instead of \"" + qName + "\".");
             }
 
             // Retrieve name and value for output parameter
@@ -499,9 +498,7 @@ extends Object {
                } else {
                   String existingValue = _parameters.get(name);
                   if (existingValue != null) {
-                     if (existingValue.equals(value)) {
-                        // Ignore
-                     } else {
+                     if (!existingValue.equals(value)) {
                         Log.log_2205(name, existingValue, value);
                         throw new SAXException("Found conflicting duplicate value for output parameter \"" + name + "\". Initial value is \"" + existingValue + "\". New value is \"" + value + "\".");
                      }

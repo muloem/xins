@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
-import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.TargetDescriptor;
