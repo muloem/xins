@@ -167,16 +167,17 @@ ${sf.file}</fail>
 
 	<target name="java-logdoc" depends="-init" description="Compiles the XINS/Java logdoc code">
 		<mkdir dir="build/classes/logdoc" />
-		<javac srcdir="src/java-common"
-		       includes="org/xins/logdoc/*.java"
-		       destdir="build/classes/logdoc"
-		       debug="${javac.debug}"
-		       deprecation="${javac.deprecation}"
-		       optimize="${javac.optimize}"
-		       source="${javac.targetvm}"
-		       target="${javac.targetvm}">
+		<javac
+		srcdir="src/java-common"
+		includes="org/xins/logdoc/*.java"
+		destdir="build/classes/logdoc"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		source="${javac.targetvm}"
+		target="${javac.targetvm}">
 			<classpath>
-				<fileset dir="lib"             includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
@@ -216,9 +217,10 @@ ${sf.file}</fail>
 
 	<target name="java-server" depends="java-common, logdoc-java-server" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/src/java-server-framework" />
-		<style in="src/xml/default_resultcodes.xml"
-		       out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
-		       style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
+		<style
+		in="src/xml/default_resultcodes.xml"
+		out="build/src/java-server-framework/org/xins/server/DefaultResultCodes.java"
+		style="src/xslt/java-server-framework/default_resultcodes_to_java.xslt" />
 		<path id="path.common">
 			<pathelement path="build/classes/java-common" />
 		</path>
@@ -237,22 +239,24 @@ ${sf.file}</fail>
 			<fileset dir="build/logdoc/${side}/java" includes="**/*.java" />
 		</copy>
 		<mkdir dir="build/classes/java-${side}" />
-		<javac sourcepath=""
-		       destdir="build/classes/java-${side}"
-		       debug="${javac.debug}"
-		       deprecation="${javac.deprecation}"
-		       optimize="${javac.optimize}"
-		       source="${javac.targetvm}"
-		       target="${javac.targetvm}">
+		<javac
+		sourcepath=""
+		destdir="build/classes/java-${side}"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		source="${javac.targetvm}"
+		target="${javac.targetvm}">
 			<src path="build/src/java-${src.side}" />
 			<include name="org/xins/${side}/Library.java" />
 		</javac>
-		<javac destdir="build/classes/java-${side}"
-		       debug="${javac.debug}"
-		       deprecation="${javac.deprecation}"
-		       optimize="${javac.optimize}"
-		       source="${javac.targetvm}"
-		       target="${javac.targetvm}">
+		<javac
+		destdir="build/classes/java-${side}"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		source="${javac.targetvm}"
+		target="${javac.targetvm}">
 			<src path="src/java-${src.side}" />
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />
@@ -260,17 +264,17 @@ ${sf.file}</fail>
 			<classpath>
 				<path refid="path.common" />
 				<pathelement location="build/logdoc.jar" />
-				<fileset dir="lib"             includes="*.jar" />
+				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
 			<section name="xins-${side}">
 				<attribute name="Specification-Title"    value="XINS/Java ${type}" />
-				<attribute name="Specification-Version"  value="${version}" />
-				<attribute name="Specification-Vendor"   value="${vendor}"  />
+				<attribute name="Specification-Version"  value="${version}"        />
+				<attribute name="Specification-Vendor"   value="${vendor}"         />
 				<attribute name="Implementation-Title"   value="XINS/Java ${type}" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+				<attribute name="Implementation-Version" value="${version}"        />
+				<attribute name="Implementation-Vendor"  value="${vendor}"         />
 			</section>
 		</manifest>
 		<jar
@@ -307,10 +311,12 @@ ${sf.file}</fail>
 		out="build/logdoc/${side}/build.xml"
 		style="src/xslt/logdoc/log_to_build.xslt">
 			<xmlcatalog id="log-dtds">
-				<dtd location="src/dtd/log_1_0.dtd"
-						 publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-				<dtd location="src/dtd/translation-bundle_1_0.dtd"
-						 publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
+				<dtd
+				location="src/dtd/log_1_0.dtd"
+				publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
+				<dtd
+				location="src/dtd/translation-bundle_1_0.dtd"
+				publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
 			</xmlcatalog>
 			<param name="xins_home"       expression="${basedir}"                    />
 			<param name="logdoc_xslt_dir" expression="${basedir}/src/xslt/logdoc"    />
@@ -374,13 +380,19 @@ ${sf.file}</fail>
 
 		<!-- Copy to remote host -->
 		<echo level="verbose" message="Copying TAR GZ file for Logdoc HTML" />
-		<scp todir="${www.target}/logdoc" password="${sf.password}" trust="true" file="build/logdoc.tgz" />
+		<scp
+		todir="${www.target}/logdoc"
+		password="${sf.password}"
+		trust="true"
+		file="build/logdoc.tgz" />
 
 		<!-- Remotely: Unpack and create symbolic link -->
 		<echo level="verbose" message="Unpacking TAR GZ file for Logdoc HTML remotely" />
-		<sshexec host="${www.host}" username="${sf.user}"
-			password="${sf.password}" trust="true"
-			command="cd ${www.dir}/logdoc &amp;&amp; tar zxf logdoc.tgz &amp;&amp; rm logdoc.tgz &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
+		<sshexec
+		host="${www.host}"
+		username="${sf.user}"
+		password="${sf.password}" trust="true"
+		command="cd ${www.dir}/logdoc &amp;&amp; tar zxf logdoc.tgz &amp;&amp; rm logdoc.tgz &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
 	<target
@@ -417,21 +429,24 @@ ${sf.file}</fail>
 		<!-- Compiles the example used for the tests -->
 		<!--delete dir="src/tests/build" /-->
 		<ant antfile="${basedir}/src/ant/make-build.xml" dir="src/tests">
-			<property name="xins_home" value="${basedir}"/>
-			<property name="user.dir" value="${basedir}/src/tests"/>
+			<property name="xins_home" value="${basedir}"           />
+			<property name="user.dir"  value="${basedir}/src/tests" />
 		</ant>
+
+		<!-- TODO: Can these be combined? -->
 		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
-		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone" />
-		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone" />
+		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
+		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
 		
 		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />
-		<javac destdir="build/classes/tests"
-		       includes="org/xins/tests/**/*.java"
-		       debug="true"
-		       deprecation="true"
-		       source="${javac.targetvm}"
-		       target="${javac.targetvm}">
+		<javac
+		destdir="build/classes/tests"
+		includes="org/xins/tests/**/*.java"
+		debug="true"
+		deprecation="true"
+		source="${javac.targetvm}"
+		target="${javac.targetvm}">
 			<src path="src/tests" />
 			<classpath>
 				<pathelement location="build/xins-common.jar" />
@@ -505,7 +520,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
 		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="false">
-			<sysproperty key="user.dir" value="${basedir}"/>
+			<sysproperty key="user.dir" value="${basedir}" />
 			<formatter type="xml" />
 			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
@@ -523,12 +538,17 @@ ${sf.file}</fail>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
-		<report srcdir="src/java-common" destdir="build/testresults/coverage"/>
+		<report
+		srcdir="src/java-common"
+		destdir="build/testresults/coverage" />
 	</target>
 
 	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
 		<mkdir dir="build/j2h" />
-		<java2html title="Source X-ref for ${title} ${version}" destination="build/j2h" footer="no">
+		<java2html
+		title="Source X-ref for ${title} ${version}"
+		destination="build/j2h"
+		footer="no">
 			<fileset dir="build/src/java-common">
 				<include name="**/*.java" />
 			</fileset>
@@ -539,25 +559,41 @@ ${sf.file}</fail>
 				<include name="**/*.java" />
 			</fileset>
 		</java2html>
-		<copy file="src/j2h/front.html" todir="build/j2h" overwrite="true" />
-		<copy file="src/css/j2h/style.css" tofile="build/j2h/stylesheet.css" overwrite="true" />
+		<copy
+		file="src/j2h/front.html"
+		todir="build/j2h"
+		overwrite="true" />
+		<copy file="src/css/j2h/style.css"
+		tofile="build/j2h/stylesheet.css"
+		overwrite="true" />
 	</target>
 
 	<target name="-jdksrc-avail">
-		<available file="${javadoc.srcdir.j2se}" type="dir" property="jdksrc.available" />
+		<available
+		file="${javadoc.srcdir.j2se}"
+		type="dir"
+		property="jdksrc.available" />
 	</target>
 
-	<target name="-javadoc-sourcepath-nojdksrc" depends="-init,-jdksrc-avail" unless="jdksrc.available">
+	<target
+	name="-javadoc-sourcepath-nojdksrc"
+	depends="-init,-jdksrc-avail"
+	unless="jdksrc.available">
 		<property name="javadoc.sourcepath" value="${javadoc.srcdir.xins}" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
 
-	<target name="-javadoc-sourcepath-jdksrc" depends="-jdksrc-avail" if="jdksrc.available">
+	<target
+	name="-javadoc-sourcepath-jdksrc"
+	depends="-jdksrc-avail"
+	if="jdksrc.available">
 		<property name="javadoc.sourcepath" value="${javadoc.srcdir.xins}:${javadoc.srcdir.j2se}" />
 		<echo level="verbose" message="JDK source code available." />
 	</target>
 
-	<target name="-javadoc-sourcepath" depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
+	<target
+	name="-javadoc-sourcepath"
+	depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
 	<target name="-do-javadoc" depends="java,-javadoc-sourcepath">
 		<mkdir dir="${javadoc.destdir}" />
@@ -572,17 +608,20 @@ ${sf.file}</fail>
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
-			<packageset dir="src/java-common" />
+			<packageset dir="src/java-common"           />
 			<packageset dir="src/java-server-framework" />
 			<packageset dir="src/java-client-framework" />
+
 			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
 			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
 			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
 			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
+
 			<classpath>
 				<fileset dir="lib"             includes="*.jar" />
 				<fileset dir="${ant.home}/lib" includes="*.jar" />
 			</classpath>
+
 			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://java.sun.com/products/servlet/2.3/javadoc/"         />
 			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.4.2/docs/api"                   />
 			<link offline="true" packagelistloc="src/package-lists/log4j/"              href="http://jakarta.apache.org/log4j/docs/api/"                 />
@@ -598,9 +637,15 @@ ${sf.file}</fail>
 		overwrite="true" />
 	</target>
 
-	<target name="javadoc" depends="javadoc-public,javadoc-private" description="Generates all Javadoc API documentation" />
+	<target
+	name="javadoc"
+	depends="javadoc-public,javadoc-private"
+	description="Generates all Javadoc API documentation" />
 
-	<target name="javadoc-public" depends="-init" description="Generates public Javadoc API documentation">
+	<target
+	name="javadoc-public"
+	depends="-init"
+	description="Generates public Javadoc API documentation">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="docs/javadoc" />
