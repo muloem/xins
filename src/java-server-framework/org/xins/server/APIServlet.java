@@ -254,7 +254,7 @@ extends HttpServlet {
 
    /**
     * Pseudo-random number generator. Used for the automatic generation of
-    * diagnostic context identifiers. See {@link #generateContextID()}.
+    * diagnostic context identifiers.
     */
    private final Random _random;
 
