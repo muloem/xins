@@ -44,6 +44,7 @@ XINS/JAVA SERVER FRAMEWORK
 * CallResultBuilder should perhaps not implement CallResult.
 * If an invalid value is passed for an input parameter of type _properties,
   the InternalError result code is returned instead of an InvalidParameters.
+* Support ACLs for the complete API and/or specific functions.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
