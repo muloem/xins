@@ -191,6 +191,8 @@ implements DefaultReturnCodes {
             doGetStatistics(context);
          } else if ("_GetVersion".equals(functionName)) {
             doGetVersion(context);
+         } else if ("_GetSettings".equals(functionName)) {
+            doGetSettings(context);
          } else {
             context.startResponse(false, NO_SUCH_FUNCTION);
          }
@@ -408,5 +410,20 @@ implements DefaultReturnCodes {
    throws IOException {
       context.param("xins.version",   Library.getVersion());
       context.param("xmlenc.version", XMLOutputter.getVersion());
+   }
+
+   /**
+    * Returns the settings.
+    *
+    * @param context
+    *    the context, guaranteed to be not <code>null</code>.
+    *
+    * @throws IOException
+    *    if an I/O error occurs.
+    */
+   private final void doGetSettings(CallContext context)
+   throws IOException {
+      context.startTag("init-settings");
+      context.endTag();
    }
 }
