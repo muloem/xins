@@ -15,8 +15,8 @@ CHANGES INTRODUCED IN XINS 0.170:
   - Removed some unused import.
 
 * Generated specification documentation:
-  - Added more possible elements for api_1_0.dtd.
-  - Added the session related parameters for function_1_0.dtd.
+  - Added more possible elements for api_1_0.dtd, function_1_0.dtd and
+    type_1_0.dtd.
 
 * Generated build file:
   - The specdocs is regenerated if api.xml.
