@@ -265,7 +265,7 @@
 	<target name="upload-packages" depends="packages,do-upload-packages" description="Creates and uploads packages to the web server" />
 
 
-	<target name="upload-release" depends="clean,upload-packages,upload-javadoc" description="Uploads everything" />
+	<target name="upload-release" depends="clean,upload-packages,upload-javadoc,upload-checkstyle" description="Uploads everything" />
 
 	<target name="all" depends="java-server-framework,javadoc" description="Generates everything" />
 
