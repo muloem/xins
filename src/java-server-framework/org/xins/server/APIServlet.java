@@ -939,7 +939,7 @@ extends HttpServlet {
          _configFileWatcher.setInterval(interval);
          log.info("Using config file \"" + _configFile + "\". Checking for modifications every " + interval + " second(s).");
 
-         Log.log_1();
+         Log.log_200();
       }
 
       public void fileNotFound() {
