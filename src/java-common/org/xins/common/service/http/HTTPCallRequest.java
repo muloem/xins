@@ -46,14 +46,39 @@ public final class HTTPCallRequest extends CallRequest {
    public HTTPCallRequest(HTTPServiceCaller.Method method,
                           PropertyReader           parameters)
    throws IllegalArgumentException {
+      this(method, parameters, null);
+   }
+
+   /**
+    * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
+    * method, parameters and status code verifier.
+    *
+    * @param method
+    *    the HTTP method to use, cannot be <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters for the HTTP call, cannot be <code>null</code>.
+    *
+    * @param statusCodeVerifier
+    *    the HTTP status code verifier, or <code>null</code> if all HTTP
+    *    status codes are allowed.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>method == null || parameters == null</code>.
+    */
+   public HTTPCallRequest(HTTPServiceCaller.Method method,
+                          PropertyReader           parameters,
+                          HTTPStatusCodeVerifier   statusCodeVerifier)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("method",     method,
                                      "parameters", parameters);
 
       // Store information
-      _method     = method;
-      _parameters = parameters;
+      _method             = method;
+      _parameters         = parameters;
+      _statusCodeVerifier = statusCodeVerifier;
 
       // Construct a textual representation of this object
       FastStringBuffer buffer = new FastStringBuffer(137, "HTTP ");
@@ -88,11 +113,22 @@ public final class HTTPCallRequest extends CallRequest {
     */
    private final PropertyReader _parameters;
 
+   /**
+    * The HTTP status code verifier, or <code>null</code> if all HTTP status codes are allowed.
+    */
+   private final HTTPStatusCodeVerifier _statusCodeVerifier;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Describes this request.
+    *
+    * @return
+    *    the description of this request, never <code>null</code>.
+    */
    public String describe() {
       return _asString;
    }
@@ -115,5 +151,16 @@ public final class HTTPCallRequest extends CallRequest {
     */
    public PropertyReader getParameters() {
       return _parameters;
+   }
+
+   /**
+    * Returns the HTTP status code verifier. If all HTTP status codes are
+    * allowed, then <code>null</code> is returned.
+    *
+    * @return
+    *    the HTTP status code verifier, or <code>null</code>.
+    */
+   public HTTPStatusCodeVerifier getStatusCodeVerifier() {
+      return _statusCodeVerifier;
    }
 }
