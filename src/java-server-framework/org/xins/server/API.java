@@ -356,16 +356,16 @@ implements DefaultResultCodes {
       // Check if this API is session-based
       _sessionBased = PropertyReaderUtils.getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
       if (_sessionBased) {
-         Log.log_112();
+         Log.log_2013();
       } else {
-         Log.log_113();
+         Log.log_2014();
       }
 
       // XXX: Allow configuration of session ID type ?
 
       // Initialize session-based API
       if (_sessionBased) {
-         Log.log_114();
+         Log.log_2015();
 
          // Initialize session ID type
          _sessionIDType      = new BasicSessionIDType(this);
@@ -375,7 +375,7 @@ implements DefaultResultCodes {
          int timeOut   = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOut");
          int precision = PropertyReaderUtils.getIntProperty(buildSettings, "org.xins.api.sessionTimeOutPrecision");
 
-         Log.log_116(String.valueOf(timeOut), String.valueOf(precision));
+         Log.log_2017(String.valueOf(timeOut), String.valueOf(precision));
 
          // Create expiry strategy and folder
          final long MINUTE_IN_MS = 60000L;
@@ -384,7 +384,7 @@ implements DefaultResultCodes {
                                                    _sessionExpiryStrategy, // expiry strategy
                                                    false,                  // strict thread sync checking? (TODO)
                                                    5000L);                 // max queue wait time in ms    (TODO)
-         Log.log_115();
+         Log.log_2016();
       }
 
       // Get build-time properties
@@ -392,7 +392,7 @@ implements DefaultResultCodes {
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
 
-      Log.log_117(_buildHost, _buildTime, _buildVersion);
+      Log.log_2018(_buildHost, _buildTime, _buildVersion);
 
       // Let the subclass perform initialization
       bootstrapImpl2(buildSettings);
@@ -402,21 +402,21 @@ implements DefaultResultCodes {
       for (int i = 0; i < count; i++) {
          Manageable m = (Manageable) _manageableObjects.get(i);
          String className = m.getClass().getName();
-         Log.log_118(className, _name);
+         Log.log_2019(className, _name);
          try {
             m.bootstrap(_buildSettings);
-            Log.log_119(_name, className);
+            Log.log_2020(_name, className);
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_120(_name, className, exception.getPropertyName());
+            Log.log_2021(_name, className, exception.getPropertyName());
             throw exception;
          } catch (InvalidPropertyValueException exception) {
-            Log.log_121(_name, className, exception.getPropertyName(), exception.getPropertyValue());
+            Log.log_2022(_name, className, exception.getPropertyName(), exception.getPropertyValue());
             throw exception;
          } catch (BootstrapException exception) {
-            Log.log_122(_name, className, exception.getMessage());
+            Log.log_2023(_name, className, exception.getMessage());
             throw exception;
          } catch (Throwable exception) {
-            Log.log_123(_name, className, exception.getClass().getName(), exception.getMessage());
+            Log.log_2024(_name, className, exception.getClass().getName(), exception.getMessage());
             throw new BootstrapException(exception);
          }
       }

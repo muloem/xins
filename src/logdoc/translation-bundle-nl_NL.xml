@@ -20,19 +20,19 @@
 	<translation entry="2009">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
 	<translation entry="2010">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
 	<translation entry="2011">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="111">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
-	<translation entry="112">API is sessie-georienteerd.</translation>
-	<translation entry="113">API is niet sessie-georienteerd.</translation>
-	<translation entry="114">Sessie-gerelateerde eigenschappen van de API worden ingesteld.</translation>
-	<translation entry="115">Sessie-gerelateerde eigenschappen van de API zijn ingesteld.</translation>
-	<translation entry="116">Sessie time-out is <value-of-param name="timeOut" /> seconden met een precisie van <value-of-param name="timeOutPrecision" /> seconden.</translation>
-	<translation entry="117">Applicatie-package is gebouwd op <value-of-param name="buildHost" /> op tijdstip <value-of-param name="buildTime" />, met XINS <value-of-param name="buildVersion" />.</translation>
-	<translation entry="118">Manageable object <value-of-param name="className" /> wordt gestart.</translation>
-	<translation entry="119">Manageable object <value-of-param name="className" /> is gestart.</translation>
-	<translation entry="120">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
-	<translation entry="121">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="122">Manageable object <value-of-param name="className" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="123">Manageable object <value-of-param name="className" /> kan niet gestart worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="2012">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="2013">API is sessie-georienteerd.</translation>
+	<translation entry="2014">API is niet sessie-georienteerd.</translation>
+	<translation entry="2015">Sessie-gerelateerde eigenschappen van de API worden ingesteld.</translation>
+	<translation entry="2016">Sessie-gerelateerde eigenschappen van de API zijn ingesteld.</translation>
+	<translation entry="2017">Sessie time-out is <value-of-param name="timeOut" /> seconden met een precisie van <value-of-param name="timeOutPrecision" /> seconden.</translation>
+	<translation entry="2018">Applicatie-package is gebouwd op <value-of-param name="buildHost" /> op tijdstip <value-of-param name="buildTime" />, met XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="2019">Manageable object <value-of-param name="className" /> wordt gestart.</translation>
+	<translation entry="2020">Manageable object <value-of-param name="className" /> is gestart.</translation>
+	<translation entry="2021">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> is verplicht, maar niet ingesteld.</translation>
+	<translation entry="2022">Manageable object <value-of-param name="className" /> kan niet gestart worden. De runtime-property <value-of-param name="propertyName" format="quoted" /> heeft een ongeldige waarde: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="2023">Manageable object <value-of-param name="className" /> kan niet gestart worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="2024">Manageable object <value-of-param name="className" /> kan niet gestart worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="129">Manageable object <value-of-param name="className" /> wordt geregistreerd bij de API.</translation>
 	<translation entry="130">Added manageable <value-of-param name="className" /> is geregistreerd bij de API.</translation>
 	<translation entry="3000">Logging subsysteem wordt geinitialiseerd.</translation>

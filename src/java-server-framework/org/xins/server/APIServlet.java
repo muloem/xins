@@ -594,7 +594,7 @@ extends HttpServlet {
          } catch (BootstrapException exception) {
             Log.log_2011(exception.getMessage());
          } catch (Throwable exception) {
-            Log.log_111(exception.getClass().getName(), exception.getMessage());
+            Log.log_2012(exception.getClass().getName(), exception.getMessage());
          } finally {
             if (succeeded == false) {
                setState(API_BOOTSTRAP_FAILED);

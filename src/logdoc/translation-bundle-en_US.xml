@@ -20,19 +20,19 @@
 	<translation entry="2009">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is required for the API, but not set.</translation>
 	<translation entry="2010">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value.</translation>
 	<translation entry="2011">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The API failed to bootstrap with the given build properties. Reason: <value-of-param name="message" />.</translation>
-	<translation entry="111">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The API failed to bootstrap with the given build properties. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
-	<translation entry="112">API is session-oriented.</translation>
-	<translation entry="113">API is session-less.</translation>
-	<translation entry="114">Starting session-related bootstrapping of API.</translation>
-	<translation entry="115">Finished session-related bootstrapping of API.</translation>
-	<translation entry="116">Session time-out is <value-of-param name="timeOut" /> seconds with a precision of <value-of-param name="timeOutPrecision" /> seconds.</translation>
-	<translation entry="117">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
-	<translation entry="118">Bootstrapping manageable <value-of-param name="className" />.</translation>
-	<translation entry="119">Bootstrapped manageable <value-of-param name="className" />.</translation>
-	<translation entry="120">Bootstrap of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="121">Bootstrap of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
-	<translation entry="122">Bootstrap of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
-	<translation entry="123">Bootstrap of manageable <value-of-param name="className" /> failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="2012">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The API failed to bootstrap with the given build properties. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="2013">API is session-oriented.</translation>
+	<translation entry="2014">API is session-less.</translation>
+	<translation entry="2015">Starting session-related bootstrapping of API.</translation>
+	<translation entry="2016">Finished session-related bootstrapping of API.</translation>
+	<translation entry="2017">Session time-out is <value-of-param name="timeOut" /> seconds with a precision of <value-of-param name="timeOutPrecision" /> seconds.</translation>
+	<translation entry="2018">Package was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="2019">Bootstrapping manageable <value-of-param name="className" />.</translation>
+	<translation entry="2020">Bootstrapped manageable <value-of-param name="className" />.</translation>
+	<translation entry="2021">Bootstrap of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="2022">Bootstrap of manageable <value-of-param name="className" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />.</translation>
+	<translation entry="2023">Bootstrap of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="2024">Bootstrap of manageable <value-of-param name="className" /> failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="129">Adding manageable <value-of-param name="className" /> to API.</translation>
 	<translation entry="130">Added manageable <value-of-param name="className" /> to API.</translation>
 	<translation entry="3000">Initializing logging subsystem.</translation>
