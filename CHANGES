@@ -1,6 +1,11 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.141:
 
+* XINS/Java Client Framework:
+  - Fixed bug in ActualFunctionCaller.getCRC32String(). The returned string
+    now starts with 8 zeroes again. This issue was probably introduced in
+    release 0.137.
+
 * XINS/Java Common Library:
   - Added org.xins.specs package for specification of API components, like
     functions, types and result codes.
