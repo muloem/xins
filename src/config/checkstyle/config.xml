@@ -49,7 +49,7 @@
 		<!-- Adhere to generally accepted naming conventions -->
 		<module name="PackageName">
 			<!-- no uppercase letters, between 2 and 8 characters -->
-			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,7})*$"/>
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,11})*$"/>
 		</module>
 		<module name="TypeName"/>
 		<module name="ConstantName"/>
