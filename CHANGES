@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.154:
   - An IP filter expression can be in the form "a.b.c.d" instead of
     "a.b.c.d./32".
 
+* Dependencies:
+  - Updated xmlenc to 0.41.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.153:
 
