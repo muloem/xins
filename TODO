@@ -72,6 +72,8 @@ GENERATED SPECIFICATION DOCUMENTATION
 
 * Display specified output parameters and data section per result code.
 
+* Check all names using regular expressions.
+
 ______________________________________________________________________________
 GENERATED TEST FORMS
 
