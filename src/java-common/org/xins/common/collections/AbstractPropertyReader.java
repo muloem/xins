@@ -24,34 +24,6 @@ implements PropertyReader {
    // Class fields
    //-------------------------------------------------------------------------
 
-   // TODO: Document
-   public static final void serialize(PropertyReader properties,
-                                      LogdocStringBuffer buffer)
-   throws NullPointerException {
-
-      Iterator names = properties.getNames();
-      boolean first = true;
-      while (names.hasNext()) {
-         String name  = (String) names.next();
-         String value = properties.get(name);
-
-         if (!first) {
-            buffer.append('&');
-         } else {
-            first = false;
-         }
-
-         buffer.append(WhislEncoding.encode(name));
-         buffer.append('=');
-         if (value == null) {
-            buffer.append("(null)");
-         } else {
-            buffer.append('"');
-            buffer.append(WhislEncoding.encode(value));
-            buffer.append('"');
-         }
-      }
-   }
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

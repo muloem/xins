@@ -200,6 +200,63 @@ extends Object {
       return new PropertiesPropertyReader(properties);
    }
 
+   /**
+    * Serializes the specified <code>PropertyReader</code> for Logdoc. For
+    * each entry, both the key and the value are encoded using the Whisl
+    * encoding (see {@link WhislEncoding}), which is similar to URL encoding.
+    * The key and value are separated by a literal equals sign
+    * (<code>'='</code>). The entries are separated using an ampersand
+    * (<code>'&amp;'</code>).
+    *
+    * <p>If the value for an entry is either <code>null</code> or an empty
+    * string (<code>""</code>), then nothing is added to the buffer for that
+    * entry.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to serialize, cannot be <code>null</code>.
+    *
+    * @param buffer
+    *    the buffer to write the serialized data to, cannot be
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || buffer == null</code>.
+    */
+   public static final void serialize(PropertyReader properties,
+                                      LogdocStringBuffer buffer)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties,
+                                     "buffer",     buffer);
+
+      Iterator names = properties.getNames();
+      boolean first = true;
+      while (names.hasNext()) {
+
+         // Get the name and value
+         String name  = (String) names.next();
+         String value = properties.get(name);
+
+         // If the value is null or an empty string, then output nothing
+         if (value == null || value.length() == 0) {
+            continue;
+         }
+
+         // Append an ampersand, except for the first entry
+         if (!first) {
+            buffer.append('&');
+         } else {
+            first = false;
+         }
+
+         // Append the key and the value, separated by an equals sign
+         buffer.append(WhislEncoding.encode(name));
+         buffer.append('=');
+         buffer.append(WhislEncoding.encode(value));
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
