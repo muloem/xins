@@ -381,12 +381,14 @@
 			<param name="ip"          nullable="false" />
 			<param name="method"      nullable="true"  />
 			<param name="queryString" nullable="true"  />
+			<!-- TODO: Log parameters ? -->
 		</entry>
 		<entry id="1501" level="INFO">
 			<description>Received HTTP request with valid method.</description>
 			<param name="ip"          nullable="false" />
 			<param name="method"      nullable="true"  />
 			<param name="queryString" nullable="true"  />
+			<!-- TODO: Log parameters ? -->
 		</entry>
 	</group>
 
@@ -415,6 +417,19 @@
 			<param name="callID" type="int32" nullable="false" />
 			<param name="parameterName" nullable="false" />
 			<param name="parameterValue" nullable="true" />
+		</entry>
+	</group>
+
+	<group id="runtime.tx" name="Transaction logging">
+		<entry id="1540" level="INFO">
+			<description>Function called.</description>
+			<param name="ip"        type="text"  nullable="false" />
+			<param name="function"  type="text"  nullable="false" />
+			<!-- TODO: <param name="inParams" type="text" nullable="false" /> -->
+			<param name="callID"    type="int32" nullable="false" />
+			<param name="start"     type="int64" nullable="false" />
+			<param name="duration"  type="int32" nullable="false" />
+			<param name="errorCode" type="text"  nullable="true"  />
 		</entry>
 	</group>
 
