@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.103:
+
+* Generated Ant buildfile now set window and document title for generated
+  Javadoc documentation for both API implementation and call interface
+  classes.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.102:
 
 * XINS/Java Server Framework:
