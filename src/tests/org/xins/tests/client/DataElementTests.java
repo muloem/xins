@@ -37,37 +37,6 @@ public class DataElementTests extends TestCase {
       return new TestSuite(DataElementTests.class);
    }
 
-   /**
-    * Determines the number of elements returned by the specified
-    * <code>Iterator</code>.
-    *
-    * <p>TODO: Move this utility function to a utility class.
-    *
-    * @param iterator
-    *    the {@link Iterator} to determine the number of elements in, or
-    *    <code>null</code>.
-    *
-    * @return
-    *    the number of elements in the {@link Iterator}, or <code>0</code> if
-    *    <code>iterator == null</code>.
-    */
-   private static int iteratorSize(Iterator iterator) {
-
-      // Short-circuit if argument is null
-      if (iterator == null) {
-         return 0;
-      }
-
-      // Loop through the elements
-      int count = 0;
-      while (iterator.hasNext()) {
-         iterator.next();
-         count++;
-      }
-
-      return count;
-   }
-
 
    //-------------------------------------------------------------------------
    // Class fields
