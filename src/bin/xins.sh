@@ -29,7 +29,9 @@ fi
 # Create the Ant build file
 in="xins-project.xml"
 out=${builddir}/build.xml
-if [ ! `xsltproc -o ${out} ${style} ${in}` ]; then
+xsltproc -o ${out} ${style} ${in}
+
+if [ ! "${returncode}a" = "0a" ]; then
 	echo "${prog}: Unable to transform ${in}."
 	exit 1
 fi
