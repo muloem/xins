@@ -132,31 +132,56 @@ import org.xins.logdoc.LogdocStringBuffer;
 		<xsl:variable name="param-type" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@type" />
 		<xsl:variable name="param-nullable" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@nullable" />
 
-		<xsl:text>
-      buffer.append(</xsl:text>
 		<xsl:choose>
+			<xsl:when test="($param-type = 'serializable') and ($param-nullable = 'false')">
+				<xsl:value-of select="@name" />
+				<xsl:text>.serialize(buffer);</xsl:text>
+			</xsl:when>
+			<xsl:when test="($param-type = 'serializable')">
+				<xsl:text>
+      if (</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text> == null) {
+         buffer.append("(null)");
+      } else {
+         </xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>.serialize(buffer);
+      }</xsl:text>
+			</xsl:when>
 			<xsl:when test="($param-type = 'object') and ($param-nullable = 'false')">
+				<xsl:text>
+      buffer.append(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>.toString()</xsl:text>
+				<xsl:text>);</xsl:text>
 			</xsl:when>
 			<xsl:when test="$param-type = 'object'">
+				<xsl:text>
+      buffer.append(</xsl:text>
 				<xsl:text>(</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>== null) ? "(null)" : </xsl:text>
+				<xsl:text> == null) ? "(null)" : </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>.toString()</xsl:text>
+				<xsl:text>);</xsl:text>
 			</xsl:when>
 			<xsl:when test="$param-nullable = 'false'">
+				<xsl:text>
+      buffer.append(</xsl:text>
 				<xsl:value-of select="@name" />
+				<xsl:text>);</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:text>
+      buffer.append(</xsl:text>
 				<xsl:text>(</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>== null) ? "(null)" : </xsl:text>
+				<xsl:text> == null) ? "(null)" : </xsl:text>
 				<xsl:value-of select="@name" />
+				<xsl:text>);</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>);</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="translation/value-of-param[@format='quoted']">

@@ -4,10 +4,15 @@
 package org.xins.common.servlet;
 
 import java.util.Iterator;
+
 import javax.servlet.ServletConfig;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.EnumerationIterator;
+import org.xins.common.collections.AbstractPropertyReader;
 import org.xins.common.collections.PropertyReader;
+
+import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Implementation of a <code>PropertyReader</code> that returns the
@@ -72,5 +77,10 @@ implements PropertyReader {
 
    public Iterator getNames() {
       return new EnumerationIterator(_servletConfig.getInitParameterNames());
+   }
+
+   public void serialize(LogdocStringBuffer buffer)
+   throws NullPointerException {
+      AbstractPropertyReader.serialize(this, buffer);
    }
 }

@@ -5,7 +5,11 @@ package org.xins.common.collections;
 
 import java.util.Iterator;
 import java.util.Map;
+
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.WhislEncoding;
+
+import org.xins.logdoc.LogdocStringBuffer;
 
 /**
  * Implementation of some methods for the PropertyReader.
@@ -20,6 +24,34 @@ implements PropertyReader {
    // Class fields
    //-------------------------------------------------------------------------
 
+   // TODO: Document
+   public static final void serialize(PropertyReader properties,
+                                      LogdocStringBuffer buffer)
+   throws NullPointerException {
+
+      Iterator names = properties.getNames();
+      boolean first = true;
+      while (names.hasNext()) {
+         String name  = (String) names.next();
+         String value = properties.get(name);
+
+         if (!first) {
+            buffer.append('&');
+         } else {
+            first = false;
+         }
+
+         buffer.append(WhislEncoding.encode(name));
+         buffer.append('=');
+         if (value == null) {
+            buffer.append("(null)");
+         } else {
+            buffer.append('"');
+            buffer.append(WhislEncoding.encode(value));
+            buffer.append('"');
+         }
+      }
+   }
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -32,8 +64,8 @@ implements PropertyReader {
     * Constructs a new <code>AbstractPropertyReader</code>.
     *
     * @param map
-    *    the map used to put the data of this PropertyReader, cannot be
-    *    <code>null</code>.
+    *    the map containing the data of this <code>PropertyReader</code>,
+    *    cannot be <code>null</code>.
     */
    public AbstractPropertyReader(Map map) {
       _properties = map;
@@ -65,13 +97,18 @@ implements PropertyReader {
    }
 
    /**
-    * Returns the Map that contains the properties.
+    * Returns the <code>Map</code> that contains the properties.
     *
     * @return
-    *    the map used to store the properties, cannot be
+    *    the {@link Map} used to store the properties in, cannot be
     *    <code>null</code>.
     */
    protected Map getPropertiesMap() {
       return _properties;
+   }
+
+   public final void serialize(LogdocStringBuffer buffer)
+   throws NullPointerException {
+      serialize(this, buffer);
    }
 }
