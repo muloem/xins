@@ -202,7 +202,7 @@ extends HttpServlet {
 
       // TODO: Remove this function
 
-      FastStringBuffer buffer = new FastStringBuffer(256);
+      FastStringBuffer buffer = new FastStringBuffer(4014);
       buffer.append("due to unexpected ");
       buffer.append(exception.getClass().getName());
 
@@ -362,21 +362,21 @@ extends HttpServlet {
 
       // If the property is set, parse it
       if (s != null && s.length() >= 1) {
-         Log.log_251(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+         Log.log_4009(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
          try {
             interval = Integer.parseInt(s);
             if (interval < 1) {
-               Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_4010(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             } else {
-               Log.log_253(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_4011(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
-            Log.log_252(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            Log.log_4010(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
          }
 
       // Otherwise, if the property is not set, use the default
       } else {
-         Log.log_250(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
+         Log.log_4008(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
       }
 
       // If the interval is not set, using the default
@@ -618,10 +618,10 @@ extends HttpServlet {
 
          // Create and start a file watch thread
          _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
-         Log.log_254(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, String.valueOf(interval));
+         Log.log_4012(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, String.valueOf(interval));
          _configFileWatcher.start();
 
-         Log.log_199();
+         Log.log_4017();
       }
    }
 
@@ -640,13 +640,13 @@ extends HttpServlet {
          _api.init(runtimeProperties);
          succeeded = true;
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_255(exception.getPropertyName());
+         Log.log_4013(exception.getPropertyName());
       } catch (InvalidPropertyValueException exception) {
-         Log.log_256(exception.getPropertyName(), exception.getPropertyValue());
+         Log.log_4014(exception.getPropertyName(), exception.getPropertyValue());
       } catch (InitializationException exception) {
-         Log.log_257(exception.getMessage());
+         Log.log_4015(exception.getMessage());
       } catch (Throwable exception) {
-         Log.log_258(exception.getClass().getName(), exception.getMessage());
+         Log.log_4016(exception.getClass().getName(), exception.getMessage());
       } finally {
 
          if (succeeded) {
@@ -966,7 +966,7 @@ extends HttpServlet {
 
       public void fileModified() {
 
-         Log.log_240(_configFile);
+         Log.log_4007(_configFile);
 
          // Apply the new runtime settings to the logging subsystem
          PropertyReader runtimeProperties = readRuntimeProperties();
@@ -981,22 +981,22 @@ extends HttpServlet {
          int oldInterval = _configFileWatcher.getInterval();
          if (oldInterval != newInterval) {
             _configFileWatcher.setInterval(newInterval);
-            Log.log_233(_configFile, String.valueOf(oldInterval), String.valueOf(newInterval));
+            Log.log_4003(_configFile, String.valueOf(oldInterval), String.valueOf(newInterval));
          }
 
-         Log.log_200();
+         Log.log_4018();
       }
 
       public void fileNotFound() {
-         Log.log_230(_configFile);
+         Log.log_4000(_configFile);
       }
 
       public void fileNotModified() {
-         Log.log_232(_configFile);
+         Log.log_4002(_configFile);
       }
 
       public void securityException(SecurityException exception) {
-         Log.log_231(_configFile, exception.getClass().getName(), exception.getMessage());
+         Log.log_4001(_configFile, exception.getClass().getName(), exception.getMessage());
       }
    }
 }

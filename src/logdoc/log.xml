@@ -234,94 +234,94 @@
 
 	<!-- Initialization -->
 
-	<entry id="230" level="WARNING" category="org.xins.server.lifespan.init">
+	<entry id="4000" level="WARNING" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file cannot be opened.</description>
 		<param name="configFile" />
 	</entry>
-	<entry id="231" level="WARNING" category="org.xins.server.lifespan.init">
+	<entry id="4001" level="WARNING" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file cannot be opened, due to a security restriction.</description>
 		<param name="configFile" />
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="232" level="DEBUG" category="org.xins.server.lifespan.init">
+	<entry id="4002" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file is not modified.</description>
 		<param name="configFile" nullable="false" />
 	</entry>
-	<entry id="233" level="NOTICE" category="org.xins.server.lifespan.init">
+	<entry id="4003" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file watch interval changed.</description>
 		<param name="configFile" nullable="false" />
 		<param name="oldInterval" nullable="false" />
 		<param name="newInterval" nullable="false" />
 	</entry>
-	<entry id="234" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="4004" level="INFO" category="org.xins.server.lifespan.init">
 		<description>Determined local timezone.</description>
 		<param name="shortName" />
 		<param name="longName"  />
 	</entry>
-	<entry id="235" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="4005" level="INFO" category="org.xins.server.lifespan.init">
 		<description>Initializing API.</description>
 		<param name="api" />
 	</entry>
-	<entry id="236" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="4006" level="INFO" category="org.xins.server.lifespan.init">
 		<description>Initialized API.</description>
 		<param name="api" />
 	</entry>
-	<entry id="240" level="DEBUG" category="org.xins.server.lifespan.init">
+	<entry id="4007" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
 		<param name="configFile" nullable="false" />
 	</entry>
-	<entry id="250" level="DEBUG" category="org.xins.server.lifespan.init">
+	<entry id="4008" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file watch interval not specified, using fallback default.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 	</entry>
-	<entry id="251" level="DEBUG" category="org.xins.server.lifespan.init">
+	<entry id="4009" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Parsing the runtime properties file watch interval.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="252" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="4010" level="ERROR" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file watch interval property value is invalid.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="253" level="DEBUG" category="org.xins.server.lifespan.init">
+	<entry id="4011" level="DEBUG" category="org.xins.server.lifespan.init">
 		<description>Runtime properties file watch interval successfully parsed.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="254" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="4012" level="INFO" category="org.xins.server.lifespan.init">
 		<description>Commencing runtime properties file watching.</description>
 		<param name="configFile" />
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="255" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="4013" level="ERROR" category="org.xins.server.lifespan.init">
 		<description>API could not be initialized due to a missing required property.</description>
 		<param name="propertyName" />
 	</entry>
-	<entry id="256" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="4014" level="ERROR" category="org.xins.server.lifespan.init">
 		<description>API could not be initialized due to an invalid property value.</description>
 		<param name="propertyName" />
 		<param name="propertyValue" />
 	</entry>
-	<entry id="257" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="4015" level="ERROR" category="org.xins.server.lifespan.init">
 		<description>API could not be initialized.</description>
 		<param name="message" />
 	</entry>
-	<entry id="258" level="ERROR" category="org.xins.server.lifespan.init">
+	<entry id="4016" level="ERROR" category="org.xins.server.lifespan.init">
 		<description>API could not be initialized due to an unexpected exception.</description>
 		<param name="exceptionClass" />
 		<param name="exceptionMessage" />
 	</entry>
-	<entry id="199" level="NOTICE" category="org.xins.server.lifespan.init">
+	<entry id="4017" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework has been initialized.</description>
 	</entry>
-	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
+	<entry id="4018" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework has been re-initialized.</description>
 	</entry>
 

@@ -348,7 +348,7 @@ implements DefaultResultCodes {
       _timeZone = TimeZone.getDefault();
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
-      Log.log_234(tzShortName, tzLongName);
+      Log.log_4004(tzShortName, tzLongName);
 
       // Store the build-time settings
       _buildSettings = buildSettings;
@@ -503,7 +503,7 @@ implements DefaultResultCodes {
 
       // TODO: Perform rollback if initialization fails at some point
 
-      Log.log_235(_name);
+      Log.log_4005(_name);
 
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
@@ -592,7 +592,7 @@ implements DefaultResultCodes {
 
       // TODO: Call initImpl2(PropertyReader) ?
 
-      Log.log_236(_name);
+      Log.log_4006(_name);
    }
 
    /**
