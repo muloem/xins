@@ -9,12 +9,15 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+
 import javax.servlet.ServletException;
 
 import org.apache.commons.httpclient.HttpStatus;
+
 import org.xins.server.APIServlet;
 
 /**
@@ -43,18 +46,21 @@ public class HTTPServletHandler {
     *
     * @param warFile
     *    the war file of the application to deploy, cannot be <code>null</code>.
+    *
+    * @throws IOException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet cannot be started.
     */
-   public HTTPServletHandler(File warFile) {
-      try {
-         // Initialize the servlet
-         initServlet(warFile);
+   public HTTPServletHandler(File warFile)
+   throws IOException, ServletException {
 
-         // Start the HTTP server.
-         startServer();
-      } catch (Exception ex) {
-         ex.printStackTrace();
-         close();
-      }
+      // Initialize the servlet
+      initServlet(warFile);
+
+      // Start the HTTP server.
+      startServer();
    }
 
    
