@@ -203,7 +203,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 
       // Store data
       _functionCaller    = functionCaller;
-      _sessionIDSplitter = sessionIDSplitter;</xsl:text>
+      _sessionIDSplitter = sessionIDSplitter;
    }]]></xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -249,14 +249,31 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			<xsl:call-template name="is_function_session_based" />
 		</xsl:variable>
 
+		<!-- Determine the kind of function, one of:
+		     - 'sharedSessionBased'
+		     - 'nonSharedSessionBased'
+		     - 'createsSharedSessions'
+		     - 'createsNonSharedSessions'
+		     - 'sessionLess'
+		-->
+		<xsl:variable name="kind">
+			<xsl:choose>
+				<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'true'">sharedSessionBased</xsl:when>
+				<xsl:when test="$sessionBased = 'true'">nonSharedSessionBased</xsl:when>
+				<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">createsSharedSessions</xsl:when>
+				<xsl:when test="@createsSession = 'true'">createsNonSharedSessions</xsl:when>
+				<xsl:otherwise>sessionLess</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<!-- Determine the return type of the method, either a Java primary
 		     data type or a Java class name. -->
 		<xsl:variable name="returnType">
 			<xsl:choose>
-				<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
+				<xsl:when test="$kind = 'createsSharedSessions'">
 					<xsl:text>java.lang.String</xsl:text>
 				</xsl:when>
-				<xsl:when test="@createsSession = 'true'">
+				<xsl:when test="$kind = 'createsNonSharedSessions'">
 					<xsl:text>org.xins.client.NonSharedSession</xsl:text>
 				</xsl:when>
 				<xsl:when test="count(output/param) = 1 and count(output/data/element) = 0">
@@ -298,13 +315,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em> function specification</a>.]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
-				<xsl:text><![CDATA[
-    *
-    * @param session
-    *    the client-side session, cannot be <code>null</code>.]]></xsl:text>
-			</xsl:when>
-			<xsl:when test="$sessionBased = 'true'">
+			<xsl:when test="$kind = 'sharedSessionBased'">
 				<xsl:text>
     *
     * @param session
@@ -314,16 +325,22 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 				</xsl:if>
 				<xsl:text>.</xsl:text>
 			</xsl:when>
+			<xsl:when test="$kind = 'nonSharedSessionBased'">
+				<xsl:text><![CDATA[
+    *
+    * @param session
+    *    the client-side session, cannot be <code>null</code>.]]></xsl:text>
+			</xsl:when>
 		</xsl:choose>
 		<xsl:apply-templates select="input/param" mode="javadoc" />
 		<xsl:choose>
-			<xsl:when test="@createsSession = 'true' and $sessionsShared = 'true'">
+			<xsl:when test="$kind = 'createsSharedSessions'">
 				<xsl:text><![CDATA[
     *
     * @return
     *    the shared session identifier, not <code>null</code>.]]></xsl:text>
 			</xsl:when>
-			<xsl:when test="@createsSession = 'true'">
+			<xsl:when test="$kind = 'createsNonSharedSessions'">
 				<xsl:text><![CDATA[
     *
     * @return
@@ -403,14 +420,13 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 			</xsl:for-each>
 		<xsl:text>)
    throws </xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
+		<xsl:if test="$kind = 'nonSharedSessionBased'">
 			<xsl:text>org.xins.types.TypeValueException, </xsl:text>
 		</xsl:if>
 		<xsl:text>java.io.IOException,
           org.xins.client.InvalidCallResultException,
           org.xins.client.UnsuccessfulCallException {</xsl:text>
-		<xsl:if test="$sessionBased = 'true' and $sessionsShared = 'false'">
- 			<!-- TODO: Improve performance by caching the result array -->
+		<xsl:if test="$kind = 'nonSharedSessionBased'">
 			<xsl:text>
 
       // Split the client-side session ID
@@ -456,7 +472,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		<xsl:text>
       CallResult result = </xsl:text>
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:when test="$kind = 'nonSharedSessionBased'">
 				<xsl:text>afc</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -465,11 +481,11 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		</xsl:choose>
 		<xsl:text>.call(</xsl:text>
 		<xsl:choose>
-			<xsl:when test="$sessionBased = 'true' and $sessionsShared = 'false'">
+			<xsl:when test="$kind = 'nonSharedSessionBased'">
 				<!-- TODO: Split the session ID -->
 				<xsl:text>session, </xsl:text>
 			</xsl:when>
-			<xsl:when test="$sessionBased = 'true'">
+			<xsl:when test="$kind = 'sharedSessionBased'">
 				<!-- TODO: Convert the session ID correctly to a String -->
 				<xsl:text>session, </xsl:text>
 			</xsl:when>
@@ -487,7 +503,7 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
 		</xsl:choose>
 		<xsl:text>);</xsl:text>
 		<xsl:choose>
-			<xsl:when test="@createsSession = 'true'">
+			<xsl:when test="$kind = 'createsNonSharedSessions'">
 				<xsl:text>
       if (result.isSuccess()) {
          String session = result.getParameter("_session");
@@ -495,18 +511,22 @@ import org.xins.util.MandatoryArgumentChecker;</xsl:text>
             throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>\" returned no session ID.");
-         }</xsl:text>
-				<xsl:choose>
-					<xsl:when test="$sessionsShared = 'true'">
-						<xsl:text>
-         return session;</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>
-         return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
+         }
+         return new org.xins.client.NonSharedSession(result.getFunctionCaller(), session);
+      } else {
+         throw new org.xins.client.UnsuccessfulCallException(result);
+      }</xsl:text>
+			</xsl:when>
+			<xsl:when test="$kind = 'createsSharedSessions'">
 				<xsl:text>
+      if (result.isSuccess()) {
+         String session = result.getParameter("_session");
+         if (session == null) {
+            throw new org.xins.client.InvalidCallResultException("The call to function \"</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>\" returned no session ID.");
+         }
+         return session;
       } else {
          throw new org.xins.client.UnsuccessfulCallException(result);
       }</xsl:text>
