@@ -698,6 +698,10 @@ implements DefaultResultCodes {
       // Stop expiry strategy
       _sessionExpiryStrategy.stop();
 
+      // Destroy all sessions
+      LOG.info("Closing " + _sessionsByID.size() + " open sessions.");
+      _sessionsByID = null;
+
       // Deinitialize instances
       for (int i = 0; i < _instances.size(); i++) {
          Object instance = _instances.get(i);
