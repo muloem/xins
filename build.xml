@@ -32,16 +32,6 @@
 		<echo message="${title} ${version}" />
 	</target>
 
-	<target name="-xmlenc-avail">
-		<available classname="org.znerd.xmlenc.XMLOutputter" property="xmlenc.available" />
-		<fail unless="xmlenc.available" message="Library not available: xmlenc" />
-	</target>
-
-	<target name="-servlet-avail">
-		<available classname="javax.servlet.http.HttpServletRequest" property="servlet.available" />
-		<fail unless="servlet.available" message="Library not available: Servlet API" />
-	</target>
-
 	<target name="-prepare" depends="-init">
 		<mkdir dir="build" />
 	</target>
@@ -67,7 +57,7 @@
 		<delete dir="build" />
 	</target>
 
-	<target name="java-server-framework" depends="-xmlenc-avail,-servlet-avail,-prepare-java,-prepare-classes" description="Compiles the XINS/Java server framework">
+	<target name="java-server-framework" depends="-prepare-java,-prepare-classes" description="Compiles the XINS/Java server framework">
 		<mkdir dir="build/classes/java-server-framework" />
 		<javac
 		srcdir="build/src/java-server-framework"
@@ -75,7 +65,13 @@
 		debug="on"
 		deprecation="on"
 		optimize="off"
-		target="1.2" />
+		target="1.2">
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
+		</javac>
 		<manifest file="build/MANIFEST.MF">
 			<section name="xins">
 				<attribute name="Specification-Title"    value="${title}"   />
@@ -96,7 +92,7 @@
 		<available file="${java.home}/src" type="dir" property="jdksrc.available" />
 	</target>
 
-	<target name="-javadoc-sourcepath-nojdksrc" depends="-servlet-avail,-prepare,-jdksrc-avail" unless="jdksrc.available">
+	<target name="-javadoc-sourcepath-nojdksrc" depends="-prepare,-jdksrc-avail" unless="jdksrc.available">
 		<property name="javadoc.sourcepath" value="build/src/java-server-framework" />
 		<echo level="verbose" message="JDK source code not available." />
 	</target>
@@ -121,6 +117,11 @@
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
 			<packageset dir="src/java-server-framework" />
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+				<fileset dir="depends/runtime"             includes="**/*.jar" />
+			</classpath>
 			<link
 			href="http://java.sun.com/products/servlet/2.3/javadoc/"
 			offline="true"
