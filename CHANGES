@@ -1,6 +1,9 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.163:
 
+* Build and release process:
+  - Linking to xmlenc 0.43 API docs.
+
 * Generated build file:
   - Linking to xmlenc 0.43 API docs.
 
