@@ -3,6 +3,10 @@
  */
 package org.xins.common.service;
 
+import java.io.IOException;
+
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Exception that indicates that an I/O error interrupted a service call.
  *
@@ -21,6 +25,40 @@ public final class IOCallException extends GenericCallException {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Checks the arguments for the constructor and then returns the short
+    * reason.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param ioException
+    *    the cause {@link IOException}, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request     == null
+    *          || target      == null
+    *          || ioException == null</code>
+    */
+   private static String getShortReason(CallRequest      request,
+                                        TargetDescriptor target,
+                                        IOException      ioException)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",     request,
+                                     "target",      target,
+                                     "ioException", ioException);
+
+      // Return the short reason
+      return "I/O error";
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -38,25 +76,29 @@ public final class IOCallException extends GenericCallException {
     * @param duration
     *    the call duration in milliseconds, must be &gt;= 0.
     *
-    * @param detail
-    *    a detailed description of the problem, can be <code>null</code> if
-    *    there is no more detail.
-    *
-    * @param cause
-    *    the cause exception, can be <code>null</code>.
+    * @param ioException
+    *    the cause {@link IOException}, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
+    *          || ioException == null
     *          || duration  &lt; 0</code>.
     */
-   IOCallException(CallRequest      request,
-                   TargetDescriptor target,
-                   long             duration,
-                   String           detail,
-                   Throwable        cause)
+   public IOCallException(CallRequest      request,
+                          TargetDescriptor target,
+                          long             duration,
+                          IOException      ioException)
    throws IllegalArgumentException {
-      super("I/O error", request, target, duration, detail, cause);
+
+      // Check arguments first and then call superconstructor
+      super(getShortReason(request, target, ioException),
+            request,
+            target,
+            duration,
+            null,
+            ioException);
+
    }
 
 
