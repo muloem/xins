@@ -432,19 +432,20 @@ public final class LDAPServiceCaller extends ServiceCaller {
        * Constructs a new <code>Query</code>.
        *
        * @param searchBase
-       *    the search base, can be <code>null</code>.
+       *    the search base, cannot be <code>null</code>.
        *
        * @param filter
        *    the filter expression, cannot be <code>null</code>.
        *
        * @throws IllegalArgumentException
-       *    if <code>filter == null</code>.
+       *    if <code>searchBase == null || filter == null</code>.
        */
       public Query(String searchBase, String filter)
       throws IllegalArgumentException {
 
          // Check preconditions
-         MandatoryArgumentChecker.check("filter", filter);
+         MandatoryArgumentChecker.check("searchBase", searchBase,
+                                        "filter",     filter);
 
          _searchBase = searchBase;
          _filter     = filter;
@@ -456,7 +457,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
 
       /**
-       * The search base. Can be <code>null</code>.
+       * The search base. Cannot be <code>null</code>.
        */
       private final String _searchBase;
 
@@ -474,7 +475,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
        * Returns the search base.
        *
        * @return
-       *    the search base, can be <code>null</code>.
+       *    the search base, cannot be <code>null</code>.
        */
       public String getSearchBase() {
          return _searchBase;
