@@ -15,6 +15,7 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 * Remove 'success' attribute from 'result' element. The existence of the
   'code' attribute indicates an error while the absence indicates success.
 * Support API inheritance.
+* Define regular expression for input parameter names.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
