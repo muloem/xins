@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 0.199:
       and converts it to a PropertyReader instance.
     - Added class function getRequiredProperty() that throws a
       MissingRequiredPropertyException if the property is not set.
+  - Extended class HexConverter: Added overloaded toHexString() methods that
+    respectively take a byte[] array, a byte and a short.
 
 * Logdoc:
   - Fixed bug introduced in XINS 0.198. The root cause exception was only
