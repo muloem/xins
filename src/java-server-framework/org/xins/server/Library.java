@@ -27,12 +27,6 @@ public final class Library extends Object {
 
    /**
     * The logging category used by the XINS/Java Server Framework during
-    * startup/initialization. This field is not <code>null</code>.
-    */
-   static final Logger BOOTSTRAP_LOG = Logger.getLogger("org.xins.server.lifespan.bootstrap");
-
-   /**
-    * The logging category used by the XINS/Java Server Framework during
     * re-initialization. This field is not <code>null</code>.
     */
    static final Logger INIT_LOG = Logger.getLogger("org.xins.server.lifespan.init");
