@@ -484,6 +484,11 @@
 			<description>Getting session attribute value, value is null.</description>
 			<param name="name" nullable="false" />
 		</entry>
+		<entry id="5010" level="INFO">
+			<description>Created session.</description>
+			<param name="id" nullable="false" />
+			<param name="generationLoops" type="int32" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="shutdown" name="Shutdown" category="org.xins.server.lifespan.shutdown">
