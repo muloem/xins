@@ -53,3 +53,6 @@ Adapt XINS/Java Client Framework to build upon improved service framework:
 [ ] Use StatusCodeHTTPCallException instead of UnexpectedHTTPStatusCodeException
 [ ] Remove UnexpectedHTTPStatusCodeException class
 [ ] Make XINSServiceCaller throw appropriate CallException subclasses
+
+Adapt CAPI generation:
+[ ] Build upon new XINS/Java Client Framework
