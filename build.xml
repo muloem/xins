@@ -520,6 +520,13 @@
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.suffix" operation="=" value="" />
 		</propertyfile>
+		<cvs command="commit">
+			<commandline>
+				<argument value="-m" />
+				<argument value="Unmarked -dev." />
+				<argument value="${version.file}" />
+			</commandline>
+		</cvs>
 	</target>
 
 	<target name="-nodiffs-check" depends="clean">
