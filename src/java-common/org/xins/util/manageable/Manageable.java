@@ -233,7 +233,7 @@ public abstract class Manageable extends Object {
     * Performs the initialization procedure (wrapper method).
     *
     * <p>If the state of this object is valid (it must be either
-    * {@link #BOOTSTRAPPED} or {@link USABLE}) and the argument is not
+    * {@link #BOOTSTRAPPED} or {@link #USABLE}) and the argument is not
     * <code>null</code>, then {@link #initImpl(PropertyReader)} will be
     * called. If that method succeeds, then this object will be left in the
     * {@link #USABLE} state. If an exception is thrown, then this object will
