@@ -8,6 +8,15 @@ package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
+
+import org.xins.common.http.HTTPCallException;
+import org.xins.common.http.HTTPCallRequest;
+import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPServiceCaller;
+import org.xins.common.http.StatusCodeHTTPCallException;
+
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
 import org.xins.common.service.CallResult;
@@ -17,15 +26,10 @@ import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 
-import org.xins.common.http.HTTPCallException;
-import org.xins.common.http.HTTPCallRequest;
-import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPServiceCaller;
-import org.xins.common.http.StatusCodeHTTPCallException;
-
-import org.xins.common.text.ParseException;
+import org.xins.logdoc.LogdocSerializable;
 
 /**
  * XINS service caller. This class can be used to perform a call to a XINS
@@ -203,9 +207,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       // TRACE: Enter method
       Log.log_2003(CLASSNAME, "call(XINSCallRequest)", null);
 
-      CallResult result;
+      XINSCallResult result;
       try {
-         result = doCall(request);
+         result = (XINSCallResult) doCall(request);
 
       // Allow GenericCallException, HTTPCallException, XINSCallException and
       // Error to proceed, but block other kinds of exceptions and throw an
@@ -227,15 +231,14 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // On failure, throw UnsuccessfulXINSCallException, otherwise return result
-      XINSCallResult xinsResult = (XINSCallResult) result;
-      if (xinsResult.getErrorCode() != null) {
-         throw new UnsuccessfulXINSCallException(xinsResult);
+      if (result.getErrorCode() != null) {
+         throw new UnsuccessfulXINSCallException(result);
       }
 
       // TRACE: Leave method
       Log.log_2005(CLASSNAME, "call(XINSCallRequest)", null);
 
-      return xinsResult;
+      return result;
    }
 
    /**
@@ -288,9 +291,19 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Convert the request to the appropriate class
       XINSCallRequest xinsRequest = (XINSCallRequest) request;
 
+      // Get URL, function and parameters (for logging)
+      String             url       = target.getURL();
+      String             function  = xinsRequest.getFunctionName();
+      PropertyReader     p         = xinsRequest.getParameters();
+      LogdocSerializable params    = PropertyReaderUtils.serialize(p, "-");
+
+      // Get the time-out values (for logging)
+      int totalTimeOut      = target.getTotalTimeOut();
+      int connectionTimeOut = target.getConnectionTimeOut();
+      int socketTimeOut     = target.getSocketTimeOut();
+
       // Log that we are about to call the API
-      // TODO: Either uncomment or remove the following line
-      // Log.log_2111(url, functionName, serParams, totalTimeOut, connectionTimeOut, socketTimeOut);
+      Log.log_2100(url, function, params, totalTimeOut, connectionTimeOut, socketTimeOut);
 
       // Delegate the actual HTTP call to the HTTPServiceCaller. This may
       // cause a CallException
