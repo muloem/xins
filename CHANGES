@@ -1,6 +1,12 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.3:
 
+* Only generating files if the concerning APIs, function and types are
+  explicitly mentioned in the concerning lists in xins-project.xml or api.xml.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.3:
+
 * Now including dependency JAR files in generated JAR file (xins.jar)
 
 ______________________________________________________________________________
