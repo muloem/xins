@@ -950,6 +950,10 @@ implements DefaultResultCodes {
     * Forwards a call to a function. The call will actually be handled by
     * {@link Function#handleCall(ServletRequest)}.
     *
+    * @param start
+    *    the start time of the request, in milliseconds since midnight January
+    *    1, 1970.
+    *
     * @param request
     *    the original servlet request, not <code>null</code>.
     *
@@ -959,7 +963,7 @@ implements DefaultResultCodes {
     * @throws NullPointerException
     *    if <code>request == null</code>.
     */
-   final CallResult handleCall(ServletRequest request)
+   final CallResult handleCall(long start, ServletRequest request)
    throws NullPointerException {
 
       // Determine the function name
@@ -1015,7 +1019,7 @@ implements DefaultResultCodes {
       }
 
       // Forward the call to the function
-      return function.handleCall(request);
+      return function.handleCall(start, request);
    }
 
    /**

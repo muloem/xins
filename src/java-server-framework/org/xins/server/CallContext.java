@@ -58,13 +58,17 @@ implements Responder, Log {
     *    the API for which this <code>CallContext</code> will be used, cannot
     *    be <code>null</code>.
     *
+    * @param start
+    *    the start time of the call, as milliseconds since midnight January 1,
+    *    1970.
+    *
     * @param functionName
     *    the name of the pertaining function, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>api == null || functionName == null || request == null</code>.
     */
-   CallContext(ServletRequest request, Function function)
+   CallContext(ServletRequest request, long start, Function function)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -76,7 +80,7 @@ implements Responder, Log {
       _function     = function;
       _functionName = function.getName();
       _state        = BEFORE_START;
-      _start        = System.currentTimeMillis();
+      _start        = start;
       _builder      = new CallResultBuilder();
 
       // Determine the function object, logger, call ID and log prefix

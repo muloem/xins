@@ -330,6 +330,9 @@ implements Servlet {
    public void service(ServletRequest request, ServletResponse response)
    throws ServletException, IOException {
 
+      // Determine current time
+      long start = System.currentTimeMillis();
+
       // Check state
       if (_state != READY) {
          if (_state == UNINITIALIZED) {
@@ -347,7 +350,7 @@ implements Servlet {
       //       performance
 
       // Call the API
-      CallResult result = _api.handleCall(request);
+      CallResult result = _api.handleCall(start, request);
 
       // Determine the XSLT to link to
       String xslt = request.getParameter("_xslt");

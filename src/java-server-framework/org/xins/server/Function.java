@@ -312,6 +312,10 @@ implements DefaultResultCodes {
     * Handles a call to this function (wrapper method). This method will call
     * {@link #handleCall(CallContext context)}.
     *
+    * @param start
+    *    the start time of the call, as milliseconds since midnight January 1,
+    *    1970.
+    *
     * @param request
     *    the original servlet request for this call, never <code>null</code>.
     *
@@ -321,7 +325,7 @@ implements DefaultResultCodes {
     * @throws Throwable
     *    if anything goes wrong.
     */
-   CallResult handleCall(ServletRequest request) {
+   CallResult handleCall(long start, ServletRequest request) {
 
       // Determine the session identifier
       Session session;
@@ -331,6 +335,7 @@ implements DefaultResultCodes {
          String sessionID = request.getParameter("_session");
          if (sessionID == null || sessionID.length() == 0) {
             // TODO: Cache CallResult and use ResultCode
+            performedCall(start, null, false, "MissingSessionID");
             return new BasicCallResult(false, "MissingSessionID", null, null);
          } else {
             try {
@@ -340,6 +345,7 @@ implements DefaultResultCodes {
                   _log.debug("Invalid value for session ID type: \"" + sessionID + "\".");
                }
                // TODO: Cache CallResult and use ResultCode
+               performedCall(start, null, false, "InvalidSessionID");
                return new BasicCallResult(false, "InvalidSessionID", null, null);
             }
             if (session == null) {
@@ -347,14 +353,14 @@ implements DefaultResultCodes {
                   _log.debug("Unknown session ID: \"" + sessionID + "\".");
                }
                // TODO: Cache CallResult and use ResultCode
+               performedCall(start, null, false, "UnknownSessionID");
                return new BasicCallResult(false, "UnknownSessionID", null, null);
             }
          }
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(request, this);
-      long start = context.getStart(); // TODO: Do we _need_ to store it in the context?
+      CallContext context = new CallContext(request, start, this);
 
       CallResult result;
       try {
