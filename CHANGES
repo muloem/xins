@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 0.181:
 
 * Build and release process:
   - Put the correct license files in the release.
+  - Downgraded the oro library to version 2.0.7 because of some
+    incompatibilities with Perl5 regular expressions.
 
 * Specification:
   - Removed the extends attribute for the types.
