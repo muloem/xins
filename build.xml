@@ -409,6 +409,12 @@
 		<fail if="tests.failed" message="All tests should run" />
 	</target>
 
+	<target name="clean-coverage">
+		<delete file="jcoverage.ser" />
+		<delete dir="build/instrumented-classes" />
+		<delete dir="build/testresults/coverage" />
+	</target>
+	
 	<target name="-prepare-coverage">
 		<taskdef classpath="lib/jcoverage.jar" resource="tasks.properties"/>
 		<instrument todir="build/instrumented-classes/java-client">

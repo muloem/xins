@@ -133,7 +133,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @return
     *    the version as a {@link String}, cannot be <code>null</code>.
     */
-   public static String getXINSVersion() {
+   public String getXINSVersion() {
       return "]]></xsl:text>
 			<xsl:value-of select="$xins_version" />
 			<xsl:text><![CDATA[";

@@ -295,8 +295,10 @@ public class AllInOneAPITests extends TestCase {
     * Tests the getXINSVersion() CAPI method.
     */
    public void testCAPIVersion() throws Throwable {
-      assertNotNull("No XINS version specified.", CAPI.getXINSVersion());
-      assertTrue("The version does not starts with '1.'", CAPI.getXINSVersion().startsWith("1."));
+      TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/");
+      CAPI allInOne = new CAPI(descriptor);
+      assertNotNull("No XINS version specified.", allInOne.getXINSVersion());
+      assertTrue("The version does not starts with '1.'", allInOne.getXINSVersion().startsWith("1."));
    }
    
    /**

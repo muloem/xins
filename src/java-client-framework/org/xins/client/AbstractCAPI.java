@@ -72,4 +72,12 @@ public abstract class AbstractCAPI {
    protected XINSServiceCaller getCaller() {
       return _caller;
    }
+
+   /**
+    * Returns the version of XINS used to build this CAPI class.
+    *
+    * @return
+    *    the version as a {@link String}, cannot be <code>null</code>.
+    */
+   public abstract String getXINSVersion();
 }
