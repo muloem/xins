@@ -70,7 +70,7 @@ public final class HTTPCallConfig extends CallConfig {
     *    the HTTP method, never <code>null</code>.
     */
    public HTTPMethod getMethod() {
-      synchronized (_lock) {
+      synchronized (getLock()) {
          return _method;
       }
    }
@@ -83,7 +83,7 @@ public final class HTTPCallConfig extends CallConfig {
     *    <code>null</code>.
     */
    public void setMethod(HTTPMethod method) {
-      synchronized (_lock) {
+      synchronized (getLock()) {
          _method = method;
       }
    }

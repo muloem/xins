@@ -24,17 +24,18 @@ import org.xins.common.text.FastStringBuffer;
  *
  * <p>This class is thread-safe, and subclasses <em>must</em> be thread-safe
  * as well. When reading or writing a field, the code should synchronize on
- * {@link #_lock}. For example, the <em>failOverAllowed</em> getter and setter
- * methods in this class could be implemented as follows:
+ * the lock object returned by {@link #getLock()}. For example, the
+ * <em>failOverAllowed</em> getter and setter methods in this class could be
+ * implemented as follows:
  *
  * <blockquote><pre>public final boolean isFailOverAllowed() {
- *   synchronized (_lock) {
+ *   synchronized (getLock()) {
  *      return _failOverAllowed;
  *   }
  *}
  *
  *public final void setFailOverAllowed(boolean allowed) {
- *   synchronized (_lock) {
+ *   synchronized (getLock()) {
  *      _failOverAllowed = allowed;
  *   }
  *}</pre></blockquote>
@@ -106,7 +107,7 @@ public class CallConfig extends Object {
     * Access controller for the fields in this object. Field reading or
     * writing code should synchronize on this object.
     */
-   protected final Object _lock;
+   private final Object _lock;
 
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
@@ -117,6 +118,17 @@ public class CallConfig extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the access controller for the fields in this object. Field
+    * reading or writing code should synchronize on this object.
+    *
+    * @return
+    *    the lock, never <code>null</code>.
+    */
+   protected final Object getLock() {
+      return _lock;
+   }
 
    /**
     * Describes this configuration. The description should be trimmed and
