@@ -239,6 +239,9 @@ implements DefaultResultCodes {
     * @param buildSettings
     *    the build-time configuration properties, not <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if this API is currently not bootstraping.
+    *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.
     *
@@ -247,12 +250,10 @@ implements DefaultResultCodes {
     *
     * @throws BootstrapException
     *    if the bootstrap fails.
-    *
-    * @throws IllegalStateException
-    *    if this API is currently not bootstraping.
     */
    protected final void bootstrapImpl(PropertyReader buildSettings)
-   throws MissingRequiredPropertyException,
+   throws IllegalStateException,
+          MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
 
