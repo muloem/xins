@@ -78,7 +78,7 @@ public abstract class SessionID extends Type {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
     *
-    * @since XINS 0.52
+    * @since XINS 0.57
     */
    public abstract class Generator
    extends Object {
@@ -109,6 +109,6 @@ public abstract class SessionID extends Type {
        * @return
        *    the generated session ID, not be <code>null</code>.
        */
-      public abstract String generateSessionID();
+      public abstract Object generateSessionID();
    }
 }
