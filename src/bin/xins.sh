@@ -7,8 +7,13 @@ if [ "${XINS_HOME}a" = "a" ]; then
 	exit 1
 fi
 
+builddir="build"
+
 if [ ! -d build ]; then
-	mkdir build
+	mkdir ${builddir}
 fi
 
-xsltproc -o build/build.xml ${XINS_HOME}/src/xslt/xins-project_to_ant-build.xslt xins-project.xml
+in="xins-project.xml"
+out=${builddir}/build.xml
+style=${XINS_HOME}/src/xslt/xins-project_to_ant-build.xslt
+xsltproc -o ${out} ${style} ${in}
