@@ -100,7 +100,11 @@ public class Log extends Object {
    /**
     * The active translation bundle.
     */
-   private static TranslationBundle TRANSLATION_BUNDLE;
+   private static TranslationBundle TRANSLATION_BUNDLE;]]></xsl:text>
+
+		<xsl:apply-templates select="group/entry" mode="counter" />
+
+		<xsl:text><![CDATA[
 
 
    //-------------------------------------------------------------------------
@@ -297,7 +301,11 @@ public class Log extends Object {
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<xsl:apply-templates select="param" mode="method-argument" />
+		<!-- XXX: Lock before updating COUNTER? Probably not needed on int -->
 		<xsl:text>) {
+      COUNT_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>++;
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
@@ -319,5 +327,18 @@ public class Log extends Object {
 		<xsl:text>), null);
       }
    }</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="group/entry" mode="counter">
+		<xsl:text>
+
+   /**
+    * Counter for log entry </xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>.
+    */
+   private static int COUNT_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>;</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
