@@ -6,6 +6,7 @@ package org.xins.tests.common.specs;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.specs.APISpec;
 import org.xins.specs.FunctionSpec;
 import org.xins.specs.InvalidNameException;
 import org.xins.specs.InvalidVersionException;
@@ -130,5 +131,9 @@ public class FunctionSpecTests extends TestCase {
       spec = new FunctionSpec("Fun",      "12.1.2");
       spec = new FunctionSpec("Fun12",    "1.2.3.4.5.6.7.8.9.10");
       spec = new FunctionSpec("F0",       "1.2.3.4.5.6.7.8.9.10");
+   }
+
+   public void testGetParentType() throws Throwable {
+      assertEquals(APISpec.TYPE, FunctionSpec.TYPE.getParentType());
    }
 }
