@@ -96,6 +96,46 @@ public class HexConverter extends Object {
       'c' , 'd' , 'e' , 'f'
    };
 
+   /**
+    * The '0' character.
+    */
+   private static final int CHAR_ZERO = (int) '0';
+
+   /**
+    * The '9' character.
+    */
+   private static final int CHAR_NINE = (int) '9';
+
+   /**
+    * The 'a' character.
+    */
+   private static final int CHAR_A    = (int) 'a';
+
+   /**
+    * The 'f' character.
+    */
+   private static final int CHAR_F    = (int) 'f';
+
+   /**
+    * The 'A' character.
+    */
+   private static final int CHAR_UP_A = (int) 'A';
+
+   /**
+    * The 'f' character.
+    */
+   private static final int CHAR_UP_F = (int) 'F';
+
+   /**
+    * The 'a' character lowered by 0xA.
+    */
+   private static final int CHAR_A_FACTOR = CHAR_A - 10;
+
+   /**
+    * The 'A' character lowered by 0xA.
+    */
+   private static final int CHAR_UP_A_FACTOR = CHAR_UP_A - 10;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -403,13 +443,7 @@ public class HexConverter extends Object {
 
       byte[] bytes = new byte[(length / 2) + (length % 2)];
 
-      // TODO: Move to class fields
       // TODO: Support uppercase in all methods
-      final int CHAR_ZERO = (int) '0';
-      final int CHAR_NINE = (int) '9';
-      final int CHAR_A    = (int) 'a';
-      final int CHAR_F    = (int) 'f';
-      final int CHAR_A_FACTOR = CHAR_A - 10;
 
       // Loop through all characters
       int top = index + length;
@@ -422,6 +456,8 @@ public class HexConverter extends Object {
             upper = (c - CHAR_ZERO);
          } else if (c >= CHAR_A && c <= CHAR_F) {
             upper = (c - CHAR_A_FACTOR);
+         } else if (c >= CHAR_UP_A && c <= CHAR_UP_F) {
+            upper = (c - CHAR_UP_A_FACTOR);
          } else {
             throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
          }
@@ -432,11 +468,13 @@ public class HexConverter extends Object {
          int lower = 0;
          if (i < top) {
             c = (int) s.charAt(i);
-            
+
             if (c >= CHAR_ZERO && c <= CHAR_NINE) {
                lower = (c - CHAR_ZERO);
             } else if (c >= CHAR_A && c <= CHAR_F) {
                lower = (c - CHAR_A_FACTOR);
+            } else if (c >= CHAR_UP_A && c <= CHAR_UP_F) {
+               lower = (c - CHAR_UP_A_FACTOR);
             } else {
                throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
             }
@@ -481,13 +519,6 @@ public class HexConverter extends Object {
 
       int n = 0;
 
-      final int CHAR_ZERO = (int) '0';
-      final int CHAR_NINE = (int) '9';
-      final int CHAR_A    = (int) 'a';
-      final int CHAR_F    = (int) 'f';
-
-      final int CHAR_A_FACTOR = CHAR_A - 10;
-
       // Loop through all characters
       int last = index + 8;
       for (int i = index; i < last; i++) {
@@ -497,6 +528,8 @@ public class HexConverter extends Object {
             n |= (c - CHAR_ZERO);
          } else if (c >= CHAR_A && c <= CHAR_F) {
             n |= (c - CHAR_A_FACTOR);
+         } else if (c >= CHAR_UP_A && c <= CHAR_UP_F) {
+            n |= (c - CHAR_UP_A_FACTOR);
          } else {
             throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
          }
@@ -569,13 +602,6 @@ public class HexConverter extends Object {
 
       long n = 0L;
 
-      final int CHAR_ZERO = (int) '0';
-      final int CHAR_NINE = (int) '9';
-      final int CHAR_A    = (int) 'a';
-      final int CHAR_F    = (int) 'f';
-
-      final int CHAR_A_FACTOR = CHAR_A - 10;
-
       // Loop through all characters
       int last = index + 16;
       for (int i = index; i < last; i++) {
@@ -585,6 +611,8 @@ public class HexConverter extends Object {
             n |= (c - CHAR_ZERO);
          } else if (c >= CHAR_A && c <= CHAR_F) {
             n |= (c - CHAR_A_FACTOR);
+         } else if (c >= CHAR_UP_A && c <= CHAR_UP_F) {
+            n |= (c - CHAR_UP_A_FACTOR);
          } else {
             throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
          }

@@ -1004,7 +1004,8 @@ extends HttpServlet {
     */
    public void destroy() {
 
-      // TODO: Stop the FileWatcher
+      // Stop the FileWatcher
+      _configFileWatcher.end();
 
       Log.log_1600();
 

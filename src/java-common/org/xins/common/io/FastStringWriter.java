@@ -22,6 +22,9 @@ public class FastStringWriter extends Writer {
    // Class fields
    //-------------------------------------------------------------------------
 
+   private final static int DEFAULT_INITIAL_SIZE = 128;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -35,7 +38,7 @@ public class FastStringWriter extends Writer {
     * string buffer size.
     */
    public FastStringWriter() {
-      _buffer = new FastStringBuffer(128); // TODO: Configure constant
+      _buffer = new FastStringBuffer(DEFAULT_INITIAL_SIZE);
    }
 
    /**

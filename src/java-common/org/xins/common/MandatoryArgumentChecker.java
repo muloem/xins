@@ -67,24 +67,24 @@ public final class MandatoryArgumentChecker extends Object {
    throws IllegalArgumentException {
 
       if (argumentValue1 == null || argumentValue2 == null) {
-	 if (argumentValue1 == null && argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 }
+         if (argumentValue1 == null && argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName1);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         }
       }
    }
 
@@ -119,52 +119,52 @@ public final class MandatoryArgumentChecker extends Object {
                             String argumentName3, Object argumentValue3)
    throws IllegalArgumentException {
       if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null) {
-	 if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(120);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 }
+         if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(120);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName1);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         }
       }
    }
 
@@ -207,116 +207,116 @@ public final class MandatoryArgumentChecker extends Object {
                             String argumentName4, Object argumentValue4)
    throws IllegalArgumentException {
       if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null || argumentValue4 == null) {
-	 if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(160);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(120);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue2 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(120);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue3 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(120);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue1 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName1);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(120);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null && argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue2 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName2);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue3 == null && argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(80);
-	    buffer.append(argumentName3);
-	    buffer.append(" == null && ");
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue3 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName3);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 } else if (argumentValue4 == null) {
-	    FastStringBuffer buffer = new FastStringBuffer(40);
-	    buffer.append(argumentName4);
-	    buffer.append(" == null");
-	    throw new IllegalArgumentException(buffer.toString());
-	 }
+         if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(160);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(120);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue2 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(120);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue3 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(120);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName1);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(120);
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null && argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName2);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue3 == null && argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(80);
+            buffer.append(argumentName3);
+            buffer.append(" == null && ");
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue3 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName3);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue4 == null) {
+            FastStringBuffer buffer = new FastStringBuffer(40);
+            buffer.append(argumentName4);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         }
       }
    }
 

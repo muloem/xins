@@ -175,7 +175,7 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("ipFilter",            ipFilter,
                                      "functionNamePattern", functionNamePattern,
-				     "asString",            asString);
+                                     "asString",            asString);
 
       // Store the data
       _allow               = allow;

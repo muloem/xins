@@ -63,8 +63,7 @@ public final class Query extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("searchBase", searchBase,
-				     "filter",     filter);
+      MandatoryArgumentChecker.check("searchBase", searchBase, "filter", filter);
 
       // Store data in fields
       _searchBase = searchBase;
@@ -124,5 +123,13 @@ public final class Query extends Object {
       return _filter;
    }
 
-   // TODO: Add getter for attributes
+   /**
+    * Returns the attributes associated with the entry.
+    *
+    * @return
+    *    the attributes, or <code>null</code> if all attributes should be returned.
+    */
+    public String[] getAttributes() {
+       return _attributes;
+    }
 }

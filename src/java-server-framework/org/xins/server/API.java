@@ -160,12 +160,6 @@ implements DefaultResultCodes {
    private PropertyReader _runtimeSettings;
 
    /**
-    * Flag that indicates if the shutdown sequence has been initiated.
-    */
-   private boolean _shutDown;
-   // TODO: Use a state for this
-
-   /**
     * Timestamp indicating when this API instance was created.
     */
    private final long _startupTimestamp;
@@ -527,8 +521,8 @@ implements DefaultResultCodes {
 
       // Check state
       Manageable.State state = getState();
-      if (getState() != BOOTSTRAPPING) {
-         // TODO: Log
+      if (state != BOOTSTRAPPING) {
+         Log.log_1437(state.getName());
          throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
       }
 
@@ -549,8 +543,6 @@ implements DefaultResultCodes {
     * exception.
     */
    protected final void deinitImpl() {
-
-      _shutDown = true;
 
       // Deinitialize instances
       int count = _manageableObjects.size();
@@ -738,8 +730,8 @@ implements DefaultResultCodes {
       }
 
       // Short-circuit if we are shutting down
-      if (_shutDown) {
-         // TODO: Add message
+      if (getState().equals(DEINITIALIZING)) {
+         Log.log_1612(_name, functionName);
          return new BasicCallResult("_InternalError", null, null);
       }
 

@@ -375,6 +375,10 @@
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule" nullable="false" />
 		</entry>
+		<entry id="1437" level="ERROR">
+			<description>Invalid state when adding manageable.</description>
+			<param name="state" />
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">
@@ -507,6 +511,11 @@
 		</entry>
 		<entry id="1611" level="WARNING" exception="true">
 			<description>Function could not be deinitialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="1612" level="DEBUG">
+			<description>Function returned _InternalError because the API is shutting down.</description>
 			<param name="api" />
 			<param name="function" />
 		</entry>

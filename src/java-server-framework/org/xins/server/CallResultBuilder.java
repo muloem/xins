@@ -278,8 +278,6 @@ final class CallResultBuilder extends Object implements CallResult {
       }
 
       // TODO: Check that parameter does not exist yet
-      // TODO: Check that parameter is known
-      // TODO: Check that parameter is valid for type
 
       // Initialize the _parameters field
       if (_parameters == null) {

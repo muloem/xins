@@ -40,7 +40,7 @@ extends AbstractPropertyReader {
     */
    public ProtectedPropertyReader(Object key)
    throws IllegalArgumentException {
-   	super(new HashMap(89));
+      super(new HashMap(89));
 
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);

@@ -80,6 +80,7 @@
 	<translation entry="1434">Successfully loaded access rule list with <value-of-param name="ruleCount" /> rule(s).</translation>
 	<translation entry="1435">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1436">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
+	<translation entry="1437">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
 	<translation entry="1500">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="1501">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="1513">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
@@ -100,4 +101,5 @@
 	<translation entry="1609">Deinitialized <value-of-param name="function" /> function.</translation>
 	<translation entry="1610">Deinitialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1611">Deinitialization of <value-of-param name="function" /> function failed.</translation>
+	<translation entry="1612">The function <value-of-param name="function" format="quoted" /> is returning "_InternalError" bacause the API <value-of-param name="api" format="quoted" /> is shutting down.</translation>
 </translation-bundle>

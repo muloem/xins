@@ -80,6 +80,7 @@
 	<translation entry="1434">Lijst van toegangsregels is geladen, met <value-of-param name="ruleCount" /> regel(s).</translation>
 	<translation entry="1435">Fout bij het toepassen van de gespecificeerde toegangsregels. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1436">Toegangsregel <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
+	<translation entry="1437">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
 	<translation entry="1500">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="1501">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="1513">Aanroep <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Een exceptie is opgetreden.</translation>
@@ -100,4 +101,5 @@
 	<translation entry="1609">Functie <value-of-param name="function" /> is gedeinitialiseerd.</translation>
 	<translation entry="1610">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="1611">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden.</translation>
+	<translation entry="1612">Functie <value-of-param name="function" format="quoted" /> geef "_InternalError" terug omdat de API <value-of-param name="api" format="quoted" /> wordt gedeinitialiseerd.</translation>
 </translation-bundle>

@@ -22,6 +22,21 @@ extends Exception {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Creates the error message for this exception.
+    *
+    * @param functionName
+    *    the name of the function, or <code>null</code>.
+    */
+   private static String createMessage(String functionName) {
+      if (functionName != null) {
+         return "The function \"" + functionName + "\" cannot be found.";
+      } else {
+         return "An undefined function cannot be found.";
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -34,8 +49,8 @@ extends Exception {
     *    the name, or <code>null</code>.
     */
    NoSuchFunctionException(String functionName) {
-      // TODO: super(createMessage(functionName));
-      super(functionName);
+      super(createMessage(functionName));
+      _functionName = functionName;
    }
 
 
@@ -43,7 +58,23 @@ extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
+    /**
+     * The name of the function.
+     */
+    private final String _functionName;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Gets the name of the function.
+    *
+    * @return
+    *    the name of the function, or <code>null</code> if no function was provided.
+    */
+   public String getFunctionName() {
+      return _functionName;
+   }
 }

@@ -49,19 +49,19 @@ extends Object {
     *    || (method == {@link AuthenticationMethod#NONE} &amp;&amp; credentials != null)</code>.
     */
    public AuthenticationDetails(AuthenticationMethod method,
-				String               principal,
-				String               credentials)
+                                String               principal,
+                                String               credentials)
    throws IllegalArgumentException {
 
       // Check preconditions
       if (method == null) {
-	 throw new IllegalArgumentException("method == null");
+         throw new IllegalArgumentException("method == null");
       } else if (method != AuthenticationMethod.NONE && principal == null) {
-	 throw new IllegalArgumentException("method (" + method + ") != AuthenticationMethod.NONE && principal == null");
+         throw new IllegalArgumentException("method (" + method + ") != AuthenticationMethod.NONE && principal == null");
       } else if (method == AuthenticationMethod.NONE && principal != null) {
-	 throw new IllegalArgumentException("method == AuthenticationMethod.NONE && principal != null");
+         throw new IllegalArgumentException("method == AuthenticationMethod.NONE && principal != null");
       } else if (method == AuthenticationMethod.NONE && credentials != null) {
-	 throw new IllegalArgumentException("method == AuthenticationMethod.NONE && credentials != null");
+         throw new IllegalArgumentException("method == AuthenticationMethod.NONE && credentials != null");
       }
 
       // Set fields

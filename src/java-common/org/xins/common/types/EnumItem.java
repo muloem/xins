@@ -90,8 +90,8 @@ public class EnumItem extends Object {
    }
 
    public int hashCode() {
-   	return (_name == null ? 0 : _name.hashCode()) ^
-         (_value == null ? 0 : _value.hashCode());
+      return (_name == null ? 0 : _name.hashCode()) ^
+             (_value == null ? 0 : _value.hashCode());
    }
 
    public boolean equals(Object obj) {
