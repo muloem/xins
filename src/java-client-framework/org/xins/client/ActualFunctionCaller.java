@@ -20,6 +20,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.http.HTTPRequester;
+import org.xins.util.net.URLEncoding;
 import org.xins.util.text.HexConverter;
 import org.xins.util.text.FastStringBuffer;
 
@@ -418,7 +419,7 @@ extends AbstractFunctionCaller {
                buffer.append('&');
                buffer.append(key);
                buffer.append('=');
-               buffer.append(value.toString());
+               buffer.append(URLEncoding.encode(value.toString()));
             }
          }
       }
