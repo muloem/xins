@@ -7,7 +7,10 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
+
 import org.xins.common.collections.PropertyReader;
+
 import org.xins.common.service.TargetDescriptor;
 
 /**
@@ -28,6 +31,12 @@ extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = UnsuccessfulXINSCallExceptionFactory.class.getName();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -99,6 +108,14 @@ extends Object {
           XINSCallResultData resultData)
    throws IllegalArgumentException {
 
+      final String THIS_METHOD = "create("
+                               + XINSCallRequest.class.getName()
+                               + ','
+                               + TargetDescriptor.class.getName()
+                               + ",long,"
+                               + XINSCallResultData.class.getName()
+                               + ')';
+
       // Check arguments
       MandatoryArgumentChecker.check("request",    request,
                                      "target",     target,
@@ -109,46 +126,42 @@ extends Object {
          throw new IllegalArgumentException("resultData.getErrorCode() == null");
       }
 
-      final String THIS_CLASS  = getClass().getName();
-      final String IMPL_METHOD = "createImpl(XINSCallRequest,TargetDescriptor,long,XINSCallResultData)";
+      final String SUBJECT_CLASS  = getClass().getName();
+      final String SUBJECT_METHOD = THIS_METHOD.replaceFirst("(", "Impl(");
 
       // Delegate to the implementation method
-      UnsuccessfulXINSCallException e = null;
+      UnsuccessfulXINSCallException e;
       try {
          e = createImpl(request, target, duration, resultData);
          if (e == null) {
-            Log.log_2050(THIS_CLASS, IMPL_METHOD, "Method returned null.");
+            final String DETAIL = "Method returned null.";
+            Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                      SUBJECT_CLASS, SUBJECT_METHOD,
+                                      DETAIL);
          }
       } catch (Throwable t) {
-         Log.log_2052(t, THIS_CLASS, IMPL_METHOD);
+         Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                   SUBJECT_CLASS, SUBJECT_METHOD,
+                                   null,          t);
+         e = null;
       }
+
+      // TODO: Make ResultData.getParameters() never return null
 
       // Check that the UnsuccessfulXINSCallException details are acceptable
       if (e != null) {
-         if (! request.equals(e.getRequest())) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if (! target.equals(e.getTarget())) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if (duration != e.getDuration()) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if (! resultData.getErrorCode().equals(e.getErrorCode())) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if ((resultData.getParameters() == null) && e.getParameters() != null) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if (resultData.getParameters() != null && (! resultData.getParameters().equals(e.getParameters()))) {
-            // TODO: Make ResultData.getParameters() never return null
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if ((resultData.getDataElement() == null) && e.getDataElement() != null) {
-            // TODO: Log.log_2050(TODO);
-            e = null;
-         } else if ((resultData.getDataElement() != null) && (! resultData.getDataElement().equals(e.getDataElement()))) {
-            // TODO: Log.log_2050(TODO);
+         if (! request.equals(e.getRequest())
+         || (! target.equals(e.getTarget()))
+         || (duration != e.getDuration())
+         || (! resultData.getErrorCode().equals(e.getErrorCode()))
+         || ((resultData.getParameters()  == null) && e.getParameters() != null)
+         || (resultData.getParameters()   != null  && (! resultData.getParameters().equals(e.getParameters())))
+         || ((resultData.getDataElement() == null) && e.getDataElement() != null)
+         || ((resultData.getDataElement() != null) && (!  resultData.getDataElement().equals(e.getDataElement())))) {
+            final String DETAIL = "Returned result does not match input.";
+            Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                      SUBJECT_CLASS, SUBJECT_METHOD,
+                                      DETAIL);
             e = null;
          }
       }

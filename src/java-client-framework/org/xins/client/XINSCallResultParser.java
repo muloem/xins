@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -144,12 +145,12 @@ extends Object {
    public XINSCallResultParser() {
 
       // TRACE: Enter constructor
-      Log.log_2000(CLASSNAME, null);
+      org.xins.common.Log.log_1000(CLASSNAME, null);
 
       // empty
 
       // TRACE: Leave constructor
-      Log.log_2002(CLASSNAME, null);
+      org.xins.common.Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -181,10 +182,10 @@ extends Object {
    public XINSCallResultData parse(byte[] xml)
    throws IllegalArgumentException, ParseException {
 
-      final String METHODNAME = "parse(byte[])";
+      final String THIS_METHOD = "parse(byte[])";
 
       // TRACE: Enter method
-      Log.log_2003(CLASSNAME, METHODNAME, null);
+      org.xins.common.Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
@@ -192,17 +193,17 @@ extends Object {
       // Initialize our SAX event handler
       Handler handler = new Handler();
 
-      ByteArrayInputStream bais = null;
+      ByteArrayInputStream stream = null;
       try {
 
          // Construct a SAX parser
          SAXParser saxParser = SAX_PARSER_FACTORY.newSAXParser();
 
          // Convert the byte array to an input stream
-         bais = new ByteArrayInputStream(xml);
+         stream = new ByteArrayInputStream(xml);
 
          // Let SAX parse the XML, using our handler
-         saxParser.parse(bais, handler);
+         saxParser.parse(stream, handler);
 
       } catch (Throwable exception) {
 
@@ -226,17 +227,21 @@ extends Object {
 
       // Always dispose the ByteArrayInputStream
       } finally {
-         if (bais != null) {
+         if (stream != null) {
             try {
-               bais.close();
+               stream.close();
             } catch (IOException ioException) {
-               Log.log_2052(ioException, bais.getClass().getName(), "close()");
+               final String SUBJECT_CLASS  = stream.getClass().getName();
+               final String SUBJECT_METHOD = "close()";
+               Utils.logProgrammingError(CLASSNAME,    THIS_METHOD,
+                                        SUBJECT_CLASS, SUBJECT_METHOD,
+                                        null,          ioException);
             }
          }
       }
 
       // TRACE: Leave method
-      Log.log_2005(CLASSNAME, METHODNAME, null);
+      org.xins.common.Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return handler;
    }
@@ -270,7 +275,7 @@ extends Object {
       private Handler() {
 
          // TRACE: Enter constructor
-         Log.log_2000(HANDLER_CLASSNAME, null);
+         org.xins.common.Log.log_1000(HANDLER_CLASSNAME, null);
 
          _state            = INITIAL;
          _level            = -1;
@@ -278,7 +283,7 @@ extends Object {
          _dataElementStack = new Stack();
 
          // TRACE: Leave constructor
-         Log.log_2002(HANDLER_CLASSNAME, null);
+         org.xins.common.Log.log_1002(HANDLER_CLASSNAME, null);
       }
 
 
@@ -364,7 +369,11 @@ extends Object {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
-         final String METHODNAME = "startElement(String,String,String,Attributes)";
+         final String THIS_METHOD = "startElement(java.lang.String,"
+                                  + "java.lang.String,"
+                                  + "java.lang.String,"
+                                  + Attributes.class.getName()
+                                  + ')';
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
@@ -377,7 +386,7 @@ extends Object {
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
          // TRACE: Enter method
-         Log.log_2003(HANDLER_CLASSNAME, METHODNAME,
+         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + currentState
                     + "; _level="       + _level
                     + "; namespaceURI=" + quotedNamespaceURI
@@ -391,23 +400,30 @@ extends Object {
          _level++;
 
          if (currentState == ERROR) {
-            String message = "_state=" + currentState + "; _level=" + _level;
-            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                            HANDLER_CLASSNAME, THIS_METHOD,
+                                            DETAIL);
 
          } else if (currentState == INITIAL) {
 
             // Level and state must comply
             if (_level != 0) {
-               String message = "_state=" + currentState + "; _level=" + _level;
-               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-               throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+               final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+               throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                               HANDLER_CLASSNAME, THIS_METHOD,
+                                               DETAIL);
             }
 
             // Root element must be 'result' without namespace
             if (! (namespaceURI == null && localName.equals("result"))) {
                Log.log_2200(namespaceURI, localName);
-               throw new SAXException("Root element is \"" + localName + "\" with namespace " + quotedNamespaceURI + " instead of \"result\" with namespace (null).");
+               final String DETAIL = "Root element is \""
+                                   + localName
+                                   + "\" with namespace "
+                                   + quotedNamespaceURI
+                                   + " instead of \"result\" with namespace (null).";
+               throw new SAXException(DETAIL);
             }
 
             // Get the 'errorcode' and 'code attributes
@@ -504,12 +520,13 @@ extends Object {
 
          // Unrecognized state
          } else {
-            String message = "_state=" + currentState + "; _level=" + _level;
-            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                            HANDLER_CLASSNAME, THIS_METHOD,
+                                            DETAIL);
          }
 
-         Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
+         org.xins.common.Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + _state
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -542,7 +559,9 @@ extends Object {
                              String qName)
       throws IllegalArgumentException, SAXException {
 
-         final String METHODNAME = "endElement(String,String,String)";
+         final String THIS_METHOD = "endElement(java.lang.String,"
+                                  + "java.lang.String,"
+                                  + "java.lang.String)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
@@ -555,7 +574,7 @@ extends Object {
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
          // TRACE: Enter method
-         Log.log_2003(HANDLER_CLASSNAME, METHODNAME,
+         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + currentState
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -566,17 +585,23 @@ extends Object {
          MandatoryArgumentChecker.check("localName", localName);
 
          if (currentState == ERROR) {
-            String message = "_state=" + currentState + "; _level=" + _level;
-            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, message);
-            throw new SAXException("Unexpected state: " + message + ". Programming error suspected.");
+            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                            HANDLER_CLASSNAME, THIS_METHOD,
+                                            DETAIL);
 
          // At root level
          } else if (currentState == AT_ROOT_LEVEL) {
 
             if (! (namespaceURI == null && "result".equals(localName))) {
-               String detail = "Expected end of element of type \"result\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
-               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-               throw new SAXException(detail);
+               final String DETAIL = "Expected end of element of type \"result\" with namespace (null) instead of \""
+                                   + localName
+                                   + "\" with namespace "
+                                   + quotedNamespaceURI
+                                   + '.';
+               throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                               HANDLER_CLASSNAME, THIS_METHOD,
+                                               DETAIL);
             }
             _state = FINISHED;
 
@@ -597,9 +622,14 @@ extends Object {
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
             if (_dataElementStack.size() == 0) {
                if (! (namespaceURI == null && "data".equals(localName))) {
-                  String detail = "Expected end of element of type \"data\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
-                  Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-                  throw new SAXException(detail);
+                  final String DETAIL = "Expected end of element of type \"data\" with namespace (null) instead of \""
+                                      + localName
+                                      + "\" with namespace "
+                                      + quotedNamespaceURI
+                                      + '.';
+                  throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                                  HANDLER_CLASSNAME, THIS_METHOD,
+                                                  DETAIL);
                }
 
                // Push the root DataElement back
@@ -628,9 +658,14 @@ extends Object {
          } else if (currentState == IN_PARAM_ELEMENT) {
 
             if (! (namespaceURI == null && "param".equals(localName))) {
-               String detail = "Expected end of element of type \"param\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + ". Programming error suspected.";
-               Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-               throw new SAXException(detail);
+               final String DETAIL = "Expected end of element of type \"param\" with namespace (null) instead of \""
+                                   + localName
+                                   + "\" with namespace "
+                                   + quotedNamespaceURI
+                                   + '.';
+               throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                               HANDLER_CLASSNAME, THIS_METHOD,
+                                               DETAIL);
             }
 
             // Retrieve name and value for output parameter
@@ -661,7 +696,14 @@ extends Object {
                   if (existingValue != null) {
                      if (!existingValue.equals(value)) {
                         // NOTE: This will be logged already (message 2205)
-                        throw new SAXException("Found conflicting duplicate value for output parameter \"" + name + "\". Initial value is \"" + existingValue + "\". New value is \"" + value + "\".");
+                        final String DETAIL = "Found conflicting duplicate value for output parameter \""
+                                            + name
+                                            + "\". Initial value is \""
+                                            + existingValue
+                                            + "\". New value is \""
+                                            + value +
+                                            "\".";
+                        throw new SAXException(DETAIL);
                      }
                   }
                }
@@ -677,16 +719,19 @@ extends Object {
 
          // Unknown state
          } else {
-            String detail = "Unrecognized state: " + currentState + ". Programming error suspected.";
-            Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-            throw new SAXException(detail);
+            final String DETAIL = "Unrecognized state: "
+                                + currentState
+                                + ". Programming error suspected.";
+            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                            HANDLER_CLASSNAME, THIS_METHOD,
+                                            DETAIL);
          }
 
          _level--;
          _characters.clear();
 
          // TRACE: Leave method
-         Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
+         org.xins.common.Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
                         "_state="       + _state
                     + "; _level="       + _level
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
@@ -716,14 +761,14 @@ extends Object {
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException, SAXException {
 
-         final String METHODNAME = "characters(char[],int,int)";
+         final String THIS_METHOD = "characters(char[],int,int)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
 
          // TRACE: Enter method
-         Log.log_2003(HANDLER_CLASSNAME, METHODNAME, null);
+         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD, null);
 
          // Check state
          if (currentState != IN_PARAM_ELEMENT
@@ -753,10 +798,21 @@ extends Object {
        */
       private void assertFinished()
       throws IllegalStateException {
+
          if (_state != FINISHED) {
-            String detail = "State is " + _state + " instead of " + FINISHED + ". Programming error suspected.";
-            Log.log_2050(HANDLER_CLASSNAME, "getDataElement()", detail);
-            throw new IllegalStateException(detail);
+
+            // TODO: Should SUBJECT_METHOD not be something else?
+            final String THIS_METHOD    = "assertFinished()";
+            final String SUBJECT_METHOD = Utils.getCallingMethod();
+            final String DETAIL = "State is "
+                                + _state
+                                + " instead of "
+                                + FINISHED
+                                + '.';
+            Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
+                                      HANDLER_CLASSNAME, SUBJECT_METHOD,
+                                      DETAIL);
+            throw new IllegalStateException(DETAIL);
          }
       }
 

@@ -417,8 +417,12 @@ public class DataElement implements Cloneable {
       // Check preconditions
       MandatoryArgumentChecker.check("child", child);
       if (child == this) {
+         final String SUBJECT_CLASS  = Utils.getCallingClass();
+         final String SUBJECT_METHOD = Utils.getCallingMethod();
          final String DETAIL = "child == this";
-         Log.log_2050(CLASSNAME, THIS_METHOD, DETAIL);
+         Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                   SUBJECT_CLASS, SUBJECT_METHOD,
+                                   DETAIL);
          throw new IllegalArgumentException(DETAIL);
       }
 

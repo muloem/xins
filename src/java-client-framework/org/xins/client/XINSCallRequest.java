@@ -208,7 +208,7 @@ public final class XINSCallRequest extends CallRequest {
 */
 
       // TRACE: Enter constructor
-      Log.log_2000(CLASSNAME, CONSTRUCTOR_DETAIL);
+      org.xins.common.Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
@@ -223,7 +223,7 @@ public final class XINSCallRequest extends CallRequest {
       // TODO: Use shared BasicUnsuccessfulXINSCallExceptionFactory instance
 
       // TRACE: Leave constructor
-      Log.log_2002(CLASSNAME, CONSTRUCTOR_DETAIL);
+      org.xins.common.Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // Note that _asString is lazily initialized.
    }
