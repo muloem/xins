@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.20:
+
+* Cleaned up fallback initialization of Log4J.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.19:
 
 * Fixed NPE in CallContext.
