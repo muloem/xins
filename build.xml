@@ -61,6 +61,8 @@
 
 	<target name="-load-sfproperties">
 		<property name="sf.file" value="${user.home}/.sourceforge.properties" />
+		<available property="sf.file.exists" file="${sf.file}" />
+		<fail message="The file ${sf.file} does not exists" unless="sf.file.exists" />
 		<property file="${sf.file}" />
 		<condition property="sf.isset">
 			<and>
@@ -68,6 +70,7 @@
 				<isset property="sf.password" />
 			</and>
 		</condition>
+		<fail message="The property sf.user or sf.password is not set." unless="sf.isset" />
 	</target>
 
 	<target name="-init-release" depends="-determine-version">
