@@ -80,14 +80,22 @@ extends Spec {
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null || version == null</code>.
     *
+    * @throws InvalidNameException
+    *    if <code>type.</code>{@link SpecType#isValidName(String) isValidName}<code>(name) == false</code>.
+    *
     * @throws InvalidVersionException
     *    if <code>version</code> is not a well-formed version number string.
     */
    private static final SpecType checkArguments(SpecType type, String name, String version)
-   throws IllegalArgumentException, InvalidVersionException {
+   throws IllegalArgumentException, InvalidNameException, InvalidVersionException {
 
       // Check required arguments
       MandatoryArgumentChecker.check("type", type, "name", name, "version", version);
+
+      // Check name string
+      if (type.isValidName(name) == false) {
+         throw new InvalidNameException(type, name);
+      }
 
       // Check version string
       if (PATTERN_MATCHER.matches(version, VERSION_PATTERN) == false) {
