@@ -51,10 +51,29 @@ extends AbstractFunctionCaller {
     */
    private static int PARAMETER_STRING_BUFFER_SIZE = 256;
 
+   /**
+    * Flag that indicates if at the construction of an
+    * <code>ActualFunctionCaller</code> the backend API is called to see if it
+    * is up.
+    */
+   private static boolean CALL_AT_CONSTRUCTION = true;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Set the flag that indicates if at the construction of an
+    * <code>ActualFunctionCaller</code> the backend API is called to see if it
+    * is up.
+    *
+    * @param b
+    *    the new value for the flag.
+    */
+   public void setCallAtConstruction(boolean b) {
+      CALL_AT_CONSTRUCTION = b;
+   }
 
    /**
     * Computes the CRC-32 checksum for the specified URL.
@@ -197,16 +216,22 @@ extends AbstractFunctionCaller {
       _urlString        = urlString;
 
       // Call the API to make sure it's up
-      if (debugEnabled) {
-         LOG.debug("Checking if API at " + urlString + " is up.");
-      }
-      try {
-         call(null, "_NoOp", null);
-         LOG.info("API at " + urlString + " is up.");
-      } catch (IOException exception) {
-         LOG.error("API at " + urlString + " is not accessible.");
-      } catch (InvalidCallResultException exception) {
-         LOG.error("API at " + urlString + " returned an invalid call result.");
+      if (CALL_AT_CONSTRUCTION) {
+         if (debugEnabled) {
+            LOG.debug("Checking if API at " + urlString + " is up.");
+         }
+         try {
+            call(null, "_NoOp", null);
+            LOG.info("API at " + urlString + " is up.");
+         } catch (IOException exception) {
+            LOG.error("API at " + urlString + " is not accessible.");
+         } catch (InvalidCallResultException exception) {
+            LOG.error("API at " + urlString + " returned an invalid call result.");
+         }
+      } else {
+         if (debugEnabled) {
+            LOG.debug("Not checking if API at " + urlString + " is up.");
+         }
       }
    }
 
