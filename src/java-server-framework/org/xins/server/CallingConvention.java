@@ -318,9 +318,12 @@ extends Object {
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
-         // FIXME: Use Utils.logProgrammingError
-         Log.log_3050(SUBJECT_CLASS, SUBJECT_METHOD, "Method returned null.");
-         throw new ProgrammingError(SUBJECT_CLASS + '.' + SUBJECT_METHOD + " returned null.");
+         final String DETAIL = "Method returned null.";
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL);
       }
 
       return xinsRequest;
