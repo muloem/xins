@@ -107,7 +107,22 @@ public final class API extends Object {
     * Calls the <em>]]></xsl:text>
 				<xsl:value-of select="$functionName" />
 				<xsl:text><![CDATA[</em> function.
-    *
+    *]]></xsl:text>
+				<xsl:for-each select="input/param">
+					<xsl:text>
+    * @param </xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>
+    *    </xsl:text>
+					<xsl:call-template name="hungarianLower">
+						<xsl:with-param name="text">
+							<xsl:value-of select="description/text()" />
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text>
+    *</xsl:text>
+				</xsl:for-each>
+				<xsl:text><![CDATA[
     * @return
     *    the result of the call, not <code>null</code>.
     *
@@ -125,10 +140,24 @@ public final class API extends Object {
    public CallResult ]]></xsl:text>
 				<xsl:value-of select="$methodName" />
 				<xsl:text>(</xsl:text>
-				<!-- TODO: Arguments -->
+					<xsl:for-each select="input/param">
+						<xsl:if test="position() &gt; 1">
+							<xsl:text>, </xsl:text>
+						</xsl:if>
+						<xsl:call-template name="class_for_type">
+							<xsl:with-param name="type">
+								<xsl:value-of select="@type" />
+							</xsl:with-param>
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
 				<xsl:text>)
    throws IOException, InvalidCallResultException, UnsuccessfulCallException {
-      return null; // TODO
+      CallResult result = _functionCaller.call("</xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text>", null); // TODO: Pass parameters if any
+      return result;
    }</xsl:text>
 			</xsl:for-each>
 		</xsl:for-each>
@@ -136,5 +165,17 @@ public final class API extends Object {
 		<xsl:text><![CDATA[
 }
 ]]></xsl:text>
+	</xsl:template>
+
+	<xsl:template name="class_for_type">
+		<xsl:param name="type" />
+		<xsl:choose> <!-- XXX: This is a bit dirty -->
+			<xsl:when test="$type = 'boolean'">
+				<xsl:text>boolean</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>java.lang.String</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
