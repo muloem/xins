@@ -23,13 +23,14 @@ XINS/JAVA SERVER FRAMEWORK
   CallResult interface self.
 * CallContext.getCallResult() should either be removed or it should return
   'this'.
-* CallResultBuilder should perhaps not implement CallResult.
-* Consider initializing all LifespanManagers at once.
 * Add state management to the LifespanManagers class.
 * Set state in APIServlet and API classes using private setState(State) method
   that could check that the state transition is valid.
 * Per State in the APIServlet and API classesdefine what a valid next state
   is. Change the setState(State) methods to check this.
+* Consider returning an HTTP error code if the call is unsuccessful.
+* Consider initializing all LifespanManagers at once.
+* CallResultBuilder should perhaps not implement CallResult.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
@@ -64,7 +65,8 @@ GENERATED XINS/JAVA SERVER FUNDAMENT CLASSES
 ______________________________________________________________________________
 GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
-* None
+* Add a method to the CAPI interface that provides functionality to determine
+  what XINS version was used to generate the class.
 
 ______________________________________________________________________________
 MISCELLANEOUS
