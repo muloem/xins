@@ -38,7 +38,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     retain backwards compatibility.
   - Added tests for class ProtectedPropertyReader.
   - Added crop(int) to class FastStringBuffer.
-  - Added class function list(String,Object[],int) to class CollectionUtils.
+  - Added class function list(String,Object[],int) to class CollectionUtils,
+    with unit tests.
+  - Added 2 additional constructors to class ProtectedList and improved the
+    Javadoc API documentation.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
