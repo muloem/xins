@@ -190,6 +190,9 @@ public abstract class Type extends Object {
     * Converts from a <code>String</code> to an instance of the value class
     * for this type (actual implementation method).
     *
+    * <p>This method does not need to check the validity of the specified
+    * value, but if it does, then it may throw a {@link TypeValueException}.
+    *
     * @param string
     *    the string to convert to an instance of the value class, guaranteed
     *    to be not <code>null</code> and guaranteed to have been passed to
@@ -198,7 +201,8 @@ public abstract class Type extends Object {
     * @return
     *    an instance of the value class, cannot be <code>null</code>.
     */
-   protected abstract Object fromStringImpl(String string);
+   protected abstract Object fromStringImpl(String string)
+   throws TypeValueException;
 
    public final String toString() {
       return _name;
