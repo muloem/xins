@@ -151,7 +151,8 @@ GENERATED XINS/JAVA SERVER FUNDAMENT CLASSES
 ______________________________________________________________________________
 GENERATED XINS/JAVA CLIENT CAPI CLASSES
 
-* None
+* Add check to test whether required attributes in returned elements are
+  actually available.
 
 ______________________________________________________________________________
 MISCELLANEOUS
