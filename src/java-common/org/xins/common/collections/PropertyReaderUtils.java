@@ -265,6 +265,80 @@ extends Object {
    }
 
    /**
+    * Serializes the specified <code>PropertyReader</code> to a
+    * <code>FastStringBuffer</code>. For each entry, both the key and the
+    * value are encoded using the Whisl encoding (see {@link WhislEncoding}),
+    * which is similar to URL encoding. The key and value are separated by a
+    * literal equals sign (<code>'='</code>). The entries are separated using
+    * an ampersand (<code>'&amp;'</code>).
+    *
+    * <p>If the value for an entry is either <code>null</code> or an empty
+    * string (<code>""</code>), then nothing is added to the buffer for that
+    * entry.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to serialize, can be <code>null</code>.
+    *
+    * @param buffer
+    *    the buffer to write the serialized data to, cannot be
+    *    <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the string to append to the buffer in case
+    *    <code>properties == null || properties.size() == 0</code>; if this
+    *    argument is <code>null</code>, however, then nothing will be appended
+    *    in the mentioned case..
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || buffer == null</code>.
+    *
+    * @since XINS 0.207
+    */
+   public static final void serialize(PropertyReader   properties,
+                                      FastStringBuffer buffer,
+                                      String           valueIfEmpty)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("buffer", buffer);
+
+      // Catch special case: No properties available.
+      if (properties == null || properties.size() == 0) {
+         if (valueIfEmpty != null) {
+            buffer.append(valueIfEmpty);
+         }
+         return;
+      }
+
+      // Loop over all properties
+      Iterator names = properties.getNames();
+      boolean first = true;
+      while (names.hasNext()) {
+
+         // Get the name and value
+         String name  = (String) names.next();
+         String value = properties.get(name);
+
+         // If the value is null or an empty string, then output nothing
+         if (value == null || value.length() == 0) {
+            continue;
+         }
+
+         // Append an ampersand, except for the first entry
+         if (!first) {
+            buffer.append('&');
+         } else {
+            first = false;
+         }
+
+         // Append the key and the value, separated by an equals sign
+         buffer.append(WhislEncoding.encode(name));
+         buffer.append('=');
+         buffer.append(WhislEncoding.encode(value));
+      }
+   }
+
+   /**
     * Constructs a <code>LogdocSerializable</code> for the specified
     * <code>PropertyReader</code>.
     *
