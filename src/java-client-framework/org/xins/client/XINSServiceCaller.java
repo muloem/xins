@@ -277,6 +277,8 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
+      // TRACE: Enter method
+
       CallResult result;
       try {
          result = doCall(request);
@@ -292,15 +294,15 @@ public final class XINSServiceCaller extends ServiceCaller {
          throw exception;
       } catch (Exception exception) {
          FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
-         message.append(".doCall(");
-         message.append(request.getClass().getName());
-         message.append(") threw ");
+         message.append(".doCall(CallRequest) threw ");
          message.append(exception.getClass().getName());
          message.append(". Message: ");
          message.append(quote(exception.getMessage()));
          message.append('.');
          throw new Error(message.toString(), exception);
       }
+
+      // TODO: TRACE: Leave method
 
       return (XINSCallResult) result;
    }
