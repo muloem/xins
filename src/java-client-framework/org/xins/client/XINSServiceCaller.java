@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +169,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *    the descriptor of the service, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null || method == null</code>.
+    *    if <code>descriptor == null</code>.
     */
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
@@ -199,6 +200,51 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Convert subject to a CallRequest
       CallRequest request = (CallRequest) subject;
 
+      // Disect the CallRequest and forward the method call
+      return call(target,
+                  request.getSessionID(),
+                  request.getFunctionName(),
+                  request.getParameters());
+   }
+
+   /**
+    * Calls the XINS service at the specified target.
+    *
+    * @param target
+    *    the service target on which to execute the request, cannot be
+    *    <code>null</code>.
+    *
+    * @param sessionID
+    *    the session identifier, if any, or <code>null</code> if the function
+    *    is session-less.
+    *
+    * @param functionName
+    *    the name of the function to be called, not <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters to be passed to that function, or
+    *    <code>null</code>; keys must be {@link String Strings}, values can be
+    *    of any class.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || functionName == null</code>.
+    *
+    * @throws CallException
+    *    if the call failed.
+    */
+   public Result call(TargetDescriptor target,
+                      String sessionID,
+                      String functionName,
+                      Map    parameters)
+   throws IllegalArgumentException, CallException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target",       target,
+                                     "functionName", functionName);
+
       // Construct new HttpClient and PostMethod objects
       HttpClient client = new HttpClient();
       PostMethod method = new PostMethod(target.getURL());
@@ -219,6 +265,8 @@ public final class XINSServiceCaller extends ServiceCaller {
          code = method.getStatusCode();
 
          succeeded = true;
+      } catch (IOException ioException) {
+         throw new CallIOException(ioException);
       } finally {
 
          // Release the connection
@@ -245,7 +293,11 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       // Parse and return the result
-      return _parser.parse(target, body);
+      try {
+         return _parser.parse(target, body);
+      } catch (ParseException parseException) {
+         throw new InvalidCallResultException(parseException.getMessage());
+      }
    }
 
    /**
