@@ -214,4 +214,8 @@ extends Object {
    public void touch() {
       // TODO
    }
+
+   public String toString() {
+      return _id.toString();
+   }
 }
