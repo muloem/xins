@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 0.161:
   - Documented the Throwable exception thrown by call(...) method in the
     generated fundament class for a function.
 
+* XINS/Java Common Library:
+  - Added the SingleEntryMap class. This class is the implementation of a 
+    Map that can only include one entry. Some unit tests testing this class
+    has also been added.
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.160:
 
