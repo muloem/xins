@@ -112,7 +112,8 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="-init-release-properties" depends="-load-version">
-		<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+		<property name="version"           value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+                <property name="tests.deprecation" value="false"  />
 	</target>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
@@ -139,10 +140,11 @@ ${sf.file}</fail>
 		<property name="www.url"             value="http://www.xins.org/" />
 
 		<!-- Java compiler-related properties -->
-		<property name="javac.targetvm"      value="1.4" />
+		<property name="javac.targetvm"      value="1.4"   />
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.deprecation"   value="true"  />
 		<property name="javac.optimize"      value="false" />
+                <property name="tests.deprecation"   value="true"  />
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
@@ -441,7 +443,7 @@ ${sf.file}</fail>
 		destdir="build/classes/tests"
 		includes="org/xins/**/*.java"
 		debug="true"
-		deprecation="true"
+		deprecation="${tests.deprecation}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">
 			<src path="src/tests" />
