@@ -238,7 +238,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
     */
-   public final class Statistics extends Object {
+   final class Statistics extends Object {
 
       //----------------------------------------------------------------------
       // Constructors
