@@ -415,8 +415,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
     *
     * @throws org.xins.client.CallException
-    *    if the call failed, see the subclasses of class {@link CallException}
-    *    for more details.
+    *    if the call failed, see the subclasses of class
+    *    {@link org.xins.client.CallException} for more details.
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />
