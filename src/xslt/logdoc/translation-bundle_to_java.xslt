@@ -212,7 +212,7 @@ import org.xins.logdoc.LogdocStringBuffer;
 			<xsl:when test="string-length(.) = 1">
 				<xsl:text>
       buffer.append('</xsl:text>
-				<xsl:call-template name="xml_to_java_string"> <!-- TODO: xml_to_java_char -->
+				<xsl:call-template name="quote_characters"> <!-- TODO: xml_to_java_char -->
 					<xsl:with-param name="text" select="." />
 				</xsl:call-template>
 				<xsl:text>');</xsl:text>

@@ -14,6 +14,14 @@ $Id$
 	<xsl:template name="xml_to_java_string">
 		<xsl:param name="text" />
 
+		<xsl:call-template name="quote_characters">
+			<xsl:with-param name="text" select="normalize-space($text)" />
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="quote_characters">
+		<xsl:param name="text" />
+
 		<xsl:variable name="firstchar">
 			<xsl:value-of select="substring($text, 1, 1)" />
 		</xsl:variable>
@@ -33,7 +41,7 @@ $Id$
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<xsl:call-template name="xml_to_java_string">
+				<xsl:call-template name="quote_characters">
 					<xsl:with-param name="text" select="$rest" />
 				</xsl:call-template>
 			</xsl:otherwise>

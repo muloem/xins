@@ -26,6 +26,8 @@ CHANGES INTRODUCED IN XINS 0.201:
   - No longer automatically logging the log entry counter (followed by a
     space) before the actual translation as specified in the translation file.
     The fallback default message, however, still includes the entry counter.
+  - Added the possibility to have a multi-line text in the translation element
+    of the translation-bundle.xml file.
 
 * XINS/Java Common Library:
   - PropertyReader interface no longer directly extends LogdocSerializable.
