@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 0.119:
     UnknownSessionIDException classes.
   - Improved logging. Always including call ID.
 
+* Generation of specification documentation:
+  - Fixed link to API owner mail address.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.118:
 
