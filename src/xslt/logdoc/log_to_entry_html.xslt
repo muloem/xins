@@ -44,7 +44,7 @@
 					<xsl:text>Log entry </xsl:text>
 					<xsl:value-of select="$entry" />
 				</h1>
-				<xsl:apply-templates select="entry[@id = $entry]" />
+				<xsl:apply-templates select="group/entry[@id = $entry]" />
 
 				<h2>Message sets</h2>
 				<xsl:choose>
@@ -65,31 +65,37 @@
 		</html>
 	</xsl:template>
 
-	<xsl:template match="entry">
+	<xsl:template match="group/entry">
 		<h2>Details for this entry</h2>
 		<table type="entry">
+			<tr>
+				<th>Group</th>
+				<td>
+					<xsl:value-of select="../@name" />
+				</td>
+			</tr>
+			<tr>
+				<th>Group category</th>
+				<td>
+					<xsl:value-of select="../@category" />
+				</td>
+			</tr>
 			<tr>
 				<th>ID</th>
 				<td>
 					<xsl:value-of select="@id" />
 				</td>
-			<tr>
 			</tr>
+			<tr>
 				<th>Description</th>
 				<td>
 					<xsl:apply-templates select="description" />
 				</td>
-			<tr>
 			</tr>
+			<tr>
 				<th>Level</th>
 				<td>
 					<xsl:value-of select="@level" />
-				</td>
-			<tr>
-			</tr>
-				<th>Category</th>
-				<td>
-					<xsl:value-of select="@category" />
 				</td>
 			</tr>
 		</table>

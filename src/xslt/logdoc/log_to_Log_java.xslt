@@ -189,7 +189,7 @@ public class Log extends Object {
       TRANSLATION_BUNDLE = bundle;
    }]]></xsl:text>
 
-		<xsl:apply-templates select="entry" />
+		<xsl:apply-templates select="group/entry" />
 
 		<xsl:text><![CDATA[
 
@@ -267,13 +267,16 @@ public class Log extends Object {
 ]]></xsl:text>
 	</xsl:template>
 
-	<xsl:template match="entry">
+	<xsl:template match="group/entry">
 		<xsl:text>
 
    /**
     * Logs the entry with ID </xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text><![CDATA[. The description for this log entry is:
+		<xsl:text><![CDATA[, in the log entry group <em>]]></xsl:text>
+		<xsl:value-of select="../@name" />
+		<xsl:text><![CDATA[</em>.
+    * The description for this log entry is:
     * <blockquote><em>]]></xsl:text>
 		<xsl:apply-templates select="description" />
 		<xsl:text><![CDATA[</em></blockquote>
@@ -288,7 +291,7 @@ public class Log extends Object {
 		</xsl:for-each>
 		<xsl:text>) {
       final Logger LOG = Logger.getLogger("</xsl:text>
-		<xsl:value-of select="@category" />
+		<xsl:value-of select="../@category" />
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>");

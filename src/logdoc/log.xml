@@ -11,349 +11,346 @@
 	<translation-bundle locale="en_US" />
 	<translation-bundle locale="nl_NL" />
 
-	<entry id="0" level="DEBUG" category="org.xins.server.lifespan">
-		<description>State change in APIServlet instance.</description>
-		<param name="oldState" />
-		<param name="newState" />
-	</entry>
+	<group name="Internal" category="org.xins.server.lifespan">
+		<entry id="0" level="DEBUG">
+			<description>State change in APIServlet instance.</description>
+			<param name="oldState" />
+			<param name="newState" />
+		</entry>
+	</group>
 
+	<group name="Bootstrapping" category="org.xins.server.lifespan.bootstrap">
+		<entry id="2000" level="DEBUG">
+			<description>Bootstrapping XINS/Java Server Framework.</description>
+		</entry>
+		<entry id="2001" level="ERROR">
+			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
+			<param name="state" />
+		</entry>
+		<entry id="2002" level="FATAL">
+			<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
+			<param name="detail" />
+		</entry>
+		<entry id="2003" level="WARNING">
+			<description>Application server implements unexpected version of Java Servlet API Specification.</description>
+			<param name="actual_version" />
+			<param name="expected_version" />
+		</entry>
+		<entry id="2004" level="ERROR">
+			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
+			<param name="propertyName" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="2005" level="FATAL">
+			<description>System property that defines the runtime properties file to use is not set.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="2006" level="FATAL">
+			<description>API class name not set in build property.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="2007" level="FATAL">
+			<description>API class cannot be loaded.</description>
+			<param name="propertyName" />
+			<param name="apiClass" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="2008" level="FATAL">
+			<description>API class is invalid, since it does not derive from the correct class.</description>
+			<param name="propertyName" />
+			<param name="apiClass" />
+			<param name="superClass" />
+		</entry>
+		<entry id="2009" level="FATAL">
+			<description>Bootstrap of API class failed due to a missing but required property.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="2010" level="FATAL">
+			<description>Bootstrap of API class failed due to an invalid property value.</description>
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="2011" level="FATAL">
+			<description>Bootstrap of API class failed.</description>
+			<param name="message" />
+		</entry>
+		<entry id="111" level="FATAL">
+			<description>Bootstrap of API class failed due to an exception.</description>
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="112" level="DEBUG">
+			<description>API is session-oriented.</description>
+		</entry>
+		<entry id="113" level="DEBUG">
+			<description>API is not session-oriented.</description>
+		</entry>
+		<entry id="114" level="DEBUG">
+			<description>Starting session-related bootstrapping of API.</description>
+		</entry>
+		<entry id="115" level="DEBUG">
+			<description>Finished session-related bootstrapping of API.</description>
+		</entry>
+		<entry id="116" level="INFO">
+			<description>Session time-out and time-out precision are set.</description>
+			<param name="timeOut" />
+			<param name="timeOutPrecision" />
+		</entry>
+		<entry id="117" level="INFO">
+			<description>Determining build-time settings.</description>
+			<param name="buildHost" />
+			<param name="buildTime" />
+			<param name="buildVersion" />
+		</entry>
+		<entry id="118" level="DEBUG">
+			<description>Bootstrapping manageable object registered with the API.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="119" level="DEBUG">
+			<description>Bootstrapped manageable object registered with the API.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="120" level="ERROR">
+			<description>Manageable object could not be initialized due to a missing required property.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="propertyName" />
+		</entry>
+		<entry id="121" level="ERROR">
+			<description>Manageable object could not be initialized due to an invalid property value.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="122" level="ERROR">
+			<description>Manageable object could not be initialized.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="message" />
+		</entry>
+		<entry id="123" level="ERROR">
+			<description>Manageable object could not be initialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="129" level="DEBUG">
+			<description>Adding manageable object to API.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="130" level="DEBUG">
+			<description>Manageable object added to API.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="138" level="DEBUG">
+			<description>Bootstrapping function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="139" level="DEBUG">
+			<description>Bootstrapped function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="140" level="ERROR">
+			<description>Function could not be initialized due to a missing required property.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+		</entry>
+		<entry id="141" level="ERROR">
+			<description>Function could not be initialized due to an invalid property value.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="142" level="ERROR">
+			<description>Function could not be initialized.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="message" />
+		</entry>
+		<entry id="143" level="ERROR">
+			<description>Function could not be initialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+	</group>
 
-	<!-- Bootstrapping -->
+	<group name="Logging subsystem" category="org.xins.server.log">
+		<entry id="3000" level="DEBUG">
+			<description>Initializing logging subsystem.</description>
+		</entry>
+		<entry id="3001" level="ERROR">
+			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
+			<param name="configFile" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="3002" level="ERROR">
+			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
+			<param name="configFile" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="3003" level="ERROR">
+			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
+			<param name="configFile" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="3004" level="WARNING">
+			<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
+			<param name="configFile" />
+		</entry>
+		<entry id="3005" level="DEBUG">
+			<description>Logging subsystem has been properly initialized.</description>
+		</entry>
+		<entry id="3006" level="INFO">
+			<description>About to change locale for the log messages.</description>
+			<param name="oldLocale" />
+			<param name="newLocale" />
+		</entry>
+		<entry id="3007" level="NOTICE">
+			<description>Changed locale for the log messages.</description>
+			<param name="oldLocale" />
+			<param name="newLocale" />
+		</entry>
+		<entry id="3008" level="ERROR">
+			<description>Failed to change the locale for the log messages.</description>
+			<param name="currentLocale" />
+			<param name="failedLocale" />
+		</entry>
+	</group>
 
-	<entry id="2000" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapping XINS/Java Server Framework.</description>
-	</entry>
-	<entry id="2001" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
-		<param name="state" />
-	</entry>
-	<entry id="2002" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
-		<param name="detail" />
-	</entry>
-	<entry id="2003" level="WARNING" category="org.xins.server.lifespan.bootstrap">
-		<description>Application server implements unexpected version of Java Servlet API Specification.</description>
-		<param name="actual_version" />
-		<param name="expected_version" />
-	</entry>
-	<entry id="2004" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
-		<param name="propertyName" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="2005" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>System property that defines the runtime properties file to use is not set.</description>
-		<param name="propertyName" />
-	</entry>
-	<entry id="2006" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>API class name not set in build property.</description>
-		<param name="propertyName" />
-	</entry>
-	<entry id="2007" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>API class cannot be loaded.</description>
-		<param name="propertyName" />
-		<param name="apiClass" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="2008" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>API class is invalid, since it does not derive from the correct class.</description>
-		<param name="propertyName" />
-		<param name="apiClass" />
-		<param name="superClass" />
-	</entry>
-	<entry id="2009" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrap of API class failed due to a missing but required property.</description>
-		<param name="propertyName" />
-	</entry>
-	<entry id="2010" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrap of API class failed due to an invalid property value.</description>
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="2011" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrap of API class failed.</description>
-		<param name="message" />
-	</entry>
-	<entry id="111" level="FATAL" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrap of API class failed due to an exception.</description>
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="112" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>API is session-oriented.</description>
-	</entry>
-	<entry id="113" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>API is not session-oriented.</description>
-	</entry>
-	<entry id="114" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Starting session-related bootstrapping of API.</description>
-	</entry>
-	<entry id="115" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Finished session-related bootstrapping of API.</description>
-	</entry>
-	<entry id="116" level="INFO" category="org.xins.server.lifespan.bootstrap">
-		<description>Session time-out and time-out precision are set.</description>
-		<param name="timeOut" />
-		<param name="timeOutPrecision" />
-	</entry>
-	<entry id="117" level="INFO" category="org.xins.server.lifespan.bootstrap">
-		<description>Determining build-time settings.</description>
-		<param name="buildHost" />
-		<param name="buildTime" />
-		<param name="buildVersion" />
-	</entry>
-	<entry id="118" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapping manageable object registered with the API.</description>
-		<param name="api" />
-		<param name="className" />
-	</entry>
-	<entry id="119" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapped manageable object registered with the API.</description>
-		<param name="api" />
-		<param name="className" />
-	</entry>
-	<entry id="120" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Manageable object could not be initialized due to a missing required property.</description>
-		<param name="api" />
-		<param name="className" />
-		<param name="propertyName" />
-	</entry>
-	<entry id="121" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Manageable object could not be initialized due to an invalid property value.</description>
-		<param name="api" />
-		<param name="className" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="122" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Manageable object could not be initialized.</description>
-		<param name="api" />
-		<param name="className" />
-		<param name="message" />
-	</entry>
-	<entry id="123" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Manageable object could not be initialized due to an unexpected exception.</description>
-		<param name="api" />
-		<param name="className" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="129" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Adding manageable object to API.</description>
-		<param name="api" />
-		<param name="className" />
-	</entry>
-	<entry id="130" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Manageable object added to API.</description>
-		<param name="api" />
-		<param name="className" />
-	</entry>
-	<entry id="138" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapping function.</description>
-		<param name="api" />
-		<param name="function" />
-	</entry>
-	<entry id="139" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
-		<description>Bootstrapped function.</description>
-		<param name="api" />
-		<param name="function" />
-	</entry>
-	<entry id="140" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Function could not be initialized due to a missing required property.</description>
-		<param name="api" />
-		<param name="function" />
-		<param name="propertyName" />
-	</entry>
-	<entry id="141" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Function could not be initialized due to an invalid property value.</description>
-		<param name="api" />
-		<param name="function" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="142" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Function could not be initialized.</description>
-		<param name="api" />
-		<param name="function" />
-		<param name="message" />
-	</entry>
-	<entry id="143" level="ERROR" category="org.xins.server.lifespan.bootstrap">
-		<description>Function could not be initialized due to an unexpected exception.</description>
-		<param name="api" />
-		<param name="function" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
+	<group name="Initialization" category="org.xins.server.lifespan.init">
+		<entry id="4000" level="WARNING">
+			<description>Runtime properties file cannot be opened.</description>
+			<param name="configFile" />
+		</entry>
+		<entry id="4001" level="WARNING">
+			<description>Runtime properties file cannot be opened, due to a security restriction.</description>
+			<param name="configFile" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="4002" level="DEBUG">
+			<description>Runtime properties file is not modified.</description>
+			<param name="configFile" nullable="false" />
+		</entry>
+		<entry id="4003" level="NOTICE">
+			<description>Runtime properties file watch interval changed.</description>
+			<param name="configFile" nullable="false" />
+			<param name="oldInterval" nullable="false" />
+			<param name="newInterval" nullable="false" />
+		</entry>
+		<entry id="4004" level="INFO">
+			<description>Determined local timezone.</description>
+			<param name="shortName" />
+			<param name="longName"  />
+		</entry>
+		<entry id="4005" level="INFO">
+			<description>Initializing API.</description>
+			<param name="api" />
+		</entry>
+		<entry id="4006" level="INFO">
+			<description>Initialized API.</description>
+			<param name="api" />
+		</entry>
+		<entry id="4007" level="DEBUG">
+			<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
+			<param name="configFile" nullable="false" />
+		</entry>
+		<entry id="4008" level="DEBUG">
+			<description>Runtime properties file watch interval not specified, using fallback default.</description>
+			<param name="configFile" />
+			<param name="propertyName" />
+		</entry>
+		<entry id="4009" level="DEBUG">
+			<description>Parsing the runtime properties file watch interval.</description>
+			<param name="configFile" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4010" level="ERROR">
+			<description>Runtime properties file watch interval property value is invalid.</description>
+			<param name="configFile" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4011" level="DEBUG">
+			<description>Runtime properties file watch interval successfully parsed.</description>
+			<param name="configFile" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4012" level="INFO">
+			<description>Commencing runtime properties file watching.</description>
+			<param name="configFile" />
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4013" level="ERROR">
+			<description>API could not be initialized due to a missing required property.</description>
+			<param name="propertyName" />
+		</entry>
+		<entry id="4014" level="ERROR">
+			<description>API could not be initialized due to an invalid property value.</description>
+			<param name="propertyName" />
+			<param name="propertyValue" />
+		</entry>
+		<entry id="4015" level="ERROR">
+			<description>API could not be initialized.</description>
+			<param name="message" />
+		</entry>
+		<entry id="4016" level="ERROR">
+			<description>API could not be initialized due to an unexpected exception.</description>
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="4017" level="NOTICE">
+			<description>XINS/Java Server Framework has been initialized.</description>
+		</entry>
+		<entry id="4018" level="NOTICE">
+			<description>XINS/Java Server Framework has been re-initialized.</description>
+		</entry>
+	</group>
 
+	<group name="Runtime" category="org.xins.server.runtime">
+		<entry id="5000" level="ERROR">
+			<description>Received HTTP request with invalid method.</description>
+			<param name="ip" />
+			<param name="method" />
+		</entry>
+		<entry id="5001" level="INFO">
+			<description>Received HTTP request with valid method.</description>
+			<param name="ip" />
+			<param name="method" />
+		</entry>
+	</group>
 
-	<!-- Logging subsystem -->
-
-	<entry id="3000" level="DEBUG" category="org.xins.server.log">
-		<description>Initializing logging subsystem.</description>
-	</entry>
-	<entry id="3001" level="ERROR" category="org.xins.server.log">
-		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
-		<param name="configFile" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="3002" level="ERROR" category="org.xins.server.log">
-		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>
-		<param name="configFile" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="3003" level="ERROR" category="org.xins.server.log">
-		<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to an I/O error.</description>
-		<param name="configFile" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="3004" level="WARNING" category="org.xins.server.log">
-		<description>Logging subsystem not properly initialized, falling back to default initialization properties.</description>
-		<param name="configFile" />
-	</entry>
-	<entry id="3005" level="DEBUG" category="org.xins.server.log">
-		<description>Logging subsystem has been properly initialized.</description>
-	</entry>
-	<entry id="3006" level="INFO" category="org.xins.server.log">
-		<description>About to change locale for the log messages.</description>
-		<param name="oldLocale" />
-		<param name="newLocale" />
-	</entry>
-	<entry id="3007" level="NOTICE" category="org.xins.server.log">
-		<description>Changed locale for the log messages.</description>
-		<param name="oldLocale" />
-		<param name="newLocale" />
-	</entry>
-	<entry id="3008" level="ERROR" category="org.xins.server.log">
-		<description>Failed to change the locale for the log messages.</description>
-		<param name="currentLocale" />
-		<param name="failedLocale" />
-	</entry>
-
-
-	<!-- Initialization -->
-
-	<entry id="4000" level="WARNING" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file cannot be opened.</description>
-		<param name="configFile" />
-	</entry>
-	<entry id="4001" level="WARNING" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file cannot be opened, due to a security restriction.</description>
-		<param name="configFile" />
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="4002" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file is not modified.</description>
-		<param name="configFile" nullable="false" />
-	</entry>
-	<entry id="4003" level="NOTICE" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file watch interval changed.</description>
-		<param name="configFile" nullable="false" />
-		<param name="oldInterval" nullable="false" />
-		<param name="newInterval" nullable="false" />
-	</entry>
-	<entry id="4004" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Determined local timezone.</description>
-		<param name="shortName" />
-		<param name="longName"  />
-	</entry>
-	<entry id="4005" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Initializing API.</description>
-		<param name="api" />
-	</entry>
-	<entry id="4006" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Initialized API.</description>
-		<param name="api" />
-	</entry>
-	<entry id="4007" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file modified. Re-initializing XINS/Java Server Framework.</description>
-		<param name="configFile" nullable="false" />
-	</entry>
-	<entry id="4008" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file watch interval not specified, using fallback default.</description>
-		<param name="configFile" />
-		<param name="propertyName" />
-	</entry>
-	<entry id="4009" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Parsing the runtime properties file watch interval.</description>
-		<param name="configFile" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="4010" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file watch interval property value is invalid.</description>
-		<param name="configFile" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="4011" level="DEBUG" category="org.xins.server.lifespan.init">
-		<description>Runtime properties file watch interval successfully parsed.</description>
-		<param name="configFile" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="4012" level="INFO" category="org.xins.server.lifespan.init">
-		<description>Commencing runtime properties file watching.</description>
-		<param name="configFile" />
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="4013" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>API could not be initialized due to a missing required property.</description>
-		<param name="propertyName" />
-	</entry>
-	<entry id="4014" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>API could not be initialized due to an invalid property value.</description>
-		<param name="propertyName" />
-		<param name="propertyValue" />
-	</entry>
-	<entry id="4015" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>API could not be initialized.</description>
-		<param name="message" />
-	</entry>
-	<entry id="4016" level="ERROR" category="org.xins.server.lifespan.init">
-		<description>API could not be initialized due to an unexpected exception.</description>
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="4017" level="NOTICE" category="org.xins.server.lifespan.init">
-		<description>XINS/Java Server Framework has been initialized.</description>
-	</entry>
-	<entry id="4018" level="NOTICE" category="org.xins.server.lifespan.init">
-		<description>XINS/Java Server Framework has been re-initialized.</description>
-	</entry>
-
-
-	<!-- Runtime -->
-
-	<entry id="5000" level="ERROR" category="org.xins.server.runtime">
-		<description>Received HTTP request with invalid method.</description>
-		<param name="ip" />
-		<param name="method" />
-	</entry>
-	<entry id="5001" level="INFO" category="org.xins.server.runtime">
-		<description>Received HTTP request with valid method.</description>
-		<param name="ip" />
-		<param name="method" />
-	</entry>
-
-
-	<!-- Shutdown -->
-
-	<entry id="6000" level="NOTICE" category="org.xins.server.lifespan.shutdown">
-		<description>Shutting down XINS/Java Server Framework.</description>
-	</entry>
-	<entry id="6001" level="ERROR" category="org.xins.server.lifespan.shutdown">
-		<description>Deinitialization of API triggered an exception.</description>
-		<param name="exceptionClass" />
-		<param name="exceptionMessage" />
-	</entry>
-	<entry id="6002" level="NOTICE" category="org.xins.server.lifespan.shutdown">
-		<description>XINS/Java Server Framework shutdown completed.</description>
-	</entry>
+	<group name="Shutdown" category="org.xins.server.lifespan.shutdown">
+		<entry id="6000" level="NOTICE">
+			<description>Shutting down XINS/Java Server Framework.</description>
+		</entry>
+		<entry id="6001" level="ERROR">
+			<description>Deinitialization of API triggered an exception.</description>
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="6002" level="NOTICE">
+			<description>XINS/Java Server Framework shutdown completed.</description>
+		</entry>
+	</group>
 </log>

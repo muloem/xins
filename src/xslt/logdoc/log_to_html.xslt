@@ -82,55 +82,61 @@
 				</ul>
 
 				<h2>Message entries</h2>
-				<p>The following message entries are declared:</p>
-				<table type="entries">
-					<tr>
-						<th title="The unique identifier of the entry">ID</th>
-						<th title="A description of the message entry, in US English">Description</th>
-						<th title="The log level for the message, ranging from DEBUG to FATAL">Level</th>
-						<th title="The logging category">Category</th>
-						<th title="Number of parameters the message accepts">Parameters</th>
-						<th title="Number of available translations for this message entry">Translations</th>
-					</tr>
-					<xsl:for-each select="entry">
-						<xsl:variable name="entry_link">
-							<xsl:text>entry-</xsl:text>
-							<xsl:value-of select="@id" />
-							<xsl:text>.html</xsl:text>
-						</xsl:variable>
-						<tr>
-							<td>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="$entry_link" />
-									</xsl:attribute>
-									<xsl:value-of select="@id" />
-								</a>
-							</td>
-							<td>
-								<a>
-									<xsl:attribute name="href">
-										<xsl:value-of select="$entry_link" />
-									</xsl:attribute>
-									<xsl:apply-templates select="description" />
-								</a>
-							</td>
-							<td>
-								<xsl:value-of select="@level" />
-							</td>
-							<td>
-								<xsl:value-of select="@category" />
-							</td>
-							<td>
-								<xsl:value-of select="count(param)" />
-							</td>
-							<td>
-								<!-- TODO: Count translations -->
-							</td>
-						</tr>
-					</xsl:for-each>
-				</table>
+				<xsl:apply-templates select="group" />
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template match="group">
+		<h3>
+			<xsl:value-of select="@name" />
+		</h3>
+		<xsl:text>The category for this group is: </xsl:text>
+		<code>
+			<xsl:value-of select="@category" />
+		</code>
+		<table type="entries">
+			<tr>
+				<th title="The unique identifier of the entry">ID</th>
+				<th title="A description of the message entry, in US English">Description</th>
+				<th title="The log level for the message, ranging from DEBUG to FATAL">Level</th>
+				<th title="Number of parameters the message accepts">Parameters</th>
+				<th title="Number of available translations for this message entry">Translations</th>
+			</tr>
+			<xsl:for-each select="entry">
+				<xsl:variable name="entry_link">
+					<xsl:text>entry-</xsl:text>
+					<xsl:value-of select="@id" />
+					<xsl:text>.html</xsl:text>
+				</xsl:variable>
+				<tr>
+					<td>
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="$entry_link" />
+							</xsl:attribute>
+							<xsl:value-of select="@id" />
+						</a>
+					</td>
+					<td>
+						<a>
+							<xsl:attribute name="href">
+								<xsl:value-of select="$entry_link" />
+							</xsl:attribute>
+							<xsl:apply-templates select="description" />
+						</a>
+					</td>
+					<td>
+						<xsl:value-of select="@level" />
+					</td>
+					<td>
+						<xsl:value-of select="count(param)" />
+					</td>
+					<td>
+						<!-- TODO: Count translations -->
+					</td>
+				</tr>
+			</xsl:for-each>
+		</table>
 	</xsl:template>
 </xsl:stylesheet>

@@ -30,7 +30,7 @@
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/index.html"
 				style="{$logdoc_xslt_dir}/log_to_html.xslt" />
-				<xsl:for-each select="entry">
+				<xsl:for-each select="group/entry">
 					<style
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/entry-{@id}.html"

@@ -95,7 +95,7 @@ public final class ]]></xsl:text>
    public String translation_</xsl:text>
 			<xsl:value-of select="$entry" />
 			<xsl:text>(</xsl:text>
-			<xsl:for-each select="document($log_file)/log/entry[@id = $entry]/param">
+			<xsl:for-each select="document($log_file)/log/group/entry[@id = $entry]/param">
 				<xsl:if test="position() &gt; 1">, </xsl:if>
 				<xsl:text>String </xsl:text>
 				<xsl:value-of select="@name" />

@@ -91,20 +91,22 @@ public abstract class TranslationBundle extends Object {
       return _name;
    }]]></xsl:text>
 
-		<xsl:apply-templates select="entry" />
+		<xsl:apply-templates select="group/entry" />
 
 		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="entry">
+	<xsl:template match="group/entry">
 		<xsl:text>
 
    /**
     * Get the translation for the log entry with ID </xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text><![CDATA[.
+		<xsl:text><![CDATA[, in the log entry group <em>]]></xsl:text>
+		<xsl:value-of select="../@name" />
+		<xsl:text><![CDATA[</em>.
     * The description for this log entry is:
     * <blockquote><em>]]></xsl:text>
 		<xsl:apply-templates select="description" />
