@@ -196,7 +196,6 @@ public final class HTTPCallRequest extends CallRequest {
     *    the description of this request, never <code>null</code>.
     */
    public String describe() {
-
       return _asString;
    }
 
