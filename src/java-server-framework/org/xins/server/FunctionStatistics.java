@@ -6,6 +6,12 @@
  */
 package org.xins.server;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.TreeMap;
+import org.xins.common.text.DateConverter;
+
 /**
  * Statistics of a function.
  *
@@ -20,6 +26,18 @@ class FunctionStatistics {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+   
+   /**
+    * String returned by the function <code>_GetStatistics</code> when certain
+    * information is not available.
+    */
+   private static final String NOT_AVAILABLE = "N/A";
+
+   /**
+    * The time zone used when generating dates for output.
+    */
+   private static final TimeZone TIME_ZONE = TimeZone.getDefault();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -34,95 +52,23 @@ class FunctionStatistics {
    //-------------------------------------------------------------------------
 
    /**
-    * Lock object for a successful call.
+    * Statistic over the successful calls.
     */
-   private final Object _successfulCallLock = new Object();
+   private Statistic _successful = new Statistic();
+   
+   /**
+    * Statistic over the unsuccessful calls.
+    */
+   private Statistic _unsuccessful = new Statistic();
 
    /**
-    * Lock object for an unsuccessful call.
+    * Statistics over the unsuccessful calls sorted by error code.
+    * The key of the map is the error code and the Statistic object 
+    * corresponding to the error code.
     */
-   private final Object _unsuccessfulCallLock = new Object();
-
-   /**
-    * The number of successful calls executed up until now.
-    */
-   private int _successfulCalls;
-
-   /**
-    * The number of unsuccessful calls executed up until now.
-    */
-   private int _unsuccessfulCalls;
-
-   /**
-    * The start time of the most recent successful call.
-    */
-   private long _lastSuccessfulStart;
-
-   /**
-    * The start time of the most recent unsuccessful call.
-    */
-   private long _lastUnsuccessfulStart;
-
-   /**
-    * The duration of the most recent successful call.
-    */
-   private long _lastSuccessfulDuration;
-
-   /**
-    * The duration of the most recent unsuccessful call.
-    */
-   private long _lastUnsuccessfulDuration;
-
-   /**
-    * The total duration of all successful calls up until now.
-    */
-   private long _successfulDuration;
-
-   /**
-    * The total duration of all unsuccessful calls up until now.
-    */
-   private long _unsuccessfulDuration;
-
-   /**
-    * The minimum time a successful call took.
-    */
-   private long _successfulMin = Long.MAX_VALUE;
-
-   /**
-    * The minimum time an unsuccessful call took.
-    */
-   private long _unsuccessfulMin = Long.MAX_VALUE;
-
-   /**
-    * The start time of the successful call that took the shortest.
-    */
-   private long _successfulMinStart;
-
-   /**
-    * The start time of the unsuccessful call that took the shortest.
-    */
-   private long _unsuccessfulMinStart;
-
-   /**
-    * The duration of the successful call that took the longest.
-    */
-   private long _successfulMax;
-
-   /**
-    * The duration of the unsuccessful call that took the longest.
-    */
-   private long _unsuccessfulMax;
-
-   /**
-    * The start time of the successful call that took the longest.
-    */
-   private long _successfulMaxStart;
-
-   /**
-    * The start time of the unsuccessful call that took the longest.
-    */
-   private long _unsuccessfulMaxStart;
-
+   private Map _errorCodeStatistics = new TreeMap();
+   
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -141,236 +87,252 @@ class FunctionStatistics {
     * @param success
     *    indication if the call was successful.
     *
+    * @param errorCode
+    *    the error code returned by the function when a result is unsuccessful.
+    *    This value is <code>null</code> only when <code>success</code>
+    *    is <code>true</code>.
+    *
     * @return
     *    returns the duration in milliseconds of the call of the function.
     *    The duration is computed as the difference in between
     *    the start time and the time that this method has been invoked.
     */
-   final long recordCall(long start, boolean success) {
+   final long recordCall(long start, boolean success, String errorCode) {
 
       long duration = System.currentTimeMillis() - start;
 
       // Call succeeded
       if (success) {
 
-         synchronized (_successfulCallLock) {
-            _lastSuccessfulStart    = start;
-            _lastSuccessfulDuration = duration;
-            _successfulCalls++;
-            _successfulDuration += duration;
-            _successfulMin      = _successfulMin > duration ? duration : _successfulMin;
-            _successfulMax      = _successfulMax < duration ? duration : _successfulMax;
-            _successfulMinStart = (_successfulMin == duration) ? start : _successfulMinStart;
-            _successfulMaxStart = (_successfulMax == duration) ? start : _successfulMaxStart;
-         }
+         _successful.recordCall(start, duration);
 
       // Call failed
       } else {
 
-         synchronized (_unsuccessfulCallLock) {
-            _lastUnsuccessfulStart    = start;
-            _lastUnsuccessfulDuration = duration;
-            _unsuccessfulCalls++;
-            _unsuccessfulDuration += duration;
-            _unsuccessfulMin = _unsuccessfulMin > duration ? duration : _unsuccessfulMin;
-            _unsuccessfulMax = _unsuccessfulMax < duration ? duration : _unsuccessfulMax;
-            _unsuccessfulMinStart = (_unsuccessfulMin == duration) ? start : _unsuccessfulMinStart;
-            _unsuccessfulMaxStart = (_unsuccessfulMax == duration) ? start : _unsuccessfulMaxStart;
+         _unsuccessful.recordCall(start, duration);
+         
+         Statistic errorCodeStat = (Statistic)_errorCodeStatistics.get(errorCode);
+         if (errorCodeStat == null) {
+            errorCodeStat = new Statistic();
          }
+         errorCodeStat.recordCall(start, duration);
+         _errorCodeStatistics.put(errorCode, errorCodeStat);
       }
       return duration;
-   }
-
-   /**
-    * Returns the number of successful calls executed up until now.
-    *
-    * @return
-    *    the number of successful calls executed up until now.
-    */
-   public int getSuccessfulCalls() {
-      return _successfulCalls;
-   }
-
-   /**
-    * Returns the number of unsuccessful calls executed up until now.
-    *
-    * @return
-    *    the number of unsuccessful calls executed up until now.
-    */
-   public int getUnsuccessfulCalls() {
-      return _unsuccessfulCalls;
-   }
-
-   /**
-    * Returns the start time of the most recent successful call.
-    *
-    * @return
-    *    the start time of the most recent successful call.
-    */
-   public long getLastSuccessfulStart() {
-      return _lastSuccessfulStart;
-   }
-
-   /**
-    * Returns the start time of the most recent unsuccessful call.
-    *
-    * @return
-    *    the start time of the most recent unsuccessful call.
-    */
-   public long getLastUnsuccessfulStart() {
-      return _lastUnsuccessfulStart;
-   }
-
-   /**
-    * Returns the duration of the most recent successful call.
-    *
-    * @return
-    *    the duration of the most recent successful call.
-    */
-   public long getLastSuccessfulDuration() {
-      return _lastSuccessfulDuration;
-   }
-
-   /**
-    * Returns the duration of the most recent unsuccessful call.
-    *
-    * @return
-    *    the duration of the most recent unsuccessful call.
-    */
-   public long getLastUnsuccessfulDuration() {
-      return _lastUnsuccessfulDuration;
-   }
-
-   /**
-    * Returns the total duration of all successful calls up until now.
-    *
-    * @return
-    *    the total duration of all successful calls up until now.
-    */
-   public long getSuccessfulDuration() {
-      return _successfulDuration;
-   }
-
-   /**
-    * Returns the total duration of all unsuccessful calls up until now.
-    *
-    * @return
-    *    the total duration of all unsuccessful calls up until now.
-    */
-   public long getUnsuccessfulDuration() {
-      return _unsuccessfulDuration;
-   }
-
-   /**
-    * Returns the minimum time a successful call took.
-    *
-    * @return
-    *    the minimum time a successful call took.
-    */
-   public long getSuccessfulMin() {
-      return _successfulMin;
-   }
-
-   /**
-    * Returns the start time of the successful call that took the shortest.
-    *
-    * @return
-    *    the start time of the successful call that took the shortest.
-    */
-   public long getSuccessfulMinStart() {
-      return _successfulMinStart;
-   }
-
-   /**
-    * Returns the minimum time an unsuccessful call took.
-    *
-    * @return
-    *    the minimum time an unsuccessful call took.
-    */
-   public long getUnsuccessfulMin() {
-      return _unsuccessfulMin;
-   }
-
-   /**
-    * Returns the start time of the unsuccessful call that took the shortest.
-    *
-    * @return
-    *    the start time of the unsuccessful call that took the shortest,
-    *    always &gt;= 0.
-    */
-   public long getUnsuccessfulMinStart() {
-      return _unsuccessfulMinStart;
-   }
-
-   /**
-    * Returns the duration of the successful call that took the longest.
-    *
-    * @return
-    *    the duration of the successful call that took the longest, always
-    *    &gt;= 0.
-    */
-   public long getSuccessfulMax() {
-      return _successfulMax;
-   }
-
-   /**
-    * Returns the start time of the most recent successful call that took
-    * the longest.
-    *
-    * @return
-    *    the start time of the most recent successful call that took the
-    *    longest, always &gt;= 0.
-    */
-   public long getSuccessfulMaxStart() {
-      return _successfulMaxStart;
-   }
-
-   /**
-    * Returns the duration of the unsuccessful call that took the longest.
-    *
-    * @return
-    *    the duration of the unsuccessful call that took the longest,
-    *    always &gt;= 0.
-    */
-   public long getUnsuccessfulMax() {
-      return _unsuccessfulMax;
-   }
-
-   /**
-    * Returns the start time of the most recent unsuccessful call that took
-    * the longest.
-    *
-    * @return
-    *    the start time of the most recent unsuccessful call that took the
-    *    longest, always &gt;= 0.
-    */
-   public long getUnsuccessfulMaxStart() {
-      return _unsuccessfulMaxStart;
    }
 
    /**
     * Resets the statistics for this function.
     */
    final void resetStatistics() {
-      synchronized (_successfulCallLock) {
-         _successfulCalls = 0;
-         _lastSuccessfulStart = 0L;
-         _lastSuccessfulDuration = 0L;
-         _successfulDuration = 0L;
-         _successfulMin = Long.MAX_VALUE;
-         _successfulMinStart = 0L;
-         _successfulMax = 0L;
-         _successfulMaxStart = 0L;
+      _successful.reset();
+      _unsuccessful.reset();
+      _errorCodeStatistics.clear();
+   }
+   
+   /**
+    * Get the successful statistic as an {@link Element}.
+    *
+    * @return
+    *    the successful element, cannot be <code>null</code>
+    */
+   public Element getSuccessfulElement() {
+      return _successful.getElement(true, null);
+   }
+
+   
+   /**
+    * Get the unsuccessful statistics as an array of {@link Element}.
+    *
+    * @param detailed
+    *    If <code>true</code>, the unsuccessful results will be returned
+    *    per error code. Otherwise only one unsuccessful containing all 
+    *    unsuccessful result will be returned.
+    *
+    * @return
+    *    the successful element, cannot be empty.
+    */
+   public Element[] getUnsuccessfulElement(boolean detailed) {
+      if (!detailed || _errorCodeStatistics.size() == 0) {
+         Element[] result = new Element[1];
+         result[0] = _unsuccessful.getElement(false, null);
+         return result;
+      } else {
+         Element[] result = new Element[_errorCodeStatistics.size()];
+         int i = 0;
+         Iterator itErrorCodeStats = _errorCodeStatistics.keySet().iterator();
+         while (itErrorCodeStats.hasNext()) {
+            String nextErrorCode = (String) itErrorCodeStats.next();
+            Statistic nextStat = (Statistic) _errorCodeStatistics.get(nextErrorCode);
+            result[i] = nextStat.getElement(false, nextErrorCode);
+            result[i].addAttribute("errorcode", nextErrorCode);
+            i++;
+         }
+         return result;
       }
-      synchronized (_unsuccessfulCallLock) {
-         _unsuccessfulCalls = 0;
-         _lastUnsuccessfulStart = 0L;
-         _lastUnsuccessfulDuration = 0L;
-         _unsuccessfulDuration = 0L;
-         _unsuccessfulMin = Long.MAX_VALUE;
-         _unsuccessfulMinStart = 0L;
-         _unsuccessfulMax = 0L;
-         _unsuccessfulMaxStart = 0L;
+   }
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * A <code>Statistic</code>.
+    *
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.1.0
+    */
+   private static final class Statistic extends Object {
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * Lock object for a call.
+       */
+      private final Object _callLock = new Object();
+
+      /**
+       * The number of successful calls executed up until now.
+       */
+      private int _calls;
+
+      /**
+       * The start time of the most recent call.
+       */
+      private long _lastStart;
+
+      /**
+       * The duration of the most recent call.
+       */
+      private long _lastDuration;
+
+      /**
+       * The total duration of all calls up until now.
+       */
+      private long _duration;
+
+      /**
+       * The minimum time a call took.
+       */
+      private long _min = Long.MAX_VALUE;
+
+      /**
+       * The start time of the call that took the shortest.
+       */
+      private long _minStart;
+
+      /**
+       * The duration of the call that took the longest.
+       */
+      private long _max;
+
+      /**
+       * The start time of the call that took the longest.
+       */
+      private long _maxStart;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Records a call.
+       *
+       * @param start
+       *    the start time, in milliseconds since January 1, 1970, not
+       *    <code>null</code>.
+       * @param duration
+       *    duration of the call, in milliseconds since January 1, 1970, not
+       *    <code>null</code>.
+       */
+      public void recordCall(long start, long duration) {
+         synchronized(_callLock) {
+            _lastStart    = start;
+            _lastDuration = duration;
+            _calls++;
+            _duration += duration;
+            _min      = _min > duration ? duration : _min;
+            _max      = _max < duration ? duration : _max;
+            _minStart = (_min == duration) ? start : _minStart;
+            _maxStart = (_max == duration) ? start : _maxStart;
+         }
+      }
+      
+      /**
+       * Get this statistic as an {@link Element}.
+       *
+       * @return
+       *    the statistic, cannot be <code>null</code>
+       */
+      public Element getElement(boolean successful, String errorCode) {
+         String average;
+         String min;
+         String minStart;
+         String max;
+         String maxStart;
+         String lastStart;
+         String lastDuration;
+         if (_calls == 0) {
+            average      = NOT_AVAILABLE;
+            min          = NOT_AVAILABLE;
+            minStart     = NOT_AVAILABLE;
+            max          = NOT_AVAILABLE;
+            maxStart     = NOT_AVAILABLE;
+            lastStart    = NOT_AVAILABLE;
+            lastDuration = NOT_AVAILABLE;
+         } else if (_duration == 0) {
+            average      = "0";
+            min          = String.valueOf(_min);
+            minStart     = DateConverter.toDateString(TIME_ZONE, _minStart);
+            max          = String.valueOf(_max);
+            maxStart     = DateConverter.toDateString(TIME_ZONE, _maxStart);
+            lastStart    = DateConverter.toDateString(TIME_ZONE, _lastStart);
+            lastDuration = String.valueOf(_lastDuration);
+         } else {
+            average      = String.valueOf(_duration / _calls);
+            min          = String.valueOf(_min);
+            minStart     = DateConverter.toDateString(TIME_ZONE, _minStart);
+            max          = String.valueOf(_max);
+            maxStart     = DateConverter.toDateString(TIME_ZONE, _maxStart);
+            lastStart    = DateConverter.toDateString(TIME_ZONE, _lastStart);
+            lastDuration = String.valueOf(_lastDuration);
+         }
+         Element element = new Element(successful ? "successful" : "unsuccessful");
+         element.addAttribute("count",    String.valueOf(_calls));
+         element.addAttribute("average",  average);
+         Element minElem = new Element("min");
+         minElem.addAttribute("start",    minStart);
+         minElem.addAttribute("duration", min);
+         element.add(minElem);
+         Element maxElem = new Element("max");
+         maxElem.addAttribute("start",    maxStart);
+         maxElem.addAttribute("duration", max);
+         element.add(maxElem);
+         Element lastElem = new Element("last");
+         lastElem.addAttribute("start",    lastStart);
+         lastElem.addAttribute("duration", lastDuration);
+         element.add(lastElem);
+         return element;
+      }
+      
+      /**
+       * Resets this statistic.
+       */
+      public void reset() {
+         synchronized (_callLock) {
+            _calls = 0;
+            _lastStart = 0L;
+            _lastDuration = 0L;
+            _duration = 0L;
+            _min = Long.MAX_VALUE;
+            _minStart = 0L;
+            _max = 0L;
+            _maxStart = 0L;
+         }
       }
    }
 }

@@ -338,7 +338,7 @@ implements DefaultResultCodes {
 
       // Update statistics and determine the duration of the call
       boolean isSuccess = code == null;
-      long duration = _statistics.recordCall(start, isSuccess);
+      long duration = _statistics.recordCall(start, isSuccess, code);
 
       // Serialize the date, input parameters and output parameters
       LogdocSerializable serStart  = new FormattedDate(start);

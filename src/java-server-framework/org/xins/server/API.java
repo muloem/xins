@@ -781,17 +781,19 @@ implements DefaultResultCodes {
          } else if ("_GetFunctionList".equals(functionName)) {
             result = doGetFunctionList();
          } else if ("_GetStatistics".equals(functionName)) {
+            String detailedArgument = parameters.get("detailed");
+            boolean detailed = detailedArgument != null && detailedArgument.equals("true");
             String resetArgument = parameters.get("reset");
             if (resetArgument != null && resetArgument.equals("true")) {
                _statisticsLocked = true;
-               result = doGetStatistics();
+               result = doGetStatistics(detailed);
                doResetStatistics();
                _statisticsLocked = false;
                synchronized (this) {
                   notifyAll();
                }
             } else {
-               result = doGetStatistics();
+               result = doGetStatistics(detailed);
             }
          } else if ("_GetVersion".equals(functionName)) {
             result = doGetVersion();
@@ -875,10 +877,15 @@ implements DefaultResultCodes {
    /**
     * Returns the call statistics for all functions in this API.
     *
+    * @param detailed
+    *    If <code>true</code>, the unsuccessful result will be returned sorted 
+    *    per error code. Otherwise the unsuccessful result won't be displayed
+    *    by error code.
+    *
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final FunctionResult doGetStatistics() {
+   private final FunctionResult doGetStatistics(boolean detailed) {
 
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
@@ -914,115 +921,18 @@ implements DefaultResultCodes {
          Function function = (Function) _functionList.get(i);
          FunctionStatistics stats = function.getStatistics();
 
-         long successfulCalls      = stats.getSuccessfulCalls();
-         long unsuccessfulCalls    = stats.getUnsuccessfulCalls();
-         long successfulDuration   = stats.getSuccessfulDuration();
-         long unsuccessfulDuration = stats.getUnsuccessfulDuration();
-
-         String successfulAverage;
-         String successfulMin;
-         String successfulMinStart;
-         String successfulMax;
-         String successfulMaxStart;
-         String lastSuccessfulStart;
-         String lastSuccessfulDuration;
-         if (successfulCalls == 0) {
-            successfulAverage      = NOT_AVAILABLE;
-            successfulMin          = NOT_AVAILABLE;
-            successfulMinStart     = NOT_AVAILABLE;
-            successfulMax          = NOT_AVAILABLE;
-            successfulMaxStart     = NOT_AVAILABLE;
-            lastSuccessfulStart    = NOT_AVAILABLE;
-            lastSuccessfulDuration = NOT_AVAILABLE;
-         } else if (successfulDuration == 0) {
-            successfulAverage      = "0";
-            successfulMin          = String.valueOf(stats.getSuccessfulMin());
-            successfulMinStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMinStart());
-            successfulMax          = String.valueOf(stats.getSuccessfulMax());
-            successfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMaxStart());
-            lastSuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastSuccessfulStart());
-            lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
-         } else {
-            successfulAverage      = String.valueOf(successfulDuration / successfulCalls);
-            successfulMin          = String.valueOf(stats.getSuccessfulMin());
-            successfulMinStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMinStart());
-            successfulMax          = String.valueOf(stats.getSuccessfulMax());
-            successfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getSuccessfulMaxStart());
-            lastSuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastSuccessfulStart());
-            lastSuccessfulDuration = String.valueOf(stats.getLastSuccessfulDuration());
-         }
-
-         String unsuccessfulAverage;
-         String unsuccessfulMin;
-         String unsuccessfulMinStart;
-         String unsuccessfulMax;
-         String unsuccessfulMaxStart;
-         String lastUnsuccessfulStart;
-         String lastUnsuccessfulDuration;
-         if (unsuccessfulCalls == 0) {
-            unsuccessfulAverage      = NOT_AVAILABLE;
-            unsuccessfulMin          = NOT_AVAILABLE;
-            unsuccessfulMinStart     = NOT_AVAILABLE;
-            unsuccessfulMax          = NOT_AVAILABLE;
-            unsuccessfulMaxStart     = NOT_AVAILABLE;
-            lastUnsuccessfulStart    = NOT_AVAILABLE;
-            lastUnsuccessfulDuration = NOT_AVAILABLE;
-         } else if (unsuccessfulDuration == 0) {
-            unsuccessfulAverage      = "0";
-            unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
-            unsuccessfulMinStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMinStart());
-            unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
-            unsuccessfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMaxStart());
-            lastUnsuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastUnsuccessfulStart());
-            lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
-         } else {
-            unsuccessfulAverage      = String.valueOf(unsuccessfulDuration / unsuccessfulCalls);
-            unsuccessfulMin          = String.valueOf(stats.getUnsuccessfulMin());
-            unsuccessfulMinStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMinStart());
-            unsuccessfulMax          = String.valueOf(stats.getUnsuccessfulMax());
-            unsuccessfulMaxStart     = DateConverter.toDateString(_timeZone, stats.getUnsuccessfulMaxStart());
-            lastUnsuccessfulStart    = DateConverter.toDateString(_timeZone, stats.getLastUnsuccessfulStart());
-            lastUnsuccessfulDuration = String.valueOf(stats.getLastUnsuccessfulDuration());
-         }
-
          Element functionElem = new Element("function");
          functionElem.addAttribute("name", function.getName());
 
          // Successful
-         Element successful = new Element("successful");
-         successful.addAttribute("count",    String.valueOf(successfulCalls));
-         successful.addAttribute("average",  successfulAverage);
-         Element successfulMinElem = new Element("min");
-         successfulMinElem.addAttribute("start",    successfulMinStart);
-         successfulMinElem.addAttribute("duration", successfulMin);
-         successful.add(successfulMinElem);
-         Element successfulMaxElem = new Element("max");
-         successfulMaxElem.addAttribute("start",    successfulMaxStart);
-         successfulMaxElem.addAttribute("duration", successfulMax);
-         successful.add(successfulMaxElem);
-         Element successfulLastElem = new Element("last");
-         successfulLastElem.addAttribute("start",    lastSuccessfulStart);
-         successfulLastElem.addAttribute("duration", lastSuccessfulDuration);
-         successful.add(successfulLastElem);
+         Element successful = stats.getSuccessfulElement();
          functionElem.add(successful);
 
          // Unsuccessful
-         Element unsuccessful = new Element("unsuccessful");
-         unsuccessful.addAttribute("count",    String.valueOf(unsuccessfulCalls));
-         unsuccessful.addAttribute("average",  unsuccessfulAverage);
-         Element unsuccessfulMinElem = new Element("min");
-         unsuccessfulMinElem.addAttribute("start",    unsuccessfulMinStart);
-         unsuccessfulMinElem.addAttribute("duration", unsuccessfulMin);
-         unsuccessful.add(unsuccessfulMinElem);
-         Element unsuccessfulMaxElem = new Element("max");
-         unsuccessfulMaxElem.addAttribute("start",    unsuccessfulMaxStart);
-         unsuccessfulMaxElem.addAttribute("duration", unsuccessfulMax);
-         unsuccessful.add(unsuccessfulMaxElem);
-         Element unsuccessfulLastElem = new Element("last");
-         unsuccessfulLastElem.addAttribute("start",    lastUnsuccessfulStart);
-         unsuccessfulLastElem.addAttribute("duration", lastUnsuccessfulDuration);
-         unsuccessful.add(unsuccessfulLastElem);
-         functionElem.add(unsuccessful);
+         Element[] unsuccessful = stats.getUnsuccessfulElement(detailed);
+         for(int j = 0; j < unsuccessful.length; j++) {
+            functionElem.add(unsuccessful[j]);
+         }
 
          builder.add(functionElem);
       }
