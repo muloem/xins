@@ -457,8 +457,8 @@
 						destdir="{$typeClassesDir}"
 						debug="true"
 						deprecation="${{deprecated}}"
-						source="1.4"
-						target="1.4">
+						source="1.3"
+						target="1.3">
 							<classpath>
 								<pathelement path="{$logdoc.jar}" />
 								<pathelement path="{$xins-common.jar}" />
@@ -723,8 +723,8 @@
 						destdir="{$classesDestDir}"
 						debug="true"
 						deprecation="${{deprecated}}"
-						source="1.4"
-						target="1.4">
+						source="1.3"
+						target="1.3">
 							<src path="{$javaDestDir}" />
 							<src path="{$javaImplDir}" />
 							<classpath>
@@ -808,7 +808,7 @@
 						author="yes"
 						private="no"
 						package="yes"
-						source="1.4"
+						source="1.3"
 						windowtitle="Implementation of {$api} API"
 						doctitle="Implementation of {$api} API">
 							<packageset dir="{$javaDestDir}" />
@@ -821,7 +821,7 @@
 							offline="true"
 							packagelistloc="{$xins_home}/docs/javadoc/" />
 							<link
-							href="http://java.sun.com/j2se/1.4.2/docs/api"
+							href="http://java.sun.com/j2se/1.3/docs/api"
 							offline="true"
 							packagelistloc="{$xins_home}/src/package-lists/j2se/" />
 							<link
@@ -938,8 +938,8 @@
 					destdir="{$project_home}/build/classes-capi/{$api}"
 					debug="true"
 					deprecation="${{deprecated}}"
-					source="1.4"
-					target="1.4">
+					source="1.3"
+					target="1.3">
 						<classpath>
 							<pathelement path="{$logdoc.jar}"      />
 							<pathelement path="{$xins-common.jar}" />
@@ -983,7 +983,7 @@
 					use="yes"
 					author="yes"
 					private="no"
-					source="1.4"
+					source="1.3"
 					windowtitle="Call interface for {$api} API"
 					doctitle="Call interface for {$api} API">
 						<packageset dir="build/java-capi/{$api}" />
@@ -995,7 +995,7 @@
 						offline="true"
 						packagelistloc="{$xins_home}/docs/javadoc/" />
 						<link
-						href="http://java.sun.com/j2se/1.4.2/docs/api"
+						href="http://java.sun.com/j2se/1.3/docs/api"
 						offline="true"
 						packagelistloc="{$xins_home}/src/package-lists/j2se/" />
 						<link

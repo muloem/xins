@@ -70,6 +70,16 @@
 					</tr>
 					<xsl:apply-templates select="testcase" mode="summary" />
 				</table>
+
+				<h2>Standard output</h2>
+				<pre>
+					<xsl:apply-templates select="system-out" />
+				</pre>
+
+				<h2>Error output</h2>
+				<pre>
+					<xsl:apply-templates select="system-err" />
+				</pre>
 			</body>
 		</html>
 	</xsl:template>

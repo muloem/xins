@@ -6,9 +6,12 @@
  */
 package org.xins.tests;
 
+import java.io.File;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.xins.tests.server.servlet.HTTPServletHandler;
 
 /**
  * Combination of all XINS/Java tests.
@@ -17,6 +20,13 @@ import junit.framework.TestSuite;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class AllTests extends TestSuite {
+
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+
+   static HTTPServletHandler HTTP_SERVER;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -30,6 +40,9 @@ public class AllTests extends TestSuite {
     */
    public static Test suite() {
       TestSuite suite = new TestSuite();
+
+      // Start the server
+      suite.addTestSuite(StartServer.class);
 
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
@@ -84,6 +97,9 @@ public class AllTests extends TestSuite {
       // Test just a test
       // suite.addTest(new org.xins.tests.server.CallingConventionTests("testXMLCallingConvention"));
 
+      // Stop the server
+      suite.addTestSuite(StopServer.class);
+
       return suite;
    }
 
@@ -102,4 +118,13 @@ public class AllTests extends TestSuite {
    public AllTests(String name) {
       super(name);
    }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
 }

@@ -36,17 +36,12 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text>;
 
-import java.util.HashMap;
-import org.apache.log4j.Logger;
-import org.xins.logdoc.AbstractLog;
-import org.xins.logdoc.UnsupportedLocaleException;
-
 /**
  * Central logging handler.
  */
 </xsl:text>
 		<xsl:value-of select="$accessmodifier" />
-		<xsl:text>class Log extends AbstractLog {
+		<xsl:text>class Log extends org.xins.logdoc.AbstractLog {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -67,7 +62,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
    /**
     * Associations from name to translation bundle.
     */
-   private static final HashMap TRANSLATION_BUNDLES_BY_NAME;
+   private static final java.util.HashMap TRANSLATION_BUNDLES_BY_NAME;
 
    /**
     * The active translation bundle.
@@ -89,7 +84,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
    static {
 
       // Reference all translation bundles by name
-      TRANSLATION_BUNDLES_BY_NAME = new HashMap();]]></xsl:text>
+      TRANSLATION_BUNDLES_BY_NAME = new java.util.HashMap();]]></xsl:text>
 			<xsl:for-each select="translation-bundle">
 				<xsl:text>
       TRANSLATION_BUNDLES_BY_NAME.put("</xsl:text>
@@ -103,8 +98,10 @@ import org.xins.logdoc.UnsupportedLocaleException;
       // Create LogController instance
       try {
          CONTROLLER = new Controller();
-      } catch (UnsupportedLocaleException ex) {
-         throw new Error(ex.getMessage(), ex);
+      } catch (org.xins.logdoc.UnsupportedLocaleException ex) {
+         java.lang.Error error = new java.lang.Error(ex.getMessage());
+         org.xins.logdoc.ExceptionUtils.setCause(error, ex);
+         throw error;
       }
    }
 
@@ -162,10 +159,10 @@ import org.xins.logdoc.UnsupportedLocaleException;
       /**
        * Constructs a new <code>Controller</code> for this log.
        *
-       * @throws UnsupportedLocaleException
+       * @throws org.xins.logdoc.UnsupportedLocaleException
        *    if the current locale is unsupported.
        */
-      public Controller() throws UnsupportedLocaleException {
+      public Controller() throws org.xins.logdoc.UnsupportedLocaleException {
          super();
       }
 
@@ -200,7 +197,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		<xsl:value-of select="@id" />
 		<xsl:text>.
     */
-   private static Logger LOGGER_</xsl:text>
+   private static org.apache.log4j.Logger LOGGER_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>;</xsl:text>
 	</xsl:template>
@@ -256,7 +253,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		<xsl:text> == null) {
          LOGGER_</xsl:text>
 		<xsl:value-of select="@id" />
-		<xsl:text> = Logger.getLogger("</xsl:text>
+		<xsl:text> = org.apache.log4j.Logger.getLogger("</xsl:text>
 		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@id" />
@@ -287,7 +284,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$exception = 'true' and @level = 'DEBUG'">
-				<xsl:text>org.xins.logdoc.LogdocExceptionUtils.getRootCause(__exception__));</xsl:text>
+				<xsl:text>org.xins.logdoc.ExceptionUtils.getRootCause(__exception__));</xsl:text>
 			</xsl:when>
 			<xsl:when test="$exception = 'true'">
 				<xsl:text>null);
@@ -296,7 +293,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
 				<xsl:text>.isEnabledFor(DEBUG)) {
             LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />
-				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(__exception__));
+				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.ExceptionUtils.getRootCause(__exception__));
          }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

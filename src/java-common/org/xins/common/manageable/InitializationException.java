@@ -8,6 +8,8 @@ package org.xins.common.manageable;
 
 import org.xins.common.text.FastStringBuffer;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Exception thrown when the initialization of a <code>Manageable</code>
  * object failed.
@@ -102,7 +104,8 @@ extends Exception {
     *    the cause exception, or <code>null</code>.
     */
    public InitializationException(String message, Throwable cause) {
-      super(createMessage(message, cause), cause);
+      super(createMessage(message, cause));
+      ExceptionUtils.setCause(this, cause);
    }
 
 

@@ -6,6 +6,8 @@
  */
 package org.xins.common.text;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Exception thrown to indicate parsing.
  *
@@ -62,7 +64,8 @@ public final class ParseException extends Exception {
     *    {@link #getDetail()}, can be <code>null</code>.
     */
    public ParseException(String message, Throwable cause, String detail) {
-      super(message, cause);
+      super(message);
+      ExceptionUtils.setCause(this, cause);
 
       _detail = detail;
    }

@@ -6,10 +6,12 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.ExceptionUtils;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.text.FastStringBuffer;
+
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Exception thrown to indicate that a <code>ServiceCaller</code> call failed.
@@ -203,8 +205,8 @@ public abstract class CallException extends Exception {
    throws IllegalArgumentException {
 
       // Trace, construct message and then call superconstructor
-      super(createMessage(shortReason, request, target, duration, detail),
-            rootCauseFor(cause));
+      super(createMessage(shortReason, request, target, duration, detail));
+      ExceptionUtils.setCause(this, rootCauseFor(cause));
 
       // Store information in fields
       _request  = request;

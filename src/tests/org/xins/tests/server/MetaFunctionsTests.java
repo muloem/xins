@@ -84,29 +84,9 @@ public class MetaFunctionsTests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The HTTP server used to handle the requests.
-    */
-   private HTTPServletHandler _httpServer;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Starts the HTTP server with the correct parameters.
-    */
-   protected void setUp() throws ServletException, IOException {
-      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
-      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
-      String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
-      File warFile = new File(System.getProperty("user.dir"), warLocation);
-
-      // Start the web server
-      //System.out.println("Web server set up.");
-      _httpServer = new HTTPServletHandler(warFile);
-   }
 
    /**
     * Tests the _GetVersion meta function.
@@ -130,14 +110,30 @@ public class MetaFunctionsTests extends TestCase {
     * Tests the _GetStatistics meta function.
     */
    public void testGetStatistics() throws Throwable {
-      XINSCallRequest request = new XINSCallRequest("_GetStatistics", null);
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
-      XINSCallResult result = caller.call(request);
+      XINSCallResult result;
+
+      // Determine the remote Java version
+      XINSCallRequest request = new XINSCallRequest("_GetVersion");
+      result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
-      assertNotNull("The function returned a data element.", result.getDataElement());
       PropertyReader parameters = result.getParameters();
-      assertNotNull("The function did not returned any parameters.", parameters);
+      assertNotNull("The function _GetVersion did not returned any parameters.", parameters);
+      String javaVersion = parameters.get("java.version");
+      assertNotNull("No Java version returned by _GetVersion.", javaVersion);
+      assertTrue(javaVersion.length() > 0);
+      boolean java14 = javaVersion.startsWith("1.4")
+                    || javaVersion.startsWith("1.5")
+                    || javaVersion.startsWith("1.6");
+
+      // Get the statistics
+      request = new XINSCallRequest("_GetStatistics", null);
+      result = caller.call(request);
+      assertNull("The function _GetStatistics returned a result code.", result.getErrorCode());
+      assertNotNull("The function returned a data element.", result.getDataElement());
+      parameters = result.getParameters();
+      assertNotNull("The function _GetStatistics did not returned any parameters.", parameters);
       assertNotNull("No startup date specified.", parameters.get("startup"));
       try {
          SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
@@ -161,12 +157,17 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No total memory provided.", heap.get("total"));
       assertNotNull("No used memory provided.", heap.get("used"));
       assertNotNull("No free memory provided.", heap.get("free"));
-      assertNotNull("No max memory provided.", heap.get("max"));
+      if (java14) {
+         assertNotNull("No max memory provided.", heap.get("max"));
+      }
+
       try {
          Long.parseLong(heap.get("total"));
          Long.parseLong(heap.get("used"));
          Long.parseLong(heap.get("free"));
-         Long.parseLong(heap.get("max"));
+         if (java14) {
+            Long.parseLong(heap.get("max"));
+         }
       } catch (Exception exception) {
          fail("Incorrect value while parsing a memory size.");
       }
@@ -397,12 +398,5 @@ public class MetaFunctionsTests extends TestCase {
       } catch (StatusCodeHTTPCallException exception) {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
       }
-   }
-
-   /**
-    * Stop the server.
-    */
-   protected void tearDown() {
-      _httpServer.close();
    }
 }

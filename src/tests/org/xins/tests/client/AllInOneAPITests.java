@@ -90,29 +90,9 @@ public class AllInOneAPITests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The HTTP server used to handle the requests.
-    */
-   private HTTPServletHandler _httpServer;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Starts the HTTP server with the correct parameters.
-    */
-   protected void setUp() throws ServletException, IOException {
-      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties");
-      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
-      String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
-      File warFile = new File(System.getProperty("user.dir"), warLocation);
-
-      // Start the web server
-      //System.out.println("Web server set up.");
-      _httpServer = new HTTPServletHandler(warFile);
-   }
 
    /**
     * Tests CAPI and pre-defined.
@@ -425,12 +405,5 @@ public class AllInOneAPITests extends TestCase {
       } catch (StatusCodeHTTPCallException exception) {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
       }
-   }
-
-   /**
-    * Stop the server.
-    */
-   protected void tearDown() {
-      _httpServer.close();
    }
 }

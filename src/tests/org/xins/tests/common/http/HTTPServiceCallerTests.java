@@ -20,9 +20,11 @@ import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
+
 import org.xins.common.service.CallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GroupDescriptor;
+import org.xins.common.service.SocketTimeOutCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
@@ -136,7 +138,7 @@ public class HTTPServiceCallerTests extends TestCase {
       // TODO: Add tests for 2-argument constructor
    }
 
-   public void testW3URL() throws Exception {
+   public void testHTTPServiceCaller_W3URL() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
       Descriptor descriptor = new TargetDescriptor("hTTp://www.w3.org/TR/2004/REC-xml-20040204/", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
@@ -150,7 +152,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals(2840783247L, checksum(text));
    }
 
-   public void testPostParameters() throws Exception {
+   public void testHTTPServiceCaller_PostParameters() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
       parameters.set("string", "Janwillem");
@@ -167,7 +169,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
    }
 
-   public void testGetParameters() throws Exception {
+   public void testHTTPServiceCaller_GetParameters() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
       parameters.set("string", "Janwillem");
@@ -183,7 +185,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
    }
 
-   public void testWrongURL() throws Exception {
+   public void testHTTPServiceCaller_WrongURL() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("hello", "world");
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
@@ -195,7 +197,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
    }
 
-   public void testFailOverGet() throws Exception {
+   public void testHTTPServiceCaller_FailOverGet() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", TOTAL_TO, CONN_TO, SOCKET_TO);
       TargetDescriptor succeededTarget = new TargetDescriptor("http://www.w3.org/StyleSheets/TR/W3C-REC.css", TOTAL_TO, CONN_TO, SOCKET_TO);
@@ -211,7 +213,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
    }
 
-   public void testFailOverPost() throws Exception {
+   public void testHTTPServiceCaller_FailOverPost() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.POST, null, true, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", TOTAL_TO, CONN_TO, SOCKET_TO);
       TargetDescriptor succeededTarget = new TargetDescriptor("http://xins.sourceforge.net/patterntest.php", TOTAL_TO, CONN_TO, SOCKET_TO);
@@ -225,5 +227,23 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
       String text = result.getString();
       assertTrue("Incorrect content.", text.indexOf("Pattern test form") != -1);
+   }
+
+   public void testHTTPServiceCaller_SocketTimeOut() throws Exception {
+      // Set socket time-out to 1 ms
+      TargetDescriptor target = new TargetDescriptor("http://xins.sourceforge.net/", TOTAL_TO, CONN_TO, 1);
+      HTTPServiceCaller caller = new HTTPServiceCaller(target);
+      HTTPCallRequest request = new HTTPCallRequest();
+      try {
+         caller.call(request);
+         fail("Expected SocketTimeOutCallException.");
+      } catch (SocketTimeOutCallException exception) {
+         // as expected
+
+         // Test some aspects of the exception
+         assertNull(exception.getNext());
+         assertEquals(request, exception.getRequest());
+         assertEquals(target,  exception.getTarget());
+      }
    }
 }

@@ -6,6 +6,11 @@
  */
 package org.xins.common;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import java.util.WeakHashMap;
+
 /**
  * Utility functions related to exceptions.
  *
@@ -13,6 +18,10 @@ package org.xins.common;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @deprecated
+ *    Deprecated since XINS 1.2.0.
+ *    Use class {@link org.xins.logdoc.ExceptionUtils} instead
  */
 public final class ExceptionUtils extends Object {
 
@@ -39,18 +48,7 @@ public final class ExceptionUtils extends Object {
     */
    public static final Throwable getRootCause(Throwable exception)
    throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
-
-      // Get the root cause of the exception
-      Throwable cause = exception.getCause();
-      while (cause != null) {
-         exception = cause;
-         cause = exception.getCause();
-      }
-
-      return exception;
+      return org.xins.logdoc.ExceptionUtils.getRootCause(exception);
    }
 
 

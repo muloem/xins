@@ -10,10 +10,13 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
@@ -162,6 +165,40 @@ public final class IPAddressUtils extends Object {
     *    the string <code>"localhost"</code>.
     */
    public static final String getLocalHost() {
+      if (Utils.getJavaVersion().olderThan(Utils.JAVA_1_4)) {
+         return getLocalHost_Java_1_3();
+      } else {
+         return getLocalHost_Java_1_4();
+      }
+   }
+
+   /**
+    * Retrieves the localhost host name, on Java 1.3.
+    *
+    * @return
+    *    if possible the fully qualified host name for localhost, otherwise if
+    *    possible the non-qualified host name for the localhost, otherwise
+    *    the string <code>"localhost"</code>.
+    */
+   public static final String getLocalHost_Java_1_3() {
+      try {
+         return InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException exception) {
+         return "localhost";
+      }
+   }
+
+   /**
+    * Retrieves the localhost host name, on Java 1.4 and up. This method
+    * applies several techniques to attempt to retrieve the localhost host
+    * name.
+    *
+    * @return
+    *    if possible the fully qualified host name for localhost, otherwise if
+    *    possible the non-qualified host name for the localhost, otherwise
+    *    the string <code>"localhost"</code>.
+    */
+   public static final String getLocalHost_Java_1_4() {
       try {
          return InetAddress.getLocalHost().getCanonicalHostName();
       } catch (UnknownHostException unknownHostException) {

@@ -108,13 +108,14 @@ extends Object {
           XINSCallResultData resultData)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "create("
-                               + XINSCallRequest.class.getName()
-                               + ','
-                               + TargetDescriptor.class.getName()
-                               + ",long,"
-                               + XINSCallResultData.class.getName()
-                               + ')';
+      final String THIS_METHOD_SIG = "("
+                                   + XINSCallRequest.class.getName()
+                                   + ','
+                                   + TargetDescriptor.class.getName()
+                                   + ",long,"
+                                   + XINSCallResultData.class.getName()
+                                   + ')';
+      final String THIS_METHOD = "create" + THIS_METHOD_SIG;
 
       // Check arguments
       MandatoryArgumentChecker.check("request",    request,
@@ -127,7 +128,7 @@ extends Object {
       }
 
       final String SUBJECT_CLASS  = getClass().getName();
-      final String SUBJECT_METHOD = THIS_METHOD.replaceFirst("\\(", "Impl\\(");
+      final String SUBJECT_METHOD = "createImpl" + THIS_METHOD_SIG;
 
       // Delegate to the implementation method
       UnsuccessfulXINSCallException e;

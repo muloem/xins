@@ -6,6 +6,14 @@
  */
 package org.xins.server;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.oro.text.regex.Perl5Pattern;
+
+import org.xins.common.Utils;
+
 /**
  * Class that represents the XINS/Java Server Framework library.
  *
@@ -21,15 +29,65 @@ public final class Library extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Fully-qualified name of this class.
+    */
+   private static final String CLASSNAME = Library.class.getName();
+
+   /**
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
+   /**
     * Regular expression that production release versions of XINS match, and
     * non-production release version do not.
     */
-   private static final String PRODUCTION_RELEASE_PATTERN = "[1-9][0-9]*\\.[0-9]+\\.[0-9]+";
+   private static final String PRODUCTION_RELEASE_PATTERN_STRING = "[1-9][0-9]*\\.[0-9]+\\.[0-9]+";
+
+   /**
+    * The pattern for a URL.
+    */
+   private static final Pattern PRODUCTION_RELEASE_PATTERN;
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Initializes this class. This function compiles
+    * {@link #PRODUCTION_RELEASE_PATTERN_STRING}
+    * to a {@link Pattern} and then stores that in
+    * {@link #PRODUCTION_RELEASE_PATTERN}.
+    */
+   static {
+      final String THIS_METHOD = "<clinit>()";
+      try {
+         PRODUCTION_RELEASE_PATTERN = PATTERN_COMPILER.compile(
+            PRODUCTION_RELEASE_PATTERN_STRING,
+            Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
+
+      } catch (MalformedPatternException exception) {
+         final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
+         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
+         final String DETAIL = "The pattern \""
+                             + PRODUCTION_RELEASE_PATTERN_STRING
+                             + "\" is considered malformed.";
+
+         throw Utils.logProgrammingError(CLASSNAME,
+                                         THIS_METHOD,
+                                         SUBJECT_CLASS,
+                                         SUBJECT_METHOD,
+                                         DETAIL,
+                                         exception);
+      }
+   }
 
    /**
     * Returns the version of this library.
@@ -57,7 +115,7 @@ public final class Library extends Object {
     */
    static final boolean isProductionRelease(String version)
    throws NullPointerException {
-      return version.matches(PRODUCTION_RELEASE_PATTERN);
+      return PATTERN_MATCHER.matches(version, PRODUCTION_RELEASE_PATTERN);
    }
 
    /**
@@ -76,7 +134,8 @@ public final class Library extends Object {
     */
    static final boolean isMoreRecent(String buildVersion)
    throws NullPointerException {
-      if (!buildVersion.matches(PRODUCTION_RELEASE_PATTERN) ||
+
+      if (!isProductionRelease(buildVersion) ||
           isProductionRelease(getVersion())) {
          return false;
       }

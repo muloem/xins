@@ -10,8 +10,11 @@ import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Patterns type. An enumeration type only accepts values that match a certain
@@ -84,7 +87,7 @@ public abstract class PatternType extends Type {
          }
       } catch (MalformedPatternException mpe) {
          PatternCompileException e = new PatternCompileException(pattern);
-         e.initCause(mpe);
+         ExceptionUtils.setCause(e, mpe);
          throw e;
       }
 

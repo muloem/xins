@@ -10,7 +10,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.ExceptionUtils;
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Tests for class <code>ExceptionUtils</code>
@@ -93,13 +93,23 @@ public class ExceptionUtilsTests extends TestCase {
       assertEquals(ex, cause);
 
       // Test 2 levels
-      Exception ex2 = new Exception(ex);
+      Exception ex2 = new Exception();
+      ExceptionUtils.setCause(ex2, ex);
       cause = ExceptionUtils.getRootCause(ex2);
       assertEquals(ex, cause);
 
       // Test 3 levels
-      Exception ex3 = new Exception(ex2);
+      Exception ex3 = new Exception();
+      ExceptionUtils.setCause(ex3, ex2);
       cause = ExceptionUtils.getRootCause(ex3);
       assertEquals(ex, cause);
+
+      // Test IllegalStateException
+      try {
+         ExceptionUtils.setCause(ex3, ex2);
+         fail("Expected IllegalStateException.");
+      } catch (IllegalStateException illegalState) {
+         // as expected
+      }
    }
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.tools.ant.BuildException;
@@ -97,9 +98,13 @@ public class CallTargetsTask extends Task {
     *    the targets to execute, space-separated.
     */
    public void setTargets(String targets) {
-      _targets = (targets == null)
-               ? new Vector()
-               : new Vector(Arrays.asList(targets.split(" ")));
+      _targets = new Vector();
+      if (targets != null) {
+         StringTokenizer tokenizer = new StringTokenizer(targets, " ");
+         while (tokenizer.hasMoreTokens()) {
+            _targets.add(tokenizer.nextToken());
+         }
+      }
    }
 
    /**

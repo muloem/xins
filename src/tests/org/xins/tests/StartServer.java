@@ -4,21 +4,23 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.tests.common;
+package org.xins.tests;
+
+import java.io.File;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.Utils;
+import org.xins.tests.server.servlet.HTTPServletHandler;
 
 /**
- * Tests for class <code>Utils</code>
+ * Starts the web server.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public class UtilsTests extends TestCase {
+public class StartServer extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -31,7 +33,7 @@ public class UtilsTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(UtilsTests.class);
+      return new TestSuite(StartServer.class);
    }
 
 
@@ -44,13 +46,13 @@ public class UtilsTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>UtilsTests</code> test suite with
+    * Constructs a new <code>StartServer</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public UtilsTests(String name) {
+   public StartServer(String name) {
       super(name);
    }
 
@@ -63,19 +65,16 @@ public class UtilsTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testGetCallingClassAndMethod() {
-      // TODO: Test this for Java 1.3 (and down) as well?
-      if (Utils.getJavaVersion().newerOrEqual(Utils.JAVA_1_4)) {
-         doTestGetCallingClassAndMethod(getClass().getName(), "testGetCallingClassAndMethod");
-      }
-   }
+   public void testStartServer() throws Exception {
+      
+      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
+      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
+      String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
+      File warFile = new File(System.getProperty("user.dir"), warLocation);
 
-   private void doTestGetCallingClassAndMethod(String expectedClass,
-                                               String expectedMethod) {
-      String c = Utils.getCallingClass();
-      String m = Utils.getCallingMethod();
-
-      assertEquals(expectedClass, c);
-      assertEquals(expectedMethod, m);
+      // Start the web server
+      System.out.println("Starting web server.");
+      AllTests.HTTP_SERVER = new HTTPServletHandler(warFile);
+      System.out.println("Web server started.");
    }
 }

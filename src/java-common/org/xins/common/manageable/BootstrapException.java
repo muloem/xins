@@ -7,7 +7,10 @@
 package org.xins.common.manageable;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.text.FastStringBuffer;
+
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Exception thrown when the bootstrapping of a <code>Manageable</code>
@@ -91,7 +94,8 @@ extends Exception {
     */
    public BootstrapException(Throwable cause)
    throws IllegalArgumentException {
-      super(createMessage(cause), cause);
+      super(createMessage(cause));
+      ExceptionUtils.setCause(this, cause);
    }
 
 

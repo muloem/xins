@@ -157,6 +157,8 @@ public abstract class Manageable extends Object {
           InvalidPropertyValueException,
           BootstrapException {
 
+      // TODO: Log
+
       State erroneousState = null;
 
       // Get the current state and change to BOOTSTRAPPING if it is valid
@@ -170,7 +172,10 @@ public abstract class Manageable extends Object {
 
       // If the state was invalid, then fail
       if (erroneousState != null) {
-         throw new IllegalStateException("The current state is " + erroneousState + " instead of " + UNUSABLE + '.');
+         final String MESSAGE = "The current state is "
+                              + erroneousState
+                              + " instead of UNUSABLE.";
+         throw new IllegalStateException(MESSAGE);
       }
 
       // Check arguments

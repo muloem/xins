@@ -53,6 +53,8 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
 import org.xins.common.text.TextUtils;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
  *
@@ -734,7 +736,7 @@ extends HttpServlet {
             Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
-            servletException.initCause(exception);
+            ExceptionUtils.setCause(servletException, exception);
             throw servletException;
          }
 
@@ -764,7 +766,7 @@ extends HttpServlet {
             Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
-            servletException.initCause(t);
+            ExceptionUtils.setCause(servletException, t);
             throw servletException;
          }
 
@@ -785,7 +787,7 @@ extends HttpServlet {
             Log.log_3208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
             setState(API_CONSTRUCTION_FAILED);
             ServletException servletException = new ServletException();
-            servletException.initCause(exception);
+            ExceptionUtils.setCause(servletException, exception);
             throw servletException;
          }
 
@@ -870,7 +872,7 @@ extends HttpServlet {
          if (caught != null) {
             setState(API_BOOTSTRAP_FAILED);
             ServletException se = new ServletException("API bootstrap failed.");
-            se.initCause(caught);
+            ExceptionUtils.setCause(se, caught);
             throw se;
          }
 

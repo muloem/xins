@@ -8,16 +8,13 @@ package org.xins.logdoc;
 
 /**
  * Utility class used to check mandatory method arguments.
- * This class is a copy of the MandatoryArgumentChecker class in the package
- * org.xins.common. This file has been copied to make the library
- * logdoc.jar independant from the xins-commons.jar file.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
-final class MandatoryArgumentChecker extends Object {
+public final class MandatoryArgumentChecker extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -37,18 +34,68 @@ final class MandatoryArgumentChecker extends Object {
     *    the value of the argument that cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentValue == null</code>.
+    *    if <code>argumentName == null</code> or <code>argumentValue == null</code>.
     */
    public static void check(String argumentName, Object argumentValue)
    throws IllegalArgumentException {
 
+      if (argumentName == null) {
+         check("argumentName", argumentName);
+      }
+
       if (argumentValue == null) {
-         LogdocStringBuffer buffer = new LogdocStringBuffer(40);
-         buffer.append(argumentName);
+         LogdocStringBuffer buffer = new LogdocStringBuffer(argumentName.length() + 8, argumentName);
          buffer.append(" == null");
          throw new IllegalArgumentException(buffer.toString());
       }
    }
+
+   /**
+    * Checks that the specified two arguments are not <code>null</code>.
+    *
+    * @param argumentName1
+    *    the name of the first argument that cannot be <code>null</code>.
+    *
+    * @param argumentValue1
+    *    the value of the first argument that cannot be <code>null</code>.
+    *
+    * @param argumentName2
+    *    the name of the second argument that cannot be <code>null</code>.
+    *
+    * @param argumentValue2
+    *    the value of the second argument that cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>argumentName1 == null || argumentName2 == null</code>
+    *    or if <code>argumentValue1 == null || argumentValue2 == null</code>.
+    */
+   public static void check(String argumentName1, Object argumentValue1,
+                            String argumentName2, Object argumentValue2)
+   throws IllegalArgumentException {
+
+      if (argumentName1 == null || argumentName2 == null) {
+         check("argumentName1", argumentName1, "argumentName2", argumentName2);
+      }
+
+      if (argumentValue1 == null || argumentValue2 == null) {
+         if (argumentValue1 == null && argumentValue2 == null) {
+            LogdocStringBuffer buffer = new LogdocStringBuffer(20 + argumentName1.length() + argumentName2.length(), argumentName1);
+            buffer.append(" == null && ");
+            buffer.append(argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue1 == null) {
+            LogdocStringBuffer buffer = new LogdocStringBuffer(8 + argumentName1.length(), argumentName1);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         } else if (argumentValue2 == null) {
+            LogdocStringBuffer buffer = new LogdocStringBuffer(8 + argumentName2.length(), argumentName2);
+            buffer.append(" == null");
+            throw new IllegalArgumentException(buffer.toString());
+         }
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors

@@ -7,7 +7,10 @@
 package org.xins.common.manageable;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.text.FastStringBuffer;
+
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Exception thrown when the deinitialization of a <code>Manageable</code>
@@ -80,7 +83,8 @@ extends Exception {
     */
    DeinitializationException(Throwable cause)
    throws IllegalArgumentException {
-      super(createMessage(cause), cause);
+      super(createMessage(cause));
+      ExceptionUtils.setCause(this, cause);
    }
 
 

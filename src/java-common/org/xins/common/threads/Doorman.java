@@ -19,6 +19,8 @@ import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Monitor that acts like a doorman. It implements a variation of the
  * <em>Alternating Reader Writer</em> algorithm.
@@ -771,7 +773,9 @@ public final class Doorman extends Object {
                Utils.logProgrammingError(QUEUE_CLASSNAME, THIS_METHOD,
                                          CALLING_CLASS,   CALLING_METHOD,
                                          DETAIL,          null);
-            throw new Error(e);
+            Error error = new Error();
+            ExceptionUtils.setCause(error, e);
+            throw error;
          }
 
          // If the queue is empty, then store the new waiter as the first
@@ -810,7 +814,9 @@ public final class Doorman extends Object {
                Utils.logProgrammingError(QUEUE_CLASSNAME, THIS_METHOD,
                                          CALLING_CLASS,   CALLING_METHOD,
                                          DETAIL,          null);
-            throw new Error(e);
+            Error error = new Error();
+            ExceptionUtils.setCause(error, e);
+            throw error;
          }
 
          Thread oldFirst = _first;

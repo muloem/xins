@@ -6,6 +6,8 @@
  */
 package org.xins.common;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Exception thrown when a programming error is detected.
  *
@@ -62,7 +64,8 @@ extends RuntimeException {
                                String    subjectMethod,
                                String    detail,
                                Throwable cause) {
-      super(detail, cause);
+      super(detail);
+      ExceptionUtils.setCause(this, cause);
 
       // TODO: Include all arguments in the exception message
       // TODO: Store arguments in fields
