@@ -14,6 +14,6 @@ znerd    - Remove unused methods, fields and classes
 znerd    - Finalize log entry ID's.
 X znerd    - Change all packages in java-common to start with org.xins.common
 znerd    - Change email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com
-agoubard - Include a minimum of documentation for the users in the release
-agoubard - Include some examples in the release
+X agoubard - Include a minimum of documentation for the users in the release
+X agoubard - Include some examples in the release
 agoubard - Prepare the annoucement (text + web sites where it will be posted)

@@ -9,7 +9,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Exception thrown if a character string does not match a certain format.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class FormatException
 extends RuntimeException {

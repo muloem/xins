@@ -12,7 +12,7 @@ import org.xins.common.text.FastStringBuffer;
  * Standard type <em>_date</em>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.166
  */
@@ -228,7 +228,7 @@ public class Date extends Type {
     * Date value, composed of a year, month and a day.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
     * @since XINS 0.166
     */

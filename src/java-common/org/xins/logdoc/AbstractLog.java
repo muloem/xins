@@ -9,7 +9,7 @@ import org.apache.log4j.Level;
  * Abstract base class for <em>logdoc</em> <code>Log</code> classes.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public abstract class AbstractLog
 extends Object {
@@ -105,7 +105,7 @@ extends Object {
     * class initializer.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
    protected static abstract class LogController extends Object {
 
@@ -158,7 +158,7 @@ extends Object {
     * Custom log level.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
    private static class CustomLevel extends Level {
 

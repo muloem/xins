@@ -11,7 +11,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Implementation of some methods for the PropertyReader.
  *
  * @version $Revision$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>), Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>), Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public abstract class AbstractPropertyReader
 implements PropertyReader {

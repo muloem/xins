@@ -10,7 +10,7 @@ import org.xins.common.collections.PropertyReader;
  * Basic implementation of a <code>CallResult</code>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.119
  */

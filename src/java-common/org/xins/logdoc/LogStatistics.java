@@ -8,7 +8,7 @@ package org.xins.logdoc;
  * number of occurrences per log entry.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class LogStatistics
 extends Object {
@@ -83,7 +83,7 @@ extends Object {
     * for the log entry.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
    public final static class Entry extends Object {
 

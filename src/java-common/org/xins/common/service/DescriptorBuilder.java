@@ -46,7 +46,7 @@ import org.xins.common.collections.PropertyReader;
  * <br>ldap.host2a=service, ldap://host2a/, 8000</code></blockquote>
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.105
  */

@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.186:
+
+* Changed email address of Ernst de Haan to ernst.dehaan@nl.wanadoo.com.
+
+* Removed some TODOs done.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.185:
 
 * XINS/Java Server Framework:
@@ -35,18 +42,18 @@ CHANGES INTRODUCED IN XINS 0.185:
     be used for XINS 1.0.
 
 * Generated specification documentation:
-  - Fixed a bug that did not generated the link to the environment with the
+  - Fixed a bug that did not generate the link to the environment with the
     new directory structure.
     This bug existed since 0.183.
 
 * Generated build file:
-  - The create-api target now adds the api element automaticcaly to the
+  - The create-api target now adds the api element automatically to the
     xins-project.xml file.
-  - The create-function target now adds the function element automaticcaly to
+  - The create-function target now adds the function element automatically to
     the api.xml file.
-  - The create-rcd target now adds the resultcode element automaticcaly to
+  - The create-rcd target now adds the resultcode element automatically to
     the api.xml file.
-  - The create-logdoc target now adds the logdoc element automaticcaly to
+  - The create-logdoc target now adds the logdoc element automatically to
     the impl.xml.
   - Added the validation of the environments.xml, impl.xml and log.xml.
 

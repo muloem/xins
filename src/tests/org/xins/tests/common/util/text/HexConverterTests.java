@@ -14,7 +14,7 @@ import org.xins.common.text.FastStringBuffer;
  * Tests for class <code>HexConverter</code>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class HexConverterTests extends TestCase {
 

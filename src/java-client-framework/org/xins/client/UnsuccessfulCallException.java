@@ -12,7 +12,7 @@ import org.xins.common.text.FastStringBuffer;
  * Exception that indicates that an API call result was unsuccessful.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 0.36
  */
@@ -41,7 +41,8 @@ extends CallException {
     *
     * @throws IllegalArgumentException
     *    if <code>result == null
-    *          || result.</code>{@link XINSServiceCaller.Result#isSuccess() isSuccess()}.
+    *          || result.{@link XINSServiceCaller.Result#getErrorCode() getErrorCode()}
+    *          == null</code>.
     *
     * @since XINS 0.124
     */
@@ -117,7 +118,9 @@ extends CallException {
     *    the result code or <code>null</code> if no code was returned.
     *
     * @since XINS 0.136
-    * @deprecated Use getErrorCode();
+    * @deprecated
+    *    Deprecated since XINS 0.181. Use {@link #getErrorCode()} instead,
+    *    which is in fact a renamed version of this function.
     */
    public String getCode() {
       return getErrorCode();

@@ -11,7 +11,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Replacer.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class Replacer extends Object {
 
@@ -160,7 +160,7 @@ public class Replacer extends Object {
     * Exception thrown when a replacement cannot be applied.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
    public static class Exception extends java.lang.Exception {
 

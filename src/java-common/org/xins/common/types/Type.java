@@ -9,7 +9,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Type for a function parameter.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
+ * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
  */
 public abstract class Type extends Object {
 

@@ -10,7 +10,7 @@ import org.xins.common.types.TypeValueException;
  * Standard type <em>_text</em>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
+ * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
  */
 public final class Text extends Type {
 

@@ -9,7 +9,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Utility functions for dealing with <code>PropertyReader</code> objects.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class PropertyReaderUtils
 extends Object {

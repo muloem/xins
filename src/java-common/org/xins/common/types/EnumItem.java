@@ -9,7 +9,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Item in an enumeration type.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</A>)
+ * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
  *
  * @see EnumType
  */

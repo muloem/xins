@@ -39,7 +39,7 @@ import org.xins.common.text.ParseException;
  * all other IP addresses are denied access to any of the functions.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class AccessRuleList
 extends Object {

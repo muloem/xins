@@ -10,7 +10,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Property reader based on a <code>Properties</code> object.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class PropertiesPropertyReader
 extends AbstractPropertyReader {

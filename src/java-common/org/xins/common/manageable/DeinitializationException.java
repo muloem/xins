@@ -11,7 +11,7 @@ import org.xins.common.text.FastStringBuffer;
  * object caused an exception to be thrown.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class DeinitializationException
 extends Exception {

@@ -10,7 +10,7 @@ package org.xins.logdoc;
  * logdoc.jar independant from the xins-commons.jar file.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 final class MandatoryArgumentChecker extends Object {
 

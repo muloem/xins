@@ -9,7 +9,7 @@ import org.apache.log4j.NDC;
  * Central class for <em>logdoc</em> logging.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public final class LogCentral
 extends Object {

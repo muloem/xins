@@ -13,7 +13,7 @@ import org.xins.common.text.Replacer;
  * Tests for class <code>Replacer</code>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class ReplacerTests extends TestCase {
 

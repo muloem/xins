@@ -15,7 +15,6 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
   must also be set."
 * Allow freezing of api.xml files. Support 'freeze' attribute in DTD and
   copy behaviour from behaviour for frozen .fnc files.
-* Add standard type '_list'.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
@@ -111,7 +110,6 @@ GENERATED SPECIFICATION DOCUMENTATION
 
 * Display specified output parameters and data section per result code.
 * Check all names using regular expressions.
-* Make sure a result code does not clash with the default result codes.
 * Have a page per environment with links to _GetVersion, _GetStatistics,
   _GetSettings, etc. Let the link on the page for an API link to that page.
 * Link to CVSweb or ViewCVS.
@@ -121,7 +119,6 @@ GENERATED SPECIFICATION DOCUMENTATION
   another.
 * Generate Docbook from the specifications.
 * Have an item for a result code page in the header.
-* Add standard type '_list': Support <list type="TYPE" /> in .typ files.
 * Per type have a list of input parameters, output parameters and data element
   attributes that are defined as of this type.
 * Display the name of each item in the generated HTML for an enum type.
@@ -164,5 +161,4 @@ MISCELLANEOUS
 * Refactor documentation.
 * Generate DocBook and PDF from the Javadoc using the Doclet available at
   http://www.michael-a-fuchs.de/projects/dbdoclet/en/index.html
-* Include a few examples in the release.
 * Investigate the unused classes/methods.
