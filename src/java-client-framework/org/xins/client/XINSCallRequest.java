@@ -309,15 +309,15 @@ public final class XINSCallRequest extends CallRequest {
          buffer.append(_functionName);
 
          // Parameters
-         buffer.append("\"; parameters=");
          if (_parameters == null || _parameters.size() < 1) {
-            buffer.append("(null)");
+            buffer.append("\"; parameters=(null); failOver=");
          } else {
+            buffer.append("\"; parameters=\"");
             PropertyReaderUtils.serialize(_parameters, buffer, "-");
+            buffer.append("\"; failOver=");
          }
 
          // Fail-over unconditionally allowed?
-         buffer.append("; failOver=");
          buffer.append(isFailOverAllowed());
 
          // Diagnostic context identifier
