@@ -377,7 +377,9 @@ implements Servlet {
 
       synchronized (_stateLock) {
          _state = DISPOSING;
-         _api.destroy();
+         if (_api != null) {
+            _api.destroy();
+         }
          Library.LIFESPAN_LOG.info("XINS/Java Server Framework shutdown completed.");
          _state = DISPOSED;
       }
