@@ -135,7 +135,7 @@ public class Int8 extends Type {
     * used.
     */
    private Int8() {
-      this("int8", Byte.MIN_VALUE, Byte.MAX_VALUE);
+      this("_int8", Byte.MIN_VALUE, Byte.MAX_VALUE);
    }
 
    /**

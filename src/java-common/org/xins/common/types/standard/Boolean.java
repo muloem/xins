@@ -134,7 +134,7 @@ public final class Boolean extends Type {
     * used.
     */
    private Boolean() {
-      super("boolean", java.lang.Boolean.class);
+      super("_boolean", java.lang.Boolean.class);
    }
 
 

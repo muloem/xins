@@ -146,7 +146,7 @@ public class Properties extends Type {
     * used.
     */
    private Properties() {
-      this("properties", null, null);
+      this("_properties", null, null);
    }
 
    /**

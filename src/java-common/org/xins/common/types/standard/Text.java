@@ -87,7 +87,7 @@ public final class Text extends Type {
     * used.
     */
    private Text() {
-      super("text", java.lang.String.class);
+      super("_text", java.lang.String.class);
    }
 
 

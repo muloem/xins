@@ -212,7 +212,7 @@ public class Timestamp extends Type {
     * used.
     */
    private Timestamp() {
-      super("timestamp", Value.class);
+      super("_timestamp", Value.class);
    }
 
 

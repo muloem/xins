@@ -134,7 +134,7 @@ public class Int32 extends Type {
     * used.
     */
    private Int32() {
-      this("int32", Integer.MIN_VALUE, Integer.MAX_VALUE);
+      this("_int32", Integer.MIN_VALUE, Integer.MAX_VALUE);
    }
 
    /**

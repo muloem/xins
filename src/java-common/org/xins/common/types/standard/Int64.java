@@ -134,7 +134,7 @@ public class Int64 extends Type {
     * used.
     */
    private Int64() {
-      this("int64", Long.MIN_VALUE, Long.MAX_VALUE);
+      this("_int64", Long.MIN_VALUE, Long.MAX_VALUE);
    }
 
    /**

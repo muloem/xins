@@ -134,7 +134,7 @@ public class Int16 extends Type {
     * used.
     */
    private Int16() {
-      this("int16", Short.MIN_VALUE, Short.MAX_VALUE);
+      this("_int16", Short.MIN_VALUE, Short.MAX_VALUE);
    }
 
    /**

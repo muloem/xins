@@ -36,6 +36,7 @@ public class Base64 extends Type {
     */
    private final static String STRING_ENCODING = "US-ASCII";
 
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -139,7 +140,7 @@ public class Base64 extends Type {
     * used.
     */
    private Base64() {
-      this("base64", 0, Integer.MAX_VALUE);
+      this("_base64", 0, Integer.MAX_VALUE);
    }
 
    /**
@@ -176,6 +177,7 @@ public class Base64 extends Type {
     * The maximum number of bytes this Base64 can have.
     */
    private final int _maximum;
+
 
    //-------------------------------------------------------------------------
    // Methods

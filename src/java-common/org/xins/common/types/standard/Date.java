@@ -174,7 +174,7 @@ public class Date extends Type {
     * used.
     */
    private Date() {
-      super("date", Value.class);
+      super("_date", Value.class);
    }
 
 
