@@ -51,5 +51,6 @@ public interface IndexedMap extends Map {
     * @throws IndexOutOfBoundsException
     *    if <code>index &lt; 0 || index &gt;= </code>{@link #size()}.
     */
-   public Object getValue(int index);
+   public Object getValue(int index)
+   throws IndexOutOfBoundsException;
 }
