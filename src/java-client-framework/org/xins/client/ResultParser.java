@@ -162,7 +162,7 @@ public class ResultParser {
       public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
          if (_level >= 0) {
             _level++;
-            DataElement element = new DataElement();
+            DataElement element = new DataElement(qName);
 
             for (int i = 0; i < attributes.getLength(); i++) {
                String key = attributes.getQName(i);
@@ -180,7 +180,7 @@ public class ResultParser {
             _pcdata = new FastStringBuffer(20);
          } else if (qName.equals("data")) {
             _elements = new Hashtable();
-            _elements.put(new Integer(0), new DataElement());
+            _elements.put(new Integer(0), new DataElement("data"));
             _level = 0;
          } else {
             throw new SAXException("Starting to parse an unknown element \"" + qName + "\".");

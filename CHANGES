@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 0.206:
   - Merged FormattedInputParameters and FormattedOutputParameters in one
     class FormattedParameters.
   - Removed unused import statements.
+  - Simplified the FormattedDate class.
 
 * XINS/Java Common Library:
   - Reabilitated the ServletRequestPropertyReader removed in the previous
@@ -16,6 +17,8 @@ CHANGES INTRODUCED IN XINS 0.206:
 
 * XINS/Java Client Framework:
   - Removed unused import statements.
+  - Added some getter methods for the DataElement.
+  - Each DataElement now must have a qualified name.
 
 * Logdoc:
   - Removed the counter that counted the number of time that a log was

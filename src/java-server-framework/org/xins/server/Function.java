@@ -4,8 +4,8 @@
 package org.xins.server;
 
 import java.io.PrintWriter;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -364,6 +364,16 @@ implements DefaultResultCodes {
    private static final class FormattedDate
    extends AbstractLogdocSerializable {
 
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+
+      /**
+       * The date formatter.
+       */
+      private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd-HHmmssSSS");
+
+
       //---------------------------------------------------------------------
       // Constructor
       //---------------------------------------------------------------------
@@ -395,85 +405,8 @@ implements DefaultResultCodes {
 
       protected String initialize() {
 
-         // XXX Why not using the SimpleDateFormater:
-         // XXX return new SimpleDateFormat("yyyyMMdd-HHmmssSSS").format(new Date(_epochDate));
+         return DATE_FORMATTER.format(new Date(_epochDate));
 
-         // Create a FastStringBuffer with an initial size as follows:
-         //  2 for the century     (e.g.  20)
-         //  2 for the year        (e.g.  04)
-         //  2 for the month       (e.g.  07)
-         //  1 for a hyphen
-         //  2 for the day         (e.g.  30)
-         //  2 for the hour        (e.g.  13)
-         //  2 for the minute      (e.g.  33)
-         //  2 for the second      (e.g.  09)
-         //  3 for the millisecond (e.g. 231)
-         // ---
-         // 18 in total
-         final int BUFFER_SIZE = 18;
-         FastStringBuffer buffer = new FastStringBuffer(BUFFER_SIZE);
-
-         // XXX: It seems stupid that it is not possible to create a Calendar
-         //      instance directly using the current date as a number of
-         //      milliseconds since the Epoch
-         Calendar calendar = new GregorianCalendar(1970, Calendar.JANUARY, 1);
-         calendar.setTimeInMillis(_epochDate);
-
-         int year    = calendar.get(Calendar.YEAR);
-         int month   = calendar.get(Calendar.MONTH);
-         int day     = calendar.get(Calendar.DATE);
-         int hours   = calendar.get(Calendar.HOUR);
-         int minutes = calendar.get(Calendar.MINUTE);
-         int seconds = calendar.get(Calendar.SECOND);
-         int millis  = calendar.get(Calendar.MILLISECOND);
-
-         // Append year
-         buffer.append(year);
-
-         // Append month
-         if (month < 10) {
-            buffer.append('0');
-         }
-         buffer.append(month);
-
-         // Append day
-         if (day < 10) {
-            buffer.append('0');
-         }
-         buffer.append(day);
-
-         // Append hyphen separator
-         buffer.append('-');
-
-         // Append hours
-         if (hours < 10) {
-            buffer.append('0');
-         }
-         buffer.append(hours);
-
-         // Append minutes
-         if (minutes < 10) {
-            buffer.append('0');
-         }
-         buffer.append(minutes);
-
-         // Append seconds
-         if (seconds < 10) {
-            buffer.append('0');
-         }
-         buffer.append(seconds);
-
-         // Append milliseconds
-         if (millis < 10) {
-            buffer.append("00");
-         } else if (millis < 100) {
-            buffer.append('0');
-         }
-         buffer.append(millis);
-
-         assert buffer.getLength() == BUFFER_SIZE : "buffer.getLength() (" + buffer.getLength() + ") == BUFFER_SIZE (" + BUFFER_SIZE + ')';
-
-         return buffer.toString();
       }
    }
 
