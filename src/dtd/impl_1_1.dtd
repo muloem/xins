@@ -5,6 +5,9 @@
 -->
 <!ELEMENT impl (logdoc?, dependency*, calling-convention?, instance*)>
 <!ELEMENT logdoc EMPTY>
+<!ATTLIST logdoc
+          accesslevel (package|public) #IMPLIED
+>
 <!ELEMENT dependency EMPTY>
 <!ATTLIST dependency
           dir        CDATA #REQUIRED

@@ -167,6 +167,8 @@
 
 					<dtd publicId="-//XINS//DTD Function 1.1//EN"
 					     location="{$xins_home}/src/dtd/function_1_1.dtd" />
+					<dtd publicId="-//XINS//DTD Implementation 1.1//EN"
+					     location="{$xins_home}/src/dtd/impl_1_1.dtd" />
 				</xmlcatalog>
 			</target>
 
@@ -691,7 +693,9 @@
 									<param name="java_destdir"    expression="{$javaDestFileDir}" />
 									<param name="package_name"    expression="{$package}" />
 								</style>
-								<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
+								<ant antfile="build/logdoc/{$api}/build.xml" target="java">
+									<property name="accesslevel" value="{$accesslevel}" />
+								</ant>
 							</xsl:if>
 						</xsl:if>
 

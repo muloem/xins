@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 * Logdoc:
   - Fixed en_US translation of log 3210, 3216, 3223, 3412, 3419 and 3424 to
     include the reason.
+  - Fixed bug #1088500: the logdoc element set in impl.xml has now an
+    accesslevel attribute.
 
 * XINS/Java Common:
   - The diagnotic context identifier is removed after being poped
