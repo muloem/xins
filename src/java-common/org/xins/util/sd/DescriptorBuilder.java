@@ -3,6 +3,7 @@
  */
 package org.xins.util.sd;
 
+import java.net.MalformedURLException;
 import java.util.StringTokenizer;
 import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.collections.PropertyReader;
@@ -138,15 +139,18 @@ public final class DescriptorBuilder extends Object {
             throw new PropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
          String url = tokens[1];
-         // TODO: Check URL in TargetDescriptor class, using pattern:
-         //       ^[a-z][a-z0-9]*:\/\/[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*$
          long timeOut;
          try {
             timeOut = Long.parseLong(tokens[2]);
          } catch (NumberFormatException nfe) {
             throw new PropertyValueException(propertyName, value, "Unable to parse time-out.");
          }
-         return new TargetDescriptor(url, timeOut);
+
+         try {
+            return new TargetDescriptor(url, timeOut);
+         } catch (MalformedURLException exception) {
+            throw new PropertyValueException(propertyName, value, "Malformed URL.");
+         }
 
       // Parse group descriptor
       } else if (GROUP_DESCRIPTOR_TYPE.equals(descriptorType)) {

@@ -3,6 +3,11 @@
  */
 package org.xins.util.sd;
 
+import java.net.MalformedURLException;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
@@ -19,9 +24,39 @@ public final class TargetDescriptor extends Descriptor {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
+   /**
+    * Pattern matcher.
+    */
+   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
+   /**
+    * The pattern for a URL, as a character string.
+    */
+   private static final String PATTERN_STRING = "[a-z][a-z0-9]*:\\/\\/[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*";
+
+   /**
+    * The pattern for a URL.
+    */
+   private static final Pattern PATTERN;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   static {
+      try {
+         PATTERN = PATTERN_COMPILER.compile(PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
+      } catch (MalformedPatternException mpe) {
+         throw new Error("Unable to compile pattern: " + PATTERN_STRING);
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -39,12 +74,18 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @throws IllegalArgumentException
     *    if <code>url == null</code>.
+    *
+    * @throws MalformedURLException
+    *    if the specified URL is malformed.
     */
    public TargetDescriptor(String url, long timeOut)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, MalformedURLException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
+      if (! PATTERN_MATCHER.matches(url, PATTERN)) {
+         throw new MalformedURLException(url);
+      }
 
       // Set fields
       _url     = url;
