@@ -87,12 +87,12 @@
 	<translation entry="4034">Lijst van toegangsregels is geladen, met <value-of-param name="ruleCount" /> regel(s).</translation>
 	<translation entry="4035">Fout bij het toepassen van de gespecificeerde toegangsregels. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="4036">Toegangsregel <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
-	<translation entry="4037">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="4038">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="4039">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
-	<translation entry="4040">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet aan geen van de toegangsregels.</translation>
 	<translation entry="5000">Ongeldig HTTP verzoek ontvangen van <value-of-param name="ip" />. Het HTTP verzoek-type <value-of-param name="method" format="quoted" /> wordt niet ondersteund/toegestaan.</translation>
 	<translation entry="5001">HTTP <value-of-param name="method" /> verzoek ontvangen van <value-of-param name="ip" />.</translation>
+	<translation entry="5002">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5003">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet voor toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5004">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie voldoet niet voor de toegangsregel <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
+	<translation entry="5005">Aanroep van <value-of-param name="ip" /> naar <value-of-param name="function" /> functie wordt niet toegestaan. Het verzoek voldoet aan geen van de toegangsregels.</translation>
 	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
 	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>
