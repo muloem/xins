@@ -39,6 +39,10 @@ CHANGES INTRODUCED IN XINS 0.125:
   - Parameter specifying function name has been renamed from 'function' to
     '_function'. One step closer to completely switching to '_function'.
 
+* Generated specification documentation:
+  - Function specifications: No longer showing success column in result code
+    table.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.124:
 
