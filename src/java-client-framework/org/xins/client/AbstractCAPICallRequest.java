@@ -238,8 +238,13 @@ extends Object {
        * @throws IllegalArgumentException
        *    if <code>parameterName == null</code>.
        */
-      public Object getParameter(String name) throws IllegalArgumentException {
-         return AbstractCAPICallRequest.this._parameters.get(name);
+      public Object getParameter(String name)
+      throws IllegalArgumentException {
+         if (_parameters == null) {
+            return null;
+         } else {
+            return _parameters.get(name);
+         }
       }
    }
 }
