@@ -46,6 +46,8 @@ XINS/JAVA SERVER FRAMEWORK
 * Consider making ACL-related classes package-private.
 * Log an INFO message if some runtime properties are unused.
 * Implement a _ResetStatistics function.
+* Log calls to meta-functions, especially _PerformGC, _DisableFunction and
+  _EnableFunction.
 
 ______________________________________________________________________________
 XINS/JAVA CLIENT FRAMEWORK
