@@ -255,6 +255,9 @@ implements Responder, Log {
       if (functionName == null) {
          functionName = request.getParameter("function");
       }
+      if (functionName == null) {
+         functionName = _api.getDefaultFunctionName();
+      }
       _functionName = functionName;
 
       // Determine the function object, logger, call ID, log prefix

@@ -174,6 +174,12 @@ implements DefaultResultCodes {
    private PropertyReader _initSettingsReader;
 
    /**
+    * The name of the default function. Is <code>null</code> if there is no
+    * default function.
+    */
+   private String _defaultFunction;
+
+   /**
     * The type that applies for session identifiers. Will be set in
     * {@link #init(Properties)}.
     */
@@ -292,6 +298,12 @@ implements DefaultResultCodes {
          _initSettings = (Properties) properties.clone();
       }
       _initSettingsReader = new PropertiesPropertyReader(_initSettings);
+
+      // Check if a default function is set
+      _defaultFunction = properties.getProperty("org.xins.api.defaultFunction");
+      if (_defaultFunction != null) {
+         LOG.debug("Default function set to \"" + _defaultFunction + "\".");
+      }
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(properties, "org.xins.api.sessionBased");
@@ -583,6 +595,18 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Returns the name of the default function, if any.
+    *
+    * @return
+    *    the name of the default function, or <code>null</code> if there is
+    *    none.
+    */
+   public String getDefaultFunctionName() {
+      // TODO: Check state
+      return _defaultFunction;
+   }
+
+   /**
     * Returns if this API is session-based.
     *
     * @return
@@ -724,8 +748,14 @@ implements DefaultResultCodes {
     */
    final void functionAdded(Function function)
    throws NullPointerException {
+
+      // TODO: Check the state here?
+
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);
+
+      // TODO: After all functions are added, check that the default function
+      //       is set.
    }
 
    /**
