@@ -426,42 +426,60 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("key", key);
 
-      Object value;
-
       // Search in the recently accessed map first
+      Entry entry;
       synchronized (_recentlyAccessedLock) {
-         value = _recentlyAccessed.get(key);
+         entry = (Entry) _recentlyAccessed.get(key);
 
-         // If not found, then look in the slots
-         if (value == null) {
+         // Entry found in recently accessed
+         if (entry != null) {
+
+            // Entry is already expired, update the map and size and return null
+            if (entry.isExpired()) {
+               _recentlyAccessed.remove(key);
+               synchronized (_sizeLock) {
+                  _size--;
+               }
+               return null;
+
+            // Entry is not expired, touch it and return the reference
+            } else {
+               entry.touch();
+               return entry.getReference();
+            }
+
+         // Not found in recently accessed, look in slots
+         } else {
             synchronized (_slots) {
 
-               // If found, then remove from the slot and add it to the
-               // recently accessed
-               for (int i = 0; i < _slotCount && value == null; i++) {
-                  value = _slots[i].remove(key);
-               }
-            }
+               // Go through all slots
+               for (int i = 0; i < _slotCount; i++) {
+                  entry = (Entry) _slots[i].remove(key);
 
-            if (value != null) {
-               _recentlyAccessed.put(key, value);
+                  if (entry != null) {
+
+                     // Entry is already expired, update the map and size and
+                     // return null
+                     if (entry.isExpired()) {
+                        synchronized (_sizeLock) {
+                           _size--;
+                        }
+                        return null;
+
+                     // Entry is not expired, touch it, store in the recently
+                     // accessed and return the reference
+                     } else {
+                        entry.touch();
+                        _recentlyAccessed.put(key, entry);
+                        return entry.getReference();
+                     }
+                  }
+               }
+
+               // Nothing found in any of the slots
+               return null;
             }
          }
-      }
-
-      // If no entry was found then return null
-      if (value == null) {
-         return null;
-      }
-
-      // FIXME: Actually remove the entry
-
-      Entry entry = (Entry) value;
-      if (entry.isExpired()) {
-         return null;
-      } else {
-         entry.touch();
-         return entry.getReference();
       }
    }
 
