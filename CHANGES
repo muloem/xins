@@ -5,6 +5,9 @@ CHANGES INTRODUCED IN XINS 0.147:
 
 * Updated commons-httpclient to 2.0rc2.
 
+* XINS/Java Server Framework:
+  - Added support for OPTIONS (HTTP request method).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.146:
 
