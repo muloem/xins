@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.41:
+
+* Extended XINS/Java Client Framework:
+  - Renamed class RemoteAPI to ActualFunctionCaller. Deprecated RemoteAPI.
+  - Added class AbstractFunctionCaller and made ActualFunctionCaller derive
+    from it.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.40:
 
 * Properly encoding plus characters ('+') while URL encoding the link to the
