@@ -67,8 +67,38 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Class functions
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------]]></xsl:text>
 
+		<xsl:if test="$apiSessionBased = 'true'">
+			<xsl:text><![CDATA[
+
+   /**
+    * Checks the arguments for the constructor and returns the
+    * <code>XINSServiceCaller</code>.
+    *
+    * @param caller
+    *    the {@link org.xins.client.XINSServiceCaller}, cannot be
+    *    <code>null</code>.
+    *
+    * @param sessionIDSplitter
+    *    the session ID splitter, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>caller == null || sessionIDSplitter == null</code>.
+    */
+   private static final org.xins.client.XINSServiceCaller checkArguments(XINSServiceCaller caller,
+                                                                         SessionIDSplitter sessionIDSplitter)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      org.xins.util.MandatoryArgumentChecker.check("caller", caller,
+                                                   "sessionIDSplitter", sessionIDSplitter);
+
+      return caller;
+   }
+
+]]></xsl:text>
+		</xsl:if>
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -149,8 +179,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                org.xins.client.SessionIDSplitter sessionIDSplitter)
    throws IllegalArgumentException {
 
-      // Call superconstructor
-      super(functionCaller);
+      // Check preconditions and then call superclass constructor
+      super(checkArguments(caller, sessionIDSplitter));
 
       // Check preconditions
       org.xins.util.MandatoryArgumentChecker.check("sessionIDSplitter", sessionIDSplitter);
@@ -174,6 +204,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     */
    public CAPI(org.xins.client.FunctionCaller functionCaller)
    throws IllegalArgumentException {
+
+      // Call the superclass constructor
       super(functionCaller);
    }]]></xsl:text>
 			</xsl:otherwise>
