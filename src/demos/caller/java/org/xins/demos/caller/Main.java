@@ -3,15 +3,20 @@
  */
 package org.xins.demos.caller;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.xins.client.CallRequest;
 import org.xins.client.CallRequestParser;
-import org.xins.client.FunctionCaller;
-import org.xins.client.FunctionCallerParser;
+import org.xins.client.XINSServiceCaller;
+import org.xins.util.collections.PropertiesPropertyReader;
+import org.xins.util.collections.PropertyReader;
+import org.xins.util.service.Descriptor;
+import org.xins.util.service.DescriptorBuilder;
 
 /**
  * Executes a call to a XINS API.
@@ -19,7 +24,7 @@ import org.xins.client.FunctionCallerParser;
  * <p>This program expects 2 or 3 arguments:
  *
  * <ol>
- *    <li>Function caller configuration file (e.g. <code>config.xml</code>)
+ *    <li>Function caller configuration file (e.g. <code>caller.properties</code>)
  *    <li>Request file (e.g. <code>request.xml</code>)
  *    <li>Count (optional, e.g. 3, default is 1)
  * </ol>
@@ -70,14 +75,17 @@ public final class Main extends Object {
       Logger log = Logger.getLogger(Main.class.getName());
 
       // Get all parameters
-      String configFileName = args[0];
+      String configFileName  = args[0];
       String requestFileName = args[1];
       int count = (argCount > 2) ? Integer.parseInt(args[2]) : 1;
 
       // Read the config file
-      Reader configFile = new FileReader(configFileName);
-      FunctionCallerParser functionCallerParser = new FunctionCallerParser();
-      FunctionCaller caller = functionCallerParser.parse(configFile);
+      InputStream configFile = new FileInputStream(configFileName);
+      Properties p = new Properties();
+      p.load(configFile);
+      PropertyReader properties = new PropertiesPropertyReader(p);
+      Descriptor descriptor = DescriptorBuilder.build(properties, "caller");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
 
       // Read the request file
       Reader requestFile = new FileReader(requestFileName);
