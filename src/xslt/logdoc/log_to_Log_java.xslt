@@ -74,6 +74,8 @@ import org.xins.logdoc.UnsupportedLocaleException;
     */
    private static TranslationBundle TRANSLATION_BUNDLE;]]></xsl:text>
 
+		<xsl:apply-templates select="group/entry" mode="field" />
+		
 		<xsl:text><![CDATA[
 
 
@@ -184,6 +186,19 @@ import org.xins.logdoc.UnsupportedLocaleException;
 ]]></xsl:text>
 	</xsl:template>
 
+	<xsl:template match="group/entry" mode="field">
+		<xsl:text>
+
+   /**
+    * Logger for the entry with ID </xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>.
+    */
+   private static Logger LOGGER_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>;</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="group/entry">
 		<xsl:variable name="category">
 			<xsl:value-of select="$package_name" />
@@ -223,12 +238,20 @@ import org.xins.logdoc.UnsupportedLocaleException;
 		</xsl:if>
 		<xsl:apply-templates select="param" mode="method-argument" />
 		<xsl:text>) {
-      final Logger LOG = Logger.getLogger("</xsl:text>
+      if (LOGGER_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text> == null) {
+         LOGGER_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text> = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="$category" />
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>");
-      if (LOG.isEnabledFor(</xsl:text>
+      }
+      if (LOGGER_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>.isEnabledFor(</xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>)) {
          String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
@@ -241,7 +264,9 @@ import org.xins.logdoc.UnsupportedLocaleException;
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:text>);
-         LOG.log(FQCN, </xsl:text>
+         LOGGER_</xsl:text>
+		<xsl:value-of select="@id" />
+		<xsl:text>.log(FQCN, </xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>, __translation__, </xsl:text>
 		<xsl:choose>
@@ -250,8 +275,12 @@ import org.xins.logdoc.UnsupportedLocaleException;
 			</xsl:when>
 			<xsl:when test="$exception = 'true'">
 				<xsl:text>null);
-         if (LOG.isEnabledFor(DEBUG)) {
-            LOG.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));
+         if (LOGGER_</xsl:text>
+				<xsl:value-of select="@id" />
+				<xsl:text>.isEnabledFor(DEBUG)) {
+            LOGGER_</xsl:text>
+				<xsl:value-of select="@id" />
+				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.LogdocExceptionUtils.getRootCause(exception));
          }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

@@ -56,6 +56,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
+  - Optimized code, the entry logger is created only the first time that the
+    log is called.
 
 * Build and release process:
   - Fixed bug #1078313: Compilation and Javadoc is done from the source code.
