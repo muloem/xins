@@ -511,7 +511,7 @@
 		</taskdef>
 
 		<sfaddrelease
-		file="build/xins-${version}.tar.gz"
+		file="build/${name}-${version}.tar.gz"
 		user="${sf.user}"
 		password="${sf.password}"
 		group="${sf.group}"
@@ -552,7 +552,7 @@
 	</target>
 
 	<target name="-nodiffs-check" depends="clean">
-		<tempfile destdir="${java.io.tmpdir}" prefix="xins-release-diff." property="diff-file" suffix=".diff" />
+		<tempfile destdir="${java.io.tmpdir}" prefix="${name}-release-diff." property="diff-file" suffix=".diff" />
 		<cvs command="diff" output="${diff-file}" quiet="true" />
 		<loadfile srcfile="${diff-file}" property="diff-contents" />
 		<property name="diff-contents" value="" />
@@ -609,10 +609,10 @@
 	</target>
 
 	<target name="upload-homepage" depends="-init">
-		<property name="docs.dir" value="../xins-docs/" />
+		<property name="docs.dir" value="../${name}-docs/" />
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
-		<ant dir="../xins-docs" target="upload-homepage" inheritall="false">
+		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
 			<property name="version" value="${version.major}.${version.minor}" />
 		</ant>
 	</target>
