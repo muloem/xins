@@ -62,6 +62,12 @@
 			<xsl:when test="@type = 'int8'">
 				<xsl:text>byte</xsl:text>
 			</xsl:when>
+			<xsl:when test="(@type = 'boolean') and ($nullable = 'true')">
+				<xsl:text>java.lang.Boolean</xsl:text>
+			</xsl:when>
+			<xsl:when test="@type = 'boolean'">
+				<xsl:text>boolean</xsl:text>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
