@@ -9,6 +9,7 @@ package org.xins.common.collections.expiry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -269,7 +270,7 @@ extends Object {
     * Notifies this map that the precision time frame has passed since the
     * last tick.
     *
-    * <p>If any entries are expirable, they will be removed from this folder.
+    * <p>Entries that are expirable may be removed from this folder.
     */
    void tick() {
 
@@ -289,7 +290,7 @@ extends Object {
             // Keep a link to the old map with recently accessed elements and
             // then reset _recentlyAccessed
             HashMap oldRecentlyAccessed = _recentlyAccessed;
-            _recentlyAccessed       = newRecentlyAccessed;
+            _recentlyAccessed           = newRecentlyAccessed;
 
             // Shift the slots
             toBeExpired = _slots[_lastSlot];
@@ -336,8 +337,15 @@ extends Object {
       // Notify all listeners
       int count = listeners.size();
       if (count > 0) {
-         // FIXME: Pass object references to listeners, not Entry objects
-         Map unmodifiableExpired = Collections.unmodifiableMap(toBeExpired);
+
+         // Pass object references to listeners, not Entry objects
+         Map refMap = new HashMap();
+         Iterator entryIterator = toBeExpired.keySet().iterator();
+         while (entryIterator.hasNext()) {
+            Entry entry = (Entry) entryIterator.next();
+            refMap.put(entry.getReference(), toBeExpired.get(entry));
+         }
+         Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
          for (int i = 0; i < count; i++) {
             ExpiryListener listener = (ExpiryListener) listeners.get(i);
             listener.expired(this, unmodifiableExpired);
@@ -365,6 +373,8 @@ extends Object {
 
    /**
     * Removes the specified object as a listener for expiry events.
+    *
+    * <p>If the listener cannot be found, then nothing happens.
     *
     * @param listener
     *    the listener to be unregistered, cannot be <code>null</code>.
