@@ -502,6 +502,8 @@
 							</xsl:if>
 							<classes dir="{$javaImplDir}" excludes="**/*.java" />
 						</war>
+						<checksum file="build/webapps/{$api}/{$api}.war" property="war.md5"/>
+						<echo message="MD5: ${{war.md5}}" />
 						<echo message="Build time: ${{timestamp}}" />
 					</target>
 					
