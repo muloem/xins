@@ -35,6 +35,10 @@ public final class InvalidNameException extends Exception {
     * @param name
     *    the name that is considered invalid, cannot be <code>null</code>.
     *
+    * @return
+    *    the message the constructor can pass up to the superconstructor,
+    *    never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null</code>.
     */

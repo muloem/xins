@@ -32,6 +32,10 @@ public final class InvalidVersionException extends Exception {
     *    the string that is considered malformed as a version, cannot be
     *    <code>null</code>.
     *
+    * @return
+    *    the message the constructor can pass up to the superconstructor,
+    *    never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>version == null</code>.
     */

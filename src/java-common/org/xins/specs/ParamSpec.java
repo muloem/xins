@@ -184,7 +184,7 @@ extends Spec {
        * @throws IllegalArgumentException
        *    if <code>name == null</code>.
        */
-      Type(String name) {
+      Type(String name) throws IllegalArgumentException {
          super(FunctionSpec.TYPE, name, "^[a-z]+[A-Za-z0-9]*$");
       }
 

@@ -141,6 +141,11 @@ extends Object {
     * Checks if the specified <code>Spec</code> is potentially a valid parent
     * for a component of this type.
     *
+    * @param parent
+    *    if {@link Spec} object of which needs to be determined if it could be
+    *    a valid parent for {@link Spec} objects of this type, can be
+    *    <code>null</code>.
+    *
     * @return
     *    if <code>(parent == null &amp;&amp; </code>{@link #getParentType()}<code> == null)
     *          || (parent != null &amp;&amp; </code>{@link #getParentType()}<code> == parent.</code>{@link Spec#getType() getType}<code>())</code>
