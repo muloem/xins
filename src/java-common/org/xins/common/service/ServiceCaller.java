@@ -138,7 +138,7 @@ public abstract class ServiceCaller extends Object {
             failedTargets.add(target);
             exceptions.add(exception);
 
-            Log.log_3313(target.getURL(), reasonFor(exception));
+            Log.log_3313(target.getURL());
 
             // Determine whether fail-over is allowed and whether we have
             // another target to fail-over to
@@ -212,6 +212,10 @@ public abstract class ServiceCaller extends Object {
     *    if <code>exception == null</code>.
     *
     * @since XINS 0.116
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.196, with no replacement. The reason for a
+    *    caught exception is no longer logged in this class.
     */
    protected final String reasonFor(Throwable exception)
    throws IllegalArgumentException {
@@ -253,6 +257,10 @@ public abstract class ServiceCaller extends Object {
     *    determine the reason, never an empty character string.
     *
     * @since XINS 0.116
+    *
+    * @deprecated
+    *    Deprecated since XINS 0.196, with no replacement. The reason for a
+    *    caught exception is no longer logged in this class.
     */
    protected String reasonForImpl(Throwable exception) {
       return null;
