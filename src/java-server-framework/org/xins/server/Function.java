@@ -4,7 +4,8 @@
 package org.xins.server;
 
 import java.io.PrintWriter;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.servlet.ServletRequest;
 
@@ -14,6 +15,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.servlet.ServletRequestPropertyReader;
+import org.xins.common.text.FastStringBuffer;
 
 import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.LogdocStringBuffer;
@@ -322,42 +324,32 @@ implements DefaultResultCodes {
 
       String ip = request.getRemoteAddr();
 
-      // TODO: Accept input parameters
+      // XXX: Accept input parameters
 
-      // TODO: If the Logging is moved somewhere else then
-      //       the method invoking this method (performedCall) can directly
-      //       invoke recordCall and this method can be removed.
+      // XXX: If the Logging is moved somewhere else then
+      //      the method invoking this method (performedCall) can directly
+      //      invoke recordCall and this method can be removed.
 
       long duration = _statistics.recordCall(start, result.isSuccess());
 
-      // Call succeeded
-      String code;
-      if (result.isSuccess()) {
-         code = null;
-         Log.log_1514(_name, callID, duration);
+      String code = result.getErrorCode();
 
-      // Call failed
-      } else {
-         code = result.getErrorCode();
-         Log.log_1516(_name, callID, duration, result.getErrorCode());
+      LogdocSerializable serStart = new FormattedDate(start);
+      // TODO: LogdocSerializable inParams = new FormattedInputParameters(request);
+      // TODO: LogdocSerializable inParams = new FormattedOutputParameters(result);
+      LogdocSerializable inParams  = new ServletRequestPropertyReader(request);
+      LogdocSerializable outParams = result.getParameters();
 
-         // log the parameters
-         PropertyReader parameters = result.getParameters();
-         if (parameters != null) {
-            Iterator itParams = parameters.getNames();
-            while (itParams.hasNext()) {
-               String nextParam = (String) itParams.next();
-               Log.log_1517(_name, callID, nextParam, parameters.get(nextParam));
-            }
-         }
-      }
-
-      PropertyReader inputParams = new ServletRequestPropertyReader(request);
-      Log.log_1540(ip, _name, callID, new FormattedDate(start), duration,
-                   inputParams, result.getParameters(), code);
+      Log.log_1540(serStart, ip, _name, callID, duration, code, inParams, outParams);
+      Log.log_1541(serStart, ip, _name, callID, duration, code);
    }
 
-   // TODO: Document
+   /**
+    * Logdoc-serializable for a date.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
    private static final class FormattedDate
    extends Object
    implements LogdocSerializable {
@@ -366,6 +358,12 @@ implements DefaultResultCodes {
       // Constructor
       //---------------------------------------------------------------------
 
+      /**
+       * Constructs a new <code>FormattedDate</code> object.
+       *
+       * @param date
+       *    the date, as a number of milliseconds since January 1, 1970.
+       */
       private FormattedDate(long date) {
          _epochDate = date;
       }
@@ -375,7 +373,15 @@ implements DefaultResultCodes {
       // Fields
       //---------------------------------------------------------------------
 
+      /**
+       * The date, as a number of milliseconds since January 1, 1970.
+       */
       private final long _epochDate;
+
+      /**
+       * Lazily initialized string that represents the date.
+       */
+      private String _asString;
 
 
       //---------------------------------------------------------------------
@@ -384,14 +390,47 @@ implements DefaultResultCodes {
 
       public void serialize(LogdocStringBuffer buffer)
       throws NullPointerException {
-         Date date = new Date(_epochDate);
 
-         int year    = date.getYear()  + 1900;
-         int month   = date.getMonth() + 1;
-         int day     = date.getDate();
-         int hours   = date.getHours();
-         int minutes = date.getMinutes();
-         int seconds = date.getSeconds();
+         if (_asString == null) {
+            convertToString();
+         }
+
+         buffer.append(_asString);
+      }
+
+      /**
+       * Actually formats the date and stores it in 
+       */
+      private final void convertToString() {
+
+         // Create a FastStringBuffer with an initial size as follows:
+         //  2 for the century     (e.g.  20)
+         //  2 for the century     (e.g.  20)
+         //  2 for the month       (e.g.  07)
+         //  1 for a hyphen
+         //  2 for the day         (e.g.  30)
+         //  2 for the hour        (e.g.  13)
+         //  2 for the minute      (e.g.  33)
+         //  2 for the second      (e.g.  09)
+         //  3 for the millisecond (e.g. 231)
+         // ---
+         // 18 in total
+         final int BUFFER_SIZE = 18;
+         FastStringBuffer buffer = new FastStringBuffer(18);
+
+         // XXX: It seems stupid that it is not possible to create a Calendar
+         //      instance directly using the current date as a number of
+         //      milliseconds since the Epoch
+         Calendar calendar = new GregorianCalendar(1970, Calendar.JANUARY, 1);
+         calendar.setTimeInMillis(_epochDate);
+
+         int year    = calendar.get(Calendar.YEAR);
+         int month   = calendar.get(Calendar.MONTH);
+         int day     = calendar.get(Calendar.DATE);
+         int hours   = calendar.get(Calendar.HOUR);
+         int minutes = calendar.get(Calendar.MINUTE);
+         int seconds = calendar.get(Calendar.SECOND);
+         int millis  = calendar.get(Calendar.MILLISECOND);
 
          // Append year
          buffer.append(year);
@@ -429,7 +468,6 @@ implements DefaultResultCodes {
          }
          buffer.append(seconds);
 
-/* XXX:
          // Append milliseconds
          if (millis < 10) {
             buffer.append("00");
@@ -437,7 +475,10 @@ implements DefaultResultCodes {
             buffer.append('0');
          }
          buffer.append(millis);
-*/
+
+         assert buffer.getLength() == BUFFER_SIZE : "buffer.getLength() (" + buffer.getLength() + ") == BUFFER_SIZE (" + BUFFER_SIZE + ')';
+
+         _asString = buffer.toString();
       }
    }
 }
