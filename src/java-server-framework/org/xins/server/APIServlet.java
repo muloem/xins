@@ -607,6 +607,23 @@ extends HttpServlet {
             throw new ServletException();
          }
 
+         // Load the Logdoc if available
+         try {
+            String packageName = apiClassName.substring(0, apiClassName.lastIndexOf('.') + 1);
+
+            // This should execute the static initializer
+            Class.forName(packageName + "Log");
+         } catch (ClassNotFoundException cnfe) {
+            // The API does not have any logdoc.
+         }
+         if (!LogCentral.isConsistent()) {
+
+            // The locale is not supported by the API
+            Log.log_1311(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
+            setState(API_CONSTRUCTION_FAILED);
+            throw new ServletException();
+         }
+
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
             Log.log_1208(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
@@ -718,6 +735,29 @@ extends HttpServlet {
       synchronized (_runtimePropertiesLock) {
 
          boolean succeeded = false;
+
+         // Determine the log locale
+         String newLocale = _runtimeProperties.get(LOG_LOCALE_PROPERTY);
+
+         // If the log locale is set, apply it
+         if (newLocale != null) {
+            String currentLocale = LogCentral.getLocale();
+            if (!currentLocale.equals(newLocale)) {
+               Log.log_1306(currentLocale, newLocale);
+               try {
+                  LogCentral.setLocale(newLocale);
+                  Log.log_1307(currentLocale, newLocale);
+               } catch (UnsupportedLocaleException exception) {
+                  Log.log_1308(currentLocale, newLocale);
+                  setState(API_INITIALIZATION_FAILED);
+                  return;
+               }
+            }
+         }
+
+         // Store the output compatibility format that should be returned
+         _outputCompatibility = _runtimeProperties.get(OUTPUT_COMPATIBILITY_PROPERTY);
+
          try {
             _api.init(_runtimeProperties);
             succeeded = true;
@@ -797,26 +837,6 @@ extends HttpServlet {
          if (! serverVersion.equals(commonVersion)) {
             Log.log_1310(serverVersion, commonVersion);
          }
-
-         // Determine the log locale
-         String newLocale = properties.getProperty(LOG_LOCALE_PROPERTY);
-
-         // If the log locale is set, apply it
-         if (newLocale != null) {
-            String currentLocale = Log.getTranslationBundle().getName();
-            if (!currentLocale.equals(newLocale)) {
-               Log.log_1306(currentLocale, newLocale);
-               try {
-                  LogCentral.setLocale(newLocale);
-                  Log.log_1307(currentLocale, newLocale);
-               } catch (UnsupportedLocaleException exception) {
-                  Log.log_1308(currentLocale, newLocale);
-               }
-            }
-         }
-
-         // Store the output compatibility format that should be returned
-         _outputCompatibility = properties.getProperty(OUTPUT_COMPATIBILITY_PROPERTY);
 
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }

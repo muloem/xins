@@ -187,7 +187,7 @@
 			<param name="oldLocale" />
 			<param name="newLocale" />
 		</entry>
-		<entry id="1308" level="ERROR">
+		<entry id="1308" level="FATAL">
 			<description>Failed to change the locale for the log messages.</description>
 			<param name="currentLocale" />
 			<param name="failedLocale" />
@@ -200,6 +200,11 @@
 			<description>XINS/Java Server Framework version is different from XINS/Java Common Library version.</description>
 			<param name="serverVersion" />
 			<param name="commonVersion" />
+		</entry>
+		<entry id="1311" level="FATAL">
+			<description>Logdoc Locale not supported by the API.</description>
+			<param name="locale" />
+			<param name="api" />
 		</entry>
 	</group>
 

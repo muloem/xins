@@ -10,7 +10,6 @@
 
 
 	<!-- Define variables -->
-	<xsl:variable name="default_locale" select="/log/@default-locale" />
 	<xsl:variable name="domain" select="/log/@domain" />
 
 	<!-- Configure output method -->

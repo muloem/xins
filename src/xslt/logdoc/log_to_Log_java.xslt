@@ -23,27 +23,12 @@
 
 	<xsl:template match="log">
 
-		<xsl:variable name="default_locale">
-			<xsl:if test="string-length(@default-locale) &lt; 1">
-				<xsl:message terminate="yes">No default locale has been set.</xsl:message>
-			</xsl:if>
-			<xsl:value-of select="@default-locale" />
-		</xsl:variable>
-
 		<xsl:variable name="accessmodifier">
 			<xsl:choose>
 				<xsl:when test="(string-length($accesslevel) = 0) or $accesslevel = 'package'" />
 				<xsl:when test="$accesslevel = 'public'">public </xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-
-		<xsl:if test="not(boolean(translation-bundle[@locale=$default_locale]))">
-			<xsl:message terminate="yes">
-				<xsl:text>The default locale "</xsl:text>
-				<xsl:value-of select="$default_locale" />
-				<xsl:text>" does not exist.</xsl:text>
-			</xsl:message>
-		</xsl:if>
 
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
@@ -101,9 +86,6 @@ import org.xins.logdoc.LogStatistics;
     */
    static {
 
-      // Create LogController instance
-      CONTROLLER = new Controller();
-
       // Reference all translation bundles by name
       TRANSLATION_BUNDLES_BY_NAME = new HashMap();]]></xsl:text>
 			<xsl:for-each select="translation-bundle">
@@ -114,12 +96,10 @@ import org.xins.logdoc.LogStatistics;
 				<xsl:value-of select="@locale" />
 				<xsl:text>.SINGLETON);</xsl:text>
 			</xsl:for-each>
-			<xsl:text>
+			<xsl:text><![CDATA[
 
-      // Initialize to the default translation bundle
-      TRANSLATION_BUNDLE = TranslationBundle_</xsl:text>
-			<xsl:value-of select="$default_locale" />
-			<xsl:text><![CDATA[.SINGLETON;
+      // Create LogController instance
+      CONTROLLER = new Controller();
    }
 
    /**
@@ -131,15 +111,6 @@ import org.xins.logdoc.LogStatistics;
     */
    public static final TranslationBundle getTranslationBundle() {
       return TRANSLATION_BUNDLE;
-   }
-
-   /**
-    * Activates the default translation bundle.
-    */
-   public static final void resetTranslationBundle() {
-      TRANSLATION_BUNDLE = TranslationBundle_]]></xsl:text>
-		<xsl:value-of select="$default_locale" />
-		<xsl:text><![CDATA[.SINGLETON;
    }
 
    /**
@@ -198,9 +169,9 @@ import org.xins.logdoc.LogStatistics;
       /**
        * Constructs a new <code>Controller</code>.
        */
-      private Controller() {
+      /*private Controller() {
          // empty
-      }
+      }*/
 
 
       //----------------------------------------------------------------------

@@ -9,10 +9,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
-	<!-- Define variables -->
-	<xsl:variable name="default_locale" select="/log/@default-locale" />
-	<xsl:variable name="domain" select="/log/@domain" />
-
 	<!-- Configure output method -->
 	<xsl:output
 	method="xml"

@@ -25,6 +25,17 @@ extends Object {
     */
    private static AbstractLog.LogController[] CONTROLLERS;
 
+   /**
+    * The locale for the logdoc.
+    */
+   private static String LOCALE = null;
+
+   /**
+    * Boolean that indicates that an AbstractLog that did not supported the
+    * locale tried to register.
+    */
+   private static boolean CONSISTENT = true;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -45,6 +56,23 @@ extends Object {
 
       // Check preconditions
       MandatoryArgumentChecker.check("controller", controller);
+
+      // When the first LogController registers, set the locale.
+      if (LOCALE == null) {
+         String defaultLocale = System.getProperty("org.xins.server.locale");
+         if (defaultLocale == null || defaultLocale.equals("")) {
+            LOCALE = "en_US";
+         } else {
+            LOCALE = defaultLocale;
+         }
+      }
+
+      if (!controller.isLocaleSupported(LOCALE)) {
+         CONSISTENT = false;
+         //throw new UnsupportedLocaleException(LOCALE);
+      } else {
+         controller.setLocale(LOCALE);
+      }
 
       // Add the controller to the List
       if (CONTROLLERS == null) {
@@ -97,11 +125,34 @@ extends Object {
       }
 
       // Change the locale on all controllers
+      // XXX This should be removed and the controller should invoke LogCentral.getLocale()
       for (int i = 0; i < size; i++) {
          CONTROLLERS[i].setLocale(newLocale);
       }
+
+      LOCALE = newLocale;
    }
 
+   /**
+    * Get the locale set in this LogCentral.
+    *
+    * @return
+    *    the locale as set for java properties file (e.g. "en_US").
+    */
+   public static final String getLocale() {
+      return LOCALE;
+   }
+
+   /**
+    * Indicates if the registered Logs support the same locale.
+    *
+    * @return
+    *    <code>true</code> if all Logs support the locale set in the LogCentral,
+    *    <code>false</code> otherwise.
+    */
+   public static final boolean isConsistent() {
+      return CONSISTENT;
+   }
 
    //-------------------------------------------------------------------------
    // Constructors

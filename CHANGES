@@ -3,6 +3,8 @@ CHANGES INTRODUCED IN XINS 0.203:
 
 * XINS/Java Server Framework:
   - Changed the format of the context identifier to app@hostname:time:random.
+  - The servlet fails is the locale is not supported by all parties that
+    use Logdoc.
 
 * XINS/Java Common Library:
   - Replaced the way to find the hostname for the hostname task.
@@ -23,7 +25,7 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Overhaul of logdoc entries.
   - Explicitly defined duration in CallException as the call duration.
   - Changed UnacceptableCallResultException to extend CallException again.
-  - Removed reference to JDom, the org.jdom.Element is replaced with
+  - Removed public reference to JDom, the org.jdom.Element is replaced with
     org.xins.client.DataElement.
     Note: this change may break your code compatibility if you use a CAPI API.
   - Replaced the Dom parser with a SAX parser to parse the XML.
@@ -32,6 +34,7 @@ CHANGES INTRODUCED IN XINS 0.203:
   - Changed the interface of class AbstractLogdocSerializable (introduced in
     XINS 0.201) in an incompatible way. All subclasses have been adapted
     accordingly.
+  - Added the possibility to set the Logdoc locale property at start-up time.
 
 * Generated specification documentation:
   - Fixed regeneration of the test forms if the environments.xml file has
