@@ -71,9 +71,6 @@ XINS/JAVA CLIENT FRAMEWORK
 
 * Convert to logdoc-approach.
 * Support non-200 HTTP return codes.
-* Replace FunctionCaller / ActualFunctionCaller / CallTargetGroup hierarchy
-  with Service-based solution, implemented in XINS/Java Common Library,
-  package org.xins.util.service.
 * Add method getRemoteSettings() to class AbstractCAPI. Functionality: Calls
   _GetSettings and converts the result to a RemoteSettings object with build
   properties, runtime properties and system properties.
