@@ -44,7 +44,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>type == null || name == null || version == null</code>.
     */
-   Spec(Object type, String name, String version)
+   Spec(SpecType type, String name, String version)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -63,7 +63,7 @@ extends Object {
    /**
     * The type of the component. Cannot be <code>null</code>.
     */
-   private final Object _type;
+   private final SpecType _type;
 
    /**
     * The name of the component. Cannot be <code>null</code>.
@@ -86,7 +86,7 @@ extends Object {
     * @return
     *    the type, cannot be <code>null</code>.
     */
-   public final Object getType() {
+   public final SpecType getType() {
       return _type;
    }
 
