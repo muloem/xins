@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.88:
     UnknownSessionIDException.
   - Expecting Log4J config file to be specified in property
     'org.apache.log4j.config'.
+  - Replacement strings should now be between square brackets ('[' and ']')
+    instead of curly ones ('{' and '}').
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.87:
