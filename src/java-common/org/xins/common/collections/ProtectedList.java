@@ -39,8 +39,8 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     *
     * @param key
     *    the secret key that must be passed to
-    *    {@link #set(Object,String,String)} in order to be authorized to
-    *    modify this set of properties, cannot be <code>null</code>.
+    *    {@link #add(Object,Object)} in order to be authorized to
+    *    modify this list, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
