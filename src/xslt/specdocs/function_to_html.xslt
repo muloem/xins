@@ -115,16 +115,16 @@
 
 	<xsl:template name="input_section">
 		<h2>Input section</h2>
-		<xsl:choose>
-			<xsl:when test="input">
-				<blockquote>
+		<blockquote>
+			<xsl:choose>
+				<xsl:when test="input">
 					<xsl:apply-templates select="input" />
-				</blockquote>
-			</xsl:when>
-			<xsl:otherwise>
-				<em>This function supports no input parameters.</em>
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<em>This function supports no input parameters.</em>
+				</xsl:otherwise>
+			</xsl:choose>
+		</blockquote>
 	</xsl:template>
 
 	<xsl:template name="output_section">
