@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import nl.wanadoo.util.MandatoryArgumentChecker;
 import org.apache.log4j.Logger;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -26,6 +30,17 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
+   /**
+    * Pattern matcher.
+    */
+   private final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -44,16 +59,25 @@ public abstract class PatternType extends Type {
     *    the name of the type, not <code>null</code>.
     *
     * @param pattern
-    *    the regular expression the values must match, or <code>null</code>.
+    *    the regular expression the values must match, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || pattern == null</code>.
+    *
+    * @throws MalformedPatternException
+    *    if the specified pattern is considered invalid.
     */
    protected PatternType(String name, String pattern)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, MalformedPatternException {
       super(name, String.class);
 
-      _pattern = pattern;
+      if (pattern == null) {
+         throw new IllegalArgumentException("pattern == null");
+      }
+
+      synchronized (PATTERN_COMPILER) {
+         _pattern = PATTERN_COMPILER.compile(pattern, Perl5Compiler.READ_ONLY_MASK);
+      }
    }
 
 
@@ -62,17 +86,23 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * The regular expression the values must match. Cannot be
-    * <code>null</code>.
+    * Compiled pattern. This is the compiled version of {@link #_pattern}.
+    * This field cannot be <code>null</code>.
     */
-   private final String _pattern;
+   private final Pattern _pattern;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Returns the pattern.
+    *
+    * @return
+    *    the pattern, not <code>null</code>.
+    */
    public String getPattern() {
-      return _pattern;
+      return _pattern.getPattern();
    }
 }
