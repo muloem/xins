@@ -12,6 +12,8 @@ import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
 
+import org.xins.common.constraint.Constraint;
+
 /**
  * Exception that indicates that a request for an API call is considered
  * unacceptable on the application-level. For example, a mandatory input

@@ -4,16 +4,12 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.client;
+package org.xins.common.constraint;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.MandatoryArgumentChecker;
-
-import org.xins.common.types.Type;
-import org.xins.common.types.TypeValueException;
 
 /**
- * Constraint that mandates that a parameter value matches a specified type.
+ * Constraint that mandates that a parameter value is not <em>null</em>.
  *
  * <p><em>This class should not be used directly. It may be moved or removed
  * in an upcoming minor XINS release.</em>
@@ -23,7 +19,7 @@ import org.xins.common.types.TypeValueException;
  *
  * @since XINS 1.2.0
  */
-public final class TypedParamConstraint
+public final class RequiredParamConstraint
 extends ParamConstraint {
 
    //-------------------------------------------------------------------------
@@ -33,7 +29,7 @@ extends ParamConstraint {
    /**
     * Fully-qualified name of this class.
     */
-   private static final String CLASSNAME = TypedParamConstraint.class.getName();
+   private static final String CLASSNAME = RequiredParamConstraint.class.getName();
 
 
    //-------------------------------------------------------------------------
@@ -45,33 +41,22 @@ extends ParamConstraint {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>TypedParamConstraint</code> for a parameter with the
-    * specified name and type.
+    * Creates a new <code>RequiredParamConstraint</code> for a parameter with
+    * the specified name.
     *
-    * <p>If the value of the parameter is found to be not match the type, then
+    * <p>If the value of the parameter is found to be <code>null</code> then
     * that violates this constraint.
     *
     * @param name
     *    the parameter name, cannot be <code>null</code> and cannot be an
     *    empty string.
     *
-    * @param type
-    *    the parameter type, cannot be <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>name == null
-    *          || name.length() &lt; 1
-    *          || type == null</code>.
+    *    if <code>name == null || name.length() &lt; 1</code>.
     */
-   public TypedParamConstraint(String name, Type type)
+   public RequiredParamConstraint(String name)
    throws IllegalArgumentException {
       super(name);
-
-      // Check additional preconditions
-      MandatoryArgumentChecker.check("type", type);
-
-      // Store information
-      _type = type;
    }
 
 
@@ -79,26 +64,9 @@ extends ParamConstraint {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The type of the parameter. This value of this field can never be
-    * <code>null</code>.
-    */
-   private final Type _type;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Retrieves the type.
-    *
-    * @return
-    *    the associated type, never <code>null</code>.
-    */
-   Type getType() {
-      return _type;
-   }
 
    /**
     * Checks if the specified value is allowable. If this constraint is
@@ -109,9 +77,7 @@ extends ParamConstraint {
     * {@link #checkImpl(ConstraintContext)}.
     *
     * <p>The implementation of this method returns <code>true</code> if and
-    * only if
-    * <code>{@link #getType()}.{@link Type#isValidValue(String) isValidValue}(value)</code>
-    * returns <code>true</code>.
+    * only if <code>value != null</code>.
     *
     * @param value
     *    the value for the parameter, possibly <code>null</code>.
@@ -121,14 +87,7 @@ extends ParamConstraint {
     *    <code>true</code> if it was not, and <code>false</code> if it was.
     */
    boolean checkParameterValue(Object value) {
-      try {
-         String string = _type.toString(value);
-         return _type.isValidValue(string);
-      } catch (ClassCastException exception) {
-         return false;
-      } catch (TypeValueException exception) {
-         return false;
-      }
+      return (value != null);
    }
 
    /**
@@ -139,10 +98,8 @@ extends ParamConstraint {
     *    <code>null</code> and never an empty string.
     */
    public String describeViolation() {
-      return "Value for parameter \""
+      return "Parameter \""
            + getParameterName()
-           + "\" does not match type "
-           + _type.getName()
-           + '.';
+           + "\" is required, but the value is null.";
    }
 }

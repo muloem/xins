@@ -4,7 +4,7 @@
  * Copyright 2003-2005 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.client;
+package org.xins.common.constraint;
 
 import java.util.ArrayList;
 
