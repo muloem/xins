@@ -265,13 +265,13 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Unknown kind of exception. This should never happen. Log and
          // re-throw the exception, packed up as an Error.
          } else {
-            final String methodName = "doCall(CallRequest)";
-            Log.log_2052(exception, CLASSNAME, methodName);
+            final String METHODNAME = "doCall(CallRequest)";
+            Log.log_2052(exception, CLASSNAME, METHODNAME);
 
             FastStringBuffer message = new FastStringBuffer(190);
             message.append(CLASSNAME);
             message.append('.');
-            message.append(methodName);
+            message.append(METHODNAME);
             message.append(" threw unexpected ");
             message.append(exception.getClass().getName());
             message.append(". Message: ");
@@ -408,14 +408,14 @@ public final class XINSServiceCaller extends ServiceCaller {
       // the exception, packed up as a CallException.
       } catch (Throwable exception) {
          duration = System.currentTimeMillis() - start;
-         final String className = HTTPServiceCaller.class.getName();
-         final String methodName = "call(HTTPCallRequest,TargetDescriptor)";
-         Log.log_2052(exception, className, methodName);
+         final String HTTPCALLER_CLASSNAME = HTTPServiceCaller.class.getName();
+         final String HTTPCALLER_METHODNAME = "call(HTTPCallRequest,TargetDescriptor)";
+         Log.log_2052(exception, HTTPCALLER_CLASSNAME, METHODNAME);
 
          FastStringBuffer message = new FastStringBuffer(190);
-         message.append(className);
+         message.append(HTTPCALLER_CLASSNAME);
          message.append('.');
-         message.append(methodName);
+         message.append(HTTPCALLER_METHODNAME);
          message.append(" threw unexpected ");
          message.append(exception.getClass().getName());
          message.append(". Message: ");
@@ -432,9 +432,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Make sure data was received
       byte[] httpData = httpResult.getData();
       if (httpData == null || httpData.length == 0) {
-         final String message = "No data received.";
-         Log.log_2110(url, function, params, duration, message);
-         throw new InvalidResultXINSCallException(xinsRequest, target, duration, message, null);
+         final String MESSAGE = "No data received.";
+         Log.log_2110(url, function, params, duration, MESSAGE);
+         throw new InvalidResultXINSCallException(xinsRequest, target, duration, MESSAGE, null);
       }
 
       // Parse the result
