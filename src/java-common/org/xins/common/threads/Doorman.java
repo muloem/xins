@@ -89,8 +89,16 @@ public final class Doorman extends Object {
    throws IllegalArgumentException {
 
       // TRACE: Enter constructor
-      final String traceDetail = "name=" + TextUtils.quote(name) + "; strict=" + strict + "; queueSize=" + queueSize + "; maxQueueWaitTime=" + maxQueueWaitTime;
-      Log.log_1000(DOORMAN_CLASSNAME, traceDetail);
+      final String TRACE_DETAIL = "name="
+                                + TextUtils.quote(name)
+                                + "; strict="
+                                + strict
+                                + "; queueSize="
+                                + queueSize
+                                + "; maxQueueWaitTime="
+                                + maxQueueWaitTime;
+
+      Log.log_1000(DOORMAN_CLASSNAME, TRACE_DETAIL);
 
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
@@ -117,7 +125,7 @@ public final class Doorman extends Object {
       _maxQueueWaitTime = maxQueueWaitTime;
 
       // TRACE: Leave constructor
-      Log.log_1002(DOORMAN_CLASSNAME, traceDetail);
+      Log.log_1002(DOORMAN_CLASSNAME, TRACE_DETAIL);
    }
 
 
