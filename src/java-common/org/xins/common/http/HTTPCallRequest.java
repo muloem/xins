@@ -140,6 +140,7 @@ public final class HTTPCallRequest extends CallRequest {
    }
 
    // TODO: Add constructor that accepts HTTPCallConfig
+   // TODO: Deprecate constructors that accept failOverAllowed and/or method
 
 
    //-------------------------------------------------------------------------
