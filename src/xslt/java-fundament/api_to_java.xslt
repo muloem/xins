@@ -94,6 +94,37 @@ public class APIImpl extends API {
 			<xsl:value-of select="$value" />
 			<xsl:text>");</xsl:text>
 		</xsl:for-each>
+
+		<xsl:for-each select="//api/function">
+			<xsl:variable name="name"    select="@name" />
+			<xsl:variable name="file"    select="concat($specsdir, '/', $api, '/', $name, '.fnc')" />
+			<xsl:variable name="fieldname">
+				<xsl:call-template name="toupper">
+					<xsl:with-param name="text">
+						<xsl:call-template name="hungarianWordSplit">
+							<xsl:with-param name="text" select="$name" />
+							<xsl:with-param name="separator" select="'_'" />
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:text><![CDATA[
+
+   /**
+    * The <em>]]></xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text><![CDATA[</em> function.
+    */
+   public final static ]]></xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$fieldname" />
+			<xsl:text> = new </xsl:text>
+			<xsl:value-of select="$name" />
+			<xsl:text>Impl(SINGLETON);</xsl:text>
+		</xsl:for-each>
+
 		<xsl:text><![CDATA[
 
 
