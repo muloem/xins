@@ -41,9 +41,9 @@ import org.xins.client.UnsuccessfulCallException;
 import org.xins.util.MandatoryArgumentChecker;
 
 /**
- * Stub for <code>]]></xsl:text>
+ * Stub for the <em>]]></xsl:text>
 		<xsl:value-of select="$api" />
-		<xsl:text><![CDATA[</code> API.
+		<xsl:text><![CDATA[</em> API.
  */
 public final class API extends Object {
 
