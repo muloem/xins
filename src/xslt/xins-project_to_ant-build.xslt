@@ -135,6 +135,7 @@ $Id$
 						style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="api"          expression="{$api}"          />
 					</style>
 					<style
 						basedir="{$specsdir}/{$api}"
@@ -143,6 +144,7 @@ $Id$
 						includes="{$functionIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="api"          expression="{$api}"          />
 					</style>
 					<style
 						basedir="{$specsdir}/{$api}"
@@ -151,6 +153,7 @@ $Id$
 						includes="{$typeIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="api"          expression="{$api}"          />
 					</style>
 					<style
 						basedir="{$specsdir}/{$api}"
@@ -159,6 +162,7 @@ $Id$
 						includes="{$resultcodeIncludes}">
 						<param name="project_home" expression="{$project_home}" />
 						<param name="specsdir"     expression="{$specsdir}"     />
+						<param name="api"          expression="{$api}"          />
 					</style>
 					<xsl:for-each select="document($api_file)/api/environment">
 						<style
@@ -169,6 +173,7 @@ $Id$
 							extension="-testform-{@id}.html">
 							<param name="project_home" expression="{$project_home}" />
 							<param name="specsdir"     expression="{$specsdir}"     />
+							<param name="api"          expression="{$api}"          />
 							<param name="environment"  expression="{@id}"           />
 						</style>
 					</xsl:for-each>
