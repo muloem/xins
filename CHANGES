@@ -3,6 +3,14 @@ CHANGES INTRODUCED IN XINS 0.65:
 
 * Improved descriptions for Library classes.
 
+* XINS/Java Common Library:
+  - Made ExpiryFolder class final instead of abstract.
+  - Made ExpiryStrategy constructor public.
+
+* XINS/Java Server Framework
+  - Now using ExpiryFolder for storage of sessions. They still don't expiry
+    yet, though.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.64:
 
