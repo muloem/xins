@@ -590,13 +590,12 @@
 		<antcall target="upload-homepage" />
 	</target>
 
-	<target name="upload-homepage" depends="-check-version-suffix">
-		<fail if="version.suffix.set" message="Version suffix is set. Cannot upload homepage." />
+	<target name="upload-homepage" depends="-init">
 		<property name="docs.dir" value="../xins-docs/" />
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
 		<ant dir="../xins-docs" target="upload-homepage" inheritall="false">
-			<property name="version" value="${version}" />
+			<property name="version" value="${version.major}${version.minor}" />
 		</ant>
 	</target>
 
