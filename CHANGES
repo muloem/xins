@@ -76,6 +76,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     members.
   - Implemented SF.net RFE #1120017: Generated Type class should include
     Javadoc comments
+  - Completed implementation of RFE #1110484 (make CAPI call with request
+    object).
 
 * Generated build file:
   - Added common-codec.jar to the classpath and in the generated war file.
