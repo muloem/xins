@@ -1,4 +1,13 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.179:
+
+* Generation of specification documentation:
+  - Changed the style.css for the specdocs. It does not explicitly specify
+    actual font families (e.g.  Arial, Verdana) anymore. Instead, it specifies
+    logical font families (serif, sans-serif). These logical font families are
+    mapped to actual font families by the browser.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.178:
 
 * XINS/Java Common Library:
