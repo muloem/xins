@@ -6,6 +6,8 @@ CHANGES INTRODUCED IN XINS 0.20:
 * Class APIServlet directly implements Servlet interface, no longer derives
   from HttpServlet class.
 
+* Fixed bug: Also logging successful calls again.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.19:
 
