@@ -34,6 +34,7 @@ import java.io.IOException;
 import org.xins.client.CallResult;
 import org.xins.client.CallResultParser;
 import org.xins.client.InvalidCallResultException;
+import org.xins.client.UnsuccessfulCallException;
 import org.xins.client.RemoteAPI;
 import org.xins.util.MandatoryArgumentChecker;
 
@@ -87,7 +88,52 @@ public final class API extends Object {
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------]]></xsl:text>
+
+		<xsl:for-each select="function">
+			<xsl:variable name="functionName" select="@name" />
+			<xsl:variable name="functionFile" select="concat($specsdir, '/', $api, '/', $functionName, '.fnc')" />
+			<xsl:variable name="methodName">
+				<xsl:call-template name="hungarianLower">
+					<xsl:with-param name="text">
+						<xsl:value-of select="$functionName" />
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:for-each select="document($functionFile)/function">
+				<xsl:text><![CDATA[
+
+   /**
+    * Calls the <em>]]></xsl:text>
+				<xsl:value-of select="$functionName" />
+				<xsl:text><![CDATA[</em> function.
+    *
+    * @return
+    *    the result of the call, not <code>null</code>.
+    *
+    * @throws IOException
+    *    if there was an I/O error.
+    *
+    * @throws InvalidCallResultException
+    *    if the call to the API resulted in an invalid response, either
+    *    invalid XML or invalid as a XINS result document.
+    *
+    * @throws UnsuccessfulCallException
+    *    if the call was unsuccessful; in some cases this may be determined
+    *    locally already.
+    */
+   public CallResult ]]></xsl:text>
+				<xsl:value-of select="$methodName" />
+				<xsl:text>(</xsl:text>
+				<!-- TODO: Arguments -->
+				<xsl:text>)
+   throws IOException, InvalidCallResultException, UnsuccessfulCallException {
+      return null; // TODO
+   }</xsl:text>
+			</xsl:for-each>
+		</xsl:for-each>
+
+		<xsl:text><![CDATA[
 }
 ]]></xsl:text>
 	</xsl:template>
