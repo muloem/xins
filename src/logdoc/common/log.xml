@@ -59,6 +59,12 @@
 			<param name="exceptionMessage" type="text" nullable="true"  />
 			<param name="description"      type="text" nullable="true"  />
 		</entry>
+		<entry id="1052" level="ERROR" exception="true">
+			<description>Caught unexpected exception.</description>
+			<param name="className"  type="text" nullable="false" />
+			<param name="methodName" type="text" nullable="false" />
+			<param name="detail"     type="text" nullable="true"  />
+		</entry>
 	</group>
 
 	<group id="http" name="HTTP-related">
