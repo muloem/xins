@@ -46,7 +46,7 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>Function</code> object.
+    * Constructs a new session-less <code>Function</code>.
     *
     * @param api
     *    the API to which this function belongs, not <code>null</code>.
@@ -63,6 +63,31 @@ implements DefaultResultCodes {
     */
    protected Function(API api, String name, String version)
    throws IllegalArgumentException {
+      this(api, name, version, false);
+   }
+
+   /**
+    * Constructs a new <code>Function</code>.
+    *
+    * @param api
+    *    the API to which this function belongs, not <code>null</code>.
+    *
+    * @param name
+    *    the name, not <code>null</code>.
+    *
+    * @param version
+    *    the version of the specification this function implements, not
+    *    <code>null</code>.
+    *
+    * @param sessionBased
+    *    flag that indicates if this function is session-based
+    *    (if <code>true</code>) or session-less (if <code>false</code>).
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null || name == null || version == null</code>.
+    */
+   protected Function(API api, String name, String version, boolean sessionBased)
+   throws IllegalArgumentException {
 
       // Check argument
       MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
@@ -71,6 +96,7 @@ implements DefaultResultCodes {
       _api     = api;
       _name    = name;
       _version = version;
+      _sessionBased = sessionBased;
 
       _responseValidator = BasicResponseValidator.SINGLETON;
 
@@ -102,6 +128,11 @@ implements DefaultResultCodes {
     * The version of the specification this function implements.
     */
    private final String _version;
+
+   /**
+    * Flag that indicates if this function is session-based.
+    */
+   private final boolean _sessionBased;
 
    /**
     * The current response validator.
@@ -282,7 +313,7 @@ implements DefaultResultCodes {
     * @since XINS 0.52
     */
    final boolean isSessionBased() {
-      return false; // TODO
+      return _sessionBased;
    }
 
    /**
