@@ -165,7 +165,8 @@ public final class XINSCallRequest extends CallRequest {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code> or if <code>parameters</code>
     *    contains a name that does not match the constraints for a parameter
-    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING}.
+    *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
+    *    <code>"function"</code>, which is currently still reserved.
     */
    public XINSCallRequest(String         functionName,
                           PropertyReader parameters,
@@ -189,22 +190,43 @@ public final class XINSCallRequest extends CallRequest {
       if (parameters != null) {
          Iterator names = parameters.getNames();
          while (names.hasNext()) {
+
+            // Get the name and value
             String name  = (String) names.next();
             String value = parameters.get(name);
 
+            // Name cannot violate the pattern
             if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
                // XXX: Consider using a different kind of exception for this
-               //      specific case. This exception may or may not derive from
+               //      specific case. For backwards compatibility, this
+               //      exception class should derive from
                //      IllegalArgumentException.
-               throw new IllegalArgumentException("The parameter name \"" + name + "\" does not match the pattern \"" + PARAMETER_NAME_PATTERN_STRING + "\".");
-            }
 
-            httpParams.set(SECRET_KEY, name, value);
+               FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
+               buffer.append(name);
+               buffer.append("\" does not match the pattern \"");
+               buffer.append(PARAMETER_NAME_PATTERN_STRING);
+               buffer.append("\".");
+               throw new IllegalArgumentException(buffer.toString());
+
+            // Name cannot be "function"
+            } else if ("function".equals(name)) {
+               throw new IllegalArgumentException("Parameter name \"function\" is reserved.");
+
+            // Name is considered valid, store it
+            } else {
+               httpParams.set(SECRET_KEY, name, value);
+            }
          }
       }
 
       // Add the function to the parameter list
       httpParams.set(SECRET_KEY, "_function", functionName);
+
+      // XXX: For backwards compatibility, also add the parameter "function"
+      //      to the list of HTTP parameters. This is, however, very likely to
+      //      change in the future.
+      httpParams.set(SECRET_KEY, "function", functionName);
 
       // Add the diagnostic context ID to the parameter list, if there is one
       String contextID = NDC.peek();
