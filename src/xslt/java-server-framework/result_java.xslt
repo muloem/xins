@@ -399,11 +399,11 @@ implements Result {
       //-------------------------------------------------------------------------
 
       /**
-       * Returns the element containing the informations about the element.
+       * Returns the element containing the values of the data element.
        *
        * @return
-       *    the JDOM element created by invoking the different set methods, never
-       *    <code>null</code>
+       *    the JDOM element created by invoking the different set methods
+       *    of this object, never <code>null</code>.
        */
       final org.jdom.Element getDOMElement() {
          return _jdomElement;

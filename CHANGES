@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 0.191:
 * XINS/Java Common Library:
   - Slightly improved implementation of HungarianMapper.
 
+* Generated java code:
+  - Improved Javadoc for the getDOMElement() method.
+
 * Build and release process:
   - Fails if the .sourceforge.properties does not exist or if it does not
     defined the required properties.
