@@ -46,12 +46,6 @@ extends AbstractFunctionCaller {
    private final static Logger LOG = Logger.getLogger(ActualFunctionCaller.class.getName());
 
    /**
-    * The number of instances for this class. This field is initialized to 0
-    * and updated by the constructor. It is never decreased, only increased.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
     * Initial buffer size for a parameter string. See
     * {@link #createParameterString(String,String,Map)}.
     */
@@ -168,14 +162,12 @@ extends AbstractFunctionCaller {
 
       boolean debugEnabled = LOG.isDebugEnabled();
 
-      // Get an instance number and increase the count
-      _instanceNum = INSTANCE_COUNT++;
-
+      String urlString = url.toString();
       if (debugEnabled) {
          if (hostName == null) {
-            LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url);
+            LOG.debug("Creating ActualFunctionCaller for URL: " + urlString);
          } else {
-            LOG.debug("Creating ActualFunctionCaller #" + _instanceNum + " for URL: " + url + ", hostname: " + hostName);
+            LOG.debug("Creating ActualFunctionCaller for URL: " + urlString + ", hostname: " + hostName);
          }
       }
 
@@ -202,6 +194,20 @@ extends AbstractFunctionCaller {
       _callResultParser = new CallResultParser();
       _crc32            = computeCRC32(_url);
       _crc32String      = HexConverter.toHexString(_crc32);
+      _urlString        = urlString;
+
+      // Call the API to make sure it's up
+      if (debugEnabled) {
+         LOG.debug("Checking if API at " + urlString + " is up.");
+      }
+      try {
+         call(null, "_NoOp", null);
+         LOG.info("API at " + urlString + " is up.");
+      } catch (IOException exception) {
+         LOG.error("API at " + urlString + " is not accessible.");
+      } catch (InvalidCallResultException exception) {
+         LOG.error("API at " + urlString + " returned an invalid call result.");
+      }
    }
 
 
@@ -210,15 +216,15 @@ extends AbstractFunctionCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Unique number of this instance.
-    */
-   private final int _instanceNum;
-
-   /**
     * The URL for the API this object represents. This field is never
     * <code>null</code>.
     */
    private final URL _url;
+
+   /**
+    * The URL for the API, as a string. This field is never <code>null</code>.
+    */
+   private final String _urlString;
 
    /**
     * The host name as passed to the constructor in the URL. This field is
