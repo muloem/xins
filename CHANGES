@@ -1,4 +1,9 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.13:
+
+* Added function _GetSettings that returns the initialization settings.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.12:
 
 * Putting dependencies in source distro.
