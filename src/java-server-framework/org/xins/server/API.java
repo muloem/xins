@@ -201,12 +201,6 @@ implements DefaultResultCodes {
    private PropertyReader _runtimeSettings;
 
    /**
-    * The name of the default function. Is <code>null</code> if there is no
-    * default function.
-    */
-   private String _defaultFunction;
-
-   /**
     * The type that applies for session identifiers. For session-based APIs
     * this will be set in {@link #init(PropertyReader)}.
     */
@@ -434,24 +428,12 @@ implements DefaultResultCodes {
       // Log the time zone
       // TODO: Why log the time zone?
       _timeZone = TimeZone.getDefault();
-      String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
-      if (tzLongName.equals(tzShortName)) {
-         Library.BOOTSTRAP_LOG.info("Local time zone is " + tzLongName + '.');
-      } else {
-         Library.BOOTSTRAP_LOG.info("Local time zone is " + tzShortName + " (" + tzLongName + ").");
-      }
+      String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
+      Log.log_234(tzShortName, tzLongName);
 
       // Store the build-time settings
       _buildSettings = buildSettings;
-
-      // Check if a default function is set
-      _defaultFunction = _buildSettings.get("org.xins.api.defaultFunction");
-      if (_defaultFunction != null) {
-         Library.BOOTSTRAP_LOG.debug("Default function set to \"" + _defaultFunction + "\".");
-      }
-      // TODO: Check that default function exists. If not, set state
-      //       accordingly.
 
       // Check if this API is session-based
       _sessionBased = getBooleanProperty(buildSettings, "org.xins.api.sessionBased", false);
@@ -841,10 +823,13 @@ implements DefaultResultCodes {
     * @return
     *    the name of the default function, or <code>null</code> if there is
     *    none.
+    *
+    * @deprecated
+    *    This method is deprecated since XINS 0.157, with no replacement. This
+    *    method will always return <code>null</code>.
     */
    public String getDefaultFunctionName() {
-      // TODO: Check state
-      return _defaultFunction;
+      return null;
    }
 
    /**
@@ -993,9 +978,6 @@ implements DefaultResultCodes {
 
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);
-
-      // TODO: After all functions are added, check that the default function
-      //       is set.
    }
 
    /**
