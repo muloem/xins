@@ -8,14 +8,15 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * Result of a call to a XINS API function.
+ * Result of a call to a XINS service.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
- * @since XINS 0.146
+ * @since XINS 0.207
  */
-public final class Result {
+public final class XINSCallResult
+extends Object {
 
    //----------------------------------------------------------------------
    // Constructors
@@ -51,12 +52,12 @@ public final class Result {
     *          || target     == null
     *          || duration &lt; 0
     */
-   Result(CallRequest      request,
-          TargetDescriptor target,
-          long             duration,
-          String           code,
-          PropertyReader   parameters,
-          DataElement      dataElement)
+   XINSCallResult(XINSCallRequest      request,
+                  TargetDescriptor target,
+                  long             duration,
+                  String           code,
+                  PropertyReader   parameters,
+                  DataElement      dataElement)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -123,8 +124,6 @@ public final class Result {
     *
     * @return
     *    the {@link CallRequest}, cannot be <code>null</code>.
-    *
-    * @since XINS 0.203
     */
    public CallRequest getRequest() {
       return _request;
@@ -146,8 +145,6 @@ public final class Result {
     *
     * @return
     *    the call duration in milliseconds, guaranteed to be &gt;= 0.
-    *
-    * @since XINS 0.203
     */
    public long getDuration() {
       return _duration;
