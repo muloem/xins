@@ -362,6 +362,94 @@ public class HexConverter extends Object {
    }
 
    /**
+    * Parses the specified string as a set of hex digits and converts it to a
+    * byte array.
+    *
+    * @param s
+    *    the hexadecimal string, cannot be <code>null</code>.
+    *
+    * @param index
+    *    the starting index in the string, must be &gt;= 0.
+    *
+    * @param length
+    *    the number of characters to convert in the string, must be &gt;= 0.
+    *
+    * @return
+    *    the value of the parsed unsigned hexadecimal string, as an array of
+    *    bytes.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null || index &lt; 0 || length &lt; 1 || s.{@link String#length() length()} &lt; index + length</code>).
+    *
+    * @throws NumberFormatException
+    *    if any of the characters in the specified range of the string is not
+    *    a hex digit (<code>'0'</code> to <code>'9'</code>,
+    *    <code>'a'</code> to <code>'f'</code> and
+    *    <code>'A'</code> to <code>'F'</code>).
+    */
+   public static byte[] parseHexBytes(String s, int index, int length)
+   throws IllegalArgumentException, NumberFormatException {
+
+      // Check preconditions
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      } else if (index < 0) {
+         throw new IllegalArgumentException("index (" + index + ") < 0");
+      } else if (length < 1) {
+         throw new IllegalArgumentException("length (" + length + ") < 1");
+      } else if (s.length() < index + length) {
+         throw new IllegalArgumentException("s.length() (" + s.length() + ") < index (" + index + ") + length (" + length + ')');
+      }
+
+      byte[] bytes = new byte[(length / 2) + (length % 2)];
+
+      // TODO: Move to class fields
+      // TODO: Support uppercase in all methods
+      final int CHAR_ZERO = (int) '0';
+      final int CHAR_NINE = (int) '9';
+      final int CHAR_A    = (int) 'a';
+      final int CHAR_F    = (int) 'f';
+      final int CHAR_A_FACTOR = CHAR_A - 10;
+
+      // Loop through all characters
+      int top = index + length;
+      int pos = 0;
+      for (int i = index; i < top; i++) {
+         int c = (int) s.charAt(i);
+
+         int upper;
+         if (c >= CHAR_ZERO && c <= CHAR_NINE) {
+            upper = (c - CHAR_ZERO);
+         } else if (c >= CHAR_A && c <= CHAR_F) {
+            upper = (c - CHAR_A_FACTOR);
+         } else {
+            throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
+         }
+
+         // Proceed to next char, which is the lower nibble of the byte
+         i++;
+
+         int lower = 0;
+         if (i < top) {
+            c = (int) s.charAt(i);
+            
+            if (c >= CHAR_ZERO && c <= CHAR_NINE) {
+               lower = (c - CHAR_ZERO);
+            } else if (c >= CHAR_A && c <= CHAR_F) {
+               lower = (c - CHAR_A_FACTOR);
+            } else {
+               throw new NumberFormatException("s.charAt(" + i + ") == '" + s.charAt(i) + '\'');
+            }
+         }
+
+         upper <<= 4;
+         bytes[pos++] = (byte) (upper | lower);
+      }
+
+      return bytes;
+   }
+
+   /**
     * Parses the 8-digit unsigned hex number in the specified string.
     *
     * @param s
