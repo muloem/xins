@@ -1,10 +1,42 @@
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.61:
 
-* Fixed problem with invalid call results in generated CAPI classes.
+* Improved generated CAPI classes. This includes a fix for unsuccessful call
+  results. These now actually cause an UnsuccessfulCallException.
 
-* XINS/Java Server Framework: Synchronizing on sessions so a single session
-  cannot be used in 2 functions in parallel.
+* XINS/Java Server Framework:
+  - Synchronizing on sessions so a single session cannot be used in 2
+    functions in parallel.
+  - Improved logging.
+
+* Fixed bug in XSLT for generating CAPI classes.
+
+* Improved output with result code MissingParameters.
+  Instead of outputting the following (pre-0.61):
+
+     <result success="false" code="MissingParameters" />
+
+  the output would now be, for example:
+
+     <result success="false" code="MissingParameters">
+        <data>
+           <missing-param name="account"/>
+           <missing-param name="password"/>
+        </data>
+     </result>
+
+* Improved output with result code InvalidParameters.
+  Instead of outputting for example the following (pre-0.61):
+
+     <result success="false" code="InvalidParameters" />
+
+  the output would now be, for example:
+
+     <result success="false" code="InvalidParameters">
+        <data>
+           <invalid-value-for-type param="password" type="password"/>
+        </data>
+     </result>
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.60:
