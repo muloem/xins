@@ -96,4 +96,13 @@
 	<translation entry="6000">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="6001">Deinitialization of API failed during XINS/Java Server Framework shutdown. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework shutdown completed.</translation>
+	<translation entry="6003">Closing <value-of-param name="sessionCount" /> open session(s).</translation>
+	<translation entry="6004">Deinitializing manageable <value-of-param name="className" />.</translation>
+	<translation entry="6005">Deinitialized manageable <value-of-param name="className" />.</translation>
+	<translation entry="6006">Deinitialization of manageable <value-of-param name="className" /> failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="6007">Deinitialization of manageable <value-of-param name="className" /> failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="6008">Deinitializing <value-of-param name="function" /> function.</translation>
+	<translation entry="6009">Deinitialized <value-of-param name="function" /> function.</translation>
+	<translation entry="6010">Deinitialization of <value-of-param name="function" /> function failed. Reason: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="6011">Deinitialization of <value-of-param name="function" /> function failed. Caught an exception of type <value-of-param name="exceptionClass" />, message is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 </translation-bundle>

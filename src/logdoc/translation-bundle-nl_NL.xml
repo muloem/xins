@@ -96,4 +96,13 @@
 	<translation entry="6000">XINS/Java Server Framework wordt gedeinitialiseerd.</translation>
 	<translation entry="6001">Fout bij de-initialisatie van de API tijdens de-initialisatie van het XINS/Java Server Framework. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 	<translation entry="6002">XINS/Java Server Framework is gedeinitialiseerd.</translation>
+	<translation entry="6003">Alle open sessies (<value-of-param name="sessionCount" /> in totaal) worden gesloten.</translation>
+	<translation entry="6004">Manageable object <value-of-param name="className" /> wordt gedeinitialiseerd.</translation>
+	<translation entry="6005">Manageable object <value-of-param name="className" /> is gedeinitialiseerd.</translation>
+	<translation entry="6006">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="6007">Manageable object <value-of-param name="className" /> kan niet gedeinitialiseerd worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
+	<translation entry="6008">Functie <value-of-param name="function" /> wordt gedeinitialiseerd.</translation>
+	<translation entry="6009">Functie <value-of-param name="function" /> is gedeinitialiseerd.</translation>
+	<translation entry="6010">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden. Reden: <value-of-param name="message" format="quoted" />.</translation>
+	<translation entry="6011">Functie <value-of-param name="function" /> kan niet gedeinitialiseerd worden. Oorzaak is een exceptie van het type <value-of-param name="exceptionClass" />, omschrijving is <value-of-param name="exceptionMessage" format="quoted" />.</translation>
 </translation-bundle>

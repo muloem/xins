@@ -478,5 +478,55 @@
 		<entry id="6002" level="NOTICE">
 			<description>XINS/Java Server Framework shutdown completed.</description>
 		</entry>
+		<entry id="6003" level="NOTICE">
+			<description>Closing open sessions.</description>
+			<param name="sessionCount" />
+		</entry>
+		<entry id="6004" level="DEBUG">
+			<description>Deinitializing manageable object.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="6005" level="DEBUG">
+			<description>Deinitialized manageable object.</description>
+			<param name="api" />
+			<param name="className" />
+		</entry>
+		<entry id="6006" level="WARNING">
+			<description>Manageable object could not be deinitialized.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="message" />
+		</entry>
+		<entry id="6007" level="WARNING">
+			<description>Manageable object could not be deinitialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="className" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
+		<entry id="6008" level="DEBUG">
+			<description>Deinitializing function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="6009" level="DEBUG">
+			<description>Deinitialized function.</description>
+			<param name="api" />
+			<param name="function" />
+		</entry>
+		<entry id="6010" level="WARNING">
+			<description>Function could not be deinitialized.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="message" />
+		</entry>
+		<entry id="6011" level="WARNING">
+			<description>Function could not be deinitialized due to an unexpected exception.</description>
+			<param name="api" />
+			<param name="function" />
+			<param name="exceptionClass" />
+			<param name="exceptionMessage" />
+		</entry>
 	</group>
 </log>
