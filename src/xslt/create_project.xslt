@@ -60,6 +60,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<antcall target="create-environments" />
 			<replace file="xins-project.xml" token="$${{api.name}}" value="${{api.name}}" />
 			<!--echo message="Don't forget to add &lt;api name=&quot;${{api.name}}&quot; /&gt; to the xins-project.xml file." /-->
+			<echo message="Use create-function to create the functions for the API." />
 		</target>
 
 		<target name="create-impl" if="create.impl">
@@ -132,6 +133,13 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
 	<description>]]>${function.description}<![CDATA[</description>
 
+	<input>
+		<param name"inputexample" required="false" type="_text">
+			<description>Input example</description>
+		</param>
+	</input>
+	<output>
+	</output>
 </function>]]></echo>
 			<fixcrlf srcdir="apis/${{api.name}}/spec" includes="${{function.name}}.fnc" />
 			<replace file="apis/${{api.name}}/spec/api.xml">

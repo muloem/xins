@@ -9,15 +9,26 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 9:
 * Build and release process:
   - The Java2HTML pages are now uploaded in a TAR GZ file.
 
-* Libraries
+* Generated build file:
+  - Improved the create-api and create-function targets.
+
+* Libraries:
   - Updated xmlenc from 0.45 to 0.46, which should result in a performance
     improvement.
     Typical impact on performance: Small.
 
+* Documentation:
+  - Added chapter about the integration of XINS in NetBeans 4.0.
+
+* Examples:
+  - Fixed TestMyFunction example.
+  - The build.xml is to compile and run the examples, an appart script file
+    nbbuild.xml has been created for using XINS with NetBeans 4.0.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
-* Logdoc
+* Logdoc:
   - The missing accesslevel variable problem has been fixed. This bug has been
     in XINS since version 1.1.0 alpha 6.
 
@@ -50,8 +61,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
 * Documentation:
   - Added the documentation about the XINS protocol to the release.
+  - Added the new features of XINS 1.1 to the User Guide.
 
-* Tests
+* Tests:
   - Added new tests for the base64 type, the param combos and the input data
     sections.
   - Adapted the framework to facilitate the testing of the XML calling 
