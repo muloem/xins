@@ -49,6 +49,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Fixed SF.net bug #1110747: CAPI class Javadoc links to non-existent online
     specs.
 
+* Generated build file:
+  - Added common-codec.jar to the classpath and in the generated war file.
+
 * Generic XSLT files:
   - Added 'javaclass_for_javatype' template to types.xslt. For a Java primary
     data type it returns the fully-qualified name of the corresponding wrapper

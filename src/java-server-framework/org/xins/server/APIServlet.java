@@ -1273,7 +1273,7 @@ extends HttpServlet {
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {
-         if (name.equals(_servletConfig.getInitParameter(API_CALLING_CONVENTION_PROPERTY))) {
+         if (!name.equals(_servletConfig.getInitParameter(API_CALLING_CONVENTION_PROPERTY))) {
             
             // TODO Log
             return null;
