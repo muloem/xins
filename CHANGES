@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     implementing the correct methods.
   - Fixed SF.net bug #1079069. The first line of the class description was:
     "Abstractgion of a manageanble object". Fixed those 2 typos.
+  - Moved some unit tests for org.xins.common packages from
+    org.xins.tests.common.util to org.xins.tests.common.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
