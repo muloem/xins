@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import org.xins.util.MandatoryArgumentChecker;
-import org.xins.util.text.HexConverter;
 
 /**
  * Grouping of function callers. This grouping is of a certain type (see
