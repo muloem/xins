@@ -1,4 +1,11 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.76:
+
+* Supporting the attribute 'mapping' in the impl-java tag in the api.xml file.
+  This results in a custom url-pattern being set in the generated web.xml
+  file.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.75:
 
 * XINS/Java Server Framework:
