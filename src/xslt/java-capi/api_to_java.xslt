@@ -123,7 +123,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:text><![CDATA[
 
    /**
-    * The client-side session identifier splitter. Cannot be
+    * Splitter of the client-side session identifier. Cannot be
     * <code>null</code>.
     */
    private final org.xins.client.SessionIDSplitter _sessionIDSplitter;]]></xsl:text>
@@ -168,7 +168,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text><![CDATA[
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified function
+    * Constructs a new <code>CAPI</code> object for the specified XINS service
     * caller and session ID splitter.
     *
     * @param caller
@@ -199,7 +199,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:text><![CDATA[
 
    /**
-    * Constructs a new <code>CAPI</code> object for the specified function
+    * Constructs a new <code>CAPI</code> object for the specified XINS service
     * caller.
     *
     * @param caller
