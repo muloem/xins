@@ -67,6 +67,9 @@ public final class Int32 extends Type {
     * Converts the specified non-<code>null</code> string value to an
     * <code>int</code>.
     *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
@@ -75,7 +78,7 @@ public final class Int32 extends Type {
     *    type.
     */
    public int fromStringForRequired(String string)
-   throws TypeValueException {
+   throws IllegalArgumentException, TypeValueException {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {

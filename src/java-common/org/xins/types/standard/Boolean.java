@@ -76,6 +76,9 @@ public final class Boolean extends Type {
     * Converts the specified non-<code>null</code> string value to a
     * <code>boolean</code>.
     *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
@@ -84,7 +87,7 @@ public final class Boolean extends Type {
     *    type.
     */
    public boolean fromStringForRequired(String string)
-   throws TypeValueException {
+   throws IllegalArgumentException, TypeValueException {
       if ("true".equals(string)) {
          return true;
       } else if ("false".equals(string)) {
