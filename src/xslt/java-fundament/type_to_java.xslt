@@ -16,7 +16,9 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
-	<xsl:include href="../escapepattern.xslt" />
+	<xsl:include href="../escapepattern.xslt"  />
+	<xsl:include href="../java.xslt"           />
+	<xsl:include href="../types.xslt"          />
 
 	<xsl:variable name="type" select="//type/@name" />
 	<xsl:variable name="classname">
@@ -26,26 +28,41 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:variable>
-	<xsl:variable name="superclass">
+	<xsl:variable name="kind">
 		<xsl:choose>
-			<xsl:when test="type/enum">EnumType</xsl:when>
-			<xsl:when test="type/pattern">PatternType</xsl:when>
-			<xsl:otherwise>Type</xsl:otherwise>
+			<xsl:when test="type/enum">enum</xsl:when>
+			<xsl:when test="type/pattern">pattern</xsl:when>
+			<xsl:when test="type/properties">properties</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>Unable to determine kind of type. Seems to be neither enum nor pattern type.</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-
-	<xsl:include href="../hungarian.xslt" />
-	<xsl:include href="../java.xslt"      />
+	<xsl:variable name="superclass">
+		<xsl:choose>
+			<xsl:when test="$kind = 'enum'">org.xins.types.EnumType</xsl:when>
+			<xsl:when test="$kind = 'pattern'">org.xins.types.PatternType</xsl:when>
+			<xsl:when test="$kind = 'properties'">org.xins.types.standard.Properties</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
 
 	<xsl:template match="type">
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
-		<xsl:text><![CDATA[;
+		<xsl:text>;
 
-import org.xins.types.*;
+import org.xins.types.EnumItem;
 
 /**
- * Enumeration type <em>]]></xsl:text>
+ * </xsl:text>
+		<xsl:call-template name="hungarianUpper">
+			<xsl:with-param name="text">
+				<xsl:value-of select="$kind" />
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:text><![CDATA[ type <em>]]></xsl:text>
 		<xsl:value-of select="$type" />
 		<xsl:text><![CDATA[</em>.
  */
@@ -92,7 +109,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$type" />
 		<xsl:text>", </xsl:text>
 		<xsl:choose>
-			<xsl:when test="enum">
+			<xsl:when test="$kind = 'enum'">
 				<xsl:text>new EnumItem[] {</xsl:text>
 				<xsl:for-each select="enum/item">
 					<xsl:if test="position() &gt; 1">,</xsl:if>
@@ -112,7 +129,7 @@ public final class ]]></xsl:text>
 				</xsl:for-each>
 				<xsl:text>}</xsl:text>
 			</xsl:when>
-			<xsl:when test="pattern">
+			<xsl:when test="$kind = 'pattern'">
 				<xsl:text>"</xsl:text>
 				<xsl:call-template name="escapepattern">
 					<xsl:with-param name="text">
@@ -121,7 +138,20 @@ public final class ]]></xsl:text>
 				</xsl:call-template>
 				<xsl:text>"</xsl:text>
 			</xsl:when>
-			<xsl:otherwise>String.class</xsl:otherwise>
+			<xsl:when test="$kind = 'properties'">
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="properties/@nameType" />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON, </xsl:text>
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="properties/@valueType" />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON</xsl:text>
+			</xsl:when>
 		</xsl:choose>
 		<xsl:text>);
    }
@@ -134,14 +164,7 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+}
 </xsl:text>
-		<xsl:if test="not(pattern or enum)">
-			<xsl:text>
-   public Object fromStringImpl(String string) {
-      return string;
-   }</xsl:text>
-		</xsl:if>
-		<xsl:text>
-}</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
