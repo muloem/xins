@@ -454,6 +454,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param request
     *    the call request, not <code>null</code>.
     *
+    * @param callConfig
+    *    the call configuration to use, or <code>null</code>.
+    *
     * @return
     *    the result of the call, cannot be <code>null</code>.
     *
@@ -476,7 +479,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
           GenericCallException,
           HTTPCallException {
 
-      final String THIS_METHOD = "call(HTTPCallRequest,HTTPCallConfig)";
+      final String THIS_METHOD = "call("
+                               + HTTPCallRequest.class.getName()
+                               + ','
+                               + HTTPCallConfig.class.getName()
+                               + ')';
 
       // TRACE: Enter method
       Log.log_1003(CLASSNAME, THIS_METHOD, null);

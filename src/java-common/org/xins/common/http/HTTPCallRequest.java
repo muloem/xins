@@ -191,8 +191,7 @@ public final class HTTPCallRequest extends CallRequest {
    public HTTPCallRequest(HTTPMethod             method,
                           PropertyReader         parameters,
                           boolean                failOverAllowed,
-                          HTTPStatusCodeVerifier statusCodeVerifier)
-   throws IllegalArgumentException {
+                          HTTPStatusCodeVerifier statusCodeVerifier) {
 
       this(parameters, statusCodeVerifier);
 
