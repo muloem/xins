@@ -276,7 +276,7 @@
 			<arg value="mkdir -p ${www.dir}/logdoc/${version}" />
 		</exec>
 		<echo level="verbose" message="Copying files to directory ${www.dir}/logdoc/${version} on ${www.host}" />
-		<exec dir="build/logdoc/html" executable="scp" failonerror="true">
+		<exec dir="build/logdoc/server/html" executable="scp" failonerror="true">
 			<arg value="-r" />
 			<arg value="." />
 			<arg value="${www.target}/logdoc/${version}" />
