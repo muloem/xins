@@ -30,7 +30,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     Java 1.4.0 or Java 1.4.1.
   - Added new types float32 and float64.
 
-* Logdoc
+* Logdoc:
   - Added new types float32 and float64.
 
 * Libraries:
