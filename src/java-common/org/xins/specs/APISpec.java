@@ -82,7 +82,7 @@ extends VersionedSpec {
        * Constructs a new <code>Type</code> object.
        */
       private Type() {
-         super("api");
+         super("api", "^[a-z][a-zA-Z0-9-]*$");
       }
 
 
