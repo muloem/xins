@@ -110,7 +110,7 @@ public class HexConverter extends Object {
       }
 
       // Append 16 zero characters to the buffer
-      buffer.append(ZEROES);
+      buffer.append(SIXTEEN_ZEROES);
 
       int pos = LENGTH - 1;
 
@@ -214,9 +214,9 @@ public class HexConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>LongUtils</code> object.
+    * Creates a new <code>HexConverter</code> object.
     */
-   private LongUtils() {
+   private HexConverter() {
       // empty
    }
 
