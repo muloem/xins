@@ -8,12 +8,12 @@ import org.xins.util.MandatoryArgumentChecker;
 import org.xins.util.text.ParseException;
 
 /**
- * Access rule parser. Takes a character string and produces a list of
- * {@link AccessRule} objects from it.
+ * Access rule list. This class can take a character string to produce an
+ * {@link AccessRuleList} object from it.
  *
  * <h3>Examples</h3>
  *
- * <p>An example of an access rule list is:
+ * <p>An example of an access rule list descriptor is:
  *
  * <blockquote><code>allow 194.134.168.213/32 *;
  * <br>deny  194.134.168.213/24 _*;
@@ -30,7 +30,7 @@ import org.xins.util.text.ParseException;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
  */
-public final class AccessRuleParser
+public final class AccessRuleList
 extends Object {
 
    //-------------------------------------------------------------------------
@@ -41,26 +41,54 @@ extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Parses the specified character string to construct a new
+    * <code>AccessRuleList</code> object.
+    *
+    * @param descriptor
+    *    the access rule list descriptor, the character string to parse,
+    *    cannot be <code>null</code>.
+    *
+    * @return
+    *    an {@link AccessRuleList} instance, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    *
+    * @throws ParseException
+    *    if there was a parsing error.
+    */
+   public static final AccessRuleList parseAccessRuleList(String descriptor)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("descriptor", descriptor);
+
+      return null; // TODO
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>AccessRuleParser</code> for the specified API.
+    * Creates a new <code>AccessRuleList</code> object.
     *
-    * @param api
-    *    the API, cannot be <code>null</code>.
+    * @param rules
+    *    the list of rules ({@link AccessRule} objects), cannot be
+    *    <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
+    *    if <code>rules == null</code>.
     */
-   public AccessRuleParser(API api)
+   public AccessRuleList(List rules)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("api", api);
+      MandatoryArgumentChecker.check("rules", rules);
 
-      _api = api;
+      _rules = rules;
    }
 
 
@@ -69,38 +97,12 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The API. Cannot be <code>null</code>.
+    * The list of rules. Cannot be <code>null</code>.
     */
-   private API _api;
+   private List _rules;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Parses the specified character string to construct a list of access
-    * rules.
-    *
-    * @param s
-    *    the character string to parse, cannot be <code>null</code>.
-    *
-    * @return
-    *    the {@link List} of parsed {@link AccessRule} objects, never
-    *    <code>null</code>, although the list may be empty.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>s == null</code>.
-    *
-    * @throws ParseException
-    *    if there was a parsing error.
-    */
-   public List parseRuleList(String s)
-   throws IllegalArgumentException, ParseException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("s", s);
-
-      return null; // TODO
-   }
 }
