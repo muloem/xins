@@ -247,8 +247,9 @@ extends Object {
          // TRACE: Enter constructor
          Log.log_2000(HANDLER_CLASSNAME, null);
 
-         _state = INITIAL;
-         _level = -1;
+         _state      = INITIAL;
+         _level      = -1;
+         _characters = new FastStringBuffer(45);
 
          // TRACE: Leave constructor
          Log.log_2002(HANDLER_CLASSNAME, null);
@@ -282,9 +283,10 @@ extends Object {
       private String _parameterName;
 
       /**
-       * The PCDATA content of the element currently being parsed.
+       * The character content (CDATA or PCDATA) of the element currently
+       * being parsed.
        */
-      private FastStringBuffer _pcdata;
+      private final FastStringBuffer _characters;
 
       /**
        * The stack of child elements within the data section. The top element
@@ -424,10 +426,6 @@ extends Object {
 
                // TODO: Check parameter name here (null and pattern)
 
-               // Reserve a buffer for the character content already
-               // TODO: Rename _pcdata because it may also be CDATA
-               _pcdata = new FastStringBuffer(20);
-
                // Update the state
                _state = IN_PARAM_ELEMENT;
 
@@ -473,8 +471,7 @@ extends Object {
             _dataElementStack.push(element);
 
             // Reserve buffer for PCDATA
-            // TODO: Lazily initialize this field to improve performance
-            _pcdata = new FastStringBuffer(20);
+            _characters.clear();
 
             // Reset the state from ERROR back to IN_DATA_SECTION
             _state = IN_DATA_SECTION;
@@ -564,7 +561,7 @@ extends Object {
 
          // Ignorable element
          } else if (currentState == WITHIN_IGNORABLE_ELEMENT) {
-            if (_level == 1) { // XXX: Is this correct???
+            if (_level == 1) {
                _state = AT_ROOT_LEVEL;
             } else {
                _state = WITHIN_IGNORABLE_ELEMENT;
@@ -594,12 +591,9 @@ extends Object {
             } else {
 
                // Set the PCDATA content on the element
-               if (_pcdata != null && _pcdata.getLength() > 0) {
-                  child.setText(_pcdata.toString());
+               if (_characters != null && _characters.getLength() > 0) {
+                  child.setText(_characters.toString());
                }
-
-               // Reset the PCDATA content and the level
-               _pcdata = null;
 
                // Add the child to the parent
                DataElement parent = (DataElement) _dataElementStack.peek();
@@ -612,16 +606,15 @@ extends Object {
          // Output parameter
          } else if (currentState == IN_PARAM_ELEMENT) {
 
-            final String expectedName = "param";
-            if (! qName.equals(expectedName)) {
-               String detail = "Expected end tag for \"" + expectedName + "\" element instead of \"" + qName + "\".";
+            if (! (namespaceURI == null && "param".equals(localName))) {
+               String detail = "Expected end of element of type \"param\" with namespace (null) instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
                Log.log_2050(HANDLER_CLASSNAME, METHODNAME, detail);
-               throw new Error(detail);
+               throw new SAXException(detail);
             }
 
             // Retrieve name and value for output parameter
             String name  = _parameterName;
-            String value = _pcdata.toString();
+            String value = _characters.toString();
 
             // Both name and value should be set
             boolean noName  = (name  == null || name.length()  < 1);
@@ -658,8 +651,8 @@ extends Object {
 
             // Reset the state
             _parameterName = null;
-            _pcdata       = null;
-            _state        = AT_ROOT_LEVEL;
+            _state         = AT_ROOT_LEVEL;
+            _characters.clear();
 
          // Unknown state
          } else {
@@ -669,6 +662,7 @@ extends Object {
          }
 
          _level--;
+         _characters.clear();
 
          // TRACE: Leave method
          Log.log_2005(HANDLER_CLASSNAME, METHODNAME,
@@ -677,7 +671,6 @@ extends Object {
                     + "; namespaceURI=" + TextUtils.quote(namespaceURI)
                     + "; localName="    + TextUtils.quote(localName)
                     + "; qName="        + TextUtils.quote(qName));
-
       }
 
       /**
@@ -722,8 +715,8 @@ extends Object {
             }
          }
 
-         if (_pcdata != null) {
-            _pcdata.append(ch, start, length);
+         if (_characters != null) {
+            _characters.append(ch, start, length);
          }
 
          // Reset _state
