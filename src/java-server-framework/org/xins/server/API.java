@@ -1104,9 +1104,11 @@ implements DefaultResultCodes {
 
          context.startTag("function");
          context.attribute("name", function.getName());
+
+         // Successful
          context.startTag("successful");
-         context.attribute("count", String.valueOf(successfulCalls));
-         context.attribute("average", successfulAverage);
+         context.attribute("count",    String.valueOf(successfulCalls));
+         context.attribute("average",  successfulAverage);
          context.startTag("min");
          context.attribute("start",    successfulMinStart);
          context.attribute("duration", successfulMin);
@@ -1120,22 +1122,25 @@ implements DefaultResultCodes {
          context.attribute("duration", lastSuccessfulDuration);
          context.endTag(); // last
          context.endTag(); // successful
+
+         // Unsuccessful
          context.startTag("unsuccessful");
-         context.attribute("count",   String.valueOf(unsuccessfulCalls));
-         context.attribute("average", unsuccessfulAverage);
+         context.attribute("count",    String.valueOf(unsuccessfulCalls));
+         context.attribute("average",  unsuccessfulAverage);
          context.startTag("min");
-         context.attribute("start",        unsuccessfulMinStart);
-         context.attribute("duration",     unsuccessfulMin);
+         context.attribute("start",    unsuccessfulMinStart);
+         context.attribute("duration", unsuccessfulMin);
          context.endTag(); // min
          context.startTag("max");
-         context.attribute("start",        unsuccessfulMaxStart);
-         context.attribute("duration",     unsuccessfulMax);
+         context.attribute("start",    unsuccessfulMaxStart);
+         context.attribute("duration", unsuccessfulMax);
          context.endTag(); // max
          context.startTag("last");
          context.attribute("start",    lastUnsuccessfulStart);
          context.attribute("duration", lastUnsuccessfulDuration);
          context.endTag(); // last
          context.endTag(); // unsuccessful
+
          context.endTag(); // function
       }
    }
