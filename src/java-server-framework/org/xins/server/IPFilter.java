@@ -104,6 +104,7 @@ extends Object {
     */
    private IPFilter(String expression) {
       _expression = expression;
+      _mask = determineMask(expression);
    }
 
 
@@ -115,6 +116,11 @@ extends Object {
     * The expression of this filter.
     */
    private final String _expression;
+
+   /**
+    * The mask of this filter.
+    */
+   private final int _mask;
 
 
    //-------------------------------------------------------------------------
@@ -156,9 +162,9 @@ extends Object {
 
       MandatoryArgumentChecker.check("ip", ip);
 
-      List ipFieldList = getIPFields(ip);
+      String[] ipFields = getIPFields(ip);
 
-      if (ipFieldList == null) {
+      if (ipFields == null) {
          throw new ParseException("The provided IP " + ip + " is invalid.");
       }
 
@@ -224,8 +230,8 @@ extends Object {
     *    otherwise false.
     */
    private static boolean isValidIp(String ip) {
-      List ipFieldList = getIPFields(ip);
-      boolean validIP = ipFieldList == null ? false : true;
+      String[] ipFields = getIPFields(ip);
+      boolean validIP = ipFields == null ? false : true;
       return validIP;
    }
 
@@ -292,7 +298,7 @@ extends Object {
    }
 
    /**
-    * Creates a list with the several fields (parts separated by a dot) of 
+    * Creates an array with the several fields (parts separated by a dot) of 
     * the provided IP. If the provided IP is invalid <code>null</code> is
     * returned.
     *
@@ -300,33 +306,64 @@ extends Object {
     *    ip the IP address.
     *
     * @return
-    *    a list with the strings representing the value of each IP field
+    *    an array with the strings representing the value of each IP field
     *    or <code>null</code> if the provided IP is invalid.
     */
-   private static List getIPFields(String ip) {
+   private static String[] getIPFields(String ip) {
       StringTokenizer tokenizer = new StringTokenizer(ip, IP_ADDRESS_DELIMETER);
+      String[] ipFields = new String[4];
       String currIPSection = null;
-      boolean validToken = true;
-      boolean validIP = false;
-      int counter = 0;
-      List ipFieldList = new ArrayList(4);
+      boolean validIP = true;
 
-      while (tokenizer.hasMoreTokens() && validToken == true) {
-          currIPSection = tokenizer.nextToken();
-          validToken = isValidIPSection(currIPSection);
-          ipFieldList.add(currIPSection);
-          counter++;
+      for (int i = 0;i < 4 && validIP == true; i++) {
+         if (tokenizer.hasMoreTokens()) {
+             currIPSection = tokenizer.nextToken();
+             validIP = isValidIPSection(currIPSection);
+             ipFields[i] = currIPSection;
+         }
+         else {
+            validIP = false;
+         }
       }
 
-      if (validToken == true && counter == 4) {
-         validIP = true;
+      if (tokenizer.hasMoreTokens()) {
+         validIP = false;
       }
 
       if (validIP == false) {
-         ipFieldList = null;
+         ipFields = null;
       }
 
-      return ipFieldList;
+      return ipFields;
+   }
+
+   /**
+    * Determines what the mask is of the provided expression.
+    *
+    * @param
+    *    expression the expression.
+    *
+    * @return
+    *    An integer representing the value of the mask of this expression.
+    */
+   private int determineMask(String expression) {
+      int mask = -1;
+      int slashPosition = expression.indexOf(IP_MASK_DELIMETER);
+
+      if (slashPosition < 0 || slashPosition == expression.length() - 1) {
+         throw new InternalError("The provided filter " + expression + " is invalid.");
+      }
+
+      String maskString = expression.substring(slashPosition + 1);
+
+      try {
+         mask = Integer.parseInt(maskString);
+      }
+      catch (NumberFormatException nfe) {
+         throw new InternalError("The mask within the provided filter " + expression + " could not be translated to an integer.");
+      }
+
+      return mask;
    }
 
 }
