@@ -120,8 +120,11 @@ public final class CallRequestParser extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("in", in);
 
+      // Parse the input stream
       try {
          return parse(_xmlBuilder.build(in));
+
+      // Catch problems
       } catch (Exception exception) {
          FastStringBuffer message = new FastStringBuffer(128);
          message.append("Unable to parse call request due to unexpected ");
