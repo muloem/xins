@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Fixed SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on
     Blackdown JVM 1.4.1. This problem was not really fixed, since the source
     of the problem is in the Blackdown JVM self. It was worked around though.
+  - Implemented SF.net RE #1124698: Added isProtocolSupported(String) method
+    to class ServiceCaller.
   - Changed the internal names of the standard types to start with an
     underscore. E.g. "int32" is now "_int32".
   - Changed HTTPServiceCaller to work with HttpClient 3.0 only. HttpClient 2.0
@@ -53,6 +55,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Fixed the method fromString() of the base64 standard type.
   - Fixed the method toString(Object) of the base64 standard type.
   - Removed the org.xins.common.text.Base64 class.
+  - Added getProtocol() method to class TargetDescriptor (with unit tests).
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1114846: Error code in
