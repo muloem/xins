@@ -18,8 +18,7 @@
 IF NOT "%1" == "-version" GOTO no_version
 java -version
 CALL ant -version
-CALL ant -f %XINS_HOME%\build.xml -listener org.apache.tools.ant.NoBannerLogger
-version
+CALL ant -f %XINS_HOME%\build.xml version
 GOTO end
 
 :: Determine the current drive and directory

@@ -38,7 +38,7 @@ if [ "$1" = "-version" ]; then
 	echo
 	ant -version
 	echo
-	ant -f ${xins_home}/build.xml -listener org.apache.tools.ant.NoBannerLogger version
+	ant -f ${xins_home}/build.xml version
 	exit 0
 fi
 
