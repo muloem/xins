@@ -11,6 +11,11 @@
 	<messageset id="en_US" />
 	<messageset id="nl_NL" />
 
+	<entry id="0" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
+		<description>State change in APIServlet instance.</description>
+		<param name="oldState" />
+		<param name="newState" />
+	</entry>
 	<entry id="100" level="DEBUG" category="org.xins.server.lifespan.bootstrap">
 		<description>Bootstrapping XINS/Java Server Framework.</description>
 	</entry>
@@ -27,7 +32,22 @@
 		<param name="actual_version" />
 		<param name="expected_version" />
 	</entry>
-	<entry id="200" level="INFO" category="org.xins.server.lifespan.init">
+	<entry id="200" level="NOTICE" category="org.xins.server.lifespan.init">
 		<description>XINS/Java Server Framework initialized or re-initialized.</description>
+	</entry>
+	<entry id="201" level="INFO" category="org.xins.server.lifespan.init">
+		<description>About to change locale for the log messages.</description>
+		<param name="oldLocale" />
+		<param name="newLocale" />
+	</entry>
+	<entry id="202" level="NOTICE" category="org.xins.server.lifespan.init">
+		<description>Changed locale for the log messages.</description>
+		<param name="oldLocale" />
+		<param name="newLocale" />
+	</entry>
+	<entry id="203" level="ERROR" category="org.xins.server.lifespan.init">
+		<description>Failed to change the locale for the log messages.</description>
+		<param name="currentLocale" />
+		<param name="failedLocale" />
 	</entry>
 </log>
