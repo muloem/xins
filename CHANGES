@@ -16,8 +16,11 @@ CHANGES INTRODUCED IN XINS 0.213:                                (1.0.0-beta6)
 
 * XINS/Java Client Framework:
   - Added more test using the AllInOne CAPI.
-  - Fixed the PCDATA set in the data section was not parsed correctly.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
+  - Improved the logging.
+  - Refactored XINSCallResultParser, improved the documentation for it and
+    improved and extended the tests for it. Fixed bug that caused the PCDATA
+    content in the data section to be not parsed correctly.
 
 * Tests
   - Added JCoverage to the libraries and added a coverage task that shows the 
