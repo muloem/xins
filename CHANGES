@@ -50,7 +50,8 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . 2112 (was INFO).
   - Added log message 2113: XINS call request completely failed.
   - Changed log messages 2200 and 2206 to include namespace.
-  - Improved XINSCallResultParser behavior.
+  - Improved XINSCallResultParser behavior. Logging is improved and the parser
+    is now XML Namespaces-aware.
 
 * XINS/Java Server Framework:
   - Fixed bug #1036854: Reset logging subsystem when reloading.
