@@ -104,7 +104,8 @@ public final class XINSCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
-    * and parameters, possibly allowing fail-over.
+    * and parameters, possibly allowing fail-over even if the request was
+    * possibly already received by a target service.
     *
     * @param functionName
     *    the name of the function to call, cannot be <code>null</code>.
