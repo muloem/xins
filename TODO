@@ -63,7 +63,9 @@ XINS/JAVA CLIENT FRAMEWORK
   that. Otherwise also the MD5 would be the same.
 * Allow configuration of calling _NoOp at construction of
   ActualFunctionCaller.
-* Added multi-call functionality to CallTargetGroup.
+* Add class MultiCallResult that maps ActualFunctionCaller instances to a
+  result. The result is either a CallException or a CallResult.
+* Add multi-call functionality to CallTargetGroup.
 
 ______________________________________________________________________________
 XINS/JAVA COMMON LIBRARY
