@@ -195,7 +195,7 @@ extends Object {
          }
 
          // Throw exception with message, and register cause exception
-         throw new ParseException(buffer.toString(), exception);
+         throw new ParseException(buffer.toString(), exception, detail);
       }
 
       // TRACE: Leave method
