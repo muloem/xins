@@ -18,7 +18,7 @@
 	<!-- Set output method -->
 	<xsl:output method="text" />
 
-	<xsl:template match="messages">
+	<xsl:template match="translation-bundle">
 		<xsl:variable name="classname">
 			<xsl:text>TranslationBundle_</xsl:text>
 			<xsl:value-of select="$locale" />

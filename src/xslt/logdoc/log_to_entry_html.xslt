@@ -147,7 +147,7 @@
 				<xsl:value-of select="@locale" />
 			</th>
 			<td>
-				<xsl:apply-templates select="document($translation-bundle-doc)/messages/message[@entry=$entry]" />
+				<xsl:apply-templates select="document($translation-bundle-doc)/translation-bundle/translation[@entry=$entry]" />
 			</td>
 		</tr>
 	</xsl:template>
