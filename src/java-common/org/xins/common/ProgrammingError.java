@@ -71,7 +71,7 @@ public final class ProgrammingError extends Error {
     *    the name of the class which exposes the programming error, or
     *    <code>null</code> if unknown.
     *
-    * @param subjectClass
+    * @param subjectMethod
     *    the name of the method (within the <code>subjectClass</code>) which
     *    exposes the programming error, or <code>null</code> if unknown.
     *
