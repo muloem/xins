@@ -3,6 +3,10 @@ CHANGES INTRODUCED IN XINS 0.71:
 
 * Added missing Javadoc comments for some private members.
 
+* Configuration of time-out and time-out precision is now done in api.xml and
+  this information is sent down to and interpreted by the API class (in the
+  XINS/Java Server Framework).
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.70:
 
