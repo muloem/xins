@@ -21,7 +21,8 @@
 
 	<xsl:output
 	doctype-public="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-	doctype-system="http://java.sun.com/dtd/web-app_2_3.dtd" />
+	doctype-system="http://java.sun.com/dtd/web-app_2_3.dtd"
+	indent="yes" />
 
 	<xsl:include href="../package_to_dir.xslt" />
 	<xsl:include href="../package_for_api.xslt" />
