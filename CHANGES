@@ -1,4 +1,12 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.155:
+
+* Generated specification documentation:
+  - Now one style.css per API, so that if only the specdocs/[api] directory
+    can be read by a client, for example because of an access restriction,
+    then the pages will still be displayed correctly.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.154:
 
 * XINS/Java Server Framework:
