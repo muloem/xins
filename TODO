@@ -19,6 +19,8 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 * Allow the following type of constraint to be specified in a function
   specification file: "if input parameter A is set, then input parameter B
   must also be set."
+* Allow freezing of api.xml files. Support 'freeze' attribute in DTD and
+  copy behaviour from behaviour for frozen .fnc files.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
