@@ -212,6 +212,8 @@ implements DefaultReturnCodes {
          code    = context.getCode();
          exceptionThrown = false;
       } catch (Throwable exception) {
+         LOG.error("Caught exception while calling API.", exception);
+
          success = false;
          code    = INTERNAL_ERROR;
 
