@@ -41,6 +41,11 @@ public final class LDAPServiceCaller extends ServiceCaller {
    public static final AuthenticationMethod SIMPLE_AUTHENTICATION = new AuthenticationMethod("simple");
 
    /**
+    * Authentication details to be used when none are specified.
+    */
+   public static final AuthenticationDetails FALLBACK_AUTHENTICATION_DETAILS = new AuthenticationDetails(NO_AUTHENTICATION, null, null);
+
+   /**
     * The initial context factory.
     */
    private static final String INITIAL_CONTEXT_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
@@ -97,8 +102,8 @@ public final class LDAPServiceCaller extends ServiceCaller {
     * @throws CallFailedException
     *    if the call failed.
     */
-   public Result call(AuthenticationDetails authenticationDetails,
-                      Query                 query)
+   public NamingEnumeration call(AuthenticationDetails authenticationDetails,
+                                 Query                 query)
    throws CallFailedException {
 
       // Construct a Request object
@@ -108,7 +113,7 @@ public final class LDAPServiceCaller extends ServiceCaller {
       CallResult callResult = doCall(request);
 
       // Return the result
-      return (Result) callResult.getResult();
+      return (NamingEnumeration) callResult.getResult();
    }
 
    protected Object doCallImpl(ServiceDescriptor target,
@@ -118,10 +123,20 @@ public final class LDAPServiceCaller extends ServiceCaller {
       // Convert subject to a Request object
       Request request = (Request) subject;
 
-      InitialDirContext context    = authenticate(target,  request._authenticationDetails);
-      NamingEnumeration namingEnum = query       (context, request._query);
+      // Authenticate and connect
+      AuthenticationDetails authenticationDetails = request._authenticationDetails;
+      if (authenticationDetails == null) {
+         authenticationDetails = FALLBACK_AUTHENTICATION_DETAILS;
+      }
+      InitialDirContext context = authenticate(target,  authenticationDetails);
 
-      return null; // TODO
+      // Perform a query if applicable
+      Query query = request._query;
+      if (query != null) {
+         return query(context, query);
+      } else {
+         return null;
+      }
    }
 
    /**
@@ -165,11 +180,20 @@ public final class LDAPServiceCaller extends ServiceCaller {
       return new InitialDirContext(env);
    }
 
-   private NamingEnumeration query(InitialDirContext context, Query _query)
+   /**
+    * Performs the specified query.
+    *
+    * @param context
+    *    the directory context for the query, cannot be <code>null</code>.
+    *
+    * @param query
+    *    the query to execute, cannot be <code>null</code>.
+    */
+   private NamingEnumeration query(InitialDirContext context, Query query)
    throws IllegalArgumentException, NamingException {
 
-      String searchBase             = null; // TODO
-      String filter                 = null; // TODO
+      String         searchBase     = null; // TODO
+      String         filter         = null; // TODO
       SearchControls searchControls = null; // TODO
 
       return context.search(searchBase, filter, searchControls);
@@ -437,8 +461,10 @@ public final class LDAPServiceCaller extends ServiceCaller {
     *
     * @since XINS 0.115
     */
-   public static final class Result
+   private static final class Result
    extends Object {
+
+      // TODO: Use this class
 
       //----------------------------------------------------------------------
       // Constructors
