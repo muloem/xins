@@ -4,7 +4,7 @@
 package org.xins.client;
 
 /**
- * Class that represents this XINS/Java Client Framework library.
+ * Class that represents the XINS/Java Client Framework library.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:znerd@FreeBSD.org">znerd@FreeBSD.org</a>)
@@ -22,7 +22,7 @@ public final class Library extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the version of the <code>XINS</code> server framework library.
+    * Returns the version of this library.
     *
     * @return
     *    the version of this library, for example <code>"%%VERSION%%"</code>,
