@@ -146,7 +146,7 @@ public abstract class ]]></xsl:text>
 			<xsl:text>
 
       // Get the session
-      org.xins.server.Session session = context.getSession();</xsl:text>
+      org.xins.server.Session _session = context.getSession();</xsl:text>
 		</xsl:if>
 
 
@@ -211,6 +211,36 @@ public abstract class ]]></xsl:text>
       }</xsl:text>
 		</xsl:if>
 
+		<!-- ************************************************************* -->
+		<!-- Check values for types                                        -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
+			<xsl:text>
+
+      // Check values are valid for the associated types</xsl:text>
+			<xsl:for-each select="input/param[not(@type='_text' or string-length(@type) = 0)]">
+				<xsl:text>
+      if (!</xsl:text>
+				<xsl:call-template name="javatypeclass_for_type">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="type"         select="@type"         />
+				</xsl:call-template>
+				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>)) {
+         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
+         result.setInvalidTypeForValue("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>", "</xsl:text>
+				<xsl:value-of select="@type" />
+				<xsl:text>");
+         return result;
+      }</xsl:text>
+			</xsl:for-each>
+		</xsl:if>
 
 		<!-- ************************************************************* -->
 		<!-- Check 'inclusive-or' combos                                   -->
@@ -283,7 +313,6 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
-
 		<!-- ************************************************************* -->
 		<!-- Check 'all-or-none' combos                                    -->
 		<!-- ************************************************************* -->
@@ -323,51 +352,22 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
-
 		<!-- ************************************************************* -->
-		<!-- Check values for types                                        -->
+		<!-- Invoke the abstract call method                               -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="input/param[not(@type='_text' or string-length(@type) = 0)]">
-			<xsl:text>
-
-      // Check values are valid for the associated types</xsl:text>
-			<xsl:for-each select="input/param[not(@type='_text' or string-length(@type) = 0)]">
-				<xsl:text>
-      if (!</xsl:text>
-				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
-					<xsl:with-param name="api"          select="$api"          />
-					<xsl:with-param name="specsdir"     select="$specsdir"     />
-					<xsl:with-param name="type"         select="@type"         />
-				</xsl:call-template>
-				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>)) {
-         org.xins.server.InvalidParametersResult result = new org.xins.server.InvalidParametersResult();
-         result.setInvalidTypeForValue("</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>", "</xsl:text>
-				<xsl:value-of select="@type" />
-				<xsl:text>");
-         return result;
-      }</xsl:text>
-			</xsl:for-each>
-		</xsl:if>
-
-		<!-- Creates the session if needed and the call. -->
 		<xsl:choose>
 			<xsl:when test="$createsSession = 'true'">
 				<xsl:text>
       // Create the session
-      org.xins.server.Session session = context.createSession();
+      org.xins.server.Session _session = context.createSession();
 </xsl:text>
 			</xsl:when>
 			<xsl:when test="$sessionBased = 'true'">
 				<xsl:text>
 
       // Lock on the session and then call the subclass
-      synchronized (session) {
+      synchronized (_session) {
          </xsl:text>
 			</xsl:when>
 		</xsl:choose>
@@ -388,7 +388,7 @@ public abstract class ]]></xsl:text>
 			<xsl:if test="input/param">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
-			<xsl:text>session</xsl:text>
+			<xsl:text>_session</xsl:text>
 		</xsl:if>
 		<xsl:text>);
       Result result = call(callRequest);</xsl:text>

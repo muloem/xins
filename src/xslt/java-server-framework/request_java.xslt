@@ -18,20 +18,18 @@
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
-	<xsl:param name="sessionBased" />
 
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision">
-				<xsl:value-of select="//function/@rcsversion" />
-			</xsl:with-param>
+			<xsl:with-param name="revision" select="//function/@rcsversion" />
 		</xsl:call-template>
 	</xsl:variable>
 
 	<xsl:template name="request">
+		<xsl:param name="sessionBased" />
 <xsl:text><![CDATA[
 /**
- * Container for the input parameters for the <em>]]></xsl:text>
+ * Container for the input parameters of the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
  */
@@ -47,8 +45,11 @@ public final static class Request {
 
    //-------------------------------------------------------------------------
    // Constructors
-   //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:call-template name="constructor_request" />
+   //-------------------------------------------------------------------------
+]]></xsl:text>
+		<xsl:call-template name="constructor_request">
+			<xsl:with-param name="sessionBased" select="$sessionBased" />
+		</xsl:call-template>
 		<xsl:text>
 
    //-------------------------------------------------------------------------
@@ -56,12 +57,35 @@ public final static class Request {
    //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="input/param" mode="field" />
 
+	 	<!-- If this function is session based also has a session field. -->
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text>
+   private final org.xins.server.Session __session;</xsl:text>
+		</xsl:if>
+
 		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
+
 		<xsl:apply-templates select="input/param" mode="method" />
+
+	 	<!-- If this function is session based also generates a getSession() method. -->
+		<xsl:if test="$sessionBased = 'true'">
+			<xsl:text><![CDATA[
+
+   /**
+    * Retrieves the user's session.
+    *
+    * @return
+    *    the session of the user, never <code>null</code>.
+    */
+   org.xins.server.Session retrieveSession() {
+      return __session;
+   }]]></xsl:text>
+		</xsl:if>
+
 		<xsl:text>
 }
 </xsl:text>
@@ -71,6 +95,8 @@ public final static class Request {
 	     The contructor sets the input values.
 	-->
 	<xsl:template name="constructor_request">
+		<xsl:param name="sessionBased" />
+
 		<xsl:text><![CDATA[
    /**
     * Constructs a new <code>Request</code> instance.
@@ -92,7 +118,7 @@ public final static class Request {
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>, Session session</xsl:text>
+			<xsl:text>, org.xins.server.Session _session</xsl:text>
 		</xsl:if>
 		<xsl:text>) {
 </xsl:text>
@@ -105,7 +131,7 @@ public final static class Request {
 </xsl:text>
 		</xsl:for-each>
 		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text>      _session = session;</xsl:text>
+			<xsl:text>      __session = _session;</xsl:text>
 		</xsl:if>
 		<xsl:text>
    }</xsl:text>
@@ -148,9 +174,7 @@ public final static class Request {
 				<xsl:otherwise>get</xsl:otherwise>
 			</xsl:choose>
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<!-- Get the return type of the get method. -->
@@ -220,13 +244,6 @@ public final static class Request {
 		<xsl:value-of select="@name" />
 		<xsl:text>;
    }</xsl:text>
-
-	 	<!-- If this function is session based also generates a getSession() method. -->
-		<xsl:if test="$sessionBased = 'true'">
-			<xsl:text><![CDATA[   Session getSession() {
-      return _session;
-   }]]></xsl:text>
-		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -21,9 +21,7 @@
 
 	<xsl:variable name="version">
 		<xsl:call-template name="revision2string">
-			<xsl:with-param name="revision">
-				<xsl:value-of select="//function/@rcsversion" />
-			</xsl:with-param>
+			<xsl:with-param name="revision" select="//function/@rcsversion" />
 		</xsl:call-template>
 	</xsl:variable>
 
@@ -88,7 +86,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
     */
    public SuccessfulResult() {
 
-      // Reports the success
+      // Report the success
       super(true, null);
    }
 
@@ -130,9 +128,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<xsl:variable name="methodName">
 			<xsl:text>set</xsl:text>
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javatype">
@@ -158,6 +154,20 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="typeToString">
+			<xsl:call-template name="javatype_to_string_for_type">
+				<xsl:with-param name="api"      select="$api" />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="$required" />
+				<xsl:with-param name="type"     select="@type" />
+				<xsl:with-param name="variable" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="typeIsPrimary">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$javatype" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Write the set methods -->
 		<xsl:text><![CDATA[
@@ -175,23 +185,28 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<xsl:text><![CDATA[ output parameter <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em>.
-    *
-    * @param
-    *    the value of the <em>]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
+    * This method ]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="not($basetype = '_text')">.</xsl:when>
 			<xsl:when test="@required = 'true'">
-				<xsl:text><![CDATA[, cannot be <code>null</code>.]]></xsl:text>
+				<xsl:text>has</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text><![CDATA[, or can be <code>null</code>.]]></xsl:text>
+				<xsl:text>doesn't need</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:text> to be called before returning the SuccessfulResult.
+    *
+    * @param </xsl:text>
+		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[
+    *    the value of the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> output parameter, can be <code>null</code>.
+    *      The value is not added to the result if the value is <code>null</code> or
+    *      it's <code>String</code> representation is an empty <code>String</code>.]]></xsl:text>
+		<xsl:text>
     */
-   public void ]]></xsl:text>
+   public void </xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$javatype" />
@@ -199,18 +214,25 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<xsl:value-of select="@name" />
 		<xsl:text>) {
       </xsl:text>
+		<xsl:if test="not($typeIsPrimary = 'true')" >
+		<xsl:text>if (</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text> != null &amp;&amp; !</xsl:text>
+		<xsl:value-of select="$typeToString" />
+		<xsl:text>.equals("")) {
+         </xsl:text>
+			</xsl:if>
 		<xsl:value-of select="$methodImpl" />
 		<xsl:text>("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>",  </xsl:text>
-		<xsl:call-template name="javatype_to_string_for_type">
-			<xsl:with-param name="api"      select="$api" />
-			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="type"     select="@type" />
-			<xsl:with-param name="variable" select="@name" />
-		</xsl:call-template>
-		<xsl:text>);
+		<xsl:value-of select="$typeToString" />
+		<xsl:text>);</xsl:text>
+		<xsl:if test="not($typeIsPrimary = 'true')" >
+			<xsl:text>
+      }</xsl:text>
+		</xsl:if>
+		<xsl:text>
    }</xsl:text>
 	</xsl:template>
 
@@ -221,9 +243,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 	<xsl:template match="function/output/data/element" mode="addMethod">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -256,9 +276,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 	<xsl:template match="function/output/data/element" mode="elementClass">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="@name" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 
@@ -313,7 +331,7 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
       /**
        * Returns the element containing the informations about the
        */
-      public final org.jdom.Element getDOMElement() {
+      final org.jdom.Element getDOMElement() {
          return _jdomElement;
       }
 
@@ -329,12 +347,10 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 	</xsl:template>
 
 	<xsl:template match="function/output/data/element/contains/contained">
-		<!-- Define the varibles used in the set methods -->
+		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
 			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text">
-					<xsl:value-of select="@element" />
-				</xsl:with-param>
+				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:text><![CDATA[

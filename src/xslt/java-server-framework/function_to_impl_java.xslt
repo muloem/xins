@@ -33,10 +33,6 @@ package ]]></xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text><![CDATA[;
 
-import org.xins.server.Function;
-import org.xins.server.Responder;
-import org.xins.server.Session;
-
 /**
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />

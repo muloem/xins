@@ -27,6 +27,25 @@
 	<xsl:variable name="className" select="concat($resultcode, 'Result')" />
 
 	<xsl:template match="resultcode">
+		<xsl:variable name="resultcodeIncludes">
+			<xsl:for-each select="document($api_file)/api/function">
+				<xsl:call-template name="search-matching-resultcode">
+					<xsl:with-param name="functionName" select="@name" />
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
+
+		<!-- Send a warning if no function uses this ResultCode -->
+		<xsl:if test="$resultcodeIncludes = ''">
+			<xsl:message>
+				<xsl:text>.
+ *-*-* WARNING : This result code '</xsl:text>
+				<xsl:value-of select="$resultcode" />
+ 				<xsl:text>'is not used in any function. *-*-*</xsl:text>
+ 			</xsl:message>
+		</xsl:if>
+
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package" />
@@ -36,23 +55,20 @@
 /**
  * UnsuccessfulResult due to a </xsl:text>
 		<xsl:value-of select="$resultcode" />
+		<xsl:if test="$resultcodeIncludes = ''">
+			<xsl:text>.
+ * WARNING : This ResultCode is not used in any function.</xsl:text>
+		</xsl:if>
 		<xsl:text>.
  */
 final class </xsl:text>
 		<xsl:value-of select="$className" />
-		<xsl:text> extends org.xins.server.FunctionResult implements </xsl:text>
+		<xsl:text> extends org.xins.server.FunctionResult </xsl:text>
 		<!-- This class should implements the UnsuccessfulResult from all the functions
 		     that reference to this result code. -->
-		<xsl:variable name="resultcodeIncludes">
-			<xsl:for-each select="document($api_file)/api/function">
-				<xsl:call-template name="search-matching-resultcode">
-					<xsl:with-param name="functionName" select="@name" />
-				</xsl:call-template>
-			</xsl:for-each>
-		</xsl:variable>
-		<xsl:variable name="resultcodeIncludes2"    select="substring($resultcodeIncludes, 2)" />
-		<xsl:value-of select="$resultcodeIncludes2" />
-
+		<xsl:if test="not($resultcodeIncludes = '')">
+			<xsl:value-of select="$resultcodeIncludes2" />
+		</xsl:if>
 		<xsl:text> {
 
    //-------------------------------------------------------------------------
