@@ -4,6 +4,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import org.xins.util.MandatoryArgumentChecker;
 
 /**
  * Base class for function implementation classes.
@@ -32,18 +33,20 @@ extends Object {
     * @param api
     *    the API to which this function belongs, not <code>null</code>.
     *
+    * @param name
+    *    the name, not <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
+    *    if <code>api == null || name == null</code>.
     */
-   protected Function(API api)
+   protected Function(API api, String name)
    throws IllegalArgumentException {
 
       // Check argument
-      if (api == null) {
-         throw new IllegalArgumentException("api == null");
-      }
+      MandatoryArgumentChecker.check("api", api, "name", name);
 
-      _api = api;
+      _api  = api;
+      _name = name;
    }
 
 
@@ -55,6 +58,11 @@ extends Object {
     * The API implementation this function is part of.
     */
    private final API _api;
+
+   /**
+    * The name of this function.
+    */
+   private final String _name;
 
    /**
     * Lock object for a successful call.
@@ -90,6 +98,16 @@ extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the name of this function.
+    *
+    * @return
+    *    the name, not <code>null</code>.
+    */
+   public final String getName() {
+      return _name;
+   }
 
    /**
     * Callback method that may be called after a call to this function. This

@@ -62,7 +62,9 @@ public abstract class ]]></xsl:text>
    protected ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>(APIImpl api) {
-      super(api);</xsl:text>
+      super(api, "</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>");</xsl:text>
 		<xsl:for-each select="document($api_file)/api/impl-java/instance">
 			<xsl:text>
       </xsl:text>
