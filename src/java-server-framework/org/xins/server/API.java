@@ -218,6 +218,12 @@ implements DefaultReturnCodes {
     *    the function result code, or <code>null</code>.
     */
    protected void callFailed(String function, long start, long duration, String code) {
-      // empty
+      Function f = getFunction(function);
+      if (f == null) {
+         // TODO: Should we throw an exception? Probably just log an error
+         return;
+      }
+
+      f.performedCall(start, duration, false, code);
    }
 }
