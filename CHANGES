@@ -5,6 +5,7 @@ CHANGES INTRODUCED IN XINS 0.120:
   - Changed and improved logging. All classes in org.xins.server now log to
     only 2 categories: org.xins.server.LIFESPAN and org.xins.server.RUNTIME.
     Logging the build-time XINS version now, too.
+  - Responder interface now extends Log interface too. Use this for logging.
 
 * XINS/Java Client Framework:
   - Fixed a typo in the Javadoc comment for parse(Reader) in class
