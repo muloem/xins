@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 0.104:
   - At construction time, ActualFunctionCaller checks if the API is actually
     up or not, and logs this.
 
+* Generated API docs and XINS API docs now correctly link to Apache Ant API
+  docs at nagoya.apache.org.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.103:
 
