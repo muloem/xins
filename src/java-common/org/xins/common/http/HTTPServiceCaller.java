@@ -31,6 +31,7 @@ import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.text.URLEncoding;
 
+import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallRequest;
@@ -88,9 +89,9 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * <ul>
  *    <li>if the <em>failOverAllowed</em> property is set to <code>true</code>
- *        for the {@link HTTPCallRequest};
- *    <li>on connection refusal;
- *    <li>if a connection attempt times out;
+ *        for the active {@link HTTPCallConfig};
+ *    <li>if the connection cannot be established (e.g. due to connection
+ *        refusal, a DNS error, connection time-out, etc.)
  *    <li>if an HTTP status code other than 200-299 is returned;
  * </ul>
  *
@@ -280,6 +281,34 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a new <code>HTTPServiceCaller</code> object with the
+    * specified descriptor and call configuration.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the call configuration, or <code>null</code> if a default one should
+    *    be used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPServiceCaller(Descriptor     descriptor,
+                            HTTPCallConfig callConfig)
+   throws IllegalArgumentException {
+
+      // Trace first and then call superclass constructor
+      super(trace(descriptor), callConfig);
+
+      // TRACE: Leave constructor
+      Log.log_1002(CLASSNAME, null);
+   }
+
+
+   /**
     * Constructs a new <code>HTTPServiceCaller</code> object.
     *
     * @param descriptor
@@ -290,12 +319,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    public HTTPServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException {
-
-      // Trace first and then call superclass constructor
-      super(trace(descriptor));
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
+      this(descriptor, null);
    }
 
 
@@ -308,20 +332,24 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Calls the specified target using the specified subject. If the call
-    * succeeds, then a {@link HTTPCallResult} object is returned, otherwise a
+    * Executes a request towards the specified target. If the call succeeds,
+    * then a {@link HTTPCallResult} object is returned, otherwise a
     * {@link CallException} is thrown.
     *
     * <p>The implementation of this method in class
     * <code>HTTPServiceCaller</code> delegates to
     * {@link #call(HTTPCallRequest,TargetDescriptor)}.
     *
-    * @param target
-    *    the target to call, cannot be <code>null</code>.
-    *
     * @param request
     *    the call request to be executed, must be an instance of class
     *    {@link HTTPCallRequest}, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the call configuration, never <code>null</code> and should always be
+    *    an instance of class {@link HTTPCallConfig}.
+    *
+    * @param target
+    *    the target to call, cannot be <code>null</code>.
     *
     * @return
     *    the result, if and only if the call succeeded, always an instance of
@@ -336,21 +364,95 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @throws CallException
     *    if the call to the specified target failed.
+    *
+    * @since XINS 1.1.0
     */
    protected Object doCallImpl(CallRequest      request,
+                               CallConfig       callConfig,
                                TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {
 
+      final String METHODNAME = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
+
       // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_1003(CLASSNAME, METHODNAME, null);
 
       // Delegate to method with more specialized interface
-      Object ret = call((HTTPCallRequest) request, target);
+      Object ret = call((HTTPCallRequest) request,
+                        (HTTPCallConfig)  callConfig,
+                        target);
 
       // TRACE: Leave method
-      Log.log_1005(CLASSNAME, "doCallImpl(CallRequest,TargetDescriptor)", null);
+      Log.log_1005(CLASSNAME, METHODNAME, null);
 
       return ret;
+   }
+
+   /**
+    * Performs the specified request towards the HTTP service. If the call
+    * succeeds with one of the targets, then a {@link HTTPCallResult} object
+    * is returned, that combines the HTTP status code and the data returned.
+    * Otherwise, if none of the targets could successfully be called, a
+    * {@link CallException} is thrown.
+    *
+    * @param request
+    *    the call request, not <code>null</code>.
+    *
+    * @return
+    *    the result of the call, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    *
+    * @throws GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPCallResult call(HTTPCallRequest request,
+                              HTTPCallConfig  callConfig)
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException {
+
+      final String METHODNAME = "call(HTTPCallRequest,HTTPCallConfig)";
+
+      // TRACE: Enter method
+      Log.log_1003(CLASSNAME, METHODNAME, null);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
+
+      // Perform the call
+      CallResult callResult;
+      try {
+         callResult = doCall(request, callConfig);
+
+      // Allow GenericCallException, HTTPCallException and Error to proceed,
+      // but block other kinds of exceptions and throw an Error instead.
+      } catch (GenericCallException exception) {
+         throw exception;
+      } catch (HTTPCallException exception) {
+         throw exception;
+      } catch (Exception exception) {
+         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
+         message.append(".doCall(CallRequest,CallConfig) threw ");
+         message.append(exception.getClass().getName());
+         message.append(". Message: ");
+         message.append(TextUtils.quote(exception.getMessage()));
+         message.append('.');
+         throw new Error(message.toString(), exception);
+      }
+
+      // TRACE: Leave method
+      Log.log_1005(CLASSNAME, METHODNAME, null);
+
+      return (HTTPCallResult) callResult;
    }
 
    /**
@@ -381,46 +483,20 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, "call(HTTPCallRequest)", null);
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
-
-      // Perform the call
-      CallResult callResult;
-      try {
-         callResult = doCall(request);
-
-      // Allow GenericCallException, HTTPCallException and Error to proceed,
-      // but block other kinds of exceptions and throw an Error instead.
-      } catch (GenericCallException exception) {
-         throw exception;
-      } catch (HTTPCallException exception) {
-         throw exception;
-      } catch (Exception exception) {
-         FastStringBuffer message = new FastStringBuffer(190, getClass().getName());
-         message.append(".doCall(CallRequest) threw ");
-         message.append(exception.getClass().getName());
-         message.append(". Message: ");
-         message.append(TextUtils.quote(exception.getMessage()));
-         message.append('.');
-         throw new Error(message.toString(), exception);
-      }
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, "call(HTTPCallRequest)", null);
-
-      return (HTTPCallResult) callResult;
+      return call(request, (HTTPCallConfig) null);
    }
 
    /**
-    * Executes the specified HTTP call request on the specified target. If the
-    * call fails in any way, then a {@link CallException} is thrown.
+    * Executes the specified HTTP call request on the specified target with
+    * the specified call configuration. If the call fails in any way, then a
+    * {@link CallException} is thrown.
     *
     * @param request
     *    the call request to execute, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the (optional) call configuration, or <code>null</code> if it should
+    *    be determined at a lower level.
     *
     * @param target
     *    the service target on which to execute the request, cannot be
@@ -440,11 +516,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    if the first call attempt failed due to an HTTP-related reason and
     *    all the other call attempts failed as well.
     *
+    * @since XINS 1.1.0
+    *
     * @deprecated
-    *    Deprecated since XINS 1.0.0, since this method is expected to be
+    *    Deprecated since XINS 1.1.0, since this method is expected to be
     *    removed. Please do not use it directly.
     */
    public HTTPCallResult call(HTTPCallRequest  request,
+                              HTTPCallConfig   callConfig,
                               TargetDescriptor target)
    throws IllegalArgumentException,
           GenericCallException,
@@ -459,7 +538,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Prepare a thread for execution of the call
       // NOTE: Preconditions are checked by the CallExecutor constructor
-      CallExecutor executor = new CallExecutor(request, target, NDC.peek());
+      CallExecutor executor = new CallExecutor(request, callConfig, target, NDC.peek());
 
       // Get URL and time-out values
       String url               = target.getURL();
@@ -570,6 +649,44 @@ public final class HTTPServiceCaller extends ServiceCaller {
    }
 
    /**
+    * Executes the specified HTTP call request on the specified target. If the
+    * call fails in any way, then a {@link CallException} is thrown.
+    *
+    * @param request
+    *    the call request to execute, cannot be <code>null</code>.
+    *
+    * @param target
+    *    the service target on which to execute the request, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null || request == null</code>.
+    *
+    * @throws GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts failed as well.
+    *
+    * @throws HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts failed as well.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.0.0, since this method is expected to be
+    *    removed. Please do not use it directly.
+    */
+   public HTTPCallResult call(HTTPCallRequest  request,
+                              TargetDescriptor target)
+   throws IllegalArgumentException,
+          GenericCallException,
+          HTTPCallException {
+      return call(request, (HTTPCallConfig) null, target);
+   }
+
+
+   /**
     * Constructs an appropriate <code>CallResult</code> object for a
     * successful call attempt. This method is called from
     * {@link #doCall(CallRequest)}.
@@ -623,36 +740,53 @@ public final class HTTPServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Determines whether a call should fail-over to the next selected target.
+    * Determines whether a call should fail-over to the next selected target
+    * based on a request, call configuration and exception list.
+    * This method should only be called from
+    * {@link #doCall(CallRequest,CallConfig)}.
+    *
+    * <p>The implementation of this method in class {@link HTTPServiceCaller}
+    * returns <code>true</code> if and only if one of the following conditions
+    * holds true:
+    *
+    * <ul>
+    *    <li><code>super.shouldFailOver(request, callConfig, exceptions)</code>
+    *    <li><code>exceptions.{@link CallExceptionList#last() last()}
+    *        instanceof {@link StatusCodeHTTPCallException}</code> and for
+    *        that exception
+    *        {@link StatusCodeHTTPCallException#getStatusCode() getStatusCode()} is not in the
+    *        range 200-299.
+    * </ul>
     *
     * @param request
     *    the request for the call, as passed to {@link #doCall(CallRequest)},
     *    should not be <code>null</code>.
     *
-    * @param exception
-    *    the exception caught while calling the most recently called target,
-    *    should not be <code>null</code>.
+    * @param callConfig
+    *    the call config that is currently in use, never <code>null</code>.
+    *
+    * @param exceptions
+    *    the current list of {@link CallException}s; never
+    *    <code>null</code>; get the most recent one by calling
+    *    <code>exceptions.</code>{@link CallExceptionList#last() last()}.
     *
     * @return
     *    <code>true</code> if the call should fail-over to the next target, or
     *    <code>false</code> if it should not.
     */
-   protected boolean shouldFailOver(CallRequest request,
-                                    Throwable   exception) {
+   protected boolean shouldFailOver(CallRequest       request,
+                                    CallConfig        callConfig,
+                                    CallExceptionList exceptions) {
 
-      HTTPCallRequest httpRequest = (HTTPCallRequest) request;
-
-      // Short-circuit if the failOverAllowed flag is set
-      if (httpRequest.isFailOverAllowed()) {
-         return true;
+      CallException last = exceptions.last();
 
       // Let the superclass do it's job
-      } else if (super.shouldFailOver(request, exception)) {
+      if (super.shouldFailOver(request, callConfig, exceptions)) {
          return true;
 
       // A non-2xx HTTP status code indicates the request was not handled
-      } else if (exception instanceof StatusCodeHTTPCallException) {
-         int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
+      } else if (last instanceof StatusCodeHTTPCallException) {
+         int code = ((StatusCodeHTTPCallException) last).getStatusCode();
          return (code < 200 || code > 299);
 
       // Otherwise do not fail over
@@ -702,6 +836,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * @param request
        *    the call request to execute, cannot be <code>null</code>.
        *
+       * @param callConfig
+       *    the call configuration, never <code>null</code> and should always
+       *    be an instance of class {@link HTTPCallConfig}.
+       *
        * @param target
        *    the service target on which to execute the request, cannot be
        *    <code>null</code>.
@@ -711,9 +849,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *    <code>null</code>.
        *
        * @throws IllegalArgumentException
-       *    if <code>target == null || request == null</code>.
+       *    if <code>target     == null
+       *          || callConfig == null
+       *          || request    == null</code>.
        */
       private CallExecutor(HTTPCallRequest  request,
+                           HTTPCallConfig   callConfig,
                            TargetDescriptor target,
                            String           context)
       throws IllegalArgumentException {
