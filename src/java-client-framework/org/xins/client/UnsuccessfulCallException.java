@@ -111,19 +111,6 @@ extends CallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the <code>ActualFunctionCaller</code> that executed the call.
-    *
-    * @return
-    *    the {@link ActualFunctionCaller} that executed the call, or
-    *    <code>null</code> if this information is not available.
-    *
-    * @since XINS 0.136
-    */
-   public ActualFunctionCaller getFunctionCaller() {
-      return _result.getFunctionCaller();
-   }
-
-   /**
     * Returns the result code.
     *
     * @return
