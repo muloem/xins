@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 6:
 
+* XINS/Java Server Framework:
+  - Improved initialization of the APIServlet: Setting the cause on a
+    ServletException if appropriate.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
