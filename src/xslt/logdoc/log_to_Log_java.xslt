@@ -233,7 +233,7 @@ public class Log extends Object {
       final Logger LOG = Logger.getLogger("</xsl:text>
 		<xsl:value-of select="@category" />
 		<xsl:text>");
-      LOG.log(FQCN, Level.</xsl:text>
+      LOG.log(FQCN, </xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>, TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
