@@ -27,6 +27,7 @@ CHANGES INTRODUCED IN XINS 0.205:
     ArrayIterator, CollectionUtils, IndexedMap, PropertyReaderConverter,
     SingleEntryMap, ServletRequestPropertyReader, ServletUtils and Replacer.
   - Removed the tests for SingleEntryMap and Replacer.
+  - Removed SafeRandom, NaiveTrustManager and all ldap related classes.
 
 * XINS/Java Client Framework:
   - Fixed some Javadoc.
