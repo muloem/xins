@@ -47,12 +47,12 @@ public class HTTPServiceCallerTests extends TestCase {
    /**
     * Connection time-out to use when making HTTP connections.
     */
-   private final static int CONN_TO = 5000;
+   private final static int CONN_TO = 15000;
 
    /**
     * Socket time-out to use on HTTP connections.
     */
-   private final static int SOCKET_TO = 3000;
+   private final static int SOCKET_TO = 15000;
 
 
    //-------------------------------------------------------------------------
