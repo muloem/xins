@@ -82,7 +82,7 @@ implements DefaultReturnCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The logger used by this API instance. This field is initialized by the
+    * The logger used by this function. This field is initialized by the
     * constructor and set to a non-<code>null</code> value.
     */
    private final Logger _log;
