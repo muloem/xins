@@ -295,21 +295,20 @@ implements DefaultResultCodes {
       // Initialize session-based API
       if (_sessionBased) {
          LOG.debug("Performing session-related initialization.");
+
+         // Initialize session ID type
          _sessionIDType      = new BasicSessionID(this);
          _sessionIDGenerator = _sessionIDType.getGenerator();
 
+         // Determine session time-out duration and precision
          final long MINUTE_IN_MS = 60000L;
-
          long timeOut   = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOut");
          long precision = MINUTE_IN_MS * (long) getIntProperty(properties, "org.xins.api.sessionTimeOutPrecision");
 
+         // Create expiry strategy and folder, max queue wait time is set to
+         // half of the time-out duration
          ExpiryStrategy expiryStrategy = new ExpiryStrategy(timeOut, precision);
-
-         // TODO: Configure initial queue size and max queue wait time using init
-         //       settings
-         final int  INITIAL_QUEUE_SIZE = 89;
-         final long MAX_QUEUE_WAIT_TIME = 15000L; // 15 seconds
-         _sessionsByID = new ExpiryFolder(expiryStrategy, INITIAL_QUEUE_SIZE, MAX_QUEUE_WAIT_TIME);
+         _sessionsByID = new ExpiryFolder(expiryStrategy, timeOut / 2L);
       }
 
       // Let the subclass perform initialization
