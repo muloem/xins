@@ -96,12 +96,23 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<xsl:apply-templates select="input/param" mode="field" />
 
-		<xsl:text><![CDATA[
+		<xsl:text>
 
    //-------------------------------------------------------------------------
    // Methods
-   //-------------------------------------------------------------------------
+   //-------------------------------------------------------------------------</xsl:text>
 
+		<xsl:call-template name="validateMethod" />
+
+		<xsl:apply-templates select="input/param" mode="methods" />
+
+		<xsl:text>
+}
+</xsl:text>
+	</xsl:template>
+
+	<xsl:template name="validateMethod">
+		<xsl:text><![CDATA[
    /**
     * Validates whether this request is considered acceptable (implementation
     * method). If required parameters are missing or if certain parameter
@@ -115,15 +126,20 @@ extends org.xins.client.AbstractCAPICallRequest {
     *    non-<code>null</code> description if this request is considered
     *    unacceptable.
     */
-   public java.lang.String validateImpl() {
-      return null; // TODO
-   }]]></xsl:text>
-
-		<xsl:apply-templates select="input/param" mode="methods" />
-
+   public java.lang.String validateImpl() {]]></xsl:text>
+		<xsl:for-each select="input/param[@required='true']">
+			<xsl:text>
+      if (_</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> == null) {
+         return "The input parameter \"</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>\" is required but not set.";
+      }</xsl:text>
+		</xsl:for-each>
 		<xsl:text>
-}
-</xsl:text>
+      return null;
+   }</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="input/param" mode="field">
