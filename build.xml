@@ -9,17 +9,32 @@
 <project name="xins" default="all" basedir=".">
 
 	<target name="-checkstyle-avail">
-		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available" />
+		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+			</classpath>
+		</available>
 		<fail unless="checkstyle.available" message="Checkstyle not available" />
 	</target>
 
 	<target name="-junit-avail">
-		<available classname="junit.framework.Test" property="junit.available" />
+		<available classname="junit.framework.Test" property="junit.available">
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+			</classpath>
+		</available>
 		<fail unless="junit.available" message="JUnit not available" />
 	</target>
 
 	<target name="-checkstyle-task" depends="-checkstyle-avail">
-		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
+		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
+			<classpath>
+				<fileset dir="depends/compile"             includes="**/*.jar" />
+				<fileset dir="depends/compile_and_runtime" includes="**/*.jar" />
+			</classpath>
+		</taskdef>
 	</target>
 
 	<target name="-j2h-avail">
