@@ -71,7 +71,16 @@ extends AbstractCompositeFunctionCaller {
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
 
-      return null; // TODO
+      // Return an instance of a CallTargetGroup subclass
+      if (type == ORDERED_TYPE) {
+         return new OrderedCallTargetGroup(members);
+      } else if (type == RANDOM_TYPE) {
+         return null; // TODO: new RandomCallTargetGroup(members);
+      } else if (type == ROUND_ROBIN_TYPE) {
+         return null; // TODO: new RoundRobinCallTargetGroup(members);
+      } else {
+         throw new InternalError("Type not recognized.");
+      }
    }
 
 
@@ -100,7 +109,7 @@ extends AbstractCompositeFunctionCaller {
 
       // Initialize fields
       _type                            = type;
-      _actualFunctionCallersByHostName = new HashMap();
+      _actualFunctionCallersByURL = new HashMap();
    }
 
 
@@ -114,10 +123,11 @@ extends AbstractCompositeFunctionCaller {
    private final Type _type;
 
    /**
-    * Mappings from host nams to <code>ActualFunctionCaller</code>. This
-    * {@link Map} cannot be <code>null</code>.
+    * Mappings from URLs to <code>ActualFunctionCaller</code>. The URLs are
+    * stored as {@link String} instances. This {@link Map} cannot be
+    * <code>null</code>.
     */
-   private final Map _actualFunctionCallersByHostName;
+   private final Map _actualFunctionCallersByURL;
 
 
    //-------------------------------------------------------------------------
@@ -136,32 +146,32 @@ extends AbstractCompositeFunctionCaller {
    }
 
    /**
-    * Gets the actual function caller for the specified host.
+    * Gets the actual function caller for the specified URL.
     *
-    * @param hostName
-    *    the name of the host to get the actual function caller for, not
+    * @param url
+    *    the URL of the API to get the actual function caller for, not
     *    <code>null</code>.
     *
     * @return
-    *    the actual function caller for the specified host, not
+    *    the actual function caller for the specified URL, not
     *    <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>hostName == null</code>.
+    *    if <code>url == null</code>.
     *
     * @throws NoSuchActualFunctionCallerException
-    *    if there is no {@link ActualFunctionCaller} for the specified host in
+    *    if there is no {@link ActualFunctionCaller} for the specified URL in
     *    this group or any of the contained groups (if any).
     */
-   public final ActualFunctionCaller getActualFunctionCaller(String hostName)
+   public final ActualFunctionCaller getActualFunctionCaller(String url)
    throws IllegalArgumentException, NoSuchActualFunctionCallerException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("hostName", hostName);
+      MandatoryArgumentChecker.check("url", url);
 
-      Object o = _actualFunctionCallersByHostName.get(hostName);
+      Object o = _actualFunctionCallersByURL.get(url);
       if (o == null) {
-         throw new NoSuchActualFunctionCallerException(hostName);
+         throw new NoSuchActualFunctionCallerException(url);
       }
 
       return (ActualFunctionCaller) o;
@@ -176,10 +186,10 @@ extends AbstractCompositeFunctionCaller {
 
    /**
     * Calls the specified API function with the specified parameters,
-    * optionally at the specified host only.
+    * optionally at the specified URL only.
     *
-    * @param hostName
-    *    the name of the host the call the API function on, or
+    * @param url
+    *    the URL that identifies the API to call the function on, or
     *    <code>null</code> if any of the underlying actual function callers
     *    can be called.
     *
@@ -202,7 +212,7 @@ extends AbstractCompositeFunctionCaller {
     *    if <code>functionName == null</code>.
     *
     * @throws NoSuchActualFunctionCallerException
-    *    if there is no {@link ActualFunctionCaller} for the specified host in
+    *    if there is no {@link ActualFunctionCaller} for the specified URL in
     *    this group or any of the contained groups (if any).
     *
     * @throws IOException
@@ -212,12 +222,12 @@ extends AbstractCompositeFunctionCaller {
     *    if the calling of the function failed or if the result from the
     *    function was invalid.
     */
-   public final CallResult call(String hostName, String sessionID, String functionName, Map parameters)
+   public final CallResult call(String url, String sessionID, String functionName, Map parameters)
    throws IllegalArgumentException, NoSuchActualFunctionCallerException, IOException, InvalidCallResultException {
-      if (hostName == null) {
+      if (url == null) {
          return callImpl(sessionID, functionName, parameters);
       } else {
-         return getActualFunctionCaller(hostName).call(sessionID, functionName, parameters);
+         return getActualFunctionCaller(url).call(sessionID, functionName, parameters);
       }
    }
 

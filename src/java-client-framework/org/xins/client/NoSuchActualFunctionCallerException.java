@@ -29,17 +29,17 @@ extends Exception {
 
    /**
     * Constructs a new <code>NoSuchActualFunctionCallerException</code> with
-    * the specified host name used to identify the
+    * the specified URL used to identify the
     * <code>ActualFunctionCaller</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>hostName == null</code>.
+    *    if <code>url == null</code>.
     */
-   public NoSuchActualFunctionCallerException(String hostName)
+   public NoSuchActualFunctionCallerException(String url)
    throws IllegalArgumentException {
-      super(hostName); // TODO
-      MandatoryArgumentChecker.check("hostName", hostName);
-      _hostName = hostName;
+      super(url); // TODO
+      MandatoryArgumentChecker.check("url", url);
+      _url = url;
    }
 
 
@@ -48,11 +48,11 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * The host name used to identify the <code>ActualFunctionCaller</code>
+    * The URL used to identify the <code>ActualFunctionCaller</code>
     * that could not be found. The value of this field cannot be
     * <code>null</code>.
     */
-   private final String _hostName;
+   private final String _url;
 
 
    //-------------------------------------------------------------------------
@@ -60,13 +60,13 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the host name used to identify the
-    * <code>ActualFunctionCaller</code> that could not be found.
+    * Returns the URL used to identify the <code>ActualFunctionCaller</code>
+    * that could not be found.
     *
     * @return
-    *    the host name, cannot be <code>null</code>.
+    *    the URL, cannot be <code>null</code>.
     */
-   public String getHostName() {
-      return _hostName;
+   public String getURL() {
+      return _url;
    }
 }
