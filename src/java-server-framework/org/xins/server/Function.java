@@ -102,6 +102,16 @@ implements DefaultResultCodes {
    private final String _version;
 
    /**
+    * Lock object for <code>_callCount</code>.
+    */
+   private final Object _callCountLock = new Object();
+
+   /**
+    * The total number of calls executed up until now.
+    */
+   private int _callCount;
+
+   /**
     * Statistics object linked to this function.
     */
    private final Statistics _statistics = new Statistics();
@@ -221,6 +231,19 @@ implements DefaultResultCodes {
     */
    final Statistics getStatistics() {
       return _statistics;
+   }
+
+   /**
+    * Assigns a new call ID for the caller. Every call to this method will
+    * return an increasing number.
+    *
+    * @return
+    *    the assigned call ID, &gt;= 0.
+    */
+   final int assignCallID() {
+      synchronized (_callCountLock) {
+         return _callCount++;
+      }
    }
 
    /**
