@@ -30,16 +30,28 @@ extends Exception {
     *
     * @param functionName
     *    the name of the function, or <code>null</code>.
+    *
+    * @return
+    *    the error message to be used by the constructor, never
+    *    <code>null</code>.
     */
    private static String createMessage(String ip, String functionName) {
+
+      // Function name and IP address given
       if (functionName != null && ip != null) {
          return "The function \"" + functionName + "\" cannot be accessed from IP address " + ip + ".";
+
+      // Only IP address given
       } else if (ip != null) {
-         return "A function cannot be accessed from IP address " + ip + ".";
+         return "An unspecified function cannot be accessed from IP address " + ip + ".";
+
+      // Only function name given
       } else if (functionName != null) {
          return "The function \"" + functionName + "\" cannot be accessed.";
+
+      // Neither function name nor IP address given
       } else {
-         return "An undefined function cannot be accessed.";
+         return "An unspecified function cannot be accessed.";
       }
    }
 
@@ -70,14 +82,17 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * The IP address which is denied for the given function.
+    * The IP address which is denied for the given function. This field may be
+    * <code>null</code>.
     */
-    private final String _ip;
+   private final String _ip;
 
-    /**
-     * The name of the function which does not grant the access.
-     */
-    private final String _functionName;
+   /**
+    * The name of the function which does not grant the access. This field may
+    * be <code>null</code>.
+    */
+   private final String _functionName;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -97,7 +112,8 @@ extends Exception {
     * Gets the name of the function which does not grant the access.
     *
     * @return
-    *    the name of the function, or <code>null</code> if no function was provided.
+    *    the name of the function, or <code>null</code> if no function name
+    *    was provided.
     */
    public String getFunctionName() {
       return _functionName;
