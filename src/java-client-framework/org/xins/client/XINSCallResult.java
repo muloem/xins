@@ -105,7 +105,7 @@ public final class XINSCallResult extends CallResult {
     *    the error code or <code>null</code> if no code was returned.
     */
    public String getErrorCode() {
-      return _data._code;
+      return _data.getErrorCode();
    }
 
    /**
@@ -116,7 +116,7 @@ public final class XINSCallResult extends CallResult {
     *    if there are none.
     */
    public PropertyReader getParameters() {
-      return _data._parameters;
+      return _data.getParameters();
    }
 
    /**
@@ -138,13 +138,15 @@ public final class XINSCallResult extends CallResult {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
+      PropertyReader params = getParameters();
+
       // Short-circuit if there are no parameters at all
-      if (_data._parameters == null) {
+      if (params == null) {
          return null;
       }
 
       // Otherwise return the parameter value
-      return _data._parameters.get(name);
+      return params.get(name);
    }
 
    /**
@@ -156,7 +158,7 @@ public final class XINSCallResult extends CallResult {
     */
    public DataElement getDataElement() {
 
-      return _data._dataElement;
+      return _data.getDataElement();
    }
 
 
@@ -238,6 +240,41 @@ public final class XINSCallResult extends CallResult {
        */
       boolean isSuccess() {
          return (_code == null);
+      }
+
+      /**
+       * Returns the error code. If <code>null</code> is returned the call was
+       * successful and thus no error code was returned. Otherwise the call
+       * was unsuccessful.
+       *
+       * @return
+       *    the returned error code, or <code>null</code>.
+       */
+      private String getErrorCode() {
+         return _code;
+      }
+
+      /**
+       * Gets all parameters.
+       *
+       * @return
+       *    a {@link PropertyReader} with all parameters, or <code>null</code>
+       *    if there are none.
+       */
+      public PropertyReader getParameters() {
+         return _parameters;
+      }
+
+      /**
+       * Returns the optional extra data. The data is an XML
+       * {@link DataElement}, or <code>null</code>.
+       *
+       * @return
+       *    the extra data as an XML {@link DataElement}, can be
+       *    <code>null</code>;
+       */
+      public DataElement getDataElement() {
+         return _dataElement;
       }
    }
 }
