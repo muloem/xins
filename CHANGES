@@ -5,6 +5,8 @@ CHANGES INTRODUCED IN XINS 0.60:
   Now marking functions that create session IDs with the attribute
   createsSession='true'.
 
+* Automatically determining XINS version when generating Javadoc API docs.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.59:
 
