@@ -7,7 +7,8 @@
 <!ELEMENT api (description?, session-based?, function*, type*, resultcode*, environment*, impl-java?)>
 <!ATTLIST api
           name       CDATA #REQUIRED
-          owner      CDATA #REQUIRED
+          freeze     CDATA #IMPLIED
+          owner      CDATA #IMPLIED
 	  sessionIDType CDATA #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED

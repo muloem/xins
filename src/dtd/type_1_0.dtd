@@ -4,7 +4,7 @@
 <!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.0//EN"
 "http://xins.sourceforge.net/dtd/type_1_0.dtd">
 -->
-<!ELEMENT type (description?, pattern?, enum?)>
+<!ELEMENT type (description?, pattern?, enum?, properties?)>
 <!ATTLIST type
           name       CDATA #REQUIRED
           extends    CDATA #REQUIRED
@@ -19,4 +19,9 @@
 <!ATTLIST item
           name    CDATA #IMPLIED
           value   CDATA #REQUIRED
+>
+<!ELEMENT properties EMPTY>
+<!ATTLIST properties
+          nameType    CDATA #IMPLIED
+          valueType   CDATA #REQUIRED
 >

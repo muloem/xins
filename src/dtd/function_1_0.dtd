@@ -19,10 +19,10 @@
 <!ELEMENT param (description, example-value*)>
 <!ATTLIST param
           name       CDATA #REQUIRED
-          required   CDATA #REQUIRED
+          required   (true|false) #REQUIRED
           type       CDATA #IMPLIED
 >
-<!ELEMENT param-combo (description, param-ref*)>
+<!ELEMENT param-combo (description?, param-ref*)>
 <!ATTLIST param-combo
           type       CDATA #IMPLIED
 >
@@ -45,7 +45,7 @@
           contains   CDATA #REQUIRED
           multiplicity CDATA #IMPLIED
 >
-<!ELEMENT element (description, contains?, attribute*)>
+<!ELEMENT element (description?, contains?, attribute*)>
 <!ATTLIST element
           name       CDATA #REQUIRED
 >
@@ -55,12 +55,14 @@
           element    CDATA #REQUIRED
           multiplicity CDATA #IMPLIED
 >
-<!ELEMENT attribute (description)>
+<!ELEMENT attribute (description, deprecated?)>
 <!ATTLIST attribute
           name       CDATA #REQUIRED
           required   CDATA #IMPLIED
           type       CDATA #IMPLIED
+          deprecated CDATA #IMPLIED
 >
+<!ELEMENT deprecated (#PCDATA)>
 <!ELEMENT example-value (#PCDATA)>
 <!ATTLIST example-value
           example     CDATA #REQUIRED
@@ -73,7 +75,7 @@
           success     CDATA #IMPLIED
 >
 <!ELEMENT data-example (element-example*)>
-<!ELEMENT element-example (element-example*, attribute-example*)>
+<!ELEMENT element-example (attribute-example*, element-example*)>
 <!ATTLIST element-example
           name        CDATA #REQUIRED
 >
