@@ -73,7 +73,7 @@ public final class ]]></xsl:text>
     * @throws IllegalArgumentException
     *    if <code>result == null || result.isSuccess() == false</code>.
     */
-   public ]]></xsl:text>
+   ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[(CallResult result)
    throws IllegalArgumentException {
