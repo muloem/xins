@@ -3,6 +3,7 @@
  */
 package org.xins.client;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
@@ -125,6 +126,11 @@ extends Object {
 
       try {
          return parse(_xmlBuilder.build(in));
+      } catch (IOException ioException) {
+         final String message = "Unable to parse XML returned by API.";
+         LOG.error(message, ioException);
+         // TODO: Include type of error in here somewhere
+         throw new ParseException(message, ioException);
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);

@@ -117,6 +117,11 @@ public class CallResultParser extends Object {
       try {
          StringReader reader = new StringReader(xml);
          return parse(functionCaller, _xmlBuilder.build(reader));
+      } catch (IOException ioException) {
+         final String message = "Unable to parse XML returned by API.";
+         LOG.error(message, ioException);
+         // TODO: Include type of error in here somewhere
+         throw new ParseException(message, ioException);
       } catch (JDOMException jdomException) {
          final String message = "Unable to parse XML returned by API.";
          LOG.error(message, jdomException);
