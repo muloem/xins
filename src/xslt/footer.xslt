@@ -8,10 +8,16 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!-- Include RCS/CVS parsing utilities -->
 	<xsl:include href="rcs.xslt" />
 
+	<!-- Print the footer -->
 	<xsl:template name="footer">
 
+		<!-- Define parameters -->
+		<xsl:param name="xins_version" />
+
+		<!-- Determine the version of the concerned object -->
 		<xsl:variable name="version">
 	    	<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision">
@@ -20,6 +26,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- Determine the modification timestamp of the concerned object -->
 		<xsl:variable name="timestamp">
 			<xsl:choose>
 				<xsl:when test="@rcsdate = concat('$', 'Date$')">
@@ -71,6 +78,10 @@
 			<xsl:value-of select="substring-after(substring-after($time, ':'), ':')" />
 		</xsl:variable>
 
+		<!-- Check preconditions -->
+		<xsl:if test="not(string-length($xins_version) &gt; 0)">
+			<xsl:message terminate="yes">The mandatory parameter 'xins_version' is not set.</xsl:message>
+		</xsl:if>
 		<xsl:if test="not(string-length(@rcsdate) &gt; 0)">
 			<xsl:message terminate="yes">
 				<xsl:text>The RCS date is not specified. It should be specified in the 'rcsdate' attribute of the '</xsl:text>
@@ -97,6 +108,9 @@
 			</xsl:attribute>
 			<xsl:text>Version </xsl:text>
 			<xsl:value-of select="$version" />
+			<xsl:text>. Generated using XINS </xsl:text>
+			<xsl:value-of select="$xins_version" />
+			<xsl:text>.</xsl:text>
 		</div>
 	</xsl:template>
 </xsl:stylesheet>
