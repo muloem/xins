@@ -84,7 +84,14 @@ public final class DescriptorBuilder extends Object {
       // Constructor
       //----------------------------------------------------------------------
 
-      public Exception(String message) {
+      /**
+       * Constructs a new <code>DescriptorBuilder.Exception</code> with the
+       * spedified detail message.
+       *
+       * @param message
+       *    the detail message, can be <code>null</code>.
+       */
+      Exception(String message) {
          super(message);
       }
 
