@@ -3,6 +3,7 @@ CHANGES INTRODUCED IN XINS 0.211:                                (1.0.0-beta4)
 
 * XINS/Java Client Framework:
   - Improved Javadoc documentation.
+  - Added tests for class XINSCallResultParser.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.210:                                (1.0.0-beta3)
