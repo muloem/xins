@@ -313,6 +313,12 @@ public abstract class ]]></xsl:text>
       }</xsl:text>
 		</xsl:if>
 		<xsl:if test="@createsSession = 'true'">
+			<xsl:if test="input/param">
+				<xsl:message terminate="yes">No input parameters allowed for functions that create sessions.</xsl:message>
+			</xsl:if>
+			<xsl:if test="output/param">
+				<xsl:message terminate="yes">No output parameters allowed for functions that create sessions.</xsl:message>
+			</xsl:if>
 			<xsl:text>
 
       // Create the session
