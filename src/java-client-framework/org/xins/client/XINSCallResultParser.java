@@ -35,6 +35,8 @@ import org.xins.common.text.ParseException;
  * as the error code. If both these attributes are set and conflicting, then
  * this is considered a showstopper.
  *
+ * <p>TODO: Describe rest of parse process.
+ *
  * @version $Revision$ $Date$
  *
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
