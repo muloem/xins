@@ -104,7 +104,7 @@ extends Object {
                                       + " [name="
                                       + TextUtils.quote(name)
                                       + "; strategy="
-                                      + TextUtils.quote(name)
+                                      + TextUtils.quote(strategy.toString())
                                       + ']';
 
       Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
