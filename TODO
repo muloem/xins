@@ -18,6 +18,7 @@ XINS PROTOCOL AND SPECIFICATION FORMAT
 * Allow freezing of api.xml files. Support 'freeze' attribute in DTD and
   copy behaviour from behaviour for frozen .fnc files.
 * Add standard type '_list'.
+* Add more strict values for attributes in the DTDs when possible.
 
 ______________________________________________________________________________
 XINS/JAVA SERVER FRAMEWORK
@@ -131,8 +132,6 @@ GENERATED SPECIFICATION DOCUMENTATION
 * Have a page per environment with links to _GetVersion, _GetStatistics,
   _GetSettings, etc. Let the link on the page for an API link to that page.
 * Link to CVSweb or ViewCVS.
-* Generate an anchor for each input parameter, output parameter, element and
-  attribute in the generated file for a function.
 * On specification documentation page for a result code: Have a list of links
   to the functions that specify they may return the result code.
 * Use an image to indicate the inheritance relationship between one type and
@@ -169,7 +168,6 @@ ______________________________________________________________________________
 MISCELLANEOUS
 
 * The standard result codes should be documented online.
-* A pattern test script should be provided on http://xins.sourceforge.net/.
 * Finish SourceForgeUpload task to smoothen the release process by performing
   the following actions:
   - create a release on the SourceForge site

@@ -106,5 +106,56 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 </type>]]></echo>
 			<echo message="Don't forget to add &lt;type name=&quot;${{type.name}}&quot; /&gt; to the api.xml file." />
 		</target>
+
+		<target name="create-logdoc" description="Generates a new logdoc file for the API.">
+			<input addproperty="api.name"
+						 message="Please, enter the name of the api:" />
+			<property name="xml.file" value="src/logdoc/${{api.name}}/log.xml" />
+			<property name="xml.file2" value="src/logdoc/${{api.name}}/translation-bundle-en_US.xml" />
+			<available property="xml.exists" file="${{xml.file}}" />
+			<available property="xml.exists2" file="${{xml.file2}}" />
+			<fail message="The file ${{xml.file}} already exists!" if="xml.exists" />
+			<fail message="The file ${{xml.file2}} already exists!" if="xml.exists2" />
+			<property name="domain">
+			<xsl:attribute name="value">
+				<xsl:value-of select="document($project_file)/project/@domain" />
+			</xsl:attribute>
+			</property>
+			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.0//EN" "http://xins.sourceforge.net/dtd/log_1_0.dtd">
+
+<log default-locale="en_US" domain="]]>${domain}<![CDATA[">
+
+	<translation-bundle locale="en_US" />
+
+	<group id="initilisation" name="Initialisation">
+		<entry id="10000" level="INFO">
+			<description>Starting initilisation of the function.</description>
+			<param name="functionName" />
+		</entry>
+		<entry id="10001" level="INFO">
+			<description>Initilisation of the function finished.</description>
+			<param name="functionName" />
+		</entry>
+	</group>
+
+	<group id="runtime" name="Runtime">
+		<entry id="11000" level="DEBUG">
+			<description>Running the function.</description>
+			<param name="functionName" />
+		</entry>
+	</group>
+</log>
+]]></echo>
+			<echo file="${{xml.file2}}"><![CDATA[<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://xins.sourceforge.net/dtd/translation-bundle_1_0.dtd">
+
+<translation-bundle>
+	<translation entry="10000">Starting the initialisation of the <value-of-param name="functionName" /> function.</translation>
+	<translation entry="10001">Finished the initialisation of the <value-of-param name="functionName" /> function.</translation>
+	<translation entry="11000">Running the function <value-of-param name="functionName" />.</translation>
+</translation-bundle>
+]]></echo>
+		</target>
 	</xsl:template>
 </xsl:stylesheet>

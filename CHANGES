@@ -1,4 +1,33 @@
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 0.172:
+
+* XINS/Java Server Framework:
+  - If the parameter is deprecated the javadoc for the Request and Result
+    generated classes also is marked as deprecated.
+
+* Generated specification documentation:
+  - Set some attributes from required to implied for xins-project_1_0.dtd.
+  - If api.xml has changed only regenerate index.html and the test forms.
+
+* Generated build file:
+  - If the API doesn't have any result code, the build.xml doesn't try to
+    generate the classes.
+    This bug has been in XINS since XINS 0.168.
+  - All style tasks now have a <xmlcalatog> element to locate the DTDs
+    locally.
+  - Fixed the clean-<api> target to point to the correct directories.
+    This bug has been in XINS since version 0.170.
+
+* Build and release process:
+  - A symbolic link latest is created in the directory javadoc, j2h,
+    checkstyle, javadoc-private and logdoc that points to the latest version.
+
+* Logdoc:
+  - Added the DTD for the logdoc xml files.
+  - Added a target create-logdoc to create a basis log.xml with a
+    translation-bundle.xml for a specified API.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 0.171:
 
 * XINS/Java Common Library:

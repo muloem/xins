@@ -211,7 +211,15 @@ public final static class Request {
     * has been sent.
     *
     * @return
-    *    true is the parameter has been sent, false otherwise.
+    *    true is the parameter has been sent, false otherwise.</xsl:text>
+		<xsl:if test="deprecated">
+			<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
+		</xsl:if>
+		<xsl:text>
     */
    boolean isSet</xsl:text>
 			<xsl:value-of select="$hungarianName" />
@@ -237,7 +245,10 @@ public final static class Request {
 		</xsl:choose>
 		<xsl:text><![CDATA[ input parameter <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em>.
+		<xsl:text><![CDATA[</em>,
+    * which is ]]></xsl:text>
+		<xsl:value-of select="description/text()" />
+		<xsl:text><![CDATA[
     *
     * @return
     *    the value of the <em>]]></xsl:text>
@@ -254,6 +265,13 @@ public final static class Request {
     *
     * @throw ParameterNotInitializedException
     *    if the value has not been set.</xsl:text>
+		</xsl:if>
+		<xsl:if test="deprecated">
+			<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
 		</xsl:if>
 		<xsl:text>
     */

@@ -198,7 +198,14 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> output parameter, can be <code>null</code>.
     *      The value is not added to the result if the value is <code>null</code> or
-    *      it's <code>String</code> representation is an empty <code>String</code>.]]></xsl:text>
+    *      its <code>String</code> representation is an empty <code>String</code>.]]></xsl:text>
+		<xsl:if test="deprecated">
+			<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
+		</xsl:if>
 		<xsl:text>
     */
    public void </xsl:text>
@@ -248,9 +255,17 @@ public final static class SuccessfulResult extends org.xins.server.FunctionResul
    /**
     * Adds a new <code>]]></xsl:text>
 		<xsl:value-of select="$objectName" />
-		<xsl:text><![CDATA[</code> to the result.
+		<xsl:text><![CDATA[</code> to the result.]]></xsl:text>
+		<xsl:if test="deprecated">
+			<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
+		</xsl:if>
+		<xsl:text>
     */
-   public void add]]></xsl:text>
+   public void add</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$objectName" />

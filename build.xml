@@ -278,6 +278,10 @@
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/logdoc/server/html" />
 		</scp>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="rm ${www.dir}/logdoc/latest" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="ln -s ${www.dir}/logdoc/${version} ${www.dir}/logdoc/latest" />
 	</target>
 
 	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
@@ -440,6 +444,10 @@
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/javadoc" />
 		</scp>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="rm ${www.dir}/javadoc/latest" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="ln -s ${www.dir}/javadoc/${version} ${www.dir}/javadoc/latest" />
 
 		<echo level="verbose" message="Creating directory ${www.dir}/javadoc-private/${version} on ${www.host}" />
 		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
@@ -449,6 +457,10 @@
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/javadoc-private" />
 		</scp>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="rm ${www.dir}/javadoc-private/latest" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="ln -s ${www.dir}/javadoc-private/${version} ${www.dir}/javadoc-private/latest" />
 	</target>
 
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
@@ -496,6 +508,10 @@
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/checkstyle/html" />
 		</scp>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="rm ${www.dir}/checkstyle/latest" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="ln -s ${www.dir}/checkstyle/${version} ${www.dir}/checkstyle/latest" />
 	</target>
 
 	<target name="upload-j2h" depends="-init,j2h">
@@ -508,13 +524,19 @@
 		     password="${sf.password}" trust="true">
 			<fileset dir="build/j2h" />
 		</scp>
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="rm ${www.dir}/j2h/latest" />
+		<sshexec host="${www.host}" username="${sf.user}" password="${sf.password}" trust="true"
+		         command="ln -s ${www.dir}/j2h/${version} ${www.dir}/j2h/latest" />
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
-			<include name="src/css/**/*"                   />
+			<include name="src/css/javadoc/*"              />
+			<include name="src/css/logdoc/*"               />
+			<include name="src/css/specdocs/*"             />
 			<include name="src/demos/**/*"                 />
 			<include name="src/dtd/**/*"                   />
 			<include name="src/java-client-framework/**/*" />
@@ -532,10 +554,8 @@
 			<include name="COPYRIGHT"                      />
 			<include name="README"                         />
 			<include name="TODO"                           />
-			<exclude name="src/css/checkstyle"             />
-			<exclude name="src/css/j2h"                    />
-			<exclude name="src/css/tests"                  />
-			<exclude name="src/xslt/tests"                 />
+			<exclude name="src/xslt/checkstyle/*"          />
+			<exclude name="src/xslt/tests/*"               />
 		</patternset>
 		<copy todir="build" includeEmptyDirs="false">
 			<fileset dir=".">

@@ -92,6 +92,9 @@
 				<echo message="specdocs            Generates all specification docs." />
 				<echo message="wars                Creates the WARs for all APIs." />
 				<echo message="" />
+				<echo message="version             Prints the version of XINS." />
+				<echo message="help                Prints this message." />
+				<echo message="" />
 				<echo message="create-api          Generates a new api specification file." />
 				<echo message="create-function     Generates a new function specification file." />
 				<echo message="create-rcd          Generates a new result code specification file." />
@@ -117,17 +120,29 @@
 
 			<target name="-prepare-specdocs" depends="-prepare">
 				<mkdir dir="{$builddir}/specdocs" />
+				<xmlcatalog id="all-dtds">
+					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
+					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+					     location="{$xins_home}/src/dtd/api_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Function 1.0//EN"
+					     location="{$xins_home}/src/dtd/function_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Type 1.0//EN"
+					     location="{$xins_home}/src/dtd/type_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
+					     location="{$xins_home}/src/dtd/resultcode_1_0.dtd" />
+				</xmlcatalog>
 			</target>
 
 			<target name="specdocs-index" depends="-prepare-specdocs" description="Generates the API index">
 				<xmlvalidate file="{$project_file}" warn="false">
-					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
-							 location="{$xins_home}/src/dtd/xins-project_1_0.dtd"/>
+					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
 				<style
 				in="{$project_file}"
 				out="{$builddir}/specdocs/index.html"
 				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
+					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
 					<param name="project_file" expression="{$project_file}" />
@@ -189,17 +204,18 @@
 					</dependset>
 					<dependset>
 						<srcfilelist   dir="{$specsdir}/{$api}"    files="api.xml" />
-						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
+						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
+						<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*-testform-*.html" />
 					</dependset>
 					<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 					<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">
-						<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-								 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
 					<style
 					in="{$specsdir}/{$api}/api.xml"
 					out="{$project_home}/build/specdocs/{$api}/index.html"
 					style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
+						<xmlcatalog refid="all-dtds" />
 						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
 						<param name="project_file" expression="{$project_file}" />
@@ -209,14 +225,14 @@
 					</style>
 					<xmlvalidate warn="false">
 						<fileset dir="{$specsdir}/{$api}" includes="{$functionIncludes}"/>
-						<dtd publicId="-//XINS//DTD Function 1.0//EN"
-								 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
 					<style
 					basedir="{$specsdir}/{$api}"
 					destdir="{$project_home}/build/specdocs/{$api}"
 					style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
 					includes="{$functionIncludes}">
+						<xmlcatalog refid="all-dtds" />
 						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
 						<param name="project_file" expression="{$project_file}" />
@@ -227,14 +243,14 @@
 					<xsl:if test="string-length($typeIncludes) &gt; 0">
 						<xmlvalidate warn="false">
 							<fileset dir="{$specsdir}/{$api}" includes="{$typeIncludes}"/>
-							<dtd publicId="-//XINS//DTD Type 1.0//EN"
-									 location="{$xins_home}/src/dtd/type_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/specdocs/{$api}"
 						style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
 						includes="{$typeIncludes}">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -246,14 +262,14 @@
 					<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 						<xmlvalidate warn="false">
 							<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
-							<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
-									 location="{$xins_home}/src/dtd/resultcode_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
 						destdir="{$project_home}/build/specdocs/{$api}"
 						style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
 						includes="{$resultcodeIncludes}">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -269,6 +285,7 @@
 						style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 						includes="{$functionIncludes}"
 						extension="-testform-{@id}.html">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -313,13 +330,13 @@
 						</xsl:for-each>
 
 						<xmlvalidate file="{$api_file}" warn="false">
-							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/package.html"
 						style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}"  />
 							<param name="project_home" expression="{$project_home}"  />
 							<param name="project_file" expression="{$project_file}"  />
@@ -330,8 +347,7 @@
 						</style>
 						<xmlvalidate warn="false">
 							<fileset dir="{$copiedTypesDir}" includes="**/*.typ"/>
-							<dtd publicId="-//XINS//DTD Type 1.0//EN"
-									 location="{$xins_home}/src/dtd/type_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						basedir="{$copiedTypesDir}"
@@ -339,6 +355,7 @@
 						style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
 						reloadstylesheet="true"
 						extension=".java">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -393,6 +410,26 @@
 					<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api)" />
 					<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api)" />
 					<xsl:variable name="javaCombinedDir" select="concat($project_home,    '/build/java-combined/',  $api)" />
+					<xsl:variable name="logdoc_file"    select="concat($project_home, '/src/logdoc/', $api, '/Log.xml')" />
+					<xsl:variable name="javaDestFileDir"    select="concat($javaDestDir, '/', $packageAsDir)" />
+
+					<target name="-classes-logdoc-{$api}" depends="-prepare-classes" if="${{logdoc.available.{$api}}}">
+						<echo message="Generating the logdoc for {$api}" />
+						<mkdir dir="build/logdoc/{$api}" />
+						<style
+						in="src/logdoc/{$api}/log.xml"
+						out="build/logdoc/{$api}/build.xml"
+						style="src/xslt/logdoc/log_to_build.xslt">
+							<xmlcatalog refid="all-dtds" />
+							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
+							<param name="sourcedir"       expression="src/logdoc/{$api}" />
+							<param name="html_destdir"    expression="html" />
+							<param name="java_destdir"    expression="{$javaDestFileDir}" />
+							<param name="package_name"    expression="$package" />
+							<!--param name="package_name"    expression="$packageXXX use domain argument org.xins.{api}" /-->
+						</style>
+						<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
+					</target>
 
 					<target name="-impl-{$api}-existencechecks">
 						<xsl:for-each select="document($api_file)/api/function">
@@ -404,24 +441,6 @@
 								file="{$javaImplFile}"
 								type="file" />
 						</xsl:for-each>
-					</target>
-
-					<xsl:variable name="logdoc_file"    select="concat($project_home, '/src/logdoc/', $api, '/Log.xml')" />
-					<xsl:variable name="javaDestFileDir"    select="concat($javaDestDir, '/', $packageAsDir)" />
-					<target name="-classes-logdoc-{$api}" depends="-prepare-classes" if="${{logdoc.available.{$api}}}">
-						<mkdir dir="build/logdoc/{$api}" />
-						<style
-						in="src/logdoc/{$api}/log.xml"
-						out="build/logdoc/{$api}/build.xml"
-						style="src/xslt/logdoc/log_to_build.xslt">
-							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-							<param name="sourcedir"       expression="src/logdoc/{$api}" />
-							<param name="html_destdir"    expression="html" />
-							<param name="java_destdir"    expression="{$javaDestFileDir}" />
-							<param name="package_name"    expression="$package" />
-							<!--param name="package_name"    expression="$packageXXX use domain argument org.xins.{api}" /-->
-						</style>
-						<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 					</target>
 
 					<xsl:for-each select="document($api_file)/api/function">
@@ -436,16 +455,16 @@
 						</target>
 						<target
 							name="-skeleton-impl-{$api}-{$function}"
-							depends="-impl-{$api}-{$function}-unavail"
+							depends="-impl-{$api}-{$function}-unavail, -prepare-classes"
 							unless="exists-{$api}-{$classname}">
 							<xmlvalidate file="{$specsdir}/{$api}/{$function}.fnc" warn="false">
-								<dtd publicId="-//XINS//DTD Function 1.0//EN"
-										 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+								<xmlcatalog refid="all-dtds" />
 							</xmlvalidate>
 							<style
 							in="{$specsdir}/{$api}/{$function}.fnc"
 							out="{$javaImplFile}"
 							style="{$xins_home}/src/xslt/java-server-framework/function_to_impl_java.xslt">
+								<xmlcatalog refid="all-dtds" />
 								<param name="xins_version" expression="{$xins_version}" />
 								<param name="project_home" expression="{$project_home}" />
 								<param name="project_file" expression="{$project_file}" />
@@ -473,6 +492,7 @@
 
 					<target name="classes-api-{$api}" description="Compiles the Java classes for the '{$api}' API implementation">
 						<xsl:attribute name="depends">
+							<xsl:text>-prepare-classes,</xsl:text>
 							<xsl:if test="$apiHasTypes = 'true'">
 								<xsl:text>-classes-types-</xsl:text>
 								<xsl:value-of select="$api" />
@@ -483,13 +503,13 @@
 						</xsl:attribute>
 						<mkdir dir="{$project_home}/build/java-fundament/{$api}/{$packageAsDir}" />
 						<xmlvalidate file="{$api_file}" warn="false">
-							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						in="{$api_file}"
 						out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
 						style="{$xins_home}/src/xslt/java-server-framework/api_to_java.xslt">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -500,8 +520,7 @@
 						</style>
 						<xmlvalidate warn="false">
 							<fileset dir="{$specsdir}/{$api}" includes="{$functionIncludes}"/>
-							<dtd publicId="-//XINS//DTD Function 1.0//EN"
-									 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
@@ -509,6 +528,7 @@
 						style="{$xins_home}/src/xslt/java-server-framework/function_to_java.xslt"
 						extension=".java"
 						includes="{$functionIncludes}">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -519,29 +539,31 @@
 						</style>
 						<!-- Generation of the result code files. -->
 						<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
-						<dependset>
-							<srcfilelist   dir="{$specsdir}/{$api}"    files="{$functionIncludes}" />
-							<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java"/>
-						</dependset>
-						<xmlvalidate warn="false">
-							<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
-							<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
-									 location="{$xins_home}/src/dtd/resultcode_1_0.dtd"/>
-						</xmlvalidate>
-						<style
-						basedir="{$specsdir}/{$api}"
-						destdir="{$javaDestDir}/{$packageAsDir}"
-						style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
-						extension="Result.java"
-						includes="{$resultcodeIncludes}">
-							<param name="xins_version" expression="{$xins_version}" />
-							<param name="project_home" expression="{$project_home}" />
-							<param name="project_file" expression="{$project_file}" />
-							<param name="specsdir"     expression="{$specsdir}"     />
-							<param name="package"      expression="{$package}"      />
-							<param name="api"          expression="{$api}"          />
-							<param name="api_file"     expression="{$api_file}"     />
-						</style>
+						<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+							<dependset>
+								<srcfilelist   dir="{$specsdir}/{$api}"    files="{$functionIncludes}" />
+								<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java"/>
+							</dependset>
+							<xmlvalidate warn="false">
+								<fileset dir="{$specsdir}/{$api}" includes="{$resultcodeIncludes}"/>
+								<xmlcatalog refid="all-dtds" />
+							</xmlvalidate>
+							<style
+							basedir="{$specsdir}/{$api}"
+							destdir="{$javaDestDir}/{$packageAsDir}"
+							style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
+							extension="Result.java"
+							includes="{$resultcodeIncludes}">
+								<xmlcatalog refid="all-dtds" />
+								<param name="xins_version" expression="{$xins_version}" />
+								<param name="project_home" expression="{$project_home}" />
+								<param name="project_file" expression="{$project_file}" />
+								<param name="specsdir"     expression="{$specsdir}"     />
+								<param name="package"      expression="{$package}"      />
+								<param name="api"          expression="{$api}"          />
+								<param name="api_file"     expression="{$api_file}"     />
+							</style>
+						</xsl:if>
 
 						<!-- Generate the logdoc java file is needed -->
 						<available property="logdoc.available.{$api}" file="{$logdoc_file}" />
@@ -598,13 +620,13 @@
 						<hostname />
 						<delete file="build/webapps/{$api}/web.xml" />
 						<xmlvalidate file="{$specsdir}/{$api}/api.xml" warn="false">
-							<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-									 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						in="{$specsdir}/{$api}/api.xml"
 						out="build/webapps/{$api}/web.xml"
 						style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}" />
 							<param name="project_home" expression="{$project_home}" />
 							<param name="project_file" expression="{$project_file}" />
@@ -717,7 +739,7 @@
 					</target>
 				</xsl:if>
 
-				<target name="-stubs-capi-{$api}">
+				<target name="-stubs-capi-{$api}" depends="-prepare-classes" >
 					<xsl:variable name="functionResultIncludes">
 						<xsl:for-each select="document($api_file)/api/function">
 							<xsl:variable name="functionName" select="@name" />
@@ -735,13 +757,13 @@
 
 					<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 					<xmlvalidate file="{$api_file}" warn="false">
-						<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-								 location="{$xins_home}/src/dtd/api_1_0.dtd"/>
+						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
 					<style
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
 					style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
+						<xmlcatalog refid="all-dtds" />
 						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="project_file" expression="{$project_file}"  />
@@ -754,6 +776,7 @@
 					in="{$api_file}"
 					out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/package.html"
 					style="{$xins_home}/src/xslt/java-capi/api_to_packagehtml.xslt">
+						<xmlcatalog refid="all-dtds" />
 						<param name="xins_version" expression="{$xins_version}"  />
 						<param name="project_home" expression="{$project_home}"  />
 						<param name="project_file" expression="{$project_file}"  />
@@ -765,8 +788,7 @@
 					<xsl:if test="string-length($functionResultIncludes) &gt; 0">
 						<xmlvalidate warn="false">
 							<fileset dir="{$specsdir}/{$api}" includes="{$functionResultIncludes}"/>
-							<dtd publicId="-//XINS//DTD Function 1.0//EN"
-									 location="{$xins_home}/src/dtd/function_1_0.dtd"/>
+							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<style
 						basedir="{$specsdir}/{$api}"
@@ -774,6 +796,7 @@
 						style="{$xins_home}/src/xslt/java-capi/function_to_java.xslt"
 						extension="Result.java"
 						includes="{$functionResultIncludes}">
+							<xmlcatalog refid="all-dtds" />
 							<param name="xins_version" expression="{$xins_version}"  />
 							<param name="project_home" expression="{$project_home}"  />
 							<param name="project_file" expression="{$project_file}"  />
@@ -907,19 +930,19 @@
 				</target>
 
 				<target name="clean-{$api}" description="Deletes everything for the '{$api}' API stubs.">
-					<delete dir="capis/{$api}-capi.jar" />
-					<delete dir="classes-api/{$api}" />
-					<delete dir="classes-capi/{$api}" />
-					<delete dir="classes-types/{$api}" />
-					<delete dir="java-capi/{$api}" />
-					<delete dir="java-combined/{$api}" />
-					<delete dir="java-fundament/{$api}" />
-					<delete dir="java-types/{$api}" />
-					<delete dir="javadoc-api/{$api}" />
-					<delete dir="javadoc-capi/{$api}" />
-					<delete dir="specdocs/{$api}" />
-					<delete dir="types/{$api}" />
-					<delete dir="webapps/{$api}" />
+					<delete dir="build/capis/{$api}-capi.jar" />
+					<delete dir="build/classes-api/{$api}" />
+					<delete dir="build/classes-capi/{$api}" />
+					<delete dir="build/classes-types/{$api}" />
+					<delete dir="build/java-capi/{$api}" />
+					<delete dir="build/java-combined/{$api}" />
+					<delete dir="build/java-fundament/{$api}" />
+					<delete dir="build/java-types/{$api}" />
+					<delete dir="build/javadoc-api/{$api}" />
+					<delete dir="build/javadoc-capi/{$api}" />
+					<delete dir="build/specdocs/{$api}" />
+					<delete dir="build/types/{$api}" />
+					<delete dir="build/webapps/{$api}" />
 				</target>
 
 				<target name="rebuild-{$api}" depends="clean-{$api}, all-{$api}"
@@ -940,6 +963,18 @@
 				<!-- If not set by the user set it to true. -->
 				<property name="deprecated" value="true" />
 				<mkdir dir="build/classes" />
+				<xmlcatalog id="all-dtds">
+					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
+					     location="{$xins_home}/src/dtd/xins-project_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
+					     location="{$xins_home}/src/dtd/api_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Function 1.0//EN"
+					     location="{$xins_home}/src/dtd/function_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Type 1.0//EN"
+					     location="{$xins_home}/src/dtd/type_1_0.dtd" />
+					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
+					     location="{$xins_home}/src/dtd/resultcode_1_0.dtd" />
+				</xmlcatalog>
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">

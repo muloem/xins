@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://xins.sourceforge.net/dtd/translation-bundle_1_0.dtd">
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
@@ -16,7 +17,7 @@
 	<translation entry="2005">XINS/Java Server Framework kan niet gestart worden. Operationeel probleem gedetecteerd. De systeem-property <value-of-param name="propertyName" format="quoted" /> (definieert de locatie van het runtime configuratie-bestand) is niet ingesteld.</translation>
 	<translation entry="2006">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is niet ingesteld.</translation>
 	<translation entry="2007">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class kan niet geladen worden.</translation>
-	<translation entry="2008">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class is niet valide. Reden: <param-value name="message" format="quoted" />.</translation>
+	<translation entry="2008">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> (definieert de naam van de API class) is <value-of-param name="apiClass" format="quoted" />, maar die class is niet valide. Reden: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="2009">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> dient ingesteld te zijn, maar is dat niet.</translation>
 	<translation entry="2010">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De build-property <value-of-param name="propertyName" format="quoted" /> is ingesteld op <value-of-param name="propertyValue" format="quoted" />, maar dat is een ongeldige waarde.</translation>
 	<translation entry="2011">XINS/Java Server Framework kan niet gestart worden. De applicatie-package is niet valide. De API kon niet gestart worden met de gegeven build-properties. Reden: <value-of-param name="message" format="quoted" />.</translation>

@@ -9,9 +9,9 @@
           rcsid      CDATA #IMPLIED
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
-          specsdir   CDATA #REQUIRED
-          javadir    CDATA #REQUIRED
-          dependenciesdir CDATA #REQUIRED
+          specsdir   CDATA #IMPLIED
+          javadir    CDATA #IMPLIED
+          dependenciesdir CDATA #IMPLIED
           domain     CDATA #REQUIRED
 >
 <!ELEMENT description (#PCDATA|em)*>
