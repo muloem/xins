@@ -25,6 +25,9 @@ import org.xins.common.text.TextUtils;
  * <p>Note that this class is not thread-safe. It should not be used from
  * different threads at the same time. This applies even to read operations.
  *
+ * <p>Note that the namespace URIs and local names are not checked for
+ * validity in this class.
+ *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -595,9 +598,6 @@ public class DataElement implements Cloneable {
          if (namespaceURI != null && namespaceURI.length() < 1) {
             namespaceURI = null;
          }
-
-         // TODO: Check format of namespaceURI
-         // TODO: Check format of localName
 
          // Initialize fields
          _hashCode     = localName.hashCode();
