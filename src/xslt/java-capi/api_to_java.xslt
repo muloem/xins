@@ -259,7 +259,9 @@ public final class API extends Object {
 							</xsl:call-template>
 						</xsl:variable>
 
-						<xsl:text>, </xsl:text>
+						<xsl:if test="$sessionBased = 'true' or position() &gt; 1">
+							<xsl:text>, </xsl:text>
+						</xsl:if>
 						<xsl:value-of select="$javatype" />
 						<xsl:text> </xsl:text>
 						<xsl:value-of select="@name" />
