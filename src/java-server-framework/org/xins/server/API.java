@@ -439,6 +439,9 @@ implements DefaultResultCodes {
     *
     * @param arguments
     *    the arguments to pass to the method.
+    *
+    * @return
+    *    the value returned by the call, can be <code>null</code>.
     */
    private final boolean callMethod(Object   instance,
                                     String   methodName,
