@@ -11,7 +11,11 @@
 	<xsl:output indent="yes" />
 
 	<xsl:template match="project">
-		<project>
+		<project default="all">
+			<target name="specdocs">
+			</target>
+
+			<target name="all" depends="specdocs" />
 		</project>
 	</xsl:template>
 </xsl:stylesheet>
