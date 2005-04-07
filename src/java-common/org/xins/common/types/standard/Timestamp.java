@@ -314,28 +314,32 @@ public class Timestamp extends Type {
        * Constructs a new timestamp value. The values will not be checked.
        *
        * @param year
-       *    the year, e.g. <code>2004</code>.
+       *    the year, including century, e.g. <code>2005</code>.
        *
        * @param month
-       *    the month of the year, e.g. <code>11</code> for November.
+       *    the month of the year in the range 1-12, e.g. <code>11</code> for
+       *    November.
        *
        * @param day
-       *    the day of the month, e.g. <code>1</code> for the first day of the
-       *    month.
+       *    the day of the month in the range 1-31, e.g. <code>1</code> for
+       *    the first day of the month.
        *
        * @param hour
-       *    the hour of the day, e.g. <code>22</code> or <code>0</code> for
-       *    the first hour of the day.
+       *    the hour of the day in the range 0-23, e.g. <code>22</code> for 10
+       *    o'clock at night.
        *
        * @param minute
-       *    the minute of the hour, e.g. <code>0</code> for first minute of
-       *    the hour.
+       *    the minute of the hour in the range 0-59, e.g. <code>0</code> for
+       *    first minute of the hour.
        *
        * @param second
-       *    the second of the minute, e.g. <code>0</code> for the first second
-       *    of the minute.
+       *    the second of the minute in the range 0-59, e.g. <code>0</code>
+       *    for the first second of the minute.
        */
-      public Value(int year, int month, int day, int hour, int minute, int second) {
+      public Value(int year, int month,  int day,
+                   int hour, int minute, int second) {
+
+         // Store values unchecked
          _year   = year;
          _month  = month;
          _day    = day;
@@ -343,51 +347,71 @@ public class Timestamp extends Type {
          _minute = minute;
          _second = second;
 
-         _asString = Timestamp.toString(year, month, day, hour, minute, second);
+         // TODO: Should we not check the values ?!
+
+         // Convert to string, and store that
+         _asString = Timestamp.toString(year, month,  day,
+                                        hour, minute, second);
       }
+
 
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
 
       /**
-       * The year. E.g. <code>2004</code>.
+       * The year, including century. E.g. <code>2005</code>.
        */
       private final int _year;
 
       /**
-       * The month of the year. E.g. <code>11</code> for November.
+       * The month of the year, 1-based. E.g. <code>11</code> for November.
        */
       private final int _month;
 
       /**
-       * The day of the month. E.g. <code>1</code> for the first day of the
-       * month.
+       * The day of the month, 1-based. E.g. <code>1</code> for the first day
+       * of the month.
        */
       private final int _day;
 
       /**
-       * The hour of the day. E.g. <code>22</code> or <code>0</code> for
-       * the first hour of the day.
+       * The hour of the day, 0-based. E.g. <code>22</code> for 10 o'clock at
+       * night, or <code>0</code> for the first hour of the day.
        */
       private final int _hour;
 
       /**
-       * The minute of the hour. E.g. <code>0</code> for first minute of
-       * the hour.
+       * The minute of the hour, 0-based. E.g. <code>0</code> for first minute
+       * of the hour.
        */
       private final int _minute;
 
       /**
-       * The second of the minute. E.g. <code>0</code> for the first second
-       * of the minute.
+       * The second of the minute, 0-based. E.g. <code>0</code> for the first
+       * second of the minute.
        */
       private final int _second;
 
       /**
-       * Textual representation of this timestamp. Composed of the year (YYYY),
-       * month (MM), day (DD), hour (hh), minute (mm) and second (ss)
-       * in the format: <em>YYYYMMDDhhmmss</em>.
+       * Textual representation of this timestamp. Formatted as:
+       *
+       * <blockquote><em>YYYYMMDDhhmmss</em></blockquote>
+       *
+       * where:
+       * <ul>
+       *    <li><em>YYYY</em> is the 4-digit year, e.g. 2005;
+       *    <li><em>MM</em> is the 2-digit month of the year, e.g. 03 for
+       *        March;
+       *    <li><em>DD</em> is the 2-digit day of the month, e.g. 01 for the
+       *        first day of the month;
+       *    <li><em>hh</em> is the number of hours since the beginning of the
+       *        day;
+       *    <li><em>mm</em> is the number of minutes since the beginning of
+       *        the hour;
+       *    <li><em>ss</em> is the number of seconds since the beginning of
+       *        the minute;
+       * </ul>
        */
       private final String _asString;
 
