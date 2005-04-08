@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added _descriptor type.
   - Changed the HttpServiceCaller to use the new common-net 1.3.0.
   - Added a new mode for the servlet container.
+  - Implemented SF.net RFE #1176248. Timestamp.Value objects can now be
+    created from long values, Date objects and Calendar objects.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
