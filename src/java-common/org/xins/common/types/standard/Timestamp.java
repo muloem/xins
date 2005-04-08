@@ -9,10 +9,14 @@ package org.xins.common.types.standard;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
+
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
+
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.text.FastStringBuffer;
 
 /**
@@ -46,6 +50,33 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
+    * Converts a <code>java.util.Date</code> object to a
+    * <code>java.util.Calendar</code> object.
+    *
+    * @param date
+    *    the {@link java.util.Date} object to convert, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    an equivalent {@link Calendar} object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>date == null</code>.
+    */
+   private static Calendar createCalendar(java.util.Date date)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("date", date);
+
+      // Create and adjust a Calendar object
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(date);
+
+      return calendar;
+   }
+
+   /**
     * Constructs a <code>Timestamp.Value</code> with the value of the current
     * time.
     *
@@ -54,14 +85,7 @@ public class Timestamp extends Type {
     *    never <code>null</code>.
     */
    public static Value now() {
-      Calendar today = Calendar.getInstance();
-      int year = today.get(Calendar.YEAR);
-      int month = today.get(Calendar.MONTH);
-      int day = today.get(Calendar.DAY_OF_MONTH);
-      int hour = today.get(Calendar.HOUR);
-      int minutes = today.get(Calendar.MINUTE);
-      int seconds = today.get(Calendar.SECOND);
-      return new Value(year, month, day, hour, minutes, seconds);
+      return new Value(Calendar.getInstance());
    }
 
    /**
@@ -159,13 +183,18 @@ public class Timestamp extends Type {
     *    the second of the minute, must be &gt;= 0 and &lt;= 59.
     *
     * @return
-    *    the textual representation of the value in the ISO format YYYYMMDDhhmmss,
-    *    never <code>null</code>.
+    *    the textual representation of the value in the format
+    *    <em>YYYYMMDDhhmmss</em>, never <code>null</code>.
     */
-   private static String toString(int year, int month, int day, int hour, int minute, int second) {
+   private static String toString(int year,
+                                  int month,
+                                  int day,
+                                  int hour,
+                                  int minute,
+                                  int second) {
 
       // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(8);
+      FastStringBuffer buffer = new FastStringBuffer(14);
 
       // Append the year
       if (year < 10) {
@@ -241,35 +270,39 @@ public class Timestamp extends Type {
       }
 
       // Convert all 3 components of the string to integers
-      int y, m, d, h, mn, s;
+      int y, m, d, h, mi, s;
       try {
-         y = Integer.parseInt(value.substring(0, 4));
-         m = Integer.parseInt(value.substring(4, 6));
-         d = Integer.parseInt(value.substring(6, 8));
-         h = Integer.parseInt(value.substring(8, 10));
-         mn = Integer.parseInt(value.substring(10, 12));
-         s = Integer.parseInt(value.substring(12, 14));
+         y  = Integer.parseInt(value.substring( 0,  4));
+         m  = Integer.parseInt(value.substring( 4,  6));
+         d  = Integer.parseInt(value.substring( 6,  8));
+         h  = Integer.parseInt(value.substring( 8, 10));
+         mi = Integer.parseInt(value.substring(10, 12));
+         s  = Integer.parseInt(value.substring(12, 14));
       } catch (NumberFormatException nfe) {
          return false;
       }
 
       // Check that the values are in the correct range
-      return (y >= 0) && (m >= 1) && (m <= 12) && (d >= 1) && (d <= 31) &&
-         (h >= 0) && (h <= 23) && (mn >= 0) && (mn <= 59) && (s >= 0) && (s <= 59);
+      return (y  >= 0)
+          && (m  >= 1) && (m  <= 12)
+          && (d  >= 1) && (d  <= 31)
+          && (h  >= 0) && (h  <= 23)
+          && (mi >= 0) && (mi <= 59)
+          && (s  >= 0) && (s  <= 59);
    }
 
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
       // Convert all 3 components of the string to integers
-      int y, m, d, h, mn, s;
+      int y, m, d, h, mi, s;
       try {
-         y = Integer.parseInt(string.substring(0, 4));
-         m = Integer.parseInt(string.substring(4, 6));
-         d = Integer.parseInt(string.substring(6, 8));
-         h = Integer.parseInt(string.substring(8, 10));
-         mn = Integer.parseInt(string.substring(10, 12));
-         s = Integer.parseInt(string.substring(12, 14));
+         y  = Integer.parseInt(string.substring( 0,  4));
+         m  = Integer.parseInt(string.substring( 4,  6));
+         d  = Integer.parseInt(string.substring( 6,  8));
+         h  = Integer.parseInt(string.substring( 8, 10));
+         mi = Integer.parseInt(string.substring(10, 12));
+         s  = Integer.parseInt(string.substring(12, 14));
       } catch (NumberFormatException nfe) {
 
          // Should never happen, since isValidValueImpl(String) will have been
@@ -277,8 +310,8 @@ public class Timestamp extends Type {
          throw new TypeValueException(this, string);
       }
 
-      // Check that the values are in the correct range
-      return new Value(y, m, d, h, mn, s);
+      // Convert to a Value instance
+      return new Value(y, m, d, h, mi, s);
    }
 
    public final String toString(Object value)
@@ -287,7 +320,7 @@ public class Timestamp extends Type {
       // Check preconditions
       MandatoryArgumentChecker.check("value", value);
 
-      // The argument must be a PropertyReader
+      // Convert the Value object to a String
       return toString((Value) value);
    }
 
@@ -354,6 +387,54 @@ public class Timestamp extends Type {
                                         hour, minute, second);
       }
 
+      /**
+       * Constructs a new timestamp value based on the specified
+       * <code>Calendar</code>.
+       *
+       * @param calendar
+       *    the {@link Calendar} object to get the exact date from, cannot be
+       *    <code>null</code>.
+       *
+       * @throws NullPointerException
+       *    if <code>calendar == null</code>.
+       */
+      public Value(Calendar calendar) throws NullPointerException { 
+         this(calendar.get(Calendar.YEAR),
+              calendar.get(Calendar.MONTH),
+              calendar.get(Calendar.DAY_OF_MONTH),
+              calendar.get(Calendar.HOUR),
+              calendar.get(Calendar.MINUTE),
+              calendar.get(Calendar.SECOND));
+      }
+
+      /**
+       * Constructs a new timestamp value based on the specified
+       * <code>Date</code>.
+       *
+       * @param d
+       *    the {@link Date} object to get the exact date from, cannot be
+       *    <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>d == null</code>.
+       */
+      public Value(java.util.Date date) throws IllegalArgumentException { 
+         this(createCalendar(date));
+      } 
+
+      /**
+       * Constructs a new timestamp value based on the specified number of
+       * milliseconds since the Epoch.
+       *
+       * @param millis
+       *    the number of milliseconds since the Epoch.
+       *
+       * @see System#currentTimeMillis()
+       */
+      public Value(long millis) { 
+         this(new java.util.Date(millis)); 
+      } 
+          
 
       //----------------------------------------------------------------------
       // Fields
