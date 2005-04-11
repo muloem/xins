@@ -86,6 +86,8 @@ public abstract class AbstractCAPI extends Object {
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor, callConfig);
       _caller.setCAPI(this);
+      
+      checkXINSVersion();
    }
 
    /**
@@ -169,6 +171,8 @@ public abstract class AbstractCAPI extends Object {
 
       // Associate caller with this CAPI object
       _caller.setCAPI(this);
+      
+      checkXINSVersion();
    }
 
 
@@ -237,6 +241,15 @@ public abstract class AbstractCAPI extends Object {
       return _caller;
    }
 
+   /**
+    * Warn if the CAPI has a different XINS version.
+    */
+   private void checkXINSVersion() {
+      if (!Library.getVersion().equals(getXINSVersion())) {
+         Log.log_2114(getXINSVersion(), Library.getVersion());
+      }
+   }
+   
    /**
     * Returns the version of XINS used to build this CAPI class.
     *

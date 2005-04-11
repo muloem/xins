@@ -53,6 +53,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - The xsl:variable and xsl:with-param element now uses the select 
     attribute whenever possible.
   - Replaced some string variable with boolean variables.
+  - RFE #1146073 Warn if CAPI was built with different XINS version.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
