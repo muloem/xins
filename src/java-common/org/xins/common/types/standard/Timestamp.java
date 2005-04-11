@@ -409,14 +409,14 @@ public class Timestamp extends Type {
 
       /**
        * Constructs a new timestamp value based on the specified
-       * <code>Date</code>.
+       * <code>java.util.Date</code> object.
        *
-       * @param d
-       *    the {@link Date} object to get the exact date from, cannot be
-       *    <code>null</code>.
+       * @param date
+       *    the {@link java.util.Date} object to get the exact date from,
+       *    cannot be <code>null</code>.
        *
        * @throws IllegalArgumentException
-       *    if <code>d == null</code>.
+       *    if <code>date == null</code>.
        */
       public Value(java.util.Date date) throws IllegalArgumentException { 
          this(createCalendar(date));
