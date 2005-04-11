@@ -83,6 +83,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Fixed SF.net bug #1168317: Used another method to load local DTD files 
     that also works with directories containing spaces.
 
+* DTD:
+  - RFE #1146131: Restrict param-combo types in 1.2 DTDs.
+
 * Examples:
   - Added .version.properties in the demo directory of the release.
   - Added PHP and Perl examples for the client side. Contribution from 

@@ -21,7 +21,7 @@
 <!ELEMENT deprecated (#PCDATA|em)*>
 <!ELEMENT param-combo (param-ref, param-ref+)>
 <!ATTLIST param-combo
-          type       NMTOKEN #IMPLIED
+          type       (exclusive-or|inclusive-or|all-or-none) #REQUIRED
 >
 <!ELEMENT param-ref EMPTY>
 <!ATTLIST param-ref

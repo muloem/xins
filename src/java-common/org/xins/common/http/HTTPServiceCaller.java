@@ -686,6 +686,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (TimeoutException exception) {
          duration = System.currentTimeMillis() - start;
          Log.log_1106(url, params, duration, totalTimeOut);
+         executor.dispose();
          throw new TotalTimeOutCallException(request, target, duration);
 
       } finally {
@@ -1151,8 +1152,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Remove the diagnostic context ID
          if (_context != null) {
             NDC.pop();
-            NDC.remove();
          }
+         NDC.remove();
 
          // Set objects to null for garbage collection
          _asString = null;
