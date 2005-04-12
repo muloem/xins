@@ -465,11 +465,17 @@ extends HttpServlet {
     * Changes the current state. This method first synchronizes on
     * {@link #_stateLock} and then sets the value of {@link #_state}.
     *
+    * <p>If the state change is considered invalid, then an
+    * {@link IllegalStateException} is thrown.
+    *
     * @param newState
     *    the new state, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>newState == null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the state change is considered invalid.
     */
    private void setState(State newState)
    throws IllegalArgumentException {
@@ -477,42 +483,120 @@ extends HttpServlet {
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
 
-      // Check state
-      if (newState == INITIAL
-       || (_state == INITIAL                         && newState != BOOTSTRAPPING_FRAMEWORK                                                  )
-       || (_state == BOOTSTRAPPING_FRAMEWORK         && newState != FRAMEWORK_BOOTSTRAP_FAILED && newState != CONSTRUCTING_API               )
-       || (_state == FRAMEWORK_BOOTSTRAP_FAILED      && newState != BOOTSTRAPPING_FRAMEWORK                                                  )
-       || (_state == CONSTRUCTING_API                && newState != API_CONSTRUCTION_FAILED    && newState != BOOTSTRAPPING_API              )
-       || (_state == API_CONSTRUCTION_FAILED         && newState != CONSTRUCTING_API                                                         )
-       || (_state == BOOTSTRAPPING_API               && newState != API_BOOTSTRAP_FAILED       && newState != DETERMINE_INTERVAL             )
-       || (_state == API_BOOTSTRAP_FAILED            && newState != BOOTSTRAPPING_API                                                        )
-       || (_state == DETERMINE_INTERVAL              && newState != INITIALIZING_API           && newState != DETERMINE_INTERVAL_FAILED      )
-       || (_state == DETERMINE_INTERVAL_FAILED       && newState != DETERMINE_INTERVAL                                                       )
-       || (_state == INITIALIZING_API                && newState != API_INITIALIZATION_FAILED  && newState != READY                          )
-       || (_state == READY                           && newState != DETERMINE_INTERVAL         && newState != DISPOSING                      )
-       || (_state == DISPOSING                       && newState != DISPOSED))
-      {
-         Log.log_3101(_state == null ? null : _state.getName(), newState.getName());
-         throw new IllegalArgumentException("The state " + newState + " cannot follow the state " + _state + '.');
-      }
-
-      State oldState;
-
       synchronized (_stateLock) {
 
-         // Short-circuit if the current is the new state
-         if (_state == newState) {
+         // Remember the current state
+         State oldState = _state;
+
+         // Determine name of current and new state
+         String oldStateName = (oldState == null)
+                             ? null
+                             : oldState.getName();
+         String newStateName = newState.getName();
+
+         // Short-circuit if the current equals the new state
+         if (oldState == newState) {
             return;
+
+         // Always allow changing state to DISPOSING
+         } else if (oldState != DISPOSING && newState == DISPOSING) {
+
+         // The first state change should be to bootstrap the framework
+         } else if (oldState == INITIAL
+                 && newState == BOOTSTRAPPING_FRAMEWORK) {
+
+         // Bootstrapping the framework may fail
+         } else if (oldState == BOOTSTRAPPING_FRAMEWORK
+                 && newState == FRAMEWORK_BOOTSTRAP_FAILED) {
+
+         // Bootstrapping the framework can be retried
+         } else if (oldState == FRAMEWORK_BOOTSTRAP_FAILED
+                 && newState == BOOTSTRAPPING_FRAMEWORK) {
+
+         // Bootstrapping the framework may succeed, in which case the API
+         // will be constructed
+         } else if (oldState == BOOTSTRAPPING_FRAMEWORK
+                 && newState == CONSTRUCTING_API) {
+
+         // Construction of API may fail
+         } else if (oldState == CONSTRUCTING_API
+                 && newState == API_CONSTRUCTION_FAILED) {
+
+         // API construction can be retried
+         } else if (oldState == API_CONSTRUCTION_FAILED
+                 && newState == CONSTRUCTING_API) {
+
+         // Construction of API may succeed, in which case the API is
+         // bootstrapped
+         } else if (oldState == CONSTRUCTING_API
+                 && newState == BOOTSTRAPPING_API) {
+
+         // Bootstrapping the API may fail
+         } else if (oldState == BOOTSTRAPPING_API
+                 && newState == API_BOOTSTRAP_FAILED) {
+
+         // Bootstrapping the API can be retried
+         } else if (oldState == API_BOOTSTRAP_FAILED
+                 && newState == BOOTSTRAPPING_API) {
+     
+         // If bootstrapping the API succeeds, then the next step is to
+         // determine the watch interval
+         } else if (oldState == BOOTSTRAPPING_API
+                 && newState == DETERMINE_INTERVAL) {
+
+         // Determination of the watch interval may change
+         } else if (oldState == DETERMINE_INTERVAL
+                 && newState == DETERMINE_INTERVAL_FAILED) {
+
+         // Determination of the watch interval may be retried
+         } else if (oldState == DETERMINE_INTERVAL_FAILED
+                 && newState == DETERMINE_INTERVAL) {
+
+         // If determination of the watch interval succeeds, then the next
+         // step is to initialize the API
+         } else if (oldState == DETERMINE_INTERVAL
+                 && newState == INITIALIZING_API) {
+              
+         // API initialization may fail
+         } else if (oldState == INITIALIZING_API
+                 && newState == API_INITIALIZATION_FAILED) {
+
+         // API initialization may be retried
+         } else if (oldState == API_INITIALIZATION_FAILED
+                 && newState == INITIALIZING_API) {
+
+         // API initialization may succeed, in which case the servlet is ready
+         } else if (oldState == INITIALIZING_API
+                 && newState == READY) {
+
+         // While the servet is ready, the watch interval may be redetermined,
+         // which is the first step in reinitialization
+         } else if (oldState == READY
+                 && newState == DETERMINE_INTERVAL) {
+
+         // After disposal the state changes to the final disposed state
+         } else if (oldState == DISPOSING
+                 && newState == DISPOSED) {
+
+         // Otherwise the state change is not allowed, fail!
+         } else {
+
+            // Log error
+            Log.log_3101(oldStateName, newStateName);
+
+            // Throw exception
+            String error = "The state "
+                         + oldStateName
+                         + " cannot be followed by the state "
+                         + newStateName
+                         + '.';
+            throw new IllegalStateException(error);
          }
 
-         // Store the old state
-         oldState = _state;
-
-         // Change the current state
+         // Perform the state change
          _state = newState;
+         Log.log_3100(oldStateName, newStateName);
       }
-
-      Log.log_3100(oldState.getName(), newState.getName());
    }
 
    /**

@@ -29,6 +29,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1163559: _InvalidResponse is not returned when the
     response is invalid.
+  - Fixed SF.net bug #1181594: Error on change state in APIServlet.
   - Added support for param-combo in the output section.
   - The CallingConvention class now extends the Manageable class.
   - Added a template cache system for the XSLT calling convention.
