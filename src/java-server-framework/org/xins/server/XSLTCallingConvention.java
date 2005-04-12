@@ -46,9 +46,14 @@ class XSLTCallingConvention extends StandardCallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * The runtime property name that define if the templates should be cached.
+    */
+   public final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
+   
+   /**
     * The runtime property name that define the base directory of the XSLT templates.
     */
-   public final static String TEMPLATE_LOCATION_PROPERTY = "templates.callingconvention.source";
+   public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
    
    /**
     * The input parameter that specify the location of the XSLT template tot use.
@@ -85,6 +90,11 @@ class XSLTCallingConvention extends StandardCallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Flag that indicates whether the templates should be cached.
+    */
+   private boolean _cacheTemplates = true;
+
+   /**
     * Location of the XSLT transformation Style Sheet.
     */
    private String _baseXSLTDir;
@@ -109,10 +119,12 @@ class XSLTCallingConvention extends StandardCallingConvention {
           InvalidPropertyValueException,
           InitializationException {
       
+      _cacheTemplates = "false".equals(runtimeProperties.get(TEMPLATES_CACHE_PROPERTY));
+
       // Get the base directory of the Style Sheet
       // e.g. http://xslt.mycompany.com/myapi/
       // then the XSLT file must have the function names.
-      _baseXSLTDir = runtimeProperties.get(TEMPLATE_LOCATION_PROPERTY);
+      _baseXSLTDir = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
       
       // Relative URLs use the user directory as base dir.
       if (_baseXSLTDir == null) {
@@ -154,11 +166,13 @@ class XSLTCallingConvention extends StandardCallingConvention {
             out.close();
             return;
          }
-         if (_templateCache.containsKey(xsltLocation)) {
+         if (!_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
             template = (Templates) _templateCache.get(xsltLocation);
          } else {
             template = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
-            _templateCache.put(xsltLocation, template);
+            if (_cacheTemplates) {
+               _templateCache.put(xsltLocation, template);
+            }
          }
          Transformer xformer = template.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
