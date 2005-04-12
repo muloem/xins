@@ -65,8 +65,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Fixed SF.net bug #1064480: Name for input/output-example is not checked.
   - Required attributes are now check in the examples.
   - Name for attribute-example is now checked.
-  - The system check that a file exists for each function, type and result code
-    defined in api.xml.
+  - Checking that the corresponding file exists for each function, type and
+    result code defined in api.xml.
   - Changed output slightly.
   - The xsl:variable and xsl:with-param element now uses the select
     attribute whenever possible.
@@ -192,8 +192,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added the possibility to define the properties in the impl.xml file.
     If defined a class is created. This class checks the properties and
     provides methods to access the value of the properties.
-  - Added the init method for the CallingConvention. This method can be used to
-    initialize the calling convention with the data stored in the build
+  - Added the init method for the CallingConvention. This method can be used
+    to initialize the calling convention with the data stored in the build
     properties or the runtime properties.
   - If the calling convention passed as parameter is the same as the default
     one, do not create a new CallingConvention object.
@@ -671,9 +671,9 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     org.xins.tests.common.util to org.xins.tests.common.
   - Extended test set for class TargetDescriptor.
   - Changed pattern: removed obsolete escapes; changed 0-9 range into \d;
-    changed [a-zA-Z] range into [a-z], using the Perl5Compiler.CASE_INSENSITIVE_MASK
-    in the call to the Perl5Compiler.compile() method instead to enable case-
-    insensitive matches.
+    changed [a-zA-Z] range into [a-z], using the
+    Perl5Compiler.CASE_INSENSITIVE_MASK in the call to the
+    Perl5Compiler.compile() method instead to enable case-insensitive matches.
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
@@ -703,11 +703,11 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     properties.
   - Fixed bug #1076638: The generated context ID was not conform to the
     architect group recommendation.
-  - The server classes now use the org.xins.common.xml.Element class instead of
-    the deprecated org.xins.server.Element class.
+  - The server classes now use the org.xins.common.xml.Element class instead
+    of the deprecated org.xins.server.Element class.
   - Added calling convention which allows to specify in which format the data
-    should be received and returned. Two implementation are provided "xins-std"
-    and "xins-old".
+    should be received and returned. Two implementation are provided,
+    "xins-std" and "xins-old".
 
 * Logdoc:
   - The parameter types are now defined in the DTD.
@@ -772,7 +772,8 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - The AbstractCAPICallResult class adds the following methods:
     . long duration()                    -- Returns the call duration, in
                                             milliseconds.
-    . CallExceptionList exceptions()     -- Returns the list of CallExceptions.
+    . CallExceptionList exceptions()     -- Returns the list of
+                                            CallException instances.
     . TargetDescriptor succeededTarget() -- Returns the target for which the
                                             call succeeded.
   - Refactored the XINSCallRequest and added new setter methods.
@@ -1243,8 +1244,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 11:
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1058074. Transaction logging now also applies to meta
     functions. Applied some refactorings during the process: Changed
-    FormattedDate and FormattedParameters from inner classes in class Function to
-    outer class with package-private access.
+    FormattedDate and FormattedParameters from inner classes in class Function
+    to outer class with package-private access.
   - Changed log messages 3540 and 3541 so they no longer accept a 'callID'
     parameter. The parameter is not used in the translation. This is done
     because it simplified the introduction of transaction logging for
@@ -1364,8 +1365,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 6:
 
 * XINS/Java Common Library:
   - Added the hashCode() and equals() method to the types Date and Timestamp.
-  - Fixed the HTTPServiceCaller did not pass the arguments correctly when using
-    the GET method.
+  - Fixed the HTTPServiceCaller did not pass the arguments correctly when
+    using the GET method.
   - Added TextUtils class.
   - Added tests for the ExpiryFolder and MandatoryArgumentChecker.
   - Fixed some Checkstyle-reported issues, like missing Javadoc comments.
@@ -1564,7 +1565,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
   - Added the MetaFunctionsTests that tests the XINSServiceCaller and the
     _GetVersion meta function. This test requires the xins-examples directory
     in the same directory as xins. The allinone example should be compiled.
-  - Added a basic implementation of a Servlet container that can run XINS APIs.
+  - Added a basic implementation of a Servlet container that can run XINS
+    APIs.
 
 * Build and release process:
   - Added the possibility to release with a specific version
