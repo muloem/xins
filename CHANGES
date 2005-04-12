@@ -16,7 +16,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - If the main() method is used to start the servlet container, the thread
     accepting connections is not a daemon thread.
   - Added new logProprammingError methods.
-  - The Java version returned has been changed from an object to a double 
+  - The Java version returned has been changed from an object to a double
     number.
   - Added _descriptor type.
   - Changed translations for log messages 1200 and 1201 to be correct for the
@@ -35,15 +35,15 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added a template cache system for the XSLT calling convention.
   - The config file name is now path separator independent.
   - Fixed problems related to the URIResolver of the XSLTCallingConvention.
-  - Added the possibility to disable the template cache for the 
+  - Added the possibility to disable the template cache for the
     XSLTCallingConvention.
 
 * Generation of server-side Java code:
-  - Code generated to check input and output parameters is now merged in a 
+  - Code generated to check input and output parameters is now merged in a
     single file.
-  - The generated code now checks also the attributes passed to the data 
+  - The generated code now checks also the attributes passed to the data
     sections for the required parameters and for the invalid parameters.
-  - The xsl:variable and xsl:with-param element now uses the select 
+  - The xsl:variable and xsl:with-param element now uses the select
     attribute whenever possible.
   - Replaced some string variable with boolean variables.
   - Fixed bug #1176265: NPE in generated <Function>.java when no elements
@@ -53,14 +53,14 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
     name.
 
 * Generation of client-side Java code:
-  - The xsl:variable and xsl:with-param element now uses the select 
+  - The xsl:variable and xsl:with-param element now uses the select
     attribute whenever possible.
   - Replaced some string variable with boolean variables.
   - RFE #1146073 Warn if CAPI was built with different XINS version.
 
 * Generated specification documentation:
   - The multiplicity attribute is no longer supported.
-  - Fixed SF.net bug #1165828: Required parameters are not checked in the 
+  - Fixed SF.net bug #1165828: Required parameters are not checked in the
     examples.
   - Fixed SF.net bug #1064480: Name for input/output-example is not checked.
   - Required attributes are now check in the examples.
@@ -68,7 +68,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - The system check that a file exists for each function, type and result code
     defined in api.xml.
   - Changed output slightly.
-  - The xsl:variable and xsl:with-param element now uses the select 
+  - The xsl:variable and xsl:with-param element now uses the select
     attribute whenever possible.
   - Replaced some string variable with boolean variables.
 
@@ -84,7 +84,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
   - Added support for the jikes compiler.
   - Added run-<api> target that runs your API implementation.
   - Replace the "for-each api" loop with an apply-template.
-  - Fixed SF.net bug #1168317: Used another method to load local DTD files 
+  - Fixed SF.net bug #1168317: Used another method to load local DTD files
     that also works with directories containing spaces.
 
 * DTD:
@@ -92,7 +92,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 
 * Examples:
   - Added .version.properties in the demo directory of the release.
-  - Added PHP and Perl examples for the client side. Contribution from 
+  - Added PHP and Perl examples for the client side. Contribution from
     Janwillem Borleffs.
 
 ______________________________________________________________________________
@@ -154,7 +154,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added no-arg HTTPServiceCaller constructor.
   - Do not throw an exception if the buffer and the offset are nil in the
     FastStringBuffer.
-  - Moved the Servlet container classes used for test directory to the 
+  - Moved the Servlet container classes used for test directory to the
     org.xins.common.servlet.container package.
   - Added Logdoc to the servlet container.
   - Improved handling of exception in the servlet container.
@@ -183,17 +183,17 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     public.
   - Added the HttpServletRequest as a parameter when creating the result
     in the calling convention.
-  - If the function has not output parameters, getParameter() will return null. 
+  - If the function has not output parameters, getParameter() will return null.
   - If available the version of the API is set in the manifest of the WAR file
     and in the web.xml file. The _GetVersion meta function now returns the
     version of the API.
-  - Added possibility to have comma separated list of functions for the 
+  - Added possibility to have comma separated list of functions for the
     ACL permissions.
   - Added the possibility to define the properties in the impl.xml file.
-    If defined a class is created. This class checks the properties and 
+    If defined a class is created. This class checks the properties and
     provides methods to access the value of the properties.
   - Added the init method for the CallingConvention. This method can be used to
-    initialize the calling convention with the data stored in the build 
+    initialize the calling convention with the data stored in the build
     properties or the runtime properties.
   - If the calling convention passed as parameter is the same as the default
     one, do not create a new CallingConvention object.
@@ -346,7 +346,7 @@ NOTE: This release is based on XINS 1.1.0-rc1.
     request object):
     . Renamed function_to_java.xslt to function_to_result_java.xslt.
     . Added function_to_request_java.xslt which produces a <Function>Request
-      object. 
+      object.
     . Generating one call(<Function>Request) method per function in the
       generated CAPI class.
     . Generating one call(<Function>Request,XINSCallConfig) method per
