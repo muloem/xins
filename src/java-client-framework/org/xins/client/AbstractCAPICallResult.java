@@ -55,6 +55,12 @@ extends Object {
       MandatoryArgumentChecker.check("result", result);
 
       _result = result;
+      
+      // Check preconditions
+      if (result.getErrorCode() != null) {
+         throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");
+      }
+
    }
 
 

@@ -141,12 +141,7 @@ extends org.xins.client.AbstractCAPICallResult {
           org.xins.client.UnacceptableResultXINSCallException {
 
       // Call superconstructor, which will fail if result == null
-      super(result);
-
-      // Check preconditions
-      if (result.getErrorCode() != null) {
-         throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");
-      }</xsl:text>
+      super(result);</xsl:text>
 
 		<xsl:if test="output/param">
 			<xsl:text>
