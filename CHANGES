@@ -1493,6 +1493,8 @@ CHANGES INTRODUCED IN XINS 1.0.0 BETA 2:
   - Class HTTPCallResult now implements HTTPCallResultData interface.
   - A ClassCastException was thrown if HTTPServiceCaller.call(HTTPCallRequest)
     was called and the call succeeded. This is now fixed.
+  - Fixed SF.net bug #1165833: Text type should throw the TypeValueException.
+    This required changes in some XSLT files as well.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1043048. Previously a ClassCastException was thrown if

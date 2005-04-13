@@ -130,10 +130,8 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 			<xsl:value-of select="$variableName" />
 			<xsl:text>.equals("")) {</xsl:text>
 		</xsl:if>
-		<xsl:if test="@type and not(@type = '_text')">
 			<xsl:text>
       try {</xsl:text>
-		</xsl:if>
 		<xsl:text>
          _</xsl:text>
 			<xsl:value-of select="$variableName" />
@@ -145,9 +143,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:with-param name="type"     select="@type"     />
 			<xsl:with-param name="variable" select="$variableName"     />
 			</xsl:call-template>
-			<xsl:text>;</xsl:text>
-		<xsl:if test="@type and not(@type = '_text')">
-			<xsl:text>
+			<xsl:text>;
       } catch (org.xins.common.types.TypeValueException exception) {
          throw new org.xins.common.collections.InvalidPropertyValueException("</xsl:text>
 			<xsl:value-of select="@name" />
@@ -155,7 +151,6 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 			<xsl:value-of select="$variableName" />
 			<xsl:text>);
       }</xsl:text>
-		</xsl:if>
 		<xsl:if test="@required = 'false'">
 			<xsl:text>
       }</xsl:text>
