@@ -24,6 +24,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 * Libraries:
   - Upgraded Jakarta Commons HttpClient from 3.0-rc1 to 3.0-rc2.
 
+* Added Windows installer script.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:
 
