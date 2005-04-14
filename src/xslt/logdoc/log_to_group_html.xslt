@@ -78,7 +78,7 @@
 				<th title="Number of parameters the message accepts">Parameters</th>
 			</tr>
 			<xsl:for-each select="entry">
-				<xsl:variable name="entry_link" select=concat('entry-', @id, '.html')" />
+				<xsl:variable name="entry_link" select="concat('entry-', @id, '.html')" />
 				<tr>
 					<td>
 						<a>
