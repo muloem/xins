@@ -209,13 +209,13 @@ implements Result {
 		<xsl:text>) {
       </xsl:text>
 		<xsl:if test="$typeIsPrimary = 'false'" >
-		<xsl:text>if (</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text> != null &amp;&amp; !</xsl:text>
-		<xsl:value-of select="$typeToString" />
-		<xsl:text>.equals("")) {
+			<xsl:text>if (</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> != null &amp;&amp; !</xsl:text>
+			<xsl:value-of select="$typeToString" />
+			<xsl:text>.equals("")) {
          </xsl:text>
-			</xsl:if>
+		</xsl:if>
 		<xsl:value-of select="$methodImpl" />
 		<xsl:text>("</xsl:text>
 		<xsl:value-of select="@name" />

@@ -65,6 +65,21 @@ extends StandardErrorCodeException {
 
       // Parse the data element
       DataElement element = result.getDataElement();
+      return createMessage(element);
+   }
+
+   /**
+    * Creates the message containing the details of the error.
+    *
+    * @param element
+    *    The {@link DataElement} containing the details of the error.
+    *
+    * @return the message or <code>null</code> if the element is 
+    *         <code>null</code> or empty.
+    */
+   static String createMessage(DataElement element) {
+      
+      // Parse the data element
       if (element == null) {
          return null;
       }
@@ -78,9 +93,16 @@ extends StandardErrorCodeException {
          for (int i = 0; i < size; i++) {
             DataElement e = (DataElement) missingParamElements.get(i);
             String parameterName = e.getAttribute("param");
-            if (parameterName != null && parameterName.length() >= 1) {
+            String elementName = e.getAttribute("element");
+            if (elementName == null && parameterName != null && parameterName.length() >= 1) {
                detail.append("No value given for required parameter \""
                            + parameterName
+                           + "\". ");
+            } else if (elementName != null &&  elementName.length() >= 1 && parameterName != null && parameterName.length() >= 1) {
+               detail.append("No value given for required attribute \""
+                           + parameterName
+                           + "\" in the element \""
+                           + elementName
                            + "\". ");
             }
          }
@@ -94,16 +116,51 @@ extends StandardErrorCodeException {
             DataElement e = (DataElement) invalidValueElements.get(i);
             String parameterName = e.getAttribute("param");
             String typeName      = e.getAttribute("type");
+            String elementName   = e.getAttribute("element");
             if (parameterName != null && parameterName.length() >= 1) {
                detail.append("The value for parameter \""
                            + parameterName
-                           + "\" is considered invalid. ");
+                           + "\" is considered invalid for the type \""
+                           + typeName
+                           + "\". ");
+            } else if (elementName != null &&  elementName.length() >= 1 && parameterName != null && parameterName.length() >= 1) {
+               detail.append("The value for attribute \""
+                           + parameterName
+                           + "\" in the element \""
+                           + elementName
+                           + "\" is considered invalid for the type \""
+                           + typeName
+                           + "\". ");
             }
-            // XXX: typeName is not used
             // XXX: actual value is not specified in message
          }
       }
 
+      // Handle all param-combo values
+      List paramComboElements = element.getChildElements("param-combo");
+      if (paramComboElements != null) {
+         int size = paramComboElements.size();
+         for (int i = 0; i < size; i++) {
+            DataElement e = (DataElement) paramComboElements.get(i);
+            String typeName      = e.getAttribute("type");
+            detail.append("The values of the parameters ");
+            List parameterList   = e.getChildElements("param");
+            int parametersSize = parameterList.size();
+            for (int j = 0; j < parametersSize; j++) {
+               DataElement e2 = (DataElement) parameterList.get(j);
+               String parameterName = e2.getAttribute("name");
+               if (parameterName != null && parameterName.length() >= 1) {
+                  detail.append("\""
+                              + parameterName
+                              + "\" ");
+               }
+            }
+            detail.append("do not match the param-combo of type \""
+                           + typeName
+                           + "\". ");
+         }
+      }
+      
       // Remove the last space from the string, if there is any
       if (detail.getLength() >= 1) {
          detail.crop(detail.getLength() - 1);
@@ -112,7 +169,6 @@ extends StandardErrorCodeException {
          return null;
       }
    }
-
 
    //-------------------------------------------------------------------------
    // Constructors

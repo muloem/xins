@@ -18,38 +18,44 @@
 	<xsl:output method="text" />
 
 	<xsl:template match="input | output | element" mode="checkParams">
+		<xsl:param name="side" select="'server'" />
 
 		<xsl:variable name="errorclass">
 			<xsl:choose>
-				<xsl:when test="local-name() = 'input'">
-					<xsl:text>InvalidRequestResult</xsl:text>
+				<xsl:when test="$side='server' and (local-name() = 'input' or (local-name() = 'element' and local-name(../..) = 'input'))">
+					<xsl:text>org.xins.server.InvalidRequestResult</xsl:text>
 				</xsl:when>
-				<xsl:when test="local-name() = 'output'">
-					<xsl:text>InvalidResponseResult</xsl:text>
+				<xsl:when test="$side='server' and (local-name() = 'output' or (local-name() = 'element' and local-name(../..) = 'output'))">
+					<xsl:text>org.xins.server.InvalidResponseResult</xsl:text>
 				</xsl:when>
-				<xsl:when test="local-name() = 'element' and local-name(../..) = 'input'">
-					<xsl:text>InvalidRequestResult</xsl:text>
+				<xsl:when test="$side='client' and (local-name() = 'input' or (local-name() = 'element' and local-name(../..) = 'input'))">
+					<xsl:text>org.xins.client.UnacceptableRequestException</xsl:text>
 				</xsl:when>
-				<xsl:when test="local-name() = 'element' and local-name(../..) = 'output'">
-					<xsl:text>InvalidResponseResult</xsl:text>
+				<xsl:when test="$side='client' and (local-name() = 'output' or (local-name() = 'element' and local-name(../..) = 'output'))">
+					<xsl:text>org.xins.client.UnacceptableResultXINSCallException</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
-						Invalid node.
+						<xsl:text>Invalid node with side &quot;</xsl:text>
+						<xsl:value-of select="$side" />
+						<xsl:text>&quot; in the element &quot;</xsl:text>
+						<xsl:value-of select="local-name()" />
+						<xsl:text>&quot;.</xsl:text>
 					</xsl:message>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-
+		
 		<xsl:variable name="context">
 			<xsl:choose>
-				<xsl:when test="local-name() = 'input'">
+				<xsl:when test="$side='server' and local-name() = 'input'">
 					<xsl:text>context.</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'element'">
 					<xsl:value-of select="@name" />
 					<xsl:text>NextElement.</xsl:text>
 				</xsl:when>
+				<xsl:otherwise />
 			</xsl:choose>
 		</xsl:variable>
 
@@ -82,7 +88,7 @@
 		<xsl:if test="local-name() = 'input' or local-name() = 'output'">
 			<xsl:text>
 
-      org.xins.server.</xsl:text>
+      </xsl:text>
 			<xsl:value-of select="$errorclass" />
 			<xsl:text> _errorResult = null;</xsl:text>
 		</xsl:if>
@@ -102,12 +108,12 @@
 					<xsl:if test="local-name() = 'attribute'">
 						<xsl:text>Attribute</xsl:text>
 					</xsl:if>
-					<xsl:text> == null) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-					<xsl:value-of select="$errorclass" />
-					<xsl:text>();
-         }
+					<xsl:text> == null) {</xsl:text>
+					<xsl:call-template name="create-error">
+						<xsl:with-param name="side" select="$side" />
+						<xsl:with-param name="errorclass" select="$errorclass" />
+					</xsl:call-template>
+					<xsl:text>
          _errorResult.addMissingParameter("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:if test="local-name() = 'attribute'">
@@ -141,12 +147,12 @@
 				<xsl:if test="local-name() = 'attribute'">
 					<xsl:text>Attribute</xsl:text>
 				</xsl:if>
-				<xsl:text>)) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-				<xsl:value-of select="$errorclass" />
-				<xsl:text>();
-         }
+				<xsl:text>)) {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
          _errorResult.addInvalidValueForType("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>", "</xsl:text>
@@ -176,12 +182,12 @@
 					<xsl:value-of select="@name" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
-				<xsl:text>) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-				<xsl:value-of select="$errorclass" />
-				<xsl:text>();
-         }
+				<xsl:text>) {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 				<xsl:text>
@@ -212,12 +218,12 @@
 					<xsl:value-of select="@name" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
-				<xsl:text>) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-				<xsl:value-of select="$errorclass" />
-				<xsl:text>();
-         }
+				<xsl:text>) {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 				<xsl:text>
@@ -239,12 +245,12 @@
 						<xsl:value-of select="@name" />
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
-					<xsl:text>)) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-					<xsl:value-of select="$errorclass" />
-					<xsl:text>();
-         }
+					<xsl:text>)) {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="$active" />
@@ -288,12 +294,12 @@
 					<xsl:value-of select="@name" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
-				<xsl:text>)) {
-         if (_errorResult == null) {
-            _errorResult = new org.xins.server.</xsl:text>
-				<xsl:value-of select="$errorclass" />
-				<xsl:text>();
-         }
+				<xsl:text>)) {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:text>
@@ -312,20 +318,22 @@
 		<!-- Check data section                                            -->
 		<!-- ************************************************************* -->
 		<xsl:choose>
-			<xsl:when test="local-name() = 'input'">
+			<xsl:when test="$side='server' and local-name() = 'input'">
 				<xsl:text>
       if (context.getDataElement() != null) {</xsl:text>
 				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
 					<xsl:with-param name="parentelement" select="'context.getDataElement()'" />
+					<xsl:with-param name="side" select="$side" />
 				</xsl:apply-templates>
 				<xsl:text>
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="local-name() = 'output'">
+			<xsl:when test="($side = 'client' and local-name() = 'input') or ($side = 'server' and local-name() = 'output')">
 				<xsl:text>
       if (getDataElement() != null) {</xsl:text>
 				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
 					<xsl:with-param name="parentelement" select="'getDataElement()'" />
+					<xsl:with-param name="side" select="$side" />
 				</xsl:apply-templates>
 				<xsl:text>
       }</xsl:text>
@@ -333,17 +341,18 @@
 		</xsl:choose>
 		<xsl:apply-templates select="contains/contained" mode="checkParams">
 			<xsl:with-param name="parentelement" select="concat(@name, 'NextElement')" />
+			<xsl:with-param name="side" select="$side" />
 		</xsl:apply-templates>
 
 		<xsl:choose>
-			<xsl:when test="local-name() = 'input'">
+			<xsl:when test="$side = 'server' and local-name() = 'input'">
 				<xsl:text>
 
       if (_errorResult != null) {
          return _errorResult;
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="local-name() = 'output'">
+			<xsl:when test="($side = 'client' and local-name() = 'input') or ($side = 'server' and local-name() = 'output')">
 				<xsl:text>
       return _errorResult;</xsl:text>
 			</xsl:when>
@@ -353,6 +362,7 @@
 
 	<xsl:template match="contains/contained" mode="checkParams">
 		<xsl:param name="parentelement" />
+		<xsl:param name="side" select="'server'" />
 
 		<xsl:variable name="elementname" select="@element" />
 		<xsl:text>
@@ -365,16 +375,51 @@
 		<xsl:text>").iterator();
       while (</xsl:text>
 		<xsl:value-of select="$elementname" />
-		<xsl:text>Iterator.hasNext()) {
+		<xsl:text>Iterator.hasNext()) {</xsl:text>
+		<xsl:choose>
+			<xsl:when test="$side='client' and local-name(../../..) = 'output'">
+				<xsl:text>
+         org.xins.client.DataElement </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>
          org.xins.common.xml.Element </xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:value-of select="$elementname" />
-		<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
+		<xsl:choose>
+			<xsl:when test="$side='client' and local-name(../../..) = 'output'">
+				<xsl:text>NextElement = (org.xins.client.DataElement) </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:value-of select="$elementname" />
 		<xsl:text>Iterator.next();</xsl:text>
-		<xsl:apply-templates select="../../element[@name=$elementname]" mode="checkParams" />
-		<xsl:apply-templates select="../../../element[@name=$elementname]" mode="checkParams" />
+		<xsl:apply-templates select="../../element[@name=$elementname]" mode="checkParams">
+			<xsl:with-param name="side" select="$side" />
+		</xsl:apply-templates>
+		<xsl:apply-templates select="../../../element[@name=$elementname]" mode="checkParams">
+			<xsl:with-param name="side" select="$side" />
+		</xsl:apply-templates>
 		<xsl:text>
       }</xsl:text>
 	</xsl:template>
 
+	<xsl:template name="create-error">
+		<xsl:param name="side" select="'server'" />
+		<xsl:param name="errorclass" />
+
+		<xsl:text>
+         if (_errorResult == null) {
+            _errorResult = new </xsl:text>
+		<xsl:value-of select="$errorclass" />
+		<xsl:text>(</xsl:text>
+		<xsl:if test="$side = 'client'">
+			<xsl:text>this</xsl:text>
+		</xsl:if>
+		<xsl:text>);
+         }</xsl:text>
+	</xsl:template>
 </xsl:stylesheet>

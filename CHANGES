@@ -6,6 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 
+* XINS/Java Client Framework:
+  - Improved logged message in case that an _InvalidRequest is returned.
+
+* Generation of client-side Java code:
+  - The parameters set in the generated Request object are now checked the 
+    same way as they are on the generated code of the server side.
+
+* Libraries:
+  - Upgrated HTTPClient to 3.0 RC2.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 3:

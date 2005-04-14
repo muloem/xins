@@ -56,136 +56,6 @@ extends RuntimeException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Constructs a detail message for the constructor to pass up to the
-    * superclass constructor.
-    *
-    * @param request
-    *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
-    *    never <code>null</code>.
-    *
-    * @param violations
-    *    a list of constraint violations, cannot be <code>null</code> and
-    *    should contain at least one element; all elements should be instances
-    *    of class {@link ConstraintViolation}.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request                ==   null
-    *          || violations             ==   null
-    *          || violations.size()      &lt; 1
-    *          || violations[<em>i</em>] ==   null
-    *          || !(violations[<em>i</em>] instanceof ConstraintViolation)
-    *          || violations[<em>i</em>] == violations[<em>j</em>])</code>,
-    *    <br>where <code>0 &lt;= <em>i</em> &lt; violations.size()</code>
-    *    <br>and <code>0 &lt;= <em>j</em> &lt; violations.size()</code>.
-    */
-   private static final String createMessage(
-      AbstractCAPICallRequest request,
-      List                    violations)
-   throws IllegalArgumentException {
-
-      // Arguments cannot be null
-      MandatoryArgumentChecker.check("request",    request,
-                                     "violations", violations);
-
-      // We need at least one violation
-      int violationCount = violations.size();
-      if (violationCount < 1) {
-         throw new IllegalArgumentException("violationCount.size() == 0");
-      }
-
-      // Stick the message in a buffer
-      FastStringBuffer buffer = new FastStringBuffer(250);
-      buffer.append("Unacceptable XINS call request, due to ");
-      if (violationCount == 1) {
-         buffer.append(" 1 constraint violation: ");
-      } else {
-         buffer.append(violationCount);
-         buffer.append(" constraint violations: ");
-      }
-
-      // TODO: Make sure violations are on input constraints only
-
-      // Loop through the list of violations
-      for (int i = 0; i < violationCount; i++) {
-         Object elem = violations.get(i);
-
-         // Disallow null elements
-         if (elem == null) {
-            throw new IllegalArgumentException("violations[" + i + "] == null");
-
-         // Disallow other than ConstraintViolation instances
-         } else if (! (elem instanceof ConstraintViolation)) {
-            throw new IllegalArgumentException("violations["
-                                             + i
-                                             + "] is an instance of class "
-                                             + Utils.getClassName(elem));
-         }
-
-         // Disallow duplicates
-         int existing = violations.indexOf(elem);
-         if (existing != i) {
-            throw new IllegalArgumentException("violations[" + existing + "].equals(violations[" + i + "])");
-         }
-
-         ConstraintViolation violation = (ConstraintViolation) elem;
-         buffer.append(violation.getDescription());
-         buffer.append(' ');
-      }
-
-      // Append function name
-      buffer.append("Request is to function \"");
-      buffer.append(request.function().getName());
-      buffer.append("\" with ");
-
-      // Determine parameter names, types and values
-      Map paramTypes  = request.parameterTypeMap();
-      Map paramValues = request.parameterValueMap();
-
-      // Loop through all defined parameters
-      Iterator iterator = paramTypes.keySet().iterator();
-      boolean hadOne = false;
-      while (iterator.hasNext()) {
-
-         // For this parameter, get name, type and value
-         String name  = (String) iterator.next();
-         Type   type  = (Type)   paramTypes.get(name);
-         Object value = paramValues.get(name);
-
-         // If there is a value, then print the name and value
-         if (value != null) {
-            if (! hadOne) {
-               buffer.append("parameters ");
-               hadOne = true;
-            }
-
-            // Print the parameter name
-            buffer.append(WhislEncoding.encode(name));
-            buffer.append('=');
-
-            // Print the parameter value
-            String valueString;
-            try {
-               valueString = WhislEncoding.encode(type.toString(value));
-            } catch (TypeValueException exception) {
-               valueString = "<invalid>";
-            }
-            buffer.append(valueString);
-            buffer.append('&');
-         }
-      }
-
-      if (hadOne) {
-         // Remove last ampersand
-         buffer.crop(buffer.getLength() - 1);
-      } else {
-         buffer.append("no parameters.");
-      }
-
-      return buffer.toString();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -194,38 +64,20 @@ extends RuntimeException {
     * Constructs a new <code>UnacceptableRequestException</code> using the
     * specified <code>AbstractCAPICallRequest</code>.
     *
-    * <p>The list of violated constraints is passed. This list will be stored
-    * internally in this exception instance.
-    *
     * @param request
     *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
     *    never <code>null</code>.
     *
-    * @param violations
-    *    a list of constraint violations, cannot be <code>null</code> and
-    *    should contain at least one element; all elements should be instances
-    *    of class {@link ConstraintViolation}.
-    *
     * @throws IllegalArgumentException
-    *    if <code>request                ==   null
-    *          || violations             ==   null
-    *          || violations.size()      &lt; 1
-    *          || violations[<em>i</em>] ==   null
-    *          || !(violations[<em>i</em>] instanceof ConstraintViolation)
-    *          || violations[<em>i</em>] == violations[<em>j</em>])</code>,
-    *    <br>where <code>0 &lt;= <em>i</em> &lt; violations.size()</code>
-    *    <br>and <code>0 &lt;= <em>j</em> &lt; violations.size()</code>.
+    *    if <code>request == null</code>.
     */
-   UnacceptableRequestException(AbstractCAPICallRequest request,
-                                List                    violations)
+   public UnacceptableRequestException(AbstractCAPICallRequest request)
    throws IllegalArgumentException {
 
-      // Construct a detail message and pass that up
-      super(createMessage(request, violations));
-
+      MandatoryArgumentChecker.check("request", request);
+      
       // Store the information
       _request    = request;
-      _violations = new ProtectedList(SECRET_KEY, violations);
    }
 
 
@@ -239,15 +91,114 @@ extends RuntimeException {
    private final AbstractCAPICallRequest _request;
 
    /**
-    * The list of constraint violations. Cannot be <code>null</code>. Every
-    * element is an instance of class {@link ConstraintViolation}.
+    * The DataElement containing the errors.
     */
-   private final ProtectedList _violations;
+   private DataElement _errors = new DataElement(null, "data");
 
-
+   /**
+    * The error message.
+    */
+   private String _message;
+   
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   // TODO: Add "List getViolatedConstraints()"
+   public String getMessage() {
+      if (_message == null) {
+         _message = InvalidRequestException.createMessage(_errors);
+      }
+      return _message;
+   }
+   
+   /**
+    * Adds to the response a paramater that is missing.
+    *
+    * @param parameter
+    *    the missing parameter.
+    */
+   public void addMissingParameter(String parameter) {
+      DataElement missingParam = new DataElement(null, "missing-param");
+      missingParam.setAttribute(null, "param", parameter);
+      _errors.addChild(missingParam);
+   }
+
+   /**
+    * Adds to the response an attribute that is missing in an element.
+    *
+    * @param attribute
+    *    the missing attribute.
+    *
+    * @param element
+    *    the element in which the attribute is missing.
+    */
+   public void addMissingParameter(String attribute, String element) {
+      DataElement missingParam = new DataElement(null, "missing-param");
+      missingParam.setAttribute(null, "param", attribute);
+      missingParam.setAttribute(null, "element", element);
+      _errors.addChild(missingParam);
+   }
+
+   /**
+    * Adds an invalid value for a specified type.
+    *
+    * @param parameter
+    *    the parameter passed by the user.
+    *
+    * @param type
+    *    the type which this parameter should be compliant with.
+    */
+   public void addInvalidValueForType(String parameter, String type) {
+      DataElement invalidValue = new DataElement(null, "invalid-value-for-type");
+      invalidValue.setAttribute(null, "param", parameter);
+      invalidValue.setAttribute(null, "type", type);
+      _errors.addChild(invalidValue);
+   }
+
+   /**
+    * Adds an invalid value for a specified type.
+    *
+    * @param attribute
+    *    the attribute passed by the user.
+    *
+    * @param type
+    *    the type which this parameter should be compliant with.
+    *
+    * @param element
+    *    the element in which the attribute is missing.
+    */
+   public void addInvalidValueForType(String attribute, String type, String element) {
+      DataElement invalidValue = new DataElement(null, "invalid-value-for-type");
+      invalidValue.setAttribute(null, "param", attribute);
+      invalidValue.setAttribute(null, "type", type);
+      invalidValue.setAttribute(null, "element", element);
+      _errors.addChild(invalidValue);
+   }
+
+   /**
+    * Adds an invalid combination of parameters.
+    *
+    * @param type
+    *    the type of the combination.
+    *
+    * @param elements
+    *    list of the elements in the combination passed as a list of
+    *    {@link String} objects.
+    */
+   public void addParamCombo(String type, List elements) {
+
+      DataElement paramCombo = new DataElement(null, "param-combo");
+      paramCombo.setAttribute(null, "type", type);
+
+      // Iterate ober all elements
+      Iterator itElements = elements.iterator();
+      while(itElements.hasNext()) {
+         DataElement param = new DataElement(null, "param");
+         param.setAttribute(null, "name", (String) itElements.next());
+         paramCombo.addChild(param);
+      }
+
+      _errors.addChild(paramCombo);
+   }
 }

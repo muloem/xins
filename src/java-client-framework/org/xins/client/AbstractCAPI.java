@@ -302,7 +302,10 @@ public abstract class AbstractCAPI extends Object {
       MandatoryArgumentChecker.check("request", request);
 
       // Check whether request is acceptable
-      request.validate();
+      UnacceptableRequestException unacceptable = request.checkParameters();
+      if (unacceptable != null) {
+         throw unacceptable;
+      }
 
       // Execute the call request
       return _caller.call(request.xinsCallRequest());

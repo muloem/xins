@@ -24,6 +24,8 @@ import org.xins.common.constraint.ConstraintViolation;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 
+import org.xins.common.xml.Element;
+
 /**
  * Base class for generated CAPI function request classes.
  *
@@ -35,18 +37,11 @@ import org.xins.common.types.TypeValueException;
  *
  * @since XINS 1.2.0
  */
-public abstract class AbstractCAPICallRequest
-extends Object {
+public abstract class AbstractCAPICallRequest {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = AbstractCAPICallRequest.class.getName();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -56,47 +51,19 @@ extends Object {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /**
-    * Creates a new <code>AbstractCAPICallRequest</code> object.
-    *
-    * @param function
-    *    representation of the function to call, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>function == null</code>.
-    */
-   protected AbstractCAPICallRequest(AbstractCAPIFunction function)
-   throws IllegalArgumentException {
-      _function          = function;
-      _constraintContext = new ConstraintContext();
-      _parameterTypes    = new HashMap();
-   }
-
-
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 
    /**
-    * Representation of the function to call. Never <code>null</code>.
+    * The name the function to call, never <code>null</code>.
     */
-   private final AbstractCAPIFunction _function;
-
-   /**
-    * Constraint context. Never <code>null</code>.
-    */
-   private final ConstraintContext _constraintContext;
+   private final String _functionName;
 
    /**
     * The call configuration. Initially <code>null</code>.
     */
    private XINSCallConfig _callConfig;
-
-   /**
-    * Mapping from parameter names to their associated types. This field is
-    * initialized by the constructor and never <code>null</code>.
-    */
-   private final HashMap _parameterTypes;
 
    /**
     * Mapping from parameter names to either their associated string values or
@@ -105,36 +72,29 @@ extends Object {
     */
    private HashMap _parameterValues;
 
+   /**
+    * The data section of the function if any, can be <code>null</code>.
+    */
+   private Element _dataSection;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    /**
-    * Sets the type for the specified parameter.
+    * Creates a new <code>AbstractCAPICallRequest</code>.
     *
-    * @param name
-    *    the name of the parameter to set the type for, cannot be
-    *    <code>null</code>.
-    *
-    * @param type
-    *    the type of the parameter, cannot be <code>null</code>.
+    * @param functionName
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null || type == null</code>.
+    *    if <code>functionName == null</code>.
     */
-   protected final void parameterType(String name, Type type)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("name",  name, "type", type);
-
-      // TODO: Make sure there is no type defined for the param yet
-
-      // Store the association
-      _parameterTypes.put(name, type);
+   protected AbstractCAPICallRequest(String functionName) {
+      MandatoryArgumentChecker.check("functionName", functionName);
+      _functionName = functionName;
    }
-
+   
    /**
     * Sets the specified parameter to the specified value.
     *
@@ -142,12 +102,13 @@ extends Object {
     *    the name of the parameter to set, cannot be <code>null</code>.
     *
     * @param value
-    *    the value of the parameter, can be <code>null</code>.
+    *    the String representation of the value of the parameter, 
+    *    can be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   protected final void parameterValue(String name, Object value)
+   protected final void parameterValue(String name, String value)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -170,43 +131,6 @@ extends Object {
    }
 
    /**
-    * Returns the <code>AbstractCAPIFunction</code> instance representing the
-    * function to call.
-    *
-    * @return
-    *    the function to call, never <code>null</code>.
-    */
-   final AbstractCAPIFunction function() {
-      return _function;
-   }
-
-   /**
-    * Returns the parameter type map. This is a mapping from parameter names
-    * to their associated types.
-    *
-    * @return
-    *    the parameter type map, never <code>null</code>.
-    */
-   final Map parameterTypeMap() {
-      return _parameterTypes;
-   }
-
-   /**
-    * Returns the parameter value map. This is a mapping from parameter names
-    * to their associated values.
-    *
-    * @return
-    *    the parameter value map, never <code>null</code>.
-    */
-   final Map parameterValueMap() {
-      if (_parameterValues == null) {
-         return Collections.EMPTY_MAP;
-      } else {
-         return _parameterValues;
-      }
-   }
-
-   /**
     * Returns an appropriate <code>XINSCallRequest</code> object.
     *
     * @return
@@ -214,42 +138,26 @@ extends Object {
     */
    final XINSCallRequest xinsCallRequest() {
 
-      final String THIS_METHOD = "xinsCallRequest()";
-
       // Construct a XINSCallRequest object
-      XINSCallRequest request = new XINSCallRequest(_function.getName());
+      XINSCallRequest request = new XINSCallRequest(_functionName);
 
       // Set all parameters on the request, if any
       if (_parameterValues != null && _parameterValues.size() > 0) {
 
          // Loop over all parameters in the map containing the types
-         Iterator iterator = _parameterTypes.keySet().iterator();
+         Iterator iterator = _parameterValues.keySet().iterator();
          while (iterator.hasNext()) {
 
             // Determine parameter name, type and value
             String name  = (String) iterator.next();
-            Type   type  = (Type)   _parameterTypes.get(name);
-            Object value = _parameterValues.get(name);
+            String value = (String) _parameterValues.get(name);
 
-            if (value != null) {
-               // Convert the value to a string
-               String valueString;
-               try {
-                  valueString = type.toString(value);
-               } catch (TypeValueException exception) {
-                  throw Utils.logProgrammingError(
-                     CLASSNAME,
-                     THIS_METHOD,
-                     CLASSNAME,
-                     THIS_METHOD,
-                     null,
-                     exception);
-               }
-
-               // Set the parameter on the request
-               request.setParameter(name, valueString);
-            }
+            // Set the parameter on the request
+            request.setParameter(name, value);
          }
+      }
+      if (_callConfig != null) {
+         request.setXINSCallConfig(_callConfig);
       }
 
       return request;
@@ -280,105 +188,55 @@ extends Object {
    }
 
    /**
+    * Sets the data section. 
+    * If the value is <code>null</code> any previous data section set is removed.
+    * If a previous value was entered, the value will be overridden by this new
+    * value.
+    *
+    * @param dataSection
+    *    The data section.
+    */
+   protected final void putDataSection(Element dataSection) {
+      _dataSection = dataSection;
+   }
+
+   /**
+    * Gets the value of a parameter or <code>null</code> if this parameter
+    * is not set.
+    *
+    * @return
+    *    The value of a parameter or <code>null</code> if this parameter
+    *    is not set.
+    */
+   protected final String getParameter(String parameterName) {
+      if (_parameterValues == null) {
+         return null;
+      } else {
+         return (String) _parameterValues.get(parameterName);
+      }
+   }
+   
+   /**
+    * Gets the data section.
+    *
+    * @return
+    *    The data section or <code>null</code> if there is no data section.
+    */
+   protected Element getDataElement() {
+      return _dataSection;
+   }
+   
+   /**
     * Validates whether this request is considered acceptable. If any
     * constraints are violated, then an {@link UnacceptableRequestException}
-    * is thrown.
+    * is returned.
     *
     * <p>This method is called when the request is executed, but it may also
     * be called in advance.
     *
-    * @throws UnacceptableRequestException
+    * @return UnacceptableRequestException
     *    if this request is considered unacceptable.
     */
-   public final void validate()
-   throws UnacceptableRequestException {
+   public abstract UnacceptableRequestException checkParameters();
 
-      // Retrieve all input constrainst
-      List constraints = _function.getInputConstraints();
-
-      // Check constraints and build list of violations (lazily initialized)
-      ArrayList violations = null;
-      int constraintCount = constraints.size();
-      for (int i = 0; i < constraintCount; i++) {
-
-         // Get the constraint from the collection
-         Constraint constraint = (Constraint) constraints.get(i);
-
-         // Validate it
-         ConstraintViolation violation = constraint.check(_constraintContext);
-
-         if (violation != null) {
-
-            // Lazily initialize the list of violations
-            if (violations == null) {
-               violations = new ArrayList(constraintCount - i);
-            }
-
-            violations.add(violation);
-         }
-      }
-
-      // If there is at least one violation, then fail
-      if (violations != null) {
-         throw new UnacceptableRequestException(this, violations);
-      }
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Implementation of a <code>ConstraintContext</code> based on an
-    * <code>AbstractCAPICallRequest</code>.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    */
-   private class ConstraintContext
-   extends Object
-   implements org.xins.common.constraint.ConstraintContext {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>ConstraintContext</code> instance.
-       */
-      private ConstraintContext() {
-         // empty
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Retrieves the value of the specified parameter.
-       *
-       * @param name
-       *    the name of the parameter, cannot be <code>null</code>.
-       *
-       * @return
-       *    the value of the parameter, possibly be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>parameterName == null</code>.
-       */
-      public Object getParameter(String name)
-      throws IllegalArgumentException {
-         if (_parameterValues == null) {
-            return null;
-         } else {
-            return _parameterValues.get(name);
-         }
-      }
-   }
 }
