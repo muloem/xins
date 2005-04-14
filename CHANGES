@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 
+* XINS/Java Common Library:
+  - Removed the constraint package as no longer used.
+
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
 
