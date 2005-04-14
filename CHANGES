@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 * Build- and release-process:
   - The tests-ui, checkstyle and j2h targets do not need the -lib lib 
     parameter anymore.
+  - Removed the certificate as it's not used.
 
 * Libraries:
   - Upgrated HTTPClient to 3.0 RC2.
