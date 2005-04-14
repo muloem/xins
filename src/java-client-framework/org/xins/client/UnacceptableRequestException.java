@@ -16,9 +16,6 @@ import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedList;
 
-import org.xins.common.constraint.Constraint;
-import org.xins.common.constraint.ConstraintViolation;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.WhislEncoding;
 

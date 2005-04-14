@@ -18,9 +18,6 @@ import org.xins.common.Utils;
 
 import org.xins.common.collections.CollectionUtils;
 
-import org.xins.common.constraint.Constraint;
-import org.xins.common.constraint.ConstraintViolation;
-
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 
