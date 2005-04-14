@@ -23,16 +23,8 @@
 	for this task is not available.
 	-->
 	<target name="-checkstyle-task">
-		<available classname="com.puppycrawl.tools.checkstyle.CheckStyleTask" property="checkstyle.available">
-			<classpath>
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
-		</available>
-		<fail unless="checkstyle.available" message="Checkstyle not available" />
 		<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
-			<classpath>
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath location="lib/checkstyle.jar" />
 		</taskdef>
 	</target>
 
@@ -41,9 +33,9 @@
 	class for this task is not available.
 	-->
 	<target name="-j2h-task">
-		<available classname="j2h" property="j2h.available" />
-		<fail unless="j2h.available" message="Java2HTML not available" />
-		<taskdef name="java2html" classname="com.java2html.Java2HTMLTask"/>
+		<taskdef name="java2html" classname="com.java2html.Java2HTMLTask">
+			<classpath location="lib/j2h.jar" />
+		</taskdef>
 	</target>
 
 	<!--
@@ -445,7 +437,7 @@ ${sf.file}</fail>
 		</ant>
 	</target>
 
-	<target name="classes-tests" depends="-junit-task,java" description="Compiles the test cases">
+	<target name="classes-tests" depends="java" description="Compiles the test cases">
 		<!-- Compiles the example used for the tests -->
 		<!--delete dir="src/tests/build" /-->
 		<ant antfile="${basedir}/src/ant/make-build.xml" dir="src/tests">
@@ -479,7 +471,7 @@ ${sf.file}</fail>
 		</javac>
 	</target>
 
-	<target name="do-tests" depends="classes-tests" description="Runs the unit tests">
+	<target name="do-tests" depends="-junit-task,classes-tests" description="Runs the unit tests">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		
@@ -536,7 +528,7 @@ ${sf.file}</fail>
 		</java>
 	</target>
 	
-	<target name="do-perftests" depends="classes-tests" description="Runs the performance tests">
+	<target name="do-perftests" depends="-junit-task,classes-tests" description="Runs the performance tests">
 		<mkdir dir="build/perftestresults" />
 		<mkdir dir="build/perftestresults/xml" />
 		<junit printsummary="true" failureproperty="perftests.failed">
@@ -589,7 +581,7 @@ ${sf.file}</fail>
 		</instrument>
 	</target>
 
-	<target name="coverage" depends="classes-tests, -prepare-coverage">
+	<target name="coverage" depends="-junit-task, classes-tests, -prepare-coverage">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
@@ -1191,7 +1183,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="   refer to the directory containing the Docbook XSLT files."        />
 	</target>
 
-	<target name="netbeans-debug" depends="classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
+	<target name="netbeans-debug" depends="-junit-task, classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
 		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket">
 			<classpath>
 				<pathelement location="build/classes/tests" />
