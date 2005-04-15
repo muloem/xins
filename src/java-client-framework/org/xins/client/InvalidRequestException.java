@@ -27,6 +27,8 @@ import org.xins.common.text.FastStringBuffer;
 public class InvalidRequestException
 extends StandardErrorCodeException {
 
+   // TODO: Look at Issue class. It's now private. Should it be used?
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -170,6 +172,7 @@ extends StandardErrorCodeException {
       }
    }
 
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -216,6 +219,7 @@ extends StandardErrorCodeException {
    //-------------------------------------------------------------------------
 
    // TODO: Add methods for retrieval of details
+
 
    //-------------------------------------------------------------------------
    // Inner classes
@@ -282,7 +286,7 @@ extends StandardErrorCodeException {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
-   public static final class MissingParameterIssue
+   private static final class MissingParameterIssue
    extends Issue {
 
       //----------------------------------------------------------------------
@@ -318,5 +322,7 @@ extends StandardErrorCodeException {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      // XXX: Add 'String getParameter()'
    }
 }
