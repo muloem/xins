@@ -1088,6 +1088,27 @@ APIs in this project are:
 					<param name="package"      expression="{$clientPackage}" />
 				</style>
 			</xsl:if>
+			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+				<xmlvalidate warn="false">
+					<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
+					<xmlcatalog refid="all-dtds" />
+				</xmlvalidate>
+				<style
+				basedir="{$api_specsdir}"
+				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
+				style="{$xins_home}/src/xslt/java-capi/resultcode_to_java.xslt"
+				extension="Exception.java"
+				includes="{$resultcodeIncludes}">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}"  />
+					<param name="project_home" expression="{$project_home}"  />
+					<param name="project_file" expression="{$project_file}"  />
+					<param name="specsdir"     expression="{$api_specsdir}"  />
+					<param name="api"          expression="{$api}"           />
+					<param name="api_file"     expression="{$api_file}"      />
+					<param name="package"      expression="{$clientPackage}" />
+				</style>
+			</xsl:if>
 		</target>
 
 		<target name="jar-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
