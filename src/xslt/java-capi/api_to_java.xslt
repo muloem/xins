@@ -211,7 +211,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
 
    /**
-    * Returns the version of XINS used to build this CAPI class.
+    * Returns the version of XINS used to generate this CAPI class.
     *
     * @return
     *    the version as a {@link String}, e.g. <code>"]]></xsl:text>
@@ -224,8 +224,98 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:value-of select="$xins_version" />
 			<xsl:text><![CDATA[";
    }
-}
+
+   /**
+    * Creates an <code>AbstractCAPIErrorCodeException</code> for the specified
+    * error code. If the specified error code is not recognized, then
+    * <code>null</code> is returned.
+    *
+    * @param request
+    *    the original request, should not be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, should not
+    *    be <code>null</code>.
+    *
+    * @param duration
+    *    the call duration in milliseconds, should be &gt;= 0.
+    *
+    * @param resultData
+    *    the result data, should not be <code>null</code> and should have an
+    *    error code set.
+    *
+    * @return
+    *    if the error code is recognized, then a matching
+    *    {@link org.xins.client.AbstractCAPIErrorCodeException} instance,
+    *    otherwise <code>null</code>.
+    *
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>request                   ==   null
+    *          || target                    ==   null
+    *          || duration                  &lt; 0
+    *          || resultData                ==   null
+    *          || resultData.getErrorCode() ==   null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   protected final org.xins.client.AbstractCAPIErrorCodeException
+   createErrorCodeException(org.xins.client.XINSCallRequest          request,
+                            org.xins.common.service.TargetDescriptor target,
+                            long                                     duration,
+                            org.xins.client.XINSCallResultData       resultData)
+   throws java.lang.IllegalArgumentException {
+
+      // Check preconditions
+      org.xins.common.MandatoryArgumentChecker.check(
+         "request", request, "target",  target, "resultData", resultData);
+      if (duration < 0) {
+         throw new java.lang.IllegalArgumentException("duration ("
+                                                     + duration + ") < 0");
+      }
+
+      // Determine the error code
+      java.lang.String __errorCode__ = resultData.getErrorCode();
+      if (resultData.getErrorCode() == null) {
+         throw new java.lang.IllegalArgumentException(
+            "resultData.getErrorCode() == null");
+      }
 ]]></xsl:text>
+      <xsl:choose>
+         <xsl:when test="resultcode">
+            <xsl:for-each select="resultcode">
+               <xsl:text>
+      </xsl:text>
+               <xsl:choose>
+                  <xsl:when test="position() = 1">
+                     <xsl:text>
+      if ("</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                     <xsl:text>
+      } else if ("</xsl:text>
+                  </xsl:otherwise>
+               </xsl:choose>
+               <xsl:value-of select="@name" />
+               <xsl:text>".equals(__errorCode__)) {
+         return new </xsl:text>
+               <xsl:value-of select="@name" />
+               <xsl:text>Exception(request, target, duration, resultData);</xsl:text>
+            </xsl:for-each>
+            <xsl:text>
+      } else {
+         return null;
+      }</xsl:text>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:text>
+      // No error codes defined for this API
+      return null;</xsl:text>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text>
+   }
+}
+</xsl:text>
 	</xsl:template>
 
 
@@ -415,10 +505,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
       return new </xsl:text>
 
-<!--
-TODO for Ernst: Catch all expected error codes and throw a specific error code exception
--->
-
 		<xsl:value-of select="$returnType" />
 		<xsl:text>(result);</xsl:text>
 		<xsl:text>
@@ -525,10 +611,6 @@ TODO for Ernst: Catch all expected error codes and throw a specific error code e
       org.xins.client.XINSCallResult result = caller.call(request);
 
       return new </xsl:text>
-
-<!--
-TODO for Ernst: Catch all expected error codes and throw a specific error code exception
--->
 
 		<xsl:value-of select="$returnType" />
 		<xsl:text>(result);</xsl:text>
