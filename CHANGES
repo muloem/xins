@@ -13,12 +13,13 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
-  - Improved Javadoc comments for AbstractCAPIErrorCodeException constructor.
+  - Improved Javadoc here and there.
 
 * Generation of client-side Java code:
+  - Implemented SF.net RFE #1054504: One constant or class per error code.
   - The parameters set in the generated Request object are now checked the 
     same way as they are in the generated code on the server side.
-  - Fixed @link in Javadoc for generated CAPI class.
+  - Improved Javadoc here and there.
 
 * Build- and release-process:
   - The tests-ui, checkstyle and j2h targets no longer need the -lib lib
