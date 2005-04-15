@@ -65,6 +65,11 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
    
+   /**
+    * Cache for the templates.
+    */
+   private final static Map TEMPLATE_CACHE = new HashMap();
+
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -103,11 +108,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * The XSLT transformer.
     */
    private final TransformerFactory _factory;
-
-   /**
-    * Cache for the templates.
-    */
-   private final static Map _templateCache = new HashMap();
 
 
    //-------------------------------------------------------------------------
@@ -160,18 +160,18 @@ class XSLTCallingConvention extends StandardCallingConvention {
       try {
          Templates template = null;
          if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
-            _templateCache.clear();
+            TEMPLATE_CACHE.clear();
             PrintWriter out = httpResponse.getWriter();
             out.write("Done.");
             out.close();
             return;
          }
-         if (!_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
-            template = (Templates) _templateCache.get(xsltLocation);
+         if (!_cacheTemplates && TEMPLATE_CACHE.containsKey(xsltLocation)) {
+            template = (Templates) TEMPLATE_CACHE.get(xsltLocation);
          } else {
             template = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
             if (_cacheTemplates) {
-               _templateCache.put(xsltLocation, template);
+               TEMPLATE_CACHE.put(xsltLocation, template);
             }
          }
          Transformer xformer = template.newTransformer();
@@ -216,6 +216,9 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    class XsltURIResolver implements URIResolver {
 
+      /**
+       * The previous base URL if any.
+       */
       private String _base;
       
       /**

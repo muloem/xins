@@ -408,11 +408,19 @@ extends Object {
     * Determines the number of non-expired entries in the specified
     * <code>HashMap</code>. If any entries are expired, they will be removed.
     *
+    * @param map
+    *    the map in which the non-expired entries are counted.
+    *
     * @return
     *    the size of the specified map, always &gt;= 0.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>map == null</code>.
     */
-   private int sizeOf(HashMap map) {
+   private int sizeOf(HashMap map) throws IllegalArgumentException {
 
+      MandatoryArgumentChecker.check("map", map);
+      
       int size = 0;
 
       synchronized (_lock) {

@@ -203,7 +203,7 @@ extends AbstractPropertyReader {
     * Copies all entries from the specified property reader into this one.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
-    * {@link IllegalArgumentException} is thrown. Note that an identity check
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity check
     * is done, <em>not</em> an equality check. So
     * {@link Object#equals(Object)} is not used, but the <code>==</code>
     * operator is.
@@ -211,6 +211,10 @@ extends AbstractPropertyReader {
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
     *    the constructor, cannot be <code>null</code>.
+    *
+    * @param source
+    *    the {@link PropertyReader} containing the key/value pairs to copy to 
+    *    this object, cannot be <code>null</code>.
     *
     * @throws IncorrectSecretKeyException
     *    if <code>secretKey</code> does not match the secret key passed to the

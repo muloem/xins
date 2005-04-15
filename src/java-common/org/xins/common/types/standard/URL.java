@@ -48,6 +48,10 @@ public final class URL extends Type {
     * @return
     *    the original {@link String}.
     *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    *
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     */

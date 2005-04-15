@@ -317,6 +317,6 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public boolean isSecure() {
-      return true;
+      return false;
    }
 }

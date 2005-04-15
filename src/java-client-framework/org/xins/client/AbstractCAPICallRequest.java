@@ -83,11 +83,13 @@ public abstract class AbstractCAPICallRequest {
     * Creates a new <code>AbstractCAPICallRequest</code>.
     *
     * @param functionName
+    *    the name of the function used with this request.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   protected AbstractCAPICallRequest(String functionName) {
+   protected AbstractCAPICallRequest(String functionName) 
+   throws IllegalArgumentException{
       MandatoryArgumentChecker.check("functionName", functionName);
       _functionName = functionName;
    }
@@ -200,6 +202,9 @@ public abstract class AbstractCAPICallRequest {
    /**
     * Gets the value of a parameter or <code>null</code> if this parameter
     * is not set.
+    *
+    * @param parameterName
+    *    The name of the parameter, can be <code>null</code>.
     *
     * @return
     *    The value of a parameter or <code>null</code> if this parameter

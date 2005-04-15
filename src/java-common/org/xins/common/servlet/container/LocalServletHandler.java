@@ -52,6 +52,8 @@ public class LocalServletHandler {
     * @param warFile
     *    The WAR file containing the Servlet to load.
     *
+    * @return the servlet handler.
+    *
     * @throws ServletException
     *    if the Servlet cannot be created.
     */
@@ -66,8 +68,14 @@ public class LocalServletHandler {
     *
     * @param warFile
     *    The WAR file containing the Servlet to load.
+    *
     * @param mode
-    *    The way that the classes will be loaded.
+    *    The way that the classes will be loaded. The possible values are
+    *    <code>USE_CURRENT_CLASSPATH</code>, <code>USE_CLASSPATH_LIB</code>,
+    *    <code>USE_XINS_LIB</code>, <code>USE_WAR_LIB</code>,
+    *    <code>USE_WAR_EXTERNAL_LIB</code>.
+    *
+    * @return the servlet handler.
     *
     * @throws ServletException
     *    if the Servlet cannot be created.
@@ -141,6 +149,12 @@ public class LocalServletHandler {
     *    the location of the war file containing the Servlet, cannot be
     *    <code>null</code>.
     *
+    * @param mode
+    *    the mode in which the servlet should be loaded. The possible values are
+    *    <code>USE_CURRENT_CLASSPATH</code>, <code>USE_CLASSPATH_LIB</code>,
+    *    <code>USE_XINS_LIB</code>, <code>USE_WAR_LIB</code>,
+    *    <code>USE_WAR_EXTERNAL_LIB</code>.
+    *
     * @throws ServletException
     *    if the Servlet cannot be created.
     */
@@ -152,11 +166,6 @@ public class LocalServletHandler {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * This Servlet handler.
-    */
-   private static LocalServletHandler _servlet;
 
    /**
     * The Servlet started by this Servlet handler.
@@ -173,6 +182,15 @@ public class LocalServletHandler {
     *
     * @param warFile
     *    the location of the war file, cannot be <code>null</code>.
+    *
+    * @param mode
+    *    the mode in which the servlet should be loaded. The possible values are
+    *    <code>USE_CURRENT_CLASSPATH</code>, <code>USE_CLASSPATH_LIB</code>,
+    *    <code>USE_XINS_LIB</code>, <code>USE_WAR_LIB</code>,
+    *    <code>USE_WAR_EXTERNAL_LIB</code>.
+    *
+    * @throws ServletException
+    *    if the Servlet cannot be loaded.
     */
    public void initServlet(File warFile, int mode) throws ServletException {
       // create and initiliaze the Servlet
@@ -197,11 +215,18 @@ public class LocalServletHandler {
     *
     * @param warFile
     *    The WAR file containing the Servlet.
+    *
     * @param mode
-    *    The way that the Servlet and the libraries should be loaded.
+    *    the mode in which the servlet should be loaded. The possible values are
+    *    <code>USE_CURRENT_CLASSPATH</code>, <code>USE_CLASSPATH_LIB</code>,
+    *    <code>USE_XINS_LIB</code>, <code>USE_WAR_LIB</code>,
+    *    <code>USE_WAR_EXTERNAL_LIB</code>.
     *
     * @return
     *    The Class loader to use to load the Servlet.
+    *
+    * @throws IOException
+    *    if the file cannot be read or is incorrect.
     */
    private ClassLoader getServletClassLoader(File warFile, int mode) throws IOException {
       if (mode == USE_CURRENT_CLASSPATH) {
@@ -268,6 +293,9 @@ public class LocalServletHandler {
     * @return
     *    The extracted file. The created file is a temporary file in the 
     *    temporary directory.
+    *
+    * @throws IOException
+    *    if the JAR file cannot be read or is incorrect.
     */
    private File unpack(JarInputStream jarStream, String entryName) throws IOException {
       String libName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.length() - 4);
@@ -302,6 +330,9 @@ public class LocalServletHandler {
     *
     * @return
     *    the servlet response.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly by the servlet.
     */
    public XINSServletResponse query(String url) throws IOException {
       Log.log_1504(url);
@@ -323,6 +354,6 @@ public class LocalServletHandler {
    public void close() {
       Log.log_1507();
       _apiServlet.destroy();
-      _servlet = null;
+      SERVLET_MAP.clear();
    }
 }

@@ -92,14 +92,14 @@ public class HTTPServletHandler {
     * @param warFile
     *    the war file of the application to deploy, cannot be <code>null</code>.
     *
-    * @throws IOException
+    * @throws ServletException
     *    if the servlet cannot be initialized.
     *
     * @throws IOException
-    *    if the servlet cannot be started.
+    *    if the servlet container cannot be started.
     */
    public HTTPServletHandler(File warFile)
-   throws IOException, ServletException {
+   throws ServletException, IOException {
       this(warFile, DEFAULT_PORT_NUMBER);
    }
 
@@ -113,14 +113,14 @@ public class HTTPServletHandler {
     * @param port
     *    the port of the web server, cannot be <code>null</code>.
     *
-    * @throws IOException
+    * @throws ServletException
     *    if the servlet cannot be initialized.
     *
     * @throws IOException
-    *    if the servlet cannot be started.
+    *    if the servlet container cannot be started.
     */
    public HTTPServletHandler(File warFile, int port)
-   throws IOException, ServletException {
+   throws ServletException, IOException {
       this(warFile, port, true);
    }
 
@@ -138,14 +138,14 @@ public class HTTPServletHandler {
     *    <code>true</code> if the thread listening to connection should be a 
     *    deamon thread, <code>false</code> otherwise.
     *
-    * @throws IOException
+    * @throws ServletException
     *    if the servlet cannot be initialized.
     *
     * @throws IOException
-    *    if the servlet cannot be started.
+    *    if the servlet container cannot be started.
     */
    public HTTPServletHandler(File warFile, int port, boolean deamon)
-   throws IOException, ServletException {
+   throws ServletException, IOException {
 
       // Create the servlet
       _servletHandler = LocalServletHandler.getInstance(warFile);
@@ -223,6 +223,9 @@ public class HTTPServletHandler {
     *
     * @param client
     *    the connection with the client.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly.
     */
    public void serviceClient(Socket client) throws IOException {
       BufferedOutputStream outbound = null;
@@ -256,6 +259,9 @@ public class HTTPServletHandler {
     *
     * @return
     *    the HTTP result to send back to the client.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly.
     */
    public String httpQuery(BufferedReader input) throws IOException {
       String inputLine;
@@ -312,6 +318,10 @@ public class HTTPServletHandler {
 
       /**
        * Create the thread.
+       * 
+       * @param deamon
+       *    <code>true</code> if the server should be a deamon thread,$
+       *    <code>false</code> otherwise.
        */
       public SocketAcceptor(boolean deamon) {
          setDaemon(deamon);

@@ -617,9 +617,6 @@ public abstract class ServiceCaller extends Object {
     * @throws IllegalArgumentException
     *    if <code>config == null</code>.
     *
-    * @throws ProgrammingException
-    *    if this service caller used the old-style (XINS 1.0) constructor.
-    *
     * @since XINS 1.2.0
     */
    protected final void setCallConfig(CallConfig config)
@@ -951,7 +948,7 @@ public abstract class ServiceCaller extends Object {
     *    This method is guaranteed not to be removed before XINS 2.0.0.
     */
    protected final CallResult doCall(CallRequest request)
-   throws IllegalArgumentException, CallException {
+   throws IllegalArgumentException, IllegalStateException, CallException {
 
       final String THIS_METHOD = "doCall("
                                + CallRequest.class.getName()

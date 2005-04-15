@@ -46,6 +46,9 @@ extends RuntimeException {
     *    the {@link TargetDescriptor} that has an unsupported protocol, cannot
     *    be <code>null</code>.
     *
+    * @return
+    *    the created message, never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>target == null</code>.
     */

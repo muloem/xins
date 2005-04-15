@@ -156,7 +156,7 @@ public abstract class AbstractCAPI extends Object {
       // TODO: Check validity of API name
 
       // Determine property name
-      final String propName = "capis." + apiName;
+      String propName = "capis." + apiName;
 
       // Construct a XINS caller object
       _caller = new XINSServiceCaller();
@@ -334,6 +334,9 @@ public abstract class AbstractCAPI extends Object {
     *    if the error code is recognized, then a matching
     *    {@link AbstractCAPIErrorCodeException} instance, otherwise
     *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null || target == null || duration < 0 || resultData == null</code>.
     *
     * @since XINS 1.2.0
     */

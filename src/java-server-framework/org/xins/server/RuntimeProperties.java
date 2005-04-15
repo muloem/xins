@@ -40,6 +40,20 @@ public class RuntimeProperties {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Initialize the runtime properties. This method should be overwritten
+    * by a generated class if any runtime properties is declared in the 
+    * impl.xml file.
+    *
+    * @param runtimeSettings
+    *    the initialization properties, not <code>null<code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is not given.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value of a certain property is invalid.
+    */
    protected void init(org.xins.common.collections.PropertyReader runtimeSettings)
    throws MissingRequiredPropertyException, InvalidPropertyValueException {
    }

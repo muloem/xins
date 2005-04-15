@@ -478,7 +478,7 @@ extends HttpServlet {
     *    if the state change is considered invalid.
     */
    private void setState(State newState)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, IllegalStateException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
@@ -1376,6 +1376,17 @@ extends HttpServlet {
     * @return
     *    a {@link CallingConvention} object that matches the specified calling
     *    convention name, or <code>null</code> if no match is found.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if the created calling convention requires a bootstrap property that
+    *    is missing.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the created calling convention has a bootstrap property with an 
+    *    incorrect value.
+    *
+    * @throws BootstrapException
+    *    if an error occured during the bootstraping of the calling convention.
     */
    private CallingConvention createCallingConvention(String name) 
    throws MissingRequiredPropertyException,

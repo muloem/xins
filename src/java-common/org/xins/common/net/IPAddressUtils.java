@@ -166,9 +166,9 @@ public final class IPAddressUtils extends Object {
     */
    public static final String getLocalHost() {
       if (Utils.getJavaVersion() < 1.4) {
-         return getLocalHost_Java_1_3();
+         return getLocalHostJava13();
       } else {
-         return getLocalHost_Java_1_4();
+         return getLocalHostJava14();
       }
    }
 
@@ -180,7 +180,7 @@ public final class IPAddressUtils extends Object {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static final String getLocalHost_Java_1_3() {
+   public static final String getLocalHostJava13() {
       try {
          return InetAddress.getLocalHost().getHostName();
       } catch (UnknownHostException exception) {
@@ -198,7 +198,7 @@ public final class IPAddressUtils extends Object {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static final String getLocalHost_Java_1_4() {
+   public static final String getLocalHostJava14() {
       try {
          return InetAddress.getLocalHost().getCanonicalHostName();
       } catch (UnknownHostException unknownHostException) {
