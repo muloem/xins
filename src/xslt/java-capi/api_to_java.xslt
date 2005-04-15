@@ -381,7 +381,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws org.xins.client.UnacceptableRequestException
     *    if the request is considered to be unacceptable; this is determined
     *    by calling
-    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#validate() validate()}.
+    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#checkParameters() checkParameters()}.
     *
     * @throws org.xins.common.service.GenericCallException
     *    if the first call attempt failed due to a generic reason and all the
