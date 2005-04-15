@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 
 * XINS/Java Common Library:
   - Removed the constraint package as it is no longer used.
+  - Slightly improved log message 1506: Quoting the response, but not the HTTP
+    status code.
 
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
