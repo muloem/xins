@@ -10,10 +10,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.TargetDescriptor;
 
-/* 
- * Since XINS 1.1.0, this class is no longer final.
- * However, all methods still are.
- */
 /**
  * Exception that indicates that a result code was returned by the API call.
  *
@@ -24,6 +20,9 @@ import org.xins.common.service.TargetDescriptor;
  */
 public class UnsuccessfulXINSCallException
 extends XINSCallException {
+
+   // NOTE: Since XINS 1.1.0, this class is no longer final. However, all
+   //       methods still are.
 
    // XXX: Implement XINSCallResultData interface?
 
