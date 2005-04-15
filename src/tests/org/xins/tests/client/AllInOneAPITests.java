@@ -299,6 +299,42 @@ public class AllInOneAPITests extends TestCase {
    }
 
    /**
+    * Tests a function that should return a defined result code, using the new
+    * XINS 1.2-based interface.
+    */
+   public void testResultCode2() throws Exception {
+
+      // Call with null, should be checked
+      ResultCodeRequest request = null;
+      try {
+         _capi.callResultCode(request);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      // Call once with key, should succeed
+      request = new ResultCodeRequest();
+      final String key = "johny";
+      request.setInputText(key);
+      _capi.callResultCode(request);
+
+      // Call again with same key, should fail
+      request = new ResultCodeRequest(); // XXX: Can we re-use the request object?
+      request.setInputText(key);
+      try {
+         _capi.callResultCode(request);
+         fail("The second call with the same parameter should return an AlreadySet error code.");
+      } catch (AlreadySetException exception) {
+         assertEquals("AlreadySet", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNotNull(exception.getParameters());
+         assertEquals("Incorrect value for the count parameter.", "1", exception.getParameter("count"));
+         assertNull(exception.getDataElement());
+      }
+   }
+
+   /**
     * Tests a function that writes messages to the Logdoc.
     */
    public void testLogdoc() throws Exception {
