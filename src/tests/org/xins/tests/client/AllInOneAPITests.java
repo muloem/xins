@@ -96,6 +96,9 @@ public class AllInOneAPITests extends TestCase {
     */
    private TargetDescriptor _target;
 
+   /**
+    * The <code>CAPI</code> object used to call the API.
+    */
    private CAPI _capi;
 
 
@@ -104,8 +107,11 @@ public class AllInOneAPITests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
-      _target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 4000, 4000);
-      _capi    = new CAPI(_target);
+      _target = new TargetDescriptor("http://127.0.0.1:8080/",
+                                     5000,
+                                     1000,
+                                     4000);
+      _capi   = new CAPI(_target);
    }
 
    /**
@@ -229,7 +235,10 @@ public class AllInOneAPITests extends TestCase {
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
-      DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList);
+      DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1",
+                                                         Salutation.LADY,
+                                                         (byte) 28,
+                                                         textList);
       assertEquals("127.0.0.1", result.getOutputIP());
       assertEquals(Salutation.LADY, result.getOutputSalutation());
       assertEquals(Byte.decode("35"), result.getOutputAge());
@@ -245,7 +254,10 @@ public class AllInOneAPITests extends TestCase {
       textList.add("Hello");
       textList.add("Test");
       try {
-         DefinedTypesResult result = _capi.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList);
+         DefinedTypesResult result = _capi.callDefinedTypes("not an IP",
+                                                            Salutation.LADY,
+                                                            (byte) 8,
+                                                            textList);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
