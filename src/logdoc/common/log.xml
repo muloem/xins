@@ -261,10 +261,10 @@
 			<param name="query" type="text" nullable="false" />
 		</entry>
 		<entry id="1505" level="ERROR" exception="true">
-			<description>The query to the API failed.</description>
+			<description>Query to the API failed.</description>
 		</entry>
 		<entry id="1506" level="DEBUG">
-			<description>The query to the API succeeded.</description>
+			<description>Query to the API succeeded.</description>
 			<param name="response" type="text" nullable="true" />
 			<param name="status" type="int32" nullable="false" />
 		</entry>

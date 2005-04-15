@@ -60,7 +60,7 @@
 	<translation entry="1503">Loading and initializing the Servlet located in the <value-of-param name="warFile" /> file using the mode <value-of-param name="mode" format="quoted" />.</translation>
 	<translation entry="1504">Query the Servlet with URL arguments: <value-of-param name="query" format="quoted" />.</translation>
 	<translation entry="1505">Query to the Servlet failed.</translation>
-	<translation entry="1506">Query to the Servlet succeeded with response <value-of-param name="response" /> and the HTTP status <value-of-param name="status" format="quoted" />.</translation>
+	<translation entry="1506">Query to the Servlet succeeded with response <value-of-param name="response" format="quoted" /> and the HTTP status <value-of-param name="status" />.</translation>
 	<translation entry="1507">Closing the Servlet container.</translation>
 	<translation entry="1508">Failed to load the Servlet due to a Servlet exception.</translation>
 	<translation entry="1509">Failed to load the Servlet due to a generic exception.</translation>
