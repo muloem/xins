@@ -648,4 +648,53 @@ public class AllInOneAPITests extends TestCase {
          assertNull(invalidParam.getText());
       }
    }
+
+   /**
+    * Tests invalid responses from the server using the new XINS 1.2 call
+    * method.
+    */
+   public void testInvalidResponse2() throws Exception {
+
+      InvalidResponseRequest request = new InvalidResponseRequest();
+      try {
+         _capi.callInvalidResponse(request);
+         fail("Expected InternalErrorException.");
+      } catch (InternalErrorException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
+         assertEquals("missing-param", missingParam.getName());
+         assertEquals("outputText1", missingParam.get("param"));
+         assertEquals(0, missingParam.getChildElements().size());
+         assertNull(missingParam.getText());
+         DataElement invalidParam = (DataElement) dataSection.getChildElements().get(1);
+         assertEquals("invalid-value-for-type", invalidParam.getName());
+         assertEquals("pattern", invalidParam.get("param"));
+         assertEquals(0, invalidParam.getChildElements().size());
+         assertNull(invalidParam.getText());
+      }
+
+      request = new InvalidResponseRequest();
+      request.setErrorCode("ErrorCodeNotKnownWhatsoever");
+      try {
+         _capi.callInvalidResponse(request);
+         fail("Expected InternalErrorException.");
+      } catch (InternalErrorException exception) {
+         assertEquals("_InternalError", exception.getErrorCode());
+         assertEquals(_target,          exception.getTarget());
+      }
+
+      request = new InvalidResponseRequest();
+      request.setErrorCode("InvalidNumber");
+      try {
+         _capi.callInvalidResponse(request);
+         fail("Expected InternalErrorException.");
+      } catch (InternalErrorException exception) {
+         assertEquals("_InternalError", exception.getErrorCode());
+         assertEquals(_target,          exception.getTarget());
+      }
+   }
 }

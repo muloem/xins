@@ -5,6 +5,12 @@
 
 	<description>Test invalid responses.</description>
 
+   <input>
+      <param name="errorCode" required="false" type="_text">
+			<description>The error code to (try to) return.</description>
+      </param>
+   </input>
+
 	<output>
 		<param name="outputText1" required="true" type="_text">
 			<description>A required output parameter.</description>

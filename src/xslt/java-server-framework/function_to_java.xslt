@@ -32,6 +32,14 @@
 	<xsl:include href="result_java.xslt" />
 	<xsl:include href="check_params.xslt" />
 
+   <xsl:variable name="functionName" select="//function/@name" />
+   <xsl:variable name="className"    select="$functionName"    />
+   <xsl:variable name="fqcn">
+      <xsl:value-of select="$package" />
+      <xsl:text>.</xsl:text>
+      <xsl:value-of select="$className" />
+   </xsl:variable>
+
 	<xsl:template match="function">
 
 		<xsl:variable name="version">
@@ -49,11 +57,11 @@
 
 /**
  * Abstract base class for <code>]]></xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[</code> function implementation.
  */
 public abstract class ]]></xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[ extends org.xins.server.Function {
 
    //-------------------------------------------------------------------------
@@ -70,7 +78,7 @@ public abstract class ]]></xsl:text>
 
    /**
     * Constructs a new <code>]]></xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[</code> instance.
     *
     * @param api
@@ -78,7 +86,7 @@ public abstract class ]]></xsl:text>
     *    <code>null</code>.
     */
    protected ]]></xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$functionName" />
 		<xsl:text>(APIImpl api) {
       super(api, "</xsl:text>
 		<xsl:value-of select="@name" />
@@ -105,12 +113,28 @@ public abstract class ]]></xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 		<xsl:text><![CDATA[
+
+      // Initialize list of error codes
+      _errorCodes = new java.util.HashSet();]]></xsl:text>
+      <xsl:for-each select="output/resultcode-ref">
+         <xsl:text>
+      _errorCodes.add("</xsl:text>
+         <xsl:value-of select="@name" />
+         <xsl:text>");</xsl:text>
+      </xsl:for-each>
+		<xsl:text><![CDATA[
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The list of error codes supported by this function. This field cannot be
+    * <code>null</code>.
+    */
+   private final java.util.HashSet _errorCodes;
 ]]></xsl:text>
 		<xsl:for-each select="document($api_file)/api/impl-java/instance">
 			<xsl:text>
@@ -144,14 +168,13 @@ public abstract class ]]></xsl:text>
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
    throws Throwable {</xsl:text>
 
-
 		<!-- ************************************************************* -->
 		<!-- Retrieve input parameters                                     -->
 		<!-- ************************************************************* -->
 
 		<xsl:if test="input/data/element">
 			<xsl:text>
-      org.xins.common.xml.Element _dataSection = context.getDataElement();</xsl:text>
+      org.xins.common.xml.Element __dataElement__ = context.getDataElement();</xsl:text>
 		</xsl:if>
 
 		<xsl:apply-templates select="input" mode="checkParams" />
@@ -161,7 +184,7 @@ public abstract class ]]></xsl:text>
 		<!-- ************************************************************* -->
 
 		<xsl:text>
-      Request _callRequest = new Request(context.getRemoteAddr()</xsl:text>
+      Request __request__ = new Request(context.getRemoteAddr()</xsl:text>
 
 		<xsl:for-each select="input/param">
 			<xsl:text>, </xsl:text>
@@ -174,12 +197,65 @@ public abstract class ]]></xsl:text>
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
-			<xsl:text>, _dataSection</xsl:text>
+			<xsl:text>, __dataElement__</xsl:text>
 		</xsl:if>
 		<xsl:text>);
-      Result _result = call(_callRequest);
+      Result __result__ = call(__request__);
 
-      return (org.xins.server.FunctionResult) _result;</xsl:text>
+      // The method should never return null
+      if (__result__ == null) {
+         throw org.xins.common.Utils.logProgrammingError(
+            "</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>", // detecting class
+            "handleCall(org.xins.server.CallContext)", // detecting method
+            getClass().getName(), // subject class
+            "call(</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>$Request)", // subject method
+            "Return value is null."
+         );
+      }
+
+      // Check that the Result object is really a FunctionResult instance. If
+      // not, then the developer must have implemented his own class that
+      // implements Result. He should never do this.
+      if (! (__result__ instanceof org.xins.server.FunctionResult)) {
+         throw org.xins.common.Utils.logProgrammingError(
+            "</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>", // detecting class
+            "handleCall(org.xins.server.CallContext)", // detecting method
+            getClass().getName(), // subject class
+            "call(</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>$Request)", // subject method
+            "Return value is an instance of class " + __result__.getClass().getName() + ", which is not derived from class org.xins.server.FunctionResult."
+         );
+      }
+
+      // Convert the Result object to a proper FunctionResult instance
+      org.xins.server.FunctionResult __fr__ = (org.xins.server.FunctionResult) __result__;
+
+      // Check that if an error code is set, it is a supported one
+      java.lang.String __errorCode__ = __fr__.getErrorCode();
+      if (__errorCode__ != null) {
+         if (! _errorCodes.contains(__errorCode__)) {
+            throw org.xins.common.Utils.logProgrammingError(
+               "</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>", // detecting class
+               "handleCall(org.xins.server.CallContext)", // detecting method
+               getClass().getName(), // subject class
+               "call(</xsl:text>
+      <xsl:value-of select="$className" />
+      <xsl:text>$Request)", // subject method
+               "The error code \"" + __errorCode__ + "\" is not supported by this function."
+            );
+         }
+      }
+
+      return __fr__;</xsl:text>
 		<xsl:text><![CDATA[
    }
 
@@ -197,6 +273,7 @@ public abstract class ]]></xsl:text>
     *    if anything went wrong.
     */
    public abstract Result call(Request request) throws Throwable;
+
 
    //-------------------------------------------------------------------------
    // Inner classes

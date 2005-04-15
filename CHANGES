@@ -21,6 +21,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
     same way as they are in the generated code on the server side.
   - Improved Javadoc here and there.
 
+* Generation of server-side Java code:
+  - More sanity checking and logging of programming errors in the generated
+    <Function>.java file. Tested part of this with unit tests, too.
+
 * Build- and release-process:
   - The tests-ui, checkstyle and j2h targets no longer need the -lib lib
     command-line option.
