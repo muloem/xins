@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
 
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
+  - Improved Javadoc comments for AbstractCAPIErrorCodeException constructor.
 
 * Generation of client-side Java code:
   - The parameters set in the generated Request object are now checked the 

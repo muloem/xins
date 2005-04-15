@@ -37,22 +37,27 @@ extends UnsuccessfulXINSCallException {
     * Constructs a new <code>AbstractCAPIErrorCodeException</code>.
     *
     * @param request
-    *    the original request, guaranteed not to be <code>null</code>.
+    *    the original request, cannot be <code>null</code>.
     *
     * @param target
-    *    the target on which the request was executed, guaranteed not to be
+    *    descriptor for the target that was attempted to be called, cannot be
     *    <code>null</code>.
     *
     * @param duration
-    *    the call duration, guaranteed to be &gt;= <code>0L</code>.
+    *    the call duration in milliseconds, must be &gt;= 0.
     *
     * @param resultData
-    *    the data returned from the call, guaranteed to be <code>null</code>
-    *    and must have an error code set.
+    *    the result data, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    detail message, or <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
+    *    if <code>request     == null
+    *          || target      == null
+    *          || duration  &lt; 0
+    *          || resultData  == null
+    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
     */
    protected AbstractCAPIErrorCodeException(XINSCallRequest    request,
                                             TargetDescriptor   target,
