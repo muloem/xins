@@ -335,8 +335,12 @@ public abstract class AbstractCAPI extends Object {
     *    {@link AbstractCAPIErrorCodeException} instance, otherwise
     *    <code>null</code>.
     *
-    * @throws IllegalArgumentException
-    *    if <code>request == null || target == null || duration < 0 || resultData == null</code>.
+    * @throws java.lang.IllegalArgumentException
+    *    if <code>request                   ==   null
+    *          || target                    ==   null
+    *          || duration                  &lt; 0
+    *          || resultData                ==   null
+    *          || resultData.getErrorCode() ==   null</code>.
     *
     * @since XINS 1.2.0
     */
