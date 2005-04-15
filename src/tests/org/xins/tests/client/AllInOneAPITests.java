@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.client.DataElement;
+import org.xins.client.InternalErrorException;
 import org.xins.client.InvalidRequestException;
 import org.xins.client.UnacceptableRequestException;
 import org.xins.client.UnsuccessfulXINSCallException;
@@ -482,26 +483,69 @@ public class AllInOneAPITests extends TestCase {
    */
    public void testParamCombo2() throws Exception {
 
+      // Prepare an empty request
       ParamComboRequest request = new ParamComboRequest();
-      UnacceptableRequestException exception;
+      request.setBirthYear(2006);
+      // not setting birthMonth
+      request.setBirthDay(20);
+      request.setBirthCountry("France");
+      request.setBirthCity("Paris");
+
+      // Attempt the call
       try {
          _capi.callParamCombo(request);
          fail("Expected UnacceptableRequestException.");
-         return;
-      } catch (UnacceptableRequestException e) {
-         exception = e;
+
+      // Call failed as it should
+      } catch (UnacceptableRequestException exception) {
+         // as expected
       }
 
-      // TODO
+      // Prepare a request
+      request = new ParamComboRequest();
+      request.setBirthYear(2006);
+      request.setBirthMonth(5);
+      request.setBirthDay(20);
+      request.setBirthCountry("France");
+      request.setBirthCity("Paris");
+
+      // Attempt the call
+      try {
+         _capi.callParamCombo(request);
+         fail("Expected InternalErrorException.");
+
+      // Call failed as it should
+      } catch (InternalErrorException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+      }
    }
 
   /**
    * Tests the param-combo for the output section.
    */
    public void testParamCombo3() throws Exception {
+
       // Test 'all-or-none'
       try {
-         _capi.callParamCombo(null, new Integer(2006), new Integer(5), new Integer(20), "France", "Paris", null);
+         _capi.callParamCombo(null,
+                              new Integer(2006),
+                              new Integer(5),
+                              new Integer(20),
+                              "France",
+                              "Paris",
+                              null);
          fail("The param-combo call should return an _InvalidResponse error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidResponse", exception.getErrorCode());
