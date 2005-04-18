@@ -4,7 +4,7 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
+CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 
 * XINS/Java Common Library:
   - Removed the constraint package as it is no longer used.
