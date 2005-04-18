@@ -47,7 +47,8 @@ public final class UnsupportedLocaleException extends Exception {
       // Check preconditions
       MandatoryArgumentChecker.check("locale", locale);
 
-      // XXX: Store the locale ?
+      // Store locale?
+      _locale = locale;
    }
 
 
@@ -55,7 +56,24 @@ public final class UnsupportedLocaleException extends Exception {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The locale that is unsupported. The value of this field cannot be
+    * <code>null</code>.
+    */
+   private final String _locale;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Retrieves the unsupported locale.
+    *
+    * @return
+    *    the unsupported locale, never <code>null</code>.
+    */
+   public String getLocale() {
+      return _locale;
+   }
 }
