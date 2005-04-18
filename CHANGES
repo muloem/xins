@@ -8,7 +8,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 
 * XINS/Java Logdoc:
   - Storing locale in UnsupportedLocaleException.
-  - Added UnsupportedLocaleError class.
+  - Added UnsupportedLocaleError class. An instance of this class is now
+    thrown in case a required locale is unsupported, instead of a plain
+    java.lang.Error.
 
 * XINS/Java Common Library:
   - Removed the constraint package as it is no longer used.
