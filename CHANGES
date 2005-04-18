@@ -13,6 +13,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
   - Implemented SF.net RFE #1145386: ProtectedList class should throw
     IncorrectSecretKeyException. Adapted unit test cases.
   - Improved Javadoc documentation for ProtectedPropertyReader class.
+  - The HTTPServletHandler now loads the external libraries that are not in
+    the ClassPath.
+  - The main method for the HTTPServletHandler is now in HTTPServletStarter.
+  - The Servlet hanlders can also load a Servlet by just passing the name of
+    the class.
 
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.

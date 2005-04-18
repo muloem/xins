@@ -57,7 +57,7 @@
 	<translation entry="1500">Starting the Servlet container on port <value-of-param name="port" />.</translation>
 	<translation entry="1501">The HTTP Servlet container has thrown an I/O exception.</translation>
 	<translation entry="1502">Error when closing the HTTP Servlet container.</translation>
-	<translation entry="1503">Loading and initializing the Servlet located in the <value-of-param name="warFile" /> file using the mode <value-of-param name="mode" format="quoted" />.</translation>
+	<translation entry="1503">Loading and initializing the Servlet located in the <value-of-param name="warFile" /> file.</translation>
 	<translation entry="1504">Query the Servlet with URL arguments: <value-of-param name="query" format="quoted" />.</translation>
 	<translation entry="1505">Query to the Servlet failed.</translation>
 	<translation entry="1506">Query to the Servlet succeeded with response <value-of-param name="response" format="quoted" /> and the HTTP status <value-of-param name="status" />.</translation>

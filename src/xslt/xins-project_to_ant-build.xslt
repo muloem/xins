@@ -935,7 +935,7 @@ APIs in this project are:
 			</target>
 
 			<target name="run-{$api}" depends="war-{$api}" description="Runs the '{$api}' API">
-				<java classname="org.xins.common.servlet.container.HTTPServletHandler"
+				<java classname="org.xins.common.servlet.container.HTTPServletStarter"
 							fork="true">
 					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
 					<arg path="build/webapps/{$api}/{$api}.war" />

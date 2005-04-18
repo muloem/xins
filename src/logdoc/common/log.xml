@@ -254,7 +254,6 @@
 		<entry id="1503" level="DEBUG">
 			<description>Loading and initializing the Servlet.</description>
 			<param name="warFile" type="text" nullable="false" />
-			<param name="mode" type="int32" nullable="false" />
 		</entry>
 		<entry id="1504" level="DEBUG">
 			<description>Performing a query to the API.</description>

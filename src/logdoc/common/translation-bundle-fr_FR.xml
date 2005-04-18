@@ -57,7 +57,7 @@
 	<translation entry="1500">Demarrage du conteneur de la Servlet sur le port <value-of-param name="port" />.</translation>
 	<translation entry="1501">Le conteneur HTTP de la Servlet a provoqué une exception E/S.</translation>
 	<translation entry="1502">Erreur lors de la fermeture du conteneur HTTP de la Servlet.</translation>
-	<translation entry="1503">Chargement et initialisation de la Servlet située dan le fichier <value-of-param name="warFile" /> en utilisant le mode <value-of-param name="mode" format="quoted" />.</translation>
+	<translation entry="1503">Chargement et initialisation de la Servlet située dan le fichier <value-of-param name="warFile" />.</translation>
 	<translation entry="1504">Requête à la Servlet avec les arguments: <value-of-param name="query" format="quoted" />.</translation>
 	<translation entry="1505">Echec de la requête à la Servlet.</translation>
 	<translation entry="1506">Succès de la requête à la Servlet avec pour réponse <value-of-param name="response" format="quoted" /> et le status HTTP <value-of-param name="status" />.</translation>

@@ -15,11 +15,13 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.log4j.PropertyConfigurator;
 
 import org.xins.common.Log;
 import org.xins.common.Utils;
@@ -37,40 +39,17 @@ public class HTTPServletHandler {
    //-------------------------------------------------------------------------
 
    /**
-    * Starts the Servlet container for the specific API.
-    * 
-    * @param args
-    *    The command line arguments, the first argument should be the location
-    *    of the WAR file, the optional second argument is the port number. 
-    *    If no port number is specified, 8080 is used as default.
+    * Initializes the logging subsystem with fallback default settings.
     */
-   public static void main(String[] args) {
-      if (args.length < 1) {
-         System.err.println("Please, pass the location of the WAR file as argument.");
-         System.exit(-1);
-      }
-      File warFile = new File(args[0]);
-      if (!warFile.exists()) {
-         System.err.println("WAR file \"" + args[0] + "\" not found.");
-         System.exit(-1);
-      }
-      int port = DEFAULT_PORT_NUMBER;
-      if (args.length > 1) {
-         try {
-            port = Integer.parseInt(args[1]);
-         } catch (NumberFormatException nfe) {
-            System.err.println("Warning: Incorrect port number \"" + args[1] + 
-                  "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
-         }
-      }
-      
-      try {
-         // Starts the server and wait for connections
-         new HTTPServletHandler(warFile, port, false);
-      } catch (Exception ioe) {
-         ioe.printStackTrace();
-      }
+   private static final void configureLoggerFallback() {
+      Properties settings = new Properties();
+      settings.setProperty("log4j.rootLogger",                                "ALL, console");
+      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
+      PropertyConfigurator.configure(settings);
    }
+
    
    //-------------------------------------------------------------------------
    // Class fields
@@ -81,6 +60,7 @@ public class HTTPServletHandler {
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
 
+   
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -147,8 +127,44 @@ public class HTTPServletHandler {
    public HTTPServletHandler(File warFile, int port, boolean deamon)
    throws ServletException, IOException {
 
+      // Configure log4j
+      configureLoggerFallback();
+      
       // Create the servlet
-      _servletHandler = LocalServletHandler.getInstance(warFile);
+      _servletHandler = new LocalServletHandler(warFile);
+
+      // Start the HTTP server.
+      startServer(port, deamon);
+   }
+
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * and wait for calls from the XINSServiceCaller.
+    *
+    * @param servletClassName
+    *    The name of the servlet's class to load, cannot be <code>null</code>.
+    *
+    * @param port
+    *    The port of the web server, cannot be <code>null</code>.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet container cannot be started.
+    */
+   public HTTPServletHandler(String servletClassName, int port, boolean deamon)
+   throws ServletException, IOException {
+
+      // Configure log4j
+      configureLoggerFallback();
+      
+      // Create the servlet
+      _servletHandler = new LocalServletHandler(servletClassName);
 
       // Start the HTTP server.
       startServer(port, deamon);
