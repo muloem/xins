@@ -6,7 +6,7 @@
  */
 package org.xins.tests.common.collections;
 
-import java.lang.Exception;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -16,6 +16,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.common.collections.IncorrectSecretKeyException;
 import org.xins.common.collections.ProtectedList;
 
 /**
@@ -23,6 +24,7 @@ import org.xins.common.collections.ProtectedList;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class ProtectedListTests extends TestCase {
 
@@ -33,7 +35,8 @@ public class ProtectedListTests extends TestCase {
    /**
     * The secret key for the test protected list.
     */
-   private final static Object KEY = new Object();
+   private final static Object SECRET_KEY = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -65,6 +68,7 @@ public class ProtectedListTests extends TestCase {
       super(name);
    }
 
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -76,8 +80,7 @@ public class ProtectedListTests extends TestCase {
    /*
     * @see TestCase#setUp()
     */
-   protected void setUp()
-      throws Exception {
+   protected void setUp() throws Exception {
       super.setUp();
       Properties settings = new Properties();
       settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
@@ -89,33 +92,108 @@ public class ProtectedListTests extends TestCase {
       PropertyConfigurator.configure(settings);
    }
 
-   public void testList() {
-      ProtectedList list = new ProtectedList(KEY);
+   public void testProtectedList() {
 
-      assertEquals("The size of the list is incorrect.", 0, list.size());
+      // Construct a ProtectedList with null as secret key (should fail)
+      try {
+         new ProtectedList(null);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      try {
+         new ProtectedList(null, 15);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      try {
+         new ProtectedList(null, new ArrayList());
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
 
+      // Construct a ProtectedList with the secret key
+      ProtectedList list = new ProtectedList(SECRET_KEY);
+      assertEquals(0, list.size());
+
+      // Try unsupported standard add-operation
       try {
          list.add("hello1");
-         fail("BasicPropertyReader.set(null, null) should throw an IllegalArgumentException.");
-      } catch (Exception exception) {
+         fail("Expected UnsupportedOperationException.");
+      } catch (UnsupportedOperationException exception) {
          // as expected
       }
 
-      try {
-         list.add(KEY, "hello2");
-      } catch (Exception exception) {
-         fail("BasicPropertyReader.set(null, null) should throw an IllegalArgumentException.");
-      }
+      // Add using secret key should succeed
+      list.add(SECRET_KEY, "hello2");
+      assertEquals(1,        list.size());
+      assertEquals("hello2", list.get(0));
+      assertEquals(0,        list.indexOf("hello2"));
+      assertEquals(0,        list.lastIndexOf("hello2"));
+      assertTrue(list.contains("hello2"));
 
+      // Add using incorrect secret key should fail
+      try {
+         list.add(null, "hello3");
+         fail("Expected IncorrectSecretKeyException.");
+      } catch (IncorrectSecretKeyException exception) {
+         // as expected
+      }
       try {
          list.add(new Object(), "hello3");
-         fail("BasicPropertyReader.set(null, null) should throw an IllegalArgumentException.");
-      } catch (Exception exception) {
+         fail("Expected IncorrectSecretKeyException.");
+      } catch (IncorrectSecretKeyException exception) {
+         // as expected
+      }
+      assertEquals(1,        list.size());
+      assertEquals("hello2", list.get(0));
+      assertEquals(0,        list.indexOf("hello2"));
+      assertEquals(0,        list.lastIndexOf("hello2"));
+      assertTrue(list.contains("hello2"));
+      assertFalse(list.contains("hello3"));
+
+      // Try removing with incorrect secret key
+      try {
+         list.remove(null, -1);
+         fail("Expected IncorrectSecretKeyException.");
+      } catch (IncorrectSecretKeyException exception) {
+         // as expected
+      }
+      try {
+         list.remove(new Object(), -1);
+         fail("Expected IncorrectSecretKeyException.");
+      } catch (IncorrectSecretKeyException exception) {
          // as expected
       }
 
-      assertEquals("The size of the list is incorrect.", 1, list.size());
-      assertEquals("The value of the element in the list is incorrect.", "hello2", list.get(0));
-   }
+      // Try removing with correct secret key, but invalid index
+      try {
+         list.remove(SECRET_KEY, -1);
+         fail("Expected IndexOutOfBoundsException.");
+      } catch (IndexOutOfBoundsException exception) {
+         // as expected
+      }
+      try {
+         list.remove(SECRET_KEY, 1);
+         fail("Expected IndexOutOfBoundsException.");
+      } catch (IndexOutOfBoundsException exception) {
+         // as expected
+      }
+      assertEquals(1,        list.size());
+      assertEquals("hello2", list.get(0));
+      assertEquals(0,        list.indexOf("hello2"));
+      assertEquals(0,        list.lastIndexOf("hello2"));
+      assertTrue(list.contains("hello2"));
+      assertFalse(list.contains("hello3"));
 
+      // Really remove
+      list.remove(SECRET_KEY, 0);
+      assertEquals(0,        list.size());
+      assertEquals(-1,       list.indexOf("hello2"));
+      assertEquals(-1,       list.lastIndexOf("hello2"));
+      assertFalse(list.contains("hello2"));
+      assertFalse(list.contains("hello3"));
+   }
 }
