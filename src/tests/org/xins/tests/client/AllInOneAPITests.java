@@ -46,10 +46,12 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 /**
- * Tests the allinone functions using the generated CAPI.
+ * Tests the functions in the <em>allinone</em> API using the generated CAPI
+ * classes.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class AllInOneAPITests extends TestCase {
 
@@ -93,12 +95,14 @@ public class AllInOneAPITests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * The target descriptor to use in all tests.
+    * The target descriptor to use in all tests. This field is initialized by
+    * {@link #setUp()}.
     */
    private TargetDescriptor _target;
 
    /**
-    * The <code>CAPI</code> object used to call the API.
+    * The <code>CAPI</code> object used to call the API. This field is
+    * initialized by {@link #setUp()}.
     */
    private CAPI _capi;
 
@@ -123,7 +127,7 @@ public class AllInOneAPITests extends TestCase {
          _capi.callSimpleTypes((byte) 8,              // _int8
                                (Short) null,          // _int16
                                65,                    // _int32
-                               88l,                   // _int64
+                               88L,                   // _int64
                                32.5f,                 // _float32
                                new Double(37.2),      // _float64
                                "text",                // _text
@@ -136,7 +140,7 @@ public class AllInOneAPITests extends TestCase {
       assertNull(result.getOutputByte());
       assertEquals((short) -1, result.getOutputShort());
       assertEquals(16,         result.getOutputInt());
-      assertEquals(14l,        result.getOutputLong());
+      assertEquals(14L,        result.getOutputLong());
       assertEquals("hello",    result.getOutputText());
       assertNull(result.getOutputText2());
       assertNull(result.getOutputProperties());
@@ -195,7 +199,7 @@ public class AllInOneAPITests extends TestCase {
       assertNull(result.getOutputByte());
       assertEquals((short) -1, result.getOutputShort());
       assertEquals(16,         result.getOutputInt());
-      assertEquals(14l,        result.getOutputLong());
+      assertEquals(14L,        result.getOutputLong());
       assertEquals("hello",    result.getOutputText());
       assertNull(result.getOutputText2());
       assertNull(result.getOutputProperties());
@@ -212,7 +216,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testMissingParam() throws Exception {
       try {
-         SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88l, 72.5f, new Double(37.2),
+         SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88L, 72.5f, new Double(37.2),
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
@@ -320,7 +324,7 @@ public class AllInOneAPITests extends TestCase {
       _capi.callResultCode(request);
 
       // Call again with same key, should fail
-      request = new ResultCodeRequest(); // XXX: Can we re-use the request object?
+      request = new ResultCodeRequest(); // XXX: Can we re-use request object?
       request.setInputText(key);
       try {
          _capi.callResultCode(request);
