@@ -10,9 +10,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -21,6 +24,7 @@ import java.util.Random;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,9 +33,12 @@ import org.apache.log4j.NDC;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
+
 import org.xins.common.manageable.BootstrapException;
 
+import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.LogCentral;
+import org.xins.logdoc.UnsupportedLocaleError;
 import org.xins.logdoc.UnsupportedLocaleException;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -115,72 +122,72 @@ extends HttpServlet {
    /**
     * The <em>INITIAL</em> state.
     */
-   private static final State INITIAL = new State("INITIAL");
+   private static final State INITIAL = new State("INITIAL", false);
 
    /**
     * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
     */
-   private static final State BOOTSTRAPPING_FRAMEWORK = new State("BOOTSTRAPPING_FRAMEWORK");
+   private static final State BOOTSTRAPPING_FRAMEWORK = new State("BOOTSTRAPPING_FRAMEWORK", false);
 
    /**
     * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State FRAMEWORK_BOOTSTRAP_FAILED = new State("FRAMEWORK_BOOTSTRAP_FAILED");
+   private static final State FRAMEWORK_BOOTSTRAP_FAILED = new State("FRAMEWORK_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>CONSTRUCTING_API</em> state.
     */
-   private static final State CONSTRUCTING_API = new State("CONSTRUCTING_API");
+   private static final State CONSTRUCTING_API = new State("CONSTRUCTING_API", false);
 
    /**
     * The <em>API_CONSTRUCTION_FAILED</em> state.
     */
-   private static final State API_CONSTRUCTION_FAILED = new State("API_CONSTRUCTION_FAILED");
+   private static final State API_CONSTRUCTION_FAILED = new State("API_CONSTRUCTION_FAILED", true);
 
    /**
     * The <em>BOOTSTRAPPING_API</em> state.
     */
-   private static final State BOOTSTRAPPING_API = new State("BOOTSTRAPPING_API");
+   private static final State BOOTSTRAPPING_API = new State("BOOTSTRAPPING_API", false);
 
    /**
     * The <em>API_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED");
+   private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>DETERMINE_INTERVAL</em> state.
     */
-   private static final State DETERMINE_INTERVAL = new State("DETERMINE_INTERVAL");
+   private static final State DETERMINE_INTERVAL = new State("DETERMINE_INTERVAL", false);
 
    /**
     * The <em>DETERMINE_INTERVAL_FAILED</em> state.
     */
-   private static final State DETERMINE_INTERVAL_FAILED = new State("DETERMINE_INTERVAL_FAILED");
+   private static final State DETERMINE_INTERVAL_FAILED = new State("DETERMINE_INTERVAL_FAILED", true);
 
    /**
     * The <em>INITIALIZING_API</em> state.
     */
-   private static final State INITIALIZING_API = new State("INITIALIZING_API");
+   private static final State INITIALIZING_API = new State("INITIALIZING_API", false);
 
    /**
     * The <em>API_INITIALIZATION_FAILED</em> state.
     */
-   private static final State API_INITIALIZATION_FAILED = new State("API_INITIALIZATION_FAILED");
+   private static final State API_INITIALIZATION_FAILED = new State("API_INITIALIZATION_FAILED", true);
 
    /**
     * The <em>READY</em> state.
     */
-   private static final State READY = new State("READY");
+   private static final State READY = new State("READY", false);
 
    /**
     * The <em>DISPOSING</em> state.
     */
-   private static final State DISPOSING = new State("DISPOSING");
+   private static final State DISPOSING = new State("DISPOSING", false);
 
    /**
     * The <em>DISPOSED</em> state.
     */
-   private static final State DISPOSED = new State("DISPOSED");
+   private static final State DISPOSED = new State("DISPOSED", false);
 
    /**
     * The date formatter used for the context identifier.
@@ -296,6 +303,26 @@ extends HttpServlet {
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
       settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
       PropertyConfigurator.configure(settings);
+   }
+
+   /**
+    * Constructs a new <code>ServletException</code> with the specified cause.
+    *
+    * @param t
+    *    the cause for the {@link ServletException}, can be <code>null</code>.
+    *
+    * @return
+    *    the new {@link ServletException}, that has <code>t</code> registered
+    *    as the cause for it, never <code>null</code>.
+    *
+    * @see ExceptionUtils#setCause(Throwable,Throwable)
+    */
+   private static final ServletException servletExceptionFor(Throwable t) {
+      ServletException servletException = new ServletException();
+      if (t != null) {
+         ExceptionUtils.setCause(servletException, t);
+      }
+      return servletException;
    }
 
 
@@ -657,9 +684,91 @@ extends HttpServlet {
    }
 
    /**
-    * Initializes this servlet using the specified configuration. The
-    * (required) {@link ServletConfig} argument is stored internally and is
-    * returned from {@link #getServletConfig()}.
+    * Initializes this servlet using the specified configuration (wrapper
+    * method). This method delegates to {@link #initImpl(ServletConfig)}.
+    *
+    * @param config
+    *    the {@link ServletConfig} object which contains build properties for
+    *    this servlet, as specified by the <em>assembler</em>, cannot be
+    *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the servlet could not be initialized.
+    */
+   public void init(ServletConfig config)
+   throws ServletException {
+
+      final String THIS_METHOD = "init(javax.servlet.ServletConfig)";
+
+      // Starting servlet initialization
+      Log.log_3000();
+
+      try {
+
+         // Delegate to initImpl method
+         initImpl(config);
+
+         // Initialization succeeded
+         Log.log_3001();
+
+      } catch (Throwable exception) {
+
+         // Initialization failed, log the exception
+         Log.log_3002(exception);
+
+         // Make sure the current state is an error state
+         synchronized (_state) {
+            if (! _state.isError()) {
+
+               // Current state is not an error state, should never happen
+               String subjectMethod = "initImpl(javax.servlet.ServletConfig)";
+               String detail        = "Method has thrown an exception, but"
+                                    + " servlet was left in the state \""
+                                    + _state.getName()
+                                    + "\", instead of an error state.";
+               Utils.logProgrammingError(
+                  APIServlet.class.getName(), THIS_METHOD,
+                  APIServlet.class.getName(), subjectMethod,
+                  detail);
+
+               // Try to fix the state
+               if (_state == BOOTSTRAPPING_FRAMEWORK) {
+                  setState(FRAMEWORK_BOOTSTRAP_FAILED);
+               } else if (_state == CONSTRUCTING_API) {
+                  setState(API_CONSTRUCTION_FAILED);
+               } else if (_state == BOOTSTRAPPING_API) {
+                  setState(API_BOOTSTRAP_FAILED);
+               } else if (_state == DETERMINE_INTERVAL) {
+                  setState(DETERMINE_INTERVAL_FAILED);
+               } else if (_state == INITIALIZING_API) {
+                  setState(API_INITIALIZATION_FAILED);
+               } else {
+                  // XXX: Failed to correct the state
+               }
+            }
+         }
+
+         // Pass the exception through
+         if (exception instanceof ServletException) {
+            throw (ServletException) exception;
+         } else if (exception instanceof Error) {
+            throw (Error) exception;
+         } else if (exception instanceof RuntimeException) {
+            throw (RuntimeException) exception;
+
+         } else {
+            // Should in theory never happen, but because of the design of the
+            // JVM this cannot be guaranteed
+            throw new Error();
+         }
+      }
+   }
+
+   /**
+    * Initializes this servlet using the specified configuration (wrapper
+    * method). This method delegates to {@link #initImpl(ServletConfig)}.
+    * The (required) {@link ServletConfig} argument is stored internally and
+    * is returned from {@link #getServletConfig()}.
     *
     * <p>The initialization procedure will take required information from 3
     * sources, initially:
@@ -703,8 +812,10 @@ extends HttpServlet {
     * @throws ServletException
     *    if the servlet could not be initialized.
     */
-   public void init(ServletConfig config)
+   public void initImpl(ServletConfig config)
    throws ServletException {
+
+      final String THIS_METHOD = "initImpl(javax.servlet.ServletConfig)";
 
       // Log: Bootstrapping XINS/Java Server Framework
       String serverVersion = Library.getVersion();
@@ -819,7 +930,6 @@ extends HttpServlet {
          setState(CONSTRUCTING_API);
 
          // Determine the API class
-         // TODO: Should we trim all init parameters?
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
          apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
          if (apiClassName == null || apiClassName.length() < 1) {
@@ -833,46 +943,24 @@ extends HttpServlet {
          try {
             apiClass = Class.forName(apiClassName);
          } catch (Throwable exception) {
+            String detail = "Caught unexpected "
+                          + exception.getClass().getName()
+                          + " while loading class "
+                          + apiClassName
+                          + '.';
             Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
             setState(API_CONSTRUCTION_FAILED);
-            ServletException servletException = new ServletException();
-            ExceptionUtils.setCause(servletException, exception);
-            throw servletException;
-         }
-
-         // Load the Logdoc if available
-         try {
-            // XXX: What if the API class name does not contain a dot?
-            String packageName = apiClassName.substring(0, apiClassName.lastIndexOf('.') + 1);
-
-            // This should execute the static initializer
-            Class.forName(packageName + "Log");
-            // TODO: Log if the API indeed has logdoc
-
-         // API does not have any logdoc.
-         } catch (ClassNotFoundException cnfe) {
-            // TODO: Log if the API does not have any logdoc
-            // ignore
-
-         } catch (Throwable t) {
-
-            // FIXME for Anthony: Distinguish between case where locale is not
-            //                    supported (handled here) and other cases.
-
-            // TODO: Should this not be an _init_ instead of a _bootstrap_
-            //       issue?
-
-            // The locale is not supported by the API
-            Log.log_3309(LogCentral.getLocale(), config.getInitParameter(API_NAME_PROPERTY));
-            setState(API_CONSTRUCTION_FAILED);
-            ServletException servletException = new ServletException();
-            ExceptionUtils.setCause(servletException, t);
-            throw servletException;
+            throw servletExceptionFor(exception);
          }
 
          // Check that the loaded API class is derived from the API base class
          if (! API.class.isAssignableFrom(apiClass)) {
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, API.class.getName() + ".class.isAssignableFrom(apiClass) == false");
+            String detail = "Class "
+                          + apiClassName
+                          + " is not derived from "
+                          + API.class.getName()
+                          + '.';
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -883,23 +971,36 @@ extends HttpServlet {
             singletonField = apiClass.getDeclaredField("SINGLETON");
             _api = (API) singletonField.get(null);
          } catch (Throwable exception) {
-            // XXX: Log unexpected exception (#3052) here?
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, exception.getClass().getName());
+            String detail = "Caught unexpected "
+                          + exception.getClass().getName()
+                          + " while retrieving the value of the static field"
+                          + " SINGLETON in class "
+                          + apiClassName
+                          + '.';
+            Utils.logProgrammingError(APIServlet.class.getName(), THIS_METHOD,
+                                      apiClassName,               "SINGLETON",
+                                      detail,                     exception);
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
             setState(API_CONSTRUCTION_FAILED);
-            ServletException servletException = new ServletException();
-            ExceptionUtils.setCause(servletException, exception);
-            throw servletException;
+            throw servletExceptionFor(exception);
          }
 
-         // Make sure that the field is an instance of that same class and not
-         // of a subclass
-         // TODO: Why check this at all?
+         // Make sure that the value of the field is not null
          if (_api == null) {
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null) == null");
+            String detail = "Value of static field SINGLETON in class "
+                          + apiClassName
+                          + " is null.";
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
-         } else if (_api.getClass() != apiClass) {
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, "apiClass.getDeclaredField(\"SINGLETON\").get(null).getClass() != apiClass");
+         }
+
+         // Make sure that the value of the field is an instance of that class
+         if (_api.getClass() != apiClass) {
+            String detail = "Value of static field SINGLETON in class "
+                          + apiClassName
+                          + " is not an instance of that class.";
+            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
          }
@@ -912,25 +1013,69 @@ extends HttpServlet {
          // Proceed to next stage
          setState(BOOTSTRAPPING_API);
 
-         // Store the name of the API
-         _apiName = config.getInitParameter(API_NAME_PROPERTY);
-         if (_apiName == null) {
-
-            // Should never happen
-            _apiName= "-";
-         }
-
-         // TODO: Enable this for XINS 2.0.0:
-/*
-         if (TextUtils.isEmpty(_apiName)) {
+         // Determine the name of the API
+         String apiName = config.getInitParameter(API_NAME_PROPERTY);
+         if (TextUtils.isEmpty(apiName)) {
+            Log.log_3232(API_NAME_PROPERTY);
+            apiName = "-";
+/* TODO for XINS 2.0.0: Fail if API name is not set.
             Log.log_3209(API_NAME_PROPERTY);
             setState(API_BOOTSTRAP_FAILED);
             throw new ServletException();
+*/
+         } else {
+            apiName = apiName.trim();
          }
- */
-         // XXX: Trim the API name?
+         Log.log_3235(apiName);
+         _apiName = apiName;
 
-         // Bootstrap the API
+         // Determine the name of the Log class
+         String classPrefix;
+         int lastDot = apiClassName.lastIndexOf('.');
+         if (lastDot < 0) {
+            classPrefix = "";
+         } else {
+            classPrefix = apiClassName.substring(0, lastDot + 1);
+         }
+         String logdocClassName = classPrefix + "Log";
+
+         // Load the Logdoc if available
+         try {
+
+            // Attempt to load the Logdoc 'Log' class. This should execute the
+            // static initializer, which is what we want.
+            Class logdocClass = Class.forName(logdocClassName);
+
+            // Is the loaded class really a Logdoc 'Log' class or just some
+            // other class that is coincedentally called 'Log' ?
+            if (AbstractLog.class.isAssignableFrom(logdocClass)) {
+               // The API indeed uses Logdoc logging
+               Log.log_3233();
+            } else {
+               // The API does not use Logdoc logging
+               Log.log_3234();
+            }
+
+         // There is no 'Log' class in the API package
+         } catch (ClassNotFoundException cnfe) {
+            Log.log_3234();
+
+         // The locale is not supported
+         } catch (UnsupportedLocaleError exception) {
+            Log.log_3309(exception.getLocale());
+            setState(API_BOOTSTRAP_FAILED);
+            throw servletExceptionFor(exception);
+
+         // Other unexpected exception
+         } catch (Throwable exception) {
+            Utils.logProgrammingError(
+               APIServlet.class.getName(), THIS_METHOD,
+               Class.class.getName(),      "forName(java.lang.String)",
+               "Unexpected exception while loading Logdoc Log class for API.",
+               exception);
+         }
+
+         // Bootstrap the API self
          Throwable caught;
          try {
             _api.bootstrap(new ServletConfigPropertyReader(config));
@@ -943,7 +1088,9 @@ extends HttpServlet {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3210(exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3210(exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
             caught = exception;
 
          // Other bootstrap error
@@ -1514,15 +1661,21 @@ extends HttpServlet {
        * @param name
        *    the name of this state, cannot be <code>null</code>.
        *
+       * @param error
+       *    flag that indicates whether this is an error state,
+       *    <code>true</code> if it is.
+       *
        * @throws IllegalArgumentException
        *    if <code>name == null</code>.
        */
-      private State(String name) throws IllegalArgumentException {
+      private State(String name, boolean error)
+      throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("name", name);
 
-         _name = name;
+         _name  = name;
+         _error = error;
       }
 
 
@@ -1534,6 +1687,12 @@ extends HttpServlet {
        * The name of this state. Cannot be <code>null</code>.
        */
       private final String _name;
+
+      /**
+       * Flag that indicates whether this is an error state. Value is
+       * <code>true</code> if it is.
+       */
+      private final boolean _error;
 
 
       //----------------------------------------------------------------------
@@ -1548,6 +1707,17 @@ extends HttpServlet {
        */
       public String getName() {
          return _name;
+      }
+
+      /**
+       * Checks if this state is an error state.
+       *
+       * @return
+       *    <code>true</code> if this is an error state, <code>false</code>
+       *    otherwise.
+       */
+      public boolean isError() {
+         return _error;
       }
 
       /**

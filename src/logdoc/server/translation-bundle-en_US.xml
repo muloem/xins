@@ -8,6 +8,10 @@
 -->
 
 <translation-bundle>
+    <translation entry="3000">Starting servlet initialization.</translation>
+    <translation entry="3001">Successfully finished servlet initialization.</translation>
+    <translation entry="3002">Servlet initialization failed.</translation>
+
 	<translation entry="3100">Changing APIServlet state from <value-of-param name="oldState" />	to <value-of-param name="newState" />.</translation>
 	<translation entry="3101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
 
@@ -19,7 +23,7 @@
 	<translation entry="3205">XINS/Java Server Framework cannot be bootstrapped. System administration issue detected. The property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, is not set.</translation>
 	<translation entry="3206">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is not set.</translation>
 	<translation entry="3207">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to <value-of-param name="apiClass" format="quoted" />, but that class cannot be loaded.</translation>
-	<translation entry="3208">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to <value-of-param name="apiClass" format="quoted" />, but that class does not derive from class <value-of-param name="superClass" />.</translation>
+	<translation entry="3208">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" />, which defines the name of the API class, is set to <value-of-param name="apiClass" format="quoted" />, but that class is considered invalid as an API class. Reason: <value-of-param name="reason" />.</translation>
 	<translation entry="3209">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
 	<translation entry="3210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value. Reason: <value-of-param name="reason" /></translation>
 	<translation entry="3211">XINS/Java Server Framework cannot be bootstrapped for an unknown reason.</translation>
@@ -43,6 +47,10 @@
 	<translation entry="3229">Package was built with XINS <value-of-param name="buildVersion" /> which is more recent version than the running version XINS <value-of-param name="currentVersion" />.</translation>
 	<translation entry="3230">The system property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, cannot be read due to a security restriction.</translation>
 	<translation entry="3231">Getting the location of the runtime properties file by reading the <value-of-param name="propertyName" format="quoted" /> property from the bootstrap properties.</translation>
+	<translation entry="3232">Expected bootstrap property <value-of-param name="propertyName" format="quoted" /> to be set.</translation>
+	<translation entry="3233">API uses Logdoc logging.</translation>
+	<translation entry="3234">API does not use Logdoc logging.</translation>
+	<translation entry="3235">API name is <value-of-param name="apiName" format="quoted" />.</translation>
 
 	<translation entry="3300">Initializing logging subsystem with the settings set in the <value-of-param name="configFile" format="quoted" /> file.</translation>
 	<translation entry="3301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
@@ -53,7 +61,7 @@
 	<translation entry="3306">Changing locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="3307">Changed locale for log messages from <value-of-param name="oldLocale" /> to <value-of-param name="newLocale" />.</translation>
 	<translation entry="3308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
-	<translation entry="3309">The locale <value-of-param name="locale" format="quoted" /> is not supported by the <value-of-param name="api" format="quoted" /> API.</translation>
+	<translation entry="3309">The locale <value-of-param name="locale" format="quoted" /> is not supported by the API.</translation>
 	<translation entry="3310">Changed hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
 
 	<translation entry="3400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>

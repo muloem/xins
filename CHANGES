@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 
+* XINS/Java Logdoc:
+  - Storing locale in UnsupportedLocaleException.
+  - Added UnsupportedLocaleError class.
+
 * XINS/Java Common Library:
   - Removed the constraint package as it is no longer used.
   - Slightly improved log message 1506: Quoting the response, but not the HTTP
@@ -22,6 +26,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
   - Improved Javadoc here and there.
+
+* XINS/Java Server Framework:
+  - Improved error detection, logging and recovery in class APIServlet. Fixed
+    SF.net bug #1146371 "Distinguish caught exceptions", among other things.
 
 * Generation of client-side Java code:
   - Implemented SF.net RFE #1054504: One constant or class per error code.
