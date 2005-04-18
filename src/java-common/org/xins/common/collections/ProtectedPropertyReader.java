@@ -12,8 +12,8 @@ import java.util.Iterator;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Modifiable implementation of a property reader that can, however, be
- * protected from unauthorized changes.
+ * Modifiable <code>PropertyReader</code> implementaton that can be protected
+ * from unauthorized changes.
  *
  * <p>A secret key must be passed when constructing a
  * <code>ProtectedPropertyReader</code> instance. All modification methods on
@@ -23,10 +23,11 @@ import org.xins.common.MandatoryArgumentChecker;
  * <p>Note that the secret key equality is always checked before the other
  * preconditions. This means that if the secret key is incorrect, then the
  * other preconditions will not even be checked. For example, if
- * <code>set(null, null)</code> is called, then an
- * {@link IncorrectSecretKeyException} is thrown (for the mismatching secret
- * key), and not an {@link IllegalArgumentException} (for the missing
- * <code>name</code> argument).
+ * {@link #set(Object,String,String) set}(null, null)</code> is called, then
+ * an {@link IncorrectSecretKeyException} is thrown for the mismatching secret
+ * key, and not an instance of the superclass
+ * {@link IllegalArgumentException}, for the missing <code>name</code>
+ * argument.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -74,7 +75,8 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
 
    /**
-    * The secret key.
+    * The secret key. This field is initialized by the constructor and can
+    * never be <code>null</code>.
     */
    private final Object _secretKey;
 
@@ -106,10 +108,10 @@ extends AbstractPropertyReader {
     * Sets the specified property to the specified value.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
-    * {@link IllegalArgumentException} is thrown. Note that an identity check
-    * is done, <em>not</em> an equality check. So
-    * {@link Object#equals(Object)} is not used, but the <code>==</code>
-    * operator is.
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity
+    * check is done, <em>not</em> an equality check. So
+    * the {@link Object#equals(Object)} method is not used, but the
+    * <code>==</code> operator is.
     *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
@@ -144,10 +146,10 @@ extends AbstractPropertyReader {
     * Removes the specified property.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
-    * {@link IllegalArgumentException} is thrown. Note that an identity check
-    * is done, <em>not</em> an equality check. So
-    * {@link Object#equals(Object)} is not used, but the <code>==</code>
-    * operator is.
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity
+    * check is done, <em>not</em> an equality check. So
+    * the {@link Object#equals(Object)} method is not used, but the
+    * <code>==</code> operator is.
     *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
@@ -178,10 +180,10 @@ extends AbstractPropertyReader {
     * Removes all properties.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
-    * {@link IllegalArgumentException} is thrown. Note that an identity check
-    * is done, <em>not</em> an equality check. So
-    * {@link Object#equals(Object)} is not used, but the <code>==</code>
-    * operator is.
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity
+    * check is done, <em>not</em> an equality check. So
+    * the {@link Object#equals(Object)} method is not used, but the
+    * <code>==</code> operator is.
     *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
@@ -203,10 +205,10 @@ extends AbstractPropertyReader {
     * Copies all entries from the specified property reader into this one.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
-    * {@link IncorrectSecretKeyException} is thrown. Note that an identity check
-    * is done, <em>not</em> an equality check. So
-    * {@link Object#equals(Object)} is not used, but the <code>==</code>
-    * operator is.
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity
+    * check is done, <em>not</em> an equality check. So
+    * the {@link Object#equals(Object)} method is not used, but the
+    * <code>==</code> operator is.
     *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
