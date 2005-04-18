@@ -439,7 +439,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * Calls the <em>]]></xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
-    * function using the specified request.
+    * function using the specified request object.
+    * If the request object is <code>null</code>, then an exception is thrown.
     *
     * <p>Generated from function specification version ]]></xsl:text>
 		<xsl:call-template name="revision2string">
@@ -479,7 +480,27 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @throws org.xins.common.http.HTTPCallException
     *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts (if any) failed as well.
+    *    all the other call attempts (if any) failed as well.]]></xsl:text>
+
+        <xsl:for-each select="output/resultcode-ref">
+            <xsl:text>
+    *
+    * @throws </xsl:text>
+            <xsl:value-of select="$package" />
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="@name" />
+            <xsl:text><![CDATA[Exception
+    *    if the first call attempt failed due to the error code
+    *    <em>]]></xsl:text>
+            <xsl:value-of select="@name" />
+            <xsl:text><![CDATA[</em> being returned by the other end; and
+    *    all the other call attempts (if any) failed as well;
+    *    note that this exception is derived from
+    *    {@link org.xins.client.XINSCallException}, so if that one is caught,
+    *    then this one is also caught.]]></xsl:text>
+        </xsl:for-each>
+
+        <xsl:text><![CDATA[
     *
     * @throws org.xins.client.XINSCallException
     *    if the first call attempt failed due to a XINS-related reason and
@@ -497,7 +518,16 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    throws java.lang.IllegalArgumentException,
           org.xins.client.UnacceptableRequestException,
           org.xins.common.service.GenericCallException,
-          org.xins.common.http.HTTPCallException,
+          org.xins.common.http.HTTPCallException,</xsl:text>
+        <xsl:for-each select="output/resultcode-ref">
+            <xsl:text>
+          </xsl:text>
+            <xsl:value-of select="$package" />
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="@name" />
+            <xsl:text>Exception,</xsl:text>
+        </xsl:for-each>
+        <xsl:text>
           org.xins.client.XINSCallException {
 
       // Execute the call request
