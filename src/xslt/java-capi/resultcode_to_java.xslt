@@ -67,6 +67,10 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> instance.
     *
+    * <p><em>This constructor is internal to XINS. Please do not use it
+    * directly. It should only be used by the generated classes. Note that
+    * this constructor may be removed at any point in time.</em>
+    *
     * @param request
     *    the original request, cannot be <code>null</code>.
     *
