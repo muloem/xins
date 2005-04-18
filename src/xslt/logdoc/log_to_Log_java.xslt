@@ -99,9 +99,7 @@
       try {
          CONTROLLER = new Controller();
       } catch (org.xins.logdoc.UnsupportedLocaleException ex) {
-         java.lang.Error error = new java.lang.Error(ex.getMessage());
-         org.xins.logdoc.ExceptionUtils.setCause(error, ex);
-         throw error;
+         throw new org.xins.logdoc.UnsupportedLocaleError(ex);
       }
    }
 
