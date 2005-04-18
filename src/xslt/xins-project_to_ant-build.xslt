@@ -932,9 +932,6 @@ APIs in this project are:
 				<checksum file="build/webapps/{$api}/{$api}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
 				<echo message="Build time: ${{timestamp}}" />
-				<xsl:if test="$api = 'art'">
-					<echo message="Ernst, the state of the &quot;art&quot; developer!" />
-				</xsl:if>
 			</target>
 
 			<target name="run-{$api}" depends="war-{$api}" description="Runs the '{$api}' API">
