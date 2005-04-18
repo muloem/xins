@@ -49,9 +49,6 @@ extends UnsuccessfulXINSCallException {
     * @param resultData
     *    the result data, cannot be <code>null</code>.
     *
-    * @param detail
-    *    detail message, or <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null

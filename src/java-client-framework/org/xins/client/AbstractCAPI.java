@@ -275,7 +275,7 @@ public abstract class AbstractCAPI extends Object {
     * @throws UnacceptableRequestException
     *    if the request is considered to be unacceptable; this is determined
     *    by calling
-    *    <code>request.</code>{@link AbstractCAPICallRequest#validate() validate()}.
+    *    <code>request.</code>{@link AbstractCAPICallRequest#checkParameters() checkParameters()}.
     *
     * @throws GenericCallException
     *    if the first call attempt failed due to a generic reason and all the
