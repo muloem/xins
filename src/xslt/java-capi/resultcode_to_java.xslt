@@ -80,9 +80,6 @@ public final class ]]></xsl:text>
     * @param resultData
     *    the result data, cannot be <code>null</code>.
     *
-    * @param detail
-    *    detail message, or <code>null</code>.
-    *
     * @throws java.lang.IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
