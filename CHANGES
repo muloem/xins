@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 4:
   - Removed the constraint package as it is no longer used.
   - Slightly improved log message 1506: Quoting the response, but not the HTTP
     status code.
+  - Implemented SF.net RFE #1145386: ProtectedList class should throw
+    IncorrectSecretKeyException. Adapted unit test cases.
+  - Improved Javadoc documentation for ProtectedPropertyReader class.
 
 * XINS/Java Client Framework:
   - Improved logged message in case that an _InvalidRequest is returned.
