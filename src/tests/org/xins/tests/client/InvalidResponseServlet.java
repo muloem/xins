@@ -73,6 +73,14 @@ public class InvalidResponseServlet extends HttpServlet {
          Writer writer = response.getWriter();
          writer.append(getInvalidSimpleTypesResult());
          writer.close();
+      } else if (function.equals("ResultCode")) {
+         response.setStatus(HttpServletResponse.SC_OK);
+         response.setContentType("text/xml;charset=UTF-8");
+         Writer writer = response.getWriter();
+         writer.append(getInvalidResultCodeResult());
+         writer.close();
+      } else {
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       }
    }
    
@@ -91,6 +99,18 @@ public class InvalidResponseServlet extends HttpServlet {
              "<param name=\"outputFloat\">3.5</param>"+
              "<param name=\"outputDouble\">3.1415</param>"+
              "<param name=\"outputDate\">20040621</param>"+
+             "</result>";
+   }
+   
+   /**
+    * Returns an invalid result for the ResultCode function.
+    *
+    * @returns
+    *    the invalid result as XML String.
+    */
+   private String getInvalidResultCodeResult() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result errorcode=\"InvalidNumber\">"+
              "</result>";
    }
 }
