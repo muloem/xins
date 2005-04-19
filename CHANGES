@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
 
+* Generation of client-side Java code:
+  - Added a test case that fails because of bug #1182928:
+    Missing required parameter throws incorrect exception.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 

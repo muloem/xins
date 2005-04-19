@@ -94,6 +94,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.XINSCallRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSServiceCallerTests.class);
+      suite.addTestSuite(org.xins.tests.client.InvalidResponseTests.class);
 
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
