@@ -972,7 +972,7 @@ APIs in this project are:
 					offline="true"
 					packagelistloc="{$xins_home}/docs/javadoc/" />
 					<link
-					href="http://java.sun.com/j2se/1.3/docs/api"
+					href="http://java.sun.com/j2se/1.4.2/docs/api"
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/j2se/" />
 					<link
@@ -1184,7 +1184,7 @@ APIs in this project are:
 				offline="true"
 				packagelistloc="{$xins_home}/docs/javadoc/" />
 				<link
-				href="http://java.sun.com/j2se/1.3/docs/api"
+				href="http://java.sun.com/j2se/1.4.2/docs/api"
 				offline="true"
 				packagelistloc="{$xins_home}/src/package-lists/j2se/" />
 				<link
