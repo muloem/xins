@@ -71,13 +71,13 @@ public class InvalidResponseServlet extends HttpServlet {
          response.setStatus(HttpServletResponse.SC_OK);
          response.setContentType("text/xml;charset=UTF-8");
          Writer writer = response.getWriter();
-         writer.append(getInvalidSimpleTypesResult());
+         writer.write(getInvalidSimpleTypesResult());
          writer.close();
       } else if (function.equals("ResultCode")) {
          response.setStatus(HttpServletResponse.SC_OK);
          response.setContentType("text/xml;charset=UTF-8");
          Writer writer = response.getWriter();
-         writer.append(getInvalidResultCodeResult());
+         writer.write(getInvalidResultCodeResult());
          writer.close();
       } else {
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
