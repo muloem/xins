@@ -37,12 +37,6 @@ public class LocalServletHandler {
    // Class fields
    //-------------------------------------------------------------------------
    
-   /**
-    * The Map&lt;String, LocalServletHandler&gt; containing the Servlets.
-    */
-   private final static Map SERVLET_MAP = new HashMap();
-
-
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -185,6 +179,5 @@ public class LocalServletHandler {
    public void close() {
       Log.log_1507();
       _apiServlet.destroy();
-      SERVLET_MAP.clear();
    }
 }

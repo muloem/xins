@@ -20,6 +20,7 @@ import org.xins.common.service.*;
 import org.xins.common.servlet.container.HTTPServletHandler;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
+import org.xins.tests.AllTests;
 
 /**
  * Tests the CAPI when it receives invalid result.
@@ -73,16 +74,15 @@ public class InvalidResponseTests extends TestCase {
     * initialized by {@link #setUp()}.
     */
    private CAPI _capi;
-   private HTTPServletHandler httpServer2;
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
-      httpServer2 = new HTTPServletHandler("org.xins.tests.client.InvalidResponseServlet", 8081, true);
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8081/", 5000, 1000, 4000);
-      _capi   = new CAPI(target);
+      AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.InvalidResponseServlet", "/invalid");
+      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/invalid", 5000, 1000, 4000);
+      _capi = new CAPI(target);
    }
 
    public void testMissingParameter() throws Exception {
@@ -93,6 +93,7 @@ public class InvalidResponseTests extends TestCase {
       } catch (UnacceptableResultXINSCallException exception) {
          // as expected
       } catch (Exception exception) {
+         exception.printStackTrace();
          fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
       }
    }
@@ -104,11 +105,12 @@ public class InvalidResponseTests extends TestCase {
       } catch (UnexpectedErrorCodeException exception) {
          // as expected
       } catch (Exception exception) {
+         exception.printStackTrace();
          fail("The result is invalid, the function should throw an UnexpectedErrorCodeException exception");
       }
    }
    
    public void tearDown() throws Exception {
-      httpServer2.close();
+      AllTests.HTTP_SERVER.removeServlet("/invalid");
    }
 }

@@ -6,19 +6,20 @@
  */
 package org.xins.common.servlet.container;
 
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
-
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.PropertyConfigurator;
@@ -56,7 +57,7 @@ public class HTTPServletHandler {
    //-------------------------------------------------------------------------
 
    /**
-    * The default port number.
+    * The default port number is 8080.
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
 
@@ -66,8 +67,25 @@ public class HTTPServletHandler {
    //-------------------------------------------------------------------------
 
    /**
+    * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet 
+    * methods to add the WAR files or the Servlets.
+    *
+    * @throws IOException
+    *    if the servlet container cannot be started.
+    */
+   public HTTPServletHandler(int port, boolean deamon) throws IOException {
+      // Configure log4j
+      configureLoggerFallback();
+      
+      // Start the HTTP server.
+      startServer(port, deamon);
+   }
+
+   /**
     * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
     * on port 8080 and wait for calls from the XINSServiceCaller.
+    * Note that all the libraries used by this WAR file should already be in
+    * the classpath.
     *
     * @param warFile
     *    the war file of the application to deploy, cannot be <code>null</code>.
@@ -80,61 +98,8 @@ public class HTTPServletHandler {
     */
    public HTTPServletHandler(File warFile)
    throws ServletException, IOException {
-      this(warFile, DEFAULT_PORT_NUMBER);
-   }
-
-   /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * and wait for calls from the XINSServiceCaller.
-    *
-    * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
-    *
-    * @param port
-    *    the port of the web server, cannot be <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the servlet cannot be initialized.
-    *
-    * @throws IOException
-    *    if the servlet container cannot be started.
-    */
-   public HTTPServletHandler(File warFile, int port)
-   throws ServletException, IOException {
-      this(warFile, port, true);
-   }
-
-   /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * and wait for calls from the XINSServiceCaller.
-    *
-    * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
-    *
-    * @param port
-    *    the port of the web server, cannot be <code>null</code>.
-    *
-    * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
-    *    deamon thread, <code>false</code> otherwise.
-    *
-    * @throws ServletException
-    *    if the servlet cannot be initialized.
-    *
-    * @throws IOException
-    *    if the servlet container cannot be started.
-    */
-   public HTTPServletHandler(File warFile, int port, boolean deamon)
-   throws ServletException, IOException {
-
-      // Configure log4j
-      configureLoggerFallback();
-      
-      // Create the servlet
-      _servletHandler = new LocalServletHandler(warFile);
-
-      // Start the HTTP server.
-      startServer(port, deamon);
+      this(DEFAULT_PORT_NUMBER, true);
+      addWAR(warFile, "/");
    }
 
    /**
@@ -144,41 +109,21 @@ public class HTTPServletHandler {
     * @param servletClassName
     *    The name of the servlet's class to load, cannot be <code>null</code>.
     *
-    * @param port
-    *    The port of the web server, cannot be <code>null</code>.
-    *
-    * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
-    *    deamon thread, <code>false</code> otherwise.
-    *
     * @throws ServletException
     *    if the servlet cannot be initialized.
     *
     * @throws IOException
     *    if the servlet container cannot be started.
     */
-   public HTTPServletHandler(String servletClassName, int port, boolean deamon)
-   throws ServletException, IOException {
-
-      // Configure log4j
-      configureLoggerFallback();
-      
-      // Create the servlet
-      _servletHandler = new LocalServletHandler(servletClassName);
-
-      // Start the HTTP server.
-      startServer(port, deamon);
+   public HTTPServletHandler(String servletClassName) throws ServletException, IOException {
+      this(DEFAULT_PORT_NUMBER, true);
+      addServlet(servletClassName, "/");
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The servlet.
-    */
-   private LocalServletHandler _servletHandler;
 
    /**
     * The web server.
@@ -191,14 +136,70 @@ public class HTTPServletHandler {
    private SocketAcceptor _acceptor;
 
    /**
-    * flag indicating if the server should wait for other connections or stop.
+    * Flag indicating if the server should wait for other connections or stop.
     */
    private boolean _running;
 
+   /**
+    * Mapping between the path and the servlet.
+    */
+   private Map _servlets = new HashMap();
+   
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Adds a WAR file to the server.
+    * The servlet with the virtual path "/" will be the default one.
+    * Note that all the libraries used by this WAR file should already be in
+    * the classpath.
+    *
+    * @param warFile
+    *    The war file of the application to deploy, cannot be <code>null</code>.
+    *
+    * @param virtualPath
+    *    The virtual path of the HTTP server that links to this WAR file, cannot be <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    */
+   public void addWAR(File warFile, String virtualPath) throws ServletException {
+      LocalServletHandler servlet = new LocalServletHandler(warFile);
+      _servlets.put(virtualPath, servlet);
+   }
+
+   /**
+    * Adds a new servlet.
+    * The servlet with the virtual path "/" will be the default one.
+    *
+    * @param servletClassName
+    *    The name of the servlet's class to load, cannot be <code>null</code>.
+    *
+    * @param virtualPath
+    *    The virtual path of the HTTP server that links to this WAR file, cannot be <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    */
+   public void addServlet(String servletClassName, String virtualPath) throws ServletException{
+      LocalServletHandler servlet = new LocalServletHandler(servletClassName);
+      _servlets.put(virtualPath, servlet);
+   }
+   
+   /**
+    * Remove a servlet from the server.
+    *
+    * @param virtualPath
+    *    The virtual path of the servlet to remove, cannot be <code>null</code>.
+    */
+   public void removeServlet(String virtualPath) {
+      LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
+      servlet.close();
+      _servlets.remove(virtualPath);
+   }
+   
    /**
     * Starts the web server.
     *
@@ -226,7 +227,11 @@ public class HTTPServletHandler {
     */
    public void close() {
       _running = false;
-      _servletHandler.close();
+      Iterator itServlets = _servlets.values().iterator();
+      while (itServlets.hasNext()) {
+         LocalServletHandler servlet = (LocalServletHandler) itServlets.next();
+         servlet.close();
+      }
       try {
          _serverSocket.close();
       } catch (IOException ioe) {
@@ -269,6 +274,10 @@ public class HTTPServletHandler {
    /**
     * This method parses the data sent from the client to get the input
     * parameters and format the result as a compatible HTTP result.
+    * This method will used the servlet associated with the passed virtual
+    * path. If no servlet is associated with the virtual path, the servlet with 
+    * the virtual path "/" is used as default. If there is no servlet then with
+    * the virtual path "/" is found then HTTP 404 is returned.
     *
     * @param input
     *    the input stream that contains the data send by the client.
@@ -282,6 +291,7 @@ public class HTTPServletHandler {
    public String httpQuery(BufferedReader input) throws IOException {
       String inputLine;
       String query = null;
+      String virtualPath = "/";
 
       while (query == null && (inputLine = input.readLine()) != null) {
          if (inputLine.startsWith("GET ")) {
@@ -295,9 +305,13 @@ public class HTTPServletHandler {
                }
             }
             query = inputLine.replace(',', '&');
+            virtualPath = inputLine.substring(4, inputLine.lastIndexOf('/', inputLine.length()-8));
          }
 
          // POST method
+         if (inputLine.startsWith("POST ")) {
+            virtualPath = inputLine.substring(5, inputLine.indexOf(' ', 5));
+         }
          if (inputLine.startsWith("Content-Length: ")) {
             int postLength = Integer.parseInt(inputLine.substring(16));
             input.readLine();
@@ -308,11 +322,17 @@ public class HTTPServletHandler {
          }
       }
       if (query != null) {
-         XINSServletResponse response = _servletHandler.query(query);
+         LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
+         if (servlet == null) {
+            servlet = (LocalServletHandler) _servlets.get("/");
+         }
+         if (servlet == null) {
+            return "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+         }
+         XINSServletResponse response = servlet.query(query);
          String result = response.getResult();
          if (result == null) {
-            result = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
-            return result;
+            return "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
          }
          String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
          httpResult += "Content-type: " + response.getContentType() + "\n";

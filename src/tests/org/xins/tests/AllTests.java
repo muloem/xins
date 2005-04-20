@@ -25,7 +25,7 @@ public class AllTests extends TestSuite {
    // Class fields
    //-------------------------------------------------------------------------
 
-   static HTTPServletHandler HTTP_SERVER;
+   public static HTTPServletHandler HTTP_SERVER;
 
 
    //-------------------------------------------------------------------------
