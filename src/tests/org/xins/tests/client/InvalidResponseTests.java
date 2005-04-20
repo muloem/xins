@@ -12,7 +12,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.client.UnacceptableResultXINSCallException;
-import org.xins.client.UnexpectedErrorCodeException;
+import org.xins.client.UnacceptableErrorCodeXINSCallException;
 
 import org.xins.common.service.*;
 
@@ -101,12 +101,12 @@ public class InvalidResponseTests extends TestCase {
    public void testInvalidErrorCode() throws Exception {
       try {
          _capi.callResultCode("hello");
-         fail("The result is invalid, the function should throw an UnexpectedErrorCodeException exception");
-      } catch (UnexpectedErrorCodeException exception) {
+         fail("Expected UnacceptableErrorCodeXINSCallException");
+      } catch (UnacceptableErrorCodeXINSCallException exception) {
          // as expected
       } catch (Exception exception) {
          exception.printStackTrace();
-         fail("The result is invalid, the function should throw an UnexpectedErrorCodeException exception");
+         fail("The result is invalid, the function should throw an UnacceptableErrorCodeXINSCallException exception");
       }
    }
    
