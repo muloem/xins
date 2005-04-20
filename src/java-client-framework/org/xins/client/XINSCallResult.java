@@ -15,7 +15,18 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * Result of a call to a XINS service.
+ * Successful result of a call to a XINS service. It may be that some targets
+ * failed before a target returned a successful result. All the failures are
+ * also stored in this object.
+ *
+ * <p>When a <code>XINSCallResult</code> instance is created, information must
+ * be passed both about the successful call (which target successfully
+ * returned a result, how long did it take, what was the result) and about the
+ * unsuccessful calls (to which targets were they, what was the error, etc.)
+ *
+ * <p>While a {@link XINSCallResultData} object describes the result of a call
+ * to an single target, a <code>XINSCallResultData</code> also describes all
+ * failed calls that happened before.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
