@@ -86,58 +86,6 @@ implements XINSCallResultData {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /** FIXME:
-    * Constructs a new <code>UnsuccessfulXINSCallException</code> based on
-    * another <code>UnsuccessfulXINSCallException</code>.
-    *
-    * @param exception
-    *    the <code>UnsuccessfulXINSCallException</code> to base this one on,
-    *    cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
-   UnsuccessfulXINSCallException(UnsuccessfulXINSCallException exception)
-   throws IllegalArgumentException {
-      super("Unsuccessful XINS call result",
-            (XINSCallRequest) exception.getRequest(),
-            exception.getTarget(),
-            exception.getDuration(),
-            exception.getDetail(),
-            exception);
-
-      // XXX: What about next/previous?
-
-      _errorCode   = exception.getErrorCode();
-      _parameters  = exception.getParameters();
-      _dataElement = exception.getDataElement();
-   }
-    */
-
-   /** FIXME:
-    * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
-    * <code>XINSCallResult</code> instance.
-    *
-    * @param result
-    *    the call result, cannot be <code>null</code>; stores the original
-    *    call request, the target descriptor and the call duration; must be
-    *    unsuccessful.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
-   UnsuccessfulXINSCallException(XINSCallResult result)
-   throws IllegalArgumentException {
-
-      super("Unsuccessful XINS call result", result,
-            determineDetail(result, null), null);
-
-      // Store details
-      _errorCode   = result.getErrorCode();
-      _parameters  = result.getParameters();
-      _dataElement = result.getDataElement();
-   }
-    */
-
    /**
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
     * <code>XINSCallResultData</code> instance.
