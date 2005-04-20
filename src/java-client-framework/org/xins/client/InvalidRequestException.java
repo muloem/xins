@@ -27,7 +27,7 @@ import org.xins.common.text.FastStringBuffer;
 public class InvalidRequestException
 extends StandardErrorCodeException {
 
-   // TODO: Look at Issue class. It's now private. Should it be used?
+   // TODO for XINS 1.3: Look at Issue class. It's now private. Should it be used?
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -206,7 +206,7 @@ extends StandardErrorCodeException {
       super(request, target, duration, resultData,
             determineDetail(resultData));
 
-      // TODO: Parse details
+      // TODO for XINS 1.3: Parse details
    }
 
 
@@ -218,7 +218,7 @@ extends StandardErrorCodeException {
    // Methods
    //-------------------------------------------------------------------------
 
-   // TODO: Add methods for retrieval of details
+   // TODO for XINS 1.3: Add methods for retrieval of details
 
 
    //-------------------------------------------------------------------------
