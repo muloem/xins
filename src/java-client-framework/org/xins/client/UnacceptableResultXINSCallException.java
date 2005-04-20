@@ -7,7 +7,10 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.collections.PropertyReader;
+
+import org.xins.common.service.TargetDescriptor;
 
 /**
  * Exception that indicates that an API call returned a result that was
@@ -23,8 +26,13 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 1.0.0
  */
-public final class UnacceptableResultXINSCallException
+public class UnacceptableResultXINSCallException
 extends XINSCallException {
+
+   //-------------------------------------------------------------------------
+   // NOTE: Since XINS 1.2.0, this class is no longer final. However, all
+   //       methods still are. This to allow the subclass
+   //       UnacceptableErrorCodeXINSCallException.
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -113,6 +121,52 @@ extends XINSCallException {
       this(checkArguments(result).getXINSCallResult(), detail, cause);
    }
 
+   /**
+    * Constructs a new <code>UnacceptableResultXINSCallException</code> based
+    * on a <code>XINSCallResultData</code> instance.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the call duration in milliseconds, must be &gt;= 0.
+    *
+    * @param resultData
+    *    the result data, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    detail message, or <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request     == null
+    *          || target      == null
+    *          || duration  &lt; 0
+    *          || resultData  == null
+    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
+    */
+   UnacceptableResultXINSCallException(XINSCallRequest    request,
+                                       TargetDescriptor   target,
+                                       long               duration,
+                                       XINSCallResultData resultData,
+                                       String             detail)
+   throws IllegalArgumentException {
+
+      super("Unacceptable XINS call result",
+            request, target, duration, detail, (Throwable) null);
+
+      // Check additional precondition
+      MandatoryArgumentChecker.check("resultData", resultData);
+
+      // TODO: Check all mandatory arguments at once
+
+      // Store details
+      _result = resultData;
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields
@@ -121,7 +175,7 @@ extends XINSCallException {
    /**
     * The result that is considered unacceptable. Never <code>null</code>.
     */
-   private final XINSCallResult _result;
+   private final XINSCallResultData _result;
 
 
    //-------------------------------------------------------------------------
@@ -135,7 +189,7 @@ extends XINSCallException {
     *    the error code or <code>null</code> if the call was successful and no
     *    error code was returned.
     */
-   public String getErrorCode() {
+   public final String getErrorCode() {
       return _result.getErrorCode();
    }
 
@@ -146,7 +200,7 @@ extends XINSCallException {
     *    a {@link PropertyReader} containing all parameters, or
     *    <code>null</code> if there are none.
     */
-   public PropertyReader getParameters() {
+   public final PropertyReader getParameters() {
       return _result.getParameters();
    }
 
@@ -162,9 +216,14 @@ extends XINSCallException {
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
     */
-   public String getParameter(String name)
+   public final String getParameter(String name)
    throws IllegalArgumentException {
-      return _result.getParameter(name);
+      PropertyReader p = getParameters();
+      if (p == null) {
+         return null;
+      } else {
+         return p.get(name);
+      }
    }
 
    /**
@@ -173,7 +232,7 @@ extends XINSCallException {
     * @return
     *    the extra data as a {@link DataElement}, can be <code>null</code>;
     */
-   public DataElement getDataElement() {
+   public final DataElement getDataElement() {
       return _result.getDataElement();
    }
 }
