@@ -6,24 +6,25 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<description>API that uses all the features included in XINS.</description>
 
-	<function name="DataSection"  />
+	<function name="DataSection"     />
 	<function name="DataSection2" freeze="1.1" />
-	<function name="DataSection3" />
-	<function name="DefinedTypes" />
+	<function name="DataSection3"    />
+	<function name="DefinedTypes"    />
 	<function name="InvalidResponse" />
-	<function name="Logdoc"       />
-	<function name="ParamCombo"   />
-	<function name="ResultCode"   />
-	<function name="RuntimeProps" />
-	<function name="SimpleOutput" />
-	<function name="SimpleTypes"  />
+	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->
+	<function name="Logdoc"          />
+	<function name="ParamCombo"      />
+	<function name="ResultCode"      />
+	<function name="RuntimeProps"    />
+	<function name="SimpleOutput"    />
+	<function name="SimpleTypes"     />
 
-	<type name="Age"               />
-	<type name="AgeNameProperties" />
-	<type name="IPAddress"         />
-	<type name="Salutation"        />
+	<type name="Age"                  />
+	<type name="AgeNameProperties"    />
+	<type name="IPAddress"            />
+	<type name="Salutation"           />
 	<type name="TextList"          freeze="1.1" />
 
-	<resultcode name="AlreadySet"    />
-	<resultcode name="InvalidNumber" />
+	<resultcode name="AlreadySet"     />
+	<resultcode name="InvalidNumber"  />
 </api>
