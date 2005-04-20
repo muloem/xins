@@ -7,7 +7,9 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
+
 import org.xins.common.collections.PropertyReader;
+
 import org.xins.common.service.TargetDescriptor;
 
 /**
@@ -19,12 +21,17 @@ import org.xins.common.service.TargetDescriptor;
  * @since XINS 1.0.0
  */
 public class UnsuccessfulXINSCallException
-extends XINSCallException {
+extends XINSCallException
+implements XINSCallResultData {
 
+   //-------------------------------------------------------------------------
    // NOTE: Since XINS 1.1.0, this class is no longer final. However, all
    //       methods still are.
 
-   // XXX: Implement XINSCallResultData interface?
+   //-------------------------------------------------------------------------
+   // NOTE: Since XINS 1.2.0, this class implements the XINSCallResultData
+   //       interface.
+
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -36,7 +43,8 @@ extends XINSCallException {
 
    /**
     * Delegate for the constructor that determines the detail message based on
-    * a <code>XINSCallResultData</code> object.
+    * a <code>XINSCallResultData</code> object and an optional detailed
+    * description.
     *
     * @param result
     *    the {@link XINSCallResultData} instance, should not be
@@ -78,7 +86,7 @@ extends XINSCallException {
    // Constructors
    //-------------------------------------------------------------------------
 
-   /**
+   /** FIXME:
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on
     * another <code>UnsuccessfulXINSCallException</code>.
     *
@@ -88,7 +96,6 @@ extends XINSCallException {
     *
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
-    */
    UnsuccessfulXINSCallException(UnsuccessfulXINSCallException exception)
    throws IllegalArgumentException {
       super("Unsuccessful XINS call result",
@@ -104,8 +111,9 @@ extends XINSCallException {
       _parameters  = exception.getParameters();
       _dataElement = exception.getDataElement();
    }
+    */
 
-   /**
+   /** FIXME:
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
     * <code>XINSCallResult</code> instance.
     *
@@ -117,7 +125,6 @@ extends XINSCallException {
     * @throws IllegalArgumentException
     *    if <code>result == null
     *          || result.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
-    */
    UnsuccessfulXINSCallException(XINSCallResult result)
    throws IllegalArgumentException {
 
@@ -129,6 +136,7 @@ extends XINSCallException {
       _parameters  = result.getParameters();
       _dataElement = result.getDataElement();
    }
+    */
 
    /**
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
@@ -179,9 +187,7 @@ extends XINSCallException {
       }
 
       // Store details
-      _errorCode   = errorCode;
-      _parameters  = resultData.getParameters();
-      _dataElement = resultData.getDataElement();
+      _result = resultData;
    }
 
 
@@ -190,19 +196,9 @@ extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * The error code. The value of this field cannot be <code>null</code>.
+    * The result data. The value of this field cannot be <code>null</code>.
     */
-   private final String _errorCode;
-
-   /**
-    * The parameters. The value of this field can be <code>null</code>.
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * Returns the optional extra data.
-    */
-   private final DataElement _dataElement;
+   private final XINSCallResultData _result;
 
 
    //-------------------------------------------------------------------------
@@ -216,7 +212,7 @@ extends XINSCallException {
     *    the error code, never <code>null</code>.
     */
    public final String getErrorCode() {
-      return _errorCode;
+      return _result.getErrorCode();
    }
 
    /**
@@ -227,7 +223,7 @@ extends XINSCallException {
     *    <code>null</code> if there are none.
     */
    public final PropertyReader getParameters() {
-      return _parameters;
+      return _result.getParameters();
    }
 
    /**
@@ -244,7 +240,12 @@ extends XINSCallException {
     */
    public final String getParameter(String name)
    throws IllegalArgumentException {
-      return _parameters.get(name);
+      PropertyReader p = getParameters();
+      if (p == null) {
+         return null;
+      } else {
+         return p.get(name);
+      }
    }
 
    /**
@@ -254,6 +255,6 @@ extends XINSCallException {
     *    the extra data as a {@link DataElement}, can be <code>null</code>;
     */
    public final DataElement getDataElement() {
-      return _dataElement;
+      return _result.getDataElement();
    }
 }
