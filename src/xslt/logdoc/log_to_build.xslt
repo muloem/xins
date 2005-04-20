@@ -34,19 +34,22 @@
 				<mkdir dir="{$html_destdir}" />
 				<!-- TODO: Define the xmlcatalog only in one place -->
 				<xmlcatalog id="log-dtds">
-					<dtd location="{$xins_home}/src/dtd/log_1_0_alpha.dtd"
+					<classpath>
+						<pathelement path="{$xins_home}/src/dtd"/>
+					</classpath>
+					<dtd location="log_1_0_alpha.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0_alpha.dtd"
+					<dtd location="translation-bundle_1_0_alpha.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN" />
 
-					<dtd location="{$xins_home}/src/dtd/log_1_0.dtd"
+					<dtd location="log_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd"
+					<dtd location="translation-bundle_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
 
-					<dtd location="{$xins_home}/src/dtd/log_1_1.dtd"
+					<dtd location="log_1_1.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.1//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_1.dtd"
+					<dtd location="translation-bundle_1_1.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN" />
 				</xmlcatalog>
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
@@ -92,19 +95,22 @@
 			<target name="java" description="Generates Java code">
 				<mkdir dir="{$java_destdir}" />
 				<xmlcatalog id="log-dtds">
-					<dtd location="{$xins_home}/src/dtd/log_1_0_alpha.dtd"
+					<classpath>
+						<pathelement path="{$xins_home}/src/dtd"/>
+					</classpath>
+					<dtd location="log_1_0_alpha.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0_alpha.dtd"
+					<dtd location="translation-bundle_1_0_alpha.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN" />
 
-					<dtd location="{$xins_home}/src/dtd/log_1_0.dtd"
+					<dtd location="log_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_0.dtd"
+					<dtd location="translation-bundle_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
 
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_1.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN" />
-					<dtd location="{$xins_home}/src/dtd/translation-bundle_1_1.dtd"
+					<dtd location="log_1_1.dtd"
+					     publicId="-//XINS//DTD XINS Logdoc 1.1//EN" />
+					<dtd location="translation-bundle_1_1.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN" />
 				</xmlcatalog>
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
