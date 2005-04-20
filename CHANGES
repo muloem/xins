@@ -9,7 +9,20 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
 * XINS/Java Common Library:
   - The HTTPServletHandler can contain several servlets.
 
+* XINS/Java Client Framework:
+  - Class UnsuccessfulXINSCallException now implements XINSCallResultData.
+  - Class UnacceptableResultXINSCallException is no longer final.
+  - Added class UnacceptableErrorCodeXINSCallException, derived from
+    UnacceptableErrorCodeXINSCallException.
+  - If an error code is received that starts with an underscore, but which is
+    unrecognized, then an UnacceptableErrorCodeXINSCallException is thrown,
+    instead of an UnsuccessfulXINSCallException.
+
 * Generation of client-side Java code:
+  - Fixed SF.net bug #1183640: Detect unacceptable error code in CAPI. If the
+    server-side returns an error code that is not recognized as a result code
+    for the function, then an UnacceptableErrorCodeXINSCallException is
+    thrown.
   - Added a test case that fails because of bug #1182928 and #1060861:
     Missing required parameter throws incorrect exception.
   - Added a test case that fails because of bug #1183640:
