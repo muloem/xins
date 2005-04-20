@@ -335,12 +335,16 @@ public abstract class AbstractCAPI extends Object {
     *    {@link AbstractCAPIErrorCodeException} instance, otherwise
     *    <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>request                   ==   null
     *          || target                    ==   null
     *          || duration                  &lt; 0
     *          || resultData                ==   null
     *          || resultData.getErrorCode() ==   null</code>.
+    *
+    * @throws UnacceptableResultXINSCallException
+    *    if the specified error code is unacceptable for the specified
+    *    function.
     *
     * @since XINS 1.2.0
     */
@@ -349,7 +353,9 @@ public abstract class AbstractCAPI extends Object {
                             TargetDescriptor   target,
                             long               duration,
                             XINSCallResultData resultData)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException,
+          UnacceptableErrorCodeXINSCallException {
+
       // By default return nothing
       return null;
    }
