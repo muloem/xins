@@ -169,6 +169,45 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       return new CAPI(properties, apiName);
    }
 
+   /**
+    * Initializes the map of error codes per function. This class function is
+    * called from the constructors.
+    *
+    * @return
+    *    the set of error codes, per function; never <code>null</code>.
+    */
+   private static final java.util.HashMap initErrorCodesPerFunction() {
+      java.util.HashMap map = new java.util.HashMap();
+      java.util.ArrayList list;]]></xsl:text>
+
+      <xsl:for-each select="function">
+			<xsl:variable name="functionName" select="@name" />
+			<xsl:variable name="functionFile" select="concat($specsdir, '/', $functionName, '.fnc')" />
+         <xsl:for-each select="document($functionFile)/function">
+            <xsl:if test="output/resultcode-ref">
+               <xsl:text>
+
+      // Error codes for the '</xsl:text>
+			      <xsl:value-of select="$functionName" />
+               <xsl:text>' function
+      list = new java.util.ArrayList();</xsl:text>
+               <xsl:for-each select="output/resultcode-ref">
+                  <xsl:text>
+      list.add("</xsl:text>
+			         <xsl:value-of select="@name" />
+                  <xsl:text>");</xsl:text>
+               </xsl:for-each>
+               <xsl:text>map.put("</xsl:text>
+			      <xsl:value-of select="$functionName" />
+               <xsl:text>", list);</xsl:text>
+            </xsl:if>
+         </xsl:for-each>
+      </xsl:for-each>
+
+      <xsl:text><![CDATA[
+      return map;
+   }
+
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -191,8 +230,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Fields
-   //-------------------------------------------------------------------------]]></xsl:text>
-		<xsl:text><![CDATA[
+   //-------------------------------------------------------------------------
+
+   /**
+    * Error codes, per function. This field is never <code>null</code>. All
+    * keys are function names, such as <code>"ProcessOrder"</code>, and all
+    * values are {@link java.util.ArrayList} lists, which contain the
+    * supported error codes for that function, as <code>String</code>s, such
+    * as <code>"ProcessingFailed"</code>.
+    */
+   private final java.util.Map _errorCodesPerFunction;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -256,6 +304,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *          || resultData                ==   null
     *          || resultData.getErrorCode() ==   null</code>.
     *
+    * @throws UnacceptableErrorCodeXINSCallException
+    *    if the specified error code is unacceptable for the specified
+    *    function.
+    *
     * @since XINS 1.2.0
     */
    protected final org.xins.client.AbstractCAPIErrorCodeException
@@ -263,14 +315,15 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                             org.xins.common.service.TargetDescriptor target,
                             long                                     duration,
                             org.xins.client.XINSCallResultData       resultData)
-   throws java.lang.IllegalArgumentException {
+   throws java.lang.IllegalArgumentException,
+          org.xins.client.UnacceptableErrorCodeXINSCallException {
 
       // Check preconditions
       org.xins.common.MandatoryArgumentChecker.check(
          "request", request, "target",  target, "resultData", resultData);
-      if (duration < 0) {
+      if (duration < 0L) {
          throw new java.lang.IllegalArgumentException("duration ("
-                                                     + duration + ") < 0");
+                                                     + duration + ") < 0L");
       }
 
       // Determine the error code
@@ -297,9 +350,18 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                </xsl:choose>
                <xsl:value-of select="@name" />
                <xsl:text>".equals(__errorCode__)) {
-         return new </xsl:text>
+         java.lang.String    __function__  = request.getFunctionName();
+         java.util.ArrayList __supported__ = (java.util.ArrayList) _errorCodesPerFunction.get(__function__);
+         if (__supported__ == null || !__supported__.contains("</xsl:text>
                <xsl:value-of select="@name" />
-               <xsl:text>Exception(request, target, duration, resultData);</xsl:text>
+               <xsl:text>")) {
+            throw new org.xins.client.UnacceptableErrorCodeXINSCallException(
+               request, target, duration, resultData);
+         } else {
+            return new </xsl:text>
+               <xsl:value-of select="@name" />
+               <xsl:text>Exception(request, target, duration, resultData);
+         }</xsl:text>
             </xsl:for-each>
             <xsl:text>
       } else {
@@ -354,6 +416,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       super(properties, "]]></xsl:text>
 		<xsl:value-of select="//api/@name" />
 		<xsl:text><![CDATA[");
+      _errorCodesPerFunction = initErrorCodesPerFunction();
    }
 
    /**
@@ -388,6 +451,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
       super(properties, apiName);
+      _errorCodesPerFunction = initErrorCodesPerFunction();
    }
 
    /**
@@ -408,6 +472,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
    throws java.lang.IllegalArgumentException,
           org.xins.common.service.UnsupportedProtocolException {
       super(descriptor);
+      _errorCodesPerFunction = initErrorCodesPerFunction();
    }]]></xsl:text>
 	</xsl:template>
 
