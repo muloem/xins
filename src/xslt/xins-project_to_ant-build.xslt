@@ -704,11 +704,14 @@ APIs in this project are:
 				</xsl:attribute>
 				<mkdir dir="{$javaDestDir}" />
 				<dependset>
-					<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
-					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
-				</dependset>
-				<dependset>
-					<srcfilelist   dir="{$specsdir}/.." files="**/impl.xml" />
+					<xsl:choose>
+						<xsl:when test="impl">
+							<srcfilelist   dir="{$api_specsdir}/../impl" files="impl.xml" />
+						</xsl:when>
+						<xsl:otherwise>
+							<srcfilelist   dir="{$api_specsdir}" files="api.xml" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 				</dependset>
 				<xmlvalidate file="{$api_file}" warn="false">

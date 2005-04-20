@@ -96,7 +96,6 @@ public class ServletClassLoader {
             String entryName = entry.getName();
             if (entryName.startsWith("WEB-INF/lib/") && entryName.endsWith(".jar") && !standardLibs.contains(entryName.substring(12))) {
                File tempJarFile = unpack(jarStream, entryName);
-               System.err.println(":"+tempJarFile.toURL());
                urlList.add(tempJarFile.toURL());
             }
             entry = jarStream.getNextJarEntry();
@@ -116,7 +115,6 @@ public class ServletClassLoader {
       URL[] urls = new URL[urlList.size()];
       for (int i=0; i<urlList.size(); i++) {
          urls[i] = (URL) urlList.get(i);
-         //System.err.println("adding " + urlList.get(i));
       }
       ClassLoader loader = new ChildFirstClassLoader(urls, ServletClassLoader.class.getClassLoader());
       Thread.currentThread().setContextClassLoader(loader);
