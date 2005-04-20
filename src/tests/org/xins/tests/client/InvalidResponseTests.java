@@ -89,12 +89,12 @@ public class InvalidResponseTests extends TestCase {
       try {
          SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88L, 72.5f, new Double(37.2),
             "test", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
-         fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
+         fail("Expected UnacceptableResultXINSCallException.");
       } catch (UnacceptableResultXINSCallException exception) {
          // as expected
       } catch (Exception exception) {
          exception.printStackTrace();
-         fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
+         fail("Expected UnacceptableResultXINSCallException instead of " + exception.getClass().getName() + '.');
       }
    }
    
