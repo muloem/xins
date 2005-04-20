@@ -37,6 +37,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
   - Fixed a dependency problem. Now the java files for the server are not 
     regenerated if not needed.
 
+* Build- and release-process:
+  - Added common-codec to the release.
+
 * General:
   - All Javadoc now links to the Java 1.4.2 API docs again, instead of to the
     Java 1.3.1 API docs.

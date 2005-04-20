@@ -928,6 +928,7 @@ ${sf.file}</fail>
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
 			<include name="lib/apache.LICENSE"             />
+			<include name="lib/commons-codec.LICENSE"      />
 			<include name="lib/commons-httpclient.LICENSE" />
 			<include name="lib/commons-logging.LICENSE"    />
 			<include name="lib/jakarta-oro.LICENSE"        />
@@ -975,6 +976,7 @@ ${sf.file}</fail>
 				<include name="build/*.jar"                    />
 				<include name="docs/XINSGuide.pdf"             />
 				<include name="docs/protocol/XINSProtocol.pdf" />
+				<include name="lib/commons-codec.jar"          />
 				<include name="lib/commons-httpclient.jar"     />
 				<include name="lib/commons-logging.jar"        />
 				<include name="lib/jakarta-oro.jar"            />
