@@ -23,10 +23,13 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
     server-side returns an error code that is not recognized as a result code
     for the function, then an UnacceptableErrorCodeXINSCallException is
     thrown.
-  - Added a test case that fails because of bug #1182928 and #1060861:
-    Missing required parameter throws incorrect exception.
-  - Added a test case that fails because of bug #1183640:
-    Check that incorrect error code causes UnexpectedErrorCodeEx.
+    Added a unit test case to check this.
+  - Fixed SF.net bug #1060861: IllegalArgumentException if output param is
+    required but null. Now if an output parameter is required but not set,
+    then the generated client-side code throws an
+    UnacceptableResultXINSCallException.
+    Added a unit test case to check this.
+    Bug #1182928 was a duplicate of this one.
 
 * Logdoc:
   - Fixed Logdoc DTDs were not loaded locally if the XINS directory contains

@@ -159,6 +159,12 @@ extends org.xins.client.AbstractCAPICallResult {
 </xsl:text>
 		    <xsl:apply-templates select="output/param" mode="setfield" />
 		    <xsl:text>
+      } catch (java.lang.IllegalArgumentException exception) {
+         org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(181, "The parameter \"");
+         buffer.append(currentParam);
+         buffer.append("\" is not set although it is required.");
+         throw new org.xins.client.UnacceptableResultXINSCallException(result, buffer.toString(), exception);
+
       } catch (org.xins.common.types.TypeValueException exception) {
          org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(203, "The parameter \"");
          buffer.append(currentParam);
