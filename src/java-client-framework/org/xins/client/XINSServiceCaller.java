@@ -535,7 +535,11 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      final String METHODNAME = "doCallImpl(CallRequest,TargetDescriptor)";
+      final String METHODNAME = "doCallImpl("
+                              + CallRequest.class.getName()
+                              + ','
+                              + TargetDescriptor.class.getName()
+                              + ')';
 
       // TRACE: Enter method
       org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
@@ -704,45 +708,32 @@ public final class XINSServiceCaller extends ServiceCaller {
                                                    resultData);
             } else if (errorCode.equals("_InternalError")
                     || errorCode.equals("_InvalidResponse")) {
-               throw new InternalErrorException(xinsRequest,
-                                                target,
-                                                duration,
-                                                resultData);
+               throw new InternalErrorException(
+                  xinsRequest, target, duration, resultData);
             } else if (errorCode.equals("_InvalidRequest")) {
-               throw new InvalidRequestException(xinsRequest,
-                                                 target,
-                                                 duration,
-                                                 resultData);
+               throw new InvalidRequestException(
+                  xinsRequest, target, duration, resultData);
             } else {
-               throw new UnexpectedErrorCodeException(xinsRequest,
-                                                      target,
-                                                      duration,
-                                                      resultData);
+               throw new UnacceptableErrorCodeXINSCallException(
+                  xinsRequest, target, duration, resultData);
             }
 
          // Non-standard error codes, CAPI not used
          } else if (_capi == null) {
-            throw new UnsuccessfulXINSCallException(xinsRequest,
-                                                    target,
-                                                    duration,
-                                                    resultData,
-                                                    null);
+            throw new UnsuccessfulXINSCallException(
+               xinsRequest, target, duration, resultData, null);
 
          // Non-standard error codes, CAPI used
          } else {
             AbstractCAPIErrorCodeException ex =
-               _capi.createErrorCodeException(xinsRequest,
-                                              target,
-                                              duration,
-                                              resultData);
+               _capi.createErrorCodeException(
+                  xinsRequest, target, duration, resultData);
 
             if (ex != null) {
                throw ex;
             } else {
-               throw new UnexpectedErrorCodeException(xinsRequest,
-                                                      target,
-                                                      duration,
-                                                      resultData);
+               throw new UnacceptableErrorCodeXINSCallException(
+                  xinsRequest, target, duration, resultData);
             }
          }
       }
@@ -801,7 +792,13 @@ public final class XINSServiceCaller extends ServiceCaller {
                                          Object            result)
    throws ClassCastException {
 
-      final String METHODNAME = "createCallResult(CallRequest,TargetDescriptor,long,CallExceptionList,Object)";
+      final String METHODNAME = "createCallResult("
+                              + CallRequest.class.getName()
+                              + ','
+                              + TargetDescriptor.class.getName()
+                              + ",long,"
+                              + CallExceptionList.class.getName()
+                              + ",java.lang.Object)";
 
       // TRACE: Enter method
       org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
