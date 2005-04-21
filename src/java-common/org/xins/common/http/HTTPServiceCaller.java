@@ -6,6 +6,8 @@
  */
 package org.xins.common.http;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.IOException;
 
@@ -17,7 +19,7 @@ import java.util.Iterator;
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnection;
-import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.util.TimeoutController;
@@ -187,12 +189,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Creates an appropriate <code>HttpMethod</code> object for the specified
-    * URL.
+    * Creates an appropriate <code>HttpMethodBase</code> object for the
+    * specified URL.
     *
     * @param url
-    *    the URL for which to create an {@link HttpMethod} object, should not
-    *    be <code>null</code>.
+    *    the URL for which to create an {@link HttpMethodBase} object, should
+    *    not be <code>null</code>.
     *
     * @param request
     *    the HTTP call request, not <code>null</code>.
@@ -201,14 +203,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    the HTTP call configuration object, not <code>null</code>.
     *
     * @return
-    *    the constructed {@link HttpMethod} object, not <code>null</code>.
+    *    the constructed {@link HttpMethodBase} object, not <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>url == null || request == null</code>.
     */
-   private static HttpMethod createMethod(String          url,
-                                          HTTPCallRequest request,
-                                          HTTPCallConfig  callConfig)
+   private static HttpMethodBase createMethod(String          url,
+                                              HTTPCallRequest request,
+                                              HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
       final String THIS_METHOD = "createMethod(java.lang.String,"
@@ -1110,7 +1112,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          client.getParams().setSoTimeout(socketTimeOut);
 
          // Construct the method object
-         HttpMethod method = createMethod(url, _request, _callConfig);
+         HttpMethodBase method = createMethod(url, _request, _callConfig);
 
          // Perform the HTTP call
          try {
@@ -1121,9 +1123,44 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             // Get response body
             _throwingClass  = method.getClass().getName();
-            _throwingMethod = "getResponseBody()";
-            byte[] body     = method.getResponseBody();
+            _throwingMethod = "getResponseBodyAsStream()";
+            InputStream in  = method.getResponseBodyAsStream();
 
+            byte[] body;
+            if (in == null) {
+               body = null;
+
+            } else {
+               _throwingMethod    = "getResponseContentLength()";
+               long contentLength = method.getResponseContentLength();
+               // XXX: What if contentLength > Integer.MAX_VALUE ?
+
+               // Create byte array output stream
+               int size = contentLength > 0 ? (int) contentLength : 4096;
+               ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+               byte[] buffer = new byte[4096];
+
+               // Copy from the input stream to the byte array
+               String inClass  = in.getClass().getName();
+               String outClass = "java.io.ByteArrayOutputStream";
+               _throwingClass  = inClass;
+               _throwingMethod = "read(byte[])";
+               for (int len = in.read(buffer); len > 0; ) {
+
+                  _throwingClass  = outClass;
+                  _throwingMethod = "write(byte[],int,int)";
+                  out.write(buffer, 0, len);
+
+                  _throwingClass  = inClass;
+                  _throwingMethod = "read(byte[])";
+                  len             = in.read(buffer);
+               }
+
+               _throwingClass  = outClass;
+               _throwingMethod = "toByteArray()";
+               body            = out.toByteArray();
+            }
+            
             // Store the result
             _throwingClass  = HTTPCallResultDataHandler.class.getName();
             _throwingMethod = "<init>(int,byte[])";
