@@ -44,6 +44,10 @@ public class AllTests extends TestSuite {
       // Start the server
       suite.addTestSuite(StartServer.class);
 
+      //
+      // Add all tests
+      //
+
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
@@ -90,6 +94,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.CAPITests.class);
       suite.addTestSuite(org.xins.tests.client.DataElementTests.class);
+      suite.addTestSuite(org.xins.tests.client.InvalidRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.UnacceptableResultXINSCallExceptionTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
@@ -102,8 +107,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
 
-      // Test just a test
-      // suite.addTest(new org.xins.tests.server.CallingConventionTests("testXMLCallingConvention"));
+      // XXX: Perform just a single test
+      // suite.addTestSuite(org.xins.tests.client.InvalidRequestTests.class);
 
       // Stop the server
       suite.addTestSuite(StopServer.class);
