@@ -18,6 +18,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
     unrecognized, then an UnacceptableErrorCodeXINSCallException is thrown,
     instead of an UnsuccessfulXINSCallException.
 
+* XINS/Java Server Framework:
+  - Translated some new logdoc messages to French.
+
 * Generation of client-side Java code:
   - Fixed SF.net bug #1183640: Detect unacceptable error code in CAPI. If the
     server-side returns an error code that is not recognized as a result code
