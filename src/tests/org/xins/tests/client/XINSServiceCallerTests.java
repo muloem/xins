@@ -6,18 +6,19 @@
  */
 package org.xins.tests.client;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.client.InvalidResultXINSCallException;
+import org.xins.client.XINSCallConfig;
 import org.xins.client.XINSCallRequest;
+import org.xins.client.XINSCallResult;
 
 import org.xins.client.XINSServiceCaller;
+import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
@@ -114,5 +115,26 @@ public class XINSServiceCallerTests extends TestCase {
       } catch (InvalidResultXINSCallException exception) {
          // as expected
       }
+   }
+   
+   /**
+    * Test the XINSServiceCaller with HTTP GET
+    */
+   public void testXINSServiceCallerWithGET() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
+      XINSCallConfig config = new XINSCallConfig();
+      config.setHTTPMethod(HTTPMethod.GET);
+      request.setXINSCallConfig(config);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      PropertyReader parameters = result.getParameters();
+      assertNotNull("No java version specified.", parameters.get("java.version"));
+      
+      BasicPropertyReader parameters2 = new BasicPropertyReader();
+      parameters2.set("inputText", "bonjour");
+      XINSCallRequest request2 = new XINSCallRequest("ResultCode", parameters2);
+      request2.setXINSCallConfig(config);
+      caller.call(request2);
    }
 }

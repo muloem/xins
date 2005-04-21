@@ -359,13 +359,24 @@ public class HTTPServletHandler {
             if (questionPos !=-1) {
                int lastSpace = inputLine.indexOf(' ', questionPos);
                if (lastSpace != -1) {
-                  inputLine = inputLine.substring(questionPos + 1, lastSpace);
+                  query = inputLine.substring(questionPos + 1, lastSpace);
                } else {
-                  inputLine = inputLine.substring(questionPos + 1);
+                  query = inputLine.substring(questionPos + 1);
+               }
+               virtualPath = inputLine.substring(4, questionPos);
+            } else {
+               query = "";
+               int lastSpace = inputLine.indexOf(' ', 4);
+               if (lastSpace != -1) {
+                  virtualPath = inputLine.substring(4, lastSpace);
+               } else {
+                  virtualPath = inputLine.substring(4);
                }
             }
-            query = inputLine.replace(',', '&');
-            virtualPath = inputLine.substring(4, inputLine.lastIndexOf('/', inputLine.length()-8));
+            query = query.replace(',', '&');
+            if (virtualPath.length() > 1 && virtualPath.endsWith("/")) {
+               virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
+            }
          }
 
          // POST method
