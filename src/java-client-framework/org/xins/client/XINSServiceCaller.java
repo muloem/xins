@@ -349,8 +349,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-
-   /**
     * Executes the specified XINS call request towards one of the associated
     * targets. If the call succeeds with one of these targets, then a
     * {@link XINSCallResult} object is returned. Otherwise, if none of the
