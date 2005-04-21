@@ -87,18 +87,23 @@ import org.xins.logdoc.ExceptionUtils;
  * response code will be returned:
  *
  * <table class="APIServlet_HTTP_response_codes">
- *    <tr><th>State</th>                     <th>HTTP response code</th>       </tr>
- *    <tr><td>Initial</td>                   <td>503 Service Unavailable</td>  </tr>
- *    <tr><td>Bootstrapping framework</td>   <td>503 Service Unavailable</td>  </tr>
- *    <tr><td>Framework bootstrap failed</td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Constructing API</td>          <td>503 Service Unavailable</td>  </tr>
- *    <tr><td>API construction failed</td>   <td>500 Internal Server Error</td></tr>
- *    <tr><td>Bootstrapping API</td>         <td>503 Service Unavailable</td>  </tr>
- *    <tr><td>API bootstrap failed</td>      <td>500 Internal Server Error</td></tr>
- *    <tr><td>Initializing API</td>          <td>503 Service Unavailable</td>  </tr>
- *    <tr><td>API initialization failed</td> <td>500 Internal Server Error</td></tr>
- *    <tr><td>Disposing</td>                 <td>500 Internal Server Error</td></tr>
- *    <tr><td>Disposed</td>                  <td>500 Internal Server Error</td></tr>
+ *    <tr><th>State               </th><th>HTTP response code       </th></tr>
+ *
+ *    <tr><td>Initial             </td><td>503 Service Unavailable  </td></tr>
+ *    <tr><td>Bootstrapping
+ *            framework           </td><td>503 Service Unavailable  </td></tr>
+ *    <tr><td>Framework bootstrap
+ *                          failed</td><td>500 Internal Server Error</td></tr>
+ *    <tr><td>Constructing API    </td><td>503 Service Unavailable  </td></tr>
+ *    <tr><td>API construction
+ *            failed              </td><td>500 Internal Server Error</td></tr>
+ *    <tr><td>Bootstrapping API   </td><td>503 Service Unavailable  </td></tr>
+ *    <tr><td>API bootstrap failed</td><td>500 Internal Server Error</td></tr>
+ *    <tr><td>Initializing API    </td><td>503 Service Unavailable  </td></tr>
+ *    <tr><td>API initialization
+ *            failed              </td><td>500 Internal Server Error</td></tr>
+ *    <tr><td>Disposing           </td><td>500 Internal Server Error</td></tr>
+ *    <tr><td>Disposed            </td><td>500 Internal Server Error</td></tr>
  * <table>
  *
  * @version $Revision$ $Date$
@@ -127,52 +132,62 @@ extends HttpServlet {
    /**
     * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
     */
-   private static final State BOOTSTRAPPING_FRAMEWORK = new State("BOOTSTRAPPING_FRAMEWORK", false);
+   private static final State BOOTSTRAPPING_FRAMEWORK =
+      new State("BOOTSTRAPPING_FRAMEWORK", false);
 
    /**
     * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State FRAMEWORK_BOOTSTRAP_FAILED = new State("FRAMEWORK_BOOTSTRAP_FAILED", true);
+   private static final State FRAMEWORK_BOOTSTRAP_FAILED =
+      new State("FRAMEWORK_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>CONSTRUCTING_API</em> state.
     */
-   private static final State CONSTRUCTING_API = new State("CONSTRUCTING_API", false);
+   private static final State CONSTRUCTING_API =
+      new State("CONSTRUCTING_API", false);
 
    /**
     * The <em>API_CONSTRUCTION_FAILED</em> state.
     */
-   private static final State API_CONSTRUCTION_FAILED = new State("API_CONSTRUCTION_FAILED", true);
+   private static final State API_CONSTRUCTION_FAILED =
+      new State("API_CONSTRUCTION_FAILED", true);
 
    /**
     * The <em>BOOTSTRAPPING_API</em> state.
     */
-   private static final State BOOTSTRAPPING_API = new State("BOOTSTRAPPING_API", false);
+   private static final State BOOTSTRAPPING_API =
+      new State("BOOTSTRAPPING_API", false);
 
    /**
     * The <em>API_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State API_BOOTSTRAP_FAILED = new State("API_BOOTSTRAP_FAILED", true);
+   private static final State API_BOOTSTRAP_FAILED =
+      new State("API_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>DETERMINE_INTERVAL</em> state.
     */
-   private static final State DETERMINE_INTERVAL = new State("DETERMINE_INTERVAL", false);
+   private static final State DETERMINE_INTERVAL =
+      new State("DETERMINE_INTERVAL", false);
 
    /**
     * The <em>DETERMINE_INTERVAL_FAILED</em> state.
     */
-   private static final State DETERMINE_INTERVAL_FAILED = new State("DETERMINE_INTERVAL_FAILED", true);
+   private static final State DETERMINE_INTERVAL_FAILED =
+      new State("DETERMINE_INTERVAL_FAILED", true);
 
    /**
     * The <em>INITIALIZING_API</em> state.
     */
-   private static final State INITIALIZING_API = new State("INITIALIZING_API", false);
+   private static final State INITIALIZING_API =
+      new State("INITIALIZING_API", false);
 
    /**
     * The <em>API_INITIALIZATION_FAILED</em> state.
     */
-   private static final State API_INITIALIZATION_FAILED = new State("API_INITIALIZATION_FAILED", true);
+   private static final State API_INITIALIZATION_FAILED =
+      new State("API_INITIALIZATION_FAILED", true);
 
    /**
     * The <em>READY</em> state.
@@ -192,19 +207,22 @@ extends HttpServlet {
    /**
     * The date formatter used for the context identifier.
     */
-   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyMMdd-HHmmssSSS");
+   private static final SimpleDateFormat DATE_FORMATTER =
+      new SimpleDateFormat("yyMMdd-HHmmssSSS");
 
    /**
     * The name of the system property that specifies the location of the
     * configuration file.
     */
-   public static final String CONFIG_FILE_SYSTEM_PROPERTY = "org.xins.server.config";
+   public static final String CONFIG_FILE_SYSTEM_PROPERTY =
+      "org.xins.server.config";
 
    /**
     * The name of the runtime property that specifies the interval
     * for the configuration file modification checks, in seconds.
     */
-   public static final String CONFIG_RELOAD_INTERVAL_PROPERTY = "org.xins.server.config.reload";
+   public static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
+      "org.xins.server.config.reload";
 
    /**
     * The name of the runtime property that hostname for the server
@@ -233,17 +251,22 @@ extends HttpServlet {
     * The name of the build property that specifies the version with which the
     * API was built.
     */
-   public static final String API_BUILD_VERSION_PROPERTY = "org.xins.api.build.version";
+   public static final String API_BUILD_VERSION_PROPERTY =
+      "org.xins.api.build.version";
 
    /**
-    * The name of the build property that specifies the default calling convention.
+    * The name of the build property that specifies the default calling
+    * convention.
     */
-   public static final String API_CALLING_CONVENTION_PROPERTY = "org.xins.api.calling.convention";
+   public static final String API_CALLING_CONVENTION_PROPERTY =
+      "org.xins.api.calling.convention";
 
    /**
-    * The name of the build property that specifies the class of the default calling convention.
+    * The name of the build property that specifies the class of the default
+    * calling convention.
     */
-   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY = "org.xins.api.calling.convention.class";
+   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
+      "org.xins.api.calling.convention.class";
 
    /**
     * The parameter of the query to specify the calling convention.
@@ -277,7 +300,8 @@ extends HttpServlet {
     * @deprecated
     *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
-   public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
+   public static final String LOG_LOCALE_PROPERTY =
+      "org.xins.server.log.locale";
 
 
    //-------------------------------------------------------------------------
@@ -297,11 +321,26 @@ extends HttpServlet {
     * Initializes the logging subsystem with fallback default settings.
     */
    private static final void configureLoggerFallback() {
+
       Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",                                "ALL, console");
-      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
+
+      // Send all log messages to the logger named 'console'
+      settings.setProperty("log4j.rootLogger",
+                           "ALL, console");
+      
+      // Define the type of the logger named 'console'
+      settings.setProperty("log4j.appender.console",
+                           "org.apache.log4j.ConsoleAppender");
+
+      // Use a pattern-layout for the logger
+      settings.setProperty("log4j.appender.console.layout",
+                           "org.apache.log4j.PatternLayout");
+
+      // Define the pattern for the logger
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern",
+                           "%16x %6c{1} %-6p %m%n");
+
+      // Perform Log4J configuration
       PropertyConfigurator.configure(settings);
    }
 
@@ -464,7 +503,8 @@ extends HttpServlet {
       HexConverter.toHexString(buffer, _random.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
 
-      FastStringBuffer contextID = new FastStringBuffer(_apiName.length() + _hostname.length() + 27);
+      int length = _apiName.length() + _hostname.length() + 27;
+      FastStringBuffer contextID = new FastStringBuffer(length);
       contextID.append(_apiName);
       contextID.append('@');
       contextID.append(_hostname);
@@ -588,9 +628,10 @@ extends HttpServlet {
          } else if (oldState == INITIALIZING_API
                  && newState == API_INITIALIZATION_FAILED) {
 
-         // API initialization may be retried
+         // API initialization may be retried, but then the interval is
+         // determined first
          } else if (oldState == API_INITIALIZATION_FAILED
-                 && newState == INITIALIZING_API) {
+                 && newState == DETERMINE_INTERVAL) {
 
          // API initialization may succeed, in which case the servlet is ready
          } else if (oldState == INITIALIZING_API
@@ -653,14 +694,17 @@ extends HttpServlet {
             if (interval < 0) {
                Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
                setState(DETERMINE_INTERVAL_FAILED);
-               throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
+               throw new InvalidPropertyValueException(
+                  CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
                Log.log_3410(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             }
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
             setState(DETERMINE_INTERVAL_FAILED);
-            throw new InvalidPropertyValueException(CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Not a 32-bit integer number.");
+            throw new InvalidPropertyValueException(
+               CONFIG_RELOAD_INTERVAL_PROPERTY, s,
+               "Not a 32-bit integer number.");
          }
 
       // Otherwise, if the property is not set, use the default
@@ -781,27 +825,30 @@ extends HttpServlet {
     *        optional. These build-time settings are passed to the servlet by
     *        the application server as a {@link ServletConfig} object. See
     *        {@link #init(ServletConfig)}.
-    *        <br />The servlet configuration is the responsibility of the
+    *        <br>The servlet configuration is the responsibility of the
     *        <em>assembler</em>.</dd>
     *
     *    <dt><strong>2. System properties</strong></dt>
     *    <dd>The location of the configuration file must be passed to the
     *        Java VM at startup, as a system property.
-    *        <br />System properties are the responsibility of the
+    *        <br>System properties are the responsibility of the
     *        <em>system administrator</em>.
-    *        <br />Example:
-    *        <br /><code>java -Dorg.xins.server.config=`pwd`/conf/xins.properties orion.jar</code></dd>
+    *        <br>Example:
+    *        <br><code>java
+    *        -Dorg.xins.server.config=`pwd`/conf/xins.properties
+    *        orion.jar</code></dd>
     *
     *    <dt><strong>3. Configuration file</strong></dt>
     *    <dd>The configuration file should contain runtime configuration
     *        settings, like the settings for the logging subsystem.
-    *        <br />Runtime properties are the responsibility of the
+    *        <br>Runtime properties are the responsibility of the
     *        <em>system administrator</em>.
-    *        <br />Example contents for a configuration file:
+    *        <br>Example contents for a configuration file:
     *        <blockquote><code>log4j.rootLogger=DEBUG, console
-    *        <br />log4j.appender.console=org.apache.log4j.ConsoleAppender
-    *        <br />log4j.appender.console.layout=org.apache.log4j.PatternLayout
-    *        <br />log4j.appender.console.layout.ConversionPattern=%d %-5p [%c] %m%n</code></blockquote>
+    *        <br>log4j.appender.console=org.apache.log4j.ConsoleAppender
+    *        <br>log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    *        <br>log4j.appender.console.layout.ConversionPattern=%d
+    *        %-5p [%c] %m%n</code></blockquote>
     * </dl>
     *
     * @param config
@@ -889,10 +936,12 @@ extends HttpServlet {
             Log.log_3230(exception, CONFIG_FILE_SYSTEM_PROPERTY);
          }
 
-         // If the config file is not set at start-up try to get it from the web.xml
+         // If the config file is not set at start-up try to get it from the
+         // web.xml file
          if (_configFile == null) {
             Log.log_3231(CONFIG_FILE_SYSTEM_PROPERTY);
-            _configFile = config.getInitParameter(CONFIG_FILE_SYSTEM_PROPERTY);
+            _configFile = config.getInitParameter(
+               CONFIG_FILE_SYSTEM_PROPERTY);
          }
 
          // Property value must be set
@@ -904,8 +953,9 @@ extends HttpServlet {
             throw new ServletException();
          }
          
-         // Set the path separator correctly if needed
-         _configFile = _configFile.replace('/', File.separatorChar).replace('\\', File.separatorChar);
+         // Unify the file separator character
+         _configFile = _configFile.replace('/',  File.separatorChar);
+         _configFile = _configFile.replace('\\', File.separatorChar);
 
          // Initialize the logging subsystem
          readRuntimeProperties();
@@ -915,8 +965,11 @@ extends HttpServlet {
 
          // Warn if API build version is more recent than running version
          if (Library.isProductionRelease(serverVersion)) {
-            String buildVersion = config.getInitParameter(API_BUILD_VERSION_PROPERTY);
-            if (buildVersion == null || (Library.isProductionRelease(buildVersion) && Library.isMoreRecent(buildVersion))) {
+            String buildVersion = config.getInitParameter(
+               API_BUILD_VERSION_PROPERTY);
+            if (buildVersion == null ||
+                  (Library.isProductionRelease(buildVersion)
+                   && Library.isMoreRecent(buildVersion))) {
                Log.log_3229(buildVersion, serverVersion);
             }
          }
@@ -931,8 +984,10 @@ extends HttpServlet {
 
          // Determine the API class
          String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
-         apiClassName = (apiClassName == null) ? apiClassName : apiClassName.trim();
-         if (apiClassName == null || apiClassName.length() < 1) {
+         apiClassName = TextUtils.isEmpty(apiClassName)
+                      ? null
+                      : apiClassName.trim();
+         if (apiClassName == null) {
             Log.log_3206(API_CLASS_PROPERTY);
             setState(API_CONSTRUCTION_FAILED);
             throw new ServletException();
@@ -1101,11 +1156,15 @@ extends HttpServlet {
 
          // Determine the default calling convention
          try {
-            _defaultCallingConvention = config.getInitParameter(API_CALLING_CONVENTION_PROPERTY);
+            _defaultCallingConvention = config.getInitParameter(
+               API_CALLING_CONVENTION_PROPERTY);
             if (! TextUtils.isEmpty(_defaultCallingConvention)) {
-               _callingConvention = createCallingConvention(_defaultCallingConvention);
+               _callingConvention = createCallingConvention(
+                  _defaultCallingConvention);
                if (_callingConvention == null) {
-                  Log.log_3210(API_CALLING_CONVENTION_PROPERTY, _defaultCallingConvention, "No such calling convention.");
+                  Log.log_3210(API_CALLING_CONVENTION_PROPERTY,
+                               _defaultCallingConvention,
+                               "No such calling convention.");
                   setState(API_BOOTSTRAP_FAILED);
                   throw new ServletException();
                }
@@ -1164,7 +1223,9 @@ extends HttpServlet {
 
          // Create and start a file watch thread
          if (interval > 0) {
-            _configFileWatcher = new FileWatcher(_configFile, interval, _configFileListener);
+            _configFileWatcher = new FileWatcher(_configFile,
+                                                 interval,
+                                                 _configFileListener);
             _configFileWatcher.start();
          }
       }
@@ -1182,8 +1243,10 @@ extends HttpServlet {
          boolean succeeded = false;
 
          // Determine the log locale
-         String newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
-         if (newLocale == null) {
+         String newLocale = _runtimeProperties.get(
+            LogCentral.LOG_LOCALE_PROPERTY);
+
+         if (TextUtils.isEmpty(newLocale)) {
             newLocale = _runtimeProperties.get(LOG_LOCALE_PROPERTY);
          }
 
@@ -1216,7 +1279,9 @@ extends HttpServlet {
          } catch (MissingRequiredPropertyException exception) {
             Log.log_3411(exception.getPropertyName());
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3412(exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3412(exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
          } catch (InitializationException exception) {
             Log.log_3413(exception.getMessage());
          } catch (Throwable exception) {
@@ -1269,11 +1334,12 @@ extends HttpServlet {
 
          // Change the hostname if needed
          String hostname = properties.getProperty(HOSTNAME_PROPERTY);
-         if (hostname != null && !hostname.trim().equals("") && !hostname.equals(_hostname)) {
+         if (!(TextUtils.isEmpty(hostname) || hostname.equals(_hostname))) {
             Log.log_3310(_hostname, hostname);
             _hostname = hostname;
          }
 
+         // Store the runtime properties internally
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }
    }
@@ -1288,7 +1354,9 @@ extends HttpServlet {
       PropertyConfigurator.configure(properties);
 
       // Determine if Log4J is properly initialized
-      Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+      Enumeration appenders =
+         LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+
       if (appenders instanceof NullEnumeration) {
          Log.log_3304(_configFile);
          configureLoggerFallback();
@@ -1325,7 +1393,8 @@ extends HttpServlet {
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
-   public void service(HttpServletRequest request, HttpServletResponse response)
+   public void service(HttpServletRequest  request,
+                       HttpServletResponse response)
    throws IOException {
 
       // Determine diagnostic context ID
@@ -1414,7 +1483,9 @@ extends HttpServlet {
       // Determine the calling convention. If an existing calling convention
       // is specified in the request, then use that, otherwise use the calling
       // convention stored in the field.
-      String ccParam = (String) request.getParameter(CALLING_CONVENTION_PARAMETER);
+      String ccParam = (String) request.getParameter(
+         CALLING_CONVENTION_PARAMETER);
+
       CallingConvention callingConvention = null;
       if (ccParam != null && !ccParam.equals(_defaultCallingConvention)) {
          try {
@@ -1448,11 +1519,14 @@ extends HttpServlet {
          try {
 
             // Convert the HTTP request to an incoming XINS request
-            FunctionRequest xinsRequest = callingConvention.convertRequest(request);
+            FunctionRequest xinsRequest =
+               callingConvention.convertRequest(request);
 
             // Call the function
             SUBJECT_CLASS  = _api.getClass().getName();
-            SUBJECT_METHOD = "handleCall(long," + FunctionRequest.class.getName() + ",java.lang.String)";
+            SUBJECT_METHOD = "handleCall(long,"
+                           + FunctionRequest.class.getName()
+                           + ",java.lang.String)";
             result = _api.handleCall(start, xinsRequest, ip);
 
          } catch (Throwable exception) {
@@ -1518,7 +1592,8 @@ extends HttpServlet {
     * new one is constructed.
     *
     * @param name
-    *    the name of the calling convention to retrieve, can be <code>null</code>.
+    *    the name of the calling convention to retrieve, can be
+    *    <code>null</code>.
     *
     * @return
     *    a {@link CallingConvention} object that matches the specified calling
@@ -1533,7 +1608,8 @@ extends HttpServlet {
     *    incorrect value.
     *
     * @throws BootstrapException
-    *    if an error occured during the bootstraping of the calling convention.
+    *    if an error occured during the bootstraping of the calling
+    *    convention.
     */
    private CallingConvention createCallingConvention(String name) 
    throws MissingRequiredPropertyException,
@@ -1559,18 +1635,21 @@ extends HttpServlet {
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {
-         if (!name.equals(_servletConfig.getInitParameter(API_CALLING_CONVENTION_PROPERTY))) {
+         if (!name.equals(_servletConfig.getInitParameter(
+                API_CALLING_CONVENTION_PROPERTY))) {
             
-            // TODO Log
+            // TODO: Log
             return null;
          }
-         String conventionClass = _servletConfig.getInitParameter(API_CALLING_CONVENTION_CLASS_PROPERTY);
+         String conventionClass = _servletConfig.getInitParameter(
+            API_CALLING_CONVENTION_CLASS_PROPERTY);
          try {
             
-            // First try with a constructor with the API as parameter then with the empty constructor
+            // First try with a constructor with the API as parameter then
+            // with the empty constructor
             try {
-               Class[] construtorClasses = { API.class };
-               Object[] constructorArgs = { _api };
+               Class[]  construtorClasses = { API.class };
+               Object[] constructorArgs   = { _api };
                Constructor customConstructor = Class.forName(conventionClass).getConstructor(construtorClasses);
                createdConvention = (CustomCallingConvention) customConstructor.newInstance(constructorArgs);
             } catch (NoSuchMethodException nsmex) {
@@ -1578,7 +1657,7 @@ extends HttpServlet {
             }
          } catch (Exception ex) {
 
-            // TODO Log
+            // TODO: Log
             ex.printStackTrace();
             return null;
          }
@@ -1795,13 +1874,17 @@ extends HttpServlet {
             initAPI();
 
             // Update the file watch interval
-            int oldInterval = _configFileWatcher == null ? 0 : _configFileWatcher.getInterval();
+            int oldInterval = _configFileWatcher == null
+                            ? 0
+                            : _configFileWatcher.getInterval();
             if (oldInterval != newInterval) {
                if (newInterval == 0 && _configFileWatcher != null) {
                   _configFileWatcher.end();
                   _configFileWatcher = null;
                } else if (newInterval > 0 && _configFileWatcher == null) {
-                  _configFileWatcher = new FileWatcher(_configFile, newInterval, _configFileListener);
+                  _configFileWatcher = new FileWatcher(_configFile,
+                                                       newInterval,
+                                                       _configFileListener);
                   _configFileWatcher.start();
                } else {
                   _configFileWatcher.setInterval(newInterval);
