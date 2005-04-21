@@ -78,28 +78,42 @@ public class XINSServiceCallerTests extends TestCase {
     * Tests the constructor arguments.
     */
    public void testXINSServiceCallerConstructor() throws Throwable {
-      XINSServiceCaller caller = new XINSServiceCaller(null);
-      assertEquals(null, caller.getDescriptor());
 
-      // TODO: Move this test to a different function
+      TargetDescriptor  descriptor;
+      XINSServiceCaller caller;
+      String            url;
+
+      // Construct a XINSServiceCaller with no descriptor
+      descriptor = null;
+      caller     = new XINSServiceCaller(null);
+      assertEquals(descriptor, caller.getDescriptor());
+
+      // Update descriptor in XINSServiceCaller
+      url        = "http://1.2.3.4/";
+      descriptor = new TargetDescriptor(url);
+      caller.setDescriptor(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
+
+      // Test XINSServiceCaller with invalid protocol
+      url        = "blah://1.2.3.4/";
+      descriptor = new TargetDescriptor(url);
       try {
-         TargetDescriptor descriptor2 = new TargetDescriptor("blah://127.0.0.1:8080/");
-         caller.setDescriptor(descriptor2);
-         fail("The \"blah\" protocol should not be supported.");
+         caller = new XINSServiceCaller(descriptor);
+         fail("Expected UnsupportedProtocolException.");
       } catch (UnsupportedProtocolException upe) {
-         // As expected.
+         // as expected
       }
 
-      TargetDescriptor descriptor = new TargetDescriptor("hTtP://127.0.0.1:8080/");
-      caller = new XINSServiceCaller(descriptor);
+      // Construct XINSServiceCaller with valid descriptor
+      url        = "hTtP://127.0.0.1:8080/";
+      descriptor = new TargetDescriptor(url);
+      caller     = new XINSServiceCaller(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
 
-      try {
-         TargetDescriptor descriptor2 = new TargetDescriptor("blah://127.0.0.1:8080/");
-         XINSServiceCaller caller2 = new XINSServiceCaller(descriptor2);
-         fail("The \"blah\" protocol should not be supported.");
-      } catch (UnsupportedProtocolException upe) {
-         // As expected.
-      }
+      // Set the descriptor to null again
+      descriptor = null;
+      caller.setDescriptor(descriptor);
+      assertEquals(descriptor, caller.getDescriptor());
    }
    
    /**
