@@ -70,6 +70,13 @@ public class HTTPServletHandler {
     * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet 
     * methods to add the WAR files or the Servlets.
     *
+    * @param port
+    *    The port of the servlet server.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
     * @throws IOException
     *    if the servlet container cannot be started.
     */
@@ -104,6 +111,34 @@ public class HTTPServletHandler {
 
    /**
     * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * on port 8080 and wait for calls from the XINSServiceCaller.
+    * Note that all the libraries used by this WAR file should already be in
+    * the classpath.
+    *
+    * @param warFile
+    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *
+    * @param port
+    *    The port of the servlet server.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet container cannot be started.
+    */
+   public HTTPServletHandler(File warFile, int port, boolean deamon)
+   throws ServletException, IOException {
+      this(port, deamon);
+      addWAR(warFile, "/");
+   }
+
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
     * and wait for calls from the XINSServiceCaller.
     *
     * @param servletClassName
@@ -117,6 +152,31 @@ public class HTTPServletHandler {
     */
    public HTTPServletHandler(String servletClassName) throws ServletException, IOException {
       this(DEFAULT_PORT_NUMBER, true);
+      addServlet(servletClassName, "/");
+   }
+
+   /**
+    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
+    * and wait for calls from the XINSServiceCaller.
+    *
+    * @param servletClassName
+    *    The name of the servlet's class to load, cannot be <code>null</code>.
+    *
+    * @param port
+    *    The port of the servlet server.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a 
+    *    deamon thread, <code>false</code> otherwise.
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet container cannot be started.
+    */
+   public HTTPServletHandler(String servletClassName, int port, boolean deamon) throws ServletException, IOException {
+      this(port, deamon);
       addServlet(servletClassName, "/");
    }
 
@@ -204,7 +264,7 @@ public class HTTPServletHandler {
     * Starts the web server.
     *
     * @param port
-    *    The port of the servle server.
+    *    The port of the servlet server.
     *
     * @param deamon
     *    <code>true</code> if the thread listening to connection should be a 

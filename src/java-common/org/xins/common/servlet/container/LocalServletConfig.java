@@ -61,6 +61,7 @@ public class LocalServletConfig implements ServletConfig {
 
          DefaultHandler handler = new WebInfoParser();
          SAXParserFactory factory = SAXParserFactory.newInstance();
+         factory.setValidating(false);
          SAXParser saxParser = factory.newSAXParser();
          saxParser.parse(webxmlInputStream, handler);
          webxmlInputStream.close();

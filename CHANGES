@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
 
 * XINS/Java Common Library:
   - The HTTPServletHandler can contain several servlets.
+  - Fixed incorrect call to the HTTPServletHandler for the run target.
 
 * XINS/Java Client Framework:
   - Class UnsuccessfulXINSCallException now implements XINSCallResultData.

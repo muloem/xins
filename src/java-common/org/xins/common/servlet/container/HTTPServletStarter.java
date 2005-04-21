@@ -145,7 +145,7 @@ public class HTTPServletStarter {
       Class[] constClasses = {File.class, Integer.TYPE, Boolean.TYPE};
       Object[] constArgs = {warFile, new Integer(port), new Boolean(deamon)};
       try {
-         Class delegate = loader.loadClass("org.xins.common.servlet.container.HTTPServletDelegate");
+         Class delegate = loader.loadClass("org.xins.common.servlet.container.HTTPServletHandler");
          Constructor constructor  = delegate.getConstructor(constClasses);
          constructor.newInstance(constArgs);
       } catch (Exception ex) {
@@ -180,7 +180,7 @@ public class HTTPServletStarter {
       Class[] constClasses = {String.class, Integer.TYPE, Boolean.TYPE};
       Object[] constArgs = {servletClassName, new Integer(port), new Boolean(deamon)};
       try {
-         Class delegate = getClass().getClassLoader().loadClass("org.xins.common.servlet.container.HTTPServletDelegate");
+         Class delegate = getClass().getClassLoader().loadClass("org.xins.common.servlet.container.HTTPServletHandler");
          Constructor constructor  = delegate.getConstructor(constClasses);
          constructor.newInstance(constArgs);
       } catch (Exception ex) {
