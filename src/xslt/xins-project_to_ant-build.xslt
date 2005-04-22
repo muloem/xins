@@ -938,6 +938,7 @@ APIs in this project are:
 			</target>
 
 			<target name="run-{$api}" depends="war-{$api}" description="Runs the '{$api}' API">
+				<fail message="Please, specify the org.xins.server.config property as explained in the user guide." unless="org.xins.server.config" />
 				<java classname="org.xins.common.servlet.container.HTTPServletStarter"
 							fork="true">
 					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />

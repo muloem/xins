@@ -18,6 +18,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
   - Fixed SF.net bug #1187660: State change failed in APIServlet.
   - Minor improvements in APIServlet class. Mostly style.
 
+* Generated build file:
+  - Fixed bug #1187658: The run-<api> target will fail nicely if no 
+    org.xins.server.config property is set.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
 
