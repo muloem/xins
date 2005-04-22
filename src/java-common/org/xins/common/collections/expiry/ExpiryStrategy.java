@@ -284,9 +284,9 @@ public final class ExpiryStrategy extends Object {
       // Notify all the associated ExpiryFolder instances that we are stopping
       for (int i = 0; i < _folders.size(); i++) {
          WeakReference ref = (WeakReference) _folders.get(i);
-         ExpiryFolder folder = ref.get();
+         ExpiryFolder folder = (ExpiryFolder) ref.get();
          if (folder != null) {
-            f.strategyStopped();
+            folder.strategyStopped();
          }
       }
    }
