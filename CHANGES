@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1187660: State change failed in APIServlet.
   - Minor improvements in APIServlet class. Mostly style.
+  - Fixed translations for log message 3403 so they are appropriate even if
+    the new number of seconds is 1.
 
 * Generated build file:
   - Fixed bug #1187658: The run-<api> target will fail nicely if no 
