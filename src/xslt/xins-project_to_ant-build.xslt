@@ -197,10 +197,24 @@ APIs in this project are:
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN"
 					     location="translation-bundle_1_1.dtd" />
 
-					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
-					     location="impl_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Project 1.2//EN"
+					     location="xins-project_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD XINS API 1.2//EN"
+					     location="api_1_2.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.2//EN"
 					     location="function_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD Type 1.2//EN"
+					     location="type_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD Result Code 1.2//EN"
+					     location="resultcode_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
+					     location="impl_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD Environments 1.2//EN"
+					     location="environments_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Logdoc 1.2//EN"
+					     location="log_1_2.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.2//EN"
+					     location="translation-bundle_1_2.dtd" />
 				</xmlcatalog>
 			</target>
 

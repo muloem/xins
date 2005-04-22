@@ -35,6 +35,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
   - Fixed bug #1187658: The run-<api> target will fail nicely if no 
     org.xins.server.config property is set.
 
+* DTDs:
+  - Added 1.2 DTDs.
+
 * Documentation:
   - Improved README.html file.
 
