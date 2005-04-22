@@ -46,6 +46,33 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
 
    /**
+    * Converts a <code>java.util.Date</code> object to a
+    * <code>java.util.Calendar</code> object.
+    *
+    * @param date
+    *    the {@link java.util.Date} object to convert, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    an equivalent {@link java.util.Calendar} object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>date == null</code>.
+    */
+   private static Calendar createCalendar(java.util.Date date)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("date", date);
+
+      // Create and adjust a Calendar object
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(date);
+
+      return calendar;
+   }
+
+   /**
     * Constructs a <code>Date.Value</code> with the value of the current date.
     *
     * @return
@@ -286,6 +313,51 @@ public class Date extends Type {
          _asString = Date.toString(year, month, day);
       }
 
+      /**
+       * Constructs a new date value based on the specified
+       * <code>Calendar</code>.
+       *
+       * @param calendar
+       *    the {@link java.util.Calendar} object to get the exact date from, cannot be
+       *    <code>null</code>.
+       *
+       * @throws NullPointerException
+       *    if <code>calendar == null</code>.
+       */
+      public Value(Calendar calendar) throws NullPointerException { 
+         this(calendar.get(Calendar.YEAR),
+              calendar.get(Calendar.MONTH),
+              calendar.get(Calendar.DAY_OF_MONTH));
+      }
+
+      /**
+       * Constructs a new date value based on the specified
+       * <code>java.util.Date</code> object.
+       *
+       * @param date
+       *    the {@link java.util.Date} object to get the exact date from,
+       *    cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>date == null</code>.
+       */
+      public Value(java.util.Date date) throws IllegalArgumentException { 
+         this(createCalendar(date));
+      } 
+
+      /**
+       * Constructs a new date value based on the specified number of
+       * milliseconds since the Epoch.
+       *
+       * @param millis
+       *    the number of milliseconds since the Epoch.
+       *
+       * @see System#currentTimeMillis()
+       */
+      public Value(long millis) { 
+         this(new java.util.Date(millis)); 
+      } 
+          
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------

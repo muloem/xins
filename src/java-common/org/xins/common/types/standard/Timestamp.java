@@ -58,7 +58,7 @@ public class Timestamp extends Type {
     *    <code>null</code>.
     *
     * @return
-    *    an equivalent {@link Calendar} object, never <code>null</code>.
+    *    an equivalent {@link java.util.Calendar} object, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>date == null</code>.
@@ -392,8 +392,8 @@ public class Timestamp extends Type {
        * <code>Calendar</code>.
        *
        * @param calendar
-       *    the {@link Calendar} object to get the exact date from, cannot be
-       *    <code>null</code>.
+       *    the {@link java.util.Calendar} object to get the exact date from, 
+       *    cannot be <code>null</code>.
        *
        * @throws NullPointerException
        *    if <code>calendar == null</code>.
