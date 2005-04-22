@@ -322,9 +322,9 @@ implements DefaultResultCodes {
       _buildHost    = _buildSettings.get("org.xins.api.build.host");
       _buildTime    = _buildSettings.get("org.xins.api.build.time");
       _buildVersion = _buildSettings.get("org.xins.api.build.version");
-      _apiVersion = _buildSettings.get(API_VERSION_PROPERTY);
+      _apiVersion   = _buildSettings.get(API_VERSION_PROPERTY);
 
-      Log.log_3212(_buildHost, _buildTime, _buildVersion, _apiVersion);
+      Log.log_3212(_buildHost, _buildTime, _buildVersion, _name, _apiVersion);
 
       // Check if build version identifies a production release of XINS
       if (_buildVersion == null || ! Library.isProductionRelease(_buildVersion)) {

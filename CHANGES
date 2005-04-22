@@ -25,6 +25,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
   - Minor improvements in APIServlet class. Mostly style.
   - Fixed translations for log message 3403 so they are appropriate even if
     the new number of seconds is 1.
+  - Logging API name in log message 3212.
+  - Changed level of log message 3235 (determined API name) from INFO to
+    DEBUG, the API name is already in message 3212.
+  - Changed level of log messages 3233 and 3234 (API does or does not use
+    Logdoc) from INFO to DEBUG.
 
 * Generated build file:
   - Fixed bug #1187658: The run-<api> target will fail nicely if no 

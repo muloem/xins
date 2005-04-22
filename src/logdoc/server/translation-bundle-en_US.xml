@@ -27,7 +27,7 @@
 	<translation entry="3209">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
 	<translation entry="3210">XINS/Java Server Framework cannot be bootstrapped. Invalid application package. The build property <value-of-param name="propertyName" format="quoted" /> is set to <value-of-param name="propertyValue" format="quoted" />, which is considered an invalid value. Reason: <value-of-param name="reason" /></translation>
 	<translation entry="3211">XINS/Java Server Framework cannot be bootstrapped for an unknown reason.</translation>
-	<translation entry="3212">Package for the API version <value-of-param name="apiVersion" format="quoted"/> was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
+	<translation entry="3212">Package for <value-of-param name="apiName" format="quoted"/> API, version <value-of-param name="apiVersion" format="quoted"/>, was built on <value-of-param name="buildHost" /> at <value-of-param name="buildTime" />, using XINS <value-of-param name="buildVersion" />.</translation>
 	<translation entry="3213">Bootstrapping manageable <value-of-param name="className" />.</translation>
 	<translation entry="3214">Bootstrapped manageable <value-of-param name="className" />.</translation>
 	<translation entry="3215">Bootstrap of manageable <value-of-param name="className" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
