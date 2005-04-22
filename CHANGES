@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
   - When an ExpiryStrategy is stopped, then all associated ExpiryFolder
     objects are notified, so they may deinitialize. If an ExpiryFolder is used
     after that, it throws an IllegalStateException on almost all operations.
+  - Added missing @since tags to Timestamp class and made some minor changes,
+    which should not affect the behavior.
 
 * XINS/Java Client Framework:
   - Added partial unit test for SF.net RFE #1115233: Show _InvalidRequest

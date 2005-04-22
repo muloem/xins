@@ -34,10 +34,11 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Formatter used to convert the String representation as a 
-    * {@link java.util.Date}.
+    * Formatter used to convert the <code>String</code> representation to a 
+    * <code>java.util.Date</code> instance.
     */
-   private static DateFormat FORMATTER;
+   private static final DateFormat FORMATTER =
+      new SimpleDateFormat("yyyyMMddHHmmss");
       
    /**
     * The only instance of this class. This field is never <code>null</code>.
@@ -397,6 +398,8 @@ public class Timestamp extends Type {
        *
        * @throws NullPointerException
        *    if <code>calendar == null</code>.
+       *
+       * @since XINS 1.2.0
        */
       public Value(Calendar calendar) throws NullPointerException { 
          this(calendar.get(Calendar.YEAR),
@@ -417,6 +420,8 @@ public class Timestamp extends Type {
        *
        * @throws IllegalArgumentException
        *    if <code>date == null</code>.
+       *
+       * @since XINS 1.2.0
        */
       public Value(java.util.Date date) throws IllegalArgumentException { 
          this(createCalendar(date));
@@ -430,6 +435,8 @@ public class Timestamp extends Type {
        *    the number of milliseconds since the Epoch.
        *
        * @see System#currentTimeMillis()
+       *
+       * @since XINS 1.2.0
        */
       public Value(long millis) { 
          this(new java.util.Date(millis)); 
@@ -576,13 +583,14 @@ public class Timestamp extends Type {
       }
 
       /**
+       * Converts to a <code>java.util.Date</code> object.
+       *
        * @return
-       *    The {@link java.util.Date} corresponding to this value.
+       *    the {@link java.util.Date} corresponding to this value.
+       *
+       * @since XINS 1.2.0
        */
       public java.util.Date toDate() {
-         if (FORMATTER == null) {
-            FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
-         }
          try {
             return FORMATTER.parse(_asString);
          } catch (ParseException pex) {
@@ -592,10 +600,25 @@ public class Timestamp extends Type {
       }
       
       /**
+       * Returns a textual representation of this object. The timestamp is
+       * returned in the format:
+       *
+       * <blockquote><em>YYYYMMDDhhmmss</em></ul>
+       *
+       * where:
+       *
+       * <ul>
+       *    <li><em>YYYY</em> is the year, e.g. <code>"2005"</code>;
+       *    <li><em>MM</em> is the month, e.g. <code>"01"</code> for January;
+       *    <li><em>DD</em> is the day of the month, e.g. <code>"31"</code>;
+       *    <li><em>hh</em> is the hour, e.g. <code>"23"</code>;
+       *    <li><em>mm</em> is the minute, e.g. <code>"59"</code>;
+       *    <li><em>ss</em> is the second, e.g. <code>"00"</code>.
+       * </ul>
+       *
        * @return
-       *    The textual representation of this timestamp. Composed of the year (YYYY),
-       *    month (MM), day (DD), hour (hh), minute (mm) and second (ss)
-       *    in the format: <em>YYYYMMDDhhmmss</em>.
+       *    the textual representation of this timestamp, never
+       *    <code>null</code>.
        */
       public String toString() {
          return _asString;
