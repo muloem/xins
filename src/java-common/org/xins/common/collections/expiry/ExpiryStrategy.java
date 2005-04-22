@@ -235,13 +235,21 @@ public final class ExpiryStrategy extends Object {
     *    the {@link ExpiryFolder} that is now associated with this strategy,
     *    cannot be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if this strategy was already stopped.
+    *
     * @throws IllegalArgumentException
     *    if <code>folder == null</code>.
     */
    void folderAdded(ExpiryFolder folder)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
 
-      // Check preconditions
+      // Check state
+      if (_stop) {
+         throw new IllegalStateException("Already stopped.");
+      }
+
+      // Check arguments
       MandatoryArgumentChecker.check("folder", folder);
 
       // XXX: Review this log message. Generally, toString() is not wise.
@@ -262,13 +270,22 @@ public final class ExpiryStrategy extends Object {
    public void stop()
    throws IllegalStateException {
 
-      // Check preconditions
+      // Check state
       if (_stop) {
          throw new IllegalStateException("Already stopped.");
       }
 
+      // Set the stop flag
       _stop = true;
+
+      // Notify the timer thread
       _timerThread.interrupt();
+
+      // Notify all the associated ExpiryFolder instances that we are stopping
+      for (int i = 0; i < _folders.size(); i++) {
+         ExpiryFolder f = (ExpiryFolder) _folders.get(i);
+         f.strategyStopped();
+      }
    }
 
    /**
@@ -276,6 +293,11 @@ public final class ExpiryStrategy extends Object {
     * called from (and on) the timer thread.
     */
    private void doTick() {
+
+      // Do nothing if this strategy was already stopped
+      if (_stop) {
+         return;
+      }
 
       int emptyRefIndex = -1;
 

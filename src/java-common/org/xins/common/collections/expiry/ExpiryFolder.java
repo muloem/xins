@@ -76,7 +76,10 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ExpiryFolder</code>.
+    * Constructs a new <code>ExpiryFolder</code> with the specified name and
+    * strategy. When the strategy is stopped (see
+    * {@link ExpiryStrategy#stop()} then this folder becomes invalid and can
+    * no longer be used.
     *
     * @param name
     *    description of this folder, to be used in log and exception messages,
@@ -87,6 +90,9 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || strategy == null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the strategy is already stopped.
     *
     * @since XINS 1.0.1
     */
@@ -107,22 +113,24 @@ extends Object {
                                       + TextUtils.quote(strategy.toString())
                                       + ']';
 
+      // TRACE: Enter constructor
       Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
 
-      // Check preconditions
+      // Check arguments
       MandatoryArgumentChecker.check("name", name, "strategy", strategy);
 
       // Initialize fields
-      _lock                 = new Object();
-      _name                 = name;
-      _strategy             = strategy;
-      _asString             = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
-      _recentlyAccessed     = new HashMap(89);
-      _slotCount            = strategy.getSlotCount();
-      _slots                = new HashMap[_slotCount];
-      _lastSlot             = _slotCount - 1;
-      _listeners            = new ArrayList(5);
-      _expired              = new HashMap();
+      _lock             = new Object();
+      _name             = name;
+      _strategy         = strategy;
+      _strategyStopped  = false;
+      _asString         = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
+      _recentlyAccessed = new HashMap(89);
+      _slotCount        = strategy.getSlotCount();
+      _slots            = new HashMap[_slotCount];
+      _lastSlot         = _slotCount - 1;
+      _listeners        = new ArrayList(5);
+      _expired          = new HashMap();
 
       // Initialize all slots to a new HashMap
       for (int i = 0; i < _slotCount; i++) {
@@ -132,11 +140,18 @@ extends Object {
       // Notify the strategy that we listen to it
       strategy.folderAdded(this);
 
+      // TRACE: Leave constructor
       Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
    }
 
    /**
-    * Constructs a new <code>ExpiryFolder</code>.
+    * Constructs a new <code>ExpiryFolder</code> with the specified name and
+    * strategy and some specific tweaks. When the strategy is stopped (see
+    * {@link ExpiryStrategy#stop()} then this folder becomes invalid and can
+    * no longer be used.
+    *
+    * <p><em>Since XINS 1.0.1, the arguments <code>strictChecking</code> and
+    * <code>maxQueueWaitTime</code> are not used at all.</em>
     *
     * @param name
     *    description of this folder, to be used in log and exception messages,
@@ -202,7 +217,13 @@ extends Object {
    /**
     * The strategy used. This field cannot be <code>null</code>.
     */
-   private final ExpiryStrategy _strategy;
+   private ExpiryStrategy _strategy;
+
+   /**
+    * Flag that indicates whether the associated strategy has already stopped.
+    * If it has, then this folder becomes invalid.
+    */
+   private boolean _strategyStopped;
 
    /**
     * String representation. Cannot be <code>null</code>.
@@ -234,12 +255,12 @@ extends Object {
     * accessed. The further back in the array, the sooner the entries will
     * expire.
     */
-   private final HashMap[] _slots;
+   private HashMap[] _slots;
 
    /**
     * The set of listeners. May be empty, but never is <code>null</code>.
     */
-   private final ArrayList _listeners;
+   private ArrayList _listeners;
 
    /**
     * Map containing entries already removed (because they are expired) but
@@ -256,6 +277,39 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Checks that the associated expiry strategy was not yet stopped. If it
+    * was, then an {@link IllegalStateException} is thrown.
+    *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} was stopped.
+    */
+   private void assertStrategyNotStopped() {
+      if (_strategyStopped) {
+         throw new IllegalStateException(
+            "The associated ExpiryStrategy has stopped already.");
+      }
+   }
+
+   /**
+    * Callback method, called by the <code>ExpiryStrategy</code> to indicate
+    * it was stopped.
+    */
+   void strategyStopped() {
+
+      _strategyStopped = true;
+
+      // TODO: Log
+
+      synchronized (_lock) {
+         _strategy         = null;
+         _recentlyAccessed = null;
+         _slots            = null;
+         _listeners        = null;
+         _expired          = null;
+      }
+   }
+
+   /**
     * Returns the name given to this expiry folder.
     *
     * @return
@@ -270,10 +324,16 @@ extends Object {
     * last tick.
     *
     * <p>Entries that are expirable may be removed from this folder.
+    *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
     */
-   void tick() {
+   void tick() throws IllegalStateException {
 
       final String THIS_METHOD = "tick()";
+
+      // Check state
+      assertStrategyNotStopped();
 
       // Allocate memory for the new map of recently accessed entries outside
       // the synchronized sections
@@ -308,14 +368,16 @@ extends Object {
       }
 
       // Determine how may objects are to be sent to the listeners
-      int toBeExpiredSize = toBeExpired.size()
-                          + (refMap == null ? 0 : refMap.size());
+      int refMapSize       = refMap == null
+                           ? 0
+                           : refMap.size();
+      int toBeExpiredCount = toBeExpired.size() + refMapSize;
 
       // Log this
-      Log.log_1400(_asString, toBeExpiredSize, newSize);
+      Log.log_1400(_asString, toBeExpiredCount, newSize);
       
       // If set of objects for listeners is empty, then short-circuit
-      if (toBeExpiredSize < 1) {
+      if (toBeExpiredCount < 1) {
          return;
       }
 
@@ -331,7 +393,6 @@ extends Object {
       if (listeners == null) {
          return;
       }
-
 
       // Create a map for the object references, if necessary
       if (refMap == null) {
@@ -372,11 +433,19 @@ extends Object {
     * @param listener
     *    the listener to be registered, cannot be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>listener == null</code>.
     */
    public void addListener(ExpiryListener listener)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
+
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("listener", listener);
 
       synchronized (_listeners) {
@@ -392,11 +461,19 @@ extends Object {
     * @param listener
     *    the listener to be unregistered, cannot be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>listener == null</code>.
     */
    public void removeListener(ExpiryListener listener)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
+
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("listener", listener);
 
       synchronized (_listeners) {
@@ -414,11 +491,19 @@ extends Object {
     * @return
     *    the size of the specified map, always &gt;= 0.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>map == null</code>.
     */
-   private int sizeOf(HashMap map) throws IllegalArgumentException {
+   private int sizeOf(HashMap map)
+   throws IllegalStateException, IllegalArgumentException {
 
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("map", map);
       
       int size = 0;
@@ -445,8 +530,15 @@ extends Object {
     *
     * @return
     *    the number of entries in this expiry folder, always &gt;= 0.
+    *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
     */
-   public int size() {
+   public int size()
+   throws IllegalStateException {
+
+      // Check state
+      assertStrategyNotStopped();
 
       // Always get the lock for _recentlyAccessed first
       synchronized (_lock) {
@@ -475,12 +567,19 @@ extends Object {
     *    and only if this folder does not contain an entry with the specified
     *    key.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
-   public Object get(Object key) throws IllegalArgumentException {
+   public Object get(Object key)
+   throws IllegalStateException, IllegalArgumentException {
 
-      // Check preconditions
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("key", key);
 
       // Search in the recently accessed map first
@@ -549,12 +648,19 @@ extends Object {
     *    and only if this folder does not contain an entry with the specified
     *    key.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
-   public Object find(Object key) throws IllegalArgumentException {
+   public Object find(Object key)
+   throws IllegalStateException, IllegalArgumentException {
 
-      // Check preconditions
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("key", key);
 
       Object value;
@@ -592,13 +698,19 @@ extends Object {
     * @param value
     *    they value for the entry, cannot be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>key == null || value == null</code>.
     */
    public void put(Object key, Object value)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
 
-      // Check preconditions
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("key", key, "value", value);
 
       // Store the association in the set of recently accessed entries
@@ -619,13 +731,19 @@ extends Object {
     *    if and only if this folder does not contain an entry with the
     *    specified key.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
    public Object remove(Object key)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
 
-      // Check preconditions
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("key", key);
 
       Object value;
@@ -665,16 +783,22 @@ extends Object {
     *    the new folder where the entries should be copied into,
     *    cannot be <code>null</code>, cannot be <code>this</code>.
     *
+    * @throws IllegalStateException
+    *    if the associated {@link ExpiryStrategy} has stopped already.
+    *
     * @throws IllegalArgumentException
     *    if <code>newFolder == null</code> or <code>newFolder == this</code>
     *    or the precision is the newFolder is not the same as for this folder.
     */
    public void copy(ExpiryFolder newFolder)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
 
       final String THIS_METHOD = "copy(" + CLASSNAME + ')';
 
-      // Check preconditions
+      // Check state
+      assertStrategyNotStopped();
+
+      // Check arguments
       MandatoryArgumentChecker.check("newFolder", newFolder);
       if (newFolder == this) {
          final String DETAIL = "Folder can not be copied into itself.";
@@ -712,8 +836,16 @@ extends Object {
     *
     * @return
     *    the strategy, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the associated strategy has already stopped.
     */
-   public ExpiryStrategy getStrategy() {
+   public ExpiryStrategy getStrategy()
+   throws IllegalStateException {
+
+      // Check state
+      assertStrategyNotStopped();
+
       return _strategy;
    }
 
