@@ -16,9 +16,9 @@
 			<li>XINS is a web application framework.</li>
 			<li>XINS is design to be able to create web applications based on defined specifications.</li>
 			<li>XINS is based on a simple way to send requests (using URLs) and handle result (Simple XML format).</li>
-			<li>XINS generates a set of HTML pages from the specification and some test forms to test the application.</li>
+			<li>XINS generates a set of HTML pages from the specification and some forms to test the application.</li>
 			<li>XINS generates Java code to invoke the web application and to develop it.</li>
-			<li>XINS also includes detects if the parameters are conform to the specification.</li>
+			<li>XINS also detects if the parameters are conform to the specification.</li>
 			<li>XINS includes concepts like load balancing, fail over, logging, security, properties and statistics.</li>
 		</ul>
 
@@ -34,16 +34,16 @@
 		</ul>
 
 		<p>
-		<font color="#5555aa" size="4">Quick start:</font>
+		<font color="#5555aa" size="4">Quick start:</font><p>
+		<i>If you've chosen "Compile and run demo" with Windows installer, you can directly go to the <a href="demo/xins-project/build/specdocs/myproject/index.html">specdocs</a>.</i>
 		<ul>
-			<li>Check that <a href="http://java.sun.com/j2se/1.4.2/download.html">Java</a>, <a href="http://ant.apache.org/">ANT</a> and <a href="http://www.mortbay.org/jetty/index.html">Jetty</a> are properly installed.<br>
-			    Note that any other application server such as <a href="http://jakarta.apache.org/tomcat/">Tomcat</a> or <a href="http://www.orionserver.com/">Orion</a> could replace Jetty.</li>
-			<li>Set the <i>XINS_HOME</i> environment variable to the installed xins directory</li>
+			<li>Check that <a href="http://java.sun.com/j2se/1.4.2/download.html">Java</a> and <a href="http://ant.apache.org/">ANT</a> are properly installed.<br>
+			<li>Set the <i>XINS_HOME</i> environment variable to the installed xins directory.</li>
 			<li>Add %XINS_HOME%\bin to your PATH environment variable.</li>
-			<li>In the <i>demo\xins-projects</i> directory execute <i>xins all-myproject</i>.</li>
-			<li>Start Jetty in the same directory with <br />
-			    <i>java -Dorg.xins.server.config=..\xins.properties -Djetty.home=%JETTY_HOME% -jar %JETTY_HOME%\start.jar ..\jetty_myproject.xml</i>.</li>
-			<li>Run your browser to the web page <a href="demo/xins-project/build/specdocs/myproject/index.html">demo\xins-project\build\specdocs\myproject\index.html</a></li>
+			<li>In the <i>demo\xins-projects</i> directory execute <i>xins specdocs-myproject</i> to generated the HTML pages containing the specification and the test forms.</li>
+			<li>Compile and run the API with<br />
+			    <i>xins -Dorg.xins.server.config=..\xins.properties run-myproject</i>.</li>
+			<li>Go to the web page <a href="demo/xins-project/build/specdocs/myproject/index.html">demo\xins-project\build\specdocs\myproject\index.html</a></li>
 		</ul>
 		<i>More detailed information can be found in the <a href="docs/index.html">documentation</a>.</i>
 

@@ -2,21 +2,22 @@
 
 [Setup]
 AppName=XINS
-AppVerName=XINS version 1.1.0
-DefaultDirName={pf}\xins-1.1.0
-VersionInfoVersion=1.1.0
-OutputBaseFilename=xins-1.1.0
+AppVerName=XINS version 1.2.0-beta2
+DefaultDirName={pf}\xins-1.2.0-beta2
+VersionInfoVersion=1.2.0
+OutputDir=c:\projects
+OutputBaseFilename=xins-1.2.0-beta2
 SetupIconFile=xins.ico
 WizardImageFile=bigxinslogo.bmp
 WizardSmallImageFile=smallxinslogo.bmp
 UninstallDisplayIcon={app}\xins.ico
 DefaultGroupName=Xins
 DisableProgramGroupPage=yes
-LicenseFile=c:\xins-1.1.0\COPYRIGHT
+LicenseFile=c:\projects\xins-1.2.0-beta2\COPYRIGHT
 InfoBeforeFile=xins-info1.txt
 
 [Files]
-Source: "c:\xins-1.1.0\*"; DestDir: "{app}"; Flags: recursesubdirs
+Source: "c:\projects\xins-1.2.0-beta2\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "xins.ico"; DestDir: "{app}"
 
 [Icons]
@@ -27,10 +28,14 @@ Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; Value
 
 [Run]
 Filename: "{app}\README.html"; Description: "View the README file."; Flags: postinstall nowait shellexec skipifsilent
-Filename: "cmd"; Parameters: "/c ""set XINS_HOME=""{app}""&cd ""{app}\demo\xins-project""&""{app}\bin\xins.bat"" all-myproject&java -Dorg.xins.server.config=..\xins.properties -Djetty.home={%JETTY_HOME} -jar {%JETTY_HOME}\start.jar ..\jetty_myproject.xml"""; Description: "Compile and run demo (using Jetty)."; Flags: postinstall nowait skipifsilent unchecked
+Filename: "cmd"; Parameters: "/c ""set XINS_HOME=""{app}""&cd ""{app}\demo\xins-project""&""{app}\bin\xins.bat"" all-myproject&""{app}\bin\xins.bat"" -Dorg.xins.server.config=..\xins.properties  run-myproject"""; Description: "Compile and run demo."; Flags: postinstall nowait skipifsilent unchecked
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\demo\xins-project\build\*"
+Type: dirifempty; Name: "{app}\demo\xins-project\build"
+Type: dirifempty; Name: "{app}\demo\xins-project"
+Type: dirifempty; Name: "{app}\demo"
+Type: dirifempty; Name: "{app}"
 
 [Code]
 function ShouldSkipPage(PageID: Integer): Boolean;
