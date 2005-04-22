@@ -323,6 +323,8 @@ public class Date extends Type {
        *
        * @throws NullPointerException
        *    if <code>calendar == null</code>.
+       *
+       * @since 1.2.0
        */
       public Value(Calendar calendar) throws NullPointerException { 
          this(calendar.get(Calendar.YEAR),
@@ -340,6 +342,8 @@ public class Date extends Type {
        *
        * @throws IllegalArgumentException
        *    if <code>date == null</code>.
+       *
+       * @since 1.2.0
        */
       public Value(java.util.Date date) throws IllegalArgumentException { 
          this(createCalendar(date));
@@ -353,6 +357,8 @@ public class Date extends Type {
        *    the number of milliseconds since the Epoch.
        *
        * @see System#currentTimeMillis()
+       *
+       * @since 1.2.0
        */
       public Value(long millis) { 
          this(new java.util.Date(millis)); 
