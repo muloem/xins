@@ -1,4 +1,6 @@
 ; -- xins.iss --
+;
+; $Id$
 
 [Setup]
 AppName=XINS
