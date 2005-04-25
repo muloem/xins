@@ -7,7 +7,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 
 * XINS/Java Common Library:
-  - Fixed a problem with an incorrect path detection for HTTP GET requests.
+  - Fixed incorrect path detection for HTTP GET requests in the 
+    HTTPServletHandler.
   - Fixed SF.net bug #1106065: Warning regarding response buffering.
   - Added constructors to create a Date.value from a java.util.Date or a long.
   - When an ExpiryStrategy is stopped, then all associated ExpiryFolder
@@ -34,6 +35,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 * Generated build file:
   - Fixed bug #1187658: The run-<api> target will fail nicely if no 
     org.xins.server.config property is set.
+
+* Build- and release-process:
+  - Fixed missing perl and php examples in the release.
 
 * DTDs:
   - Added 1.2 DTDs.
