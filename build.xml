@@ -876,6 +876,7 @@ ${sf.file}</fail>
 				<include name="capis/perl/*" />
 				<include name="capis/php/*" />
 				<include name="xins-project/.version.properties" />
+				<include name="xins-project/build.properties" />
 				<include name="xins-project/**/*.xml" />
 				<include name="xins-project/**/*.fnc" />
 				<include name="xins-project/**/*.typ" />

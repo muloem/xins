@@ -6,6 +6,8 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
+* Build- and release-process:
+  - Fixed missing build.properties for the demos.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
@@ -43,6 +45,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 
 * Build- and release-process:
   - Fixed missing perl and php examples in the release.
+  - Fixed missing build.properties for the demos.
 
 * DTDs:
   - Added 1.2 DTDs.
