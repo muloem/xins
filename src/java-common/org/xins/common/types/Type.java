@@ -6,7 +6,6 @@
  */
 package org.xins.common.types;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
@@ -214,7 +213,7 @@ public abstract class Type extends Object {
 
       Object value = fromStringImpl(string);
 
-      if (_valueClass.isInstance(value) == false) {
+      if (!_valueClass.isInstance(value)) {
          final String THIS_METHOD    = "fromString(java.lang.String)";
          final String SUBJECT_CLASS  = getClass().getName();
          final String SUBJECT_METHOD = "isValidValueImpl(java.lang.String)";
@@ -287,7 +286,7 @@ public abstract class Type extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("value", value);
 
-      if (getValueClass().isInstance(value) == false) {
+      if (!getValueClass().isInstance(value)) {
          throw new ClassCastException();
       }
       return value.toString();

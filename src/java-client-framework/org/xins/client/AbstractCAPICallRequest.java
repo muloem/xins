@@ -6,20 +6,10 @@
  */
 package org.xins.client;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.Utils;
-
-import org.xins.common.collections.CollectionUtils;
-
-import org.xins.common.types.Type;
-import org.xins.common.types.TypeValueException;
 
 import org.xins.common.xml.Element;
 
@@ -88,12 +78,12 @@ public abstract class AbstractCAPICallRequest {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     */
-   protected AbstractCAPICallRequest(String functionName) 
+   protected AbstractCAPICallRequest(String functionName)
    throws IllegalArgumentException{
       MandatoryArgumentChecker.check("functionName", functionName);
       _functionName = functionName;
    }
-   
+
    /**
     * Sets the specified parameter to the specified value.
     *
@@ -101,7 +91,7 @@ public abstract class AbstractCAPICallRequest {
     *    the name of the parameter to set, cannot be <code>null</code>.
     *
     * @param value
-    *    the String representation of the value of the parameter, 
+    *    the String representation of the value of the parameter,
     *    can be <code>null</code>.
     *
     * @throws IllegalArgumentException
@@ -187,7 +177,7 @@ public abstract class AbstractCAPICallRequest {
    }
 
    /**
-    * Sets the data section. 
+    * Sets the data section.
     * If the value is <code>null</code> any previous data section set is removed.
     * If a previous value was entered, the value will be overridden by this new
     * value.
@@ -217,7 +207,7 @@ public abstract class AbstractCAPICallRequest {
          return (String) _parameterValues.get(parameterName);
       }
    }
-   
+
    /**
     * Gets the data section.
     *
@@ -227,7 +217,7 @@ public abstract class AbstractCAPICallRequest {
    protected Element getDataElement() {
       return _dataSection;
    }
-   
+
    /**
     * Validates whether this request is considered acceptable. If any
     * constraints are violated, then an {@link UnacceptableRequestException}

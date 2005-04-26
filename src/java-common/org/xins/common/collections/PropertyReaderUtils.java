@@ -480,8 +480,8 @@ extends Object {
        *    the value to return if the specified set of properties is either
        *    <code>null</code> or empty, can be <code>null</code>.
        */
-      private SerializedPropertyReader(PropertyReader p,
-                                       String         valueIfEmpty) {
+      SerializedPropertyReader(PropertyReader p,
+                               String         valueIfEmpty) {
 
          _propertyReader = p;
          _valueIfEmpty   = valueIfEmpty;

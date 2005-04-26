@@ -71,13 +71,6 @@ public class HexConverter extends Object {
    private static final long LONG_MASK = RADIX - 1L;
 
    /**
-    * Array of 4 zero characters.
-    */
-   private static final char[] FOUR_ZEROES = {
-      '0', '0', '0', '0',
-   };
-
-   /**
     * Array of 8 zero characters.
     */
    private static final char[] EIGHT_ZEROES = {

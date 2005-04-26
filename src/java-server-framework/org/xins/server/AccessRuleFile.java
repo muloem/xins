@@ -54,10 +54,10 @@ public class AccessRuleFile implements AccessRuleContainer {
    private static String nextToken(String descriptor, StringTokenizer tokenizer)
    throws ParseException {
 
-      if (!tokenizer.hasMoreTokens()) {
-         throw new ParseException("The string \"" + descriptor + "\" is invalid as an access rule descriptor. Too few tokens retrieved from the descriptor.");
-      } else {
+      if (tokenizer.hasMoreTokens()) {
          return tokenizer.nextToken();
+      } else {
+         throw new ParseException("The string \"" + descriptor + "\" is invalid as an access rule descriptor. Too few tokens retrieved from the descriptor.");
       }
    }
 
@@ -286,7 +286,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       /**
        * Constructs a new <code>ACLFileListener</code> object.
        */
-      private ACLFileListener() {
+      ACLFileListener() {
          // empty
       }
 

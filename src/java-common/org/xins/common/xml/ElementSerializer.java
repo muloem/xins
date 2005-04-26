@@ -7,22 +7,18 @@
 package org.xins.common.xml;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 import org.xins.common.io.FastStringWriter;
 
-import org.znerd.xmlenc.XMLEncoder;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**

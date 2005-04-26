@@ -52,11 +52,6 @@ public class DataElement implements Cloneable {
     */
    private static final String CLASSNAME = DataElement.class.getName();
 
-   /**
-    * Fully-qualified name of the inner class <code>QualifiedName</code>.
-    */
-   private static final String QN_CLASSNAME = QualifiedName.class.getName();
-
 
    //-------------------------------------------------------------------------
    // Class functions

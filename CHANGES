@@ -6,14 +6,24 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
+* XINS/Java Common Library:
+  - Removed unused imports and unused variables.
+
+* XINS/Java Client Framework:
+  - Removed unused imports and unused variables.
+
+* XINS/Java Server Framework:
+  - Removed unused imports and unused variables.
+
 * Build- and release-process:
   - Fixed missing build.properties for the demos.
+  - Improved Windows installer.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 
 * XINS/Java Common Library:
-  - Fixed incorrect path detection for HTTP GET requests in the 
+  - Fixed incorrect path detection for HTTP GET requests in the
     HTTPServletHandler.
   - Fixed SF.net bug #1106065: Warning regarding response buffering.
   - Added constructors to create a Date.value from a java.util.Date or a long.
@@ -40,12 +50,11 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
     Logdoc) from INFO to DEBUG.
 
 * Generated build file:
-  - Fixed bug #1187658: The run-<api> target will fail nicely if no 
+  - Fixed bug #1187658: The run-<api> target will fail nicely if no
     org.xins.server.config property is set.
 
 * Build- and release-process:
   - Fixed missing perl and php examples in the release.
-  - Fixed missing build.properties for the demos.
 
 * DTDs:
   - Added 1.2 DTDs.
@@ -94,7 +103,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 2:
   - Fixed link to the local DTD for Log 1.1 was missing.
 
 * Generated build file:
-  - Fixed a dependency problem. Now the java files for the server are not 
+  - Fixed a dependency problem. Now the java files for the server are not
     regenerated if not needed.
 
 * Build- and release-process:
@@ -136,7 +145,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
 
 * Generation of client-side Java code:
   - Implemented SF.net RFE #1054504: One constant or class per error code.
-  - The parameters set in the generated Request object are now checked the 
+  - The parameters set in the generated Request object are now checked the
     same way as they are in the generated code on the server side.
   - Improved Javadoc here and there.
 

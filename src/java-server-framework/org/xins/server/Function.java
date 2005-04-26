@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
 
@@ -248,7 +247,7 @@ implements DefaultResultCodes {
       try {
 
          result = handleCall(context);
-         
+
          InvalidResponseResult invalidResponse = result.checkOutputParameters();
          if (invalidResponse != null) {
             result = invalidResponse;

@@ -7,7 +7,6 @@
 package org.xins.common.servlet.container;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;

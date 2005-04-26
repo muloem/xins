@@ -13,15 +13,12 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 
 import org.xins.common.http.HTTPCallException;
-import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.DescriptorBuilder;
 import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
-
-import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Base class for generated Client-side Application Programming Interface
@@ -86,7 +83,7 @@ public abstract class AbstractCAPI extends Object {
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor, callConfig);
       _caller.setCAPI(this);
-      
+
       checkXINSVersion();
    }
 
@@ -171,7 +168,7 @@ public abstract class AbstractCAPI extends Object {
 
       // Associate caller with this CAPI object
       _caller.setCAPI(this);
-      
+
       checkXINSVersion();
    }
 
@@ -249,7 +246,7 @@ public abstract class AbstractCAPI extends Object {
          Log.log_2114(getXINSVersion(), Library.getVersion());
       }
    }
-   
+
    /**
     * Returns the version of XINS used to build this CAPI class.
     *

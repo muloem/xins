@@ -189,7 +189,7 @@ public class Base64 extends Type {
          if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
             return false;
          }
-         byte[] number = org.apache.commons.codec.binary.Base64.decodeBase64(encoded);;
+         byte[] number = org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
          if (number.length < _minimum || number.length > _maximum) {
             return false;
          }

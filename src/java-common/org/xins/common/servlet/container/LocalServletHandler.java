@@ -8,8 +8,6 @@ package org.xins.common.servlet.container;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
@@ -36,7 +34,7 @@ public class LocalServletHandler {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -145,7 +143,7 @@ public class LocalServletHandler {
    public Object getServlet() {
       return _apiServlet;
    }
-   
+
    /**
     * Queries the Servlet with the specified URL.
     *
@@ -160,7 +158,7 @@ public class LocalServletHandler {
     */
    public XINSServletResponse query(String url) throws IOException {
       Log.log_1504(url);
-      
+
       XINSServletRequest request = new XINSServletRequest(url);
       XINSServletResponse response = new XINSServletResponse();
       try {

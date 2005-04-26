@@ -18,7 +18,6 @@ import java.util.Iterator;
 
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -33,8 +32,6 @@ import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
-
-import org.xins.common.text.URLEncoding;
 
 import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
@@ -55,7 +52,8 @@ import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 
 import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.TextUtils;
+import org.xins.common.text.URLEncoding;
+
 import org.xins.logdoc.LogdocSerializable;
 
 /**
@@ -1103,7 +1101,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Determine URL and time-outs
          String url               = _target.getURL();
-         int    totalTimeOut      = _target.getTotalTimeOut();
          int    connectionTimeOut = _target.getConnectionTimeOut();
          int    socketTimeOut     = _target.getSocketTimeOut();
 
@@ -1160,7 +1157,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                _throwingMethod = "toByteArray()";
                body            = out.toByteArray();
             }
-            
+
             // Store the result
             _throwingClass  = HTTPCallResultDataHandler.class.getName();
             _throwingMethod = "<init>(int,byte[])";

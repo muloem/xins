@@ -57,7 +57,6 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.net.IPAddressUtils;
 
 import org.xins.common.servlet.ServletConfigPropertyReader;
-import org.xins.common.servlet.ServletRequestPropertyReader;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
@@ -330,7 +329,7 @@ extends HttpServlet {
       // Send all log messages to the logger named 'console'
       settings.setProperty("log4j.rootLogger",
                            "ALL, console");
-      
+
       // Define the type of the logger named 'console'
       settings.setProperty("log4j.appender.console",
                            "org.apache.log4j.ConsoleAppender");
@@ -608,7 +607,7 @@ extends HttpServlet {
          // Bootstrapping the API can be retried
          } else if (oldState == API_BOOTSTRAP_FAILED
                  && newState == BOOTSTRAPPING_API) {
-     
+
          // If bootstrapping the API succeeds, then the next step is to
          // determine the watch interval
          } else if (oldState == BOOTSTRAPPING_API
@@ -626,7 +625,7 @@ extends HttpServlet {
          // step is to initialize the API
          } else if (oldState == DETERMINE_INTERVAL
                  && newState == INITIALIZING_API) {
-              
+
          // API initialization may fail
          } else if (oldState == INITIALIZING_API
                  && newState == API_INITIALIZATION_FAILED) {
@@ -955,7 +954,7 @@ extends HttpServlet {
             setState(FRAMEWORK_BOOTSTRAP_FAILED);
             throw new ServletException();
          }
-         
+
          // Unify the file separator character
          _configFile = _configFile.replace('/',  File.separatorChar);
          _configFile = _configFile.replace('\\', File.separatorChar);
@@ -1270,9 +1269,9 @@ extends HttpServlet {
          }
 
          try {
-            
+
             _api.init(_runtimeProperties);
-            
+
             // Initialize the default calling convention for this API
             if (_callingConvention != null) {
                _callingConvention.init(_runtimeProperties);
@@ -1497,14 +1496,14 @@ extends HttpServlet {
                callingConvention.init(_runtimeProperties);
             }
          } catch (Exception ex) {
-            
+
             // the calling convention could not be created or initialized
             Log.log_3560(ex, ccParam);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
          }
       }
-      
+
       if (callingConvention == null) {
          callingConvention = _callingConvention;
          // TODO: Log that no calling convention was specified
@@ -1607,14 +1606,14 @@ extends HttpServlet {
     *    is missing.
     *
     * @throws InvalidPropertyValueException
-    *    if the created calling convention has a bootstrap property with an 
+    *    if the created calling convention has a bootstrap property with an
     *    incorrect value.
     *
     * @throws BootstrapException
     *    if an error occured during the bootstraping of the calling
     *    convention.
     */
-   private CallingConvention createCallingConvention(String name) 
+   private CallingConvention createCallingConvention(String name)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
@@ -1640,14 +1639,14 @@ extends HttpServlet {
       } else if (name.charAt(0) != '_') {
          if (!name.equals(_servletConfig.getInitParameter(
                 API_CALLING_CONVENTION_PROPERTY))) {
-            
+
             // TODO: Log
             return null;
          }
          String conventionClass = _servletConfig.getInitParameter(
             API_CALLING_CONVENTION_CLASS_PROPERTY);
          try {
-            
+
             // First try with a constructor with the API as parameter then
             // with the empty constructor
             try {

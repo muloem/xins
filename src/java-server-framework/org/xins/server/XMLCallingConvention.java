@@ -10,16 +10,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.ProtectedPropertyReader;
 

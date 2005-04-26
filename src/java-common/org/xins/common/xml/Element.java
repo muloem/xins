@@ -6,14 +6,11 @@
  */
 package org.xins.common.xml;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
@@ -47,11 +44,6 @@ public class Element implements Cloneable {
     * Fully-qualified name of this class.
     */
    private static final String CLASSNAME = Element.class.getName();
-
-   /**
-    * Fully-qualified name of the inner class <code>QualifiedName</code>.
-    */
-   private static final String QN_CLASSNAME = QualifiedName.class.getName();
 
    /**
     * The secret key to use to add child elements.

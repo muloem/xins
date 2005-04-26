@@ -8,7 +8,6 @@ package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
 
-import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.TargetDescriptor;
 
@@ -55,7 +54,7 @@ extends Object {
       MandatoryArgumentChecker.check("result", result);
 
       _result = result;
-      
+
       // Check preconditions
       if (result.getErrorCode() != null) {
          throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");

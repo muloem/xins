@@ -463,8 +463,6 @@ public abstract class ServiceCaller extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("target", target);
 
-      String protocol = target.getProtocol();
-      boolean supported;
       try {
          if (! isProtocolSupported(target.getProtocol())) {
             throw new UnsupportedProtocolException(target);
@@ -1448,7 +1446,7 @@ public abstract class ServiceCaller extends Object {
       /**
        * Constructs a new <code>MethodNotImplementedError</code>.
        */
-      private MethodNotImplementedError() {
+      MethodNotImplementedError() {
          // empty
       }
 

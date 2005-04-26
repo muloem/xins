@@ -22,10 +22,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.CollectionUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
-import org.xins.common.collections.InvalidPropertyValueException;
-import org.xins.common.collections.MissingRequiredPropertyException;
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.TextUtils;
 
@@ -57,11 +53,6 @@ abstract class CallingConvention extends Manageable {
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
-
-   /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
 
    /**
     * The pattern which normal parameter names should match, as a character
@@ -357,5 +348,5 @@ abstract class CallingConvention extends Manageable {
                                              HttpServletRequest  httpRequest)
    throws IOException;
    // XXX: Replace IOException with more appropriate exception?
-   
+
 }

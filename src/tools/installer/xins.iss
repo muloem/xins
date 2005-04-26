@@ -26,7 +26,7 @@ Source: "xins.ico"; DestDir: "{app}"
 
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: """{app}"""; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "%XINS_HOME%\bin;{reg:HKCU\Environment,PATH|""}"; Flags: preservestringtype
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{app}\bin;{reg:HKCU\Environment,PATH|""}"; Flags: preservestringtype
 
 [Run]
 Filename: "{app}\README.html"; Description: "View the README file."; Flags: postinstall nowait shellexec skipifsilent

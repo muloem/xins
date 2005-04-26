@@ -6,7 +6,6 @@
  */
 package org.xins.client;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.log4j.NDC;
@@ -31,7 +30,6 @@ import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.CallRequest;
-import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;

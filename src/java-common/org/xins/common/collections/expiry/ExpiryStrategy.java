@@ -9,7 +9,6 @@ package org.xins.common.collections.expiry;
 import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;

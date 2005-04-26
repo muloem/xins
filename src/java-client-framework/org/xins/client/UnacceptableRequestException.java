@@ -8,19 +8,8 @@ package org.xins.client;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.Utils;
-
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.ProtectedList;
-
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.WhislEncoding;
-
-import org.xins.common.types.Type;
-import org.xins.common.types.TypeValueException;
 
 /**
  * Exception that indicates that a request for an API call is considered
@@ -42,12 +31,6 @@ extends RuntimeException {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Secret key used to protect <code>ProtectedList</code> instances.
-    */
-   private static final Object SECRET_KEY = new Object();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -72,7 +55,7 @@ extends RuntimeException {
    throws IllegalArgumentException {
 
       MandatoryArgumentChecker.check("request", request);
-      
+
       // Store the information
       _request    = request;
    }
@@ -96,8 +79,8 @@ extends RuntimeException {
     * The error message.
     */
    private String _message;
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -108,7 +91,7 @@ extends RuntimeException {
       }
       return _message;
    }
-   
+
    /**
     * Adds to the response a paramater that is missing.
     *

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.xins.common.Log;
@@ -125,7 +124,7 @@ extends Object {
       _strategy         = strategy;
       _strategyStopped  = false;
       _asString         = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
-      _recentlyAccessed = new HashMap(89);
+      _recentlyAccessed = new HashMap(INITIAL_QUEUE_SIZE);
       _slotCount        = strategy.getSlotCount();
       _slots            = new HashMap[_slotCount];
       _lastSlot         = _slotCount - 1;
@@ -134,7 +133,7 @@ extends Object {
 
       // Initialize all slots to a new HashMap
       for (int i = 0; i < _slotCount; i++) {
-         _slots[i] = new HashMap(89);
+         _slots[i] = new HashMap(INITIAL_QUEUE_SIZE);
       }
 
       // Notify the strategy that we listen to it
@@ -375,7 +374,7 @@ extends Object {
 
       // Log this
       Log.log_1400(_asString, toBeExpiredCount, newSize);
-      
+
       // If set of objects for listeners is empty, then short-circuit
       if (toBeExpiredCount < 1) {
          return;
@@ -505,7 +504,7 @@ extends Object {
 
       // Check arguments
       MandatoryArgumentChecker.check("map", map);
-      
+
       int size = 0;
 
       synchronized (_lock) {

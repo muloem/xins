@@ -8,9 +8,6 @@ package org.xins.common.http;
 
 import org.xins.common.service.CallConfig;
 
-import org.xins.common.Log;
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Call configuration for the HTTP service caller.
  *
@@ -24,12 +21,6 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = HTTPCallConfig.class.getName();
-
 
    //-------------------------------------------------------------------------
    // Class functions

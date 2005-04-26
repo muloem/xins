@@ -8,9 +8,6 @@ package org.xins.client;
 
 import org.xins.common.service.CallConfig;
 
-import org.xins.common.Log;
-import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPMethod;
 
@@ -27,12 +24,6 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = XINSCallConfig.class.getName();
-
 
    //-------------------------------------------------------------------------
    // Class functions

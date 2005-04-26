@@ -9,8 +9,6 @@ package org.xins.common.collections;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
-import org.xins.logdoc.ExceptionUtils;
-
 /**
  * Exception thrown to indicate the property of a value is invalid.
  *

@@ -8,7 +8,6 @@ package org.xins.server;
 
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
-import org.xins.common.collections.PropertyReader;
 
 /**
  * Base class to get the runtime properties.
@@ -42,7 +41,7 @@ public class RuntimeProperties {
 
    /**
     * Initialize the runtime properties. This method should be overwritten
-    * by a generated class if any runtime properties is declared in the 
+    * by a generated class if any runtime properties is declared in the
     * impl.xml file.
     *
     * @param runtimeSettings

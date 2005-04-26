@@ -355,7 +355,7 @@ public final class GroupDescriptor extends Descriptor {
        * @param description
        *    the description for this type.
        */
-      private Type(String description) {
+      Type(String description) {
 
          // TRACE: Enter constructor
          Log.log_1000(TYPE_CLASSNAME, null);
@@ -421,7 +421,7 @@ public final class GroupDescriptor extends Descriptor {
       /**
        * Constructs a new <code>RandomIterator</code>.
        */
-      private RandomIterator() {
+      RandomIterator() {
 
          // TRACE: Enter constructor
          Log.log_1000(RANDOM_ITERATOR_CLASSNAME, null);
@@ -560,7 +560,7 @@ public final class GroupDescriptor extends Descriptor {
       /**
        * Constructs a new <code>OrderedIterator</code>.
        */
-      private OrderedIterator() {
+      OrderedIterator() {
 
          // TRACE: Enter constructor
          Log.log_1000(ORDERED_ITERATOR_CLASSNAME, null);

@@ -8,7 +8,6 @@ package org.xins.common.ant;
 
 import java.io.File;
 
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -20,7 +19,6 @@ import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.types.PropertySet;
 
 /**
  * Apache Ant task that calls one or more targets in a separate build file.

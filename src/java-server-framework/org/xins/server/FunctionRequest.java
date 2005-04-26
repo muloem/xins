@@ -9,7 +9,6 @@ package org.xins.server;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
 
 import org.xins.common.xml.Element;
@@ -81,11 +80,11 @@ public class FunctionRequest {
       _functionName = functionName;
 
       // Store the parameters, make sure this is never null
-      if (parameters != null) {
+      if (parameters == null) {
+         _parameters = EMPTY_PROPERTY_READER;
+      } else {
          _parameters = new ProtectedPropertyReader(SECRET_KEY);
          _parameters.copyFrom(SECRET_KEY, parameters);
-      } else {
-         _parameters = EMPTY_PROPERTY_READER;
       }
 
       // Store the data section, or null if there is none

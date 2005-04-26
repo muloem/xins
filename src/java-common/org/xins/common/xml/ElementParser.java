@@ -6,13 +6,11 @@
  */
 package org.xins.common.xml;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
 
 import java.util.Stack;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
@@ -24,9 +22,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.ProtectedPropertyReader;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -62,12 +57,6 @@ extends Object {
     * is not <code>null</code>.
     */
    private static final String HANDLER_CLASSNAME = ElementParser.Handler.class.getName();
-
-   /**
-    * The key for the <code>ProtectedPropertyReader</code> instances created
-    * by this class.
-    */
-   private static final Object PROTECTION_KEY = new Object();
 
    /**
     * Error state for the SAX event handler.
@@ -301,11 +290,6 @@ extends Object {
        * The element resulting of the parsing.
        */
       private Element _element;
-
-      /**
-       * The name of the output parameter that is currently being parsed.
-       */
-      private String _parameterName;
 
       /**
        * The character content (CDATA or PCDATA) of the element currently
@@ -598,7 +582,7 @@ extends Object {
        * @throws IllegalArgumentException
        *    if <code>name == null</code>.
        */
-      private State(String name) throws IllegalArgumentException {
+      State(String name) throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("name", name);

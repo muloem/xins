@@ -57,12 +57,6 @@ implements DefaultResultCodes {
    private static final String CLASSNAME = API.class.getName();
 
    /**
-    * String returned by the function <code>_GetStatistics</code> when certain
-    * information is not available.
-    */
-   private static final String NOT_AVAILABLE = "N/A";
-
-   /**
     * Successful empty call result.
     */
    private static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
@@ -527,7 +521,7 @@ implements DefaultResultCodes {
 
       // Initialize the RuntimeProperties object.
       getProperties().init(runtimeSettings);
-      
+
       // Initialize all instances
       int count = _manageableObjects.size();
       for (int i = 0; i < count; i++) {

@@ -6,16 +6,12 @@
  */
 package org.xins.common.types.standard;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.StringTokenizer;
 import org.xins.common.service.DescriptorBuilder;
 import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
 
 /**
@@ -103,7 +99,7 @@ public class Descriptor extends Type {
       if (value == null) {
          return null;
       }
-      
+
       return toString(value, "descriptor");
    }
 

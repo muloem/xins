@@ -6,8 +6,6 @@
  */
 package org.xins.client;
 
-import java.util.Iterator;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
@@ -18,7 +16,6 @@ import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
@@ -845,9 +842,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // TRACE: Enter method
       org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
-
-      // The request must be a XINS call request
-      XINSCallRequest xinsRequest = (XINSCallRequest) request;
 
       // Get the most recent exception
       CallException exception = exceptions.last();

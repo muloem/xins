@@ -9,14 +9,12 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -140,7 +138,7 @@ extends CallingConvention {
 
       // Get data section
       String dataSectionValue = httpRequest.getParameter("_data");
-      Element dataElement;
+      Element dataElement = null;
       if (dataSectionValue != null && dataSectionValue.length() > 0) {
          ElementParser parser = new ElementParser();
 
@@ -160,8 +158,6 @@ extends CallingConvention {
          } catch (ParseException ex) {
             throw new InvalidRequestException("Cannot parse the data section.", ex);
          }
-      } else {
-         dataElement = null;
       }
 
       // Construct and return the request object

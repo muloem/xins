@@ -8,7 +8,6 @@ package org.xins.server;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.Element;
 
 /**
