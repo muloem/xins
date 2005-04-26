@@ -226,15 +226,14 @@ public abstract class AbstractCAPI extends Object {
    /**
     * Returns the XINS service caller to use.
     *
-    * <p>This method is considered internal to XINS. It should not be called
-    * directly, nor overridden.
+    * <p><em>This method is considered internal to XINS. It should not be
+    * called directly, nor overridden.</em>
     *
-    * <p>This method is expected to be marked <code>final</code> in a future
-    * release of XINS. This is not done yet to remain fully compatible with
-    * XINS 1.0.
+    * <p><em>This method is expected to be marked <code>final</code> in XINS
+    * 2.0. This is not done yet to remain fully compatible with XINS 1.0.</em>
     *
     * @return
-    *    the XINS service caller to use, never <code>null</code>.
+    *    the {@link XINSServiceCaller} to use, never <code>null</code>.
     */
    protected XINSServiceCaller getCaller() {
       // TODO for XINS 2.0.0: Mark this method as final
@@ -242,7 +241,8 @@ public abstract class AbstractCAPI extends Object {
    }
 
    /**
-    * Warn if the CAPI has a different XINS version.
+    * Checks if the XINS version used to build this CAPI class equals the
+    * current XINS version. If not, a warning is logged.
     */
    private void checkXINSVersion() {
       if (!Library.getVersion().equals(getXINSVersion())) {
@@ -343,8 +343,8 @@ public abstract class AbstractCAPI extends Object {
     *          || resultData.getErrorCode() ==   null</code>.
     *
     * @throws UnacceptableResultXINSCallException
-    *    if the specified error code is unacceptable for the specified
-    *    function.
+    *    if the specified error code is recognized but is considered
+    *    unacceptable for the function specified in the request. 
     *
     * @since XINS 1.2.0
     */
