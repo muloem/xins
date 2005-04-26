@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
   - Removed unused imports and unused variables.
 
 * XINS/Java Client Framework:
+  - Implemented RFE #1188052: Log message 2114 should be logged only once.
   - Removed unused imports and unused variables.
 
 * XINS/Java Server Framework:

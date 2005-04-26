@@ -6,6 +6,8 @@
  */
 package org.xins.client;
 
+import java.util.HashSet;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.PropertyReader;
@@ -24,13 +26,13 @@ import org.xins.common.service.UnsupportedProtocolException;
  * Base class for generated Client-side Application Programming Interface
  * (CAPI) classes.
  *
- * <p>This class should not be derived from manually. This class is only
+ * <p><em>This class should not be derived from manually. This class is only
  * intended to be used as a superclass of <code>CAPI</code> classes generated
- * by the XINS framework.
+ * by the XINS framework.</em>
  *
- * <p>The constructors of this class are considered internal to XINS and
+ * <p><em>The constructors of this class are considered internal to XINS and
  * should not be used directly. The behavior of the constructors may be
- * changed in later releases of XINS or they may even be removed.
+ * changed in later releases of XINS or they may even be removed.</em>
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -42,6 +44,13 @@ public abstract class AbstractCAPI extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Set of all CAPI classes for which the XINS version at build-time has
+    * already been checked against the XINS version at run-time.
+    */
+   private final static HashSet VERSION_COMPARISIONS_DONE = new HashSet();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -83,7 +92,8 @@ public abstract class AbstractCAPI extends Object {
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor, callConfig);
       _caller.setCAPI(this);
-
+      
+      // Compare the XINS version at build- and run-time
       checkXINSVersion();
    }
 
@@ -168,7 +178,8 @@ public abstract class AbstractCAPI extends Object {
 
       // Associate caller with this CAPI object
       _caller.setCAPI(this);
-
+      
+      // Compare the XINS version at build- and run-time
       checkXINSVersion();
    }
 
@@ -242,8 +253,19 @@ public abstract class AbstractCAPI extends Object {
     * current XINS version. If not, a warning is logged.
     */
    private void checkXINSVersion() {
-      if (!Library.getVersion().equals(getXINSVersion())) {
-         Log.log_2114(getXINSVersion(), Library.getVersion());
+
+      Class clazz = getClass();
+      if (! VERSION_COMPARISIONS_DONE.contains(clazz)) {
+
+         // Compare build- and run-time version of XINS
+         String buildVersion = getXINSVersion();
+         String runtimeVersion = Library.getVersion();
+         if (! buildVersion.equals(runtimeVersion)) {
+            Log.log_2114(buildVersion, runtimeVersion);
+         }
+
+         // Never check this CAPI class again
+         VERSION_COMPARISIONS_DONE.add(clazz);
       }
    }
 
