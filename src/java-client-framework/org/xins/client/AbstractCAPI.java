@@ -375,7 +375,7 @@ public abstract class AbstractCAPI extends Object {
          String buildVersion = getXINSVersion();
          String runtimeVersion = Library.getVersion();
          if (! buildVersion.equals(runtimeVersion)) {
-            Log.log_2114(buildVersion, runtimeVersion);
+            Log.log_2114(_apiName, buildVersion, runtimeVersion);
          }
 
          // Never check this CAPI class again

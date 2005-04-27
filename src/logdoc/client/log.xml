@@ -114,8 +114,9 @@
 		</entry>
 		<entry id="2114" level="WARNING">
 			<description>The CAPI has been compiled with a different XINS version.</description>
-			<param name="capiVersion"    type="text" nullable="false" />
-			<param name="currentVersion" type="text" nullable="false" />
+			<param name="apiName"        type="text" nullable="true"  />
+			<param name="buildVersion"   type="text" nullable="false" />
+			<param name="runtimeVersion" type="text" nullable="false" />
 		</entry>
 	</group>
 

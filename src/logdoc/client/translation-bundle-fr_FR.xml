@@ -21,7 +21,7 @@
 	<translation entry="2111">Erreur lors de l'appel de la fonction <value-of-param name="function" /> à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Une exception imprèvue a été attrapée.</translation>
 	<translation entry="2112">Reçu un résultat XINS non réussi (code erreur <value-of-param name="errorCode" />) lors de l'appel de la fonction <value-of-param name="function" /> à <value-of-param name="url" /> avec les paramètres <value-of-param name="parameters" />.</translation>
 	<translation entry="2113">La requête de l'appel pour la fonction <value-of-param name="function" /> avec les paramètres <value-of-param name="parameters" /> a échoué complement après <value-of-param name="duration" /> ms.</translation>
-	<translation entry="2114">La CAPI a été compilée avec la version <value-of-param name="capiVersion" format="quoted" /> mais la version de xins-client.jar est <value-of-param name="currentVersion" format="quoted" />.</translation>
+<!-- FIXME --><translation entry="2114">The build-time XINS version for the <value-of-param name="apiName" format="quoted" /> CAPI (<value-of-param name="buildVersion" />) differs from the runtime version of the XINS/Java Client Framework (<value-of-param name="runtimeVersion" />).</translation>
 
 	<translation entry="2200">L'XML retourné est invalide. Le type de l'élément racine est <value-of-param name="localName" format="quoted" /> avec le namespace <value-of-param name="namespaceURI" format="quoted" /> au lieu de "result" sans namespace.</translation>
 	<translation entry="2201">Trouvé un paramètre de sortie sans nom ni valeur.</translation>
