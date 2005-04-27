@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
 * XINS/Java Common Library:
   - Removed unused imports and unused variables.
+  - The HTTPServletContainer returns \r\n instead of \n after the HTTP 
+    headers.
 
 * XINS/Java Client Framework:
   - Implemented RFE #1188052: Log message 2114 should be logged only once.

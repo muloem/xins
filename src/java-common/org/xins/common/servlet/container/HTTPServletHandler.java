@@ -405,12 +405,12 @@ public class HTTPServletHandler {
          if (result == null) {
             return "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
          }
-         String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\n";
-         httpResult += "Content-type: " + response.getContentType() + "\n";
+         String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
+         httpResult += "Content-type: " + response.getContentType() + "\r\n";
          int length = result.length() + 1;
-         httpResult += "Content-Length: " + length + "\n";
-         httpResult += "Connection: close\n";
-         httpResult += "\n";
+         httpResult += "Content-Length: " + length + "\r\n";
+         httpResult += "Connection: close\r\n";
+         httpResult += "\r\n";
          httpResult += result + "\n";
          httpResult += "\n";
          return httpResult;
