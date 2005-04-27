@@ -25,8 +25,9 @@ Source: "xins.ico"; DestDir: "{app}"
 [Icons]
 
 [Registry]
-Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: """{app}"""; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{app}\bin;{reg:HKCU\Environment,PATH|""}"; Flags: preservestringtype
+Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: "{code:AddQuotes|{app}}"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{code:GetNewPath|{app}\bin}"; Flags: preservestringtype
+;"{app}\bin;{reg:HKCU\Environment,PATH|""}"; Flags: preservestringtype
 
 [Run]
 Filename: "{app}\README.html"; Description: "View the README file."; Flags: postinstall nowait shellexec skipifsilent
@@ -40,6 +41,10 @@ Type: dirifempty; Name: "{app}\demo"
 Type: dirifempty; Name: "{app}"
 
 [Code]
+var
+  CurrentPath: String;
+  UsersPath: String;
+  
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   { Do no show the InfoBeforeFile page if the environment variables are correct. }
@@ -47,6 +52,19 @@ begin
     Result := True;
   end else begin
     Result := False;
+  end;
+end;
+
+function GetNewPath(XPath: String): String;
+begin
+  CurrentPath := ExpandConstant('{reg:HKCU\Environment,PATH}');
+  UsersPath := ExpandConstant('{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,PATH}');
+  if (Length(CurrentPath) = 0) then begin
+    Result := XPath;
+  end else if ((Pos(XPath, CurrentPath) = 0) and (Pos(XPath, UsersPath) = 0)) then begin
+    Result := XPath + ';' + CurrentPath;
+  end else begin
+    Result := CurrentPath;
   end;
 end;
 
