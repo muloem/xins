@@ -9,6 +9,7 @@ package org.xins.client;
 import java.util.HashSet;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -21,6 +22,8 @@ import org.xins.common.service.DescriptorBuilder;
 import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
+
+import org.xins.common.text.TextUtils;
 
 /**
  * Base class for generated Client-side Application Programming Interface
@@ -44,6 +47,11 @@ public abstract class AbstractCAPI extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Fully-qualified name of this class.
+    */
+   private final static String CLASSNAME = AbstractCAPI.class.getName();
 
    /**
     * Set of all CAPI classes for which the XINS version at build-time has
@@ -86,6 +94,10 @@ public abstract class AbstractCAPI extends Object {
    protected AbstractCAPI(Descriptor descriptor, XINSCallConfig callConfig)
    throws IllegalArgumentException, UnsupportedProtocolException {
 
+      // TRACE: Enter constructor
+      org.xins.common.Log.log_1000(CLASSNAME, "descriptor=" + descriptor 
+                                          + "; callConfig=" + callConfig);
+
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
@@ -93,8 +105,16 @@ public abstract class AbstractCAPI extends Object {
       _caller = new XINSServiceCaller(descriptor, callConfig);
       _caller.setCAPI(this);
       
+      // Determine the API name
+      _apiName = determineAPIName();
+      
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
+
+      // TRACE: Leave constructor
+      org.xins.common.Log.log_1002(CLASSNAME, "descriptor=" + descriptor 
+                                          + "; callConfig=" + callConfig
+                                          + "; apiName="    + _apiName);
    }
 
    /**
@@ -123,7 +143,7 @@ public abstract class AbstractCAPI extends Object {
 
    /**
     * Creates a new <code>AbstractCAPI</code> object based on the specified
-    * set of properties.
+    * set of properties and the specified name.
     *
     * <p>A default XINS call configuration will be used.
     *
@@ -156,6 +176,10 @@ public abstract class AbstractCAPI extends Object {
           MissingRequiredPropertyException,
           InvalidPropertyValueException {
 
+      // TRACE: Enter constructor
+      org.xins.common.Log.log_1000(CLASSNAME, "properties=" + properties 
+                                          + "; apiName="    + apiName);
+
       // Check arguments
       MandatoryArgumentChecker.check("properties", properties,
                                      "apiName",    apiName);
@@ -178,9 +202,17 @@ public abstract class AbstractCAPI extends Object {
 
       // Associate caller with this CAPI object
       _caller.setCAPI(this);
+
+      // Determine the API name
+      _apiName = determineAPIName();
       
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
+
+      // TRACE: Leave constructor
+      org.xins.common.Log.log_1002(CLASSNAME, "descriptor=" + descriptor 
+                                          + "; callConfig=" + "null"
+                                          + "; apiName="    + _apiName);
    }
 
 
@@ -189,14 +221,96 @@ public abstract class AbstractCAPI extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * The name of the API. This field cannot be <code>null</code>.
+    */
+   private final String _apiName;
+
+   /**
     * The XINS service caller to use. This field cannot be <code>null</code>.
     */
-   private XINSServiceCaller _caller;
+   private final XINSServiceCaller _caller;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Retrieves the name of the API (wrapper method).
+    *
+    * @return
+    *    the name of the API, or <code>null</code> if the name cannot be
+    *    determined.
+    *
+    * @since XINS 1.2.0
+    */
+   private final String determineAPIName() {
+
+      // Try to call getAPINameImpl()
+      try {
+         String s = getAPINameImpl();
+         if (! TextUtils.isEmpty(s)) {
+            return s;
+         }
+      } catch (Throwable exception) {
+         Utils.logProgrammingError(CLASSNAME,            "determineAPIName()",
+                                   getClass().getName(), "getAPINameImpl()",
+                                   null,                 exception);
+         // fall through
+      }
+
+      // Subclass did not return anything, determine based on package name
+      String className = getClass().getName();
+      int    index     = className.lastIndexOf(".capi.");
+      if (index > 0) {
+         String s = className.substring(0, index);
+         index = s.lastIndexOf('.');
+         s = s.substring(index + 1);
+         if (! TextUtils.isEmpty(s)) {
+            return s;
+         }
+      }
+
+      return null;
+   }
+
+   /**
+    * Determines the name of the API.
+    *
+    * @return
+    *    the name of the API, or a special indication (e.g.
+    *    <code>"&lt;unknown&gt;"</code>) if the name cannot be determined;
+    *    never <code>null</code>.
+    *
+    * @since XINS 1.2.0
+    */
+   public final String getAPIName() {
+      if (_apiName == null) {
+         return "<unknown>";
+      } else {
+         return _apiName;
+      }
+   }
+
+   /**
+    * Retrieves the name of the API (implementation method).
+    *
+    * <p>The implementation of this method in class <code>AbstractCAPI</code>
+    * returns <code>null</code>.
+    *
+    * @return
+    *    the name of the API, or <code>null</code> if unknown.
+    *
+    * @since XINS 1.2.0
+    */
+   protected String getAPINameImpl() {
+
+      // NOTE: This method is not abstract, since that would make this class
+      //       incompatible with CAPI classes generated with older versions of
+      //       XINS (before 1.2.0)
+
+      return null;
+   }
 
    /**
     * Assigns the specified call configuration to this CAPI object.

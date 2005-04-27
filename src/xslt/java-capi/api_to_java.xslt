@@ -91,8 +91,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    a new <code>CAPI</code> object, never <code>null</code>.
     *
     * @throws java.lang.IllegalArgumentException
-    *    if <code>properties == null || apiName == null</code> or if
-    *    <code>apiName</code> is not considered to be a valid API name.
+    *    if <code>properties == null || apiName == null</code>,
+    *    or if <code>apiName</code> is not considered to be a valid API name.
     *
     * @throws org.xins.common.collections.MissingRequiredPropertyException
     *    if a required property is missing in the specified properties set.
@@ -257,6 +257,25 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:for-each>
 
 		<xsl:text><![CDATA[
+
+   /**
+    * Retrieves the name of the API (implementation method).
+    *
+    * <p>The implementation of this method in class <code>AbstractCAPI</code>
+    * returns <code>"]]></xsl:text>
+			<xsl:value-of select="$api" />
+      <xsl:text><![CDATA["</code>.
+    *
+    * @return
+    *    the name of the API, or <code>null</code> if unknown.
+    *
+    * @since XINS 1.2.0
+    */
+   protected String getAPINameImpl() {
+      return "]]></xsl:text>
+		<xsl:value-of select="$api" />
+      <xsl:text><![CDATA[";
+   }
 
    /**
     * Returns the version of XINS used to generate this CAPI class.
