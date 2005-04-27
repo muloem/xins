@@ -272,7 +272,7 @@
 				<a>
 					<xsl:attribute name="href">
 						<xsl:value-of select="@url" />
-						<xsl:text>?_function=_GetStatistics&amp;_convention=_xins-std</xsl:text>
+						<xsl:text>?_function=_GetStatistics&amp;_convention=_xins-std&amp;detailed=true</xsl:text>
 					</xsl:attribute>
 					<xsl:text>statistics</xsl:text>
 				</a>

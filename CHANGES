@@ -18,6 +18,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 * XINS/Java Server Framework:
   - Removed unused imports and unused variables.
 
+* Generated specification documentation:
+  - Implemented SF.net RFE #1190778: Link to detailed statistics from API
+    specdocs.
+
 * Build- and release-process:
   - Fixed missing build.properties for the demos.
   - Improved Windows installer.
