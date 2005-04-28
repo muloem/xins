@@ -383,45 +383,45 @@ extends Object {
       // XXX: Should we do this in separate thread(s) ?
 
       // Get a copy of the list of listeners
-      ArrayList listeners;
       synchronized (_listeners) {
-         listeners = (_listeners.size() == 0) ? null : new ArrayList(_listeners);
-      }
 
-      // If there are no listeners to notify, then short-circuit
-      if (listeners == null) {
-         return;
-      }
-
-      // Create a map for the object references, if necessary
-      if (refMap == null) {
-         refMap = new HashMap();
-      }
-
-      // Copy all references from the wrapping Entry objects
-      Iterator keyIterator = toBeExpired.keySet().iterator();
-      while (keyIterator.hasNext()) {
-         Object key   = keyIterator.next();
-         Entry  entry = (Entry) toBeExpired.get(key);
-         if (entry.isExpired()) {
-            refMap.put(key, entry.getReference());
-         } else {
-            final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
-                                + entry.getReference().toString()
-                                + "\".";
-            Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                      CLASSNAME, THIS_METHOD,
-                                      DETAIL);
+         // If there are no listeners to notify, then short-circuit
+         if (_listeners.size() < 1) {
+            return;
          }
-      }
 
-      // If appropriate, notify the listeners
-      if (refMap.size() > 0) {
-         Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
-         int listenerCount = listeners.size();
-         for (int i = 0; i < listenerCount; i++) {
-            ExpiryListener listener = (ExpiryListener) listeners.get(i);
-            listener.expired(this, unmodifiableExpired);
+         // Copy all references from the wrapping Entry objects
+         Iterator keyIterator = toBeExpired.keySet().iterator();
+         while (keyIterator.hasNext()) {
+            Object key   = keyIterator.next();
+            Entry  entry = (Entry) toBeExpired.get(key);
+            if (entry.isExpired()) {
+
+               // Create a map for the object references, if necessary
+               if (refMap == null) {
+                  refMap = new HashMap();
+               }
+
+               // Store the entry that needs expiring in the refMap
+               refMap.put(key, entry.getReference());
+            } else {
+               final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
+                                   + entry.getReference().toString()
+                                   + "\".";
+               Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                         CLASSNAME, THIS_METHOD,
+                                         DETAIL);
+            }
+         }
+
+         // If appropriate, notify the listeners
+         if (refMap != null && refMap.size() > 0) {
+            Map unmodifiableExpired = Collections.unmodifiableMap(refMap);
+            int listenerCount = _listeners.size();
+            for (int i = 0; i < listenerCount; i++) {
+               ExpiryListener listener = (ExpiryListener) _listeners.get(i);
+               listener.expired(this, unmodifiableExpired);
+            }
          }
       }
    }
