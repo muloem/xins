@@ -45,7 +45,7 @@
 	<translation entry="1306">More targets available but fail-over is not allowed.</translation>
 	<translation entry="1307">More targets available and fail-over is allowed.</translation>
 
-	<translation entry="1400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />. Entries remaining: <value-of-param name="remaining" />.</translation>
+	<translation entry="1400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />.</translation>
 	<translation entry="1401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
 	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
 	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>

@@ -953,10 +953,12 @@ APIs in this project are:
 
 			<target name="run-{$api}" depends="war-{$api}" description="Runs the '{$api}' API">
 				<fail message="Please, specify the org.xins.server.config property as explained in the user guide." unless="org.xins.server.config" />
+				<property name="servlet.port" value="8080" />
 				<java classname="org.xins.common.servlet.container.HTTPServletStarter"
 							fork="true">
 					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
 					<arg path="build/webapps/{$api}/{$api}.war" />
+					<arg path="${{servlet.port}}" />
 					<classpath>
 						<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-client.jar xins-server.jar" />
 						<fileset dir="{$xins_home}/lib" includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar" />

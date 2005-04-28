@@ -129,7 +129,6 @@ extends Object {
       _slots            = new HashMap[_slotCount];
       _lastSlot         = _slotCount - 1;
       _listeners        = new ArrayList(5);
-      _expired          = new HashMap();
 
       // Initialize all slots to a new HashMap
       for (int i = 0; i < _slotCount; i++) {
@@ -261,15 +260,6 @@ extends Object {
     */
    private ArrayList _listeners;
 
-   /**
-    * Map containing entries already removed (because they are expired) but
-    * not passed to the listeners yet.
-    *
-    * <p>Values in this map are the actual object references. These are not
-    * wrapped in {@link Entry} objects.
-    */
-   private HashMap _expired;
-
 
    //-------------------------------------------------------------------------
    // Methods
@@ -304,7 +294,6 @@ extends Object {
          _recentlyAccessed = null;
          _slots            = null;
          _listeners        = null;
-         _expired          = null;
       }
    }
 
@@ -334,49 +323,74 @@ extends Object {
       // Check state
       assertStrategyNotStopped();
 
-      // Allocate memory for the new map of recently accessed entries outside
-      // the synchronized sections
-      HashMap newRecentlyAccessed = new HashMap();
-
-      int newSize;
-      HashMap toBeExpired, refMap;
+      HashMap toBeExpired;
+      HashMap refMap = null;
       synchronized (_lock) {
-
-         // Keep a link to the old map with recently accessed elements and
-         // then reset _recentlyAccessed
-         HashMap oldRecentlyAccessed = _recentlyAccessed;
-         _recentlyAccessed           = newRecentlyAccessed;
 
          // Shift the slots
          toBeExpired = _slots[_lastSlot];
          for (int i = _lastSlot; i > 0; i--) {
             _slots[i] = _slots[i - 1];
          }
-         _slots[0] = oldRecentlyAccessed;
+         _slots[0] = _recentlyAccessed;
 
-         // Determine the new size
-         newSize = size();
-
-         // Get the map with all objects to be expired
-         if (_expired.size() > 0) {
-            refMap   = _expired;
-            _expired = new HashMap();
-         } else {
-            refMap = null;
+         // Removed the entries expired in the last slot
+         if (!_slots[_lastSlot].isEmpty()) {
+            Iterator keyIterator = _slots[_lastSlot].keySet().iterator();
+            while (keyIterator.hasNext()) {
+               Object key   = keyIterator.next();
+               Entry  entry = (Entry) _slots[_lastSlot].get(key);
+               if (entry.isExpired()) {
+                  keyIterator.remove();
+                  if (refMap == null) {
+                     refMap = new HashMap();
+                  }
+                  refMap.put(key, entry.getReference());
+               }
+            }
          }
+         
+         // Copy all references from the wrapping Entry objects
+         if (!toBeExpired.isEmpty()) {
+            Iterator keyIterator = toBeExpired.keySet().iterator();
+            while (keyIterator.hasNext()) {
+               Object key   = keyIterator.next();
+               Entry  entry = (Entry) toBeExpired.get(key);
+               if (entry.isExpired()) {
+
+                  // Create a map for the object references, if necessary
+                  if (refMap == null) {
+                     refMap = new HashMap();
+                  }
+
+                  // Store the entry that needs expiring in the refMap
+                  refMap.put(key, entry.getReference());
+               } else {
+                  final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
+                                      + entry.getReference().toString()
+                                      + "\".";
+                  Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
+                                            CLASSNAME, THIS_METHOD,
+                                            DETAIL);
+               }
+            }
+         }
+         
+         // Recycle the old HashMap
+         toBeExpired.clear();
+         _recentlyAccessed = toBeExpired;
       }
 
       // Determine how may objects are to be sent to the listeners
       int refMapSize       = refMap == null
                            ? 0
                            : refMap.size();
-      int toBeExpiredCount = toBeExpired.size() + refMapSize;
 
       // Log this
-      Log.log_1400(_asString, toBeExpiredCount, newSize);
+      Log.log_1400(_asString, refMapSize);
 
       // If set of objects for listeners is empty, then short-circuit
-      if (toBeExpiredCount < 1) {
+      if (refMapSize < 1 || _listeners.size() < 1) {
          return;
       }
 
@@ -384,35 +398,6 @@ extends Object {
 
       // Get a copy of the list of listeners
       synchronized (_listeners) {
-
-         // If there are no listeners to notify, then short-circuit
-         if (_listeners.size() < 1) {
-            return;
-         }
-
-         // Copy all references from the wrapping Entry objects
-         Iterator keyIterator = toBeExpired.keySet().iterator();
-         while (keyIterator.hasNext()) {
-            Object key   = keyIterator.next();
-            Entry  entry = (Entry) toBeExpired.get(key);
-            if (entry.isExpired()) {
-
-               // Create a map for the object references, if necessary
-               if (refMap == null) {
-                  refMap = new HashMap();
-               }
-
-               // Store the entry that needs expiring in the refMap
-               refMap.put(key, entry.getReference());
-            } else {
-               final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
-                                   + entry.getReference().toString()
-                                   + "\".";
-               Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                         CLASSNAME, THIS_METHOD,
-                                         DETAIL);
-            }
-         }
 
          // If appropriate, notify the listeners
          if (refMap != null && refMap.size() > 0) {
@@ -512,10 +497,7 @@ extends Object {
          while (keyIterator.hasNext()) {
             Object key   = keyIterator.next();
             Entry  entry = (Entry) map.get(key);
-            if (entry.isExpired()) {
-               keyIterator.remove();
-               _expired.put(key, entry.getReference());
-            } else {
+            if (!entry.isExpired()) {
                size++;
             }
          }
@@ -591,8 +573,6 @@ extends Object {
 
             // Entry is already expired
             if (entry.isExpired()) {
-               _recentlyAccessed.remove(key);
-               _expired.put(key, entry.getReference());
                return null;
 
             // Entry is not expired, touch it and return the reference
@@ -613,7 +593,6 @@ extends Object {
                   // Entry is already expired, update the map and size and
                   // return null
                   if (entry.isExpired()) {
-                     _expired.put(key, entry.getReference());
                      return null;
 
                   // Entry is not expired, touch it, store in the recently

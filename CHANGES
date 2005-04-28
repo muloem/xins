@@ -7,9 +7,13 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
 * XINS/Java Common Library:
+  - Removed unused imports and unused variables.
+  - The size is no longer computed every tick() in the ExpiryFolder.
   - Fixed bug in the HTTPServletContainer. It now correctly returns \r\n
     instead of \n after the HTTP headers.
   - Removed unused imports and variables.
+  - Refactored the ExpiryFolder to improve performance and remove some memory
+    leaks.
 
 * XINS/Java Client Framework:
   - Implemented RFE #1188052: Log message 2114 should be logged only once.
@@ -24,9 +28,13 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
   - Implemented SF.net RFE #1190778: Link to detailed statistics from API
     specdocs.
 
+* Generated build file:
+  - Implemented RFE #1190978: Added the possibility to specify the port 
+    for the server with the servlet.port parameter.
+
 * Build- and release-process:
   - Fixed missing build.properties for the demos.
-  - Improved Windows installer.
+  - Improved Windows installer. (including fix for bug #1189532)
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:

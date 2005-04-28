@@ -208,7 +208,6 @@
 			<description>Tick processed.</description>
 			<param name="folderName" type="text"  nullable="false" />
 			<param name="expired"    type="int32" nullable="false" />
-			<param name="remaining"  type="int32" nullable="false" />
 		</entry>
 		<entry id="1401" level="DEBUG">
 			<description>Associating expiry folder with expiry stategy thread.</description>
