@@ -1413,6 +1413,10 @@ extends HttpServlet {
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties);
 
+      // Reset Log4J configuration
+      LogManager.getLoggerRepository().resetConfiguration();
+
+      // Reconfigure Log4J
       PropertyConfigurator.configure(properties);
 
       // Determine if Log4J is properly initialized
@@ -1921,6 +1925,8 @@ extends HttpServlet {
        */
       private void reinit() {
 
+         Utils.traceEnterMethod();
+
          Log.log_3407(_configFile);
 
          synchronized (_runtimePropertiesLock) {
@@ -1938,7 +1944,6 @@ extends HttpServlet {
             }
 
             // Reconfigure the Log4J system
-            LogManager.getLoggerRepository().resetConfiguration();
             configureLogger(PropertyReaderConverter.toProperties(_runtimeProperties));
 
             // Re-initialize the API
@@ -1963,6 +1968,8 @@ extends HttpServlet {
                }
             }
          }
+
+         Utils.traceLeaveMethod();
       }
 
       /**
@@ -1972,7 +1979,9 @@ extends HttpServlet {
        * <p>This will trigger re-initialization.
        */
       public void fileFound() {
+         Utils.traceLeaveMethod();
          reinit();
+         Utils.traceLeaveMethod();
       }
 
       /**
@@ -1982,7 +1991,9 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotFound() {
+         Utils.traceEnterMethod();
          Log.log_3400(_configFile);
+         Utils.traceLeaveMethod();
       }
 
       /**
@@ -1992,7 +2003,9 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotModified() {
+         Utils.traceEnterMethod();
          Log.log_3402(_configFile);
+         Utils.traceLeaveMethod();
       }
 
       /**
@@ -2006,7 +2019,9 @@ extends HttpServlet {
        *    (although this is not checked).
        */
       public void securityException(SecurityException exception) {
+         Utils.traceEnterMethod();
          Log.log_3401(exception, _configFile);
+         Utils.traceLeaveMethod();
       }
 
       /**
@@ -2016,7 +2031,9 @@ extends HttpServlet {
        * <p>This will trigger re-initialization.
        */
       public void fileModified() {
+         Utils.traceEnterMethod();
          reinit();
+         Utils.traceLeaveMethod();
       }
    }
 }
