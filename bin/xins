@@ -46,7 +46,7 @@ do
     then
         if [ ! -z "${__OPTS__}" ]
         then
-            word="${word} "
+            word=" ${word}"
         fi
         __OPTS__="${__OPTS__}${word}"
 
@@ -54,7 +54,7 @@ do
     else
         if [ ! -z "${__ARGS__}" ]
         then
-            word="${word} "
+            word=" ${word}"
         fi
         __ARGS__="${__ARGS__}${word}"
     fi
@@ -64,13 +64,13 @@ done
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
 __CMD__="${__CMD__} -Dxins_home=${XINS_HOME}"
 __CMD__="${__CMD__} -Dpwd=`pwd`"
-if [ ! -z ${__OPTS__} ]
+if [ ! -z "${__OPTS__}" ]
 then
     __CMD__="${__CMD__} ${__OPTS__}"
 fi
-if [ ! -z ${__ARGS__} ]
+if [ ! -z "${__ARGS__}" ]
 then
-    __CMD__="${__CMD__} -Dargs=${__ARGS__}"
+    __CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
 fi
 
 # Pass control to Ant
