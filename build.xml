@@ -466,6 +466,7 @@ ${sf.file}</fail>
 				<pathelement location="build/xins-client.jar" />
 				<pathelement location="build/logdoc.jar" />
 				<pathelement location="src/tests/build/classes-capi/allinone" />
+				<pathelement location="src/tests/myproject-capi.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</javac>
@@ -488,6 +489,7 @@ ${sf.file}</fail>
 				<pathelement location="src/tests/build/classes-capi/allinone" />
 				<pathelement location="src/tests/build/classes-api/allinone" />
 				<pathelement location="src/tests/build/classes-types/allinone" />
+				<pathelement location="src/tests/myproject-capi.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
@@ -523,6 +525,7 @@ ${sf.file}</fail>
 				<pathelement location="src/tests/build/classes-capi/allinone" />
 				<pathelement location="src/tests/build/classes-api/allinone" />
 				<pathelement location="src/tests/build/classes-types/allinone" />
+				<pathelement location="src/tests/myproject-capi.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</java>
@@ -544,6 +547,7 @@ ${sf.file}</fail>
 				<pathelement location="src/tests/build/classes-capi/allinone" />
 				<pathelement location="src/tests/build/classes-api/allinone" />
 				<pathelement location="src/tests/build/classes-types/allinone" />
+				<pathelement location="src/tests/myproject-capi.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>

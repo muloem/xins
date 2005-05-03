@@ -1,0 +1,92 @@
+/*
+ * $Id$
+ *
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
+ */
+package org.xins.tests.client;
+
+import java.io.IOException;
+import java.io.Writer;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet that returns invalid XINS results.
+ *
+ * @version $Revision$
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ */
+public class MyProjectServlet extends HttpServlet {
+   
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+   
+   //-------------------------------------------------------------------------
+   // Class fields
+   //-------------------------------------------------------------------------
+   
+   //-------------------------------------------------------------------------
+   // Constructor
+   //-------------------------------------------------------------------------
+   
+   /**
+    * Creates a new instance of InvalidResponseServlet
+    */
+   public MyProjectServlet() {
+   }
+   
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+   
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+   
+   /**
+    * Handles a request to this servlet (wrapper method). If any of the
+    * arguments is <code>null</code>, then the behaviour of this method is
+    * undefined.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws IOException
+    *    if there is an error error writing to the response output stream.
+    */
+   public void service(HttpServletRequest request, HttpServletResponse response)
+   throws IOException {
+      String function = request.getParameter("_function");
+      if (function == null) {
+         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+         throw new IOException("Invalid request, no \"_function\" parameter passed.");
+      }
+      if (function.equals("MyFunction")) {
+         response.setStatus(HttpServletResponse.SC_OK);
+         response.setContentType("text/xml;charset=UTF-8");
+         Writer writer = response.getWriter();
+         writer.write(getResultCodeResult());
+         writer.close();
+      } else {
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+   }
+   
+   /**
+    * Returns an invalid result for the ResultCode function.
+    *
+    * @returns
+    *    the invalid result as XML String.
+    */
+   private String getResultCodeResult() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result errorcode=\"NoVowel\">"+
+             "</result>";
+   }
+}

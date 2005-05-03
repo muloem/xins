@@ -13,6 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallConfig;
 
 import org.xins.common.collections.BasicPropertyReader;
@@ -23,6 +24,8 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.*;
 
 import org.xins.logdoc.ExceptionUtils;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the generated <em>allinone</em> CAPI class, other than calling the
@@ -229,5 +232,22 @@ public class CAPITests extends TestCase {
          UnsupportedProtocolException upe = (UnsupportedProtocolException) cause;
          assertEquals(url, upe.getTargetDescriptor().getURL());
       }
+   }
+   
+   public void testCompatibility() throws Exception {
+      // Add the servlet
+      AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.MyProjectServlet", "/myproject");
+      
+      try {
+         TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/myproject");
+         com.mycompany.myproject.capi.CAPI capi = new com.mycompany.myproject.capi.CAPI(descriptor);
+         capi.callMyFunction(com.mycompany.myproject.types.Gender.MALE, "Bnd");
+         fail("callMyFunction succeeded even with a invalid name");
+      } catch (UnsuccessfulXINSCallException ex) {
+         assertEquals("NoVowel", ex.getErrorCode());
+      }
+      
+      // Remove the servlet
+      AllTests.HTTP_SERVER.removeServlet("/myproject");
    }
 }

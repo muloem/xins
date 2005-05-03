@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
   - Added getAPIName() to class AbstractCAPI.
   - Implemented SF.net RFE #1188021: Log message 2114 should include API name.
   - Removed unused imports and variables.
+  - Added a test that fails with an invalid result code.
 
 * XINS/Java Server Framework:
   - Removed unused imports and variables.
