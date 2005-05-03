@@ -907,8 +907,9 @@ classname="org.hammurapi.HammurapiTask"
 				<include name="rundemo.sh" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
-				<include name="capis/perl/*" />
-				<include name="capis/php/*" />
+				<include name="capis/perl/*.pl" />
+				<include name="capis/php/*.php" />
+				<include name="capis/javascript/*.html" />
 				<include name="xins-project/.version.properties" />
 				<include name="xins-project/build.properties" />
 				<include name="xins-project/**/*.xml" />
@@ -988,6 +989,7 @@ classname="org.hammurapi.HammurapiTask"
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
+			<exclude name="demo/rundemo*"                  />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
