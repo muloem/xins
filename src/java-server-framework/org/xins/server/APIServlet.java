@@ -359,10 +359,16 @@ extends HttpServlet {
     * @see ExceptionUtils#setCause(Throwable,Throwable)
     */
    private static final ServletException servletExceptionFor(Throwable t) {
+
+      Utils.traceEnterMethod(t);
+
       ServletException servletException = new ServletException();
       if (t != null) {
          ExceptionUtils.setCause(servletException, t);
       }
+
+      Utils.traceLeaveMethod(t);
+
       return servletException;
    }
 
@@ -473,7 +479,7 @@ extends HttpServlet {
     * Generates a diagnostic context identifier. The generated context
     * identifier will be in the format:
     *
-    * <blockqoute>app@host:time:rnd</blockqoute>
+    * <blockquote>app@host:time:rnd</blockquote>
     *
     * where:
     *
@@ -496,6 +502,9 @@ extends HttpServlet {
     */
    private String generateContextID() {
 
+      // TRACE: Enter method
+      Utils.traceEnterMethod();
+
       // TODO: Improve performance of this method
       // XXX: Consider moving this method to a separate utility class
 
@@ -514,7 +523,12 @@ extends HttpServlet {
       contextID.append(currentDate);
       contextID.append(':');
       contextID.append(randomFive);
-      return contextID.toString();
+
+      String contextIDString = contextID.toString();
+
+      Utils.traceLeaveMethod();
+
+      return contextIDString;
    }
 
    /**
@@ -525,6 +539,9 @@ extends HttpServlet {
     *    the current state, cannot be <code>null</code>.
     */
    private State getState() {
+
+      // NOTE: No trace logging on this simplistic method
+
       synchronized (_stateLock) {
          return _state;
       }
@@ -549,6 +566,9 @@ extends HttpServlet {
    private void setState(State newState)
    throws IllegalArgumentException, IllegalStateException {
 
+      // TRACE: Enter method
+      Utils.traceEnterMethod(newState);
+
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
 
@@ -565,6 +585,9 @@ extends HttpServlet {
 
          // Short-circuit if the current equals the new state
          if (oldState == newState) {
+
+            // TRACE: Leave method
+            Utils.traceLeaveMethod(newState);
             return;
 
          // Always allow changing state to DISPOSING
@@ -667,6 +690,9 @@ extends HttpServlet {
          _state = newState;
          Log.log_3100(oldStateName, newStateName);
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod(newState);
    }
 
    /**
@@ -682,6 +708,9 @@ extends HttpServlet {
     */
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
+
+      // TRACE: Enter method
+      Utils.traceEnterMethod();
 
       setState(DETERMINE_INTERVAL);
 
@@ -714,6 +743,9 @@ extends HttpServlet {
          Log.log_3408(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod();
 
       return interval;
    }
@@ -864,7 +896,9 @@ extends HttpServlet {
    public void initImpl(ServletConfig config)
    throws ServletException {
 
+      // TRACE: Enter method
       final String THIS_METHOD = "initImpl(javax.servlet.ServletConfig)";
+      Utils.traceEnterMethod(config);
 
       // Log: Bootstrapping XINS/Java Server Framework
       String serverVersion = Library.getVersion();
@@ -1231,12 +1265,18 @@ extends HttpServlet {
             _configFileWatcher.start();
          }
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod(config);
    }
 
    /**
     * Initializes the API using the current runtime settings.
     */
    void initAPI() {
+
+      // TRACE: Enter method
+      Utils.traceEnterMethod();
 
       setState(INITIALIZING_API);
 
@@ -1298,6 +1338,9 @@ extends HttpServlet {
             }
          }
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod();
    }
 
    /**
@@ -1307,6 +1350,9 @@ extends HttpServlet {
     * set of properties is returned.
     */
    private void readRuntimeProperties() {
+
+      // TRACE: Enter method
+      Utils.traceEnterMethod();
 
       Log.log_3300(_configFile);
 
@@ -1344,6 +1390,9 @@ extends HttpServlet {
          // Store the runtime properties internally
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod();
    }
 
    /**
@@ -1351,8 +1400,19 @@ extends HttpServlet {
     *
     * @param properties
     *    the runtime properties containing the Log4J configuration.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null</code>.
     */
-   private void configureLogger(Properties properties) {
+   private void configureLogger(Properties properties)
+   throws IllegalArgumentException {
+
+      // TRACE: Enter method
+      Utils.traceEnterMethod(properties);
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties);
+
       PropertyConfigurator.configure(properties);
 
       // Determine if Log4J is properly initialized
@@ -1365,6 +1425,9 @@ extends HttpServlet {
       } else {
          Log.log_3305();
       }
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod(properties);
    }
 
    /**
@@ -1692,6 +1755,9 @@ extends HttpServlet {
     */
    public void destroy() {
 
+      // TRACE: Enter method
+      Utils.traceEnterMethod();
+
       // Stop the FileWatcher
       if (_configFileWatcher != null) {
          _configFileWatcher.end();
@@ -1715,6 +1781,9 @@ extends HttpServlet {
       setState(DISPOSED);
 
       Log.log_3602();
+
+      // TRACE: Leave method
+      Utils.traceLeaveMethod();
    }
 
 
