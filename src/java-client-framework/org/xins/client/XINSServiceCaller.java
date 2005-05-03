@@ -727,8 +727,23 @@ public final class XINSServiceCaller extends ServiceCaller {
             if (ex != null) {
                throw ex;
             } else {
-               throw new UnacceptableErrorCodeXINSCallException(
-                  xinsRequest, target, duration, resultData);
+
+               // If the CAPI class was generated using a XINS release older
+               // than 1.2.0, then it will not override the
+               // 'createErrorCodeException' method and consequently the
+               // method will return null. It cannot be determined here
+               // whether the error code is acceptable or not
+               String ver = _capi.getXINSVersion();
+               if (ver.startsWith("0.")
+                || ver.startsWith("1.0.")
+                || ver.startsWith("1.1.")) {
+                  throw new UnsuccessfulXINSCallException(
+                     xinsRequest, target, duration, resultData, null);
+
+               } else {
+                  throw new UnacceptableErrorCodeXINSCallException(
+                     xinsRequest, target, duration, resultData);
+               }
             }
          }
       }
