@@ -52,7 +52,7 @@ do
         then
             word="${word} "
         fi
-        __ARGS__="${__ARGS__}${word} "
+        __ARGS__="${__ARGS__}${word}"
     fi
     shift
 done
