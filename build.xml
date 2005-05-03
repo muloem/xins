@@ -449,7 +449,7 @@ ${sf.file}</fail>
 		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
 		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
-		
+
 		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />
 		<javac
@@ -475,7 +475,7 @@ ${sf.file}</fail>
 	<target name="do-tests" depends="-junit-task,classes-tests" description="Runs the unit tests">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
-		
+
 		<junit fork="true" printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
@@ -530,7 +530,7 @@ ${sf.file}</fail>
 			</classpath>
 		</java>
 	</target>
-	
+
 	<target name="do-perftests" depends="-junit-task,classes-tests" description="Runs the performance tests">
 		<mkdir dir="build/perftestresults" />
 		<mkdir dir="build/perftestresults/xml" />
@@ -864,7 +864,7 @@ classname="org.hammurapi.HammurapiTask"
 	description="Uploads the Java2HTML documentation to the web site"
 	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
-		
+
 		<!-- Create TAR GZ file for Java2HTML -->
 		<echo level="verbose" message="Creating TAR GZ file for Java2HTML" />
 		<tar tarfile="build/j2h.tar" longfile="gnu">
@@ -903,6 +903,8 @@ classname="org.hammurapi.HammurapiTask"
 				<include name="jetty_myproject.xml" />
 				<include name="jetty_allinone.xml" />
 				<include name="jetty_filteredproject.xml" />
+				<include name="rundemo.bat" />
+				<include name="rundemo.sh" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
 				<include name="capis/perl/*" />
@@ -997,9 +999,11 @@ classname="org.hammurapi.HammurapiTask"
 		<fixcrlf srcdir="build/lf" eol="unix" eof="remove">
 			<patternset refid="release.text.files" />
 			<include name="bin/xins" />
+			<include name="demo/rundemo.sh" />
 		</fixcrlf>
 		<fixcrlf srcdir="build/lf/bin" eol="dos" eof="asis">
 			<include name="xins.bat" />
+			<include name="demo/rundemo.bat" />
 		</fixcrlf>
 
 		<!-- Tar the release file -->
@@ -1025,12 +1029,14 @@ classname="org.hammurapi.HammurapiTask"
 			mode="644">
 				<patternset refid="release.text.files"/>
 				<include name="bin/xins.bat" />
+				<include name="demo/rundemo.bat" />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build/lf"
 			prefix="${name}-${version}"
 			mode="755">
 				<include name="bin/xins" />
+				<include name="demo/rundemo.sh" />
 			</tarfileset>
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
@@ -1242,7 +1248,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
-		
+
 		<junit printsummary="true" failureproperty="tests.failed" fork="true">
 			<jvmarg value="-Xdebug" />
 			<jvmarg value="-Xnoagent" />
@@ -1264,7 +1270,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
-		
+
 		<antcall target="testreports" />
 	</target>
 </project>
