@@ -133,19 +133,34 @@ public final class Utils extends Object {
     */
    public static final ProgrammingException
    logProgrammingError(Throwable cause) {
-      String sourceClass = "<unknown>";
-      String sourceMethod = "<unknown>";
+
+      String sourceClass;
+      String sourceMethod;
+
       try {
-         StackTraceElement[] trace = cause.getStackTrace();
-         StackTraceElement source = trace[trace.length - 1];
-         sourceClass = source.getClassName();
+
+         // Determine the source of the exception
+         StackTraceElement[] trace  = cause.getStackTrace();
+         StackTraceElement   source = trace[trace.length - 1];
+
+         // Determine source class and method
+         sourceClass  = source.getClassName();
          sourceMethod = source.getMethodName();
+
+      // If there's any exception, then fallback to default values
       } catch (Throwable t) {
-         // ignore
+         sourceClass  = "<unknown>";
+         sourceMethod = "<unknown>";
       }
-      return logProgrammingError(getCallingClass(), getCallingMethod(),
-                                 sourceClass,       sourceMethod,
-                                 null,              cause);
+
+      // Determine detecting class and method
+      String detectingClass = getCallingClass();
+      String detectingMethod = getCallingMethod();
+
+      // Log the programming error
+      return logProgrammingError(detectingClass, detectingMethod,
+                                 sourceClass,    sourceMethod,
+                                 null,           cause);
    }
 
    /**
@@ -330,8 +345,8 @@ public final class Utils extends Object {
 
          // Get the stack trace
          StackTraceElement[] trace = exception.getStackTrace();
-         if (trace != null && trace.length >= 4) {
-            StackTraceElement caller = trace[3];
+         if (trace != null && trace.length >= 3) {
+            StackTraceElement caller = trace[2];
             if (caller != null) {
 
                // Determine class name
