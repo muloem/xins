@@ -4,6 +4,10 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
+
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
 * XINS/Java Common Library:
@@ -556,7 +560,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 FINAL:
   - Added proper @since tag on the generated create methods.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
+CHANGES INTRODUCED IN XINS 1.1.0 RELEASE CANDIDATE 2:
 
 * XINS/Java Common Library:
   - The Base64 class has been deprecated and may be removed in coming
@@ -567,7 +571,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 RC 2:
     This bug has been in XINS since XINS 1.1.0-alpha8.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.1.0 RC 1:
+CHANGES INTRODUCED IN XINS 1.1.0 RELEASE CANDIDATE 1:
 
 * XINS/Java Server Framework:
   - Implemented SF.net RFE #1102205: Let Server use Common log messages.
@@ -1230,7 +1234,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 FINAL:
     diagnostic context identifier.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.0.1 RC 3:
+CHANGES INTRODUCED IN XINS 1.0.1 RELEASE CANDIDATE 3:
 
 * XINS/Java Common Library:
   - Fixed a bug in the ExpiryStrategy class, which caused the slot count to be
@@ -1252,7 +1256,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 RC 3:
   - Added 'netbeans-debug' target in build.xml file
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.0.1 RC 2:
+CHANGES INTRODUCED IN XINS 1.0.1 RELEASE CANDIDATE 2:
 
 * XINS/Java Server Framework:
   - No longer determining function name in API class _again_, but rather
@@ -1261,7 +1265,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 RC 2:
     _function and function are specified.
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.0.1 RC 1:
+CHANGES INTRODUCED IN XINS 1.0.1 RELEASE CANDIDATE 1:
 
 * XINS/Java Common:
   - The diagnostic context identifier is removed after being popped
