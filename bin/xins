@@ -32,7 +32,8 @@ then
 	rm build/build.xml
 fi
 
-# Split arguments that do start with a hyphen and those that do not
+# Split options and target arguments.
+# Options start with a hyphen, while target arguments do not.
 #
 # This fixes SF.net bug 1187914: Cannot pass arguments with the XINS command
 # on Unix
@@ -61,6 +62,7 @@ do
     shift
 done
 
+# Construct the command to execute
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
 __CMD__="${__CMD__} -Dxins_home=${XINS_HOME}"
 __CMD__="${__CMD__} -Dpwd=`pwd`"
@@ -73,10 +75,13 @@ then
     __CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
 fi
 
-# Pass control to Ant
+# If verbose mode is on, print the command that will be executed
 if [ "${XINS_VERBOSE}" = "true" ]
 then
-    echo Executing:
-    echo ${__CMD__}
+    echo "Executing:"
+    echo "${__CMD__}"
+    echo
 fi
+
+# Execute the command; pass control to Ant
 ${__CMD__}
