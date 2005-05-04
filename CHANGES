@@ -35,6 +35,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 * Generated build file:
   - Implemented RFE #1190978: Added the possibility to specify the port 
     for the server with the servlet.port parameter.
+  - Remove the generated file if any file in the specification has changed.
 
 * Build- and release-process:
   - Fixed missing build.properties for the demos.

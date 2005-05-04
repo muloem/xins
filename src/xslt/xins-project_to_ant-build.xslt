@@ -726,6 +726,9 @@ APIs in this project are:
 							<srcfilelist   dir="{$api_specsdir}" files="api.xml" />
 						</xsl:otherwise>
 					</xsl:choose>
+					<srcfileset    dir="{$api_specsdir}">
+						<include name="*.fnc *.typ *.rcd" />
+					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 				</dependset>
 				<xmlvalidate file="{$api_file}" warn="false">
