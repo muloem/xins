@@ -14,10 +14,6 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
   - Removed unused imports and variables.
   - Refactored the ExpiryFolder to improve performance and remove some memory
     leaks.
-  - Added class functions traceEnterMethod(), traceEnterMethod(Object),
-    traceLeaveMethod() and traceLeaveMethod(String). These methods
-    automatically determine the name of the calling class and method and then
-    log the entering of or leaving from a method.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1194486: CAPI compatibility problem.
