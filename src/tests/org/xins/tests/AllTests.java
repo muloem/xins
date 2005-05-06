@@ -78,6 +78,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
 
       suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.DescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int8Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int16Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int32Tests.class);
@@ -86,8 +87,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.Float64Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Base64Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.TimestampTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);
-      suite.addTestSuite(org.xins.tests.common.types.standard.DescriptorTests.class);
 
       suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 
