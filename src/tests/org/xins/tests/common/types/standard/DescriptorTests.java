@@ -9,7 +9,7 @@ import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Descriptor;
 
 /**
- * Tests for class <code>Descritor</code>.
+ * Tests for the <code>Descriptor</code> type class.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -61,7 +61,7 @@ public class DescriptorTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Tests the fromStringForRequired method of the Boolean type class.
+    * Tests the fromStringForRequired method.
     */
    public void testFromStringForRequired() throws Throwable {
 
@@ -86,7 +86,7 @@ public class DescriptorTests extends TestCase {
    }
 
    /**
-    * Tests the fromStringForOptional method of the Boolean type class.
+    * Tests the fromStringForOptional method.
     */
    public void testFromStringForOptional() throws Throwable {
       // test the fromStringForOptional method with all possabilities
@@ -105,7 +105,7 @@ public class DescriptorTests extends TestCase {
    }
 
    /**
-    * Tests the isValidValue method of hte Boolean type class.
+    * Tests the isValidValue method.
     */
    public void testIsValidValue() {
 
@@ -117,7 +117,7 @@ public class DescriptorTests extends TestCase {
    }
 
    /**
-    * Tests the fromString method of Boolean type class.
+    * Tests the fromString method.
     */
    public void testFromString() throws Throwable  {
 
@@ -132,7 +132,7 @@ public class DescriptorTests extends TestCase {
    }
 
    /**
-    * Tests the toString method of the Boolean type class which is inherited from the Type class.
+    * Tests the toString method.
     */
    public void testToString() throws Throwable {
 
