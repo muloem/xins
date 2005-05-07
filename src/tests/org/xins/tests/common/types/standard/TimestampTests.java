@@ -66,7 +66,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
     * <code>Calendar</code> instance.
     */
-   public void testTimestampValue_Calendar() throws Throwable {
+   public void testTimestampValue_Calendar() throws Exception {
 
       Calendar cal = null;
       Timestamp.Value v;
@@ -87,5 +87,77 @@ public class TimestampTests extends TestCase {
       assertEquals(52,   v.getMinuteOfHour());
       assertEquals(21,   v.getSecondOfMinute());
       assertEquals("20050506155221", v.toString());
+   }
+
+   /**
+    * Tests the <code>Timestamp$Value</code> constructor that accepts a
+    * <code>Date</code> instance.
+    */
+   public void testTimestampValue_Date() throws Exception {
+
+      Date d = null;
+      Timestamp.Value v;
+      try {
+         v = new Timestamp.Value(d);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      d = new Date(2005 - 1900, 4, 6, 15, 52, 21);
+      v = new Timestamp.Value(d);
+      assertEquals(2005, v.getYear());
+      assertEquals(5,    v.getMonthOfYear());
+      assertEquals(6,    v.getDayOfMonth());
+      assertEquals(15,   v.getHourOfDay());
+      assertEquals(52,   v.getMinuteOfHour());
+      assertEquals(21,   v.getSecondOfMinute());
+      assertEquals("20050506155221", v.toString());
+
+      d = new Date(0L);
+      v = new Timestamp.Value(d);
+      assertEquals(1970, v.getYear());
+      assertEquals(1,    v.getMonthOfYear());
+      assertEquals(1,    v.getDayOfMonth());
+      assertEquals(0,    v.getHourOfDay());
+      assertEquals(0,    v.getMinuteOfHour());
+      assertEquals(0,    v.getSecondOfMinute());
+      assertEquals("19700101000000", v.toString());
+   }
+
+   /**
+    * Tests the <code>Timestamp$Value</code> constructor that accepts a
+    * <code>long</code>.
+    */
+   public void testTimestampValue_long() throws Exception {
+
+      long n = -1L;
+      Timestamp.Value v;
+      try {
+         v = new Timestamp.Value(n);
+         fail("Expected IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      n = 0L;
+      v = new Timestamp.Value(n);
+      assertEquals(1970, v.getYear());
+      assertEquals(1,    v.getMonthOfYear());
+      assertEquals(1,    v.getDayOfMonth());
+      assertEquals(0,    v.getHourOfDay());
+      assertEquals(0,    v.getMinuteOfHour());
+      assertEquals(0,    v.getSecondOfMinute());
+      assertEquals("19700101000000", v.toString());
+
+      n = 1000L;
+      v = new Timestamp.Value(n);
+      assertEquals(1970, v.getYear());
+      assertEquals(1,    v.getMonthOfYear());
+      assertEquals(1,    v.getDayOfMonth());
+      assertEquals(0,    v.getHourOfDay());
+      assertEquals(0,    v.getMinuteOfHour());
+      assertEquals(1,    v.getSecondOfMinute());
+      assertEquals("19700101000001", v.toString());
    }
 }
