@@ -279,7 +279,8 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Date value, composed of a year, month and a day.
+    * Value for the type <em>_date</em>. Represents a specific moment in
+    * time, with day-precision.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)

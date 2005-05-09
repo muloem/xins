@@ -313,8 +313,8 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Timestamp value. Represents a specific moment in time, with
-    * second-precision.
+    * Value for the type <em>_timestamp</em>. Represents a specific moment in
+    * time, with second-precision.
     *
     * @version $Revision$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
