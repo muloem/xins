@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Standard type <em>_timestamp</em>. A value of this timestamp represents a
+ * Standard type <em>_timestamp</em>. A value of this type represents a
  * certain moment in time, with second-precision, without an indication of the
  * time zone.
  *
@@ -68,6 +68,12 @@ public class Timestamp extends Type {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Timestamp SINGLETON = new Timestamp();
+
+   /**
+    * Formatter that converts a date to a string.
+    */
+   private final static SimpleDateFormat FORMATTER =
+      new SimpleDateFormat("yyyyMMddHHmmss");
 
 
    //-------------------------------------------------------------------------
@@ -322,7 +328,7 @@ public class Timestamp extends Type {
     *
     * @since XINS 1.0.0
     */
-   public static final class Value {
+   public static final class Value extends Object implements Cloneable {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -454,6 +460,18 @@ public class Timestamp extends Type {
       //----------------------------------------------------------------------
 
       /**
+       * Creates and returns a copy of this object.
+       *
+       * @return
+       *    a copy of this object, never <code>null</code>.
+       *
+       * @see Object#clone()
+       */
+      public Object clone() {
+         return new Value(_calendar);
+      }
+
+      /**
        * Returns the year.
        *
        * @return
@@ -517,9 +535,25 @@ public class Timestamp extends Type {
          if (!(obj instanceof Value)) {
             return false;
          }
-         Value that = (Value) obj;
-         return this._calendar.equals(that._calendar);
+
+         // Get relevant fields of the other one
+         Calendar thatCalendar = ((Value) obj)._calendar;
+         int Y = thatCalendar.get(Calendar.YEAR);
+         int M = thatCalendar.get(Calendar.MONTH);
+         int D = thatCalendar.get(Calendar.DAY_OF_MONTH);
+         int h = thatCalendar.get(Calendar.HOUR_OF_DAY);
+         int m = thatCalendar.get(Calendar.MINUTE);
+         int s = thatCalendar.get(Calendar.SECOND);
+
+         // Compare relevant values in the Calendar object
+         return (Y == _calendar.get(Calendar.YEAR))
+             && (M == _calendar.get(Calendar.MONTH))
+             && (D == _calendar.get(Calendar.DAY_OF_MONTH))
+             && (h == _calendar.get(Calendar.HOUR_OF_DAY))
+             && (m == _calendar.get(Calendar.MINUTE))
+             && (s == _calendar.get(Calendar.SECOND));
       }
+
 
       public int hashCode() {
          return _calendar.hashCode();
@@ -545,12 +579,7 @@ public class Timestamp extends Type {
        *    <code>null</code>.
        */
       public String toString() {
-
-         // Construct a formatter
-         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-
-         // Return the formatter string
-         return format.format(_calendar.getTime());
+         return FORMATTER.format(_calendar.getTime());
       }
    }
 }
