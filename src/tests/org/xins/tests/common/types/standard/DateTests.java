@@ -1,7 +1,6 @@
 package org.xins.tests.common.types.standard;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 import junit.framework.Test;
@@ -9,15 +8,15 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.types.TypeValueException;
-import org.xins.common.types.standard.Timestamp;
+import org.xins.common.types.standard.Date;
 
 /**
- * Tests for the <code>Timestamp</code> type class.
+ * Tests for the <code>Date</code> type class.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-public class TimestampTests extends TestCase {
+public class DateTests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -30,7 +29,7 @@ public class TimestampTests extends TestCase {
     *    the test suite, never <code>null</code>.
     */
    public static Test suite() {
-      return new TestSuite(TimestampTests.class);
+      return new TestSuite(DateTests.class);
    }
 
 
@@ -43,13 +42,13 @@ public class TimestampTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>TimestampTests</code> test suite with
+    * Constructs a new <code>DateTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
     * @param name
     *    the name for this test suite.
     */
-   public TimestampTests(String name) {
+   public DateTests(String name) {
       super(name);
    }
 
@@ -63,68 +62,62 @@ public class TimestampTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Tests the <code>Timestamp$Value</code> constructor that accepts a
+    * Tests the <code>Date$Value</code> constructor that accepts a
     * <code>Calendar</code> instance.
     */
-   public void testTimestampValue_Calendar() throws Exception {
+   public void testDateValue_Calendar() throws Exception {
 
       Calendar cal = null;
-      Timestamp.Value v;
+      Date.Value v;
       try {
-         v = new Timestamp.Value(cal);
+         v = new Date.Value(cal);
          fail("Expected IllegalArgumentException");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
       cal = Calendar.getInstance();
-      cal.set(2005, 4, 6, 15, 52, 21);
-      v = new Timestamp.Value(cal);
+      cal.set(2005, 4, 6);
+      v = new Date.Value(cal);
       assertEquals(2005, v.getYear());
       assertEquals(5,    v.getMonthOfYear());
       assertEquals(6,    v.getDayOfMonth());
-      assertEquals(15,   v.getHourOfDay());
-      assertEquals(52,   v.getMinuteOfHour());
-      assertEquals(21,   v.getSecondOfMinute());
-      assertEquals("20050506155221", v.toString());
+      assertEquals("20050506", v.toString());
    }
 
    /**
-    * Tests the <code>Timestamp$Value</code> constructor that accepts a
+    * Tests the <code>Date$Value</code> constructor that accepts a
     * <code>Date</code> instance.
     */
-   public void testTimestampValue_Date() throws Exception {
+   public void testDateValue_Date() throws Exception {
 
-      Date d = null;
-      Timestamp.Value v;
+      java.util.Date d = null;
+      Date.Value v;
       try {
-         v = new Timestamp.Value(d);
+         v = new Date.Value(d);
          fail("Expected IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
-      d = new Date(2005 - 1900, 4, 6, 15, 52, 21);
-      v = new Timestamp.Value(d);
+      d = new java.util.Date(2005 - 1900, 4, 6);
+      v = new Date.Value(d);
       assertEquals(2005, v.getYear());
       assertEquals(5,    v.getMonthOfYear());
       assertEquals(6,    v.getDayOfMonth());
-      assertEquals(15,   v.getHourOfDay());
-      assertEquals(52,   v.getMinuteOfHour());
-      assertEquals(21,   v.getSecondOfMinute());
-      assertEquals("20050506155221", v.toString());
+      assertEquals("20050506", v.toString());
    }
 
    /**
-    * Tests the <code>Timestamp$Value</code> constructor that accepts a
+    * Tests the <code>Date$Value</code> constructor that accepts a
     * <code>long</code>.
     */
-   public void testTimestampValue_long() throws Exception {
+   public void testDateValue_long() throws Exception {
 
       long n = -1L;
-      Timestamp.Value v;
+      Date.Value v;
       try {
-         v = new Timestamp.Value(n);
+         v = new Date.Value(n);
          fail("Expected IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
@@ -138,48 +131,42 @@ public class TimestampTests extends TestCase {
       // Compensate for the time zone offset
       n -= TimeZone.getDefault().getOffset(n);
 
-      v = new Timestamp.Value(n);
+      v = new Date.Value(n);
       assertEquals(1970, v.getYear());
       assertEquals(1,    v.getMonthOfYear());
       assertEquals(3,    v.getDayOfMonth());
-      assertEquals(12,   v.getHourOfDay());
-      assertEquals(0,    v.getMinuteOfHour());
-      assertEquals(0,    v.getSecondOfMinute());
-      assertEquals("19700103120000", v.toString());
+      assertEquals("19700103", v.toString());
    }
 
    /**
-    * Tests the <code>Timestamp$Value</code> constructor that accepts a number
+    * Tests the <code>Date$Value</code> constructor that accepts a number
     * of <code>int</code> values.
     */
-   public void testTimestampValue_ints() throws Exception {
+   public void testDateValue_ints() throws Exception {
 
-      int year=2005, month=12, day=31, hour=12, minute=59, second=59;
-      String asString = ""+year+month+day+hour+minute+second;
-      Timestamp.Value v;
+      int year=2005, month=12, day=31;
+      String asString = ""+year+month+day;
+      Date.Value v;
 
-      v = new Timestamp.Value(year, month, day, hour, minute, second);
+      v = new Date.Value(year, month, day);
       assertEquals(year,     v.getYear());
       assertEquals(month,    v.getMonthOfYear());
       assertEquals(day,      v.getDayOfMonth());
-      assertEquals(hour,     v.getHourOfDay());
-      assertEquals(minute,   v.getMinuteOfHour());
-      assertEquals(second,   v.getSecondOfMinute());
       assertEquals(asString, v.toString());
    }
 
    /**
-    * Tests the <code>equals</code> method in the <code>Timestamp$Value</code>
+    * Tests the <code>equals</code> method in the <code>Date$Value</code>
     * class.
     */
-   public void testTimestampValue_equals() throws Exception {
+   public void testDateValue_equals() throws Exception {
 
-      Timestamp.Value v1 = new Timestamp.Value(2005, 5, 9, 20, 52, 21);
-      Timestamp.Value v2 = new Timestamp.Value(2005, 5, 9, 20, 52, 21);
-      Timestamp.Value v3 = (Timestamp.Value) v1.clone();
+      Date.Value v1 = new Date.Value(2005, 5, 9);
+      Date.Value v2 = new Date.Value(2005, 5, 9);
+      Date.Value v3 = (Date.Value) v1.clone();
 
       assertFalse(v1.equals(null));
-      assertFalse(v1.equals("20050509205221"));
+      assertFalse(v1.equals("20050509"));
       assertTrue(v1.equals(v2));
       assertTrue(v1.equals(v3));
       assertTrue(v2.equals(v1));
@@ -197,8 +184,8 @@ public class TimestampTests extends TestCase {
       assertFalse(c1.equals(c2));
       assertFalse(c2.equals(c1));
 
-      v1 = new Timestamp.Value(c1);
-      v2 = new Timestamp.Value(c2);
+      v1 = new Date.Value(c1);
+      v2 = new Date.Value(c2);
       assertEquals(v1, v2);
    }
 }
