@@ -808,34 +808,6 @@ ${sf.file}</fail>
 
 	<target name="checkstyle" depends="checkstyle-xml,checkstyle-report" description="Checks the style of the source code" />
 
-<target name="hammurapi">
-<taskdef
-name="hammurapi"
-classname="org.hammurapi.HammurapiTask"
->
-<!-- class path wich for running Hammurapi -->
-<classpath>
-<!-- The jars are in this folder which are necessary to run Hammurapi -->
-<fileset dir="c:\java\hammurapi\lib" includes="*.jar"/>
-<fileset dir="lib" includes="*.jar"/>
-<!-- jars which are necessary for the built in rules -->
-</classpath>
-</taskdef>
-<hammurapi>
-<!-- The source folder of the inspected project -->
-<src dir="src/java-client-framework"/>
-<classpath>
-<!-- jars which are necessary for the built in rules -->
-<fileset dir="lib" includes="*.jar"/>
-<fileset dir="build" includes="*.jar"/>
-<!-- The folder which contains the compiled classes of the inspected project -->
-<path location="build/classes/java-client-framwork"/>
-</classpath>
-<!-- The output folder where Hammurapi saves the inspection result -->
-<output dir="build/hammurapi"/>
-</hammurapi>
-</target>
-
 	<target
 	name="upload-checkstyle"
 	depends="-init,checkstyle"
@@ -1146,6 +1118,10 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<property name="tagname" value="RELEASE_${version.major}_${version.middle}_${version.minor.uppercase}${version.build}" />
 		<echo message="Tagging ${tagname}" />
 		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
+		     failonerror="true" command="tag ${tagname}" quiet="true" />
+		<cvs dest="../xins-docs" cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
+		     failonerror="true" command="tag ${tagname}" quiet="true" />
+		<cvs dest="../xins-examples" cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="tag ${tagname}" quiet="true" />
 	</target>
 

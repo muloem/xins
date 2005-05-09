@@ -16,7 +16,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
     process.
 
 * Build- and release-process:
-  - Fixed rundemo script files in the release.
+  - Fixed missing rundemo script files in the release.
+  - The xins-examples and xins-docs directory are now tagged when a release
+    is created.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
