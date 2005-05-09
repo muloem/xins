@@ -150,4 +150,24 @@ public class TimestampTests extends TestCase {
       assertEquals(0,    v.getSecondOfMinute());
       assertEquals("19700103120000", v.toString());
    }
+
+   /**
+    * Tests the <code>Timestamp$Value</code> constructor that accepts a number
+    * of <code>int</code> values.
+    */
+   public void testTimestampValue_ints() throws Exception {
+
+      int year=2005, month=12, day=31, hour=12, minute=59, second=59;
+      String asString = ""+year+month+day+hour+minute+second;
+      Timestamp.Value v;
+
+      v = new Timestamp.Value(year, month, day, hour, minute, second);
+      assertEquals(year,     v.getYear());
+      assertEquals(month,    v.getMonthOfYear());
+      assertEquals(day,      v.getDayOfMonth());
+      assertEquals(hour,     v.getHourOfDay());
+      assertEquals(minute,   v.getMinuteOfHour());
+      assertEquals(second,   v.getSecondOfMinute());
+      assertEquals(asString, v.toString());
+   }
 }
