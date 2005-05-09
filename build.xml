@@ -1047,7 +1047,7 @@ classname="org.hammurapi.HammurapiTask"
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
 		<delete file="build/${package-basename}.tar" />
-		<!--delete dir="build/lf" /-->
+		<delete dir="build/lf" />
 	</target>
 
 	<target
