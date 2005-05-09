@@ -45,6 +45,13 @@ import org.xins.common.text.FastStringBuffer;
  *        <code>"59"</code> for the last second within the minute.
  * </ul>
  *
+ * <p>Note that all timestamps will be based on the current time zone (see
+ * {@link java.util.TimeZone#getDefault()}).
+ *
+ * <p>A number of milliseconds can be used to indicate a specific instant in
+ * time. This number of milliseconds is since the Epoch, which is the very
+ * first second of January 1, 1970 in the time zone UTC.
+ *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
