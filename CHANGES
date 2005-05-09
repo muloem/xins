@@ -6,14 +6,16 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 
-* XINS/Java Client Framework:
-  - Cleaned up some code in the InvalidRequestException class. Removed unused
-    private inner classes.
-
 * XINS/Java Common Library:
   - Fixed SF.net bug #1195309: The Date format returned by Timestamp.value()
     is incorrect. Improved the unit tests for the Timestamp class in the
     process.
+  - Fixed various issues in the Date and Timestamp classes. Added several new
+    unit tests. Made the 'Value' inner classes implement Cloneable.
+
+* XINS/Java Client Framework:
+  - Cleaned up some code in the InvalidRequestException class. Removed unused
+    private inner classes.
 
 * Build- and release-process:
   - Fixed missing rundemo script files in the release.
