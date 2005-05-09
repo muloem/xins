@@ -904,7 +904,7 @@ classname="org.hammurapi.HammurapiTask"
 				<include name="jetty_allinone.xml" />
 				<include name="jetty_filteredproject.xml" />
 				<include name="rundemo.bat" />
-				<include name="rundemo.sh" />
+				<include name="rundemo" />
 				<include name="capis/**/*.xml" />
 				<include name="capis/**/*.java" />
 				<include name="capis/perl/*.pl" />
@@ -981,7 +981,10 @@ classname="org.hammurapi.HammurapiTask"
 			<include name="docs/javadoc/package-list"      />
 			<include name="docs/logdoc/**/*.html"          />
 			<include name="docs/logdoc/**/*.css"           />
-			<include name="demo/**/*"                      />
+			<include name="demo/capis/**/*"                />
+			<include name="demo/xins-project/**/*"         />
+			<include name="demo/*.xml"                     />
+			<include name="demo/*.properties"              />
 			<include name="build.xml"                      />
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
@@ -989,19 +992,20 @@ classname="org.hammurapi.HammurapiTask"
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/*"               />
-			<exclude name="demo/rundemo*"                  />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
 			<fileset dir=".">
 				<patternset refid="release.text.files" />
 				<include name="bin/*"                  />
+				<include name="demo/rundemo"           />
+				<include name="demo/rundemo.bat"       />
 			</fileset>
 		</copy>
 		<fixcrlf srcdir="build/lf" eol="unix" eof="remove">
 			<patternset refid="release.text.files" />
 			<include name="bin/xins" />
-			<include name="demo/rundemo.sh" />
+			<include name="demo/rundemo" />
 		</fixcrlf>
 		<fixcrlf srcdir="build/lf/bin" eol="dos" eof="asis">
 			<include name="xins.bat" />
@@ -1038,12 +1042,12 @@ classname="org.hammurapi.HammurapiTask"
 			prefix="${name}-${version}"
 			mode="755">
 				<include name="bin/xins" />
-				<include name="demo/rundemo.sh" />
+				<include name="demo/rundemo" />
 			</tarfileset>
 		</tar>
 		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
 		<delete file="build/${package-basename}.tar" />
-		<delete dir="build/lf" />
+		<!--delete dir="build/lf" /-->
 	</target>
 
 	<target

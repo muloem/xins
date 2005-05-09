@@ -6,6 +6,8 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 
+* Build- and release-process:
+  - Fixed rundemo script files in the release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
