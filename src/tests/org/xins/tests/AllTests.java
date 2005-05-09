@@ -78,6 +78,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
 
       suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.DateTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.DescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int8Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Int16Tests.class);
