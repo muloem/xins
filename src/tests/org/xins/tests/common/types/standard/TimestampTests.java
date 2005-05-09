@@ -65,13 +65,6 @@ public class TimestampTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void setUp() throws Exception {
-      _timeZone = TimeZone.getDefault();
-
-      TimeZone tz = TimeZone.getTimeZone("UTC");
-      TimeZone.setDefault(tz);
-   }
-
    /**
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
     * <code>Calendar</code> instance.
@@ -123,16 +116,6 @@ public class TimestampTests extends TestCase {
       assertEquals(52,   v.getMinuteOfHour());
       assertEquals(21,   v.getSecondOfMinute());
       assertEquals("20050506155221", v.toString());
-
-      d = new Date(0L);
-      v = new Timestamp.Value(d);
-      assertEquals(1970, v.getYear());
-      assertEquals(1,    v.getMonthOfYear());
-      assertEquals(1,    v.getDayOfMonth());
-      assertEquals(0,    v.getHourOfDay());
-      assertEquals(0,    v.getMinuteOfHour());
-      assertEquals(0,    v.getSecondOfMinute());
-      assertEquals("19700101000000", v.toString());
    }
 
    /**
@@ -150,28 +133,21 @@ public class TimestampTests extends TestCase {
          // as expected
       }
 
-      n = 0L;
+      // 2 days after the Epoch (which is the start of January 1, 1970, in the
+      // UTC time zone) at 1 o'clock in the afternoon
+      long dayInMillis = 24 * 60 * 60 * 1000;
+      n = (dayInMillis * 5) / 2;
+
+      // Compensate for the time zone offset
+      n -= TimeZone.getDefault().getOffset(n);
+
       v = new Timestamp.Value(n);
       assertEquals(1970, v.getYear());
       assertEquals(1,    v.getMonthOfYear());
-      assertEquals(1,    v.getDayOfMonth());
-      assertEquals(0,    v.getHourOfDay());
+      assertEquals(3,    v.getDayOfMonth());
+      assertEquals(12,   v.getHourOfDay());
       assertEquals(0,    v.getMinuteOfHour());
       assertEquals(0,    v.getSecondOfMinute());
-      assertEquals("19700101000000", v.toString());
-
-      n = 1000L;
-      v = new Timestamp.Value(n);
-      assertEquals(1970, v.getYear());
-      assertEquals(1,    v.getMonthOfYear());
-      assertEquals(1,    v.getDayOfMonth());
-      assertEquals(0,    v.getHourOfDay());
-      assertEquals(0,    v.getMinuteOfHour());
-      assertEquals(1,    v.getSecondOfMinute());
-      assertEquals("19700101000001", v.toString());
-   }
-
-   public void tearDown() throws Exception {
-      TimeZone.setDefault(_timeZone);
+      assertEquals("19700103120000", v.toString());
    }
 }
