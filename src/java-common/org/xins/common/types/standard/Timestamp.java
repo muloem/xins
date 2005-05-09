@@ -6,7 +6,6 @@
  */
 package org.xins.common.types.standard;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -20,10 +19,35 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
 /**
- * Standard type <em>_timestamp</em>.
+ * Standard type <em>_timestamp</em>. A value of this timestamp represents a
+ * certain moment in time, with second-precision, without an indication of the
+ * time zone.
+ *
+ * <p>The textual representation of a timestamp is always 14 numeric
+ * characters, in the format:
+ *
+ * <blockquote><em>YYYYMMDDhhmmss</em></blockquote>
+ *
+ * where:
+ *
+ * <ul>
+ *    <li><em>YYYY</em> is the year, including the century, between 1970 and
+ *        2999, for example <code>"2005"</code>.
+ *    <li><em>MM</em> is the month of the year, 1-based, for example
+ *        <code>"12"</code> for December.
+ *    <li><em>DD</em> is the day of the month, 1-based, for example
+ *        <code>"31"</code> for the last day of December.
+ *    <li><em>hh</em> is the hour of the day, 0-based, for example
+ *        <code>"23"</code> for the last hour of the day.
+ *    <li><em>mm</em> is the minute within the hour, 0-based, for example
+ *        <code>"59"</code> for the last minute within the hour.
+ *    <li><em>ss</em> is the second within the minute, 0-based, for example
+ *        <code>"59"</code> for the last second within the minute.
+ * </ul>
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -34,13 +58,6 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Formatter used to convert the <code>String</code> representation to a 
-    * <code>java.util.Date</code> instance.
-    */
-   private static final DateFormat FORMATTER =
-      new SimpleDateFormat("yyyyMMddHHmmss");
-      
-   /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Timestamp SINGLETON = new Timestamp();
@@ -50,52 +67,25 @@ public class Timestamp extends Type {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Converts a <code>java.util.Date</code> object to a
-    * <code>java.util.Calendar</code> object.
-    *
-    * @param date
-    *    the {@link java.util.Date} object to convert, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    an equivalent {@link java.util.Calendar} object, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>date == null</code>.
-    */
-   private static Calendar createCalendar(java.util.Date date)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("date", date);
-
-      // Create and adjust a Calendar object
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(date);
-
-      return calendar;
-   }
 
    /**
     * Constructs a <code>Timestamp.Value</code> with the value of the current
     * time.
     *
     * @return
-    *    the {@link Value} initialed with the current time,
+    *    the {@link Value} initialized with the current time,
     *    never <code>null</code>.
     */
    public static Value now() {
-      return new Value(Calendar.getInstance());
+      return new Value(System.currentTimeMillis());
    }
 
    /**
-    * Constructs a <code>Timestamp.Value</code> from the specified string
-    * which is guaranteed to be non-<code>null</code>.
+    * Constructs a <code>Timestamp.Value</code> from the specified
+    * non-<code>null</code> string.
     *
     * @param string
-    *    the string to convert in the ISO format YYYYMMDDhhmmss,
-    *    cannot be <code>null</code>.
+    *    the string to convert, cannot be <code>null</code>.
     *
     * @return
     *    the {@link Value} object, never <code>null</code>.
@@ -120,8 +110,7 @@ public class Timestamp extends Type {
     * Constructs a <code>Timestamp.Value</code> from the specified string.
     *
     * @param string
-    *    the string to convert in the ISO format YYYYMMDDhhmmss,
-    *    can be <code>null</code>.
+    *    the string to convert, can be <code>null</code>.
     *
     * @return
     *    the {@link Value}, or <code>null</code> if
@@ -143,7 +132,7 @@ public class Timestamp extends Type {
     *    the value to convert, can be <code>null</code>.
     *
     * @return
-    *    the textual representation of the value in the ISO format YYYYMMDDhhmmss,
+    *    the textual representation of the value;
     *    or <code>null</code> if and only if <code>value == null</code>.
     */
    public static String toString(Value value) {
@@ -166,7 +155,7 @@ public class Timestamp extends Type {
     * minute and second to a string.
     *
     * @param year
-    *    the year, must be &gt;=0 and &lt;= 9999.
+    *    the year, must be &gt;=1970 and &lt;= 2999.
     *
     * @param month
     *    the month of the year, must be &gt;= 1 and &lt;= 12.
@@ -198,13 +187,6 @@ public class Timestamp extends Type {
       FastStringBuffer buffer = new FastStringBuffer(14);
 
       // Append the year
-      if (year < 10) {
-         buffer.append("000");
-      } else if (year < 100) {
-         buffer.append("00");
-      } else if (year < 1000) {
-         buffer.append('0');
-      }
       buffer.append(year);
 
       // Append the month
@@ -265,6 +247,8 @@ public class Timestamp extends Type {
 
    protected final boolean isValidValueImpl(String value) {
 
+      // TODO: Use parse methods available in J2SE for more accuracy
+
       // First check the length
       if (value.length() != 14) {
          return false;
@@ -295,24 +279,15 @@ public class Timestamp extends Type {
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
-      // Convert all 3 components of the string to integers
-      int y, m, d, h, mi, s;
+      SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+      java.util.Date date;
       try {
-         y  = Integer.parseInt(string.substring( 0,  4));
-         m  = Integer.parseInt(string.substring( 4,  6));
-         d  = Integer.parseInt(string.substring( 6,  8));
-         h  = Integer.parseInt(string.substring( 8, 10));
-         mi = Integer.parseInt(string.substring(10, 12));
-         s  = Integer.parseInt(string.substring(12, 14));
-      } catch (NumberFormatException nfe) {
-
-         // Should never happen, since isValidValueImpl(String) will have been
-         // called
-         throw new TypeValueException(this, string);
+         date = format.parse(string);
+      } catch (ParseException exception) {
+         throw new TypeValueException(this, string); // XXX: Add detail?
       }
 
-      // Convert to a Value instance
-      return new Value(y, m, d, h, mi, s);
+      return new Value(date);
    }
 
    public final String toString(Object value)
@@ -331,10 +306,12 @@ public class Timestamp extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Timestamp value, composed of a year, month, day, hour, minute and a second.
+    * Timestamp value. Represents a specific moment in time, with
+    * second-precision.
     *
     * @version $Revision$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     *
     * @since XINS 1.0.0
     */
@@ -373,19 +350,9 @@ public class Timestamp extends Type {
       public Value(int year, int month,  int day,
                    int hour, int minute, int second) {
 
-         // Store values unchecked
-         _year   = year;
-         _month  = month;
-         _day    = day;
-         _hour   = hour;
-         _minute = minute;
-         _second = second;
-
-         // TODO: Should we not check the values ?!
-
-         // Convert to string, and store that
-         _asString = Timestamp.toString(year, month,  day,
-                                        hour, minute, second);
+         // Construct the Calendar
+         _calendar = Calendar.getInstance();
+         _calendar.set(year, month - 1, day, hour, minute, second);
       }
 
       /**
@@ -393,21 +360,22 @@ public class Timestamp extends Type {
        * <code>Calendar</code>.
        *
        * @param calendar
-       *    the {@link java.util.Calendar} object to get the exact date from, 
+       *    the {@link java.util.Calendar} object to get the exact date from,
        *    cannot be <code>null</code>.
        *
-       * @throws NullPointerException
+       * @throws IllegalArgumentException
        *    if <code>calendar == null</code>.
        *
        * @since XINS 1.2.0
        */
-      public Value(Calendar calendar) throws NullPointerException { 
-         this(calendar.get(Calendar.YEAR),
-              calendar.get(Calendar.MONTH),
-              calendar.get(Calendar.DAY_OF_MONTH),
-              calendar.get(Calendar.HOUR),
-              calendar.get(Calendar.MINUTE),
-              calendar.get(Calendar.SECOND));
+      public Value(Calendar calendar)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("calendar", calendar);
+
+         // Initialize fields
+         _calendar = (Calendar) calendar.clone();
       }
 
       /**
@@ -423,9 +391,16 @@ public class Timestamp extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(java.util.Date date) throws IllegalArgumentException { 
-         this(createCalendar(date));
-      } 
+      public Value(java.util.Date date)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("date", date);
+
+         // Construct the Calendar
+         _calendar = Calendar.getInstance();
+         _calendar.setTime(date);
+      }
 
       /**
        * Constructs a new timestamp value based on the specified number of
@@ -434,74 +409,37 @@ public class Timestamp extends Type {
        * @param millis
        *    the number of milliseconds since the Epoch.
        *
+       * @throws IllegalArgumentException
+       *    if <code>millis &lt; 0L</code>.
+       *
        * @see System#currentTimeMillis()
        *
        * @since XINS 1.2.0
        */
-      public Value(long millis) { 
-         this(new java.util.Date(millis)); 
-      } 
-          
+      public Value(long millis) {
+
+         // Check preconditions
+         if (millis < 0L) {
+            throw new IllegalArgumentException("millis (" + millis + " < 0L");
+         }
+
+         // Convert the number of milliseconds to a Date object
+         java.util.Date date = new java.util.Date(millis);
+
+         // Construct the Calendar
+         _calendar = Calendar.getInstance();
+         _calendar.setTime(date);
+      }
+
 
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
 
       /**
-       * The year, including century. E.g. <code>2005</code>.
+       * Calendar representing the moment in time.
        */
-      private final int _year;
-
-      /**
-       * The month of the year, 1-based. E.g. <code>11</code> for November.
-       */
-      private final int _month;
-
-      /**
-       * The day of the month, 1-based. E.g. <code>1</code> for the first day
-       * of the month.
-       */
-      private final int _day;
-
-      /**
-       * The hour of the day, 0-based. E.g. <code>22</code> for 10 o'clock at
-       * night, or <code>0</code> for the first hour of the day.
-       */
-      private final int _hour;
-
-      /**
-       * The minute of the hour, 0-based. E.g. <code>0</code> for first minute
-       * of the hour.
-       */
-      private final int _minute;
-
-      /**
-       * The second of the minute, 0-based. E.g. <code>0</code> for the first
-       * second of the minute.
-       */
-      private final int _second;
-
-      /**
-       * Textual representation of this timestamp. Formatted as:
-       *
-       * <blockquote><em>YYYYMMDDhhmmss</em></blockquote>
-       *
-       * where:
-       * <ul>
-       *    <li><em>YYYY</em> is the 4-digit year, e.g. 2005;
-       *    <li><em>MM</em> is the 2-digit month of the year, e.g. 03 for
-       *        March;
-       *    <li><em>DD</em> is the 2-digit day of the month, e.g. 01 for the
-       *        first day of the month;
-       *    <li><em>hh</em> is the number of hours since the beginning of the
-       *        day;
-       *    <li><em>mm</em> is the number of minutes since the beginning of
-       *        the hour;
-       *    <li><em>ss</em> is the number of seconds since the beginning of
-       *        the minute;
-       * </ul>
-       */
-      private final String _asString;
+      private Calendar _calendar;
 
 
       //----------------------------------------------------------------------
@@ -512,10 +450,10 @@ public class Timestamp extends Type {
        * Returns the year.
        *
        * @return
-       *    the year, between 0 and 9999 (inclusive).
+       *    the year, between 1970 and 2999 (inclusive).
        */
       public int getYear() {
-         return _year;
+         return _calendar.get(Calendar.YEAR);
       }
 
       /**
@@ -525,7 +463,7 @@ public class Timestamp extends Type {
        *    the month of the year, between 1 and 12 (inclusive).
        */
       public int getMonthOfYear() {
-         return _month;
+         return _calendar.get(Calendar.MONTH) + 1;
       }
 
       /**
@@ -535,7 +473,7 @@ public class Timestamp extends Type {
        *    the day of the month, between 1 and 31 (inclusive).
        */
       public int getDayOfMonth() {
-         return _day;
+         return _calendar.get(Calendar.DAY_OF_MONTH);
       }
 
       /**
@@ -545,7 +483,7 @@ public class Timestamp extends Type {
        *    the hour of the day, between 0 and 23 (inclusive).
        */
       public int getHourOfDay() {
-         return _hour;
+         return _calendar.get(Calendar.HOUR_OF_DAY);
       }
 
       /**
@@ -555,7 +493,7 @@ public class Timestamp extends Type {
        *    the minute of the hour, between 0 and 59 (inclusive).
        */
       public int getMinuteOfHour() {
-         return _minute;
+         return _calendar.get(Calendar.MINUTE);
       }
 
       /**
@@ -565,21 +503,19 @@ public class Timestamp extends Type {
        *    the second of the minute, between 0 and 59 (inclusive).
        */
       public int getSecondOfMinute() {
-         return _second;
+         return _calendar.get(Calendar.SECOND);
       }
 
       public boolean equals(Object obj) {
          if (!(obj instanceof Value)) {
             return false;
          }
-         Value obj2 = (Value) obj;
-         return obj2.getYear() == _year && obj2.getMonthOfYear() == _month &&
-            obj2.getDayOfMonth() == _day && obj2.getHourOfDay() == _hour &&
-            obj2.getMinuteOfHour() == _minute && obj2.getSecondOfMinute() == _second;
+         Value that = (Value) obj;
+         return this._calendar.equals(that._calendar);
       }
 
       public int hashCode() {
-         return _asString.hashCode();
+         return _calendar.hashCode();
       }
 
       /**
@@ -591,37 +527,23 @@ public class Timestamp extends Type {
        * @since XINS 1.2.0
        */
       public java.util.Date toDate() {
-         try {
-            return FORMATTER.parse(_asString);
-         } catch (ParseException pex) {
-            // TODO Log programming error.
-            return null;
-         }
+         return _calendar.getTime();
       }
-      
+
       /**
-       * Returns a textual representation of this object. The timestamp is
-       * returned in the format:
-       *
-       * <blockquote><em>YYYYMMDDhhmmss</em></ul>
-       *
-       * where:
-       *
-       * <ul>
-       *    <li><em>YYYY</em> is the year, e.g. <code>"2005"</code>;
-       *    <li><em>MM</em> is the month, e.g. <code>"01"</code> for January;
-       *    <li><em>DD</em> is the day of the month, e.g. <code>"31"</code>;
-       *    <li><em>hh</em> is the hour, e.g. <code>"23"</code>;
-       *    <li><em>mm</em> is the minute, e.g. <code>"59"</code>;
-       *    <li><em>ss</em> is the second, e.g. <code>"00"</code>.
-       * </ul>
+       * Returns a textual representation of this object.
        *
        * @return
        *    the textual representation of this timestamp, never
        *    <code>null</code>.
        */
       public String toString() {
-         return _asString;
+
+         // Construct a formatter
+         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+
+         // Return the formatter string
+         return format.format(_calendar.getTime());
       }
    }
 }

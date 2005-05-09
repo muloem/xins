@@ -6,6 +6,11 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1195309: The Date format returned by Timestamp.value()
+    is incorrect. Improved the unit tests for the Timestamp class in the
+    process.
+
 * Build- and release-process:
   - Fixed rundemo script files in the release.
 

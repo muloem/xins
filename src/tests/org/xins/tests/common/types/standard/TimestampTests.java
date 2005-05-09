@@ -2,6 +2,7 @@ package org.xins.tests.common.types.standard;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -57,10 +58,19 @@ public class TimestampTests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   private TimeZone _timeZone;
+
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   public void setUp() throws Exception {
+      _timeZone = TimeZone.getDefault();
+
+      TimeZone tz = TimeZone.getTimeZone("UTC");
+      TimeZone.setDefault(tz);
+   }
 
    /**
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
@@ -72,8 +82,8 @@ public class TimestampTests extends TestCase {
       Timestamp.Value v;
       try {
          v = new Timestamp.Value(cal);
-         fail("Expected NullPointerException");
-      } catch (NullPointerException exception) {
+         fail("Expected IllegalArgumentException");
+      } catch (IllegalArgumentException exception) {
          // as expected
       }
 
@@ -159,5 +169,9 @@ public class TimestampTests extends TestCase {
       assertEquals(0,    v.getMinuteOfHour());
       assertEquals(1,    v.getSecondOfMinute());
       assertEquals("19700101000001", v.toString());
+   }
+
+   public void tearDown() throws Exception {
+      TimeZone.setDefault(_timeZone);
    }
 }
