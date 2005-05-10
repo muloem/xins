@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 
 * General:
   - Fixed some Javadoc- and style-issues. Most were reported by Checkstyle.
+  - Fixed SF.net bug #1198372: XINS script fails on Solaris. Tested with bash
+    2.05 on Linux 2.4 and with bash 2.03 on Solaris 8.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:

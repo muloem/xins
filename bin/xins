@@ -37,30 +37,30 @@ fi
 #
 # This fixes SF.net bug 1187914: Cannot pass arguments with the XINS command
 # on Unix
-until [ -z "$1" ]
+
+for word in $*
 do
-    word=$1
-    firstChar=${word:0:1}
+   case $word in
+   -*)
+      if [ ! -z "${__OPTS__}" ]
+      then
+         word=' '${word}
+      fi
+      __OPTS__=${__OPTS__}${word}
+      ;;
 
-    # Option found
-    if [ "${firstChar}" = "-" ]
-    then
-        if [ ! -z "${__OPTS__}" ]
-        then
-            word=" ${word}"
-        fi
-        __OPTS__="${__OPTS__}${word}"
+   *)
+      if [ ! -z "${__ARGS__}" ]
+      then
+         word=' '${word}
+      fi
+      __ARGS__=${__ARGS__}${word}
+      ;;
 
-    # Target argument found
-    else
-        if [ ! -z "${__ARGS__}" ]
-        then
-            word=" ${word}"
-        fi
-        __ARGS__="${__ARGS__}${word}"
-    fi
-    shift
+   esac
+   shift
 done
+
 
 # Construct the command to execute
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
