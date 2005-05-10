@@ -97,7 +97,7 @@ extends Object {
     */
    public ExpiryFolder(String         name,
                        ExpiryStrategy strategy)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, IllegalStateException {
 
       // Determine instance number
       synchronized (INSTANCE_COUNT_LOCK) {
@@ -135,7 +135,8 @@ extends Object {
          _slots[i] = new HashMap(INITIAL_QUEUE_SIZE);
       }
 
-      // Notify the strategy that we listen to it
+      // Notify the strategy that we listen to it. If the strategy has already
+      // stopped, then this will throw an IllegalStateException
       strategy.folderAdded(this);
 
       // TRACE: Leave constructor
@@ -272,7 +273,8 @@ extends Object {
     * @throws IllegalStateException
     *    if the associated {@link ExpiryStrategy} was stopped.
     */
-   private void assertStrategyNotStopped() {
+   private void assertStrategyNotStopped()
+   throws IllegalStateException {
       if (_strategyStopped) {
          throw new IllegalStateException(
             "The associated ExpiryStrategy has stopped already.");
