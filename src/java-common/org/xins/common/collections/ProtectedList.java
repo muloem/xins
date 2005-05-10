@@ -181,7 +181,8 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     *    if <code>index &lt; 0
     *          || index &gt;= {@link #size()}</code>.
     */
-   public Object get(int index) {
+   public Object get(int index)
+   throws IndexOutOfBoundsException {
       return _list.get(index);
    }
 
