@@ -22,6 +22,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
   - The xins-examples and xins-docs directory are now tagged when a release
     is created.
 
+* General:
+  - Fixed some Javadoc- and style-issues. Most were reported by Checkstyle.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
 
