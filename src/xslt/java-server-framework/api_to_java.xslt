@@ -200,7 +200,8 @@ public class APIImpl extends API {
 			<xsl:value-of select="@name" />
 			<xsl:text>;</xsl:text>
 		</xsl:for-each>
-		<xsl:text>
+		<xsl:text><![CDATA[
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -208,6 +209,9 @@ public class APIImpl extends API {
 
    /**
     * Gets the class used to access the defined runtime properties
+    *
+    * @return
+    *    the runtime properties, never <code>null</code>code>.
     */
    public org.xins.server.RuntimeProperties getProperties() {
       return _runtimeProperties;
@@ -219,7 +223,7 @@ public class APIImpl extends API {
    void reinitialize() {
       super.reinitializeImpl();
    }
-</xsl:text>
+]]></xsl:text>
 	<xsl:if test="instance">
 		<xsl:text>
    protected void bootstrapImpl2(org.xins.common.collections.PropertyReader properties)

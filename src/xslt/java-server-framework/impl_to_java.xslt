@@ -130,7 +130,30 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 			<xsl:value-of select="$variableName" />
 			<xsl:text>.equals("")) {</xsl:text>
 		</xsl:if>
+		
+		<xsl:if test="not(starts-with(@type, '_')) and not(string-length(@type) = 0)">
+			<xsl:variable name="class">
+				<xsl:call-template name="javatype_for_customtype">
+					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="type"         select="@type"         />
+				</xsl:call-template>
+			</xsl:variable>
 			<xsl:text>
+      if (!</xsl:text>
+			<xsl:value-of select="$class" />
+			<xsl:text>.SINGLETON.isValidValue(</xsl:text>
+			<xsl:value-of select="$variableName" />
+			<xsl:text>)) {
+         throw new org.xins.common.collections.InvalidPropertyValueException("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", </xsl:text>
+			<xsl:value-of select="$variableName" />
+			<xsl:text>);
+      }</xsl:text>
+		</xsl:if>
+
+		<xsl:text>
       try {</xsl:text>
 		<xsl:text>
          _</xsl:text>
@@ -141,7 +164,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:with-param name="required" select="@required" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="type"     select="@type"     />
-			<xsl:with-param name="variable" select="$variableName"     />
+				<xsl:with-param name="variable" select="$variableName" />
 			</xsl:call-template>
 			<xsl:text>;
       } catch (org.xins.common.types.TypeValueException exception) {

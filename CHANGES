@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
   - Cleaned up some code in the InvalidRequestException class. Removed unused
     private inner classes.
 
+* Generation of server-side Java code:
+  - Fixed bug #1198829: Defined Types in Runtime properties behave incorrectly.
+
 * Build- and release-process:
   - Fixed missing rundemo script files in the release.
   - The xins-examples and xins-docs directory are now tagged when a release
