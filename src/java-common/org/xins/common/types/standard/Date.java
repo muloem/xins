@@ -348,7 +348,8 @@ public class Date extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(Calendar calendar) throws NullPointerException { 
+      public Value(Calendar calendar)
+      throws IllegalArgumentException { 
 
          // Check preconditions
          MandatoryArgumentChecker.check("calendar", calendar);
@@ -394,7 +395,7 @@ public class Date extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(long millis) { 
+      public Value(long millis) throws IllegalArgumentException { 
 
          // Check preconditions
          if (millis < 0L) {
@@ -471,16 +472,11 @@ public class Date extends Type {
             return false;
          }
 
-         // Get year, month and day of the other one
-         Calendar thatCalendar = ((Value) obj)._calendar;
-         int y = thatCalendar.get(Calendar.YEAR);
-         int m = thatCalendar.get(Calendar.MONTH);
-         int d = thatCalendar.get(Calendar.DAY_OF_MONTH);
-
-         // Compare relevant values in the Calendar object
-         return (y == _calendar.get(Calendar.YEAR))
-             && (m == _calendar.get(Calendar.MONTH))
-             && (d == _calendar.get(Calendar.DAY_OF_MONTH));
+         // Compare relevant values
+         Value that = (Value) obj;
+         return (getYear()           == that.getYear()       )
+             && (getMonthOfYear()    == that.getMonthOfYear())
+             && (getDayOfMonth()     == that.getDayOfMonth() );
       }
 
       public int hashCode() {

@@ -1690,10 +1690,10 @@ extends HttpServlet {
       State state = getState();
       if (state == READY) {
 
-         String SUBJECT_CLASS  = callingConvention.getClass().getName();
-         String SUBJECT_METHOD = "convertRequest("
-                                 + HttpServletRequest.class.getName()
-                                 + ')';
+         String subjectClass  = callingConvention.getClass().getName();
+         String subjectMethod = "convertRequest("
+                              + HttpServletRequest.class.getName()
+                              + ')';
          try {
 
             // Convert the HTTP request to an incoming XINS request
@@ -1701,10 +1701,10 @@ extends HttpServlet {
                callingConvention.convertRequest(request);
 
             // Call the function
-            SUBJECT_CLASS  = _api.getClass().getName();
-            SUBJECT_METHOD = "handleCall(long,"
-                           + FunctionRequest.class.getName()
-                           + ",java.lang.String)";
+            subjectClass  = _api.getClass().getName();
+            subjectMethod = "handleCall(long,"
+                          + FunctionRequest.class.getName()
+                          + ",java.lang.String)";
             result = _api.handleCall(start, xinsRequest, ip);
 
          } catch (Throwable exception) {
@@ -1732,8 +1732,8 @@ extends HttpServlet {
                error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
                Utils.logProgrammingError(CLASSNAME,
                                          THIS_METHOD,
-                                         SUBJECT_CLASS,
-                                         SUBJECT_METHOD,
+                                         subjectClass,
+                                         subjectMethod,
                                          null,
                                          exception);
             }

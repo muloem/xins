@@ -475,7 +475,7 @@ public abstract class AbstractCAPI extends Object {
     *          || resultData                ==   null
     *          || resultData.getErrorCode() ==   null</code>.
     *
-    * @throws UnacceptableResultXINSCallException
+    * @throws UnacceptableErrorCodeXINSCallException
     *    if the specified error code is recognized but is considered
     *    unacceptable for the function specified in the request. 
     *

@@ -429,7 +429,7 @@ public class Timestamp extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(long millis) {
+      public Value(long millis) throws IllegalArgumentException {
 
          // Check preconditions
          if (millis < 0L) {
@@ -536,22 +536,14 @@ public class Timestamp extends Type {
             return false;
          }
 
-         // Get relevant fields of the other one
-         Calendar thatCalendar = ((Value) obj)._calendar;
-         int Y = thatCalendar.get(Calendar.YEAR);
-         int M = thatCalendar.get(Calendar.MONTH);
-         int D = thatCalendar.get(Calendar.DAY_OF_MONTH);
-         int h = thatCalendar.get(Calendar.HOUR_OF_DAY);
-         int m = thatCalendar.get(Calendar.MINUTE);
-         int s = thatCalendar.get(Calendar.SECOND);
-
-         // Compare relevant values in the Calendar object
-         return (Y == _calendar.get(Calendar.YEAR))
-             && (M == _calendar.get(Calendar.MONTH))
-             && (D == _calendar.get(Calendar.DAY_OF_MONTH))
-             && (h == _calendar.get(Calendar.HOUR_OF_DAY))
-             && (m == _calendar.get(Calendar.MINUTE))
-             && (s == _calendar.get(Calendar.SECOND));
+         // Compare relevant values
+         Value that = (Value) obj;
+         return (getYear()           == that.getYear()          )
+             && (getMonthOfYear()    == that.getMonthOfYear()   )
+             && (getDayOfMonth()     == that.getDayOfMonth()    )
+             && (getHourOfDay()      == that.getHourOfDay()     )
+             && (getMinuteOfHour()   == that.getMinuteOfHour()  )
+             && (getSecondOfMinute() == that.getSecondOfMinute());
       }
 
 

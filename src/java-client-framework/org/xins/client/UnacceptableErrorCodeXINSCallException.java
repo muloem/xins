@@ -38,6 +38,9 @@ extends UnacceptableResultXINSCallException {
     *    the {@link XINSCallResultData} that is has an error code set that is
     *    considered unacceptable, never <code>null</code>.
     *
+    * @return
+    *    the detail message, never <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>result == null
     *          || result.{@link XINSCallResult#getErrorCode()} == null</code>.

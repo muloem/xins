@@ -32,6 +32,9 @@ public final class UnsupportedLocaleError extends Error {
     *    the source {@link UnsupportedLocaleException}, cannot be
     *    <code>null</code>.
     *
+    * @return
+    *    the constructed message, can be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
