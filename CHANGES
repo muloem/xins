@@ -10,6 +10,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
 
+* Generation of client-side Java code:
+  - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
+    file generated with XINS 1.1.0, which generates Java 1.4-specific byte
+    code.
+
 * Generation of server-side Java code:
   - Fixed: Incorrect value for _descriptor in the runtime properties.
 
@@ -20,6 +25,15 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
+
+* XINS/Java Common Library:
+  - Made tests for type classes Date and Timestamp compatible with Java 1.3.
+    Previously they used Java 1.4-specific functionality.
+
+* Generation of client-side Java code:
+  - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
+    file generated with XINS 1.1.0, which generates Java 1.4-specific byte
+    code.
 
 * Generation of server-side Java code:
   - Fixed: Incorrect value for _descriptor in the runtime properties.
@@ -87,7 +101,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 4:
     specdocs.
 
 * Generated build file:
-  - Implemented RFE #1190978: Added the possibility to specify the port 
+  - Implemented RFE #1190978: Added the possibility to specify the port
     for the server with the servlet.port parameter.
   - Remove the generated file if any file in the specification has changed.
 
@@ -602,7 +616,6 @@ NOTE: This release is based on XINS 1.1.0-rc1.
 * Generated build file:
   - Fixed SF.net bug #1110726: Invalid generated build.xml can't be removed
     with 'xins clean'.
-
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 FINAL:
 
