@@ -37,7 +37,6 @@ fi
 #
 # This fixes SF.net bug 1187914: Cannot pass arguments with the XINS command
 # on Unix
-
 for word in $*
 do
    case $word in
@@ -61,6 +60,14 @@ do
    shift
 done
 
+# Default to the 'all' target
+#
+# This fixes SF.net bug #1199691: Calling 'xins' shell script should default
+# to target 'help'
+if [ "${__ARGS__}" = "" ]
+then
+   __ARGS__=help
+fi
 
 # Construct the command to execute
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
@@ -70,10 +77,7 @@ if [ ! -z "${__OPTS__}" ]
 then
     __CMD__="${__CMD__} ${__OPTS__}"
 fi
-if [ ! -z "${__ARGS__}" ]
-then
-    __CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
-fi
+__CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
 
 # If verbose mode is on, print the command that will be executed
 if [ "${XINS_VERBOSE}" = "true" ]
