@@ -16,6 +16,8 @@ import junit.framework.TestSuite;
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallConfig;
 
+import org.xins.common.Utils;
+
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -235,6 +237,14 @@ public class CAPITests extends TestCase {
    }
    
    public void testCompatibility() throws Exception {
+
+      // This test does not work on Java 1.3, because XINS 1.1.0 generates
+      // Java 1.4-specific bytecode.
+      if (Utils.getJavaVersion() < 1.4) {
+         // TODO: Log warning
+         return;
+      }
+
       // Add the servlet
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.MyProjectServlet", "/myproject");
       
