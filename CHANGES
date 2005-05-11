@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
+
+* Generation of server-side Java code:
+  - Fixed: Incorrect value for _descriptor in the runtime properties.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 
 * XINS/Java Common Library:
