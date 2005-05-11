@@ -133,10 +133,13 @@ public class TimestampTests extends TestCase {
       // 2 days after the Epoch (which is the start of January 1, 1970, in the
       // UTC time zone) at 1 o'clock in the afternoon
       long dayInMillis = 24 * 60 * 60 * 1000;
-      n = (dayInMillis * 5) / 2;
+      int halfDay = (int) (dayInMillis / 2L);
+      n = 5L * ((long) halfDay);
 
       // Compensate for the time zone offset
-      n -= TimeZone.getDefault().getOffset(n);
+      TimeZone tz = TimeZone.getDefault();
+      int offset = tz.getOffset(1, 1970, 0, 2, Calendar.FRIDAY, halfDay);
+      n -= offset;
 
       v = new Timestamp.Value(n);
       assertEquals(1970, v.getYear());
