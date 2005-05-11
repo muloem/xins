@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 
 import org.xins.client.UnsuccessfulXINSCallException;
 
+import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPCallException;
@@ -123,7 +124,7 @@ public class MetaFunctionsTests extends TestCase {
       String javaVersion = parameters.get("java.version");
       assertNotNull("No Java version returned by _GetVersion.", javaVersion);
       assertTrue(javaVersion.length() > 0);
-      boolean java14 = javaVersion.startsWith("1.");
+      boolean java14 = Utils.getJavaVersion() >= 1.4;
 
       // Get the statistics
       request = new XINSCallRequest("_GetStatistics", null);

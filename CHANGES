@@ -10,6 +10,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
 
+* XINS/Java Server Framework:
+  - Changed the MetaFunctionsTests to properly detect the Java version and
+    omit certain checks on Java versions prior to 1.4.
+
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
     file generated with XINS 1.1.0, which generates Java 1.4-specific byte
@@ -29,6 +33,10 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
+
+* XINS/Java Server Framework:
+  - Changed the MetaFunctionsTests to properly detect the Java version and
+    omit certain checks on Java versions prior to 1.4.
 
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
