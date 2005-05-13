@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
+  - Fixed SF.net bug #1201270: the run target works also if the computer is not 
+    connected to Internet.
 
 * XINS/Java Server Framework:
   - Changed the MetaFunctionsTests to properly detect the Java version and
@@ -23,7 +25,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
   - Fixed: Incorrect value for _descriptor in the runtime properties.
 
 * Build- and release-process:
-  - Added the XML libraries needed to run XINS with Java 1.3.1.
+  - Fixed SF.net bug #1201267: Added the XML libraries needed to run XINS with 
+    Java 1.3.1.
   - Added the licence files for the XML libraries.
 
 * General:

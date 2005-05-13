@@ -6,8 +6,10 @@
  */
 package org.xins.common.servlet.container;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.jar.JarEntry;
@@ -57,15 +59,28 @@ public class LocalServletConfig implements ServletConfig {
          JarFile warFile = new JarFile(warFileLocation);
          JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
          InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
-
-         DefaultHandler handler = new WebInfoParser();
-         SAXParserFactory factory = SAXParserFactory.newInstance();
-         factory.setValidating(false);
-         SAXParser saxParser = factory.newSAXParser();
-         saxParser.parse(webxmlInputStream, handler);
-         webxmlInputStream.close();
-      } catch (Exception ioe) {
-         ioe.printStackTrace();
+         parseWebXML(webxmlInputStream);
+      } catch (Exception ex) {
+         
+         // try again without the DTD
+         try {
+            JarFile warFile = new JarFile(warFileLocation);
+            JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
+            InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
+            byte[] webXMLContent = new byte[webxmlInputStream.available()];
+            webxmlInputStream.read(webXMLContent);
+            String webXMLContentString = new String(webXMLContent, "UTF-8");
+            int beginDTD = webXMLContentString.indexOf("<!DOCTYPE web-app");
+            int endDTD = webXMLContentString.indexOf(".dtd\">", beginDTD) + 6;
+            String webXMLWithoutDTD = webXMLContentString.substring(0, beginDTD) +
+                  webXMLContentString.substring(endDTD);
+            ByteArrayInputStream baisWebXML = new ByteArrayInputStream(webXMLWithoutDTD.getBytes("UTF-8"));
+            parseWebXML(baisWebXML);
+         } catch (Exception ex2) {
+            
+            // TODO log
+            ex2.printStackTrace();
+         }
       }
    }
 
@@ -97,6 +112,24 @@ public class LocalServletConfig implements ServletConfig {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Parses the web.xml file.
+    *
+    * @param webxmlInputStream
+    *    the web.xml file input stream.
+    *
+    * @throws Exception
+    *    if the file cannot be parsed for any reason.
+    */
+   private void parseWebXML(InputStream webxmlInputStream) throws Exception {
+      DefaultHandler handler = new WebInfoParser();
+      SAXParserFactory factory = SAXParserFactory.newInstance();
+      factory.setValidating(false);
+      SAXParser saxParser = factory.newSAXParser();
+      saxParser.parse(webxmlInputStream, handler);
+      webxmlInputStream.close();
+   }
+   
    public String getInitParameter(String param) {
       return _initParameters.getProperty(param);
    }
