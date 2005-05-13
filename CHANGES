@@ -22,6 +22,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 * Generation of server-side Java code:
   - Fixed: Incorrect value for _descriptor in the runtime properties.
 
+* Build- and release-process:
+  - Added the XML libraries needed to run XINS with Java 1.3.1.
+  - Added the licence files for the XML libraries.
+
 * General:
   - Fixed SF.net bug #1199691: Calling 'xins' shell script should default to
     target 'help'. Tested with bash 2.05 on Linux 2.4 and with bash 2.03 on
