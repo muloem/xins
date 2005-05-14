@@ -981,8 +981,8 @@ ${sf.file}</fail>
 			<include name="bin/xins" />
 			<include name="demo/rundemo" />
 		</fixcrlf>
-		<fixcrlf srcdir="build/lf/bin" eol="dos" eof="asis">
-			<include name="xins.bat" />
+		<fixcrlf srcdir="build/lf" eol="dos" eof="asis">
+			<include name="bin/xins.bat" />
 			<include name="demo/rundemo.bat" />
 		</fixcrlf>
 
