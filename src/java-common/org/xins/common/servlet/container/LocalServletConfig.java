@@ -9,7 +9,6 @@ package org.xins.common.servlet.container;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.jar.JarEntry;

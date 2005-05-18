@@ -115,9 +115,6 @@ public final class APIServlet
 extends HttpServlet {
 
    //-------------------------------------------------------------------------
-   // TODO: Add trace logging for all methods
-
-   //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
@@ -360,125 +357,12 @@ extends HttpServlet {
     */
    private static final ServletException servletExceptionFor(Throwable t) {
 
-      traceEnterMethod(t);
-
       ServletException servletException = new ServletException();
       if (t != null) {
          ExceptionUtils.setCause(servletException, t);
       }
 
-      traceLeaveMethod(t);
-
       return servletException;
-   }
-
-   /**
-    * Generic method for tracing a method call, either while entering or while
-    * leaving the method.
-    *
-    * @param enter
-    *    <code>true</code> if this is about entering a method, otherwise
-    *    <code>false</code> if this is about leaving a method.
-    *
-    * @param detail
-    *    the optional object representing the detail message, or
-    *    <code>null</code> if none.
-    */
-   private static final void traceMethod(boolean enter, Object detail) {
-
-      // TODO: Move this method to org.xins.common.Utils
-
-      String callingClass  = "<unknown>";
-      String callingMethod = "<unknown>";
-
-      // Determine calling class and calling method, but only on Java 1.4+
-      if (Utils.getJavaVersion() >= 1.4) {
-
-         // Create an exception so we can look at the stack trace
-         Throwable exception = new Throwable();
-
-         // Get the stack trace
-         StackTraceElement[] trace = exception.getStackTrace();
-         if (trace != null && trace.length >= 3) {
-            StackTraceElement caller = trace[2];
-            if (caller != null) {
-
-               // Determine class name
-               String s = caller.getClassName();
-               if (! TextUtils.isEmpty(s)) {
-                  callingClass = s;
-               }
-
-               // Determine method name
-               s = caller.getMethodName();
-               if (! TextUtils.isEmpty(s)) {
-                  callingMethod = s;
-               }
-            }
-         }
-      }
-
-      // Determine detail message
-      String detailString = (detail == null)
-                          ? null
-                          : detail.toString();
-
-      // Actually log
-      if (enter) {
-         org.xins.common.Log.log_1003(callingClass,
-                                      callingMethod,
-                                      detailString);
-      } else {
-         org.xins.common.Log.log_1005(callingClass,
-                                      callingMethod,
-                                      detailString);
-      }
-   }
-
-   /**
-    * Traces the entering of a method using a log message. The calling class
-    * and method are assumed to be the ones to log.
-    */
-   private static final void traceEnterMethod() {
-      // TODO: Move this method to org.xins.common.Utils
-      traceMethod(true, null);
-   }
-
-   /**
-    * Traces the entering of a method using a log message, with an optional
-    * detail message. The calling class and method are assumed to be the ones
-    * to log.
-    *
-    * @param detail
-    *    the optional object representing the detail message, or
-    *    <code>null</code> if none.
-    */
-   private static final void traceEnterMethod(Object detail) {
-      // TODO: Move this method to org.xins.common.Utils
-      traceMethod(true, detail);
-   }
-
-   /**
-    * Traces the leaving of a method using a log message. The calling class
-    * and method are assumed to be the ones to log.
-    */
-   private static final void traceLeaveMethod() {
-      // TODO: Move this method to org.xins.common.Utils
-      traceMethod(false, null);
-   }
-
-   /**
-    * Traces the leaving of a method using a log message, with an optional
-    * detail message. The calling class and method are assumed to be the ones
-    * to log.
-    *
-    * @param detail
-    *    the optional object representing the detail message, or
-    *    <code>null</code> if none.
-    */
-   private static final void traceLeaveMethod(Object detail) {
-      // TODO: Move this method to org.xins.common.Utils
-      traceMethod(false, detail);
    }
 
 
@@ -611,9 +495,6 @@ extends HttpServlet {
     */
    private String generateContextID() {
 
-      // TRACE: Enter method
-      traceEnterMethod();
-
       // TODO: Improve performance of this method
       // XXX: Consider moving this method to a separate utility class
 
@@ -635,8 +516,6 @@ extends HttpServlet {
 
       String contextIDString = contextID.toString();
 
-      traceLeaveMethod();
-
       return contextIDString;
    }
 
@@ -648,8 +527,6 @@ extends HttpServlet {
     *    the current state, cannot be <code>null</code>.
     */
    private State getState() {
-
-      // NOTE: No trace logging on this simplistic method
 
       synchronized (_stateLock) {
          return _state;
@@ -675,9 +552,6 @@ extends HttpServlet {
    private void setState(State newState)
    throws IllegalArgumentException, IllegalStateException {
 
-      // TRACE: Enter method
-      traceEnterMethod(newState);
-
       // Check preconditions
       MandatoryArgumentChecker.check("newState", newState);
 
@@ -695,8 +569,6 @@ extends HttpServlet {
          // Short-circuit if the current equals the new state
          if (oldState == newState) {
 
-            // TRACE: Leave method
-            traceLeaveMethod(newState);
             return;
 
          // Always allow changing state to DISPOSING
@@ -799,9 +671,6 @@ extends HttpServlet {
          _state = newState;
          Log.log_3100(oldStateName, newStateName);
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod(newState);
    }
 
    /**
@@ -817,9 +686,6 @@ extends HttpServlet {
     */
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
-
-      // TRACE: Enter method
-      traceEnterMethod();
 
       setState(DETERMINE_INTERVAL);
 
@@ -852,9 +718,6 @@ extends HttpServlet {
          Log.log_3408(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY);
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod();
 
       return interval;
    }
@@ -1005,9 +868,7 @@ extends HttpServlet {
    public void initImpl(ServletConfig config)
    throws ServletException {
 
-      // TRACE: Enter method
       final String THIS_METHOD = "initImpl(javax.servlet.ServletConfig)";
-      traceEnterMethod(config);
 
       // Log: Bootstrapping XINS/Java Server Framework
       String serverVersion = Library.getVersion();
@@ -1374,18 +1235,12 @@ extends HttpServlet {
             _configFileWatcher.start();
          }
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod(config);
    }
 
    /**
     * Initializes the API using the current runtime settings.
     */
    void initAPI() {
-
-      // TRACE: Enter method
-      traceEnterMethod();
 
       setState(INITIALIZING_API);
 
@@ -1447,9 +1302,6 @@ extends HttpServlet {
             }
          }
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod();
    }
 
    /**
@@ -1459,9 +1311,6 @@ extends HttpServlet {
     * set of properties is returned.
     */
    private void readRuntimeProperties() {
-
-      // TRACE: Enter method
-      traceEnterMethod();
 
       Log.log_3300(_configFile);
 
@@ -1499,9 +1348,6 @@ extends HttpServlet {
          // Store the runtime properties internally
          _runtimeProperties = new PropertiesPropertyReader(properties);
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod();
    }
 
    /**
@@ -1515,9 +1361,6 @@ extends HttpServlet {
     */
    private void configureLogger(Properties properties)
    throws IllegalArgumentException {
-
-      // TRACE: Enter method
-      traceEnterMethod(properties);
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties);
@@ -1538,9 +1381,6 @@ extends HttpServlet {
       } else {
          Log.log_3305();
       }
-
-      // TRACE: Leave method
-      traceLeaveMethod(properties);
    }
 
    /**
@@ -1868,9 +1708,6 @@ extends HttpServlet {
     */
    public void destroy() {
 
-      // TRACE: Enter method
-      traceEnterMethod();
-
       // Stop the FileWatcher
       if (_configFileWatcher != null) {
          _configFileWatcher.end();
@@ -1895,8 +1732,6 @@ extends HttpServlet {
 
       Log.log_3602();
 
-      // TRACE: Leave method
-      traceLeaveMethod();
    }
 
 
@@ -2034,8 +1869,6 @@ extends HttpServlet {
        */
       private void reinit() {
 
-         traceEnterMethod();
-
          Log.log_3407(_configFile);
 
          synchronized (_runtimePropertiesLock) {
@@ -2077,8 +1910,6 @@ extends HttpServlet {
                }
             }
          }
-
-         traceLeaveMethod();
       }
 
       /**
@@ -2088,9 +1919,7 @@ extends HttpServlet {
        * <p>This will trigger re-initialization.
        */
       public void fileFound() {
-         traceLeaveMethod();
          reinit();
-         traceLeaveMethod();
       }
 
       /**
@@ -2100,9 +1929,7 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotFound() {
-         traceEnterMethod();
          Log.log_3400(_configFile);
-         traceLeaveMethod();
       }
 
       /**
@@ -2112,9 +1939,7 @@ extends HttpServlet {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotModified() {
-         traceEnterMethod();
          Log.log_3402(_configFile);
-         traceLeaveMethod();
       }
 
       /**
@@ -2128,9 +1953,7 @@ extends HttpServlet {
        *    (although this is not checked).
        */
       public void securityException(SecurityException exception) {
-         traceEnterMethod();
          Log.log_3401(exception, _configFile);
-         traceLeaveMethod();
       }
 
       /**
@@ -2140,9 +1963,7 @@ extends HttpServlet {
        * <p>This will trigger re-initialization.
        */
       public void fileModified() {
-         traceEnterMethod();
          reinit();
-         traceLeaveMethod();
       }
    }
 }

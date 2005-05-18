@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 * XINS/Java Server Framework:
   - Changed the MetaFunctionsTests to properly detect the Java version and
     omit certain checks on Java versions prior to 1.4.
+  - Removed the trace methods in the APIServlet class.
 
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
