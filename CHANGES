@@ -6,6 +6,8 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 
+NOTE: This release is based on XINS 1.2.0-rc1.
+
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
@@ -16,6 +18,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
   - Changed the MetaFunctionsTests to properly detect the Java version and
     omit certain checks on Java versions prior to 1.4.
   - Removed the trace methods in the APIServlet class.
+  - Refactored the APIServlet class. The APIServlet is now only a small
+    servlet class, that delegates completely to the newly-introduced Engine
+    class.
 
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
@@ -33,8 +38,14 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 
 * General:
   - Fixed SF.net bug #1199691: Calling 'xins' shell script should default to
-    target 'help'. Tested with bash 2.05 on Linux 2.4 and with bash 2.03 on
-    Solaris 8.
+    target 'help'. Tested with bash 2.05 on Linux 2.4 and 2.6, with
+    bash 2.03 on Solaris 8 and with bash 2.05 on OS/X.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.0 FINAL:
+
+* XINS/Java Server Framework:
+  - Removed the trace methods in the APIServlet class.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
@@ -42,10 +53,13 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
+  - Fixed SF.net bug #1201270: the run target works also if the computer is not
+    connected to Internet.
 
 * XINS/Java Server Framework:
   - Changed the MetaFunctionsTests to properly detect the Java version and
     omit certain checks on Java versions prior to 1.4.
+  - Removed the trace methods in the APIServlet class.
 
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR
@@ -55,10 +69,17 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
 * Generation of server-side Java code:
   - Fixed: Incorrect value for _descriptor in the runtime properties.
 
+* Build- and release-process:
+  - Fixed the rundemo.bat was in the Unix line feed.
+
+* Documentation:
+  - Added release notes file in the release and linked it from the readme
+    file.
+
 * General:
   - Fixed SF.net bug #1199691: Calling 'xins' shell script should default to
-    target 'help'. Tested with bash 2.05 on Linux 2.4 and with bash 2.03 on
-    Solaris 8.
+    target 'help'. Tested with bash 2.05 on Linux 2.4 and 2.6, with
+    bash 2.03 on Solaris 8 and with bash 2.05 on OS/X.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:

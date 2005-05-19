@@ -117,9 +117,9 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * The API servlet that owns this <code>API</code> object.
+    * The engine that owns this <code>API</code> object.
     */
-   private APIServlet _apiServlet;
+   private Engine _engine;
 
    /**
     * The name of this API. Cannot be <code>null</code> and cannot be an empty
@@ -438,14 +438,14 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Stores a reference to the <code>APIServlet</code> object that owns this
+    * Stores a reference to the <code>Engine</code> that owns this
     * <code>API</code> object.
     *
     * @param apiServlet
-    *    the {@link APIServlet} instance, should not be <code>null</code>.
+    *    the {@link Engine} instance, should not be <code>null</code>.
     */
-   void setAPIServlet(APIServlet apiServlet) {
-      _apiServlet = apiServlet;
+   void setEngine(Engine engine) {
+      _engine = engine;
    }
 
    /**
@@ -454,7 +454,7 @@ implements DefaultResultCodes {
     * API should be re-initialized.
     */
    protected final void reinitializeImpl() {
-      _apiServlet.initAPI();
+      _engine.initAPI();
    }
 
    /**
@@ -852,7 +852,7 @@ implements DefaultResultCodes {
          } else if ("_ResetStatistics".equals(functionName)) {
             result = doResetStatistics();
          } else if ("_ReloadProperties".equals(functionName)) {
-            _apiServlet.reloadPropertiesIfChanged();
+            _engine.reloadPropertiesIfChanged();
             result = SUCCESSFUL_RESULT;
          } else {
             throw new NoSuchFunctionException(functionName);
