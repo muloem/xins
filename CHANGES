@@ -20,7 +20,8 @@ NOTE: This release is based on XINS 1.2.0-rc1.
   - Removed the trace methods in the APIServlet class.
   - Refactored the APIServlet class. The APIServlet is now only a small
     servlet class, that delegates completely to the newly-introduced Engine
-    class.
+    class. The inner class APIServlet.State has been replaced by the
+    EngineState class.
 
 * Generation of client-side Java code:
   - Disabled CAPI compatibility test on Java 1.3, since it uses a CAPI JAR

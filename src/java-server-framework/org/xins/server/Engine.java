@@ -85,82 +85,85 @@ final class Engine extends Object {
    /**
     * The <em>INITIAL</em> state.
     */
-   private static final State INITIAL = new State("INITIAL", false);
+   private static final EngineState INITIAL = new EngineState("INITIAL", false);
 
    /**
     * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
     */
-   private static final State BOOTSTRAPPING_FRAMEWORK =
-      new State("BOOTSTRAPPING_FRAMEWORK", false);
+   private static final EngineState BOOTSTRAPPING_FRAMEWORK =
+      new EngineState("BOOTSTRAPPING_FRAMEWORK", false);
 
    /**
     * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State FRAMEWORK_BOOTSTRAP_FAILED =
-      new State("FRAMEWORK_BOOTSTRAP_FAILED", true);
+   private static final EngineState FRAMEWORK_BOOTSTRAP_FAILED =
+      new EngineState("FRAMEWORK_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>CONSTRUCTING_API</em> state.
     */
-   private static final State CONSTRUCTING_API =
-      new State("CONSTRUCTING_API", false);
+   private static final EngineState CONSTRUCTING_API =
+      new EngineState("CONSTRUCTING_API", false);
 
    /**
     * The <em>API_CONSTRUCTION_FAILED</em> state.
     */
-   private static final State API_CONSTRUCTION_FAILED =
-      new State("API_CONSTRUCTION_FAILED", true);
+   private static final EngineState API_CONSTRUCTION_FAILED =
+      new EngineState("API_CONSTRUCTION_FAILED", true);
 
    /**
     * The <em>BOOTSTRAPPING_API</em> state.
     */
-   private static final State BOOTSTRAPPING_API =
-      new State("BOOTSTRAPPING_API", false);
+   private static final EngineState BOOTSTRAPPING_API =
+      new EngineState("BOOTSTRAPPING_API", false);
 
    /**
     * The <em>API_BOOTSTRAP_FAILED</em> state.
     */
-   private static final State API_BOOTSTRAP_FAILED =
-      new State("API_BOOTSTRAP_FAILED", true);
+   private static final EngineState API_BOOTSTRAP_FAILED =
+      new EngineState("API_BOOTSTRAP_FAILED", true);
 
    /**
     * The <em>DETERMINE_INTERVAL</em> state.
     */
-   private static final State DETERMINE_INTERVAL =
-      new State("DETERMINE_INTERVAL", false);
+   private static final EngineState DETERMINE_INTERVAL =
+      new EngineState("DETERMINE_INTERVAL", false);
 
    /**
     * The <em>DETERMINE_INTERVAL_FAILED</em> state.
     */
-   private static final State DETERMINE_INTERVAL_FAILED =
-      new State("DETERMINE_INTERVAL_FAILED", true);
+   private static final EngineState DETERMINE_INTERVAL_FAILED =
+      new EngineState("DETERMINE_INTERVAL_FAILED", true);
 
    /**
     * The <em>INITIALIZING_API</em> state.
     */
-   private static final State INITIALIZING_API =
-      new State("INITIALIZING_API", false);
+   private static final EngineState INITIALIZING_API =
+      new EngineState("INITIALIZING_API", false);
 
    /**
     * The <em>API_INITIALIZATION_FAILED</em> state.
     */
-   private static final State API_INITIALIZATION_FAILED =
-      new State("API_INITIALIZATION_FAILED", true);
+   private static final EngineState API_INITIALIZATION_FAILED =
+      new EngineState("API_INITIALIZATION_FAILED", true);
 
    /**
     * The <em>READY</em> state.
     */
-   private static final State READY = new State("READY", false);
+   private static final EngineState READY =
+      new EngineState("READY", false);
 
    /**
     * The <em>DISPOSING</em> state.
     */
-   private static final State DISPOSING = new State("DISPOSING", false);
+   private static final EngineState DISPOSING =
+      new EngineState("DISPOSING", false);
 
    /**
     * The <em>DISPOSED</em> state.
     */
-   private static final State DISPOSED = new State("DISPOSED", false);
+   private static final EngineState DISPOSED
+      = new EngineState("DISPOSED", false);
 
    /**
     * The date formatter used for the context identifier.
@@ -776,7 +779,7 @@ final class Engine extends Object {
    /**
     * The current state.
     */
-   private State _state;
+   private EngineState _state;
 
    /**
     * The listener that is notified when the configuration file changes. Only
@@ -902,7 +905,7 @@ final class Engine extends Object {
     * @return
     *    the current state, cannot be <code>null</code>.
     */
-   private State getState() {
+   private EngineState getState() {
       synchronized (_stateLock) {
          return _state;
       }
@@ -924,7 +927,7 @@ final class Engine extends Object {
     * @throws IllegalStateException
     *    if the state change is considered invalid.
     */
-   private void setState(State newState)
+   private void setState(EngineState newState)
    throws IllegalArgumentException, IllegalStateException {
 
       // Check preconditions
@@ -933,7 +936,7 @@ final class Engine extends Object {
       synchronized (_stateLock) {
 
          // Remember the current state
-         State oldState = _state;
+         EngineState oldState = _state;
 
          // Determine name of current and new state
          String oldStateName = (oldState == null)
@@ -1386,7 +1389,7 @@ final class Engine extends Object {
 
       // Call the API if the state is READY
       FunctionResult result;
-      State state = getState();
+      EngineState state = getState();
       if (state == READY) {
 
          String subjectClass  = callingConvention.getClass().getName();
@@ -1596,96 +1599,6 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
-
-   /**
-    * State of an <code>Engine</code>.
-    *
-    * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
-    */
-   private static final class State extends Object {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>State</code> object.
-       *
-       * @param name
-       *    the name of this state, cannot be <code>null</code>.
-       *
-       * @param error
-       *    flag that indicates whether this is an error state,
-       *    <code>true</code> if it is.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>name == null</code>.
-       */
-      private State(String name, boolean error)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
-
-         _name  = name;
-         _error = error;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of this state. Cannot be <code>null</code>.
-       */
-      private final String _name;
-
-      /**
-       * Flag that indicates whether this is an error state. Value is
-       * <code>true</code> if it is.
-       */
-      private final boolean _error;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns the name of this state.
-       *
-       * @return
-       *    the name of this state, cannot be <code>null</code>.
-       */
-      public String getName() {
-         return _name;
-      }
-
-      /**
-       * Checks if this state is an error state.
-       *
-       * @return
-       *    <code>true</code> if this is an error state, <code>false</code>
-       *    otherwise.
-       */
-      public boolean isError() {
-         return _error;
-      }
-
-      /**
-       * Returns a textual representation of this object.
-       *
-       * @return
-       *    the name of this state, never <code>null</code>.
-       */
-      public String toString() {
-         return _name;
-      }
-   }
 
    /**
     * Listener that reloads the configuration file if it changes.
