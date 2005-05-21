@@ -177,7 +177,9 @@ public abstract class ]]></xsl:text>
       org.xins.common.xml.Element __dataElement__ = context.getDataElement();</xsl:text>
 		</xsl:if>
 
-		<xsl:apply-templates select="input" mode="checkParams" />
+		<xsl:apply-templates select="input" mode="checkParams">
+			<xsl:with-param name="side" select="'server'" />
+		</xsl:apply-templates>
 
 		<!-- ************************************************************* -->
 		<!-- Invoke the abstract call method                               -->
