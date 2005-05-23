@@ -1,15 +1,9 @@
-:: -*- mode: Fundamental; tab-width: 4; -*-
-:: ex:ts=4
 ::
 :: $Id$
 ::
 :: Converts xins-project.xml in the current directory to an Ant build file and
 :: then passes control to Ant.
 ::
-:: This batch file is intended to be used on Windows 2000 and higher, although
-:: it may also work on earlier Windows releases. It has been tested on:
-::
-::     * Windows 2000 SP 3 (build 5.00.2195)
 
 @ECHO OFF
 
