@@ -101,10 +101,22 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<xsl:apply-templates select="input/data/element" mode="methods" />
 		
-		<xsl:text>
+		<xsl:text><![CDATA[
 
+   /**
+    * Validates whether this request is considered acceptable. If any
+    * constraints are violated, then an {@link UnacceptableRequestException}
+    * is returned.
+    *
+    * <p>This method is called automatically when this request is executed, so
+    * it typically does not need to be called manually in advance.
+    *
+    * @return
+    *    an {@link UnacceptableRequestException} instance if this request is
+    *    considered unacceptable, otherwise <code>null</code>.
+    */
    public org.xins.client.UnacceptableRequestException checkParameters() {
-</xsl:text>
+]]></xsl:text>
 		<xsl:apply-templates select="input" mode="checkParams">
 			<xsl:with-param name="side" select="'client'" />
 		</xsl:apply-templates>

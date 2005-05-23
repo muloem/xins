@@ -223,11 +223,12 @@ public abstract class AbstractCAPICallRequest {
     * constraints are violated, then an {@link UnacceptableRequestException}
     * is returned.
     *
-    * <p>This method is called when the request is executed, but it may also
-    * be called in advance.
+    * <p>This method is called automatically when this request is executed, so
+    * it typically does not need to be called manually in advance.
     *
-    * @return UnacceptableRequestException
-    *    if this request is considered unacceptable.
+    * @return
+    *    an {@link UnacceptableRequestException} instance if this request is
+    *    considered unacceptable, otherwise <code>null</code>.
     */
    public abstract UnacceptableRequestException checkParameters();
 
