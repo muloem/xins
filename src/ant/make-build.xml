@@ -37,6 +37,9 @@
 		       out="${project_home}/build/build.xml"
 		       style="${xins_home}/src/xslt/xins-project_to_ant-build.xslt">
 			<xmlcatalog>
+				<classpath>
+					<pathelement path="${xins_home}/src/dtd"/>
+				</classpath>
 				<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
 				     location="${xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
 				<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"

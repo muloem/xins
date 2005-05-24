@@ -41,6 +41,8 @@ NOTE: This release is based on XINS 1.2.0-rc1.
 * Generated build file:
   - Fixed bug #1205102: The API does not compile created with 1.2 DTDs if the
     computer is offline.
+  - Classpath element added to locate DTDs if XINS is installed in a directory
+    that contain spaces.
 
 * Build- and release-process:
   - Fixed SF.net bug #1201267: Added the XML libraries needed to run XINS with
