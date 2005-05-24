@@ -195,19 +195,6 @@ public final class XINSCallRequest extends CallRequest {
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
 
-      final String CONSTRUCTOR_DETAIL = "#"
-                                      + _instanceNumber;
-
-/* TODO:
-                                      + " [functionName="
-                                      + TextUtils.quote(functionName)
-                                      + "; parameters="
-                                      + TextUtils.quote
-*/
-
-      // TRACE: Enter constructor
-      org.xins.common.Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
-
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 
@@ -217,9 +204,6 @@ public final class XINSCallRequest extends CallRequest {
       _httpParams   = new ProtectedPropertyReader(SECRET_KEY);
       setParameters(parameters);
       setDataSection(dataSection);
-
-      // TRACE: Leave constructor
-      org.xins.common.Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
 
       // Note that _asString is lazily initialized.
    }

@@ -153,9 +153,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final Descriptor trace(Descriptor descriptor) {
 
-      // TRACE: Enter constructor
-      org.xins.common.Log.log_1000(CLASSNAME, null);
-
       return descriptor;
    }
 
@@ -194,9 +191,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Initialize the fields
       _parser      = new XINSCallResultParser();
       _httpCaller  = new HTTPServiceCaller(descriptor);
-
-      // TRACE: Leave constructor
-      org.xins.common.Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -398,9 +392,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                                + XINSCallConfig.class.getName()
                                + ')';
 
-      // TRACE: Enter method
-      org.xins.common.Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       long start = System.currentTimeMillis();
 
       XINSCallResult result;
@@ -437,9 +428,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                                             null,          exception);
          }
       }
-
-      // TRACE: Leave method
-      org.xins.common.Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return result;
    }
@@ -536,9 +524,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                               + ','
                               + TargetDescriptor.class.getName()
                               + ')';
-
-      // TRACE: Enter method
-      org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("request",    request,
@@ -752,9 +737,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Call completely succeeded
       Log.log_2101(url, function, params, duration);
 
-      // TRACE: Leave method
-      org.xins.common.Log.log_1005(CLASSNAME, METHODNAME, null);
-
       return resultData;
    }
 
@@ -811,17 +793,11 @@ public final class XINSServiceCaller extends ServiceCaller {
                               + CallExceptionList.class.getName()
                               + ",java.lang.Object)";
 
-      // TRACE: Enter method
-      org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
-
       XINSCallResult r = new XINSCallResult((XINSCallRequest) request,
                                             succeededTarget,
                                             duration,
                                             exceptions,
                                             (XINSCallResultData) result);
-
-      // TRACE: Leave method
-      org.xins.common.Log.log_1005(CLASSNAME, METHODNAME, null);
 
       return r;
    }
@@ -856,9 +832,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                               + CallExceptionList.class.getName()
                               + ')';
 
-      // TRACE: Enter method
-      org.xins.common.Log.log_1003(CLASSNAME, METHODNAME, null);
-
       // Get the most recent exception
       CallException exception = exceptions.last();
 
@@ -890,9 +863,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       } else {
          should = false;
       }
-
-      // TRACE: Leave method
-      org.xins.common.Log.log_1005(CLASSNAME, METHODNAME, should ? "true" : "false");
 
       return should;
    }

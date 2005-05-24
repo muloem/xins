@@ -84,9 +84,6 @@ public final class ExpiryStrategy extends Object {
                                       + "L]";
       final String THIS_METHOD = "<init>" + CONSTRUCTOR_DETAIL;
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
-
       // Check preconditions
       if (timeOut < 1) {
          final String DETAIL = "timeOut (" + timeOut + "L) < 1L";
@@ -137,9 +134,6 @@ public final class ExpiryStrategy extends Object {
       _timerThread = new TimerThread();
       _timerThread.setDaemon(false);
       _timerThread.start();
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
    }
 
 

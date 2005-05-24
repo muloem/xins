@@ -60,13 +60,7 @@ public class ElementBuilder extends Object {
     */
    public ElementBuilder() {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       _state = INITIAL;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -99,14 +93,8 @@ public class ElementBuilder extends Object {
    public ElementBuilder(String namespaceURI, String localName)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       _state = INITIAL;
       startElement(namespaceURI, localName);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
    //-------------------------------------------------------------------------

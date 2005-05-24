@@ -34,26 +34,6 @@ extends ConnectionCallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Logs the fact that the constructor was entered. The short reason passed
-    * to the constructor is both the input and the output for this class
-    * function.
-    *
-    * @param shortReason
-    *    the short reason, could be <code>null</code>.
-    *
-    * @return
-    *    <code>shortReason</code>.
-    */
-   private static final String trace(String shortReason) {
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      return shortReason;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -82,12 +62,9 @@ extends ConnectionCallException {
                                    long             duration)
    throws IllegalArgumentException {
 
-      // Trace and then call constructor of superclass
-      super(trace("Unknown host"),
+      // Call constructor of superclass
+      super("Unknown host",
             request, target, duration, null, null);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

@@ -294,9 +294,6 @@ public final class TargetDescriptor extends Descriptor {
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
-
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
       if (! PATTERN_MATCHER.matches(url, PATTERN)) {
@@ -324,9 +321,6 @@ public final class TargetDescriptor extends Descriptor {
       _crc               = computeCRC32(url);
 
       // NOTE: _asString is lazily initialized
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
    }
 
 
@@ -567,13 +561,8 @@ public final class TargetDescriptor extends Descriptor {
        * Constructs a new <code>Iterator</code>.
        */
       private Iterator() {
-         // TRACE: Enter constructor
-         Log.log_1000(ITERATOR_CLASSNAME, null);
-
+         
          // empty
-
-         // TRACE: Leave constructor
-         Log.log_1002(ITERATOR_CLASSNAME, null);
       }
 
 

@@ -63,9 +63,6 @@ extends GenericCallException {
                                         IOException      ioException)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("request",     request,
                                      "target",      target,
@@ -115,9 +112,6 @@ extends GenericCallException {
             duration,
             null,
             ioException);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

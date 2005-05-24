@@ -144,13 +144,7 @@ extends Object {
     */
    public XINSCallResultParser() {
 
-      // TRACE: Enter constructor
-      org.xins.common.Log.log_1000(CLASSNAME, null);
-
       // empty
-
-      // TRACE: Leave constructor
-      org.xins.common.Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -183,9 +177,6 @@ extends Object {
    throws IllegalArgumentException, ParseException {
 
       final String THIS_METHOD = "parse(byte[])";
-
-      // TRACE: Enter method
-      org.xins.common.Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
@@ -240,9 +231,6 @@ extends Object {
          }
       }
 
-      // TRACE: Leave method
-      org.xins.common.Log.log_1005(CLASSNAME, THIS_METHOD, null);
-
       return handler;
    }
 
@@ -274,16 +262,10 @@ extends Object {
        */
       private Handler() {
 
-         // TRACE: Enter constructor
-         org.xins.common.Log.log_1000(HANDLER_CLASSNAME, null);
-
          _state            = INITIAL;
          _level            = -1;
          _characters       = new FastStringBuffer(45);
          _dataElementStack = new Stack();
-
-         // TRACE: Leave constructor
-         org.xins.common.Log.log_1002(HANDLER_CLASSNAME, null);
       }
 
 
@@ -388,14 +370,6 @@ extends Object {
 
          // Cache quoted version of namespaceURI
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
-         // TRACE: Enter method
-         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + currentState
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + quotedNamespaceURI
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
 
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName, "atts", atts);
@@ -540,13 +514,6 @@ extends Object {
                                             HANDLER_CLASSNAME, THIS_METHOD,
                                             DETAIL);
          }
-
-         org.xins.common.Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + _state
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
       }
 
       /**
@@ -587,14 +554,6 @@ extends Object {
 
          // Cache quoted version of namespaceURI
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
-         // TRACE: Enter method
-         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + currentState
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
 
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName);
@@ -744,14 +703,6 @@ extends Object {
 
          _level--;
          _characters.clear();
-
-         // TRACE: Leave method
-         org.xins.common.Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + _state
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
       }
 
       /**
@@ -781,9 +732,6 @@ extends Object {
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
-
-         // TRACE: Enter method
-         org.xins.common.Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD, null);
 
          // Check state
          if (currentState != IN_PARAM_ELEMENT

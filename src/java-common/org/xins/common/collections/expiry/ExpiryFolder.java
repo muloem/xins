@@ -112,9 +112,6 @@ extends Object {
                                       + TextUtils.quote(strategy.toString())
                                       + ']';
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, CONSTRUCTOR_DETAIL);
-
       // Check arguments
       MandatoryArgumentChecker.check("name", name, "strategy", strategy);
 
@@ -138,9 +135,6 @@ extends Object {
       // Notify the strategy that we listen to it. If the strategy has already
       // stopped, then this will throw an IllegalStateException
       strategy.folderAdded(this);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, CONSTRUCTOR_DETAIL);
    }
 
    /**

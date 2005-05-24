@@ -35,26 +35,6 @@ public abstract class HTTPCallException extends CallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Logs the fact that the constructor was entered. The short reason passed
-    * to the constructor is both the input and the output for this class
-    * function.
-    *
-    * @param shortReason
-    *    the short reason, could be <code>null</code>.
-    *
-    * @return
-    *    <code>shortReason</code>.
-    */
-   private static final String trace(String shortReason) {
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      return shortReason;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -97,10 +77,7 @@ public abstract class HTTPCallException extends CallException {
                      String           detail,
                      Throwable        cause)
    throws IllegalArgumentException {
-      super(trace(shortReason), request, target, duration, detail, cause);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
+      super(shortReason, request, target, duration, detail, cause);
    }
 
 

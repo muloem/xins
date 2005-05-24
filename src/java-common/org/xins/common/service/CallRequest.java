@@ -61,13 +61,7 @@ public abstract class CallRequest extends Object {
     */
    protected CallRequest() {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // empty
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

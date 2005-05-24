@@ -94,10 +94,6 @@ public abstract class AbstractCAPI extends Object {
    protected AbstractCAPI(Descriptor descriptor, XINSCallConfig callConfig)
    throws IllegalArgumentException, UnsupportedProtocolException {
 
-      // TRACE: Enter constructor
-      org.xins.common.Log.log_1000(CLASSNAME, "descriptor=" + descriptor 
-                                          + "; callConfig=" + callConfig);
-
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
 
@@ -111,10 +107,6 @@ public abstract class AbstractCAPI extends Object {
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
 
-      // TRACE: Leave constructor
-      org.xins.common.Log.log_1002(CLASSNAME, "descriptor=" + descriptor 
-                                          + "; callConfig=" + callConfig
-                                          + "; apiName="    + _apiName);
    }
 
    /**
@@ -176,10 +168,6 @@ public abstract class AbstractCAPI extends Object {
           MissingRequiredPropertyException,
           InvalidPropertyValueException {
 
-      // TRACE: Enter constructor
-      org.xins.common.Log.log_1000(CLASSNAME, "properties=" + properties 
-                                          + "; apiName="    + apiName);
-
       // Check arguments
       MandatoryArgumentChecker.check("properties", properties,
                                      "apiName",    apiName);
@@ -208,11 +196,6 @@ public abstract class AbstractCAPI extends Object {
       
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
-
-      // TRACE: Leave constructor
-      org.xins.common.Log.log_1002(CLASSNAME, "descriptor=" + descriptor 
-                                          + "; callConfig=" + "null"
-                                          + "; apiName="    + _apiName);
    }
 
 

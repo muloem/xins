@@ -70,9 +70,6 @@ public abstract class CallResult extends Object {
                         CallExceptionList exceptions)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("request",         request,
                                      "succeededTarget", succeededTarget);
@@ -85,9 +82,6 @@ public abstract class CallResult extends Object {
       _succeededTarget = succeededTarget;
       _duration        = duration;
       _exceptions      = exceptions;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

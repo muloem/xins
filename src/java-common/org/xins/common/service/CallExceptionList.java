@@ -45,13 +45,7 @@ public final class CallExceptionList extends Object {
     */
    public CallExceptionList() {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       _exceptions = new ArrayList();
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

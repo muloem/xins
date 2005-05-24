@@ -86,9 +86,6 @@ public abstract class CallException extends Exception {
                                              String           detail)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("shortReason", shortReason,
                                      "request",     request,
@@ -213,9 +210,6 @@ public abstract class CallException extends Exception {
       _target   = target;
       _duration = duration;
       _detail   = detail;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

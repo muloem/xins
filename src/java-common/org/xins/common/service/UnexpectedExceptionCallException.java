@@ -36,26 +36,6 @@ extends GenericCallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Logs the fact that the constructor was entered. The short reason passed
-    * to the constructor is both the input and the output for this class
-    * function.
-    *
-    * @param shortReason
-    *    the short reason, could be <code>null</code>.
-    *
-    * @return
-    *    <code>shortReason</code>.
-    */
-   private static final String trace(String shortReason) {
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      return shortReason;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -93,15 +73,12 @@ extends GenericCallException {
                                            Throwable        cause)
    throws IllegalArgumentException {
 
-      // Trace and then call constructor of superclass
-      super(trace("Unexpected exception caught"),
+      // Call constructor of superclass
+      super("Unexpected exception caught",
             request, target, duration, detail, cause);
       MandatoryArgumentChecker.check("cause", cause);
 
       // TODO: Check all arguments at once
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

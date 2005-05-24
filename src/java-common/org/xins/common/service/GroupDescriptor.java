@@ -142,9 +142,6 @@ public final class GroupDescriptor extends Descriptor {
    public GroupDescriptor(Type type, Descriptor[] members)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "members", members);
       int size = members.length;
@@ -166,9 +163,6 @@ public final class GroupDescriptor extends Descriptor {
       // Recursively add all TargetDescriptor instances to the Map
       _targetsByCRC = new HashMap();
       addTargetsByCRC(members);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -357,13 +351,7 @@ public final class GroupDescriptor extends Descriptor {
        */
       Type(String description) {
 
-         // TRACE: Enter constructor
-         Log.log_1000(TYPE_CLASSNAME, null);
-
          _description = description;
-
-         // TRACE: Leave constructor
-         Log.log_1002(TYPE_CLASSNAME, null);
       }
 
 
@@ -423,9 +411,6 @@ public final class GroupDescriptor extends Descriptor {
        */
       RandomIterator() {
 
-         // TRACE: Enter constructor
-         Log.log_1000(RANDOM_ITERATOR_CLASSNAME, null);
-
          // Copy all members to _remaining
          int size = _members.length;
          _remaining = new ArrayList(size);
@@ -439,9 +424,6 @@ public final class GroupDescriptor extends Descriptor {
 
          // Initialize the current iterator to link to that member's services
          _currentIterator = member.iterateTargets();
-
-         // TRACE: Leave constructor
-         Log.log_1002(RANDOM_ITERATOR_CLASSNAME, null);
       }
 
 
@@ -562,17 +544,11 @@ public final class GroupDescriptor extends Descriptor {
        */
       OrderedIterator() {
 
-         // TRACE: Enter constructor
-         Log.log_1000(ORDERED_ITERATOR_CLASSNAME, null);
-
          // Copy all members to _remaining
          _currentIndex = 0;
 
          // Initialize the current iterator to link to that member's services
          _currentIterator = _members[0].iterateTargets();
-
-         // TRACE: Leave constructor
-         Log.log_1002(ORDERED_ITERATOR_CLASSNAME, null);
       }
 
 

@@ -36,26 +36,6 @@ extends HTTPCallException {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Logs the fact that the constructor was entered. The short reason passed
-    * to the constructor is both the input and the output for this class
-    * function.
-    *
-    * @param shortReason
-    *    the short reason, could be <code>null</code>.
-    *
-    * @return
-    *    <code>shortReason</code>.
-    */
-   private static final String trace(String shortReason) {
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      return shortReason;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -87,13 +67,10 @@ extends HTTPCallException {
                                long             duration,
                                int              code)
    throws IllegalArgumentException {
-      super(trace("Unsupported HTTP status code " + code),
+      super("Unsupported HTTP status code " + code,
             request, target, duration, null, null);
 
       _code = code;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

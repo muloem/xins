@@ -105,13 +105,7 @@ extends Object {
     */
    public ElementParser() {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // empty
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -152,9 +146,6 @@ extends Object {
       // TODO: Consider using an XMLReader instead of a SAXParser
 
       final String THIS_METHOD = "parse(java.io.Reader)";
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("in", in);
@@ -233,9 +224,6 @@ extends Object {
 
       Element element = handler.getElement();
 
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
-
       return element;
    }
 
@@ -264,16 +252,10 @@ extends Object {
        */
       private Handler() {
 
-         // TRACE: Enter constructor
-         Log.log_1000(HANDLER_CLASSNAME, null);
-
          _state            = PARSING;
          _level            = -1;
          _characters       = new FastStringBuffer(45);
          _dataElementStack = new Stack();
-
-         // TRACE: Leave constructor
-         Log.log_1002(HANDLER_CLASSNAME, null);
       }
 
 
@@ -359,14 +341,6 @@ extends Object {
          // Cache quoted version of namespaceURI
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
-         // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + currentState
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + quotedNamespaceURI
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
-
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName, "atts", atts);
 
@@ -400,13 +374,6 @@ extends Object {
             // Reset the state from ERROR back to PARSING
             _state = PARSING;
          }
-
-         Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + _state
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
       }
 
       /**
@@ -443,14 +410,6 @@ extends Object {
          // Cache quoted version of namespaceURI
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
 
-         // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + currentState
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
-
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName);
 
@@ -485,14 +444,6 @@ extends Object {
 
          _level--;
          _characters.clear();
-
-         // TRACE: Leave method
-         Log.log_1005(HANDLER_CLASSNAME, THIS_METHOD,
-                        "_state="       + _state
-                    + "; _level="       + _level
-                    + "; namespaceURI=" + TextUtils.quote(namespaceURI)
-                    + "; localName="    + TextUtils.quote(localName)
-                    + "; qName="        + TextUtils.quote(qName));
       }
 
       /**
@@ -522,9 +473,6 @@ extends Object {
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
-
-         // TRACE: Enter method
-         Log.log_1003(HANDLER_CLASSNAME, THIS_METHOD, null);
 
          if (_characters != null) {
             _characters.append(ch, start, length);

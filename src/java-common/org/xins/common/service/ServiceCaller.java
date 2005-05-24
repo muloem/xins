@@ -165,9 +165,6 @@ public abstract class ServiceCaller extends Object {
                                + Descriptor.class.getName()
                                + ')';
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Store information
       _className  = getClass().getName();
       _newStyle   = false;
@@ -247,9 +244,6 @@ public abstract class ServiceCaller extends Object {
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
    /**
@@ -280,9 +274,6 @@ public abstract class ServiceCaller extends Object {
                                + ','
                                + CallConfig.class.getName()
                                + ')';
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
 
       // Store information
       _className  = getClass().getName();
@@ -404,9 +395,6 @@ public abstract class ServiceCaller extends Object {
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 
@@ -569,9 +557,6 @@ public abstract class ServiceCaller extends Object {
                                + Descriptor.class.getName()
                                + ')';
 
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       // Test the protocol for all TargetDescriptors
       if (descriptor != null) {
          Iterator targets = descriptor.iterateTargets();
@@ -582,9 +567,6 @@ public abstract class ServiceCaller extends Object {
 
       // Store it
       _descriptor = descriptor;
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
    }
 
    /**
@@ -731,9 +713,6 @@ public abstract class ServiceCaller extends Object {
                                + ','
                                + CallConfig.class.getName()
                                + ')';
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
@@ -888,9 +867,6 @@ public abstract class ServiceCaller extends Object {
          if (succeeded) {
             long duration = System.currentTimeMillis() - start;
 
-            // TRACE: Leave method
-            Log.log_1005(CLASSNAME, THIS_METHOD, null);
-
             return createCallResult(request, target, duration, exceptions, result);
          }
       }
@@ -900,9 +876,6 @@ public abstract class ServiceCaller extends Object {
 
       // Get the first exception from the list, this one should be thrown
       CallException first = exceptions.get(0);
-
-      // TRACE: Leave method with exception
-      Log.log_1004(first, CLASSNAME, THIS_METHOD, null);
 
       throw first;
    }
@@ -951,9 +924,6 @@ public abstract class ServiceCaller extends Object {
       final String THIS_METHOD = "doCall("
                                + CallRequest.class.getName()
                                + ')';
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // This method should only be called if the subclass uses the old style
       if (_newStyle) {
@@ -1095,9 +1065,6 @@ public abstract class ServiceCaller extends Object {
          if (succeeded) {
             long duration = System.currentTimeMillis() - start;
 
-            // TRACE: Leave method
-            Log.log_1005(CLASSNAME, THIS_METHOD, null);
-
             return createCallResult(request, target, duration, exceptions, result);
          }
       }
@@ -1107,9 +1074,6 @@ public abstract class ServiceCaller extends Object {
 
       // Get the first exception from the list, this one should be thrown
       CallException first = exceptions.get(0);
-
-      // TRACE: Leave method with exception
-      Log.log_1004(first, CLASSNAME, THIS_METHOD, null);
 
       throw first;
    }
@@ -1338,14 +1302,8 @@ public abstract class ServiceCaller extends Object {
                                + Throwable.class.getName()
                                + ')';
 
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       // Determine if fail-over is applicable
       boolean should = (exception instanceof ConnectionCallException);
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return should;
    }
@@ -1395,9 +1353,6 @@ public abstract class ServiceCaller extends Object {
                                + CallExceptionList.class.getName()
                                + ')';
 
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
          final String SUBJECT_CLASS  = Utils.getCallingClass();
@@ -1411,16 +1366,12 @@ public abstract class ServiceCaller extends Object {
             CLASSNAME,     THIS_METHOD,
             SUBJECT_CLASS, SUBJECT_METHOD,
             DETAIL);
-         Log.log_1004(exception, CLASSNAME, THIS_METHOD, null);
          throw exception;
       }
 
       // Determine if fail-over is applicable
       boolean should = callConfig.isFailOverAllowed()
           || (exceptions.last() instanceof ConnectionCallException);
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return should;
    }

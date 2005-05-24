@@ -81,14 +81,8 @@ public class CallConfig extends Object {
       // First determine instance number
       _instanceNumber = ++INSTANCE_COUNT;
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
-
       // Create lock object
       _lock = new Object();
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
    }
 
 

@@ -168,25 +168,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
 
    /**
-    * Logs the fact that the constructor was entered. The descriptor passed
-    * to the constructor is both the input and the output for this class
-    * function.
-    *
-    * @param descriptor
-    *    the descriptor, could be <code>null</code>.
-    *
-    * @return
-    *    <code>descriptor</code>.
-    */
-   private static final Descriptor trace(Descriptor descriptor) {
-
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
-      return descriptor;
-   }
-
-   /**
     * Creates an appropriate <code>HttpMethodBase</code> object for the
     * specified URL.
     *
@@ -216,9 +197,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                + ','
                                + HTTPCallConfig.class.getName()
                                + ')';
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url, "request", request);
@@ -251,9 +229,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                }
             }
          }
-
-         // TRACE: Leave method
-         Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
          return postMethod;
 
@@ -291,9 +266,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                getMethod.setQueryString(query.toString());
             }
          }
-
-         // TRACE: Leave method
-         Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
          return getMethod;
 
@@ -338,10 +310,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws IllegalArgumentException, UnsupportedProtocolException {
 
       // Trace first and then call superclass constructor
-      super(trace(descriptor), callConfig);
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
+      super(descriptor, callConfig);
    }
 
 
@@ -488,18 +457,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {
 
-      final String THIS_METHOD = "doCallImpl(CallRequest,CallConfig,TargetDescriptor)";
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       // Delegate to method with more specialized interface
       Object ret = call((HTTPCallRequest) request,
                         (HTTPCallConfig)  callConfig,
                         target);
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return ret;
    }
@@ -545,9 +506,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                + HTTPCallConfig.class.getName()
                                + ')';
 
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
@@ -567,9 +525,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          final String SUBJECT_METHOD = "doCall(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ')';
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, null, exception);
       }
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       return (HTTPCallResult) callResult;
    }
@@ -655,9 +610,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                + ','
                                + TargetDescriptor.class.getName()
                                + ')';
-
-      // TRACE: Enter method
-      Log.log_1003(CLASSNAME, THIS_METHOD, null);
 
       // Get the parameters for logging
       PropertyReader     p      = request.getParameters();
@@ -785,9 +737,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          executor.dispose();
          throw new StatusCodeHTTPCallException(request, target, duration, code);
       }
-
-      // TRACE: Leave method
-      Log.log_1005(CLASSNAME, THIS_METHOD, null);
 
       executor.dispose();
       return new HTTPCallResult(request, target, duration, null, data);

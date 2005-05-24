@@ -55,9 +55,6 @@ extends RuntimeException {
    private static final String createMessage(TargetDescriptor target)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, null);
-
       // Check preconditions
       MandatoryArgumentChecker.check("target", target);
 
@@ -88,9 +85,6 @@ extends RuntimeException {
 
       // Store
       _target = target;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, null);
    }
 
 

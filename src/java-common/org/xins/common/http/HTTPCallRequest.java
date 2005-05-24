@@ -75,17 +75,11 @@ public final class HTTPCallRequest extends CallRequest {
       // Determine instance number first
       _instanceNumber = ++INSTANCE_COUNT;
 
-      // TRACE: Enter constructor
-      Log.log_1000(CLASSNAME, "#" + _instanceNumber);
-
       // Store information
       _parameters         = (parameters != null)
                           ? parameters
                           : PropertyReaderUtils.EMPTY_PROPERTY_READER;
       _statusCodeVerifier = statusCodeVerifier;
-
-      // TRACE: Leave constructor
-      Log.log_1002(CLASSNAME, "#" + _instanceNumber);
 
       // Note that _asString is lazily initialized.
    }
