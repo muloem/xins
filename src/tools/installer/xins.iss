@@ -5,7 +5,7 @@
 [Setup]
 AppName=XINS
 AppVerName=XINS version 1.2.0-beta4
-DefaultDirName={pf}\xins-1.2.0-beta4
+DefaultDirName={sd}\xins-1.2.0-beta4
 VersionInfoVersion=1.2.0
 OutputDir=c:\projects
 OutputBaseFilename=xins-1.2.0-beta4
