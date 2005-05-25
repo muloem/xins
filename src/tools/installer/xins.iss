@@ -4,22 +4,22 @@
 
 [Setup]
 AppName=XINS
-AppVerName=XINS version 1.2.0-beta4
-DefaultDirName={sd}\xins-1.2.0-beta4
-VersionInfoVersion=1.2.0
+AppVerName=XINS version 1.3.0-alpha1
+DefaultDirName={sd}\xins-1.3.0-alpha1
+VersionInfoVersion=1.3.0
 OutputDir=c:\projects
-OutputBaseFilename=xins-1.2.0-beta4
+OutputBaseFilename=xins-1.3.0-alpha1
 SetupIconFile=xins.ico
 WizardImageFile=bigxinslogo.bmp
 WizardSmallImageFile=smallxinslogo.bmp
 UninstallDisplayIcon={app}\xins.ico
 DefaultGroupName=Xins
 DisableProgramGroupPage=yes
-LicenseFile=c:\projects\xins-1.2.0-beta4\COPYRIGHT
+LicenseFile=c:\projects\xins-1.3.0-alpha1\COPYRIGHT
 InfoBeforeFile=xins-info1.txt
 
 [Files]
-Source: "c:\projects\xins-1.2.0-beta4\*"; DestDir: "{app}"; Flags: recursesubdirs
+Source: "c:\projects\xins-1.3.0-alpha1\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "xins.ico"; DestDir: "{app}"
 
 [Icons]
