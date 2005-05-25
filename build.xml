@@ -943,9 +943,6 @@ ${sf.file}</fail>
 			<include name="lib/commons-logging.LICENSE"    />
 			<include name="lib/jakarta-oro.LICENSE"        />
 			<include name="lib/log4j.LICENSE"              />
-			<include name="lib/xalan.LICENSE"              />
-			<include name="lib/xerces.LICENSE"             />
-			<include name="lib/xmlenc.LICENSE"             />
 			<include name="docs/*.html"                    />
 			<include name="docs/*.css"                     />
 			<include name="docs/protocol/*.html"           />
@@ -1000,9 +997,6 @@ ${sf.file}</fail>
 				<include name="lib/commons-logging.jar"        />
 				<include name="lib/jakarta-oro.jar"            />
 				<include name="lib/log4j.jar"                  />
-				<include name="lib/xalan.jar"                  />
-				<include name="lib/xercesImpl.jar"             />
-				<include name="lib/xml-apis.jar"               />
 				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />
 			</tarfileset>
