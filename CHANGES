@@ -23,6 +23,8 @@ NOTE: This release is based on XINS 1.2.0-rc1.
     servlet class, that delegates completely to the newly-introduced Engine
     class. The inner class APIServlet.State has been replaced by the
     EngineState class.
+  - Fixed bug #1208936: Erroneous non-assignments in XSLTCallingConvention
+    class.
 
 * XINS/Java Client Framework:
   - Removed trace logs from the code.
