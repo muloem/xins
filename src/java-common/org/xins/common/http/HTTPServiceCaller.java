@@ -1047,6 +1047,22 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
+         
+         // Add support for 
+         int proxyPort = 80;
+         if ("true".equals(System.getProperty("proxySet")) && System.getProperty("proxyHost") != null) {
+            String proxyHost = System.getProperty("proxyHost");
+            if (System.getProperty("proxyPort") != null) {
+               proxyPort = Integer.parseInt(System.getProperty("proxyPort"));
+            }
+            client.getHostConfiguration().setProxy(proxyHost, proxyPort);
+         } else if (System.getProperty("http.proxyHost") != null) {
+            String proxyHost = System.getProperty("http.proxyHost");
+            if (System.getProperty("http.proxyPort") != null) {
+               proxyPort = Integer.parseInt(System.getProperty("http.proxyPort"));
+            }
+            client.getHostConfiguration().setProxy(proxyHost, proxyPort);
+         }
 
          // Determine URL and time-outs
          String url               = _target.getURL();

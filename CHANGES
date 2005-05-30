@@ -14,6 +14,7 @@ NOTE: This release is based on XINS 1.2.0-rc1.
   - Fixed SF.net bug #1201270: the run target works also if the computer is not
     connected to Internet.
   - Removed trace logs from the code.
+  - Fixed bug #1211277: XINS does not work with proxies.
 
 * XINS/Java Server Framework:
   - Changed the MetaFunctionsTests to properly detect the Java version and
