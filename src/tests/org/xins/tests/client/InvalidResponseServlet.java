@@ -73,6 +73,12 @@ public class InvalidResponseServlet extends HttpServlet {
          Writer writer = response.getWriter();
          writer.write(getInvalidSimpleTypesResult());
          writer.close();
+      } else if (function.equals("DefinedTypes")) {
+         response.setStatus(HttpServletResponse.SC_OK);
+         response.setContentType("text/xml;charset=UTF-8");
+         Writer writer = response.getWriter();
+         writer.write(getInvalidDefinedTypesResult());
+         writer.close();
       } else if (function.equals("ResultCode")) {
          response.setStatus(HttpServletResponse.SC_OK);
          response.setContentType("text/xml;charset=UTF-8");
@@ -100,6 +106,17 @@ public class InvalidResponseServlet extends HttpServlet {
              "<param name=\"outputDouble\">3.1415</param>"+
              "<param name=\"outputDate\">20040621</param>"+
              "</result>";
+   }
+   
+   /**
+    * Returns an invalid result for the DefinedTypes function.
+    *
+    * @returns
+    *    the invalid result as XML String.
+    */
+   private String getInvalidDefinedTypesResult() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result/>";
    }
    
    /**

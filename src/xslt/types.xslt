@@ -365,8 +365,14 @@
 				</xsl:variable>
 
 				<xsl:value-of select="$class" />
-				<!-- TODO: Also call fromStringForRequired ?  -->
-				<xsl:text>.fromStringForOptional(</xsl:text>
+				<xsl:choose>
+					<xsl:when test="$required = 'true'">
+						<xsl:text>.fromStringForRequired(</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>.fromStringForOptional(</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:value-of select="$variable" />
 				<xsl:text>)</xsl:text>
 			</xsl:when>

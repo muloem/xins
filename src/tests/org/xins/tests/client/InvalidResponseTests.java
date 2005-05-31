@@ -7,6 +7,7 @@
 package org.xins.tests.client;
 
 import com.mycompany.allinone.capi.*;
+import com.mycompany.allinone.types.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -89,6 +90,15 @@ public class InvalidResponseTests extends TestCase {
       try {
          SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88L, 72.5f, new Double(37.2),
             "test", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
+         fail("Expected UnacceptableResultXINSCallException.");
+      } catch (UnacceptableResultXINSCallException exception) {
+         // as expected
+      } catch (Exception exception) {
+         exception.printStackTrace();
+         fail("Expected UnacceptableResultXINSCallException instead of " + exception.getClass().getName() + '.');
+      }
+      try {
+         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1", Salutation.LADY, (byte) 20, null);
          fail("Expected UnacceptableResultXINSCallException.");
       } catch (UnacceptableResultXINSCallException exception) {
          // as expected

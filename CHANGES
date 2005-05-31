@@ -4,9 +4,18 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
+
+* Generation of client-side Java code:
+  - Fixed bug #1211447: Presence of mandatory Result Items not checked.
+
+* The debug and profile targets in the NetBeans build script do not require
+  Jetty anymore.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:
 
-NOTE: This release is based on XINS 1.2.0-rc1.
+NOTE: This release is based on XINS 1.2.0.
 
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
