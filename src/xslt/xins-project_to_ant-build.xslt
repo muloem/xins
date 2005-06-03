@@ -218,21 +218,6 @@ APIs in this project are:
 				</xmlcatalog>
 			</target>
 
-			<target name="generate-wsdl">
-				<input message="Enter the name of the API:" addproperty="api.name" />
-				<!-- TODO support for the old directory structure ?? -->
-				<mkdir dir="{$builddir}/webapps/${{api.name}}" />
-				<style
-				in="{$project_home}/apis/${{api.name}}/spec/api.xml"
-				out="{$builddir}/webapps/${{api.name}}/${{api.name}}.wsdl"
-				style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$project_home}/apis/${{api.name}}/spec" />
-				</style>
-			</target>
-			
 			<target name="index-specdocs" depends="-prepare-specdocs" description="Generates the API index">
 				<xmlvalidate file="{$project_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
@@ -616,6 +601,19 @@ APIs in this project are:
 				</javac>
 			</target>
 		</xsl:if>
+
+		<target name="wsdl-{$api}">
+			<mkdir dir="{$builddir}/webapps/{$api}" />
+			<style
+			in="{$api_specsdir}/api.xml"
+			out="{$builddir}/webapps/{$api}/{$api}.wsdl"
+			style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+				<param name="project_file" expression="{$project_file}" />
+				<param name="specsdir"     expression="{$api_specsdir}" />
+			</style>
+		</target>
 
 		<xsl:if test="document($api_file)/api/impl-java or impl">
 			<xsl:variable name="package">

@@ -13,7 +13,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
   - Fixed bug #1211447: Presence of mandatory Result Items not checked.
 
 * Build- and release-process:
-  - Added generate-wsdl target.
+  - Added wsdl-<api> targets that generated the WSDL file for the given API.
 
 * The debug and profile targets in the NetBeans build script do not require
   Jetty anymore.
