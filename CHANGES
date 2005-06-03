@@ -6,8 +6,14 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 
+* XINS/Java Server Framework:
+  - Added SOAP calling convention.
+
 * Generation of client-side Java code:
   - Fixed bug #1211447: Presence of mandatory Result Items not checked.
+
+* Build- and release-process:
+  - Added generate-wsdl target.
 
 * The debug and profile targets in the NetBeans build script do not require
   Jetty anymore.

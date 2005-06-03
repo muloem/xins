@@ -645,4 +645,75 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<!--
+	* Returns the SOAP type for the specified XINS type.
+	* The type could be a standard type or a defined type.
+	*
+	* @param project_file
+	*    the location of the xins-project.xml file.
+	*
+	* @param specsdir
+	*    the specification directory for the concerning XINS project, must be
+	*    specified.
+	*
+	* @param api
+	*    the name of the API to which the type belongs, must be specified.
+	*
+	* @param type
+	*    the name of the type of the parameter, can be empty.
+	*
+	* @return
+	*    the SOAP type as defined at http://www.w3.org/2001/XMLSchema.xsd.
+	*    Examples: integer, string, base64Binary
+	-->
+	<xsl:template name="soaptype_for_type">
+
+		<!-- Define parameters -->
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		<xsl:param name="type"         />
+		
+		<xsl:variable name="paramtype">
+			<xsl:choose>
+				<xsl:when test="string-length($type) = 0 or starts-with($type, '_')">
+					<xsl:value-of select="$type" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="basetype_for_type">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="specsdir" select="$specsdir" />
+						<xsl:with-param name="api" select="$api" />
+						<xsl:with-param name="type" select="$type" />
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:choose>
+			<xsl:when test="string-length($paramtype) = 0 or $paramtype = '_text'">string</xsl:when>
+			<xsl:when test="$paramtype = '_boolean'">boolean</xsl:when>
+			<xsl:when test="$paramtype = '_int8'">byte</xsl:when>
+			<xsl:when test="$paramtype = '_int16'">short</xsl:when>
+			<xsl:when test="$paramtype = '_int32'">integer</xsl:when>
+			<xsl:when test="$paramtype = '_int64'">long</xsl:when>
+			<xsl:when test="$paramtype = '_float32'">float</xsl:when>
+			<xsl:when test="$paramtype = '_float64'">double</xsl:when>
+			<xsl:when test="$paramtype = '_base64'">base64Binary</xsl:when>
+			<xsl:when test="$paramtype = '_url'">anyURI</xsl:when>
+			<!-- the SOAP type for date and time is yyyy-mm-ddThh:mm:ss -->
+			<xsl:when test="$paramtype = '_date'">string</xsl:when>
+			<xsl:when test="$paramtype = '_timestamp'">string</xsl:when>
+			<xsl:when test="$paramtype = '_properties'">string</xsl:when>
+			<xsl:when test="$paramtype = '_descriptor'">string</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>Unrecognized type datatype '</xsl:text>
+					<xsl:value-of select="$paramtype" />
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

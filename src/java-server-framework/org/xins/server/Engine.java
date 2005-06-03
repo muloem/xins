@@ -255,6 +255,11 @@ final class Engine extends Object {
    static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
 
    /**
+    * The SOAP calling convention.
+    */
+   static final String SOAP_CALLING_CONVENTION = "_xins-soap";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *
@@ -1512,6 +1517,10 @@ final class Engine extends Object {
       // XSLT calling convention
       } else if (XSLT_CALLING_CONVENTION.equals(name)) {
          createdConvention = new XSLTCallingConvention();
+
+      // SOAP calling convention
+      } else if (SOAP_CALLING_CONVENTION.equals(name)) {
+         createdConvention = new SOAPCallingConvention();
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {

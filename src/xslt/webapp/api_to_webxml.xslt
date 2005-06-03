@@ -22,6 +22,7 @@
 	<xsl:param name="timestamp"    />
 
 	<xsl:output
+	method="xml"
 	doctype-public="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 	doctype-system="http://java.sun.com/dtd/web-app_2_3.dtd"
 	indent="yes" />
