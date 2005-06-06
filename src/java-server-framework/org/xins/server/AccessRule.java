@@ -201,11 +201,6 @@ public final class AccessRule implements AccessRuleContainer {
    private final Perl5Pattern _functionNamePattern;
 
    /**
-    * Pattern matcher.
-    */
-   private final Perl5Matcher _paternMatcher = new Perl5Matcher();
-
-   /**
     * String representation of this object. Cannot be <code>null</code>.
     */
    private final String _asString;
@@ -294,7 +289,8 @@ public final class AccessRule implements AccessRuleContainer {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      if (!_ipFilter.match(ip) || !_paternMatcher.matches(functionName, _functionNamePattern)) {
+      Perl5Matcher patternMatcher = new Perl5Matcher();
+      if (!_ipFilter.match(ip) || !patternMatcher.matches(functionName, _functionNamePattern)) {
          return null;
       } else {
          return _allow;

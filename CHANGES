@@ -22,6 +22,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 * Generation of client-side Java code:
   - Fixed bug #1211447: Presence of mandatory Result Items not checked.
 
+* Generated specification documentation:
+  - Added support for multiple implementation for the runtime properties.
+
+* Generated build file:
+  - Added support for multiple implementation.
+
 * Build- and release-process:
   - Added wsdl-<api> targets that generated the WSDL file for the given API.
   - Added target that creates the Windows installer.

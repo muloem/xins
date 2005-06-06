@@ -224,17 +224,41 @@
 				<h2>Properties</h2>
 				<xsl:choose>
 					<xsl:when test="document($project_file)/project/api[@name = $api]/impl">
-						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-						<xsl:choose>
-							<xsl:when test="document($impl_file)/impl/runtime-properties/property">
-								<a href="properties.html" title="Specification of the runtime properties used by this API">Runtime properties</a>
-							</xsl:when>
-							<xsl:otherwise>
-								<p>
-									<em>No runtime properties have been defined for this API.</em>
-								</p>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:for-each select="document($project_file)/project/api[@name = $api]/impl">
+							<xsl:variable name="implName" select="@name" />
+							<xsl:variable name="implName2">
+								<xsl:if test="@name and string-length($implName) &gt; 0">
+									<xsl:value-of select="concat('-', $implName)" />
+								</xsl:if>
+							</xsl:variable>
+							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+							<xsl:choose>
+								<xsl:when test="document($impl_file)/impl/runtime-properties/property and @name and string-length($implName) &gt; 0">
+									<a href="properties{$implName2}.html" title="Specification of the runtime properties used for the {$implName} implementation.">
+										<xsl:text>Runtime properties for </xsl:text>
+										<xsl:value-of select="$implName" />
+										<xsl:text> implementation.</xsl:text>
+									</a>
+								</xsl:when>
+								<xsl:when test="document($impl_file)/impl/runtime-properties/property">
+									<a href="properties.html" title="Specification of the runtime properties used by this API">Runtime properties</a>
+								</xsl:when>
+								<xsl:when test="@name and string-length($implName) &gt; 0">
+									<p>
+										<em>
+											<xsl:text>No runtime properties have been defined for the &quot;</xsl:text>
+											<xsl:value-of select="$implName" />
+											<xsl:text>&quot; implementation.</xsl:text>
+										</em>
+									</p>
+								</xsl:when>
+								<xsl:otherwise>
+									<p>
+										<em>No runtime properties have been defined for the default implementation.</em>
+									</p>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
 						<p>

@@ -291,7 +291,9 @@ public final class TargetDescriptor extends Descriptor {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
-      if (! _patternMatcher.matches(url, PATTERN)) {
+      
+      Perl5Matcher patternMatcher = new Perl5Matcher();
+      if (! patternMatcher.matches(url, PATTERN)) {
          throw new MalformedURLException(url);
       }
 
@@ -363,11 +365,6 @@ public final class TargetDescriptor extends Descriptor {
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
    private final int _crc;
-
-   /**
-    * Pattern matcher.
-    */
-   private final Perl5Matcher _patternMatcher = new Perl5Matcher();
 
 
    //-------------------------------------------------------------------------
