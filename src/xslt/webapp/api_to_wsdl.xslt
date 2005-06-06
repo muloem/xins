@@ -13,6 +13,7 @@
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+								xmlns="http://schemas.xmlsoap.org/wsdl/"
 								xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 								xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
 								version="1.0">
@@ -23,7 +24,7 @@
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 
-	<xsl:output method="xml" indent="yes" />
+	<xsl:output indent="yes" />
 
 	<xsl:template match="api">
 	
