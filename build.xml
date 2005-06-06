@@ -1055,6 +1055,34 @@ ${sf.file}</fail>
 	depends="package,do-upload-package"
 	description="Creates and uploads package to the web server" />
 
+	<target name="installer" depends="-init">
+		<get src="http://xins.sourceforge.net/VERSION"
+		     dest="../VERSION" />
+		<loadfile srcfile="../VERSION" property="exe.version" />
+		<delete file="../VERSION" />
+		<get src="http://prdownloads.sourceforge.net/xins/xins-${exe.version}.tgz?download"
+		     dest="../${name}-${exe.version}.tgz" />
+		<gunzip src="../${name}-${exe.version}.tgz" />
+		<untar src="../${name}-${exe.version}.tar" dest=".." />
+		<delete file="../${name}-${exe.version}.tar" />
+		<replace file="src/tools/installer/${name}.iss"
+		         token="%%VERSION%%"
+						 value="${exe.version}" />
+		<exec command="C:\Util\InnoSetup\compil32.exe">
+			<arg value="/cc" />
+			<arg path="src/tools/installer/${name}.iss" />
+		</exec>
+		<delete file="src/tools/installer/${name}.iss" />
+		<cvs cvsRoot=":ext:${sf.user}@cvs.sourceforge.net:/cvsroot/xins"
+		     command="update"
+				 dest="src/tools/installer" />
+		<echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
+		<ftp server="upload.sf.net" remotedir="incoming"
+		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
+			<fileset dir=".." includes="${name}-${exe.version}.exe" />
+		</ftp>
+	</target>
+
 	<target name="-check-release-version" depends="-init" unless="force">
 		<condition property="version.suffix.set">
 			<equals arg1="${version.suffix}" arg2="-dev" />
