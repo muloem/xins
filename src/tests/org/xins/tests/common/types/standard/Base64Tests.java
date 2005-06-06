@@ -73,7 +73,7 @@ public class Base64Tests extends TestCase {
       assertEquals(5, hello.length);
       assertEquals('o', hello[4]);
       try {
-         byte[] hello2 = (byte[])lowerLimit.fromString("héllo");
+         byte[] hello2 = (byte[])lowerLimit.fromString("h\u00e9llo");
          fail("Converted an invalid base64 String.");
       } catch (TypeValueException tve) {
          // As expected
