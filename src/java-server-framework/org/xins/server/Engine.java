@@ -341,7 +341,7 @@ final class Engine extends Object {
     *        for the XINS/Java Server Framework to start up, while others are
     *        optional. These build-time settings are passed to the servlet by
     *        the application server as a {@link ServletConfig} object. See
-    *        {@link #init(ServletConfig)}.
+    *        {@link APIServlet#init(ServletConfig)}.
     *        <br>The servlet configuration is the responsibility of the
     *        <em>assembler</em>.</dd>
     *
@@ -367,14 +367,6 @@ final class Engine extends Object {
     *        <br>log4j.appender.console.layout.ConversionPattern=%d
     *        %-5p [%c] %m%n</code></blockquote>
     * </dl>
-    *
-    * @param config
-    *    the {@link ServletConfig} object which contains build properties for
-    *    this servlet, as specified by the <em>assembler</em>, cannot be
-    *    <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the servlet could not be initialized.
     *
     * @param config
     *    the {@link ServletConfig} object which contains build properties for
@@ -1253,7 +1245,7 @@ final class Engine extends Object {
    /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
-    * object is the one passed to the {@link #init(ServletConfig)} method.
+    * object is the one passed to the {@link APIServlet#init(ServletConfig)} method.
     *
     * @return
     *    the {@link ServletConfig} object that was used to initialize this

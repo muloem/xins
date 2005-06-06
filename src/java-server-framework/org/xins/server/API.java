@@ -441,7 +441,7 @@ implements DefaultResultCodes {
     * Stores a reference to the <code>Engine</code> that owns this
     * <code>API</code> object.
     *
-    * @param apiServlet
+    * @param engine
     *    the {@link Engine} instance, should not be <code>null</code>.
     */
    void setEngine(Engine engine) {

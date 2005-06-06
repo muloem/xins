@@ -236,7 +236,7 @@ extends HttpServlet {
    /**
     * Initializes the loggers to log to the console using a simple format
     * and no threshold. This is done by calling
-    * {@link #configureLoggerFallback()}.
+    * {@link Engine#configureLoggerFallback()}.
     */
    static {
       Engine.configureLoggerFallback();
@@ -281,7 +281,7 @@ extends HttpServlet {
 
    /**
     * Initializes this servlet using the specified configuration (wrapper
-    * method). This method delegates to {@link #initImpl(ServletConfig)}.
+    * method). This method delegates to {@link Engine}.
     *
     * @param config
     *    the {@link ServletConfig} object which contains build properties for
